@@ -219,7 +219,6 @@ class QueryResult implements QueryResultInterface
     }
 
     /**
-     * @return bool
      * @see Iterator::valid()
      */
     public function valid(): bool

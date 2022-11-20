@@ -99,7 +99,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * override it by TypoScript settings, and return it. Only files with
      * the extension .yaml or .form.yaml are loaded.
      *
-     * @return array
      * @internal
      */
     public function load(string $persistenceIdentifier): array
@@ -449,7 +448,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * persistenceManager.allowedExtensionPaths
      * are listed.
      *
-     * @return array
      * @internal
      */
     public function getAccessibleExtensionFolders(): array
@@ -554,7 +552,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * Check if an identifier is already used by a formDefinition.
      *
-     * @return bool
      * @internal
      */
     public function checkForDuplicateIdentifier(string $identifier): bool
@@ -576,7 +573,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * If the input is a persistence identifier an additional check for a
      * valid file extension will be performed.
      * .
-     * @return bool
      * @internal
      */
     public function isAllowedPersistencePath(string $persistencePath): bool
@@ -641,17 +637,11 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         return $formDefinition;
     }
 
-    /**
-     * @return bool
-     */
     protected function pathIsIntendedAsExtensionPath(string $path): bool
     {
         return PathUtility::isExtensionPath($path);
     }
 
-    /**
-     * @return bool
-     */
     protected function pathIsIntendedAsFileMountPath(string $path): bool
     {
         if (empty($path)) {
@@ -671,7 +661,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * If no file for this identifier exists a new object will be
      * created.
      *
-     * @return File
      * @throws PersistenceManagerException
      */
     protected function getOrCreateFile(string $persistenceIdentifier): File
@@ -709,7 +698,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * Returns a ResourceStorage for a given uid
      *
-     * @return ResourceStorage
      * @throws PersistenceManagerException
      */
     protected function getStorageByUid(int $storageUid): ResourceStorage
@@ -726,7 +714,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
 
     /**
      * @param string|File $persistenceIdentifier
-     * @return array
      * @throws NoSuchFileException
      */
     protected function loadMetaData($persistenceIdentifier): array
@@ -770,9 +757,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         return $yaml;
     }
 
-    /**
-     * @return array
-     */
     protected function extractMetaDataFromCouldBeFormDefinition(string $maybeRawFormDefinition): array
     {
         $metaDataProperties = ['identifier', 'type', 'label', 'prototypeName'];
@@ -819,7 +803,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @return File
      * @throws PersistenceManagerException
      * @throws NoSuchFileException
      */
@@ -865,7 +848,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @return bool
      * @internal only to be used within TYPO3 Core, not part of TYPO3 Core API
      */
     public function hasValidFileExtension(string $fileName): bool
@@ -873,9 +855,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         return str_ends_with($fileName, self::FORM_DEFINITION_FILE_EXTENSION);
     }
 
-    /**
-     * @return bool
-     */
     protected function isFileWithinAccessibleExtensionFolders(string $fileName): bool
     {
         $pathInfo = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
@@ -884,9 +863,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         return array_key_exists($dirName, $this->getAccessibleExtensionFolders());
     }
 
-    /**
-     * @return bool
-     */
     protected function isFileWithinAccessibleFormStorageFolders(string $fileName): bool
     {
         $pathInfo = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
@@ -895,35 +871,23 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         return array_key_exists($dirName, $this->getAccessibleFormStorageFolders());
     }
 
-    /**
-     * @return bool
-     */
     protected function isAccessibleExtensionFolder(string $folderName): bool
     {
         $folderName = rtrim($folderName, '/') . '/';
         return array_key_exists($folderName, $this->getAccessibleExtensionFolders());
     }
 
-    /**
-     * @return bool
-     */
     protected function isAccessibleFormStorageFolder(string $folderName): bool
     {
         $folderName = rtrim($folderName, '/') . '/';
         return array_key_exists($folderName, $this->getAccessibleFormStorageFolders());
     }
 
-    /**
-     * @return bool
-     */
     protected function looksLikeAFormDefinition(array $data): bool
     {
         return isset($data['identifier'], $data['type']) && !empty($data['identifier']) && trim($data['type']) === 'Form';
     }
 
-    /**
-     * @return array
-     */
     protected function sortForms(array $forms): array
     {
         $keys = $this->formSettings['persistenceManager']['sortByKeys'] ?? ['name', 'fileUid'];

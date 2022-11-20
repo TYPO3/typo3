@@ -51,8 +51,6 @@ class CoreVersionService
 
     /**
      * Get current installed version number
-     *
-     * @return string
      */
     public function getInstalledVersion(): string
     {
@@ -147,7 +145,6 @@ class CoreVersionService
     /**
      * Youngest patch release
      *
-     * @return CoreRelease
      * @throws \TYPO3\CMS\Install\Service\Exception\RemoteFetchException
      */
     public function getYoungestPatchRelease(): CoreRelease
@@ -177,7 +174,6 @@ class CoreVersionService
     }
 
     /**
-     * @return array
      * @throws \TYPO3\CMS\Install\Service\Exception\RemoteFetchException
      */
     protected function fetchFromRemote(string $url): array

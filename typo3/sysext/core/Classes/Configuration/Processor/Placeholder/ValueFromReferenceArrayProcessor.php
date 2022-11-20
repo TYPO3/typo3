@@ -22,9 +22,6 @@ namespace TYPO3\CMS\Core\Configuration\Processor\Placeholder;
  */
 class ValueFromReferenceArrayProcessor implements PlaceholderProcessorInterface
 {
-    /**
-     * @return bool
-     */
     public function canProcess(string $placeholder, array $referenceArray): bool
     {
         return !str_contains($placeholder, '(');

@@ -72,9 +72,6 @@ class Method
         }
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
@@ -90,8 +87,6 @@ class Method
 
     /**
      * @throws NoSuchMethodParameterException
-     *
-     * @return MethodParameter
      */
     public function getFirstParameter(): MethodParameter
     {
@@ -116,8 +111,6 @@ class Method
 
     /**
      * @throws NoSuchMethodParameterException
-     *
-     * @return MethodParameter
      */
     public function getParameter(string $parameterName): MethodParameter
     {
@@ -132,41 +125,26 @@ class Method
         return $this->parameters[$parameterName];
     }
 
-    /**
-     * @return bool
-     */
     public function isPublic(): bool
     {
         return $this->definition['public'];
     }
 
-    /**
-     * @return bool
-     */
     public function isProtected(): bool
     {
         return $this->definition['protected'];
     }
 
-    /**
-     * @return bool
-     */
     public function isPrivate(): bool
     {
         return $this->definition['private'];
     }
 
-    /**
-     * @return bool
-     */
     public function isInjectMethod(): bool
     {
         return $this->definition['injectMethod'];
     }
 
-    /**
-     * @return bool
-     */
     public function isStatic(): bool
     {
         return $this->definition['static'];

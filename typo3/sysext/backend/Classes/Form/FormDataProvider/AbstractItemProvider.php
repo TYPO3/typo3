@@ -1050,9 +1050,6 @@ abstract class AbstractItemProvider
 
     /**
      * Add alternative icon using "altIcons" TSconfig
-     *
-     *
-     * @return array
      */
     public function addIconFromAltIcons(array $result, array $items, string $table, string $fieldName): array
     {

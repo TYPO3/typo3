@@ -83,7 +83,6 @@ class ObjectConverter extends AbstractTypeConverter
      * Only convert non-persistent types
      *
      * @param mixed $source
-     * @return bool
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function canConvertFrom($source, string $targetType): bool
@@ -95,7 +94,6 @@ class ObjectConverter extends AbstractTypeConverter
      * Convert all properties in the source array
      *
      * @param mixed $source
-     * @return array
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getSourceChildPropertiesToBeConverted($source): array
@@ -109,7 +107,6 @@ class ObjectConverter extends AbstractTypeConverter
     /**
      * The type of a property is determined by the reflection service.
      *
-     * @return string
      * @throws InvalidTargetException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
@@ -189,7 +186,6 @@ class ObjectConverter extends AbstractTypeConverter
      * Determines the target type based on the source's (optional) __type key.
      *
      * @param mixed $source
-     * @return string
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidDataTypeException
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
      * @throws \InvalidArgumentException

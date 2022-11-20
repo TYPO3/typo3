@@ -99,9 +99,6 @@ class CronCommandTest extends UnitTestCase
         self::assertSame(self::TIMESTAMP + 60, $instance->getTimestamp());
     }
 
-    /**
-     * @return array
-     */
     public static function expectedTimestampDataProvider(): array
     {
         return [
@@ -180,9 +177,6 @@ class CronCommandTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function expectedCalculatedTimestampDataProvider(): array
     {
         return [

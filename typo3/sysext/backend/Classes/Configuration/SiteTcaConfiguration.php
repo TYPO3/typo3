@@ -38,8 +38,6 @@ class SiteTcaConfiguration
      * $GLOBALS['SiteConfiguration'] within the Overrides files.
      *
      * It is not possible to use ExtensionManagementUtility methods.
-     *
-     * @return array
      */
     public function getTca(): array
     {

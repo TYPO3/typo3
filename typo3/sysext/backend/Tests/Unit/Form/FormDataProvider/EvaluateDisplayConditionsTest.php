@@ -563,7 +563,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      * receives all condition parameter!
      *
      * @throws \RuntimeException if condition parameter not resolved correctly
-     * @return bool
      */
     public function addDataResolvesAllUserParametersCallback(array $parameter): bool
     {
@@ -623,7 +622,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      * Throws an exception if data is correct!
      *
      * @throws \RuntimeException if FlexForm context is not as expected
-     * @return bool
      */
     public function addDataPassesFlexContextToUserConditionCallback(array $parameter): bool
     {
@@ -901,8 +899,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
 
     /**
      * Test scenarios for "a display condition references the value of another field"
-     *
-     * @return array
      */
     public function addDataRemovesTcaReferencingOtherFieldsInDisplayConditionDataProvider(): array
     {
@@ -3635,8 +3631,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      * - the condition string
      * - the current record
      * - the expected result
-     *
-     * @return array
      */
     public function conditionStringDataProvider(): array
     {

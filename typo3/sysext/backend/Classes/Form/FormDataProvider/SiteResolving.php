@@ -45,8 +45,6 @@ class SiteResolving implements FormDataProviderInterface
 
     /**
      * Find and add site object
-     *
-     * @return array
      */
     public function addData(array $result): array
     {
@@ -67,9 +65,6 @@ class SiteResolving implements FormDataProviderInterface
         return $result;
     }
 
-    /**
-     * @return SiteInterface
-     */
     protected function resolveSite(int $pageId): SiteInterface
     {
         try {

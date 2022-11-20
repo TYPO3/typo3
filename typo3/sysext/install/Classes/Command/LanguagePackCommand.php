@@ -84,7 +84,6 @@ class LanguagePackCommand extends Command
      *
      * @throws \InvalidArgumentException
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

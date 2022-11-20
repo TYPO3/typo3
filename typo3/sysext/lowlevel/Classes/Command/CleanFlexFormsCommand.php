@@ -76,8 +76,6 @@ class CleanFlexFormsCommand extends Command
 
     /**
      * Executes the command to find and update records with FlexForms where the values do not match the datastructures
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -130,7 +128,6 @@ class CleanFlexFormsCommand extends Command
      * @param int $pageId Page root id
      * @param int $depth Depth
      * @param array $dirtyFlexFormFields the list of all previously found flexform fields
-     * @return array
      */
     protected function findAllDirtyFlexformsInPage(int $pageId, int $depth, array $dirtyFlexFormFields = []): array
     {

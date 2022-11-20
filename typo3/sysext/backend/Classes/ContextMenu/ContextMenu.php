@@ -33,9 +33,6 @@ class ContextMenu
         $this->itemProvidersRegistry = $itemProvidersRegistry;
     }
 
-    /**
-     * @return array
-     */
     public function getItems(string $table, string $identifier, string $context = ''): array
     {
         $items = [];
@@ -66,8 +63,6 @@ class ContextMenu
     /**
      * Clean up double dividers.
      * Don't render menu when there are no item or submenu.
-     *
-     * @return array
      */
     protected function cleanItems(array $items): array
     {

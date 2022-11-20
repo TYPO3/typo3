@@ -56,7 +56,6 @@ class FileDumpController
     /**
      * Main method to dump a file
      *
-     * @return ResponseInterface
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      * @throws \UnexpectedValueException

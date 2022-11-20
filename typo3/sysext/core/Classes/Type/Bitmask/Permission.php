@@ -63,7 +63,6 @@ final class Permission extends BitSet
      * Permission mapping
      * Used for instance in PageTS
      *
-     * @return array
      * @internal
      */
     public static function getMap(): array

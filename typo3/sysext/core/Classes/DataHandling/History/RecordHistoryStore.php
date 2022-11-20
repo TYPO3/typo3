@@ -81,7 +81,6 @@ class RecordHistoryStore
 
     /**
      * @param CorrelationId|null $correlationId
-     * @return string
      */
     public function addRecord(string $table, int $uid, array $payload, CorrelationId $correlationId = null): string
     {
@@ -103,7 +102,6 @@ class RecordHistoryStore
 
     /**
      * @param CorrelationId|null $correlationId
-     * @return string
      */
     public function modifyRecord(string $table, int $uid, array $payload, CorrelationId $correlationId = null): string
     {
@@ -125,7 +123,6 @@ class RecordHistoryStore
 
     /**
      * @param CorrelationId|null $correlationId
-     * @return string
      */
     public function deleteRecord(string $table, int $uid, CorrelationId $correlationId = null): string
     {
@@ -146,7 +143,6 @@ class RecordHistoryStore
 
     /**
      * @param CorrelationId|null $correlationId
-     * @return string
      */
     public function undeleteRecord(string $table, int $uid, CorrelationId $correlationId = null): string
     {
@@ -167,7 +163,6 @@ class RecordHistoryStore
 
     /**
      * @param CorrelationId|null $correlationId
-     * @return string
      */
     public function moveRecord(string $table, int $uid, array $payload, CorrelationId $correlationId = null): string
     {
@@ -214,9 +209,6 @@ class RecordHistoryStore
         return $correlationId !== null ? $correlationId->withSubject($subject) : CorrelationId::forSubject($subject);
     }
 
-    /**
-     * @return Connection
-     */
     protected function getDatabaseConnection(): Connection
     {
         return GeneralUtility::makeInstance(ConnectionPool::class)

@@ -117,7 +117,6 @@ class ImageMagickFile
 
     /**
      * @param int|null $frame
-     * @return ImageMagickFile
      */
     public static function fromFilePath(string $filePath, int $frame = null): self
     {
@@ -151,9 +150,6 @@ class ImageMagickFile
         );
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return $this->asArgument;
@@ -167,7 +163,6 @@ class ImageMagickFile
      * + otherwise "safe" and allowed file extension is used (jpg, png, gif, webp, tif, ...)
      * + potentially malicious script formats (eps, ps, ...) are not allowed
      *
-     * @return string
      * @throws UnsupportedFileException
      */
     protected function resolvePrefix(): string
@@ -194,25 +189,16 @@ class ImageMagickFile
         );
     }
 
-    /**
-     * @return string
-     */
     protected function escape(string $value): string
     {
         return CommandUtility::escapeShellArgument($value);
     }
 
-    /**
-     * @return bool
-     */
     protected function isInAllowedExtensions(string $extension): bool
     {
         return in_array($extension, $this->allowedExtensions, true);
     }
 
-    /**
-     * @return FileInfo
-     */
     protected function getFileInfo(string $filePath): FileInfo
     {
         return GeneralUtility::makeInstance(FileInfo::class, $filePath);

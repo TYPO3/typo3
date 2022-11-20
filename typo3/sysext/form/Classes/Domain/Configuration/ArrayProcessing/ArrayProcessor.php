@@ -40,7 +40,6 @@ class ArrayProcessor
 
     /**
      * @param ArrayProcessing[] $processings
-     * @return array
      */
     public function forEach(...$processings): array
     {

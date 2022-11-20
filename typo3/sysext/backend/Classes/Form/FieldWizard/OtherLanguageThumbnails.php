@@ -37,8 +37,6 @@ class OtherLanguageThumbnails extends AbstractNode
 {
     /**
      * Render cropped thumbnails from other language rows
-     *
-     * @return array
      */
     public function render(): array
     {

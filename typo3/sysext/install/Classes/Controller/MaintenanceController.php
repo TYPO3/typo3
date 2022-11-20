@@ -59,8 +59,6 @@ class MaintenanceController extends AbstractController
     }
     /**
      * Main "show the cards" view
-     *
-     * @return ResponseInterface
      */
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -73,8 +71,6 @@ class MaintenanceController extends AbstractController
 
     /**
      * Clear cache framework and opcode caches
-     *
-     * @return ResponseInterface
      */
     public function cacheClearAllAction(): ResponseInterface
     {
@@ -92,8 +88,6 @@ class MaintenanceController extends AbstractController
 
     /**
      * Clear typo3temp files statistics action
-     *
-     * @return ResponseInterface
      */
     public function clearTypo3tempFilesStatsAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -122,8 +116,6 @@ class MaintenanceController extends AbstractController
 
     /**
      * Clear typo3temp/assets or FAL processed Files
-     *
-     * @return ResponseInterface
      */
     public function clearTypo3tempFilesAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -162,8 +154,6 @@ class MaintenanceController extends AbstractController
 
     /**
      * Dump autoload information
-     *
-     * @return ResponseInterface
      */
     public function dumpAutoloadAction(): ResponseInterface
     {
@@ -189,8 +179,6 @@ class MaintenanceController extends AbstractController
 
     /**
      * Get main database analyzer modal HTML
-     *
-     * @return ResponseInterface
      */
     public function databaseAnalyzerAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -216,8 +204,6 @@ class MaintenanceController extends AbstractController
 
     /**
      * Analyze current database situation
-     *
-     * @return ResponseInterface
      */
     public function databaseAnalyzerAnalyzeAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -371,8 +357,6 @@ class MaintenanceController extends AbstractController
 
     /**
      * Apply selected database changes
-     *
-     * @return ResponseInterface
      */
     public function databaseAnalyzerExecuteAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -412,8 +396,6 @@ class MaintenanceController extends AbstractController
 
     /**
      * Clear table overview statistics action
-     *
-     * @return ResponseInterface
      */
     public function clearTablesStatsAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -438,7 +420,6 @@ class MaintenanceController extends AbstractController
     /**
      * Truncate a specific table
      *
-     * @return ResponseInterface
      * @throws \RuntimeException
      */
     public function clearTablesClearAction(ServerRequestInterface $request): ResponseInterface
@@ -462,8 +443,6 @@ class MaintenanceController extends AbstractController
     }
     /**
      * Create Admin Get Data action
-     *
-     * @return ResponseInterface
      */
     public function createAdminGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -486,8 +465,6 @@ class MaintenanceController extends AbstractController
 
     /**
      * Create a backend administrator from given username and password
-     *
-     * @return ResponseInterface
      */
     public function createAdminAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -579,8 +556,6 @@ class MaintenanceController extends AbstractController
      * Entry action of language packs module gets
      * * list of available languages with details like active or not and last update
      * * list of loaded extensions
-     *
-     * @return ResponseInterface
      */
     public function languagePacksGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -608,8 +583,6 @@ class MaintenanceController extends AbstractController
 
     /**
      * Activate a language and any possible dependency it may have
-     *
-     * @return ResponseInterface
      */
     public function languagePacksActivateLanguageAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -662,7 +635,6 @@ class MaintenanceController extends AbstractController
     /**
      * Deactivate a language if no other active language depends on it
      *
-     * @return ResponseInterface
      * @throws \RuntimeException
      */
     public function languagePacksDeactivateLanguageAction(ServerRequestInterface $request): ResponseInterface
@@ -738,7 +710,6 @@ class MaintenanceController extends AbstractController
     /**
      * Update a pack of one extension and one language
      *
-     * @return ResponseInterface
      * @throws \RuntimeException
      */
     public function languagePacksUpdatePackAction(ServerRequestInterface $request): ResponseInterface
@@ -757,8 +728,6 @@ class MaintenanceController extends AbstractController
 
     /**
      * Set "last updated" time in registry for fully updated language packs.
-     *
-     * @return ResponseInterface
      */
     public function languagePacksUpdateIsoTimesAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -780,8 +749,6 @@ class MaintenanceController extends AbstractController
 
     /**
      * Set 'uc' field of all backend users to empty string
-     *
-     * @return ResponseInterface
      */
     public function resetBackendUserUcAction(): ResponseInterface
     {

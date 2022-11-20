@@ -30,8 +30,6 @@ interface DispatcherInterface
 {
     /**
      * Main method to dispatch a request and its response to a callable object
-     *
-     * @return ResponseInterface
      */
     public function dispatch(ServerRequestInterface $request): ResponseInterface;
 }

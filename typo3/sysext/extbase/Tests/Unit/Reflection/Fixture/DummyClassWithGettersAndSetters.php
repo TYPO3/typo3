@@ -103,9 +103,6 @@ class DummyClassWithGettersAndSetters
         $this->property2 = $property2;
     }
 
-    /**
-     * @return string
-     */
     protected function getProtectedProperty(): string
     {
         return '42';
@@ -119,17 +116,11 @@ class DummyClassWithGettersAndSetters
         $this->protectedProperty = $value;
     }
 
-    /**
-     * @return bool
-     */
     public function isBooleanProperty(): bool
     {
         return $this->booleanProperty;
     }
 
-    /**
-     * @return string
-     */
     protected function getPrivateProperty(): string
     {
         return '21';
@@ -152,9 +143,6 @@ class DummyClassWithGettersAndSetters
         $this->anotherBooleanProperty = $anotherBooleanProperty;
     }
 
-    /**
-     * @return bool
-     */
     public function hasAnotherBooleanProperty(): bool
     {
         return $this->anotherBooleanProperty;
@@ -162,8 +150,6 @@ class DummyClassWithGettersAndSetters
 
     /**
      * @param int $value
-     *
-     * @return bool
      */
     public function hasSomeValue($value = 42): bool
     {

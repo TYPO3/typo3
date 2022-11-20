@@ -43,8 +43,6 @@ class Identifier
 
     /**
      * Quotes the schema object name.
-     *
-     * @return string
      */
     public function getQuotedName(): string
     {

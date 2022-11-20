@@ -77,8 +77,6 @@ class Maintenance implements MiddlewareInterface
 
     /**
      * Handles an Install Tool request for normal operations
-     *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -266,8 +264,6 @@ class Maintenance implements MiddlewareInterface
 
     /**
      * Use form protection API to find out if protected POST forms are ok.
-     *
-     * @return bool
      */
     protected function checkSessionToken(ServerRequestInterface $request, SessionService $session): bool
     {
@@ -340,8 +336,6 @@ class Maintenance implements MiddlewareInterface
      * Evaluates HTTP `Referer` header (which is denied by client to be a custom
      * value) - attempts to ensure the value is given using a HTML client refresh.
      * see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer
-     *
-     * @return ResponseInterface|null
      */
     protected function enforceReferrer(ServerRequestInterface $request): ?ResponseInterface
     {

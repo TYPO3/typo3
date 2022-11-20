@@ -77,7 +77,6 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
     /**
      * Entry method called in Composer post-dump-autoload hook
      *
-     * @return bool
      * @throws InvalidPackageKeyException
      * @throws InvalidPackageManifestException
      * @throws InvalidPackagePathException
@@ -148,8 +147,6 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
     /**
      * Fetch a map of all installed packages and filter them, when they apply
      * for TYPO3.
-     *
-     * @return array
      */
     private function extractPackageMapFromComposer(): array
     {
@@ -232,7 +229,6 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
      *
      * @param PackageInterface $rootPackage
      * @param string $extensionKey
-     * @return array
      */
     private function handleRootPackage(PackageInterface $rootPackage, string $extensionKey): array
     {

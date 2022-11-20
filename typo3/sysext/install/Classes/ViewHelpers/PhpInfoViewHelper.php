@@ -69,7 +69,6 @@ final class PhpInfoViewHelper extends AbstractViewHelper
      * Change HTML markup to HTML5.
      *
      * @param string $html HTML markup to be cleaned
-     * @return string
      */
     protected static function changeHtmlToHtml5(string $html): string
     {

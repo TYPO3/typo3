@@ -672,8 +672,6 @@ class GridDataService implements LoggerAwareInterface
 
     /**
      * Calculate the "real" start value by also taking collection children into account
-     *
-     * @return int
      */
     protected function calculateStartWithCollections(int $start): int
     {
@@ -713,8 +711,6 @@ class GridDataService implements LoggerAwareInterface
      * Fill the data array part until enough parent records are found ($end is reached).
      * Also adds the related collection children, but without increasing the corresponding
      * parent records count.
-     *
-     * @return array
      */
     private function fillDataArrayPart(int $start, int $end): array
     {

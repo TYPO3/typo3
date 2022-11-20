@@ -49,8 +49,6 @@ class PhpassPreset extends AbstractPreset
 
     /**
      * Find out if Phpass is available on this system
-     *
-     * @return bool
      */
     public function isAvailable(): bool
     {

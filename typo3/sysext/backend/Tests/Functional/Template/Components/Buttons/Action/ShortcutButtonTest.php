@@ -172,8 +172,6 @@ class ShortcutButtonTest extends FunctionalTestCase
      * + `    <` will be `<` (removing leading spaces before `<` on a line)
      * + `    href=""` will be ` href=""` (reducing multiple leading spaces to just one space)
      * + `\n</span>\n</span>` will be `</span></span>` (removing all vertical spaces - like new lines)
-     *
-     * @return string
      */
     private function normalizeSpaces(string $html): string
     {

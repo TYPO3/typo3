@@ -40,8 +40,6 @@ class ColumnDefinitionAttributesTest extends UnitTestCase
      *  - comment
      *  - column format
      *  - storage
-     *
-     * @return array
      */
     public function canParseColumnDefinitionAttributesDataProvider(): array
     {
@@ -371,8 +369,6 @@ class ColumnDefinitionAttributesTest extends UnitTestCase
 
     /**
      * Parse the CREATE TABLE statement and return the reference definition
-     *
-     * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem
      */
     protected function createSubject(string $statement): CreateColumnDefinitionItem
     {

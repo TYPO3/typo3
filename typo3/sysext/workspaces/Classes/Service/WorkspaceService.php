@@ -406,8 +406,6 @@ class WorkspaceService implements SingletonInterface
     /**
      * Find all versionized elements which are new (= do not have a live counterpart),
      * so this method does not need to have a JOIN SQL statement.
-     *
-     * @return array
      */
     protected function getNewVersionsForPages(
         string $table,

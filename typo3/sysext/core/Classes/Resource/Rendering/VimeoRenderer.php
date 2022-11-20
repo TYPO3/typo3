@@ -202,7 +202,6 @@ class VimeoRenderer implements FileRendererInterface
 
     /**
      * @internal
-     * @return string
      */
     protected function implodeAttributes(array $attributes): string
     {

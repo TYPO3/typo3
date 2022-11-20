@@ -51,9 +51,6 @@ class TwitterCardMetaTagManagerTest extends UnitTestCase
         self::assertEquals($expectedRenderedTag, $manager->renderProperty($property['property']));
     }
 
-    /**
-     * @return array
-     */
     public function propertiesProvider(): array
     {
         return [

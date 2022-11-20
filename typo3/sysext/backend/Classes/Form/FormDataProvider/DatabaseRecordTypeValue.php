@@ -139,8 +139,6 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
 
     /**
      * Retrieve the requested row from the database
-     *
-     * @return array
      */
     protected function getDatabaseRow(string $tableName, int $uid, string $fieldName): array
     {

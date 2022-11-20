@@ -326,7 +326,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * based on the user groups and the logged-in state.
      *
      * @param bool $respectUserGroups used to disable the inclusion of the users' groups
-     * @return UserAspect
      */
     public function createUserAspect(bool $respectUserGroups = true): UserAspect
     {

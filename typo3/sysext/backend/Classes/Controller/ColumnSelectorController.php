@@ -55,8 +55,6 @@ class ColumnSelectorController
 
     /**
      * Update the columns to be displayed for the given table
-     *
-     * @return ResponseInterface
      */
     public function updateVisibleColumnsAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -83,8 +81,6 @@ class ColumnSelectorController
 
     /**
      * Generate the show columns selector form
-     *
-     * @return ResponseInterface
      */
     public function showColumnsSelectorAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -105,8 +101,6 @@ class ColumnSelectorController
 
     /**
      * Retrieve all columns for the table, which can be selected
-     *
-     * @return array
      */
     protected function getColumns(string $table, int $pageId): array
     {
@@ -185,8 +179,6 @@ class ColumnSelectorController
     /**
      * Get file related fields by merging sys_file and sys_file_metadata together
      * and adding the corresponding table as prefix (needed for labels processing).
-     *
-     * @return array
      */
     protected function getFileFields(): array
     {

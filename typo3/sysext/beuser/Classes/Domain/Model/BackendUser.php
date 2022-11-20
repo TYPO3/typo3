@@ -192,8 +192,6 @@ class BackendUser extends AbstractEntity
      * 1. The user for which the password reset should be triggered is not the currently logged in user
      * 2. Password reset is enabled for the user (Email+Password are set)
      * 3. The currently logged in user is allowed to reset passwords in the backend (Enabled in user TSconfig)
-     *
-     * @return bool
      */
     public function isPasswordResetEnabled(): bool
     {

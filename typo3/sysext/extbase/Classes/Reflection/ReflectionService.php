@@ -70,7 +70,6 @@ class ReflectionService implements SingletonInterface
      * Returns the class schema for the given class
      *
      * @param mixed $classNameOrObject The class name or an object
-     * @return ClassSchema
      * @throws \TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException
      */
     public function getClassSchema($classNameOrObject): ClassSchema

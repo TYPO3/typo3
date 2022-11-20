@@ -75,8 +75,6 @@ final class ModifyRecordListTableActionsEvent
 
     /**
      * Whether the action exists
-     *
-     * @return bool
      */
     public function hasAction(string $actionName): bool
     {
@@ -129,8 +127,6 @@ final class ModifyRecordListTableActionsEvent
      * this returns an empty string, this only means that
      * no other listener set a label before. TYPO3 will
      * always fall back to a default if this remains empty.
-     *
-     * @return string
      */
     public function getNoActionLabel(): string
     {
@@ -150,7 +146,6 @@ final class ModifyRecordListTableActionsEvent
     /**
      * Returns the current DatabaseRecordList instance.
      *
-     * @return DatabaseRecordList
      * @todo Might be replaced by a DTO in the future
      */
     public function getRecordList(): DatabaseRecordList

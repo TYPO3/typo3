@@ -175,7 +175,6 @@ class SortSubPagesController
      *
      * @param int $parentPageUid Get sub pages from this pages
      * @param string $orderBy Order pages by this field
-     * @return array
      */
     protected function getSubPagesOfPage(int $parentPageUid, string $orderBy = 'sorting'): array
     {

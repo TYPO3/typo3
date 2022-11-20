@@ -268,8 +268,6 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
 
     /**
      * Get record localized summary list reduced to list of uids
-     *
-     * @return array
      */
     protected function getReducedRecordLocalizeSummary(): array
     {

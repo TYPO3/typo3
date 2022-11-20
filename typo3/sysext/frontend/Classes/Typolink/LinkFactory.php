@@ -204,7 +204,6 @@ class LinkFactory implements LoggerAwareInterface
      *
      * @param string $mixedLinkParameter destination data like "15,13 _blank myclass &more=1" used to create the link
      * @param array $linkConfiguration TypoScript configuration
-     * @return array
      */
     protected function resolveTypolinkParameterString(string $mixedLinkParameter, array &$linkConfiguration = []): array
     {

@@ -39,8 +39,6 @@ class DefaultFactory
     /**
      * Default definition of folder and file structure with dynamic
      * permission settings
-     *
-     * @return array
      */
     protected function getDefaultStructureDefinition(): array
     {
@@ -254,8 +252,6 @@ class DefaultFactory
 
     /**
      * Get public path structure while resolving nested paths
-     *
-     * @return array
      */
     protected function getPublicStructure(string $publicPath, array $subStructure): array
     {
@@ -365,8 +361,6 @@ class DefaultFactory
 
     /**
      * This defines the structure for typo3temp/assets
-     *
-     * @return array
      */
     protected function getTemporaryAssetsFolderStructure(): array
     {

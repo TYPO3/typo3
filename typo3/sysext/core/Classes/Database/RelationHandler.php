@@ -190,8 +190,6 @@ class RelationHandler
 
     /**
      * Gets the current workspace id.
-     *
-     * @return int
      */
     protected function getWorkspaceId(): int
     {
@@ -1160,8 +1158,6 @@ class RelationHandler
      *
      * In addition, the item array contains the full record to be used later-on and save database queries.
      * This method keeps the ordering intact.
-     *
-     * @return array
      */
     public function getResolvedItemArray(): array
     {
@@ -1578,7 +1574,6 @@ class RelationHandler
      * Removes empty values (null, '0', 0, false).
      *
      * @param int[] $ids
-     * @return array
      */
     protected function sanitizeIds(array $ids): array
     {

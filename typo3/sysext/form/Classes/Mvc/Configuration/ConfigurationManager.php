@@ -84,7 +84,6 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
      * * resolve possible TypoScript settings in FE mode
      *
      * @param string $extensionName
-     * @return array
      * @throws ExtensionNameRequiredException
      */
     protected function getConfigurationFromYamlFile(string $extensionName): array
@@ -119,9 +118,6 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
         return $this->overrideConfigurationByTypoScript($yamlSettings, $extensionName);
     }
 
-    /**
-     * @return array
-     */
     protected function overrideConfigurationByTypoScript(array $yamlSettings, string $extensionName): array
     {
         $typoScript = parent::getConfiguration(self::CONFIGURATION_TYPE_SETTINGS, $extensionName);
@@ -149,9 +145,6 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
         return $this->cache;
     }
 
-    /**
-     * @return string
-     */
     protected function getConfigurationCacheKey(string $cacheKeySuffix): string
     {
         return strtolower(self::CONFIGURATION_TYPE_YAML_SETTINGS . '_' . $cacheKeySuffix);

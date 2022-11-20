@@ -106,7 +106,6 @@ class TableBuilder
     /**
      * Create a Doctrine Table object based on the parsed MySQL SQL command.
      *
-     * @return \Doctrine\DBAL\Schema\Table
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
@@ -146,7 +145,6 @@ class TableBuilder
     }
 
     /**
-     * @return \Doctrine\DBAL\Schema\Column
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \RuntimeException
      */
@@ -216,7 +214,6 @@ class TableBuilder
     }
 
     /**
-     * @return \Doctrine\DBAL\Schema\Index
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
@@ -313,7 +310,6 @@ class TableBuilder
     }
 
     /**
-     * @return string
      * @throws \RuntimeException
      */
     protected function getDoctrineColumnTypeName(AbstractDataType $dataType): string
@@ -405,8 +401,6 @@ class TableBuilder
 
     /**
      * Build the table specific options as far as they are supported by Doctrine.
-     *
-     * @return array
      */
     protected function buildTableOptions(array $tableOptions): array
     {

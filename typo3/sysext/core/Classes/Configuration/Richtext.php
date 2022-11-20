@@ -40,7 +40,6 @@ class Richtext
      * @param int $pid Real page id
      * @param string $recordType Record type value
      * @param array $tcaFieldConf ['config'] section of TCA field
-     * @return array
      */
     public function getConfiguration(string $table, string $field, int $pid, string $recordType, array $tcaFieldConf): array
     {
@@ -172,7 +171,6 @@ class Richtext
      * @param string $field Field name
      * @param int $pid Real page id
      * @param string $recordType Record type value
-     * @return array
      */
     protected function getPageTsConfiguration(string $table, string $field, int $pid, string $recordType): array
     {

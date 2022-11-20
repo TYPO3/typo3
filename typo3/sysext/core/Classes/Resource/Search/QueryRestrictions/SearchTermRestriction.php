@@ -62,7 +62,6 @@ class SearchTermRestriction implements QueryRestrictionInterface
      * Build the MySql where clause by table.
      *
      * @param string $tableName Record table name
-     * @return CompositeExpression
      */
     private function makeQuerySearchByTable(string $tableName, string $tableAlias): CompositeExpression
     {
@@ -127,7 +126,6 @@ class SearchTermRestriction implements QueryRestrictionInterface
      * Get all fields from given table where we can search for.
      *
      * @param string $tableName Name of the table for which to get the searchable fields
-     * @return array
      */
     private function extractSearchableFieldsFromTable(string $tableName): array
     {

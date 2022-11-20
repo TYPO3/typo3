@@ -73,7 +73,6 @@ class SystemEnvironmentBuilder
      *
      * HTTP_TYPO3_CONTEXT -> used with Apache suexec support
      * REDIRECT_TYPO3_CONTEXT -> used under some circumstances when value is set in the webserver and proxying the values to FPM
-     * @return ApplicationContext
      * @throws \TYPO3\CMS\Core\Exception
      */
     protected static function createApplicationContext(): ApplicationContext
@@ -330,9 +329,6 @@ class SystemEnvironmentBuilder
         return $rootPath;
     }
 
-    /**
-     * @return bool
-     */
     protected static function usesComposerClassLoading(): bool
     {
         return defined('TYPO3_COMPOSER_MODE') && TYPO3_COMPOSER_MODE;
@@ -341,8 +337,6 @@ class SystemEnvironmentBuilder
     /**
      * Checks if request type is cli.
      * Falls back to check PHP_SAPI in case request type is not provided
-     *
-     * @return bool
      */
     protected static function isCliRequestType(?int $requestType): bool
     {

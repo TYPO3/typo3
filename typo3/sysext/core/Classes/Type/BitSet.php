@@ -101,9 +101,6 @@ class BitSet
         $this->set &= ~$bitIndex;
     }
 
-    /**
-     * @return bool
-     */
     public function get(int $bitIndex): bool
     {
         return ($bitIndex & $this->set) === $bitIndex;
@@ -165,8 +162,6 @@ class BitSet
      * Returns the integer representation of the internal set.
      * (As PHP does not know a byte type, the internal set is already handled as an integer and can
      * therefore directly be returned)
-     *
-     * @return int
      */
     public function __toInt(): int
     {
@@ -175,8 +170,6 @@ class BitSet
 
     /**
      * Returns the (binary) string representation of the internal (integer) set.
-     *
-     * @return string
      */
     public function __toString(): string
     {

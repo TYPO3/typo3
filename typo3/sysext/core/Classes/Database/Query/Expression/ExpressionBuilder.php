@@ -65,7 +65,6 @@ class ExpressionBuilder
      *
      * @param CompositeExpression|string ...$expressions Optional clause. Requires at least one defined when converting to string.
      *
-     * @return CompositeExpression
      * @deprecated since v12, will be removed in v13. Use ExpressionBuilder::and() instead.
      */
     public function andX(...$expressions): CompositeExpression
@@ -82,7 +81,6 @@ class ExpressionBuilder
      *
      * @param CompositeExpression|string ...$expressions Optional clause. Requires at least one defined when converting to string.
      *
-     * @return CompositeExpression
      * @deprecated since v12, will be removed in v13. Use ExpressionBuilder::or() instead.
      */
     public function orX(...$expressions): CompositeExpression
@@ -116,8 +114,6 @@ class ExpressionBuilder
      * @param mixed $leftExpression The left expression.
      * @param string $operator One of the ExpressionBuilder::* constants.
      * @param mixed $rightExpression The right expression.
-     *
-     * @return string
      */
     public function comparison($leftExpression, string $operator, $rightExpression): string
     {
@@ -129,8 +125,6 @@ class ExpressionBuilder
      *
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
      * @param mixed $value The value. No automatic quoting/escaping is done.
-     *
-     * @return string
      */
     public function eq(string $fieldName, $value): string
     {
@@ -148,8 +142,6 @@ class ExpressionBuilder
      *
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
      * @param mixed $value The value. No automatic quoting/escaping is done.
-     *
-     * @return string
      */
     public function neq(string $fieldName, $value): string
     {
@@ -161,8 +153,6 @@ class ExpressionBuilder
      *
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
      * @param mixed $value The value. No automatic quoting/escaping is done.
-     *
-     * @return string
      */
     public function lt($fieldName, $value): string
     {
@@ -174,8 +164,6 @@ class ExpressionBuilder
      *
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
      * @param mixed $value The value. No automatic quoting/escaping is done.
-     *
-     * @return string
      */
     public function lte(string $fieldName, $value): string
     {
@@ -187,8 +175,6 @@ class ExpressionBuilder
      *
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
      * @param mixed $value The value. No automatic quoting/escaping is done.
-     *
-     * @return string
      */
     public function gt(string $fieldName, $value): string
     {
@@ -200,8 +186,6 @@ class ExpressionBuilder
      *
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
      * @param mixed $value The value. No automatic quoting/escaping is done.
-     *
-     * @return string
      */
     public function gte(string $fieldName, $value): string
     {
@@ -212,8 +196,6 @@ class ExpressionBuilder
      * Creates an IS NULL expression with the given arguments.
      *
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
-     *
-     * @return string
      */
     public function isNull(string $fieldName): string
     {
@@ -224,8 +206,6 @@ class ExpressionBuilder
      * Creates an IS NOT NULL expression with the given arguments.
      *
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
-     *
-     * @return string
      */
     public function isNotNull(string $fieldName): string
     {
@@ -276,8 +256,6 @@ class ExpressionBuilder
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
      * @param string|array $value The placeholder or the array of values to be used by IN() comparison.
      *                            No automatic quoting/escaping is done.
-     *
-     * @return string
      */
     public function in(string $fieldName, $value): string
     {
@@ -294,8 +272,6 @@ class ExpressionBuilder
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
      * @param string|array $value The placeholder or the array of values to be used by NOT IN() comparison.
      *                            No automatic quoting/escaping is done.
-     *
-     * @return string
      */
     public function notIn(string $fieldName, $value): string
     {
@@ -312,7 +288,6 @@ class ExpressionBuilder
      * @param string $fieldName The field name. Will be quoted according to database platform automatically.
      * @param string $value Argument to be used in FIND_IN_SET() comparison. No automatic quoting/escaping is done.
      * @param bool $isColumn Set when the value to compare is a column on a table to activate casting
-     * @return string
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
@@ -400,7 +375,6 @@ class ExpressionBuilder
      * @param string $fieldName The field name. Will be quoted according to database platform automatically.
      * @param string $value Argument to be used in FIND_IN_SET() comparison. No automatic quoting/escaping is done.
      * @param bool $isColumn Set when the value to compare is a column on a table to activate casting
-     * @return string
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
@@ -487,7 +461,6 @@ class ExpressionBuilder
      *
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
      * @param int $value Argument to be used in the bitwise AND operation
-     * @return string
      */
     public function bitAnd(string $fieldName, int $value): string
     {
@@ -512,7 +485,6 @@ class ExpressionBuilder
      * Creates a MIN expression for the given field/alias.
      *
      * @param string|null $alias
-     * @return string
      */
     public function min(string $fieldName, string $alias = null): string
     {
@@ -523,7 +495,6 @@ class ExpressionBuilder
      * Creates a MAX expression for the given field/alias.
      *
      * @param string|null $alias
-     * @return string
      */
     public function max(string $fieldName, string $alias = null): string
     {
@@ -534,7 +505,6 @@ class ExpressionBuilder
      * Creates a AVG expression for the given field/alias.
      *
      * @param string|null $alias
-     * @return string
      */
     public function avg(string $fieldName, string $alias = null): string
     {
@@ -545,7 +515,6 @@ class ExpressionBuilder
      * Creates a SUM expression for the given field/alias.
      *
      * @param string|null $alias
-     * @return string
      */
     public function sum(string $fieldName, string $alias = null): string
     {
@@ -556,7 +525,6 @@ class ExpressionBuilder
      * Creates a COUNT expression for the given field/alias.
      *
      * @param string|null $alias
-     * @return string
      */
     public function count(string $fieldName, string $alias = null): string
     {
@@ -567,7 +535,6 @@ class ExpressionBuilder
      * Creates a LENGTH expression for the given field/alias.
      *
      * @param string|null $alias
-     * @return string
      */
     public function length(string $fieldName, string $alias = null): string
     {
@@ -578,7 +545,6 @@ class ExpressionBuilder
      * Create a SQL aggregate function.
      *
      * @param string|null $alias
-     * @return string
      */
     protected function calculation(string $aggregateName, string $fieldName, string $alias = null): string
     {

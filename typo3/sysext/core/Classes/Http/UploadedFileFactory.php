@@ -40,7 +40,6 @@ class UploadedFileFactory implements UploadedFileFactoryInterface
      * @param int $error PHP file upload error
      * @param string $clientFilename Filename as provided by the client, if any.
      * @param string $clientMediaType Media type as provided by the client, if any.
-     * @return UploadedFileInterface
      * @throws \InvalidArgumentException If the file resource is not readable.
      */
     public function createUploadedFile(

@@ -46,9 +46,6 @@ class TestSet
         return $this->url;
     }
 
-    /**
-     * @return int|null
-     */
     public function getTargetPageId(): ?int
     {
         return $this->targetPageId;

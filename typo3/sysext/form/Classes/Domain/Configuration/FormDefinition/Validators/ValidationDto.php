@@ -67,145 +67,91 @@ class ValidationDto
         $this->propertyCollectionElementIdentifier = $propertyCollectionElementIdentifier;
     }
 
-    /**
-     * @return string
-     */
     public function getPrototypeName(): string
     {
         return $this->prototypeName;
     }
 
-    /**
-     * @return string
-     */
     public function getFormElementType(): string
     {
         return $this->formElementType;
     }
 
-    /**
-     * @return string
-     */
     public function getFormElementIdentifier(): string
     {
         return $this->formElementIdentifier;
     }
 
-    /**
-     * @return string
-     */
     public function getPropertyPath(): string
     {
         return $this->propertyPath;
     }
 
-    /**
-     * @return string
-     */
     public function getPropertyCollectionName(): string
     {
         return $this->propertyCollectionName;
     }
 
-    /**
-     * @return string
-     */
     public function getPropertyCollectionElementIdentifier(): string
     {
         return $this->propertyCollectionElementIdentifier;
     }
 
-    /**
-     * @return bool
-     */
     public function hasPrototypeName(): bool
     {
         return !empty($this->prototypeName);
     }
 
-    /**
-     * @return bool
-     */
     public function hasFormElementType(): bool
     {
         return !empty($this->formElementType);
     }
 
-    /**
-     * @return bool
-     */
     public function hasFormElementIdentifier(): bool
     {
         return !empty($this->formElementIdentifier);
     }
 
-    /**
-     * @return bool
-     */
     public function hasPropertyPath(): bool
     {
         return !empty($this->propertyPath);
     }
 
-    /**
-     * @return bool
-     */
     public function hasPropertyCollectionName(): bool
     {
         return !empty($this->propertyCollectionName);
     }
 
-    /**
-     * @return bool
-     */
     public function hasPropertyCollectionElementIdentifier(): bool
     {
         return !empty($this->propertyCollectionElementIdentifier);
     }
 
-    /**
-     * @return ValidationDto
-     */
     public function withPrototypeName(string $prototypeName): ValidationDto
     {
         return GeneralUtility::makeInstance(self::class, $prototypeName, $this->formElementType, $this->formElementIdentifier, $this->propertyPath, $this->propertyCollectionName, $this->propertyCollectionElementIdentifier);
     }
 
-    /**
-     * @return ValidationDto
-     */
     public function withFormElementType(string $formElementType): ValidationDto
     {
         return GeneralUtility::makeInstance(self::class, $this->prototypeName, $formElementType, $this->formElementIdentifier, $this->propertyPath, $this->propertyCollectionName, $this->propertyCollectionElementIdentifier);
     }
 
-    /**
-     * @return ValidationDto
-     */
     public function withFormElementIdentifier(string $formElementIdentifier): ValidationDto
     {
         return GeneralUtility::makeInstance(self::class, $this->prototypeName, $this->formElementType, $formElementIdentifier, $this->propertyPath, $this->propertyCollectionName, $this->propertyCollectionElementIdentifier);
     }
 
-    /**
-     * @return ValidationDto
-     */
     public function withPropertyPath(string $propertyPath): ValidationDto
     {
         return GeneralUtility::makeInstance(self::class, $this->prototypeName, $this->formElementType, $this->formElementIdentifier, $propertyPath, $this->propertyCollectionName, $this->propertyCollectionElementIdentifier);
     }
 
-    /**
-     * @return ValidationDto
-     */
     public function withPropertyCollectionName(string $propertyCollectionName): ValidationDto
     {
         return GeneralUtility::makeInstance(self::class, $this->prototypeName, $this->formElementType, $this->formElementIdentifier, $this->propertyPath, $propertyCollectionName, $this->propertyCollectionElementIdentifier);
     }
 
-    /**
-     * @return ValidationDto
-     */
     public function withPropertyCollectionElementIdentifier(string $propertyCollectionElementIdentifier): ValidationDto
     {
         return GeneralUtility::makeInstance(self::class, $this->prototypeName, $this->formElementType, $this->formElementIdentifier, $this->propertyPath, $this->propertyCollectionName, $propertyCollectionElementIdentifier);

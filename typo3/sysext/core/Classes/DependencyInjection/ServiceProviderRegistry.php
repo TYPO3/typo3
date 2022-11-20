@@ -99,7 +99,6 @@ class ServiceProviderRegistry implements \IteratorAggregate
      * Returns service provider by id.
      *
      * @param string $packageKey Key of the service provider in the registry
-     * @return ServiceProviderInterface
      */
     public function get(string $packageKey): ServiceProviderInterface
     {
@@ -111,7 +110,6 @@ class ServiceProviderRegistry implements \IteratorAggregate
      *
      * @param string $packageKey Key of the service provider in the registry
      * @param Package|null $package
-     * @return ServiceProviderInterface
      */
     private function create(string $packageKey, Package $package = null): ServiceProviderInterface
     {
@@ -136,7 +134,6 @@ class ServiceProviderRegistry implements \IteratorAggregate
      * The result is cached in the registry so two successive calls will trigger `getFactories` only once.
      *
      * @param string $packageKey Key of the service provider in the registry
-     * @return array
      */
     public function getFactories(string $packageKey): array
     {
@@ -148,7 +145,6 @@ class ServiceProviderRegistry implements \IteratorAggregate
      * The result is cached in the registry so two successive calls will trigger `getExtensions` only once.
      *
      * @param string $packageKey Key of the service provider in the registry
-     * @return array
      */
     public function getExtensions(string $packageKey): array
     {
@@ -178,9 +174,6 @@ class ServiceProviderRegistry implements \IteratorAggregate
         return $extension($container, $previous);
     }
 
-    /**
-     * @return \Generator
-     */
     public function getIterator(): \Generator
     {
         foreach ($this->packageManager->getActivePackages() as $package) {

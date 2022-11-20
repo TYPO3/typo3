@@ -33,8 +33,6 @@ class Random
 
     /**
      * Generates cryptographic secure pseudo-random bytes
-     *
-     * @return string
      */
     public function generateRandomBytes(int $length): string
     {
@@ -43,8 +41,6 @@ class Random
 
     /**
      * Generates cryptographic secure pseudo-random integers
-     *
-     * @return int
      */
     public function generateRandomInteger(int $min, int $max): int
     {
@@ -53,8 +49,6 @@ class Random
 
     /**
      * Generates cryptographic secure pseudo-random hex string
-     *
-     * @return string
      */
     public function generateRandomHexString(int $length): string
     {
@@ -64,7 +58,6 @@ class Random
     /**
      * Generates cryptographic secure pseudo-random password based on given password rules
      *
-     * @return string
      * @internal Only to be used within TYPO3. Might change in the future.
      */
     public function generateRandomPassword(array $passwordRules): string
@@ -129,8 +122,6 @@ class Random
 
     /**
      * Generates cryptographic secure pseudo-random base64 string
-     *
-     * @return string
      */
     protected function generateRandomBase64String(int $length): string
     {

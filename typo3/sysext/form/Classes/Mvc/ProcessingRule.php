@@ -61,7 +61,6 @@ class ProcessingRule
     }
 
     /**
-     * @return PropertyMappingConfiguration
      * @internal
      */
     public function getPropertyMappingConfiguration(): PropertyMappingConfiguration
@@ -70,7 +69,6 @@ class ProcessingRule
     }
 
     /**
-     * @return string
      * @internal
      */
     public function getDataType(): string
@@ -89,7 +87,6 @@ class ProcessingRule
     /**
      * Returns the child validators of the ConjunctionValidator that is bound to this processing rule
      *
-     * @return \SplObjectStorage
      * @internal
      */
     public function getValidators(): \SplObjectStorage
@@ -167,7 +164,6 @@ class ProcessingRule
     }
 
     /**
-     * @return Result
      * @internal
      */
     public function getProcessingMessages(): Result

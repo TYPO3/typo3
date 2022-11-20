@@ -57,7 +57,6 @@ class Route extends SymfonyRoute
     }
 
     /**
-     * @return array
      * @todo '_arguments' are added implicitly, make it explicit in enhancers
      */
     public function getArguments(): array
@@ -65,9 +64,6 @@ class Route extends SymfonyRoute
         return $this->getOption('_arguments') ?? [];
     }
 
-    /**
-     * @return EnhancerInterface|null
-     */
     public function getEnhancer(): ?EnhancerInterface
     {
         return $this->getOption('_enhancer') ?? null;

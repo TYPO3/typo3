@@ -292,8 +292,6 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
     /**
      * Create the database row for the default site language based
      * on an already existing default language from another site.
-     *
-     * @return array
      */
     protected function getDefaultDatabaseRow(): array
     {

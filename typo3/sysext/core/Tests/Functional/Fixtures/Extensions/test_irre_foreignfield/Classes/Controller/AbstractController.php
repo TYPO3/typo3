@@ -44,7 +44,6 @@ abstract class AbstractController extends ActionController
     }
 
     /**
-     * @return ResponseInterface
      * @throws \RuntimeException
      */
     public function processRequest(RequestInterface $request): ResponseInterface
@@ -61,7 +60,6 @@ abstract class AbstractController extends ActionController
 
     /**
      * @param \Iterator|AbstractEntity[] $iterator
-     * @return array
      */
     protected function getStructure($iterator): array
     {
@@ -109,9 +107,6 @@ abstract class AbstractController extends ActionController
             ->withBody($this->streamFactory->createStream($this->view->render()));
     }
 
-    /**
-     * @return string
-     */
     protected function getRuntimeIdentifier(): string
     {
         $arguments = [];

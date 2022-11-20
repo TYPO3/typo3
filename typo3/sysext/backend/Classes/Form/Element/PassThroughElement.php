@@ -25,8 +25,6 @@ class PassThroughElement extends AbstractFormElement
 {
     /**
      * Return the empty initialized result array
-     *
-     * @return array
      */
     public function render(): array
     {

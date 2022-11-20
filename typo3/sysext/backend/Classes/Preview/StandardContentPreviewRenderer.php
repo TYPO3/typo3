@@ -186,8 +186,6 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
 
     /**
      * Render a footer for the record
-     *
-     * @return string
      */
     public function renderPageModulePreviewFooter(GridColumnItem $item): string
     {
@@ -326,7 +324,6 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
      * Generates a list of selected pages or categories for the menu content types
      *
      * @param array $record row from pages
-     * @return string
      */
     protected function generateListForMenuContentTypes(array $record): string
     {

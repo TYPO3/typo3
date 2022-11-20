@@ -33,26 +33,18 @@ class FormFileProvider extends FileProvider
 
     /**
      * Lowest priority, thus gets executed last.
-     *
-     * @return int
      */
     public function getPriority(): int
     {
         return 0;
     }
 
-    /**
-     * @return bool
-     */
     public function canHandle(): bool
     {
         return parent::canHandle()
             && str_ends_with($this->identifier, FormPersistenceManager::FORM_DEFINITION_FILE_EXTENSION);
     }
 
-    /**
-     * @return array
-     */
     public function addItems(array $items): array
     {
         $this->initialize();
@@ -69,7 +61,6 @@ class FormFileProvider extends FileProvider
      * actually purges items instead of adding them.
      *
      * @param array $items
-     * @return array
      */
     protected function purgeItems(array $items): array
     {
@@ -86,17 +77,11 @@ class FormFileProvider extends FileProvider
         return $items;
     }
 
-    /**
-     * @return bool
-     */
     protected function canBeEdited(): bool
     {
         return false;
     }
 
-    /**
-     * @return bool
-     */
     protected function canBeRenamed(): bool
     {
         return false;

@@ -55,8 +55,6 @@ class StaticRouteResolver implements MiddlewareInterface
 
     /**
      * Checks if there is a valid site with route configuration.
-     *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -109,9 +107,6 @@ class StaticRouteResolver implements MiddlewareInterface
         return null;
     }
 
-    /**
-     * @return array
-     */
     protected function getFromFile(File $file): array
     {
         $content = $file->getContents();
@@ -119,9 +114,6 @@ class StaticRouteResolver implements MiddlewareInterface
         return [$content, $contentType];
     }
 
-    /**
-     * @return array
-     */
     protected function getFromUri(string $uri): array
     {
         $response = $this->requestFactory->request($uri);
@@ -136,7 +128,6 @@ class StaticRouteResolver implements MiddlewareInterface
     }
 
     /**
-     * @return string
      * @throws InvalidRouteArgumentsException
      */
     protected function getPageUri(ServerRequestInterface $request, Site $site, array $urlParams): string
@@ -158,7 +149,6 @@ class StaticRouteResolver implements MiddlewareInterface
     }
 
     /**
-     * @return array
      * @throws InvalidRouteArgumentsException
      */
     protected function resolveByType(ServerRequestInterface $request, Site $site, string $type, array $routeConfig): array

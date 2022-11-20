@@ -361,8 +361,6 @@ class DataMapperTest extends UnitTestCase
      * the database. That's why it's not possible to check for explicit date
      * strings but using the date('c') conversion instead, which considers the
      * current local timezone setting.
-     *
-     * @return array
      */
     public function mapDateTimeHandlesDifferentFieldEvaluationsDataProvider(): array
     {
@@ -396,9 +394,6 @@ class DataMapperTest extends UnitTestCase
         }
     }
 
-    /**
-     * @return array
-     */
     public function mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZoneDataProvider(): array
     {
         return [
@@ -477,9 +472,6 @@ class DataMapperTest extends UnitTestCase
         self::assertSame($expectedValue, $dataMapper->getPlainValue($input));
     }
 
-    /**
-     * @return array
-     */
     public function getPlainValueReturnsExpectedValuesDataProvider(): array
     {
         $traversableDomainObject = $this->prophesize()

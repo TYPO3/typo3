@@ -29,9 +29,6 @@ abstract class AbstractEscapingBaseViewHelper extends AbstractViewHelper
         $this->registerArgument('content', 'string', 'Content provided as argument');
     }
 
-    /**
-     * @return string
-     */
     public function render(): string
     {
         if (!isset($this->arguments['content'])) {

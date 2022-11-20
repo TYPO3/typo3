@@ -55,7 +55,6 @@ class DefaultPermissionsCheck
      * If it permits only user read/write: Ok
      *
      * @param string $which fileCreateMask or folderCreateMask
-     * @return FlashMessage
      */
     public function getMaskStatus($which): FlashMessage
     {

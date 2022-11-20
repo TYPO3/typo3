@@ -122,8 +122,6 @@ class SimpleDataHandlerController
 
     /**
      * Processes all AJAX calls and returns a JSON formatted string
-     *
-     * @return ResponseInterface
      */
     public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
     {

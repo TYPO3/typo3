@@ -82,7 +82,6 @@ class ConnectionPool
      * that the mapping of table names to database connections is honored.
      *
      * @param string $tableName
-     * @return Connection
      */
     public function getConnectionForTable(string $tableName): Connection
     {
@@ -108,7 +107,6 @@ class ConnectionPool
      * that the tablename<>databaseConnection mapping will be taken into account.
      *
      * @param string $connectionName
-     * @return Connection
      * @throws \Doctrine\DBAL\Exception
      */
     public function getConnectionByName(string $connectionName): Connection
@@ -163,8 +161,6 @@ class ConnectionPool
 
     /**
      * Map custom driver class for certain driver
-     *
-     * @return array
      */
     protected function mapCustomDriver(array $connectionParams): array
     {
@@ -178,8 +174,6 @@ class ConnectionPool
 
     /**
      * Creates a connection object based on the specified parameters
-     *
-     * @return Connection
      */
     protected function getDatabaseConnection(array $connectionParams): Connection
     {
@@ -232,8 +226,6 @@ class ConnectionPool
     /**
      * Returns the connection specific query builder object that can be used to build
      * complex SQL queries using and object oriented approach.
-     *
-     * @return QueryBuilder
      */
     public function getQueryBuilderForTable(string $tableName): QueryBuilder
     {
@@ -254,7 +246,6 @@ class ConnectionPool
      * that the tablename<>databaseConnection mapping will be taken into account.
      *
      * @internal
-     * @return array
      */
     public function getConnectionNames(): array
     {
@@ -268,7 +259,6 @@ class ConnectionPool
      * registered automatically.
      *
      * @internal
-     * @return array
      */
     public function getCustomDoctrineTypes(): array
     {

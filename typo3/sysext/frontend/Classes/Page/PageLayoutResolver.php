@@ -37,8 +37,6 @@ class PageLayoutResolver
      *   field = backend_layout
      *   ifEmpty.data = levelfield:-2, backend_layout_next_level, slide
      *   ifEmpty.ifEmpty = default
-     *
-     * @return string
      */
     public function getLayoutForPage(array $page, array $rootLine): string
     {

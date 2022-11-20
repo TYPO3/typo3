@@ -34,8 +34,6 @@ abstract class AbstractProvider implements ProviderInterface
 
     /**
      * An array of class names which implements the ExpressionFunctionProviderInterface
-     *
-     * @return array
      */
     public function getExpressionLanguageProviders(): array
     {
@@ -44,8 +42,6 @@ abstract class AbstractProvider implements ProviderInterface
 
     /**
      * An array with key/value pairs. The key will be available as variable name
-     *
-     * @return array
      */
     public function getExpressionLanguageVariables(): array
     {

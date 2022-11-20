@@ -24,8 +24,6 @@ interface CodeScannerInterface
 {
     /**
      * Each match is an array with detail information
-     *
-     * @return array
      */
     public function getMatches(): array;
 }

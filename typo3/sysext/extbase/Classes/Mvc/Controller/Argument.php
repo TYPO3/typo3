@@ -279,9 +279,6 @@ class Argument
         return (string)$this->value;
     }
 
-    /**
-     * @return Result
-     */
     public function validate(): Result
     {
         if ($this->hasBeenValidated) {
@@ -298,7 +295,6 @@ class Argument
     }
 
     /**
-     * @return Result
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getValidationResults(): Result

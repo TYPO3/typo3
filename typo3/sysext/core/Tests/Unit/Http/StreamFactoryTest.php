@@ -32,8 +32,6 @@ class StreamFactoryTest extends UnitTestCase
     /**
      * Helper method to create a random directory and return the path.
      * The path will be registered for deletion upon test ending
-     *
-     * @return string
      */
     protected function getTestDirectory(string $prefix = 'root_'): string
     {

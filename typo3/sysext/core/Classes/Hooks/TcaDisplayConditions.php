@@ -29,8 +29,6 @@ class TcaDisplayConditions
 {
     /**
      * Check if an extension is loaded.
-     *
-     * @return bool
      */
     public function isExtensionInstalled(array $parameters): bool
     {
@@ -47,7 +45,6 @@ class TcaDisplayConditions
      * IMPORTANT: This only works for the be_users table.
      *
      * @param array $parameters
-     * @return bool
      */
     public function isRecordCurrentUser(array $parameters): bool
     {

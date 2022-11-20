@@ -59,7 +59,6 @@ class VerifyHostHeader implements MiddlewareInterface
      * Checks if the provided host header value matches the trusted hosts pattern.
      *
      * @param string $hostHeaderValue HTTP_HOST header value as sent during the request (may include port)
-     * @return bool
      */
     public function isAllowedHostHeaderValue(string $hostHeaderValue, array $serverParams): bool
     {

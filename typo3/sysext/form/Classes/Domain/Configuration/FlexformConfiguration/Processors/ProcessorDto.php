@@ -54,41 +54,26 @@ class ProcessorDto
         $this->finisherDefinitionFromFormDefinition = $finisherDefinitionFromFormDefinition;
     }
 
-    /**
-     * @return string
-     */
     public function getFinisherIdentifier(): string
     {
         return $this->finisherIdentifier;
     }
 
-    /**
-     * @return array
-     */
     public function getFinisherDefinitionFromSetup(): array
     {
         return $this->finisherDefinitionFromSetup;
     }
 
-    /**
-     * @return array
-     */
     public function getFinisherDefinitionFromFormDefinition(): array
     {
         return $this->finisherDefinitionFromFormDefinition;
     }
 
-    /**
-     * @return array
-     */
     public function getResult(): array
     {
         return $this->result;
     }
 
-    /**
-     * @return ProcessorDto
-     */
     public function setResult(array $result): ProcessorDto
     {
         $this->result = $result;

@@ -158,8 +158,6 @@ class DependencyUtility implements SingletonInterface
 
     /**
      * Return the dependency errors
-     *
-     * @return array
      */
     public function getDependencyErrors(): array
     {
@@ -169,7 +167,6 @@ class DependencyUtility implements SingletonInterface
     /**
      * Returns true if current TYPO3 version fulfills extension requirements
      *
-     * @return bool
      * @throws Exception\UnresolvedTypo3DependencyException
      */
     protected function checkTypo3Dependency(Dependency $dependency, string $version): bool
@@ -200,7 +197,6 @@ class DependencyUtility implements SingletonInterface
      * Returns true if current php version fulfills extension requirements
      *
      * @throws Exception\UnresolvedPhpDependencyException
-     * @return bool
      */
     protected function checkPhpDependency(Dependency $dependency, string $version): bool
     {
@@ -370,9 +366,6 @@ class DependencyUtility implements SingletonInterface
         return ExtensionManagementUtility::isLoaded($extensionKey);
     }
 
-    /**
-     * @return bool
-     */
     protected function isLoadedVersionCompatible(Dependency $dependency): bool
     {
         $extensionVersion = ExtensionManagementUtility::getExtensionVersion($dependency->getIdentifier());
@@ -382,8 +375,6 @@ class DependencyUtility implements SingletonInterface
     /**
      * Checks whether the needed extension is available
      * (not necessarily installed, but present in system)
-     *
-     * @return bool
      */
     protected function isDependentExtensionAvailable(string $extensionKey): bool
     {
@@ -393,8 +384,6 @@ class DependencyUtility implements SingletonInterface
 
     /**
      * Checks whether the available version is compatible
-     *
-     * @return bool
      */
     protected function isAvailableVersionCompatible(Dependency $dependency): bool
     {
@@ -408,8 +397,6 @@ class DependencyUtility implements SingletonInterface
 
     /**
      * Checks whether a ter extension with $extensionKey exists
-     *
-     * @return bool
      */
     protected function isExtensionDownloadableFromRemote(string $extensionKey): bool
     {
@@ -418,8 +405,6 @@ class DependencyUtility implements SingletonInterface
 
     /**
      * Checks whether a compatible version of the extension exists in TER
-     *
-     * @return bool
      */
     protected function isDownloadableVersionCompatible(Dependency $dependency): bool
     {
@@ -434,8 +419,6 @@ class DependencyUtility implements SingletonInterface
     /**
      * Get the latest compatible version of an extension that's
      * compatible with the current core and PHP version.
-     *
-     * @return Extension|null
      */
     protected function getCompatibleExtension(iterable $extensions): ?Extension
     {
@@ -459,8 +442,6 @@ class DependencyUtility implements SingletonInterface
     /**
      * Get the latest compatible version of an extension that
      * fulfills the given dependency from TER
-     *
-     * @return Extension|null
      */
     protected function getLatestCompatibleExtensionByDependency(Dependency $dependency): ?Extension
     {

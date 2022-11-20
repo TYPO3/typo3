@@ -26,36 +26,26 @@ interface MetaTagManagerInterface
 
     /**
      * Get a specific property that is set before
-     *
-     * @return array
      */
     public function getProperty(string $property, string $type = ''): array;
 
     /**
      * Check if this manager can handle the given property
-     *
-     * @return bool
      */
     public function canHandleProperty(string $property): bool;
 
     /**
      * Returns an array with all properties that can be handled by the manager
-     *
-     * @return array
      */
     public function getAllHandledProperties(): array;
 
     /**
      * Render all registered properties of this manager
-     *
-     * @return string
      */
     public function renderAllProperties(): string;
 
     /**
      * Render a meta tag for a specific property
-     *
-     * @return string
      */
     public function renderProperty(string $property): string;
 

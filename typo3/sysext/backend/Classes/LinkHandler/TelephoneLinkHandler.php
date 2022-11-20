@@ -61,8 +61,6 @@ class TelephoneLinkHandler extends AbstractLinkHandler implements LinkHandlerInt
      * The handler may store this information locally for later usage.
      *
      * @param array $linkParts Link parts as returned from TypoLinkCodecService
-     *
-     * @return bool
      */
     public function canHandleLink(array $linkParts): bool
     {
@@ -75,8 +73,6 @@ class TelephoneLinkHandler extends AbstractLinkHandler implements LinkHandlerInt
 
     /**
      * Format the current link for HTML output
-     *
-     * @return string
      */
     public function formatCurrentUrl(): string
     {

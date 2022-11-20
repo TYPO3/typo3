@@ -39,9 +39,6 @@ class LinkHandlingController
         $this->cObj = $cObj;
     }
 
-    /**
-     * @return string
-     */
     public function mainAction(mixed $_, array $__, ServerRequestInterface $request): string
     {
         if (!$request instanceof InternalRequest) {
@@ -59,7 +56,6 @@ class LinkHandlingController
 
     /**
      * @param array|null $configuration
-     * @return string
      */
     public function dumpPageArgumentsAction(?string $content, array $configuration = null): string
     {

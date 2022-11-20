@@ -66,7 +66,6 @@ class ListRenderer implements FlashMessageRendererInterface
      * Gets the message rendered as clean and secure markup
      *
      * @param FlashMessage[] $flashMessages
-     * @return string
      */
     protected function getMessageAsMarkup(array $flashMessages): string
     {

@@ -42,9 +42,6 @@ class ArrayConverterTest extends UnitTestCase
         self::assertEquals($sourceArray, $this->converter->convertFrom($sourceArray, 'array'));
     }
 
-    /**
-     * @return array
-     */
     public function stringToArrayDataProvider(): array
     {
         return [
@@ -61,9 +58,6 @@ class ArrayConverterTest extends UnitTestCase
         self::assertEquals($expectedResult, $this->converter->convertFrom($source, 'array'));
     }
 
-    /**
-     * @return array
-     */
     public function stringToArrayWithConfigurationDataProvider(): array
     {
         return [

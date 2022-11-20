@@ -162,8 +162,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     /**
      * Main entry point for transforming RTE content in the database so the Rich Text Editor can deal with
      * e.g. links.
-     *
-     * @return string
      */
     public function transformTextForRichTextEditor(string $value, array $processingConfiguration): string
     {
@@ -194,8 +192,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
 
     /**
      * Called to process HTML content before it is stored in the database.
-     *
-     * @return string
      */
     public function transformTextForPersistence(string $value, array $processingConfiguration): string
     {

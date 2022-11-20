@@ -31,8 +31,6 @@ class TableOptionsTest extends UnitTestCase
      * Each parameter array consists of the following values:
      *  - table options SQL fragment
      *  - expected options array
-     *
-     * @return array
      */
     public function canParseTableOptionsDataProvider(): array
     {
@@ -157,8 +155,6 @@ class TableOptionsTest extends UnitTestCase
 
     /**
      * Parse the CREATE TABLE statement and return the reference definition
-     *
-     * @return AbstractCreateStatement|CreateTableStatement
      */
     protected function createSubject(string $statement): AbstractCreateStatement
     {

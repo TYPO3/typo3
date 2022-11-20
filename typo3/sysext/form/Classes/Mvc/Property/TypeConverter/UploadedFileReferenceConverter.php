@@ -203,8 +203,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
 
     /**
      * Import a resource and respect configuration given for properties
-     *
-     * @return PseudoFileReference
      */
     protected function importUploadedResource(
         array $uploadInfo,
@@ -249,9 +247,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         return $fileReferenceModel;
     }
 
-    /**
-     * @return PseudoFileReference
-     */
     protected function createFileReferenceFromFalFileObject(
         File $file,
         int $resourcePointer = null
@@ -271,8 +266,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      * In case no $resourcePointer is given a new file reference domain object
      * will be returned. Otherwise the file reference is reconstituted from
      * storage and will be updated(!) with the provided $falFileReference.
-     *
-     * @return PseudoFileReference
      */
     protected function createFileReferenceFromFalFileReferenceObject(
         CoreFileReference $falFileReference,
@@ -291,8 +284,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     /**
      * Returns a human-readable message for the given PHP file upload error
      * constant.
-     *
-     * @return string
      */
     protected function getUploadErrorMessage(int $errorCode): string
     {
@@ -327,8 +318,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
 
     /**
      * Ensures that upload folder exists, creates it if it does not.
-     *
-     * @return Folder
      */
     protected function provideUploadFolder(string $uploadFolderIdentifier): Folder
     {
@@ -346,8 +335,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
 
     /**
      * Ensures that particular target folder exists, creates it if it does not.
-     *
-     * @return Folder
      */
     protected function provideTargetFolder(Folder $parentFolder, string $folderName): Folder
     {

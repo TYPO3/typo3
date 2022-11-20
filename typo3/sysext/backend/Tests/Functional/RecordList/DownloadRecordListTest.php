@@ -201,8 +201,6 @@ class DownloadRecordListTest extends FunctionalTestCase
     /**
      * postgres is returning int fields as pure integers, others use strings.
      * In order to have our tests reliable, we cast everything to string.
-     *
-     * @return array
      */
     protected function prepareRecordsForDbCompatAssertions(array $records): array
     {

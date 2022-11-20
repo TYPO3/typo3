@@ -739,9 +739,6 @@ class NormalizedParamsTest extends UnitTestCase
         self::assertSame($expected, $serverRequestParameters->getRemoteAddress());
     }
 
-    /**
-     * @return array
-     */
     public static function getRequestHostOnlyReturnsExpectedValueDataProvider(): array
     {
         return [
@@ -806,9 +803,6 @@ class NormalizedParamsTest extends UnitTestCase
         self::assertSame($expected, $serverRequestParameters->getRequestHostOnly());
     }
 
-    /**
-     * @return array
-     */
     public static function getRequestPortOnlyReturnsExpectedValueDataProvider(): array
     {
         return [

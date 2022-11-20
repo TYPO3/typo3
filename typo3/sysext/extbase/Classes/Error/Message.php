@@ -88,8 +88,6 @@ class Message
 
     /**
      * Get arguments
-     *
-     * @return array
      */
     public function getArguments(): array
     {
@@ -98,8 +96,6 @@ class Message
 
     /**
      * Get title
-     *
-     * @return string
      */
     public function getTitle(): string
     {
@@ -108,8 +104,6 @@ class Message
 
     /**
      * Return the rendered message
-     *
-     * @return string
      */
     public function render(): string
     {

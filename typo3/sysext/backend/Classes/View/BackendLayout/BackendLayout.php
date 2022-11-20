@@ -187,7 +187,6 @@ class BackendLayout
      * and the value is the title.
      * "1" => "Left" etc.
      * Please note that the title can contain LLL references ready for translation.
-     * @return array
      */
     public function getUsedColumns(): array
     {

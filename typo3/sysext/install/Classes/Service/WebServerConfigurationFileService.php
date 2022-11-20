@@ -141,7 +141,6 @@ class WebServerConfigurationFileService
      * be placed before.
      *
      * @param string $configurationFileContent
-     * @return bool
      */
     protected function updateNecessary(string $configurationFileContent): bool
     {

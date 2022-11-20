@@ -238,9 +238,6 @@ class ObjectAccessTest extends UnitTestCase
         self::assertSame(2, $i);
     }
 
-    /**
-     * @return ObjectStorage
-     */
     protected function setUpObjectStorageWithTwoItems(): ObjectStorage
     {
         $objectStorage = new ObjectStorage();
@@ -280,9 +277,6 @@ class ObjectAccessTest extends UnitTestCase
         self::assertSame(2, $i);
     }
 
-    /**
-     * @return \SplObjectStorage
-     */
     protected function setUpSplObjectStorageWithTwoItems(): \SplObjectStorage
     {
         $objectStorage = new \SplObjectStorage();
@@ -416,9 +410,6 @@ class ObjectAccessTest extends UnitTestCase
         self::assertEquals($expected, ObjectAccess::isPropertyGettable($this->dummyObject, $property));
     }
 
-    /**
-     * @return array
-     */
     public function propertyGettableTestValues(): array
     {
         return [

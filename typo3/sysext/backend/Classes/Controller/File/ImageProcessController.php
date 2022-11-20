@@ -43,9 +43,6 @@ class ImageProcessController implements LoggerAwareInterface
         $this->imageProcessingService = $imageProcessingService;
     }
 
-    /**
-     * @return ResponseInterface
-     */
     public function process(ServerRequestInterface $request): ResponseInterface
     {
         $processedFileId = (int)($request->getQueryParams()['id'] ?? 0);

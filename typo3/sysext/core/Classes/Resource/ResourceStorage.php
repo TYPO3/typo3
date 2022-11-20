@@ -418,8 +418,6 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Returns TRUE if this storage stores folder structure in file identifiers.
-     *
-     * @return bool
      */
     public function hasHierarchicalIdentifiers(): bool
     {
@@ -432,7 +430,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param Folder|null $folder
      * @param bool $useFilters Whether storage filters should be applied
-     * @return FileSearchResultInterface
      */
     public function searchFiles(FileSearchDemand $searchDemand, Folder $folder = null, bool $useFilters = true): FileSearchResultInterface
     {
@@ -1725,7 +1722,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @param bool $asDownload If set Content-Disposition attachment is sent, inline otherwise
      * @param string $alternativeFilename the filename for the download (if $asDownload is set)
      * @param string $overrideMimeType If set this will be used as Content-Type header instead of the automatically detected mime type.
-     * @return ResponseInterface
      */
     public function streamFile(
         FileInterface $file,
@@ -2859,9 +2855,6 @@ class ResourceStorage implements ResourceStorageInterface
         return $this->isDefault;
     }
 
-    /**
-     * @return ResourceFactory
-     */
     public function getResourceFactoryInstance(): ResourceFactory
     {
         return GeneralUtility::makeInstance(ResourceFactory::class);

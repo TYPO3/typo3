@@ -72,7 +72,6 @@ class ProcessedFileTest extends UnitTestCase
     /**
      * @param array $dbRow
      * @param ResourceStorage $storageMock
-     * @return File
      */
     protected function getFileFixture($dbRow = null, $storageMock = null): File
     {
@@ -82,7 +81,6 @@ class ProcessedFileTest extends UnitTestCase
     /**
      * @param array $dbRow
      * @param File $originalFile
-     * @return ProcessedFile
      */
     protected function getProcessedFileFixture($dbRow = null, $originalFile = null): ProcessedFile
     {

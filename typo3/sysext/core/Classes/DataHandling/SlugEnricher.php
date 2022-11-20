@@ -35,9 +35,6 @@ class SlugEnricher
      */
     protected $slugFieldNamesPerTable = [];
 
-    /**
-     * @return array
-     */
     public function enrichDataMap(array $dataMap): array
     {
         foreach ($dataMap as $tableName => &$tableDataMap) {
@@ -58,9 +55,6 @@ class SlugEnricher
         return $dataMap;
     }
 
-    /**
-     * @return array
-     */
     protected function enrichUndefinedSlugFieldNames(array $slugFieldNames, array $fieldValues): array
     {
         if (empty($slugFieldNames)) {

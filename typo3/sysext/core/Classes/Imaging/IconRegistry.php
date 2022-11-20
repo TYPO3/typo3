@@ -441,9 +441,6 @@ class IconRegistry implements SingletonInterface
         return array_keys($this->icons);
     }
 
-    /**
-     * @return array
-     */
     public function getDeprecatedIcons(): array
     {
         return $this->deprecatedIcons;
@@ -479,7 +476,6 @@ class IconRegistry implements SingletonInterface
     /**
      * Calculates the cache identifier based on the current registry
      *
-     * @return string
      * @internal
      */
     public function getCacheIdentifier(): string

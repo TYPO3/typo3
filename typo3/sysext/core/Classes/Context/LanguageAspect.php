@@ -94,8 +94,6 @@ class LanguageAspect implements AspectInterface
 
     /**
      * Used language overlay
-     *
-     * @return string
      */
     public function getOverlayType(): string
     {
@@ -105,8 +103,6 @@ class LanguageAspect implements AspectInterface
     /**
      * Returns the language ID the current page was requested,
      * this is relevant when building menus or links to other pages.
-     *
-     * @return int
      */
     public function getId(): int
     {
@@ -117,8 +113,6 @@ class LanguageAspect implements AspectInterface
      * Contains the language UID of the content records that should be overlaid to would be fetched.
      * This is especially useful when a page requested with language=4 should fall back to showing
      * content of language=2 (see fallbackChain)
-     *
-     * @return int
      */
     public function getContentId(): int
     {
@@ -132,8 +126,6 @@ class LanguageAspect implements AspectInterface
 
     /**
      * Whether overlays should be done
-     *
-     * @return bool
      */
     public function doOverlays(): bool
     {
@@ -142,8 +134,6 @@ class LanguageAspect implements AspectInterface
 
     /**
      * Previously known as TSFE->sys_language_mode, here for compatibility reasons
-     *
-     * @return string
      */
     public function getLegacyLanguageMode(): string
     {
@@ -161,8 +151,6 @@ class LanguageAspect implements AspectInterface
 
     /**
      * Previously known as TSFE->sys_language_contentOL, here for compatibility reasons
-     *
-     * @return string
      */
     public function getLegacyOverlayType(): string
     {

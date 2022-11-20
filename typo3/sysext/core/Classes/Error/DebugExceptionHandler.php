@@ -86,8 +86,6 @@ HTML;
 
     /**
      * Generates the HTML for the error output.
-     *
-     * @return string
      */
     protected function getContent(\Throwable $throwable): string
     {
@@ -148,8 +146,6 @@ HTML;
 
     /**
      * Renders the HTML for a single throwable.
-     *
-     * @return string
      */
     protected function getSingleThrowableContent(\Throwable $throwable, int $index, int $total): string
     {
@@ -186,8 +182,6 @@ HTML;
 
     /**
      * Generates the stylesheet needed to display the error page.
-     *
-     * @return string
      */
     protected function getStylesheet(): string
     {
@@ -401,8 +395,6 @@ STYLESHEET;
 
     /**
      * Renders the backtrace as HTML.
-     *
-     * @return string
      */
     protected function getBacktraceCode(array $trace): string
     {
@@ -482,7 +474,6 @@ STYLESHEET;
      *
      * @param string $path The full path of the file.
      * @param int $line The line number.
-     * @return string
      */
     protected function formatPath(string $path, int $line): string
     {
@@ -497,7 +488,6 @@ STYLESHEET;
      * Formats the arguments of a method call.
      *
      * @param array $args The flattened args of method/function call
-     * @return string
      */
     protected function formatArgs(array $args): string
     {

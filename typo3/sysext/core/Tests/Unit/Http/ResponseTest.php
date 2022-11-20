@@ -54,9 +54,6 @@ class ResponseTest extends UnitTestCase
         self::assertEquals(400, $response->getStatusCode());
     }
 
-    /**
-     * @return array
-     */
     public function invalidStatusCodesDataProvider(): array
     {
         return [
@@ -124,9 +121,6 @@ class ResponseTest extends UnitTestCase
         self::assertEquals($headers, $response->getHeaders());
     }
 
-    /**
-     * @return array
-     */
     public function invalidStatusDataProvider(): array
     {
         return [
@@ -152,9 +146,6 @@ class ResponseTest extends UnitTestCase
         new Response('php://memory', $code);
     }
 
-    /**
-     * @return array
-     */
     public function invalidResponseBodyDataProvider(): array
     {
         return [
@@ -201,9 +192,6 @@ class ResponseTest extends UnitTestCase
         self::assertEquals($expected, $response->getHeaders());
     }
 
-    /**
-     * @return array
-     */
     public function headersWithInjectionVectorsDataProvider(): array
     {
         return [

@@ -90,8 +90,6 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Helper method to create a random directory and return the path.
      * The path will be registered for deletion upon test ending
-     *
-     * @return string
      */
     protected function getTestDirectory(string $prefix = 'root_'): string
     {
@@ -118,8 +116,6 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for canRetrieveValueWithGP.
      * All test values also check whether slashes are stripped properly.
-     *
-     * @return array
      */
     public function gpDataProvider(): array
     {
@@ -155,8 +151,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * Data provider for gpMergedWillMergeArraysFromGetAndPost
-     *
-     * @return array
      */
     public function gpMergedDataProvider(): array
     {
@@ -179,8 +173,6 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for canRetrieveGlobalInputsThroughGet
      * and canRetrieveGlobalInputsThroughPost
-     *
-     * @return array
      */
     public function getAndPostDataProvider(): array
     {
@@ -483,8 +475,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * Data provider for inListForItemContainedReturnsTrue.
-     *
-     * @return array
      */
     public function inListForItemContainedReturnsTrueDataProvider(): array
     {
@@ -507,8 +497,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * Data provider for inListForItemNotContainedReturnsFalse.
-     *
-     * @return array
      */
     public function inListForItemNotContainedReturnsFalseDataProvider(): array
     {
@@ -533,8 +521,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * Data provider for expandListExpandsIntegerRangesDataProvider
-     *
-     * @return array
      */
     public function expandListExpandsIntegerRangesDataProvider(): array
     {
@@ -574,8 +560,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * Data provider for formatSizeTranslatesBytesToHigherOrderRepresentation
-     *
-     * @return array
      */
     public function formatSizeDataProvider(): array
     {
@@ -794,8 +778,6 @@ class GeneralUtilityTest extends UnitTestCase
     //////////////////////////////////
     /**
      * Data provider for implodeArrayForUrlBuildsValidParameterString
-     *
-     * @return array
      */
     public function implodeArrayForUrlDataProvider(): array
     {
@@ -859,13 +841,6 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertEquals($expected, GeneralUtility::explodeUrl2Array($input));
     }
 
-    //////////////////////////////////
-    // Tests concerning revExplode
-    //////////////////////////////////
-
-    /**
-     * @return array
-     */
     public function revExplodeDataProvider(): array
     {
         return [
@@ -965,9 +940,6 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertSame($expectedResult, GeneralUtility::trimExplode($delimiter, $testString, $removeEmpty, $limit));
     }
 
-    /**
-     * @return array
-     */
     public function trimExplodeReturnsCorrectResultDataProvider(): array
     {
         return [
@@ -1230,9 +1202,6 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('/', $result[strlen($result) - 1]);
     }
 
-    /**
-     * @return array
-     */
     public static function hostnameAndPortDataProvider(): array
     {
         return [
@@ -1936,8 +1905,6 @@ class GeneralUtilityTest extends UnitTestCase
     //////////////////////////////////
     /**
      * Data provider for quoteJSvalueTest.
-     *
-     * @return array
      */
     public function quoteJsValueDataProvider(): array
     {
@@ -2496,7 +2463,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * Data provider for mkdirDeepCreatesDirectoryWithDoubleSlashes.
-     * @return array
      */
     public function mkdirDeepCreatesDirectoryWithAndWithoutDoubleSlashesDataProvider(): array
     {
@@ -2779,8 +2745,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * Data provider for getFilesInDirByExtensionFindsFiles
-     *
-     * @return array
      */
     public function fileExtensionDataProvider(): array
     {
@@ -3362,9 +3326,6 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertNotSame($instance, GeneralUtility::makeInstance($className));
     }
 
-    /**
-     * @return array
-     */
     public function getFileAbsFileNameDataProvider(): array
     {
         return [
@@ -3436,8 +3397,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * Data provider for validPathStrDetectsInvalidCharacters.
-     *
-     * @return array
      */
     public function validPathStrInvalidCharactersDataProvider(): array
     {
@@ -3577,8 +3536,6 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for callUserFunctionInvalidParameterDataprovider and
      * callUserFunctionWillThrowExceptionForInvalidParameters.
-     *
-     * @return array
      */
     public function callUserFunctionInvalidParameterDataprovider(): array
     {
@@ -3617,9 +3574,6 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('Worked fine', $result);
     }
 
-    /**
-     * @return string
-     */
     public function user_calledUserFunction(): string
     {
         return 'Worked fine';

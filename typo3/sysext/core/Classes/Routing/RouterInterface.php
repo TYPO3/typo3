@@ -38,7 +38,6 @@ interface RouterInterface
 
     /**
      * @param RouteResultInterface|null $previousResult
-     * @return RouteResultInterface
      * @throws RouteNotFoundException
      */
     public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): RouteResultInterface;
@@ -50,7 +49,6 @@ interface RouterInterface
      * @param array $parameters query parameters, specially reserved parameters are usually prefixed with "_"
      * @param string $fragment the section/fragment www.example.com/page/#fragment, WITHOUT the hash
      * @param string $type see the constants above.
-     * @return UriInterface
      */
     public function generateUri($route, array $parameters = [], string $fragment = '', string $type = self::ABSOLUTE_URL): UriInterface;
 }

@@ -32,7 +32,6 @@ class Sqlite extends AbstractPlatform
     /**
      * Get all status information as array with status objects
      *
-     * @return FlashMessageQueue
      * @throws \InvalidArgumentException
      * @throws \Doctrine\DBAL\Exception
      */
@@ -74,8 +73,6 @@ class Sqlite extends AbstractPlatform
      * Validate the database name
      * SQLite does not have any limitation for the length of the database name,
      * but must start with a letter or _
-     *
-     * @return bool
      */
     public static function isValidDatabaseName(string $databaseName): bool
     {

@@ -80,8 +80,6 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
 
     /**
      * Get the template name of the renderable
-     *
-     * @return string
      */
     public function getTemplateName(): string
     {
@@ -118,7 +116,6 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
     }
 
     /**
-     * @return array
      * @internal
      */
     public function getProperties(): array
@@ -127,7 +124,6 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
     }
 
     /**
-     * @return bool
      * @internal
      */
     public function isRequired(): bool

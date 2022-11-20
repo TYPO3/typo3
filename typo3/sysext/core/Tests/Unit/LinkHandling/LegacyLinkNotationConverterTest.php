@@ -37,8 +37,6 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
 
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page
-     *
-     * @return array
      */
     public function resolveParametersForNonFilesDataProvider(): array
     {
@@ -168,15 +166,12 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
     /**
      * testing files and folders
      */
-
     /**
      * Data provider for pointing to files
      * t3:file:15
      * t3:file:fileadmin/deep/down.jpg
      * t3:file:1:myfolder/myidentifier.jpg
      * t3:folder:1:myfolder
-     *
-     * @return array
      */
     public function resolveParametersForFilesDataProvider(): array
     {
@@ -352,9 +347,6 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
         self::assertEquals($expected, $subject->asString($parameters));
     }
 
-    /**
-     * @return array
-     */
     public function resolveThrowExceptionWithPharReferencesDataProvider(): array
     {
         return [

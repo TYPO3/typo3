@@ -114,8 +114,6 @@ class ExtensionServiceTest extends UnitTestCase
 
     /**
      * DataProvider for getPluginNamespaceByPluginSignatureTests()
-     *
-     * @return array
      */
     public function getPluginNamespaceDataProvider(): array
     {
@@ -155,8 +153,6 @@ class ExtensionServiceTest extends UnitTestCase
 
     /**
      * DataProvider for getPluginNameByActionTests()
-     *
-     * @return array
      */
     public function getPluginNameByActionDataProvider(): array
     {

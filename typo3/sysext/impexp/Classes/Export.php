@@ -1295,7 +1295,6 @@ class Export extends ImportExport
     }
 
     /**
-     * @return File
      * @throws InsufficientFolderWritePermissionsException
      */
     public function saveToFile(): File
@@ -1332,9 +1331,6 @@ class Export extends ImportExport
         return $file;
     }
 
-    /**
-     * @return string
-     */
     public function getExportFileName(): string
     {
         return $this->exportFileName;
@@ -1346,9 +1342,6 @@ class Export extends ImportExport
         $this->exportFileName = $exportFileName;
     }
 
-    /**
-     * @return string
-     */
     public function getOrGenerateExportFileNameWithFileExtension(): string
     {
         if (!empty($this->exportFileName)) {
@@ -1361,9 +1354,6 @@ class Export extends ImportExport
         return $exportFileName;
     }
 
-    /**
-     * @return string
-     */
     protected function generateExportFileName(): string
     {
         if ($this->pid !== -1) {
@@ -1383,9 +1373,6 @@ class Export extends ImportExport
         return 'T3D_' . $exportFileName . '_' . date('Y-m-d_H-i');
     }
 
-    /**
-     * @return string
-     */
     public function getExportFileType(): string
     {
         return $this->exportFileType;
@@ -1409,9 +1396,6 @@ class Export extends ImportExport
         $this->exportFileType = $exportFileType;
     }
 
-    /**
-     * @return array
-     */
     public function getSupportedFileTypes(): array
     {
         if (empty($this->supportedFileTypes)) {
@@ -1426,9 +1410,6 @@ class Export extends ImportExport
         return $this->supportedFileTypes;
     }
 
-    /**
-     * @return string
-     */
     protected function getFileExtensionByFileType(): string
     {
         switch ($this->exportFileType) {
@@ -1442,13 +1423,6 @@ class Export extends ImportExport
         }
     }
 
-    /**************************
-     * Getters and Setters
-     *************************/
-
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
@@ -1459,9 +1433,6 @@ class Export extends ImportExport
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
@@ -1472,9 +1443,6 @@ class Export extends ImportExport
         $this->description = $description;
     }
 
-    /**
-     * @return string
-     */
     public function getNotes(): string
     {
         return $this->notes;
@@ -1485,9 +1453,6 @@ class Export extends ImportExport
         $this->notes = $notes;
     }
 
-    /**
-     * @return array
-     */
     public function getRecord(): array
     {
         return $this->record;
@@ -1498,9 +1463,6 @@ class Export extends ImportExport
         $this->record = $record;
     }
 
-    /**
-     * @return array
-     */
     public function getList(): array
     {
         return $this->list;
@@ -1511,9 +1473,6 @@ class Export extends ImportExport
         $this->list = $list;
     }
 
-    /**
-     * @return int
-     */
     public function getLevels(): int
     {
         return $this->levels;
@@ -1524,9 +1483,6 @@ class Export extends ImportExport
         $this->levels = $levels;
     }
 
-    /**
-     * @return array
-     */
     public function getTables(): array
     {
         return $this->tables;
@@ -1537,9 +1493,6 @@ class Export extends ImportExport
         $this->tables = $tables;
     }
 
-    /**
-     * @return array
-     */
     public function getRelOnlyTables(): array
     {
         return $this->relOnlyTables;
@@ -1550,17 +1503,11 @@ class Export extends ImportExport
         $this->relOnlyTables = $relOnlyTables;
     }
 
-    /**
-     * @return string
-     */
     public function getTreeHTML(): string
     {
         return $this->treeHTML;
     }
 
-    /**
-     * @return bool
-     */
     public function isIncludeExtFileResources(): bool
     {
         return $this->includeExtFileResources;
@@ -1582,9 +1529,6 @@ class Export extends ImportExport
         $this->saveFilesOutsideExportFile = $saveFilesOutsideExportFile;
     }
 
-    /**
-     * @return bool
-     */
     public function isSaveFilesOutsideExportFile(): bool
     {
         return $this->saveFilesOutsideExportFile;

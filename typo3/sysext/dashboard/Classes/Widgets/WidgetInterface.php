@@ -28,15 +28,11 @@ interface WidgetInterface
      * This method returns the content of a widget. The returned markup will be delivered
      * by an AJAX call and will not be escaped.
      * Be aware of XSS and ensure that the content is well encoded.
-     *
-     * @return string
      */
     public function renderWidgetContent(): string;
 
     /**
      * This method returns the options of the widget as set in the registration.
-     *
-     * @return array
      */
     public function getOptions(): array;
 }

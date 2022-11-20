@@ -17,9 +17,6 @@ namespace TYPO3\CMS\Core\Configuration\Processor\Placeholder;
 
 interface PlaceholderProcessorInterface
 {
-    /**
-     * @return bool
-     */
     public function canProcess(string $placeholder, array $referenceArray): bool;
 
     /**

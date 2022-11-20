@@ -28,8 +28,6 @@ class FileNameFilterTest extends UnitTestCase
 {
     /**
      * Return combinations of files and paths to test against.
-     *
-     * @return array
      */
     public function getItemsAndPathsWithoutHiddenFilesAndFolders_dataProvider(): array
     {
@@ -43,8 +41,6 @@ class FileNameFilterTest extends UnitTestCase
 
     /**
      * Return combinations of files and paths to test against.
-     *
-     * @return array
      */
     public function getItemsAndPathsWithHiddenFilesAndFolders_dataProvider(): array
     {

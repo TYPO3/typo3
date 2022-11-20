@@ -455,8 +455,6 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
 
     /**
      * Get expand / collapse state of inline items
-     *
-     * @return array
      */
     protected function getReferenceExpandCollapseStateArray(): array
     {

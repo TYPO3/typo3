@@ -185,7 +185,6 @@ class DebugUtility
      *
      * @param bool|null $plainText Omit or pass null to use the current default.
      * @param bool|null $ansiColors Omit or pass null to use the current default.
-     * @return string
      */
     protected static function renderDump(mixed $variable, string $title = '', ?bool $plainText = null, ?bool $ansiColors = null): string
     {

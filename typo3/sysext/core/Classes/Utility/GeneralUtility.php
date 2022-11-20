@@ -2894,7 +2894,6 @@ class GeneralUtility
     }
 
     /**
-     * @return ContainerInterface
      * @internal
      */
     public static function getContainer(): ContainerInterface
@@ -3302,7 +3301,6 @@ class GeneralUtility
      *
      * @param mixed $value
      * @param bool $useHtmlEntities
-     * @return string
      */
     public static function jsonEncodeForHtmlAttribute($value, bool $useHtmlEntities = true): string
     {
@@ -3317,7 +3315,6 @@ class GeneralUtility
      * (`[[JSON]]` represents return value of this function)
      *
      * @param mixed $value
-     * @return string
      */
     public static function jsonEncodeForJavaScript($value): string
     {

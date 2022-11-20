@@ -67,8 +67,6 @@ class FalDumpFileContentsDecoratorStream implements StreamInterface, SelfEmittab
     /**
      * Creates a stream (on demand). This method is consumed by the guzzle StreamDecoratorTrait
      * and is used when this stream is used without the emit() fastpath.
-     *
-     * @return StreamInterface
      */
     protected function createStream(): StreamInterface
     {
@@ -77,17 +75,11 @@ class FalDumpFileContentsDecoratorStream implements StreamInterface, SelfEmittab
         return $stream;
     }
 
-    /**
-     * @return int
-     */
     public function getSize(): int
     {
         return $this->size;
     }
 
-    /**
-     * @return bool
-     */
     public function isWritable(): bool
     {
         return false;

@@ -41,8 +41,6 @@ class RecoveryCodes
 
     /**
      * Generate plain and hashed recovery codes and return them as key/value
-     *
-     * @return array
      */
     public function generateRecoveryCodes(): array
     {
@@ -86,8 +84,6 @@ class RecoveryCodes
 
     /**
      * Hash the given plain recovery codes with the default hash instance and return them
-     *
-     * @return array
      */
     public function generatedHashedRecoveryCodes(array $codes): array
     {
@@ -104,8 +100,6 @@ class RecoveryCodes
     /**
      * Compare given recovery code against all hashed codes and
      * unset the corresponding code on success.
-     *
-     * @return bool
      */
     public function verifyRecoveryCode(string $recoveryCode, array &$codes): bool
     {

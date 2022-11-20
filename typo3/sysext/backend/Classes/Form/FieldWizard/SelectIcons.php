@@ -28,8 +28,6 @@ class SelectIcons extends AbstractNode
 {
     /**
      * Render thumbnails of selected files
-     *
-     * @return array
      */
     public function render(): array
     {

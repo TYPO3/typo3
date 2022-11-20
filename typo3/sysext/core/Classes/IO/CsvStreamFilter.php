@@ -43,7 +43,6 @@ class CsvStreamFilter extends \php_user_filter
      * @param resource $out
      * @param int $consumed
      * @param bool $closing
-     * @return int
      */
     public function filter($in, $out, &$consumed, $closing): int
     {
@@ -67,7 +66,6 @@ class CsvStreamFilter extends \php_user_filter
     /**
      * @param resource $stream
      * @param bool $LF whether to apply line-feed
-     * @return \Closure
      */
     public static function applyStreamFilter($stream, bool $LF = true): \Closure
     {
@@ -97,9 +95,6 @@ class CsvStreamFilter extends \php_user_filter
         );
     }
 
-    /**
-     * @return \Closure
-     */
     protected static function buildStreamFilterModifier(string $sequence): \Closure
     {
         return static function ($element) use ($sequence) {

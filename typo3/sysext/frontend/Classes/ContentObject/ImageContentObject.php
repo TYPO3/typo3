@@ -123,7 +123,6 @@ class ImageContentObject extends AbstractContentObject
      *
      * @param string $layoutKey rendering key
      * @param array $conf TypoScript configuration properties
-     * @return string
      */
     protected function getImageTagTemplate($layoutKey, $conf): string
     {

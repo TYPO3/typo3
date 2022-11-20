@@ -123,8 +123,6 @@ class DatabaseLanguageRows implements FormDataProviderInterface
 
     /**
      * Retrieve the requested row from the database
-     *
-     * @return array
      */
     protected function getRecordWorkspaceOverlay(string $tableName, int $uid): array
     {

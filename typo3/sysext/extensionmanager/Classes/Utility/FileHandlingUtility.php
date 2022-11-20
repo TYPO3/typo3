@@ -241,8 +241,6 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
 
     /**
      * Returns relative path
-     *
-     * @return string
      */
     protected function getRelativePath(string $absolutePath): string
     {

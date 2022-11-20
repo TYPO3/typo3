@@ -99,7 +99,6 @@ class RichTextElement extends AbstractFormElement
     /**
      * Renders the ckeditor element
      *
-     * @return array
      * @throws \InvalidArgumentException
      */
     public function render(): array
@@ -191,8 +190,6 @@ class RichTextElement extends AbstractFormElement
 
     /**
      * Determine the contents language iso code
-     *
-     * @return string
      */
     protected function getLanguageIsoCodeOfContent(): string
     {
@@ -266,8 +263,6 @@ class RichTextElement extends AbstractFormElement
 
     /**
      * Get configuration of external/additional plugins
-     *
-     * @return array
      */
     protected function getExtraPlugins(): array
     {
@@ -314,8 +309,6 @@ class RichTextElement extends AbstractFormElement
 
     /**
      * Add configuration to replace LLL: references with the translated value
-     *
-     * @return array
      */
     protected function replaceLanguageFileReferences(array $configuration): array
     {
@@ -331,8 +324,6 @@ class RichTextElement extends AbstractFormElement
 
     /**
      * Add configuration to replace absolute EXT: paths with relative ones
-     *
-     * @return array
      */
     protected function replaceAbsolutePathsToRelativeResourcesPath(array $configuration): array
     {
@@ -348,8 +339,6 @@ class RichTextElement extends AbstractFormElement
 
     /**
      * Resolves an EXT: syntax file to an absolute web URL
-     *
-     * @return string
      */
     protected function resolveUrlPath(string $value): string
     {
@@ -427,9 +416,6 @@ class RichTextElement extends AbstractFormElement
         return $configuration;
     }
 
-    /**
-     * @return string
-     */
     protected function sanitizeFieldId(string $itemFormElementName): string
     {
         $fieldId = (string)preg_replace('/[^a-zA-Z0-9_:.-]/', '_', $itemFormElementName);

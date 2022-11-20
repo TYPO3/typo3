@@ -383,7 +383,6 @@ class RemoteServer
      * Prepares all comments of the stage change history entries for returning the JSON structure
      *
      * @param array $additionalChangesFromLog this is not in use since 2022 anymore, and can be removed in TYPO3 v13.0 the latest.
-     * @return array
      */
     protected function getCommentsForRecord(array $historyEntries, array $additionalChangesFromLog): array
     {
@@ -543,8 +542,6 @@ class RemoteServer
 
     /**
      * Gets the fields suitable for being displayed in new and delete diff views
-     *
-     * @return array
      */
     protected function getSuitableFields(string $table, int $uid): array
     {

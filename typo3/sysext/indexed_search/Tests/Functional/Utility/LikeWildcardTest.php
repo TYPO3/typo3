@@ -57,8 +57,6 @@ class LikeWildcardTest extends FunctionalTestCase
      * - the search value
      * - the wildcard mode
      * - the expected result
-     *
-     * @return array
      */
     public function getLikeQueryPartDataProvider(): array
     {

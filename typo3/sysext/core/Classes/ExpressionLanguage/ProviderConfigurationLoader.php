@@ -40,9 +40,6 @@ class ProviderConfigurationLoader
         $this->cacheIdentifier = $cacheIdentifier;
     }
 
-    /**
-     * @return array
-     */
     public function getExpressionLanguageProviders(): array
     {
         $providers = $this->cache->require($this->cacheIdentifier);

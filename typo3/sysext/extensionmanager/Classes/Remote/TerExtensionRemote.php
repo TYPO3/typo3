@@ -89,7 +89,6 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
     /**
      * TER provides a extensions.md5 which contains the hashsum of the current remote extensions.gz file.
      * Let's check if this is the same, if so, it is not needed to download a new extensions.gz.
-     * @return bool
      */
     protected function isDownloadedExtensionListUpToDate(): bool
     {
@@ -131,7 +130,6 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
 
     /**
      * Internal method
-     * @return ResponseInterface
      * @throws DownloadFailedException
      */
     protected function downloadFile(string $remotePath): ResponseInterface
@@ -173,8 +171,6 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
 
     /**
      * Validates the integrity of the contents of a downloaded file.
-     *
-     * @return bool
      */
     protected function isDownloadedPackageValid(string $expectedHash, string $fileContents): bool
     {

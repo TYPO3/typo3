@@ -258,9 +258,6 @@ class Arguments extends \ArrayObject
         $this->argumentNames = [];
     }
 
-    /**
-     * @return \TYPO3\CMS\Extbase\Error\Result
-     */
     public function validate(): Result
     {
         $results = new Result();

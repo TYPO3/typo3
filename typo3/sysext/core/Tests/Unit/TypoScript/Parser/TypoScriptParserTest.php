@@ -690,9 +690,6 @@ test.TYPO3Forever.TypoScript = 1
         self::assertEquals($expected, $this->typoScriptParser->setup);
     }
 
-    /**
-     * @return array
-     */
     public function typoScriptIsParsedToArrayDataProvider(): array
     {
         return [
@@ -1179,9 +1176,6 @@ test.TYPO3Forever.TypoScript = 1
         self::assertSame($expectedRemainingKey, $remainingKey);
     }
 
-    /**
-     * @return array
-     */
     public function parseNextKeySegmentReturnsCorrectNextKeySegmentDataProvider(): array
     {
         return [

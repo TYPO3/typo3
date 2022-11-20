@@ -42,8 +42,6 @@ abstract class AbstractSvgIconProvider implements IconProviderInterface
 
     /**
      * Calculate public path of SVG file
-     *
-     * @return string
      */
     protected function getPublicPath(string $source): string
     {

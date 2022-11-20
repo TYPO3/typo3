@@ -39,8 +39,6 @@ class StructureFacade implements StructureFacadeInterface
 
     /**
      * Get status of node tree
-     *
-     * @return FlashMessageQueue
      */
     public function getStatus(): FlashMessageQueue
     {
@@ -53,8 +51,6 @@ class StructureFacade implements StructureFacadeInterface
 
     /**
      * Fix structure
-     *
-     * @return FlashMessageQueue
      */
     public function fix(): FlashMessageQueue
     {

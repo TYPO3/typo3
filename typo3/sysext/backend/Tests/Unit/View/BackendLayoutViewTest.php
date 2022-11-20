@@ -64,9 +64,6 @@ class BackendLayoutViewTest extends UnitTestCase
         self::assertEquals($expected, $selectedCombinedIdentifier);
     }
 
-    /**
-     * @return array
-     */
     public function selectedCombinedIdentifierIsDeterminedDataProvider(): array
     {
         return [

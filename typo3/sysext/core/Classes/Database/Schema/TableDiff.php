@@ -34,8 +34,6 @@ class TableDiff extends \Doctrine\DBAL\Schema\TableDiff
 
     /**
      * Getter for table options.
-     *
-     * @return array
      */
     public function getTableOptions(): array
     {
@@ -44,8 +42,6 @@ class TableDiff extends \Doctrine\DBAL\Schema\TableDiff
 
     /**
      * Setter for table options
-     *
-     * @return \TYPO3\CMS\Core\Database\Schema\TableDiff
      */
     public function setTableOptions(array $tableOptions): TableDiff
     {
@@ -56,17 +52,12 @@ class TableDiff extends \Doctrine\DBAL\Schema\TableDiff
 
     /**
      * Check if a table options has been set.
-     *
-     * @return bool
      */
     public function hasTableOption(string $optionName): bool
     {
         return array_key_exists($optionName, $this->tableOptions);
     }
 
-    /**
-     * @return string
-     */
     public function getTableOption(string $optionName): string
     {
         if ($this->hasTableOption($optionName)) {
@@ -76,9 +67,6 @@ class TableDiff extends \Doctrine\DBAL\Schema\TableDiff
         return '';
     }
 
-    /**
-     * @return bool
-     */
     public function isEmpty(): bool
     {
         return count($this->addedColumns) === 0

@@ -152,7 +152,6 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
      * Converts the given $object to a string representation considering the $element FormElement definition.
      *
      * @param object $object
-     * @return string
      */
     protected static function processObject(FormElementInterface $element, $object): string
     {

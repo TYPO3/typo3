@@ -34,8 +34,6 @@ class NormalizedParamsAttribute implements MiddlewareInterface
     /**
      * Adds an instance of TYPO3\CMS\Core\Http\NormalizedParams as
      * attribute to $request object
-     *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

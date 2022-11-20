@@ -72,7 +72,6 @@ class AspectFactory
     /**
      * Creates an aspect
      *
-     * @return AspectInterface
      * @throws \InvalidArgumentException
      * @throws \OutOfRangeException
      */
@@ -99,8 +98,6 @@ class AspectFactory
 
     /**
      * Checks for the language aware trait, and adds the site language.
-     *
-     * @return AspectInterface
      */
     protected function enrich(AspectInterface $aspect, SiteLanguage $language, Site $site): AspectInterface
     {
@@ -130,8 +127,6 @@ class AspectFactory
     /**
      * Sorts aspects with putting persisted aspects to the end, thus
      * non-persisted aspects can be executed earlier without invoking database.
-     *
-     * @return int
      */
     protected function sortAspects(AspectInterface $first, AspectInterface $second): int
     {

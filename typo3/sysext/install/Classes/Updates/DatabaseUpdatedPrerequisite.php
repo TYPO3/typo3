@@ -41,9 +41,6 @@ class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterf
         $this->upgradeWizardsService = new UpgradeWizardsService();
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return 'Database Up-to-Date';
@@ -60,9 +57,6 @@ class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterf
         return $result === null;
     }
 
-    /**
-     * @return bool
-     */
     public function isFulfilled(): bool
     {
         $adds = $this->upgradeWizardsService->getBlockingDatabaseAdds();

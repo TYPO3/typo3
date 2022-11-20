@@ -22,9 +22,6 @@ namespace TYPO3\CMS\Core\Database\Schema\Exception;
  */
 class StatementException extends \Exception
 {
-    /**
-     * @return StatementException
-     */
     public static function sqlError(string $sql): StatementException
     {
         return new self($sql, 1471504820);
@@ -32,7 +29,6 @@ class StatementException extends \Exception
 
     /**
      * @param \Exception|null $previous
-     * @return StatementException
      */
     public static function syntaxError(string $message, \Exception $previous = null): StatementException
     {
@@ -41,7 +37,6 @@ class StatementException extends \Exception
 
     /**
      * @param \Exception|null $previous
-     * @return StatementException
      */
     public static function semanticalError(string $message, \Exception $previous = null): StatementException
     {

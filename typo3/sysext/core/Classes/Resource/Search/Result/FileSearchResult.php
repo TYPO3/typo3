@@ -50,7 +50,6 @@ class FileSearchResult implements FileSearchResultInterface
     }
 
     /**
-     * @return int
      * @see Countable::count()
      */
     public function count(): int
@@ -65,7 +64,6 @@ class FileSearchResult implements FileSearchResultInterface
     }
 
     /**
-     * @return File
      * @see Iterator::current()
      */
     public function current(): File
@@ -75,7 +73,6 @@ class FileSearchResult implements FileSearchResultInterface
     }
 
     /**
-     * @return int
      * @see Iterator::key()
      */
     public function key(): int
@@ -103,7 +100,6 @@ class FileSearchResult implements FileSearchResultInterface
     }
 
     /**
-     * @return bool
      * @see Iterator::valid()
      */
     public function valid(): bool

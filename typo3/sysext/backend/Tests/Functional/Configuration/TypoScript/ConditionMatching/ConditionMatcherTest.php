@@ -424,7 +424,6 @@ class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * @param int|null $pageId
-     * @return ConditionMatcher
      */
     protected function getConditionMatcher(int $pageId = null): ConditionMatcher
     {

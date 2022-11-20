@@ -220,8 +220,6 @@ class MetaDataRepository implements SingletonInterface
 
     /**
      * Gets the fields that are available in the table
-     *
-     * @return array
      */
     protected function getTableFields(): array
     {

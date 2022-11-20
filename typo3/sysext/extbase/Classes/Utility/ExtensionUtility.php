@@ -111,7 +111,6 @@ tt_content.' . $pluginSignature . ' {
      * @param string $pluginTitle is a speaking title of the plugin that will be displayed in the drop down menu in the backend
      * @param string $pluginIcon is an icon identifier or file path prepended with "EXT:", that will be displayed in the drop down menu in the backend (optional)
      * @param string $group add this plugin to a plugin group, should be something like "news" or the like, "default" as regular
-     * @return string
      * @throws \InvalidArgumentException
      */
     public static function registerPlugin($extensionName, $pluginName, $pluginTitle, $pluginIcon = null, $group = 'default'): string
@@ -156,7 +155,6 @@ tt_content.' . $pluginSignature . ' {
     }
 
     /**
-     * @return string
      * @internal only used for TYPO3 Core
      */
     public static function resolveControllerAliasFromControllerClassName(string $controllerClassName): string

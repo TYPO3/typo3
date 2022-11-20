@@ -22,9 +22,6 @@ namespace TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception;
  */
 class NoSuchMethodException extends \Exception
 {
-    /**
-     * @return NoSuchMethodException
-     */
     public static function create(string $className, string $methodName): NoSuchMethodException
     {
         return new self(

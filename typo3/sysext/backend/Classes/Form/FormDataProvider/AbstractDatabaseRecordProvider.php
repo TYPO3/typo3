@@ -65,8 +65,6 @@ abstract class AbstractDatabaseRecordProvider implements LoggerAwareInterface
 
     /**
      * Retrieve the requested row from the database
-     *
-     * @return array
      */
     protected function getDatabaseRow(string $tableName, int $uid): array
     {

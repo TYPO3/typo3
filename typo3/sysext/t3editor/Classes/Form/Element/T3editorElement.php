@@ -236,7 +236,6 @@ class T3editorElement extends AbstractFormElement
     }
 
     /**
-     * @return Mode
      * @throws InvalidModeException
      */
     protected function getMode(): Mode

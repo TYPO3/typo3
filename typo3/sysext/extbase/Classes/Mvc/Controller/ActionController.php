@@ -372,7 +372,6 @@ abstract class ActionController implements ControllerInterface
      * Handles an incoming request and returns a response object
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
-     * @return ResponseInterface
      *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
@@ -657,7 +656,6 @@ abstract class ActionController implements ControllerInterface
      * to the originating request. This effectively ends processing of the current request, so do not
      * call this method before you have finished the necessary business logic!
      *
-     * @return ResponseInterface|null
      *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
@@ -901,7 +899,6 @@ abstract class ActionController implements ControllerInterface
      * Returns a response object with either the given html string or the current rendered view as content.
      *
      * @param string|null $html
-     * @return ResponseInterface
      */
     protected function htmlResponse(string $html = null): ResponseInterface
     {
@@ -915,7 +912,6 @@ abstract class ActionController implements ControllerInterface
      * view as content. Mainly to be used for actions / controllers using the JsonView.
      *
      * @param string|null $json
-     * @return ResponseInterface
      */
     protected function jsonResponse(string $json = null): ResponseInterface
     {

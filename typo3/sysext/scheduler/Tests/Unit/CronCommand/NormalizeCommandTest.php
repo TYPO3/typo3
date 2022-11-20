@@ -23,9 +23,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class NormalizeCommandTest extends UnitTestCase
 {
-    /**
-     * @return array
-     */
     public static function normalizeValidDataProvider(): array
     {
         return [
@@ -70,9 +67,6 @@ class NormalizeCommandTest extends UnitTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @return array
-     */
     public static function validSpecialKeywordsDataProvider(): array
     {
         return [
@@ -108,9 +102,6 @@ class NormalizeCommandTest extends UnitTestCase
         self::assertEquals($invalidKeyword, $result);
     }
 
-    /**
-     * @return array
-     */
     public function normalizeFieldsValidDataProvider(): array
     {
         return [
@@ -134,9 +125,6 @@ class NormalizeCommandTest extends UnitTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @return array
-     */
     public static function normalizeMonthAndWeekdayFieldValidDataProvider(): array
     {
         return [
@@ -178,9 +166,6 @@ class NormalizeCommandTest extends UnitTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @return array
-     */
     public static function normalizeMonthAndWeekdayFieldInvalidDataProvider(): array
     {
         return [
@@ -210,9 +195,6 @@ class NormalizeCommandTest extends UnitTestCase
         NormalizeCommandAccessibleProxy::normalizeMonthAndWeekdayField($expression, $isMonthField);
     }
 
-    /**
-     * @return array
-     */
     public static function normalizeIntegerFieldValidDataProvider(): array
     {
         return [
@@ -244,9 +226,6 @@ class NormalizeCommandTest extends UnitTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @return array
-     */
     public static function normalizeIntegerFieldInvalidDataProvider(): array
     {
         return [
@@ -299,9 +278,6 @@ class NormalizeCommandTest extends UnitTestCase
         self::assertSame($expectedResult, $result);
     }
 
-    /**
-     * @return array
-     */
     public static function invalidCronCommandFieldsDataProvider(): array
     {
         return [
@@ -325,9 +301,6 @@ class NormalizeCommandTest extends UnitTestCase
         NormalizeCommandAccessibleProxy::splitFields($cronCommand);
     }
 
-    /**
-     * @return array
-     */
     public static function validRangeDataProvider(): array
     {
         return [
@@ -352,9 +325,6 @@ class NormalizeCommandTest extends UnitTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @return array
-     */
     public static function invalidRangeDataProvider(): array
     {
         return [
@@ -384,9 +354,6 @@ class NormalizeCommandTest extends UnitTestCase
         NormalizeCommandAccessibleProxy::convertRangeToListOfValues($range);
     }
 
-    /**
-     * @return array
-     */
     public static function validStepsDataProvider(): array
     {
         return [
@@ -409,9 +376,6 @@ class NormalizeCommandTest extends UnitTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @return array
-     */
     public static function invalidStepsDataProvider(): array
     {
         return [
@@ -470,9 +434,6 @@ class NormalizeCommandTest extends UnitTestCase
         self::assertSame('2', $result);
     }
 
-    /**
-     * @return array
-     */
     public static function validMonthNamesDataProvider(): array
     {
         return [
@@ -518,9 +479,6 @@ class NormalizeCommandTest extends UnitTestCase
         self::assertIsInt($result);
     }
 
-    /**
-     * @return array
-     */
     public static function invalidMonthNamesDataProvider(): array
     {
         return [
@@ -562,9 +520,6 @@ class NormalizeCommandTest extends UnitTestCase
         NormalizeCommandAccessibleProxy::normalizeMonth($invalidMonthName);
     }
 
-    /**
-     * @return array
-     */
     public static function validWeekdayDataProvider(): array
     {
         return [
@@ -620,9 +575,6 @@ class NormalizeCommandTest extends UnitTestCase
         self::assertIsInt($result);
     }
 
-    /**
-     * @return array
-     */
     public static function invalidWeekdayDataProvider(): array
     {
         return [

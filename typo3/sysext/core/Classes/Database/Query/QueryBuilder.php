@@ -107,9 +107,6 @@ class QueryBuilder
         $this->concreteQueryBuilder = $concreteQueryBuilder ?: GeneralUtility::makeInstance(\Doctrine\DBAL\Query\QueryBuilder::class, $connection);
     }
 
-    /**
-     * @return QueryRestrictionContainerInterface
-     */
     public function getRestrictions(): QueryRestrictionContainerInterface
     {
         return $this->restrictionContainer;
@@ -149,8 +146,6 @@ class QueryBuilder
      *
      * For more complex expression construction, consider storing the expression
      * builder object in a local variable.
-     *
-     * @return ExpressionBuilder
      */
     public function expr(): ExpressionBuilder
     {
@@ -160,7 +155,6 @@ class QueryBuilder
     /**
      * Gets the type of the currently built query.
      *
-     * @return int
      * @internal
      */
     public function getType(): int
@@ -170,8 +164,6 @@ class QueryBuilder
 
     /**
      * Gets the associated DBAL Connection for this query builder.
-     *
-     * @return Connection
      */
     public function getConnection(): Connection
     {
@@ -192,7 +184,6 @@ class QueryBuilder
     /**
      * Gets the concrete implementation of the query builder
      *
-     * @return \Doctrine\DBAL\Query\QueryBuilder
      * @internal
      */
     public function getConcreteQueryBuilder(): \Doctrine\DBAL\Query\QueryBuilder
@@ -216,8 +207,6 @@ class QueryBuilder
      * NamedPlaceholder are not supported, and if one or
      * more are set a 'NamedParameterNotSupportedForPreparedStatementException'
      * will be thrown.
-     *
-     * @return Statement
      */
     public function prepare(): Statement
     {
@@ -280,8 +269,6 @@ class QueryBuilder
      * they are able to write code which is compatible across two core
      * versions and avoid deprecation warning. Additional this will ease
      * backport without the need to switch if execute() is not used anymore.
-     *
-     * @return Result
      */
     public function executeQuery(): Result
     {
@@ -995,8 +982,6 @@ class QueryBuilder
 
     /**
      * Gets all query parts.
-     *
-     * @return array
      */
     public function getQueryParts(): array
     {
@@ -1073,8 +1058,6 @@ class QueryBuilder
      *
      * @param mixed $value
      * @param int $type
-     *
-     * @return string
      */
     public function createPositionalParameter($value, int $type = Connection::PARAM_STR): string
     {
@@ -1126,8 +1109,6 @@ class QueryBuilder
      * Delimiting style depends on the underlying database platform that is being used.
      *
      * @param array $input
-     *
-     * @return array
      */
     public function quoteIdentifiers(array $input): array
     {
@@ -1143,7 +1124,6 @@ class QueryBuilder
      *
      * @param array $input
      *
-     * @return array
      * @throws \InvalidArgumentException
      */
     public function quoteIdentifiersForSelect(array $input): array
@@ -1191,8 +1171,6 @@ class QueryBuilder
      * Delimiting style depends on the underlying database platform that is being used.
      *
      * @param array $input
-     *
-     * @return array
      */
     public function quoteColumnValuePairs(array $input): array
     {
@@ -1271,7 +1249,6 @@ class QueryBuilder
      * Creates a cast of the $fieldName to a text datatype depending on the database management system.
      *
      * @param string $fieldName The fieldname will be quoted and casted according to database platform automatically
-     * @return string
      */
     public function castFieldToTextType(string $fieldName): string
     {

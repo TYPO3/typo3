@@ -63,7 +63,6 @@ class RequireJsController
      * module path ("vendor/module/component") belonging to a module.
      *
      * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function retrieveConfiguration(ServerRequestInterface $request): ResponseInterface
     {
@@ -75,9 +74,6 @@ class RequireJsController
         return new JsonResponse($configuration, !empty($configuration) ? 200 : 404);
     }
 
-    /**
-     * @return array
-     */
     protected function findConfiguration(string $name): array
     {
         $relevantConfiguration = [];

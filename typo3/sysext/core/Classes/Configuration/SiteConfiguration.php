@@ -184,7 +184,6 @@ class SiteConfiguration implements SingletonInterface
     /**
      * Read the site configuration from config files.
      *
-     * @return array
      * @throws InvalidDataException
      */
     protected function getAllSiteConfigurationFromFiles(bool $useCache = true): array
@@ -223,7 +222,6 @@ class SiteConfiguration implements SingletonInterface
      * All read related actions should be performed on the site entity.
      *
      * @param string $siteIdentifier
-     * @return array
      */
     public function load(string $siteIdentifier): array
     {
@@ -329,9 +327,6 @@ class SiteConfiguration implements SingletonInterface
         $this->firstLevelCache = null;
     }
 
-    /**
-     * @return array
-     */
     protected function sortConfiguration(array $newConfiguration): array
     {
         ksort($newConfiguration);

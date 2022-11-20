@@ -58,7 +58,6 @@ abstract class AbstractFileFolderConverter extends AbstractTypeConverter
      *
      * @param string|int $source
      * @param PropertyMappingConfigurationInterface|null $configuration
-     * @return AbstractFileFolder
      * @throws Exception
      */
     public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): AbstractFileFolder
@@ -75,7 +74,6 @@ abstract class AbstractFileFolderConverter extends AbstractTypeConverter
 
     /**
      * @param string|int $source
-     * @return \TYPO3\CMS\Core\Resource\ResourceInterface|null
      */
     abstract protected function getOriginalResource($source): ?ResourceInterface;
 }

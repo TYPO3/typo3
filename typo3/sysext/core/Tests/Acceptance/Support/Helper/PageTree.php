@@ -64,8 +64,6 @@ class PageTree extends AbstractPageTree
 
     /**
      * Get node identifier of given page.
-     *
-     * @return string
      */
     public function getPageXPathByPageName(string $pageName): string
     {

@@ -242,8 +242,6 @@ class LogRecord implements \ArrayAccess
     /**
      * Convert record to string for simple output, like echo().
      * Contents of data array is appended as JSON-encoded string
-     *
-     * @return string
      */
     public function __toString(): string
     {

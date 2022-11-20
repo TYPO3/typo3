@@ -60,7 +60,6 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
      * Adds an expression to composite expression.
      *
      * @param mixed $part
-     * @return self
      * @deprecated since v12, will be removed in v13. This class will be made immutable. Use with() instead.
      */
     public function add($part): self
@@ -90,7 +89,6 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
      * Adds multiple parts to composite expression.
      *
      * @param string[]|self[] $parts
-     * @return self
      * @deprecated since v12, will be removed in v13. This class will be made immutable. Use with() instead.
      */
     public function addMultiple(array $parts = []): self
@@ -173,8 +171,6 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
 
     /**
      * Returns the type of this composite expression (AND/OR).
-     *
-     * @return string
      */
     public function getType(): string
     {

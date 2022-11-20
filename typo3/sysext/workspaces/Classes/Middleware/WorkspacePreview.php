@@ -70,7 +70,6 @@ class WorkspacePreview implements MiddlewareInterface
      *
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      * @throws \Exception
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -154,8 +153,6 @@ class WorkspacePreview implements MiddlewareInterface
     /**
      * Renders the logout template when the "logout" button was pressed.
      * Returns a string which can be put into a HttpResponse.
-     *
-     * @return string
      */
     protected function getLogoutTemplateMessage(UriInterface $currentUrl): string
     {
@@ -226,8 +223,6 @@ class WorkspacePreview implements MiddlewareInterface
 
     /**
      * Adds a cookie for logging in a preview user into the HTTP response
-     *
-     * @return ResponseInterface
      */
     protected function addCookie(string $keyword, NormalizedParams $normalizedParams, ResponseInterface $response): ResponseInterface
     {
@@ -292,7 +287,6 @@ class WorkspacePreview implements MiddlewareInterface
     /**
      * Code regarding adding a custom preview message, when previewing a workspace
      */
-
     /**
      * Renders a message at the bottom of the HTML page, can be modified via
      *
@@ -306,7 +300,6 @@ class WorkspacePreview implements MiddlewareInterface
      *
      * @param TypoScriptFrontendController $tsfe
      * @param UriInterface $currentUrl
-     * @return string
      */
     protected function renderPreviewInfo(TypoScriptFrontendController $tsfe, UriInterface $currentUrl): string
     {
@@ -379,8 +372,6 @@ class WorkspacePreview implements MiddlewareInterface
 
     /**
      * Used for generating URLs (e.g. in logout page) without the existing ADMCMD_prev keyword as GET variable
-     *
-     * @return UriInterface
      */
     protected function removePreviewParameterFromUrl(UriInterface $url, string $newAdminCommand = ''): UriInterface
     {

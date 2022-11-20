@@ -214,9 +214,6 @@ class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    /**
-     * @return array
-     */
     public function ctrlIntegrityColumnsAreAvailableDataProvider(): array
     {
         return [

@@ -33,8 +33,6 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
      * Return the path to the package location, including trailing slash
      * should return the value of: __DIR__ . '/../'
      * for ServiceProviders located in the Classes/ directory
-     *
-     * @return string
      */
     abstract protected static function getPackagePath(): string;
 
@@ -45,14 +43,8 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
      */
     abstract protected static function getPackageName(): string;
 
-    /**
-     * @return array
-     */
     abstract public function getFactories(): array;
 
-    /**
-     * @return array
-     */
     public function getExtensions(): array
     {
         return [
@@ -66,7 +58,6 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
 
     /**
      * @param string|null $path supplied when invoked internally through PseudoServiceProvider
-     * @return ArrayObject
      */
     public static function configureMiddlewares(ContainerInterface $container, ArrayObject $middlewares, string $path = null): ArrayObject
     {
@@ -84,7 +75,6 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     /**
      * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      * @param string|null $packageName supplied when invoked internally through PseudoServiceProvider
-     * @return ArrayObject
      */
     public static function configureBackendRoutes(ContainerInterface $container, ArrayObject $routes, string $path = null, string $packageName = null): ArrayObject
     {
@@ -141,7 +131,6 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     /**
      * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      * @param string|null $packageName supplied when invoked internally through PseudoServiceProvider
-     * @return ArrayObject
      */
     public static function configureBackendModules(ContainerInterface $container, ArrayObject $modules, string $path = null, string $packageName = null): ArrayObject
     {

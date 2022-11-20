@@ -29,8 +29,6 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
 
     /**
      * Returns TRUE if this processor can process the given task.
-     *
-     * @return bool
      */
     public function canProcessTask(TaskInterface $task): bool
     {
@@ -149,9 +147,6 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
         return $helper;
     }
 
-    /**
-     * @return GraphicalFunctions
-     */
     protected function getGraphicalFunctionsObject(): GraphicalFunctions
     {
         return GeneralUtility::makeInstance(GraphicalFunctions::class);

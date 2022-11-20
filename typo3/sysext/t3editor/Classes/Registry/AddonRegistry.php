@@ -33,8 +33,6 @@ class AddonRegistry implements SingletonInterface
 
     /**
      * Registers addons for global use in t3editor
-     *
-     * @return self
      */
     public function register(Addon $addon): AddonRegistry
     {
@@ -50,7 +48,6 @@ class AddonRegistry implements SingletonInterface
 
     /**
      * @param Addon[] $addons
-     * @return array
      */
     public function compileSettings(array $addons): array
     {

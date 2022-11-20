@@ -41,8 +41,6 @@ class Typo3tempFileService
 
     /**
      * Returns a list of directory names in typo3temp/assets and their number of files
-     *
-     * @return array
      */
     public function getDirectoryStatistics(): array
     {
@@ -65,8 +63,6 @@ class Typo3tempFileService
     /**
      * Directory statistics for typo3temp/assets folders with some
      * special handling for legacy processed file storage _processed_
-     *
-     * @return array
      */
     protected function statsFromTypo3temp(): array
     {
@@ -98,8 +94,6 @@ class Typo3tempFileService
 
     /**
      * Directory statistics for typo3temp/assets/_processed_ folder
-     *
-     * @return array
      */
     protected function statsFromTypo3tempProcessed(): array
     {
@@ -123,8 +117,6 @@ class Typo3tempFileService
 
     /**
      * Directory statistics for configured FAL storages.
-     *
-     * @return array
      */
     protected function statsFromStorages(): array
     {

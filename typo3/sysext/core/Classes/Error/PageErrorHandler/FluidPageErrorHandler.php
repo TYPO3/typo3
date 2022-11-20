@@ -59,9 +59,6 @@ class FluidPageErrorHandler implements PageErrorHandlerInterface
         $this->view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($configuration['errorFluidTemplate']));
     }
 
-    /**
-     * @return ResponseInterface
-     */
     public function handlePageError(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
     {
         $this->view->assignMultiple([

@@ -22,9 +22,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class QueryGeneratorTest extends UnitTestCase
 {
-    /**
-     * @return array
-     */
     public function getSubscriptReturnsExpectedValuesDataProvider(): array
     {
         return [

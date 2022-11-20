@@ -37,25 +37,16 @@ class ExtractorDto
         $this->prototypeConfiguration = $prototypeConfiguration;
     }
 
-    /**
-     * @return array
-     */
     public function getPrototypeConfiguration(): array
     {
         return $this->prototypeConfiguration;
     }
 
-    /**
-     * @return array
-     */
     public function getResult(): array
     {
         return $this->result;
     }
 
-    /**
-     * @return ExtractorDto
-     */
     public function setResult(array $result): ExtractorDto
     {
         $this->result = $result;

@@ -82,7 +82,6 @@ class SchemaIndexDefinitionListener
      * Build a Doctrine Index Object based on the information
      * gathered from the MySQL information schema.
      *
-     * @return \Doctrine\DBAL\Schema\Index
      * @throws \InvalidArgumentException
      */
     protected function buildIndex(array $tableIndexRows): Index

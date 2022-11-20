@@ -88,8 +88,6 @@ class ConnectionMigrator
     /**
      * Return the raw Doctrine SchemaDiff object for the current connection.
      * This diff contains all changes without any pre-processing.
-     *
-     * @return SchemaDiff
      */
     public function getSchemaDiff(): SchemaDiff
     {
@@ -99,8 +97,6 @@ class ConnectionMigrator
     /**
      * Compare current and expected schema definitions and provide updates
      * suggestions in the form of SQL statements.
-     *
-     * @return array
      */
     public function getUpdateSuggestions(bool $remove = false): array
     {
@@ -128,8 +124,6 @@ class ConnectionMigrator
      * Perform add/change/create operations on tables and fields in an
      * optimized, non-interactive, mode using the original doctrine
      * SchemaManager ->toSaveSql() method.
-     *
-     * @return array
      */
     public function install(bool $createOnly = false): array
     {
@@ -198,7 +192,6 @@ class ConnectionMigrator
      * for tables that are in the database but have no direct relation to the TYPO3 instance.
      *
      * @throws \Doctrine\DBAL\Exception
-     * @return \Doctrine\DBAL\Schema\SchemaDiff
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
@@ -275,7 +268,6 @@ class ConnectionMigrator
     /**
      * Build the expected schema definitions from raw SQL statements.
      *
-     * @return \Doctrine\DBAL\Schema\Schema
      * @throws \Doctrine\DBAL\Exception
      * @throws \InvalidArgumentException
      */
@@ -325,7 +317,6 @@ class ConnectionMigrator
      * Extract the update suggestions (SQL statements) for newly added tables
      * from the complete schema diff.
      *
-     * @return array
      * @throws \InvalidArgumentException
      */
     protected function getNewTableUpdateSuggestions(SchemaDiff $schemaDiff): array
@@ -347,7 +338,6 @@ class ConnectionMigrator
      * Extract the update suggestions (SQL statements) for newly added fields
      * from the complete schema diff.
      *
-     * @return array
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
@@ -429,7 +419,6 @@ class ConnectionMigrator
      * Extract update suggestions (SQL statements) for changed options
      * (like ENGINE) from the complete schema diff.
      *
-     * @return array
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
@@ -476,7 +465,6 @@ class ConnectionMigrator
      * Extract update suggestions (SQL statements) for changed fields
      * from the complete schema diff.
      *
-     * @return array
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
@@ -641,7 +629,6 @@ class ConnectionMigrator
      * In this case the update suggestions are renames of the tables
      * with a prefix to mark them for deletion in a second sweep.
      *
-     * @return array
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
@@ -680,7 +667,6 @@ class ConnectionMigrator
      * In this case the update suggestions are renames of the fields
      * with a prefix to mark them for deletion in a second sweep.
      *
-     * @return array
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
@@ -743,7 +729,6 @@ class ConnectionMigrator
      * Fields that can be removed have been prefixed in a previous run
      * of the schema migration.
      *
-     * @return array
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
@@ -844,7 +829,6 @@ class ConnectionMigrator
      * Tables that can be removed have been prefixed in a previous run
      * of the schema migration.
      *
-     * @return array
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
@@ -882,7 +866,6 @@ class ConnectionMigrator
      * performs a drop of the old table and creates a new table, which leads to all data in
      * the old table being lost.
      *
-     * @return \Doctrine\DBAL\Schema\SchemaDiff
      * @throws \InvalidArgumentException
      */
     protected function migrateUnprefixedRemovedTablesToRenames(SchemaDiff $schemaDiff): SchemaDiff
@@ -921,7 +904,6 @@ class ConnectionMigrator
      * the name of the field does not start with the deleted prefix mark the column
      * for a rename instead of a drop operation.
      *
-     * @return \Doctrine\DBAL\Schema\SchemaDiff
      * @throws \InvalidArgumentException
      */
     protected function migrateUnprefixedRemovedFieldsToRenames(SchemaDiff $schemaDiff): SchemaDiff
@@ -971,7 +953,6 @@ class ConnectionMigrator
      * Revert the automatic rename optimization that Doctrine performs when it detects
      * a column being added and a column being dropped that only differ by name.
      *
-     * @return SchemaDiff
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
@@ -1008,7 +989,6 @@ class ConnectionMigrator
     /**
      * Return the amount of records in the given table.
      *
-     * @return int
      * @throws \InvalidArgumentException
      */
     protected function getTableRecordCount(string $tableName): int
@@ -1021,7 +1001,6 @@ class ConnectionMigrator
     /**
      * Determine the connection name for a table
      *
-     * @return string
      * @throws \InvalidArgumentException
      */
     protected function getConnectionNameForTable(string $tableName): string
@@ -1204,8 +1183,6 @@ class ConnectionMigrator
      * will use quoted identifiers when creating the final SQL statements. This is needed as Doctrine doesn't
      * provide a method to set the flag after the object has been instantiated and there's no possibility to
      * hook into the createSchema() method early enough to influence the original table object.
-     *
-     * @return \Doctrine\DBAL\Schema\Table
      */
     protected function buildQuotedTable(Table $table): Table
     {
@@ -1226,8 +1203,6 @@ class ConnectionMigrator
      * will use quoted identifiers when creating the final SQL statements. This is needed as Doctrine doesn't
      * provide a method to set the flag after the object has been instantiated and there's no possibility to
      * hook into the createSchema() method early enough to influence the original column object.
-     *
-     * @return \Doctrine\DBAL\Schema\Column
      */
     protected function buildQuotedColumn(Column $column): Column
     {
@@ -1245,8 +1220,6 @@ class ConnectionMigrator
      * will use quoted identifiers when creating the final SQL statements. This is needed as Doctrine doesn't
      * provide a method to set the flag after the object has been instantiated and there's no possibility to
      * hook into the createSchema() method early enough to influence the original column object.
-     *
-     * @return \Doctrine\DBAL\Schema\Index
      */
     protected function buildQuotedIndex(Index $index): Index
     {
@@ -1267,8 +1240,6 @@ class ConnectionMigrator
      * SchemaManager will use quoted identifiers when creating the final SQL statements. This is needed as Doctrine
      * doesn't provide a method to set the flag after the object has been instantiated and there's no possibility to
      * hook into the createSchema() method early enough to influence the original column object.
-     *
-     * @return \Doctrine\DBAL\Schema\ForeignKeyConstraint
      */
     protected function buildQuotedForeignKey(ForeignKeyConstraint $index): ForeignKeyConstraint
     {

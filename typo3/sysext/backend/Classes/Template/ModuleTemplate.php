@@ -422,7 +422,6 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
      * @param bool $storeLastActiveTab If set, the last open tab is stored in local storage and will be re-open again.
      *                                 If you don't need this feature, e.g. for wizards like import/export you can
      *                                 disable this behaviour.
-     * @return string
      * @deprecated since v12, will be removed in v13.
      */
     public function getDynamicTabMenu(array $menuItems, string $domId, int $defaultTabIndex = 1, bool $collapsible = false, bool $wrapContent = true, bool $storeLastActiveTab = true): string

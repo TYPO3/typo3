@@ -383,7 +383,6 @@ class PlainDataResolver
      * Removes empty values (null, '0', 0, false).
      *
      * @param int[] $ids
-     * @return array
      */
     protected function sanitizeIds(array $ids): array
     {

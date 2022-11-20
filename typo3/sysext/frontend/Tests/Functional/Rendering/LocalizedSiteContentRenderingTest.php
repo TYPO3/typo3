@@ -203,8 +203,6 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
 
     /**
      * Dutch language has page translation record and some content elements are translated
-     *
-     * @return array
      */
     public function dutchDataProvider(): array
     {
@@ -840,8 +838,6 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
 
     /**
      * Helper function to ease asserting that rest of the data set is not visible
-     *
-     * @return array
      */
     protected function getNonVisibleHeaders(array $visibleHeaders): array
     {
@@ -865,8 +861,6 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
 
     /**
      * Helper function to ease asserting that rest of the files are not present
-     *
-     * @return array
      */
     protected function getNonVisibleFileTitles(array $visibleTitles): array
     {

@@ -24,9 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class UpgradeControllerTest extends UnitTestCase
 {
-    /**
-     * @return array
-     */
     public function versionDataProvider(): array
     {
         return [

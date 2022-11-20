@@ -105,8 +105,6 @@ class FrontendUserRepository
     /**
      * Fetches array containing uid, username, email, first_name, middle_name & last_name by email or username.
      * Returns null, if user was not found or if user has no email address set.
-     *
-     * @return array|null
      */
     public function findUserByUsernameOrEmailOnPages(string $usernameOrEmail, array $pages = []): ?array
     {

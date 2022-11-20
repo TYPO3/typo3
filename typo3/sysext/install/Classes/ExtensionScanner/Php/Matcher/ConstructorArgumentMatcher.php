@@ -93,7 +93,6 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
     /**
      * @param Node $node reflects invocation, e.g. `GeneralUtility::makeInstance(MyClass::class, 123)`
      * @param Node $resolvedNode reflects resolved and actual usage, e.g. `new MyClass(123)`
-     * @return bool
      */
     protected function handleRequiredArguments(Node $node, Node $resolvedNode): bool
     {
@@ -123,7 +122,6 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
     /**
      * @param Node $node reflects invocation, e.g. `GeneralUtility::makeInstance(MyClass::class, 123)`
      * @param Node $resolvedNode reflects resolved and actual usage, e.g. `new MyClass(123)`
-     * @return bool
      */
     protected function handleDroppedArguments(Node $node, Node $resolvedNode): bool
     {
@@ -153,7 +151,6 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
     /**
      * @param Node $node reflects invocation, e.g. `GeneralUtility::makeInstance(MyClass::class, 123)`
      * @param Node $resolvedNode reflects resolved and actual usage, e.g. `new MyClass(123)`
-     * @return bool
      */
     protected function handleCalledArguments(Node $node, Node $resolvedNode): bool
     {
@@ -186,7 +183,6 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
     /**
      * @param Node $node reflects invocation, e.g. `GeneralUtility::makeInstance(MyClass::class, 123)`
      * @param Node $resolvedNode reflects resolved and actual usage, e.g. `new MyClass(123)`
-     * @return bool
      */
     protected function handleUnusedArguments(Node $node, Node $resolvedNode): bool
     {

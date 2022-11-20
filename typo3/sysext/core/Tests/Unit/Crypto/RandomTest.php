@@ -34,8 +34,6 @@ class RandomTest extends UnitTestCase
 
     /**
      * Data provider for generateRandomHexStringReturnsExpectedAmountOfChars
-     *
-     * @return array
      */
     public function generateRandomHexStringReturnsExpectedAmountOfCharsDataProvider(): array
     {

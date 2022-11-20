@@ -150,9 +150,6 @@ class DataHandlerTest extends UnitTestCase
         self::assertFalse($this->subject->checkModifyAccessList($tableName));
     }
 
-    /**
-     * @return array
-     */
     public function checkValueForDatetimeDataProvider(): array
     {
         // Three elements: input, timezone of input, expected output (UTC)
@@ -340,8 +337,6 @@ class DataHandlerTest extends UnitTestCase
 
     /**
      * Data provider for inputValuesRangeDoubleDataProvider
-     *
-     * @return array
      */
     public function inputValuesRangeDoubleDataProvider(): array
     {
@@ -410,9 +405,6 @@ class DataHandlerTest extends UnitTestCase
         self::assertSame($expectedReturnValue, $returnValue['value']);
     }
 
-    /**
-     * @return array
-     */
     public function datetimeValuesDataProvider(): array
     {
         return [
@@ -855,9 +847,6 @@ class DataHandlerTest extends UnitTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @return array
-     */
     public function equalSubmittedAndStoredValuesAreDeterminedDataProvider(): array
     {
         return [
@@ -1081,9 +1070,6 @@ class DataHandlerTest extends UnitTestCase
         $mockDataHandler->deleteRecord_procBasedOnFieldType($table, 42, 'bar', $conf);
     }
 
-    /**
-     * @return array
-     */
     public function checkValue_checkReturnsExpectedValuesDataProvider(): array
     {
         return [
@@ -1161,9 +1147,6 @@ class DataHandlerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function referenceValuesAreCastedDataProvider(): array
     {
         return [
@@ -1194,9 +1177,6 @@ class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     public function clearPrefixFromValueRemovesPrefixDataProvider(): array
     {
         return [

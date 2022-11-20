@@ -36,8 +36,6 @@ class BackendUserSessionRepository
 
     /**
      * Find all active sessions for all backend users
-     *
-     * @return array
      */
     public function findAllActive(): array
     {

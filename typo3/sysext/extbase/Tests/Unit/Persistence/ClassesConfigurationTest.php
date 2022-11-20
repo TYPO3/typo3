@@ -71,9 +71,6 @@ class ClassesConfigurationTest extends UnitTestCase
         self::assertNull($classesConfiguration->getConfigurationFor('ClassName'));
     }
 
-    /**
-     * @return array
-     */
     public function resolveSubclassesRecursiveDataProvider(): array
     {
         return [

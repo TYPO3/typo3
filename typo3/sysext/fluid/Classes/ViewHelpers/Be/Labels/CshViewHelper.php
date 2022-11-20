@@ -72,8 +72,6 @@ final class CshViewHelper extends AbstractBackendViewHelper
     }
 
     /**
-     * @return string
-     *
      * @deprecated The functionality has been removed in v12. The class will be removed in TYPO3 v13.
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string

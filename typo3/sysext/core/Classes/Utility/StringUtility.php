@@ -176,7 +176,6 @@ class StringUtility
      * @param string $delimiter
      * @param string $subject
      * @param string $escapeCharacter
-     * @return array
      */
     public static function explodeEscaped(string $delimiter, string $subject, string $escapeCharacter = '\\'): array
     {

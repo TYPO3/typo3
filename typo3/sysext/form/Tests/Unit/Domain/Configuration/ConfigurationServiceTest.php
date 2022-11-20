@@ -597,9 +597,6 @@ class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider(): array
     {
         return [
@@ -680,9 +677,6 @@ class ConfigurationServiceTest extends UnitTestCase
         $configurationServiceMock->getAllowedValuesForFormElementPropertyFromFormEditorSetup($validationDto);
     }
 
-    /**
-     * @return array
-     */
     public function getAllowedValuesForFormElementPropertyFromFormEditorSetupDataProvider(): array
     {
         return [
@@ -735,9 +729,6 @@ class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider(): array
     {
         return [
@@ -818,9 +809,6 @@ class ConfigurationServiceTest extends UnitTestCase
         $configurationServiceMock->getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetup($validationDto);
     }
 
-    /**
-     * @return array
-     */
     public function getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetupDataProvider(): array
     {
         return [
@@ -873,9 +861,6 @@ class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function isFormElementPropertyDefinedInFormEditorSetupDataProvider(): array
     {
         return [
@@ -957,9 +942,6 @@ class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     public function isPropertyCollectionPropertyDefinedInFormEditorSetupDataProvider(): array
     {
         return [
@@ -1090,9 +1072,6 @@ class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     public function isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider(): array
     {
         return [
@@ -1114,9 +1093,6 @@ class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     public function isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider(): array
     {
         return [
@@ -1143,9 +1119,6 @@ class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     public function isFormElementTypeCreatableByFormEditorDataProvider(): array
     {
         return [
@@ -1172,9 +1145,6 @@ class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     public function isPropertyCollectionElementIdentifierCreatableByFormEditorDataProvider(): array
     {
         return [
@@ -1206,9 +1176,6 @@ class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     public function buildFormDefinitionValidationConfigurationFromFormEditorSetupDataProvider(): array
     {
         return [

@@ -89,9 +89,6 @@ class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTest
         );
     }
 
-    /**
-     * @return array
-     */
     public function pagesToCheckDataProvider(): array //18-03-2019 21:24:07
     {
         return [

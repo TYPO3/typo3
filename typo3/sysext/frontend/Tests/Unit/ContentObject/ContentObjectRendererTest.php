@@ -969,9 +969,6 @@ class ContentObjectRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function stdWrapReturnsExpectationDataProvider(): array
     {
         return [
@@ -1077,13 +1074,6 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertSame($expect, $this->subject->substring($content, $conf));
     }
 
-    ///////////////////////////////
-    // Tests concerning getData()
-    ///////////////////////////////
-
-    /**
-     * @return array
-     */
     public function getDataWithTypeGpDataProvider(): array
     {
         return [
@@ -1800,9 +1790,6 @@ class ContentObjectRendererTest extends UnitTestCase
         return $contentObjectFixture;
     }
 
-    /**
-     * @return array
-     */
     protected function getLibParseFunc(): array
     {
         return [
@@ -1845,9 +1832,6 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     public function _parseFuncReturnsCorrectHtmlDataProvider(): array
     {
         return [
@@ -2445,9 +2429,6 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertSame('mailto:', $this->subject->_call('mailto_makelinks', 'mailto:', []));
     }
 
-    /**
-     * @return array
-     */
     public function typolinkReturnsCorrectLinksForEmailsAndUrlsDataProvider(): array
     {
         return [
@@ -2652,9 +2633,6 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->typoLink($linkText, $typoScript));
     }
 
-    /**
-     * @return array
-     */
     public function typoLinkEncodesMailAddressForSpamProtectionDataProvider(): array
     {
         return [
@@ -2752,9 +2730,6 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     public function typolinkReturnsCorrectLinksFilesDataProvider(): array
     {
         return [
@@ -2873,9 +2848,6 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
     }
 
-    /**
-     * @return array
-     */
     public function typolinkReturnsCorrectLinksForFilesWithAbsRefPrefixDataProvider(): array
     {
         return [
@@ -3197,9 +3169,6 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertEquals($expectedResult, (string)$this->subject->typoLink($linkText, $configuration));
     }
 
-    /**
-     * @return array
-     */
     public function typoLinkProperlyEncodesLinkResultDataProvider(): array
     {
         return [
@@ -3886,9 +3855,6 @@ class ContentObjectRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function stdWrap_addPageCacheTagsAddsPageTagsDataProvider(): array
     {
         return [
@@ -4033,8 +3999,6 @@ class ContentObjectRendererTest extends UnitTestCase
 
     /**
      * Data provider for stdWrap_brTag
-     *
-     * @return array
      */
     public function stdWrapBrTagDataProvider(): array
     {
@@ -5072,9 +5036,6 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @return array
-     */
     public function html5SelfClosingTagsDataprovider(): array
     {
         return [
@@ -7165,8 +7126,6 @@ class ContentObjectRendererTest extends UnitTestCase
 
     /**
      * Data provider for stdWrap_stdWrapValue test
-     *
-     * @return array
      */
     public function stdWrap_stdWrapValueDataProvider(): array
     {

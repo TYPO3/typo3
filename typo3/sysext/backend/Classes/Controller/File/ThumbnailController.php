@@ -43,9 +43,6 @@ class ThumbnailController
         'crop' => null,
     ];
 
-    /**
-     * @return ResponseInterface
-     */
     public function render(ServerRequestInterface $request): ResponseInterface
     {
         try {
@@ -83,7 +80,6 @@ class ThumbnailController
 
     /**
      * @param mixed|int $fileId
-     * @return ResponseInterface
      * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
      */
     protected function generateThumbnail($fileId, array $configuration): ResponseInterface
@@ -125,9 +121,6 @@ class ThumbnailController
         return $this->generateNotFoundResponse();
     }
 
-    /**
-     * @return ResponseInterface
-     */
     protected function generateNotFoundResponse(): ResponseInterface
     {
         return new HtmlResponse('', 404);

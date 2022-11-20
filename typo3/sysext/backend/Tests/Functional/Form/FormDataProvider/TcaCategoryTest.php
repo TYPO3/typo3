@@ -518,8 +518,6 @@ class TcaCategoryTest extends FunctionalTestCase
     /**
      * This adds the default category configuration as
      * done by TcaPreparation->configureCategoryRelations
-     *
-     * @return array
      */
     protected function getFieldConfiguration(array $input): array
     {

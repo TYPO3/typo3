@@ -39,8 +39,6 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
 {
     /**
      * Sanitize config options and resolve category items if requested.
-     *
-     * @return array
      */
     public function addData(array $result): array
     {
@@ -168,8 +166,6 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
 
     /**
      * Validate and sanitize the category field value.
-     *
-     * @return array
      */
     protected function processCategoryFieldValue(array $result, string $fieldName): array
     {

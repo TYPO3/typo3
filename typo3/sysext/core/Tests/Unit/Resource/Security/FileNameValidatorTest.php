@@ -23,9 +23,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 
 class FileNameValidatorTest extends TestCase
 {
-    /**
-     * @return array
-     */
     public function deniedFilesWithoutDenyPatternDataProvider(): array
     {
         return [
@@ -52,9 +49,6 @@ class FileNameValidatorTest extends TestCase
         self::assertFalse($subject->isValid($deniedFile));
     }
 
-    /**
-     * @return array
-     */
     public function deniedFilesWithDefaultDenyPatternDataProvider(): array
     {
         $data = [
@@ -129,9 +123,6 @@ class FileNameValidatorTest extends TestCase
         self::assertFalse($subject->isValid($deniedFile));
     }
 
-    /**
-     * @return array
-     */
     public function insecureFilesDataProvider(): array
     {
         return [
@@ -152,9 +143,6 @@ class FileNameValidatorTest extends TestCase
         self::assertTrue($subject->isValid($fileName));
     }
 
-    /**
-     * @return array
-     */
     public function allowedFilesDataProvider(): array
     {
         return [
@@ -210,8 +198,6 @@ class FileNameValidatorTest extends TestCase
 
     /**
      * Data provider for 'defaultFileDenyPatternMatchesPhpExtension' test case.
-     *
-     * @return array
      */
     public function phpExtensionDataProvider(): array
     {

@@ -71,9 +71,6 @@ class FailsafeContainer implements ContainerInterface
         $this->factories += $factories;
     }
 
-    /**
-     * @return bool
-     */
     public function has(string $id): bool
     {
         return array_key_exists($id, $this->entries) || array_key_exists($id, $this->factories);

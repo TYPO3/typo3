@@ -34,8 +34,6 @@ class ForeignKeyDefinitionTest extends UnitTestCase
      *  - array of index column definitions [name, length, direction]
      *  - foreign table name
      *  - array of foreign column definitions [name, length, direction]
-     *
-     * @return array
      */
     public function canParseForeignKeyDefinitionDataProvider(): array
     {
@@ -98,8 +96,6 @@ class ForeignKeyDefinitionTest extends UnitTestCase
 
     /**
      * Parse the CREATE TABLE statement and return the reference definition
-     *
-     * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateForeignKeyDefinitionItem
      */
     protected function createSubject(string $statement): CreateForeignKeyDefinitionItem
     {

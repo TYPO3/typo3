@@ -43,9 +43,6 @@ abstract class AbstractFileCest
         $I->waitForElementNotVisible('.upload-queue-item .upload-queue-progress');
     }
 
-    /**
-     * @return RemoteWebElement
-     */
     protected function openActionDropdown(ApplicationTester $I, string $title): RemoteWebElement
     {
         $I->comment('Get open action dropdown "' . $title . '"');

@@ -31,7 +31,6 @@ class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
 {
     /**
      * @param string|TestSet|null $parentSet
-     * @return array
      */
     public function staticValueMapperDataProvider($parentSet = null): array
     {
@@ -144,8 +143,6 @@ class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
     /**
      * Combines the previous data provider for mappable aspects into one large
      * data set that is permuted for several page type decorator instructions.
-     *
-     * @return array
      */
     public function pageTypeDecoratorIsAppliedDataProvider(): array
     {

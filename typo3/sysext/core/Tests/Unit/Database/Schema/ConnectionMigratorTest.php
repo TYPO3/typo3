@@ -94,8 +94,6 @@ class ConnectionMigratorTest extends UnitTestCase
 
     /**
      * Utility method to create a table instance with name that exceeds the identifier limits.
-     *
-     * @return Table
      */
     protected function getTable(): Table
     {
@@ -105,9 +103,6 @@ class ConnectionMigratorTest extends UnitTestCase
 
     /**
      * Utility method to create a column instance with name that exceeds the identifier limits.
-     *
-     *
-     * @return Column
      */
     protected function getColumn(): Column
     {

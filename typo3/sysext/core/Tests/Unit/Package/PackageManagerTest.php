@@ -288,8 +288,6 @@ class PackageManagerTest extends UnitTestCase
 
     /**
      * Data Provider returning valid package keys and the corresponding path
-     *
-     * @return array
      */
     public function packageKeysAndPaths(): array
     {
@@ -408,9 +406,6 @@ class PackageManagerTest extends UnitTestCase
         self::assertFalse($this->packageManager->isPackageAvailable('Acme.YetAnotherTestPackage'));
     }
 
-    /**
-     * @return array
-     */
     public function buildDependencyGraphBuildsCorrectGraphDataProvider(): array
     {
         return [
@@ -604,9 +599,6 @@ class PackageManagerTest extends UnitTestCase
         self::assertEquals($expectedGraph, $dependencyGraph);
     }
 
-    /**
-     * @return array
-     */
     public function packageSortingDataProvider(): array
     {
         return [

@@ -55,7 +55,6 @@ class PageTsConfigLoader
 
     /**
      * Main method to get all PageTSconfig from the rootline including the defaultTSconfig settings.
-     * @return string
      */
     public function load(array $rootLine): string
     {
@@ -67,7 +66,6 @@ class PageTsConfigLoader
     /**
      * Same as "load()" but returns an array of all parts. Only useful in the TYPO3 Backend for inspection purposes.
      *
-     * @return array
      * @internal
      */
     public function collect(array $rootLine): array

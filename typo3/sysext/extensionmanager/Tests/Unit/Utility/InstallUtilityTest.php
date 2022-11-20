@@ -121,9 +121,6 @@ class InstallUtilityTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @return array
-     */
     public function getExtensionData(): array
     {
         return $this->extensionData;
@@ -202,9 +199,6 @@ class InstallUtilityTest extends UnitTestCase
         $this->installMock->install($this->extensionKey);
     }
 
-    /**
-     * @return array
-     */
     public function importT3DFileDoesNotImportFileIfAlreadyImportedDataProvider(): array
     {
         return [

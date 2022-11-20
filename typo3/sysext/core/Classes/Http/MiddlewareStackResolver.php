@@ -63,7 +63,6 @@ class MiddlewareStackResolver
      * Returns the middleware stack registered in all packages within Configuration/RequestMiddlewares.php
      * which are sorted by given dependency requirements
      *
-     * @return array
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      * @throws \TYPO3\CMS\Core\Exception
      */
@@ -92,8 +91,6 @@ class MiddlewareStackResolver
 
     /**
      * Lazy load configuration from the container
-     *
-     * @return ArrayObject
      */
     protected function loadConfiguration(): ArrayObject
     {
@@ -102,8 +99,6 @@ class MiddlewareStackResolver
 
     /**
      * Order each stack and sanitize to a plain array
-     *
-     * @return array
      */
     protected function sanitizeMiddlewares(ArrayObject $allMiddlewares): array
     {
@@ -128,9 +123,6 @@ class MiddlewareStackResolver
         return $middlewares;
     }
 
-    /**
-     * @return string
-     */
     protected function getCacheIdentifier(string $stackName): string
     {
         return 'middlewares_' . $stackName . $this->baseCacheIdentifier;

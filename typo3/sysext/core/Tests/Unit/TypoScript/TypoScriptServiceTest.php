@@ -24,7 +24,6 @@ class TypoScriptServiceTest extends UnitTestCase
 {
     /**
      * data provider for convertTypoScriptArrayToPlainArray
-     * @return array
      */
     public function convertTypoScriptArrayToPlainArrayTestdata(): array
     {
@@ -163,8 +162,6 @@ class TypoScriptServiceTest extends UnitTestCase
 
     /**
      * Dataprovider for testcase "convertPlainArrayToTypoScriptArray"
-     *
-     * @return array
      */
     public function convertPlainArrayToTypoScriptArrayTestdata(): array
     {
@@ -295,9 +292,6 @@ class TypoScriptServiceTest extends UnitTestCase
         self::assertEquals($converted, $classic);
     }
 
-    /**
-     * @return array
-     */
     public function explodeConfigurationForOptionSplitProvider(): array
     {
         return [

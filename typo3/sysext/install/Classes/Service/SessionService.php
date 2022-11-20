@@ -169,8 +169,6 @@ class SessionService implements SingletonInterface
 
     /**
      * Checks whether whether is session cookie is set
-     *
-     * @return bool
      */
     public function hasSessionCookie(): bool
     {

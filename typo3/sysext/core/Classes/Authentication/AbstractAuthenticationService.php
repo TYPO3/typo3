@@ -222,7 +222,6 @@ class AbstractAuthenticationService implements LoggerAwareInterface
     }
 
     /**
-     * @return array
      * @internal this is part of the Service API which should be avoided to be used and only used within TYPO3 internally
      */
     public function getLastErrorArray(): array

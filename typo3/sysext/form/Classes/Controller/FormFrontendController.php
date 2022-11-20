@@ -90,8 +90,6 @@ class FormFrontendController extends ActionController
     /**
      * Override the formDefinition with additional data from the Flexform
      * settings. For now, only finisher settings are overridable.
-     *
-     * @return array
      */
     protected function overrideByFlexFormSettings(array $formDefinition): array
     {
@@ -139,9 +137,6 @@ class FormFrontendController extends ActionController
         return $formDefinition;
     }
 
-    /**
-     * @return string
-     */
     protected function getFlexformSheetIdentifier(
         array $formDefinition,
         string $prototypeName,
@@ -157,9 +152,6 @@ class FormFrontendController extends ActionController
         );
     }
 
-    /**
-     * @return array
-     */
     protected function getFlexFormSettingsFromSheet(
         array $flexForm,
         string $sheetIdentifier

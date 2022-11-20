@@ -72,7 +72,6 @@ class SiteFinder
      * Find a site by given root page id
      *
      * @param int $rootPageId the page ID (default language)
-     * @return Site
      * @throws SiteNotFoundException
      * @internal only for usage in some places for managing Site Configuration, might be removed without further notice
      */
@@ -87,7 +86,6 @@ class SiteFinder
     /**
      * Find a site by given identifier
      *
-     * @return Site
      * @throws SiteNotFoundException
      */
     public function getSiteByIdentifier(string $identifier): Site
@@ -102,7 +100,6 @@ class SiteFinder
      * Traverses the rootline of a page up until a Site was found.
      *
      * @param string|null $mountPointParameter
-     * @return Site
      * @throws SiteNotFoundException
      */
     public function getSiteByPageId(int $pageId, array $rootLine = null, string $mountPointParameter = null): Site

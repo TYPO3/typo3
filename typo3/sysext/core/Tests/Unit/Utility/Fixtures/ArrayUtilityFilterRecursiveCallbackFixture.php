@@ -24,7 +24,6 @@ class ArrayUtilityFilterRecursiveCallbackFixture
 {
     /**
      * @param mixed $value
-     * @return bool
      */
     public function callbackViaInstanceMethod($value): bool
     {
@@ -33,7 +32,6 @@ class ArrayUtilityFilterRecursiveCallbackFixture
 
     /**
      * @param mixed $value
-     * @return bool
      */
     public static function callbackViaStaticMethod($value): bool
     {

@@ -664,7 +664,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @throws ContentRenderingException
      * @throws \Exception
-     * @return string
      */
     public function render(AbstractContentObject $contentObject, $configuration = []): string
     {
@@ -3856,8 +3855,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Takes a JSON string and creates CropVariantCollection and fetches the corresponding
      * CropArea for that.
-     *
-     * @return Area
      */
     protected function createCropAreaFromJsonString(string $cropSettings, string $cropVariant): Area
     {
@@ -4344,7 +4341,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $linkText the text to be wrapped in a link
      * @param array $conf the typolink configuration
-     * @return LinkResultInterface
      * @throws UnableToLinkException
      * @see typoLink()
      * @see createUrl()
@@ -5190,7 +5186,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Helper to transform the QueryBuilder join part into a SQL fragment.
      *
-     * @return string
      * @throws \RuntimeException
      */
     protected function getQueryArrayJoinHelper(string $fromAlias, array $joinParts, array &$knownAliases): string

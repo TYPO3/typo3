@@ -121,9 +121,6 @@ class SuggestWizardControllerTest extends UnitTestCase
         self::assertEquals($expected, $subject->_call('isTableHidden', $array));
     }
 
-    /**
-     * @return array
-     */
     public function isTableHiddenIsProperlyRetrievedDataProvider(): array
     {
         return [

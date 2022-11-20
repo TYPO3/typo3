@@ -44,7 +44,6 @@ class Installer implements MiddlewareInterface
     /**
      * Handles an Install Tool request when nothing is there
      *
-     * @return ResponseInterface
      * @throws \RuntimeException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

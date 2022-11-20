@@ -104,8 +104,6 @@ class AbstractProvider implements ProviderInterface
     /**
      * Returns the provider priority which is used for determining the order in which providers are adding items
      * to the result array. Highest priority means provider is evaluated first.
-     *
-     * @return int
      */
     public function getPriority(): int
     {
@@ -114,8 +112,6 @@ class AbstractProvider implements ProviderInterface
 
     /**
      * Whether this provider can handle given request (usually a check based on table, uid and context)
-     *
-     * @return bool
      */
     public function canHandle(): bool
     {
@@ -154,8 +150,6 @@ class AbstractProvider implements ProviderInterface
 
     /**
      * Adds new items to the given array or modifies existing items
-     *
-     * @return array
      */
     public function addItems(array $items): array
     {
@@ -166,8 +160,6 @@ class AbstractProvider implements ProviderInterface
 
     /**
      * Converts item configuration (from $this->itemsConfiguration) into an array ready for returning by controller
-     *
-     * @return array
      */
     protected function prepareItems(array $itemsConfiguration): array
     {
@@ -194,8 +186,6 @@ class AbstractProvider implements ProviderInterface
     /**
      * Returns an array of additional attributes for given item. Additional attributes are used to pass item specific data
      * to the JS. E.g. message for the delete confirmation dialog
-     *
-     * @return array
      */
     protected function getAdditionalAttributes(string $itemName): array
     {
@@ -204,8 +194,6 @@ class AbstractProvider implements ProviderInterface
 
     /**
      * Checks whether certain item can be rendered (e.g. check for disabled items or permissions)
-     *
-     * @return bool
      */
     protected function canRender(string $itemName, string $type): bool
     {
@@ -214,8 +202,6 @@ class AbstractProvider implements ProviderInterface
 
     /**
      * Returns a clicked record identifier
-     *
-     * @return string
      */
     protected function getIdentifier(): string
     {

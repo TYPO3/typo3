@@ -190,7 +190,6 @@ class UploadExtensionFileController extends AbstractController
      * @param string $uploadedFile Path to uploaded file
      * @param bool $overwrite Overwrite existing extension if TRUE
      * @throws ExtensionManagerException
-     * @return string
      */
     protected function extractExtensionFromZipFile(string $uploadedFile, string $extensionKey, bool $overwrite = false): string
     {

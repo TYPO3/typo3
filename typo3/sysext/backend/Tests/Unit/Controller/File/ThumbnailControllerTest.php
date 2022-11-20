@@ -74,9 +74,6 @@ class ThumbnailControllerTest extends UnitTestCase
         $this->subject->render($request);
     }
 
-    /**
-     * @return array
-     */
     public function exceptionIsThrownOnInvalidHMACDataProvider(): array
     {
         return [
@@ -114,9 +111,6 @@ class ThumbnailControllerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function generateThumbnailIsInvokedDataProvider(): array
     {
         return [

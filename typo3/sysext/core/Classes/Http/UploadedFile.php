@@ -266,7 +266,6 @@ class UploadedFile implements UploadedFileInterface
      * If the file has been moved (by moveTo) an exception is thrown.
      *
      * @internal Not part of the PSR interface - used for legacy code in the core
-     * @return string|null
      */
     public function getTemporaryFileName(): ?string
     {

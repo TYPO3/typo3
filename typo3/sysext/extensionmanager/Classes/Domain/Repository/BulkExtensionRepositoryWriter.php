@@ -292,8 +292,6 @@ class BulkExtensionRepositoryWriter implements \SplObserver
      * Fetches the UIDs of all maximal versions for all extensions.
      * This is done by doing a LEFT JOIN to itself ("a" and "b") and comparing
      * both integer_version fields.
-     *
-     * @return array
      */
     protected function fetchMaximalVersionsForAllExtensions(string $remoteIdentifier): array
     {

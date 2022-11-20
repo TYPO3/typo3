@@ -76,8 +76,6 @@ class JsonResponse extends Response
 
     /**
      * Overrides the exiting content, takes an array as input
-     *
-     * @return $this
      */
     public function setPayload(array $data = [], int $encodingOptions = self::DEFAULT_JSON_FLAGS): JsonResponse
     {

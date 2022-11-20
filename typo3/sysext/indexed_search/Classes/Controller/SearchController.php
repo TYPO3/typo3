@@ -1579,8 +1579,6 @@ class SearchController extends ActionController
     /**
      * Internal method to build the page uri and link target.
      * @todo make use of the UriBuilder
-     *
-     * @return array
      */
     protected function preparePageLink(int $pageUid, array $row, array $urlParameters): array
     {

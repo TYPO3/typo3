@@ -64,8 +64,6 @@ class MiddlewareDispatcher implements RequestHandlerInterface
 
     /**
      * Invoke the middleware stack
-     *
-     * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

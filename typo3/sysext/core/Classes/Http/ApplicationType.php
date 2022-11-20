@@ -59,7 +59,6 @@ final class ApplicationType
     /**
      * Create an ApplicationType object from a given PSR-7 request.
      *
-     * @return static
      * @throws RuntimeException
      */
     public static function fromRequest(ServerRequestInterface $request): self

@@ -32,34 +32,22 @@ class ModelDto
      */
     protected $model;
 
-    /**
-     * @return string
-     */
     public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * @return self
-     */
     public function setValue(string $value): self
     {
         $this->value = $value;
         return $this;
     }
 
-    /**
-     * @return ModelDto
-     */
     public function getModel(): ModelDto
     {
         return $this->model;
     }
 
-    /**
-     * @return self
-     */
     public function setModel(ModelDto $model): self
     {
         $this->model = $model;

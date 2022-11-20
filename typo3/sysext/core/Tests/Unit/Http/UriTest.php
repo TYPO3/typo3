@@ -120,9 +120,6 @@ class UriTest extends UnitTestCase
             (string)$new
         );
     }
-    /**
-     * @return array
-     */
     public function validPortsDataProvider(): array
     {
         return [
@@ -147,9 +144,6 @@ class UriTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function invalidPortsDataProviderType(): array
     {
         return [
@@ -172,9 +166,6 @@ class UriTest extends UnitTestCase
         $uri->withPort($port);
     }
 
-    /**
-     * @return array
-     */
     public function invalidPortsDataProviderRange(): array
     {
         return [
@@ -250,9 +241,6 @@ class UriTest extends UnitTestCase
         self::assertEquals('https://user:pass@local.example.com:3001/bar/baz?bar=baz#quz', (string)$new);
     }
 
-    /**
-     * @return array
-     */
     public function invalidPathsDataProvider(): array
     {
         return [
@@ -310,9 +298,6 @@ class UriTest extends UnitTestCase
         self::assertEquals('https://user:pass@local.example.com:3001/foo?baz=bat#quz', (string)$new);
     }
 
-    /**
-     * @return array
-     */
     public function invalidQueryStringsDataProvider(): array
     {
         return [
@@ -359,9 +344,6 @@ class UriTest extends UnitTestCase
         self::assertEquals('https://user:pass@local.example.com:3001/foo?bar=baz#qat', (string)$new);
     }
 
-    /**
-     * @return array
-     */
     public function authorityInfoDataProvider(): array
     {
         return [
@@ -429,9 +411,6 @@ class UriTest extends UnitTestCase
         self::assertEquals('?foo=bar', (string)$uri);
     }
 
-    /**
-     * @return array
-     */
     public function invalidConstructorUrisDataProvider(): array
     {
         return [
@@ -473,9 +452,6 @@ class UriTest extends UnitTestCase
         self::assertEquals('https', $new->getScheme());
     }
 
-    /**
-     * @return array
-     */
     public function invalidSchemesDataProvider(): array
     {
         return [
@@ -563,9 +539,6 @@ class UriTest extends UnitTestCase
         self::assertEquals('/foo/bar', $new->getFragment());
     }
 
-    /**
-     * @return array
-     */
     public function standardSchemePortCombinationsDataProvider(): array
     {
         return [
@@ -607,9 +580,6 @@ class UriTest extends UnitTestCase
         self::assertEquals($expected, $uri->getPath());
     }
 
-    /**
-     * @return array
-     */
     public function queryStringsForEncodingDataProvider(): array
     {
         return [

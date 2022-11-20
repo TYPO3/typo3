@@ -133,7 +133,6 @@ class PasswordHashFactory
      * Returns list of all registered hashing methods. Used eg. in
      * extension configuration to select the default hashing method.
      *
-     * @return array
      * @throws \RuntimeException
      */
     public static function getRegisteredSaltedHashingMethods(): array

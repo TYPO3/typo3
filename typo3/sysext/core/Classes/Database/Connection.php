@@ -89,8 +89,6 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
 
     /**
      * Gets the DatabasePlatform for the connection and initializes custom types and event listeners.
-     *
-     * @return bool
      */
     public function connect(): bool
     {
@@ -108,8 +106,6 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
 
     /**
      * Creates a new instance of a SQL query builder.
-     *
-     * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
      */
     public function createQueryBuilder(): QueryBuilder
     {
@@ -142,8 +138,6 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * Delimiting style depends on the underlying database platform that is being used.
      *
      * @param array $input
-     *
-     * @return array
      */
     public function quoteIdentifiers(array $input): array
     {
@@ -157,8 +151,6 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * Delimiting style depends on the underlying database platform that is being used.
      *
      * @param array $input
-     *
-     * @return array
      */
     public function quoteColumnValuePairs(array $input): array
     {
@@ -169,8 +161,6 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * Detect if the column types are specified by column name or using
      * positional information. In the first case quote the field names
      * accordingly.
-     *
-     * @return array
      */
     protected function quoteColumnTypes(array $input): array
     {
@@ -373,7 +363,6 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * If no version information is available only the platform name will be shown.
      * If the platform name is unknown or unsupported the driver name will be shown.
      *
-     * @return string
      * @internal
      */
     public function getServerVersion(): string
@@ -430,7 +419,6 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * are not required / and only the table name is passed through.
      *
      * @param string|null $tableName
-     * @return string
      */
     public function lastInsertId($tableName = null, string $fieldName = 'uid'): string
     {

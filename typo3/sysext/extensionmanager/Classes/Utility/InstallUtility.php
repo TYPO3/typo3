@@ -192,8 +192,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      * Find installed extensions which depend on the given extension.
      * This is used at extension uninstall to stop the process if an installed
      * extension depends on the extension to be uninstalled.
-     *
-     * @return array
      */
     protected function findInstalledExtensionsThatDependOnExtension(string $extensionKey): array
     {
@@ -412,7 +410,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      *
      * @param string $extensionKey
      * @param string $packagePath
-     * @return Import|null
      */
     protected function importT3DFile($extensionKey, $packagePath): ?Import
     {
@@ -577,7 +574,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      * Is the given path a valid path for extension installation
      *
      * @param string $path the absolute (!) path in question
-     * @return bool
      */
     protected function isValidExtensionPath($path): bool
     {

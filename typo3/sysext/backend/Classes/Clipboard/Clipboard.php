@@ -363,8 +363,6 @@ class Clipboard
 
     /**
      * Returns true if the clipboard contains elements
-     *
-     * @return bool
      */
     public function hasElements(): bool
     {
@@ -449,7 +447,6 @@ class Clipboard
      *
      * @param string $padIdentifier Identifier for the clipboard pad
      * @param string $table The table name to count for elements
-     * @return string
      */
     protected function getTabInfo(string $padIdentifier, string $table = ''): string
     {
@@ -468,7 +465,6 @@ class Clipboard
      * @param string $itemText Title of element - must be htmlspecialchar'ed on beforehand.
      * @param array|string $reference If array, a record is expected. If string, its the folders' combined identifier
      * @param bool $isRequestedTable Whether the element is from the requested table
-     * @return string
      */
     protected function linkItemText(string $itemText, $reference, bool $isRequestedTable): string
     {
@@ -537,7 +533,6 @@ class Clipboard
      *                               (paste into / paste after). For files, this is the combined identifier.
      * @param bool $setRedirect If set, then the redirect URL will point back to the current script, but with CB reset.
      * @param array|null $update Additional key/value pairs which should get set in the moved/copied record (via DataHandler)
-     * @return string
      */
     public function pasteUrl(string $table, $identifier, bool $setRedirect = true, array $update = null): string
     {
@@ -784,8 +779,6 @@ class Clipboard
     /**
      * Builds a URL to the current module with the received
      * parameters, merged / replaced by additional parameters.
-     *
-     * @return string
      */
     protected function buildUrl(array $parameters = []): string
     {

@@ -103,9 +103,6 @@ EOC;
         self::assertEmpty($subject->getMatches());
     }
 
-    /**
-     * @return array
-     */
     public function matchesReturnsExpectedRestFilesDataProvider(): array
     {
         return [

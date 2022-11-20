@@ -112,9 +112,6 @@ class RedirectServiceTest extends UnitTestCase
         self::assertSame($row, $result);
     }
 
-    /**
-     * @return array
-     */
     public function matchRedirectReturnsRedirectOnFlatMatchDataProvider(): array
     {
         return [

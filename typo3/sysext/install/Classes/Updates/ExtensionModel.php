@@ -68,33 +68,21 @@ class ExtensionModel
         return $this->description;
     }
 
-    /**
-     * @return string
-     */
     public function getKey(): string
     {
         return $this->key;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getVersionString(): string
     {
         return $this->versionString;
     }
 
-    /**
-     * @return string
-     */
     public function getComposerName(): string
     {
         return $this->composerName;

@@ -154,8 +154,6 @@ class Mailer implements MailerInterface
 
     /**
      * Returns the real transport (not a spool).
-     *
-     * @return TransportInterface
      */
     public function getRealTransport(): TransportInterface
     {
@@ -164,9 +162,6 @@ class Mailer implements MailerInterface
         return $this->getTransportFactory()->get($mailSettings);
     }
 
-    /**
-     * @return TransportFactory
-     */
     protected function getTransportFactory(): TransportFactory
     {
         return GeneralUtility::makeInstance(TransportFactory::class);

@@ -45,8 +45,6 @@ class UnableToLinkException extends Exception
 
     /**
      * Returns the link text when the link could not been set
-     *
-     * @return string
      */
     public function getLinkText(): string
     {

@@ -31,8 +31,6 @@ interface CheckInterface
 {
     /**
      * Get all status information as array with status objects
-     *
-     * @return FlashMessageQueue
      */
     public function getStatus(): FlashMessageQueue;
 }

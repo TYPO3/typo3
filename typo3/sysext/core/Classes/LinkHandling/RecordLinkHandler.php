@@ -32,7 +32,6 @@ class RecordLinkHandler implements LinkHandlingInterface
     /**
      * Returns all valid parameters for linking to a TYPO3 page as a string
      *
-     * @return string
      * @throws \InvalidArgumentException
      */
     public function asString(array $parameters): string
@@ -53,7 +52,6 @@ class RecordLinkHandler implements LinkHandlingInterface
     /**
      * Returns all relevant information built in the link to a page (see asString())
      *
-     * @return array
      * @throws \InvalidArgumentException
      */
     public function resolveHandlerData(array $data): array

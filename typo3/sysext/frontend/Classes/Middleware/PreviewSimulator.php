@@ -49,7 +49,6 @@ class PreviewSimulator implements MiddlewareInterface
     /**
      * Evaluates preview settings if a backend user is logged in
      *
-     * @return ResponseInterface
      * @throws \Exception
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -112,8 +111,6 @@ class PreviewSimulator implements MiddlewareInterface
      * Ideally the global access is removed in future versions.
      * This functionality needs to be loaded after BackendAuthenticator as it is only relevant for
      * logged in backend users and needs to be done before any page resolving starts.
-     *
-     * @return bool
      */
     protected function simulateDate(ServerRequestInterface $request): bool
     {
@@ -147,8 +144,6 @@ class PreviewSimulator implements MiddlewareInterface
      * new: via Context::UserAspect
      * This functionality needs to be loaded after BackendAuthenticator as it is only relevant for
      * logged in backend users and needs to be done before any page resolving starts.
-     *
-     * @return bool
      */
     protected function simulateUserGroup(ServerRequestInterface $request): bool
     {

@@ -80,9 +80,6 @@ class TemplatesPathsTest extends FunctionalTestCase
         $this->setUpFrontendRootPage(1, ['EXT:fluid_test/Configuration/TypoScript/Basic.typoscript']);
     }
 
-    /**
-     * @return array
-     */
     public function differentOverrideScenariosDataProvider(): array
     {
         return [
@@ -266,9 +263,6 @@ class TemplatesPathsTest extends FunctionalTestCase
         self::assertStringContainsString('Override Template', $content);
     }
 
-    /**
-     * @return string
-     */
     protected function fetchFrontendResponseBody(array $requestArguments): string
     {
         $response = $this->executeFrontendSubRequest(

@@ -46,9 +46,6 @@ class VariableCompiler
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getResults(): array
     {
         return $this->results;

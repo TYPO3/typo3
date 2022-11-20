@@ -220,7 +220,6 @@ class TranslationService implements SingletonInterface
     }
 
     /**
-     * @return string
      * @throws \InvalidArgumentException
      */
     public function translateFinisherOption(
@@ -427,7 +426,6 @@ class TranslationService implements SingletonInterface
     }
 
     /**
-     * @return string
      * @throws \InvalidArgumentException
      * @internal
      */
@@ -500,7 +498,6 @@ class TranslationService implements SingletonInterface
     }
 
     /**
-     * @return string
      * @internal
      */
     public function getLanguage(): string
@@ -684,8 +681,6 @@ class TranslationService implements SingletonInterface
 
     /**
      * Returns the currently configured "site language" if a site is configured (= resolved) in the current request.
-     *
-     * @return SiteLanguage|null
      */
     protected function getCurrentSiteLanguage(): ?SiteLanguage
     {
@@ -695,9 +690,6 @@ class TranslationService implements SingletonInterface
         return null;
     }
 
-    /**
-     * @return array
-     */
     protected function getAllTypo3BackendLanguages(): array
     {
         $languages = array_merge(

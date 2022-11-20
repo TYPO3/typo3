@@ -86,7 +86,6 @@ class LoginProviderResolver
 
     /**
      * Get all registered login providers in the right order
-     * @return array
      */
     public function getLoginProviders(): array
     {
@@ -96,7 +95,6 @@ class LoginProviderResolver
     /**
      * Check if the login provider is registered.
      *
-     * @return bool
      * @internal
      */
     public function hasLoginProvider(string $identifier): bool
@@ -111,7 +109,6 @@ class LoginProviderResolver
 
     /**
      * Returns the identifier of the first login provider / with the highest priority.
-     * @return string
      */
     public function getPrimaryLoginProviderIdentifier(): string
     {
@@ -122,8 +119,6 @@ class LoginProviderResolver
     /**
      * Fetches the login provider identifier from a ServerRequest, checking for POST Body, then Query Param,
      * and then checks for the cookie.
-     *
-     * @return string
      */
     public function resolveLoginProviderIdentifierFromRequest(ServerRequestInterface $request, string $cookieName): string
     {

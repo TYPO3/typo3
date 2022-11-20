@@ -372,9 +372,6 @@ class UriPrefixRenderingTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @return string
-     */
     protected function compileTypoScriptConstants(array $constants): string
     {
         $lines = [];

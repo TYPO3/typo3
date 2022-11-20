@@ -1574,7 +1574,6 @@ abstract class AbstractMenuContentObject
      * @param string $addParams Parameters to add to URL
      * @param int|string $typeOverride "type" value, empty string means "not set"
      * @param int|null $overridePageId link to this page instead of the $page[uid] value
-     * @return LinkResultInterface
      */
     protected function menuTypoLink(array $page, string $oTarget, $addParams, $typeOverride, ?int $overridePageId = null): LinkResultInterface
     {
@@ -1753,8 +1752,6 @@ abstract class AbstractMenuContentObject
 
     /**
      * Returns the currently configured "site" if a site is configured (= resolved) in the current request.
-     *
-     * @return Site
      */
     protected function getCurrentSite(): Site
     {
@@ -1840,9 +1837,6 @@ abstract class AbstractMenuContentObject
         return null;
     }
 
-    /**
-     * @return string
-     */
     private function getMode(string $mode = ''): string
     {
         switch ($mode) {

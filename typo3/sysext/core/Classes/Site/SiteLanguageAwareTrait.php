@@ -36,9 +36,6 @@ trait SiteLanguageAwareTrait
         $this->siteLanguage = $siteLanguage;
     }
 
-    /**
-     * @return Entity\SiteLanguage
-     */
     public function getSiteLanguage(): SiteLanguage
     {
         return $this->siteLanguage;

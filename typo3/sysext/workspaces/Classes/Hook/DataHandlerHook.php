@@ -1195,8 +1195,6 @@ class DataHandlerHook
 
     /**
      * Gets all defined TCA tables.
-     *
-     * @return array
      */
     protected function getTcaTables(): array
     {
@@ -1340,9 +1338,6 @@ class DataHandlerHook
         );
     }
 
-    /**
-     * @return RelationHandler
-     */
     protected function createRelationHandlerInstance(): RelationHandler
     {
         return GeneralUtility::makeInstance(RelationHandler::class);

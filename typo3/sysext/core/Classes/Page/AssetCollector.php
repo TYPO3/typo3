@@ -71,7 +71,6 @@ class AssetCollector implements SingletonInterface
      * @param string $source URI to JavaScript file (allows EXT: syntax)
      * @param array $attributes additional HTML <script> tag attributes
      * @param array $options ['priority' => true] means rendering before other tags
-     * @return AssetCollector
      */
     public function addJavaScript(string $identifier, string $source, array $attributes = [], array $options = []): self
     {
@@ -91,7 +90,6 @@ class AssetCollector implements SingletonInterface
      * @param string $source JavaScript code
      * @param array $attributes additional HTML <script> tag attributes
      * @param array $options ['priority' => true] means rendering before other tags
-     * @return AssetCollector
      */
     public function addInlineJavaScript(string $identifier, string $source, array $attributes = [], array $options = []): self
     {
@@ -111,7 +109,6 @@ class AssetCollector implements SingletonInterface
      * @param string $source URI to stylesheet file (allows EXT: syntax)
      * @param array $attributes additional HTML <link> tag attributes
      * @param array $options ['priority' => true] means rendering before other tags
-     * @return AssetCollector
      */
     public function addStyleSheet(string $identifier, string $source, array $attributes = [], array $options = []): self
     {
@@ -131,7 +128,6 @@ class AssetCollector implements SingletonInterface
      * @param string $source stylesheet code
      * @param array $attributes additional HTML <link> tag attributes
      * @param array $options ['priority' => true] means rendering before other tags
-     * @return AssetCollector
      */
     public function addInlineStyleSheet(string $identifier, string $source, array $attributes = [], array $options = []): self
     {
@@ -149,7 +145,6 @@ class AssetCollector implements SingletonInterface
 
     /**
      * @param array $additionalInformation One dimensional hash map (array with non numerical keys) with scalar values
-     * @return AssetCollector
      */
     public function addMedia(string $fileName, array $additionalInformation): self
     {
@@ -248,7 +243,6 @@ class AssetCollector implements SingletonInterface
     /**
      * @param array $assets Takes a reference to prevent a deep copy. The variable is not changed (const).
      * @param bool|null $priority null: no filter; else filters for the given priority
-     * @return array
      */
     protected function filterAssetsPriority(array &$assets, ?bool $priority): array
     {
@@ -275,7 +269,6 @@ class AssetCollector implements SingletonInterface
     }
 
     /**
-     * @return array
      * @internal
      */
     public function getState(): array

@@ -74,9 +74,6 @@ class ValidatorClassNameResolverTest extends UnitTestCase
         self::assertSame(IntegerValidator::class, ValidatorClassNameResolver::resolve('NonExisting'));
     }
 
-    /**
-     * @return array
-     */
     public function namespacedShorthandValidatorNamesDataProvider(): array
     {
         return [

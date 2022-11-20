@@ -24,8 +24,6 @@ interface ConfirmableInterface
 {
     /**
      * Return a confirmation message instance
-     *
-     * @return \TYPO3\CMS\Install\Updates\Confirmation
      */
     public function getConfirmation(): Confirmation;
 }

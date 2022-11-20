@@ -92,7 +92,6 @@ abstract class AbstractEnhancer implements EnhancerInterface
      *
      * @param Route $route
      * @param array $values
-     * @return array
      */
     protected function filterValuesByPathVariables(Route $route, array $values): array
     {
@@ -105,8 +104,6 @@ abstract class AbstractEnhancer implements EnhancerInterface
     /**
      * Overrides items having an aspect definition with a given
      * $overrideValue in target $targetValue array.
-     *
-     * @return array
      */
     protected function overrideValuesByAspect(Route $route, array $values, string $targetValue): array
     {
@@ -119,8 +116,6 @@ abstract class AbstractEnhancer implements EnhancerInterface
     /**
      * Define items having an aspect definition in case they are not defined
      * with a given $targetValue in target $targetValue array.
-     *
-     * @return array
      */
     protected function defineValuesByAspect(Route $route, array $values, string $targetValue): array
     {
@@ -140,7 +135,6 @@ abstract class AbstractEnhancer implements EnhancerInterface
      * + `/{!locale_modifier}/{product_title}` -> `/products/{product_title}`
      *
      * @param string $routePath
-     * @return string
      */
     protected function modifyRoutePath(string $routePath): string
     {
@@ -166,7 +160,6 @@ abstract class AbstractEnhancer implements EnhancerInterface
      * Retrieves type from processed route and modifies remaining query parameters.
      *
      * @param array $remainingQueryParameters reference to remaining query parameters
-     * @return string
      */
     protected function resolveType(Route $route, array &$remainingQueryParameters): string
     {
@@ -183,9 +176,6 @@ abstract class AbstractEnhancer implements EnhancerInterface
         return (string)$type;
     }
 
-    /**
-     * @return VariableProcessor
-     */
     protected function getVariableProcessor(): VariableProcessor
     {
         if (isset($this->variableProcessor)) {

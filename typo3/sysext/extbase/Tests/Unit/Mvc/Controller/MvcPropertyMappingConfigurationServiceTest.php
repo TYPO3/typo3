@@ -34,8 +34,6 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
 {
     /**
      * Data provider for generating the list of trusted properties
-     *
-     * @return array
      */
     public function dataProviderForGenerateTrustedPropertiesToken(): array
     {
@@ -94,8 +92,6 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     /**
      * Data Provider for invalid values in generating the list of trusted properties,
      * which should result in an exception
-     *
-     * @return array
      */
     public function dataProviderForGenerateTrustedPropertiesTokenWithUnallowedValues(): array
     {
@@ -315,9 +311,6 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
 
     /**
      * Helper which initializes the property mapping configuration and returns arguments
-     *
-     *
-     * @return \TYPO3\CMS\Extbase\Mvc\Controller\Arguments
      */
     protected function initializePropertyMappingConfiguration(array $trustedProperties): Arguments
     {

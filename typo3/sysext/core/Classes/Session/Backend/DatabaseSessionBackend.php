@@ -59,7 +59,6 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
     /**
      * Checks if the configuration is valid
      *
-     * @return bool
      * @throws \InvalidArgumentException
      * @internal To be used only by SessionManager
      */
@@ -222,17 +221,11 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
         return $query->executeQuery()->fetchAllAssociative();
     }
 
-    /**
-     * @return QueryBuilder
-     */
     protected function getQueryBuilder(): QueryBuilder
     {
         return $this->getConnection()->createQueryBuilder();
     }
 
-    /**
-     * @return Connection
-     */
     protected function getConnection(): Connection
     {
         return GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->configuration['table']);

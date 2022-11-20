@@ -68,8 +68,6 @@ class BcryptPasswordHash implements PasswordHashInterface
 
     /**
      * Returns true if sha384 for pre-hashing and bcrypt itself is available.
-     *
-     * @return bool
      */
     public function isAvailable(): bool
     {
@@ -85,7 +83,6 @@ class BcryptPasswordHash implements PasswordHashInterface
      *
      * @param string $plainPW plain text password to compare with salted hash
      * @param string $saltedHashPW Salted hash to compare plain-text password with
-     * @return bool
      */
     public function checkPassword(string $plainPW, string $saltedHashPW): bool
     {
@@ -150,8 +147,6 @@ class BcryptPasswordHash implements PasswordHashInterface
      * 1. It is close to the (bcrypt-) maximum of 72 character keyspace
      * 2. base64 will never produce NUL bytes (bcrypt truncates on NUL bytes)
      * 3. sha384 is resistant to length extension attacks
-     *
-     * @return string
      */
     protected function processPlainPassword(string $password): string
     {
@@ -160,7 +155,6 @@ class BcryptPasswordHash implements PasswordHashInterface
 
     /**
      * @see https://github.com/php/php-src/blob/php-7.2.0/ext/standard/password.c#L441-L444
-     * @return bool
      */
     protected function isValidBcryptCost(int $cost): bool
     {

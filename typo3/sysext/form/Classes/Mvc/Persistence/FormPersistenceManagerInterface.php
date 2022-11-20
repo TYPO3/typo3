@@ -32,8 +32,6 @@ interface FormPersistenceManagerInterface
 {
     /**
      * Load the array form representation identified by $persistenceIdentifier, and return it
-     *
-     * @return array
      */
     public function load(string $persistenceIdentifier): array;
 
@@ -74,22 +72,16 @@ interface FormPersistenceManagerInterface
 
     /**
      * Return a list of all accessible extension folders
-     *
-     * @return array
      */
     public function getAccessibleExtensionFolders(): array;
 
     /**
      * This takes a form identifier and returns a unique persistence identifier for it.
-     *
-     * @return string
      */
     public function getUniquePersistenceIdentifier(string $formIdentifier, string $savePath): string;
 
     /**
      * Check if an identifier is already used by a formDefinition.
-     *
-     * @return bool
      */
     public function checkForDuplicateIdentifier(string $identifier): bool;
 }

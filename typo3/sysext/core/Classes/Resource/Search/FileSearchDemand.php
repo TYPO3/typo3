@@ -133,8 +133,6 @@ class FileSearchDemand
     /**
      * Requests the position of the first result to retrieve (the "offset").
      * Same as in QueryBuilder it is the index of the result set, with 0 being the first result.
-     *
-     * @return FileSearchDemand
      */
     public function withStartResult(int $firstResult): self
     {

@@ -29,7 +29,6 @@ interface TypeConverterInterface
      *
      * @param mixed $source the source data
      * @param string $originalTargetType the type we originally want to convert to
-     * @return string
      */
     public function getTargetTypeForSource($source, string $originalTargetType, PropertyMappingConfigurationInterface $configuration = null): string;
 
@@ -38,7 +37,6 @@ interface TypeConverterInterface
      * The "key" is the sub-property name, and the "value" is the value of the sub-property.
      *
      * @param mixed $source
-     * @return array
      */
     public function getSourceChildPropertiesToBeConverted($source): array;
 

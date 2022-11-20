@@ -25,9 +25,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ResourceUtilityTest extends UnitTestCase
 {
-    /**
-     * @return array
-     */
     public function recursiveFileListSortingHelperTestDataProvider(): array
     {
         return [

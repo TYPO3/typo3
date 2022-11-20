@@ -262,7 +262,6 @@ class Request extends Message implements RequestInterface
      * changed request method.
      *
      * @param string $method Case-sensitive method.
-     * @return static
      * @throws \InvalidArgumentException for invalid HTTP methods.
      */
     public function withMethod($method): static
@@ -318,7 +317,6 @@ class Request extends Message implements RequestInterface
      *
      * @param \Psr\Http\Message\UriInterface $uri New request URI to use.
      * @param bool $preserveHost Preserve the original state of the Host header.
-     * @return static
      */
     public function withUri(UriInterface $uri, $preserveHost = false): static
     {

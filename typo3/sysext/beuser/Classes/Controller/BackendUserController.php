@@ -128,7 +128,6 @@ class BackendUserController extends ActionController
      * Displays all BackendUsers
      *
      * @param Demand|null $demand
-     * @return ResponseInterface
      */
     public function indexAction(Demand $demand = null, int $currentPage = 1, string $operation = ''): ResponseInterface
     {
@@ -374,8 +373,6 @@ class BackendUserController extends ActionController
 
     /**
      * Displays all BackendUserGroups
-     *
-     * @return ResponseInterface
      */
     public function groupsAction(int $currentPage = 1): ResponseInterface
     {
@@ -516,7 +513,6 @@ class BackendUserController extends ActionController
      *   1 => true,
      *   5 => true
      * ]
-     * @return array
      */
     protected function getOnlineBackendUsers(): array
     {

@@ -36,8 +36,6 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
 {
     /**
      * Resolve inline fields
-     *
-     * @return array
      */
     public function addData(array $result): array
     {
@@ -62,8 +60,6 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
 
     /**
      * Is column of type "inline"
-     *
-     * @return bool
      */
     protected function isInlineField(array $fieldConfig): bool
     {

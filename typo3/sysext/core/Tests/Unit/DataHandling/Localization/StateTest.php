@@ -44,9 +44,6 @@ class StateTest extends UnitTestCase
         self::assertInstanceOf(State::class, $subject);
     }
 
-    /**
-     * @return array
-     */
     public function stateObjectCanBeCreatedDataProvider(): array
     {
         return [
@@ -82,9 +79,6 @@ class StateTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function statesAreEnrichedAndSanitizedOnObjectCreationDataProvider(): array
     {
         return [
@@ -169,8 +163,6 @@ class StateTest extends UnitTestCase
 
     /**
      * @param string[] ...$fieldNames
-     *
-     * @return array
      */
     private function provideTableConfiguration(string ...$fieldNames): array
     {

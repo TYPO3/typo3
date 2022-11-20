@@ -169,8 +169,6 @@ class LocalizationUtility
 
     /**
      * Returns the default path and filename for an extension
-     *
-     * @return string
      */
     protected static function getLanguageFilePath(string $extensionName): string
     {
@@ -179,8 +177,6 @@ class LocalizationUtility
 
     /**
      * Sets the currently active language keys.
-     *
-     * @return array
      */
     protected static function getLanguageKeys(): array
     {
@@ -283,8 +279,6 @@ class LocalizationUtility
 
     /**
      * Returns instance of the configuration manager
-     *
-     * @return \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
     protected static function getConfigurationManager(): ConfigurationManagerInterface
     {
@@ -298,8 +292,6 @@ class LocalizationUtility
     /**
      * Returns the currently configured "site language" if a site is configured (= resolved)
      * in the current request.
-     *
-     * @return SiteLanguage|null
      */
     protected static function getCurrentSiteLanguage(): ?SiteLanguage
     {

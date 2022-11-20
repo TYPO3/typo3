@@ -355,8 +355,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      * Resolves page and if a translated page was found, resolves that to its
      * language parent, adjusts `$linkDetails['pageuid']` (for hook processing)
      * and modifies `$configuration['language']` (for language URL generation).
-     *
-     * @return array
      */
     protected function resolvePage(array &$linkDetails, array &$configuration, bool $disableGroupAccessCheck): array
     {
@@ -413,7 +411,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      * Fetches the requested language of a site that the link should be built for
      *
      * @param string $targetLanguageId "current" or the languageId
-     * @return SiteLanguage
      * @throws UnableToLinkException
      */
     protected function getSiteLanguageOfTargetPage(Site $siteOfTargetPage, string $targetLanguageId): SiteLanguage
@@ -442,7 +439,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     /**
      * Create a UriInterface object when linking to a page with a site configuration
      *
-     * @return UriInterface
      * @throws UnableToLinkException
      */
     protected function generateUrlForPageWithSiteConfiguration(array $page, Site $siteOfTargetPage, array $queryParameters, string $fragment, array $conf): UriInterface
@@ -569,7 +565,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      * Can be called many times with overhead only the first time since then the map is generated and cached in memory.
      *
      * @param int $pageId Page id to return MPvar value for.
-     * @return string
      */
     public function getMountPointParameterFromRootPointMaps(int $pageId): string
     {
@@ -592,7 +587,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      *
      * @param string $defaultMountPoints a string as defined in config.MP_defaults
      * @param string $mapRootPointList a string as defined in config.MP_mapRootPoints
-     * @return array
      */
     protected function initializeMountPointMap(string $defaultMountPoints = '', string $mapRootPointList = ''): array
     {
@@ -753,8 +747,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     /**
      * Check if we have a site object in the current request. if null, this usually means that
      * this class was called from CLI context.
-     *
-     * @return SiteInterface|null
      */
     protected function getCurrentSite(): ?SiteInterface
     {
@@ -773,8 +765,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     /**
      * If the current request has a site language, this means that the SiteResolver has detected a
      * page with a site configuration and a selected language, so let's choose that one.
-     *
-     * @return SiteLanguage|null
      */
     protected function getCurrentSiteLanguage(): ?SiteLanguage
     {

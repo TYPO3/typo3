@@ -50,9 +50,6 @@ class FileTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(MetaDataRepository::class, $mockedMetaDataRepository);
     }
 
-    /**
-     * @return File
-     */
     protected function prepareFixture(): File
     {
         $fixture = new File(['testfile'], $this->storageMock);

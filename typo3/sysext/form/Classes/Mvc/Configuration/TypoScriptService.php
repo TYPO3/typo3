@@ -38,7 +38,6 @@ class TypoScriptService
      * Parse a configuration with ContentObjectRenderer::cObjGetSingle()
      * and return the result.
      *
-     * @return array
      * @internal
      */
     public function resolvePossibleTypoScriptConfiguration(array $configuration = []): array
@@ -63,7 +62,6 @@ class TypoScriptService
      * ]
      *
      * @param array $configuration
-     * @return array
      */
     protected function resolveTypoScriptConfiguration(array $configuration = []): array
     {

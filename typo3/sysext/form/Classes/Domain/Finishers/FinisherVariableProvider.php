@@ -85,7 +85,6 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
      *
      * @param string $finisherIdentifier
      * @param string $key
-     * @return bool
      */
     public function exists($finisherIdentifier, $key): bool
     {
@@ -168,9 +167,6 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
         unset($this->objects[$offset]);
     }
 
-    /**
-     * @return \Traversable
-     */
     public function getIterator(): \Traversable
     {
         foreach ($this->objects as $offset => $value) {

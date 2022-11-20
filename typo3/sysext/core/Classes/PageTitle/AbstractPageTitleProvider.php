@@ -29,9 +29,6 @@ abstract class AbstractPageTitleProvider implements PageTitleProviderInterface, 
      */
     protected $title = '';
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;

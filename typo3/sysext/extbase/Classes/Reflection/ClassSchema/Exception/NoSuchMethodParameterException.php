@@ -24,7 +24,6 @@ class NoSuchMethodParameterException extends \Exception
 {
     /**
      * @param string $parameterName
-     * @return NoSuchMethodParameterException
      */
     public static function createForParameterName(string $className, string $methodName, $parameterName): NoSuchMethodParameterException
     {
@@ -34,9 +33,6 @@ class NoSuchMethodParameterException extends \Exception
         );
     }
 
-    /**
-     * @return NoSuchMethodParameterException
-     */
     public static function createForParameterPosition(string $className, string $methodName, int $position): NoSuchMethodParameterException
     {
         return new self(

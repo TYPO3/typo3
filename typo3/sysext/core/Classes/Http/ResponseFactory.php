@@ -30,7 +30,6 @@ class ResponseFactory implements ResponseFactoryInterface
      *
      * @param int $code HTTP status code; defaults to 200
      * @param string $reasonPhrase Reason phrase to associate with status code
-     * @return ResponseInterface
      */
     public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
     {

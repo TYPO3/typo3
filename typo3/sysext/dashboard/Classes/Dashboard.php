@@ -76,25 +76,16 @@ class Dashboard
         $this->container = $container;
     }
 
-    /**
-     * @return string
-     */
     public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->getLanguageService()->sL($this->title) ?: $this->title;
     }
 
-    /**
-     * @return array
-     */
     public function getWidgetConfig(): array
     {
         return $this->widgetConfig;

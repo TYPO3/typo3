@@ -74,9 +74,6 @@ abstract class AbstractDataType
      */
     protected $values;
 
-    /**
-     * @return int
-     */
     public function getLength(): int
     {
         return $this->length;
@@ -87,9 +84,6 @@ abstract class AbstractDataType
         $this->length = $length;
     }
 
-    /**
-     * @return int
-     */
     public function getPrecision(): int
     {
         return $this->precision;
@@ -100,9 +94,6 @@ abstract class AbstractDataType
         $this->precision = $precision;
     }
 
-    /**
-     * @return int
-     */
     public function getScale(): int
     {
         return $this->scale;
@@ -113,9 +104,6 @@ abstract class AbstractDataType
         $this->scale = $scale;
     }
 
-    /**
-     * @return bool
-     */
     public function isFixed(): bool
     {
         return $this->fixed;
@@ -126,9 +114,6 @@ abstract class AbstractDataType
         $this->fixed = $fixed;
     }
 
-    /**
-     * @return array
-     */
     public function getOptions(): array
     {
         return $this->options;
@@ -139,9 +124,6 @@ abstract class AbstractDataType
         $this->options = $options;
     }
 
-    /**
-     * @return bool
-     */
     public function isUnsigned(): bool
     {
         return $this->unsigned;
@@ -152,9 +134,6 @@ abstract class AbstractDataType
         $this->unsigned = $unsigned;
     }
 
-    /**
-     * @return array
-     */
     public function getValues(): array
     {
         return $this->values;

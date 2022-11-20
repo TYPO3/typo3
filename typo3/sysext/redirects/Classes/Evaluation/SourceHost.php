@@ -35,8 +35,6 @@ class SourceHost
      * Returned `JavaScriptModuleInstruction` delegates handling to corresponding
      * RequireJS module, having a method `evaluateSourceHost` that deals with that
      * evaluation request.
-     *
-     * @return JavaScriptModuleInstruction
      */
     public function returnFieldJS(): JavaScriptModuleInstruction
     {

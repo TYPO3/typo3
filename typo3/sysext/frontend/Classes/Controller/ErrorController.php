@@ -40,7 +40,6 @@ class ErrorController
      * Used for creating a 500 response ("Internal Server Error"), usually due some misconfiguration
      * but if configured, a RedirectResponse could be returned as well.
      *
-     * @return ResponseInterface
      * @throws InternalServerErrorException
      */
     public function internalErrorAction(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
@@ -59,7 +58,6 @@ class ErrorController
      * Used for creating a 503 response ("Service Unavailable"), to be used for maintenance mode
      * or when the server is overloaded, a RedirectResponse could be returned as well.
      *
-     * @return ResponseInterface
      * @throws ServiceUnavailableException
      */
     public function unavailableAction(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
@@ -78,7 +76,6 @@ class ErrorController
      * Used for creating a 404 response ("Page Not Found"),
      * but if configured, a RedirectResponse could be returned as well.
      *
-     * @return ResponseInterface
      * @throws PageNotFoundException
      */
     public function pageNotFoundAction(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
@@ -98,7 +95,6 @@ class ErrorController
      * Used for creating a 403 response ("Access denied"),
      * but if configured, a RedirectResponse could be returned as well.
      *
-     * @return ResponseInterface
      * @throws PageNotFoundException
      */
     public function accessDeniedAction(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
@@ -128,8 +124,6 @@ class ErrorController
 
     /**
      * Checks if a site is configured, and an error handler is configured for this specific status code.
-     *
-     * @return PageErrorHandlerInterface|null
      */
     protected function getErrorHandlerFromSite(ServerRequestInterface $request, int $statusCode): ?PageErrorHandlerInterface
     {
@@ -146,8 +140,6 @@ class ErrorController
 
     /**
      * Ensures that a response object is created as a "fallback" when no error handler is configured.
-     *
-     * @return ResponseInterface
      */
     protected function handleDefaultError(ServerRequestInterface $request, int $statusCode, string $reason = ''): ResponseInterface
     {

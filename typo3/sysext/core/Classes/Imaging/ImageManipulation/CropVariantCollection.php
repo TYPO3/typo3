@@ -35,9 +35,6 @@ class CropVariantCollection
         $this->setCropVariants(...$cropVariants);
     }
 
-    /**
-     * @return CropVariantCollection
-     */
     public static function create(string $jsonString, array $tcaConfig = []): CropVariantCollection
     {
         $persistedCollectionConfig = empty($jsonString) ? [] : json_decode($jsonString, true);
@@ -81,7 +78,6 @@ class CropVariantCollection
     }
 
     /**
-     * @return array
      * @internal
      */
     public function asArray(): array
@@ -93,9 +89,6 @@ class CropVariantCollection
         return $cropVariantsAsArray;
     }
 
-    /**
-     * @return CropVariantCollection
-     */
     public function applyRatioRestrictionToSelectedCropArea(FileInterface $file): CropVariantCollection
     {
         $newCollection = clone $this;
@@ -120,9 +113,6 @@ class CropVariantCollection
         return json_encode($cropVariantsAsArray) ?: '[]';
     }
 
-    /**
-     * @return Area
-     */
     public function getCropArea(string $id = 'default'): Area
     {
         if (isset($this->cropVariants[$id])) {
@@ -131,9 +121,6 @@ class CropVariantCollection
         return Area::createEmpty();
     }
 
-    /**
-     * @return Area
-     */
     public function getFocusArea(string $id = 'default'): Area
     {
         if (isset($this->cropVariants[$id]) && $this->cropVariants[$id]->getFocusArea() !== null) {
@@ -142,9 +129,6 @@ class CropVariantCollection
         return Area::createEmpty();
     }
 
-    /**
-     * @return CropVariantCollection
-     */
     protected static function createEmpty(): CropVariantCollection
     {
         return new self([]);

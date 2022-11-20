@@ -92,7 +92,6 @@ class UriBuilder implements SingletonInterface
      * Currently works just fine for URLs built for "main" and "login" pages.
      *
      * @param RouteRedirect|null $redirect
-     * @return UriInterface
      * @throws RouteNotFoundException
      * @internal this is experimental API used for creating logins to redirect to a different route
      */
@@ -160,8 +159,6 @@ class UriBuilder implements SingletonInterface
      * @param string $route The route path to prepend
      * @param array $parameters An array of GET parameters
      * @param string $referenceType The type of reference to be generated (one of the constants)
-     *
-     * @return UriInterface
      */
     protected function buildUri(string $route, array $parameters, string $referenceType): UriInterface
     {

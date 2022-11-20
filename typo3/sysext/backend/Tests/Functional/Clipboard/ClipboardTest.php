@@ -68,9 +68,6 @@ class ClipboardTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @return array
-     */
     public function localizationsAreResolvedDataProvider(): array
     {
         return [

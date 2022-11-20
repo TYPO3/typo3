@@ -65,7 +65,6 @@ class ImageManipulationController
      * Check if hmac signature is correct
      *
      * @param ServerRequestInterface $request the request with the POST parameters
-     * @return bool
      */
     protected function isSignatureValid(ServerRequestInterface $request): bool
     {

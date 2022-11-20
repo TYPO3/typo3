@@ -104,9 +104,6 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
         self::assertSame($expected, (new TcaInlineExpandCollapseState())->addData($input));
     }
 
-    /**
-     * @return array
-     */
     public function addDataAddsCorrectIsInlineChildExpandedDataProvider(): array
     {
         return [

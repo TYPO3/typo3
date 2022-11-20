@@ -192,7 +192,6 @@ class MathUtility
      * @param mixed $value Integer value to check. If not an integer this method always returns false.
      * @param int $minimum Lower boundary of the range
      * @param int $maximum Upper boundary of the range
-     * @return bool
      */
     public static function isIntegerInRange(mixed $value, int $minimum, int $maximum): bool
     {

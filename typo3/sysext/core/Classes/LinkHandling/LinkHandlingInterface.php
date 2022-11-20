@@ -44,7 +44,6 @@ interface LinkHandlingInterface
      * array of data -> string
      *
      * @param array $parameters
-     * @return string
      */
     public function asString(array $parameters): string;
 
@@ -55,7 +54,6 @@ interface LinkHandlingInterface
      * array of strings -> array of data
      *
      * @param array $data
-     * @return array
      */
     public function resolveHandlerData(array $data): array;
 }

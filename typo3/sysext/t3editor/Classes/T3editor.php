@@ -85,7 +85,6 @@ class T3editor implements SingletonInterface
     /**
      * Compiles the configuration for t3editor. Configuration is stored in caching framework.
      *
-     * @return array
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      * @throws \InvalidArgumentException
@@ -134,16 +133,12 @@ class T3editor implements SingletonInterface
         return $this->configuration;
     }
 
-    /**
-     * @return string
-     */
     protected function generateCacheIdentifier(PackageManager $packageManager): string
     {
         return (new PackageDependentCacheIdentifier($packageManager))->withPrefix('T3editorConfiguration')->toString();
     }
 
     /**
-     * @return FrontendInterface
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      * @throws \InvalidArgumentException
      */

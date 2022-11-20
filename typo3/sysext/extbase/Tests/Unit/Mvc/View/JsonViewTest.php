@@ -50,7 +50,6 @@ class JsonViewTest extends UnitTestCase
 
     /**
      * data provider for testTransformValue()
-     * @return array
      */
     public function jsonViewTestData(): array
     {
@@ -186,7 +185,6 @@ class JsonViewTest extends UnitTestCase
     }
     /**
      * data provider for testRecursive()
-     * @return array
      */
     public function jsonViewTestDataRecursive(): array
     {
@@ -362,7 +360,6 @@ class JsonViewTest extends UnitTestCase
 
     /**
      * data provider for testTransformValueWithObjectIdentifierExposure()
-     * @return array
      */
     public function objectIdentifierExposureTestData(): array
     {

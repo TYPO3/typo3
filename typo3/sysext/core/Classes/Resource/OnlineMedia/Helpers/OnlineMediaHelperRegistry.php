@@ -27,8 +27,6 @@ class OnlineMediaHelperRegistry implements SingletonInterface
 {
     /**
      * Checks if there is a helper for this file extension
-     *
-     * @return bool
      */
     public function hasOnlineMediaHelper(string $fileExtension): bool
     {

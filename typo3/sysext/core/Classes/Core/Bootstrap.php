@@ -66,7 +66,6 @@ class Bootstrap
      *
      * @param ClassLoader $classLoader an instance of the class loader
      * @param bool $failsafe true if no caching and a failsafe package manager should be used
-     * @return ContainerInterface
      */
     public static function init(
         ClassLoader $classLoader,
@@ -237,7 +236,6 @@ class Bootstrap
      * provided by the packages.
      *
      * @param string $packageManagerClassName Define an alternative package manager implementation (usually for the installer)
-     * @return PackageManager
      * @internal This is not a public API method, do not use in own extensions
      */
     public static function createPackageManager($packageManagerClassName, PackageCacheInterface $packageCache): PackageManager
@@ -253,8 +251,6 @@ class Bootstrap
 
     /**
      * @internal
-     *
-     * @return PackageCacheInterface
      */
     public static function createPackageCache(FrontendInterface $coreCache): PackageCacheInterface
     {
@@ -287,8 +283,6 @@ class Bootstrap
     /**
      * We need an early instance of the configuration manager.
      * Since makeInstance relies on the object configuration, we create it here with new instead.
-     *
-     * @return ConfigurationManager
      */
     public static function createConfigurationManager(): ConfigurationManager
     {
@@ -315,7 +309,6 @@ class Bootstrap
      *
      * @param string $identifier
      * @param bool $disableCaching
-     * @return FrontendInterface
      * @internal
      */
     public static function createCache(string $identifier, bool $disableCaching = false): FrontendInterface

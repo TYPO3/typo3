@@ -96,8 +96,6 @@ class TypeHandlingUtility
 
     /**
      * Returns TRUE if the $type is a literal.
-     *
-     * @return bool
      */
     public static function isLiteral(string $type): bool
     {
@@ -106,8 +104,6 @@ class TypeHandlingUtility
 
     /**
      * Returns TRUE if the $type is a simple type.
-     *
-     * @return bool
      */
     public static function isSimpleType(string $type): bool
     {
@@ -118,7 +114,6 @@ class TypeHandlingUtility
      * Returns TRUE if the $type is a CMS core type object.
      *
      * @param string|object $type
-     * @return bool
      */
     public static function isCoreType($type): bool
     {
@@ -127,8 +122,6 @@ class TypeHandlingUtility
 
     /**
      * Returns TRUE if the $type is a collection type.
-     *
-     * @return bool
      */
     public static function isCollectionType(string $type): bool
     {
@@ -151,7 +144,6 @@ class TypeHandlingUtility
      * Returns TRUE when the given value can be used in an "in" comparison in a query.
      *
      * @param mixed $value
-     * @return bool
      */
     public static function isValidTypeForMultiValueComparison($value): bool
     {

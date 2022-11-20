@@ -254,7 +254,6 @@ class ArrayUtilityTest extends UnitTestCase
      * - Array to get value from
      * - String path
      * - Expected result
-     * @return array
      */
     public function getValueByPathInvalidPathDataProvider(): array
     {
@@ -1218,13 +1217,6 @@ class ArrayUtilityTest extends UnitTestCase
         self::assertSame($expected, ArrayUtility::arrayExport($array));
     }
 
-    ///////////////////////
-    // Tests concerning flatten
-    ///////////////////////
-
-    /**
-     * @return array
-     */
     public function flattenCalculatesExpectedResultDataProvider(): array
     {
         return [
@@ -1342,13 +1334,6 @@ class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expected, ArrayUtility::flatten($array));
     }
 
-    ///////////////////////
-    // Tests concerning flattenPlain
-    ///////////////////////
-
-    /**
-     * @return array
-     */
     public function flattenPlainCalculatesExpectedResultDataProvider(): array
     {
         return [
@@ -1516,9 +1501,6 @@ class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expected, ArrayUtility::flattenPlain($array));
     }
 
-    /**
-     * @return array
-     */
     public function flattenWithKeepDotsCalculatesExpectedResultDataProvider(): array
     {
         return [
@@ -1636,13 +1618,6 @@ class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expected, ArrayUtility::flatten($array, '', true));
     }
 
-    ///////////////////////
-    // Tests concerning unflatten
-    ///////////////////////
-
-    /**
-     * @return array
-     */
     public function unflattenCalculatesExpectedResultDataProvider(): array
     {
         return [
@@ -1810,13 +1785,6 @@ class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expected, ArrayUtility::unflatten($array));
     }
 
-    ///////////////////////
-    // Tests concerning intersectRecursive
-    ///////////////////////
-
-    /**
-     * @return array
-     */
     public function intersectRecursiveCalculatesExpectedResultDataProvider(): array
     {
         $sameObject = new \stdClass();
@@ -2020,12 +1988,6 @@ class ArrayUtilityTest extends UnitTestCase
         self::assertSame($expected, ArrayUtility::intersectRecursive($source, $mask));
     }
 
-    ///////////////////////
-    // Tests concerning renumberKeysToAvoidLeapsIfKeysAreAllNumeric
-    ///////////////////////
-    /**
-     * @return array
-     */
     public function renumberKeysToAvoidLeapsIfKeysAreAllNumericDataProvider(): array
     {
         return [
@@ -2155,9 +2117,6 @@ class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expected, ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($inputArray));
     }
 
-    /**
-     * @return array
-     */
     public function mergeRecursiveWithOverruleCalculatesExpectedResultDataProvider(): array
     {
         return [
@@ -2489,8 +2448,6 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * Data provider for keepItemsInArrayWorksWithOneArgument
-     *
-     * @return array
      */
     public function keepItemsInArrayWorksWithOneArgumentDataProvider(): array
     {
@@ -2891,8 +2848,6 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * Data provider for filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsTrue
-     *
-     * @return array
      */
     public function filterAndSortByNumericKeysWithAcceptAnyKey(): array
     {
@@ -2988,8 +2943,6 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * Data provider for filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsFalse
-     *
-     * @return array
      */
     public function filterAndSortByNumericKeysWithoutAcceptAnyKey(): array
     {
@@ -3054,8 +3007,6 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * dataProvider for sortArrayWithIntegerKeys
-     *
-     * @return array
      */
     public function sortArrayWithIntegerKeysDataProvider(): array
     {
@@ -3374,7 +3325,6 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * Data provider for arrayFilterRecursiveFiltersFalseElements
-     * @return array
      */
     public function filterRecursiveFiltersFalseElementsDataProvider(): array
     {
@@ -3448,7 +3398,6 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * Data provider for filterRecursiveCallbackFiltersEmptyElementsWithoutIntegerByCallback
-     * @return array
      */
     public function filterRecursiveCallbackFiltersEmptyElementsWithoutIntegerZeroByCallbackDataProvider(): array
     {
@@ -3531,7 +3480,6 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * Data provider for filterRecursiveSupportsCallableCallback
-     * @return array
      */
     public function filterRecursiveSupportsCallableCallbackDataProvider(): array
     {
@@ -3603,7 +3551,6 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * Data provider for isAssociativeCorrectlyFindsStringKeys
-     * @return array
      */
     public function isAssociativeCorrectlyFindsStringKeysDataProvider(): array
     {
@@ -3646,7 +3593,6 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * Data provider for replaceAndAppendScalarValuesRecursiveCorrectlyMergesArrays
-     * @return array
      */
     public function replaceAndAppendScalarValuesRecursiveCorrectlyMergesArraysDataProvider(): array
     {

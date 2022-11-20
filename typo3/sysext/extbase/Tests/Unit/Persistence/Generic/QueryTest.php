@@ -121,9 +121,6 @@ class QueryTest extends UnitTestCase
         $this->query->setOffset(-1);
     }
 
-    /**
-     * @return array
-     */
     public function equalsForCaseSensitiveFalseLowercasesOperandProvider(): array
     {
         return [

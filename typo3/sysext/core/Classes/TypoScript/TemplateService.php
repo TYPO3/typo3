@@ -1087,8 +1087,6 @@ class TemplateService
 
     /**
      * Returns the page ID of the rootlevel
-     *
-     * @return int
      */
     public function getRootId(): int
     {

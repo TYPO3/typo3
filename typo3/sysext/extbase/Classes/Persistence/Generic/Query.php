@@ -128,7 +128,6 @@ class Query implements QueryInterface
     }
 
     /**
-     * @return ?QueryInterface
      * @internal
      */
     public function getParentQuery(): ?QueryInterface

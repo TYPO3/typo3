@@ -1138,13 +1138,6 @@ abstract class ImportExport
         return '<select name="' . $name . '">' . $optionsHtml . '</select>';
     }
 
-    /*****************************
-     * Helper functions of kinds
-     *****************************/
-
-    /**
-     * @return string
-     */
     public function getFileadminFolderName(): string
     {
         if (empty($this->fileadminFolderName)) {
@@ -1157,9 +1150,6 @@ abstract class ImportExport
         return $this->fileadminFolderName;
     }
 
-    /**
-     * @return string
-     */
     public function getOrCreateTemporaryFolderName(): string
     {
         if (empty($this->temporaryFolderName)) {
@@ -1493,13 +1483,6 @@ abstract class ImportExport
         return $GLOBALS['LANG'];
     }
 
-    /**************************
-     * Getters and Setters
-     *************************/
-
-    /**
-     * @return int
-     */
     public function getPid(): int
     {
         return $this->pid;
@@ -1517,8 +1500,6 @@ abstract class ImportExport
      *
      * If the page is the root of the page tree,
      * add some basic but missing information.
-     *
-     * @return array|null
      */
     protected function getPidRecord(): ?array
     {
@@ -1547,17 +1528,11 @@ abstract class ImportExport
         $this->excludeDisabledRecords = $excludeDisabledRecords;
     }
 
-    /**
-     * @return bool
-     */
     public function isExcludeDisabledRecords(): bool
     {
         return $this->excludeDisabledRecords;
     }
 
-    /**
-     * @return array
-     */
     public function getExcludeMap(): array
     {
         return $this->excludeMap;
@@ -1568,9 +1543,6 @@ abstract class ImportExport
         $this->excludeMap = $excludeMap;
     }
 
-    /**
-     * @return array
-     */
     public function getSoftrefCfg(): array
     {
         return $this->softrefCfg;
@@ -1581,9 +1553,6 @@ abstract class ImportExport
         $this->softrefCfg = $softrefCfg;
     }
 
-    /**
-     * @return array
-     */
     public function getExtensionDependencies(): array
     {
         return $this->extensionDependencies;
@@ -1594,9 +1563,6 @@ abstract class ImportExport
         $this->extensionDependencies = $extensionDependencies;
     }
 
-    /**
-     * @return bool
-     */
     public function isShowStaticRelations(): bool
     {
         return $this->showStaticRelations;
@@ -1607,9 +1573,6 @@ abstract class ImportExport
         $this->showStaticRelations = $showStaticRelations;
     }
 
-    /**
-     * @return array
-     */
     public function getRelStaticTables(): array
     {
         return $this->relStaticTables;
@@ -1620,9 +1583,6 @@ abstract class ImportExport
         $this->relStaticTables = $relStaticTables;
     }
 
-    /**
-     * @return array
-     */
     public function getErrorLog(): array
     {
         return $this->errorLog;
@@ -1633,9 +1593,6 @@ abstract class ImportExport
         $this->errorLog = $errorLog;
     }
 
-    /**
-     * @return bool
-     */
     public function isUpdate(): bool
     {
         return $this->update;
@@ -1646,9 +1603,6 @@ abstract class ImportExport
         $this->update = $update;
     }
 
-    /**
-     * @return array
-     */
     public function getImportMode(): array
     {
         return $this->importMode;
@@ -1659,9 +1613,6 @@ abstract class ImportExport
         $this->importMode = $importMode;
     }
 
-    /**
-     * @return bool
-     */
     public function isGlobalIgnorePid(): bool
     {
         return $this->globalIgnorePid;
@@ -1672,9 +1623,6 @@ abstract class ImportExport
         $this->globalIgnorePid = $globalIgnorePid;
     }
 
-    /**
-     * @return bool
-     */
     public function isForceAllUids(): bool
     {
         return $this->forceAllUids;
@@ -1685,9 +1633,6 @@ abstract class ImportExport
         $this->forceAllUids = $forceAllUids;
     }
 
-    /**
-     * @return bool
-     */
     public function isShowDiff(): bool
     {
         return $this->showDiff;
@@ -1698,9 +1643,6 @@ abstract class ImportExport
         $this->showDiff = $showDiff;
     }
 
-    /**
-     * @return array
-     */
     public function getSoftrefInputValues(): array
     {
         return $this->softrefInputValues;
@@ -1711,9 +1653,6 @@ abstract class ImportExport
         $this->softrefInputValues = $softrefInputValues;
     }
 
-    /**
-     * @return string
-     */
     public function getMode(): string
     {
         return $this->mode;
@@ -1724,9 +1663,6 @@ abstract class ImportExport
         $this->mode = $mode;
     }
 
-    /**
-     * @return array
-     */
     public function getImportMapId(): array
     {
         return $this->importMapId;
@@ -1737,9 +1673,6 @@ abstract class ImportExport
         $this->importMapId = $importMapId;
     }
 
-    /**
-     * @return array
-     */
     public function getDat(): array
     {
         return $this->dat;

@@ -61,8 +61,6 @@ class DownloadController extends AbstractController
 
     /**
      * Check extension dependencies
-     *
-     * @return ResponseInterface
      */
     public function checkDependenciesAction(Extension $extension): ResponseInterface
     {
@@ -151,8 +149,6 @@ class DownloadController extends AbstractController
 
     /**
      * Install an extension from TER action
-     *
-     * @return ResponseInterface
      */
     public function installFromTerAction(Extension $extension, string $downloadPath = 'Local'): ResponseInterface
     {
@@ -170,8 +166,6 @@ class DownloadController extends AbstractController
 
     /**
      * Check extension dependencies with special dependencies
-     *
-     * @return ResponseInterface
      */
     public function installExtensionWithoutSystemDependencyCheckAction(Extension $extension): ResponseInterface
     {
@@ -224,8 +218,6 @@ class DownloadController extends AbstractController
      * available version from TER and updates. Update check is done by the list
      * already. This method should only be called if we are sure that there is
      * an update.
-     *
-     * @return ResponseInterface
      */
     protected function updateExtensionAction(): ResponseInterface
     {

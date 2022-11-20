@@ -212,9 +212,6 @@ class Post extends AbstractEntity
         $this->secondAuthor = $secondAuthor;
     }
 
-    /**
-     * @return Person|null
-     */
     public function getReviewer(): ?Person
     {
         return $this->reviewer;
@@ -237,8 +234,6 @@ class Post extends AbstractEntity
 
     /**
      * Getter for content
-     *
-     * @return string
      */
     public function getContent(): string
     {
@@ -337,9 +332,6 @@ class Post extends AbstractEntity
         $this->additionalName = $additionalName;
     }
 
-    /**
-     * @return ?Info
-     */
     public function getAdditionalInfo(): ?Info
     {
         return $this->additionalInfo;

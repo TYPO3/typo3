@@ -265,8 +265,6 @@ class IconFactory
 
     /**
      * Returns a possible configured icon for the given plugin name
-     *
-     * @return string|null
      */
     protected function getIconForPlugin(string $pluginName): ?string
     {
@@ -285,7 +283,6 @@ class IconFactory
     /**
      * Returns recordType for icon based on a typeName and a suffix.
      * Fallback to page as typeName if resulting type is not configured.
-     * @return string
      */
     protected function getRecordTypeForPageType(string $typeName, string $suffix, string $table): string
     {

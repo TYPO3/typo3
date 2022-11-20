@@ -59,9 +59,6 @@ class ArrayDimensionMatcherTest extends UnitTestCase
         self::assertEquals($expectedHitLineNumbers, $actualHitLineNumbers);
     }
 
-    /**
-     * @return array
-     */
     public function matchesReturnsExpectedRestFilesDataProvider(): array
     {
         return [

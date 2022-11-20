@@ -40,9 +40,6 @@ class LocalizationRepositoryTest extends FunctionalTestCase
         $this->subject = new LocalizationRepository();
     }
 
-    /**
-     * @return array
-     */
     public function fetchOriginLanguageDataProvider(): array
     {
         return [
@@ -106,9 +103,6 @@ class LocalizationRepositoryTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    /**
-     * @return array
-     */
     public function getLocalizedRecordCountDataProvider(): array
     {
         return [
@@ -160,9 +154,6 @@ class LocalizationRepositoryTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    /**
-     * @return array
-     */
     public function getRecordsToCopyDatabaseResultDataProvider(): array
     {
         return [

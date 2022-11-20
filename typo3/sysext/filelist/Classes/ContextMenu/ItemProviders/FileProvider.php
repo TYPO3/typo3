@@ -130,9 +130,6 @@ class FileProvider extends AbstractProvider
         ],
     ];
 
-    /**
-     * @return bool
-     */
     public function canHandle(): bool
     {
         return $this->table === 'sys_file';
@@ -153,8 +150,6 @@ class FileProvider extends AbstractProvider
 
     /**
      * Checks whether certain item can be rendered (e.g. check for disabled items or permissions)
-     *
-     * @return bool
      */
     protected function canRender(string $itemName, string $type): bool
     {
@@ -219,9 +214,6 @@ class FileProvider extends AbstractProvider
         return $canRender;
     }
 
-    /**
-     * @return bool
-     */
     protected function canBeEdited(): bool
     {
         return $this->isFile()
@@ -229,9 +221,6 @@ class FileProvider extends AbstractProvider
            && $this->record->isTextFile();
     }
 
-    /**
-     * @return bool
-     */
     protected function canEditMetadata(): bool
     {
         return $this->isFile()
@@ -241,33 +230,21 @@ class FileProvider extends AbstractProvider
            && $this->backendUser->check('tables_modify', 'sys_file_metadata');
     }
 
-    /**
-     * @return bool
-     */
     protected function canBeRenamed(): bool
     {
         return $this->record->checkActionPermission('rename');
     }
 
-    /**
-     * @return bool
-     */
     protected function canBeDeleted(): bool
     {
         return $this->record->checkActionPermission('delete');
     }
 
-    /**
-     * @return bool
-     */
     protected function canShowInfo(): bool
     {
         return $this->isFile();
     }
 
-    /**
-     * @return bool
-     */
     protected function canCreateNew(): bool
     {
         return $this->isFolder() && $this->record->checkActionPermission('write');
@@ -275,33 +252,22 @@ class FileProvider extends AbstractProvider
 
     /**
      * New filemounts can only be created for readable folders by admins
-     *
-     * @return bool
      */
     protected function canCreateNewFilemount(): bool
     {
         return $this->isFolder() && $this->record->checkActionPermission('read') && $this->backendUser->isAdmin();
     }
 
-    /**
-     * @return bool
-     */
     protected function canBeCopied(): bool
     {
         return $this->record->checkActionPermission('read') && $this->record->checkActionPermission('copy') && !$this->isRecordInClipboard('copy');
     }
 
-    /**
-     * @return bool
-     */
     protected function canBeCut(): bool
     {
         return $this->record->checkActionPermission('move') && !$this->isRecordInClipboard('cut');
     }
 
-    /**
-     * @return bool
-     */
     protected function canBePastedInto(): bool
     {
         $elArr = $this->clipboard->elFromTable('_FILE');
@@ -354,7 +320,6 @@ class FileProvider extends AbstractProvider
      * Cannot copy folders between filemounts
      *
      * @param File|Folder|null $fileOrFolderInClipBoard
-     * @return bool
      */
     protected function isFoldersAreInTheSameRoot($fileOrFolderInClipBoard): bool
     {
@@ -369,7 +334,6 @@ class FileProvider extends AbstractProvider
      * Checks if a file record is in the "normal" pad of the clipboard
      *
      * @param string $mode "copy", "cut" or '' for any mode
-     * @return bool
      */
     protected function isRecordInClipboard(string $mode = ''): bool
     {
@@ -386,33 +350,21 @@ class FileProvider extends AbstractProvider
         return $mode === '' ? !empty($isSelected) : $isSelected === $mode;
     }
 
-    /**
-     * @return bool
-     */
     protected function isStorageRoot(): bool
     {
         return $this->record->getIdentifier() === $this->record->getStorage()->getRootLevelFolder()->getIdentifier();
     }
 
-    /**
-     * @return bool
-     */
     protected function isFile(): bool
     {
         return $this->record instanceof File;
     }
 
-    /**
-     * @return bool
-     */
     protected function isFolder(): bool
     {
         return $this->record instanceof Folder;
     }
 
-    /**
-     * @return array
-     */
     protected function getAdditionalAttributes(string $itemName): array
     {
         $attributes = [
@@ -517,9 +469,6 @@ class FileProvider extends AbstractProvider
         return $attributes;
     }
 
-    /**
-     * @return string
-     */
     protected function getIdentifier(): string
     {
         return $this->record->getCombinedIdentifier();

@@ -38,7 +38,6 @@ final class ValidatorClassNameResolver
      * without any deprecation.
      *
      * @param string $validatorIdentifier
-     * @return string
      * @throws NoSuchValidatorException
      * @internal
      */

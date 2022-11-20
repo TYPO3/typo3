@@ -914,7 +914,6 @@ class FileList
      * Adds the checkbox to select a file/folder in the listing
      *
      * @param File|Folder $fileOrFolderObject
-     * @return string
      */
     protected function makeCheckbox($fileOrFolderObject): string
     {
@@ -1192,8 +1191,6 @@ class FileList
 
     /**
      * Generate readable path
-     *
-     * @return string
      */
     protected function makePath(ResourceInterface $resource): string
     {
@@ -1218,8 +1215,6 @@ class FileList
      * to the corresponding metadata translation, while depending on
      * the current state, either a new translation can be created or
      * an existing translation can be edited.
-     *
-     * @return string
      */
     protected function makeTranslations(File $file): string
     {
@@ -1402,8 +1397,6 @@ class FileList
     /**
      * Determine the concrete table name by checking if
      * the field exists, while sys_file takes precedence.
-     *
-     * @return string
      */
     protected function getConcreteTableName(string $fieldName): string
     {
@@ -1412,8 +1405,6 @@ class FileList
 
     /**
      * Whether file download is enabled for the user
-     *
-     * @return bool
      */
     protected function fileDownloadEnabled(): bool
     {

@@ -38,9 +38,6 @@ class HookFixture implements SingletonInterface
         $this->invocations = [];
     }
 
-    /**
-     * @return array|null
-     */
     public function findInvocationsByMethodName(string $methodName): ?array
     {
         return $this->invocations[$methodName] ?? null;

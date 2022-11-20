@@ -49,8 +49,6 @@ class Argon2idPreset extends AbstractPreset
 
     /**
      * Find out if Argon2id is available on this system
-     *
-     * @return bool
      */
     public function isAvailable(): bool
     {

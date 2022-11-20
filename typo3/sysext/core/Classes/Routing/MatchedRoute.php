@@ -50,9 +50,6 @@ class MatchedRoute
         return $this->route;
     }
 
-    /**
-     * @return array
-     */
     public function getRouteResult(): array
     {
         return $this->routeResult;

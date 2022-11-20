@@ -179,8 +179,6 @@ class SiteLanguage
     /**
      * Returns the SiteLanguage in an array representation for e.g. the usage
      * in TypoScript.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -202,65 +200,41 @@ class SiteLanguage
         ]);
     }
 
-    /**
-     * @return int
-     */
     public function getLanguageId(): int
     {
         return $this->languageId;
     }
 
-    /**
-     * @return string
-     */
     public function getLocale(): string
     {
         return $this->locale;
     }
 
-    /**
-     * @return UriInterface
-     */
     public function getBase(): UriInterface
     {
         return $this->base;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getNavigationTitle(): string
     {
         return $this->navigationTitle ?: $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getWebsiteTitle(): string
     {
         return $this->websiteTitle;
     }
 
-    /**
-     * @return string
-     */
     public function getFlagIdentifier(): string
     {
         return $this->flagIdentifier;
     }
 
-    /**
-     * @return string
-     */
     public function getTypo3Language(): string
     {
         return $this->typo3Language;
@@ -268,8 +242,6 @@ class SiteLanguage
 
     /**
      * Returns the ISO-639-1 language ISO code
-     *
-     * @return string
      */
     public function getTwoLetterIsoCode(): string
     {
@@ -278,8 +250,6 @@ class SiteLanguage
 
     /**
      * Returns the RFC 1766 / 3066 language tag
-     *
-     * @return string
      */
     public function getHreflang(): string
     {
@@ -288,8 +258,6 @@ class SiteLanguage
 
     /**
      * Returns the language direction
-     *
-     * @return string
      */
     public function getDirection(): string
     {
@@ -298,8 +266,6 @@ class SiteLanguage
 
     /**
      * Returns true if the language is available in frontend usage
-     *
-     * @return bool
      */
     public function enabled(): bool
     {
@@ -308,25 +274,17 @@ class SiteLanguage
 
     /**
      * Helper so fluid can work with this as well.
-     *
-     * @return bool
      */
     public function isEnabled(): bool
     {
         return $this->enabled;
     }
 
-    /**
-     * @return string
-     */
     public function getFallbackType(): string
     {
         return $this->fallbackType;
     }
 
-    /**
-     * @return array
-     */
     public function getFallbackLanguageIds(): array
     {
         return $this->fallbackLanguageIds;

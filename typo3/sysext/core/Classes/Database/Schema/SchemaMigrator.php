@@ -113,7 +113,6 @@ class SchemaMigrator
      *
      * @param string[] $statements The CREATE TABLE statements
      * @param string[] $selectedStatements The hashes of the update suggestions to execute
-     * @return array
      * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
@@ -187,8 +186,6 @@ class SchemaMigrator
 
     /**
      * Import static data (INSERT statements)
-     *
-     * @return array
      */
     public function importStaticData(array $statements, bool $truncate = false): array
     {

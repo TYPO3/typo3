@@ -61,8 +61,6 @@ class MfaProviderRegistry
 
     /**
      * Whether the given user has active providers
-     *
-     * @return bool
      */
     public function hasActiveProviders(AbstractUserAuthentication $user): bool
     {
@@ -106,8 +104,6 @@ class MfaProviderRegistry
 
     /**
      * Whether the given user has locked providers
-     *
-     * @return bool
      */
     public function hasLockedProviders(AbstractUserAuthentication $user): bool
     {

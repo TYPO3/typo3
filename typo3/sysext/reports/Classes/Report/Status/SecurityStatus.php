@@ -78,8 +78,6 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
 
     /**
      * Checks if the current connection is encrypted (HTTPS)
-     *
-     * @return ReportStatus
      */
     protected function getEncryptedConnectionStatus(ServerRequestInterface $request): ReportStatus
     {

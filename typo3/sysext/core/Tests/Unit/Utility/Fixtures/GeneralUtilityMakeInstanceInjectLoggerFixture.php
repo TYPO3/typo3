@@ -28,9 +28,6 @@ class GeneralUtilityMakeInstanceInjectLoggerFixture implements LoggerAwareInterf
 {
     use LoggerAwareTrait;
 
-    /**
-     * @return LoggerInterface
-     */
     public function getLogger(): LoggerInterface
     {
         return $this->logger;

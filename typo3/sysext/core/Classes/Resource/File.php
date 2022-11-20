@@ -73,7 +73,6 @@ class File extends AbstractFile
      * can be retrieved by "getProperty"
      *
      * @param string $key
-     * @return bool
      */
     public function hasProperty($key): bool
     {
@@ -85,8 +84,6 @@ class File extends AbstractFile
 
     /**
      * Returns the properties of this object.
-     *
-     * @return array
      */
     public function getProperties(): array
     {
@@ -330,8 +327,6 @@ class File extends AbstractFile
 
     /**
      * Loads the metadata of a file in an encapsulated aspect
-     *
-     * @return MetaDataAspect
      */
     public function getMetaData(): MetaDataAspect
     {

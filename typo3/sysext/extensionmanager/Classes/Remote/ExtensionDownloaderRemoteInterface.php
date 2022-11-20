@@ -28,8 +28,6 @@ interface ExtensionDownloaderRemoteInterface
 {
     /**
      * Returns the remote identifier
-     *
-     * @return string
      */
     public function getIdentifier(): string;
 

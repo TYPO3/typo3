@@ -151,9 +151,6 @@ class VariableProcessorTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function parametersDataProvider(): array
     {
         return [
@@ -193,9 +190,6 @@ class VariableProcessorTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function namespaceParametersDataProvider(): array
     {
         return [

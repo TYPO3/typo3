@@ -258,8 +258,6 @@ class ListUtility implements SingletonInterface
     /**
      * Gets all available and installed extension with additional information
      * from em_conf and TER (if available)
-     *
-     * @return array
      */
     public function getAvailableAndInstalledExtensionsWithAdditionalInformation(string $filter = ''): array
     {

@@ -192,7 +192,6 @@ class TcaFlexProcess implements FormDataProviderInterface
      * consider flex form section containers at all.
      *
      * @param string $dataStructureIdentifier
-     * @return string
      */
     protected function getSimplifiedDataStructureIdentifier(string $dataStructureIdentifier): string
     {

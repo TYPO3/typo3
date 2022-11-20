@@ -144,7 +144,6 @@ class CreateSiteConfiguration
      * Checks whether a site exists by its root page. Sets up a new SiteFinder instance
      *
      * @param int $rootPageId the page ID (default language)
-     * @return bool
      */
     protected function siteExistsByRootPageId(int $rootPageId): bool
     {

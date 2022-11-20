@@ -423,9 +423,6 @@ class MountPointTest extends AbstractTestCase
         self::assertSame($expectedMountPointParameter, $responseData['dynamicArguments']['MP'] ?? null);
     }
 
-    /**
-     * @return array
-     */
     public function mountPointPagesShowContentAsConfiguredDataProvider(): array
     {
         return [

@@ -51,8 +51,6 @@ class LogLevel extends \Psr\Log\LogLevel
 
     /**
      * Resolves the name of the log level and returns its internal string representation
-     *
-     * @return string
      */
     public static function getInternalName(int $level): string
     {
@@ -89,7 +87,6 @@ class LogLevel extends \Psr\Log\LogLevel
      * Normalizes level by converting it from string to integer
      *
      * @param string|int $level
-     * @return int
      */
     public static function normalizeLevel($level): int
     {

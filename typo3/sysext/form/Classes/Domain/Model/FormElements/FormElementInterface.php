@@ -80,8 +80,6 @@ interface FormElementInterface extends RenderableInterface
 
     /**
      * Get all element-specific configuration properties
-     *
-     * @return array
      */
     public function getProperties(): array;
 
@@ -114,8 +112,6 @@ interface FormElementInterface extends RenderableInterface
 
     /**
      * Whether or not this element is required
-     *
-     * @return bool
      */
     public function isRequired(): bool;
 }

@@ -57,8 +57,6 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
 
     /**
      * Get the data of a specific property
-     *
-     * @return array
      */
     public function getProperty(string $property, string $type = 'name'): array
     {
@@ -73,7 +71,6 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
 
     /**
      * Returns an array with all properties that can be handled by this manager
-     * @return array
      */
     public function getAllHandledProperties(): array
     {
@@ -82,8 +79,6 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
 
     /**
      * Render all registered properties of this manager
-     *
-     * @return string
      */
     public function renderAllProperties(): string
     {
@@ -97,8 +92,6 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
 
     /**
      * Render a specific property including subproperties of that property
-     *
-     * @return string
      */
     public function renderProperty(string $property): string
     {
@@ -146,9 +139,6 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
         $this->properties = [];
     }
 
-    /**
-     * @return bool
-     */
     public function canHandleProperty(string $property): bool
     {
         return true;

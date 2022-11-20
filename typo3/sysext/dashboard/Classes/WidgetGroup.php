@@ -40,17 +40,11 @@ class WidgetGroup
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
     public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->getLanguageService()->sL($this->title) ?: $this->title;

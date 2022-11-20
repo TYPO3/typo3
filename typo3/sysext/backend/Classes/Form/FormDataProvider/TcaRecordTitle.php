@@ -283,7 +283,6 @@ class TcaRecordTitle implements FormDataProviderInterface
      * Return the folder names
      *
      * @param array $value Current database value of this field
-     * @return string
      */
     protected function getRecordTitleForFolderType(array $value): string
     {
@@ -324,7 +323,6 @@ class TcaRecordTitle implements FormDataProviderInterface
      * Returns the record title for not transformed text fields
      *
      * @param mixed $value Current database value of this field
-     * @return string
      */
     protected function getRecordTitleForStandardTextField(mixed $value): string
     {
@@ -401,7 +399,6 @@ class TcaRecordTitle implements FormDataProviderInterface
      * Returns the record title for password fields
      *
      * @param mixed $value Current database value of this field
-     * @return string
      */
     protected function getRecordTitleForPasswordType(mixed $value): string
     {

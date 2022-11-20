@@ -165,7 +165,6 @@ class LanguageService
      * This looks up the given .xlf file path in the 'core' extension for label labels.depth_0
      *
      * @param string $input Label key/reference
-     * @return string
      */
     public function sL($input): string
     {

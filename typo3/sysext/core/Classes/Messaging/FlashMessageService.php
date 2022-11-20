@@ -37,7 +37,6 @@ class FlashMessageService implements SingletonInterface
      * If no queue exists, an empty one will be created.
      *
      * @param string $identifier
-     * @return FlashMessageQueue
      */
     public function getMessageQueueByIdentifier($identifier = FlashMessageQueue::FLASHMESSAGE_QUEUE): FlashMessageQueue
     {

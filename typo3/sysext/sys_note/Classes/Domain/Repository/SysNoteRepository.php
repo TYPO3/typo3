@@ -40,7 +40,6 @@ class SysNoteRepository
      * @param int $pid Single pid
      * @param int $author Author uid
      * @param int|null $position null for no restriction, integer for defined position
-     * @return array
      */
     public function findByPidAndAuthorId(int $pid, int $author, int $position = null): array
     {

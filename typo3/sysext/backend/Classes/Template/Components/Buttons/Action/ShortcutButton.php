@@ -67,8 +67,6 @@ class ShortcutButton implements ButtonInterface, PositionInterface
 
     /**
      * Gets the route identifier for the shortcut.
-     *
-     * @return string
      */
     public function getRouteIdentifier(): string
     {
@@ -77,8 +75,6 @@ class ShortcutButton implements ButtonInterface, PositionInterface
 
     /**
      * Sets the route identifier for the shortcut.
-     *
-     * @return ShortcutButton
      */
     public function setRouteIdentifier(string $routeIdentifier): self
     {
@@ -288,8 +284,6 @@ class ShortcutButton implements ButtonInterface, PositionInterface
 
     /**
      * Returns HTML attributes for client-side `ActionDispatcher` of the "add shortcut" button.
-     *
-     * @return string
      */
     protected function getDispatchActionAttrs(string $routeIdentifier, string $encodedArguments, string $confirmationText): string
     {

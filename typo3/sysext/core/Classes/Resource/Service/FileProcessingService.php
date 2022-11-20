@@ -140,9 +140,6 @@ class FileProcessingService
         }
     }
 
-    /**
-     * @return Resource\Processing\ProcessorInterface
-     */
     protected function getProcessorByTask(TaskInterface $task): ProcessorInterface
     {
         $processorRegistry = GeneralUtility::makeInstance(ProcessorRegistry::class);

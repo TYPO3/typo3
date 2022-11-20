@@ -299,8 +299,6 @@ class AbstractPlugin
 
     /**
      * Remove the internal array key _typoScriptNodeValue
-     *
-     * @return array
      */
     protected function removeInternalNodeValue(array $typoscript): array
     {

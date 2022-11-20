@@ -36,8 +36,6 @@ class CanonicalizationUtility
      *
      * @param int $pageId Id of the page you want to get the excluded params
      * @param array $additionalCanonicalizedUrlParameters Which GET-params should stay besides the params used for cHash calculation
-     *
-     * @return array
      */
     public static function getParamsToExcludeForCanonicalizedUrl(int $pageId, array $additionalCanonicalizedUrlParameters = []): array
     {

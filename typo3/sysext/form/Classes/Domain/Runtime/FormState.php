@@ -60,9 +60,6 @@ class FormState
         return $this->lastDisplayedPageIndex !== self::NOPAGE;
     }
 
-    /**
-     * @return int
-     */
     public function getLastDisplayedPageIndex(): int
     {
         return $this->lastDisplayedPageIndex;
@@ -73,9 +70,6 @@ class FormState
         $this->lastDisplayedPageIndex = $lastDisplayedPageIndex;
     }
 
-    /**
-     * @return array
-     */
     public function getFormValues(): array
     {
         return $this->formValues;

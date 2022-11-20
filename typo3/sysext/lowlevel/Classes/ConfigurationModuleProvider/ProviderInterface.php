@@ -36,22 +36,16 @@ interface ProviderInterface
 
     /**
      * Returns the provider identifier
-     *
-     * @return string
      */
     public function getIdentifier(): string;
 
     /**
      * Returns the providers' label (locallang or static text)
-     *
-     * @return string
      */
     public function getLabel(): string;
 
     /**
      * Returns the configuration, displayed in the module
-     *
-     * @return array
      */
     public function getConfiguration(): array;
 }

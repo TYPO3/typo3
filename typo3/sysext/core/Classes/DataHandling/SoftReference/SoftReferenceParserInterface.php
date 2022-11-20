@@ -53,8 +53,6 @@ interface SoftReferenceParserInterface
 
     /**
      * Returns the parser key, which was previously set by "setParserKey"
-     *
-     * @return string
      */
     public function getParserKey(): string;
 }

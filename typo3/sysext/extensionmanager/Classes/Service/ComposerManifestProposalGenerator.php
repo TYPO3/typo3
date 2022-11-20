@@ -48,8 +48,6 @@ class ComposerManifestProposalGenerator
 
     /**
      * Return the generated composer manifest content
-     *
-     * @return string
      */
     public function getComposerManifestProposal(string $extensionKey): string
     {

@@ -36,9 +36,6 @@ class VariableProcessor
      */
     protected $nestedValues = [];
 
-    /**
-     * @return string
-     */
     protected function addHash(string $value): string
     {
         if (strlen($value) < 31 && !preg_match('#[^\w]#', $value)) {
@@ -59,7 +56,6 @@ class VariableProcessor
     }
 
     /**
-     * @return string
      * @throws \OutOfRangeException
      */
     protected function resolveHash(string $hash): string
@@ -76,9 +72,6 @@ class VariableProcessor
         return $this->hashes[$hash];
     }
 
-    /**
-     * @return string
-     */
     protected function addNestedValue(string $value): string
     {
         if (!str_contains($value, static::ARGUMENT_SEPARATOR)) {
@@ -93,9 +86,6 @@ class VariableProcessor
         return $nestedValue;
     }
 
-    /**
-     * @return string
-     */
     protected function resolveNestedValue(string $value): string
     {
         if (!str_contains($value, static::LEVEL_DELIMITER)) {
@@ -106,7 +96,6 @@ class VariableProcessor
 
     /**
      * @param string|null $namespace
-     * @return string
      */
     public function deflateRoutePath(string $routePath, string $namespace = null, array $arguments = []): string
     {
@@ -126,7 +115,6 @@ class VariableProcessor
 
     /**
      * @param string|null $namespace
-     * @return string
      */
     public function inflateRoutePath(string $routePath, string $namespace = null, array $arguments = []): string
     {
@@ -146,8 +134,6 @@ class VariableProcessor
 
     /**
      * Deflates (flattens) route/request parameters for a given namespace.
-     *
-     * @return array
      */
     public function deflateNamespaceParameters(array $parameters, string $namespace, array $arguments = []): array
     {
@@ -165,8 +151,6 @@ class VariableProcessor
 
     /**
      * Inflates (unflattens) route/request parameters.
-     *
-     * @return array
      */
     public function inflateNamespaceParameters(array $parameters, string $namespace, array $arguments = []): array
     {
@@ -184,8 +168,6 @@ class VariableProcessor
 
     /**
      * Deflates (flattens) route/request parameters for a given namespace.
-     *
-     * @return array
      */
     public function deflateParameters(array $parameters, array $arguments = []): array
     {
@@ -195,8 +177,6 @@ class VariableProcessor
 
     /**
      * Inflates (unflattens) route/request parameters.
-     *
-     * @return array
      */
     public function inflateParameters(array $parameters, array $arguments = []): array
     {
@@ -210,7 +190,6 @@ class VariableProcessor
      *
      * @param string|null $namespace
      * @param bool $hash = true
-     * @return array
      */
     public function deflateKeys(array $items, string $namespace = null, array $arguments = [], bool $hash = true): array
     {
@@ -230,7 +209,6 @@ class VariableProcessor
      *
      * @param string|null $namespace
      * @param bool $hash = true
-     * @return array
      */
     public function inflateKeys(array $items, string $namespace = null, array $arguments = [], bool $hash = true): array
     {
@@ -248,7 +226,6 @@ class VariableProcessor
      * Deflates plain values.
      *
      * @param string|null $namespace
-     * @return array
      */
     protected function deflateValues(array $values, string $namespace = null, array $arguments = [], bool $hash = true): array
     {
@@ -275,7 +252,6 @@ class VariableProcessor
      * Inflates plain values.
      *
      * @param string|null $namespace
-     * @return array
      */
     protected function inflateValues(array $values, string $namespace = null, array $arguments = [], bool $hash = true): array
     {
@@ -302,8 +278,6 @@ class VariableProcessor
 
     /**
      * Deflates (flattens) array having nested structures.
-     *
-     * @return array
      */
     protected function deflateArray(array $array, string $prefix = ''): array
     {
@@ -334,7 +308,6 @@ class VariableProcessor
      * Inflates (unflattens) an array into nested structures.
      *
      * @param string $namespace
-     * @return array
      */
     protected function inflateArray(array $array, ?string $namespace, array $arguments): array
     {
@@ -356,7 +329,6 @@ class VariableProcessor
 
     /**
      * @param string $namespace
-     * @return string
      */
     protected function inflateNestedValue(string $value, ?string $namespace, array $arguments): string
     {

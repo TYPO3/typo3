@@ -182,8 +182,6 @@ class Result
      * a fluent interface, so you will probably use it like:
      * $result->forProperty('foo.bar')->getErrors() -- to get all errors
      * for property "foo.bar"
-     *
-     * @return Result
      */
     public function forProperty(?string $propertyPath): Result
     {
@@ -203,7 +201,6 @@ class Result
     /**
      * @todo: consider making this method protected as it will and should not be called from an outside scope
      *
-     * @return Result
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function recurseThroughResult(array $pathSegments): Result
@@ -260,8 +257,6 @@ class Result
 
     /**
      * Does the current Result object have Notices, Errors or Warnings? (Recursively)
-     *
-     * @return bool
      */
     public function hasMessages(): bool
     {
@@ -286,8 +281,6 @@ class Result
 
     /**
      * Does the current Result object have Errors? (Recursively)
-     *
-     * @return bool
      */
     public function hasErrors(): bool
     {
@@ -306,8 +299,6 @@ class Result
 
     /**
      * Does the current Result object have Warnings? (Recursively)
-     *
-     * @return bool
      */
     public function hasWarnings(): bool
     {
@@ -326,8 +317,6 @@ class Result
 
     /**
      * Does the current Result object have Notices? (Recursively)
-     *
-     * @return bool
      */
     public function hasNotices(): bool
     {

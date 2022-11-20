@@ -51,9 +51,6 @@ class SitemapXmlCest
         $I->amOnUrl($url . '?type=1533906435');
     }
 
-    /**
-     * @return string
-     */
     private function getCurrentURL(ApplicationTester $I, int $attempt = 1): string
     {
         $url = $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
@@ -89,9 +86,6 @@ class SitemapXmlCest
         $I->assertIsNumeric($priority);
     }
 
-    /**
-     * @return array
-     */
     protected function sitemapDataProvider(): array
     {
         return [
@@ -125,8 +119,6 @@ class SitemapXmlCest
 
     /**
      * Find text by given slug part
-     *
-     * @return RemoteWebElement
      */
     protected function getTableColumn(ApplicationTester $I, string $slug, int $sibling = 3): RemoteWebElement
     {

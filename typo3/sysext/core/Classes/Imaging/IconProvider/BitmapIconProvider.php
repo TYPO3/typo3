@@ -50,8 +50,6 @@ class BitmapIconProvider implements IconProviderInterface
 
     /**
      * Calculate public path of image file
-     *
-     * @return string
      */
     protected function getPublicPath(string $source): string
     {

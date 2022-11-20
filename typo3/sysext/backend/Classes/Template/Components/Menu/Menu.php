@@ -118,8 +118,6 @@ class Menu
 
     /**
      * Get identifier for data attribute
-     *
-     * @return string
      */
     public function getDataIdentifier(): string
     {

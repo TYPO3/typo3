@@ -1936,7 +1936,7 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/MvcPropertyMappingConfigurationServiceTest.php
 
 		-
-			message: "#^Property class@anonymous/extbase/Tests/Unit/Mvc/View/JsonViewTest\\.php\\:107\\:\\:\\$prohibited is unused\\.$#"
+			message: "#^Property class@anonymous/extbase/Tests/Unit/Mvc/View/JsonViewTest\\.php\\:106\\:\\:\\$prohibited is unused\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/View/JsonViewTest.php
 

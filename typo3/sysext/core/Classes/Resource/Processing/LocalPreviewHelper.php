@@ -39,8 +39,6 @@ class LocalPreviewHelper
 
     /**
      * Enforce default configuration for preview processing
-     *
-     * @return array
      */
     public static function preProcessConfiguration(array $configuration): array
     {
@@ -94,8 +92,6 @@ class LocalPreviewHelper
     /**
      * Does the heavy lifting prescribed in processTask()
      * except that the processing can be performed on any given local image
-     *
-     * @return array|null
      */
     public function processWithLocalFile(TaskInterface $task, string $localFile): ?array
     {

@@ -39,7 +39,6 @@ class SuggestWizardController
      * Ajax handler for the "suggest" feature in FormEngine.
      *
      * @throws \RuntimeException for incomplete or invalid arguments
-     * @return ResponseInterface
      */
     public function searchAction(ServerRequestInterface $request): ResponseInterface
     {

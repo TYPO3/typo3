@@ -375,7 +375,6 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * @return array
      * @internal
      */
     public function getState(): array
@@ -597,9 +596,6 @@ class PageRenderer implements SingletonInterface
         $this->requireJsPath = $path;
     }
 
-    /**
-     * @return array
-     */
     public function getRequireJsConfig(string $scope = null): array
     {
         // return basic RequireJS configuration without shim, paths and packages
@@ -979,9 +975,6 @@ class PageRenderer implements SingletonInterface
 
     /**
      * Returns the requested meta tag
-     *
-     *
-     * @return array
      */
     public function getMetaTag(string $type, string $name): array
     {
@@ -1472,7 +1465,6 @@ class PageRenderer implements SingletonInterface
     /**
      * Generates RequireJS loader HTML markup.
      *
-     * @return string
      * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     protected function getRequireJsLoader(): string
@@ -1540,7 +1532,6 @@ class PageRenderer implements SingletonInterface
 
     /**
      * @param string[] $keys
-     * @return array
      */
     protected function filterArrayKeys(array $array, array $keys, bool $keep = true): array
     {
@@ -1990,8 +1981,6 @@ class PageRenderer implements SingletonInterface
 
     /**
      * Reads the template file and returns the requested part as string
-     *
-     * @return string
      */
     protected function getTemplate(): string
     {
@@ -2066,8 +2055,6 @@ class PageRenderer implements SingletonInterface
 
     /**
      * Converts the language labels for usage in JavaScript
-     *
-     * @return array
      */
     protected function parseLanguageLabelsForJavaScript(): array
     {
@@ -2190,8 +2177,6 @@ class PageRenderer implements SingletonInterface
 
     /**
      * Create link (inline=0) or style (inline=1) tag
-     *
-     * @return string
      */
     private function createCssTag(array $properties, string $file): string
     {
@@ -2666,7 +2651,6 @@ class PageRenderer implements SingletonInterface
      * Resolving the absolute path in the frontend with conflict with
      * applying config.absRefPrefix in frontend rendering process.
      *
-     * @return string
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setAbsRefPrefix()
      */
     protected function getAbsoluteWebPath(string $file): string
@@ -2792,7 +2776,6 @@ class PageRenderer implements SingletonInterface
      * Creates a CSS inline tag
      *
      * @param string $file the filename to process
-     * @return string
      */
     protected function createInlineCssTagFromFile(string $file, array $properties): string
     {

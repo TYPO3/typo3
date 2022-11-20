@@ -40,8 +40,6 @@ class FormDefinitionConversionService implements SingletonInterface
      * and a hmac hash for the property value.
      * "_orig_<propertyName>" will be used to validate the form definition on saving.
      * @see \TYPO3\CMS\Form\Domain\Configuration\FormDefinitionValidationService::validateFormDefinitionProperties()
-     *
-     * @return array
      */
     public function addHmacData(array $formDefinition): array
     {
@@ -69,8 +67,6 @@ class FormDefinitionConversionService implements SingletonInterface
 
     /**
      * Remove the "_orig_<propertyName>" values from the form definition.
-     *
-     * @return array
      */
     public function removeHmacData(array $formDefinition): array
     {
@@ -93,8 +89,6 @@ class FormDefinitionConversionService implements SingletonInterface
 
     /**
      * Migrate various finisher options
-     *
-     * @return array
      */
     public function migrateFinisherConfiguration(array $formDefinition): array
     {

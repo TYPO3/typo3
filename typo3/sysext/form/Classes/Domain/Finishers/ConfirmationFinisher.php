@@ -129,7 +129,6 @@ class ConfirmationFinisher extends AbstractFinisher
     }
 
     /**
-     * @return StandaloneView
      * @throws FinisherException
      */
     protected function initializeStandaloneView(FormRuntime $formRuntime): StandaloneView

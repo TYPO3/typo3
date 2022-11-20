@@ -37,17 +37,11 @@ class EntityPointerLink
         $this->subject = $subject;
     }
 
-    /**
-     * @return EntityPointer
-     */
     public function getSubject(): EntityPointer
     {
         return $this->subject;
     }
 
-    /**
-     * @return EntityPointerLink
-     */
     public function getHead(): EntityPointerLink
     {
         $head = $this;
@@ -57,17 +51,11 @@ class EntityPointerLink
         return $head;
     }
 
-    /**
-     * @return EntityPointerLink|null
-     */
     public function getAncestor(): ?EntityPointerLink
     {
         return $this->ancestor;
     }
 
-    /**
-     * @return EntityPointerLink
-     */
     public function withAncestor(EntityPointerLink $ancestor): self
     {
         if ($this->ancestor === $ancestor) {

@@ -42,8 +42,6 @@ class BackendUserGroupRepository extends Repository
 
     /**
      * Finds Backend Usergroups on a given list of uids
-     *
-     * @return array
      */
     public function findByUidList(array $uidList): array
     {

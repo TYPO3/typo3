@@ -41,8 +41,6 @@ class ImageCropScaleMaskTask extends AbstractGraphicalTask
     /**
      * Checks if the given configuration is sensible for this task, i.e. if all required parameters
      * are given, within the boundaries and don't conflict with each other.
-     *
-     * @return bool
      */
     protected function isValidConfiguration(array $configuration): bool
     {

@@ -58,9 +58,6 @@ class CacheHashCalculatorTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->calculateCacheHash($params));
     }
 
-    /**
-     * @return array
-     */
     public function cacheHashCalculationDataProvider(): array
     {
         return [
@@ -96,9 +93,6 @@ class CacheHashCalculatorTest extends UnitTestCase
         self::assertEquals($expected, array_keys($actual));
     }
 
-    /**
-     * @return array
-     */
     public function getRelevantParametersDataprovider(): array
     {
         return [
@@ -145,9 +139,6 @@ class CacheHashCalculatorTest extends UnitTestCase
         $this->subject->generateForParameters('&key=x');
     }
 
-    /**
-     * @return array
-     */
     public function canGenerateForParametersDataProvider(): array
     {
         $knowHash = 'fac112f7e662c83c19b57142c3a921f5';
@@ -174,9 +165,6 @@ class CacheHashCalculatorTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->doParametersRequireCacheHash($params));
     }
 
-    /**
-     * @return array
-     */
     public function parametersRequireCacheHashDataprovider(): array
     {
         return [
@@ -203,9 +191,6 @@ class CacheHashCalculatorTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->generateForParameters($params));
     }
 
-    /**
-     * @return array
-     */
     public function canWhitelistParametersDataProvider(): array
     {
         $oneParamHash = 'eae50a13101afd53a9d2c543230eb5bb';
@@ -230,9 +215,6 @@ class CacheHashCalculatorTest extends UnitTestCase
         self::assertEquals($expected, array_keys($actual));
     }
 
-    /**
-     * @return array
-     */
     public function canSkipParametersWithEmptyValuesDataProvider(): array
     {
         return [

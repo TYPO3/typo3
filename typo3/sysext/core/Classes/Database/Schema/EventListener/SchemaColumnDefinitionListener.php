@@ -56,7 +56,6 @@ class SchemaColumnDefinitionListener
     /**
      * Build a Doctrine column object for TYPE/TYPE columns.
      *
-     * @return \Doctrine\DBAL\Schema\Column
      * @throws \Doctrine\DBAL\Exception
      * @todo: The $tableColumn source currently only support MySQL definition style.
      */
@@ -85,8 +84,6 @@ class SchemaColumnDefinitionListener
 
     /**
      * Extract the field type from the definition string
-     *
-     * @return string
      */
     protected function getDatabaseType(string $typeDefinition): string
     {
@@ -96,9 +93,6 @@ class SchemaColumnDefinitionListener
         return $dbType;
     }
 
-    /**
-     * @return array
-     */
     protected function getUnquotedEnumerationValues(string $typeDefinition): array
     {
         $valuesDefinition = preg_replace('#^(enum|set)\((.*)\)\s*$#i', '$2', $typeDefinition) ?? '';

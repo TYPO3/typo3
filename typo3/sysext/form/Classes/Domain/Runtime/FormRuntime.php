@@ -478,8 +478,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Returns TRUE if the last page of the form has been submitted, otherwise FALSE
-     *
-     * @return bool
      */
     protected function isAfterLastPage(): bool
     {
@@ -488,17 +486,12 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Returns TRUE if no previous page is stored in the FormState, otherwise FALSE
-     *
-     * @return bool
      */
     protected function isFirstRequest(): bool
     {
         return $this->lastDisplayedPage === null;
     }
 
-    /**
-     * @return bool
-     */
     protected function isPostRequest(): bool
     {
         return $this->getRequest()->getMethod() === 'POST';
@@ -511,7 +504,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * will be rendered.
      *
      * @todo: this should be checked against https://forge.typo3.org/issues/91625 as this was fixed differently for UriBuilder
-     * @return bool
      */
     protected function isRenderedCached(): bool
     {
@@ -539,8 +531,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * returns TRUE if the user went back to any previous step in the form.
-     *
-     * @return bool
      */
     protected function userWentBackToPreviousStep(): bool
     {
@@ -548,7 +538,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
-     * @return Result
      * @throws PropertyMappingException
      */
     protected function mapAndValidatePage(Page $page): Result
@@ -679,8 +668,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Executes all finishers of this form
-     *
-     * @return string
      */
     protected function invokeFinishers(): string
     {
@@ -757,7 +744,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * Is this not the case, all possible submitted values will be discarded
      * and the first form step will be shown with an empty form state.
      *
-     * @return bool
      * @internal
      */
     public function canProcessFormSubmission(): bool
@@ -766,7 +752,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
-     * @return FormSession|null
      * @internal
      */
     public function getFormSession(): ?FormSession
@@ -776,8 +761,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Returns the currently selected page
-     *
-     * @return Page|null
      */
     public function getCurrentPage(): ?Page
     {
@@ -786,8 +769,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Returns the previous page of the currently selected one or NULL if there is no previous page
-     *
-     * @return Page|null
      */
     public function getPreviousPage(): ?Page
     {
@@ -800,8 +781,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Returns the next page of the currently selected one or NULL if there is no next page
-     *
-     * @return Page|null
      */
     public function getNextPage(): ?Page
     {
@@ -815,8 +794,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     /**
      * Returns the previous enabled page of the currently selected one
      * or NULL if there is no previous page
-     *
-     * @return Page|null
      */
     public function getPreviousEnabledPage(): ?Page
     {
@@ -844,8 +821,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     /**
      * Returns the next enabled page of the currently selected one or
      * NULL if there is no next page
-     *
-     * @return Page|null
      */
     public function getNextEnabledPage(): ?Page
     {
@@ -878,8 +853,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * Abstract "type" of this Renderable. Is used during the rendering process
      * to determine the template file or the View PHP class being used to render
      * the particular element.
-     *
-     * @return string
      */
     public function getType(): string
     {
@@ -888,7 +861,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * @param string $identifier
-     * @return bool
      * @internal
      */
     public function offsetExists(mixed $identifier): bool
@@ -917,7 +889,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * @param string $identifier
-     * @return mixed
      * @internal
      */
     public function offsetGet(mixed $identifier): mixed
@@ -976,7 +947,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
-     * @return FormState|null
      * @internal
      */
     public function getFormState(): ?FormState
@@ -1007,8 +977,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Get the label which shall be displayed next to the form element
-     *
-     * @return string
      */
     public function getLabel(): string
     {
@@ -1017,8 +985,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Get the template name of the renderable
-     *
-     * @return string
      */
     public function getTemplateName(): string
     {
@@ -1027,8 +993,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Get the underlying form definition from the runtime
-     *
-     * @return FormDefinition
      */
     public function getFormDefinition(): FormDefinition
     {
@@ -1100,17 +1064,12 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Reference to the current running finisher
-     *
-     * @return FinisherInterface|null
      */
     public function getCurrentFinisher(): ?FinisherInterface
     {
         return $this->currentFinisher;
     }
 
-    /**
-     * @return Resolver
-     */
     protected function getConditionResolver(): Resolver
     {
         $formValues = array_replace_recursive(
@@ -1149,17 +1108,11 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         );
     }
 
-    /**
-     * @return FrontendUserAuthentication
-     */
     protected function getFrontendUser(): FrontendUserAuthentication
     {
         return $this->getTypoScriptFrontendController()->fe_user;
     }
 
-    /**
-     * @return TypoScriptFrontendController|null
-     */
     protected function getTypoScriptFrontendController(): ?TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'] ?? null;

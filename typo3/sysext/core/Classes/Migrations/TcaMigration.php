@@ -47,7 +47,6 @@ class TcaMigration
      * See unit tests for details.
      *
      * @param array $tca
-     * @return array
      */
     public function migrate(array $tca): array
     {
@@ -127,7 +126,6 @@ class TcaMigration
      * ['config']['type'] = 'none'; for those to enforce config
      *
      * @param array $tca Incoming TCA
-     * @return array
      */
     protected function migrateColumnsConfig(array $tca): array
     {
@@ -234,7 +232,6 @@ class TcaMigration
      * The list of references to usages below is not necessarily complete.
      *
      * @param array $tca
-     * @return array
      *
      * @see \TYPO3\CMS\Core\DataHandling\DataHandler::fillInFieldArray()
      */
@@ -269,9 +266,6 @@ class TcaMigration
 
     /**
      * Removes $TCA[$mytable][columns][_transOrigPointerField_][exclude] if defined
-     *
-     *
-     * @return array
      */
     protected function removeExcludeFieldForTransOrigPointerField(array $tca): array
     {
@@ -292,8 +286,6 @@ class TcaMigration
     /**
      * Removes $TCA[$mytable]['interface']['showRecordFieldList'] and also $TCA[$mytable]['interface']
      * if `showRecordFieldList` was the only key in the array.
-     *
-     * @return array
      */
     protected function removeShowRecordFieldListField(array $tca): array
     {
@@ -340,8 +332,6 @@ class TcaMigration
     /**
      * Replaces $TCA[$mytable][columns][$TCA[$mytable][ctrl][languageField]][config] with
      * $TCA[$mytable][columns][$TCA[$mytable][ctrl][languageField]][config][type] = 'language'
-     *
-     * @return array
      */
     protected function migrateLanguageFieldToTcaTypeLanguage(array $tca): array
     {
@@ -365,8 +355,6 @@ class TcaMigration
     /**
      * Replaces $TCA[$mytable][columns][field][config][special] = 'languages' with
      * $TCA[$mytable][columns][field][config][type] = 'language'
-     *
-     * @return array
      */
     protected function migrateSpecialLanguagesToTcaTypeLanguage(array $tca): array
     {
@@ -417,8 +405,6 @@ class TcaMigration
     /**
      * Moves the "fileFolder" configuration of TCA columns type=select
      * into sub array "fileFolderConfig", while renaming those options.
-     *
-     * @return array
      */
     protected function migrateFileFolderConfiguration(array $tca): array
     {
@@ -464,8 +450,6 @@ class TcaMigration
      * disabled by a dedicated option, e.g. showNewRecordLink,
      * this wizard sets those options to false and unsets the
      * invalid levelLinksPosition value.
-     *
-     * @return array
      */
     protected function migrateLevelLinksPosition(array $tca): array
     {
@@ -497,8 +481,6 @@ class TcaMigration
 
     /**
      * If a column has [treeConfig][rootUid] defined, migrate to [treeConfig][startingPoints] on the same level.
-     *
-     * @return array
      */
     protected function migrateRootUidToStartingPoints(array $tca): array
     {

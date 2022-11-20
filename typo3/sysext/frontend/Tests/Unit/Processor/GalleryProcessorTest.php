@@ -202,7 +202,6 @@ class GalleryProcessorTest extends UnitTestCase
 
     /**
      * Count test data provider
-     * @return array
      */
     public function countDataProvider(): array
     {
@@ -276,8 +275,6 @@ class GalleryProcessorTest extends UnitTestCase
 
     /**
      * Data provider for calculateMediaWidthsAndHeightsTest
-     *
-     * @return array
      */
     public function calculateMediaWidthsAndHeightsDataProvider(): array
     {

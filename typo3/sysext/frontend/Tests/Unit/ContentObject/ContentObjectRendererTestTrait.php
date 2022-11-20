@@ -24,9 +24,6 @@ use TYPO3\CMS\Core\Site\Entity\Site;
  */
 trait ContentObjectRendererTestTrait
 {
-    /**
-     * @return array
-     */
     private function getLibParseFunc_RTE(): array
     {
         return [
@@ -182,9 +179,6 @@ trait ContentObjectRendererTestTrait
         ];
     }
 
-    /**
-     * @return Site
-     */
     private function createSiteWithLanguage(array $languageConfiguration): Site
     {
         return new Site('test', 1, [

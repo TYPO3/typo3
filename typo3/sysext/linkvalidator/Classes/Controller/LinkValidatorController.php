@@ -422,7 +422,6 @@ class LinkValidatorController
      * Builds the checkboxes to show which types of links are available
      *
      * @param string $prefix "report" or "check" for "Report" and "Check links" tab
-     * @return array
      */
     protected function getCheckOptions(string $prefix): array
     {

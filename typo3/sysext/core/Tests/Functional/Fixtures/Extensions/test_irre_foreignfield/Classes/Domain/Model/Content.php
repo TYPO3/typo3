@@ -59,9 +59,6 @@ class Content extends AbstractEntity
         $this->header = $header;
     }
 
-    /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
-     */
     public function getHotels(): ObjectStorage
     {
         return $this->hotels;

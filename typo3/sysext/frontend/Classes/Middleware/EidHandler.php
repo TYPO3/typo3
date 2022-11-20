@@ -42,7 +42,6 @@ class EidHandler implements MiddlewareInterface
     /**
      * Dispatches the request to the corresponding eID class or eID script
      *
-     * @return ResponseInterface
      * @throws Exception
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

@@ -126,7 +126,6 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
      * ]
      *
      * @param array $input
-     * @return array
      */
     protected function transformMultiValueElementsForFormFramework(array $input): array
     {
@@ -152,7 +151,6 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
      * Remove keys from an array if the key value is an empty array
      *
      * @todo ArrayUtility?
-     * @return array
      */
     protected function filterEmptyArrays(array $array): array
     {
@@ -173,25 +171,16 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
         return $array;
     }
 
-    /**
-     * @return string
-     */
     protected function retrieveSessionToken(): string
     {
         return $this->getBackendUser()->getSessionData('extFormProtectionSessionToken');
     }
 
-    /**
-     * @return FormDefinitionValidationService
-     */
     protected function getFormDefinitionValidationService(): FormDefinitionValidationService
     {
         return GeneralUtility::makeInstance(FormDefinitionValidationService::class);
     }
 
-    /**
-     * @return FormDefinitionConversionService
-     */
     protected function getFormDefinitionConversionService(): FormDefinitionConversionService
     {
         return GeneralUtility::makeInstance(FormDefinitionConversionService::class);

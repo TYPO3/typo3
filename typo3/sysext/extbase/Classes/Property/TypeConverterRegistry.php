@@ -91,7 +91,6 @@ class TypeConverterRegistry
      * @param string $sourceType Type of the source to convert from
      * @param class-string $targetClass Name of the target class to find a type converter for
      *
-     * @return TypeConverterInterface|null
      *
      * @throws Exception\InvalidTargetException
      * @throws Exception\DuplicateTypeConverterException
@@ -144,8 +143,6 @@ class TypeConverterRegistry
 
     /**
      * @param array<int,TypeConverterInterface> $converters
-     *
-     * @return TypeConverterInterface|null
      */
     protected function findEligibleConverterWithHighestPriority(array $converters): ?TypeConverterInterface
     {

@@ -80,8 +80,6 @@ class BulkInsertQuery
 
     /**
      * Render the bulk insert statement as string.
-     *
-     * @return string
      */
     public function __toString(): string
     {
@@ -191,8 +189,6 @@ class BulkInsertQuery
 
     /**
      * Returns the parameters for this INSERT query being constructed indexed by parameter index.
-     *
-     * @return array
      */
     public function getParameters(): array
     {
@@ -201,8 +197,6 @@ class BulkInsertQuery
 
     /**
      * Returns the parameter types for this INSERT query being constructed indexed by parameter index.
-     *
-     * @return array
      */
     public function getParameterTypes(): array
     {
@@ -212,7 +206,6 @@ class BulkInsertQuery
     /**
      * Returns the SQL formed by the current specifications of this INSERT query.
      *
-     * @return string
      *
      * @throws \LogicException if no values have been specified yet.
      */

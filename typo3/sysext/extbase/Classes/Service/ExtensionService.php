@@ -207,7 +207,6 @@ class ExtensionService implements SingletonInterface
      *
      * @param string $extensionName name of the extension to retrieve the target PID for
      * @param string $pluginName name of the plugin to retrieve the target PID for
-     * @return string|null
      */
     public function getDefaultControllerNameByPlugin(string $extensionName, string $pluginName): ?string
     {
@@ -223,7 +222,6 @@ class ExtensionService implements SingletonInterface
      * @param string $extensionName name of the extension to retrieve the target PID for
      * @param string $pluginName name of the plugin to retrieve the target PID for
      * @param string $controllerName name of the controller to retrieve default action for
-     * @return string|null
      */
     public function getDefaultActionNameByPluginAndController(string $extensionName, string $pluginName, string $controllerName): ?string
     {

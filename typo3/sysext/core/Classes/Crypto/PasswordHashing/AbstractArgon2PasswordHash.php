@@ -109,8 +109,6 @@ abstract class AbstractArgon2PasswordHash implements PasswordHashInterface, Argo
     /**
      * Returns true if PHP is compiled '--with-password-argon2' so
      * the hash algorithm is available.
-     *
-     * @return bool
      */
     public function isAvailable(): bool
     {

@@ -93,7 +93,6 @@ class DebuggerUtility
      * Renders a dump of the given value
      *
      * @param mixed $value
-     * @return string
      */
     protected static function renderDump($value, int $level, bool $plainText, bool $ansiColors): string
     {
@@ -129,8 +128,6 @@ class DebuggerUtility
 
     /**
      * Renders a dump of the given array
-     *
-     * @return string
      */
     protected static function renderArray(array $array, int $level, bool $plainText = false, bool $ansiColors = false): string
     {
@@ -165,8 +162,6 @@ class DebuggerUtility
 
     /**
      * Renders a dump of the given object
-     *
-     * @return string
      */
     protected static function renderObject(object $object, int $level, bool $plainText = false, bool $ansiColors = false): string
     {
@@ -190,8 +185,6 @@ class DebuggerUtility
 
     /**
      * Renders a dump of the given closure
-     *
-     * @return string
      */
     protected static function renderClosure(\Closure $object, int $level, bool $plainText = false, bool $ansiColors = false): string
     {
@@ -450,9 +443,6 @@ class DebuggerUtility
         return $dump;
     }
 
-    /**
-     * @return string
-     */
     protected static function renderCollection(iterable $collection, int $level, bool $plainText, bool $ansiColors): string
     {
         $dump = '';

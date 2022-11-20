@@ -33,8 +33,6 @@ trait SiteLanguageAccessorTrait
 
     /**
      * Resolves one record out of given language fallbacks.
-     *
-     * @return array|null
      */
     protected function resolveLanguageFallback(array $results, ?string $languageFieldName, ?array $languageIds): ?array
     {
@@ -84,7 +82,6 @@ trait SiteLanguageAccessorTrait
      * Provides LanguageAspect which contains the logic how fallbacks
      * for a given context/overlay-mode shall be handled.
      *
-     * @return LanguageAspect
      * @see LanguageAspectFactory::createFromSiteLanguage
      */
     protected function getLanguageAspect(): LanguageAspect

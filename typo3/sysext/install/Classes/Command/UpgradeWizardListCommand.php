@@ -93,8 +93,6 @@ class UpgradeWizardListCommand extends Command
 
     /**
      * List available upgrade wizards. If -all is given, already done wizards are listed, too.
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -135,7 +133,6 @@ class UpgradeWizardListCommand extends Command
      * Returns null if wizard is already done
      *
      * @param bool $all
-     * @return \TYPO3\CMS\Install\Updates\UpgradeWizardInterface|null
      */
     protected function getWizard(string $className, string $identifier, $all = false): ?UpgradeWizardInterface
     {

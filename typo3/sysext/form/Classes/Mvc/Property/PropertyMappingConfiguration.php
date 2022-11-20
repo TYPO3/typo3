@@ -128,7 +128,6 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
     }
 
     /**
-     * @return bool
      * @internal
      */
     protected function checkSaveFileMountAccess(string $saveToFileMountIdentifier): bool

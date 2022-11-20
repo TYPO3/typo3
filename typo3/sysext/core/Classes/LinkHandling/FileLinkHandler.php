@@ -41,8 +41,6 @@ class FileLinkHandler implements LinkHandlingInterface
 
     /**
      * Returns the link to a file as a string
-     *
-     * @return string
      */
     public function asString(array $parameters): string
     {
@@ -67,7 +65,6 @@ class FileLinkHandler implements LinkHandlingInterface
      * Get a file object inside the array data from the string
      *
      * @param array $data with the "file" property containing a File object
-     * @return array
      * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
      */
     public function resolveHandlerData(array $data): array
@@ -85,7 +82,6 @@ class FileLinkHandler implements LinkHandlingInterface
     }
 
     /**
-     * @return FileInterface|null
      * @throws FileDoesNotExistException
      */
     protected function resolveFile(array $data): ?FileInterface
@@ -101,8 +97,6 @@ class FileLinkHandler implements LinkHandlingInterface
 
     /**
      * Initializes the resource factory (only once)
-     *
-     * @return ResourceFactory
      */
     protected function getResourceFactory(): ResourceFactory
     {

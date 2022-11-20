@@ -166,8 +166,6 @@ class ExportCommand extends Command
 
     /**
      * Executes the command for exporting a t3d/xml file from the TYPO3 system
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

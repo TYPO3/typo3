@@ -55,7 +55,6 @@ class DriverFilteredSearchResult implements FileSearchResultInterface
     }
 
     /**
-     * @return int
      * @see Countable::count()
      */
     public function count(): int
@@ -66,7 +65,6 @@ class DriverFilteredSearchResult implements FileSearchResultInterface
     }
 
     /**
-     * @return File
      * @see Iterator::current()
      */
     public function current(): File
@@ -77,7 +75,6 @@ class DriverFilteredSearchResult implements FileSearchResultInterface
     }
 
     /**
-     * @return int
      * @see Iterator::key()
      */
     public function key(): int
@@ -106,7 +103,6 @@ class DriverFilteredSearchResult implements FileSearchResultInterface
     }
 
     /**
-     * @return bool
      * @see Iterator::valid()
      */
     public function valid(): bool

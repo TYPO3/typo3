@@ -30,7 +30,6 @@ class TcaSlug implements FormDataProviderInterface
      * Resolve slug prefix items
      *
      *
-     * @return array
      * @throws \UnexpectedValueException
      */
     public function addData(array $result): array
@@ -69,8 +68,6 @@ class TcaSlug implements FormDataProviderInterface
 
     /**
      * Render the prefix for the input field.
-     *
-     * @return string
      */
     protected function getPrefixForSite(SiteInterface $site, int $languageId): string
     {

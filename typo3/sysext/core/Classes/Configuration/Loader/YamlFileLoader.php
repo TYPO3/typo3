@@ -146,7 +146,6 @@ class YamlFileLoader implements LoggerAwareInterface
     /**
      * Checks for the special "imports" key on the main level of a file,
      * which calls "load" recursively.
-     * @return array
      */
     protected function processImports(array $content, ?string $fileName): array
     {
@@ -248,9 +247,6 @@ class YamlFileLoader implements LoggerAwareInterface
         return $result ?? $placeholder;
     }
 
-    /**
-     * @return array
-     */
     protected function getParts(string $placeholders): array
     {
         // find occurrences of placeholders like %some()% and %array.access%.

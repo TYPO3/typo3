@@ -46,8 +46,6 @@ class LocalizationRepository
 
     /**
      * Fetch the language from which the records in a certain language were initially localized
-     *
-     * @return array
      */
     public function fetchOriginLanguage(int $pageId, int $localizedLanguage): array
     {
@@ -87,8 +85,6 @@ class LocalizationRepository
     /**
      * Returns number of localized records in given page and language
      * Records which were added to the language directly (not through translation) are not counted.
-     *
-     * @return int
      */
     public function getLocalizedRecordCount(int $pageId, int $languageId): int
     {
@@ -118,8 +114,6 @@ class LocalizationRepository
 
     /**
      * Fetch all available languages
-     *
-     * @return array
      */
     public function fetchAvailableLanguages(int $pageId, int $languageId): array
     {
@@ -228,8 +222,6 @@ class LocalizationRepository
     /**
      * Get a QueryBuilder for the given table with preconfigured restrictions
      * to not retrieve workspace placeholders or deleted records.
-     *
-     * @return QueryBuilder
      */
     protected function getQueryBuilderWithWorkspaceRestriction(string $tableName): QueryBuilder
     {

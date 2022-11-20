@@ -81,9 +81,6 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
         $this->map = array_map('strval', $map);
     }
 
-    /**
-     * @return string
-     */
     public function getRoutePathRedecorationPattern(): string
     {
         return $this->buildRegularExpressionPattern(false);
@@ -177,8 +174,6 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
 
     /**
      * Checks if the value exists inside the map.
-     *
-     * @return string
      */
     protected function resolveValue(?string $type): string
     {
@@ -191,8 +186,6 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
 
     /**
      * Builds a regexp out of the map.
-     *
-     * @return string
      */
     protected function buildRegularExpressionPattern(bool $useNames = true): string
     {
@@ -225,8 +218,6 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
 
     /**
      * Helper method for regexps.
-     *
-     * @return string
      */
     protected function quoteForRegularExpressionPattern(string $value): string
     {
@@ -235,8 +226,6 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
 
     /**
      * Checks if a slash should be prefixed.
-     *
-     * @return bool
      */
     protected function needsSlashPrefix(string $value): bool
     {

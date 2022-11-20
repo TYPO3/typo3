@@ -992,9 +992,6 @@ class RelationTest extends FunctionalTestCase
         self::assertEquals($this->blog->getCategories()->count(), $newBlogCategoryCount);
     }
 
-    /**
-     * @return array
-     */
     public function distinctDataProvider(): array
     {
         return [
@@ -1110,9 +1107,6 @@ class RelationTest extends FunctionalTestCase
         $this->assertDistinctIds($postIds);
     }
 
-    /**
-     * @return QueryInterface
-     */
     protected function provideFindPostsByPublisherQuery(int $publisherId): QueryInterface
     {
         $postRepository = $this->get(PostRepository::class);
@@ -1163,9 +1157,6 @@ class RelationTest extends FunctionalTestCase
         $this->assertDistinctIds($blogIds);
     }
 
-    /**
-     * @return QueryInterface
-     */
     protected function provideFindBlogsByPostsSinceQuery(\DateTime $date): QueryInterface
     {
         $blogRepository = $this->get(BlogRepository::class);
@@ -1209,9 +1200,6 @@ class RelationTest extends FunctionalTestCase
         $this->assertDistinctIds($personIds);
     }
 
-    /**
-     * @return QueryInterface
-     */
     protected function provideFindPersonsByTagNameQuery(string $tagName): QueryInterface
     {
         $personRepository = $this->get(PersonRepository::class);
@@ -1258,9 +1246,6 @@ class RelationTest extends FunctionalTestCase
         $this->assertDistinctIds($postsIds);
     }
 
-    /**
-     * @return QueryInterface
-     */
     protected function provideFindPostsByAuthorTagName(string $tagName): QueryInterface
     {
         $postRepository = $this->get(PostRepository::class);
@@ -1308,8 +1293,6 @@ class RelationTest extends FunctionalTestCase
 
     /**
      * Counts amount of distinct IDS.
-     *
-     * @return int
      */
     protected function countDistinctIds(array $ids): int
     {

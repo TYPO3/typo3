@@ -121,9 +121,6 @@ class QueryGeneratorTest extends FunctionalTestCase
         self::assertSame($expectation, $treeList);
     }
 
-    /**
-     * @return array
-     */
     public function dataForGetTreeListReturnsListOfIdsWithBeginSetToZero(): array
     {
         return [
@@ -163,9 +160,6 @@ class QueryGeneratorTest extends FunctionalTestCase
         self::assertSame($expectation, $treeList);
     }
 
-    /**
-     * @return array
-     */
     public function dataForGetTreeListReturnsListOfIdsWithBeginSetToMinusOne(): array
     {
         return [

@@ -55,7 +55,6 @@ class IpAnonymizationUtility
      *
      * @param string $address IP address
      * @param int $mask Allowed values are 0 (masking disabled), 1 (mask host), 2 (mask host and subnet)
-     * @return string
      * @throws \UnexpectedValueException
      */
     public static function anonymizeIp(string $address, int $mask = null): string

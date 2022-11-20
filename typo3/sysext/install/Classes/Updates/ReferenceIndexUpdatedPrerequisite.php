@@ -57,8 +57,6 @@ class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, Chatty
 
     /**
      * Updates the reference index
-     *
-     * @return bool
      */
     public function ensure(): bool
     {
@@ -71,8 +69,6 @@ class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, Chatty
 
     /**
      * Checks whether there are reference index updates to be done
-     *
-     * @return bool
      */
     public function isFulfilled(): bool
     {

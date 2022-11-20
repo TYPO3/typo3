@@ -188,9 +188,6 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
         $container->setDefinition($finalServiceName, $factoryDefinition);
     }
 
-    /**
-     * @return callable|null
-     */
     private function getStaticallyCallable(callable $callable): ?callable
     {
         if (is_string($callable)) {
@@ -203,9 +200,6 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
         return null;
     }
 
-    /**
-     * @return string|null
-     */
     private function getReturnType(\ReflectionFunctionAbstract $reflection, string $serviceName): ?string
     {
         if ($reflection->getReturnType() instanceof \ReflectionNamedType) {
@@ -219,9 +213,6 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
         return null;
     }
 
-    /**
-     * @return \ReflectionFunctionAbstract
-     */
     private function getReflection(callable $callable): \ReflectionFunctionAbstract
     {
         if (is_array($callable) && count($callable) === 2) {
@@ -236,7 +227,6 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
 
     /**
      * @param ContainerBuilder $container
-     * @return array
      */
     private function getDecoratedServiceName(ContainerBuilder $container, string $serviceName): array
     {

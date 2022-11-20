@@ -729,7 +729,6 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table
      * @param int $pageId
      * @param array $prepopulatedFieldArray
-     * @return array
      */
     protected function applyDefaultsForFieldArray(string $table, int $pageId, array $prepopulatedFieldArray): array
     {
@@ -1444,7 +1443,6 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table
      * @param string $field
-     * @return array
      */
     protected function resolveFieldConfigurationAndRespectColumnsOverrides(string $table, string $field): array
     {
@@ -1678,7 +1676,6 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param mixed $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
-     * @return array
      */
     protected function checkValueForNumber(mixed $value, array $tcaFieldConf): array
     {
@@ -2005,7 +2002,6 @@ class DataHandler implements LoggerAwareInterface
      * @param int|string $id uid of record
      * @param string $status The status - 'update' or 'new' flag
      * @param string $field Field name
-     * @return array
      */
     protected function checkValueForCategory(
         array $result,
@@ -2056,7 +2052,6 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param mixed $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
-     * @return array
      */
     protected function checkValueForDatetime(mixed $value, array $tcaFieldConf): array
     {
@@ -3647,8 +3642,6 @@ class DataHandler implements LoggerAwareInterface
      * First, get the list that the user is allowed to modify (all if admin),
      * and then check against a possible limitation within "DataHandler->copyWhichTables" if not set to "*"
      * to limit the list further down
-     *
-     * @return array
      */
     protected function getAllowedTablesToCopyWhenCopyingAPage(): array
     {
@@ -5003,8 +4996,6 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * Returns true if a localization of a record exists.
-     *
-     * @return bool
      */
     protected function isRecordLocalized(string $table, int $uid, int $language): bool
     {
@@ -7806,9 +7797,6 @@ class DataHandler implements LoggerAwareInterface
         }
     }
 
-    /**
-     * @return RecordHistoryStore
-     */
     protected function getRecordHistoryStore(): RecordHistoryStore
     {
         return GeneralUtility::makeInstance(
@@ -8252,7 +8240,6 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param int $pageId
      * @param int $languageId
-     * @return SiteLanguage|null
      */
     protected function getSiteLanguageForPage(int $pageId, int $languageId): ?SiteLanguage
     {
@@ -9407,7 +9394,6 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Name of the table
      * @param int $id Uid of the record
-     * @return int|null
      * @internal should only be used from within TYPO3 Core
      */
     public function getAutoVersionId($table, $id): ?int
@@ -9793,9 +9779,6 @@ class DataHandler implements LoggerAwareInterface
         $this->correlationId = $correlationId;
     }
 
-    /**
-     * @return CorrelationId|null
-     */
     public function getCorrelationId(): ?CorrelationId
     {
         return $this->correlationId;
@@ -9804,8 +9787,6 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Entry point to post process a database insert. Currently bails early unless a UID has been forced
      * and the database platform is not MySQL.
-     *
-     * @return int
      */
     protected function postProcessDatabaseInsert(Connection $connection, string $tableName, int $suggestedUid): int
     {
@@ -9913,7 +9894,6 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * @internal should only be used from within TYPO3 Core
-     * @return array
      */
     public function getHistoryRecords(): array
     {

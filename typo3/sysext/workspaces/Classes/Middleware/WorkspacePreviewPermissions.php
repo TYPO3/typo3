@@ -33,7 +33,6 @@ use TYPO3\CMS\Workspaces\Authentication\PreviewUserAuthentication;
 class WorkspacePreviewPermissions implements MiddlewareInterface
 {
     /**
-     * @return ResponseInterface
      * @throws \Exception
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

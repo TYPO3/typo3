@@ -34,8 +34,6 @@ interface ConfigurationManagerInterface extends SingletonInterface
 
     /**
      * Get the content object
-     *
-     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|null
      */
     public function getContentObject(): ?ContentObjectRenderer;
 
@@ -68,7 +66,6 @@ interface ConfigurationManagerInterface extends SingletonInterface
      * Do not use it in your custom code!
      *
      * @param string $featureName
-     * @return bool
      */
     public function isFeatureEnabled(string $featureName): bool;
 }

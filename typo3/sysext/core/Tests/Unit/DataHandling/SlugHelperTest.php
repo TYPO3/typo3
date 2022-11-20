@@ -24,9 +24,6 @@ class SlugHelperTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @return array
-     */
     public function sanitizeDataProvider(): array
     {
         return [
@@ -194,9 +191,6 @@ class SlugHelperTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function sanitizeForPagesDataProvider(): array
     {
         return [
@@ -389,9 +383,6 @@ class SlugHelperTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function generatePrependsSlugsForPagesDataProvider(): array
     {
         return [
@@ -506,9 +497,6 @@ class SlugHelperTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function generateSlugWithNavTitleAndFallbackForPagesDataProvider(): array
     {
         return [
@@ -673,9 +661,6 @@ class SlugHelperTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function generateSlugWithPid0DataProvider(): array
     {
         return [

@@ -35,7 +35,6 @@ class DatabaseService
      * Returns an array with all sys_refindex database rows which be
      * connected to a formDefinition identified by $persistenceIdentifier
      *
-     * @return array
      * @throws \InvalidArgumentException
      * @internal
      */
@@ -72,7 +71,6 @@ class DatabaseService
      * Returns an array with all form definition persistenceIdentifiers
      * as keys and their reference counts as values.
      *
-     * @return array
      * @internal
      */
     public function getAllReferencesForPersistenceIdentifier(): array
@@ -88,7 +86,6 @@ class DatabaseService
      * Returns an array with all form definition file uids as keys
      * and their reference counts as values.
      *
-     * @return array
      * @internal
      */
     public function getAllReferencesForFileUid(): array
@@ -101,7 +98,6 @@ class DatabaseService
     }
 
     /**
-     * @return array
      * @throws \InvalidArgumentException
      */
     protected function getAllReferences(string $column): array

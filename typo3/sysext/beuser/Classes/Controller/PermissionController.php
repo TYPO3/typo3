@@ -476,8 +476,6 @@ class PermissionController
 
     /**
      * Finding tree and offer setting of values recursively.
-     *
-     * @return array
      */
     protected function getRecursiveSelectOptions(): array
     {
@@ -531,8 +529,6 @@ class PermissionController
 
     /**
      * Returns the shortcut title for the current page
-     *
-     * @return string
      */
     protected function getShortcutTitle(): string
     {

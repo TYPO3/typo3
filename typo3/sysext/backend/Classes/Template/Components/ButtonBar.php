@@ -176,8 +176,6 @@ class ButtonBar
     /**
      * Returns an associative array of all buttons in the form of
      * ButtonPosition > ButtonGroup > Button
-     *
-     * @return array
      */
     public function getButtons(): array
     {

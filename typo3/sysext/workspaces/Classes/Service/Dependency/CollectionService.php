@@ -217,7 +217,6 @@ class CollectionService implements SingletonInterface
      * Return count of children, present in the data array
      *
      * @param ReferenceEntity[] $children
-     * @return int
      */
     protected function getCollectionChildrenCount(array $children): int
     {

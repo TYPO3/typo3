@@ -66,9 +66,6 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
         };
     }
 
-    /**
-     * @return array
-     */
     public function doRedirectOnMissingOrSuperfluousRequestUrlDataProvider(): array
     {
         $site1 = new Site('outside-site', 13, [
@@ -166,9 +163,6 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
         self::assertEquals($expectedRedirectUrl, $response->getHeader('Location')[0] ?? '');
     }
 
-    /**
-     * @return array
-     */
     public function checkIf404IsSiteLanguageIsDisabledInFrontendDataProvider(): array
     {
         return [
@@ -220,9 +214,6 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
         self::assertEquals($expectedStatusCode, $response->getStatusCode());
     }
 
-    /**
-     * @return array
-     */
     public function doNotRedirectOnBaseWithoutQueryDataProvider(): array
     {
         $site1 = new Site('outside-site', 13, [

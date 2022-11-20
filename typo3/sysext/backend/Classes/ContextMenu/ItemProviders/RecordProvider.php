@@ -152,8 +152,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Whether this provider should kick in
-     *
-     * @return bool
      */
     public function canHandle(): bool
     {
@@ -175,8 +173,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Priority is set to lower then default value, in order to skip this provider if there is less generic provider available.
-     *
-     * @return int
      */
     public function getPriority(): int
     {
@@ -185,8 +181,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * This provider works as a fallback if there is no provider dedicated for certain table, thus it's only kicking in when $items are empty.
-     *
-     * @return array
      */
     public function addItems(array $items): array
     {
@@ -199,8 +193,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Whether a given item can be rendered (e.g. user has enough permissions)
-     *
-     * @return bool
      */
     protected function canRender(string $itemName, string $type): bool
     {
@@ -274,7 +266,6 @@ class RecordProvider extends AbstractProvider
      * Returns true if a current user have access to given permission
      *
      * @see BackendUserAuthentication::doesUserHaveAccess()
-     * @return bool
      */
     protected function hasPagePermission(int $permission): bool
     {
@@ -283,8 +274,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Additional attributes for JS
-     *
-     * @return array
      */
     protected function getAdditionalAttributes(string $itemName): array
     {
@@ -325,8 +314,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Additional attributes for the 'view' item
-     *
-     * @return array
      */
     protected function getViewAdditionalAttributes(): array
     {
@@ -342,8 +329,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Additional attributes for the hide & unhide items
-     *
-     * @return array
      */
     protected function getEnableDisableAdditionalAttributes(): array
     {
@@ -356,7 +341,6 @@ class RecordProvider extends AbstractProvider
      * Additional attributes for the pasteInto and pasteAfter items
      *
      * @param string $type "after" or "into"
-     * @return array
      */
     protected function getPasteAdditionalAttributes(string $type): array
     {
@@ -385,8 +369,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Additional data for a "delete" action (confirmation modal title and message)
-     *
-     * @return array
      */
     protected function getDeleteAdditionalAttributes(): array
     {
@@ -427,8 +409,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Returns id of the Page used for preview
-     *
-     * @return int
      */
     protected function getPreviewPid(): int
     {
@@ -437,8 +417,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Returns the view link
-     *
-     * @return string
      */
     protected function getViewLink(): string
     {
@@ -457,8 +435,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Checks if the page is allowed to show info
-     *
-     * @return bool
      */
     protected function canShowInfo(): bool
     {
@@ -467,8 +443,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Checks if the page is allowed to show info
-     *
-     * @return bool
      */
     protected function canShowHistory(): bool
     {
@@ -478,8 +452,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Checks if the record can be previewed in frontend
-     *
-     * @return bool
      */
     protected function canBeViewed(): bool
     {
@@ -488,8 +460,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Whether a record can be edited
-     *
-     * @return bool
      */
     protected function canBeEdited(): bool
     {
@@ -512,8 +482,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Whether a record can be created
-     *
-     * @return bool
      */
     protected function canBeNew(): bool
     {
@@ -522,8 +490,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Checks if disableDelete flag is set in TSConfig for the current table
-     *
-     * @return bool
      */
     protected function isDeletionDisabledInTS(): bool
     {
@@ -536,8 +502,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Checks if the user has the right to delete the record
-     *
-     * @return bool
      */
     protected function canBeDeleted(): bool
     {
@@ -548,8 +512,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Returns true if current record can be unhidden/enabled
-     *
-     * @return bool
      */
     protected function canBeEnabled(): bool
     {
@@ -558,8 +520,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Returns true if current record can be hidden
-     *
-     * @return bool
      */
     protected function canBeDisabled(): bool
     {
@@ -570,34 +530,23 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Returns true new content element wizard can be shown
-     *
-     * @return bool
      */
     protected function canOpenNewCEWizard(): bool
     {
         return $this->table === 'tt_content' && $this->canBeEdited() && !$this->isRecordATranslation();
     }
 
-    /**
-     * @return bool
-     */
     protected function canOpenListModule(): bool
     {
         return $this->backendUser->check('modules', 'web_list');
     }
 
-    /**
-     * @return bool
-     */
     protected function canBeCopied(): bool
     {
         return !$this->isRecordInClipboard('copy')
             && !$this->isRecordATranslation();
     }
 
-    /**
-     * @return bool
-     */
     protected function canBeCut(): bool
     {
         return !$this->isRecordInClipboard('cut')
@@ -607,8 +556,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Paste after is only shown for records from the same table (comparing record in clipboard and record clicked)
-     *
-     * @return bool
      */
     protected function canBePastedAfter(): bool
     {
@@ -622,8 +569,6 @@ class RecordProvider extends AbstractProvider
     /**
      * Checks if table have "disable" column (e.g. "hidden"), if user has access to this column
      * and if it contains given value
-     *
-     * @return bool
      */
     protected function hasDisableColumnWithValue(int $value): bool
     {
@@ -644,8 +589,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Record is locked if page is locked or page is not locked but record is
-     *
-     * @return bool
      */
     protected function isRecordLocked(): bool
     {
@@ -656,8 +599,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Returns true is a current record is a delete placeholder
-     *
-     * @return bool
      */
     protected function isDeletePlaceholder(): bool
     {
@@ -671,7 +612,6 @@ class RecordProvider extends AbstractProvider
      * Checks if current record is in the "normal" pad of the clipboard
      *
      * @param string $mode "copy", "cut" or '' for any mode
-     * @return bool
      */
     protected function isRecordInClipboard(string $mode = ''): bool
     {
@@ -684,8 +624,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Returns true is a record ia a translation
-     *
-     * @return bool
      */
     protected function isRecordATranslation(): bool
     {
@@ -694,8 +632,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Return true in case the current record is the current backend user
-     *
-     * @return bool
      */
     protected function isRecordCurrentBackendUser(): bool
     {
@@ -705,8 +641,6 @@ class RecordProvider extends AbstractProvider
 
     /**
      * Check whether the elements' parent page can be viewed
-     *
-     * @return bool
      */
     protected function parentPageCanBeViewed(): bool
     {
@@ -723,9 +657,6 @@ class RecordProvider extends AbstractProvider
         ], true);
     }
 
-    /**
-     * @return string
-     */
     protected function getIdentifier(): string
     {
         return $this->record['uid'];

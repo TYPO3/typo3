@@ -199,25 +199,16 @@ class ColumnMap
         $this->typeOfRelation = $typeOfRelation;
     }
 
-    /**
-     * @return string
-     */
     public function getTypeOfRelation(): string
     {
         return $this->typeOfRelation;
     }
 
-    /**
-     * @return string
-     */
     public function getPropertyName(): string
     {
         return $this->propertyName;
     }
 
-    /**
-     * @return string
-     */
     public function getColumnName(): string
     {
         return $this->columnName;
@@ -228,9 +219,6 @@ class ColumnMap
         $this->childTableName = $childTableName;
     }
 
-    /**
-     * @return string|null
-     */
     public function getChildTableName(): ?string
     {
         return $this->childTableName;
@@ -241,9 +229,6 @@ class ColumnMap
         $this->childSortByFieldName = $childSortByFieldName;
     }
 
-    /**
-     * @return string|null
-     */
     public function getChildSortByFieldName(): ?string
     {
         return $this->childSortByFieldName;
@@ -254,9 +239,6 @@ class ColumnMap
         $this->relationTableName = $relationTableName;
     }
 
-    /**
-     * @return string|null
-     */
     public function getRelationTableName(): ?string
     {
         return $this->relationTableName;
@@ -267,9 +249,6 @@ class ColumnMap
         $this->relationTablePageIdColumnName = $relationTablePageIdColumnName;
     }
 
-    /**
-     * @return string|null
-     */
     public function getRelationTablePageIdColumnName(): ?string
     {
         return $this->relationTablePageIdColumnName;
@@ -280,9 +259,6 @@ class ColumnMap
         $this->relationTableMatchFields = $relationTableMatchFields;
     }
 
-    /**
-     * @return array|null
-     */
     public function getRelationTableMatchFields(): ?array
     {
         return $this->relationTableMatchFields;
@@ -293,9 +269,6 @@ class ColumnMap
         $this->relationTableInsertFields = $relationTableInsertFields;
     }
 
-    /**
-     * @return array|null
-     */
     public function getRelationTableInsertFields(): ?array
     {
         return $this->relationTableInsertFields;
@@ -306,9 +279,6 @@ class ColumnMap
         $this->parentKeyFieldName = $parentKeyFieldName;
     }
 
-    /**
-     * @return string|null
-     */
     public function getParentKeyFieldName(): ?string
     {
         return $this->parentKeyFieldName;
@@ -319,9 +289,6 @@ class ColumnMap
         $this->parentTableFieldName = $parentTableFieldName;
     }
 
-    /**
-     * @return string|null
-     */
     public function getParentTableFieldName(): ?string
     {
         return $this->parentTableFieldName;
@@ -332,9 +299,6 @@ class ColumnMap
         $this->childKeyFieldName = $childKeyFieldName;
     }
 
-    /**
-     * @return string|null
-     */
     public function getChildKeyFieldName(): ?string
     {
         return $this->childKeyFieldName;
@@ -345,9 +309,6 @@ class ColumnMap
         $this->dateTimeStorageFormat = $dateTimeStorageFormat;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDateTimeStorageFormat(): ?string
     {
         return $this->dateTimeStorageFormat;
@@ -358,9 +319,6 @@ class ColumnMap
         $this->type = $type;
     }
 
-    /**
-     * @return TableColumnType|null
-     */
     public function getType(): ?TableColumnType
     {
         return $this->type;

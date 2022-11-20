@@ -89,7 +89,6 @@ class Route
      * This method implements a fluent interface.
      *
      * @param string[] $methods The array of allowed methods
-     * @return self
      */
     public function setMethods(array $methods): self
     {

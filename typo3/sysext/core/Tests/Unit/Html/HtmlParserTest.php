@@ -33,9 +33,6 @@ class HtmlParserTest extends UnitTestCase
         $this->subject = new HtmlParser();
     }
 
-    /**
-     * @return array
-     */
     public function cDataWillRemainUnmodifiedDataProvider(): array
     {
         return [
@@ -60,8 +57,6 @@ class HtmlParserTest extends UnitTestCase
 
     /**
      * Data provider for splitIntoBlock
-     *
-     * @return array
      */
     public function splitIntoBlockDataProvider(): array
     {
@@ -206,8 +201,6 @@ class HtmlParserTest extends UnitTestCase
 
     /**
      * Data provider for localNestingCorrectlyRemovesInvalidTags
-     *
-     * @return array
      */
     public static function localNestingCorrectlyRemovesInvalidTagsDataProvider(): array
     {
@@ -250,8 +243,6 @@ class HtmlParserTest extends UnitTestCase
 
     /**
      * Data provider for globalNestingCorrectlyRemovesInvalidTags
-     *
-     * @return array
      */
     public static function globalNestingCorrectlyRemovesInvalidTagsDataProvider(): array
     {
@@ -292,9 +283,6 @@ class HtmlParserTest extends UnitTestCase
         self::assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
     }
 
-    /**
-     * @return array
-     */
     public function emptyTagsDataProvider(): array
     {
         return [
@@ -362,9 +350,6 @@ class HtmlParserTest extends UnitTestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    /**
-     * @return array
-     */
     public function stripEmptyTagsKeepsConfiguredTagsDataProvider(): array
     {
         return [
@@ -425,8 +410,6 @@ class HtmlParserTest extends UnitTestCase
 
     /**
      * Data provider for getFirstTag
-     *
-     * @return array
      */
     public function getFirstTagDataProvider(): array
     {
@@ -470,8 +453,6 @@ class HtmlParserTest extends UnitTestCase
 
     /**
      * Data provider for getFirstTagName
-     *
-     * @return array
      */
     public function getFirstTagNameDataProvider(): array
     {
@@ -540,9 +521,6 @@ class HtmlParserTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->getFirstTagName($str, $preserveCase));
     }
 
-    /**
-     * @return array
-     */
     public function removeFirstAndLastTagDataProvider(): array
     {
         return [
@@ -594,9 +572,6 @@ class HtmlParserTest extends UnitTestCase
         self::assertEquals($expectedResult, $this->subject->removeFirstAndLastTag($str));
     }
 
-    /**
-     * @return array
-     */
     public function getTagAttributesDataProvider(): array
     {
         return [
@@ -638,9 +613,6 @@ class HtmlParserTest extends UnitTestCase
         self::assertEquals($expectedResult, $this->subject->get_tag_attributes($tag));
     }
 
-    /**
-     * @return array
-     */
     public function stripEmptyTagsDataProvider(): array
     {
         return [

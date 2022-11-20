@@ -75,9 +75,6 @@ class MockPlatform extends AbstractPlatform
 
     /**
      * Returns the SQL snippet used to declare a VARCHAR column type.
-     *
-     *
-     * @return string
      */
     public function getVarcharTypeDeclarationSQL(array $field): string
     {
@@ -86,9 +83,6 @@ class MockPlatform extends AbstractPlatform
 
     /**
      * Returns the SQL snippet used to declare a CLOB column type.
-     *
-     *
-     * @return string
      */
     public function getClobTypeDeclarationSQL(array $field): string
     {
@@ -102,8 +96,6 @@ class MockPlatform extends AbstractPlatform
      * special datatypes when the underlying databases support this datatype.
      *
      * @param array $field
-     *
-     * @return string
      */
     public function getJsonTypeDeclarationSQL(array $field): string
     {
@@ -114,8 +106,6 @@ class MockPlatform extends AbstractPlatform
      * Returns the SQL snippet used to declare a BINARY/VARBINARY column type.
      *
      * @param array $field The column definition.
-     *
-     * @return string
      */
     public function getBinaryTypeDeclarationSQL(array $field): string
     {
@@ -155,7 +145,6 @@ class MockPlatform extends AbstractPlatform
     /**
      * Returns the class name of the reserved keywords list.
      *
-     * @return string
      *
      * @throws \Doctrine\DBAL\Exception If not supported on this platform.
      */

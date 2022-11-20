@@ -103,9 +103,6 @@ class FileMount extends AbstractEntity
         return $this->readOnly;
     }
 
-    /**
-     * @return string
-     */
     public function getIdentifier(): string
     {
         return $this->identifier;
@@ -116,9 +113,6 @@ class FileMount extends AbstractEntity
         $this->identifier = $identifier;
     }
 
-    /**
-     * @return bool
-     */
     public function isHidden(): bool
     {
         return $this->hidden;
@@ -131,7 +125,6 @@ class FileMount extends AbstractEntity
 
     /**
      * returns the path segment of the filemount (without the storage id)
-     * @return string
      */
     public function getPath(): string
     {
@@ -139,9 +132,6 @@ class FileMount extends AbstractEntity
         return $segments[1] ?? '';
     }
 
-    /**
-     * @return ResourceStorage
-     */
     public function getStorage(): ResourceStorage
     {
         return GeneralUtility::makeInstance(StorageRepository::class)->findByCombinedIdentifier($this->identifier);

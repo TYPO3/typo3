@@ -593,9 +593,6 @@ class Extension extends AbstractEntity
         return $this->alldownloadcounter;
     }
 
-    /**
-     * @return string
-     */
     public function getDocumentationLink(): string
     {
         return $this->documentationLink;
@@ -613,8 +610,6 @@ class Extension extends AbstractEntity
 
     /**
      * Map a legacy extension array to an object
-     *
-     * @return Extension
      */
     public static function createFromExtensionArray(array $extensionArray): self
     {

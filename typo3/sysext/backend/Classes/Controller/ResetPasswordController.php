@@ -67,8 +67,6 @@ class ResetPasswordController
 
     /**
      * Show a form to enter an email address to request a password reset email.
-     *
-     * @return ResponseInterface
      */
     public function forgetPasswordFormAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -84,7 +82,6 @@ class ResetPasswordController
      * Restricted to POST method in Configuration/Backend/Routes.php
      *
      * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function initiatePasswordResetAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -109,8 +106,6 @@ class ResetPasswordController
 
     /**
      * Validates the link and show a form to enter the new password.
-     *
-     * @return ResponseInterface
      */
     public function passwordResetAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -129,7 +124,6 @@ class ResetPasswordController
      * Restricted to POST method in Configuration/Backend/Routes.php
      *
      * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function passwordResetFinishAction(ServerRequestInterface $request): ResponseInterface
     {

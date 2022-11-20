@@ -27,8 +27,6 @@ class ExtensionTest extends UnitTestCase
 {
     /**
      * Data provider for getCategoryIndexFromStringOrNumberReturnsIndex
-     *
-     * @return array
      */
     public function getCategoryIndexFromStringOrNumberReturnsIndexDataProvider(): array
     {
@@ -128,9 +126,6 @@ class ExtensionTest extends UnitTestCase
         self::assertSame($identifiers, ['php', 'typo3', 'fn_lib']);
     }
 
-    /**
-     * @return array
-     */
     public function convertDependenciesToObjectSetsVersionDataProvider(): array
     {
         return [

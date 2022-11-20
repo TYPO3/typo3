@@ -286,9 +286,6 @@ class ActionControllerTest extends UnitTestCase
         $mockController->_call('setViewConfiguration', $view);
     }
 
-    /**
-     * @return array
-     */
     public function templateRootPathDataProvider(): array
     {
         return [
@@ -360,9 +357,6 @@ class ActionControllerTest extends UnitTestCase
         $mockController->_call('setViewConfiguration', $view);
     }
 
-    /**
-     * @return array
-     */
     public function layoutRootPathDataProvider(): array
     {
         return [
@@ -434,9 +428,6 @@ class ActionControllerTest extends UnitTestCase
         $mockController->_call('setViewConfiguration', $view);
     }
 
-    /**
-     * @return array
-     */
     public function partialRootPathDataProvider(): array
     {
         return [
@@ -522,9 +513,6 @@ class ActionControllerTest extends UnitTestCase
         $method->invokeArgs($subject, [$requestMock]);
     }
 
-    /**
-     * @return array
-     */
     public function headerAssetDataProvider(): array
     {
         $viewWithHeaderData = $this->getMockBuilder(FluidTemplateView::class)->onlyMethods(['renderSection'])->disableOriginalConstructor()->getMock();
@@ -557,9 +545,6 @@ class ActionControllerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     public function addFlashMessageDataProvider(): array
     {
         return [

@@ -193,7 +193,6 @@ class DataStructureIdentifierListener
      *
      * @param string $persistenceIdentifier Current persistence identifier
      * @param array $formDefinition The form definition
-     * @return array
      */
     protected function getAdditionalFinisherSheets(string $persistenceIdentifier, array $formDefinition): array
     {
@@ -265,7 +264,6 @@ class DataStructureIdentifierListener
      * Boilerplate XML array of a new sheet
      *
      * @throws \InvalidArgumentException
-     * @return array
      */
     protected function initializeNewSheetArray(string $sheetIdentifier, string $finisherName): array
     {
@@ -287,9 +285,6 @@ class DataStructureIdentifierListener
         ];
     }
 
-    /**
-     * @return array
-     */
     protected function addSelectedPersistenceIdentifier(string $persistenceIdentifier, array $dataStructure): array
     {
         if (!empty($persistenceIdentifier)) {
@@ -325,9 +320,6 @@ class DataStructureIdentifierListener
             );
     }
 
-    /**
-     * @return string
-     */
     protected function buildFlexformSheetIdentifier(
         string $persistenceIdentifier,
         string $prototypeName,
@@ -344,9 +336,6 @@ class DataStructureIdentifierListener
         );
     }
 
-    /**
-     * @return array
-     */
     protected function translateFinisherDefinitionByIdentifier(
         string $finisherIdentifier,
         array $finishersDefinition,

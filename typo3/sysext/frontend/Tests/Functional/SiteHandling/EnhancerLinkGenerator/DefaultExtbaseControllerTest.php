@@ -21,9 +21,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
 {
-    /**
-     * @return array
-     */
     public function defaultExtbaseControllerActionNamesAreAppliedWithAdditionalNonMappedQueryArgumentsDataProvider(): array
     {
         return [
@@ -101,9 +98,6 @@ class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    /**
-     * @return array
-     */
     public function defaultExtbaseControllerActionNamesAreAppliedDataProvider(): array
     {
         return [

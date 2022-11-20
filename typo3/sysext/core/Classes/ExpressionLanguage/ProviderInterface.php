@@ -31,8 +31,6 @@ interface ProviderInterface
 
     /**
      * An array with key/value pairs. The key will be available as variable name
-     *
-     * @return array
      */
     public function getExpressionLanguageVariables(): array;
 }

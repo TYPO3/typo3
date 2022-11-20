@@ -28,8 +28,6 @@ class FixedPointTypesTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseFixedPointTypes()
-     *
-     * @return array
      */
     public function canParseFixedPointTypesProvider(): array
     {

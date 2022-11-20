@@ -143,8 +143,6 @@ class CorePasswordValidator extends AbstractPasswordValidator
 
     /**
      * Evaluates the password complexity for the given check
-     *
-     * @return bool
      */
     private function evaluatePasswordRequirement(string $password, string $requirement): bool
     {

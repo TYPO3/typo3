@@ -26,9 +26,6 @@ use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
  */
 interface RenderableVariantInterface
 {
-    /**
-     * @return string
-     */
     public function getIdentifier(): string;
 
     /**
@@ -37,13 +34,7 @@ interface RenderableVariantInterface
      */
     public function apply(): void;
 
-    /**
-     * @return bool
-     */
     public function isApplied(): bool;
 
-    /**
-     * @return bool
-     */
     public function conditionMatches(Resolver $conditionResolver): bool;
 }

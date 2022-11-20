@@ -51,17 +51,11 @@ class FileLocation
             . PathUtility::getAbsoluteWebPath($this->filePath);
     }
 
-    /**
-     * @return string
-     */
     public function getFilePath(): string
     {
         return $this->filePath;
     }
 
-    /**
-     * @return string
-     */
     public function getBaseUrl(): string
     {
         return $this->baseUrl;

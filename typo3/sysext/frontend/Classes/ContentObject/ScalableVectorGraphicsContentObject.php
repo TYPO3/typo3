@@ -27,7 +27,6 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
      * Rendering the cObject, SVG
      *
      * @param array $conf Array of TypoScript properties
-     * @return string
      */
     public function render($conf = []): string
     {
@@ -40,9 +39,6 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
         return $this->renderObject($conf);
     }
 
-    /**
-     * @return string
-     */
     protected function renderInline(array $conf): string
     {
         $src = $this->resolveAbsoluteSourcePath($conf);
@@ -81,8 +77,6 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
 
     /**
      * Render the SVG as <object> tag
-     *
-     * @return string
      */
     protected function renderObject(array $conf): string
     {
@@ -108,18 +102,12 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
         return $content;
     }
 
-    /**
-     * @return string
-     */
     protected function resolveAbsoluteSourcePath(array $conf): string
     {
         $src = (string)$this->cObj->stdWrapValue('src', $conf ?? []);
         return GeneralUtility::getFileAbsFileName($src);
     }
 
-    /**
-     * @return array
-     */
     protected function getDimensions(array $conf): array
     {
         $isDefaultWidth = false;

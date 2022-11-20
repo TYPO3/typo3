@@ -46,7 +46,6 @@ class NoteRenderer
      * @param int $pid The page id notes should be rendered for
      * @param int|null $position null for no restriction, integer for defined position
      * @param string $returnUrl Url to return to when editing and closing a notes record again
-     * @return string
      */
     public function renderList(ServerRequestInterface $request, int $pid, int $position = null, string $returnUrl = ''): string
     {

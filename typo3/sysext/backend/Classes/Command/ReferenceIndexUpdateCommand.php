@@ -45,8 +45,6 @@ class ReferenceIndexUpdateCommand extends Command
 
     /**
      * Executes the command for adding or removing the lock file
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

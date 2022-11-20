@@ -368,7 +368,6 @@ class ElementHistoryController
      * Generates the URL for a link to the current page
      *
      * @param array $overrideParameters
-     * @return string
      */
     protected function buildUrl($overrideParameters = []): string
     {
@@ -397,7 +396,6 @@ class ElementHistoryController
      *
      * @param string $table
      * @param string $uid
-     * @return string
      */
     protected function generateTitle($table, $uid): string
     {
@@ -439,8 +437,6 @@ class ElementHistoryController
      *
      * @param string $tableName
      * @param int $elementUid
-     *
-     * @return bool
      */
     protected function getEditLockFromElement($tableName, $elementUid): bool
     {

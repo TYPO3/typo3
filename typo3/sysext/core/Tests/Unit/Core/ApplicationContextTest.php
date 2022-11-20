@@ -54,8 +54,6 @@ class ApplicationContextTest extends UnitTestCase
 
     /**
      * Data provider with forbidden contexts.
-     *
-     * @return array
      */
     public function forbiddenContexts(): array
     {
@@ -81,8 +79,6 @@ class ApplicationContextTest extends UnitTestCase
 
     /**
      * Data provider with expected is*() values for various contexts.
-     *
-     * @return array
      */
     public function isMethods(): array
     {

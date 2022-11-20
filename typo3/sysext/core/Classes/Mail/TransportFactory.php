@@ -50,7 +50,6 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
      * Gets a transport from settings.
      *
      * @param array $mailSettings from $GLOBALS['TYPO3_CONF_VARS']['MAIL']
-     * @return TransportInterface
      * @throws Exception
      * @throws \RuntimeException
      */
@@ -196,7 +195,6 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
     /**
      * Creates a spool from mail settings.
      *
-     * @return DelayedTransportInterface
      * @throws \RuntimeException
      */
     protected function createSpool(array $mailSettings): DelayedTransportInterface

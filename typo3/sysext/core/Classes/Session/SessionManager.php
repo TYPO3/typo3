@@ -47,7 +47,6 @@ class SessionManager implements SingletonInterface
     /**
      * Gets the currently running session backend for the given context
      *
-     * @return SessionBackendInterface
      * @throws \InvalidArgumentException
      */
     public function getSessionBackend(string $identifier): SessionBackendInterface
@@ -102,7 +101,6 @@ class SessionManager implements SingletonInterface
      *
      * @param string $identifier the identifier
      * @param array<string, class-string> $configuration The session configuration array
-     * @return SessionBackendInterface
      * @throws \InvalidArgumentException
      */
     protected function createSessionBackendFromConfiguration(string $identifier, array $configuration): SessionBackendInterface

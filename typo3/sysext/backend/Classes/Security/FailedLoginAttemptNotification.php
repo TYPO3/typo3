@@ -172,9 +172,6 @@ class FailedLoginAttemptNotification
         }
     }
 
-    /**
-     * @return QueryBuilder
-     */
     protected function createPreparedQueryBuilder(int $earliestLogDate, int $loginAction): QueryBuilder
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

@@ -120,8 +120,6 @@ class Typo3DbQueryParser
      * Whether using a distinct query is suggested.
      * This information is defined during parsing of the current query
      * for RELATION_HAS_MANY & RELATION_HAS_AND_BELONGS_TO_MANY relations.
-     *
-     * @return bool
      */
     public function isDistinctQuerySuggested(): bool
     {
@@ -480,7 +478,6 @@ class Typo3DbQueryParser
      * correctly when building the query.
      *
      * @param mixed $value The parameter value
-     * @return int
      * @throws \InvalidArgumentException
      */
     protected function getParameterType($value): int

@@ -103,9 +103,6 @@ class ResolverTest extends UnitTestCase
         self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
     }
 
-    /**
-     * @return array
-     */
     public function basicExpressionsWithVariablesAndExpressionLanguageProviderDataHandler(): array
     {
         return [

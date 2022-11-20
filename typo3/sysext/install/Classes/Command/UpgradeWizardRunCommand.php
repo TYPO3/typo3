@@ -101,8 +101,6 @@ class UpgradeWizardRunCommand extends Command
 
     /**
      * Update language packs of all active languages for all active extensions
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -138,8 +136,6 @@ class UpgradeWizardRunCommand extends Command
     /**
      * Get Wizard instance by class name and identifier
      * Returns null if wizard is already done
-     *
-     * @return \TYPO3\CMS\Install\Updates\UpgradeWizardInterface|null
      */
     protected function getWizard(string $className, string $identifier): ?UpgradeWizardInterface
     {
@@ -183,7 +179,6 @@ class UpgradeWizardRunCommand extends Command
      * prerequisites
      *
      * @param UpgradeWizardInterface[] $instances
-     * @return bool
      */
     protected function handlePrerequisites(array $instances): bool
     {
@@ -216,9 +211,6 @@ class UpgradeWizardRunCommand extends Command
         return $result;
     }
 
-    /**
-     * @return int
-     */
     protected function runSingleWizard(
         UpgradeWizardInterface $instance
     ): int {

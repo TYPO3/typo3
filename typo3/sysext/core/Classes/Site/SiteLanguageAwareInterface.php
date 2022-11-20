@@ -26,8 +26,5 @@ interface SiteLanguageAwareInterface
 {
     public function setSiteLanguage(SiteLanguage $siteLanguage);
 
-    /**
-     * @return Entity\SiteLanguage
-     */
     public function getSiteLanguage(): SiteLanguage;
 }

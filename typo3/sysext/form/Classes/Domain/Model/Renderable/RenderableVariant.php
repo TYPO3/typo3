@@ -85,9 +85,6 @@ class RenderableVariant implements RenderableVariantInterface
         $this->applied = true;
     }
 
-    /**
-     * @return bool
-     */
     public function conditionMatches(Resolver $conditionResolver): bool
     {
         if (empty($this->condition)) {
@@ -97,17 +94,11 @@ class RenderableVariant implements RenderableVariantInterface
         return $conditionResolver->evaluate($this->condition);
     }
 
-    /**
-     * @return string
-     */
     public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
-    /**
-     * @return bool
-     */
     public function isApplied(): bool
     {
         return $this->applied;

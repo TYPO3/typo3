@@ -861,9 +861,6 @@ class UriBuilderTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @return array
-     */
     public function convertIteratorToArrayConvertsIteratorsToArrayProvider(): array
     {
         return [

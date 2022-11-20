@@ -221,7 +221,6 @@ class UserSessionManager implements LoggerAwareInterface
      * @param string $sessionId The session id
      * @param array $existingSessionRecord If given, this session record will be used instead of fetching again
      * @param bool $anonymous If true session will be regenerated as anonymous session
-     * @return UserSession
      *
      * @throws Backend\Exception\SessionNotCreatedException
      * @throws SessionNotFoundException
@@ -303,8 +302,6 @@ class UserSessionManager implements LoggerAwareInterface
 
     /**
      * Creates a new session ID using a random with SESSION_ID_LENGTH as length
-     *
-     * @return string
      */
     protected function createSessionId(): string
     {
@@ -387,7 +384,6 @@ class UserSessionManager implements LoggerAwareInterface
      * This method shall be used to reflect updated low-level session data in corresponding `UserSession` object.
      *
      * @param array|null $sessionRecord
-     * @return UserSession
      * @throws SessionNotFoundException
      */
     protected function recreateUserSession(UserSession $session, array $sessionRecord = null): UserSession

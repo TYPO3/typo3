@@ -203,8 +203,6 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
 
     /**
      * Replaces the generated token with a generic equivalent
-     *
-     * @return string
      */
     protected function anonymizeToken(string $requestedUrl): string
     {

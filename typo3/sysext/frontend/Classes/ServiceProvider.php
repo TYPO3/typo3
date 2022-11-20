@@ -80,7 +80,6 @@ class ServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * @return ArrayObject
      * @throws InvalidDataException
      * @throws CoreException
      */

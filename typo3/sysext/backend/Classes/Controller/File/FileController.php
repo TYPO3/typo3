@@ -127,8 +127,6 @@ class FileController
     /**
      * Handles the actual process from within the ajaxExec function
      * therefore, it does exactly the same as the real typo3/tce_file.php.
-     *
-     * @return ResponseInterface
      */
     public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
     {
@@ -168,8 +166,6 @@ class FileController
 
     /**
      * Ajax entry point to check if a file exists in a folder
-     *
-     * @return ResponseInterface
      */
     public function fileExistsInFolderAction(ServerRequestInterface $request): ResponseInterface
     {

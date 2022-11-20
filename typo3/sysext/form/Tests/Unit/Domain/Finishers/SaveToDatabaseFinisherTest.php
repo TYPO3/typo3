@@ -92,9 +92,6 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
         $saveToDatabaseFinisher->execute($this->prophesize(FinisherContext::class)->reveal());
     }
 
-    /**
-     * @return array
-     */
     public function skipIfValueIsEmptyDataProvider(): array
     {
         return [

@@ -71,7 +71,6 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
     /**
      * Build parser configuration. Adds custom fluid interceptors from configuration.
      *
-     * @return Configuration
      * @throws \InvalidArgumentException if a class not implementing InterceptorInterface was registered
      */
     public function buildParserConfiguration(): Configuration

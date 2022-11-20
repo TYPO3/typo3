@@ -191,9 +191,6 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface, Conditi
         return $result;
     }
 
-    /**
-     * @return bool
-     */
     protected function evaluateExpression(string $expression): bool
     {
         // The TypoScript [ELSE] condition is not known by the Symfony Expression Language and must not be evaluated.

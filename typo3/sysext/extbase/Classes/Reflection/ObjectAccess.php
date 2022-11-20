@@ -292,7 +292,6 @@ class ObjectAccess
      * @param string $propertyName Name of the property to check
      *
      * @throws \InvalidArgumentException
-     * @return bool
      */
     public static function isPropertySettable(object $object, $propertyName): bool
     {
@@ -312,7 +311,6 @@ class ObjectAccess
      * @param string $propertyName Name of the property to check
      *
      * @throws \InvalidArgumentException
-     * @return bool
      */
     public static function isPropertyGettable($object, $propertyName): bool
     {
@@ -342,9 +340,6 @@ class ObjectAccess
         return $properties;
     }
 
-    /**
-     * @return PropertyAccessor
-     */
     private static function createAccessor(): PropertyAccessor
     {
         if (self::$propertyAccessor === null) {
@@ -379,9 +374,6 @@ class ObjectAccess
         return self::createAccessor()->getValue($subject, $propertyPath);
     }
 
-    /**
-     * @return PropertyPath
-     */
     private static function convertToArrayPropertyPath(PropertyPath $propertyPath): PropertyPath
     {
         $segments = array_map(static function ($segment) {
@@ -391,9 +383,6 @@ class ObjectAccess
         return new PropertyPath(implode('.', $segments));
     }
 
-    /**
-     * @return string
-     */
     private static function wrap(string $segment): string
     {
         return '[' . $segment . ']';

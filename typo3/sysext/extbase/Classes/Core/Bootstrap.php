@@ -198,7 +198,6 @@ class Bootstrap
      * Creates an Extbase Request, dispatches it and then returns the Response
      *
      * @param ServerRequestInterface $request
-     * @return ResponseInterface
      * @internal
      */
     public function handleBackendRequest(ServerRequestInterface $request): ResponseInterface

@@ -132,8 +132,6 @@ abstract class AbstractFormElement extends AbstractNode
      *
      * All that only works if the field is not within flex form scope since flex forms
      * can not store a "null" value or distinct it from "empty string".
-     *
-     * @return bool
      */
     protected function hasNullCheckboxButNoPlaceholder(): bool
     {
@@ -166,8 +164,6 @@ abstract class AbstractFormElement extends AbstractNode
      * Additionally to the casual input field, a second field is added containing the "placeholder" value. This
      * field has no name attribute and is not transferred at all. Those two are then hidden / shown depending
      * on the state of the above checkbox in via JS.
-     *
-     * @return bool
      */
     protected function hasNullCheckboxWithPlaceholder(): bool
     {
@@ -315,7 +311,6 @@ abstract class AbstractFormElement extends AbstractNode
      * This is used by a couple of renderType's like various type="input", should
      * be used with care and is internal for now.
      *
-     * @return array
      * @internal
      */
     protected function resolveJavaScriptEvaluation(array $resultArray, string $name, ?object $evalObject): array
@@ -397,7 +392,6 @@ abstract class AbstractFormElement extends AbstractNode
      * Calculates the bootstrap grid classes based on the amount of columns
      * defined in the checkbox item TCA
      *
-     * @return array
      * @internal
      */
     protected function calculateColumnMarkup(int $cols): array
@@ -437,7 +431,6 @@ abstract class AbstractFormElement extends AbstractNode
      *
      * @param string|int $label The label which can also be an integer
      * @param string|int $value The value which can also be an integer
-     * @return string
      */
     protected function appendValueToLabelInDebugMode($label, $value): string
     {

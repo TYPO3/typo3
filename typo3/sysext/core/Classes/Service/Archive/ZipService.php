@@ -30,7 +30,6 @@ class ZipService
     /**
      * Extracts the zip archive to a given directory. This method makes sure a file cannot be placed outside the directory.
      *
-     * @return bool
      * @throws ExtractException
      */
     public function extract(string $fileName, string $directory): bool
@@ -55,7 +54,6 @@ class ZipService
     }
 
     /**
-     * @return bool
      * @throws ExtractException
      */
     public function verify(string $fileName): bool

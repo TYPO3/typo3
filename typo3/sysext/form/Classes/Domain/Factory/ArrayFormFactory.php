@@ -40,7 +40,6 @@ class ArrayFormFactory extends AbstractFormFactory
     /**
      * Build a form definition, depending on some configuration.
      *
-     * @return FormDefinition
      * @throws RenderingException
      * @internal
      */

@@ -55,7 +55,6 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface
      *
      * @param AbstractContentObject|null $contentObject
      * @param array $contentObjectConfiguration
-     * @return string
      * @throws \Exception
      */
     public function handle(\Exception $exception, AbstractContentObject $contentObject = null, $contentObjectConfiguration = []): string

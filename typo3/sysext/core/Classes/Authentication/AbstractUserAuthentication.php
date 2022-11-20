@@ -286,8 +286,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
     /**
      * Used to apply a cookie to a PSR-7 Response.
-     *
-     * @return ResponseInterface
      */
     public function appendCookieToResponse(ResponseInterface $response): ResponseInterface
     {
@@ -403,7 +401,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
     /**
      * "auth" services configuration array from $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']
-     * @return array
      */
     protected function getAuthServiceConfiguration(): array
     {
@@ -653,7 +650,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * Loads users from various sources (= authentication services) as an array of arrays.
      *
      * @param array|null $authenticatedUserFromSession if we have a user from an existing session, this is set here, otherwise null
-     * @return array
      */
     protected function fetchPossibleUsers(array $loginData, bool $activeLogin, bool $isExistingSession, ?array $authenticatedUserFromSession): array
     {
@@ -725,7 +721,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     /**
      * Whether the user is required to set up MFA
      *
-     * @return bool
      * @internal
      */
     public function isMfaSetupRequired(): bool
@@ -831,7 +826,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * However, if the session has expired the session is removed and the request is treated as an anonymous session.
      *
      * @param bool $skipSessionUpdate
-     * @return array|null
      */
     protected function fetchValidUserFromSessionOrDestroySession(bool $skipSessionUpdate = false): ?array
     {
@@ -950,7 +944,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * enable columns and flags like deleted, hidden, starttime, endtime
      * and rootLevel
      *
-     * @return QueryRestrictionContainerInterface
      * @internal
      */
     protected function userConstraints(): QueryRestrictionContainerInterface

@@ -76,8 +76,6 @@ class BootService
      * Switch global context to a new context, or revert
      * to the original booting container if no container
      * is specified
-     *
-     * @return array
      */
     public function makeCurrent(ContainerInterface $container = null, array $backup = []): array
     {
@@ -113,7 +111,6 @@ class BootService
      *
      * @param bool $resetContainer
      * @param bool $allowCaching
-     * @return ContainerInterface
      */
     public function loadExtLocalconfDatabaseAndExtTables(bool $resetContainer = false, bool $allowCaching = true): ContainerInterface
     {

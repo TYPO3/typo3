@@ -25,8 +25,6 @@ interface ListDataProviderInterface
     /**
      * Return the items to be shown. This should be an array like ['item 1', 'item 2', 'item 3']. This is a
      * real simple list of items.
-     *
-     * @return array
      */
     public function getItems(): array;
 }

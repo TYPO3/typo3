@@ -302,17 +302,11 @@ class ImageManipulationElement extends AbstractFormElement
         return $config;
     }
 
-    /**
-     * @return string
-     */
     protected function getWizardUri(): string
     {
         return (string)$this->uriBuilder->buildUriFromRoute($this->wizardRouteName);
     }
 
-    /**
-     * @return array
-     */
     protected function getWizardPayload(array $cropVariants, File $image): array
     {
         $uriArguments = [];

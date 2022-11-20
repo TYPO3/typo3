@@ -41,8 +41,6 @@ class LockedBackendGuard implements MiddlewareInterface
 {
     /**
      * Checks the client's IP address and if typo3conf/LOCK_BACKEND is available
-     *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

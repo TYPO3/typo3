@@ -212,9 +212,6 @@ class DataMapFactory implements SingletonInterface
         return is_array($GLOBALS['TCA'][$tableName]['columns'] ?? null) ? $GLOBALS['TCA'][$tableName]['columns'] : [];
     }
 
-    /**
-     * @return DataMap
-     */
     protected function addMetaDataColumnNames(DataMap $dataMap, string $tableName): DataMap
     {
         $controlSection = $GLOBALS['TCA'][$tableName]['ctrl'] ?? null;
@@ -266,8 +263,6 @@ class DataMapFactory implements SingletonInterface
 
     /**
      * Set the table column type
-     *
-     * @return ColumnMap
      */
     protected function setType(ColumnMap $columnMap, array $columnConfiguration): ColumnMap
     {
@@ -286,7 +281,6 @@ class DataMapFactory implements SingletonInterface
      *
      * @param ColumnMap $columnMap The column map
      * @param array|null $columnConfiguration The column configuration from $TCA
-     * @return ColumnMap
      */
     protected function setRelations(ColumnMap $columnMap, ?array $columnConfiguration, ?string $type, ?string $elementType): ColumnMap
     {
@@ -326,7 +320,6 @@ class DataMapFactory implements SingletonInterface
      *
      * @param ColumnMap $columnMap The column map
      * @param array|null $columnConfiguration The column configuration from $TCA
-     * @return ColumnMap
      */
     protected function setDateTimeStorageFormat(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
     {
@@ -348,7 +341,6 @@ class DataMapFactory implements SingletonInterface
      *
      * @param ColumnMap $columnMap The column map
      * @param array|null $columnConfiguration The column configuration from $TCA
-     * @return ColumnMap
      */
     protected function setOneToOneRelation(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
     {
@@ -376,7 +368,6 @@ class DataMapFactory implements SingletonInterface
      *
      * @param ColumnMap $columnMap The column map
      * @param array|null $columnConfiguration The column configuration from $TCA
-     * @return ColumnMap
      */
     protected function setOneToManyRelation(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
     {
@@ -405,7 +396,6 @@ class DataMapFactory implements SingletonInterface
      * @param ColumnMap $columnMap The column map
      * @param array|null $columnConfiguration The column configuration from $TCA
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException
-     * @return ColumnMap
      */
     protected function setManyToManyRelation(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
     {
@@ -451,9 +441,6 @@ class DataMapFactory implements SingletonInterface
 
     /**
      * Creates the ColumnMap object for the given columnName and propertyName
-     *
-     *
-     * @return ColumnMap
      */
     protected function createColumnMap(string $columnName, string $propertyName): ColumnMap
     {

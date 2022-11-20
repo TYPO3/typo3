@@ -26,8 +26,6 @@ class GraphicalFunctionsTest extends UnitTestCase
 
     /**
      * Dataprovider for getScaleForImage
-     *
-     * @return array
      */
     public function getScaleForImageDataProvider(): array
     {

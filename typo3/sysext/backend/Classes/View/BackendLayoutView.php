@@ -339,7 +339,6 @@ class BackendLayoutView implements SingletonInterface
     }
 
     /**
-     * @return array
      * @internal
      */
     public function parseStructure(BackendLayout $backendLayout): array

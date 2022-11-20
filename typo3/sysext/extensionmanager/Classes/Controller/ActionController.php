@@ -106,7 +106,6 @@ class ActionController extends AbstractController
      * Remove an extension (if it is still installed, uninstall it first)
      *
      * @param string $extension
-     * @return ResponseInterface
      */
     protected function removeExtensionAction($extension): ResponseInterface
     {
@@ -139,7 +138,6 @@ class ActionController extends AbstractController
      * Download an extension as a zip file
      *
      * @param string $extension
-     * @return ResponseInterface
      */
     protected function downloadExtensionZipAction($extension): ResponseInterface
     {

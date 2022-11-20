@@ -279,8 +279,6 @@ class TimeTracker implements SingletonInterface
 
     /**
      * Get total parse time in milliseconds
-     *
-     * @return int
      */
     public function getParseTime(): int
     {
@@ -499,7 +497,6 @@ class TimeTracker implements SingletonInterface
      *
      * @param string $c The content string
      * @param string $v Command: If "FILE" then $this->printConf['contentLength_FILE'] is used for content length comparison, otherwise $this->printConf['contentLength']
-     * @return string
      */
     protected function fixCLen(string $c, string $v): string
     {
@@ -516,7 +513,6 @@ class TimeTracker implements SingletonInterface
      * Wraps input string in a <span> tag
      *
      * @param string $str The string to be wrapped
-     * @return string
      */
     protected function fw(string $str): string
     {

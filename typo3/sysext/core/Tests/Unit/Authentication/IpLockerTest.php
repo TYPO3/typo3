@@ -26,9 +26,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class IpLockerTest extends UnitTestCase
 {
-    /**
-      * @return array
-      */
     public function getSessionIpLockDataProvider(): array
     {
         return [

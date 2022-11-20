@@ -28,7 +28,6 @@ class GuzzleClientFactory
 {
     /**
      * Creates the client to do requests
-     * @return ClientInterface
      */
     public function getClient(): ClientInterface
     {

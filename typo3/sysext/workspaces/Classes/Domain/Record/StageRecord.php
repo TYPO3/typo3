@@ -257,9 +257,6 @@ class StageRecord extends AbstractRecord
         return ((int)$this->record['notification_preselection'] & 8) > 0;
     }
 
-    /**
-     * @return bool
-     */
     public function hasDefaultRecipients(): bool
     {
         return $this->record['notification_defaults'] !== '';

@@ -457,7 +457,6 @@ class ElementInformationController
      *
      * @param string $table
      * @param int $uid
-     * @return array
      * @throws RouteNotFoundException
      */
     protected function getRecordActions($table, $uid, ServerRequestInterface $request): array
@@ -503,7 +502,6 @@ class ElementInformationController
      *
      * @param string $table Table name
      * @param int|File $ref Filename or uid
-     * @return array
      * @throws RouteNotFoundException
      */
     protected function makeRef($table, $ref, ServerRequestInterface $request): array
@@ -602,7 +600,6 @@ class ElementInformationController
      *
      * @param string $table Table name
      * @param int $ref Filename or uid
-     * @return array
      */
     protected function makeRefFrom($table, $ref, ServerRequestInterface $request): array
     {
@@ -708,7 +705,6 @@ class ElementInformationController
     /**
      * @param string $tableName Name of the table
      * @param array $record Record to be checked (ensure pid is resolved for workspaces)
-     * @return bool
      */
     protected function canAccessPage(string $tableName, array $record): bool
     {

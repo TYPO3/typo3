@@ -58,33 +58,21 @@ class MethodParameter
         $this->definition = $definition;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string|null
-     */
     public function getType(): ?string
     {
         return $this->definition['type'];
     }
 
-    /**
-     * @return bool
-     */
     public function isArray(): bool
     {
         return $this->definition['array'];
     }
 
-    /**
-     * @return bool
-     */
     public function hasDefaultValue(): bool
     {
         return $this->definition['hasDefaultValue'];
@@ -98,41 +86,26 @@ class MethodParameter
         return $this->definition['defaultValue'];
     }
 
-    /**
-     * @return array
-     */
     public function getValidators(): array
     {
         return $this->definition['validators'];
     }
 
-    /**
-     * @return bool
-     */
     public function ignoreValidation(): bool
     {
         return $this->definition['ignoreValidation'];
     }
 
-    /**
-     * @return bool
-     */
     public function isOptional(): bool
     {
         return $this->definition['optional'];
     }
 
-    /**
-     * @return string|null
-     */
     public function getDependency(): ?string
     {
         return $this->definition['dependency'];
     }
 
-    /**
-     * @return int
-     */
     public function getPosition(): int
     {
         return $this->definition['position'];

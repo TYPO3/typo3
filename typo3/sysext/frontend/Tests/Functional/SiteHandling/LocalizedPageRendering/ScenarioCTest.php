@@ -57,9 +57,6 @@ class ScenarioCTest extends AbstractLocalizedPagesTestCase
         $this->setUpDatabaseWithYamlPayload(__DIR__ . '/Fixtures/ScenarioC.yaml');
     }
 
-    /**
-     * @return array
-     */
     public function resolvablePagesDataProvider(): array
     {
         return [
@@ -99,9 +96,6 @@ class ScenarioCTest extends AbstractLocalizedPagesTestCase
         $this->assertScopes($url, $scopes);
     }
 
-    /**
-     * @return array
-     */
     public function pageNotFoundDataProvider(): array
     {
         return [
@@ -123,9 +117,6 @@ class ScenarioCTest extends AbstractLocalizedPagesTestCase
         $this->assertResponseStatusCode($url);
     }
 
-    /**
-     * @return array
-     */
     public function menuDataProvider(): array
     {
         return [

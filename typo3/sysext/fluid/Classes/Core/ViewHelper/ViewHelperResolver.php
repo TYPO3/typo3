@@ -81,7 +81,6 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
 
     /**
      * @param string $viewHelperClassName
-     * @return ViewHelperInterface
      */
     public function createViewHelperInstanceFromClassName($viewHelperClassName): ViewHelperInterface
     {

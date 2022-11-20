@@ -156,8 +156,6 @@ class ConfigurationManager
 
     /**
      * Returns local configuration array merged with default configuration
-     *
-     * @return array
      */
     public function getMergedLocalConfiguration(): array
     {

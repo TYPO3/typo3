@@ -31,9 +31,6 @@ class LanguageContext implements Applicable
         $this->languageId = $languageId;
     }
 
-    /**
-     * @return int
-     */
     public function getLanguageId(): int
     {
         return $this->languageId;

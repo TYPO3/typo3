@@ -25,9 +25,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CsvUtilityTest extends UnitTestCase
 {
-    /**
-     * @return array
-     */
     public function csvToArrayDataProvider(): array
     {
         return [

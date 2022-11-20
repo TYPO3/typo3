@@ -44,9 +44,6 @@ trait SiteAccessorTrait
         $this->site = $site;
     }
 
-    /**
-     * @return Site
-     */
     public function getSite(): Site
     {
         return $this->site;
@@ -61,7 +58,6 @@ trait SiteAccessorTrait
      * first result by `$results[0]`.
      *
      * @param array $results
-     * @return array
      */
     protected function filterContainedInSite(array $results): array
     {
@@ -82,8 +78,6 @@ trait SiteAccessorTrait
     /**
      * Determines whether page is contained in current site
      * (resolved from current SiteLanguage).
-     *
-     * @return bool
      */
     protected function isPageIdContainedInSite(int $pageId): bool
     {

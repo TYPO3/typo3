@@ -343,8 +343,6 @@ class SaveToDatabaseFinisher extends AbstractFinisher
 
     /**
      * Returns the values of the submitted form
-     *
-     * @return array
      */
     protected function getFormValues(): array
     {

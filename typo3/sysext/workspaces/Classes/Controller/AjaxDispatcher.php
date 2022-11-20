@@ -40,9 +40,6 @@ class AjaxDispatcher
         'Actions' => ActionHandler::class,
     ];
 
-    /**
-     * @return ResponseInterface
-     */
     public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
         $callStack = json_decode($request->getBody()->getContents());

@@ -266,9 +266,6 @@ class FileCollector implements \Countable, LoggerAwareInterface
         return $this->files;
     }
 
-    /**
-     * @return int
-     */
     public function count(): int
     {
         return count($this->files);
@@ -281,7 +278,6 @@ class FileCollector implements \Countable, LoggerAwareInterface
      * @param string $tableName Name of the table
      * @param string $fieldName Name of the field
      * @param array $element The parent element referencing to files
-     * @return array
      */
     protected function getFileReferences($tableName, $fieldName, array $element): array
     {

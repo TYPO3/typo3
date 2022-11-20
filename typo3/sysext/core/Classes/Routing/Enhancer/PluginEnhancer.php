@@ -107,8 +107,6 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
 
     /**
      * Builds a variant of a route based on the given configuration.
-     *
-     * @return Route
      */
     protected function getVariant(Route $defaultPageRoute, array $configuration): Route
     {
@@ -154,9 +152,6 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
         $collection->add('enhancer_' . $this->namespace . spl_object_hash($variant), $variant);
     }
 
-    /**
-     * @return array
-     */
     protected function deflateParameters(Route $route, array $parameters): array
     {
         return $this->getVariableProcessor()->deflateNamespaceParameters(
@@ -169,7 +164,6 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
     /**
      * @param array $parameters Actual parameter payload to be used
      * @param array $internals Internal instructions (_route, _controller, ...)
-     * @return array
      */
     public function inflateParameters(array $parameters, array $internals = []): array
     {

@@ -37,8 +37,6 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
 {
     /**
      * Render a single flex form section container to add it to the DOM
-     *
-     * @return ResponseInterface
      */
     public function containerAdd(ServerRequestInterface $request): ResponseInterface
     {

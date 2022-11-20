@@ -55,9 +55,6 @@ class Typo3DbBackendTest extends UnitTestCase
      */
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @return array
-     */
     public function uidOfAlreadyPersistedValueObjectIsDeterminedCorrectlyDataProvider(): array
     {
         return [

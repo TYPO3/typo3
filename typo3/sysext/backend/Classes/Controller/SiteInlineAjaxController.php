@@ -53,7 +53,6 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
     /**
      * Inline "create" new child of site configuration child records
      *
-     * @return ResponseInterface
      * @throws \RuntimeException
      */
     public function newInlineChildAction(ServerRequestInterface $request): ResponseInterface
@@ -188,7 +187,6 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
     /**
      * Show the details of site configuration child records.
      *
-     * @return ResponseInterface
      * @throws \RuntimeException
      */
     public function openInlineChildAction(ServerRequestInterface $request): ResponseInterface
@@ -357,7 +355,6 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
      *
      * @param string $contextString
      * @throws \RuntimeException
-     * @return array
      */
     protected function extractSignedParentConfigFromRequest(string $contextString): array
     {
@@ -399,8 +396,6 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
     /**
      * Find a site language by id. This will return the first occurrence of a
      * language, even if the same language is used in other site configurations.
-     *
-     * @return SiteLanguage|null
      */
     protected function getLanguageById(int $languageId): ?SiteLanguage
     {

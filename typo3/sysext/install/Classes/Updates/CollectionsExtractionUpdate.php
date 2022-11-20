@@ -56,8 +56,6 @@ class CollectionsExtractionUpdate extends AbstractDownloadExtensionUpdate
 
     /**
      * Return a confirmation message instance
-     *
-     * @return Confirmation
      */
     public function getConfirmation(): Confirmation
     {
@@ -67,8 +65,6 @@ class CollectionsExtractionUpdate extends AbstractDownloadExtensionUpdate
     /**
      * Return the identifier for this wizard
      * This should be the same string as used in the ext_localconf class registration
-     *
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -77,8 +73,6 @@ class CollectionsExtractionUpdate extends AbstractDownloadExtensionUpdate
 
     /**
      * Return the speaking name of this wizard
-     *
-     * @return string
      */
     public function getTitle(): string
     {
@@ -87,8 +81,6 @@ class CollectionsExtractionUpdate extends AbstractDownloadExtensionUpdate
 
     /**
      * Return the description for this wizard
-     *
-     * @return string
      */
     public function getDescription(): string
     {
@@ -98,8 +90,6 @@ class CollectionsExtractionUpdate extends AbstractDownloadExtensionUpdate
     /**
      * Is an update necessary?
      * Is used to determine whether a wizard needs to be run.
-     *
-     * @return bool
      */
     public function updateNecessary(): bool
     {

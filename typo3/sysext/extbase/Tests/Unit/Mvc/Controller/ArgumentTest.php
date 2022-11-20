@@ -72,9 +72,6 @@ class ArgumentTest extends UnitTestCase
         self::assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
     }
 
-    /**
-     * @return array
-     */
     public function invalidShortNames(): array
     {
         return [

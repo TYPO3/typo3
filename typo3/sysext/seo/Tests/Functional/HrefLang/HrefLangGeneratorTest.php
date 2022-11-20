@@ -97,9 +97,6 @@ class HrefLangGeneratorTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @return array
-     */
     public function checkHrefLangOutputDataProvider(): array
     {
         return [

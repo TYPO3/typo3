@@ -101,8 +101,6 @@ class SlugHelper
 
     /**
      * Cleans a slug value so it is used directly in the path segment of a URL.
-     *
-     * @return string
      */
     public function sanitize(string $slug): string
     {
@@ -146,8 +144,6 @@ class SlugHelper
     /**
      * Extracts payload of slug and removes wrapping delimiters,
      * e.g. `/hello/world/` will become `hello/world`.
-     *
-     * @return string
      */
     public function extract(string $slug): string
     {
@@ -160,7 +156,6 @@ class SlugHelper
      * Used when no slug exists for a record
      *
      * @param int $pid The uid of the page to generate the slug for
-     * @return string
      */
     public function generate(array $recordData, int $pid): string
     {
@@ -239,8 +234,6 @@ class SlugHelper
 
     /**
      * Checks if there are other records with the same slug that are located on the same PID.
-     *
-     * @return bool
      */
     public function isUniqueInPid(string $slug, RecordState $state): bool
     {
@@ -265,7 +258,6 @@ class SlugHelper
     /**
      * Check if there are other records with the same slug that are located on the same site.
      *
-     * @return bool
      * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
     public function isUniqueInSite(string $slug, RecordState $state): bool
@@ -330,7 +322,6 @@ class SlugHelper
     /**
      * Check if there are other records with the same slug.
      *
-     * @return bool
      * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
     public function isUniqueInTable(string $slug, RecordState $state): bool
@@ -368,7 +359,6 @@ class SlugHelper
      *
      * @param string $slug proposed slug
      * @param callable $isUnique Callback to check for uniqueness
-     * @return string
      * @throws SiteNotFoundException
      */
     protected function buildSlug(string $slug, RecordState $state, callable $isUnique): string
@@ -394,7 +384,6 @@ class SlugHelper
      * Generate a slug with a suffix "/mytitle-1" if that is in use already.
      *
      * @param string $slug proposed slug
-     * @return string
      * @throws SiteNotFoundException
      */
     public function buildSlugForUniqueInSite(string $slug, RecordState $state): string
@@ -406,7 +395,6 @@ class SlugHelper
      * Generate a slug with a suffix "/mytitle-1" if the suggested slug is in use already.
      *
      * @param string $slug proposed slug
-     * @return string
      */
     public function buildSlugForUniqueInPid(string $slug, RecordState $state): string
     {
@@ -417,7 +405,6 @@ class SlugHelper
      * Generate a slug with a suffix "/mytitle-1" if that is in use already.
      *
      * @param string $slug proposed slug
-     * @return string
      * @throws SiteNotFoundException
      */
     public function buildSlugForUniqueInTable(string $slug, RecordState $state): string
@@ -425,9 +412,6 @@ class SlugHelper
         return $this->buildSlug($slug, $state, [$this, 'isUniqueInTable']);
     }
 
-    /**
-     * @return QueryBuilder
-     */
     protected function createPreparedQueryBuilder(): QueryBuilder
     {
         $fieldNames = ['uid', 'pid', $this->fieldName];
@@ -539,9 +523,6 @@ class SlugHelper
         }
     }
 
-    /**
-     * @return array
-     */
     protected function resolveVersionOverlays(array $records): array
     {
         if (!$this->workspaceEnabled) {
@@ -570,7 +551,6 @@ class SlugHelper
 
     /**
      * Fetch a parent page, but exclude spacers, recyclers and sys-folders
-     * @return array|null
      */
     protected function resolveParentPageRecord(int $pid, int $languageId): ?array
     {

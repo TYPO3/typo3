@@ -27,8 +27,6 @@ class ProcessorFixture extends AbstractProcessor
 {
     /**
      * Processing the record
-     *
-     * @return LogRecord
      */
     public function processLogRecord(LogRecord $record): LogRecord
     {

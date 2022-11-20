@@ -47,7 +47,6 @@ class StringConverter extends AbstractTypeConverter
      * built $convertedChildProperties and $configuration.
      *
      * @param string $source
-     * @return string
      */
     public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): string
     {

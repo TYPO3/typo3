@@ -32,8 +32,6 @@ class SetType extends Type
      *
      * @param array $fieldDeclaration The field declaration.
      * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform The currently used database platform.
-     *
-     * @return string
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
@@ -44,8 +42,6 @@ class SetType extends Type
 
     /**
      * Gets the name of this type.
-     *
-     * @return string
      */
     public function getName(): string
     {

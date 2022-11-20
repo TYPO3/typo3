@@ -73,8 +73,6 @@ class NullSite implements SiteInterface
 
     /**
      * Returns always #NULL
-     *
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -91,8 +89,6 @@ class NullSite implements SiteInterface
 
     /**
      * Always zero
-     *
-     * @return int
      */
     public function getRootPageId(): int
     {
@@ -112,7 +108,6 @@ class NullSite implements SiteInterface
     /**
      * Returns a language of this site, given by the sys_language_uid
      *
-     * @return SiteLanguage
      * @throws \InvalidArgumentException
      */
     public function getLanguageById(int $languageId): SiteLanguage
@@ -179,7 +174,6 @@ class NullSite implements SiteInterface
     /**
      * Returns a ready-to-use error handler, to be used within the ErrorController
      *
-     * @return PageErrorHandlerInterface
      * @throws \RuntimeException
      */
     public function getErrorHandler(int $statusCode): PageErrorHandlerInterface

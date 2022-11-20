@@ -427,8 +427,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Checks if the user is in the valid list of allowed system maintainers. if the list is not set,
      * then all admins are system maintainers. If the list is empty, no one is system maintainer (good for production
      * systems). If the currently logged in user is in "switch user" mode, this method will return false.
-     *
-     * @return bool
      */
     public function isSystemMaintainer(): bool
     {
@@ -581,7 +579,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     /**
      * Returns TRUE if the RTE (Rich Text Editor) is enabled for the user.
      *
-     * @return bool
      * @internal should only be used from within TYPO3 Core
      */
     public function isRTE(): bool
@@ -820,7 +817,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * This is not bound to an actual record, but to the mere fact if the user is in a workspace
      * and depending on the table settings.
      *
-     * @return bool
      * @internal should only be used from within TYPO3 Core
      */
     public function workspaceAllowsLiveEditingInTable(string $table): bool
@@ -850,7 +846,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * as all records can be created in live workspace
      *
      * @param string $table Table name
-     * @return bool
      * @internal should only be used from within TYPO3 Core
      */
     public function workspaceCanCreateNewRecord(string $table): bool
@@ -2273,7 +2268,6 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
     /**
      * Evaluate whether the user is required to set up MFA, based on user TSconfig and global configuration
      *
-     * @return bool
      * @internal
      */
     public function isMfaSetupRequired(): bool

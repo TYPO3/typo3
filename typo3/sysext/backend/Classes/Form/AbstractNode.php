@@ -154,8 +154,6 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
 
     /**
      * Build JSON string for validations rules.
-     *
-     * @return string
      */
     protected function getValidationDataAsJsonString(array $config): string
     {

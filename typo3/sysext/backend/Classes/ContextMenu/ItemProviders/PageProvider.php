@@ -173,25 +173,17 @@ class PageProvider extends RecordProvider
 
     /**
      * Checks if the provider can add items to the menu
-     *
-     * @return bool
      */
     public function canHandle(): bool
     {
         return $this->table === 'pages';
     }
 
-    /**
-     * @return int
-     */
     public function getPriority(): int
     {
         return 100;
     }
 
-    /**
-     * @return bool
-     */
     protected function canRender(string $itemName, string $type): bool
     {
         if (in_array($type, ['divider', 'submenu'], true)) {
@@ -279,8 +271,6 @@ class PageProvider extends RecordProvider
 
     /**
      * Checks if the user may create pages below the given page
-     *
-     * @return bool
      */
     protected function canBeCreated(): bool
     {
@@ -300,8 +290,6 @@ class PageProvider extends RecordProvider
 
     /**
      * Checks if the user has editing rights
-     *
-     * @return bool
      */
     protected function canBeEdited(): bool
     {
@@ -328,8 +316,6 @@ class PageProvider extends RecordProvider
 
     /**
      * Check if a page is locked
-     *
-     * @return bool
      */
     protected function isRecordLocked(): bool
     {
@@ -338,8 +324,6 @@ class PageProvider extends RecordProvider
 
     /**
      * Checks if the page is allowed to can be cut
-     *
-     * @return bool
      */
     protected function canBeCut(): bool
     {
@@ -361,8 +345,6 @@ class PageProvider extends RecordProvider
 
     /**
      * Checks if the page is allowed to be copied
-     *
-     * @return bool
      */
     protected function canBeCopied(): bool
     {
@@ -386,8 +368,6 @@ class PageProvider extends RecordProvider
 
     /**
      * Checks if something can be pasted into the node
-     *
-     * @return bool
      */
     protected function canBePastedInto(): bool
     {
@@ -403,8 +383,6 @@ class PageProvider extends RecordProvider
 
     /**
      * Checks if something can be pasted after the node
-     *
-     * @return bool
      */
     protected function canBePastedAfter(): bool
     {
@@ -419,8 +397,6 @@ class PageProvider extends RecordProvider
 
     /**
      * Check if sub pages of given page can be sorted
-     *
-     * @return bool
      */
     protected function canBeSorted(): bool
     {
@@ -435,8 +411,6 @@ class PageProvider extends RecordProvider
 
     /**
      * Checks if the page is allowed to be removed
-     *
-     * @return bool
      */
     protected function canBeDeleted(): bool
     {
@@ -452,8 +426,6 @@ class PageProvider extends RecordProvider
 
     /**
      * Checks if the page is allowed to be viewed in frontend
-     *
-     * @return bool
      */
     protected function canBeViewed(): bool
     {
@@ -464,8 +436,6 @@ class PageProvider extends RecordProvider
 
     /**
      * Checks if the page is allowed to show info
-     *
-     * @return bool
      */
     protected function canShowInfo(): bool
     {
@@ -474,8 +444,6 @@ class PageProvider extends RecordProvider
 
     /**
      * Checks if the user has clear cache rights
-     *
-     * @return bool
      */
     protected function canClearCache(): bool
     {
@@ -485,8 +453,6 @@ class PageProvider extends RecordProvider
 
     /**
      * Determines whether this node is deleted.
-     *
-     * @return bool
      */
     protected function isDeleted(): bool
     {
@@ -513,9 +479,6 @@ class PageProvider extends RecordProvider
         return in_array($this->identifier, $this->backendUser->returnWebmounts());
     }
 
-    /**
-     * @return array
-     */
     protected function getAdditionalAttributes(string $itemName): array
     {
         $attributes = [];
@@ -560,9 +523,6 @@ class PageProvider extends RecordProvider
         return $attributes;
     }
 
-    /**
-     * @return int
-     */
     protected function getPreviewPid(): int
     {
         return (int)$this->record['sys_language_uid'] === 0 ? (int)$this->record['uid'] : (int)$this->record['l10n_parent'];
@@ -570,8 +530,6 @@ class PageProvider extends RecordProvider
 
     /**
      * Returns the view link
-     *
-     * @return string
      */
     protected function getViewLink(): string
     {
@@ -584,8 +542,6 @@ class PageProvider extends RecordProvider
      * Checks if user has access to this column
      * and the page doktype is lower than 200 (exclude sys_folder, ...)
      * and it contains given value
-     *
-     * @return bool
      */
     protected function canBeToggled(string $fieldName, int $value): bool
     {
@@ -606,7 +562,6 @@ class PageProvider extends RecordProvider
      * Returns true if a current user has access to the language of the record
      *
      * @see BackendUserAuthentication::checkLanguageAccess()
-     * @return bool
      */
     protected function hasLanguageAccess(): bool
     {
@@ -622,8 +577,6 @@ class PageProvider extends RecordProvider
 
     /**
      * Returns true if the page doktype is excluded
-     *
-     * @return bool
      */
     protected function isExcludedDoktype(): bool
     {

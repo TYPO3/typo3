@@ -459,7 +459,6 @@ class FormPersistenceManagerTest extends UnitTestCase
 
     /**
      * Helper function to trigger the fallback unique identifier creation after 100 attempts
-     * @return array
      */
     private function returnTrue100Times(): array
     {

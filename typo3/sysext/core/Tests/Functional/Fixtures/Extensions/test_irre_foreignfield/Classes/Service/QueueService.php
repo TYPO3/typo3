@@ -45,17 +45,11 @@ class QueueService implements SingletonInterface
         $this->active = true;
     }
 
-    /**
-     * @return array
-     */
     public function get(): array
     {
         return $this->calls;
     }
 
-    /**
-     * @return bool
-     */
     public function isActive(): bool
     {
         return $this->active;
@@ -66,9 +60,6 @@ class QueueService implements SingletonInterface
         $this->active = (bool)$active;
     }
 
-    /**
-     * @return array|null
-     */
     public function shift(): ?array
     {
         return array_shift($this->calls);
@@ -83,9 +74,6 @@ class QueueService implements SingletonInterface
         $this->values[$identifier] = $value;
     }
 
-    /**
-     * @return array
-     */
     public function getValues(): array
     {
         return $this->values;

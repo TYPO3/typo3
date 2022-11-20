@@ -55,8 +55,6 @@ abstract class AbstractRestrictionContainer implements QueryRestrictionContainer
 
     /**
      * Removes all restrictions stored within this container
-     *
-     * @return QueryRestrictionContainerInterface
      */
     public function removeAll(): QueryRestrictionContainerInterface
     {
@@ -68,7 +66,6 @@ abstract class AbstractRestrictionContainer implements QueryRestrictionContainer
      * Remove restriction of a given type
      *
      * @param string $restrictionType Class name of the restriction to be removed
-     * @return QueryRestrictionContainerInterface
      */
     public function removeByType(string $restrictionType): QueryRestrictionContainerInterface
     {
@@ -78,8 +75,6 @@ abstract class AbstractRestrictionContainer implements QueryRestrictionContainer
 
     /**
      * Add a new restriction instance to this collection
-     *
-     * @return QueryRestrictionContainerInterface
      */
     public function add(QueryRestrictionInterface $restriction): QueryRestrictionContainerInterface
     {
@@ -95,7 +90,6 @@ abstract class AbstractRestrictionContainer implements QueryRestrictionContainer
      * Currently only instantiates the class.
      *
      * @param string $restrictionClass
-     * @return QueryRestrictionInterface
      */
     protected function createRestriction($restrictionClass): QueryRestrictionInterface
     {

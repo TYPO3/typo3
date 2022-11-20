@@ -417,9 +417,6 @@ class RichtextTest extends UnitTestCase
         self::assertSame($expected, $output);
     }
 
-    /**
-     * @return array
-     */
     public function dataProviderGetConfigurationFindPresetInPageTsOverridesPreset(): array
     {
         return [

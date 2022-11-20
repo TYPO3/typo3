@@ -24,8 +24,6 @@ interface RowUpdaterInterface
 {
     /**
      * Get a description of this single row updater
-     *
-     * @return string
      */
     public function getTitle(): string;
 
@@ -33,7 +31,6 @@ interface RowUpdaterInterface
      * Return true if this row updater may have updates for given table rows.
      *
      * @param string $tableName Given table
-     * @return bool
      */
     public function hasPotentialUpdateForTable(string $tableName): bool;
 

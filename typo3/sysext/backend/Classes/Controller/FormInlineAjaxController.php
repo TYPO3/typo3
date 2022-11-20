@@ -40,8 +40,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 {
     /**
      * Create a new inline child via AJAX.
-     *
-     * @return ResponseInterface
      */
     public function createAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -157,8 +155,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
     /**
      * Show the details of a child record.
-     *
-     * @return ResponseInterface
      */
     public function detailsAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -650,7 +646,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      * correct TCA config for the parent table
      *
      * @throws \RuntimeException
-     * @return array
      */
     protected function extractSignedParentConfigFromRequest(string $contextString): array
     {

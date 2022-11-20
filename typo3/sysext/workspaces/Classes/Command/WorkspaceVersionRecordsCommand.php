@@ -108,8 +108,6 @@ class WorkspaceVersionRecordsCommand extends Command
 
     /**
      * Executes the command to find versioned records
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -470,8 +468,6 @@ class WorkspaceVersionRecordsCommand extends Command
 
     /**
      * Returns all TCA tables where workspaces is enabled
-     *
-     * @return array
      */
     protected function getAllVersionableTables(): array
     {

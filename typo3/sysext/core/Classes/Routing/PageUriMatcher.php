@@ -102,8 +102,6 @@ class PageUriMatcher
     /**
      * Resolves an optional route specific decorated route path that has been
      * assigned by DecoratingEnhancerInterface instances.
-     *
-     * @return string|null
      */
     protected function getDecoratedRoutePath(Route $route): ?string
     {

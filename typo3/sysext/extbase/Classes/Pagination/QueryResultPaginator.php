@@ -44,9 +44,6 @@ final class QueryResultPaginator extends AbstractPaginator
         $this->updateInternalState();
     }
 
-    /**
-     * @return iterable|QueryResultInterface
-     */
     public function getPaginatedItems(): iterable
     {
         return $this->paginatedQueryResult;

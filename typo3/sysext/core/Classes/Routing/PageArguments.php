@@ -177,7 +177,6 @@ class PageArguments implements RouteResultInterface
      * Cleans empty array recursively.
      *
      * @param array<string, string|array> $array
-     * @return array
      */
     protected function clean(array $array): array
     {
@@ -199,7 +198,6 @@ class PageArguments implements RouteResultInterface
      * Sorts array keys recursively.
      *
      * @param array<string, string|array> $array
-     * @return array
      */
     protected function sort(array $array): array
     {
@@ -213,7 +211,6 @@ class PageArguments implements RouteResultInterface
      *
      * @param array<string, string|array> $first
      * @param array<string, string|array> $second
-     * @return array
      */
     protected function diff(array $first, array $second): array
     {

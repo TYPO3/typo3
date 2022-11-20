@@ -58,7 +58,6 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
     /**
      * Adds already known metadata to the aspect
      *
-     * @return self
      * @internal
      */
     public function add(array $metaData): self
@@ -71,8 +70,6 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
 
     /**
      * Gets the metadata of a file. If not metadata is loaded yet, the database gets queried
-     *
-     * @return array
      */
     public function get(): array
     {
@@ -85,7 +82,6 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
 
     /**
      * @param mixed $offset
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -121,9 +117,6 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
         $this->metaData[$offset] = null;
     }
 
-    /**
-     * @return int
-     */
     public function count(): int
     {
         return count($this->get());
@@ -152,8 +145,6 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
 
     /**
      * Returns the key of the current iteration
-     *
-     * @return string
      */
     public function key(): string
     {
@@ -168,9 +159,6 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
         ++$this->indexPosition;
     }
 
-    /**
-     * @return bool
-     */
     public function valid(): bool
     {
         $key = array_keys($this->metaData)[$this->indexPosition] ?? '';
@@ -204,17 +192,11 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
         $this->metaData = [];
     }
 
-    /**
-     * @return MetaDataRepository
-     */
     protected function getMetaDataRepository(): MetaDataRepository
     {
         return GeneralUtility::makeInstance(MetaDataRepository::class);
     }
 
-    /**
-     * @return array
-     */
     protected function loadFromRepository(): array
     {
         return $this->getMetaDataRepository()->findByFileUid((int)$this->file->getUid());

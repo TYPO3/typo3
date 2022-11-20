@@ -104,7 +104,6 @@ class RedirectFinisher extends AbstractFinisher
      * Adds the base uri if not already in place.
      *
      * @param string $uri The URI
-     * @return string
      */
     protected function addBaseUriIfNecessary(string $uri): string
     {

@@ -30,7 +30,6 @@ class StaticValueMapperTest extends AbstractEnhancerSiteRequestTest
 {
     /**
      * @param string|TestSet|null $parentSet
-     * @return array
      */
     public function staticValueMapperDataProvider($parentSet = null): array
     {
@@ -96,9 +95,6 @@ class StaticValueMapperTest extends AbstractEnhancerSiteRequestTest
         $this->assertPageArgumentsEquals($testSet);
     }
 
-    /**
-     * @return array
-     */
     public function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $testSets = [];

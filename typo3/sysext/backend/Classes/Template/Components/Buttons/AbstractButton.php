@@ -102,8 +102,6 @@ class AbstractButton extends AbstractControl implements ButtonInterface
 
     /**
      * Check if button is disabled
-     *
-     * @return bool
      */
     public function isDisabled(): bool
     {
@@ -112,8 +110,6 @@ class AbstractButton extends AbstractControl implements ButtonInterface
 
     /**
      * Set if button needs to be disabled
-     *
-     * @return AbstractButton
      */
     public function setDisabled(bool $disabled): AbstractButton
     {

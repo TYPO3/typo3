@@ -29,8 +29,6 @@ interface ChartDataProviderInterface
      *
      * @link https://www.chartjs.org/docs/latest/charts/bar.html#data-structure
      * @link https://www.chartjs.org/docs/latest/charts/doughnut.html#data-structure
-     *
-     * @return array
      */
     public function getChartData(): array;
 }

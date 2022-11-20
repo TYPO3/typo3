@@ -36,9 +36,6 @@ class VariablesContext implements Applicable
         $this->variables = $variables;
     }
 
-    /**
-     * @return Variables
-     */
     public function getVariables(): Variables
     {
         return $this->variables;

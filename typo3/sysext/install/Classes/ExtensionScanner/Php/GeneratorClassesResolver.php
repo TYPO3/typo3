@@ -83,8 +83,6 @@ class GeneratorClassesResolver extends NodeVisitorAbstract
     /**
      * Substitutes class-string values with their corresponding class constant
      * representation (`'Vendor\\ClassName'` -> `\Vendor\ClassName::class`).
-     *
-     * @return ClassConstFetch|null
      */
     protected function substituteClassString(Expr $argValue): ?ClassConstFetch
     {
@@ -103,8 +101,6 @@ class GeneratorClassesResolver extends NodeVisitorAbstract
     /**
      * Substitutes `makeInstance` invocations with proper `new` invocations.
      * `GeneralUtility(\Vendor\ClassName::class, 'a', 'b')` -> `new \Vendor\ClassName('a', 'b')`
-     *
-     * @return New_|null
      */
     protected function substituteMakeInstance(StaticCall $node, Expr $argValue): ?New_
     {

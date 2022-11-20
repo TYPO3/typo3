@@ -54,8 +54,6 @@ class NotCurrentPasswordValidator extends AbstractPasswordValidator
 
     /**
      * Returns if the hash of the given password equals the hash of the current password
-     *
-     * @return bool
      */
     protected function isCurrentPassword(string $password, ContextData $contextData): bool
     {

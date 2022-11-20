@@ -307,7 +307,6 @@ class UpgradeWizardsService
     /**
      * Execute the "get user input" step of a wizard
      *
-     * @return array
      * @throws \RuntimeException
      */
     public function getWizardUserInput(string $identifier): array
@@ -358,7 +357,6 @@ class UpgradeWizardsService
     /**
      * Execute a single update wizard
      *
-     * @return FlashMessageQueue
      * @throws \RuntimeException
      */
     public function executeWizard(string $identifier): FlashMessageQueue

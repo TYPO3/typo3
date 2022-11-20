@@ -163,7 +163,6 @@ class ExtbasePluginEnhancer extends PluginEnhancer
      *
      * @param array $parameters Actual parameter payload to be used
      * @param array $internals Internal instructions (_route, _controller, ...)
-     * @return array
      */
     public function inflateParameters(array $parameters, array $internals = []): array
     {
@@ -185,8 +184,6 @@ class ExtbasePluginEnhancer extends PluginEnhancer
 
     /**
      * Check if controller+action combination matches
-     *
-     * @return bool
      */
     protected function verifyRequiredParameters(Route $route, array $parameters): bool
     {
@@ -208,8 +205,6 @@ class ExtbasePluginEnhancer extends PluginEnhancer
     }
     /**
      * Check if action and controller are not empty.
-     *
-     * @return bool
      */
     protected function hasControllerActionValues(array $target): bool
     {

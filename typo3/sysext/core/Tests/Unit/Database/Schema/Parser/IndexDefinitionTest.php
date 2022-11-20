@@ -39,8 +39,6 @@ class IndexDefinitionTest extends UnitTestCase
      *  - isSpatial
      *  - indexType
      *  - options array
-     *
-     * @return array
      */
     public function canParseIndexDefinitionDataProvider(): array
     {
@@ -553,8 +551,6 @@ class IndexDefinitionTest extends UnitTestCase
 
     /**
      * Parse the CREATE TABLE statement and return the reference definition
-     *
-     * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateIndexDefinitionItem
      */
     protected function createSubject(string $statement): CreateIndexDefinitionItem
     {

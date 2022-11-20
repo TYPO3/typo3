@@ -39,8 +39,6 @@ class ModeRegistry implements SingletonInterface
 
     /**
      * Registers modes for t3editor
-     *
-     * @return self
      */
     public function register(Mode $mode): ModeRegistry
     {
@@ -54,8 +52,6 @@ class ModeRegistry implements SingletonInterface
 
     /**
      * Removes registered modes
-     *
-     * @return self
      */
     public function unregister(string $formatCode): ModeRegistry
     {
@@ -66,16 +62,12 @@ class ModeRegistry implements SingletonInterface
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isRegistered(string $formatCode): bool
     {
         return isset($this->registeredModes[$formatCode]);
     }
 
     /**
-     * @return Mode
      * @throws InvalidModeException
      */
     public function getByFormatCode(string $formatCode): Mode
@@ -90,7 +82,6 @@ class ModeRegistry implements SingletonInterface
     }
 
     /**
-     * @return Mode
      * @throws InvalidModeException
      */
     public function getByFileExtension(string $fileExtension): Mode
@@ -104,9 +95,6 @@ class ModeRegistry implements SingletonInterface
         throw new InvalidModeException('Cannot find a registered mode for requested file extension "' . $fileExtension . '"', 1500306488);
     }
 
-    /**
-     * @return Mode
-     */
     public function getDefaultMode(): Mode
     {
         return $this->defaultMode;

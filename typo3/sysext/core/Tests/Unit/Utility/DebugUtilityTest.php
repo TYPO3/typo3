@@ -70,9 +70,6 @@ class DebugUtilityTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function convertVariableToStringReturnsVariableContentDataProvider(): array
     {
         $object = new \stdClass();

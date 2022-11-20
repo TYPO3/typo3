@@ -49,8 +49,6 @@ class BcryptPreset extends AbstractPreset
 
     /**
      * Find out if bcrypt is available on this system
-     *
-     * @return bool
      */
     public function isAvailable(): bool
     {

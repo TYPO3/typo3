@@ -29,8 +29,6 @@ class FloatingPointTypesTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseFloatingPointTypes()
-     *
-     * @return array
      */
     public function canParseFloatingPointTypesProvider(): array
     {

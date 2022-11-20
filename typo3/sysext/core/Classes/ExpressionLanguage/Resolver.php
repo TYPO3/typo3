@@ -70,7 +70,6 @@ class Resolver
      * Evaluate an expression.
      *
      * @param string $condition The expression to parse
-     * @return bool
      */
     public function evaluate(string $condition): bool
     {
@@ -81,7 +80,6 @@ class Resolver
      * Compiles an expression source code.
      *
      * @param string $condition The expression to compile
-     * @return string
      */
     public function compile(string $condition): string
     {

@@ -230,7 +230,6 @@ class EmailFinisher extends AbstractFinisher
      * Get mail recipients
      *
      * @param string $listOption List option name
-     * @return array
      */
     protected function getRecipients(string $listOption): array
     {

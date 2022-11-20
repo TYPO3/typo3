@@ -541,8 +541,6 @@ class MenuProcessor implements DataProcessorInterface
 
     /**
      * Returns the currently configured "site" if a site is configured (= resolved) in the current request.
-     *
-     * @return SiteInterface
      */
     protected function getCurrentSite(): SiteInterface
     {

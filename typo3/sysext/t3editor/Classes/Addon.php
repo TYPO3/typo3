@@ -71,9 +71,6 @@ class Addon
         return $this->keymap;
     }
 
-    /**
-     * @return self
-     */
     public function setOptions(array $options): Addon
     {
         $this->options = $options;
@@ -81,17 +78,11 @@ class Addon
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getOptions(): array
     {
         return $this->options;
     }
 
-    /**
-     * @return self
-     */
     public function setCssFiles(array $cssFiles): Addon
     {
         $this->cssFiles = $cssFiles;
@@ -99,9 +90,6 @@ class Addon
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getCssFiles(): array
     {
         return $this->cssFiles;

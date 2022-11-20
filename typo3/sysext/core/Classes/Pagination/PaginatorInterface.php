@@ -39,8 +39,6 @@ interface PaginatorInterface
 
     /**
      * Returns an iterable, sub set of the original set of items
-     *
-     * @return iterable
      */
     public function getPaginatedItems(): iterable;
 

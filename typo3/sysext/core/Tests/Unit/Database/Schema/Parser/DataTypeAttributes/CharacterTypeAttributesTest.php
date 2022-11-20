@@ -27,8 +27,6 @@ class CharacterTypeAttributesTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseCharacterDataTypeAttributes()
-     *
-     * @return array
      */
     public function canParseCharacterDataTypeAttributesProvider(): array
     {

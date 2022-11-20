@@ -25,8 +25,6 @@ class QueryHelperTest extends UnitTestCase
 {
     /**
      * Test cases for stripping of leading logical operators in where constraints.
-     *
-     * @return array
      */
     public function stripLogicalOperatorPrefixDataProvider(): array
     {
@@ -59,8 +57,6 @@ class QueryHelperTest extends UnitTestCase
 
     /**
      * Test cases for parsing ORDER BY SQL fragments
-     *
-     * @return array
      */
     public function parseOrderByDataProvider(): array
     {
@@ -143,8 +139,6 @@ class QueryHelperTest extends UnitTestCase
 
     /**
      * Test cases for parsing FROM tableList SQL fragments
-     *
-     * @return array
      */
     public function parseTableListDataProvider(): array
     {
@@ -217,8 +211,6 @@ class QueryHelperTest extends UnitTestCase
 
     /**
      * Test cases for parsing ORDER BY SQL fragments
-     *
-     * @return array
      */
     public function parseGroupByDataProvider(): array
     {
@@ -265,8 +257,6 @@ class QueryHelperTest extends UnitTestCase
 
     /**
      * Test cases for parsing JOIN fragments into table name, alias and conditions
-     *
-     * @return array
      */
     public function parseJoinDataProvider(): array
     {
@@ -437,8 +427,6 @@ class QueryHelperTest extends UnitTestCase
 
     /**
      * Test cases for quoting column/table name identifiers in SQL fragments
-     *
-     * @return array
      */
     public function quoteDatabaseIdentifierDataProvider(): array
     {

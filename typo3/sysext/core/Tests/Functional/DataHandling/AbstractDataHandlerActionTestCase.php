@@ -228,33 +228,21 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
         }
     }
 
-    /**
-     * @return HasRecordConstraint
-     */
     protected function getRequestSectionHasRecordConstraint(): HasRecordConstraint
     {
         return new HasRecordConstraint();
     }
 
-    /**
-     * @return DoesNotHaveRecordConstraint
-     */
     protected function getRequestSectionDoesNotHaveRecordConstraint(): DoesNotHaveRecordConstraint
     {
         return new DoesNotHaveRecordConstraint();
     }
 
-    /**
-     * @return StructureHasRecordConstraint
-     */
     protected function getRequestSectionStructureHasRecordConstraint(): StructureHasRecordConstraint
     {
         return new StructureHasRecordConstraint();
     }
 
-    /**
-     * @return StructureDoesNotHaveRecordConstraint
-     */
     protected function getRequestSectionStructureDoesNotHaveRecordConstraint(): StructureDoesNotHaveRecordConstraint
     {
         return new StructureDoesNotHaveRecordConstraint();

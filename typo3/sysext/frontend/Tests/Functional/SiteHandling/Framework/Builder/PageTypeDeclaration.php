@@ -35,33 +35,21 @@ class PageTypeDeclaration implements Applicable, HasGenerateParameters, HasResol
         $this->identifier = $identifier;
     }
 
-    /**
-     * @return array
-     */
     public function getConfiguration(): array
     {
         return $this->configuration;
     }
 
-    /**
-     * @return Variables
-     */
     public function getVariables(): Variables
     {
         return $this->variables;
     }
 
-    /**
-     * @return array
-     */
     public function getResolveArguments(): array
     {
         return $this->resolveArguments;
     }
 
-    /**
-     * @return array
-     */
     public function getGenerateParameters(): array
     {
         return $this->generateParameters;

@@ -212,7 +212,6 @@ class FormDefinitionValidationService implements SingletonInterface
      * If this is not the case (return value is FALSE), an exception must be thrown.
      *
      * @param mixed $propertyValue
-     * @return bool
      * @throws PropertyException
      */
     public function isPropertyValueEqualToHistoricalValue(

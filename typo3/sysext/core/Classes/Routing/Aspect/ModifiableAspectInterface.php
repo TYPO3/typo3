@@ -23,8 +23,5 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
  */
 interface ModifiableAspectInterface extends AspectInterface
 {
-    /**
-     * @return string|null
-     */
     public function modify(): ?string;
 }

@@ -27,7 +27,6 @@ interface ControllerInterface
      * Processes a general request. The result can be returned by altering the given response.
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
-     * @return ResponseInterface
      */
     public function processRequest(RequestInterface $request): ResponseInterface;
 }

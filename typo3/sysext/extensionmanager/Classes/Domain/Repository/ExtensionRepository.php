@@ -324,7 +324,6 @@ class ExtensionRepository extends Repository
      * enables us to always just search for the latest version of an extension
      *
      * @param QueryInterface $query the query to adjust
-     * @return QueryInterface
      */
     protected function addDefaultConstraints(QueryInterface $query): QueryInterface
     {

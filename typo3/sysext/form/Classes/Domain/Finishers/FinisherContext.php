@@ -75,7 +75,6 @@ class FinisherContext
     /**
      * TRUE if no further finishers should be invoked. Defaults to FALSE
      *
-     * @return bool
      * @internal
      */
     public function isCancelled(): bool
@@ -85,8 +84,6 @@ class FinisherContext
 
     /**
      * The Form Runtime that is associated with the current finisher
-     *
-     * @return FormRuntime
      */
     public function getFormRuntime(): FormRuntime
     {
@@ -95,17 +92,12 @@ class FinisherContext
 
     /**
      * The values of the submitted form (after validation and property mapping)
-     *
-     * @return array
      */
     public function getFormValues(): array
     {
         return $this->formRuntime->getFormState()->getFormValues();
     }
 
-    /**
-     * @return FinisherVariableProvider
-     */
     public function getFinisherVariableProvider(): FinisherVariableProvider
     {
         return $this->finisherVariableProvider;

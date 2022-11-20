@@ -30,8 +30,6 @@ class BlobTypesTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseBlobDataType()
-     *
-     * @return array
      */
     public function canParseBlobDataTypeProvider(): array
     {

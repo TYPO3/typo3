@@ -25,9 +25,6 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  */
 class DataProcessorFixture implements DataProcessorInterface
 {
-    /**
-     * @return array
-     */
     public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData): array
     {
         return $processorConfiguration;

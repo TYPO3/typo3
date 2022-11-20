@@ -180,9 +180,6 @@ class MessageTest extends UnitTestCase
         self::assertCount(0, $headers);
     }
 
-    /**
-     * @return array
-     */
     public function invalidGeneralHeaderValuesDataProvider(): array
     {
         return [
@@ -207,9 +204,6 @@ class MessageTest extends UnitTestCase
         $this->message->withHeader('X-Foo', [$value]);
     }
 
-    /**
-     * @return array
-     */
     public function invalidHeaderValuesDataProvider(): array
     {
         return [
@@ -269,9 +263,6 @@ class MessageTest extends UnitTestCase
         self::assertSame('', $this->message->getHeaderLine('X-Foo-Bar'));
     }
 
-    /**
-     * @return array
-     */
     public function headersWithInjectionVectorsDataProvider(): array
     {
         return [

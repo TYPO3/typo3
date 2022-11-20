@@ -65,9 +65,6 @@ class CheckValueTest extends AbstractDataHandlerActionTestCase
         self::assertEquals('', $record['tx_testdatahandler_radio']);
     }
 
-    /**
-     * @return array
-     */
     protected function insertRecordWithRadioFieldValue($value): array
     {
         // pid 88 comes from ImportDefault

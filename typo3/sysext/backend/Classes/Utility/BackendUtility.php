@@ -185,7 +185,6 @@ class BackendUtility
     /**
      * Purges computed property names starting with underscore character ('_').
      *
-     * @return array
      * @internal should only be used from within TYPO3 Core
      */
     public static function purgeComputedPropertyNames(array $propertyNames): array
@@ -1082,9 +1081,6 @@ class BackendUtility
         return $thumbData ? '<div class="preview-thumbnails" style="--preview-thumbnails-size: ' . $size . 'px">' . $thumbData . '</div>' : '';
     }
 
-    /**
-     * @return string
-     */
     public static function getThumbnailUrl(int $fileId, array $configuration): string
     {
         $taskType = $configuration['_context'] ?? ProcessedFile::CONTEXT_IMAGEPREVIEW;
@@ -1742,7 +1738,6 @@ class BackendUtility
      *
      * @param string|int|null $recordId
      * @param string|int $value
-     * @return array
      */
     protected static function resolveRelationLabels(array $theColConf, string $table, $recordId, $value, bool $noRecordLookup): array
     {
@@ -1906,7 +1901,6 @@ class BackendUtility
      * @param string $alternativeUrl An alternative URL that, if set, will ignore other parameters except $switchFocus: It will return the window.open command wrapped around this URL!
      * @param string $additionalGetVars Additional GET variables.
      * @param bool $switchFocus If TRUE, then the preview window will gain the focus.
-     * @return string
      * @deprecated since TYPO3 v12.0. Use PreviewUriBuilder instead.
      */
     public static function getPreviewUrl(
@@ -2035,7 +2029,6 @@ class BackendUtility
      * @param int|string $uid If icon is for database record this is the UID for the
      * record from $table or identifier for sys_file record
      * @param string $context Set tree if menu is called from tree view
-     * @return array
      */
     public static function getClickMenuOnIconTagParameters(string $table, $uid = 0, string $context = ''): array
     {

@@ -171,7 +171,6 @@ class DirectoryNode extends AbstractNode implements NodeInterface
      * Create directory if not exists
      *
      * @throws Exception
-     * @return FlashMessage
      */
     protected function createDirectory(): FlashMessage
     {

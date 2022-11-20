@@ -34,7 +34,6 @@ class FormSelectTreeAjaxController
      * Returns json representing category tree
      *
      * @throws \RuntimeException
-     * @return ResponseInterface
      */
     public function fetchDataAction(ServerRequestInterface $request): ResponseInterface
     {

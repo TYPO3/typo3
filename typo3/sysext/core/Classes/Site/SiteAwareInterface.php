@@ -26,8 +26,5 @@ interface SiteAwareInterface
 {
     public function setSite(Site $site): void;
 
-    /**
-     * @return Entity\Site
-     */
     public function getSite(): Site;
 }

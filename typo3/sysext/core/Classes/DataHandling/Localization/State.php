@@ -185,9 +185,6 @@ class State
         return json_encode($this->states);
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         return $this->states ?? [];

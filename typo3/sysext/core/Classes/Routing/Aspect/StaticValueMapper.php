@@ -119,8 +119,6 @@ class StaticValueMapper implements StaticMappableAspectInterface, SiteLanguageAw
 
     /**
      * Fetches the map of with the matching locale.
-     *
-     * @return array|null
      */
     protected function retrieveLocaleMap(): ?array
     {

@@ -70,8 +70,6 @@ class MigrateSiteSettingsConfigUpdate implements UpgradeWizardInterface
 
     /**
      * if the settings file does not exist an update is considered as necessary
-     *
-     * @return bool
      */
     public function updateNecessary(): bool
     {

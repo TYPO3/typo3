@@ -116,8 +116,6 @@ class CoreUpdateService
 
     /**
      * Get messages of previous method call
-     *
-     * @return FlashMessageQueue
      */
     public function getMessages(): FlashMessageQueue
     {

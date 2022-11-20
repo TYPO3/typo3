@@ -60,8 +60,6 @@ class WorkspaceAspect implements AspectInterface
 
     /**
      * Return the workspace ID
-     *
-     * @return int
      */
     public function getId(): int
     {
@@ -70,8 +68,6 @@ class WorkspaceAspect implements AspectInterface
 
     /**
      * Return whether this is live workspace or in a custom offline workspace
-     *
-     * @return bool
      */
     public function isLive(): bool
     {

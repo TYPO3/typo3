@@ -217,8 +217,6 @@ class AbstractPluginTest extends UnitTestCase
 
     /**
      * Data provider for multiple registered result browser implementations
-     *
-     * @return array
      */
     public function registeredResultBrowserProvider(): array
     {

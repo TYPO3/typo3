@@ -50,8 +50,6 @@ class TreeController
 
     /**
      * Loads data for the first time, or when expanding a folder.
-     *
-     * @return ResponseInterface
      */
     public function fetchDataAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -73,7 +71,6 @@ class TreeController
     /**
      * Used when the search / filter is used.
      *
-     * @return ResponseInterface
      * @throws \Exception
      */
     public function filterDataAction(ServerRequestInterface $request): ResponseInterface
@@ -158,8 +155,6 @@ class TreeController
 
     /**
      * Adds information for the JSON result to be rendered.
-     *
-     * @return array
      */
     protected function prepareItemForOutput(array $item): array
     {

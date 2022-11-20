@@ -675,8 +675,6 @@ class FlexFormTools
 
     /**
      * Ensures a data structure has a default sheet, and no duplicate data
-     *
-     * @return array
      */
     protected function ensureDefaultSheet(array $dataStructure): array
     {
@@ -695,8 +693,6 @@ class FlexFormTools
 
     /**
      * Resolve FILE:EXT and EXT: for single sheets
-     *
-     * @return array
      */
     protected function resolveFileDirectives(array $dataStructure): array
     {

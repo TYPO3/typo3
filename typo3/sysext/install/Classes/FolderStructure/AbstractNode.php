@@ -140,7 +140,6 @@ abstract class AbstractNode
      * Fix permission if they are not equal to target permission
      *
      * @throws Exception
-     * @return FlashMessage
      */
     protected function fixPermission(): FlashMessage
     {

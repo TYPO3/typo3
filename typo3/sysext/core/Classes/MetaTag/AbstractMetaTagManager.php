@@ -176,8 +176,6 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
 
     /**
      * Returns an array with all properties that can be handled by this manager
-     *
-     * @return array
      */
     public function getAllHandledProperties(): array
     {
@@ -189,7 +187,6 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
      *
      * @param string $property Name of the property
      * @param string $type Optional type of property (name, property, http-equiv)
-     * @return array
      */
     public function getProperty(string $property, string $type = ''): array
     {
@@ -206,7 +203,6 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
      * Render a meta tag for a specific property
      *
      * @param string $property Name of the property
-     * @return string
      */
     public function renderProperty(string $property): string
     {
@@ -249,8 +245,6 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
 
     /**
      * Render all registered properties of this manager
-     *
-     * @return string
      */
     public function renderAllProperties(): string
     {
@@ -285,7 +279,6 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
      * Check if this manager can handle the given property
      *
      * @param string $property Name of property to check (eg. og:title)
-     * @return bool
      */
     public function canHandleProperty(string $property): bool
     {

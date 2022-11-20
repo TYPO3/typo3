@@ -49,7 +49,6 @@ class CoreTypeConverter extends AbstractTypeConverter
 
     /**
      * @param mixed $source
-     * @return bool
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      * @deprecated will be removed in TYPO3 v13.0, this is not needed anymore.
      */

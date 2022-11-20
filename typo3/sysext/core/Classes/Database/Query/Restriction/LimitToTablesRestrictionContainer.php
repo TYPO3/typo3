@@ -69,7 +69,6 @@ class LimitToTablesRestrictionContainer implements QueryRestrictionContainerInte
      * Adds the restriction, but also remembers which table aliases it should be applied to
      *
      * @param array $tableAliases flat array of table aliases, not table names
-     * @return QueryRestrictionContainerInterface
      */
     public function addForTables(QueryRestrictionInterface $restriction, array $tableAliases): QueryRestrictionContainerInterface
     {

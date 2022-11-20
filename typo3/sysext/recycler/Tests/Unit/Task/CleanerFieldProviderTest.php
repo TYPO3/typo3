@@ -73,9 +73,6 @@ class CleanerFieldProviderTest extends UnitTestCase
         return $scheduleModuleMock;
     }
 
-    /**
-     * @return array
-     */
     public function validateAdditionalFieldsLogsPeriodErrorDataProvider(): array
     {
         return [
@@ -108,9 +105,6 @@ class CleanerFieldProviderTest extends UnitTestCase
         $this->subject->validateAdditionalFields($submittedData, $scheduleModuleControllerMock);
     }
 
-    /**
-     * @return array
-     */
     public function validateAdditionalFieldsDataProvider(): array
     {
         return [

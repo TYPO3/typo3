@@ -32,8 +32,6 @@ class ListController extends AbstractWizardController
 {
     /**
      * Injects the request object for the current request or sub request
-     *
-     * @return ResponseInterface
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {

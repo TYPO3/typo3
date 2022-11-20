@@ -62,8 +62,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Main "show the cards" view
-     *
-     * @return ResponseInterface
      */
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -76,8 +74,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * System Information Get Data action
-     *
-     * @return ResponseInterface
      */
     public function systemInformationGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -97,8 +93,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * System Information Get Data action
-     *
-     * @return ResponseInterface
      */
     public function phpInfoGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -111,8 +105,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Get environment status
-     *
-     * @return ResponseInterface
      */
     public function environmentCheckGetStatusAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -155,8 +147,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Get folder structure status
-     *
-     * @return ResponseInterface
      */
     public function folderStructureGetStatusAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -202,8 +192,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Try to fix folder structure errors
-     *
-     * @return ResponseInterface
      */
     public function folderStructureFixAction(): ResponseInterface
     {
@@ -218,8 +206,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * System Information Get Data action
-     *
-     * @return ResponseInterface
      */
     public function mailTestGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -243,8 +229,6 @@ class EnvironmentController extends AbstractController
 
     /**
      *  Send a test mail
-     *
-     * @return ResponseInterface
      */
     public function mailTestAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -304,8 +288,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * System Information Get Data action
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -334,8 +316,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Create true type font test image
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingTrueTypeAction(): ResponseInterface
     {
@@ -370,8 +350,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Convert to jpg from jpg
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingReadJpgAction(): ResponseInterface
     {
@@ -380,8 +358,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Convert to jpg from gif
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingReadGifAction(): ResponseInterface
     {
@@ -390,8 +366,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Convert to jpg from png
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingReadPngAction(): ResponseInterface
     {
@@ -400,8 +374,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Convert to jpg from tif
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingReadTifAction(): ResponseInterface
     {
@@ -410,8 +382,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Convert to jpg from pdf
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingReadPdfAction(): ResponseInterface
     {
@@ -420,8 +390,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Convert to jpg from ai
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingReadAiAction(): ResponseInterface
     {
@@ -430,8 +398,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Writing gif test
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingWriteGifAction(): ResponseInterface
     {
@@ -484,8 +450,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Writing png test
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingWritePngAction(): ResponseInterface
     {
@@ -516,8 +480,6 @@ class EnvironmentController extends AbstractController
     }
     /**
      * Writing webp test
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingWriteWebpAction(): ResponseInterface
     {
@@ -549,8 +511,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Scaling transparent files - gif to gif
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingGifToGifAction(): ResponseInterface
     {
@@ -582,8 +542,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Scaling transparent files - png to png
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingPngToPngAction(): ResponseInterface
     {
@@ -615,8 +573,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Scaling transparent files - gif to jpg
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingGifToJpgAction(): ResponseInterface
     {
@@ -649,8 +605,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Converting jpg to webp
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingJpgToWebpAction(): ResponseInterface
     {
@@ -682,8 +636,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Combine images with gif mask
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingCombineGifMaskAction(): ResponseInterface
     {
@@ -719,8 +671,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Combine images with jpg mask
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingCombineJpgMaskAction(): ResponseInterface
     {
@@ -756,8 +706,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * GD with simple box
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingGdlibSimpleAction(): ResponseInterface
     {
@@ -786,8 +734,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * GD from image with box
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingGdlibFromFileAction(): ResponseInterface
     {
@@ -816,8 +762,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * GD with text
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingGdlibRenderTextAction(): ResponseInterface
     {
@@ -853,8 +797,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * GD with text, niceText
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingGdlibNiceTextAction(): ResponseInterface
     {
@@ -900,8 +842,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * GD with text, niceText, shadow
-     *
-     * @return ResponseInterface
      */
     public function imageProcessingGdlibNiceTextShadowAction(): ResponseInterface
     {
@@ -995,8 +935,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Convert to jpg from given input format
-     *
-     * @return ResponseInterface
      */
     protected function convertImageFormatsToJpg(string $inputFormat): ResponseInterface
     {
@@ -1039,8 +977,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Get details about all configured database connections
-     *
-     * @return array
      */
     protected function getDatabaseConnectionInformation(): array
     {
@@ -1076,8 +1012,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Get details about the application context
-     *
-     * @return array
      */
     protected function getApplicationContextInformation(): array
     {
@@ -1108,8 +1042,6 @@ class EnvironmentController extends AbstractController
      * Gets sender name from configuration
      * ['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
      * If this setting is empty, it falls back to a default string.
-     *
-     * @return string
      */
     protected function getSenderEmailName(): string
     {
@@ -1122,8 +1054,6 @@ class EnvironmentController extends AbstractController
      * Gets email subject from configuration
      * ['TYPO3_CONF_VARS']['SYS']['sitename']
      * If this setting is empty, it falls back to a default string.
-     *
-     * @return string
      */
     protected function getEmailSubject(): string
     {
@@ -1135,8 +1065,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Create a JsonResponse from single image tests
-     *
-     * @return ResponseInterface
      */
     protected function getImageTestResponse(array $testResult): ResponseInterface
     {
@@ -1161,8 +1089,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Create a 'image generation failed' message
-     *
-     * @return FlashMessage
      */
     protected function imageGenerationFailedMessage(): FlashMessage
     {
@@ -1189,8 +1115,6 @@ class EnvironmentController extends AbstractController
 
     /**
      * Create a 'imageMagick disabled' message
-     *
-     * @return FlashMessage
      */
     protected function imageMagickDisabledMessage(): FlashMessage
     {
@@ -1204,8 +1128,6 @@ class EnvironmentController extends AbstractController
     /**
      * Return the temp image dir.
      * If not exist it will be created
-     *
-     * @return string
      */
     protected function getImagesPath(): string
     {

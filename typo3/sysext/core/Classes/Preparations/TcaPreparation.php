@@ -37,7 +37,6 @@ class TcaPreparation
      * See unit tests for details.
      *
      * @param array $tca
-     * @return array
      */
     public function prepare(array $tca): array
     {
@@ -64,7 +63,6 @@ class TcaPreparation
      * must always be executed before prepareQuotingOfTableNamesAndColumnNames().
      *
      * @param array $tca
-     * @return array
      */
     protected function configureCategoryRelations(array $tca): array
     {

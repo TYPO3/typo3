@@ -67,7 +67,6 @@ abstract class AbstractWriter implements WriterInterface
      * such as if it's being written to a database for later display.
      *
      * @param string $value
-     * @return string
      */
     protected function formatContextValue(string $value): string
     {

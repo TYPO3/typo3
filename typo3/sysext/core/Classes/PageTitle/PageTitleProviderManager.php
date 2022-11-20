@@ -36,9 +36,6 @@ class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterfa
      */
     private $pageTitleCache = [];
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         $pageTitle = '';
@@ -79,7 +76,6 @@ class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterfa
     }
 
     /**
-     * @return array
      * @internal
      */
     public function getPageTitleCache(): array
@@ -97,7 +93,6 @@ class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterfa
 
     /**
      * Get the TypoScript configuration for pageTitleProviders
-     * @return array
      */
     private function getPageTitleProviderConfiguration(): array
     {

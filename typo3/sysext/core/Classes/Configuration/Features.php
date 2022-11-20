@@ -77,7 +77,6 @@ class Features
      * Checks if a feature is active
      *
      * @param string $featureName the name of the feature
-     * @return bool
      */
     public function isFeatureEnabled(string $featureName): bool
     {

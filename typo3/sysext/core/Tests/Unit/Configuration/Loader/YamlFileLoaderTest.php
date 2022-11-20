@@ -147,7 +147,6 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
 
     /**
      * dataprovider for tests isPlaceholderTest
-     * @return array
      */
     public function isPlaceholderDataProvider(): array
     {

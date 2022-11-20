@@ -53,9 +53,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
 
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    /**
-     * @return array
-     */
     protected function wrapInArray(array $array): array
     {
         return array_map(
@@ -68,7 +65,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
 
     /**
      * @param string[] $array
-     * @return array
      */
     protected function keysFromValues(array $array): array
     {
@@ -88,7 +84,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
      * @param array $array
      * @param string $template
      * @param callable|null $callback
-     * @return array
      */
     protected function keysFromTemplate(array $array, string $template, callable $callback = null): array
     {
@@ -114,9 +109,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
         return array_combine($keys, $array);
     }
 
-    /**
-     * @return ArrayValueInstruction
-     */
     protected function createTypoLinkUrlInstruction(array $typoScript): ArrayValueInstruction
     {
         return (new ArrayValueInstruction(LinkHandlingController::class))
@@ -131,9 +123,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
             ]);
     }
 
-    /**
-     * @return ArrayValueInstruction
-     */
     protected function createHierarchicalMenuProcessorInstruction(array $typoScript): ArrayValueInstruction
     {
         return (new ArrayValueInstruction(LinkHandlingController::class))
@@ -152,9 +141,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
             ]);
     }
 
-    /**
-     * @return ArrayValueInstruction
-     */
     protected function createLanguageMenuProcessorInstruction(array $typoScript): ArrayValueInstruction
     {
         return (new ArrayValueInstruction(LinkHandlingController::class))
@@ -175,8 +161,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
 
     /**
      * Filters and keeps only desired names.
-     *
-     * @return array
      */
     protected function filterMenu(
         array $menu,

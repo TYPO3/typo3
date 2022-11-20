@@ -74,8 +74,6 @@ final class ModifyRecordListHeaderColumnsEvent
 
     /**
      * Whether the column exists
-     *
-     * @return bool
      */
     public function hasColumn(string $columnName): bool
     {
@@ -140,7 +138,6 @@ final class ModifyRecordListHeaderColumnsEvent
     /**
      * Returns the current DatabaseRecordList instance.
      *
-     * @return DatabaseRecordList
      * @todo Might be replaced by a DTO in the future
      */
     public function getRecordList(): DatabaseRecordList

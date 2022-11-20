@@ -42,8 +42,6 @@ class WidgetGroupInitializationService
 
     /**
      * Define the different groups of widgets as shown in the modal when adding a widget to the current dashboard
-     *
-     * @return array
      */
     public function buildWidgetGroupsConfiguration(): array
     {

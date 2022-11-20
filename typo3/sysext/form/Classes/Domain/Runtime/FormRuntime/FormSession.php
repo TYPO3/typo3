@@ -47,7 +47,6 @@ class FormSession
     }
 
     /**
-     * @return string
      * @internal
      */
     public function getIdentifier(): string
@@ -58,7 +57,6 @@ class FormSession
     /**
      * Consumed by TYPO3\CMS\Form\ViewHelpers\FormViewHelper
      *
-     * @return string
      * @internal
      */
     public function getAuthenticatedIdentifier(): string
@@ -68,16 +66,12 @@ class FormSession
             ->appendHmac($this->identifier . '|');
     }
 
-    /**
-     * @return string
-     */
     protected function generateIdentifier(): string
     {
         return GeneralUtility::makeInstance(Random::class)->generateRandomHexString(40);
     }
 
     /**
-     * @return string
      * @throws BadRequestException
      */
     protected function validateIdentifier(string $authenticatedIdentifier): string

@@ -95,7 +95,6 @@ class InheritancesResolverService
      * Returns an instance of this service. Additionally the configuration
      * which should be resolved can be passed.
      *
-     * @return InheritancesResolverService
      * @internal
      */
     public static function create(array $configuration = []): InheritancesResolverService
@@ -137,7 +136,6 @@ class InheritancesResolverService
      * After that the configuration array is cleaned from the
      * inheritance operator.
      *
-     * @return array
      * @internal
      */
     public function getResolvedConfiguration(): array
@@ -159,7 +157,6 @@ class InheritancesResolverService
      * @param array $configuration - a mapped YAML configuration (full or partial)
      * @param array $pathStack - an identifier for YAML key as array (Form.part1.key => {Form, part1, key})
      * @param bool $setInheritancePathToCheck
-     * @return array
      */
     protected function resolve(
         array $configuration,
@@ -211,7 +208,6 @@ class InheritancesResolverService
      * Takes all inheritances (an array of YAML paths), and check them for endless loops
      *
      * @param array $inheritances
-     * @return array
      * @throws CycleInheritancesException
      */
     protected function resolveInheritancesRecursive(array $inheritances): array

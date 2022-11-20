@@ -124,7 +124,6 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
     /**
      * Performs the configuration update.
      *
-     * @return bool
      * @throws \Doctrine\DBAL\ConnectionException
      * @throws \Exception
      */

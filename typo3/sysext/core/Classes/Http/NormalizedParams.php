@@ -828,7 +828,6 @@ class NormalizedParams
      *
      * @param string $requestHost scheme://host[:port]
      * @param string $siteUrl Full Frontend Url
-     * @return string
      */
     protected static function determineSitePath(string $requestHost, string $siteUrl): string
     {
@@ -837,8 +836,6 @@ class NormalizedParams
 
     /**
      * Determine site script
-     *
-     * @return string
      */
     protected static function determineSiteScript(string $requestUrl, string $siteUrl): string
     {

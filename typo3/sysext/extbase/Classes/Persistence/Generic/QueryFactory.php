@@ -46,7 +46,6 @@ class QueryFactory implements QueryFactoryInterface, SingletonInterface
      * Creates a query object working on the given class name
      *
      * @param string $className The class name
-     * @return QueryInterface
      */
     public function create($className): QueryInterface
     {

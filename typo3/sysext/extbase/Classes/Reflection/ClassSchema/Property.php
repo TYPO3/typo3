@@ -62,9 +62,6 @@ class Property
         $this->definition = $definition;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
@@ -74,8 +71,6 @@ class Property
      * Returns the type (string, integer, ...) set by the @var doc comment
      *
      * Returns null if type could not be evaluated
-     *
-     * @return string|null
      */
     public function getType(): ?string
     {
@@ -89,49 +84,32 @@ class Property
      * items inside the collection.
      *
      * Returns null if the property is not a collection and therefore no element type is defined.
-     *
-     * @return string|null
      */
     public function getElementType(): ?string
     {
         return $this->definition['e'];
     }
 
-    /**
-     * @return bool
-     */
     public function isPublic(): bool
     {
         return $this->characteristics->get(PropertyCharacteristics::VISIBILITY_PUBLIC);
     }
 
-    /**
-     * @return bool
-     */
     public function isProtected(): bool
     {
         return $this->characteristics->get(PropertyCharacteristics::VISIBILITY_PROTECTED);
     }
 
-    /**
-     * @return bool
-     */
     public function isPrivate(): bool
     {
         return $this->characteristics->get(PropertyCharacteristics::VISIBILITY_PRIVATE);
     }
 
-    /**
-     * @return bool
-     */
     public function isLazy(): bool
     {
         return $this->characteristics->get(PropertyCharacteristics::ANNOTATED_LAZY);
     }
 
-    /**
-     * @return bool
-     */
     public function isTransient(): bool
     {
         return $this->characteristics->get(PropertyCharacteristics::ANNOTATED_TRANSIENT);
@@ -142,9 +120,6 @@ class Property
         return (bool)$this->definition['n'];
     }
 
-    /**
-     * @return array
-     */
     public function getValidators(): array
     {
         return $this->definition['v'];
@@ -158,9 +133,6 @@ class Property
         return $this->definition['d'];
     }
 
-    /**
-     * @return string|null
-     */
     public function getCascadeValue(): ?string
     {
         return $this->definition['c'];

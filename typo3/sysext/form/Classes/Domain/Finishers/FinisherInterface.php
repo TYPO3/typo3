@@ -54,8 +54,6 @@ interface FinisherInterface
 
     /**
      * Returns whether this finisher is enabled
-     *
-     * @return bool
      */
     public function isEnabled(): bool;
 }

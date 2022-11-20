@@ -22,23 +22,11 @@ namespace TYPO3\CMS\Core\DataHandling\Model;
  */
 interface EntityPointer
 {
-    /**
-     * @return string
-     */
     public function getName(): string;
 
-    /**
-     * @return string
-     */
     public function getIdentifier(): string;
 
-    /**
-     * @return bool
-     */
     public function isNode(): bool;
 
-    /**
-     * @return bool
-     */
     public function isEqualTo(EntityPointer $other): bool;
 }

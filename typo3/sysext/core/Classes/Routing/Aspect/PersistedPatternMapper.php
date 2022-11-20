@@ -167,7 +167,6 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
     }
 
     /**
-     * @return string|null
      * @throws \InvalidArgumentException
      */
     protected function createRouteResult(?array $result): ?string
@@ -190,9 +189,6 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
         );
     }
 
-    /**
-     * @return array
-     */
     protected function filterNamesKeys(array $array): array
     {
         return array_filter(
@@ -256,9 +252,6 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
         return $queryBuilder;
     }
 
-    /**
-     * @return array
-     */
     protected function createRouteFieldConstraints(QueryBuilder $queryBuilder, array $values): array
     {
         $languageAware = $this->languageFieldName !== null && $this->languageParentFieldName !== null;

@@ -83,8 +83,6 @@ class EditableRestriction implements QueryRestrictionInterface
 
     /**
      * Gets all allowed language ids for current backend user
-     *
-     * @return array
      */
     protected function getAllowedLanguagesForCurrentUser(): array
     {
@@ -125,7 +123,6 @@ class EditableRestriction implements QueryRestrictionInterface
      *
      * @param array $searchFields array of 'table' => ['field1, field2', ....]
      *   in which linkvalidator searches for broken links
-     * @return array
      */
     protected function getAllowedFieldsForCurrentUser(array $searchFields = []): array
     {

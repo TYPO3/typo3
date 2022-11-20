@@ -564,9 +564,6 @@ class ConditionMatcherTest extends FunctionalTestCase
         self::assertTrue($conditionMatcher->match('[tree.pagelayout == "pagets__special_layout"]'));
     }
 
-    /**
-     * @return ConditionMatcher
-     */
     protected function getConditionMatcher(): ConditionMatcher
     {
         $conditionMatcher = new ConditionMatcher();

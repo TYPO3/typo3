@@ -436,8 +436,6 @@ class SchemaMigratorTest extends FunctionalTestCase
 
     /**
      * Helper to return the Doctrine Table object for the test table
-     *
-     * @return \Doctrine\DBAL\Schema\Table
      */
     protected function getTableDetails(): Table
     {
@@ -446,8 +444,6 @@ class SchemaMigratorTest extends FunctionalTestCase
 
     /**
      * Helper to read a fixture SQL file and convert it into a statement array.
-     *
-     * @return array
      */
     protected function readFixtureFile(string $fixtureName): array
     {

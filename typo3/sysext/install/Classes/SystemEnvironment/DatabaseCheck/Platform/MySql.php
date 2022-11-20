@@ -89,7 +89,6 @@ class MySql extends AbstractPlatform
     /**
      * Get all status information as array with status objects
      *
-     * @return FlashMessageQueue
      * @throws \InvalidArgumentException
      * @throws \Doctrine\DBAL\Exception
      */
@@ -248,8 +247,6 @@ class MySql extends AbstractPlatform
 
     /**
      * Validate the database name
-     *
-     * @return bool
      */
     public static function isValidDatabaseName(string $databaseName): bool
     {

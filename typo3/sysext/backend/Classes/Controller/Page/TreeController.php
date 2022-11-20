@@ -167,8 +167,6 @@ class TreeController
 
     /**
      * Returns page tree configuration in JSON
-     *
-     * @return ResponseInterface
      */
     public function fetchConfigurationAction(): ResponseInterface
     {
@@ -212,8 +210,6 @@ class TreeController
      *
      * Note: The list can be filtered by the user TypoScript
      * option "options.pageTree.doktypesToShowInNewPageDragArea".
-     *
-     * @return array
      */
     protected function getDokTypes(): array
     {
@@ -251,8 +247,6 @@ class TreeController
 
     /**
      * Returns JSON representing page tree
-     *
-     * @return ResponseInterface
      */
     public function fetchDataAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -280,8 +274,6 @@ class TreeController
 
     /**
      * Returns JSON representing page tree filtered by keyword
-     *
-     * @return ResponseInterface
      */
     public function filterDataAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -308,7 +300,6 @@ class TreeController
     /**
      * Sets a temporary mount point
      *
-     * @return ResponseInterface
      * @throws \RuntimeException
      */
     public function setTemporaryMountPointAction(ServerRequestInterface $request): ResponseInterface
@@ -339,7 +330,6 @@ class TreeController
      * @param int $entryPoint
      * @param int $depth
      * @param array $inheritedData
-     * @return array
      */
     protected function pagesToFlatArray(array $page, int $entryPoint, int $depth = 0, array $inheritedData = []): array
     {
@@ -489,7 +479,6 @@ class TreeController
      * Fetches all pages for all tree entry points the user is allowed to see
      *
      * @param string $query The search query can either be a string to be found in the title or the nav_title of a page or the uid of a page.
-     * @return array
      */
     protected function getAllEntryPointPageTrees(int $startPid = 0, string $query = ''): array
     {
@@ -603,8 +592,6 @@ class TreeController
 
     /**
      * Returns the first configured domain name for a page
-     *
-     * @return string
      */
     protected function getDomainNameForPage(int $pageId): string
     {
@@ -622,8 +609,6 @@ class TreeController
 
     /**
      * Returns the mount point path for a temporary mount or the given id
-     *
-     * @return string
      */
     protected function getMountPointPath(int $uid): string
     {
@@ -646,8 +631,6 @@ class TreeController
 
     /**
      * Check if drag-move in the svg tree is allowed for the user
-     *
-     * @return bool
      */
     protected function isDragMoveAllowed(): bool
     {

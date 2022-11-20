@@ -84,8 +84,6 @@ class Logger implements LoggerInterface
 
     /**
      * Remove everything except the name, to be able to restore it on wakeup
-     *
-     * @return array
      */
     public function __sleep(): array
     {

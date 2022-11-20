@@ -47,7 +47,6 @@ class Dispatcher
      * Dispatches a request to a controller and initializes the security framework.
      *
      * @param RequestInterface $request The request to dispatch
-     * @return ResponseInterface
      * @throws Exception\InfiniteLoopException
      */
     public function dispatch(RequestInterface $request): ResponseInterface

@@ -26,22 +26,16 @@ interface SiteInterface
 {
     /**
      * Returns the root page ID of this site
-     *
-     * @return int
      */
     public function getRootPageId(): int;
 
     /**
      * Returns an identifier for the site / configuration
-     *
-     * @return string
      */
     public function getIdentifier(): string;
 
     /**
      * Returns the base URL
-     *
-     * @return UriInterface
      */
     public function getBase(): UriInterface;
 
@@ -55,15 +49,12 @@ interface SiteInterface
     /**
      * Returns a language of this site, given by the sys_language_uid
      *
-     * @return SiteLanguage
      * @throws \InvalidArgumentException
      */
     public function getLanguageById(int $languageId): SiteLanguage;
 
     /**
      * Returns the first language that was configured. This is usually language=0
-     *
-     * @return SiteLanguage
      */
     public function getDefaultLanguage(): SiteLanguage;
 
@@ -81,7 +72,6 @@ interface SiteInterface
     /**
      * Returns a ready-to-use error handler, to be used within the ErrorController
      *
-     * @return PageErrorHandlerInterface
      * @throws PageErrorHandlerNotConfiguredException
      */
     public function getErrorHandler(int $statusCode): PageErrorHandlerInterface;

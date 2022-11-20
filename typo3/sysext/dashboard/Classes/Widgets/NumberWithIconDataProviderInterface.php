@@ -24,8 +24,6 @@ interface NumberWithIconDataProviderInterface
 {
     /**
      * Return the number that should be shown in the widget
-     *
-     * @return int
      */
     public function getNumber(): int;
 }

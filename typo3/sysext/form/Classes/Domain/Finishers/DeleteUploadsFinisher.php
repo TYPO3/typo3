@@ -77,9 +77,6 @@ class DeleteUploadsFinisher extends AbstractFinisher
         }
     }
 
-    /**
-     * @return bool
-     */
     protected function isEmptyFolder(Folder $folder): bool
     {
         return $folder->getFileCount() === 0

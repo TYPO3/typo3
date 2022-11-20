@@ -31,7 +31,6 @@ class StaticRangeMapperTest extends AbstractEnhancerSiteRequestTest
 {
     /**
      * @param string|TestSet|null $parentSet
-     * @return array
      */
     public function staticRangeMapperDataProvider($parentSet = null): array
     {
@@ -99,9 +98,6 @@ class StaticRangeMapperTest extends AbstractEnhancerSiteRequestTest
         $this->assertPageArgumentsEquals($testSet);
     }
 
-    /**
-     * @return array
-     */
     public function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $testSets = [];

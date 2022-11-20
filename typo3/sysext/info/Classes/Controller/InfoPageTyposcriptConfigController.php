@@ -202,8 +202,6 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
 
     /**
      * Renders table rows of all pages containing TSConfig together with its rootline
-     *
-     * @return array
      */
     protected function getOverviewOfPagesUsingTSConfig(): array
     {
@@ -265,7 +263,6 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
      * Extract the lines of TSConfig from a given pages row
      *
      * @param array $row The row from the database containing the uid and TSConfig fields
-     * @return array
      */
     protected function extractLinesFromTSConfig(array $row): array
     {
@@ -290,7 +287,6 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
      * @param array $pageArray The Page Array
      * @param array $lines Lines that have been processed up to this point
      * @param int $pageDepth The level of the current $pageArray being processed
-     * @return array
      */
     protected function getList(array $pageArray, array $lines = [], int $pageDepth = 0): array
     {

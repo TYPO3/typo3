@@ -108,7 +108,6 @@ class PageSlugCandidateProvider
      * Should be rebuilt to return the actual Page ID considering the online ID of the page.
      *
      * @param int $pageId
-     * @return int|null
      */
     public function getRealPageIdForPageIdAsPossibleCandidate(int $pageId): ?int
     {

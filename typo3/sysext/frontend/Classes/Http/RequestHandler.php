@@ -101,8 +101,6 @@ class RequestHandler implements RequestHandlerInterface
 
     /**
      * Handles a frontend request, after finishing running middlewares
-     *
-     * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -166,8 +164,6 @@ class RequestHandler implements RequestHandlerInterface
     /**
      * Generates the main body part for the page, and if "config.disableAllHeaderCode" is not active, triggers
      * pageRenderer to evaluate includeCSS, headTag etc. TypoScript processing to populate the pageRenderer.
-     *
-     * @return string
      */
     protected function generatePageContent(TypoScriptFrontendController $controller, ServerRequestInterface $request): string
     {
@@ -199,8 +195,6 @@ class RequestHandler implements RequestHandlerInterface
      * Generates the main content part within <body> tags (except JS files/CSS files), this means:
      * render everything that can be cached, otherwise put placeholders for COA_INT/USER_INT objects
      * in the content that is processed later-on.
-     *
-     * @return string
      */
     protected function generatePageBodyContent(TypoScriptFrontendController $controller): string
     {
@@ -905,9 +899,6 @@ class RequestHandler implements RequestHandlerInterface
         }
     }
 
-    /**
-     * @return PageRenderer
-     */
     protected function getPageRenderer(): PageRenderer
     {
         return GeneralUtility::makeInstance(PageRenderer::class);

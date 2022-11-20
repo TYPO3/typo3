@@ -35,9 +35,6 @@ class EntityContext
      */
     protected $languageId = 0;
 
-    /**
-     * @return int
-     */
     public function getWorkspaceId(): int
     {
         return $this->workspaceId;
@@ -56,9 +53,6 @@ class EntityContext
         return $target;
     }
 
-    /**
-     * @return int
-     */
     public function getLanguageId(): int
     {
         return $this->languageId;

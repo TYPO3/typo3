@@ -31,7 +31,6 @@ class LocaleModifierTest extends AbstractEnhancerLinkGeneratorTestCase
 {
     /**
      * @param string|TestSet|null $parentSet
-     * @return array
      */
     public function localeModifierDataProvider($parentSet = null): array
     {
@@ -141,8 +140,6 @@ class LocaleModifierTest extends AbstractEnhancerLinkGeneratorTestCase
     /**
      * Combines the previous data provider for mappable aspects into one large
      * data set that is permuted for several page type decorator instructions.
-     *
-     * @return array
      */
     public function pageTypeDecoratorIsAppliedDataProvider(): array
     {

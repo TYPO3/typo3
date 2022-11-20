@@ -24,8 +24,6 @@ interface PrerequisiteInterface
 {
     /**
      * Get speaking name of this prerequisite
-     *
-     * @return string
      */
     public function getTitle(): string;
 
@@ -38,7 +36,6 @@ interface PrerequisiteInterface
      * Returns true on success, false on error
      *
      * @see isFulfilled
-     * @return bool
      */
     public function ensure(): bool;
 
@@ -49,7 +46,6 @@ interface PrerequisiteInterface
      * ensure should be called to fulfill it.
      *
      * @see ensure
-     * @return bool
      */
     public function isFulfilled(): bool;
 }

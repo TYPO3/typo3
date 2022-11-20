@@ -80,8 +80,6 @@ class TcaSelectItemsTest extends UnitTestCase
     /**
      * Prepare a mock database setup for a Doctrine connection
      * and return an array of all prophets to set expectations upon.
-     *
-     * @return array
      */
     protected function mockDatabaseConnection(string $tableName = 'fTable'): array
     {
@@ -1192,9 +1190,6 @@ class TcaSelectItemsTest extends UnitTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @return array
-     */
     private function mockForeignTableItemsQuery(): array
     {
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
@@ -3245,8 +3240,6 @@ class TcaSelectItemsTest extends UnitTestCase
 
     /**
      * Data Provider
-     *
-     * @return array
      */
     public function processSelectFieldSetsCorrectValuesForMmRelationsDataProvider(): array
     {

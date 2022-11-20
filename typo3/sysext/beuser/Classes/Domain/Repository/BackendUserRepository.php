@@ -148,9 +148,6 @@ class BackendUserRepository extends Repository
         return $query;
     }
 
-    /**
-     * @return SessionBackendInterface
-     */
     protected function getSessionBackend(): SessionBackendInterface
     {
         return GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend('BE');

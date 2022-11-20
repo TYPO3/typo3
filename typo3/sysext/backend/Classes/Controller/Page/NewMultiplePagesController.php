@@ -218,7 +218,6 @@ class NewMultiplePagesController
      * Fetch all data fields for full page icon display
      *
      * @param int $pageUid Get sub pages from this pages
-     * @return array
      */
     protected function getSubPagesOfPage(int $pageUid): array
     {

@@ -98,9 +98,6 @@ class DatabaseIntegrityCheck
      */
     protected $lostPagesList = '';
 
-    /**
-     * @return array
-     */
     public function getPageTranslatedPageIDArray(): array
     {
         return $this->pageTranslatedPageIDArray;
@@ -541,49 +538,31 @@ class DatabaseIntegrityCheck
         return $result;
     }
 
-    /**
-     * @return array
-     */
     public function getPageIdArray(): array
     {
         return $this->pageIdArray;
     }
 
-    /**
-     * @return array
-     */
     public function getCheckGroupDBRefs(): array
     {
         return $this->checkGroupDBRefs;
     }
 
-    /**
-     * @return array
-     */
     public function getCheckSelectDBRefs(): array
     {
         return $this->checkSelectDBRefs;
     }
 
-    /**
-     * @return array
-     */
     public function getRecStats(): array
     {
         return $this->recStats;
     }
 
-    /**
-     * @return array
-     */
     public function getLRecords(): array
     {
         return $this->lRecords;
     }
 
-    /**
-     * @return string
-     */
     public function getLostPagesList(): string
     {
         return $this->lostPagesList;

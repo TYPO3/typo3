@@ -77,8 +77,6 @@ final class ModifyRecordListRecordActionsEvent
     /**
      * Whether the action exists in the given group. In case non or
      * an invalid $group is provided, both groups will be checked.
-     *
-     * @return bool
      */
     public function hasAction(string $actionName, string $group = ''): bool
     {
@@ -93,8 +91,6 @@ final class ModifyRecordListRecordActionsEvent
      * Get action by its name. In case the action exists in both groups
      * and non or an invalid $group is provided, the action from the
      * "primary" group will be returned.
-     *
-     * @return string|null
      */
     public function getAction(string $actionName, string $group = ''): ?string
     {
@@ -137,8 +133,6 @@ final class ModifyRecordListRecordActionsEvent
 
     /**
      * Get the actions of a specific group
-     *
-     * @return array|null
      */
     public function getActionGroup(string $group): ?array
     {

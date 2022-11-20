@@ -57,8 +57,6 @@ class FileInfoElement extends AbstractFormElement
 
     /**
      * Renders a HTML Block with file information
-     *
-     * @return string
      */
     protected function renderFileInformationContent(File $file = null): string
     {

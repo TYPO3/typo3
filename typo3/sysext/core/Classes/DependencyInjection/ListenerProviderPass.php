@@ -131,8 +131,6 @@ final class ListenerProviderPass implements CompilerPassInterface
      * @throws RuntimeException
      *
      * This method borrowed very closely from Symfony's AbstractRecurisvePass.
-     *
-     * @return \ReflectionFunctionAbstract
      */
     protected function getReflectionMethod(string $serviceName, Definition $definition, string $method): \ReflectionFunctionAbstract
     {

@@ -35,9 +35,6 @@ class HttpUtilityTest extends UnitTestCase
         self::assertEquals($expected, $url);
     }
 
-    /**
-     * @return array
-     */
     public function isUrlBuiltCorrectlyDataProvider(): array
     {
         return [
@@ -66,8 +63,6 @@ class HttpUtilityTest extends UnitTestCase
 
     /**
      * Data provider for buildQueryString
-     *
-     * @return array
      */
     public function queryStringDataProvider(): array
     {

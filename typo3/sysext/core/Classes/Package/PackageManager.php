@@ -259,7 +259,6 @@ class PackageManager implements SingletonInterface
     /**
      * Resolves a path in the form EXT:vendor/package/Path/To/Resource to an absolute filesystem path
      *
-     * @return string
      * @throws UnknownPackageException
      * @throws UnknownPackagePathException
      */
@@ -274,7 +273,6 @@ class PackageManager implements SingletonInterface
     /**
      * Extracts the package key from a path in the form EXT:vendor/package/Path/To/Resource
      *
-     * @return string
      * @throws UnknownPackageException
      * @throws UnknownPackagePathException
      * @internal
@@ -1041,8 +1039,6 @@ class PackageManager implements SingletonInterface
 
     /**
      * Returns true if the given path has valid subdirectories, false otherwise.
-     *
-     * @return bool
      */
     protected function hasSubDirectories(string $path): bool
     {
@@ -1116,8 +1112,6 @@ class PackageManager implements SingletonInterface
     /**
      * Checks whether the given package name is a Composer dependency.
      * In non Composer mode this is always false
-     *
-     * @return bool
      */
     protected function isComposerDependency(string $packageName): bool
     {

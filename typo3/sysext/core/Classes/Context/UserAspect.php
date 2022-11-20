@@ -57,9 +57,6 @@ class UserAspect implements AspectInterface
         $this->groups = $alternativeGroups;
     }
 
-    /**
-     * @return \stdClass
-     */
     private function createPseudoUser(): \stdClass
     {
         $user = new \stdClass();
@@ -98,8 +95,6 @@ class UserAspect implements AspectInterface
      * For frontend purposes, it is possible to e.g. simulate groups, but this would still be defined as "not logged in".
      *
      * For backend, only the check on the user ID is used.
-     *
-     * @return bool
      */
     public function isLoggedIn(): bool
     {
@@ -108,8 +103,6 @@ class UserAspect implements AspectInterface
 
     /**
      * Check if admin is set
-     *
-     * @return bool
      */
     public function isAdmin(): bool
     {
@@ -126,8 +119,6 @@ class UserAspect implements AspectInterface
      * For Frontend Users there are two special groups:
      * "-1" = hide at login
      * "-2" = show at any login
-     *
-     * @return array
      */
     public function getGroupIds(): array
     {
@@ -155,8 +146,6 @@ class UserAspect implements AspectInterface
 
     /**
      * Get the name of all groups, used in Fluid's IfHasRole ViewHelper
-     *
-     * @return array
      */
     public function getGroupNames(): array
     {

@@ -89,7 +89,6 @@ class ListenerProvider implements ListenerProviderInterface
 
     /**
      * @param string|null $method
-     * @return callable
      * @throws \InvalidArgumentException
      */
     protected function getCallable(string $service, string $method = null): callable

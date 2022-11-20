@@ -113,9 +113,6 @@ class RequestTest extends UnitTestCase
         new Request(null, 'BOGUS-METHOD');
     }
 
-    /**
-     * @return array
-     */
     public function invalidRequestBodyDataProvider(): array
     {
         return [
@@ -181,9 +178,6 @@ class RequestTest extends UnitTestCase
         self::assertEquals('/', $request->getRequestTarget());
     }
 
-    /**
-     * @return array
-     */
     public function requestsWithUriDataProvider(): array
     {
         return [
@@ -223,9 +217,6 @@ class RequestTest extends UnitTestCase
         self::assertEquals($expected, $request->getRequestTarget());
     }
 
-    /**
-     * @return array
-     */
     public function validRequestTargetsDataProvider(): array
     {
         return [
@@ -411,9 +402,6 @@ class RequestTest extends UnitTestCase
         self::assertEquals('www.example.com:10081', $new->getHeaderLine('Host'));
     }
 
-    /**
-     * @return array
-     */
     public function headersWithUpperAndLowerCaseValuesDataProvider(): array
     {
         // 'name' => [$headerName, $headerValue, $expectedValue]
@@ -436,9 +424,6 @@ class RequestTest extends UnitTestCase
         self::assertEquals([$expected], $request->getHeader(strtoupper($header)));
     }
 
-    /**
-     * @return array
-     */
     public function headersWithInjectionVectorsDataProvider(): array
     {
         return [

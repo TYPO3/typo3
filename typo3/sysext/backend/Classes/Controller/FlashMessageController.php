@@ -30,8 +30,6 @@ class FlashMessageController
 {
     /**
      * Renders the FlashMessages from queue and returns them as JSON.
-     *
-     * @return ResponseInterface
      */
     public function getQueuedFlashMessagesAction(): ResponseInterface
     {

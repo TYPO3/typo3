@@ -31,7 +31,6 @@ class PersistedPatternMapperTest extends AbstractEnhancerLinkGeneratorTestCase
 {
     /**
      * @param string|TestSet|null $parentSet
-     * @return array
      */
     public function persistedPatternMapperDataProvider($parentSet = null): array
     {
@@ -136,8 +135,6 @@ class PersistedPatternMapperTest extends AbstractEnhancerLinkGeneratorTestCase
     /**
      * Combines the previous data provider for mappable aspects into one large
      * data set that is permuted for several page type decorator instructions.
-     *
-     * @return array
      */
     public function pageTypeDecoratorIsAppliedDataProvider(): array
     {

@@ -336,9 +336,6 @@ class DataMapFactoryTest extends UnitTestCase
         $mockDataMapFactory->_call('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
     }
 
-    /**
-     * @return array
-     */
     public function columnMapIsInitializedWithFieldEvaluationsForDateTimeFieldsDataProvider(): array
     {
         return [
@@ -403,9 +400,6 @@ class DataMapFactoryTest extends UnitTestCase
         $mockDataMapFactory->buildDataMap('UnknownObject');
     }
 
-    /**
-     * @return array
-     */
     public function classNameTableNameMappings(): array
     {
         return [

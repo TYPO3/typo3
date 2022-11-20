@@ -65,49 +65,31 @@ class Confirmation
         $this->required = $required;
     }
 
-    /**
-     * @return string
-     */
     public function getConfirm(): string
     {
         return $this->confirm;
     }
 
-    /**
-     * @return string
-     */
     public function getDeny(): string
     {
         return $this->deny;
     }
 
-    /**
-     * @return bool
-     */
     public function isRequired(): bool
     {
         return $this->required;
     }
 
-    /**
-     * @return bool
-     */
     public function getDefaultValue(): bool
     {
         return $this->defaultValue;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getMessage(): string
     {
         return $this->message;

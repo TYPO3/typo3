@@ -22,22 +22,15 @@ namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
  */
 interface ProviderInterface
 {
-    /**
-     * @return array
-     */
     public function addItems(array $items): array;
 
     /**
      * Returns the priority of the provider. Higher priority value means provider is executed first
-     *
-     * @return int
      */
     public function getPriority(): int;
 
     /**
      * Checks if the provider can add items to the menu
-     *
-     * @return bool
      */
     public function canHandle(): bool;
 

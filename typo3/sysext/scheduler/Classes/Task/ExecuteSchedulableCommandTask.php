@@ -60,9 +60,6 @@ class ExecuteSchedulableCommandTask extends AbstractTask
         $this->commandIdentifier = $commandIdentifier;
     }
 
-    /**
-     * @return string
-     */
     public function getCommandIdentifier(): string
     {
         return $this->commandIdentifier;

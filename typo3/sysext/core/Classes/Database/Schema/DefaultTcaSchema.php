@@ -740,7 +740,6 @@ class DefaultTcaSchema
      * True if table with given table name is defined within incoming $tables array
      *
      * @param Table[] $tables
-     * @return bool
      */
     protected function isTableDefined(array $tables, string $tableName): bool
     {
@@ -757,7 +756,6 @@ class DefaultTcaSchema
      * array of Table's.
      *
      * @param Table[] $tables
-     * @return bool
      */
     protected function isColumnDefinedForTable(array $tables, string $tableName, string $fieldName): bool
     {
@@ -780,7 +778,6 @@ class DefaultTcaSchema
      * array of Table's.
      *
      * @param Table[] $tables
-     * @return bool
      */
     protected function isIndexDefinedForTable(array $tables, string $tableName, string $indexName): bool
     {
@@ -808,7 +805,6 @@ class DefaultTcaSchema
      * @todo to contain a table only once before this class is entered.
      *
      * @param Table[] $tables
-     * @return int
      * @throws \RuntimeException
      */
     protected function getTableFirstPosition(array $tables, string $tableName): int
@@ -821,9 +817,6 @@ class DefaultTcaSchema
         throw new DefaultTcaSchemaTablePositionException('Table ' . $tableName . ' not found in schema list', 1527854474);
     }
 
-    /**
-     * @return string
-     */
     protected function quote(string $identifier): string
     {
         return '`' . $identifier . '`';

@@ -64,8 +64,6 @@ class FileNameValidator
 
     /**
      * Find out if there is a custom file deny pattern configured.
-     *
-     * @return bool
      */
     public function customFileDenyPatternConfigured(): bool
     {
@@ -75,8 +73,6 @@ class FileNameValidator
     /**
      * Checks if the given file deny pattern does not have parts that the default pattern should
      * recommend. Used in status overview.
-     *
-     * @return bool
      */
     public function missingImportantPatterns(): bool
     {

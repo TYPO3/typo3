@@ -142,8 +142,6 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
     /**
      * Count processed files by storage. This is used in the install tool
      * to render statistics of processed files.
-     *
-     * @return int
      */
     public function countByStorage(ResourceStorage $storage): int
     {

@@ -205,65 +205,41 @@ class FileDeclaration
         return $target;
     }
 
-    /**
-     * @return FileLocation
-     */
     public function getFileLocation(): FileLocation
     {
         return $this->fileLocation;
     }
 
-    /**
-     * @return string
-     */
     public function getFileName(): string
     {
         return $this->fileName;
     }
 
-    /**
-     * @return string
-     */
     public function getUrl(): string
     {
         return $this->fileLocation->getBaseUrl() . $this->fileName;
     }
 
-    /**
-     * @return bool
-     */
     public function shallFail(): bool
     {
         return $this->fail;
     }
 
-    /**
-     * @return string|null
-     */
     public function getExpectedContentType(): ?string
     {
         return $this->expectedContentType;
     }
 
-    /**
-     * @return string|null
-     */
     public function getUnexpectedContentType(): ?string
     {
         return $this->unexpectedContentType;
     }
 
-    /**
-     * @return string|null
-     */
     public function getExpectedContent(): ?string
     {
         return $this->expectedContent;
     }
 
-    /**
-     * @return string|null
-     */
     public function getUnexpectedContent(): ?string
     {
         return $this->unexpectedContent;

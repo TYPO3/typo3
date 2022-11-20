@@ -34,7 +34,6 @@ class StandardPreviewRendererResolver
      * @param string $table The name of the table the returned PreviewRenderer must work with
      * @param array $row A record from $table which will be previewed - allows returning a different PreviewRenderer based on record attributes
      * @param int $pageUid The UID of the page on which the preview will be rendered - allows returning a different PreviewRenderer based on for example pageTSconfig
-     * @return PreviewRendererInterface
      * @throws \UnexpectedValueException
      * @throws \RuntimeException
      */

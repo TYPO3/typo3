@@ -212,7 +212,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     /**
      * Returns the object data matching the $query.
      *
-     * @return array
      * @throws SqlErrorException
      */
     public function getObjectDataByQuery(QueryInterface $query): array
@@ -260,7 +259,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     /**
      * Returns the object data using a custom statement
      *
-     * @return array
      * @throws SqlErrorException when the raw SQL statement fails in the database
      */
     protected function getObjectDataByRawQuery(Statement $statement): array
@@ -416,7 +414,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      *
      * @param Qom\SourceInterface $source The source (selector or join)
      * @param int|null $workspaceUid
-     * @return array
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
     protected function overlayLanguageAndWorkspace(SourceInterface $source, array $rows, QueryInterface $query, int $workspaceUid = null): array

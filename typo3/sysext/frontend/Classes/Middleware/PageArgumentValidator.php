@@ -67,8 +67,6 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
 
     /**
      * Validates the &cHash parameter against the other $queryParameters / GET parameters
-     *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -174,7 +172,6 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
      *
      * @param array<string, string|array> $dynamicArguments
      * @param bool $pageNotFoundOnCacheHashError
-     * @return bool
      */
     protected function evaluateQueryParametersWithoutCacheHash(array $dynamicArguments, bool $pageNotFoundOnCacheHashError): bool
     {

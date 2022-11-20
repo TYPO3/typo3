@@ -27,8 +27,6 @@ class IpAnonymizationUtilityTest extends UnitTestCase
 {
     /**
      * Data provider for anonymizeIpReturnsCorrectValue
-     *
-     * @return array
      */
     public function anonymizeIpReturnsCorrectValueDataProvider(): array
     {

@@ -73,9 +73,6 @@ class LinkVarsCalculatorTest extends UnitTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @return array
-     */
     public function splitLinkVarsDataProvider(): array
     {
         return [

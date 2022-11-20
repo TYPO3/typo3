@@ -64,8 +64,6 @@ class SettingsController extends AbstractController
 
     /**
      * Main "show the cards" view
-     *
-     * @return ResponseInterface
      */
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -79,8 +77,6 @@ class SettingsController extends AbstractController
 
     /**
      * Change install tool password
-     *
-     * @return ResponseInterface
      */
     public function changeInstallToolPasswordGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -107,8 +103,6 @@ class SettingsController extends AbstractController
 
     /**
      * Change install tool password
-     *
-     * @return ResponseInterface
      */
     public function changeInstallToolPasswordAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -155,8 +149,6 @@ class SettingsController extends AbstractController
 
     /**
      * Return a list of possible and active system maintainers
-     *
-     * @return ResponseInterface
      */
     public function systemMaintainerGetListAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -214,8 +206,6 @@ class SettingsController extends AbstractController
 
     /**
      * Write new system maintainer list
-     *
-     * @return ResponseInterface
      */
     public function systemMaintainerWriteAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -281,8 +271,6 @@ class SettingsController extends AbstractController
 
     /**
      * Main LocalConfiguration card content
-     *
-     * @return ResponseInterface
      */
     public function localConfigurationGetContentAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -320,7 +308,6 @@ class SettingsController extends AbstractController
     /**
      * Write given LocalConfiguration settings
      *
-     * @return ResponseInterface
      * @throws \RuntimeException
      */
     public function localConfigurationWriteAction(ServerRequestInterface $request): ResponseInterface
@@ -358,8 +345,6 @@ class SettingsController extends AbstractController
 
     /**
      * Main preset card content
-     *
-     * @return ResponseInterface
      */
     public function presetsGetContentAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -391,8 +376,6 @@ class SettingsController extends AbstractController
 
     /**
      * Write selected presets
-     *
-     * @return ResponseInterface
      */
     public function presetsActivateAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -435,8 +418,6 @@ class SettingsController extends AbstractController
 
     /**
      * Render a list of extensions with their configuration form.
-     *
-     * @return ResponseInterface
      */
     public function extensionConfigurationGetContentAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -502,8 +483,6 @@ class SettingsController extends AbstractController
 
     /**
      * Write extension configuration
-     *
-     * @return ResponseInterface
      */
     public function extensionConfigurationWriteAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -536,8 +515,6 @@ class SettingsController extends AbstractController
 
     /**
      * Render feature toggles
-     *
-     * @return ResponseInterface
      */
     public function featuresGetContentAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -584,8 +561,6 @@ class SettingsController extends AbstractController
 
     /**
      * Update feature toggles state
-     *
-     * @return ResponseInterface
      */
     public function featuresSaveAction(ServerRequestInterface $request): ResponseInterface
     {

@@ -102,8 +102,6 @@ class PreviewUriBuilder
 
     /**
      * Generate workspace preview links for all available languages of a page
-     *
-     * @return array
      */
     public function buildUrisForAllLanguagesOfPage(int $pageId): array
     {
@@ -121,7 +119,6 @@ class PreviewUriBuilder
      * Generates a workspace split-bar preview link.
      *
      * @param int $uid The ID of the record to be linked
-     * @return UriInterface
      * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     public function buildUriForWorkspaceSplitPreview(int $uid): UriInterface
@@ -145,7 +142,6 @@ class PreviewUriBuilder
      * @param int $uid Uid of the version(!) record
      * @param array $liveRecord Optional live record data
      * @param array $versionRecord Optional version record data
-     * @return string
      */
     public function buildUriForElement(string $table, int $uid, array $liveRecord = null, array $versionRecord = null): string
     {
@@ -245,7 +241,6 @@ class PreviewUriBuilder
      * the results are cached at run-time to avoid too many database-queries
      *
      * @throws \InvalidArgumentException
-     * @return int
      */
     protected function getLivePageUid(int $uid): int
     {

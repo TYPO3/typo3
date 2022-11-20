@@ -95,9 +95,6 @@ class StringUtilityTest extends UnitTestCase
         self::assertSame($result, StringUtility::searchStringWildcard($haystack, $needle));
     }
 
-    /**
-     * @return array
-     */
     public function searchStringWildcardDataProvider(): array
     {
         return [
@@ -279,9 +276,6 @@ class StringUtilityTest extends UnitTestCase
         self::assertSame($rawValue, StringUtility::base64urlDecode($encodedValue));
     }
 
-    /**
-     * @return array
-     */
     public function explodeEscapedDataProvider(): array
     {
         return [

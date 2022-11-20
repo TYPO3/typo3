@@ -412,8 +412,6 @@ class DatabaseRecordList
     /**
      * Returns a list of all fields / columns including meta columns such as
      * "_REF_" or "_PATH_" which should be rendered for the databsae table.
-     *
-     * @return array
      */
     public function getColumnsToRender(string $table, bool $includeMetaColumns): array
     {
@@ -810,8 +808,6 @@ class DatabaseRecordList
 
     /**
      * If new records can be created on this page, create a button
-     *
-     * @return string
      */
     protected function createNewRecordButton(string $table): string
     {
@@ -924,9 +920,6 @@ class DatabaseRecordList
 
     /**
      * Get preview link for pages or tt_content records
-     *
-     *
-     * @return PreviewUriBuilder
      */
     protected function getPreviewUriBuilder(string $table, array $row): PreviewUriBuilder
     {
@@ -1846,7 +1839,6 @@ class DatabaseRecordList
      *
      * @param string $table The table
      * @param mixed[] $row The record for which to make the localization panel.
-     * @return string
      */
     public function makeLocalizationPanel($table, $row, array $translations): string
     {
@@ -2086,7 +2078,6 @@ class DatabaseRecordList
 
     /**
      * Check if the table is readonly or editable
-     * @return bool
      */
     public function isEditable(string $table): bool
     {
@@ -2268,7 +2259,6 @@ class DatabaseRecordList
      *
      * @param string $table Table name
      * @param string[] $fields Field list to select, * for all
-     * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
      */
     public function getQueryBuilder(
         string $table,
@@ -2710,9 +2700,6 @@ class DatabaseRecordList
         $this->tableDisplayOrder = $orderInformation;
     }
 
-    /**
-     * @return array
-     */
     public function getOverridePageIdList(): array
     {
         return $this->overridePageIdList;
@@ -3021,8 +3008,6 @@ class DatabaseRecordList
 
     /**
      * Render the multi record selection actions, which are shown as soon as one record is selected
-     *
-     * @return string
      */
     protected function renderMultiRecordSelectionActions(string $table, array $currentIdList): string
     {
@@ -3124,8 +3109,6 @@ class DatabaseRecordList
 
     /**
      * Creates data attributes to be handles in moddule `TYPO3/CMS/Backend/ActionDispatcher`
-     *
-     * @return string
      */
     protected function createShowItemTagAttributes(string $arguments): string
     {
@@ -3140,9 +3123,6 @@ class DatabaseRecordList
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @return DatabaseRecordList
-     */
     public function setLanguagesAllowedForUser(array $languagesAllowedForUser): DatabaseRecordList
     {
         $this->languagesAllowedForUser = $languagesAllowedForUser;
@@ -3151,9 +3131,6 @@ class DatabaseRecordList
 
     /**
      * Check if a given record is a localization
-     *
-     *
-     * @return bool
      */
     protected function isLocalized(string $table, array $row): bool
     {
@@ -3166,8 +3143,6 @@ class DatabaseRecordList
     /**
      * Returns the configuration of mod.web_list.noViewWithDokTypes or the
      * default value 254 (Sys Folders) and 255 (Recycler), if not set.
-     *
-     * @return array
      */
     protected function getNoViewWithDokTypes(array $tsConfig): array
     {
@@ -3188,8 +3163,6 @@ class DatabaseRecordList
      * Check whether the clipboard functionality is generally enabled.
      * In case a row is given, this checks if the record is neither
      * a "delete placeholder", nor a translation.
-     *
-     * @return bool
      */
     protected function isClipboardFunctionalityEnabled(string $table, array $row = []): bool
     {

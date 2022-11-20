@@ -63,7 +63,6 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
      *          - If the page has subpages, show a warning that the subpages WILL NOT BE MODIFIED and keep the OLD url
      *
      * @param ServerRequestInterface $request
-     * @return ResponseInterface
      * @throws \RuntimeException
      */
     public function suggestAction(ServerRequestInterface $request): ResponseInterface
@@ -150,7 +149,6 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
     }
 
     /**
-     * @return bool
      * @throws \InvalidArgumentException
      */
     protected function checkRequest(ServerRequestInterface $request): bool

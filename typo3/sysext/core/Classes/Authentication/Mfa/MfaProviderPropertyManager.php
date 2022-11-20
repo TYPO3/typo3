@@ -51,8 +51,6 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
 
     /**
      * Check if a provider entry exists for the current user
-     *
-     * @return bool
      */
     public function hasProviderEntry(): bool
     {
@@ -61,8 +59,6 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
 
     /**
      * Check if a provider property exists
-     *
-     * @return bool
      */
     public function hasProperty(string $key): bool
     {
@@ -80,8 +76,6 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
 
     /**
      * Get provider specific properties
-     *
-     * @return array
      */
     public function getProperties(): array
     {
@@ -92,8 +86,6 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
      * Update the provider properties
      * Note: If no entry exists yet, use createProviderEntry() instead.
      *       This can be checked with hasProviderEntry().
-     *
-     * @return bool
      */
     public function updateProperties(array $properties): bool
     {
@@ -118,8 +110,6 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
      * Create a new provider entry for the current user
      * Note: If a entry already exists, use updateProperties() instead.
      *       This can be checked with hasProviderEntry().
-     *
-     * @return bool
      */
     public function createProviderEntry(array $properties): bool
     {
@@ -147,7 +137,6 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
     /**
      * Delete a provider entry for the current user
      *
-     * @return bool
      * @throws \JsonException
      */
     public function deleteProviderEntry(): bool
@@ -160,7 +149,6 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
     /**
      * Stores the updated properties in the user array and the database
      *
-     * @return bool
      * @throws \JsonException
      */
     protected function storeProperties(): bool
@@ -191,8 +179,6 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
 
     /**
      * Return the current user
-     *
-     * @return AbstractUserAuthentication
      */
     public function getUser(): AbstractUserAuthentication
     {
@@ -201,8 +187,6 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
 
     /**
      * Return the current providers identifier
-     *
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -211,8 +195,6 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
 
     /**
      * Create property manager for the user with the given provider
-     *
-     * @return MfaProviderPropertyManager
      */
     public static function create(MfaProviderManifestInterface $provider, AbstractUserAuthentication $user): self
     {

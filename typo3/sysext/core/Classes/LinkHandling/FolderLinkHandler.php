@@ -43,9 +43,6 @@ class FolderLinkHandler implements LinkHandlingInterface
 
     /**
      * Returns a link notation to a folder
-     *
-     *
-     * @return string
      */
     public function asString(array $parameters): string
     {
@@ -58,8 +55,6 @@ class FolderLinkHandler implements LinkHandlingInterface
      * Get a folder object inside the array data from the string
      *
      * @param array $data with the "folder" property containing a Folder object
-     *
-     * @return array
      */
     public function resolveHandlerData(array $data): array
     {
@@ -74,8 +69,6 @@ class FolderLinkHandler implements LinkHandlingInterface
 
     /**
      * Initializes the resource factory (only once)
-     *
-     * @return ResourceFactory
      */
     protected function getResourceFactory(): ResourceFactory
     {

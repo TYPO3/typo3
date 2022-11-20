@@ -50,8 +50,6 @@ abstract class AbstractValidator implements ValidatorInterface
 
     /**
      * Builds the path in which the hmac value is expected based on the property path.
-     *
-     * @return string
      */
     protected function buildHmacDataPath(string $propertyPath): string
     {
@@ -62,17 +60,11 @@ abstract class AbstractValidator implements ValidatorInterface
         return implode('.', $pathParts);
     }
 
-    /**
-     * @return FormDefinitionValidationService
-     */
     protected function getFormDefinitionValidationService(): FormDefinitionValidationService
     {
         return GeneralUtility::makeInstance(FormDefinitionValidationService::class);
     }
 
-    /**
-     * @return ConfigurationService
-     */
     protected function getConfigurationService(): ConfigurationService
     {
         return GeneralUtility::makeInstance(ConfigurationService::class);

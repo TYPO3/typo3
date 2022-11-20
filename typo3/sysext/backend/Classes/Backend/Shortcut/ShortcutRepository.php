@@ -100,8 +100,6 @@ class ShortcutRepository
 
     /**
      * Get shortcut groups the current user has access to
-     *
-     * @return array
      */
     public function getShortcutGroups(): array
     {
@@ -136,8 +134,6 @@ class ShortcutRepository
 
     /**
      * Returns if there already is a shortcut entry for a given TYPO3 URL
-     *
-     * @return bool
      */
     public function shortcutExists(string $routeIdentifier, string $arguments): bool
     {
@@ -166,7 +162,6 @@ class ShortcutRepository
      * @param string $routeIdentifier route identifier of the new shortcut
      * @param string $arguments arguments of the new shortcut
      * @param string $title title of the new shortcut
-     * @return bool
      * @throws \RuntimeException if the given URL is invalid
      */
     public function addShortcut(string $routeIdentifier, string $arguments = '', string $title = ''): bool
@@ -197,7 +192,6 @@ class ShortcutRepository
      * @param int $id identifier of a shortcut
      * @param string $title new title of the shortcut
      * @param int $groupId new group identifier of the shortcut
-     * @return bool
      */
     public function updateShortcut(int $id, string $title, int $groupId): bool
     {
@@ -236,7 +230,6 @@ class ShortcutRepository
      * Remove a shortcut
      *
      * @param int $id identifier of a shortcut
-     * @return bool
      */
     public function removeShortcut(int $id): bool
     {
@@ -264,8 +257,6 @@ class ShortcutRepository
 
     /**
      * Gets the available shortcut groups from default groups, user TSConfig, and global groups
-     *
-     * @return array
      */
     protected function initShortcutGroups(): array
     {

@@ -134,9 +134,6 @@ class SystemStatusUpdateTask extends AbstractTask
         GeneralUtility::makeInstance(MailerInterface::class)->send($email);
     }
 
-    /**
-     * @return bool
-     */
     public function getNotificationAll(): bool
     {
         return $this->notificationAll;

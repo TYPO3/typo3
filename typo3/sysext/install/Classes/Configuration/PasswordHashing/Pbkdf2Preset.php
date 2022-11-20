@@ -49,8 +49,6 @@ class Pbkdf2Preset extends AbstractPreset
 
     /**
      * Find out if PBKDF2 is available on this system
-     *
-     * @return bool
      */
     public function isAvailable(): bool
     {

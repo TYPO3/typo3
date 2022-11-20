@@ -593,8 +593,6 @@ class FileListController implements LoggerAwareInterface
     /**
      * Get main headline based on active folder or storage for backend module
      * Folder names are resolved to their special names like done in the tree view.
-     *
-     * @return string
      */
     protected function getModuleHeadline(): string
     {
@@ -614,8 +612,6 @@ class FileListController implements LoggerAwareInterface
 
     /**
      * Return the default duplication behaviour action, set in TSconfig
-     *
-     * @return string
      */
     protected function getDefaultDuplicationBehaviourAction(): string
     {
@@ -642,8 +638,6 @@ class FileListController implements LoggerAwareInterface
 
     /**
      * Generate a response by either the given $html or by rendering the module content.
-     *
-     * @return ResponseInterface
      */
     protected function htmlResponse(string $html): ResponseInterface
     {
@@ -668,8 +662,6 @@ class FileListController implements LoggerAwareInterface
 
     /**
      * Returns the URL for uploading files
-     *
-     * @return string
      */
     protected function getFileUploadUrl(): string
     {

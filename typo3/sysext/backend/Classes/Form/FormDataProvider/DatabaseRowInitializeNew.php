@@ -224,7 +224,6 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
      * Set the parent uid of inline relations created via ajax to the corresponding foreign field
      *
      * @param array $result Result array
-     * @return array
      */
     protected function setDefaultsFromInlineParentUid(array $result): array
     {

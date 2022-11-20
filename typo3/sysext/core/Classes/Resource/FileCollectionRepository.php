@@ -137,8 +137,6 @@ class FileCollectionRepository
     /**
      * Function to return the current application (FE/BE) based on $GLOBALS[TSFE].
      * This function can be mocked in unit tests to be able to test frontend behaviour.
-     *
-     * @return string
      */
     protected function getEnvironmentMode(): string
     {

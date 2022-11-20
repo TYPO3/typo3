@@ -61,9 +61,6 @@ class Hotel extends AbstractEntity
         $this->title = $title;
     }
 
-    /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
-     */
     public function getOffers(): ObjectStorage
     {
         return $this->offers;

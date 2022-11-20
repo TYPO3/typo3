@@ -120,8 +120,6 @@ class ContentFetcher
 
     /**
      * Allows to decide via an Event whether a custom type has children which were rendered or should not be rendered.
-     *
-     * @return iterable
      */
     public function getUnusedRecords(): iterable
     {

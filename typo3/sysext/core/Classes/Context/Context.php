@@ -72,8 +72,6 @@ class Context implements SingletonInterface
 
     /**
      * Checks if an aspect exists in the context
-     *
-     * @return bool
      */
     public function hasAspect(string $name): bool
     {
@@ -95,7 +93,6 @@ class Context implements SingletonInterface
     /**
      * Returns an aspect, if it is set
      *
-     * @return AspectInterface
      * @throws AspectNotFoundException
      */
     public function getAspect(string $name): AspectInterface

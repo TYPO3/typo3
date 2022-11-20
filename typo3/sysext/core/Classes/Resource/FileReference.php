@@ -75,7 +75,6 @@ class FileReference implements FileInterface
 
     /**
      * @param ResourceFactory|null $factory
-     * @return FileInterface
      * @throws Exception\FileDoesNotExistException
      */
     private function getFileObject(int $uidLocal, ResourceFactory $factory = null): FileInterface

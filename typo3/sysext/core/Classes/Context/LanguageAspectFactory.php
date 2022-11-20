@@ -27,8 +27,6 @@ class LanguageAspectFactory
 {
     /**
      * Site Languages always run with overlays + floating records.
-     *
-     * @return LanguageAspect
      */
     public static function createFromSiteLanguage(SiteLanguage $language): LanguageAspect
     {

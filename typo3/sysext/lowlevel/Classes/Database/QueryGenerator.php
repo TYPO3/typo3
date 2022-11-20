@@ -2351,7 +2351,6 @@ class QueryGenerator
      * Get subscript
      *
      * @param array $arr
-     * @return array
      */
     protected function getSubscript($arr): array
     {
@@ -2401,8 +2400,6 @@ class QueryGenerator
 
     /**
      * Convert ISO-8601 timestamp (string) into unix timestamp (int)
-     *
-     * @return array
      */
     protected function convertIso8601DatetimeStringToUnixTimestamp(array $conf): array
     {
@@ -2420,7 +2417,6 @@ class QueryGenerator
      * Checks if the given value is of the ISO 8601 format.
      *
      * @param mixed $date
-     * @return bool
      */
     protected function isDateOfIso8601Format($date): bool
     {
@@ -2718,7 +2714,6 @@ class QueryGenerator
      * Get select query
      *
      * @param string $qString
-     * @return string
      */
     protected function getSelectQuery($qString = ''): string
     {

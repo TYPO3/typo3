@@ -52,7 +52,6 @@ class ImageService implements SingletonInterface
      * Create a processed file
      *
      * @param FileInterface|FileReference $image
-     * @return ProcessedFile
      */
     public function applyProcessingInstructions($image, array $processingInstructions): ProcessedFile
     {
@@ -76,7 +75,6 @@ class ImageService implements SingletonInterface
      * Get public url of image depending on the environment
      *
      * @param bool|false $absolute Force absolute URL
-     * @return string
      */
     public function getImageUri(FileInterface $image, bool $absolute = false): string
     {
@@ -98,7 +96,6 @@ class ImageService implements SingletonInterface
      * @param string $src
      * @param FileInterface|\TYPO3\CMS\Extbase\Domain\Model\FileReference|null $image
      * @param bool $treatIdAsReference
-     * @return FileInterface|File|FileReference
      * @throws \UnexpectedValueException
      * @internal
      */
@@ -147,8 +144,6 @@ class ImageService implements SingletonInterface
 
     /**
      * Get File or FileReference object by src
-     *
-     * @return FileInterface|null
      */
     protected function getImageFromSourceString(string $src, bool $treatIdAsReference): ?FileInterface
     {
@@ -199,8 +194,6 @@ class ImageService implements SingletonInterface
      * Calculates the compatibility values
      * This is duplicate code taken from ContentObjectRenderer::getImgResource()
      * Ideally we should get rid of this code in both places.
-     *
-     * @return array
      */
     protected function getCompatibilityImageResourceValues(ProcessedFile $processedImage): array
     {

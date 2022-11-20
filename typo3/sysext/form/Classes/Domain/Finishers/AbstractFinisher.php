@@ -80,9 +80,6 @@ abstract class AbstractFinisher implements FinisherInterface
         $this->shortFinisherIdentifier = preg_replace('/Finisher$/', '', $this->finisherIdentifier) ?? '';
     }
 
-    /**
-     * @return string
-     */
     public function getFinisherIdentifier(): string
     {
         return $this->finisherIdentifier;
@@ -359,8 +356,6 @@ abstract class AbstractFinisher implements FinisherInterface
 
     /**
      * Returns whether this finisher is enabled
-     *
-     * @return bool
      */
     public function isEnabled(): bool
     {

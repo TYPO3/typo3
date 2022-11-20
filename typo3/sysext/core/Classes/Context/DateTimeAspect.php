@@ -68,8 +68,6 @@ class DateTimeAspect implements AspectInterface
 
     /**
      * Return the full date time object
-     *
-     * @return \DateTimeImmutable
      */
     public function getDateTime(): \DateTimeImmutable
     {

@@ -216,7 +216,6 @@ class UserSession
      * Creates a new user session based on the provided session record
      *
      * @param string $id the session identifier
-     * @return UserSession
      */
     public static function createFromRecord(string $id, array $record, bool $markAsNew = false): self
     {
@@ -237,8 +236,6 @@ class UserSession
     /**
      * Creates a non fixated user session. This means the
      * session does not belong to a logged-in user
-     *
-     * @return UserSession
      */
     public static function createNonFixated(string $identifier): self
     {

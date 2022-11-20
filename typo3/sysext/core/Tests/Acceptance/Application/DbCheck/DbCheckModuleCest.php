@@ -141,7 +141,6 @@ class DbCheckModuleCest
      * Find count of table row by name
      *
      * @param string $fieldLabel
-     * @return RemoteWebElement
      */
     protected function getCountByRowName(ApplicationTester $I, string $rowName, int $sibling = 1): RemoteWebElement
     {

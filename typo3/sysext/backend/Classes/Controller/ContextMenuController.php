@@ -41,8 +41,6 @@ class ContextMenuController
 
     /**
      * Renders a context menu
-     *
-     * @return ResponseInterface
      */
     public function getContextMenuAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -57,9 +55,6 @@ class ContextMenuController
         return new JsonResponse($items);
     }
 
-    /**
-     * @return ResponseInterface
-     */
     public function clipboardAction(ServerRequestInterface $request): ResponseInterface
     {
         $clipboard = GeneralUtility::makeInstance(Clipboard::class);

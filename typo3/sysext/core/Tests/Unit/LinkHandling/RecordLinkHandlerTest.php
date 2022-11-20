@@ -41,9 +41,6 @@ class RecordLinkHandlerTest extends UnitTestCase
         self::assertEquals($url, $subject->asString($parameters));
     }
 
-    /**
-     * @return array
-     */
     public function missingParameterDataProvider(): array
     {
         return [

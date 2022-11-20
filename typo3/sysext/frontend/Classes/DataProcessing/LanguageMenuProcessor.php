@@ -267,17 +267,12 @@ class LanguageMenuProcessor implements DataProcessorInterface
 
     /**
      * Get configuration value from processorConfiguration
-     *
-     * @return string
      */
     protected function getConfigurationValue(string $key): string
     {
         return $this->cObj->stdWrapValue($key, $this->processorConfiguration, $this->menuDefaults[$key]);
     }
 
-    /**
-     * @return TypoScriptFrontendController
-     */
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
@@ -285,8 +280,6 @@ class LanguageMenuProcessor implements DataProcessorInterface
 
     /**
      * Returns the currently configured "site" if a site is configured (= resolved) in the current request.
-     *
-     * @return Site
      */
     protected function getCurrentSite(): Site
     {
@@ -297,7 +290,6 @@ class LanguageMenuProcessor implements DataProcessorInterface
      * JSON Encode
      *
      * @param mixed $value
-     * @return string
      */
     protected function jsonEncode($value): string
     {
@@ -428,8 +420,6 @@ class LanguageMenuProcessor implements DataProcessorInterface
 
     /**
      * This UserFunc gets the link and the target
-     *
-     * @return array
      */
     public function replacePlaceholderInRenderedMenuItem(array $menuItem): array
     {

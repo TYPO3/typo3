@@ -39,9 +39,6 @@ class Ratio
         $this->value = $value;
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
@@ -69,7 +66,6 @@ class Ratio
     }
 
     /**
-     * @return array
      * @internal
      */
     public function asArray(): array
@@ -81,17 +77,11 @@ class Ratio
         ];
     }
 
-    /**
-     * @return float
-     */
     public function getRatioValue(): float
     {
         return $this->value;
     }
 
-    /**
-     * @return bool
-     */
     public function isFree(): bool
     {
         return $this->value === 0.0;

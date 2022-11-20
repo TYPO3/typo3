@@ -49,7 +49,6 @@ class JavaScriptModuleInstruction implements \JsonSerializable
     /**
      * @param string $name Module name mapped by an importmap or absolute specifier
      * @param string|null $exportName (optional) name used internally to export the module
-     * @return self
      */
     public static function create(string $name, string $exportName = null): self
     {
@@ -61,7 +60,6 @@ class JavaScriptModuleInstruction implements \JsonSerializable
     /**
      * @param string $name RequireJS module name
      * @param string|null $exportName (optional) name used internally to export the module
-     * @return self
      * @deprecated will be removed in TYPO3 v13.0. Use JavaScriptModuleInstruction::create() instead.
      */
     public static function forRequireJS(string $name, string $exportName = null, bool $internalCall = false): self

@@ -86,8 +86,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
 
     /**
      * Get the global unique identifier of the element
-     *
-     * @return string
      */
     public function getUniqueIdentifier(): string
     {
@@ -141,8 +139,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
 
     /**
      * Check if the element is required
-     *
-     * @return bool
      */
     public function isRequired(): bool
     {
@@ -173,8 +169,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
 
     /**
      * Get all properties
-     *
-     * @return array
      */
     public function getProperties(): array
     {

@@ -152,8 +152,6 @@ class Site implements SiteInterface
 
     /**
      * Checks if the base has variants, and takes the first variant which matches an expression.
-     *
-     * @return string
      */
     protected function resolveBaseWithVariants(string $baseUrl, ?array $baseVariants): string
     {
@@ -181,8 +179,6 @@ class Site implements SiteInterface
     /**
      * Gets the identifier of this site,
      * mainly used when maintaining / configuring sites.
-     *
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -191,8 +187,6 @@ class Site implements SiteInterface
 
     /**
      * Returns the base URL of this site
-     *
-     * @return UriInterface
      */
     public function getBase(): UriInterface
     {
@@ -201,8 +195,6 @@ class Site implements SiteInterface
 
     /**
      * Returns the root page ID of this site
-     *
-     * @return int
      */
     public function getRootPageId(): int
     {
@@ -238,7 +230,6 @@ class Site implements SiteInterface
     /**
      * Returns a language of this site, given by the sys_language_uid
      *
-     * @return SiteLanguage
      * @throws \InvalidArgumentException
      */
     public function getLanguageById(int $languageId): SiteLanguage
@@ -285,7 +276,6 @@ class Site implements SiteInterface
     /**
      * Returns a ready-to-use error handler, to be used within the ErrorController
      *
-     * @return PageErrorHandlerInterface
      * @throws PageErrorHandlerNotConfiguredException
      * @throws InvalidPageErrorHandlerException
      */
@@ -310,8 +300,6 @@ class Site implements SiteInterface
 
     /**
      * Returns the whole configuration for this site
-     *
-     * @return array
      */
     public function getConfiguration(): array
     {
@@ -343,8 +331,6 @@ class Site implements SiteInterface
     /**
      * If a site base contains "/" or "www.domain.com", it is ensured that
      * parse_url() can handle this kind of configuration properly.
-     *
-     * @return string
      */
     protected function sanitizeBaseUrl(string $base): string
     {
@@ -368,7 +354,6 @@ class Site implements SiteInterface
      * Returns the applicable router for this site. This might be configurable in the future.
      *
      * @param Context|null $context
-     * @return RouterInterface
      */
     public function getRouter(Context $context = null): RouterInterface
     {

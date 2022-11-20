@@ -90,7 +90,6 @@ class CropVariant
     }
 
     /**
-     * @return CropVariant
      * @throws InvalidConfigurationException
      */
     public static function createFromConfiguration(string $id, array $config): CropVariant
@@ -111,7 +110,6 @@ class CropVariant
     }
 
     /**
-     * @return array
      * @internal
      */
     public function asArray(): array
@@ -138,17 +136,11 @@ class CropVariant
         ];
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return Area
-     */
     public function getCropArea(): Area
     {
         return $this->cropArea;
@@ -162,9 +154,6 @@ class CropVariant
         return $this->focusArea;
     }
 
-    /**
-     * @return CropVariant
-     */
     public function applyRatioRestrictionToSelectedCropArea(FileInterface $file): CropVariant
     {
         if (!$this->selectedRatio) {

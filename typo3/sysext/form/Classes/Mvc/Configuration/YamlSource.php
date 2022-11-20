@@ -209,9 +209,6 @@ class YamlSource
         return $header;
     }
 
-    /**
-     * @return string
-     */
     protected function buildCombinedIdentifier(FolderInterface $folder, string $fileName): string
     {
         return sprintf(

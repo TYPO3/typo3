@@ -71,8 +71,6 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
 
     /**
      * Return list of matches after processing
-     *
-     * @return array
      */
     public function getMatches(): array
     {
@@ -165,7 +163,6 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
      * If so, it kinda defeats any "argument count" approach.
      *
      * @param array $arguments List of arguments
-     * @return bool
      */
     protected function isArgumentUnpackingUsed(array $arguments = []): bool
     {
@@ -180,8 +177,6 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
     /**
      * Returns true if a comment before a statement is
      * marked as "@extensionScannerIgnoreLine"
-     *
-     * @return bool
      */
     protected function isLineIgnored(Node $node): bool
     {
@@ -212,8 +207,6 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
     /**
      * Return true if the node is ignored since the entire file is ignored.
      * Sets ignore status if a class node is given having the annotation.
-     *
-     * @return bool
      */
     protected function isFileIgnored(Node $node): bool
     {

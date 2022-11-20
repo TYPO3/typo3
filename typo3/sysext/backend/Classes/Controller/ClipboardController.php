@@ -48,8 +48,6 @@ class ClipboardController
 
     /**
      * Process incoming clipboard request
-     *
-     * @return ResponseInterface
      */
     public function processRequest(ServerRequestInterface $request): ResponseInterface
     {

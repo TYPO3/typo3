@@ -110,9 +110,6 @@ class LinkVarsCalculator
 
     /**
      * Split the link vars string by "," but not if the "," is inside of braces
-     *
-     *
-     * @return array
      */
     protected function splitLinkVarsString(string $string): array
     {

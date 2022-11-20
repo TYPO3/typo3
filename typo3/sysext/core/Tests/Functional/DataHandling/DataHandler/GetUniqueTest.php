@@ -42,7 +42,6 @@ class GetUniqueTest extends FunctionalTestCase
 
     /**
      * Data provider for getUnique
-     * @return array
      */
     public function getUniqueDataProvider(): array
     {

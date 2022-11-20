@@ -41,7 +41,6 @@ class SvgSanitizer
     }
 
     /**
-     * @return string
      * @throws \BadFunctionCallException
      */
     public function sanitizeContent(string $svg): string

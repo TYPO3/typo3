@@ -543,7 +543,6 @@ class PageRepository implements LoggerAwareInterface
      *
      * @param array $pageUids
      * @param LanguageAspect $languageAspect Used for the fallback chain
-     * @return array
      */
     protected function getPageOverlaysForLanguage(array $pageUids, LanguageAspect $languageAspect): array
     {
@@ -2125,9 +2124,6 @@ class PageRepository implements LoggerAwareInterface
         return $row;
     }
 
-    /**
-     * @return VariableFrontend
-     */
     protected function getRuntimeCache(): VariableFrontend
     {
         return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');

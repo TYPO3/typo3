@@ -188,7 +188,6 @@ class TcaInputPlaceholders implements FormDataProviderInterface
      *
      * @param array $fieldConfig TCA "config" section for the group type field.
      * @param string $value A comma separated list of records
-     * @return array
      */
     protected function getRelatedGroupFieldUids(array $fieldConfig, $value): array
     {

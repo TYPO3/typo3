@@ -43,8 +43,6 @@ interface PreviewRendererInterface
      * the page module only. Receives the the GridColumnItem
      * that contains the record for which a preview header
      * should be rendered and returned.
-     *
-     * @return string
      */
     public function renderPageModulePreviewHeader(GridColumnItem $item): string;
 
@@ -53,16 +51,12 @@ interface PreviewRendererInterface
      * the page module only. Receives the the GridColumnItem
      * that contains the record for which a preview should be
      * rendered and returned.
-     *
-     * @return string
      */
     public function renderPageModulePreviewContent(GridColumnItem $item): string;
 
     /**
      * Render a footer for the record to display in page module below
      * the body of the item's preview.
-     *
-     * @return string
      */
     public function renderPageModulePreviewFooter(GridColumnItem $item): string;
 
@@ -71,8 +65,6 @@ interface PreviewRendererInterface
      * HTML. Receives $item, an instance of GridColumnItem holding
      * among other things the record, which can be used to determine
      * appropriate wrapping.
-     *
-     * @return string
      */
     public function wrapPageModulePreview(string $previewHeader, string $previewContent, GridColumnItem $item): string;
 }

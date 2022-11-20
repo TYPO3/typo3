@@ -67,8 +67,6 @@ class MetaTagManagerRegistry implements SingletonInterface
 
     /**
      * Get the MetaTagManager for a specific property
-     *
-     * @return MetaTagManagerInterface
      */
     public function getManagerForProperty(string $property): MetaTagManagerInterface
     {
@@ -134,7 +132,6 @@ class MetaTagManagerRegistry implements SingletonInterface
     }
 
     /**
-     * @return array
      * @internal
      */
     public function getState(): array

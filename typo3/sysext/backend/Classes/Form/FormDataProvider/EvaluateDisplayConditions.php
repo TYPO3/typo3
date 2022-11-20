@@ -38,7 +38,6 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
      * step that - depending on evaluation result - then throws away or keeps the field.
      *
      * @param array $result
-     * @return array
      */
     public function addData(array $result): array
     {
@@ -613,8 +612,6 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
     /**
      * Loop through TCA, find prepared conditions and evaluate them. Delete either the
      * field itself if the condition did not match, or the 'displayCond' in TCA.
-     *
-     * @return array
      */
     protected function evaluateConditions(array $result): array
     {
@@ -774,7 +771,6 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
      * "FIELD:sys_language_uid:>:0" => TRUE, if the field 'sys_language_uid' is greater than 0
      *
      * @param array $condition Condition array
-     * @return bool
      */
     protected function matchFieldCondition(array $condition): bool
     {
@@ -874,7 +870,6 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
      * "REC:NEW:FALSE" => TRUE, if the record is already persisted (has a uid > 0)
      *
      * @param array $condition Condition array
-     * @return bool
      */
     protected function matchRecordCondition(array $condition): bool
     {
@@ -888,7 +883,6 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
      * Evaluates whether the current record is versioned.
      *
      * @param array $condition Condition array
-     * @return bool
      */
     protected function matchVersionCondition(array $condition): bool
     {
@@ -915,7 +909,6 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
      * Evaluates via the referenced user-defined method
      *
      * @param array $condition Condition array
-     * @return bool
      */
     protected function matchUserCondition(array $condition): bool
     {

@@ -28,8 +28,6 @@ interface EnforceableQueryRestrictionInterface
     /**
      * When returning false, restriction will be removed when removeAll()
      * is called on the container
-     *
-     * @return bool
      */
     public function isEnforced(): bool;
 }

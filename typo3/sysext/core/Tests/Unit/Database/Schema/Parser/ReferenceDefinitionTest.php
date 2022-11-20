@@ -35,8 +35,6 @@ class ReferenceDefinitionTest extends UnitTestCase
      *  - MATCH value
      *  - ON DELETE value
      *  - ON UPDATE value
-     *
-     * @return array
      */
     public function canParseReferenceDefinitionDataProvider(): array
     {
@@ -202,8 +200,6 @@ class ReferenceDefinitionTest extends UnitTestCase
 
     /**
      * Parse the CREATE TABLE statement and return the reference definition
-     *
-     * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\ReferenceDefinition
      */
     protected function createSubject(string $statement): ReferenceDefinition
     {

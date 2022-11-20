@@ -42,8 +42,6 @@ class SiteBaseRedirectResolver implements MiddlewareInterface
 {
     /**
      * Redirect to default language if required
-     *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -96,7 +94,6 @@ class SiteBaseRedirectResolver implements MiddlewareInterface
      * Checks if the language is allowed in Frontend, if not, check if there is valid BE user
      *
      * @param BackendUserAuthentication|null $user
-     * @return bool
      */
     protected function isLanguageEnabled(SiteLanguage $language, BackendUserAuthentication $user = null): bool
     {

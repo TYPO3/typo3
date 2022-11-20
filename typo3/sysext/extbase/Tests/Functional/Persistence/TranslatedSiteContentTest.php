@@ -145,8 +145,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
 
     /**
      * Danish language has pages record and some content elements are translated
-     *
-     * @return array
      */
     public function danishDataProvider(): array
     {
@@ -591,8 +589,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
 
     /**
      * Helper function to ease asserting that rest of the data set is not visible
-     *
-     * @return array
      */
     protected function getNonVisibleHeaders(array $visibleHeaders): array
     {
@@ -616,8 +612,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
 
     /**
      * Helper function to ease asserting that rest of the data set is not visible
-     *
-     * @return array
      */
     protected function getNonVisibleFileTitles(array $visibleTitles): array
     {
@@ -635,8 +629,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
 
     /**
      * Helper function to ease asserting that rest of the data set is not visible
-     *
-     * @return array
      */
     protected function getNonVisibleCategoryTitles(array $visibleTitles): array
     {

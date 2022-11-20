@@ -239,7 +239,6 @@ class Folder implements FolderInterface
      * The result also includes matches in meta data fields that are defined in TCA.
      *
      * @param int $filterMode The filter mode to use for the found files
-     * @return FileSearchResultInterface
      */
     public function searchFiles(FileSearchDemand $searchDemand, int $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS): FileSearchResultInterface
     {

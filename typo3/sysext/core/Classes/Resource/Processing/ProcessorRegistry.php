@@ -43,8 +43,6 @@ class ProcessorRegistry implements SingletonInterface
     /**
      * Finds a matching processor that can process the given task.
      * Registered processors will be tested by their priority from high to low.
-     *
-     * @return ProcessorInterface
      */
     public function getProcessorByTask(TaskInterface $task): ProcessorInterface
     {
@@ -88,9 +86,6 @@ class ProcessorRegistry implements SingletonInterface
         return $processor;
     }
 
-    /**
-     * @return array
-     */
     protected function getRegisteredProcessors(): array
     {
         return $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['processors'] ?? [];

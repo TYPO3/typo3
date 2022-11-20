@@ -38,7 +38,6 @@ class EnhancerFactory
     }
 
     /**
-     * @return EnhancerInterface
      * @throws \InvalidArgumentException
      * @throws \OutOfRangeException
      */

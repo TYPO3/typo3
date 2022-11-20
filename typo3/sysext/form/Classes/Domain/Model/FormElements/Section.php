@@ -109,8 +109,6 @@ class Section extends AbstractSection implements FormElementInterface
 
     /**
      * Get all element-specific configuration properties
-     *
-     * @return array
      */
     public function getProperties(): array
     {
@@ -136,8 +134,6 @@ class Section extends AbstractSection implements FormElementInterface
 
     /**
      * Whether or not this element is required
-     *
-     * @return bool
      */
     public function isRequired(): bool
     {

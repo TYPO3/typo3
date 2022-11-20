@@ -37,9 +37,6 @@ class PropertyPathsExtractor extends AbstractExtractor
         $this->extractorDto->setResult($result);
     }
 
-    /**
-     * @return array
-     */
     protected function getPropertyPaths(string $value, array $matches): array
     {
         $paths = [];

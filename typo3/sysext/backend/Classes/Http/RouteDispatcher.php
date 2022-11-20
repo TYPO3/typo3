@@ -73,8 +73,6 @@ class RouteDispatcher extends Dispatcher
      * Evaluates HTTP `Referer` header (which is denied by client to be a custom
      * value) - attempts to ensure the value is given using a HTML client refresh.
      * see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer
-     *
-     * @return ResponseInterface|null
      */
     protected function enforceReferrer(ServerRequestInterface $request, Route $route): ?ResponseInterface
     {

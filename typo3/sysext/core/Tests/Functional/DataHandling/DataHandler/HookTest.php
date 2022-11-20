@@ -337,9 +337,6 @@ class HookTest extends AbstractDataHandlerActionTestCase
         return $found;
     }
 
-    /**
-     * @return bool
-     */
     protected function equals(array $left, array $right): bool
     {
         foreach ($left as $key => $leftValue) {

@@ -39,8 +39,6 @@ class OnlineMediaController
 {
     /**
      * AJAX endpoint for storing the URL as a sys_file record
-     *
-     * @return ResponseInterface
      */
     public function createAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -64,7 +62,6 @@ class OnlineMediaController
     /**
      * Process add media request, and redirects to the previous page
      *
-     * @return ResponseInterface
      * @throws \RuntimeException
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface

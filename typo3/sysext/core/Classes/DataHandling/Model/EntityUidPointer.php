@@ -38,17 +38,11 @@ class EntityUidPointer implements EntityPointer
         $this->identifier = $identifier;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getIdentifier(): string
     {
         return $this->identifier;
@@ -67,17 +61,11 @@ class EntityUidPointer implements EntityPointer
         return $target;
     }
 
-    /**
-     * @return bool
-     */
     public function isNode(): bool
     {
         return $this->name === 'pages';
     }
 
-    /**
-     * @return bool
-     */
     public function isEqualTo(EntityPointer $other): bool
     {
         return $this->identifier === $other->getIdentifier()

@@ -33,22 +33,16 @@ interface RootRenderableInterface
      * Abstract "type" of this Renderable. Is used during the rendering process
      * to determine the template file or the View PHP class being used to render
      * the particular element.
-     *
-     * @return string
      */
     public function getType(): string;
 
     /**
      * The identifier of this renderable
-     *
-     * @return string
      */
     public function getIdentifier(): string;
 
     /**
      * Get the label which shall be displayed next to the form element
-     *
-     * @return string
      */
     public function getLabel(): string;
 

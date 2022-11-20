@@ -78,8 +78,6 @@ class LocalizationController
 
     /**
      * Get used languages in a page
-     *
-     * @return ResponseInterface
      */
     public function getUsedLanguagesInPage(ServerRequestInterface $request): ResponseInterface
     {
@@ -135,8 +133,6 @@ class LocalizationController
 
     /**
      * Get a prepared summary of records being translated
-     *
-     * @return ResponseInterface
      */
     public function getRecordLocalizeSummary(ServerRequestInterface $request): ResponseInterface
     {
@@ -185,9 +181,6 @@ class LocalizationController
         ]);
     }
 
-    /**
-     * @return ResponseInterface
-     */
     public function localizeRecords(ServerRequestInterface $request): ResponseInterface
     {
         $params = $request->getQueryParams();
@@ -217,8 +210,6 @@ class LocalizationController
     /**
      * Gets all possible UIDs of a page, colPos and language that might be processed and removes invalid UIDs that might
      * be smuggled in.
-     *
-     * @return array
      */
     protected function filterInvalidUids(
         int $pageId,
@@ -270,9 +261,6 @@ class LocalizationController
         $dataHandler->process_cmdmap();
     }
 
-    /**
-     * @return array
-     */
     protected function getPageColumns(int $pageId, array $flatRecords, array $params): array
     {
         $columns = [];

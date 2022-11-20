@@ -67,7 +67,6 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
      * Return the target type this TypeConverter converts to.
      * Can be a simple type or a class name.
      *
-     * @return string
      * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     public function getSupportedTargetType(): string
@@ -84,7 +83,6 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
      *
      * @param mixed $source the source data
      * @param string $originalTargetType the type we originally want to convert to
-     * @return string
      */
     public function getTargetTypeForSource($source, string $originalTargetType, PropertyMappingConfigurationInterface $configuration = null): string
     {
@@ -94,7 +92,6 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
     /**
      * Return the priority of this TypeConverter. TypeConverters with a high priority are chosen before low priority.
      *
-     * @return int
      * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     public function getPriority(): int
@@ -118,7 +115,6 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
      * Returns an empty list of sub property names
      *
      * @param mixed $source
-     * @return array
      */
     public function getSourceChildPropertiesToBeConverted($source): array
     {
@@ -133,7 +129,6 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
      *
      * @param string $targetType
      * @param string $propertyName
-     * @return string
      */
     public function getTypeOfChildProperty(string $targetType, string $propertyName, PropertyMappingConfigurationInterface $configuration): string
     {

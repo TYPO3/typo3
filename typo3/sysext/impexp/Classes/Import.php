@@ -210,9 +210,6 @@ class Import extends ImportExport
         }
     }
 
-    /**
-     * @return array
-     */
     public function getSupportedFileExtensions(): array
     {
         if (empty($this->supportedFileExtensions)) {
@@ -1065,7 +1062,6 @@ class Import extends ImportExport
      * Get the default value for a reference field.
      *
      * @param array $configuration The TCA configuration of the accordant field
-     * @return int|float|string
      */
     protected function getReferenceDefaultValue(array $configuration): int|float|string
     {
@@ -1080,8 +1076,6 @@ class Import extends ImportExport
 
     /**
      * Selects sys_file_metadata database record.
-     *
-     * @return array|null
      */
     protected function getSysFileMetaDataFromDatabase(int $pid, int $file, int $sysLanguageUid): ?array
     {
@@ -1799,13 +1793,6 @@ class Import extends ImportExport
         }
     }
 
-    /**************************
-     * Getters and Setters
-     *************************/
-
-    /**
-     * @return bool
-     */
     public function isEnableLogging(): bool
     {
         return $this->enableLogging;
@@ -1816,9 +1803,6 @@ class Import extends ImportExport
         $this->enableLogging = $enableLogging;
     }
 
-    /**
-     * @return bool
-     */
     public function isDecompressionAvailable(): bool
     {
         return $this->decompressionAvailable;

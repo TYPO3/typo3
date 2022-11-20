@@ -85,8 +85,6 @@ class PasswordReset implements LoggerAwareInterface
 
     /**
      * Check if a specific backend user can be used to trigger an email reset for (email + password set)
-     *
-     * @return bool
      */
     public function isEnabledForUser(int $userId): bool
     {
@@ -219,7 +217,6 @@ class PasswordReset implements LoggerAwareInterface
      * @param Context $context
      * @param int $userId the backend user uid
      * @param string $emailAddress is part of the hash to ensure that the email address does not get reset.
-     * @return UriInterface
      */
     protected function generateResetLinkForUser(Context $context, int $userId, string $emailAddress): UriInterface
     {
@@ -250,8 +247,6 @@ class PasswordReset implements LoggerAwareInterface
 
     /**
      * Validates all query parameters / GET parameters of the given request against the token.
-     *
-     * @return bool
      */
     public function isValidResetTokenFromRequest(ServerRequestInterface $request): bool
     {
@@ -369,8 +364,6 @@ class PasswordReset implements LoggerAwareInterface
      * - Password must be set
      * - Username must be set
      * - Email address must be set
-     *
-     * @return QueryBuilder
      */
     protected function getPreparedQueryBuilder(): QueryBuilder
     {
@@ -459,8 +452,6 @@ class PasswordReset implements LoggerAwareInterface
     /**
      * Checks if an email reset link has been requested more than 3 times in the last 30mins.
      * If a password was successfully reset more than three times in 30 minutes, it would still fail.
-     *
-     * @return bool
      */
     protected function hasExceededMaximumAttemptsForReset(Context $context, string $email): bool
     {
@@ -471,8 +462,6 @@ class PasswordReset implements LoggerAwareInterface
 
     /**
      * SQL query to find the amount of initiated resets from a given time.
-     *
-     * @return int
      */
     protected function getNumberOfInitiatedResetsForEmail(\DateTimeInterface $since, string $email): int
     {

@@ -488,9 +488,6 @@ class ResourceCompressor
         return false;
     }
 
-    /**
-     * @return string
-     */
     protected function cssFixRelativeUrlPaths(string $contents, string $filename): string
     {
         $newDir = '../../../' . PathUtility::dirname($filename) . '/';
@@ -675,8 +672,6 @@ class ResourceCompressor
      *
      * The <script> tag only needs the type if the page is not rendered as HTML5.
      * For TYPO3 Frontend the configured config.doctype is evaluated.
-     *
-     * @return string
      */
     protected function getJavaScriptFileType(): string
     {

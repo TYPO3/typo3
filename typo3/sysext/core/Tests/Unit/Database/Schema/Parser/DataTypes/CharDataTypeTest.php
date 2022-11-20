@@ -30,8 +30,6 @@ class CharDataTypeTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseBinaryDataType()
-     *
-     * @return array
      */
     public function canParseBinaryDataTypeProvider(): array
     {

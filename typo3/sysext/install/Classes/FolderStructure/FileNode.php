@@ -175,7 +175,6 @@ class FileNode extends AbstractNode implements NodeInterface
      * Create file if not exists
      *
      * @throws Exception
-     * @return FlashMessage
      */
     protected function createFile(): FlashMessage
     {
@@ -277,7 +276,6 @@ class FileNode extends AbstractNode implements NodeInterface
      * Sets content of file to target content
      *
      * @throws Exception If file does not exist
-     * @return FlashMessage
      */
     protected function setContent(): FlashMessage
     {

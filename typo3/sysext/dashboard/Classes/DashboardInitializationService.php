@@ -246,17 +246,11 @@ class DashboardInitializationService
         return $this->requireJsModules;
     }
 
-    /**
-     * @return array
-     */
     public function getJsFiles(): array
     {
         return $this->jsFiles;
     }
 
-    /**
-     * @return array
-     */
     public function getCssFiles(): array
     {
         return $this->cssFiles;

@@ -92,8 +92,6 @@ class LanguagePackService
 
     /**
      * List of languages active in this instance
-     *
-     * @return array
      */
     public function getActiveLanguages(): array
     {
@@ -103,8 +101,6 @@ class LanguagePackService
 
     /**
      * Create an array with language details: active or not, iso codes, last update, ...
-     *
-     * @return array
      */
     public function getLanguageDetails(): array
     {
@@ -136,8 +132,6 @@ class LanguagePackService
 
     /**
      * Create a list of loaded extensions and their language packs details
-     *
-     * @return array
      */
     public function getExtensionLanguagePackDetails(): array
     {

@@ -216,8 +216,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
 
     /**
      * Data provider for transferHttpSettings
-     *
-     * @return array
      */
     public function httpSettingsMappingDataProvider(): array
     {
@@ -547,9 +545,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         }, $silentConfigurationUpgradeService, SilentConfigurationUpgradeService::class)();
     }
 
-    /**
-     * @return array
-     */
     public function graphicsProcessorEffects(): array
     {
         return [

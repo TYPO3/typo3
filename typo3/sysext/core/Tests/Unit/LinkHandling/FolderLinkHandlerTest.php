@@ -36,8 +36,6 @@ class FolderLinkHandlerTest extends UnitTestCase
      * Data provider for pointing to files
      * t3:file:1:myfolder/myidentifier.jpg
      * t3:folder:1:myfolder
-     *
-     * @return array
      */
     public function resolveParametersForFilesDataProvider(): array
     {

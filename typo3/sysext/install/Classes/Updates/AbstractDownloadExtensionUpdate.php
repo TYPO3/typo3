@@ -48,8 +48,6 @@ abstract class AbstractDownloadExtensionUpdate implements UpgradeWizardInterface
     /**
      * Execute the update
      * Called when a wizard reports that an update is necessary
-     *
-     * @return bool
      */
     public function executeUpdate(): bool
     {

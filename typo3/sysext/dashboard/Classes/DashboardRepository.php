@@ -136,7 +136,6 @@ class DashboardRepository
 
     /**
      * @param array $values
-     * @return array
      */
     protected function checkAllowedFields($values): array
     {
@@ -191,9 +190,6 @@ class DashboardRepository
             ->executeStatement();
     }
 
-    /**
-     * @return Dashboard
-     */
     protected function createFromRow(array $row): Dashboard
     {
         return GeneralUtility::makeInstance(
@@ -206,9 +202,6 @@ class DashboardRepository
         );
     }
 
-    /**
-     * @return QueryBuilder
-     */
     protected function getQueryBuilder(): QueryBuilder
     {
         return $this->connectionPool->getQueryBuilderForTable(self::TABLE);

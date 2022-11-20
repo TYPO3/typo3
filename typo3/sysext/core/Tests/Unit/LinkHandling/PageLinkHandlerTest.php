@@ -24,8 +24,6 @@ class PageLinkHandlerTest extends UnitTestCase
 {
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page
-     *
-     * @return array
      */
     public function resolveParametersForNonFilesDataProvider(): array
     {

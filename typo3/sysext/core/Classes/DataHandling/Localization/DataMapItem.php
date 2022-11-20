@@ -146,8 +146,6 @@ class DataMapItem
 
     /**
      * Gets the current table name of this data-map item.
-     *
-     * @return string
      */
     public function getTableName(): string
     {
@@ -167,8 +165,6 @@ class DataMapItem
     /**
      * Gets the suggested values that were initially
      * submitted as the whole data-map to the DataHandler.
-     *
-     * @return array
      */
     public function getSuggestedValues(): array
     {
@@ -179,33 +175,22 @@ class DataMapItem
      * Gets the persisted values that represent the persisted state
      * of the record this data-map item is a surrogate for - does only
      * contain relevant field values.
-     *
-     * @return array
      */
     public function getPersistedValues(): array
     {
         return $this->persistedValues;
     }
 
-    /**
-     * @return array
-     */
     public function getConfigurationFieldNames(): array
     {
         return $this->configurationFieldNames;
     }
 
-    /**
-     * @return string
-     */
     public function getLanguageFieldName(): string
     {
         return $this->configurationFieldNames['language'];
     }
 
-    /**
-     * @return string
-     */
     public function getParentFieldName(): string
     {
         return $this->configurationFieldNames['parent'];
@@ -219,17 +204,11 @@ class DataMapItem
         return $this->configurationFieldNames['source'] ?? null;
     }
 
-    /**
-     * @return bool
-     */
     public function isNew(): bool
     {
         return $this->new;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         if ($this->type === null) {
@@ -250,33 +229,21 @@ class DataMapItem
         return $this->type;
     }
 
-    /**
-     * @return bool
-     */
     public function isParentType(): bool
     {
         return $this->getType() === static::TYPE_PARENT;
     }
 
-    /**
-     * @return bool
-     */
     public function isDirectChildType(): bool
     {
         return $this->getType() === static::TYPE_DIRECT_CHILD;
     }
 
-    /**
-     * @return bool
-     */
     public function isGrandChildType(): bool
     {
         return $this->getType() === static::TYPE_GRAND_CHILD;
     }
 
-    /**
-     * @return State|null
-     */
     public function getState(): ?State
     {
         if ($this->state === null && !$this->isParentType()) {

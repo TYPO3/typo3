@@ -559,7 +559,6 @@ class ProcessedFile extends AbstractFile
     /**
      * Returns the task object associated with this processed file.
      *
-     * @return Processing\TaskInterface
      * @throws \RuntimeException
      */
     public function getTask(): Processing\TaskInterface

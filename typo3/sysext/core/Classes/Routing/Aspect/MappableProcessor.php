@@ -24,9 +24,6 @@ use TYPO3\CMS\Core\Routing\Route;
  */
 class MappableProcessor
 {
-    /**
-     * @return bool
-     */
     public function resolve(Route $route, array &$attributes): bool
     {
         $mappers = $this->fetchMappers($route, $attributes);
@@ -49,9 +46,6 @@ class MappableProcessor
         return true;
     }
 
-    /**
-     * @return bool
-     */
     public function generate(Route $route, array &$attributes): bool
     {
         $mappers = $this->fetchMappers($route, $attributes);

@@ -83,8 +83,6 @@ class CommandRegistry implements CommandLoaderInterface, SingletonInterface
 
     /**
      * Get all commands which are allowed for scheduling recurring commands.
-     *
-     * @return \Generator
      */
     public function getSchedulableCommands(): \Generator
     {
@@ -97,7 +95,6 @@ class CommandRegistry implements CommandLoaderInterface, SingletonInterface
 
     /**
      * @throws UnknownCommandException
-     * @return Command
      */
     public function getCommandByIdentifier(string $identifier): Command
     {

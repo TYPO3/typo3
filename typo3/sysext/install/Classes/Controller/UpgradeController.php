@@ -189,8 +189,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Main "show the cards" view
-     *
-     * @return ResponseInterface
      */
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -215,8 +213,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Activate a new core
-     *
-     * @return ResponseInterface
      */
     public function coreUpdateActivateAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -229,8 +225,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Check if core update is possible
-     *
-     * @return ResponseInterface
      */
     public function coreUpdateCheckPreConditionsAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -243,8 +237,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Download new core
-     *
-     * @return ResponseInterface
      */
     public function coreUpdateDownloadAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -257,8 +249,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Core Update Get Data Action
-     *
-     * @return ResponseInterface
      */
     public function coreUpdateGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -301,8 +291,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Check for new core
-     *
-     * @return ResponseInterface
      */
     public function coreUpdateIsUpdateAvailableAction(): ResponseInterface
     {
@@ -440,8 +428,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Move core to new location
-     *
-     * @return ResponseInterface
      */
     public function coreUpdateMoveAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -454,8 +440,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Unpack a downloaded core
-     *
-     * @return ResponseInterface
      */
     public function coreUpdateUnpackAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -468,8 +452,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Verify downloaded core checksum
-     *
-     * @return ResponseInterface
      */
     public function coreUpdateVerifyChecksumAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -482,8 +464,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Get list of loaded extensions
-     *
-     * @return ResponseInterface
      */
     public function extensionCompatTesterLoadedExtensionListAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -509,8 +489,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Load all ext_localconf files in order until given extension name
-     *
-     * @return ResponseInterface
      */
     public function extensionCompatTesterLoadExtLocalconfAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -538,8 +516,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Load all ext_localconf files in order until given extension name
-     *
-     * @return ResponseInterface
      */
     public function extensionCompatTesterLoadExtTablesAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -573,7 +549,6 @@ class UpgradeController extends AbstractController
     /**
      * Unload one extension
      *
-     * @return ResponseInterface
      * @throws \RuntimeException
      */
     public function extensionCompatTesterUninstallExtensionAction(ServerRequestInterface $request): ResponseInterface
@@ -613,8 +588,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Create Extension Scanner Data action
-     *
-     * @return ResponseInterface
      */
     public function extensionScannerGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -649,8 +622,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Return a list of files of an extension
-     *
-     * @return ResponseInterface
      */
     public function extensionScannerFilesAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -689,8 +660,6 @@ class UpgradeController extends AbstractController
      * as last action. Gets a list of RST file hashes that matched, goes through all
      * existing RST files, finds those marked as "FullyScanned" and marks those that
      * did not had any matches as "you are not affected".
-     *
-     * @return ResponseInterface
      */
     public function extensionScannerMarkFullyScannedRestFilesAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -736,8 +705,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Scan a single extension file for breaking / deprecated core code usages
-     *
-     * @return ResponseInterface
      */
     public function extensionScannerScanFileAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -860,8 +827,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Check if loading ext_tables.php files still changes TCA
-     *
-     * @return ResponseInterface
      */
     public function tcaExtTablesCheckAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -906,8 +871,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Check TCA for needed migrations
-     *
-     * @return ResponseInterface
      */
     public function tcaMigrationsCheckAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -939,8 +902,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Render list of versions
-     *
-     * @return ResponseInterface
      */
     public function upgradeDocsGetContentAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -960,8 +921,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Render list of .rst files
-     *
-     * @return ResponseInterface
      */
     public function upgradeDocsGetChangelogForVersionAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -983,8 +942,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Mark a .rst file as read
-     *
-     * @return ResponseInterface
      */
     public function upgradeDocsMarkReadAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -999,8 +956,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Mark a .rst file as not read
-     *
-     * @return ResponseInterface
      */
     public function upgradeDocsUnmarkReadAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -1015,8 +970,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Check if new tables and fields should be added before executing wizards
-     *
-     * @return ResponseInterface
      */
     public function upgradeWizardsBlockingDatabaseAddsAction(): ResponseInterface
     {
@@ -1042,8 +995,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Add new tables and fields
-     *
-     * @return ResponseInterface
      */
     public function upgradeWizardsBlockingDatabaseExecuteAction(): ResponseInterface
     {
@@ -1078,7 +1029,6 @@ class UpgradeController extends AbstractController
     /**
      * Fix a broken DB charset setting
      *
-     * @return ResponseInterface
      * @todo This must be reviewed and decided if we can remove this, move to reports module or if we have other
      *       issues with charset on connection and database, or if we need to escalate this down to field level.
      */
@@ -1099,7 +1049,6 @@ class UpgradeController extends AbstractController
     /**
      * Test if database charset is ok
      *
-     * @return ResponseInterface
      * @todo This must be reviewed and decided if we can remove this, move to reports module or if we have other
      *       issues with charset on connection and database, or if we need to escalate this down to field level.
      */
@@ -1114,8 +1063,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Get list of upgrade wizards marked as done
-     *
-     * @return ResponseInterface
      */
     public function upgradeWizardsDoneUpgradesAction(): ResponseInterface
     {
@@ -1140,8 +1087,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Execute one upgrade wizard
-     *
-     * @return ResponseInterface
      */
     public function upgradeWizardsExecuteAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -1158,8 +1103,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Input stage of a specific upgrade wizard
-     *
-     * @return ResponseInterface
      */
     public function upgradeWizardsInputAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -1177,8 +1120,6 @@ class UpgradeController extends AbstractController
 
     /**
      * List available upgrade wizards
-     *
-     * @return ResponseInterface
      */
     public function upgradeWizardsListAction(): ResponseInterface
     {
@@ -1195,8 +1136,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Mark a wizard as "not done"
-     *
-     * @return ResponseInterface
      */
     public function upgradeWizardsMarkUndoneAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -1226,8 +1165,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Change install tool password
-     *
-     * @return ResponseInterface
      */
     public function upgradeWizardsGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -1268,7 +1205,6 @@ class UpgradeController extends AbstractController
      * be different depending on whether development or regular release.
      *
      * @throws \RuntimeException
-     * @return CoreRelease
      */
     protected function coreUpdateGetVersionToHandle(ServerRequestInterface $request): CoreRelease
     {
@@ -1320,8 +1256,6 @@ class UpgradeController extends AbstractController
 
     /**
      * Get a list of '.rst' files and their details for "Upgrade documentation" view.
-     *
-     * @return array
      */
     protected function getDocumentationFiles(string $version): array
     {

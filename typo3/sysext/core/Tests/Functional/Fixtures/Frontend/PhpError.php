@@ -43,9 +43,6 @@ class PhpError implements PageErrorHandlerInterface
         $this->configuration = $configuration;
     }
 
-    /**
-     * @return ResponseInterface
-     */
     public function handlePageError(
         ServerRequestInterface $request,
         string $message,

@@ -24,8 +24,6 @@ interface LogManagerInterface
 {
     /**
      * Gets a logger instance for the given name.
-     *
-     * @return \Psr\Log\LoggerInterface
      */
     public function getLogger(string $name = ''): LoggerInterface;
 }

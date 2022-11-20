@@ -69,7 +69,6 @@ class BrokenLinkRepository
      *
      * @param int[] $pageIds
      * @param array $searchFields [ table => [field1, field2, ...], ...]
-     * @return array
      */
     public function getNumberOfBrokenLinksForRecordsOnPages(array $pageIds, array $searchFields): array
     {
@@ -231,7 +230,6 @@ class BrokenLinkRepository
      * @param string[] $searchFields table => [fields1, field2, ...], ... : fields in which linkvalidator should
      *   search for broken links
      * @param int[] $languages Allowed languages
-     * @return array
      */
     public function getAllBrokenLinksForPages(
         array $pageIds,

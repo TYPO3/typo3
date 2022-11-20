@@ -30,7 +30,6 @@ class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTest
 {
     /**
      * @param string|TestSet|null $parentSet
-     * @return array
      */
     public function persistedAliasMapperDataProvider($parentSet = null): array
     {
@@ -88,9 +87,6 @@ class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTest
         $this->assertPageArgumentsEquals($testSet);
     }
 
-    /**
-     * @return array
-     */
     public function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $testSets = [];

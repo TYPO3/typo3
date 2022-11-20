@@ -39,9 +39,6 @@ class PathUtilityTest extends UnitTestCase
         self::assertEquals($expected, $commonPrefix);
     }
 
-    /**
-     * @return array
-     */
     public function isCommonPrefixResolvedCorrectlyDataProvider(): array
     {
         return [
@@ -147,9 +144,6 @@ class PathUtilityTest extends UnitTestCase
         self::assertEquals($expected, $relativePath);
     }
 
-    /**
-     * @return array
-     */
     public function isRelativePathResolvedCorrectlyDataProvider(): array
     {
         return [
@@ -199,9 +193,6 @@ class PathUtilityTest extends UnitTestCase
         self::assertEquals($expected, $sanitizedPath);
     }
 
-    /**
-     * @return array
-     */
     public function isTrailingSeparatorSanitizedCorrectlyDataProvider(): array
     {
         return [
@@ -213,8 +204,6 @@ class PathUtilityTest extends UnitTestCase
 
     /**
      * Data Provider for getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectly
-     *
-     * @return array
      */
     public function getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectlyDataProvider(): array
     {
@@ -422,8 +411,6 @@ class PathUtilityTest extends UnitTestCase
 
     /**
      * Data provider for basenameDuringBootstrapCorrectlyFetchesBasename
-     *
-     * @return array
      */
     public function basenameDuringBootstrapCorrectlyFetchesBasenameDataProvider(): array
     {

@@ -82,9 +82,6 @@ class ConnectionTest extends UnitTestCase
         self::assertInstanceOf(QueryBuilder::class, $this->connection->createQueryBuilder());
     }
 
-    /**
-     * @return array
-     */
     public function quoteIdentifierDataProvider(): array
     {
         return [
@@ -159,9 +156,6 @@ class ConnectionTest extends UnitTestCase
         self::assertSame($expected, $this->connection->quoteIdentifiers($input));
     }
 
-    /**
-     * @return array
-     */
     public function insertQueriesDataProvider(): array
     {
         return [
@@ -231,9 +225,6 @@ class ConnectionTest extends UnitTestCase
         $this->connection->bulkInsert('aTestTable', [['aField' => 'aValue'], ['aField' => 'anotherValue']], ['aField']);
     }
 
-    /**
-     * @return array
-     */
     public function updateQueriesDataProvider(): array
     {
         return [
@@ -286,9 +277,6 @@ class ConnectionTest extends UnitTestCase
         $this->connection->update(...$args);
     }
 
-    /**
-     * @return array
-     */
     public function deleteQueriesDataProvider(): array
     {
         return [
@@ -348,8 +336,6 @@ class ConnectionTest extends UnitTestCase
      *  - array of parameters for select call
      *  - expected SQL string
      *  - expected named parameter values
-     *
-     * @return array
      */
     public function selectQueriesDataProvider(): array
     {
@@ -429,8 +415,6 @@ class ConnectionTest extends UnitTestCase
      *  - array of parameters for select call
      *  - expected SQL string
      *  - expected named parameter values
-     *
-     * @return array
      */
     public function countQueriesDataProvider(): array
     {

@@ -52,9 +52,6 @@ final class FilePersistenceSlot implements SingletonInterface
      */
     protected $allowedInvocations = [];
 
-    /**
-     * @return string
-     */
     public function getContentSignature(string $content): string
     {
         return GeneralUtility::hmac($content);
@@ -83,7 +80,6 @@ final class FilePersistenceSlot implements SingletonInterface
      * identifier. Commands providing new content have have to submit a HMAC
      * signature on the content as well.
      *
-     * @return bool
      * @see getContentSignature
      */
     public function allowInvocation(
@@ -257,7 +253,6 @@ final class FilePersistenceSlot implements SingletonInterface
 
     /**
      * @param string|null $contentSignature
-     * @return int|null
      */
     protected function searchAllowedInvocation(
         string $command,
@@ -276,9 +271,6 @@ final class FilePersistenceSlot implements SingletonInterface
         return null;
     }
 
-    /**
-     * @return string
-     */
     protected function buildCombinedIdentifier(FolderInterface $folder, string $fileName): string
     {
         return sprintf(
@@ -289,9 +281,6 @@ final class FilePersistenceSlot implements SingletonInterface
         );
     }
 
-    /**
-     * @return bool
-     */
     protected function isFormDefinition(string $identifier): bool
     {
         return str_ends_with(
@@ -300,9 +289,6 @@ final class FilePersistenceSlot implements SingletonInterface
         );
     }
 
-    /**
-     * @return bool
-     */
     protected function isRecycleFolder(FolderInterface $folder): bool
     {
         $role = $folder->getStorage()->getRole($folder);

@@ -101,7 +101,6 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
     /**
      * Execute scheduler tasks
      *
-     * @return int
      * @todo: this should at some point become a protected method
      */
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -131,7 +130,6 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
      * Stopping is only performed when the --stop option is provided together with the --task option.
      *
      * @param bool $stopOption
-     * @return bool
      */
     protected function shouldStopTasks(bool $stopOption): bool
     {
@@ -220,7 +218,6 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
      *
      * Without the --task option we ask the scheduler for the next task with pending execution.
      *
-     * @return AbstractTask
      * @throws \OutOfBoundsException When there are no more tasks to execute.
      * @throws \UnexpectedValueException When no task is found by the provided UID or the task is not marked for execution.
      */

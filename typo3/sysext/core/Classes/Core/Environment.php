@@ -135,8 +135,6 @@ class Environment
      * Delivers the ApplicationContext object, usually defined in TYPO3_CONTEXT environment variables.
      * This is something like "Production", "Testing", or "Development" or any additional information
      * "Production/Staging".
-     *
-     * @return ApplicationContext
      */
     public static function getContext(): ApplicationContext
     {
@@ -146,8 +144,6 @@ class Environment
     /**
      * Informs whether TYPO3 has been installed via composer or not. Typically this is useful inside the
      * Maintenance Modules, or the Extension Manager.
-     *
-     * @return bool
      */
     public static function isComposerMode(): bool
     {
@@ -156,8 +152,6 @@ class Environment
 
     /**
      * Whether the current PHP request is handled by a CLI SAPI module or not.
-     *
-     * @return bool
      */
     public static function isCli(): bool
     {
@@ -200,8 +194,6 @@ class Environment
     /**
      * The public web folder where index.php (= the frontend application) is put, without trailing slash.
      * For non-composer installations, the project path = the public path.
-     *
-     * @return string
      */
     public static function getPublicPath(): string
     {
@@ -212,8 +204,6 @@ class Environment
      * The folder where variable data like logs, sessions, locks, and cache files can be stored.
      * When project path = public path, then this folder is usually typo3temp/var/, otherwise it's set to
      * $project_path/var.
-     *
-     * @return string
      */
     public static function getVarPath(): string
     {
@@ -229,8 +219,6 @@ class Environment
      *
      * When project path = public path, then this folder is usually typo3conf/, otherwise it's set to
      * $project_path/config.
-     *
-     * @return string
      */
     public static function getConfigPath(): string
     {
@@ -239,8 +227,6 @@ class Environment
 
     /**
      * The path + filename to the current PHP script.
-     *
-     * @return string
      */
     public static function getCurrentScript(): string
     {
@@ -251,12 +237,9 @@ class Environment
      * Helper methods to easily find occurrences, however as these properties are not computed
      * it is very possible that these methods will become obsolete in the near future.
      */
-
     /**
      * Previously found under typo3conf/l10n/
      * Please note that this might be gone at some point
-     *
-     * @return string
      */
     public static function getLabelsPath(): string
     {
@@ -269,8 +252,6 @@ class Environment
     /**
      * Previously known as PATH_typo3
      * Please note that this might be gone at some point
-     *
-     * @return string
      */
     public static function getBackendPath(): string
     {
@@ -280,8 +261,6 @@ class Environment
     /**
      * Previously known as PATH_typo3 . 'sysext/'
      * Please note that this might be gone at some point
-     *
-     * @return string
      */
     public static function getFrameworkBasePath(): string
     {
@@ -290,8 +269,6 @@ class Environment
 
     /**
      * Please note that this might be gone at some point
-     *
-     * @return string
      */
     public static function getExtensionsPath(): string
     {
@@ -307,8 +284,6 @@ class Environment
      * - legacy AdditionalConfiguration.php, and
      * - PackageStates.php
      * is located.
-     *
-     * @return string
      */
     public static function getLegacyConfigPath(): string
     {
@@ -317,8 +292,6 @@ class Environment
 
     /**
      * Whether this TYPO3 installation runs on windows
-     *
-     * @return bool
      */
     public static function isWindows(): bool
     {
@@ -327,8 +300,6 @@ class Environment
 
     /**
      * Whether this TYPO3 installation runs on unix (= non-windows machines)
-     *
-     * @return bool
      */
     public static function isUnix(): bool
     {
@@ -337,8 +308,6 @@ class Environment
 
     /**
      * Returns true if the server is running on a list of supported CGI server APIs.
-     *
-     * @return bool
      */
     public static function isRunningOnCgiServer(): bool
     {
@@ -352,8 +321,6 @@ class Environment
 
     /**
      * Returns the currently configured Environment information as array.
-     *
-     * @return array
      */
     public static function toArray(): array
     {

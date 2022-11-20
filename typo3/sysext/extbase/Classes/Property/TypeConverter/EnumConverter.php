@@ -31,7 +31,6 @@ class EnumConverter extends AbstractTypeConverter
      *
      * @template T of UnitEnum
      * @param class-string<T> $targetType
-     * @return bool
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function canConvertFrom(mixed $source, string $targetType): bool

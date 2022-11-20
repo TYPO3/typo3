@@ -145,9 +145,6 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
 
     /**
      * Delete a session record
-     *
-     *
-     * @return bool
      */
     public function remove(string $sessionId): bool
     {
@@ -327,17 +324,11 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
         return $sessions;
     }
 
-    /**
-     * @return string
-     */
     protected function getSessionKeyName(string $sessionId): string
     {
         return $this->applicationIdentifier . $sessionId;
     }
 
-    /**
-     * @return int
-     */
     protected function getSessionTimeout(): int
     {
         return (int)($GLOBALS['TYPO3_CONF_VARS'][$this->identifier]['sessionTimeout'] ?? 86400);

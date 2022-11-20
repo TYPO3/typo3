@@ -48,7 +48,6 @@ abstract class AbstractPasswordValidator
      *
      * @param string $password The password to validate
      * @param ContextData|null $contextData ContextData for usage in additional checks (e.g. password must not contain users firstname).
-     * @return bool
      */
     public function validate(string $password, ?ContextData $contextData = null): bool
     {
@@ -57,8 +56,6 @@ abstract class AbstractPasswordValidator
 
     /**
      * Returns all requirements
-     *
-     * @return array
      */
     final public function getRequirements(): array
     {
@@ -79,8 +76,6 @@ abstract class AbstractPasswordValidator
 
     /**
      * Returns all error messages
-     *
-     * @return array
      */
     final public function getErrorMessages(): array
     {

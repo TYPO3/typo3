@@ -33,7 +33,6 @@ class SiteTcaSelectItems implements FormDataProviderInterface
      * Resolve select items for
      * * 'site_language' -> 'typo3language'
      *
-     * @return array
      * @throws \UnexpectedValueException
      */
     public function addData(array $result): array

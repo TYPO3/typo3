@@ -49,7 +49,6 @@ class CsvUtility
      * @param string $fieldDelimiter The field delimiter
      * @param string $fieldEnclosure The field enclosure
      * @param int $maximumColumns The maximum amount of columns
-     * @return array
      */
     public static function csvToArray(string $input, string $fieldDelimiter = ',', string $fieldEnclosure = '"', int $maximumColumns = 0): array
     {

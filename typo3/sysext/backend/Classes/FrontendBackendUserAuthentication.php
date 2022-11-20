@@ -92,7 +92,6 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      *
      * @param string $table The name of the table.
      * @param array $currentRecord The record.
-     * @return bool
      */
     public function allowedToEditLanguage($table, array $currentRecord): bool
     {
@@ -118,7 +117,6 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      * @param array $dataArray The data array.
      * @param array $conf The configuration array for the edit panel.
      * @param bool $checkEditAccessInternals Boolean indicating whether recordEditAccessInternals should not be checked. Defaults
-     * @return bool
      */
     public function allowedToEdit(string $table, array $dataArray, array $conf, bool $checkEditAccessInternals): bool
     {
@@ -169,7 +167,6 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      * @param string $table The name of the table.
      * @param array $conf The configuration array.
      * @param int $pid The PID where editing will occur.
-     * @return array
      */
     public function getAllowedEditActions($table, array $conf, $pid): array
     {

@@ -190,7 +190,6 @@ class UriBuilder
     }
 
     /**
-     * @return array
      * @internal
      */
     public function getArguments(): array
@@ -210,7 +209,6 @@ class UriBuilder
     }
 
     /**
-     * @return string
      * @internal
      */
     public function getSection(): string
@@ -230,7 +228,6 @@ class UriBuilder
     }
 
     /**
-     * @return string
      * @internal
      */
     public function getFormat(): string
@@ -250,7 +247,6 @@ class UriBuilder
     }
 
     /**
-     * @return bool
      * @internal
      */
     public function getCreateAbsoluteUri(): bool
@@ -259,7 +255,6 @@ class UriBuilder
     }
 
     /**
-     * @return string|null
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getAbsoluteUriScheme(): ?string
@@ -281,7 +276,6 @@ class UriBuilder
 
     /**
      * Enforces a URI / link to a page to a specific language (or use "current")
-     * @return UriBuilder
      */
     public function setLanguage(?string $language): UriBuilder
     {
@@ -307,7 +301,6 @@ class UriBuilder
     }
 
     /**
-     * @return bool
      * @internal
      */
     public function getAddQueryString(): bool
@@ -330,7 +323,6 @@ class UriBuilder
     }
 
     /**
-     * @return array
      * @internal
      */
     public function getArgumentsToBeExcludedFromQueryString(): array
@@ -350,7 +342,6 @@ class UriBuilder
     }
 
     /**
-     * @return string|null
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getArgumentPrefix(): ?string
@@ -370,7 +361,6 @@ class UriBuilder
     }
 
     /**
-     * @return bool
      * @internal
      */
     public function getLinkAccessRestrictedPages(): bool
@@ -392,7 +382,6 @@ class UriBuilder
     /**
      * returns $this->targetPageUid.
      *
-     * @return int|null
      * @internal
      */
     public function getTargetPageUid(): ?int
@@ -412,7 +401,6 @@ class UriBuilder
     }
 
     /**
-     * @return int
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getTargetPageType(): int
@@ -432,7 +420,6 @@ class UriBuilder
     }
 
     /**
-     * @return bool
      * @internal
      */
     public function getNoCache(): bool
@@ -550,7 +537,6 @@ class UriBuilder
      * @param array $controllerArguments the current controller arguments to be modified
      * @param string $extensionName target extension name
      * @param string $pluginName target plugin name
-     * @return array
      */
     protected function removeDefaultControllerAndAction(array $controllerArguments, string $extensionName, string $pluginName): array
     {
@@ -747,9 +733,6 @@ class UriBuilder
         return $arguments;
     }
 
-    /**
-     * @return array
-     */
     protected function convertIteratorToArray(\Iterator $iterator): array
     {
         if (method_exists($iterator, 'toArray')) {
@@ -763,7 +746,6 @@ class UriBuilder
     /**
      * Converts a given object recursively into an array.
      *
-     * @return array
      * @todo Refactor this into convertDomainObjectsToIdentityArrays()
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */

@@ -52,7 +52,6 @@ class IconController
     }
 
     /**
-     * @return ResponseInterface
      * @internal
      */
     public function getCacheIdentifier(): ResponseInterface
@@ -61,7 +60,6 @@ class IconController
     }
 
     /**
-     * @return ResponseInterface
      * @internal
      */
     public function getIcon(ServerRequestInterface $request): ResponseInterface

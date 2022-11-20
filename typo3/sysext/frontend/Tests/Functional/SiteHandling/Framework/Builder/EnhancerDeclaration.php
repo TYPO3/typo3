@@ -42,17 +42,11 @@ class EnhancerDeclaration implements Applicable, HasGenerateParameters, HasResol
         return $this->configuration;
     }
 
-    /**
-     * @return array
-     */
     public function getResolveArguments(): array
     {
         return $this->resolveArguments;
     }
 
-    /**
-     * @return array
-     */
     public function getGenerateParameters(): array
     {
         return $this->generateParameters;

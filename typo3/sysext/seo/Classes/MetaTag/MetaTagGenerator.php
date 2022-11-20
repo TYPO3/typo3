@@ -128,7 +128,6 @@ class MetaTagGenerator
 
     /**
      * @param list<FileReference> $fileReferences
-     * @return array
      */
     protected function generateSocialImages(array $fileReferences): array
     {

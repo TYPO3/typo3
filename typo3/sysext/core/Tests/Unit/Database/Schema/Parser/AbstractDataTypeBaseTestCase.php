@@ -34,8 +34,6 @@ abstract class AbstractDataTypeBaseTestCase extends UnitTestCase
 
     /**
      * Wrap a column definition into a create table statement for testing
-     *
-     * @return string
      */
     protected function createTableStatement(string $columnDefinition): string
     {
@@ -44,8 +42,6 @@ abstract class AbstractDataTypeBaseTestCase extends UnitTestCase
 
     /**
      * Parse the CREATE TABLE statement and return the reference definition
-     *
-     * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem
      */
     protected function createSubject(string $statement): CreateColumnDefinitionItem
     {

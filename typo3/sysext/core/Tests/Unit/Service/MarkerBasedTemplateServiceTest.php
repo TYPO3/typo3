@@ -48,8 +48,6 @@ class MarkerBasedTemplateServiceTest extends UnitTestCase
 
     /**
      * Data provider for getSubpart
-     *
-     * @return array
      */
     public function getSubpartDataProvider(): array
     {
@@ -125,8 +123,6 @@ text
 
     /**
      * Data provider for substituteSubpart
-     *
-     * @return array
      */
     public function substituteSubpartDataProvider(): array
     {
@@ -396,8 +392,6 @@ hello
 
     /**
      * Data provider for substituteSubpartArray
-     *
-     * @return array
      */
     public function substituteSubpartArrayDataProvider(): array
     {
@@ -430,8 +424,6 @@ world
 
     /**
      * Data provider for substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray
-     *
-     * @return array
      */
     public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider(): array
     {
@@ -649,9 +641,6 @@ Value 2.2
         );
     }
 
-    /**
-     * @return array
-     */
     public function substituteMarkerArrayCachedReturnsExpectedContentDataProvider(): array
     {
         return [

@@ -24,8 +24,6 @@ interface EventDataInterface
 {
     /**
      * This method returns data which should be send to the widget as JSON encoded value.
-     *
-     * @return array
      */
     public function getEventData(): array;
 }

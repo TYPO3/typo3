@@ -27,8 +27,6 @@ class SetDataTypeTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseSetDataType()
-     *
-     * @return array
      */
     public function canParseSetDataTypeProvider(): array
     {

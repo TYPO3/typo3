@@ -492,7 +492,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     /**
      * @param string $finisherIdentifier identifier of the finisher as registered in the current form (for example: "Redirect")
      * @param array $options options for this finisher in the format ['option1' => 'value1', 'option2' => 'value2', ...]
-     * @return FinisherInterface
      * @throws FinisherPresetNotFoundException
      */
     public function createFinisher(string $finisherIdentifier, array $options = []): FinisherInterface
@@ -639,9 +638,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
         return $formRuntime;
     }
 
-    /**
-     * @return ProcessingRule
-     */
     public function getProcessingRule(string $propertyPath): ProcessingRule
     {
         if (!isset($this->processingRules[$propertyPath])) {
@@ -682,7 +678,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     /**
      * Get the persistence identifier of the form
      *
-     * @return string
      * @internal
      */
     public function getPersistenceIdentifier(): string
@@ -700,8 +695,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
 
     /**
      * Get the classname of the renderer
-     *
-     * @return string
      */
     public function getRendererClassName(): string
     {

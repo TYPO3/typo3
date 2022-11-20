@@ -228,7 +228,6 @@ class PageRouter implements RouterInterface
      * @param array $parameters an array of query parameters which can be built into the URI path, also consider the special handling of "_language"
      * @param string $fragment additional #my-fragment part
      * @param string $type see the RouterInterface for possible types
-     * @return UriInterface
      * @throws InvalidRouteArgumentsException
      */
     public function generateUri($route, array $parameters = [], string $fragment = '', string $type = ''): UriInterface
@@ -400,7 +399,6 @@ class PageRouter implements RouterInterface
      * @param string $pagePath the original path of the page
      * @param array $mountPointPairs an array with MP pairs (like ['13-3', '4-2'] for recursive mount points)
      * @param PageRepository $pageRepository
-     * @return string
      */
     protected function resolveMountPointParameterIntoPageSlug(
         int $pageId,
@@ -476,9 +474,6 @@ class PageRouter implements RouterInterface
         return $enhancers;
     }
 
-    /**
-     * @return string
-     */
     protected function generateCacheHash(int $pageId, PageArguments $arguments): string
     {
         return $this->cacheHashCalculator->calculateCacheHash(
@@ -486,9 +481,6 @@ class PageRouter implements RouterInterface
         );
     }
 
-    /**
-     * @return array
-     */
     protected function getCacheHashParameters(int $pageId, PageArguments $arguments): array
     {
         $hashParameters = $arguments->getDynamicArguments();
@@ -512,7 +504,6 @@ class PageRouter implements RouterInterface
      * @param Route $route
      * @param array $results
      * @param array $remainingQueryParameters
-     * @return PageArguments
      */
     protected function buildPageArguments(Route $route, array $results, array $remainingQueryParameters = []): PageArguments
     {
@@ -547,7 +538,6 @@ class PageRouter implements RouterInterface
      * Retrieves type from processed route and modifies remaining query parameters.
      *
      * @param array $remainingQueryParameters reference to remaining query parameters
-     * @return string
      */
     protected function resolveType(Route $route, array &$remainingQueryParameters): string
     {
@@ -599,7 +589,6 @@ class PageRouter implements RouterInterface
      * Determine parameters that have been processed.
      *
      * @param array $results
-     * @return array
      */
     protected function filterProcessedParameters(Route $route, $results): array
     {

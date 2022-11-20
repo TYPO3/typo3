@@ -24,8 +24,6 @@ class CommandUtilityTest extends UnitTestCase
 {
     /**
      * Data provider for getConfiguredApps
-     *
-     * @return array
      */
     public function getConfiguredAppsDataProvider(): array
     {

@@ -218,9 +218,6 @@ class LocalizationUtilityTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @return string
-     */
     protected function getLanguageFilePath(string $extensionName): string
     {
         return  'EXT:' . $extensionName . '/Resources/Private/Language/locallang.xlf';
@@ -273,9 +270,6 @@ class LocalizationUtilityTest extends UnitTestCase
         self::assertNull(LocalizationUtility::translate('', 'extbase', ['argument']));
     }
 
-    /**
-     * @return array
-     */
     public function translateDataProvider(): array
     {
         return [
@@ -372,9 +366,6 @@ class LocalizationUtilityTest extends UnitTestCase
         self::assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, $languageKey, $altLanguageKeys));
     }
 
-    /**
-     * @return array
-     */
     public function loadTypoScriptLabelsProvider(): array
     {
         return [

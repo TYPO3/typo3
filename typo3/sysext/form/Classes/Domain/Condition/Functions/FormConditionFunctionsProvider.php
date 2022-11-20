@@ -39,8 +39,6 @@ class FormConditionFunctionsProvider implements ExpressionFunctionProviderInterf
 
     /**
      * Shortcut function to access field values
-     *
-     * @return \Symfony\Component\ExpressionLanguage\ExpressionFunction
      */
     protected function getFormValueFunction(): ExpressionFunction
     {
@@ -55,9 +53,6 @@ class FormConditionFunctionsProvider implements ExpressionFunctionProviderInterf
         );
     }
 
-    /**
-     * @return \Symfony\Component\ExpressionLanguage\ExpressionFunction
-     */
     protected function getRootFormPropertyFunction(): ExpressionFunction
     {
         return new ExpressionFunction(

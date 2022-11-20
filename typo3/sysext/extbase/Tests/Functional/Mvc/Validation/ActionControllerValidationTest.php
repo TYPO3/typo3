@@ -41,9 +41,6 @@ class ActionControllerValidationTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
-    /**
-     * @return array
-     */
     public function forwardedActionValidatesPreviouslyIgnoredArgumentDataProvider(): array
     {
         return [
@@ -243,9 +240,6 @@ class ActionControllerValidationTest extends FunctionalTestCase
         self::assertEquals('testFormAction', $response->getBody()->getContents());
     }
 
-    /**
-     * @return string
-     */
     protected function generateTrustedPropertiesToken(array $formFieldNames): string
     {
         $mvcPropertyMappingConfigurationService = $this->get(
@@ -254,9 +248,6 @@ class ActionControllerValidationTest extends FunctionalTestCase
         return $mvcPropertyMappingConfigurationService->generateTrustedPropertiesToken($formFieldNames, '');
     }
 
-    /**
-     * @return HashService
-     */
     protected function getHashService(): HashService
     {
         return $this->get(HashService::class);

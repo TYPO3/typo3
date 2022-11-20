@@ -87,7 +87,6 @@ class Router implements SingletonInterface
 
     /**
      * @internal only use in Core, this should not be exposed
-     * @return SymfonyRouteCollection
      */
     public function getRouteCollection(): SymfonyRouteCollection
     {

@@ -252,8 +252,6 @@ class DeletedRecords
 
     /**
      * Helper method for setData() to create a QueryBuilder that filters the records by default.
-     *
-     * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
      */
     protected function getFilteredQueryBuilder(string $table, int $pid, int $depth, string $filter): QueryBuilder
     {
@@ -490,8 +488,6 @@ class DeletedRecords
 
     /**
      * Get tree list
-     *
-     * @return array
      */
     protected function getTreeList(int $id, int $depth, int $begin = 0): array
     {
@@ -506,9 +502,6 @@ class DeletedRecords
         return $pageTree;
     }
 
-    /**
-     * @return array
-     */
     protected function resolveTree(int $id, int $depth, int $begin = 0, string $permsClause = ''): array
     {
         $depth = (int)$depth;
@@ -543,8 +536,6 @@ class DeletedRecords
 
     /**
      * Gets an instance of the memory cache.
-     *
-     * @return FrontendInterface
      */
     protected function getCache(): FrontendInterface
     {

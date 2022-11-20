@@ -32,7 +32,6 @@ abstract class FolderStructureTestCase extends UnitTestCase
      * Created directories are registered for deletion upon test ending.
      *
      * @param string $prefix
-     * @return string
      */
     protected function getTestDirectory($prefix = 'root_'): string
     {

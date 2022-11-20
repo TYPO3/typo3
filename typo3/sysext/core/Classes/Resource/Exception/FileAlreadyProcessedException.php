@@ -38,9 +38,6 @@ class FileAlreadyProcessedException extends Exception
         parent::__construct(sprintf('File "%s" has already been processed', $processedFile->getIdentifier()), $code);
     }
 
-    /**
-     * @return ProcessedFile
-     */
     public function getProcessedFile(): ProcessedFile
     {
         return $this->processedFile;

@@ -30,16 +30,12 @@ interface MfaProviderInterface
     /**
      * Check if the current request can be handled by this provider (e.g.
      * necessary query arguments are set).
-     *
-     * @return bool
      */
     public function canProcess(ServerRequestInterface $request): bool;
 
     /**
      * Check if provider is active for the user by e.g. checking the user
      * record for some provider specific active state.
-     *
-     * @return bool
      */
     public function isActive(MfaProviderPropertyManager $propertyManager): bool;
 
@@ -49,15 +45,11 @@ interface MfaProviderInterface
      * from the "isActive" state on purpose, so please DO NOT use
      * the "isActive" state for such check internally. This will
      * allow attackers to easily circumvent MFA!
-     *
-     * @return bool
      */
     public function isLocked(MfaProviderPropertyManager $propertyManager): bool;
 
     /**
      * Verifies the MFA request
-     *
-     * @return bool
      */
     public function verify(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool;
 
@@ -67,7 +59,6 @@ interface MfaProviderInterface
      * body and directly injects it into the corresponding view. It's however
      * planned to also take further information like headers into account.
      *
-     * @return ResponseInterface
      * @see MfaViewType
      */
     public function handleRequest(

@@ -155,8 +155,6 @@ class RecordListDownloadController
 
     /**
      * Generate settings form for the download request
-     *
-     * @return ResponseInterface
      */
     public function downloadSettingsAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -187,8 +185,6 @@ class RecordListDownloadController
 
     /**
      * Generating an download in CSV format
-     *
-     * @return ResponseInterface
      */
     protected function csvDownloadAction(
         ServerRequestInterface $request,
@@ -210,8 +206,6 @@ class RecordListDownloadController
 
     /**
      * Generating an download in JSON format
-     *
-     * @return ResponseInterface
      */
     protected function jsonDownloadAction(
         ServerRequestInterface $request,
@@ -260,8 +254,6 @@ class RecordListDownloadController
 
     /**
      * Get site languages, available for the current backend user
-     *
-     * @return array
      */
     protected function getSiteLanguages(ServerRequestInterface $request): array
     {
@@ -272,8 +264,6 @@ class RecordListDownloadController
     /**
      * Return an evaluated and processed custom filename or a
      * default, if non or an invalid custom filename was provided.
-     *
-     * @return string
      */
     protected function generateFilename(string $filename): string
     {
@@ -296,8 +286,6 @@ class RecordListDownloadController
 
     /**
      * Return the format options with resolved default values from TSconfig
-     *
-     * @return array
      */
     protected function getFormatOptionsWithResolvedDefaults(): array
     {

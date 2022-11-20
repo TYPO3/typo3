@@ -82,8 +82,6 @@ abstract class AbstractElementsBasicCest
 
     /**
      * Return the visible input field of element in question.
-     *
-     * @return RemoteWebElement
      */
     protected function getInputField(RemoteWebElement $formSection): RemoteWebElement
     {
@@ -92,8 +90,6 @@ abstract class AbstractElementsBasicCest
 
     /**
      * Return the hidden input field of element in question.
-     *
-     * @return RemoteWebElement
      */
     protected function getHiddenField(RemoteWebElement $formSection, RemoteWebElement $inputField): RemoteWebElement
     {
@@ -103,8 +99,6 @@ abstract class AbstractElementsBasicCest
 
     /**
      * Find this element in form.
-     *
-     * @return RemoteWebElement
      */
     protected function getFormSectionByFieldLabel(ApplicationTester $I, string $fieldLabel): RemoteWebElement
     {

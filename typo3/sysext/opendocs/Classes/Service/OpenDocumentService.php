@@ -27,8 +27,6 @@ class OpenDocumentService
 {
     /**
      * Get the list of open documents for the current user
-     *
-     * @return array
      */
     public function getOpenDocuments(): array
     {
@@ -44,8 +42,6 @@ class OpenDocumentService
 
     /**
      * Get the list of recent documents for the current user
-     *
-     * @return array
      */
     public function getRecentDocuments(): array
     {

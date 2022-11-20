@@ -269,8 +269,6 @@ class ReferenceIndex implements LoggerAwareInterface
 
     /**
      * Returns the amount of references for the given record
-     *
-     * @return int
      */
     public function getNumberOfReferencedRecords(string $tableName, int $uid): int
     {
@@ -294,7 +292,6 @@ class ReferenceIndex implements LoggerAwareInterface
      *
      * @param string $tableName Table being processed
      * @param array $record Record from $tableName
-     * @return array
      */
     protected function generateDataUsingRecord(string $tableName, array $record): array
     {

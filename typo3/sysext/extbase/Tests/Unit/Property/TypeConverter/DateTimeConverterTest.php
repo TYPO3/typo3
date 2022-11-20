@@ -85,7 +85,6 @@ class DateTimeConverterTest extends UnitTestCase
     }
 
     /**
-     * @return array
      * @see convertFromStringTests()
      */
     public function convertFromStringDataProvider(): array
@@ -135,7 +134,6 @@ class DateTimeConverterTest extends UnitTestCase
     }
 
     /**
-     * @return array
      * @see convertFromIntegerOrDigitStringWithoutConfigurationTests()
      * @see convertFromIntegerOrDigitStringInArrayWithoutConfigurationTests()
      */
@@ -202,7 +200,6 @@ class DateTimeConverterTest extends UnitTestCase
     }
 
     /**
-     * @return array
      * @see convertFromThrowsExceptionIfDatePartKeysHaveInvalidValuesSpecified
      */
     public function invalidDatePartKeyValuesDataProvider(): array
@@ -317,7 +314,6 @@ class DateTimeConverterTest extends UnitTestCase
     }
 
     /**
-     * @return array
      * @see convertFromArrayTests()
      */
     public function convertFromArrayDataProvider(): array

@@ -32,7 +32,6 @@ namespace TYPO3\CMS\Core\Compatibility;
 class PseudoSiteTcaDisplayCondition
 {
     /**
-     * @return bool
      * @throws \InvalidArgumentException
      */
     public function isInPseudoSite(array $parameters): bool

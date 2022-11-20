@@ -57,7 +57,6 @@ abstract class AbstractTypolinkBuilder
      * @param string $linkText the link text
      * @param string $target the target to point to
      * @param array $conf the TypoLink configuration array
-     * @return LinkResultInterface
      * @throws UnableToLinkException
      */
     abstract public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface;
@@ -124,8 +123,6 @@ abstract class AbstractTypolinkBuilder
 
     /**
      * Determines whether lib.parseFunc is defined.
-     *
-     * @return bool
      */
     protected function isLibParseFuncDefined(): bool
     {

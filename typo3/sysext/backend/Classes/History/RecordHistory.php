@@ -128,7 +128,6 @@ class RecordHistory
 
     /**
      * An array (0 = tablename, 1 = uid) or empty array if no element is set
-     * @return array
      */
     public function getElementInformation(): array
     {
@@ -200,7 +199,6 @@ class RecordHistory
      * Fetches the history data of a record + includes subelements if this is from a page
      *
      * @param int $lastHistoryEntry the highest entry to be evaluated
-     * @return array
      */
     protected function getHistoryData(string $table, int $uid, bool $includeSubEntries = null, int $lastHistoryEntry = null): array
     {
@@ -288,8 +286,6 @@ class RecordHistory
 
     /**
      * Resolve tablename + record uid from sys_history UID
-     *
-     * @return array
      */
     protected function getHistoryEntry(int $lastHistoryEntry): array
     {
@@ -350,8 +346,6 @@ class RecordHistory
     /**
      * Queries the DB and prepares the results
      * Resolving a WSOL of the UID and checking permissions is explicitly not part of this method
-     *
-     * @return array
      */
     public function findEventsForRecord(string $table, int $uid, int $limit = 0, int $minimumUid = null): array
     {
@@ -438,7 +432,6 @@ class RecordHistory
      *
      * @param string $table
      * @param int $uid
-     * @return bool
      */
     protected function hasPageAccess($table, $uid): bool
     {
@@ -489,7 +482,6 @@ class RecordHistory
      * Invalid values will be converted to an empty string.
      *
      * @param string $value the value of the element value
-     * @return string
      */
     protected function sanitizeElementValue(string $value): string
     {
@@ -501,8 +493,6 @@ class RecordHistory
 
     /**
      * Evaluates if the rollback field is correct
-     *
-     * @return string
      */
     protected function sanitizeRollbackFieldsValue(string $value): string
     {
@@ -516,7 +506,6 @@ class RecordHistory
      * Determines whether user has access to a table.
      *
      * @param string $table
-     * @return bool
      */
     protected function hasTableAccess($table): bool
     {

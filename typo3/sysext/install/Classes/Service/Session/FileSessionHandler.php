@@ -169,7 +169,6 @@ class FileSessionHandler implements \SessionHandlerInterface
      * Garbage collect session info. See @session_set_save_handler
      *
      * @param int $maxLifeTime The setting of session.gc_maxlifetime
-     * @return int|false
      */
     public function gc(int $maxLifeTime): int|false
     {

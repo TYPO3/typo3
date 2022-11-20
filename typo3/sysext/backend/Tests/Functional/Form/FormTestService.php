@@ -29,8 +29,6 @@ class FormTestService
 {
     /**
      * Creates an outerWrapContainer node for a new record of the given table.
-     *
-     * @return array
      */
     public function createNewRecordForm(string $table, array $defaults = []): array
     {
@@ -52,8 +50,6 @@ class FormTestService
 
     /**
      * Checks if the form field with the given name exists in the given form HTML.
-     *
-     * @return bool
      */
     public function formHtmlContainsField(string $fieldName, string $formHtml): bool
     {

@@ -77,7 +77,6 @@ class Dependency
      * @param string $identifier the extension name or "typo3" or "php" for TYPO3 Core / PHP version constraints
      * @param string $versionConstraint the actual version number. "1.0.0-2.0.0" or "1.0.0" which means "1.0.0 or higher"
      * @param string $dependencyType use "depends", "suggests" or "conflicts".
-     * @return self
      * @throws ExtensionManagerException
      */
     public static function createFromEmConf(

@@ -57,9 +57,6 @@ class ImageContentObjectTest extends UnitTestCase
         $this->subject->setContentObjectRenderer($contentObjectRenderer);
     }
 
-    /**
-     * @return array
-     */
     public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFoundDataProvider(): array
     {
         return [
@@ -85,9 +82,6 @@ class ImageContentObjectTest extends UnitTestCase
         self::assertEquals($result, $defaultImgTagTemplate);
     }
 
-    /**
-     * @return array
-     */
     public function getImageTagTemplateReturnTemplateElementIdentifiedByKeyDataProvider(): array
     {
         return [
@@ -118,9 +112,6 @@ class ImageContentObjectTest extends UnitTestCase
         self::assertEquals($result, $expectation);
     }
 
-    /**
-     * @return array
-     */
     public function getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefinedDataProvider(): array
     {
         return [
@@ -464,7 +455,6 @@ class ImageContentObjectTest extends UnitTestCase
     /**
      * Handles the arguments that have been sent to the getImgResource hook.
      *
-     * @return string
      * @see getImageSourceCollectionHookCalled
      */
     public function isGetOneSourceCollectionCalledCallback(

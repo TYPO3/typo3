@@ -132,9 +132,6 @@ class ServiceProvider extends AbstractServiceProvider
         return $widgetGroupRegistry;
     }
 
-    /**
-     * @return ArrayObject
-     */
     public static function configureDashboardPresets(ContainerInterface $container, ArrayObject $presets): ArrayObject
     {
         $paths = self::getPathsOfInstalledPackages();
@@ -154,7 +151,6 @@ class ServiceProvider extends AbstractServiceProvider
 
     /**
      * @param string $path supplied when invoked internally through PseudoServiceProvider
-     * @return ArrayObject
      */
     public static function configureWidgetGroups(ContainerInterface $container, ArrayObject $widgetGroups, string $path = null): ArrayObject
     {
@@ -174,7 +170,6 @@ class ServiceProvider extends AbstractServiceProvider
 
     /**
      * @param string $path supplied when invoked internally through PseudoServiceProvider
-     * @return ArrayObject
      */
     public static function configureWidgets(ContainerInterface $container, ArrayObject $widgets, string $path = null): ArrayObject
     {

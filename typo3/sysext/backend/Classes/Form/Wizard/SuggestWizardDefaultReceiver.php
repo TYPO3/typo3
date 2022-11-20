@@ -261,8 +261,6 @@ class SuggestWizardDefaultReceiver
      * Splits the search string by space
      * This allows searching for 'elements basic' and will find results like "elements rte basic"
      * To search for whole phrases enclose by double-quotes: '"elements basic"', results in empty result
-     *
-     * @return array
      */
     protected function splitSearchString(string $searchString): array
     {

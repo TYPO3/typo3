@@ -23,8 +23,6 @@ class MockKeywordList extends KeywordList
 {
     /**
      * Returns the name of this keyword list.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -33,8 +31,6 @@ class MockKeywordList extends KeywordList
 
     /**
      * Returns the list of keywords.
-     *
-     * @return array
      */
     protected function getKeywords(): array
     {

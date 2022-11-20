@@ -247,9 +247,6 @@ class ContentObjectRendererTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @return array
-     */
     public function getWhereReturnCorrectQueryDataProvider(): array
     {
         return [
@@ -396,9 +393,6 @@ And another one';
         self::assertEquals($input, $result);
     }
 
-    /**
-     * @return array
-     */
     protected function getLibParseFunc(): array
     {
         return [

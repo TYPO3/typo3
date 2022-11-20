@@ -25,8 +25,6 @@ interface AdditionalCssInterface
     /**
      * This method returns an array with paths to required CSS files.
      * e.g. ['EXT:myext/Resources/Public/Css/my_widget.css']
-     *
-     * @return array
      */
     public function getCssFiles(): array;
 }

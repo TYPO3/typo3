@@ -42,8 +42,6 @@ class PageResolver implements MiddlewareInterface
 {
     /**
      * Resolve the page ID
-     *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

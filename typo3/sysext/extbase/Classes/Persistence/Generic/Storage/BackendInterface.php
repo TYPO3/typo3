@@ -63,15 +63,11 @@ interface BackendInterface
 
     /**
      * Returns the number of items matching the query.
-     *
-     * @return int
      */
     public function getObjectCountByQuery(QueryInterface $query): int;
 
     /**
      * Returns the object data matching the $query.
-     *
-     * @return array
      */
     public function getObjectDataByQuery(QueryInterface $query): array;
 

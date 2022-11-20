@@ -34,8 +34,6 @@ class OutputCompression implements MiddlewareInterface
 {
     /**
      * Clears all output and checks if a compression level is set
-     *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

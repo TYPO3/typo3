@@ -805,8 +805,6 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @param bool $returnMockObject
      * @param bool $isConnectionMysql
-     *
-     * @return Typo3DatabaseBackend
      */
     protected function getSubjectObject($returnMockObject = false, $isConnectionMysql = true): Typo3DatabaseBackend
     {

@@ -75,8 +75,6 @@ class DeletedRecordsCommand extends Command
 
     /**
      * Executes the command to find and permanently delete records which are marked as deleted
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

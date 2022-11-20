@@ -32,8 +32,6 @@ class OtherLanguageContent extends AbstractNode
 {
     /**
      * Render other language content if enabled.
-     *
-     * @return array
      */
     public function render(): array
     {

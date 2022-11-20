@@ -22,8 +22,6 @@ class UrlLinkHandler implements LinkHandlingInterface
 {
     /**
      * Returns the URL as given
-     *
-     * @return string
      */
     public function asString(array $parameters): string
     {
@@ -34,7 +32,6 @@ class UrlLinkHandler implements LinkHandlingInterface
      * Returns the URL as is
      *
      * @param array $data (needs 'url') inside
-     * @return array
      */
     public function resolveHandlerData(array $data): array
     {
@@ -45,7 +42,6 @@ class UrlLinkHandler implements LinkHandlingInterface
      * Ensures that a scheme is always added, if www.typo3.org was added previously.
      *
      * @param string $url the URL
-     * @return string
      */
     protected function addHttpSchemeAsFallback(string $url): string
     {

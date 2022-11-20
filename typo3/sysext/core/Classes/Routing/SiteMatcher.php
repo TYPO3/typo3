@@ -86,7 +86,6 @@ class SiteMatcher implements SingletonInterface
      * all available site records (and their language prefixes).
      *
      * @param ServerRequestInterface $request
-     * @return RouteResultInterface
      */
     public function matchRequest(ServerRequestInterface $request): RouteResultInterface
     {
@@ -175,7 +174,6 @@ class SiteMatcher implements SingletonInterface
      *
      * @param int $pageId uid of a page in default language
      * @param array|null $rootLine an alternative root line, if already at and.
-     * @return SiteInterface
      */
     public function matchByPageId(int $pageId, array $rootLine = null): SiteInterface
     {
@@ -188,8 +186,6 @@ class SiteMatcher implements SingletonInterface
 
     /**
      * Returns a Symfony RouteCollection containing all routes to all sites.
-     *
-     * @return RouteCollection
      */
     protected function getRouteCollectionForAllSites(): RouteCollection
     {

@@ -43,8 +43,6 @@ class TimeTrackerInitialization implements MiddlewareInterface
 
     /**
      * Starting time tracking (by setting up a singleton object)
-     *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

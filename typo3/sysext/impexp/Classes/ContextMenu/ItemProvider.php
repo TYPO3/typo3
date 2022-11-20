@@ -48,8 +48,6 @@ class ItemProvider extends AbstractProvider
 
     /**
      * Export item is added for all database records except files
-     *
-     * @return bool
      */
     public function canHandle(): bool
     {
@@ -58,8 +56,6 @@ class ItemProvider extends AbstractProvider
 
     /**
      * This needs to be lower than priority of the RecordProvider
-     *
-     * @return int
      */
     public function getPriority(): int
     {
@@ -68,8 +64,6 @@ class ItemProvider extends AbstractProvider
 
     /**
      * Adds import/export items to the "submenu" if available
-     *
-     * @return array
      */
     public function addItems(array $items): array
     {
@@ -83,9 +77,6 @@ class ItemProvider extends AbstractProvider
         return $items;
     }
 
-    /**
-     * @return bool
-     */
     protected function canRender(string $itemName, string $type): bool
     {
         if (in_array($itemName, $this->disabledItems, true)) {
@@ -105,8 +96,6 @@ class ItemProvider extends AbstractProvider
 
     /**
      * Registers custom JS module with item onclick behaviour
-     *
-     * @return array
      */
     protected function getAdditionalAttributes(string $itemName): array
     {

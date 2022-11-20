@@ -50,8 +50,6 @@ class Typo3Information
 
     /**
      * Used for any backend rendering in the <meta generator> tag when rendering HTML.
-     *
-     * @return string
      */
     public function getHtmlGeneratorTagContent(): string
     {
@@ -60,8 +58,6 @@ class Typo3Information
 
     /**
      * Used for any frontend rendering in the <head> tag when rendering HTML.
-     *
-     * @return string
      */
     public function getInlineHeaderComment(): string
     {

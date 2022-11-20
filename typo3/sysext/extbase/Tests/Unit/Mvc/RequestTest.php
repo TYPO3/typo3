@@ -169,8 +169,6 @@ class RequestTest extends UnitTestCase
 
     /**
      * DataProvider for explodeObjectControllerName
-     *
-     * @return array
      */
     public function controllerArgumentsAndExpectedObjectName(): array
     {

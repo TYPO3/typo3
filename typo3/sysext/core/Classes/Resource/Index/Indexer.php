@@ -63,7 +63,6 @@ class Indexer implements LoggerAwareInterface
      * Create index entry
      *
      * @param string $identifier
-     * @return File
      * @throws \InvalidArgumentException
      */
     public function createIndexEntry($identifier): File
@@ -91,8 +90,6 @@ class Indexer implements LoggerAwareInterface
 
     /**
      * Update index entry
-     *
-     * @return File
      */
     public function updateIndexEntry(File $fileObject): File
     {
@@ -273,8 +270,6 @@ class Indexer implements LoggerAwareInterface
     /**
      * Since the core desperately needs image sizes in metadata table put them there
      * This should be called after every "content" update and "record" creation
-     *
-     * @return array
      */
     protected function extractRequiredMetaData(File $fileObject): array
     {
@@ -297,12 +292,10 @@ class Indexer implements LoggerAwareInterface
     /****************************
      *         UTILITY
      ****************************/
-
     /**
      * Collects the information to be cached in sys_file
      *
      * @param string $identifier
-     * @return array
      * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidHashException
      */
     protected function gatherFileInformationArray($identifier): array
@@ -409,9 +402,6 @@ class Indexer implements LoggerAwareInterface
         return GeneralUtility::makeInstance(ResourceFactory::class);
     }
 
-    /**
-     * @return ExtractorService
-     */
     protected function getExtractorService(): ExtractorService
     {
         if ($this->extractorService === null) {

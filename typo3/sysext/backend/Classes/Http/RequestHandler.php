@@ -87,8 +87,6 @@ class RequestHandler implements RequestHandlerInterface
      * Handles a backend request, after finishing running middlewares
      * Dispatch the request to the appropriate controller through the
      * Backend Dispatcher which resolves the routing
-     *
-     * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

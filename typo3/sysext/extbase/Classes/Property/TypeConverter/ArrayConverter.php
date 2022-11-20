@@ -52,7 +52,6 @@ class ArrayConverter extends AbstractTypeConverter
      * We can only convert empty strings to array or array to array.
      *
      * @param mixed $source
-     * @return bool
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      * @deprecated will be removed in TYPO3 v13.0
      */

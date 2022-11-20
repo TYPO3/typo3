@@ -33,8 +33,6 @@ class RecordsOverview extends AbstractNode
 {
     /**
      * Render table with record details
-     *
-     * @return array
      */
     public function render(): array
     {

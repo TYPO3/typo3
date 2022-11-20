@@ -162,7 +162,6 @@ class Package implements PackageInterface
     /**
      * Get the Service Provider class name
      *
-     * @return string
      * @internal
      */
     public function getServiceProvider(): string

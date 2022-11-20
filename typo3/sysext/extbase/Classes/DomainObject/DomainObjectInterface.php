@@ -49,7 +49,6 @@ interface DomainObjectInterface
     /**
      * Returns TRUE if the object is new (the uid was not set, yet). Only for internal use
      *
-     * @return bool
      * @internal
      */
     public function _isNew(): bool;

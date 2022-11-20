@@ -188,18 +188,12 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
         return $reference;
     }
 
-    /**
-     * @return bool
-     */
     protected function isBackendMode(): bool
     {
         return ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend();
     }
 
-    /**
-     * @return bool
-     */
     protected function isFrontendMode(): bool
     {
         return ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface

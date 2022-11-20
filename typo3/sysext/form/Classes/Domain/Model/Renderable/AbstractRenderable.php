@@ -102,8 +102,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
 
     /**
      * Get the type of the renderable
-     *
-     * @return string
      */
     public function getType(): string
     {
@@ -112,8 +110,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
 
     /**
      * Get the identifier of the element
-     *
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -220,7 +216,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
     /**
      * Get all validators on the element
      *
-     * @return \SplObjectStorage
      * @internal
      */
     public function getValidators(): \SplObjectStorage
@@ -240,8 +235,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
 
     /**
      * Get the classname of the renderer
-     *
-     * @return string
      */
     public function getRendererClassName(): string
     {
@@ -250,8 +243,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
 
     /**
      * Get all rendering options
-     *
-     * @return array
      */
     public function getRenderingOptions(): array
     {
@@ -298,7 +289,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
     /**
      * Get the root form this element belongs to
      *
-     * @return FormDefinition
      * @throws FormDefinitionConsistencyException
      */
     public function getRootForm(): FormDefinition
@@ -355,7 +345,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
     /**
      * Get the index of the renderable
      *
-     * @return int
      * @internal
      */
     public function getIndex(): int
@@ -375,8 +364,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
 
     /**
      * Get the label of the renderable
-     *
-     * @return string
      */
     public function getLabel(): string
     {
@@ -393,8 +380,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
 
     /**
      * Get the templateName name of the renderable
-     *
-     * @return string
      */
     public function getTemplateName(): string
     {
@@ -405,8 +390,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
 
     /**
      * Returns whether this renderable is enabled
-     *
-     * @return bool
      */
     public function isEnabled(): bool
     {
@@ -423,9 +406,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
         return $this->variants;
     }
 
-    /**
-     * @return RenderableVariantInterface
-     */
     public function createVariant(array $options): RenderableVariantInterface
     {
         $identifier = $options['identifier'] ?? '';

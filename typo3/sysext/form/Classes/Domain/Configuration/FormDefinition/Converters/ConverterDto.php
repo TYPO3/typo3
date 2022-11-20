@@ -57,102 +57,66 @@ class ConverterDto
         $this->formDefinition = $formDefinition;
     }
 
-    /**
-     * @return array
-     */
     public function getFormDefinition(): array
     {
         return $this->formDefinition;
     }
 
-    /**
-     * @return ConverterDto
-     */
     public function setFormDefinition(array $formDefinition): ConverterDto
     {
         $this->formDefinition = $formDefinition;
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getRenderablePathParts(): array
     {
         return $this->renderablePathParts;
     }
 
-    /**
-     * @return ConverterDto
-     */
     public function setRenderablePathParts(array $renderablePathParts): ConverterDto
     {
         $this->renderablePathParts = $renderablePathParts;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getFormElementIdentifier(): string
     {
         return $this->formElementIdentifier;
     }
 
-    /**
-     * @return ConverterDto
-     */
     public function setFormElementIdentifier(string $formElementIdentifier): ConverterDto
     {
         $this->formElementIdentifier = $formElementIdentifier;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getPropertyCollectionIndex(): int
     {
         return $this->propertyCollectionIndex;
     }
 
-    /**
-     * @return ConverterDto
-     */
     public function setPropertyCollectionIndex(int $propertyCollectionIndex): ConverterDto
     {
         $this->propertyCollectionIndex = $propertyCollectionIndex;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getPropertyCollectionName(): string
     {
         return $this->propertyCollectionName;
     }
 
-    /**
-     * @return ConverterDto
-     */
     public function setPropertyCollectionName(string $propertyCollectionName): ConverterDto
     {
         $this->propertyCollectionName = $propertyCollectionName;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getPropertyCollectionElementIdentifier(): string
     {
         return $this->propertyCollectionElementIdentifier;
     }
 
-    /**
-     * @return ConverterDto
-     */
     public function setPropertyCollectionElementIdentifier(string $propertyCollectionElementIdentifier): ConverterDto
     {
         $this->propertyCollectionElementIdentifier = $propertyCollectionElementIdentifier;

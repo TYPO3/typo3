@@ -88,7 +88,6 @@ final class PageAccessFailureReasons
 
     /**
      * @param string $reasonCode a valid reason code (see above)
-     * @return string
      */
     public function getMessageForReason(string $reasonCode): string
     {

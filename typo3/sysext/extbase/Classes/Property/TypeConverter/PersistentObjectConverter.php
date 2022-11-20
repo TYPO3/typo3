@@ -86,7 +86,6 @@ class PersistentObjectConverter extends ObjectConverter
      * We can only convert if the $targetType is either tagged with entity or value object.
      *
      * @param mixed $source
-     * @return bool
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function canConvertFrom($source, string $targetType): bool
@@ -98,7 +97,6 @@ class PersistentObjectConverter extends ObjectConverter
      * All properties in the source array except __identity are sub-properties.
      *
      * @param mixed $source
-     * @return array
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getSourceChildPropertiesToBeConverted($source): array
@@ -116,7 +114,6 @@ class PersistentObjectConverter extends ObjectConverter
      * The type of a property is determined by the reflection service.
      *
      * @param string $targetType
-     * @return string
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
@@ -184,7 +181,6 @@ class PersistentObjectConverter extends ObjectConverter
     /**
      * Handle the case if $source is an array.
      *
-     * @return object
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
      */
     protected function handleArrayData(array $source, string $targetType, array &$convertedChildProperties, PropertyMappingConfigurationInterface $configuration = null): object
@@ -213,7 +209,6 @@ class PersistentObjectConverter extends ObjectConverter
      * @param mixed $identity
      * @throws \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
-     * @return object
      */
     protected function fetchObjectFromPersistence($identity, string $targetType): object
     {

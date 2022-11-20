@@ -27,9 +27,6 @@ class CssViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @return array
-     */
     public function sourceDataProvider(): array
     {
         return [

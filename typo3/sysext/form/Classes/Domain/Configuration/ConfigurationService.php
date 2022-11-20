@@ -86,7 +86,6 @@ class ConfigurationService implements SingletonInterface
     /**
      * Return all prototype names which are defined within "formManager.selectablePrototypesConfiguration.*.identifier"
      *
-     * @return array
      * @internal
      */
     public function getSelectablePrototypeNamesDefinedInFormEditorSetup(): array
@@ -131,7 +130,6 @@ class ConfigurationService implements SingletonInterface
      * the form setup, you must provide the writable property paths with a hook.
      *
      * @see executeBuildFormDefinitionValidationConfigurationHooks()
-     * @return bool
      * @internal
      */
     public function isFormElementPropertyDefinedInFormEditorSetup(ValidationDto $dto): bool
@@ -165,7 +163,6 @@ class ConfigurationService implements SingletonInterface
      * the form setup, you must provide the writable property paths with a hook.
      *
      * @see executeBuildFormDefinitionValidationConfigurationHooks()
-     * @return bool
      * @internal
      */
     public function isPropertyCollectionPropertyDefinedInFormEditorSetup(ValidationDto $dto): bool
@@ -184,7 +181,6 @@ class ConfigurationService implements SingletonInterface
      * then only the defined values within the selectOptions are allowed to be written
      * by the form editor.
      *
-     * @return bool
      * @internal
      */
     public function formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup(
@@ -203,7 +199,6 @@ class ConfigurationService implements SingletonInterface
     /**
      * Get the "selectOptions" value for a form element property from the form setup.
      *
-     * @return array
      * @throws PropertyException
      * @internal
      */
@@ -237,7 +232,6 @@ class ConfigurationService implements SingletonInterface
      * then only the defined values within the selectOptions are allowed to be written
      * by the form editor.
      *
-     * @return bool
      * @internal
      */
     public function propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup(
@@ -256,7 +250,6 @@ class ConfigurationService implements SingletonInterface
     /**
      * Get the "selectOptions" value for a form elements finisher|validator property from the form setup.
      *
-     * @return array
      * @throws PropertyException
      * @internal
      */
@@ -285,9 +278,6 @@ class ConfigurationService implements SingletonInterface
         return $formDefinitionValidationConfiguration['collections'][$dto->getPropertyCollectionName()][$dto->getPropertyCollectionElementIdentifier()][$property][$propertyPath];
     }
 
-    /**
-     * @return string
-     */
     protected function getBasePropertyPathFromMultiValueFormElementProperty(
         ValidationDto $dto
     ): string {
@@ -307,9 +297,6 @@ class ConfigurationService implements SingletonInterface
         return $propertyPath;
     }
 
-    /**
-     * @return string
-     */
     protected function getBasePropertyPathFromMultiValuePropertyCollectionElement(
         ValidationDto $dto
     ): string {
@@ -336,7 +323,6 @@ class ConfigurationService implements SingletonInterface
      * A form element default property is defined within the following form editor properties:
      * * formElementsDefinition.<formElementType>.formEditor.predefinedDefaults.<propertyPath> = "default value"
      *
-     * @return bool
      * @internal
      */
     public function isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup(
@@ -387,7 +373,6 @@ class ConfigurationService implements SingletonInterface
      * A form elements finisher|validator default property is defined within the following form editor properties:
      * * <validatorsDefinition|finishersDefinition>.<index>.formEditor.predefinedDefaults.<propertyPath> = "default value"
      *
-     * @return bool
      * @internal
      */
     public function isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup(
@@ -440,7 +425,6 @@ class ConfigurationService implements SingletonInterface
      * And the value from "formElementsDefinition.<formElementType>.formEditor.group" is
      * one of the keys within "formEditor.formElementGroups"
      *
-     * @return bool
      * @internal
      */
     public function isFormElementTypeCreatableByFormEditor(ValidationDto $dto): bool
@@ -463,7 +447,6 @@ class ConfigurationService implements SingletonInterface
      * and
      * "formElementsDefinition.<formElementType>.formEditor.editors.<index>.selectOptions.<index>.value = <finisherIdentifier|validatorIdentifier>"
      *
-     * @return bool
      * @internal
      */
     public function isPropertyCollectionElementIdentifierCreatableByFormEditor(ValidationDto $dto): bool
@@ -477,7 +460,6 @@ class ConfigurationService implements SingletonInterface
     /**
      * Check if the form elements type is defined within the form setup.
      *
-     * @return bool
      * @internal
      */
     public function isFormElementTypeDefinedInFormSetup(ValidationDto $dto): bool
@@ -491,7 +473,6 @@ class ConfigurationService implements SingletonInterface
     }
 
     /**
-     * @return array
      * @internal
      */
     public function getAllBackendTranslationsForTranslationKeys(array $keys, string $prototypeName): array
@@ -508,9 +489,6 @@ class ConfigurationService implements SingletonInterface
         return $translations;
     }
 
-    /**
-     * @return array
-     */
     public function getAllBackendTranslationsForTranslationKey(string $key, string $prototypeName): array
     {
         $prototypeConfiguration = $this->getPrototypeConfiguration($prototypeName);
@@ -525,8 +503,6 @@ class ConfigurationService implements SingletonInterface
     /**
      * Collect all the form editor configurations which are needed to check if a
      * form definition property can be written or not.
-     *
-     * @return array
      */
     protected function buildFormDefinitionValidationConfigurationFromFormEditorSetup(string $prototypeName): array
     {
@@ -651,7 +627,6 @@ class ConfigurationService implements SingletonInterface
      *     ];
      *     return $propertyPaths;
      * }
-     * @return array
      * @throws PropertyException
      */
     protected function executeBuildFormDefinitionValidationConfigurationHooks(
@@ -680,7 +655,6 @@ class ConfigurationService implements SingletonInterface
     }
 
     /**
-     * @return array
      * @throws PropertyException
      */
     protected function addAdditionalPropertyPathsFromHook(
@@ -746,9 +720,6 @@ class ConfigurationService implements SingletonInterface
         return $configuration;
     }
 
-    /**
-     * @return bool
-     */
     protected function isPropertyDefinedInFormEditorSetup(string $propertyPath, array $subConfig): bool
     {
         if (empty($subConfig)) {
@@ -770,9 +741,6 @@ class ConfigurationService implements SingletonInterface
         return false;
     }
 
-    /**
-     * @return array
-     */
     protected function translateValues(array $prototypeConfiguration, array $configuration): array
     {
         if (isset($configuration['formElements'])) {
@@ -794,9 +762,6 @@ class ConfigurationService implements SingletonInterface
         return $configuration;
     }
 
-    /**
-     * @return array
-     */
     protected function translatePredefinedDefaults(array $prototypeConfiguration, array $formElements): array
     {
         foreach ($formElements ?? [] as $name => $formElement) {
@@ -813,9 +778,6 @@ class ConfigurationService implements SingletonInterface
         return $formElements;
     }
 
-    /**
-     * @return array
-     */
     protected function translateSelectOptions(array $prototypeConfiguration, array $formElements): array
     {
         foreach ($formElements ?? [] as $name => $formElement) {
@@ -854,9 +816,6 @@ class ConfigurationService implements SingletonInterface
         $this->firstLevelCache[$cacheKey] = $value;
     }
 
-    /**
-     * @return TranslationService
-     */
     protected function getTranslationService(): TranslationService
     {
         return $this->translationService instanceof TranslationService
@@ -864,9 +823,6 @@ class ConfigurationService implements SingletonInterface
             : GeneralUtility::makeInstance(TranslationService::class);
     }
 
-    /**
-     * @return FrontendInterface
-     */
     protected function getCacheFrontend(): FrontendInterface
     {
         return GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');

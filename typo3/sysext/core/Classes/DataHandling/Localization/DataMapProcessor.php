@@ -162,8 +162,6 @@ class DataMapProcessor
 
     /**
      * Purges superfluous empty data-map sections.
-     *
-     * @return array
      */
     protected function purgeDataMap(array $dataMap): array
     {
@@ -1249,7 +1247,6 @@ class DataMapProcessor
      * Applies localization references to given raw data-map item.
      *
      * @param string|int $fromId
-     * @return array
      */
     protected function applyLocalizationReferences(string $tableName, $fromId, int $language, array $fieldNames, array $data): array
     {
@@ -1282,7 +1279,6 @@ class DataMapProcessor
      * Prefixes language title if applicable for the accordant field name in raw data-map item.
      *
      * @param string|int $fromId
-     * @return array
      */
     protected function prefixLanguageTitle(string $tableName, $fromId, int $language, array $data): array
     {
@@ -1474,8 +1470,6 @@ class DataMapProcessor
     /**
      * Determines whether the table can be localized and either has fields
      * with allowLanguageSynchronization enabled or l10n_mode set to exclude.
-     *
-     * @return bool
      */
     protected function isApplicable(string $tableName): bool
     {

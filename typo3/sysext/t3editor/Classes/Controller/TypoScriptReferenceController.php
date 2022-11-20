@@ -35,8 +35,6 @@ class TypoScriptReferenceController
 
     /**
      * Load TypoScript reference
-     *
-     * @return ResponseInterface
      */
     public function loadReference(ServerRequestInterface $request): ResponseInterface
     {
@@ -60,8 +58,6 @@ class TypoScriptReferenceController
 
     /**
      * Get types from XML
-     *
-     * @return array
      */
     protected function getTypes(): array
     {

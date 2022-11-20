@@ -327,9 +327,6 @@ class ExtensionUtilityTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function checkResolveControllerAliasFromControllerClassNameDataProvider(): array
     {
         return [

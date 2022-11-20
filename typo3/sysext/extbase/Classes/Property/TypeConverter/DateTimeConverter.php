@@ -97,7 +97,6 @@ class DateTimeConverter extends AbstractTypeConverter
      * If conversion is possible.
      *
      * @param string|array|int $source
-     * @return bool
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function canConvertFrom($source, string $targetType): bool
@@ -178,8 +177,6 @@ class DateTimeConverter extends AbstractTypeConverter
 
     /**
      * Returns whether date information (day, month, year) are present as keys in $source.
-     *
-     * @return bool
      */
     protected function isDatePartKeysProvided(array $source): bool
     {
@@ -192,7 +189,6 @@ class DateTimeConverter extends AbstractTypeConverter
      * Determines the default date format to use for the conversion.
      * If no format is specified in the mapping configuration DEFAULT_DATE_FORMAT is used.
      *
-     * @return string
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
      */
     protected function getDefaultDateFormat(PropertyMappingConfigurationInterface $configuration = null): string
@@ -213,8 +209,6 @@ class DateTimeConverter extends AbstractTypeConverter
 
     /**
      * Overrides hour, minute & second of the given date with the values in the $source array
-     *
-     * @return \DateTime
      */
     protected function overrideTimeIfSpecified(\DateTime $date, array $source): \DateTime
     {

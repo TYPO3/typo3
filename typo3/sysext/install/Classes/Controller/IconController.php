@@ -47,7 +47,6 @@ class IconController extends AbstractController
     }
 
     /**
-     * @return ResponseInterface
      * @internal
      */
     public function getCacheIdentifierAction(): ResponseInterface
@@ -56,7 +55,6 @@ class IconController extends AbstractController
     }
 
     /**
-     * @return ResponseInterface
      * @internal
      */
     public function getIconAction(ServerRequestInterface $request): ResponseInterface

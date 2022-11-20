@@ -52,8 +52,6 @@ class LegacyLinkNotationConverter
      * Does NOT check if the page exists or the file exists.
      *
      * @param string $linkParameter could be "fileadmin/myfile.jpg", "info@typo3.org", "13" or "http://www.typo3.org"
-     *
-     * @return array
      */
     public function resolve(string $linkParameter): array
     {
@@ -238,8 +236,6 @@ class LegacyLinkNotationConverter
 
     /**
      * Initializes the resource factory (only once)
-     *
-     * @return ResourceFactory
      */
     protected function getResourceFactory(): ResourceFactory
     {

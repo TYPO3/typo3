@@ -53,9 +53,6 @@ class ScenarioGTest extends AbstractLocalizedPagesTestCase
         $this->setUpDatabaseWithYamlPayload(__DIR__ . '/Fixtures/ScenarioG.yaml');
     }
 
-    /**
-     * @return array
-     */
     public function menuDataProvider(): array
     {
         return [

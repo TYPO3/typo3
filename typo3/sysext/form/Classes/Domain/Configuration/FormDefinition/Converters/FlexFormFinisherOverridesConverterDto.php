@@ -54,25 +54,16 @@ class FlexFormFinisherOverridesConverterDto
         $this->flexFormSheetSettings = $flexFormSheetSettings;
     }
 
-    /**
-     * @return array
-     */
     public function getPrototypeFinisherDefinition(): array
     {
         return $this->prototypeFinisherDefinition;
     }
 
-    /**
-     * @return array
-     */
     public function getFinisherDefinition(): array
     {
         return $this->finisherDefinition;
     }
 
-    /**
-     * @return FlexFormFinisherOverridesConverterDto
-     */
     public function setFinisherDefinition(array $finisherDefinition): FlexFormFinisherOverridesConverterDto
     {
         $this->finisherDefinition = $finisherDefinition;
@@ -80,17 +71,11 @@ class FlexFormFinisherOverridesConverterDto
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getFinisherIdentifier(): string
     {
         return $this->finisherIdentifier;
     }
 
-    /**
-     * @return array
-     */
     public function getFlexFormSheetSettings(): array
     {
         return $this->flexFormSheetSettings;

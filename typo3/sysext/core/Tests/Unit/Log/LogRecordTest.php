@@ -28,7 +28,6 @@ class LogRecordTest extends UnitTestCase
      * Returns a LogRecord
      *
      * @param array $parameters Parameters to set in LogRecord constructor.
-     * @return LogRecord
      */
     protected function getRecord(array $parameters = []): LogRecord
     {

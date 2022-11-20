@@ -135,8 +135,6 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
 
     /**
      * Data provider for different autoload information
-     *
-     * @return array
      */
     public function autoloadFilesAreBuildCorrectlyDataProvider(): array
     {
@@ -297,8 +295,6 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
 
     /**
      * Data provider for different autoload information
-     *
-     * @return array
      */
     public function autoloadDevFilesAreBuildCorrectlyDataProvider(): array
     {

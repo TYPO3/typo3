@@ -25,8 +25,6 @@ class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
 {
     /**
      * Builds a shell for the user aspect object which returns the checked values in the Restriction.
-     *
-     * @return UserAspect
      */
     protected function getPreparedUserAspect(bool $isLoggedIn, bool $isAdmin, int $userId, array $groupIds): UserAspect
     {

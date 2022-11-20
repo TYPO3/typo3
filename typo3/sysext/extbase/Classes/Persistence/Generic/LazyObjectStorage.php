@@ -115,9 +115,6 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
         }
     }
 
-    /**
-     * @return bool
-     */
     protected function isStorageAlreadyMemorizedInParentCleanState(): bool
     {
         return $this->parentObject->_getCleanProperty($this->propertyName) === $this;
@@ -147,7 +144,6 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
 
     /**
      * @param TEntity $object The object to look for.
-     * @return bool
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::contains
      */
@@ -221,7 +217,6 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
 
     /**
      * @param TEntity $value The object to look for, or the key in the storage.
-     * @return bool
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetExists
      */
@@ -287,8 +282,6 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @return bool
-     *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::valid
      */
     public function valid(): bool
@@ -298,8 +291,6 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @return array
-     *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::toArray
      */
     public function toArray(): array
@@ -310,7 +301,6 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
 
     /**
      * @param mixed $object
-     * @return int|null
      */
     public function getPosition($object): ?int
     {

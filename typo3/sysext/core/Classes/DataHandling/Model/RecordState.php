@@ -62,25 +62,16 @@ class RecordState
         $this->subject = $subject;
     }
 
-    /**
-     * @return EntityContext
-     */
     public function getContext(): EntityContext
     {
         return $this->context;
     }
 
-    /**
-     * @return EntityPointer
-     */
     public function getNode(): EntityPointer
     {
         return $this->node;
     }
 
-    /**
-     * @return EntityUidPointer
-     */
     public function getSubject(): EntityUidPointer
     {
         return $this->subject;
@@ -128,9 +119,6 @@ class RecordState
         return $target;
     }
 
-    /**
-     * @return bool
-     */
     public function isNew(): bool
     {
         return !MathUtility::canBeInterpretedAsInteger(
@@ -147,8 +135,6 @@ class RecordState
      * + pages: uid: 10, pid: 5, sys_language_uid: 0, l10n_parent: 0  -> returns 5
      * + pages: uid: 11, pid: 5, sys_language_uid: 1, l10n_parent: 10 -> returns 10
      * + other: uid: 12, pid: 10 -> returns 10
-     *
-     * @return string
      */
     public function resolveNodeIdentifier(): string
     {
@@ -172,8 +158,6 @@ class RecordState
      * + pages: uid: 11, pid: 5, sys_language_uid: 1, l10n_parent: 10 -> returns 10
      * + pages in version, return online page ID
      * + other: uid: 12, pid: 10 -> returns 10
-     *
-     * @return string
      */
     public function resolveNodeAggregateIdentifier(): string
     {

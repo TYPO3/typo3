@@ -58,8 +58,6 @@ class LayoutController extends AbstractController
     /**
      * The init action renders an HTML response with HTML view having <head> section
      * containing resources to main .js routing.
-     *
-     * @return ResponseInterface
      */
     public function initAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -99,8 +97,6 @@ class LayoutController extends AbstractController
      * Return a json response with the main HTML layout body: Toolbar, main menu and
      * doc header in standalone, doc header only in backend context. Silent updaters
      * are executed before this main view is loaded.
-     *
-     * @return ResponseInterface
      */
     public function mainLayoutAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -153,8 +149,6 @@ class LayoutController extends AbstractController
      * ext_conf_template.txt files. This make LocalConfiguration the only source of truth for
      * extension configuration, and it is always up-to-date, also if an extension has been
      * updated.
-     *
-     * @return ResponseInterface
      */
     public function executeSilentExtensionConfigurationSynchronizationAction(): ResponseInterface
     {

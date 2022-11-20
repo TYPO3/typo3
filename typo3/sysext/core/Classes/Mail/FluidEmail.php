@@ -154,7 +154,6 @@ class FluidEmail extends Email
     }
 
     /**
-     * @return ViewHelperVariableContainer
      * @internal Only used for ext:form, not part of TYPO3 Core API.
      */
     public function getViewHelperVariableContainer(): ViewHelperVariableContainer

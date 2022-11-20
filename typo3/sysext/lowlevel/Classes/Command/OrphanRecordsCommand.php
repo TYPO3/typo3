@@ -73,8 +73,6 @@ Manual repair suggestions:
     /**
      * Executes the command to find records not attached to the pagetree
      * and permanently delete these records
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

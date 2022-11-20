@@ -58,7 +58,6 @@ class FileSearchQuery
      * Prepares a query based on a search demand to be used to fetch rows.
      *
      * @param QueryBuilder|null $queryBuilder
-     * @return FileSearchQuery
      */
     public static function createForSearchDemand(FileSearchDemand $searchDemand, QueryBuilder $queryBuilder = null): self
     {
@@ -127,7 +126,6 @@ class FileSearchQuery
      * Prepares a query based on a search demand to be used to count rows.
      *
      * @param QueryBuilder|null $queryBuilder
-     * @return FileSearchQuery
      */
     public static function createCountForSearchDemand(FileSearchDemand $searchDemand, QueryBuilder $queryBuilder = null): self
     {

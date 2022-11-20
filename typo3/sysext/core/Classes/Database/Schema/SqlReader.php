@@ -129,8 +129,6 @@ class SqlReader
 
     /**
      * Extract only INSERT statements from SQL dump
-     *
-     * @return array
      */
     public function getInsertStatementArray(string $dumpContent): array
     {
@@ -139,8 +137,6 @@ class SqlReader
 
     /**
      * Extract only CREATE TABLE statements from SQL dump
-     *
-     * @return array
      */
     public function getCreateTableStatementArray(string $dumpContent): array
     {

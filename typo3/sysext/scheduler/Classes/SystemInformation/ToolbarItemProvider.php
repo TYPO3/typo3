@@ -101,8 +101,6 @@ final class ToolbarItemProvider
 
     /**
      * Check whether the scheduler was already executed
-     *
-     * @return bool
      */
     private function schedulerWasExecuted(): bool
     {
@@ -111,8 +109,6 @@ final class ToolbarItemProvider
 
     /**
      * Check if the last scheduler run array contains all information
-     *
-     * @return bool
      */
     private function lastRunInfoExists(): bool
     {
@@ -123,8 +119,6 @@ final class ToolbarItemProvider
 
     /**
      * See if there are any tasks configured at all.
-     *
-     * @return bool
      */
     private function hasConfiguredTasks(): bool
     {

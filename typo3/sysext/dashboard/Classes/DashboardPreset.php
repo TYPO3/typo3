@@ -70,32 +70,20 @@ class DashboardPreset
         $this->showInWizard = $showInWizard;
     }
 
-    /**
-     * @return string
-     */
     public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
-    /**
-     * @return string
-     */
     public function getIconIdentifier(): string
     {
         return $this->iconIdentifier;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->getLanguageService()->sL($this->title) ?: $this->title;
     }
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->getLanguageService()->sL($this->description) ?: $this->description;
@@ -109,9 +97,6 @@ class DashboardPreset
         return $this->defaultWidgets;
     }
 
-    /**
-     * @return bool
-     */
     public function isShowInWizard(): bool
     {
         return $this->showInWizard;

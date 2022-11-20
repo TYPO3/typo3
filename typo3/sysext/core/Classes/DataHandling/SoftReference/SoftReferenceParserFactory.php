@@ -103,9 +103,6 @@ class SoftReferenceParserFactory
         }
     }
 
-    /**
-     * @return bool
-     */
     public function hasSoftReferenceParser(string $softReferenceParserKey): bool
     {
         return isset($this->softReferenceParsers[$softReferenceParserKey]);
@@ -122,7 +119,6 @@ class SoftReferenceParserFactory
      *
      *
      * @param string $softReferenceParserKey
-     * @return SoftReferenceParserInterface
      */
     public function getSoftReferenceParser(string $softReferenceParserKey): SoftReferenceParserInterface
     {

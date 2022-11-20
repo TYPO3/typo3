@@ -34,9 +34,6 @@ final class PseudoServiceProvider extends AbstractServiceProvider
         $this->package = $package;
     }
 
-    /**
-     * @return string
-     */
     protected static function getPackagePath(): string
     {
         throw new \BadMethodCallException('PseudoServiceProvider does not support the getPackagePath() method.', 1562354465);
@@ -47,17 +44,11 @@ final class PseudoServiceProvider extends AbstractServiceProvider
         throw new \BadMethodCallException('PseudoServiceProvider does not support the getPackageName() method.', 1643372902);
     }
 
-    /**
-     * @return array
-     */
     public function getFactories(): array
     {
         return [];
     }
 
-    /**
-     * @return array
-     */
     public function getExtensions(): array
     {
         $packagePath = $this->package->getPackagePath();

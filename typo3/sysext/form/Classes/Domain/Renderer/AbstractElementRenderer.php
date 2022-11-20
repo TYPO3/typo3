@@ -41,9 +41,6 @@ abstract class AbstractElementRenderer implements RendererInterface
         $this->formRuntime = $formRuntime;
     }
 
-    /**
-     * @return FormRuntime
-     */
     public function getFormRuntime(): FormRuntime
     {
         return $this->formRuntime;

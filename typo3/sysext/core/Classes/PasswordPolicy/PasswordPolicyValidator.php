@@ -48,7 +48,6 @@ class PasswordPolicyValidator
      *
      * @param string $password The password to validate
      * @param ContextData|null $contextData ContextData for usage in additional checks (e.g. password must not contain users firstname).
-     * @return bool
      */
     public function isValidPassword(string $password, ?ContextData $contextData = null): bool
     {

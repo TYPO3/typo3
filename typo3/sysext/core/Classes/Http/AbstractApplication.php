@@ -74,9 +74,6 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
         }
     }
 
-    /**
-     * @return ResponseInterface
-     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         try {

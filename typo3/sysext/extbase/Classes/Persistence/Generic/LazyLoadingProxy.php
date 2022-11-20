@@ -100,9 +100,6 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
         return $type . ':' . $this->fieldValue;
     }
 
-    /**
-     * @return int
-     */
     public function getUid(): int
     {
         return (int)$this->fieldValue;

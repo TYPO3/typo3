@@ -116,7 +116,6 @@ class ExtensionManagementUtility
      * @param string $key Extension key
      * @param string $script $script is appended to the output if set.
      * @throws \BadFunctionCallException
-     * @return string
      */
     public static function extPath(string $key, string $script = ''): string
     {
@@ -130,7 +129,6 @@ class ExtensionManagementUtility
      * Returns the correct class name prefix for the extension key $key
      *
      * @param string $key Extension key
-     * @return string
      * @internal
      */
     public static function getCN(string $key): string
@@ -533,7 +531,6 @@ class ExtensionManagementUtility
      * @param string $allowedFileExtensions Comma-separated list of allowed file extensions (e.g. "jpg,gif,pdf")
      * @param string $disallowedFileExtensions Comma-separated list of disallowed file extensions (e.g. "doc,docx")
      *
-     * @return array
      * @deprecated since TYPO3 v12.0. Use the TCA type "file" directly
      */
     public static function getFileFieldTCAConfig(string $fieldName, array $customSettingOverride = [], string $allowedFileExtensions = '', string $disallowedFileExtensions = ''): array
@@ -1254,8 +1251,6 @@ tt_content.' . $key . $suffix . ' {
      *
      * @param string $extensionPath Path to extension directory.
      * @param bool $returnFullPath Return full path of file.
-     *
-     * @return string
      */
     public static function getExtensionIcon(string $extensionPath, bool $returnFullPath = false): string
     {

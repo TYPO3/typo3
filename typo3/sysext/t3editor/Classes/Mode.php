@@ -52,17 +52,11 @@ class Mode
         return $this->module;
     }
 
-    /**
-     * @return string
-     */
     public function getFormatCode(): string
     {
         return $this->formatCode;
     }
 
-    /**
-     * @return Mode
-     */
     public function setFormatCode(string $formatCode): Mode
     {
         $this->formatCode = $formatCode;
@@ -70,9 +64,6 @@ class Mode
         return $this;
     }
 
-    /**
-     * @return self
-     */
     public function bindToFileExtensions(array $fileExtensions): Mode
     {
         $this->fileExtensions = $fileExtensions;
@@ -80,17 +71,11 @@ class Mode
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getBoundFileExtensions(): array
     {
         return $this->fileExtensions;
     }
 
-    /**
-     * @return Mode
-     */
     public function setAsDefault(): Mode
     {
         $this->isDefault = true;
@@ -98,9 +83,6 @@ class Mode
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isDefault(): bool
     {
         return $this->isDefault;

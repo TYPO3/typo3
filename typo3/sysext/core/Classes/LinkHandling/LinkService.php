@@ -82,7 +82,6 @@ class LinkService implements SingletonInterface
      * Does NOT check if the page exists or the file exists.
      *
      * @param string $linkParameter could be "fileadmin/myfile.jpg", "info@typo3.org", "13" or "http://www.typo3.org"
-     * @return array
      * @throws UnknownLinkHandlerException
      */
     public function resolve(string $linkParameter): array
@@ -99,7 +98,6 @@ class LinkService implements SingletonInterface
     /**
      * Returns an array with data interpretation of the link target, something like t3://page?uid=23.
      *
-     * @return array
      * @throws Exception\UnknownLinkHandlerException
      * @throws Exception\UnknownUrnException
      */
@@ -163,7 +161,6 @@ class LinkService implements SingletonInterface
      *  - mailto:mac@safe.com
      *
      * @param array $parameters
-     * @return string
      * @throws Exception\UnknownLinkHandlerException
      */
     public function asString(array $parameters): string

@@ -81,8 +81,6 @@ class StorageRepository implements LoggerAwareInterface
      * It is automatically created with the setting fileadminDir from install tool.
      * getDefaultStorage->getDefaultFolder() will get you fileadmin/user_upload/ in a standard
      * TYPO3 installation.
-     *
-     * @return ResourceStorage|null
      */
     public function getDefaultStorage(): ?ResourceStorage
     {
@@ -108,7 +106,6 @@ class StorageRepository implements LoggerAwareInterface
      * Gets a storage object from a combined identifier
      *
      * @param string $identifier An identifier of the form [storage uid]:[object identifier]
-     * @return ResourceStorage|null
      */
     public function findByCombinedIdentifier(string $identifier): ?ResourceStorage
     {
@@ -116,9 +113,6 @@ class StorageRepository implements LoggerAwareInterface
         return count($parts) === 2 ? $this->findByUid((int)$parts[0]) : null;
     }
 
-    /**
-     * @return array
-     */
     protected function fetchRecordDataByUid(int $uid): array
     {
         $this->initializeLocalCache();
@@ -332,7 +326,6 @@ class StorageRepository implements LoggerAwareInterface
      * @param array $recordData The record row from database.
      * @param mixed|null $fileIdentifier Identifier for a file. Used for auto-detection of a storage, but only if $uid === 0 (Local default storage) is used
      * @throws \InvalidArgumentException
-     * @return ResourceStorage
      */
     public function getStorageObject($uid, array $recordData = [], &$fileIdentifier = null): ResourceStorage
     {
@@ -390,7 +383,6 @@ class StorageRepository implements LoggerAwareInterface
      * The file identifier is adapted accordingly to match the new storage's base path.
      *
      * @param string $localPath
-     * @return int
      */
     protected function findBestMatchingStorageByLocalPath(&$localPath): int
     {
@@ -468,7 +460,6 @@ class StorageRepository implements LoggerAwareInterface
      * Creates a storage object from a storage database row.
      *
      * @param array|null $storageConfiguration Storage configuration (if given, this won't be extracted from the FlexForm value but the supplied array used instead)
-     * @return ResourceStorage
      */
     protected function createStorageObject(array $storageRecord, array $storageConfiguration = null): ResourceStorage
     {
@@ -499,7 +490,6 @@ class StorageRepository implements LoggerAwareInterface
      *
      * @param string $driverIdentificationString The driver class (or identifier) to use.
      * @param array $driverConfiguration The configuration of the storage
-     * @return DriverInterface
      */
     protected function getDriverObject(string $driverIdentificationString, array $driverConfiguration): DriverInterface
     {
@@ -510,7 +500,6 @@ class StorageRepository implements LoggerAwareInterface
     }
 
     /**
-     * @return ResourceStorage
      * @internal
      */
     public function createFromRecord(array $storageRecord): ResourceStorage

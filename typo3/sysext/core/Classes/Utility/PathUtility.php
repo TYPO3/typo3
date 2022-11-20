@@ -93,7 +93,6 @@ class PathUtility
      *
      * @internal This method should not be used for now except for TYPO3 core. It may be removed or be changed any time
      * @param bool $prefixWithSitePath Don't use this argument. It is only used by TYPO3 in one place, which is subject to removal.
-     * @return string
      */
     public static function getPublicResourceWebPath(string $resourcePath, bool $prefixWithSitePath = true): string
     {
@@ -114,8 +113,6 @@ class PathUtility
 
     /**
      * Checks whether the given path is an extension resource
-     *
-     * @return bool
      */
     public static function isExtensionPath(string $path): bool
     {
@@ -128,7 +125,6 @@ class PathUtility
      *
      * @param string $sourcePath Absolute source path
      * @param string $targetPath Absolute target path
-     * @return string|null
      */
     public static function getRelativePath(string $sourcePath, string $targetPath): ?string
     {
@@ -165,7 +161,6 @@ class PathUtility
      * = /var/www/domain.com/typo3/sysext/
      *
      * @param array<string> $paths Paths to be processed
-     * @return string|null
      */
     public static function getCommonPrefix(array $paths): ?string
     {
@@ -204,7 +199,6 @@ class PathUtility
      *
      * @param string $path The path to be sanitized
      * @param string $separator The separator to be used
-     * @return string
      */
     public static function sanitizeTrailingSeparator(string $path, string $separator = '/'): string
     {
@@ -221,8 +215,6 @@ class PathUtility
      * @see http://www.php.net/manual/en/function.basename.php
      *
      * @param string $path
-     *
-     * @return string
      */
     public static function basename(string $path): string
     {
@@ -247,8 +239,6 @@ class PathUtility
      * @see http://www.php.net/manual/en/function.dirname.php
      *
      * @param string $path
-     *
-     * @return string
      */
     public static function dirname(string $path): string
     {
@@ -354,9 +344,6 @@ class PathUtility
      * Early during bootstrap there is no TYPO3_CONF_VARS yet so the setting for the system locale
      * is also unavailable. The filename part is determined with a regular expression to avoid issues
      * with locales.
-     *
-     *
-     * @return string
      */
     public static function basenameDuringBootstrap(string $path): string
     {
@@ -452,7 +439,6 @@ class PathUtility
      * use \TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl()
      *
      * @param string $path
-     * @return bool
      *
      * @internal
      */

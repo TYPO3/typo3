@@ -69,7 +69,6 @@ class PostgreSql extends AbstractPlatform
     /**
      * Get all status information as array with status objects
      *
-     * @return FlashMessageQueue
      * @throws \Doctrine\DBAL\Exception
      * @throws \InvalidArgumentException
      */
@@ -209,8 +208,6 @@ class PostgreSql extends AbstractPlatform
 
     /**
      * Validate the database name
-     *
-     * @return bool
      */
     public static function isValidDatabaseName(string $databaseName): bool
     {

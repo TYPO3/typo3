@@ -101,7 +101,6 @@ class Totp
      *
      * @param string $totp The time-based one-time password to be verified
      * @param int|null $gracePeriod The grace period for the TOTP +- (mainly to circumvent transmission delays)
-     * @return bool
      */
     public function verifyTotp(string $totp, int $gracePeriod = null): bool
     {
@@ -128,8 +127,6 @@ class Totp
 
     /**
      * Generate and return the otpauth URL for TOTP
-     *
-     * @return string
      */
     public function getTotpAuthUrl(string $issuer, string $account = '', array $additionalParameters = []): string
     {
@@ -171,7 +168,6 @@ class Totp
      *
      * @param string $totp The time-based one-time password to verify
      * @param int $counter The counter value, the moving factor
-     * @return bool
      */
     protected function compare(string $totp, int $counter): bool
     {
@@ -180,8 +176,6 @@ class Totp
 
     /**
      * Generate the counter value (moving factor) from the given timestamp
-     *
-     * @return int
      */
     protected function getTimeCounter(int $timestamp): int
     {
@@ -191,8 +185,6 @@ class Totp
     /**
      * Generate the shared secret (K) by using a random and applying
      * additional authentication factors like username or email address.
-     *
-     * @return string
      */
     public static function generateEncodedSecret(array $additionalAuthFactors = []): string
     {

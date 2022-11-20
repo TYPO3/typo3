@@ -201,7 +201,6 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
      * @param array $allItems all resolved items including the ones from foreign_table values. The group ID information can be found in fourth key [3] of an item.
      * @param array $definedGroups [config][itemGroups]
      * @param array $sortOrders [config][sortOrders]
-     * @return array
      */
     protected function groupAndSortItems(array $allItems, array $definedGroups, array $sortOrders): array
     {

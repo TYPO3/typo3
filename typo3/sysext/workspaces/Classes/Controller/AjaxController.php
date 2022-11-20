@@ -41,8 +41,6 @@ class AjaxController
     /**
      * Sets the TYPO3 Backend context to a certain workspace,
      * called by the Backend toolbar menu
-     *
-     * @return ResponseInterface
      */
     public function switchWorkspaceAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -89,8 +87,6 @@ class AjaxController
     /**
      * Get the page module name. Either "web_layout" or custom
      * module name from TSconfig. Also perform module access check.
-     *
-     * @return string
      */
     protected function getPageModuleName(): string
     {

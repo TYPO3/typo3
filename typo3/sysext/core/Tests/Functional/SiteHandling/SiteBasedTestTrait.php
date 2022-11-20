@@ -93,9 +93,6 @@ trait SiteBasedTestTrait
         }
     }
 
-    /**
-     * @return array
-     */
     protected function buildSiteConfiguration(
         int $rootPageId,
         string $base = ''
@@ -106,9 +103,6 @@ trait SiteBasedTestTrait
         ];
     }
 
-    /**
-     * @return array
-     */
     protected function buildDefaultLanguageConfiguration(
         string $identifier,
         string $base
@@ -120,9 +114,6 @@ trait SiteBasedTestTrait
         return $configuration;
     }
 
-    /**
-     * @return array
-     */
     protected function buildLanguageConfiguration(
         string $identifier,
         string $base,
@@ -160,9 +151,6 @@ trait SiteBasedTestTrait
         return $configuration;
     }
 
-    /**
-     * @return array
-     */
     protected function buildErrorHandlingConfiguration(
         string $handler,
         array $codes
@@ -224,8 +212,6 @@ trait SiteBasedTestTrait
     }
 
     /**
-     * @return InternalRequest
-     *
      * @todo Instruction handling should be part of Testing Framework (multiple instructions per identifier, merge in interface)
      */
     protected function applyInstructions(InternalRequest $request, AbstractInstruction ...$instructions): InternalRequest
@@ -247,9 +233,6 @@ trait SiteBasedTestTrait
         return $request->withInstructions($modifiedInstructions);
     }
 
-    /**
-     * @return AbstractInstruction
-     */
     protected function mergeInstruction(AbstractInstruction $current, AbstractInstruction $other): AbstractInstruction
     {
         if (get_class($current) !== get_class($other)) {

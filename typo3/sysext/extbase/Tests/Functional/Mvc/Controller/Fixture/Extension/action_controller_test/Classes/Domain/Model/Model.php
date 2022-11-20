@@ -34,34 +34,22 @@ class Model extends AbstractEntity
      */
     protected $model;
 
-    /**
-     * @return string
-     */
     public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * @return self
-     */
     public function setValue(string $value): self
     {
         $this->value = $value;
         return $this;
     }
 
-    /**
-     * @return Model
-     */
     public function getModel(): Model
     {
         return $this->model;
     }
 
-    /**
-     * @return self
-     */
     public function setModel(Model $model): self
     {
         $this->model = $model;

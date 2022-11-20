@@ -47,25 +47,16 @@ class ArrayProcessing
         $this->processor = $processor;
     }
 
-    /**
-     * @return string
-     */
     public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
-    /**
-     * @return string
-     */
     public function getExpression(): string
     {
         return $this->expression;
     }
 
-    /**
-     * @return callable
-     */
     public function getProcessor(): callable
     {
         return $this->processor;

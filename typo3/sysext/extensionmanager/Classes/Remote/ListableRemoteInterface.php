@@ -29,15 +29,11 @@ interface ListableRemoteInterface
 
     /**
      * Checks whether the remote is outdated and should fetch latest updates.
-     *
-     * @return bool
      */
     public function needsUpdate(): bool;
 
     /**
      * Get the time when the remote was updated the last time.
-     *
-     * @return \DateTimeInterface
      */
     public function getLastUpdate(): \DateTimeInterface;
 }

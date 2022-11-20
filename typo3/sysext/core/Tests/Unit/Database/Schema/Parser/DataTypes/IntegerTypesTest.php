@@ -31,8 +31,6 @@ class IntegerTypesTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseIntegerDataType()
-     *
-     * @return array
      */
     public function canParseIntegerDataTypeProvider(): array
     {

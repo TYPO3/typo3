@@ -705,9 +705,6 @@ class ExpressionBuilderTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function trimQuotesIdentifierDataProvider(): array
     {
         return  [

@@ -28,7 +28,6 @@ class GeneralUtilityFilesystemFixture extends GeneralUtility
      * For testing we must allow vfs:// as first part file path
      *
      * @param string $path File path to evaluate
-     * @return bool
      */
     public static function isAllowedAbsPath($path): bool
     {

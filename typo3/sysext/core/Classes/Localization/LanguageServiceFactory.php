@@ -41,7 +41,6 @@ class LanguageServiceFactory
      * Factory method to create a language service object.
      *
      * @param string $locale the locale (= the TYPO3-internal locale given)
-     * @return LanguageService
      */
     public function create(string $locale): LanguageService
     {

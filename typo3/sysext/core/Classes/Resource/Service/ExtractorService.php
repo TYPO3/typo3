@@ -32,9 +32,6 @@ class ExtractorService
      */
     private $extractionServices;
 
-    /**
-     * @return array
-     */
     public function extractMetaData(File $fileObject): array
     {
         $newMetaData = $extractedMetaData = [];
@@ -77,8 +74,6 @@ class ExtractorService
 
     /**
      * Check whether the extractor service supports this file according to file type restrictions.
-     *
-     * @return bool
      */
     private function isFileTypeSupportedByExtractor(File $file, ExtractorInterface $extractor): bool
     {
@@ -92,8 +87,6 @@ class ExtractorService
 
     /**
      * Returns an instance of the FileIndexRepository
-     *
-     * @return ExtractorRegistry
      */
     protected function getExtractorRegistry(): ExtractorRegistry
     {

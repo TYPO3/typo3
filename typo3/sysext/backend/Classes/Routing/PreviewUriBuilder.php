@@ -242,7 +242,6 @@ class PreviewUriBuilder
      * CAVE: Attributes are NOT XSS-protected and need to be put through `htmlspecialchars`
      *
      * @param array|null $options
-     * @return array|null
      */
     public function buildDispatcherDataAttributes(array $options = null): ?array
     {
@@ -258,7 +257,6 @@ class PreviewUriBuilder
      * CAVE: Attributes are NOT XSS-protected and need to be put through `htmlspecialchars`
      *
      * @param array|null $options
-     * @return array|null
      */
     public function buildDispatcherAttributes(array $options = null): ?array
     {
@@ -273,7 +271,6 @@ class PreviewUriBuilder
      * Serialized attributes are processed with `htmlspecialchars` and ready to be used.
      *
      * @param array|null $options
-     * @return string|null
      */
     public function serializeDispatcherAttributes(array $options = null): ?string
     {
@@ -288,7 +285,6 @@ class PreviewUriBuilder
      * expose `data` attributes, see custom element in `ImmediateActionElement.ts`.
      *
      * @param array|null $options
-     * @return string|null
      */
     public function buildImmediateActionElement(array $options = null): ?string
     {
@@ -336,7 +332,6 @@ class PreviewUriBuilder
      * + `windowScope` (string): `local` (current document) `global` (whole backend)
      *
      * @param array|null $options
-     * @return array
      */
     protected function enrichOptions(array $options = null): array
     {

@@ -61,8 +61,6 @@ class MailMessage extends Email
 
     /**
      * Checks whether the message has been sent.
-     *
-     * @return bool
      */
     public function isSent(): bool
     {
@@ -76,12 +74,10 @@ class MailMessage extends Email
      * Also, ensure to switch to Address objects and the ->subject()/->from() methods directly
      * to directly use the new API.
      */
-
     /**
      * Set the subject of the message.
      *
      * @param string $subject
-     * @return MailMessage
      */
     public function setSubject($subject): self
     {
@@ -92,7 +88,6 @@ class MailMessage extends Email
      * Set the origination date of the message as a UNIX timestamp.
      *
      * @param int $date
-     * @return MailMessage
      */
     public function setDate($date): self
     {
@@ -103,7 +98,6 @@ class MailMessage extends Email
      * Set the return-path (the bounce address) of this message.
      *
      * @param string $address
-     * @return MailMessage
      */
     public function setReturnPath($address): self
     {
@@ -117,7 +111,6 @@ class MailMessage extends Email
      *
      * @param string $address
      * @param string $name optional
-     * @return MailMessage
      */
     public function setSender($address, $name = null): self
     {
@@ -135,7 +128,6 @@ class MailMessage extends Email
      *
      * @param string|array $addresses
      * @param string $name optional
-     * @return MailMessage
      */
     public function setFrom($addresses, $name = null): self
     {
@@ -154,7 +146,6 @@ class MailMessage extends Email
      *
      * @param string|array $addresses
      * @param string $name optional
-     * @return MailMessage
      */
     public function setReplyTo($addresses, $name = null): self
     {
@@ -174,7 +165,6 @@ class MailMessage extends Email
      *
      * @param string|array $addresses
      * @param string $name optional
-     * @return MailMessage
      */
     public function setTo($addresses, $name = null): self
     {
@@ -194,7 +184,6 @@ class MailMessage extends Email
      *
      * @param string|array $addresses
      * @param string $name optional
-     * @return MailMessage
      */
     public function setCc($addresses, $name = null): self
     {
@@ -214,7 +203,6 @@ class MailMessage extends Email
      *
      * @param string|array $addresses
      * @param string $name optional
-     * @return MailMessage
      */
     public function setBcc($addresses, $name = null): self
     {
@@ -224,8 +212,6 @@ class MailMessage extends Email
 
     /**
      * Ask for a delivery receipt from the recipient to be sent to $addresses.
-     *
-     * @return MailMessage
      */
     public function setReadReceiptTo(string $address): self
     {

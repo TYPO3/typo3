@@ -65,9 +65,6 @@ class ContainerBuilder
         $this->dumpContainer($containerBuilder, $cache, $cacheIdentifier);
     }
 
-    /**
-     * @return ContainerInterface
-     */
     public function createDependencyInjectionContainer(PackageManager $packageManager, FrontendInterface $cache, bool $failsafe = false): ContainerInterface
     {
         if (!$cache instanceof PhpFrontend) {
@@ -99,9 +96,6 @@ class ContainerBuilder
         return $container;
     }
 
-    /**
-     * @return SymfonyContainerBuilder
-     */
     protected function buildContainer(PackageManager $packageManager, ServiceProviderRegistry $registry): SymfonyContainerBuilder
     {
         $containerBuilder = new SymfonyContainerBuilder();
@@ -152,9 +146,6 @@ class ContainerBuilder
         return $containerBuilder;
     }
 
-    /**
-     * @return string
-     */
     protected function dumpContainer(SymfonyContainerBuilder $containerBuilder, FrontendInterface $cache, string $cacheIdentifier): string
     {
         $containerClassName = $cacheIdentifier;
@@ -177,7 +168,6 @@ class ContainerBuilder
     }
 
     /**
-     * @return string
      * @internal may only be used in this class or in functional tests
      */
     public function getCacheIdentifier(PackageManager $packageManager): string
@@ -186,9 +176,6 @@ class ContainerBuilder
         return $this->cacheIdentifiers[$packageManagerCacheIdentifier] ?? $this->createCacheIdentifier($packageManager, $packageManagerCacheIdentifier);
     }
 
-    /**
-     * @return string
-     */
     protected function createCacheIdentifier(PackageManager $packageManager, string $additionalIdentifier): string
     {
         return $this->cacheIdentifiers[$additionalIdentifier] = (new PackageDependentCacheIdentifier($packageManager))->withPrefix('DependencyInjectionContainer')->toString();

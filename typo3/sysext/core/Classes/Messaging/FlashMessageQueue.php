@@ -225,8 +225,6 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
     /**
      * Gets user object by context.
      * This class is also used in install tool, where $GLOBALS['BE_USER'] is not set and can be null.
-     *
-     * @return AbstractUserAuthentication|null
      */
     protected function getUserByContext(): ?AbstractUserAuthentication
     {

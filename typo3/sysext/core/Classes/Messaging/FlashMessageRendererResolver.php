@@ -45,8 +45,6 @@ class FlashMessageRendererResolver
      * This method resolves a FlashMessageRendererInterface for the given $context.
      *
      * In case $context is null, the context will be detected automatic.
-     *
-     * @return FlashMessageRendererInterface
      */
     public function resolve(): FlashMessageRendererInterface
     {
@@ -61,8 +59,6 @@ class FlashMessageRendererResolver
 
     /**
      * This method resolves the renderer class by given context.
-     *
-     * @return string
      */
     protected function resolveFlashMessageRenderClass(): string
     {
@@ -82,8 +78,6 @@ class FlashMessageRendererResolver
      * - FE
      * - BE
      * - CLI
-     *
-     * @return string
      */
     protected function resolveContext(): string
     {

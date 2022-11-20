@@ -33,8 +33,6 @@ class TableList extends AbstractNode
 {
     /**
      * Render table buttons
-     *
-     * @return array
      */
     public function render(): array
     {

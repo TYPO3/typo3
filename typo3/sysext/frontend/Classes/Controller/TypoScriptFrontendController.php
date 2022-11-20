@@ -1097,8 +1097,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Fetches the arguments that are relevant for creating the hash base from the given PageArguments object.
      * Excluded parameters are not taken into account when calculating the hash base.
-     *
-     * @return array
      */
     protected function getRelevantParametersForCachingFromPageArguments(PageArguments $pageArguments): array
     {
@@ -1770,7 +1768,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * and is accessed directly, the user will be redirected to the mountpoint context.
      * @internal
      * @param ServerRequestInterface $request
-     * @return string|null
      */
     public function getRedirectUriForMountPoint(ServerRequestInterface $request): ?string
     {
@@ -1789,7 +1786,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @internal
      * @param ServerRequestInterface $request
-     * @return string|null
      */
     public function getRedirectUriForShortcut(ServerRequestInterface $request): ?string
     {
@@ -1819,8 +1815,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Instantiate \TYPO3\CMS\Frontend\ContentObject to generate the correct target URL
-     *
-     * @return string
      */
     protected function getUriToCurrentPageForRedirect(ServerRequestInterface $request): string
     {
@@ -1953,9 +1947,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->pageCacheTags = array_merge($this->pageCacheTags, $tags);
     }
 
-    /**
-     * @return array
-     */
     public function getPageCacheTags(): array
     {
         return $this->pageCacheTags;
@@ -2165,9 +2156,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         return $websiteTitle . $pageTitleSeparator . $pageTitle;
     }
 
-    /**
-     * @return string
-     */
     protected function getWebsiteTitle(): string
     {
         if (trim($this->language->getWebsiteTitle()) !== '') {
@@ -2327,8 +2315,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Add HTTP headers to the response object.
-     *
-     * @return ResponseInterface
      */
     public function applyHttpHeadersToResponse(ResponseInterface $response): ResponseInterface
     {
@@ -2370,8 +2356,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Get cache headers good for client/reverse proxy caching.
-     *
-     * @return array
      */
     protected function getCacheHeaders(): array
     {
@@ -2552,11 +2536,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Various external API functions - for use in plugins etc.
      *
      *******************************************/
-
     /**
      * Returns the pages TSconfig array based on the current ->rootLine
-     *
-     * @return array
      */
     public function getPagesTSconfig(): array
     {

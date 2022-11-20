@@ -64,8 +64,6 @@ class LocalConfigurationValueService
     /**
      * Because configuration entries can be at any sub-array level, we need
      * to check entries recursively.
-     *
-     * @return array
      */
     protected function recursiveConfigurationFetching(array $sections, array $sectionsFromCurrentConfiguration, array $descriptions, array $path = []): array
     {
@@ -145,7 +143,6 @@ class LocalConfigurationValueService
      * Store changed values in LocalConfiguration
      *
      * @param array $valueList Nested array with key['key'] value
-     * @return FlashMessageQueue
      */
     public function updateLocalConfigurationValues(array $valueList): FlashMessageQueue
     {
@@ -216,8 +213,6 @@ class LocalConfigurationValueService
 
     /**
      * Read descriptions from description file
-     *
-     * @return array
      */
     protected function getDefaultConfigArrayComments(): array
     {

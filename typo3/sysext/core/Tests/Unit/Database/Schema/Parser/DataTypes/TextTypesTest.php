@@ -30,8 +30,6 @@ class TextTypesTest extends AbstractDataTypeBaseTestCase
 {
     /**
      * Data provider for canParseTextDataType()
-     *
-     * @return array
      */
     public function canParseTextDataTypeProvider(): array
     {

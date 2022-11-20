@@ -541,8 +541,6 @@ MESSAGE;
 
     /**
      * @throws NoSuchPropertyException
-     *
-     * @return Property
      */
     public function getProperty(string $propertyName): Property
     {
@@ -592,16 +590,12 @@ MESSAGE;
      * If the class schema has a certain property.
      *
      * @param string $propertyName Name of the property
-     * @return bool
      */
     public function hasProperty(string $propertyName): bool
     {
         return array_key_exists($propertyName, $this->properties);
     }
 
-    /**
-     * @return bool
-     */
     public function hasConstructor(): bool
     {
         return $this->bitSet->get(self::BIT_CLASS_HAS_CONSTRUCTOR);
@@ -609,8 +603,6 @@ MESSAGE;
 
     /**
      * @throws NoSuchMethodException
-     *
-     * @return Method
      */
     public function getMethod(string $methodName): Method
     {
@@ -631,9 +623,6 @@ MESSAGE;
         return $this->buildMethodObjects();
     }
 
-    /**
-     * @return bool
-     */
     protected function hasInjectMethodName(\ReflectionMethod $reflectionMethod): bool
     {
         $methodName = $reflectionMethod->getName();
@@ -651,7 +640,6 @@ MESSAGE;
     }
 
     /**
-     * @return bool
      * @internal
      */
     public function isModel(): bool
@@ -660,7 +648,6 @@ MESSAGE;
     }
 
     /**
-     * @return bool
      * @internal
      */
     public function isEntity(): bool
@@ -669,7 +656,6 @@ MESSAGE;
     }
 
     /**
-     * @return bool
      * @internal
      */
     public function isValueObject(): bool
@@ -677,33 +663,21 @@ MESSAGE;
         return $this->bitSet->get(self::BIT_CLASS_IS_VALUE_OBJECT);
     }
 
-    /**
-     * @return bool
-     */
     public function isSingleton(): bool
     {
         return $this->bitSet->get(self::BIT_CLASS_IS_SINGLETON);
     }
 
-    /**
-     * @return bool
-     */
     public function hasMethod(string $methodName): bool
     {
         return isset($this->methods[$methodName]);
     }
 
-    /**
-     * @return bool
-     */
     public function hasInjectProperties(): bool
     {
         return $this->bitSet->get(self::BIT_CLASS_HAS_INJECT_PROPERTIES);
     }
 
-    /**
-     * @return bool
-     */
     public function hasInjectMethods(): bool
     {
         return $this->bitSet->get(self::BIT_CLASS_HAS_INJECT_METHODS);

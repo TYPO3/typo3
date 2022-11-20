@@ -128,7 +128,6 @@ class PageTreeRepository
      *
      * @param int $entryPoint the page ID to fetch the tree for
      * @param callable|null $callback a callback to be used to check for permissions and filter out pages not to be included.
-     * @return array
      */
     public function getTree(
         int $entryPoint,
@@ -224,8 +223,6 @@ class PageTreeRepository
 
     /**
      * Retrieve the page records based on the given page or parent page ids
-     *
-     * @return array
      */
     protected function getPageRecords(array $pageIds = [], array $parentPageIds = []): array
     {
@@ -508,8 +505,6 @@ class PageTreeRepository
 
     /**
      * Retrieve the page tree based on the given search filter
-     *
-     * @return array
      */
     public function fetchFilteredTree(string $searchFilter, array $allowedMountPointPageIds, string $additionalWhereClause): array
     {
@@ -671,8 +666,6 @@ class PageTreeRepository
 
     /**
      * Filter all records outside of the allowed mount points
-     *
-     * @return array
      */
     protected function filterPagesOnMountPoints(array $pages, array $mountPoints): array
     {
@@ -745,7 +738,6 @@ class PageTreeRepository
      * Group pages by parent page and sort pages based on sorting property
      *
      * @param array $groupedAndSortedPagesByPid
-     * @return array
      */
     protected function groupAndSortPages(array $pages, $groupedAndSortedPagesByPid = []): array
     {

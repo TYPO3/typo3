@@ -50,7 +50,6 @@ class Area
     }
 
     /**
-     * @return Area
      * @throws InvalidConfigurationException
      */
     public static function createFromConfiguration(array $config): Area
@@ -109,7 +108,6 @@ class Area
     }
 
     /**
-     * @return array
      * @internal
      */
     public function asArray(): array
@@ -155,9 +153,6 @@ class Area
         );
     }
 
-    /**
-     * @return Area
-     */
     public function applyRatioRestriction(Ratio $ratio): Area
     {
         if ($ratio->isFree()) {

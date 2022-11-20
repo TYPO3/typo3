@@ -29,17 +29,11 @@ class ClassesConfiguration
         $this->configuration = $configuration;
     }
 
-    /**
-     * @return bool
-     */
     public function hasClass(string $className): bool
     {
         return array_key_exists($className, $this->configuration);
     }
 
-    /**
-     * @return array|null
-     */
     public function getConfigurationFor(string $className): ?array
     {
         return $this->configuration[$className] ?? null;
@@ -56,9 +50,6 @@ class ClassesConfiguration
         return $this->resolveSubClassesRecursive($className);
     }
 
-    /**
-     * @return array
-     */
     private function resolveSubClassesRecursive(string $className, array $subClasses = []): array
     {
         foreach ($this->configuration[$className]['subclasses'] ?? [] as $subclass) {

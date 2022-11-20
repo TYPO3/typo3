@@ -166,8 +166,6 @@ class Lexer extends AbstractLexer
 
     /**
      * Lexical catchable patterns.
-     *
-     * @return array
      */
     protected function getCatchablePatterns(): array
     {
@@ -182,8 +180,6 @@ class Lexer extends AbstractLexer
 
     /**
      * Lexical non-catchable patterns.
-     *
-     * @return array
      */
     protected function getNonCatchablePatterns(): array
     {
@@ -194,7 +190,6 @@ class Lexer extends AbstractLexer
      * Retrieve token type. Also processes the token value if necessary.
      *
      * @param string $value
-     * @return int
      */
     protected function getType(&$value): int
     {

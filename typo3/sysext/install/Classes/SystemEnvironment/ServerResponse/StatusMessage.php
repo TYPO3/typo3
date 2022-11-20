@@ -38,9 +38,6 @@ class StatusMessage
         $this->values = $values;
     }
 
-    /**
-     * @return string
-     */
     public function getMessage(): string
     {
         return $this->message;

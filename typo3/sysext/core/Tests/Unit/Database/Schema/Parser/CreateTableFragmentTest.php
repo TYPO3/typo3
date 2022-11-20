@@ -32,8 +32,6 @@ class CreateTableFragmentTest extends UnitTestCase
      *  - create table SQL fragment
      *  - table name
      *  - is temporary
-     *
-     * @return array
      */
     public function canParseCreateTableFragmentDataProvider(): array
     {
@@ -95,8 +93,6 @@ class CreateTableFragmentTest extends UnitTestCase
 
     /**
      * Parse the CREATE TABLE statement and return the reference definition
-     *
-     * @return AbstractCreateStatement|CreateTableStatement
      */
     protected function createSubject(string $statement): AbstractCreateStatement
     {

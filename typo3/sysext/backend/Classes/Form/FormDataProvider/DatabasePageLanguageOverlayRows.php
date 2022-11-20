@@ -47,8 +47,6 @@ class DatabasePageLanguageOverlayRows implements FormDataProviderInterface
 
     /**
      * Retrieve the requested overlay row from the database
-     *
-     * @return array
      */
     protected function getDatabaseRows(int $pid): array
     {

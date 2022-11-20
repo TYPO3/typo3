@@ -170,7 +170,6 @@ class ArrayUtility
      * @param array $array Input array
      * @param array|string $path Path within the array
      * @param string $delimiter Defined path delimiter, default /
-     * @return mixed
      * @throws \RuntimeException if the path is empty, or if the path does not exist
      * @throws \InvalidArgumentException if the path is neither array nor string
      */
@@ -466,7 +465,6 @@ class ArrayUtility
      * @param array $array The (relative) array to be converted
      * @param string $prefix The (relative) prefix to be used (e.g. 'section.')
      * @param bool $keepDots
-     * @return array
      */
     public static function flatten(array $array, string $prefix = '', bool $keepDots = false): array
     {
@@ -628,7 +626,6 @@ class ArrayUtility
      *
      * @param array $array Input array
      * @param int $level Internal level used for recursion, do *not* set from outside!
-     * @return array
      */
     public static function renumberKeysToAvoidLeapsIfKeysAreAllNumeric(array $array = [], int $level = 0): array
     {

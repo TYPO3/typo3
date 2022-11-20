@@ -48,7 +48,6 @@ class RecordStateFactory
     /**
      * @param int|string|null $pageId
      * @param int|string|null $recordId
-     * @return RecordState
      */
     public function fromArray(array $data, $pageId = null, $recordId = null): RecordState
     {
@@ -74,9 +73,6 @@ class RecordStateFactory
             ->withVersionLink($this->resolveVersionLink($aspectFieldValues));
     }
 
-    /**
-     * @return array
-     */
     protected function resolveAspectFieldNames(): array
     {
         return [
@@ -88,9 +84,6 @@ class RecordStateFactory
         ];
     }
 
-    /**
-     * @return array
-     */
     protected function resolveAspectFieldValues(array $data): array
     {
         return array_map(
@@ -101,9 +94,6 @@ class RecordStateFactory
         );
     }
 
-    /**
-     * @return EntityPointerLink|null
-     */
     protected function resolveLanguageLink(array $aspectFieldNames): ?EntityPointerLink
     {
         $languageSourceLink = null;
@@ -132,9 +122,6 @@ class RecordStateFactory
         return $languageSourceLink->withAncestor($languageParentLink);
     }
 
-    /**
-     * @return EntityPointerLink|null
-     */
     protected function resolveVersionLink(array $aspectFieldNames): ?EntityPointerLink
     {
         if (!empty($aspectFieldNames['versionParent'])) {
@@ -149,7 +136,6 @@ class RecordStateFactory
     /**
      * @param string|int $identifier
      * @param string|null $name
-     * @return EntityPointer
      * @throws \LogicException
      */
     protected function createEntityPointer($identifier, string $name = null): EntityPointer

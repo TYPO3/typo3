@@ -82,8 +82,6 @@ class EditController extends AbstractWizardController
     /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
-     *
-     * @return ResponseInterface
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -103,8 +101,6 @@ class EditController extends AbstractWizardController
      * Process request function
      * Makes a header-location redirect to an edit form IF POSSIBLE from the passed data - otherwise the window will
      * just close.
-     *
-     * @return ResponseInterface
      */
     protected function processRequest(): ResponseInterface
     {

@@ -38,7 +38,6 @@ class SlugUniqueTest extends AbstractDataHandlerActionTestCase
 
     /**
      * Data provider for differentUniqueEvalSettingsDeDuplicateSlug
-     * @return array
      */
     public function getEvalSettingDataProvider(): array
     {

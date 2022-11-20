@@ -58,7 +58,6 @@ final class PermissionsViewHelper extends AbstractViewHelper
 
     /**
      * @param array{permission: int, scope: string, pageId: int} $arguments
-     * @return string
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {

@@ -53,8 +53,6 @@ class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterfa
     /**
      * Return the identifier for this wizard
      * This should be the same string as used in the ext_localconf class registration
-     *
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -63,8 +61,6 @@ class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterfa
 
     /**
      * Return the speaking name of this wizard
-     *
-     * @return string
      */
     public function getTitle(): string
     {
@@ -73,8 +69,6 @@ class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterfa
 
     /**
      * Return the description for this wizard
-     *
-     * @return string
      */
     public function getDescription(): string
     {
@@ -85,8 +79,6 @@ class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterfa
 
     /**
      * To avoid timeout issues, no check is performed in advance
-     *
-     * @return bool
      */
     public function updateNecessary(): bool
     {
@@ -97,8 +89,6 @@ class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterfa
      * Execute the update
      *
      * Called when a wizard reports that an update is necessary
-     *
-     * @return bool
      */
     public function executeUpdate(): bool
     {
@@ -120,8 +110,6 @@ class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterfa
 
     /**
      * Return a confirmation message instance
-     *
-     * @return Confirmation
      */
     public function getConfirmation(): Confirmation
     {

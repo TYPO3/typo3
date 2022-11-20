@@ -26,43 +26,31 @@ interface MfaProviderManifestInterface extends MfaProviderInterface
 {
     /**
      * Unique provider identifier
-     *
-     * @return string
      */
     public function getIdentifier(): string;
 
     /**
      * The title of the provider
-     *
-     * @return string
      */
     public function getTitle(): string;
 
     /**
      * A short description about the provider
-     *
-     * @return string
      */
     public function getDescription(): string;
 
     /**
      * Instructions to be displayed in the setup view
-     *
-     * @return string
      */
     public function getSetupInstructions(): string;
 
     /**
      * The icon identifier for this provider
-     *
-     * @return string
      */
     public function getIconIdentifier(): string;
 
     /**
      * Whether the provider is allowed to be set as default
-     *
-     * @return bool
      */
     public function isDefaultProviderAllowed(): bool;
 }

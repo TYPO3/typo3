@@ -26,22 +26,16 @@ interface ButtonProviderInterface
      * This method should return the title that will be shown as the text on the button. As the title will be
      * translated within the template, you can also return a localization string like
      * 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:button'
-     *
-     * @return string
      */
     public function getTitle(): string;
 
     /**
      * Return the link
-     *
-     * @return string
      */
     public function getLink(): string;
 
     /**
      * Specify the target of the link like '_blank'
-     *
-     * @return string
      */
     public function getTarget(): string;
 }

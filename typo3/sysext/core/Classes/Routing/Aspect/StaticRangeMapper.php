@@ -109,9 +109,6 @@ class StaticRangeMapper implements StaticMappableAspectInterface, \Countable
         return $this->respondWhenInRange($value);
     }
 
-    /**
-     * @return string|null
-     */
     protected function respondWhenInRange(string $value): ?string
     {
         if (in_array($value, $this->range, true)) {
