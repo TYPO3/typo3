@@ -72,8 +72,6 @@ class FilePathSanitizer
     /**
      * Returns the reference used for the frontend inclusion, checks against allowed paths for inclusion.
      *
-     * @param string $originalFileName
-     * @param bool|null $allowExtensionPath
      * @return string Resulting filename, is either a full absolute URL or a relative path.
      */
     public function sanitize(string $originalFileName, ?bool $allowExtensionPath = null): string

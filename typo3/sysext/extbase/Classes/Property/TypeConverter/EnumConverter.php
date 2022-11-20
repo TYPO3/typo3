@@ -30,7 +30,6 @@ class EnumConverter extends AbstractTypeConverter
      * Only convert if target is enum
      *
      * @template T of UnitEnum
-     * @param mixed $source
      * @param class-string<T> $targetType
      * @return bool
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
@@ -44,9 +43,7 @@ class EnumConverter extends AbstractTypeConverter
      * Convert an enum from $source to an enum.
      *
      * @template T of UnitEnum
-     * @param mixed $source
      * @param class-string<T> $targetType
-     * @param array $convertedChildProperties
      * @param PropertyMappingConfigurationInterface|null $configuration
      * @return T|null
      * @throws InvalidTargetException
@@ -59,7 +56,6 @@ class EnumConverter extends AbstractTypeConverter
 
     /**
      * @template T of UnitEnum
-     * @param float|int|string $source
      * @param class-string<T> $targetType
      * @return T|null
      * @throws InvalidTargetException

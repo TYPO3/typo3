@@ -66,7 +66,6 @@ class VisibilityAspect implements AspectInterface
     /**
      * Fetch the values
      *
-     * @param string $name
      * @return int|bool
      * @throws AspectPropertyNotFoundException
      */

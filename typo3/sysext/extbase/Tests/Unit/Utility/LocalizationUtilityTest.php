@@ -219,7 +219,6 @@ class LocalizationUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param string $extensionName
      * @return string
      */
     protected function getLanguageFilePath(string $extensionName): string
@@ -319,8 +318,6 @@ class LocalizationUtilityTest extends UnitTestCase
      * @param string $key
      * @param string $languageKey
      * @param string $expected
-     * @param array $altLanguageKeys
-     * @param array $arguments
      * @dataProvider translateDataProvider
      * @test
      */
@@ -351,8 +348,6 @@ class LocalizationUtilityTest extends UnitTestCase
      * @param string $key
      * @param string $languageKey
      * @param string $expected
-     * @param array $altLanguageKeys
-     * @param array $arguments
      * @dataProvider translateDataProvider
      * @test
      */
@@ -472,10 +467,7 @@ class LocalizationUtilityTest extends UnitTestCase
     /**
      * Tests whether labels from xml are overwritten by TypoScript labels
      *
-     * @param array $LOCAL_LANG
-     * @param array $typoScriptLocalLang
      * @param string $languageKey
-     * @param array $expected
      * @dataProvider loadTypoScriptLabelsProvider
      * @test
      */

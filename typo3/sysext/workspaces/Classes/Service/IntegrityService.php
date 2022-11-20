@@ -102,8 +102,6 @@ class IntegrityService
 
     /**
      * Checks a single element.
-     *
-     * @param CombinedRecord $element
      */
     public function checkElement(CombinedRecord $element)
     {
@@ -115,8 +113,6 @@ class IntegrityService
      * If current record is a localization and its localization parent
      * is new in this workspace,
      * then both (localization and localization parent) should be published.
-     *
-     * @param CombinedRecord $element
      */
     protected function checkLocalization(CombinedRecord $element)
     {

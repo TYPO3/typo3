@@ -38,7 +38,6 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
      * @param int $id
      * @param array $fileMetadataRecord
      * @param int|null $otherHookGrantedAccess
-     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler
      * @return int|null
      */
     public function checkRecordUpdateAccess($table, $id, $fileMetadataRecord, $otherHookGrantedAccess, DataHandler $dataHandler)

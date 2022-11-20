@@ -45,7 +45,6 @@ class AjaxLoginController
      * a BE user and reset the timer and hide the login window.
      * If it was unsuccessful, we display that and show the login box again.
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function loginAction(ServerRequestInterface $request): ResponseInterface
@@ -67,7 +66,6 @@ class AjaxLoginController
     /**
      * Logs out the current BE user
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function logoutAction(ServerRequestInterface $request): ResponseInterface
@@ -98,7 +96,6 @@ class AjaxLoginController
      * The session refresh has been performed inside the BackendUserAuthenticator middleware.
      * If that was successful, we have a BE user and report that information as response.
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function refreshAction(ServerRequestInterface $request): ResponseInterface
@@ -114,7 +111,6 @@ class AjaxLoginController
     /**
      * Checks if the user session is expired yet
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function isTimedOutAction(ServerRequestInterface $request): ResponseInterface

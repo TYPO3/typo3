@@ -265,9 +265,6 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
     /**
      * Remove one property from the MetaTagManager
      * If there are multiple occurrences of a property, they all will be removed
-     *
-     * @param string $property
-     * @param string $type
      */
     public function removeProperty(string $property, string $type = '')
     {

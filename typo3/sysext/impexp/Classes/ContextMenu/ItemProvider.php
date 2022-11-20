@@ -69,7 +69,6 @@ class ItemProvider extends AbstractProvider
     /**
      * Adds import/export items to the "submenu" if available
      *
-     * @param array $items
      * @return array
      */
     public function addItems(array $items): array
@@ -85,8 +84,6 @@ class ItemProvider extends AbstractProvider
     }
 
     /**
-     * @param string $itemName
-     * @param string $type
      * @return bool
      */
     protected function canRender(string $itemName, string $type): bool
@@ -109,7 +106,6 @@ class ItemProvider extends AbstractProvider
     /**
      * Registers custom JS module with item onclick behaviour
      *
-     * @param string $itemName
      * @return array
      */
     protected function getAdditionalAttributes(string $itemName): array

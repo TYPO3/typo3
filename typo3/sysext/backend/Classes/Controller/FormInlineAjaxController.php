@@ -41,7 +41,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     /**
      * Create a new inline child via AJAX.
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function createAction(ServerRequestInterface $request): ResponseInterface
@@ -159,7 +158,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     /**
      * Show the details of a child record.
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function detailsAction(ServerRequestInterface $request): ResponseInterface
@@ -605,7 +603,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      * Method to check whether the backend user has the property inline view for the current IRRE item.
      * In existing or old IRRE items the attribute may not exist, then the json_decode will fail.
      *
-     * @param BackendUserAuthentication $backendUser
      * @return bool
      */
     protected function backendUserHasUcInlineView(BackendUserAuthentication $backendUser)
@@ -652,7 +649,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      * Validates the config that is transferred over the wire to provide the
      * correct TCA config for the parent table
      *
-     * @param string $contextString
      * @throws \RuntimeException
      * @return array
      */

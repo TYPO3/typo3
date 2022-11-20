@@ -43,7 +43,6 @@ class RedirectFinisherTest extends UnitTestCase
      * @test
      * @dataProvider pageUidOptionForFinisherAcceptsVariousPageRepresentationsDataProvider
      * @param string|int|null $pageUid
-     * @param int $expectedPage
      */
     public function pageUidOptionForFinisherAcceptsVariousPageRepresentations($pageUid, int $expectedPage): void
     {

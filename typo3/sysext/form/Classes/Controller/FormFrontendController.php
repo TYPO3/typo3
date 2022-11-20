@@ -45,7 +45,6 @@ class FormFrontendController extends ActionController
     protected $formPersistenceManager;
 
     /**
-     * @param \TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface $formPersistenceManager
      * @internal
      */
     public function injectFormPersistenceManager(FormPersistenceManagerInterface $formPersistenceManager)
@@ -92,7 +91,6 @@ class FormFrontendController extends ActionController
      * Override the formDefinition with additional data from the Flexform
      * settings. For now, only finisher settings are overridable.
      *
-     * @param array $formDefinition
      * @return array
      */
     protected function overrideByFlexFormSettings(array $formDefinition): array
@@ -142,9 +140,6 @@ class FormFrontendController extends ActionController
     }
 
     /**
-     * @param array $formDefinition
-     * @param string $prototypeName
-     * @param string $finisherIdentifier
      * @return string
      */
     protected function getFlexformSheetIdentifier(
@@ -163,8 +158,6 @@ class FormFrontendController extends ActionController
     }
 
     /**
-     * @param array $flexForm
-     * @param string $sheetIdentifier
      * @return array
      */
     protected function getFlexFormSettingsFromSheet(

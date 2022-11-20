@@ -26,7 +26,6 @@ class DatabasePageRootline implements FormDataProviderInterface
     /**
      * Fetch rootline
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

@@ -317,7 +317,6 @@ class Message implements MessageInterface
     /**
      * Ensure header names and values are valid.
      *
-     * @param array $headers
      * @throws \InvalidArgumentException
      */
     protected function assertHeaders(array $headers)
@@ -360,7 +359,6 @@ class Message implements MessageInterface
     /**
      * Helper function to test if an array contains only strings
      *
-     * @param array $data
      * @return bool
      */
     protected function arrayContainsOnlyStrings(array $data)

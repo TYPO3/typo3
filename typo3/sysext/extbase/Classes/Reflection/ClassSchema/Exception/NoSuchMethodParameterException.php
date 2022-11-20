@@ -23,8 +23,6 @@ namespace TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception;
 class NoSuchMethodParameterException extends \Exception
 {
     /**
-     * @param string $className
-     * @param string $methodName
      * @param string $parameterName
      * @return NoSuchMethodParameterException
      */
@@ -37,9 +35,6 @@ class NoSuchMethodParameterException extends \Exception
     }
 
     /**
-     * @param string $className
-     * @param string $methodName
-     * @param int $position
      * @return NoSuchMethodParameterException
      */
     public static function createForParameterPosition(string $className, string $methodName, int $position): NoSuchMethodParameterException

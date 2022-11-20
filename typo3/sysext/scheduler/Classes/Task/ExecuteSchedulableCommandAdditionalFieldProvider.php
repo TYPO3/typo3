@@ -93,8 +93,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     /**
      * Validates additional selected fields
      *
-     * @param array $submittedData
-     * @param SchedulerModuleController $schedulerModule
      * @return bool
      */
     public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule): bool
@@ -168,7 +166,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     /**
      * Saves additional field values
      *
-     * @param array $submittedData
      * @param ExecuteSchedulableCommandTask $task
      * @return bool
      */
@@ -224,7 +221,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     /**
      * Get description of selected command
      *
-     * @param string $description
      * @return array
      */
     protected function getCommandDescriptionField(string $description): array
@@ -258,7 +254,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      * Also registers the default values of those fields with the Task, allowing
      * them to be read upon execution.
      *
-     * @param InputDefinition $inputDefinition
      * @return array
      */
     protected function getCommandArgumentFields(InputDefinition $inputDefinition): array
@@ -289,7 +284,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      * Also registers the default values of those fields with the Task, allowing
      * them to be read upon execution.
      *
-     * @param InputDefinition $inputDefinition
      * @return array
      */
     protected function getCommandOptionFields(InputDefinition $inputDefinition): array
@@ -320,7 +314,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     /**
      * Get a human-readable label for a command argument
      *
-     * @param InputArgument $argument
      * @return string
      */
     protected function getArgumentLabel(InputArgument $argument): string
@@ -331,7 +324,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     /**
      * Get a human-readable label for a command option
      *
-     * @param InputOption $option
      * @return string
      */
     protected function getOptionLabel(InputOption $option): string
@@ -340,8 +332,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     }
 
     /**
-     * @param array $options
-     * @param string $selectedOptionValue
      * @return string
      */
     protected function renderSelectField(array $options, string $selectedOptionValue): string
@@ -376,8 +366,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     /**
      * Renders a field for defining an argument's value
      *
-     * @param InputArgument $argument
-     * @param string $currentValue
      * @return string
      */
     protected function renderArgumentField(InputArgument $argument, string $currentValue): string
@@ -398,9 +386,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     /**
      * Renders a field for defining an option's value
      *
-     * @param InputOption $option
-     * @param bool $enabled
-     * @param string $currentValue
      * @return string
      */
     protected function renderOptionField(InputOption $option, bool $enabled, string $currentValue): string

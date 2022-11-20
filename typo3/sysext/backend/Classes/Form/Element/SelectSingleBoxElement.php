@@ -163,7 +163,6 @@ class SelectSingleBoxElement extends AbstractFormElement
      * Renders a <select> element
      *
      * @param array $optionElements List of rendered <option> elements
-     * @param array $parameterArray
      * @param array $config Field configuration
      * @return string
      */

@@ -154,8 +154,6 @@ class PropertyMapper implements SingletonInterface
      * Determine the type converter to be used. If no converter has been found, an exception is raised.
      *
      * @param mixed $source
-     * @param string $targetType
-     * @param PropertyMappingConfigurationInterface $configuration
      * @return TypeConverterInterface Type Converter which should be used to convert between $source and $targetType.
      *
      * @throws Exception\TypeConverterException

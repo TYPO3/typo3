@@ -25,7 +25,6 @@ class EmailLinkHandler implements LinkHandlingInterface
     /**
      * Returns the link to an email as a string
      *
-     * @param array $parameters
      * @return string
      */
     public function asString(array $parameters): string
@@ -37,7 +36,6 @@ class EmailLinkHandler implements LinkHandlingInterface
      * Returns the email address without the "mailto:" prefix
      * in the 'email' property of the array.
      *
-     * @param array $data
      * @return array
      */
     public function resolveHandlerData(array $data): array

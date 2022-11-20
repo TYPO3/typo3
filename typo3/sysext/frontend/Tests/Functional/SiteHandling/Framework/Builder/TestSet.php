@@ -55,7 +55,6 @@ class TestSet
     }
 
     /**
-     * @param string $type
      * @return Applicable[]
      */
     public function getApplicables(string $type = null): array
@@ -137,7 +136,6 @@ class TestSet
     }
 
     /**
-     * @param string $type
      * @return Applicable[]
      */
     private function filterApplicables(string $type): array

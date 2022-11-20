@@ -174,7 +174,6 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface
     /**
      * Returns a random string needed to generate a fileName for the queue.
      *
-     * @param int $count
      *
      * @return string
      */

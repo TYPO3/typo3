@@ -72,7 +72,6 @@ class Addon
     }
 
     /**
-     * @param array $options
      * @return self
      */
     public function setOptions(array $options): Addon
@@ -91,7 +90,6 @@ class Addon
     }
 
     /**
-     * @param array $cssFiles
      * @return self
      */
     public function setCssFiles(array $cssFiles): Addon

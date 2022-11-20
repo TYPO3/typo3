@@ -29,8 +29,6 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
     /**
      * Open list module of styleguide elements basic page
      *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      * @throws \Exception
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
@@ -81,8 +79,6 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
 
     /**
      * @dataProvider dbTypeDateEvalDateDataProvider
-     * @param ApplicationTester $I
-     * @param Example $testData
      * @throws \Exception
      */
     public function dbTypeDateEvalDate(ApplicationTester $I, Example $testData): void
@@ -125,8 +121,6 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
 
     /**
      * @dataProvider dbTypeDateEvalDatetimeDataProvider
-     * @param ApplicationTester $I
-     * @param Example $testData
      * @throws \Exception
      */
     public function dbTypeDateEvalDatetime(ApplicationTester $I, Example $testData): void
@@ -153,8 +147,6 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
 
     /**
      * @dataProvider dbTypeDateEvalTimeDataProvider
-     * @param ApplicationTester $I
-     * @param Example $testData
      * @throws \Exception
      */
     public function dbTypeDateEvalTime(ApplicationTester $I, Example $testData): void
@@ -197,8 +189,6 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
 
     /**
      * @dataProvider dbTypeDateEvalTimeDataProvider_DbTypeDateTime
-     * @param ApplicationTester $I
-     * @param Example $testData
      * @throws \Exception
      */
     public function checkThatValidationWorks_EvalDateTime_DbTypeDateTime(ApplicationTester $I, Example $testData): void

@@ -98,8 +98,6 @@ class RendererRegistry implements SingletonInterface
      * We want the result to be ordered from high to low so a higher
      * priority comes before a lower.
      *
-     * @param FileRendererInterface $rendererA
-     * @param FileRendererInterface $rendererB
      * @return int -1 a > b, 0 a == b, 1 a < b
      */
     protected function compareRendererPriority(FileRendererInterface $rendererA, FileRendererInterface $rendererB)
@@ -110,7 +108,6 @@ class RendererRegistry implements SingletonInterface
     /**
      * Get matching renderer with highest priority
      *
-     * @param FileInterface $file
      * @return FileRendererInterface|null
      */
     public function getRenderer(FileInterface $file)

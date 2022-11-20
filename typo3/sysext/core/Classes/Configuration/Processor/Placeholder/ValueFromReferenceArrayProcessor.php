@@ -23,8 +23,6 @@ namespace TYPO3\CMS\Core\Configuration\Processor\Placeholder;
 class ValueFromReferenceArrayProcessor implements PlaceholderProcessorInterface
 {
     /**
-     * @param string $placeholder
-     * @param array $referenceArray
      * @return bool
      */
     public function canProcess(string $placeholder, array $referenceArray): bool

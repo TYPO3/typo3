@@ -91,7 +91,6 @@ class Richtext
      * Load a configuration preset from an external resource (currently only YAML is supported).
      * This is the default behaviour and can be overridden by pageTSconfig.
      *
-     * @param string $presetName
      * @return array the parsed configuration
      */
     protected function loadConfigurationFromPreset(string $presetName = ''): array

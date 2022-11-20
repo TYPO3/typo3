@@ -54,7 +54,6 @@ class StageRecord extends AbstractRecord
 
     /**
      * @param int $uid
-     * @param array $record
      * @return StageRecord|null
      */
     public static function get($uid, array $record = null)
@@ -66,9 +65,7 @@ class StageRecord extends AbstractRecord
     }
 
     /**
-     * @param WorkspaceRecord $workspace
      * @param int $uid
-     * @param array $record
      * @return StageRecord
      */
     public static function build(WorkspaceRecord $workspace, $uid, array $record = null)
@@ -79,10 +76,6 @@ class StageRecord extends AbstractRecord
         return new self($workspace, $record);
     }
 
-    /**
-     * @param WorkspaceRecord $workspace
-     * @param array $record
-     */
     public function __construct(WorkspaceRecord $workspace, array $record)
     {
         parent::__construct($record);
@@ -114,7 +107,6 @@ class StageRecord extends AbstractRecord
     }
 
     /**
-     * @param StageRecord $stageRecord
      * @return int
      */
     public function determineOrder(StageRecord $stageRecord)
@@ -134,7 +126,6 @@ class StageRecord extends AbstractRecord
     /**
      * Determines whether $this is in a previous stage compared to $stageRecord.
      *
-     * @param StageRecord $stageRecord
      * @return bool
      */
     public function isPreviousTo(StageRecord $stageRecord)
@@ -152,7 +143,6 @@ class StageRecord extends AbstractRecord
     /**
      * Determines whether $this is in a later stage compared to $stageRecord.
      *
-     * @param StageRecord $stageRecord
      * @return bool
      */
     public function isNextTo(StageRecord $stageRecord)

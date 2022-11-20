@@ -575,9 +575,6 @@ class ConditionMatcherTest extends FunctionalTestCase
         return $conditionMatcher;
     }
 
-    /**
-     * @param array $groups
-     */
     protected function setupFrontendUserContext(array $groups = []): void
     {
         $frontendUser = $GLOBALS['TSFE']->fe_user;
@@ -591,17 +588,12 @@ class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Set up workspace aspect.
-     *
-     * @param int $workspaceId
      */
     protected function setUpWorkspaceAspect(int $workspaceId): void
     {
         GeneralUtility::makeInstance(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
     }
 
-    /**
-     * @param int $pageId
-     */
     protected function setupFrontendController(int $pageId): void
     {
         $site = new Site('angelo', 13, [

@@ -785,7 +785,6 @@ class Clipboard
      * Builds a URL to the current module with the received
      * parameters, merged / replaced by additional parameters.
      *
-     * @param array $parameters
      * @return string
      */
     protected function buildUrl(array $parameters = []): string

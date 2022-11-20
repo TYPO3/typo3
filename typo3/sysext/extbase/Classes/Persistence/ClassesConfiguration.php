@@ -24,16 +24,12 @@ class ClassesConfiguration
      */
     private $configuration;
 
-    /**
-     * @param array $configuration
-     */
     public function __construct(array $configuration)
     {
         $this->configuration = $configuration;
     }
 
     /**
-     * @param string $className
      * @return bool
      */
     public function hasClass(string $className): bool
@@ -42,7 +38,6 @@ class ClassesConfiguration
     }
 
     /**
-     * @param string $className
      * @return array|null
      */
     public function getConfigurationFor(string $className): ?array
@@ -54,7 +49,6 @@ class ClassesConfiguration
      * Resolves all subclasses for the given set of (sub-)classes.
      * The whole classes configuration is used to determine all subclasses recursively.
      *
-     * @param string $className
      * @return array A numeric array that contains all available subclasses-strings as values.
      */
     public function getSubClasses(string $className): array
@@ -63,8 +57,6 @@ class ClassesConfiguration
     }
 
     /**
-     * @param string $className
-     * @param array $subClasses
      * @return array
      */
     private function resolveSubClassesRecursive(string $className, array $subClasses = []): array

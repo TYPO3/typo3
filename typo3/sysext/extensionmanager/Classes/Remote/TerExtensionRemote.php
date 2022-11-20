@@ -69,8 +69,6 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
 
     /**
      * Download the xml.gz file, and extract it into the database.
-     *
-     * @param bool $force
      */
     public function getAvailablePackages(bool $force = false): void
     {
@@ -133,7 +131,6 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
 
     /**
      * Internal method
-     * @param string $remotePath
      * @return ResponseInterface
      * @throws DownloadFailedException
      */
@@ -150,11 +147,7 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
     /**
      * Downloads a single extension, and extracts the t3x file into a target location folder.
      *
-     * @param string $extensionKey
-     * @param string $version
-     * @param FileHandlingUtility $fileHandler
      * @param string|null $verificationHash
-     * @param string $pathType
      * @throws DownloadFailedException
      * @throws VerificationFailedException
      */
@@ -181,8 +174,6 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
     /**
      * Validates the integrity of the contents of a downloaded file.
      *
-     * @param string $expectedHash
-     * @param string $fileContents
      * @return bool
      */
     protected function isDownloadedPackageValid(string $expectedHash, string $fileContents): bool

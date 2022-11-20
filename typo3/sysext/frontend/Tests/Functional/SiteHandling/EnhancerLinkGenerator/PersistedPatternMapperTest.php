@@ -97,7 +97,6 @@ class PersistedPatternMapperTest extends AbstractEnhancerLinkGeneratorTestCase
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider persistedPatternMapperDataProvider
      */
@@ -156,7 +155,6 @@ class PersistedPatternMapperTest extends AbstractEnhancerLinkGeneratorTestCase
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider pageTypeDecoratorIsAppliedDataProvider
      */

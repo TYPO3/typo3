@@ -45,7 +45,6 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
     protected $yamlSource;
 
     /**
-     * @param \TYPO3\CMS\Form\Mvc\Configuration\YamlSource $yamlSource
      * @internal
      */
     public function injectYamlSource(YamlSource $yamlSource)
@@ -121,8 +120,6 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
     }
 
     /**
-     * @param array $yamlSettings
-     * @param string $extensionName
      * @return array
      */
     protected function overrideConfigurationByTypoScript(array $yamlSettings, string $extensionName): array
@@ -153,7 +150,6 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
     }
 
     /**
-     * @param string $cacheKeySuffix
      * @return string
      */
     protected function getConfigurationCacheKey(string $cacheKeySuffix): string
@@ -162,7 +158,6 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
     }
 
     /**
-     * @param string $cacheKeySuffix
      * @return mixed
      */
     protected function getYamlSettingsFromCache(string $cacheKeySuffix)
@@ -172,10 +167,6 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
         );
     }
 
-    /**
-     * @param string $cacheKeySuffix
-     * @param array $yamlSettings
-     */
     protected function setYamlSettingsIntoCache(
         string $cacheKeySuffix,
         array $yamlSettings
@@ -187,7 +178,6 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
     }
 
     /**
-     * @param string $extensionName
      * @return array
      */
     protected function getTypoScriptSettings(string $extensionName)

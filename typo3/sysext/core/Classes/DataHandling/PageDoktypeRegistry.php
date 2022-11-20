@@ -61,9 +61,6 @@ class PageDoktypeRegistry implements SingletonInterface
     /**
      * Adds a specific configuration for a doktype. By default, it is NOT restricted to only allow tables that
      * have been explicitly added via addAllowedRecordTypes().
-     *
-     * @param int $dokType
-     * @param array $configuration
      */
     public function add(int $dokType, array $configuration): void
     {

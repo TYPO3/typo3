@@ -29,7 +29,6 @@ interface TypeConverterInterface
      *
      * @param mixed $source the source data
      * @param string $originalTargetType the type we originally want to convert to
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string
      */
     public function getTargetTypeForSource($source, string $originalTargetType, PropertyMappingConfigurationInterface $configuration = null): string;
@@ -46,9 +45,6 @@ interface TypeConverterInterface
     /**
      * Return the type of a given sub-property inside the $targetType
      *
-     * @param string $targetType
-     * @param string $propertyName
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string the type of $propertyName in $targetType
      */
     public function getTypeOfChildProperty(string $targetType, string $propertyName, PropertyMappingConfigurationInterface $configuration): string;

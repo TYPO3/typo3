@@ -41,8 +41,6 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
     }
 
     /**
-     * @param array $conf
-     *
      * @return string
      */
     protected function renderInline(array $conf): string
@@ -83,7 +81,6 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
 
     /**
      * Render the SVG as <object> tag
-     * @param array $conf
      *
      * @return string
      */
@@ -112,8 +109,6 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
     }
 
     /**
-     * @param array $conf
-     *
      * @return string
      */
     protected function resolveAbsoluteSourcePath(array $conf): string
@@ -123,8 +118,6 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
     }
 
     /**
-     * @param array $conf
-     *
      * @return array
      */
     protected function getDimensions(array $conf): array

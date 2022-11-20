@@ -35,7 +35,6 @@ class DatabaseService
      * Returns an array with all sys_refindex database rows which be
      * connected to a formDefinition identified by $persistenceIdentifier
      *
-     * @param string $persistenceIdentifier
      * @return array
      * @throws \InvalidArgumentException
      * @internal
@@ -102,7 +101,6 @@ class DatabaseService
     }
 
     /**
-     * @param string $column
      * @return array
      * @throws \InvalidArgumentException
      */

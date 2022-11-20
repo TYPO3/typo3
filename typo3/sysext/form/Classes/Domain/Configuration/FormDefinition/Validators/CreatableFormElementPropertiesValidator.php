@@ -35,7 +35,6 @@ class CreatableFormElementPropertiesValidator extends ElementBasedValidator
      * and is the form element property configured to only allow a limited set of values,
      * check the current (submitted) value against the allowed set of values (defined within the form setup).
      *
-     * @param string $key
      * @param mixed $value
      */
     public function __invoke(string $key, $value)
@@ -66,7 +65,6 @@ class CreatableFormElementPropertiesValidator extends ElementBasedValidator
      * does not match the default value from the form editor setup.
      *
      * @param mixed $value
-     * @param ValidationDto $dto
      * @throws PropertyException
      */
     protected function validateFormElementPredefinedDefaultValue(
@@ -124,7 +122,6 @@ class CreatableFormElementPropertiesValidator extends ElementBasedValidator
      * does not match the allowed set of values (defined within the form setup).
      *
      * @param mixed $value
-     * @param ValidationDto $dto
      * @throws PropertyException
      */
     protected function validateFormElementValue(

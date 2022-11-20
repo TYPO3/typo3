@@ -105,8 +105,6 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
 
     /**
      * Create a simple site configuration
-     *
-     * @param int $pageId
      */
     protected function addSiteConfiguration(int $pageId): void
     {

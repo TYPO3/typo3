@@ -79,9 +79,6 @@ class RecoveryCodesTest extends UnitTestCase
     /**
      * @test
      * @dataProvider generatePlainRecoveryCodesTestDataProvider
-     *
-     * @param int $length
-     * @param int $quantity
      */
     public function generatePlainRecoveryCodesTest(int $length, int $quantity): void
     {

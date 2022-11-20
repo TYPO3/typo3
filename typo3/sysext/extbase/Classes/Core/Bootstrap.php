@@ -102,7 +102,6 @@ class Bootstrap
     /**
      * Initializes the Object framework.
      *
-     * @param array $configuration
      * @see initialize()
      * @internal
      */

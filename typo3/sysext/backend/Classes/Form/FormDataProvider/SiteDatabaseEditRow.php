@@ -43,7 +43,6 @@ class SiteDatabaseEditRow implements FormDataProviderInterface
     /**
      * First level of ['customData']['siteData'] to ['databaseRow']
      *
-     * @param array $result
      * @return array
      * @throws \RuntimeException
      */
@@ -89,8 +88,6 @@ class SiteDatabaseEditRow implements FormDataProviderInterface
     }
 
     /**
-     * @param SiteFinder $siteFinder
-     * @param int $rootPageId
      * @return array
      */
     protected function getRawConfigurationForSiteWithRootPageId(SiteFinder $siteFinder, int $rootPageId): array

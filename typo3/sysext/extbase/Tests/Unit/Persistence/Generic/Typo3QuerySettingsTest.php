@@ -71,7 +71,6 @@ class Typo3QuerySettingsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider booleanValueProvider
-     * @param bool $input
      */
     public function setRespectStoragePageSetsRespectStoragePageCorrectly(bool $input): void
     {
@@ -90,7 +89,6 @@ class Typo3QuerySettingsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider arrayValueProvider
-     * @param array $input
      */
     public function setStoragePageIdsSetsStoragePageIdsCorrectly(array $input): void
     {
@@ -109,7 +107,6 @@ class Typo3QuerySettingsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider booleanValueProvider
-     * @param bool $input
      */
     public function setRespectSysLanguageSetsRespectSysLanguageCorrectly(bool $input): void
     {
@@ -136,7 +133,6 @@ class Typo3QuerySettingsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider booleanValueProvider
-     * @param bool $input
      */
     public function setIgnoreEnableFieldsSetsIgnoreEnableFieldsCorrectly(bool $input): void
     {
@@ -155,7 +151,6 @@ class Typo3QuerySettingsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider arrayValueProvider
-     * @param array $input
      */
     public function setEnableFieldsToBeIgnoredSetsEnableFieldsToBeIgnoredCorrectly(array $input): void
     {
@@ -177,7 +172,6 @@ class Typo3QuerySettingsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider booleanValueProvider
-     * @param bool $input
      */
     public function setIncludeDeletedSetsIncludeDeletedCorrectly(bool $input): void
     {

@@ -173,8 +173,6 @@ class FailedLoginAttemptNotification
     }
 
     /**
-     * @param int $earliestLogDate
-     * @param int $loginAction
      * @return QueryBuilder
      */
     protected function createPreparedQueryBuilder(int $earliestLogDate, int $loginAction): QueryBuilder

@@ -72,7 +72,6 @@ class RedirectModuleCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @dataProvider possibleRedirectStatusCodes
      */
     public function seeStatusCodesWhenCreatingNewRedirect(ApplicationTester $I, Example $example): void

@@ -163,7 +163,6 @@ class DataMapProcessor
     /**
      * Purges superfluous empty data-map sections.
      *
-     * @param array $dataMap
      * @return array
      */
     protected function purgeDataMap(array $dataMap): array
@@ -183,9 +182,6 @@ class DataMapProcessor
 
     /**
      * Create data map items of all affected rows
-     *
-     * @param string $tableName
-     * @param array $idValues
      */
     protected function collectItems(string $tableName, array $idValues)
     {
@@ -292,8 +288,6 @@ class DataMapProcessor
      * Sanitizes the submitted data-map for a particular item and removes
      * fields which are not defined as custom and thus rely on either parent
      * or source values.
-     *
-     * @param DataMapItem $item
      */
     protected function sanitizeTranslationItem(DataMapItem $item)
     {
@@ -321,8 +315,6 @@ class DataMapProcessor
     /**
      * Synchronize a single item
      *
-     * @param DataMapItem $item
-     * @param array $fieldNames
      * @param string|int $fromId
      */
     protected function synchronizeTranslationItem(DataMapItem $item, array $fieldNames, $fromId)
@@ -366,8 +358,6 @@ class DataMapProcessor
     /**
      * Populates values downwards, either from a parent language item or
      * a source language item to an accordant dependent translation item.
-     *
-     * @param DataMapItem $item
      */
     protected function populateTranslationItem(DataMapItem $item)
     {
@@ -399,8 +389,6 @@ class DataMapProcessor
 
     /**
      * Finishes a translation item by updating states to be persisted.
-     *
-     * @param DataMapItem $item
      */
     protected function finishTranslationItem(DataMapItem $item)
     {
@@ -416,11 +404,6 @@ class DataMapProcessor
 
     /**
      * Synchronize simple values like text and similar
-     *
-     * @param DataMapItem $item
-     * @param string $fieldName
-     * @param array $fromRecord
-     * @param array $forRecord
      */
     protected function synchronizeFieldValues(DataMapItem $item, string $fieldName, array $fromRecord, array $forRecord)
     {
@@ -459,10 +442,6 @@ class DataMapProcessor
 
     /**
      * Synchronize select and group field localizations
-     *
-     * @param DataMapItem $item
-     * @param string $fieldName
-     * @param array $fromRecord
      */
     protected function synchronizeDirectRelations(DataMapItem $item, string $fieldName, array $fromRecord)
     {
@@ -524,10 +503,6 @@ class DataMapProcessor
      * Removing a relative parent results in cascaded removal of all direct(!)
      * children as well.
      *
-     * @param DataMapItem $item
-     * @param string $fieldName
-     * @param array $fromRecord
-     * @param array $forRecord
      * @throws \RuntimeException
      */
     protected function synchronizeReferences(DataMapItem $item, string $fieldName, array $fromRecord, array $forRecord)
@@ -714,9 +689,6 @@ class DataMapProcessor
      * source record from data-map or storage in case records have been
      * persisted already.
      *
-     * @param DataMapItem $item
-     * @param string $fieldName
-     * @param array $fromRecord
      * @return int[]|string[]
      */
     protected function resolveSuggestedInlineRelations(DataMapItem $item, string $fieldName, array $fromRecord): array
@@ -755,9 +727,6 @@ class DataMapProcessor
     /**
      * Determine persisted inline relations for current data-map-item.
      *
-     * @param DataMapItem $item
-     * @param string $fieldName
-     * @param array $forRecord
      * @return int[]
      */
     private function resolvePersistedInlineRelations(DataMapItem $item, string $fieldName, array $forRecord): array
@@ -789,9 +758,7 @@ class DataMapProcessor
      * set in data-map. This method considers null values as well, that would
      * not be considered by a plain isset() invocation.
      *
-     * @param string $tableName
      * @param string|int $id
-     * @param string $fieldName
      * @return bool
      */
     protected function isSetInDataMap(string $tableName, $id, string $fieldName)
@@ -810,9 +777,7 @@ class DataMapProcessor
      * to determine new data-map items to be process for synchronizing chained
      * record localizations.
      *
-     * @param string $tableName
      * @param string|int $id
-     * @param array $values
      * @throws \RuntimeException
      */
     protected function modifyDataMap(string $tableName, $id, array $values)
@@ -846,9 +811,6 @@ class DataMapProcessor
         );
     }
 
-    /**
-     * @param DataMapItem $item
-     */
     protected function addNextItem(DataMapItem $item)
     {
         $identifier = $item->getTableName() . ':' . $item->getId();
@@ -862,9 +824,6 @@ class DataMapProcessor
      * Fetches translation related field values for the items submitted in
      * the data-map.
      *
-     * @param string $tableName
-     * @param array $fieldNames
-     * @param array $ids
      * @return array
      */
     protected function fetchTranslationValues(string $tableName, array $fieldNames, array $ids)
@@ -1092,9 +1051,6 @@ class DataMapProcessor
      * parent or source field for translatable tables or their origin field
      * for non-translatable tables.
      *
-     * @param string $tableName
-     * @param array $ids
-     * @param array $fieldNames
      * @return array
      * @throws \InvalidArgumentException
      */
@@ -1175,7 +1131,6 @@ class DataMapProcessor
     /**
      * Return array of data map items that are of given type
      *
-     * @param string $type
      * @param DataMapItem[] $items
      * @return DataMapItem[]
      */
@@ -1209,7 +1164,6 @@ class DataMapProcessor
     /**
      * Return only ids that don't have an item equivalent in $this->allItems.
      *
-     * @param string $tableName
      * @param int[] $ids
      * @return array
      */
@@ -1226,7 +1180,6 @@ class DataMapProcessor
     /**
      * Flatten array
      *
-     * @param array $relationItems
      * @return string[]
      */
     protected function mapRelationItemId(array $relationItems)
@@ -1284,7 +1237,6 @@ class DataMapProcessor
     /**
      * See if an items is in item list and return it
      *
-     * @param string $tableName
      * @param string|int $id
      * @return DataMapItem|null
      */
@@ -1296,11 +1248,7 @@ class DataMapProcessor
     /**
      * Applies localization references to given raw data-map item.
      *
-     * @param string $tableName
      * @param string|int $fromId
-     * @param int $language
-     * @param array $fieldNames
-     * @param array $data
      * @return array
      */
     protected function applyLocalizationReferences(string $tableName, $fromId, int $language, array $fieldNames, array $data): array
@@ -1333,10 +1281,7 @@ class DataMapProcessor
     /**
      * Prefixes language title if applicable for the accordant field name in raw data-map item.
      *
-     * @param string $tableName
      * @param string|int $fromId
-     * @param int $language
-     * @param array $data
      * @return array
      */
     protected function prefixLanguageTitle(string $tableName, $fromId, int $language, array $data): array
@@ -1397,9 +1342,6 @@ class DataMapProcessor
     /**
      * Field names we have to deal with
      *
-     * @param DataMapItem $item
-     * @param string $scope
-     * @param bool $modified
      * @return string[]
      */
     protected function getFieldNamesForItemScope(
@@ -1427,7 +1369,6 @@ class DataMapProcessor
     /**
      * Field names of TCA table with columns having l10n_mode=exclude
      *
-     * @param string $tableName
      * @return string[]
      */
     protected function getLocalizationModeExcludeFieldNames(string $tableName)
@@ -1452,7 +1393,6 @@ class DataMapProcessor
      * Gets a list of field names which have to be handled. Basically this
      * includes fields using allowLanguageSynchronization or l10n_mode=exclude.
      *
-     * @param string $tableName
      * @return string[]
      */
     protected function getFieldNamesToBeHandled(string $tableName)
@@ -1466,7 +1406,6 @@ class DataMapProcessor
     /**
      * Field names of TCA table with columns having l10n_mode=prefixLangTitle
      *
-     * @param string $tableName
      * @return array
      */
     protected function getPrefixLanguageTitleFieldNames(string $tableName)
@@ -1492,8 +1431,6 @@ class DataMapProcessor
     /**
      * True if we're dealing with a field that has foreign db relations
      *
-     * @param string $tableName
-     * @param string $fieldName
      * @return bool True if field is type=group or select with foreign_table
      */
     protected function isRelationField(string $tableName, string $fieldName): bool
@@ -1517,8 +1454,6 @@ class DataMapProcessor
     /**
      * True if we're dealing with a reference field (either "inline" or "file")
      *
-     * @param string $tableName
-     * @param string $fieldName
      * @return bool TRUE if field is of type inline with foreign_table set
      */
     protected function isReferenceField(string $tableName, string $fieldName): bool
@@ -1540,7 +1475,6 @@ class DataMapProcessor
      * Determines whether the table can be localized and either has fields
      * with allowLanguageSynchronization enabled or l10n_mode set to exclude.
      *
-     * @param string $tableName
      * @return bool
      */
     protected function isApplicable(string $tableName): bool

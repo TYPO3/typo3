@@ -22,15 +22,10 @@ namespace TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors;
  */
 interface ExtractorInterface
 {
-    /**
-     * @param ExtractorDto $extractorDto
-     */
     public function __construct(ExtractorDto $extractorDto);
 
     /**
-     * @param string $key
      * @param mixed $value
-     * @param array $matches
      */
     public function __invoke(string $key, $value, array $matches);
 }

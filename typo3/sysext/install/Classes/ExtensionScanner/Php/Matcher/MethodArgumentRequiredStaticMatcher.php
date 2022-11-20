@@ -44,8 +44,6 @@ class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
     /**
      * Called by PhpParser.
      * Test for "::function($1, $2, $3)" (strong match)
-     *
-     * @param Node $node
      */
     public function enterNode(Node $node)
     {

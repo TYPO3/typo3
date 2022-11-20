@@ -95,49 +95,31 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility
-     */
     public function injectFileHandlingUtility(FileHandlingUtility $fileHandlingUtility)
     {
         $this->fileHandlingUtility = $fileHandlingUtility;
     }
 
-    /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
-     */
     public function injectListUtility(ListUtility $listUtility)
     {
         $this->listUtility = $listUtility;
     }
 
-    /**
-     * @param \TYPO3\CMS\Core\Package\PackageManager $packageManager
-     */
     public function injectPackageManager(PackageManager $packageManager)
     {
         $this->packageManager = $packageManager;
     }
 
-    /**
-     * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
-     */
     public function injectCacheManager(CacheManager $cacheManager)
     {
         $this->cacheManager = $cacheManager;
     }
 
-    /**
-     * @param \TYPO3\CMS\Core\Registry $registry
-     */
     public function injectRegistry(Registry $registry)
     {
         $this->registry = $registry;
     }
 
-    /**
-     * @param  BootService $bootService
-     */
     public function injectBootService(BootService $bootService)
     {
         $this->bootService = $bootService;
@@ -175,9 +157,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         $this->bootService->makeCurrent(null, $backup);
     }
 
-    /**
-     * @param string $extensionKey
-     */
     public function processExtensionSetup(string $extensionKey): void
     {
         $packagePath = $this->packageManager->getPackage($extensionKey)->getPackagePath();
@@ -214,7 +193,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      * This is used at extension uninstall to stop the process if an installed
      * extension depends on the extension to be uninstalled.
      *
-     * @param string $extensionKey
      * @return array
      */
     protected function findInstalledExtensionsThatDependOnExtension(string $extensionKey): array
@@ -478,7 +456,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      * Imports a static tables SQL File (ext_tables_static+adt)
      * Execution state is saved in the this->registry, so it only happens once
      *
-     * @param string $extensionKey
      * @param string $packagePath
      */
     protected function importStaticSqlFile(string $extensionKey, $packagePath)
@@ -524,8 +501,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * @param string $extensionKey
-     * @param string $packagePath
      * @param Import|null $import
      */
     protected function importSiteConfiguration(string $extensionKey, string $packagePath, Import $import = null): void

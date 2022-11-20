@@ -26,7 +26,6 @@ class PageTsConfig implements FormDataProviderInterface
     /**
      * Add page TsConfig
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

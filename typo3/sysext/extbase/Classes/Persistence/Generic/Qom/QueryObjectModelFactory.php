@@ -59,7 +59,6 @@ class QueryObjectModelFactory implements SingletonInterface
      * @param SourceInterface $left the left node-tuple source; non-null
      * @param SourceInterface $right the right node-tuple source; non-null
      * @param string $joinType one of QueryObjectModelConstants.JCR_JOIN_TYPE_*
-     * @param JoinConditionInterface $joinCondition
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface the join; non-null
      */
     public function join(SourceInterface $left, SourceInterface $right, $joinType, JoinConditionInterface $joinCondition)

@@ -115,9 +115,6 @@ class QueryBuilder
         return $this->restrictionContainer;
     }
 
-    /**
-     * @param QueryRestrictionContainerInterface $restrictionContainer
-     */
     public function setRestrictions(QueryRestrictionContainerInterface $restrictionContainer): void
     {
         foreach ($this->additionalRestrictions as $restrictionClass => $options) {
@@ -132,8 +129,6 @@ class QueryBuilder
 
     /**
      * Limits ALL currently active restrictions of the restriction container to the table aliases given
-     *
-     * @param array $tableAliases
      */
     public function limitRestrictionsToTables(array $tableAliases): void
     {
@@ -512,7 +507,6 @@ class QueryBuilder
      * Specifies items that are to be returned in the query result.
      * Replaces any previously specified selections, if any.
      *
-     * @param string ...$selects
      * @return QueryBuilder This QueryBuilder instance.
      */
     public function select(string ...$selects): QueryBuilder
@@ -535,7 +529,6 @@ class QueryBuilder
     /**
      * Adds an item that is to be returned in the query result.
      *
-     * @param string ...$selects
      * @return QueryBuilder This QueryBuilder instance.
      */
     public function addSelect(string ...$selects): QueryBuilder
@@ -765,7 +758,6 @@ class QueryBuilder
      * @param string $key The column to set.
      * @param mixed $value The value, expression, placeholder, etc.
      * @param bool $createNamedParameter Automatically create a named parameter for the value
-     * @param int $type
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -993,7 +985,6 @@ class QueryBuilder
     /**
      * Gets a query part by its name.
      *
-     * @param string $queryPartName
      *
      * @return mixed
      */
@@ -1029,7 +1020,6 @@ class QueryBuilder
     /**
      * Resets a single SQL part.
      *
-     * @param string $queryPartName
      *
      * @return QueryBuilder This QueryBuilder instance.
      */

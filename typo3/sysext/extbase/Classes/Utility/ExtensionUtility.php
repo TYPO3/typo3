@@ -156,7 +156,6 @@ tt_content.' . $pluginSignature . ' {
     }
 
     /**
-     * @param string $controllerClassName
      * @return string
      * @internal only used for TYPO3 Core
      */

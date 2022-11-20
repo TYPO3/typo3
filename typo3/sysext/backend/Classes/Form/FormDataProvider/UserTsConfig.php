@@ -26,7 +26,6 @@ class UserTsConfig implements FormDataProviderInterface
     /**
      * Add user typo script config
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

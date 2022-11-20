@@ -30,9 +30,6 @@ class DbCheckModuleCest
 {
     protected static string $defaultDashboardTitle = 'My Dashboard';
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
@@ -42,8 +39,6 @@ class DbCheckModuleCest
 
     /**
      * @dataProvider recordStatisticsDataProvider
-     * @param ApplicationTester $I
-     * @param Example $testData
      */
     public function seeRecordStatistics(ApplicationTester $I, Example $testData): void
     {
@@ -54,9 +49,6 @@ class DbCheckModuleCest
         $I->assertGreaterThanOrEqual($testData['count'], $count);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function seeDatabaseRelations(ApplicationTester $I): void
     {
         $this->goToPageAndSeeHeadline($I, 'Database Relations', 'Relations');
@@ -64,9 +56,6 @@ class DbCheckModuleCest
         $I->see('Group fields', 'h2');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function seeFullSearch(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $this->goToPageAndSeeHeadline($I, 'Full search', 'Search whole Database');
@@ -86,9 +75,6 @@ class DbCheckModuleCest
         $I->see('styleguide demo group 1', '.card-title');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function seeManageReferenceIndex(ApplicationTester $I): void
     {
         $this->goToPageAndSeeHeadline($I, 'Manage Reference Index', 'Manage Reference Index');
@@ -145,11 +131,6 @@ class DbCheckModuleCest
         ];
     }
 
-    /**
-     * @param string $select
-     * @param string $headline
-     * @param ApplicationTester $I
-     */
     protected function goToPageAndSeeHeadline(ApplicationTester $I, string $select, string $headline): void
     {
         $I->selectOption('select[name=DatabaseJumpMenu]', $select);
@@ -159,7 +140,6 @@ class DbCheckModuleCest
     /**
      * Find count of table row by name
      *
-     * @param ApplicationTester $I
      * @param string $fieldLabel
      * @return RemoteWebElement
      */

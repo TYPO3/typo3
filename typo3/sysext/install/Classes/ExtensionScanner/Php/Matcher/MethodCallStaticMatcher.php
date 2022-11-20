@@ -52,8 +52,6 @@ class MethodCallStaticMatcher extends AbstractCoreMatcher
      * Called by PhpParser.
      * Test for "foo\bar::deprecated()" (strong match)
      * Test for "::deprecated()" (weak match)
-     *
-     * @param Node $node
      */
     public function enterNode(Node $node)
     {

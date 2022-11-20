@@ -83,7 +83,6 @@ class EditController extends AbstractWizardController
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface

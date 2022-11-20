@@ -41,8 +41,6 @@ class FormDataCompiler
 
     /**
      * Get form data group injected
-     *
-     * @param FormDataGroupInterface $formDataGroup
      */
     public function __construct(FormDataGroupInterface $formDataGroup)
     {

@@ -405,10 +405,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public const OBJECTTYPE_USER = 2;
 
-    /**
-     * @param TypoScriptFrontendController $typoScriptFrontendController
-     * @param ContainerInterface $container
-     */
     public function __construct(TypoScriptFrontendController $typoScriptFrontendController = null, ContainerInterface $container = null)
     {
         $this->typoScriptFrontendController = $typoScriptFrontendController;
@@ -478,7 +474,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param array $data The record data that is rendered.
      * @param string $table The table that the data record is from.
-     * @param ServerRequestInterface|null $request
      */
     public function start($data, $table = '', ?ServerRequestInterface $request = null)
     {
@@ -3823,8 +3818,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Returns an ImageManipulation\Area object for the given cropVariant (or 'default')
      * or null if the crop settings or crop area is empty.
      *
-     * @param FileInterface $file
-     * @param array $fileArray
      * @return Area|null
      */
     protected function getCropAreaFromFromTypoScriptSettings(FileInterface $file, array $fileArray)
@@ -3864,8 +3857,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Takes a JSON string and creates CropVariantCollection and fetches the corresponding
      * CropArea for that.
      *
-     * @param string $cropSettings
-     * @param string $cropVariant
      * @return Area
      */
     protected function createCropAreaFromJsonString(string $cropSettings, string $cropVariant): Area
@@ -5154,7 +5145,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Helper to transform a QueryBuilder object into a queryParts array that can be used
      * with exec_SELECT_queryArray
      *
-     * @param \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder
      * @return array
      * @throws \RuntimeException
      */
@@ -5200,9 +5190,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Helper to transform the QueryBuilder join part into a SQL fragment.
      *
-     * @param string $fromAlias
-     * @param array $joinParts
-     * @param array $knownAliases
      * @return string
      * @throws \RuntimeException
      */
@@ -5615,7 +5602,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Calculates the lifetime of a cache entry based on the given configuration
      *
-     * @param array $configuration
      * @return int|null
      */
     protected function calculateCacheLifetime(array $configuration)
@@ -5635,7 +5621,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Calculates the tags for a cache entry bases on the given configuration
      *
-     * @param array $configuration
      * @return array
      */
     protected function calculateCacheTags(array $configuration)
@@ -5648,7 +5633,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Applies stdWrap to the cache key
      *
-     * @param array $configuration
      * @return string
      */
     protected function calculateCacheKey(array $configuration)

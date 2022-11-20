@@ -28,7 +28,6 @@ class VimeoHelper extends AbstractOEmbedHelper
      * Get public url
      * Return NULL if you want to use core default behaviour
      *
-     * @param File $file
      * @return string|null
      */
     public function getPublicUrl(File $file)
@@ -40,7 +39,6 @@ class VimeoHelper extends AbstractOEmbedHelper
     /**
      * Get local absolute file path to preview image
      *
-     * @param File $file
      * @return string
      */
     public function getPreviewImage(File $file)
@@ -64,7 +62,6 @@ class VimeoHelper extends AbstractOEmbedHelper
      * Try to transform given URL to a File
      *
      * @param string $url
-     * @param Folder $targetFolder
      * @return File|null
      */
     public function transformUrlToFile($url, Folder $targetFolder)

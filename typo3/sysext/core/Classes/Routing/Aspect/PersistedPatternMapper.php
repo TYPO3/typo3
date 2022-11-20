@@ -103,7 +103,6 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
     protected $slugUniqueInSite;
 
     /**
-     * @param array $settings
      * @throws \InvalidArgumentException
      */
     public function __construct(array $settings)
@@ -168,7 +167,6 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
     }
 
     /**
-     * @param array|null $result
      * @return string|null
      * @throws \InvalidArgumentException
      */
@@ -193,7 +191,6 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
     }
 
     /**
-     * @param array $array
      * @return array
      */
     protected function filterNamesKeys(array $array): array
@@ -260,8 +257,6 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
     }
 
     /**
-     * @param QueryBuilder $queryBuilder
-     * @param array $values
      * @return array
      */
     protected function createRouteFieldConstraints(QueryBuilder $queryBuilder, array $values): array

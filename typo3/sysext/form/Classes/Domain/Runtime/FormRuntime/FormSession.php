@@ -77,7 +77,6 @@ class FormSession
     }
 
     /**
-     * @param string $authenticatedIdentifier
      * @return string
      * @throws BadRequestException
      */

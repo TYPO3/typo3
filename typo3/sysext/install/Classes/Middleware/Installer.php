@@ -44,8 +44,6 @@ class Installer implements MiddlewareInterface
     /**
      * Handles an Install Tool request when nothing is there
      *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      * @throws \RuntimeException
      */
@@ -125,7 +123,6 @@ class Installer implements MiddlewareInterface
      * First installation is in progress, if system/settings.php does not exist,
      * or if FIRST_INSTALL file exists.
      *
-     * @param ServerRequestInterface $request
      * @return bool Returns always TRUE
      */
     protected function canHandleRequest(ServerRequestInterface $request): bool

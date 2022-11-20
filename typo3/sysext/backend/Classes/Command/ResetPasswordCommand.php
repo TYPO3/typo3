@@ -98,7 +98,6 @@ class ResetPasswordCommand extends Command
     /**
      * This is needed to create a link to the backend properly.
      *
-     * @param string $backendUrl
      * @return ServerRequestInterface
      */
     protected function createFakeWebRequest(string $backendUrl): ServerRequestInterface

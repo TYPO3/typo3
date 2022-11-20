@@ -131,9 +131,6 @@ class PageLayoutContext
         return $copy;
     }
 
-    /**
-     * @param SiteLanguage $siteLanguage
-     */
     public function setSiteLanguage(SiteLanguage $siteLanguage): void
     {
         $this->siteLanguage = $siteLanguage;

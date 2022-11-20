@@ -86,9 +86,6 @@ class ElementEntityProcessor
     /**
      * Callback to determine whether a new child reference shall be considered in the dependency resolver utility.
      *
-     * @param array $callerArguments
-     * @param array $targetArgument
-     * @param ElementEntity $caller
      * @param string $eventName
      * @return string|null Skip response (if required)
      */
@@ -109,9 +106,6 @@ class ElementEntityProcessor
     /**
      * Callback to determine whether a new parent reference shall be considered in the dependency resolver utility.
      *
-     * @param array $callerArguments
-     * @param array $targetArgument
-     * @param ElementEntity $caller
      * @param string $eventName
      * @return string|null Skip response (if required)
      */
@@ -129,9 +123,6 @@ class ElementEntityProcessor
      * Callback to determine whether a new child reference shall be considered in the dependency resolver utility.
      * Only elements that are a delete placeholder are considered.
      *
-     * @param array $callerArguments
-     * @param array $targetArgument
-     * @param ElementEntity $caller
      * @param string $eventName
      * @return string|null Skip response (if required)
      */
@@ -151,9 +142,6 @@ class ElementEntityProcessor
      * Callback to determine whether a new parent reference shall be considered in the dependency resolver utility.
      * Only elements that are a delete placeholder are considered.
      *
-     * @param array $callerArguments
-     * @param array $targetArgument
-     * @param ElementEntity $caller
      * @param string $eventName
      * @return string|null Skip response (if required)
      */
@@ -173,9 +161,6 @@ class ElementEntityProcessor
      * Callback to add additional data to new elements created in the dependency resolver utility.
      *
      * @throws \RuntimeException
-     * @param ElementEntity $caller
-     * @param array $callerArguments
-     * @param array $targetArgument
      * @param string $eventName
      */
     public function createNewDependentElementCallback(array $callerArguments, array $targetArgument, ElementEntity $caller, $eventName)

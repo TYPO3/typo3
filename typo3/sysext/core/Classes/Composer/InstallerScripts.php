@@ -27,10 +27,6 @@ use TYPO3\CMS\Composer\Plugin\Core\ScriptDispatcher;
  */
 class InstallerScripts implements InstallerScriptsRegistration
 {
-    /**
-     * @param Event $event
-     * @param ScriptDispatcher $scriptDispatcher
-     */
     public static function register(Event $event, ScriptDispatcher $scriptDispatcher)
     {
         if ($event->getComposer()->getPackage()->getName() === 'typo3/cms') {

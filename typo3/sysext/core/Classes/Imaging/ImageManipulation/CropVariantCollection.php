@@ -36,8 +36,6 @@ class CropVariantCollection
     }
 
     /**
-     * @param string $jsonString
-     * @param array $tcaConfig
      * @return CropVariantCollection
      */
     public static function create(string $jsonString, array $tcaConfig = []): CropVariantCollection
@@ -96,7 +94,6 @@ class CropVariantCollection
     }
 
     /**
-     * @param FileInterface $file
      * @return CropVariantCollection
      */
     public function applyRatioRestrictionToSelectedCropArea(FileInterface $file): CropVariantCollection
@@ -124,7 +121,6 @@ class CropVariantCollection
     }
 
     /**
-     * @param string $id
      * @return Area
      */
     public function getCropArea(string $id = 'default'): Area
@@ -136,7 +132,6 @@ class CropVariantCollection
     }
 
     /**
-     * @param string $id
      * @return Area
      */
     public function getFocusArea(string $id = 'default'): Area
@@ -156,7 +151,6 @@ class CropVariantCollection
     }
 
     /**
-     * @param CropVariant ...$cropVariants
      * @throws \TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException
      */
     protected function setCropVariants(CropVariant ...$cropVariants)
@@ -168,7 +162,6 @@ class CropVariantCollection
     }
 
     /**
-     * @param CropVariant $cropVariant
      * @throws InvalidConfigurationException
      */
     protected function addCropVariant(CropVariant $cropVariant)

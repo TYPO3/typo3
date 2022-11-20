@@ -66,9 +66,6 @@ class ServiceProviderRegistry implements \IteratorAggregate
      * Initializes the registry from a list of service providers.
      * This list of service providers can be passed as ServiceProvider instances, class name string,
      * or an array of ['class name', [constructor params...]].
-     *
-     * @param PackageManager $packageManager
-     * @param bool $failsafe
      */
     public function __construct(PackageManager $packageManager, bool $failsafe = false)
     {
@@ -161,7 +158,6 @@ class ServiceProviderRegistry implements \IteratorAggregate
     /**
      * @param string $packageKey Key of the service provider in the registry
      * @param string $serviceName Name of the service to fetch
-     * @param ContainerInterface $container
      * @return mixed
      */
     public function createService(string $packageKey, string $serviceName, ContainerInterface $container)
@@ -173,9 +169,7 @@ class ServiceProviderRegistry implements \IteratorAggregate
     /**
      * @param string $packageKey Key of the service provider in the registry
      * @param string $serviceName Name of the service to fetch
-     * @param ContainerInterface $container
      * @param mixed $previous
-     *
      * @return mixed
      */
     public function extendService(string $packageKey, string $serviceName, ContainerInterface $container, $previous = null)

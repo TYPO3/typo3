@@ -88,8 +88,6 @@ class RichTextElement extends AbstractFormElement
     /**
      * Container objects give $nodeFactory down to other containers.
      *
-     * @param NodeFactory $nodeFactory
-     * @param array $data
      * @param EventDispatcherInterface|null $eventDispatcher
      */
     public function __construct(NodeFactory $nodeFactory, array $data, EventDispatcherInterface $eventDispatcher = null)
@@ -316,7 +314,6 @@ class RichTextElement extends AbstractFormElement
 
     /**
      * Add configuration to replace LLL: references with the translated value
-     * @param array $configuration
      *
      * @return array
      */
@@ -334,7 +331,6 @@ class RichTextElement extends AbstractFormElement
 
     /**
      * Add configuration to replace absolute EXT: paths with relative ones
-     * @param array $configuration
      *
      * @return array
      */
@@ -353,7 +349,6 @@ class RichTextElement extends AbstractFormElement
     /**
      * Resolves an EXT: syntax file to an absolute web URL
      *
-     * @param string $value
      * @return string
      */
     protected function resolveUrlPath(string $value): string
@@ -433,7 +428,6 @@ class RichTextElement extends AbstractFormElement
     }
 
     /**
-     * @param string $itemFormElementName
      * @return string
      */
     protected function sanitizeFieldId(string $itemFormElementName): string

@@ -53,7 +53,6 @@ class EventCallback
     /**
      * Executes the callback.
      *
-     * @param array $callerArguments
      * @param object $caller
      * @param string $eventName
      * @return mixed

@@ -493,7 +493,6 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
      * This database backend uses some optimized queries for mysql
      * to get maximum performance.
      *
-     * @param Connection $connection
      * @return bool
      */
     protected function isConnectionMysql(Connection $connection): bool

@@ -46,8 +46,6 @@ class ListenerProvider implements ListenerProviderInterface
     /**
      * Not part of the public API, used in the generated service factor for this class,
      *
-     * @param string $event
-     * @param string $service
      * @param string|null $method
      * @internal
      */
@@ -90,7 +88,6 @@ class ListenerProvider implements ListenerProviderInterface
     }
 
     /**
-     * @param string $service
      * @param string|null $method
      * @return callable
      * @throws \InvalidArgumentException

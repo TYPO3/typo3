@@ -356,9 +356,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      * language parent, adjusts `$linkDetails['pageuid']` (for hook processing)
      * and modifies `$configuration['language']` (for language URL generation).
      *
-     * @param array $linkDetails
-     * @param array $configuration
-     * @param bool $disableGroupAccessCheck
      * @return array
      */
     protected function resolvePage(array &$linkDetails, array &$configuration, bool $disableGroupAccessCheck): array
@@ -415,7 +412,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     /**
      * Fetches the requested language of a site that the link should be built for
      *
-     * @param Site $siteOfTargetPage
      * @param string $targetLanguageId "current" or the languageId
      * @return SiteLanguage
      * @throws UnableToLinkException
@@ -446,11 +442,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     /**
      * Create a UriInterface object when linking to a page with a site configuration
      *
-     * @param array $page
-     * @param Site $siteOfTargetPage
-     * @param array $queryParameters
-     * @param string $fragment
-     * @param array $conf
      * @return UriInterface
      * @throws UnableToLinkException
      */

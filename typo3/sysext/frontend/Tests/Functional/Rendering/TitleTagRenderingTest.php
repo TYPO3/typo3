@@ -40,8 +40,6 @@ class TitleTagRenderingTest extends FunctionalTestCase
     /**
      * Create a simple site config for the tests that
      * call a frontend page.
-     *
-     * @param int $pageId
      */
     protected function setUpFrontendSite(int $pageId): void
     {

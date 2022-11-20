@@ -294,7 +294,6 @@ class DataHandlerHook
      * @param string $table
      * @param string $id
      * @param string $value
-     * @param DataHandler $dataHandler
      */
     public function processCmdmap_postProcess($command, $table, $id, $value, DataHandler $dataHandler)
     {
@@ -326,7 +325,6 @@ class DataHandlerHook
      * @param array $moveRec Record properties, like header and pid (without workspace overlay)
      * @param int $resolvedPid The final page ID of the record
      * @param bool $recordWasMoved can be set so that other hooks or
-     * @param DataHandler $dataHandler
      */
     public function moveRecord($table, $uid, $destPid, array $propArr, array $moveRec, $resolvedPid, &$recordWasMoved, DataHandler $dataHandler)
     {
@@ -928,12 +926,6 @@ class DataHandlerHook
     /**
      * When a new record in a workspace is published, there is no "replacing" the online version with
      * the versioned record, but instead the workspace ID and the state is changed.
-     *
-     * @param string $table
-     * @param array $newRecordInWorkspace
-     * @param DataHandler $dataHandler
-     * @param string $comment
-     * @param array $notificationAlternativeRecipients
      */
     protected function publishNewRecord(string $table, array $newRecordInWorkspace, DataHandler $dataHandler, string $comment, array $notificationAlternativeRecipients): void
     {
@@ -1020,11 +1012,6 @@ class DataHandlerHook
     /**
      * A new record was just published, but the reference index for the localized elements needs
      * an update too.
-     *
-     * @param string $table
-     * @param int $newVersionedRecordId
-     * @param int $workspaceId
-     * @param DataHandler $dataHandler
      */
     protected function updateReferenceIndexForL10nOverlays(string $table, int $newVersionedRecordId, int $workspaceId, DataHandler $dataHandler): void
     {

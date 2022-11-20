@@ -58,8 +58,6 @@ class TextTypesTest extends AbstractDataTypeBaseTestCase
     /**
      * @test
      * @dataProvider canParseTextDataTypeProvider
-     * @param string $columnDefinition
-     * @param string $className
      */
     public function canParseDataType(string $columnDefinition, string $className): void
     {

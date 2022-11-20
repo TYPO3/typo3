@@ -183,7 +183,6 @@ trait ContentObjectRendererTestTrait
     }
 
     /**
-     * @param array $languageConfiguration
      * @return Site
      */
     private function createSiteWithLanguage(array $languageConfiguration): Site

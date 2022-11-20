@@ -44,7 +44,6 @@ abstract class AbstractController extends ActionController
     }
 
     /**
-     * @param RequestInterface $request
      * @return ResponseInterface
      * @throws \RuntimeException
      */

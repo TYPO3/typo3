@@ -194,8 +194,6 @@ class CommandUtilityTest extends UnitTestCase
      *
      * @dataProvider unQuoteFilenameUnquotesCorrectlyDataProvider
      * @test
-     * @param string $source
-     * @param array $expectedQuoted
      */
     public function unQuoteFilenameUnquotesCorrectly(string $source, array $expectedQuoted): void
     {

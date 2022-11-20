@@ -95,7 +95,6 @@ class InheritancesResolverService
      * Returns an instance of this service. Additionally the configuration
      * which should be resolved can be passed.
      *
-     * @param array $configuration
      * @return InheritancesResolverService
      * @internal
      */
@@ -125,7 +124,6 @@ class InheritancesResolverService
      * Set the reference configuration which is used to get untouched
      * values which can be merged into the touched configuration.
      *
-     * @param array $referenceConfiguration
      * @return InheritancesResolverService
      */
     public function setReferenceConfiguration(array $referenceConfiguration)
@@ -272,8 +270,6 @@ class InheritancesResolverService
     /**
      * Throw an exception if a cycle is detected.
      *
-     * @param string $path
-     * @param string $pathToCheck
      * @throws CycleInheritancesException
      */
     protected function throwExceptionIfCycleInheritances(string $path, string $pathToCheck)
@@ -324,7 +320,6 @@ class InheritancesResolverService
     /**
      * Recursively remove self::INHERITANCE_OPERATOR keys
      *
-     * @param array $array
      * @return array the modified array
      */
     protected function removeInheritanceOperatorRecursive(array $array): array
@@ -347,9 +342,6 @@ class InheritancesResolverService
      * Check the given array representation of a YAML config for the given path and return it's value / sub-array.
      * If path is not found, return null;
      *
-     * @param array $config
-     * @param string $path
-     * @param string $delimiter
      * @return string|array|null
      */
     protected function getValueByPath(array $config, string $path, string $delimiter = '.')

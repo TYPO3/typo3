@@ -444,7 +444,6 @@ class RecordListController
      * Displays only languages which are not yet present for the current page and
      * that are not disabled with page TS.
      *
-     * @param string $requestUri
      * @return string HTML <select> element (if there were items for the box anyways...)
      * @throws RouteNotFoundException
      */

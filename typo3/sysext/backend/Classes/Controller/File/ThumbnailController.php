@@ -44,7 +44,6 @@ class ThumbnailController
     ];
 
     /**
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function render(ServerRequestInterface $request): ResponseInterface
@@ -64,7 +63,6 @@ class ThumbnailController
     }
 
     /**
-     * @param array $queryParameters
      * @return array|null
      */
     protected function extractParameters(array $queryParameters)
@@ -85,7 +83,6 @@ class ThumbnailController
 
     /**
      * @param mixed|int $fileId
-     * @param array $configuration
      * @return ResponseInterface
      * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
      */

@@ -65,8 +65,6 @@ class VersionNumberUtilityTest extends UnitTestCase
      *
      * @dataProvider getNumericTypo3VersionNumberDataProvider
      * @test
-     * @param string $currentVersion
-     * @param string $expectedVersion
      */
     public function getNumericTypo3VersionNumber(string $currentVersion, string $expectedVersion): void
     {

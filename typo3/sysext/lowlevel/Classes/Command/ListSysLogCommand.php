@@ -44,8 +44,6 @@ class ListSysLogCommand extends Command
     /**
      * Executes the command for showing sys_log entries
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int

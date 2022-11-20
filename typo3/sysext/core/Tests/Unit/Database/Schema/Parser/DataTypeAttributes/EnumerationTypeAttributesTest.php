@@ -51,8 +51,6 @@ class EnumerationTypeAttributesTest extends AbstractDataTypeBaseTestCase
     /**
      * @test
      * @dataProvider canParseEnumerationDataTypeAttributesProvider
-     * @param string $columnDefinition
-     * @param array $options
      */
     public function canParseDataType(string $columnDefinition, array $options): void
     {

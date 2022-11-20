@@ -37,10 +37,6 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
      */
     private $registryServiceName;
 
-    /**
-     * @param ServiceProviderRegistry $registry
-     * @param string $registryServiceName
-     */
     public function __construct(ServiceProviderRegistry $registry, string $registryServiceName = 'service_provider_registry')
     {
         $this->registry = $registry;
@@ -80,7 +76,6 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
 
     /**
      * @param ContainerBuilder $container
-     * @param string $serviceProviderKey
      */
     private function registerFactories(ContainerBuilder $container, string $serviceProviderKey): void
     {
@@ -93,7 +88,6 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
 
     /**
      * @param ContainerBuilder $container
-     * @param string $serviceProviderKey
      */
     private function registerExtensions(ContainerBuilder $container, string $serviceProviderKey): void
     {
@@ -106,9 +100,6 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
 
     /**
      * @param ContainerBuilder $container
-     * @param string $serviceName
-     * @param string $serviceProviderKey
-     * @param callable $callable
      */
     private function registerService(
         ContainerBuilder $container,
@@ -152,9 +143,6 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
 
     /**
      * @param ContainerBuilder $container
-     * @param string $serviceName
-     * @param string $serviceProviderKey
-     * @param callable $callable
      */
     private function extendService(ContainerBuilder $container, string $serviceName, string $serviceProviderKey, callable $callable): void
     {
@@ -201,7 +189,6 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
     }
 
     /**
-     * @param callable $callable
      * @return callable|null
      */
     private function getStaticallyCallable(callable $callable): ?callable
@@ -217,8 +204,6 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
     }
 
     /**
-     * @param \ReflectionFunctionAbstract $reflection
-     * @param string $serviceName
      * @return string|null
      */
     private function getReturnType(\ReflectionFunctionAbstract $reflection, string $serviceName): ?string
@@ -235,7 +220,6 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
     }
 
     /**
-     * @param callable $callable
      * @return \ReflectionFunctionAbstract
      */
     private function getReflection(callable $callable): \ReflectionFunctionAbstract
@@ -252,7 +236,6 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
 
     /**
      * @param ContainerBuilder $container
-     * @param string $serviceName
      * @return array
      */
     private function getDecoratedServiceName(ContainerBuilder $container, string $serviceName): array

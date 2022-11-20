@@ -50,8 +50,6 @@ class BackendModuleValidator implements MiddlewareInterface
      * In case the current route targets a TYPO3 backend module and the user
      * has necessary access permissions, add the module to the request.
      *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

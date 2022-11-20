@@ -150,7 +150,6 @@ class TextMenuContentObject extends AbstractMenuContentObject
      * - afterWrap
      *
      * @param string $pref Can be "before" or "after" and determines which kind of stdWrap to process (basically this is the prefix of the TypoScript properties that are read from the ->I['val'] array
-     * @param ContentObjectRenderer $cObjectForCurrentMenu
      * @return string The resulting HTML
      */
     protected function getBeforeAfter(string $pref, ContentObjectRenderer $cObjectForCurrentMenu): string

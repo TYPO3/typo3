@@ -30,7 +30,6 @@ class TcaDisplayConditions
     /**
      * Check if an extension is loaded.
      *
-     * @param array $parameters
      * @return bool
      */
     public function isExtensionInstalled(array $parameters): bool

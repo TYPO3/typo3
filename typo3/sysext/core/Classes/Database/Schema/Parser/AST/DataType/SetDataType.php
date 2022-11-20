@@ -24,9 +24,6 @@ class SetDataType extends AbstractDataType
 {
     /**
      * SetDataType constructor.
-     *
-     * @param array $values
-     * @param array $options
      */
     public function __construct(array $values, array $options)
     {

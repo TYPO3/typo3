@@ -128,7 +128,6 @@ class PageTreeRepository
      *
      * @param int $entryPoint the page ID to fetch the tree for
      * @param callable|null $callback a callback to be used to check for permissions and filter out pages not to be included.
-     * @param array $dbMounts
      * @return array
      */
     public function getTree(
@@ -150,9 +149,6 @@ class PageTreeRepository
 
     /**
      * Removes items from a tree based on a callback, usually used for permission checks
-     *
-     * @param array $tree
-     * @param callable $callback
      */
     protected function applyCallbackToChildren(array &$tree, callable $callback)
     {
@@ -229,8 +225,6 @@ class PageTreeRepository
     /**
      * Retrieve the page records based on the given page or parent page ids
      *
-     * @param array $pageIds
-     * @param array $parentPageIds
      * @return array
      */
     protected function getPageRecords(array $pageIds = [], array $parentPageIds = []): array
@@ -354,7 +348,6 @@ class PageTreeRepository
      * Fetch all non-deleted pages, regardless of permissions (however, considers additionalQueryRestrictions and additionalWhereClause).
      * That's why it's internal.
      *
-     * @param array $dbMounts
      * @return array the full page tree of the whole installation
      */
     protected function fetchAllPages(array $dbMounts): array
@@ -481,7 +474,6 @@ class PageTreeRepository
     /**
      * Adds the property "_children" to a page record with the child pages
      *
-     * @param array $page
      * @param array[] $groupedAndSortedPagesByPid
      */
     protected function addChildrenToPage(array &$page, array &$groupedAndSortedPagesByPid)
@@ -517,9 +509,6 @@ class PageTreeRepository
     /**
      * Retrieve the page tree based on the given search filter
      *
-     * @param string $searchFilter
-     * @param array $allowedMountPointPageIds
-     * @param string $additionalWhereClause
      * @return array
      */
     public function fetchFilteredTree(string $searchFilter, array $allowedMountPointPageIds, string $additionalWhereClause): array
@@ -683,8 +672,6 @@ class PageTreeRepository
     /**
      * Filter all records outside of the allowed mount points
      *
-     * @param array $pages
-     * @param array $mountPoints
      * @return array
      */
     protected function filterPagesOnMountPoints(array $pages, array $mountPoints): array
@@ -757,7 +744,6 @@ class PageTreeRepository
     /**
      * Group pages by parent page and sort pages based on sorting property
      *
-     * @param array $pages
      * @param array $groupedAndSortedPagesByPid
      * @return array
      */

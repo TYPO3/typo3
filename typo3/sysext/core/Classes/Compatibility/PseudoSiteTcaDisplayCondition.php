@@ -32,7 +32,6 @@ namespace TYPO3\CMS\Core\Compatibility;
 class PseudoSiteTcaDisplayCondition
 {
     /**
-     * @param array $parameters
      * @return bool
      * @throws \InvalidArgumentException
      */

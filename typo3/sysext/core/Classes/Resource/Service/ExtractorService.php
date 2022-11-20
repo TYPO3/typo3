@@ -33,7 +33,6 @@ class ExtractorService
     private $extractionServices;
 
     /**
-     * @param File $fileObject
      * @return array
      */
     public function extractMetaData(File $fileObject): array
@@ -66,7 +65,6 @@ class ExtractorService
     /**
      * Get available extraction services
      *
-     * @param string $driverType
      * @return ExtractorInterface[]
      */
     protected function getExtractionServices(string $driverType): array
@@ -80,8 +78,6 @@ class ExtractorService
     /**
      * Check whether the extractor service supports this file according to file type restrictions.
      *
-     * @param File $file
-     * @param ExtractorInterface $extractor
      * @return bool
      */
     private function isFileTypeSupportedByExtractor(File $file, ExtractorInterface $extractor): bool

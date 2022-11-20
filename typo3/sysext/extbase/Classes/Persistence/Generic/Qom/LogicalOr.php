@@ -36,10 +36,6 @@ class LogicalOr implements OrInterface
      */
     protected $constraint2;
 
-    /**
-     * @param ConstraintInterface $constraint1
-     * @param ConstraintInterface $constraint2
-     */
     public function __construct(ConstraintInterface $constraint1, ConstraintInterface $constraint2)
     {
         $this->constraint1 = $constraint1;

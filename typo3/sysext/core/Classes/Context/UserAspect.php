@@ -70,7 +70,6 @@ class UserAspect implements AspectInterface
     /**
      * Fetch common information about the user
      *
-     * @param string $name
      * @return int|bool|string|array
      * @throws AspectPropertyNotFoundException
      */

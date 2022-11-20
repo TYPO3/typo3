@@ -56,7 +56,6 @@ class FileDumpController
     /**
      * Main method to dump a file
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
@@ -190,7 +189,6 @@ class FileDumpController
     }
 
     /**
-     * @param array $parameters
      * @return File|FileReference|ProcessedFile|null
      */
     protected function createFileObjectByParameters(array $parameters)

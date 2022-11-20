@@ -134,10 +134,8 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
     /**
      * Render img tag
      *
-     * @param FileInterface $image
      * @param string $width
      * @param string $height
-     * @param string|null $fileExtension
      * @return string Rendered img tag
      */
     protected function renderImage(FileInterface $image, $width, $height, ?string $fileExtension): string

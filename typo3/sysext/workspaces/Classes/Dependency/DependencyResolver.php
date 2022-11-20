@@ -76,7 +76,6 @@ class DependencyResolver
      * Sets a callback for a particular event.
      *
      * @param string $eventName
-     * @param EventCallback $callback
      * @return DependencyResolver
      */
     public function setEventCallback($eventName, EventCallback $callback)
@@ -90,7 +89,6 @@ class DependencyResolver
      *
      * @param string $eventName
      * @param object $caller
-     * @param array $callerArguments
      * @return mixed
      */
     public function executeEventCallback($eventName, $caller, array $callerArguments = [])
@@ -120,7 +118,6 @@ class DependencyResolver
      *
      * @param string $table
      * @param int $id
-     * @param array $data
      * @return ElementEntity
      */
     public function addElement($table, $id, array $data = [])
@@ -150,8 +147,6 @@ class DependencyResolver
 
     /**
      * Processes and registers the outermost parents accordant to the registered elements.
-     *
-     * @param ElementEntity $element
      */
     protected function processOuterMostParent(ElementEntity $element)
     {
@@ -170,7 +165,6 @@ class DependencyResolver
      * Gets all nested elements (including the parent) of a particular outermost parent element.
      *
      * @throws \RuntimeException
-     * @param ElementEntity $outerMostParent
      * @return array
      */
     public function getNestedElements(ElementEntity $outerMostParent)

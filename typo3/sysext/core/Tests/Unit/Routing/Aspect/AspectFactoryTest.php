@@ -132,7 +132,6 @@ class AspectFactoryTest extends UnitTestCase
     }
 
     /**
-     * @param array $settings
      * @param string[] $expectation
      *
      * @test

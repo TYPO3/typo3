@@ -31,11 +31,6 @@ class LikeWildcardTest extends FunctionalTestCase
 {
     /**
      * @test
-     * @param string $tableName
-     * @param string $fieldName
-     * @param string $likeValue
-     * @param int $wildcard
-     * @param string $expected
      * @dataProvider getLikeQueryPartDataProvider
      */
     public function getLikeQueryPart(string $tableName, string $fieldName, string $likeValue, int $wildcard, string $expected): void

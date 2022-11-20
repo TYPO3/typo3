@@ -160,9 +160,6 @@ class ClassesConfigurationTest extends UnitTestCase
     /**
      * @dataProvider resolveSubclassesRecursiveDataProvider
      * @test
-     * @param array $expected
-     * @param array $configuration
-     * @param string $className
      */
     public function getSubclasses(array $expected, array $configuration, string $className): void
     {

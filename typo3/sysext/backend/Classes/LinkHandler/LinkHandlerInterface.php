@@ -48,7 +48,6 @@ interface LinkHandlerInterface
     /**
      * Initialize the handler
      *
-     * @param AbstractLinkBrowserController $linkBrowser
      * @param string $identifier
      * @param array $configuration Page TSconfig of this link handler: TCEMAIN.linkHandler.<identifier>.configuration
      */
@@ -75,7 +74,6 @@ interface LinkHandlerInterface
     /**
      * Render the link handler. Ideally this modifies the view, but it can also render content directly.
      *
-     * @param ServerRequestInterface $request
      *
      * @return string
      */

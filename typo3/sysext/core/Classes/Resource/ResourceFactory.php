@@ -396,8 +396,6 @@ class ResourceFactory implements SingletonInterface
      * Creates a file object from an array of file data. Requires a database
      * row to be fetched.
      *
-     * @param array $fileData
-     * @param ResourceStorage $storage
      * @return File
      */
     public function createFileObject(array $fileData, ResourceStorage $storage = null)
@@ -454,7 +452,6 @@ class ResourceFactory implements SingletonInterface
      * from sys_file_reference table.
      * Requires a database row to be already fetched and present.
      *
-     * @param array $fileReferenceData
      * @return FileReference
      */
     public function createFileReferenceObject(array $fileReferenceData)

@@ -90,8 +90,6 @@ class FlexFormProcessor implements DataProcessorInterface
     /**
      * Recursively process sub processors of a data processor
      *
-     * @param array $data
-     * @param array $processorConfiguration
      * @return array
      */
     public function processAdditionalDataProcessors(array $data, array $processorConfiguration): array

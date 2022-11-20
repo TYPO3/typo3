@@ -235,7 +235,6 @@ class SuggestWizardDefaultReceiver
     /**
      * Creates OR constraints for each split searchWord.
      *
-     * @param string $searchString
      * @return string|\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression
      */
     protected function buildConstraintBlock(string $searchString)
@@ -263,7 +262,6 @@ class SuggestWizardDefaultReceiver
      * This allows searching for 'elements basic' and will find results like "elements rte basic"
      * To search for whole phrases enclose by double-quotes: '"elements basic"', results in empty result
      *
-     * @param string $searchString
      * @return array
      */
     protected function splitSearchString(string $searchString): array

@@ -101,8 +101,6 @@ class ClearCacheService
      * We want a "fresh" object here to operate with the really configured cache backends.
      * CacheManager implements SingletonInterface, so the only way to get a "fresh"
      * instance is by circumventing makeInstance and using new directly!
-     *
-     * @param array $cacheConfiguration
      */
     private function flushCaches(array $cacheConfiguration): void
     {

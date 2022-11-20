@@ -54,9 +54,6 @@ class SetDataTypeTest extends AbstractDataTypeBaseTestCase
     /**
      * @test
      * @dataProvider canParseSetDataTypeProvider
-     * @param string $columnDefinition
-     * @param string $className
-     * @param array $values
      */
     public function canParseDataType(string $columnDefinition, string $className, array $values): void
     {

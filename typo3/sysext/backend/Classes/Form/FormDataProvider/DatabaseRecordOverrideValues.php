@@ -26,7 +26,6 @@ class DatabaseRecordOverrideValues implements FormDataProviderInterface
      * Add override values to the databaseRow fields. As those values are not meant to
      * be overwritten by the user, the TCA of the field is set to type hidden.
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

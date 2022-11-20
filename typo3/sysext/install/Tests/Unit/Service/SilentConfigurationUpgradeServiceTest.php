@@ -64,9 +64,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @param array $methods
-     */
     protected function createConfigurationManagerWithMockedMethods(array $methods): void
     {
         $this->configurationManager = $this->getMockBuilder(ConfigurationManager::class)
@@ -319,9 +316,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider httpSettingsMappingDataProvider
-     * @param array $currentLocalConfiguration
-     * @param array $newSettings
-     * @param bool $localConfigurationNeedsUpdate
      */
     public function transferHttpSettingsIfSet(array $currentLocalConfiguration, array $newSettings, bool $localConfigurationNeedsUpdate): void
     {
@@ -533,7 +527,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      * @dataProvider graphicsProcessorEffects
      *
      * @param mixed $currentValue
-     * @param bool $expectedMigratedValue
      */
     public function migratesGraphicsProcessorEffects($currentValue, bool $expectedMigratedValue): void
     {

@@ -187,7 +187,6 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
     /**
      * Render a footer for the record
      *
-     * @param GridColumnItem $item
      * @return string
      */
     public function renderPageModulePreviewFooter(GridColumnItem $item): string

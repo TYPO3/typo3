@@ -26,7 +26,6 @@ class PlainTextExtractor implements TextExtractorInterface
     /**
      * Checks if the given file can be read by this extractor
      *
-     * @param FileInterface $file
      * @return bool
      */
     public function canExtractText(FileInterface $file)
@@ -43,7 +42,6 @@ class PlainTextExtractor implements TextExtractorInterface
     /**
      * The actual text extraction.
      *
-     * @param FileInterface $file
      * @return string
      */
     public function extractText(FileInterface $file)

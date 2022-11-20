@@ -24,9 +24,6 @@ class FloatDataType extends AbstractDataType
 {
     /**
      * FloatDataType constructor.
-     *
-     * @param array $dataTypeDecimals
-     * @param array $dataTypeOptions
      */
     public function __construct(array $dataTypeDecimals, array $dataTypeOptions)
     {

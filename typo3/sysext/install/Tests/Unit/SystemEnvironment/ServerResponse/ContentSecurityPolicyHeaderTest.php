@@ -73,9 +73,6 @@ class ContentSecurityPolicyHeaderTest extends TestCase
     }
 
     /**
-     * @param string $header
-     * @param bool $expectation
-     *
      * @test
      * @dataProvider mitigatesCrossSiteScriptingDataProvider
      */

@@ -44,7 +44,6 @@ class BlowfishPasswordHash implements PasswordHashInterface
     /**
      * Constructor sets options if given
      *
-     * @param array $options
      * @throws \InvalidArgumentException
      */
     public function __construct(array $options = [])

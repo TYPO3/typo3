@@ -38,8 +38,6 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
 
     /**
      * Outputs content
-     *
-     * @param ResponseInterface $response
      */
     protected function sendResponse(ResponseInterface $response)
     {
@@ -77,7 +75,6 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
     }
 
     /**
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface

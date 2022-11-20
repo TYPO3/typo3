@@ -30,10 +30,7 @@ abstract class CollectionBasedValidator extends AbstractValidator
      * does not match its hmac hash or if there is no hmac hash
      * available for the value.
      *
-     * @param array $currentElement
      * @param mixed $value
-     * @param string $sessionToken
-     * @param ValidationDto $dto
      * @throws PropertyException
      */
     public function validatePropertyCollectionElementPropertyValueByHmacData(

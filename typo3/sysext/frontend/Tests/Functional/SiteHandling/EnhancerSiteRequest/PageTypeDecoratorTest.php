@@ -60,7 +60,6 @@ class PageTypeDecoratorTest extends AbstractEnhancerSiteRequestTest
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider pageTypeDecoratorIsAppliedDataProvider
      */
@@ -100,7 +99,6 @@ class PageTypeDecoratorTest extends AbstractEnhancerSiteRequestTest
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider pageTypeDecoratorIndexCanBePartOfSlugDataProvider
      */

@@ -31,7 +31,6 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
      * More complex is the field:field syntax that can look up the actual
      * value in a different table.
      *
-     * @param array $result
      * @return array
      * @throws \UnexpectedValueException
      */
@@ -141,9 +140,6 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
     /**
      * Retrieve the requested row from the database
      *
-     * @param string $tableName
-     * @param int $uid
-     * @param string $fieldName
      * @return array
      */
     protected function getDatabaseRow(string $tableName, int $uid, string $fieldName): array

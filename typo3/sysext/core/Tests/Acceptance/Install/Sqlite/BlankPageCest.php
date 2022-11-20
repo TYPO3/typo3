@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\InstallTester;
 class BlankPageCest
 {
     /**
-     * @param InstallTester $I
      * @env sqlite
      */
     public function installTypo3OnSqlite(InstallTester $I): void

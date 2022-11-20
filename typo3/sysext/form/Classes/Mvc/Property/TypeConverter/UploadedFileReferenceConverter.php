@@ -116,7 +116,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     protected $persistenceManager;
 
     /**
-     * @param \TYPO3\CMS\Core\Resource\ResourceFactory $resourceFactory
      * @internal
      */
     public function injectResourceFactory(ResourceFactory $resourceFactory)
@@ -125,7 +124,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
      * @internal
      */
     public function injectHashService(HashService $hashService)
@@ -134,7 +132,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
      * @internal
      */
     public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager)
@@ -148,8 +145,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      *
      * @param array $source
      * @param string $targetType
-     * @param array $convertedChildProperties
-     * @param PropertyMappingConfigurationInterface $configuration
      * @return AbstractFileFolder|Error|null
      * @internal
      */
@@ -209,8 +204,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     /**
      * Import a resource and respect configuration given for properties
      *
-     * @param array $uploadInfo
-     * @param PropertyMappingConfigurationInterface $configuration
      * @return PseudoFileReference
      */
     protected function importUploadedResource(
@@ -257,8 +250,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     }
 
     /**
-     * @param File $file
-     * @param int $resourcePointer
      * @return PseudoFileReference
      */
     protected function createFileReferenceFromFalFileObject(
@@ -281,8 +272,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      * will be returned. Otherwise the file reference is reconstituted from
      * storage and will be updated(!) with the provided $falFileReference.
      *
-     * @param CoreFileReference $falFileReference
-     * @param int $resourcePointer
      * @return PseudoFileReference
      */
     protected function createFileReferenceFromFalFileReferenceObject(
@@ -303,7 +292,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      * Returns a human-readable message for the given PHP file upload error
      * constant.
      *
-     * @param int $errorCode
      * @return string
      */
     protected function getUploadErrorMessage(int $errorCode): string
@@ -340,7 +328,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     /**
      * Ensures that upload folder exists, creates it if it does not.
      *
-     * @param string $uploadFolderIdentifier
      * @return Folder
      */
     protected function provideUploadFolder(string $uploadFolderIdentifier): Folder
@@ -360,8 +347,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     /**
      * Ensures that particular target folder exists, creates it if it does not.
      *
-     * @param Folder $parentFolder
-     * @param string $folderName
      * @return Folder
      */
     protected function provideTargetFolder(Folder $parentFolder, string $folderName): Folder
@@ -374,8 +359,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     /**
      * Creates empty index.html file to avoid directory indexing,
      * in case it does not exist yet.
-     *
-     * @param Folder $parentFolder
      */
     protected function provideFolderInitialization(Folder $parentFolder): void
     {

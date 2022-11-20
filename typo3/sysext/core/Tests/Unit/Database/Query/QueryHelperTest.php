@@ -51,8 +51,6 @@ class QueryHelperTest extends UnitTestCase
     /**
      * @test
      * @dataProvider stripLogicalOperatorPrefixDataProvider
-     * @param string $input
-     * @param string $expectedSql
      */
     public function stripLogicalOperatorPrefixRemovesConstraintPrefixes(string $input, string $expectedSql): void
     {
@@ -137,8 +135,6 @@ class QueryHelperTest extends UnitTestCase
     /**
      * @test
      * @dataProvider parseOrderByDataProvider
-     * @param string $input
-     * @param array $expectedResult
      */
     public function parseOrderByTest(string $input, array $expectedResult): void
     {
@@ -213,8 +209,6 @@ class QueryHelperTest extends UnitTestCase
     /**
      * @test
      * @dataProvider parseTableListDataProvider
-     * @param string $input
-     * @param array $expectedResult
      */
     public function parseTableListTest(string $input, array $expectedResult): void
     {
@@ -263,8 +257,6 @@ class QueryHelperTest extends UnitTestCase
     /**
      * @test
      * @dataProvider parseGroupByDataProvider
-     * @param string $input
-     * @param array $expectedResult
      */
     public function parseGroupByTest(string $input, array $expectedResult): void
     {
@@ -437,8 +429,6 @@ class QueryHelperTest extends UnitTestCase
     /**
      * @test
      * @dataProvider parseJoinDataProvider
-     * @param string $input
-     * @param array $expected
      */
     public function parseJoinSplitsStatement(string $input, array $expected): void
     {
@@ -475,8 +465,6 @@ class QueryHelperTest extends UnitTestCase
     /**
      * @test
      * @dataProvider quoteDatabaseIdentifierDataProvider
-     * @param string $input
-     * @param string $expected
      */
     public function quoteDatabaseIdentifiers(string $input, string $expected): void
     {

@@ -27,7 +27,6 @@ class IsoCodeService
     /**
      * Renders a select dropdown with ISO 639-1 codes.
      *
-     * @param array $conf
      * @return array
      */
     public function renderIsoCodeSelectDropdown(array $conf = [])

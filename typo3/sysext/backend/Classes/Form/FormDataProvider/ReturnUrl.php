@@ -26,7 +26,6 @@ class ReturnUrl implements FormDataProviderInterface
     /**
      * Add return unl
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

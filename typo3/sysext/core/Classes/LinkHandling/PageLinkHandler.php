@@ -31,7 +31,6 @@ class PageLinkHandler implements LinkHandlingInterface
     /**
      * Returns all valid parameters for linking to a TYPO3 page as a string
      *
-     * @param array $parameters
      * @return string
      */
     public function asString(array $parameters): string
@@ -55,7 +54,6 @@ class PageLinkHandler implements LinkHandlingInterface
     /**
      * Returns all relevant information built in the link to a page (see asString())
      *
-     * @param array $data
      * @return array
      */
     public function resolveHandlerData(array $data): array

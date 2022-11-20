@@ -30,9 +30,6 @@ abstract class AbstractFileFolder extends AbstractEntity
      */
     protected $originalResource;
 
-    /**
-     * @param \TYPO3\CMS\Core\Resource\ResourceInterface $originalResource
-     */
     public function setOriginalResource(ResourceInterface $originalResource)
     {
         $this->originalResource = $originalResource;

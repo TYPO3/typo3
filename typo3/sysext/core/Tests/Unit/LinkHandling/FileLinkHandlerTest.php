@@ -91,8 +91,6 @@ class FileLinkHandlerTest extends UnitTestCase
      *
      * @test
      *
-     * @param array $input
-     * @param array  $expected
      *
      * @dataProvider resolveParametersForFilesDataProvider
      */
@@ -122,9 +120,6 @@ class FileLinkHandlerTest extends UnitTestCase
      *
      * @test
      *
-     * @param array $input
-     * @param array  $parameters
-     * @param string $expected
      *
      * @dataProvider resolveParametersForFilesDataProvider
      */

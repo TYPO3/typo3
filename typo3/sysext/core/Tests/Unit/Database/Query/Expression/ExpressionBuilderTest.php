@@ -735,10 +735,6 @@ class ExpressionBuilderTest extends UnitTestCase
     }
 
     /**
-     * @param int $position
-     * @param string $char
-     * @param string $expected
-     *
      * @test
      * @dataProvider trimQuotesIdentifierDataProvider
      */

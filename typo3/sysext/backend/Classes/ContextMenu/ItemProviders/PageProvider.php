@@ -190,8 +190,6 @@ class PageProvider extends RecordProvider
     }
 
     /**
-     * @param string $itemName
-     * @param string $type
      * @return bool
      */
     protected function canRender(string $itemName, string $type): bool
@@ -516,7 +514,6 @@ class PageProvider extends RecordProvider
     }
 
     /**
-     * @param string $itemName
      * @return array
      */
     protected function getAdditionalAttributes(string $itemName): array
@@ -588,8 +585,6 @@ class PageProvider extends RecordProvider
      * and the page doktype is lower than 200 (exclude sys_folder, ...)
      * and it contains given value
      *
-     * @param string $fieldName
-     * @param int $value
      * @return bool
      */
     protected function canBeToggled(string $fieldName, int $value): bool

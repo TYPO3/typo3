@@ -65,9 +65,6 @@ class LinkVarsCalculatorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider calculateLinkVarsDataProvider
-     * @param string $linkVars
-     * @param array $getVars
-     * @param string $expected
      */
     public function calculateLinkVarsConsidersCorrectVariables(string $linkVars, array $getVars, string $expected): void
     {
@@ -186,9 +183,6 @@ class LinkVarsCalculatorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider splitLinkVarsDataProvider
-     *
-     * @param string $string
-     * @param array $expected
      */
     public function splitLinkVarsStringSplitsStringByComma(string $string, array $expected): void
     {

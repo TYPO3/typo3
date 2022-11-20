@@ -134,9 +134,6 @@ class FormDefinitionValidationService implements SingletonInterface
      *         NO
      *           invalid! throw exception
      *
-     * @param array $currentFormElement
-     * @param string $prototypeName
-     * @param string $sessionToken
      * @throws PropertyException
      */
     public function validateFormDefinitionProperties(
@@ -214,10 +211,7 @@ class FormDefinitionValidationService implements SingletonInterface
      * in its original state.
      * If this is not the case (return value is FALSE), an exception must be thrown.
      *
-     * @param array $hmacContent
      * @param mixed $propertyValue
-     * @param array $hmacData
-     * @param string $sessionToken
      * @return bool
      * @throws PropertyException
      */
@@ -239,9 +233,6 @@ class FormDefinitionValidationService implements SingletonInterface
      * of the data.
      * An exception will be thrown if the value is modified.
      *
-     * @param array $hmacData
-     * @param array $hmacContent
-     * @param string $sessionToken
      * @throws PropertyException
      */
     protected function checkHmacDataIntegrity(array $hmacData, array $hmacContent, string $sessionToken)
@@ -263,9 +254,7 @@ class FormDefinitionValidationService implements SingletonInterface
      * Walk through all form element properties and checks
      * if the values matches to their hmac hashes.
      *
-     * @param array $currentElement
      * @param string $sessionToken
-     * @param ValidationDto $validationDto
      */
     protected function validateAllFormElementPropertyValuesByHmac(
         array $currentElement,
@@ -291,9 +280,7 @@ class FormDefinitionValidationService implements SingletonInterface
      * Walk through all property collection properties and checks
      * if the values matches to their hmac hashes.
      *
-     * @param array $currentElement
      * @param string $sessionToken
-     * @param ValidationDto $validationDto
      */
     protected function validateAllPropertyCollectionElementValuesByHmac(
         array $currentElement,
@@ -322,9 +309,7 @@ class FormDefinitionValidationService implements SingletonInterface
      * and the property value matches the predefined value
      * or if there is a valid hmac hash for the value.
      *
-     * @param array $currentElement
      * @param string $sessionToken
-     * @param ValidationDto $validationDto
      */
     protected function validateAllPropertyValuesFromCreatableFormElement(
         array $currentElement,
@@ -353,9 +338,7 @@ class FormDefinitionValidationService implements SingletonInterface
      * and the property value matches the predefined value
      * or if there is a valid hmac hash for the value.
      *
-     * @param array $currentElement
      * @param string $sessionToken
-     * @param ValidationDto $validationDto
      */
     protected function validateAllPropertyValuesFromCreatablePropertyCollectionElement(
         array $currentElement,

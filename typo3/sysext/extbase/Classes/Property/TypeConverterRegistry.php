@@ -34,10 +34,7 @@ class TypeConverterRegistry
     /**
      * Used in the TypeConverterPass only.
      *
-     * @param TypeConverterInterface $converter
-     * @param int $priority
      * @param array|string[] $sources
-     * @param string $target
      * @throws Exception\DuplicateTypeConverterException
      * @internal
      */

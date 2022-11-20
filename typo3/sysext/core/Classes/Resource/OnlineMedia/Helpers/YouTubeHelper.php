@@ -27,7 +27,6 @@ class YouTubeHelper extends AbstractOEmbedHelper
     /**
      * Get public url
      *
-     * @param File $file
      * @return string|null
      */
     public function getPublicUrl(File $file)
@@ -39,7 +38,6 @@ class YouTubeHelper extends AbstractOEmbedHelper
     /**
      * Get local absolute file path to preview image
      *
-     * @param File $file
      * @return string
      */
     public function getPreviewImage(File $file)
@@ -68,7 +66,6 @@ class YouTubeHelper extends AbstractOEmbedHelper
      * Try to transform given URL to a File
      *
      * @param string $url
-     * @param Folder $targetFolder
      * @return File|null
      */
     public function transformUrlToFile($url, Folder $targetFolder)

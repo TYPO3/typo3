@@ -71,7 +71,6 @@ class FileSessionHandler implements \SessionHandlerInterface
     /**
      * Returns the file where to store our session data
      *
-     * @param string $id
      * @return string A filename
      */
     private function getSessionFile(string $id)

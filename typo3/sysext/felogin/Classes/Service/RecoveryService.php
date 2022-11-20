@@ -52,8 +52,6 @@ class RecoveryService
      * Sends an email with an absolute link including the given forgot hash to the passed user
      * with instructions to recover the account.
      *
-     * @param array $userData
-     * @param string $hash
      *
      * @throws TransportExceptionInterface
      */

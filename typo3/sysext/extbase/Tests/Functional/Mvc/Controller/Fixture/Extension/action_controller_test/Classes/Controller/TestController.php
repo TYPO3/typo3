@@ -45,16 +45,12 @@ class TestController extends ActionController
         );
     }
 
-    /**
-     * @param \ExtbaseTeam\ActionControllerTest\Domain\Model\Model $fooParam
-     */
     public function fooAction(Model $fooParam): ResponseInterface
     {
         return $this->htmlResponse('');
     }
 
     /**
-     * @param string $barParam
      * @Extbase\Validate("TYPO3.CMS.Extbase.Tests.Functional.Mvc.Controller.Fixture:CustomValidator", param="barParam")
      */
     public function barAction(string $barParam): ResponseInterface
@@ -63,7 +59,6 @@ class TestController extends ActionController
     }
 
     /**
-     * @param array $bazParam
      * @Extbase\Validate("NotEmpty", param="bazParam")
      */
     public function bazAction(array $bazParam): ResponseInterface

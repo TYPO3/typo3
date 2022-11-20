@@ -72,8 +72,6 @@ class SourceHostTest extends UnitTestCase
     /**
      * @test
      * @dataProvider evaluateFieldValueWorksWithDifferentInputsDataProvider
-     * @param string $input
-     * @param string $expected
      */
     public function evaluateFieldValueWorksWithDifferentInputs(string $input, string $expected): void
     {

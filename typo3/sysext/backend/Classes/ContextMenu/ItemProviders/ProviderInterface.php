@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
 interface ProviderInterface
 {
     /**
-     * @param array $items
      * @return array
      */
     public function addItems(array $items): array;

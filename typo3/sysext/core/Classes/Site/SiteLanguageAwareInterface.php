@@ -24,9 +24,6 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  */
 interface SiteLanguageAwareInterface
 {
-    /**
-     * @param Entity\SiteLanguage $siteLanguage
-     */
     public function setSiteLanguage(SiteLanguage $siteLanguage);
 
     /**

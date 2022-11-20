@@ -24,9 +24,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class InstalledExtensionsCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
@@ -36,9 +33,6 @@ class InstalledExtensionsCest
         $I->waitForElementVisible('#typo3-extension-list');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function checkSearchFiltersList(ApplicationTester $I): void
     {
         $I->seeNumberOfElements('#typo3-extension-list tbody tr[role="row"]', [10, 100]);
@@ -60,9 +54,6 @@ class InstalledExtensionsCest
         $I->seeNumberOfElements('#typo3-extension-list tbody tr[role="row"]', [10, 100]);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function checkIfUploadFormAppears(ApplicationTester $I): void
     {
         $I->cantSeeElement('.module-body .extension-upload-form');
@@ -70,9 +61,6 @@ class InstalledExtensionsCest
         $I->seeElement('.module-body .extension-upload-form');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function checkUninstallingAndInstallingAnExtension(ApplicationTester $I): void
     {
         $I->wantTo('Check if uninstalling and installing an extension with backend module removes and adds the module from the module menu.');

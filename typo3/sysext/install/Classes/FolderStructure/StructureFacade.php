@@ -31,8 +31,6 @@ class StructureFacade implements StructureFacadeInterface
 
     /**
      * Constructor sets structure to work on
-     *
-     * @param RootNodeInterface $structure
      */
     public function __construct(RootNodeInterface $structure)
     {

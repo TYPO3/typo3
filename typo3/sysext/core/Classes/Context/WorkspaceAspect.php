@@ -34,9 +34,6 @@ class WorkspaceAspect implements AspectInterface
      */
     protected $workspaceId;
 
-    /**
-     * @param int $workspaceId
-     */
     public function __construct(int $workspaceId = 0)
     {
         $this->workspaceId = $workspaceId;
@@ -45,7 +42,6 @@ class WorkspaceAspect implements AspectInterface
     /**
      * Fetch the workspace ID, or evaluated the state if it's 'online' or 'offline'
      *
-     * @param string $name
      * @return int|bool
      * @throws AspectPropertyNotFoundException
      */

@@ -58,8 +58,6 @@ class BlobTypesTest extends AbstractDataTypeBaseTestCase
     /**
      * @test
      * @dataProvider canParseBlobDataTypeProvider
-     * @param string $columnDefinition
-     * @param string $className
      */
     public function canParseDataType(string $columnDefinition, string $className): void
     {

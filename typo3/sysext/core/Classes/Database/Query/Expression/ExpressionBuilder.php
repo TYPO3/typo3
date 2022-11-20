@@ -54,8 +54,6 @@ class ExpressionBuilder
 
     /**
      * Initializes a new ExpressionBuilder
-     *
-     * @param Connection $connection
      */
     public function __construct(Connection $connection)
     {
@@ -513,7 +511,6 @@ class ExpressionBuilder
     /**
      * Creates a MIN expression for the given field/alias.
      *
-     * @param string $fieldName
      * @param string|null $alias
      * @return string
      */
@@ -525,7 +522,6 @@ class ExpressionBuilder
     /**
      * Creates a MAX expression for the given field/alias.
      *
-     * @param string $fieldName
      * @param string|null $alias
      * @return string
      */
@@ -537,7 +533,6 @@ class ExpressionBuilder
     /**
      * Creates a AVG expression for the given field/alias.
      *
-     * @param string $fieldName
      * @param string|null $alias
      * @return string
      */
@@ -549,7 +544,6 @@ class ExpressionBuilder
     /**
      * Creates a SUM expression for the given field/alias.
      *
-     * @param string $fieldName
      * @param string|null $alias
      * @return string
      */
@@ -561,7 +555,6 @@ class ExpressionBuilder
     /**
      * Creates a COUNT expression for the given field/alias.
      *
-     * @param string $fieldName
      * @param string|null $alias
      * @return string
      */
@@ -573,7 +566,6 @@ class ExpressionBuilder
     /**
      * Creates a LENGTH expression for the given field/alias.
      *
-     * @param string $fieldName
      * @param string|null $alias
      * @return string
      */
@@ -585,8 +577,6 @@ class ExpressionBuilder
     /**
      * Create a SQL aggregate function.
      *
-     * @param string $aggregateName
-     * @param string $fieldName
      * @param string|null $alias
      * @return string
      */

@@ -69,10 +69,6 @@ abstract class AbstractTask implements TaskInterface
      */
     protected $successful;
 
-    /**
-     * @param Resource\ProcessedFile $targetFile
-     * @param array $configuration
-     */
     public function __construct(ProcessedFile $targetFile, array $configuration)
     {
         $this->targetFile = $targetFile;
@@ -157,9 +153,6 @@ abstract class AbstractTask implements TaskInterface
         return $this->targetFile;
     }
 
-    /**
-     * @param Resource\ProcessedFile $targetFile
-     */
     public function setTargetFile(ProcessedFile $targetFile)
     {
         $this->targetFile = $targetFile;
@@ -173,9 +166,6 @@ abstract class AbstractTask implements TaskInterface
         return $this->sourceFile;
     }
 
-    /**
-     * @param Resource\File $sourceFile
-     */
     public function setSourceFile(File $sourceFile)
     {
         $this->sourceFile = $sourceFile;
@@ -193,7 +183,6 @@ abstract class AbstractTask implements TaskInterface
      * Checks if the given configuration is sensible for this task, i.e. if all required parameters
      * are given, within the boundaries and don't conflict with each other.
      *
-     * @param array $configuration
      * @return bool
      */
     abstract protected function isValidConfiguration(array $configuration);

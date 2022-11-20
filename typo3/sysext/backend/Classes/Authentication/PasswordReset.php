@@ -86,7 +86,6 @@ class PasswordReset implements LoggerAwareInterface
     /**
      * Check if a specific backend user can be used to trigger an email reset for (email + password set)
      *
-     * @param int $userId
      * @return bool
      */
     public function isEnabledForUser(int $userId): bool
@@ -148,10 +147,6 @@ class PasswordReset implements LoggerAwareInterface
     /**
      * Send out an email to a given email address and note that a reset was triggered but email was used multiple times.
      * Used when the database returned multiple users.
-     *
-     * @param ServerRequestInterface $request
-     * @param Context $context
-     * @param string $emailAddress
      */
     protected function sendAmbiguousEmail(ServerRequestInterface $request, Context $context, string $emailAddress): void
     {
@@ -180,11 +175,6 @@ class PasswordReset implements LoggerAwareInterface
 
     /**
      * Send out an email to a user that does have an email address added to his account, containing a reset link.
-     *
-     * @param ServerRequestInterface $request
-     * @param Context $context
-     * @param array $user
-     * @param string $emailAddress
      */
     protected function sendResetEmail(ServerRequestInterface $request, Context $context, array $user, string $emailAddress): void
     {
@@ -261,7 +251,6 @@ class PasswordReset implements LoggerAwareInterface
     /**
      * Validates all query parameters / GET parameters of the given request against the token.
      *
-     * @param ServerRequestInterface $request
      * @return bool
      */
     public function isValidResetTokenFromRequest(ServerRequestInterface $request): bool
@@ -277,9 +266,6 @@ class PasswordReset implements LoggerAwareInterface
     /**
      * Fetch the user record from the database if the token is valid, and has matched all criteria
      *
-     * @param string $token
-     * @param string $identity
-     * @param int $expirationTimestamp
      * @return array|null the BE User database record
      */
     protected function findValidUserForToken(string $token, string $identity, int $expirationTimestamp): ?array
@@ -327,7 +313,6 @@ class PasswordReset implements LoggerAwareInterface
     /**
      * Update the password in the database if the password matches and the token is valid.
      *
-     * @param ServerRequestInterface $request
      * @param Context $context current context
      * @return bool whether the password was reset or not
      */
@@ -422,10 +407,8 @@ class PasswordReset implements LoggerAwareInterface
      * @param string $message the information / message in english
      * @param int $action see SystemLogLoginAction
      * @param int $error see SystemLogErrorClassification
-     * @param int $userId
      * @param array $data additional information, used for the message
      * @param string $ipAddress
-     * @param Context $context
      */
     protected function log(string $message, int $action, int $error, int $userId, array $data, $ipAddress, Context $context): void
     {
@@ -477,8 +460,6 @@ class PasswordReset implements LoggerAwareInterface
      * Checks if an email reset link has been requested more than 3 times in the last 30mins.
      * If a password was successfully reset more than three times in 30 minutes, it would still fail.
      *
-     * @param Context $context
-     * @param string $email
      * @return bool
      */
     protected function hasExceededMaximumAttemptsForReset(Context $context, string $email): bool
@@ -491,8 +472,6 @@ class PasswordReset implements LoggerAwareInterface
     /**
      * SQL query to find the amount of initiated resets from a given time.
      *
-     * @param \DateTimeInterface $since
-     * @param string $email
      * @return int
      */
     protected function getNumberOfInitiatedResetsForEmail(\DateTimeInterface $since, string $email): int

@@ -30,7 +30,6 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
     /**
      * Fetch languages to add them as select item
      *
-     * @param array $result
      * @return array
      * @throws \UnexpectedValueException
      */

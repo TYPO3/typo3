@@ -40,8 +40,6 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
 
     /**
      * Constructor sets options if given
-     *
-     * @param array $options
      */
     public function __construct(array $options = [])
     {
@@ -198,7 +196,6 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
      * Parses the salt out of a salt string including settings. If the salt does not include settings
      * it is returned unmodified.
      *
-     * @param string $salt
      * @return string
      */
     protected function getStoredSalt(string $salt): string
@@ -283,7 +280,6 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
      * Adapted version of base64_encoding for compatibility with python passlib. The output of this function is
      * is identical to base64_encode, except that it uses . instead of +, and omits trailing padding = and whitespace.
      *
-     * @param string $value
      * @return string
      */
     protected function base64Decode(string $value): string

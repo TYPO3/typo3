@@ -203,11 +203,6 @@ class PersistedPatternMapperTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $identifier
-     * @param string $requestValue
-     * @param string $language
-     * @param string|null $expectation
-     *
      * @test
      * @dataProvider languageAwareRecordsAreResolvedDataProvider
      */
@@ -282,10 +277,6 @@ class PersistedPatternMapperTest extends FunctionalTestCase
     }
 
     /**
-     * @param Context $context
-     * @param array $parameters
-     * @param bool $expectation
-     *
      * @test
      * @dataProvider recordVisibilityDataProvider
      */
@@ -297,10 +288,6 @@ class PersistedPatternMapperTest extends FunctionalTestCase
     }
 
     /**
-     * @param Context $context
-     * @param array $parameters
-     * @param bool $expectation
-     *
      * @test
      * @dataProvider recordVisibilityDataProvider
      */

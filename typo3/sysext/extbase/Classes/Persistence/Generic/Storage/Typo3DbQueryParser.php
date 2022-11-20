@@ -131,7 +131,6 @@ class Typo3DbQueryParser
     /**
      * Returns a ready to be executed QueryBuilder object, based on the query
      *
-     * @param QueryInterface $query
      * @return QueryBuilder
      */
     public function convertQueryToDoctrineQueryBuilder(QueryInterface $query)
@@ -271,8 +270,6 @@ class Typo3DbQueryParser
 
     /**
      * add TYPO3 Constraints for all tables to the queryBuilder
-     *
-     * @param QueryInterface $query
      */
     protected function addTypo3Constraints(QueryInterface $query)
     {
@@ -397,7 +394,6 @@ class Typo3DbQueryParser
     /**
      * Parse a DynamicOperand into SQL and parameter arrays.
      *
-     * @param Qom\ComparisonInterface $comparison
      * @param Qom\SourceInterface $source The source
      * @return string
      * @throws Exception
@@ -530,7 +526,6 @@ class Typo3DbQueryParser
     }
 
     /**
-     * @param Qom\DynamicOperandInterface $operand
      * @param Qom\SourceInterface $source The source
      * @return string
      * @throws \InvalidArgumentException
@@ -672,7 +667,6 @@ class Typo3DbQueryParser
     /**
      * Adds enableFields and deletedClause to the query if necessary
      *
-     * @param QuerySettingsInterface $querySettings
      * @param string $tableName The database table name
      * @param string $tableAlias
      * @return string

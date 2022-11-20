@@ -79,7 +79,6 @@ abstract class AbstractRestrictionContainer implements QueryRestrictionContainer
     /**
      * Add a new restriction instance to this collection
      *
-     * @param QueryRestrictionInterface $restriction
      * @return QueryRestrictionContainerInterface
      */
     public function add(QueryRestrictionInterface $restriction): QueryRestrictionContainerInterface

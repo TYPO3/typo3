@@ -38,7 +38,6 @@ interface EntityPointer
     public function isNode(): bool;
 
     /**
-     * @param EntityPointer $other
      * @return bool
      */
     public function isEqualTo(EntityPointer $other): bool;

@@ -106,7 +106,6 @@ class TimeTracker implements SingletonInterface
      * Sets the starting time
      *
      * @see finish()
-     * @param float|null $starttime
      */
     public function start(?float $starttime = null)
     {

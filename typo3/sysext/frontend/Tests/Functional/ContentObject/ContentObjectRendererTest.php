@@ -213,9 +213,6 @@ class ContentObjectRendererTest extends FunctionalTestCase
      *
      * @dataProvider getQueryDataProvider
      * @test
-     * @param string $table
-     * @param array $conf
-     * @param array $expected
      */
     public function getQuery(string $table, array $conf, array $expected): void
     {

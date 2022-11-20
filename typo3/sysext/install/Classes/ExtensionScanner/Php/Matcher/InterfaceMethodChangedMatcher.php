@@ -50,7 +50,6 @@ class InterfaceMethodChangedMatcher extends AbstractCoreMatcher
      * Test for "public function like($arg1, $arg2, $arg3) {}" (weak match)
      * Test for "->like($arg1, $arg2, $arg3); (weak match)
      *
-     * @param Node $node
      * @return void|null
      */
     public function enterNode(Node $node)

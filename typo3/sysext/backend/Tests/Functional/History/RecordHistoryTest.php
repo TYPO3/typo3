@@ -45,8 +45,6 @@ class RecordHistoryTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider findEventsForCorrelationWorksAsExpectedDataProvider
-     * @param string $correlationId
-     * @param int $amountOfEntries
      */
     public function findEventsForCorrelationWorksAsExpected(string $correlationId, int $amountOfEntries): void
     {

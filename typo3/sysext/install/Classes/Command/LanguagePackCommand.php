@@ -82,8 +82,6 @@ class LanguagePackCommand extends Command
     /**
      * Update language packs of all active languages for all active extensions
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @throws \InvalidArgumentException
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      * @return int

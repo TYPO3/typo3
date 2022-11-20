@@ -80,8 +80,6 @@ class PublicPropertyDeprecationTraitTest extends UnitTestCase
     /**
      * @dataProvider issetDataProvider
      * @test
-     * @param bool $expected
-     * @param string $property
      */
     public function issetWorksAsExpected(bool $expected, string $property): void
     {

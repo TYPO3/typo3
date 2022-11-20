@@ -48,8 +48,6 @@ class SiteFinder
 
     /**
      * Fetches all existing configurations as Site objects
-     *
-     * @param SiteConfiguration $siteConfiguration
      */
     public function __construct(SiteConfiguration $siteConfiguration = null)
     {
@@ -60,7 +58,6 @@ class SiteFinder
     /**
      * Return a list of all configured sites
      *
-     * @param bool $useCache
      * @return Site[]
      */
     public function getAllSites(bool $useCache = true): array
@@ -90,7 +87,6 @@ class SiteFinder
     /**
      * Find a site by given identifier
      *
-     * @param string $identifier
      * @return Site
      * @throws SiteNotFoundException
      */
@@ -105,8 +101,6 @@ class SiteFinder
     /**
      * Traverses the rootline of a page up until a Site was found.
      *
-     * @param int $pageId
-     * @param array $rootLine
      * @param string|null $mountPointParameter
      * @return Site
      * @throws SiteNotFoundException
@@ -135,9 +129,6 @@ class SiteFinder
         throw new SiteNotFoundException('No site found in root line of page ' . $pageId, 1521716622);
     }
 
-    /**
-     * @param bool $useCache
-     */
     protected function fetchAllSites(bool $useCache = true): void
     {
         $this->sites = $this->siteConfiguration->getAllExistingSites($useCache);

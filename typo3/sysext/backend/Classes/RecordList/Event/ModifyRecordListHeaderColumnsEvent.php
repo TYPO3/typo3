@@ -75,7 +75,6 @@ final class ModifyRecordListHeaderColumnsEvent
     /**
      * Whether the column exists
      *
-     * @param string $columnName
      * @return bool
      */
     public function hasColumn(string $columnName): bool
@@ -86,7 +85,6 @@ final class ModifyRecordListHeaderColumnsEvent
     /**
      * Get column by its name
      *
-     * @param string $columnName
      * @return string|null The column or NULL if the column does not exist
      */
     public function getColumn(string $columnName): ?string
@@ -97,7 +95,6 @@ final class ModifyRecordListHeaderColumnsEvent
     /**
      * Remove column by its name
      *
-     * @param string $columnName
      * @return bool Whether the column could be removed - Will therefore
      *              return FALSE if the column to remove does not exist.
      */

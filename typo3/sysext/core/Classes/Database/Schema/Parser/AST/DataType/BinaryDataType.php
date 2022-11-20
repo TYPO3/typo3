@@ -24,8 +24,6 @@ class BinaryDataType extends AbstractDataType
 {
     /**
      * BinaryDataType constructor.
-     *
-     * @param int $length
      */
     public function __construct(int $length)
     {

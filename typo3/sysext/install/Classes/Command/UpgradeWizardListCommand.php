@@ -94,8 +94,6 @@ class UpgradeWizardListCommand extends Command
     /**
      * List available upgrade wizards. If -all is given, already done wizards are listed, too.
      *
-     * @param InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -136,8 +134,6 @@ class UpgradeWizardListCommand extends Command
      * Get Wizard instance by class name and identifier
      * Returns null if wizard is already done
      *
-     * @param string $className
-     * @param string $identifier
      * @param bool $all
      * @return \TYPO3\CMS\Install\Updates\UpgradeWizardInterface|null
      */

@@ -297,7 +297,6 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
     /**
      * Get the title of the selected page
      *
-     * @param int $pageId
      * @return string Page title or empty string
      */
     private function getPageTitle(int $pageId): string

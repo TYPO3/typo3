@@ -68,7 +68,6 @@ class ResetPasswordController
     /**
      * Show a form to enter an email address to request a password reset email.
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function forgetPasswordFormAction(ServerRequestInterface $request): ResponseInterface
@@ -111,7 +110,6 @@ class ResetPasswordController
     /**
      * Validates the link and show a form to enter the new password.
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function passwordResetAction(ServerRequestInterface $request): ResponseInterface

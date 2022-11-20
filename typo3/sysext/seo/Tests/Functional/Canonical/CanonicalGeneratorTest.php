@@ -130,9 +130,6 @@ class CanonicalGeneratorTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $targetUri
-     * @param string $expectedCanonicalUrl
-     *
      * @test
      * @dataProvider generateDataProvider
      */

@@ -436,8 +436,6 @@ class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Set up workspace aspect.
-     *
-     * @param int $workspaceId
      */
     protected function setUpWorkspaceAspect(int $workspaceId): void
     {

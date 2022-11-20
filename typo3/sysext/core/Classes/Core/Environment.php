@@ -106,15 +106,6 @@ class Environment
      * Set up of TYPO3, or to be used within tests. If you ever call this method in your extension, you're probably
      * doing something wrong. Never call this method! Never rely on it!
      *
-     * @param ApplicationContext $context
-     * @param bool $cli
-     * @param bool $composerMode
-     * @param string $projectPath
-     * @param string $publicPath
-     * @param string $varPath
-     * @param string $configPath
-     * @param string $currentScript
-     * @param string $os
      * @internal
      */
     public static function initialize(

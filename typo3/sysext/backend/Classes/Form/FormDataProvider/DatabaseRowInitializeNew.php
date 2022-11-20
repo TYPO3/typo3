@@ -28,7 +28,6 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
      * Initialize new row with default values from various sources
      * There are 4 sources of default values. Mind the order, the last takes precedence.
      *
-     * @param array $result
      * @return array
      * @throws \UnexpectedValueException
      */

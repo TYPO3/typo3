@@ -44,7 +44,6 @@ class EntityContext
     }
 
     /**
-     * @param int $workspaceId
      * @return static
      */
     public function withWorkspaceId(int $workspaceId): self
@@ -66,7 +65,6 @@ class EntityContext
     }
 
     /**
-     * @param int $languageId
      * @return static
      */
     public function withLanguageId(int $languageId): self

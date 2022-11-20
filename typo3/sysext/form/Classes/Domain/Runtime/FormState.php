@@ -68,9 +68,6 @@ class FormState
         return $this->lastDisplayedPageIndex;
     }
 
-    /**
-     * @param int $lastDisplayedPageIndex
-     */
     public function setLastDisplayedPageIndex(int $lastDisplayedPageIndex)
     {
         $this->lastDisplayedPageIndex = $lastDisplayedPageIndex;
@@ -85,7 +82,6 @@ class FormState
     }
 
     /**
-     * @param string $propertyPath
      * @param mixed $value
      */
     public function setFormValue(string $propertyPath, $value)
@@ -99,7 +95,6 @@ class FormState
     }
 
     /**
-     * @param string $propertyPath
      * @return mixed
      */
     public function getFormValue(string $propertyPath)

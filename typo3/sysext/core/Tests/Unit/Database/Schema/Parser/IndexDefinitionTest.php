@@ -520,15 +520,6 @@ class IndexDefinitionTest extends UnitTestCase
     /**
      * @test
      * @dataProvider canParseIndexDefinitionDataProvider
-     * @param string $indexDefinition
-     * @param string $indexName
-     * @param array $indexColumns
-     * @param bool $isPrimary
-     * @param bool $isUnique
-     * @param bool $isFulltext
-     * @param bool $isSpatial
-     * @param string $indexType
-     * @param array $indexOptions
      */
     public function canParseIndexDefinition(
         string $indexDefinition,
@@ -563,7 +554,6 @@ class IndexDefinitionTest extends UnitTestCase
     /**
      * Parse the CREATE TABLE statement and return the reference definition
      *
-     * @param string $statement
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateIndexDefinitionItem
      */
     protected function createSubject(string $statement): CreateIndexDefinitionItem

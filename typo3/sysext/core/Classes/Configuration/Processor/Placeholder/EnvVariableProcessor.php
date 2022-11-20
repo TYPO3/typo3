@@ -29,7 +29,6 @@ class EnvVariableProcessor implements PlaceholderProcessorInterface
     }
 
     /**
-     * @param string $value
      * @param array|null $referenceArray
      * @return mixed|string
      */

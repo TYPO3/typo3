@@ -515,7 +515,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      * Callback method of addDataEvaluatesUserCondition. A USER condition
      * Throws an exception if data is correct!
      *
-     * @param array $parameter
      * @throws \RuntimeException if data is ok
      */
     public function addDataEvaluatesUserConditionCallback(array $parameter): void
@@ -563,7 +562,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      * Callback method of addDataResolvesAllUserParameters. A USER condition
      * receives all condition parameter!
      *
-     * @param array $parameter
      * @throws \RuntimeException if condition parameter not resolved correctly
      * @return bool
      */
@@ -624,7 +622,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      * Callback method of addDataEvaluatesUserCondition. A USER condition
      * Throws an exception if data is correct!
      *
-     * @param array $parameter
      * @throws \RuntimeException if FlexForm context is not as expected
      * @return bool
      */
@@ -3883,7 +3880,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
 
     /**
      * @param string $condition
-     * @param array $record
      * @param string $expectedResult
      * @dataProvider conditionStringDataProvider
      * @test
@@ -3918,7 +3914,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
 
     /**
      * @param string $condition
-     * @param array $record
      * @param string $expectedResult
      * @dataProvider conditionStringDataProvider
      * @test

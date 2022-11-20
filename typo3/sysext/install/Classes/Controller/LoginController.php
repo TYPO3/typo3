@@ -37,7 +37,6 @@ class LoginController extends AbstractController
     /**
      * Render the "Create an "enable install tool file" action
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function showEnableInstallToolFileAction(ServerRequestInterface $request): ResponseInterface
@@ -52,7 +51,6 @@ class LoginController extends AbstractController
     /**
      * Render login view
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function showLoginAction(ServerRequestInterface $request): ResponseInterface

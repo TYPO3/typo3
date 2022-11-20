@@ -78,7 +78,6 @@ class DeleteUploadsFinisher extends AbstractFinisher
     }
 
     /**
-     * @param Folder $folder
      * @return bool
      */
     protected function isEmptyFolder(Folder $folder): bool

@@ -27,7 +27,6 @@ class DatabaseParentPageRow extends AbstractDatabaseRecordProvider implements Fo
      * Add parent page row of existing row to result
      * parentPageRow will stay NULL in result if a record is added or edited below root node
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

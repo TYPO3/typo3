@@ -44,7 +44,6 @@ interface PreviewRendererInterface
      * that contains the record for which a preview header
      * should be rendered and returned.
      *
-     * @param GridColumnItem $item
      * @return string
      */
     public function renderPageModulePreviewHeader(GridColumnItem $item): string;
@@ -55,7 +54,6 @@ interface PreviewRendererInterface
      * that contains the record for which a preview should be
      * rendered and returned.
      *
-     * @param GridColumnItem $item
      * @return string
      */
     public function renderPageModulePreviewContent(GridColumnItem $item): string;
@@ -64,7 +62,6 @@ interface PreviewRendererInterface
      * Render a footer for the record to display in page module below
      * the body of the item's preview.
      *
-     * @param GridColumnItem $item
      * @return string
      */
     public function renderPageModulePreviewFooter(GridColumnItem $item): string;
@@ -75,9 +72,6 @@ interface PreviewRendererInterface
      * among other things the record, which can be used to determine
      * appropriate wrapping.
      *
-     * @param string $previewHeader
-     * @param string $previewContent
-     * @param GridColumnItem $item
      * @return string
      */
     public function wrapPageModulePreview(string $previewHeader, string $previewContent, GridColumnItem $item): string;

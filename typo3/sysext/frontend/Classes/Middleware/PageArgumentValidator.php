@@ -68,8 +68,6 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
     /**
      * Validates the &cHash parameter against the other $queryParameters / GET parameters
      *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -135,7 +133,6 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
     /**
      * Filters out the arguments that are necessary for calculating cHash
      *
-     * @param PageArguments $pageArguments
      * @return array<string, string>
      */
     protected function getRelevantParametersForCacheHashCalculation(PageArguments $pageArguments): array

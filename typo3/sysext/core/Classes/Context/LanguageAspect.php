@@ -79,14 +79,10 @@ class LanguageAspect implements AspectInterface
     public const OVERLAYS_MIXED = 'mixed';  // config.sys_language_overlay = 1 (keep the ones that are only available in default language)
     public const OVERLAYS_ON = 'on';    // "hideNonTranslated"
     public const OVERLAYS_ON_WITH_FLOATING = 'includeFloating';    // "hideNonTranslated" + records that are only available in polish
-
     /**
      * Create the default language
      *
-     * @param int $id
      * @param int|null $contentId
-     * @param string $overlayType
-     * @param array $fallbackChain
      */
     public function __construct(int $id = 0, int $contentId = null, string $overlayType = self::OVERLAYS_ON_WITH_FLOATING, array $fallbackChain = [])
     {
@@ -185,7 +181,6 @@ class LanguageAspect implements AspectInterface
     /**
      * Fetch a property.
      *
-     * @param string $name
      * @return int|string|array
      * @throws AspectPropertyNotFoundException
      */

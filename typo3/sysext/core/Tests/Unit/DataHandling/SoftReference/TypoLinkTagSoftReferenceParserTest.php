@@ -126,8 +126,6 @@ class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferenceParserTest
     /**
      * @test
      * @dataProvider findRefReturnsParsedElementsDataProvider
-     * @param array $softrefConfiguration
-     * @param array $expectedElement
      */
     public function findRefReturnsParsedElements(array $softrefConfiguration, array $expectedElement): void
     {
@@ -173,8 +171,6 @@ class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferenceParserTest
     /**
      * @test
      * @dataProvider findRefReturnsParsedElementsWithFileDataProvider
-     * @param array $softrefConfiguration
-     * @param array $expectedElement
      */
     public function findRefReturnsParsedElementsWithFile(array $softrefConfiguration, array $expectedElement): void
     {
@@ -228,7 +224,6 @@ class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferenceParserTest
     /**
      * @test
      * @dataProvider findRefReturnsNullWithFolderDataProvider
-     * @param array $softrefConfiguration
      */
     public function findRefReturnsNullWithFolder(array $softrefConfiguration): void
     {

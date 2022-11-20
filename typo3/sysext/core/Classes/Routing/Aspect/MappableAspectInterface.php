@@ -23,13 +23,11 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
 interface MappableAspectInterface extends AspectInterface
 {
     /**
-     * @param string $value
      * @return string|null
      */
     public function generate(string $value): ?string;
 
     /**
-     * @param string $value
      * @return string|null
      */
     public function resolve(string $value): ?string;

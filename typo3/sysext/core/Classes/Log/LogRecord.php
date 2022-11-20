@@ -187,7 +187,6 @@ class LogRecord implements \ArrayAccess
      * Adds additional log data to already existing data
      * and overwrites previously data using the same array keys.
      *
-     * @param array $data
      * @return LogRecord
      */
     public function addData(array $data)

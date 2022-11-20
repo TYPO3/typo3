@@ -221,8 +221,6 @@ class QueryHelper
      * Quote database table/column names indicated by {#identifier} markup in a SQL fragment string.
      * This is an intermediate step to make SQL fragments in Typoscript and TCA database agnostic.
      *
-     * @param \TYPO3\CMS\Core\Database\Connection $connection
-     * @param string $sql
      * @return string
      */
     public static function quoteDatabaseIdentifiers(Connection $connection, string $sql): string

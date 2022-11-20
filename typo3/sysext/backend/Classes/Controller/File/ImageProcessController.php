@@ -44,7 +44,6 @@ class ImageProcessController implements LoggerAwareInterface
     }
 
     /**
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request): ResponseInterface

@@ -27,7 +27,6 @@ class State
     public const STATE_SOURCE = 'source';
 
     /**
-     * @param string $tableName
      * @return State|null
      */
     public static function create(string $tableName)
@@ -43,7 +42,6 @@ class State
     }
 
     /**
-     * @param string $tableName
      * @param string|null $json
      * @return State|null
      */
@@ -62,7 +60,6 @@ class State
     }
 
     /**
-     * @param string $tableName
      * @return bool
      */
     public static function isApplicable(string $tableName)
@@ -76,7 +73,6 @@ class State
     }
 
     /**
-     * @param string $tableName
      * @return array
      */
     public static function getFieldNames(string $tableName)
@@ -95,7 +91,6 @@ class State
     }
 
     /**
-     * @param string $tableName
      * @return bool
      */
     protected static function hasColumns(string $tableName)
@@ -107,7 +102,6 @@ class State
     }
 
     /**
-     * @param string $tableName
      * @return bool
      */
     protected static function hasLanguageFieldName(string $tableName)
@@ -116,7 +110,6 @@ class State
     }
 
     /**
-     * @param string $tableName
      * @return bool
      */
     protected static function hasTranslationParentFieldName(string $tableName)
@@ -148,10 +141,6 @@ class State
         self::STATE_PARENT,
     ];
 
-    /**
-     * @param string $tableName
-     * @param array $states
-     */
     public function __construct(string $tableName, array $states = [])
     {
         $this->tableName = $tableName;
@@ -163,9 +152,6 @@ class State
         );
     }
 
-    /**
-     * @param array $states
-     */
     public function update(array $states)
     {
         $this->states = array_merge(
@@ -176,9 +162,6 @@ class State
 
     /**
      * Updates field names having a particular state to a target state.
-     *
-     * @param string $currentState
-     * @param string $targetState
      */
     public function updateStates(string $currentState, string $targetState)
     {
@@ -232,7 +215,6 @@ class State
     }
 
     /**
-     * @param string $fieldName
      * @return bool
      */
     public function isUndefined(string $fieldName)
@@ -241,7 +223,6 @@ class State
     }
 
     /**
-     * @param string $fieldName
      * @return bool
      */
     public function isCustomState(string $fieldName)
@@ -250,7 +231,6 @@ class State
     }
 
     /**
-     * @param string $fieldName
      * @return bool
      */
     public function isParentState(string $fieldName)
@@ -259,7 +239,6 @@ class State
     }
 
     /**
-     * @param string $fieldName
      * @return bool
      */
     public function isSourceState(string $fieldName)
@@ -268,7 +247,6 @@ class State
     }
 
     /**
-     * @param string $fieldName
      * @return string|null
      */
     public function getState(string $fieldName)
@@ -279,8 +257,6 @@ class State
     /**
      * Filters field names having a desired state.
      *
-     * @param string $desiredState
-     * @param bool $modified
      * @return string[]
      */
     public function filterFieldNames(string $desiredState, bool $modified = false)
@@ -301,7 +277,6 @@ class State
     /**
      * Filter out field names that don't exist in TCA.
      *
-     * @param array $states
      * @return array
      */
     protected function sanitize(array $states)
@@ -316,7 +291,6 @@ class State
     /**
      * Add missing states for field names.
      *
-     * @param array $states
      * @return array
      */
     protected function enrich(array $states)

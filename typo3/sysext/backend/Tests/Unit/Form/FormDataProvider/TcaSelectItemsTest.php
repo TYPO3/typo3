@@ -81,7 +81,6 @@ class TcaSelectItemsTest extends UnitTestCase
      * Prepare a mock database setup for a Doctrine connection
      * and return an array of all prophets to set expectations upon.
      *
-     * @param string $tableName
      * @return array
      */
     protected function mockDatabaseConnection(string $tableName = 'fTable'): array
@@ -3380,10 +3379,6 @@ class TcaSelectItemsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider processSelectFieldSetsCorrectValuesForMmRelationsDataProvider
-     *
-     * @param array $input
-     * @param array $overrideRelationHandlerSettings
-     * @param array $relationHandlerUids
      */
     public function processSelectFieldSetsCorrectValuesForMmRelations(array $input, array $overrideRelationHandlerSettings, array $relationHandlerUids): void
     {

@@ -166,7 +166,6 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
     }
 
     /**
-     * @param int $sysLanguageUid
      * @return array
      */
     protected function getContextForSysLanguageUid(int $sysLanguageUid): array

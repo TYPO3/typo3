@@ -137,8 +137,6 @@ class ShortcutRepository
     /**
      * Returns if there already is a shortcut entry for a given TYPO3 URL
      *
-     * @param string $routeIdentifier
-     * @param string $arguments
      * @return bool
      */
     public function shortcutExists(string $routeIdentifier, string $arguments): bool
@@ -521,9 +519,6 @@ class ShortcutRepository
     /**
      * Gets the icon for the shortcut
      *
-     * @param string $routeIdentifier
-     * @param string $moduleName
-     * @param array $shortcut
      * @return string Shortcut icon as img tag
      */
     protected function getShortcutIcon(string $routeIdentifier, string $moduleName, array $shortcut): string

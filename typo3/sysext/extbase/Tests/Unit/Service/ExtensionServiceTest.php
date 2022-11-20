@@ -173,9 +173,6 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getPluginNameByActionDataProvider
-     * @param string $extensionName
-     * @param string $controllerName
-     * @param string $actionName
      * @param mixed $expectedResult
      */
     public function getPluginNameByActionTests(string $extensionName, string $controllerName, string $actionName, $expectedResult): void

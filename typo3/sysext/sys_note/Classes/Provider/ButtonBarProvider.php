@@ -98,7 +98,6 @@ final class ButtonBarProvider
     /**
      * Check if the user is allowed to create a sys_note record
      *
-     * @param int $id
      * @return bool
      */
     protected function canCreateNewRecord(int $id): bool
@@ -120,7 +119,6 @@ final class ButtonBarProvider
     /**
      * Check if creation is allowed / denied in web_list via mod TSconfig
      *
-     * @param array $modTSconfig
      * @return bool
      */
     protected function isCreationAllowed(array $modTSconfig): bool

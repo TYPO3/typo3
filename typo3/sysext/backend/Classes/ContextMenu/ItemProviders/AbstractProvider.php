@@ -155,7 +155,6 @@ class AbstractProvider implements ProviderInterface
     /**
      * Adds new items to the given array or modifies existing items
      *
-     * @param array $items
      * @return array
      */
     public function addItems(array $items): array
@@ -168,7 +167,6 @@ class AbstractProvider implements ProviderInterface
     /**
      * Converts item configuration (from $this->itemsConfiguration) into an array ready for returning by controller
      *
-     * @param array $itemsConfiguration
      * @return array
      */
     protected function prepareItems(array $itemsConfiguration): array
@@ -197,7 +195,6 @@ class AbstractProvider implements ProviderInterface
      * Returns an array of additional attributes for given item. Additional attributes are used to pass item specific data
      * to the JS. E.g. message for the delete confirmation dialog
      *
-     * @param string $itemName
      * @return array
      */
     protected function getAdditionalAttributes(string $itemName): array
@@ -208,8 +205,6 @@ class AbstractProvider implements ProviderInterface
     /**
      * Checks whether certain item can be rendered (e.g. check for disabled items or permissions)
      *
-     * @param string $itemName
-     * @param string $type
      * @return bool
      */
     protected function canRender(string $itemName, string $type): bool

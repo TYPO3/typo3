@@ -32,9 +32,6 @@ class ExtractorDto
      */
     protected $result = [];
 
-    /**
-     * @param array $prototypeConfiguration
-     */
     public function __construct(array $prototypeConfiguration)
     {
         $this->prototypeConfiguration = $prototypeConfiguration;
@@ -57,7 +54,6 @@ class ExtractorDto
     }
 
     /**
-     * @param array $result
      * @return ExtractorDto
      */
     public function setResult(array $result): ExtractorDto

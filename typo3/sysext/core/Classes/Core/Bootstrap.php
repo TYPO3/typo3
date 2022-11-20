@@ -209,7 +209,6 @@ class Bootstrap
      * checks if config/system/settings.php or PackageStates.php is missing,
      * used to see if a redirect to the installer is needed
      *
-     * @param ConfigurationManager $configurationManager
      * @return bool TRUE when the essential configuration is available, otherwise FALSE
      * @internal This is not a public API method, do not use in own extensions
      */
@@ -238,7 +237,6 @@ class Bootstrap
      * provided by the packages.
      *
      * @param string $packageManagerClassName Define an alternative package manager implementation (usually for the installer)
-     * @param PackageCacheInterface $packageCache
      * @return PackageManager
      * @internal This is not a public API method, do not use in own extensions
      */
@@ -256,7 +254,6 @@ class Bootstrap
     /**
      * @internal
      *
-     * @param FrontendInterface $coreCache
      * @return PackageCacheInterface
      */
     public static function createPackageCache(FrontendInterface $coreCache): PackageCacheInterface
@@ -277,7 +274,6 @@ class Bootstrap
      * Load ext_localconf of extensions
      *
      * @param bool $allowCaching
-     * @param FrontendInterface $coreCache
      * @internal This is not a public API method, do not use in own extensions
      */
     public static function loadTypo3LoadedExtAndExtLocalconf($allowCaching = true, FrontendInterface $coreCache = null)
@@ -303,7 +299,6 @@ class Bootstrap
      * We need an early instance of the configuration manager.
      * Since makeInstance relies on the object configuration, we create it here with new instead.
      *
-     * @param ConfigurationManager $configurationManager
      * @internal This is not a public API method, do not use in own extensions
      */
     protected static function populateLocalConfiguration(ConfigurationManager $configurationManager)

@@ -41,7 +41,6 @@ class FolderLinkHandler extends FileLinkHandler
     protected $expectedClass = Folder::class;
 
     /**
-     * @param Folder $folder
      * @param string $extensionList
      * @return FileInterface[]|Folder[]
      */
@@ -66,7 +65,6 @@ class FolderLinkHandler extends FileLinkHandler
     /**
      * Renders a single item displayed in the current folder
      *
-     * @param ResourceInterface $fileOrFolderObject
      *
      * @return array
      * @throws \InvalidArgumentException

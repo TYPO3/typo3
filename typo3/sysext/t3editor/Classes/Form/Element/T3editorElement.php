@@ -177,9 +177,7 @@ class T3editorElement extends AbstractFormElement
      * @param string $class Class attribute of HTML tag
      * @param string $content Content of the editor
      * @param array $attributes Any additional editor parameters
-     * @param array $settings
      * @param string $label Codemirror panel label
-     * @param array $hiddenfields
      *
      * @return string Generated HTML code for editor
      * @throws \TYPO3\CMS\T3editor\Exception\InvalidModeException

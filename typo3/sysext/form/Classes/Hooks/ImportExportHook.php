@@ -23,9 +23,6 @@ use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
  */
 class ImportExportHook
 {
-    /**
-     * @param array $params
-     */
     public function beforeAddSysFileRecordOnImport(array $params): void
     {
         $fileRecord = $params['fileRecord'];

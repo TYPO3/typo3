@@ -179,9 +179,6 @@ class ExternalLinktype extends AbstractLinktype
     /**
      * Check URL using the specified request methods
      *
-     * @param string $url
-     * @param string $method
-     * @param array $options
      * @return bool
      */
     protected function requestUrl(string $url, string $method, array $options): bool
@@ -333,7 +330,6 @@ class ExternalLinktype extends AbstractLinktype
     /**
      * Convert domain to punycode to handle domains with non-ASCII characters
      *
-     * @param string $url
      * @return string
      */
     protected function preprocessUrl(string $url): string

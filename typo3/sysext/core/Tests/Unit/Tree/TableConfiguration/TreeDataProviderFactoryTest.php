@@ -86,8 +86,6 @@ class TreeDataProviderFactoryTest extends UnitTestCase
     }
 
     /**
-     * @param array $tcaConfiguration
-     * @param int $expectedExceptionCode
      * @test
      * @dataProvider invalidConfigurationDataProvider
      */

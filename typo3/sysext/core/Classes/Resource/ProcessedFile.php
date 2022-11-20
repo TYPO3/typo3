@@ -118,10 +118,7 @@ class ProcessedFile extends AbstractFile
      * Constructor for a processed file object. Should normally not be used
      * directly, use the corresponding factory methods instead.
      *
-     * @param File $originalFile
      * @param string $taskType
-     * @param array $processingConfiguration
-     * @param array $databaseRow
      */
     public function __construct(File $originalFile, $taskType, array $processingConfiguration, array $databaseRow = null)
     {
@@ -138,8 +135,6 @@ class ProcessedFile extends AbstractFile
 
     /**
      * Creates a ProcessedFile object from a database record.
-     *
-     * @param array $databaseRow
      */
     protected function reconstituteFromDatabaseRecord(array $databaseRow)
     {
@@ -349,8 +344,6 @@ class ProcessedFile extends AbstractFile
     /**
      * Updates properties of this object. Do not use this to reconstitute an object from the database; use
      * reconstituteFromDatabaseRecord() instead!
-     *
-     * @param array $properties
      */
     public function updateProperties(array $properties)
     {

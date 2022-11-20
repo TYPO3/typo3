@@ -89,8 +89,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
 
     /**
      * Initializes the identifier prefix when setting the cache.
-     *
-     * @param FrontendInterface $cache
      */
     public function setCache(FrontendInterface $cache)
     {
@@ -229,7 +227,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      * Associates the identifier with the given tags
      *
      * @param string $entryIdentifier
-     * @param array $tags
      */
     protected function addIdentifierToTags($entryIdentifier, array $tags)
     {

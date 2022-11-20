@@ -85,9 +85,6 @@ class ScenarioATest extends AbstractLocalizedPagesTestCase
     }
 
     /**
-     * @param string $url
-     * @param array $scopes
-     *
      * @test
      * @dataProvider resolvablePagesDataProvider
      */
@@ -124,9 +121,6 @@ class ScenarioATest extends AbstractLocalizedPagesTestCase
     }
 
     /**
-     * @param string $url
-     * @param array $expectedMenu
-     *
      * @test
      * @dataProvider menuDataProvider
      */

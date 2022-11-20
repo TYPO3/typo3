@@ -24,9 +24,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class ConfigurationModuleProviderCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
@@ -36,9 +33,6 @@ class ConfigurationModuleProviderCest
         $I->switchToContentFrame();
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function selectAndDisplayConfiguration(ApplicationTester $I): void
     {
         // Module can be accessed
@@ -69,9 +63,6 @@ class ConfigurationModuleProviderCest
         $I->seeElement('li.active');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function canOpenTreeNodeAndScrollTo(ApplicationTester $I): void
     {
         $I->selectOption('select[name=tree]', '$GLOBALS[\'TYPO3_CONF_VARS\'] (Global Configuration)');
@@ -80,9 +71,6 @@ class ConfigurationModuleProviderCest
         $I->see('BE', '.active > .list-tree-group');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function seeAllPagesInDropDown(ApplicationTester $I): void
     {
         foreach ($this->dropDownPagesDataProvider() as $item) {

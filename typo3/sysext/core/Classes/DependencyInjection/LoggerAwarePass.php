@@ -35,9 +35,6 @@ final class LoggerAwarePass implements CompilerPassInterface
      */
     private $tagName;
 
-    /**
-     * @param string $tagName
-     */
     public function __construct(string $tagName)
     {
         $this->tagName = $tagName;

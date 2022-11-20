@@ -216,11 +216,6 @@ class ExtractorServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider extractMetaDataComposesDataByAvailableExtractorsWithDifferentPrioritiesDataProvider
-     * @param int $extractorOneDataPriority
-     * @param int $extractorOneExecutionPriority
-     * @param int $extractorTwoDataPriority
-     * @param int $extractorTwoExecutionPriority
-     * @param array $expectedMetaData
      */
     public function extractMetaDataComposesDataByAvailableExtractorsWithDifferentPriorities(
         int $extractorOneDataPriority,

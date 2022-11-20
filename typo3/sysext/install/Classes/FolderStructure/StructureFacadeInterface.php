@@ -24,8 +24,6 @@ interface StructureFacadeInterface
 {
     /**
      * Constructor gets structure to work on
-     *
-     * @param RootNodeInterface $structure
      */
     public function __construct(RootNodeInterface $structure);
 

@@ -178,10 +178,6 @@ class StaticRangeMapperTest extends TestCase
     }
 
     /**
-     * @param string $start
-     * @param string $end
-     * @param array $expectations
-     *
      * @test
      * @dataProvider valueSettingsDataProvider
      */

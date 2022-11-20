@@ -52,7 +52,6 @@ class LogLevel extends \Psr\Log\LogLevel
     /**
      * Resolves the name of the log level and returns its internal string representation
      *
-     * @param int $level
      * @return string
      */
     public static function getInternalName(int $level): string

@@ -66,8 +66,6 @@ class TreeNode implements ComparableNodeInterface
 
     /**
      * Sets the child nodes collection
-     *
-     * @param TreeNodeCollection $childNodes
      */
     public function setChildNodes(TreeNodeCollection $childNodes)
     {
@@ -151,7 +149,6 @@ class TreeNode implements ComparableNodeInterface
     /**
      * Compares a node if it's identical to another node by the id property.
      *
-     * @param TreeNode $other
      * @return bool
      */
     public function equals(TreeNode $other)

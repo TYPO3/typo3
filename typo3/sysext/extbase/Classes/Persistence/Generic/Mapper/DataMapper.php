@@ -78,9 +78,6 @@ class DataMapper
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @param QueryInterface $query
-     */
     public function setQuery(QueryInterface $query): void
     {
         $this->query = $query;
@@ -173,7 +170,6 @@ class DataMapper
      * Sets the given properties on the object.
      *
      * @param DomainObjectInterface $object The object to set properties on
-     * @param array $row
      * @throws NonExistentPropertyException
      * @throws UnknownPropertyTypeException
      */
@@ -349,7 +345,6 @@ class DataMapper
     }
 
     /**
-     * @param DomainObjectInterface $parentObject
      * @param string $propertyName
      * @return array|null
      */
@@ -361,7 +356,6 @@ class DataMapper
     }
 
     /**
-     * @param DomainObjectInterface $parentObject
      * @param string $propertyName
      * @param string $fieldValue
      * @return Persistence\QueryResultInterface
@@ -375,7 +369,6 @@ class DataMapper
     /**
      * Builds and returns the prepared query, ready to be executed.
      *
-     * @param DomainObjectInterface $parentObject
      * @param string $propertyName
      * @param string $fieldValue
      * @return Persistence\QueryInterface
@@ -430,8 +423,6 @@ class DataMapper
     /**
      * Builds and returns the constraint for multi value properties.
      *
-     * @param Persistence\QueryInterface $query
-     * @param DomainObjectInterface $parentObject
      * @param string $propertyName
      * @param string $fieldValue
      * @param array $relationTableMatchFields
@@ -551,7 +542,6 @@ class DataMapper
     /**
      * Builds and returns the source to build a join for a m:n relation.
      *
-     * @param DomainObjectInterface $parentObject
      * @param string $propertyName
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source
      */
@@ -606,7 +596,6 @@ class DataMapper
     /**
      * Checks if the relation is based on a foreign key.
      *
-     * @param DomainObjectInterface $parentObject
      * @param string $propertyName
      * @return bool TRUE if the property is mapped
      */
@@ -619,7 +608,6 @@ class DataMapper
     /**
      * Returns the given result as property value of the specified property type.
      *
-     * @param DomainObjectInterface $parentObject
      * @param string $propertyName
      * @param mixed $result The result
      * @return mixed

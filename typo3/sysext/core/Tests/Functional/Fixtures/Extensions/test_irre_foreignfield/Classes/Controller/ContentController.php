@@ -52,9 +52,6 @@ class ContentController extends AbstractController
         return $this->process($value);
     }
 
-    /**
-     * @param \TYPO3\TestIrreForeignfield\Domain\Model\Content $content
-     */
     public function showAction(Content $content)
     {
         $value = $this->getStructure($content);
@@ -62,7 +59,6 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @param \TYPO3\TestIrreForeignfield\Domain\Model\Content $newContent
      * @Extbase\IgnoreValidation("newContent")
      */
     public function newAction(Content $newContent = null): void
@@ -70,9 +66,6 @@ class ContentController extends AbstractController
         $this->view->assign('newContent', $newContent);
     }
 
-    /**
-     * @param \TYPO3\TestIrreForeignfield\Domain\Model\Content $newContent
-     */
     public function createAction(Content $newContent): void
     {
         $this->contentRepository->add($newContent);
@@ -80,7 +73,6 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @param \TYPO3\TestIrreForeignfield\Domain\Model\Content $content
      * @Extbase\IgnoreValidation("content")
      */
     public function editAction(Content $content): void
@@ -88,18 +80,12 @@ class ContentController extends AbstractController
         $this->view->assign('content', $content);
     }
 
-    /**
-     * @param \TYPO3\TestIrreForeignfield\Domain\Model\Content $content
-     */
     public function updateAction(Content $content): void
     {
         $this->contentRepository->update($content);
         $this->redirect('list');
     }
 
-    /**
-     * @param \TYPO3\TestIrreForeignfield\Domain\Model\Content $content
-     */
     public function deleteAction(Content $content): void
     {
         $this->contentRepository->remove($content);

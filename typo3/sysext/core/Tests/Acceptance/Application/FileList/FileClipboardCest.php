@@ -27,9 +27,6 @@ class FileClipboardCest extends AbstractFileCest
     protected string $copyModeCopy = '#clipboard-copymode-copy';
     protected string $copyModeMove = '#clipboard-copymode-move';
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function seeSwitchModes(ApplicationTester $I): void
     {
         $I->seeCheckboxIsChecked($this->copyModeMove);
@@ -40,9 +37,6 @@ class FileClipboardCest extends AbstractFileCest
         $I->seeCheckboxIsChecked($this->copyModeCopy);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function seeAddRemoveSingleRecord(ApplicationTester $I): void
     {
         $fileName = 'bus_lane.jpg';
@@ -57,9 +51,6 @@ class FileClipboardCest extends AbstractFileCest
         $I->dontSee($fileName, '.clipboard-panel a');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function seeAddRemoveMultipleRecords(ApplicationTester $I): void
     {
         $expectedFiles = ['bus_lane.jpg', 'telephone_box.jpg', 'underground.jpg'];

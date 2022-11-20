@@ -32,9 +32,6 @@ class FinisherOptionsFlexFormOverridesConverter
      */
     protected $converterDto;
 
-    /**
-     * @param FlexFormFinisherOverridesConverterDto $converterDto
-     */
     public function __construct(FlexFormFinisherOverridesConverterDto $converterDto)
     {
         $this->converterDto = $converterDto;

@@ -220,9 +220,6 @@ class HrefLangGeneratorTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @param array $items
-     */
     protected static function failIfArrayIsNotEmpty(array $items): void
     {
         if (empty($items)) {

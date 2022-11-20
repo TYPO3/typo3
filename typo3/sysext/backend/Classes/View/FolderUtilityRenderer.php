@@ -37,9 +37,6 @@ class FolderUtilityRenderer
     protected $parameterProvider;
     protected UriBuilder $uriBuilder;
 
-    /**
-     * @param LinkParameterProviderInterface $parameterProvider
-     */
     public function __construct(LinkParameterProviderInterface $parameterProvider)
     {
         $this->parameterProvider = $parameterProvider;
@@ -101,9 +98,7 @@ class FolderUtilityRenderer
      * Makes an upload form for uploading files to the filemount the user is browsing.
      * The files are uploaded to the tce_file.php script in the core which will handle the upload.
      *
-     * @param Folder $folderObject
      * @param string[] $allowedExtensions
-     *
      * @return string HTML for an upload form.
      */
     public function uploadForm(Folder $folderObject, array $allowedExtensions)

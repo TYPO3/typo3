@@ -100,7 +100,6 @@ class PermutationUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param array $payload
      * @param array|int $expectation
      *
      * @test
@@ -184,7 +183,6 @@ class PermutationUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param array $payload
      * @param array|int $expectation
      *
      * @test

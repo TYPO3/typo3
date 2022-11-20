@@ -68,7 +68,6 @@ class PlatformInformation
     /**
      * Return the encoding of the given platform
      *
-     * @param AbstractPlatform $platform
      * @return string
      */
     public static function getCharset(AbstractPlatform $platform): string
@@ -81,8 +80,6 @@ class PlatformInformation
     /**
      * Return the statement to create a database with the desired encoding for the given platform
      *
-     * @param AbstractPlatform $platform
-     * @param string $databaseName
      * @return string
      */
     public static function getDatabaseCreateStatementWithCharset(AbstractPlatform $platform, string $databaseName): string
@@ -103,7 +100,6 @@ class PlatformInformation
     /**
      * Return information about the maximum supported length for a SQL identifier.
      *
-     * @param AbstractPlatform $platform
      * @return int
      * @internal
      */
@@ -117,7 +113,6 @@ class PlatformInformation
     /**
      * Return information about the maximum number of bound parameters supported on this platform
      *
-     * @param AbstractPlatform $platform
      * @return int
      * @internal
      */
@@ -131,7 +126,6 @@ class PlatformInformation
     /**
      * Return the platform shortname to use as a lookup key
      *
-     * @param AbstractPlatform $platform
      * @return string
      * @throws \RuntimeException
      * @internal

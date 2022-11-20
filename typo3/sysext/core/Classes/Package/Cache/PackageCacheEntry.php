@@ -76,7 +76,6 @@ class PackageCacheEntry
     /**
      * Validates whether the configuration has the correct version
      *
-     * @param array $configuration
      * @throws PackageStatesUnavailableException
      */
     public static function ensureValidPackageConfiguration(array $configuration): void

@@ -37,9 +37,6 @@ interface FinisherInterface
      */
     public function execute(FinisherContext $finisherContext);
 
-    /**
-     * @param string $finisherIdentifier
-     */
     public function setFinisherIdentifier(string $finisherIdentifier): void;
 
     /**

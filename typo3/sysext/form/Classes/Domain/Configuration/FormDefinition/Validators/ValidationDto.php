@@ -51,14 +51,6 @@ class ValidationDto
      */
     protected $propertyCollectionElementIdentifier;
 
-    /**
-     * @param string $prototypeName
-     * @param string $formElementType
-     * @param string $formElementIdentifier
-     * @param string $propertyPath
-     * @param string $propertyCollectionName
-     * @param string $propertyCollectionElementIdentifier
-     */
     public function __construct(
         string $prototypeName = null,
         string $formElementType = null,
@@ -172,7 +164,6 @@ class ValidationDto
     }
 
     /**
-     * @param string $prototypeName
      * @return ValidationDto
      */
     public function withPrototypeName(string $prototypeName): ValidationDto
@@ -181,7 +172,6 @@ class ValidationDto
     }
 
     /**
-     * @param string $formElementType
      * @return ValidationDto
      */
     public function withFormElementType(string $formElementType): ValidationDto
@@ -190,7 +180,6 @@ class ValidationDto
     }
 
     /**
-     * @param string $formElementIdentifier
      * @return ValidationDto
      */
     public function withFormElementIdentifier(string $formElementIdentifier): ValidationDto
@@ -199,7 +188,6 @@ class ValidationDto
     }
 
     /**
-     * @param string $propertyPath
      * @return ValidationDto
      */
     public function withPropertyPath(string $propertyPath): ValidationDto
@@ -208,7 +196,6 @@ class ValidationDto
     }
 
     /**
-     * @param string $propertyCollectionName
      * @return ValidationDto
      */
     public function withPropertyCollectionName(string $propertyCollectionName): ValidationDto
@@ -217,7 +204,6 @@ class ValidationDto
     }
 
     /**
-     * @param string $propertyCollectionElementIdentifier
      * @return ValidationDto
      */
     public function withPropertyCollectionElementIdentifier(string $propertyCollectionElementIdentifier): ValidationDto

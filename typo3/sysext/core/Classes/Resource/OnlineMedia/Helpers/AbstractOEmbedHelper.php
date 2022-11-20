@@ -36,7 +36,6 @@ abstract class AbstractOEmbedHelper extends AbstractOnlineMediaHelper
      * Transform mediaId to File
      *
      * @param string $mediaId
-     * @param Folder $targetFolder
      * @param string $fileExtension
      * @return File
      */
@@ -81,7 +80,6 @@ abstract class AbstractOEmbedHelper extends AbstractOnlineMediaHelper
      * Get meta data for OnlineMedia item
      * Using the meta data from oEmbed
      *
-     * @param File $file
      * @return array with metadata
      */
     public function getMetaData(File $file)

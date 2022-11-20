@@ -32,9 +32,6 @@ class FileReference extends AbstractFileFolder
      */
     protected $uidLocal;
 
-    /**
-     * @param \TYPO3\CMS\Core\Resource\ResourceInterface $originalResource
-     */
     public function setOriginalResource(ResourceInterface $originalResource)
     {
         $this->originalResource = $originalResource;

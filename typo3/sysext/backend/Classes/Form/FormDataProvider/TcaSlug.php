@@ -29,7 +29,6 @@ class TcaSlug implements FormDataProviderInterface
     /**
      * Resolve slug prefix items
      *
-     * @param array $result
      *
      * @return array
      * @throws \UnexpectedValueException
@@ -71,8 +70,6 @@ class TcaSlug implements FormDataProviderInterface
     /**
      * Render the prefix for the input field.
      *
-     * @param SiteInterface $site
-     * @param int $languageId
      * @return string
      */
     protected function getPrefixForSite(SiteInterface $site, int $languageId): string

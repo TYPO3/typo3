@@ -35,7 +35,6 @@ class SvgImageProcessor implements ProcessorInterface
     /**
      * Processes the given task.
      *
-     * @param TaskInterface $task
      * @throws \InvalidArgumentException
      */
     public function processTask(TaskInterface $task): void

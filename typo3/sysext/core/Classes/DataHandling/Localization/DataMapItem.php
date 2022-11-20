@@ -96,11 +96,7 @@ class DataMapItem
      * Builds a data-map item. In addition to the constructor, the values
      * for language, parent and source record pointers are assigned as well.
      *
-     * @param string $tableName
      * @param string|int $id
-     * @param array $suggestedValues
-     * @param array $persistedValues
-     * @param array $configurationFieldNames
      * @return DataMapItem
      */
     public static function build(
@@ -129,11 +125,7 @@ class DataMapItem
     }
 
     /**
-     * @param string $tableName
      * @param string|int $id
-     * @param array $suggestedValues
-     * @param array $persistedValues
-     * @param array $configurationFieldNames
      */
     public function __construct(
         string $tableName,
@@ -376,7 +368,6 @@ class DataMapItem
     }
 
     /**
-     * @param string $scope
      * @return DataMapItem[]
      */
     public function findDependencies(string $scope)

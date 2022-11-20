@@ -1063,7 +1063,6 @@ class Parser
     /**
      * Determine length parameter of a column field definition, i.E. INT(11) or VARCHAR(255)
      *
-     * @param bool $required
      * @return int
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */

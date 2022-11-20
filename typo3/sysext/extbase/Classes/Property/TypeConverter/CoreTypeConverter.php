@@ -49,7 +49,6 @@ class CoreTypeConverter extends AbstractTypeConverter
 
     /**
      * @param mixed $source
-     * @param string $targetType
      * @return bool
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      * @deprecated will be removed in TYPO3 v13.0, this is not needed anymore.
@@ -63,8 +62,6 @@ class CoreTypeConverter extends AbstractTypeConverter
      * Convert an object from $source to an Enumeration.
      *
      * @param mixed $source
-     * @param string $targetType
-     * @param array $convertedChildProperties
      * @param PropertyMappingConfigurationInterface|null $configuration
      * @return object the target type
      * @internal only to be used within Extbase, not part of TYPO3 Core API.

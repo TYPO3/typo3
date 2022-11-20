@@ -83,7 +83,6 @@ class WidgetRegistry implements SingletonInterface
     }
 
     /**
-     * @param string $widgetGroupIdentifier
      * @return WidgetConfigurationInterface[]
      */
     public function getAvailableWidgetsForWidgetGroup(string $widgetGroupIdentifier): array

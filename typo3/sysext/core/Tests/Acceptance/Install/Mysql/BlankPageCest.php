@@ -26,8 +26,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\InstallTester;
 class BlankPageCest
 {
     /**
-     * @param InstallTester $I
-     * @param Scenario $scenario
      * @env mysql
      */
     public function installTypo3OnMysql(InstallTester $I, Scenario $scenario): void

@@ -97,7 +97,6 @@ class TypeHandlingUtility
     /**
      * Returns TRUE if the $type is a literal.
      *
-     * @param string $type
      * @return bool
      */
     public static function isLiteral(string $type): bool
@@ -108,7 +107,6 @@ class TypeHandlingUtility
     /**
      * Returns TRUE if the $type is a simple type.
      *
-     * @param string $type
      * @return bool
      */
     public static function isSimpleType(string $type): bool
@@ -130,7 +128,6 @@ class TypeHandlingUtility
     /**
      * Returns TRUE if the $type is a collection type.
      *
-     * @param string $type
      * @return bool
      */
     public static function isCollectionType(string $type): bool

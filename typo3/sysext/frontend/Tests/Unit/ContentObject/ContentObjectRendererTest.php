@@ -3911,8 +3911,6 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * @param array $expectedTags
-     * @param array $configuration
      * @test
      * @dataProvider stdWrap_addPageCacheTagsAddsPageTagsDataProvider
      */
@@ -5049,8 +5047,6 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @test
      * @dataProvider html5SelfClosingTagsDataprovider
-     * @param string $input
-     * @param string $expected
      */
     public function stdWrap_encapsLines_HTML5SelfClosingTags(string $input, string $expected): void
     {
@@ -6472,8 +6468,6 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @test
      * @dataProvider stdWrap_overrideDataProvider
-     * @param mixed $expect
-     * @param string $content
      * @param array $conf Property: setCurrent
      */
     public function stdWrap_override(mixed $expect, string $content, array $conf): void

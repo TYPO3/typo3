@@ -25,7 +25,6 @@ class MockPlatform extends AbstractPlatform
     /**
      * Gets the SQL Snippet used to declare a BLOB column type.
      *
-     * @param array $field
      * @return string|void
      * @throws \Doctrine\DBAL\Exception
      */
@@ -77,7 +76,6 @@ class MockPlatform extends AbstractPlatform
     /**
      * Returns the SQL snippet used to declare a VARCHAR column type.
      *
-     * @param array $field
      *
      * @return string
      */
@@ -89,7 +87,6 @@ class MockPlatform extends AbstractPlatform
     /**
      * Returns the SQL snippet used to declare a CLOB column type.
      *
-     * @param array $field
      *
      * @return string
      */

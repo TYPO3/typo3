@@ -520,10 +520,6 @@ class PermissionController
 
     /**
      * Adds a flash message to the default flash message queue
-     *
-     * @param string $message
-     * @param string $title
-     * @param ContextualFeedbackSeverity $severity
      */
     protected function addFlashMessage(string $message, string $title = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::INFO): void
     {

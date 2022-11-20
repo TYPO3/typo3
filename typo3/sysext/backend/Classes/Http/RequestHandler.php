@@ -47,9 +47,6 @@ class RequestHandler implements RequestHandlerInterface
 
     protected ListenerProvider $listenerProvider;
 
-    /**
-     * @param RouteDispatcher $dispatcher
-     */
     public function __construct(
         RouteDispatcher $dispatcher,
         UriBuilder $uriBuilder,
@@ -91,7 +88,6 @@ class RequestHandler implements RequestHandlerInterface
      * Dispatch the request to the appropriate controller through the
      * Backend Dispatcher which resolves the routing
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface

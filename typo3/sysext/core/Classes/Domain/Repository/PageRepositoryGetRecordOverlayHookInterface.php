@@ -29,7 +29,6 @@ interface PageRepositoryGetRecordOverlayHookInterface
      * @param array $row
      * @param int $sys_language_content
      * @param string $OLmode
-     * @param PageRepository $parent
      */
     public function getRecordOverlay_preProcess($table, &$row, &$sys_language_content, $OLmode, PageRepository $parent);
 
@@ -40,7 +39,6 @@ interface PageRepositoryGetRecordOverlayHookInterface
      * @param array $row
      * @param int $sys_language_content
      * @param string $OLmode
-     * @param PageRepository $parent
      */
     public function getRecordOverlay_postProcess($table, &$row, &$sys_language_content, $OLmode, PageRepository $parent);
 }

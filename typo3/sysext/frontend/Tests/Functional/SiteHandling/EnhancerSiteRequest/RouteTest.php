@@ -122,7 +122,6 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider routeDefaultsAreConsideredDataProvider
      */
@@ -201,7 +200,6 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider routeRequirementsHavingAspectsAreConsideredDataProvider
      */
@@ -306,7 +304,6 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider routeRequirementsAreConsideredDataProvider
      */
@@ -455,9 +452,6 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
     }
 
     /**
-     * @param string $namespace
-     * @param string $argumentName
-     * @param string $queryPath
      * @param string|null $failureReason
      * @test
      * @dataProvider routeIdentifiersAreResolvedDataProvider
@@ -503,7 +497,6 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider nestedRouteArgumentsAreConsideredDataProvider
      */

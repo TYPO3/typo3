@@ -68,7 +68,6 @@ class AssetCollector implements SingletonInterface
     protected $media = [];
 
     /**
-     * @param string $identifier
      * @param string $source URI to JavaScript file (allows EXT: syntax)
      * @param array $attributes additional HTML <script> tag attributes
      * @param array $options ['priority' => true] means rendering before other tags
@@ -89,7 +88,6 @@ class AssetCollector implements SingletonInterface
     }
 
     /**
-     * @param string $identifier
      * @param string $source JavaScript code
      * @param array $attributes additional HTML <script> tag attributes
      * @param array $options ['priority' => true] means rendering before other tags
@@ -110,7 +108,6 @@ class AssetCollector implements SingletonInterface
     }
 
     /**
-     * @param string $identifier
      * @param string $source URI to stylesheet file (allows EXT: syntax)
      * @param array $attributes additional HTML <link> tag attributes
      * @param array $options ['priority' => true] means rendering before other tags
@@ -131,7 +128,6 @@ class AssetCollector implements SingletonInterface
     }
 
     /**
-     * @param string $identifier
      * @param string $source stylesheet code
      * @param array $attributes additional HTML <link> tag attributes
      * @param array $options ['priority' => true] means rendering before other tags
@@ -152,7 +148,6 @@ class AssetCollector implements SingletonInterface
     }
 
     /**
-     * @param string $fileName
      * @param array $additionalInformation One dimensional hash map (array with non numerical keys) with scalar values
      * @return AssetCollector
      */
@@ -270,7 +265,6 @@ class AssetCollector implements SingletonInterface
     }
 
     /**
-     * @param array $newState
      * @internal
      */
     public function updateState(array $newState): void

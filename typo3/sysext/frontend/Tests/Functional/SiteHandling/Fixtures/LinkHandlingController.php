@@ -33,8 +33,6 @@ class LinkHandlingController
 
     /**
      * This is called from UserContentObject via ContentObjectRenderer->callUserFunction().
-     *
-     * @param ContentObjectRenderer $cObj
      */
     public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
     {
@@ -60,7 +58,6 @@ class LinkHandlingController
     }
 
     /**
-     * @param string|null $content
      * @param array|null $configuration
      * @return string
      */

@@ -270,9 +270,7 @@ class AbstractPluginTest extends UnitTestCase
      * @test
      * @dataProvider registeredResultBrowserProvider
      *
-     * @param string $className
      * @param mixed $returnValue
-     * @param string $expected
      */
     public function registeredResultBrowsersAreUsed(string $className, $returnValue, string $expected): void
     {
@@ -317,8 +315,6 @@ class AbstractPluginTest extends UnitTestCase
     }
 
     /**
-     * @param string $input
-     * @param string $expectation
      * @test
      * @dataProvider openAtagHrefInJSwindowAdjustsMarkupDataProvider
      */

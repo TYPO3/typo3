@@ -40,8 +40,6 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
     /**
      * Add a variable to the finisher container.
      *
-     * @param string $finisherIdentifier
-     * @param string $key
      * @param mixed $value
      */
     public function add(string $finisherIdentifier, string $key, $value)
@@ -53,8 +51,6 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
      * Add a variable to the Variable Container.
      * In case the value is already inside, it is silently overridden.
      *
-     * @param string $finisherIdentifier
-     * @param string $key
      * @param mixed $value
      */
     public function addOrUpdate(string $finisherIdentifier, string $key, $value)
@@ -73,8 +69,6 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
     /**
      * Gets a variable which is stored
      *
-     * @param string $finisherIdentifier
-     * @param string $key
      * @param mixed $default
      * @return mixed
      */
@@ -105,9 +99,6 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Remove a value from the variable container
-     *
-     * @param string $finisherIdentifier
-     * @param string $key
      */
     public function remove(string $finisherIdentifier, string $key)
     {

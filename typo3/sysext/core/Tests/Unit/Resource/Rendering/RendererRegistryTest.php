@@ -31,7 +31,6 @@ class RendererRegistryTest extends UnitTestCase
     /**
      * Initialize a RendererRegistry and mock createRendererInstance()
      *
-     * @param array $createsRendererInstances
      * @return MockObject|RendererRegistry
      */
     protected function getTestRendererRegistry(array $createsRendererInstances = [])

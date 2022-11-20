@@ -126,8 +126,6 @@ class DefaultSanitizerBuilderTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $payload
-     * @param string $expectation
      * @test
      * @dataProvider isSanitizedDataProvider
      */

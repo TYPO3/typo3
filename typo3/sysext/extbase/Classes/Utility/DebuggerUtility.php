@@ -93,9 +93,6 @@ class DebuggerUtility
      * Renders a dump of the given value
      *
      * @param mixed $value
-     * @param int $level
-     * @param bool $plainText
-     * @param bool $ansiColors
      * @return string
      */
     protected static function renderDump($value, int $level, bool $plainText, bool $ansiColors): string
@@ -133,10 +130,6 @@ class DebuggerUtility
     /**
      * Renders a dump of the given array
      *
-     * @param array $array
-     * @param int $level
-     * @param bool $plainText
-     * @param bool $ansiColors
      * @return string
      */
     protected static function renderArray(array $array, int $level, bool $plainText = false, bool $ansiColors = false): string
@@ -173,10 +166,6 @@ class DebuggerUtility
     /**
      * Renders a dump of the given object
      *
-     * @param object $object
-     * @param int $level
-     * @param bool $plainText
-     * @param bool $ansiColors
      * @return string
      */
     protected static function renderObject(object $object, int $level, bool $plainText = false, bool $ansiColors = false): string
@@ -202,10 +191,6 @@ class DebuggerUtility
     /**
      * Renders a dump of the given closure
      *
-     * @param \Closure $object
-     * @param int $level
-     * @param bool $plainText
-     * @param bool $ansiColors
      * @return string
      */
     protected static function renderClosure(\Closure $object, int $level, bool $plainText = false, bool $ansiColors = false): string
@@ -241,7 +226,6 @@ class DebuggerUtility
     /**
      * Checks if a given object was already rendered.
      *
-     * @param object $object
      * @return bool TRUE if the given object was already rendered
      */
     protected static function isAlreadyRendered(object $object): bool
@@ -252,10 +236,6 @@ class DebuggerUtility
     /**
      * Renders the header of a given object/collection. It is usually the class name along with some flags.
      *
-     * @param object $object
-     * @param int $level
-     * @param bool $plainText
-     * @param bool $ansiColors
      * @return string The rendered header with tags
      */
     protected static function renderHeader(object $object, int $level, bool $plainText, bool $ansiColors): string
@@ -341,10 +321,6 @@ class DebuggerUtility
     }
 
     /**
-     * @param object $object
-     * @param int $level
-     * @param bool $plainText
-     * @param bool $ansiColors
      * @return string The rendered body content of the Object(Storage)
      */
     protected static function renderContent(object $object, int $level, bool $plainText, bool $ansiColors): string
@@ -475,10 +451,6 @@ class DebuggerUtility
     }
 
     /**
-     * @param iterable $collection
-     * @param int $level
-     * @param bool $plainText
-     * @param bool $ansiColors
      * @return string
      */
     protected static function renderCollection(iterable $collection, int $level, bool $plainText, bool $ansiColors): string

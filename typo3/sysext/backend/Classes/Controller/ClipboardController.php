@@ -49,7 +49,6 @@ class ClipboardController
     /**
      * Process incoming clipboard request
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function processRequest(ServerRequestInterface $request): ResponseInterface

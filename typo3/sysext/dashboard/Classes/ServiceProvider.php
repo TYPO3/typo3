@@ -133,8 +133,6 @@ class ServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param ArrayObject $presets
      * @return ArrayObject
      */
     public static function configureDashboardPresets(ContainerInterface $container, ArrayObject $presets): ArrayObject
@@ -155,8 +153,6 @@ class ServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param ArrayObject $widgetGroups
      * @param string $path supplied when invoked internally through PseudoServiceProvider
      * @return ArrayObject
      */
@@ -177,8 +173,6 @@ class ServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param ArrayObject $widgets
      * @param string $path supplied when invoked internally through PseudoServiceProvider
      * @return ArrayObject
      */

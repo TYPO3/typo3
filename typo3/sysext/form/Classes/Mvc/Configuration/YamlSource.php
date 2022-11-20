@@ -47,9 +47,6 @@ class YamlSource
      */
     protected $filePersistenceSlot;
 
-    /**
-     * @param FilePersistenceSlot $filePersistenceSlot
-     */
     public function injectFilePersistenceSlot(FilePersistenceSlot $filePersistenceSlot)
     {
         $this->filePersistenceSlot = $filePersistenceSlot;
@@ -213,8 +210,6 @@ class YamlSource
     }
 
     /**
-     * @param FolderInterface $folder
-     * @param string $fileName
      * @return string
      */
     protected function buildCombinedIdentifier(FolderInterface $folder, string $fileName): string

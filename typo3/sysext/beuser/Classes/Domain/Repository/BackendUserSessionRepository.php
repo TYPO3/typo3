@@ -67,7 +67,6 @@ class BackendUserSessionRepository
     /**
      * Find Sessions for specific BackendUser
      *
-     * @param BackendUser $backendUser
      * @return array
      */
     public function findByBackendUser(BackendUser $backendUser)

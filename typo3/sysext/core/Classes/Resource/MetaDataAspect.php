@@ -49,8 +49,6 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
 
     /**
      * Constructor
-     *
-     * @param File $file
      */
     public function __construct(File $file)
     {
@@ -60,7 +58,6 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
     /**
      * Adds already known metadata to the aspect
      *
-     * @param array $metaData
      * @return self
      * @internal
      */

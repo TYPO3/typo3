@@ -131,7 +131,6 @@ class ConfigurationService implements SingletonInterface
      * the form setup, you must provide the writable property paths with a hook.
      *
      * @see executeBuildFormDefinitionValidationConfigurationHooks()
-     * @param ValidationDto $dto
      * @return bool
      * @internal
      */
@@ -166,7 +165,6 @@ class ConfigurationService implements SingletonInterface
      * the form setup, you must provide the writable property paths with a hook.
      *
      * @see executeBuildFormDefinitionValidationConfigurationHooks()
-     * @param ValidationDto $dto
      * @return bool
      * @internal
      */
@@ -186,7 +184,6 @@ class ConfigurationService implements SingletonInterface
      * then only the defined values within the selectOptions are allowed to be written
      * by the form editor.
      *
-     * @param ValidationDto $dto
      * @return bool
      * @internal
      */
@@ -206,9 +203,7 @@ class ConfigurationService implements SingletonInterface
     /**
      * Get the "selectOptions" value for a form element property from the form setup.
      *
-     * @param ValidationDto $dto
      * @return array
-     * @param bool $translated
      * @throws PropertyException
      * @internal
      */
@@ -242,7 +237,6 @@ class ConfigurationService implements SingletonInterface
      * then only the defined values within the selectOptions are allowed to be written
      * by the form editor.
      *
-     * @param ValidationDto $dto
      * @return bool
      * @internal
      */
@@ -262,8 +256,6 @@ class ConfigurationService implements SingletonInterface
     /**
      * Get the "selectOptions" value for a form elements finisher|validator property from the form setup.
      *
-     * @param ValidationDto $dto
-     * @param bool $translated
      * @return array
      * @throws PropertyException
      * @internal
@@ -294,7 +286,6 @@ class ConfigurationService implements SingletonInterface
     }
 
     /**
-     * @param ValidationDto $dto
      * @return string
      */
     protected function getBasePropertyPathFromMultiValueFormElementProperty(
@@ -317,7 +308,6 @@ class ConfigurationService implements SingletonInterface
     }
 
     /**
-     * @param ValidationDto $dto
      * @return string
      */
     protected function getBasePropertyPathFromMultiValuePropertyCollectionElement(
@@ -346,7 +336,6 @@ class ConfigurationService implements SingletonInterface
      * A form element default property is defined within the following form editor properties:
      * * formElementsDefinition.<formElementType>.formEditor.predefinedDefaults.<propertyPath> = "default value"
      *
-     * @param ValidationDto $dto
      * @return bool
      * @internal
      */
@@ -366,8 +355,6 @@ class ConfigurationService implements SingletonInterface
      * A form element default property is defined within the following form editor properties:
      * * formElementsDefinition.<formElementType>.formEditor.predefinedDefaults.<propertyPath> = "default value"
      *
-     * @param ValidationDto $dto
-     * @param bool $translated
      * @return mixed
      * @throws PropertyException
      * @internal
@@ -400,7 +387,6 @@ class ConfigurationService implements SingletonInterface
      * A form elements finisher|validator default property is defined within the following form editor properties:
      * * <validatorsDefinition|finishersDefinition>.<index>.formEditor.predefinedDefaults.<propertyPath> = "default value"
      *
-     * @param ValidationDto $dto
      * @return bool
      * @internal
      */
@@ -420,8 +406,6 @@ class ConfigurationService implements SingletonInterface
      * A form elements finisher|validator default property is defined within the following form editor properties:
      * * <validatorsDefinition|finishersDefinition>.<index>.formEditor.predefinedDefaults.<propertyPath> = "default value"
      *
-     * @param ValidationDto $dto
-     * @param bool $translated
      * @return mixed
      * @throws PropertyException
      * @internal
@@ -456,7 +440,6 @@ class ConfigurationService implements SingletonInterface
      * And the value from "formElementsDefinition.<formElementType>.formEditor.group" is
      * one of the keys within "formEditor.formElementGroups"
      *
-     * @param ValidationDto $dto
      * @return bool
      * @internal
      */
@@ -480,7 +463,6 @@ class ConfigurationService implements SingletonInterface
      * and
      * "formElementsDefinition.<formElementType>.formEditor.editors.<index>.selectOptions.<index>.value = <finisherIdentifier|validatorIdentifier>"
      *
-     * @param ValidationDto $dto
      * @return bool
      * @internal
      */
@@ -495,7 +477,6 @@ class ConfigurationService implements SingletonInterface
     /**
      * Check if the form elements type is defined within the form setup.
      *
-     * @param ValidationDto $dto
      * @return bool
      * @internal
      */
@@ -510,8 +491,6 @@ class ConfigurationService implements SingletonInterface
     }
 
     /**
-     * @param array $keys
-     * @param string $prototypeName
      * @return array
      * @internal
      */
@@ -530,8 +509,6 @@ class ConfigurationService implements SingletonInterface
     }
 
     /**
-     * @param string $key
-     * @param string $prototypeName
      * @return array
      */
     public function getAllBackendTranslationsForTranslationKey(string $key, string $prototypeName): array
@@ -549,7 +526,6 @@ class ConfigurationService implements SingletonInterface
      * Collect all the form editor configurations which are needed to check if a
      * form definition property can be written or not.
      *
-     * @param string $prototypeName
      * @return array
      */
     protected function buildFormDefinitionValidationConfigurationFromFormEditorSetup(string $prototypeName): array
@@ -675,8 +651,6 @@ class ConfigurationService implements SingletonInterface
      *     ];
      *     return $propertyPaths;
      * }
-     * @param string $prototypeName
-     * @param array $configuration
      * @return array
      * @throws PropertyException
      */
@@ -706,10 +680,6 @@ class ConfigurationService implements SingletonInterface
     }
 
     /**
-     * @param string $hookClassName
-     * @param string $prototypeName
-     * @param array $propertyPathsFromHook
-     * @param array $configuration
      * @return array
      * @throws PropertyException
      */
@@ -777,8 +747,6 @@ class ConfigurationService implements SingletonInterface
     }
 
     /**
-     * @param string $propertyPath
-     * @param array $subConfig
      * @return bool
      */
     protected function isPropertyDefinedInFormEditorSetup(string $propertyPath, array $subConfig): bool
@@ -803,8 +771,6 @@ class ConfigurationService implements SingletonInterface
     }
 
     /**
-     * @param array $prototypeConfiguration
-     * @param array $configuration
      * @return array
      */
     protected function translateValues(array $prototypeConfiguration, array $configuration): array
@@ -829,8 +795,6 @@ class ConfigurationService implements SingletonInterface
     }
 
     /**
-     * @param array $prototypeConfiguration
-     * @param array $formElements
      * @return array
      */
     protected function translatePredefinedDefaults(array $prototypeConfiguration, array $formElements): array
@@ -850,8 +814,6 @@ class ConfigurationService implements SingletonInterface
     }
 
     /**
-     * @param array $prototypeConfiguration
-     * @param array $formElements
      * @return array
      */
     protected function translateSelectOptions(array $prototypeConfiguration, array $formElements): array
@@ -872,7 +834,6 @@ class ConfigurationService implements SingletonInterface
     }
 
     /**
-     * @param string $cacheKey
      * @return mixed
      */
     protected function getCacheEntry(string $cacheKey)
@@ -885,7 +846,6 @@ class ConfigurationService implements SingletonInterface
     }
 
     /**
-     * @param string $cacheKey
      * @param mixed $value
      */
     protected function setCacheEntry(string $cacheKey, $value): void

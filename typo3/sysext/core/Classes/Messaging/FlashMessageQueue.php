@@ -76,9 +76,6 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
         }
     }
 
-    /**
-     * @param FlashMessage $message
-     */
     public function addMessage(FlashMessage $message)
     {
         $this->enqueue($message);
@@ -98,8 +95,6 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
     /**
      * Adds the given flash message to the array of
      * flash messages that will be stored in the session.
-     *
-     * @param FlashMessage $message
      */
     protected function addFlashMessageToSession(FlashMessage $message)
     {

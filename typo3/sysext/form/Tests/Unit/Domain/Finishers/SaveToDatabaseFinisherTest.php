@@ -129,7 +129,6 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
      * @test
      * @dataProvider skipIfValueIsEmptyDataProvider
      * @param mixed $value
-     * @param bool $expectedEmpty
      */
     public function skipIfValueIsEmptyDetectsEmptyValues($value, bool $expectedEmpty): void
     {

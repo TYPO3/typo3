@@ -114,9 +114,6 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider isFormElementPropertyDefinedInFormEditorSetupDataProvider
-     * @param array $configuration
-     * @param ValidationDto $validationDto
-     * @param bool $expectedReturn
      */
     public function isFormElementPropertyDefinedInFormEditorSetup(
         array $configuration,
@@ -143,9 +140,6 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider isPropertyCollectionPropertyDefinedInFormEditorSetupDataProvider
-     * @param array $configuration
-     * @param ValidationDto $validationDto
-     * @param bool $expectedReturn
      */
     public function isPropertyCollectionPropertyDefinedInFormEditorSetup(
         array $configuration,
@@ -172,9 +166,6 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider
-     * @param array $configuration
-     * @param ValidationDto $validationDto
-     * @param bool $expectedReturn
      */
     public function isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup(
         array $configuration,
@@ -201,9 +192,6 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider
-     * @param array $configuration
-     * @param ValidationDto $validationDto
-     * @param bool $expectedReturn
      */
     public function isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup(
         array $configuration,
@@ -358,9 +346,6 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider isFormElementTypeCreatableByFormEditorDataProvider
-     * @param array $configuration
-     * @param ValidationDto $validationDto
-     * @param bool $expectedReturn
      */
     public function isFormElementTypeCreatableByFormEditor(
         array $configuration,
@@ -387,9 +372,6 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider isPropertyCollectionElementIdentifierCreatableByFormEditorDataProvider
-     * @param array $configuration
-     * @param ValidationDto $validationDto
-     * @param bool $expectedReturn
      */
     public function isPropertyCollectionElementIdentifierCreatableByFormEditor(
         array $configuration,
@@ -575,8 +557,6 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider buildFormDefinitionValidationConfigurationFromFormEditorSetupDataProvider
-     * @param array $configuration
-     * @param array $expected
      */
     public function buildFormDefinitionValidationConfigurationFromFormEditorSetup(array $configuration, array $expected): void
     {
@@ -654,9 +634,6 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider
-     * @param array $configuration
-     * @param ValidationDto $validationDto
-     * @param bool $expectedReturn
      */
     public function formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup(
         array $configuration,
@@ -795,9 +772,6 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider
-     * @param array $configuration
-     * @param ValidationDto $validationDto
-     * @param bool $expectedReturn
      */
     public function propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup(
         array $configuration,

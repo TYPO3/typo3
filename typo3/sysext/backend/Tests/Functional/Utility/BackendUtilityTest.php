@@ -214,10 +214,6 @@ class BackendUtilityTest extends FunctionalTestCase
     }
 
     /**
-     * @param array $enableColumns
-     * @param bool $inverted
-     * @param string $expectation
-     *
      * @test
      * @dataProvider enableFieldsStatementIsCorrectDataProvider
      */

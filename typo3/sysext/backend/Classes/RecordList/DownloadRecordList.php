@@ -70,7 +70,6 @@ class DownloadRecordList
      * @param string $table the TCA table
      * @param string[] $columnsToRender
      * @param BackendUserAuthentication $backendUser the current backend user needed to check for permissions
-     * @param bool $hideTranslations
      * @param bool $rawValues Whether the field values should not be processed
      * @return array[] an array of rows ready to be output
      */

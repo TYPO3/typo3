@@ -28,9 +28,6 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
 {
     /**
      * Open list module of styleguide elements basic page
-     *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -189,8 +186,6 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
 
     /**
      * @dataProvider simpleInputFieldsDataProvider
-     * @param ApplicationTester $I
-     * @param Example $testData
      */
     public function simpleInputFields(ApplicationTester $I, Example $testData): void
     {

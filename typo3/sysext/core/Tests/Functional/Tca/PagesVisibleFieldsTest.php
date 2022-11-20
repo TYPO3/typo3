@@ -232,9 +232,6 @@ class PagesVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider pagesFormContainsExpectedFieldsDataProvider
-     * @param int $doktype
-     * @param array $expectedFields
-     * @param array $hiddenFields
      */
     public function pagesFormContainsExpectedFields(int $doktype, array $expectedFields, array $hiddenFields): void
     {

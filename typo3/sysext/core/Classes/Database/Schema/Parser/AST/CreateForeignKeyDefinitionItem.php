@@ -48,10 +48,6 @@ class CreateForeignKeyDefinitionItem extends AbstractCreateDefinitionItem
 
     /**
      * CreateForeignKeyDefinitionItem constructor.
-     *
-     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier $indexName
-     * @param array $columnNames
-     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\ReferenceDefinition $reference
      */
     public function __construct(Identifier $indexName, array $columnNames, ReferenceDefinition $reference)
     {

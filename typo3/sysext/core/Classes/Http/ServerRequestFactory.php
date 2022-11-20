@@ -94,7 +94,6 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
      * Fetch headers from $_SERVER variables
      * which are only the ones starting with HTTP_* and CONTENT_*
      *
-     * @param array $server
      * @return array
      */
     protected static function prepareHeaders(array $server)

@@ -55,9 +55,6 @@ class ArrayConverterTest extends UnitTestCase
     /**
      * @test
      * @dataProvider stringToArrayDataProvider
-     *
-     * @param string $source
-     * @param array $expectedResult
      */
     public function canConvertFromEmptyString(string $source, array $expectedResult): void
     {
@@ -101,10 +98,6 @@ class ArrayConverterTest extends UnitTestCase
     /**
      * @test
      * @dataProvider stringToArrayWithConfigurationDataProvider
-     *
-     * @param string $source
-     * @param PropertyMappingConfigurationInterface $configuration
-     * @param array $expectedResult
      */
     public function canConvertWithConfigurationFromString(string $source, PropertyMappingConfigurationInterface $configuration, array $expectedResult): void
     {

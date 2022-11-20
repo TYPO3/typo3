@@ -95,8 +95,6 @@ class SimpleEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
     /**
      * Builds a variant of a route based on the given configuration.
      *
-     * @param Route $defaultPageRoute
-     * @param array $configuration
      * @return Route
      */
     protected function getVariant(Route $defaultPageRoute, array $configuration): Route

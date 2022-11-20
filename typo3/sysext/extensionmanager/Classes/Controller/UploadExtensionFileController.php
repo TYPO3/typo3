@@ -188,7 +188,6 @@ class UploadExtensionFileController extends AbstractController
      * Extracts a given zip file and installs the extension
      *
      * @param string $uploadedFile Path to uploaded file
-     * @param string $extensionKey
      * @param bool $overwrite Overwrite existing extension if TRUE
      * @throws ExtensionManagerException
      * @return string

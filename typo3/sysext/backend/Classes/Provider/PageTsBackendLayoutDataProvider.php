@@ -89,8 +89,6 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
 
     /**
      * Set PageTsConfig
-     *
-     * @param array $pageTsConfig
      */
     protected function setPageTsConfig(array $pageTsConfig)
     {
@@ -200,10 +198,6 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
         }
     }
 
-    /**
-     * @param DataProviderContext $dataProviderContext
-     * @param BackendLayoutCollection $backendLayoutCollection
-     */
     public function addBackendLayouts(DataProviderContext $dataProviderContext, BackendLayoutCollection $backendLayoutCollection)
     {
         $this->generateBackendLayouts($dataProviderContext);
@@ -234,7 +228,6 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
     /**
      * Creates a new backend layout using the given record data.
      *
-     * @param array $data
      * @return BackendLayout
      */
     protected function createBackendLayout(array $data)

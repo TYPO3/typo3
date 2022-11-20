@@ -636,9 +636,6 @@ class TreeControllerTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $search
-     * @param array $expectedChildren
-     *
      * @test
      * @dataProvider getAllEntryPointPageTreesInWorkspaceWithSearchDataProvider
      */
@@ -744,9 +741,6 @@ class TreeControllerTest extends FunctionalTestCase
         self::assertEquals('ACME Inc', $afterPageTreeItemsPreparedEvent->getItems()[1]['name']);
     }
 
-    /**
-     * @param int $workspaceId
-     */
     private function setWorkspace(int $workspaceId): void
     {
         $this->backendUser->workspace = $workspaceId;

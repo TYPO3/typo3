@@ -65,7 +65,6 @@ class BackendLayoutCollection
     /**
      * Adds a backend layout to this collection.
      *
-     * @param BackendLayout $backendLayout
      * @throws \LogicException
      */
     public function add(BackendLayout $backendLayout)

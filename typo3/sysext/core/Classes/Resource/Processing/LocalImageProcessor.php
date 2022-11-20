@@ -30,7 +30,6 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
     /**
      * Returns TRUE if this processor can process the given task.
      *
-     * @param TaskInterface $task
      * @return bool
      */
     public function canProcessTask(TaskInterface $task): bool
@@ -42,7 +41,6 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
     /**
      * Processes the given task.
      *
-     * @param TaskInterface $task
      * @throws \InvalidArgumentException
      */
     public function processTask(TaskInterface $task): void
@@ -56,8 +54,6 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
     /**
      * Processes an image described in a task, but optionally uses a given local image
      *
-     * @param TaskInterface $task
-     * @param string|null $localFile
      * @throws \InvalidArgumentException
      */
     public function processTaskWithLocalFile(TaskInterface $task, ?string $localFile): void
@@ -100,7 +96,6 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
      * Check if the to be processed target file already exists
      * if exist take info from that file and mark task as done
      *
-     * @param TaskInterface $task
      * @return bool
      */
     protected function checkForExistingTargetFile(TaskInterface $task)

@@ -129,7 +129,6 @@ trait PublicPropertyDeprecationTrait
      * Unsets the property of the given name if tagged.
      *
      * @property array $deprecatedPublicProperties List of deprecated public properties
-     * @param string $propertyName
      */
     public function __unset(string $propertyName)
     {

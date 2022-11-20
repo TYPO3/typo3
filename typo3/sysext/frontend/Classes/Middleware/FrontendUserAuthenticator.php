@@ -55,8 +55,6 @@ class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInter
      * Creates a frontend user authentication object, tries to authenticate a user and stores
      * it in the current request as attribute.
      *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

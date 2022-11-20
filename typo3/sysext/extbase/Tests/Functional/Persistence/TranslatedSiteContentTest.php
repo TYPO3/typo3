@@ -214,9 +214,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      * @dataProvider danishDataProvider
-     *
-     * @param string $fallbackType
-     * @param array $visibleRecords
      */
     public function renderingOfDanishLanguage(string $fallbackType, array $visibleRecords): void
     {
@@ -436,9 +433,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
      * @test
      * @dataProvider contentOnNonTranslatedPageDataProvider
      *
-     * @param string $fallbackType
-     * @param array $fallbackChain
-     * @param array $visibleRecords
      * @param int $statusCode '200' or '404'
      */
     public function contentOnNonTranslatedPageGerman(string $fallbackType, array $fallbackChain, array $visibleRecords, int $statusCode = 200): void
@@ -558,10 +552,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
      *
      * @test
      * @dataProvider contentOnPartiallyTranslatedPageDataProvider
-     *
-     * @param string $fallbackType
-     * @param array $fallbackChain
-     * @param array $visibleHeaders
      */
     public function contentOnPartiallyTranslatedPage(string $fallbackType, array $fallbackChain, array $visibleHeaders): void
     {
@@ -602,7 +592,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
     /**
      * Helper function to ease asserting that rest of the data set is not visible
      *
-     * @param array $visibleHeaders
      * @return array
      */
     protected function getNonVisibleHeaders(array $visibleHeaders): array
@@ -628,7 +617,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
     /**
      * Helper function to ease asserting that rest of the data set is not visible
      *
-     * @param array $visibleTitles
      * @return array
      */
     protected function getNonVisibleFileTitles(array $visibleTitles): array
@@ -648,7 +636,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
     /**
      * Helper function to ease asserting that rest of the data set is not visible
      *
-     * @param array $visibleTitles
      * @return array
      */
     protected function getNonVisibleCategoryTitles(array $visibleTitles): array

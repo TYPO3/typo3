@@ -40,9 +40,6 @@ abstract class AbstractDownloadExtensionUpdate implements UpgradeWizardInterface
      */
     protected $extension;
 
-    /**
-     * @param OutputInterface $output
-     */
     public function setOutput(OutputInterface $output): void
     {
         $this->output = $output;
@@ -63,7 +60,6 @@ abstract class AbstractDownloadExtensionUpdate implements UpgradeWizardInterface
      * This method can be called to install an extension following all proper processes
      * (e.g. installing in extList, respecting priority, etc.)
      *
-     * @param \TYPO3\CMS\Install\Updates\ExtensionModel $extension
      * @return bool whether the installation worked or not
      * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
      */

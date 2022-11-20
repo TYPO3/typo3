@@ -42,8 +42,6 @@ class ArrayGlobalMatcher extends AbstractCoreMatcher
 
     /**
      * Called by PhpParser.
-     *
-     * @param Node $node
      */
     public function enterNode(Node $node)
     {

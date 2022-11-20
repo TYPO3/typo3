@@ -70,7 +70,6 @@ class StagesService implements SingletonInterface
      * Find the highest possible "previous" stage for all $byTableName
      *
      * @param array $workspaceItems
-     * @param array $byTableName
      * @return array Current and next highest possible stage
      */
     public function getPreviousStageForElementCollection(
@@ -118,7 +117,6 @@ class StagesService implements SingletonInterface
      * Retrieve the next stage based on the lowest stage given in the $workspaceItems record array.
      *
      * @param array $workspaceItems
-     * @param array $byTableName
      * @return array Current and next possible stage.
      */
     public function getNextStageForElementCollection(
@@ -502,7 +500,6 @@ class StagesService implements SingletonInterface
     }
 
     /**
-     * @param StageRecord $stageRecord
      * @return array
      */
     public function getPreselectedRecipients(StageRecord $stageRecord)

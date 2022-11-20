@@ -49,17 +49,12 @@ class ContainerBuilder
      */
     protected $serviceProviderRegistryServiceName = 'service_provider_registry';
 
-    /**
-     * @param array $earlyInstances
-     */
     public function __construct(array $earlyInstances)
     {
         $this->defaultServices = $earlyInstances + [ self::class => $this ];
     }
 
     /**
-     * @param PackageManager $packageManager
-     * @param FrontendInterface $cache
      * @internal
      */
     public function warmupCache(PackageManager $packageManager, FrontendInterface $cache): void
@@ -71,9 +66,6 @@ class ContainerBuilder
     }
 
     /**
-     * @param PackageManager $packageManager
-     * @param FrontendInterface $cache
-     * @param bool $failsafe
      * @return ContainerInterface
      */
     public function createDependencyInjectionContainer(PackageManager $packageManager, FrontendInterface $cache, bool $failsafe = false): ContainerInterface
@@ -108,8 +100,6 @@ class ContainerBuilder
     }
 
     /**
-     * @param PackageManager $packageManager
-     * @param ServiceProviderRegistry $registry
      * @return SymfonyContainerBuilder
      */
     protected function buildContainer(PackageManager $packageManager, ServiceProviderRegistry $registry): SymfonyContainerBuilder
@@ -163,9 +153,6 @@ class ContainerBuilder
     }
 
     /**
-     * @param SymfonyContainerBuilder $containerBuilder
-     * @param FrontendInterface $cache
-     * @param string $cacheIdentifier
      * @return string
      */
     protected function dumpContainer(SymfonyContainerBuilder $containerBuilder, FrontendInterface $cache, string $cacheIdentifier): string
@@ -190,7 +177,6 @@ class ContainerBuilder
     }
 
     /**
-     * @param PackageManager $packageManager
      * @return string
      * @internal may only be used in this class or in functional tests
      */
@@ -201,8 +187,6 @@ class ContainerBuilder
     }
 
     /**
-     * @param PackageManager $packageManager
-     * @param string $additionalIdentifier
      * @return string
      */
     protected function createCacheIdentifier(PackageManager $packageManager, string $additionalIdentifier): string

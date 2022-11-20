@@ -24,8 +24,6 @@ class TimeDataType extends AbstractDataType
 {
     /**
      * TimeDataType constructor.
-     *
-     * @param int $length
      */
     public function __construct(int $length)
     {

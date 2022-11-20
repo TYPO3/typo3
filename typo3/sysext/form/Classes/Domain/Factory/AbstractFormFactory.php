@@ -55,8 +55,6 @@ abstract class AbstractFormFactory implements FormFactoryInterface
     /**
      * Helper to be called by every AbstractFormFactory after everything has been built to call the "afterBuildingFinished"
      * hook on all form elements.
-     *
-     * @param FormDefinition $form
      */
     protected function triggerFormBuildingFinished(FormDefinition $form)
     {

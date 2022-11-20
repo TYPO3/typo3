@@ -41,7 +41,6 @@ interface QueryRestrictionContainerInterface extends QueryRestrictionInterface
     /**
      * Add a new restriction instance to this collection
      *
-     * @param QueryRestrictionInterface $restriction
      * @return QueryRestrictionContainerInterface
      */
     public function add(QueryRestrictionInterface $restriction);

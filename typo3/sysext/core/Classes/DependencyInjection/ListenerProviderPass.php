@@ -36,9 +36,6 @@ final class ListenerProviderPass implements CompilerPassInterface
 
     private DependencyOrderingService $orderer;
 
-    /**
-     * @param string $tagName
-     */
     public function __construct(string $tagName)
     {
         $this->tagName = $tagName;

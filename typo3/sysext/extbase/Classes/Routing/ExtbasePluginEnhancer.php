@@ -186,8 +186,6 @@ class ExtbasePluginEnhancer extends PluginEnhancer
     /**
      * Check if controller+action combination matches
      *
-     * @param Route $route
-     * @param array $parameters
      * @return bool
      */
     protected function verifyRequiredParameters(Route $route, array $parameters): bool
@@ -211,7 +209,6 @@ class ExtbasePluginEnhancer extends PluginEnhancer
     /**
      * Check if action and controller are not empty.
      *
-     * @param array $target
      * @return bool
      */
     protected function hasControllerActionValues(array $target): bool
@@ -222,7 +219,6 @@ class ExtbasePluginEnhancer extends PluginEnhancer
     /**
      * Add controller and action parameters so they can be used later-on.
      *
-     * @param string $controllerActionValue
      * @param array $target Reference to target array to be modified
      * @param bool $tryUpdate Try updating action value - but only if controller value matches
      */

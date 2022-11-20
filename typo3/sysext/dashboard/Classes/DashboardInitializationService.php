@@ -178,7 +178,6 @@ class DashboardInitializationService
     /**
      * Add the RequireJS modules needed by some widgets
      *
-     * @param RequireJsModuleInterface $widgetInstance
      * @deprecated will be removed in TYPO3 v13.0
      */
     protected function defineRequireJsModules(RequireJsModuleInterface $widgetInstance): void
@@ -195,8 +194,6 @@ class DashboardInitializationService
     /**
      * Define the correct path of the JS files of a widget and add them to the list of JS files that needs to be
      * included
-     *
-     * @param AdditionalJavaScriptInterface $widgetInstance
      */
     protected function defineJsFiles(AdditionalJavaScriptInterface $widgetInstance): void
     {
@@ -211,8 +208,6 @@ class DashboardInitializationService
     /**
      * Define the correct path of the CSS files of a widget and add them to the list of CSS files that needs to be
      * included
-     *
-     * @param AdditionalCssInterface $widgetInstance
      */
     protected function defineCssFiles(AdditionalCssInterface $widgetInstance): void
     {

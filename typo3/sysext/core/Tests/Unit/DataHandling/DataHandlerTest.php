@@ -436,9 +436,6 @@ class DataHandlerTest extends UnitTestCase
     }
 
     /**
-     * @param string $value
-     * @param int $expected
-     *
      * @test
      * @dataProvider datetimeValuesDataProvider
      */
@@ -1152,9 +1149,7 @@ class DataHandlerTest extends UnitTestCase
 
     /**
      * @param mixed $value
-     * @param array $configuration
      * @param int|string $expected
-     * @param bool $isNew
      * @test
      * @dataProvider referenceValuesAreCastedDataProvider
      */
@@ -1220,8 +1215,6 @@ class DataHandlerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider clearPrefixFromValueRemovesPrefixDataProvider
-     * @param string $input
-     * @param string $expected
      */
     public function clearPrefixFromValueRemovesPrefix(string $input, string $expected): void
     {

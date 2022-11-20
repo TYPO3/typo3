@@ -36,7 +36,6 @@ class TcaTypesShowitem implements FormDataProviderInterface
     /**
      * Set processedTca showitem
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

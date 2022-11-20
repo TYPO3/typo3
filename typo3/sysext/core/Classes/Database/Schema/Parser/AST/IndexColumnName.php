@@ -41,10 +41,6 @@ class IndexColumnName
 
     /**
      * IndexColumnName constructor.
-     *
-     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier $columnName
-     * @param int $length
-     * @param string $direction
      */
     public function __construct(Identifier $columnName, int $length, string $direction = null)
     {

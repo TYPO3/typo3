@@ -66,11 +66,9 @@ class RecordHistoryStore
     protected $workspaceId;
 
     /**
-     * @param string $userType
      * @param int|null $userId
      * @param int|null $originalUserId
      * @param int|null $tstamp
-     * @param int $workspaceId
      */
     public function __construct(string $userType = self::USER_BACKEND, int $userId = null, int $originalUserId = null, int $tstamp = null, int $workspaceId = 0)
     {
@@ -82,9 +80,6 @@ class RecordHistoryStore
     }
 
     /**
-     * @param string $table
-     * @param int $uid
-     * @param array $payload
      * @param CorrelationId|null $correlationId
      * @return string
      */
@@ -107,9 +102,6 @@ class RecordHistoryStore
     }
 
     /**
-     * @param string $table
-     * @param int $uid
-     * @param array $payload
      * @param CorrelationId|null $correlationId
      * @return string
      */
@@ -132,8 +124,6 @@ class RecordHistoryStore
     }
 
     /**
-     * @param string $table
-     * @param int $uid
      * @param CorrelationId|null $correlationId
      * @return string
      */
@@ -155,8 +145,6 @@ class RecordHistoryStore
     }
 
     /**
-     * @param string $table
-     * @param int $uid
      * @param CorrelationId|null $correlationId
      * @return string
      */
@@ -178,9 +166,6 @@ class RecordHistoryStore
     }
 
     /**
-     * @param string $table
-     * @param int $uid
-     * @param array $payload
      * @param CorrelationId|null $correlationId
      * @return string
      */

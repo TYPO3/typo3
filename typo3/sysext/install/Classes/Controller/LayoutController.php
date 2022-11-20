@@ -59,7 +59,6 @@ class LayoutController extends AbstractController
      * The init action renders an HTML response with HTML view having <head> section
      * containing resources to main .js routing.
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function initAction(ServerRequestInterface $request): ResponseInterface
@@ -101,7 +100,6 @@ class LayoutController extends AbstractController
      * doc header in standalone, doc header only in backend context. Silent updaters
      * are executed before this main view is loaded.
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function mainLayoutAction(ServerRequestInterface $request): ResponseInterface

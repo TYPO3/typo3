@@ -87,7 +87,6 @@ HTML;
     /**
      * Generates the HTML for the error output.
      *
-     * @param \Throwable $throwable
      * @return string
      */
     protected function getContent(\Throwable $throwable): string
@@ -150,9 +149,6 @@ HTML;
     /**
      * Renders the HTML for a single throwable.
      *
-     * @param \Throwable $throwable
-     * @param int $index
-     * @param int $total
      * @return string
      */
     protected function getSingleThrowableContent(\Throwable $throwable, int $index, int $total): string
@@ -406,7 +402,6 @@ STYLESHEET;
     /**
      * Renders the backtrace as HTML.
      *
-     * @param array $trace
      * @return string
      */
     protected function getBacktraceCode(array $trace): string

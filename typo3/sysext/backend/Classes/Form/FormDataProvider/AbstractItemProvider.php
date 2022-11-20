@@ -1051,10 +1051,6 @@ abstract class AbstractItemProvider
     /**
      * Add alternative icon using "altIcons" TSconfig
      *
-     * @param array $result
-     * @param array $items
-     * @param string $table
-     * @param string $fieldName
      *
      * @return array
      */

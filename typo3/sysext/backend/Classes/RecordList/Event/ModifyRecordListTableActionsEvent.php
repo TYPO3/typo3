@@ -55,11 +55,6 @@ final class ModifyRecordListTableActionsEvent
      * a numeric index, which is generally not recommended. It's also possible
      * to define the position of an action with either the "before" or "after"
      * argument, while their value must be an existing action.
-     *
-     * @param string $action
-     * @param string $actionName
-     * @param string $before
-     * @param string $after
      */
     public function setAction(string $action, string $actionName = '', string $before = '', string $after = ''): void
     {
@@ -81,7 +76,6 @@ final class ModifyRecordListTableActionsEvent
     /**
      * Whether the action exists
      *
-     * @param string $actionName
      * @return bool
      */
     public function hasAction(string $actionName): bool
@@ -92,7 +86,6 @@ final class ModifyRecordListTableActionsEvent
     /**
      * Get action by its name
      *
-     * @param string $actionName
      * @return string|null The action or NULL if the action does not exist
      */
     public function getAction(string $actionName): ?string
@@ -103,7 +96,6 @@ final class ModifyRecordListTableActionsEvent
     /**
      * Remove action by its name
      *
-     * @param string $actionName
      * @return bool Whether the action could be removed - Will therefore
      *              return FALSE if the action to remove does not exist.
      */

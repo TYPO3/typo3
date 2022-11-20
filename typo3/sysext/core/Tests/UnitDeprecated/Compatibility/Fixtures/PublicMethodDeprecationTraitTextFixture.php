@@ -60,8 +60,6 @@ class PublicMethodDeprecationTraitTextFixture
 
     /**
      * @private
-     * @param string $arg1
-     * @param string $arg2
      */
     protected function methodMadeProtectedWithArguments(string $arg1, string $arg2): void
     {

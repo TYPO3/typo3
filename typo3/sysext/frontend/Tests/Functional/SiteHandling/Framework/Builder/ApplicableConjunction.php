@@ -48,7 +48,6 @@ class ApplicableConjunction implements Applicable
     }
 
     /**
-     * @param string $type
      * @return Applicable[]
      */
     public function filter(string $type): array

@@ -44,7 +44,6 @@ class ProcessorRegistry implements SingletonInterface
      * Finds a matching processor that can process the given task.
      * Registered processors will be tested by their priority from high to low.
      *
-     * @param TaskInterface $task
      * @return ProcessorInterface
      */
     public function getProcessorByTask(TaskInterface $task): ProcessorInterface

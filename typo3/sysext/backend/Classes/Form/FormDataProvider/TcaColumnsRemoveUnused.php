@@ -28,7 +28,6 @@ class TcaColumnsRemoveUnused implements FormDataProviderInterface
     /**
      * Remove unused column fields to speed up further processing.
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

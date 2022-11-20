@@ -244,8 +244,6 @@ class CharsetConverterTest extends UnitTestCase
     /**
      * @test
      * @dataProvider validInputForSpecCharsToAscii
-     * @param string $input
-     * @param string $expectedString
      */
     public function specCharsToAsciiConvertsUmlautsToAscii(
         string $input,

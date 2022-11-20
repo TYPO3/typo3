@@ -1112,7 +1112,6 @@ class Export extends ImportExport
      * This adds the file from a sys_file record to the export
      * - either as content or external file
      *
-     * @param array $fileData
      * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidHashException
      */
     protected function exportAddSysFile(array $fileData): void
@@ -1341,9 +1340,6 @@ class Export extends ImportExport
         return $this->exportFileName;
     }
 
-    /**
-     * @param string $exportFileName
-     */
     public function setExportFileName(string $exportFileName): void
     {
         $exportFileName = trim((string)preg_replace('/[^[:alnum:]._-]*/', '', $exportFileName));
@@ -1395,9 +1391,6 @@ class Export extends ImportExport
         return $this->exportFileType;
     }
 
-    /**
-     * @param string $exportFileType
-     */
     public function setExportFileType(string $exportFileType): void
     {
         $supportedFileTypes = $this->getSupportedFileTypes();
@@ -1461,9 +1454,6 @@ class Export extends ImportExport
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     */
     public function setTitle(string $title): void
     {
         $this->title = $title;
@@ -1477,9 +1467,6 @@ class Export extends ImportExport
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     */
     public function setDescription(string $description): void
     {
         $this->description = $description;
@@ -1493,9 +1480,6 @@ class Export extends ImportExport
         return $this->notes;
     }
 
-    /**
-     * @param string $notes
-     */
     public function setNotes(string $notes): void
     {
         $this->notes = $notes;
@@ -1509,9 +1493,6 @@ class Export extends ImportExport
         return $this->record;
     }
 
-    /**
-     * @param array $record
-     */
     public function setRecord(array $record): void
     {
         $this->record = $record;
@@ -1525,9 +1506,6 @@ class Export extends ImportExport
         return $this->list;
     }
 
-    /**
-     * @param array $list
-     */
     public function setList(array $list): void
     {
         $this->list = $list;
@@ -1541,9 +1519,6 @@ class Export extends ImportExport
         return $this->levels;
     }
 
-    /**
-     * @param int $levels
-     */
     public function setLevels(int $levels): void
     {
         $this->levels = $levels;
@@ -1557,9 +1532,6 @@ class Export extends ImportExport
         return $this->tables;
     }
 
-    /**
-     * @param array $tables
-     */
     public function setTables(array $tables): void
     {
         $this->tables = $tables;
@@ -1573,9 +1545,6 @@ class Export extends ImportExport
         return $this->relOnlyTables;
     }
 
-    /**
-     * @param array $relOnlyTables
-     */
     public function setRelOnlyTables(array $relOnlyTables): void
     {
         $this->relOnlyTables = $relOnlyTables;
@@ -1597,9 +1566,6 @@ class Export extends ImportExport
         return $this->includeExtFileResources;
     }
 
-    /**
-     * @param bool $includeExtFileResources
-     */
     public function setIncludeExtFileResources(bool $includeExtFileResources): void
     {
         $this->includeExtFileResources = $includeExtFileResources;
@@ -1609,7 +1575,6 @@ class Export extends ImportExport
      * Option to enable having the files not included in the export file.
      * The files are saved to a temporary folder instead.
      *
-     * @param bool $saveFilesOutsideExportFile
      * @see ImportExport::getOrCreateTemporaryFolderName()
      */
     public function setSaveFilesOutsideExportFile(bool $saveFilesOutsideExportFile)

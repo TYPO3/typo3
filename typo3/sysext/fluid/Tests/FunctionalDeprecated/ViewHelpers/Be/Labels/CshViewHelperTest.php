@@ -74,10 +74,6 @@ class CshViewHelperTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $source
-     * @param array $variables
-     * @param string $expectation
-     *
      * @test
      * @dataProvider isRenderedDataProvider
      */

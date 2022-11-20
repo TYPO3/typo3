@@ -26,7 +26,6 @@ class TcaRadioItems extends AbstractItemProvider implements FormDataProviderInte
     /**
      * Resolve radio items
      *
-     * @param array $result
      * @return array
      * @throws \UnexpectedValueException
      */

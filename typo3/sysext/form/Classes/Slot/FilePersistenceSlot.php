@@ -53,7 +53,6 @@ final class FilePersistenceSlot implements SingletonInterface
     protected $allowedInvocations = [];
 
     /**
-     * @param string $content
      * @return string
      */
     public function getContentSignature(string $content): string
@@ -84,9 +83,6 @@ final class FilePersistenceSlot implements SingletonInterface
      * identifier. Commands providing new content have have to submit a HMAC
      * signature on the content as well.
      *
-     * @param string $command
-     * @param string $combinedFileIdentifier
-     * @param string $contentSignature
      * @return bool
      * @see getContentSignature
      */
@@ -210,9 +206,6 @@ final class FilePersistenceSlot implements SingletonInterface
     }
 
     /**
-     * @param string $command
-     * @param string $combinedFileIdentifier
-     * @param string $content
      * @throws FormDefinitionPersistenceException
      */
     protected function assertFileName(
@@ -263,8 +256,6 @@ final class FilePersistenceSlot implements SingletonInterface
     }
 
     /**
-     * @param string $command
-     * @param string $combinedFileIdentifier
      * @param string|null $contentSignature
      * @return int|null
      */
@@ -286,8 +277,6 @@ final class FilePersistenceSlot implements SingletonInterface
     }
 
     /**
-     * @param FolderInterface $folder
-     * @param string $fileName
      * @return string
      */
     protected function buildCombinedIdentifier(FolderInterface $folder, string $fileName): string
@@ -301,7 +290,6 @@ final class FilePersistenceSlot implements SingletonInterface
     }
 
     /**
-     * @param string $identifier
      * @return bool
      */
     protected function isFormDefinition(string $identifier): bool
@@ -313,7 +301,6 @@ final class FilePersistenceSlot implements SingletonInterface
     }
 
     /**
-     * @param FolderInterface $folder
      * @return bool
      */
     protected function isRecycleFolder(FolderInterface $folder): bool

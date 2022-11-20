@@ -25,7 +25,6 @@ class PropertyCollectionElementHmacDataValidator extends CollectionBasedValidato
     /**
      * Checks if the property collection element values matches to its hmac hash.
      *
-     * @param string $key
      * @param mixed $value
      */
     public function __invoke(string $key, $value): void

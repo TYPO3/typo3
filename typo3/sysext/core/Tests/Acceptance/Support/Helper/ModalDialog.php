@@ -48,8 +48,6 @@ class ModalDialog extends AbstractModalDialog
 
     /**
      * Inject our core AcceptanceTester actor into ModalDialog
-     *
-     * @param ApplicationTester $I
      */
     public function __construct(ApplicationTester $I)
     {

@@ -65,7 +65,6 @@ class StaticRangeMapper implements StaticMappableAspectInterface, \Countable
     protected $range;
 
     /**
-     * @param array $settings
      * @throws \InvalidArgumentException
      */
     public function __construct(array $settings)
@@ -111,7 +110,6 @@ class StaticRangeMapper implements StaticMappableAspectInterface, \Countable
     }
 
     /**
-     * @param string $value
      * @return string|null
      */
     protected function respondWhenInRange(string $value): ?string
@@ -147,7 +145,6 @@ class StaticRangeMapper implements StaticMappableAspectInterface, \Countable
     }
 
     /**
-     * @param array $range
      * @return string[]
      */
     protected function applyNumericPrefix(array $range): array

@@ -676,7 +676,6 @@ class FlexFormTools
     /**
      * Ensures a data structure has a default sheet, and no duplicate data
      *
-     * @param array $dataStructure
      * @return array
      */
     protected function ensureDefaultSheet(array $dataStructure): array
@@ -697,7 +696,6 @@ class FlexFormTools
     /**
      * Resolve FILE:EXT and EXT: for single sheets
      *
-     * @param array $dataStructure
      * @return array
      */
     protected function resolveFileDirectives(array $dataStructure): array
@@ -1006,7 +1004,6 @@ class FlexFormTools
     /**
      * Prepare type=file fields if given.
      *
-     * @param array $dataStructurSheets
      * @return array The processed $dataStructureSheets
      */
     protected function prepareFileFields(array $dataStructurSheets): array

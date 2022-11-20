@@ -88,8 +88,6 @@ class WorkspaceNewPlaceholderRemovalMigration implements RowUpdaterInterface, Lo
     /**
      * Fetch the t3ver_state = -1 record for a given t3ver_state = 1 record.
      *
-     * @param string $tableName
-     * @param int $uid
      * @return array|null the versioned record or null if none was found.
      */
     protected function fetchVersionedRecord(string $tableName, int $uid): ?array
@@ -124,11 +122,6 @@ class WorkspaceNewPlaceholderRemovalMigration implements RowUpdaterInterface, Lo
      * Because MM does not contain workspace information, they were previously bound directly
      * to the versioned record, this information is now transferred to the new version t3ver_state=1
      * record.
-     *
-     * @param string $tableName
-     * @param string $fieldName
-     * @param int $originalUid
-     * @param int $newUid
      */
     protected function transferMMValues(string $tableName, string $fieldName, int $originalUid, int $newUid): void
     {

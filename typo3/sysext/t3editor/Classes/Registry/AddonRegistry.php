@@ -34,7 +34,6 @@ class AddonRegistry implements SingletonInterface
     /**
      * Registers addons for global use in t3editor
      *
-     * @param Addon $addon
      * @return self
      */
     public function register(Addon $addon): AddonRegistry

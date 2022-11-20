@@ -22,7 +22,6 @@ use enshrined\svgSanitize\Sanitizer;
 class SvgSanitizer
 {
     /**
-     * @param string $sourcePath
      * @param string|null $targetPath
      * @throws \BadFunctionCallException
      */
@@ -42,8 +41,6 @@ class SvgSanitizer
     }
 
     /**
-     * @param string $svg
-     *
      * @return string
      * @throws \BadFunctionCallException
      */

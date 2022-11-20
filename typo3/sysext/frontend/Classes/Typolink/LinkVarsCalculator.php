@@ -111,7 +111,6 @@ class LinkVarsCalculator
     /**
      * Split the link vars string by "," but not if the "," is inside of braces
      *
-     * @param string $string
      *
      * @return array
      */

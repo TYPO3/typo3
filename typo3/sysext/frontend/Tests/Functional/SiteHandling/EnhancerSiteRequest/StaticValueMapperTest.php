@@ -88,7 +88,6 @@ class StaticValueMapperTest extends AbstractEnhancerSiteRequestTest
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider staticValueMapperDataProvider
      */
@@ -116,7 +115,6 @@ class StaticValueMapperTest extends AbstractEnhancerSiteRequestTest
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider pageTypeDecoratorIsAppliedDataProvider
      */

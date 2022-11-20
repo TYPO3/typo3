@@ -54,8 +54,6 @@ class FileProcessingService
     /**
      * Creates this object.
      *
-     * @param Resource\ResourceStorage $storage
-     * @param Resource\Driver\DriverInterface $driver
      * @param EventDispatcherInterface|null $eventDispatcher
      */
     public function __construct(ResourceStorage $storage, DriverInterface $driver, EventDispatcherInterface $eventDispatcher = null)
@@ -122,7 +120,6 @@ class FileProcessingService
     /**
      * Processes the file
      *
-     * @param Resource\ProcessedFile $processedFile
      * @param Resource\ResourceStorage $targetStorage The storage to put the processed file into
      */
     protected function process(ProcessedFile $processedFile, ResourceStorage $targetStorage)
@@ -144,7 +141,6 @@ class FileProcessingService
     }
 
     /**
-     * @param Resource\Processing\TaskInterface $task
      * @return Resource\Processing\ProcessorInterface
      */
     protected function getProcessorByTask(TaskInterface $task): ProcessorInterface

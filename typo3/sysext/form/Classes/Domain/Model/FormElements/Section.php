@@ -120,7 +120,6 @@ class Section extends AbstractSection implements FormElementInterface
     /**
      * Set an element-specific configuration property.
      *
-     * @param string $key
      * @param mixed $value
      */
     public function setProperty(string $key, $value)

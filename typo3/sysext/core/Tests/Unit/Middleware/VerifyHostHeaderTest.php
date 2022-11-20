@@ -171,12 +171,6 @@ class VerifyHostHeaderTest extends UnitTestCase
     }
 
     /**
-     * @param string $httpHost
-     * @param string $serverName
-     * @param bool $isAllowed
-     * @param string $serverPort
-     * @param string $ssl
-     *
      * @test
      * @dataProvider serverNamePatternDataProvider
      */
@@ -198,12 +192,6 @@ class VerifyHostHeaderTest extends UnitTestCase
     }
 
     /**
-     * @param string $httpHost
-     * @param string $serverName
-     * @param bool $isAllowed
-     * @param string $serverPort
-     * @param string $ssl
-     *
      * @test
      * @dataProvider serverNamePatternDataProvider
      */

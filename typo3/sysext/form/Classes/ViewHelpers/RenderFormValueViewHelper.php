@@ -94,10 +94,7 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
     /**
      * Converts the given value to a simple type (string or array) considering the underlying FormElement definition.
      *
-     * @param FormElementInterface $element
      * @param mixed $value
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     protected static function processElementValue(
@@ -144,7 +141,6 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
      * If the key does not exist in $options, it is returned without modification
      *
      * @param mixed $value
-     * @param array $options
      * @return mixed
      */
     protected static function mapValueToOption($value, array $options)
@@ -155,7 +151,6 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
     /**
      * Converts the given $object to a string representation considering the $element FormElement definition.
      *
-     * @param FormElementInterface $element
      * @param object $object
      * @return string
      */

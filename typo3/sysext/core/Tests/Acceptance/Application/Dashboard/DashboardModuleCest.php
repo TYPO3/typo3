@@ -31,9 +31,6 @@ class DashboardModuleCest
     protected static string $widgetTitle = 'Type of backend users';
     protected static string $widgetTitleSelector = '.widget-content-title';
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
@@ -41,9 +38,6 @@ class DashboardModuleCest
         $I->switchToContentFrame();
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function seeInitialDashboardAndWidgets(ApplicationTester $I): void
     {
         $I->see(self::$defaultDashboardTitle, self::$dashboardActiveSelector);
@@ -51,10 +45,6 @@ class DashboardModuleCest
         $I->see('Getting Started with TYPO3', self::$widgetTitleSelector);
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
-     */
     public function createCustomDashboardAndWidgets(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         // Create Dashboard
@@ -77,8 +67,6 @@ class DashboardModuleCest
 
     /**
      * @depends createCustomDashboardAndWidgets
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
      */
     public function deleteDashboardAndWidgets(ApplicationTester $I, ModalDialog $modalDialog): void
     {

@@ -50,8 +50,6 @@ class UpgradeControllerTest extends UnitTestCase
     }
 
     /**
-     * @param string $version
-     * @param bool $expectsException
      * @dataProvider versionDataProvider
      * @test
      */

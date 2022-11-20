@@ -104,8 +104,6 @@ class ImportCommand extends Command
     /**
      * Executes the command for importing a t3d/xml file into the TYPO3 system
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -142,9 +140,6 @@ class ImportCommand extends Command
      * Parse a basic commandline option array into an associative array by splitting each entry into a key part and
      * a value part using a specific separator.
      *
-     * @param InputInterface $input
-     * @param string $optionName
-     * @param string $separator
      * @return array
      */
     protected function parseAssociativeArray(InputInterface &$input, string $optionName, string $separator): array

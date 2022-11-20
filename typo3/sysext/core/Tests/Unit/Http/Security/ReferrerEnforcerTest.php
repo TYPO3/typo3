@@ -110,10 +110,7 @@ class ReferrerEnforcerTest extends UnitTestCase
     }
 
     /**
-     * @param string $requestUri
-     * @param string $referrer
      * @param string[]|null $options
-     * @param string|null $expectedResponse
      *
      * @test
      * @dataProvider validReferrerIsHandledDataProvider
@@ -157,10 +154,7 @@ class ReferrerEnforcerTest extends UnitTestCase
     }
 
     /**
-     * @param string $requestUri
-     * @param string $referrer
      * @param string[]|null $options
-     *
      * @test
      * @dataProvider invalidReferrerIsHandledDataProvider
      */

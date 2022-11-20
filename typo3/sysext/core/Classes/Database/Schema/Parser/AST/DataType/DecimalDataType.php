@@ -24,9 +24,6 @@ class DecimalDataType extends AbstractDataType
 {
     /**
      * DecimalDataType constructor.
-     *
-     * @param array $dataTypeDecimals
-     * @param array $dataTypeOptions
      */
     public function __construct(array $dataTypeDecimals, array $dataTypeOptions)
     {

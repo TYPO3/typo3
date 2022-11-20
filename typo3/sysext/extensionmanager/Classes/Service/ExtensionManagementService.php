@@ -90,25 +90,16 @@ class ExtensionManagementService implements SingletonInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @param DownloadQueue $downloadQueue
-     */
     public function injectDownloadQueue(DownloadQueue $downloadQueue)
     {
         $this->downloadQueue = $downloadQueue;
     }
 
-    /**
-     * @param DependencyUtility $dependencyUtility
-     */
     public function injectDependencyUtility(DependencyUtility $dependencyUtility)
     {
         $this->dependencyUtility = $dependencyUtility;
     }
 
-    /**
-     * @param InstallUtility $installUtility
-     */
     public function injectInstallUtility(InstallUtility $installUtility)
     {
         $this->installUtility = $installUtility;
@@ -129,8 +120,6 @@ class ExtensionManagementService implements SingletonInterface
 
     /**
      * Mark an extension for download
-     *
-     * @param Extension $extension
      */
     public function markExtensionForDownload(Extension $extension)
     {
@@ -142,9 +131,6 @@ class ExtensionManagementService implements SingletonInterface
         }
     }
 
-    /**
-     * @param Extension $extension
-     */
     public function markExtensionForUpdate(Extension $extension)
     {
         // We have to check for dependencies of the extension first, before marking it for download
@@ -174,7 +160,6 @@ class ExtensionManagementService implements SingletonInterface
     /**
      * Install the extension
      *
-     * @param Extension $extension
      * @return bool|array Returns FALSE if dependencies cannot be resolved, otherwise array with installation information
      */
     public function installExtension(Extension $extension)
@@ -275,7 +260,6 @@ class ExtensionManagementService implements SingletonInterface
     /**
      * Check dependencies for an extension and its required extensions
      *
-     * @param Extension $extension
      * @return bool Returns TRUE if all dependencies can be resolved, otherwise FALSE
      */
     protected function checkDependencies(Extension $extension)
@@ -306,7 +290,6 @@ class ExtensionManagementService implements SingletonInterface
     /**
      * Install dependent extensions
      *
-     * @param array $installQueue
      * @return array
      */
     protected function installDependencies(array $installQueue)
@@ -348,7 +331,6 @@ class ExtensionManagementService implements SingletonInterface
     /**
      * Get and resolve dependencies
      *
-     * @param Extension $extension
      * @return array
      */
     public function getAndResolveDependencies(Extension $extension)
@@ -366,8 +348,6 @@ class ExtensionManagementService implements SingletonInterface
      * Downloads the extension the user wants to install
      * This is separated from downloading the dependencies
      * as an extension is able to provide it's own dependencies
-     *
-     * @param Extension $extension
      */
     public function downloadMainExtension(Extension $extension)
     {
@@ -405,7 +385,6 @@ class ExtensionManagementService implements SingletonInterface
     /**
      * Set the download path
      *
-     * @param string $downloadPath
      * @throws ExtensionManagerException
      */
     public function setDownloadPath(string $downloadPath): void

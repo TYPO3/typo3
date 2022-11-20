@@ -168,7 +168,6 @@ class JsonView extends AbstractView
     protected $variables = [];
 
     /**
-     * @param PersistenceManagerInterface $persistenceManager
      * @internal
      */
     public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager): void
@@ -207,8 +206,6 @@ class JsonView extends AbstractView
     /**
      * Specifies which variables this JsonView should render
      * By default only the variable 'value' will be rendered
-     *
-     * @param array $variablesToRender
      */
     public function setVariablesToRender(array $variablesToRender): void
     {

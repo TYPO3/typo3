@@ -23,7 +23,6 @@ class UrlLinkHandler implements LinkHandlingInterface
     /**
      * Returns the URL as given
      *
-     * @param array $parameters
      * @return string
      */
     public function asString(array $parameters): string

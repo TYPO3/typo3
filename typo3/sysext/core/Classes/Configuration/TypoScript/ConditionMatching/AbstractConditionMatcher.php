@@ -192,7 +192,6 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface, Conditi
     }
 
     /**
-     * @param string $expression
      * @return bool
      */
     protected function evaluateExpression(string $expression): bool

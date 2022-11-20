@@ -135,7 +135,6 @@ class T3editor implements SingletonInterface
     }
 
     /**
-     * @param PackageManager $packageManager
      * @return string
      */
     protected function generateCacheIdentifier(PackageManager $packageManager): string

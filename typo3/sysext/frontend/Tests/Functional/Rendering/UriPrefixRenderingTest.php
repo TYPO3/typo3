@@ -290,9 +290,6 @@ class UriPrefixRenderingTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $absRefPrefixAspect
-     * @param string $compressorAspect
-     * @param array $expectations
      * @test
      * @dataProvider urisAreRenderedUsingAbsRefPrefixDataProvider
      */
@@ -357,10 +354,6 @@ class UriPrefixRenderingTest extends FunctionalTestCase
 
     /**
      * Adds TypoScript constants snippet to the existing template record
-     *
-     * @param int $pageId
-     * @param string $constants
-     * @param bool $append
      */
     protected function setTypoScriptConstantsToTemplateRecord(int $pageId, string $constants, bool $append = false): void
     {
@@ -380,7 +373,6 @@ class UriPrefixRenderingTest extends FunctionalTestCase
     }
 
     /**
-     * @param array $constants
      * @return string
      */
     protected function compileTypoScriptConstants(array $constants): string

@@ -24,12 +24,6 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
  */
 class PagesTsConfigGuard
 {
-    /**
-     * @param array $incomingFieldArray
-     * @param string $table
-     * @param string $id
-     * @param DataHandler $dataHandler
-     */
     public function processDatamap_preProcessFieldArray(
         array &$incomingFieldArray,
         string $table,

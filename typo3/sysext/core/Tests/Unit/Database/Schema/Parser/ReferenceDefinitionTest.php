@@ -175,12 +175,6 @@ class ReferenceDefinitionTest extends UnitTestCase
     /**
      * @test
      * @dataProvider canParseReferenceDefinitionDataProvider
-     * @param string $columnAttribute
-     * @param string $table
-     * @param array $columns
-     * @param string $match
-     * @param string $onDelete
-     * @param string $onUpdate
      */
     public function canParseReferenceDefinition(
         string $columnAttribute,
@@ -209,7 +203,6 @@ class ReferenceDefinitionTest extends UnitTestCase
     /**
      * Parse the CREATE TABLE statement and return the reference definition
      *
-     * @param string $statement
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\ReferenceDefinition
      */
     protected function createSubject(string $statement): ReferenceDefinition

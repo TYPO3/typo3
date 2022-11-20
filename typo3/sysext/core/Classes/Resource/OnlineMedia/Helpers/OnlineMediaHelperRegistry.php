@@ -28,7 +28,6 @@ class OnlineMediaHelperRegistry implements SingletonInterface
     /**
      * Checks if there is a helper for this file extension
      *
-     * @param string $fileExtension
      * @return bool
      */
     public function hasOnlineMediaHelper(string $fileExtension): bool
@@ -39,7 +38,6 @@ class OnlineMediaHelperRegistry implements SingletonInterface
     /**
      * Get helper class for given File
      *
-     * @param File $file
      * @return false|OnlineMediaHelperInterface
      */
     public function getOnlineMediaHelper(File $file)
@@ -55,7 +53,6 @@ class OnlineMediaHelperRegistry implements SingletonInterface
      * Try to transform given URL to a File
      *
      * @param string $url
-     * @param Folder $targetFolder
      * @param string[] $allowedExtensions
      * @return File|null
      */

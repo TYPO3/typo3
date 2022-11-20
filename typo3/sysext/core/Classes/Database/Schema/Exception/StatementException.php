@@ -23,8 +23,6 @@ namespace TYPO3\CMS\Core\Database\Schema\Exception;
 class StatementException extends \Exception
 {
     /**
-     * @param string $sql
-     *
      * @return StatementException
      */
     public static function sqlError(string $sql): StatementException
@@ -33,9 +31,7 @@ class StatementException extends \Exception
     }
 
     /**
-     * @param string $message
      * @param \Exception|null $previous
-     *
      * @return StatementException
      */
     public static function syntaxError(string $message, \Exception $previous = null): StatementException
@@ -44,9 +40,7 @@ class StatementException extends \Exception
     }
 
     /**
-     * @param string $message
      * @param \Exception|null $previous
-     *
      * @return StatementException
      */
     public static function semanticalError(string $message, \Exception $previous = null): StatementException

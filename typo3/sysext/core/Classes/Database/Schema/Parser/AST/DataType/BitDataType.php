@@ -24,8 +24,6 @@ class BitDataType extends AbstractDataType
 {
     /**
      * BitDataType constructor.
-     *
-     * @param int $length
      */
     public function __construct(int $length)
     {

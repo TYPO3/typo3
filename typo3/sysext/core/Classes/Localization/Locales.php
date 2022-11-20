@@ -203,7 +203,6 @@ class Locales implements SingletonInterface
     /**
      * Returns the dependencies of a given locale, if any.
      *
-     * @param string $locale
      * @return array<int, non-empty-string>
      */
     public function getLocaleDependencies(string $locale): array
@@ -275,7 +274,6 @@ class Locales implements SingletonInterface
      * Setting locale based on a SiteLanguage's defined locale.
      * Used for frontend rendering, previously set within TSFE->settingLocale
      *
-     * @param SiteLanguage $siteLanguage
      * @return bool whether the locale was found on the system (and could be set properly) or not
      */
     public static function setSystemLocaleFromSiteLanguage(SiteLanguage $siteLanguage): bool

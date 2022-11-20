@@ -81,7 +81,6 @@ class SchemaMigrator
      * Return the raw Doctrine SchemaDiff objects for each connection. This diff contains
      * all changes without any pre-processing.
      *
-     * @param array $statements
      * @return SchemaDiff[]
      * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\DBAL\Schema\SchemaException
@@ -189,8 +188,6 @@ class SchemaMigrator
     /**
      * Import static data (INSERT statements)
      *
-     * @param array $statements
-     * @param bool $truncate
      * @return array
      */
     public function importStaticData(array $statements, bool $truncate = false): array

@@ -140,9 +140,6 @@ class SlugHelperTest extends UnitTestCase
     /**
      * @test
      * @dataProvider sanitizeDataProvider
-     * @param array $configuration
-     * @param string $input
-     * @param string $expected
      */
     public function sanitizeConvertsString(array $configuration, string $input, string $expected): void
     {
@@ -181,8 +178,6 @@ class SlugHelperTest extends UnitTestCase
 
     /**
      * @dataProvider generateNeverDeliversEmptySlugDataProvider
-     * @param string $input
-     * @param string $expected
      * @test
      */
     public function generateNeverDeliversEmptySlug(string $input, string $expected): void
@@ -340,9 +335,6 @@ class SlugHelperTest extends UnitTestCase
     /**
      * @test
      * @dataProvider sanitizeForPagesDataProvider
-     * @param array $configuration
-     * @param string $input
-     * @param string $expected
      */
     public function sanitizeConvertsStringForPages(array $configuration, string $input, string $expected): void
     {
@@ -381,8 +373,6 @@ class SlugHelperTest extends UnitTestCase
 
     /**
      * @dataProvider generateNeverDeliversEmptySlugForPagesDataProvider
-     * @param string $input
-     * @param string $expected
      * @test
      */
     public function generateNeverDeliversEmptySlugForPages(string $input, string $expected): void
@@ -487,8 +477,6 @@ class SlugHelperTest extends UnitTestCase
 
     /**
      * @dataProvider generatePrependsSlugsForPagesDataProvider
-     * @param string $input
-     * @param string $expected
      * @test
      */
     public function generatePrependsSlugsForPages(string $input, string $expected, array $options): void
@@ -626,9 +614,6 @@ class SlugHelperTest extends UnitTestCase
 
     /**
      * @dataProvider generateSlugWithNavTitleAndFallbackForPagesDataProvider
-     * @param array $input
-     * @param string $expected
-     * @param array $options
      * @test
      */
     public function generateSlugWithNavTitleAndFallbackForPages(array $input, string $expected, array $options): void
@@ -707,8 +692,6 @@ class SlugHelperTest extends UnitTestCase
 
     /**
      * @dataProvider generateSlugWithPid0DataProvider
-     * @param array $input
-     * @param string $expected
      * @test
      */
     public function generateSlugWithPid0(array $input, string $expected)

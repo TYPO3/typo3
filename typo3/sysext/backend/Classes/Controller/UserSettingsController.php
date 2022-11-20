@@ -38,7 +38,6 @@ class UserSettingsController
     /**
      * Processes all AJAX calls and returns a JSON for the data
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface

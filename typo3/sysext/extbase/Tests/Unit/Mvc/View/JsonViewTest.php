@@ -171,9 +171,7 @@ class JsonViewTest extends UnitTestCase
     /**
      * @test
      * @param object|array $object
-     * @param array $configuration
      * @param array|string $expected
-     * @param string $description
      * @dataProvider jsonViewTestData
      */
     public function transformValue($object, array $configuration, $expected, string $description): void
@@ -346,10 +344,7 @@ class JsonViewTest extends UnitTestCase
     /**
      * @test
      * @param object|array $object
-     * @param array $configuration
      * @param array|string $expected
-     * @param string $variableToRender
-     * @param string $description
      * @dataProvider jsonViewTestDataRecursive
      */
     public function recursive($object, array $configuration, $expected, string $variableToRender, string $description): void
@@ -397,11 +392,6 @@ class JsonViewTest extends UnitTestCase
 
     /**
      * @test
-     * @param object $object
-     * @param array $configuration
-     * @param array $expected
-     * @param string $dummyIdentifier
-     * @param string $description
      * @dataProvider objectIdentifierExposureTestData
      */
     public function transformValueWithObjectIdentifierExposure(
@@ -456,10 +446,6 @@ class JsonViewTest extends UnitTestCase
 
     /**
      * @test
-     * @param int|null $exposeClassNameSetting
-     * @param string $className
-     * @param string $namespace
-     * @param array $expected
      * @dataProvider exposeClassNameSettingsAndResults
      */
     public function viewExposesClassNameFullyIfConfiguredSo(
@@ -557,7 +543,6 @@ class JsonViewTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $character
      * @dataProvider escapeCharacterDataProvider
      */
     public function renderEscapesEscapeCharacters(string $character): void

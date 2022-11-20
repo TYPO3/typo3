@@ -40,7 +40,6 @@ class LocalPreviewHelper
     /**
      * Enforce default configuration for preview processing
      *
-     * @param array $configuration
      * @return array
      */
     public static function preProcessConfiguration(array $configuration): array
@@ -96,8 +95,6 @@ class LocalPreviewHelper
      * Does the heavy lifting prescribed in processTask()
      * except that the processing can be performed on any given local image
      *
-     * @param TaskInterface $task
-     * @param string $localFile
      * @return array|null
      */
     public function processWithLocalFile(TaskInterface $task, string $localFile): ?array
@@ -108,7 +105,6 @@ class LocalPreviewHelper
     /**
      * Returns the path to a temporary file for processing
      *
-     * @param TaskInterface $task
      * @return non-empty-string
      */
     protected function getTemporaryFilePath(TaskInterface $task)

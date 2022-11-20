@@ -33,8 +33,6 @@ class FormElementHooks
      * **after** a form page was submitted but **before** values are
      * property-mapped, validated and pushed within the FormRuntime's `FormState`.
      *
-     * @param FormRuntime $formRuntime
-     * @param RenderableInterface $renderable
      * @param mixed $elementValue submitted value of the element *before post processing*
      * @param array $requestArguments submitted raw request values
      * @return mixed
@@ -63,9 +61,6 @@ class FormElementHooks
     /**
      * This is a hook that is invoked by the rendering system **before**
      * the corresponding element is rendered.
-     *
-     * @param FormRuntime $formRuntime
-     * @param RootRenderableInterface $renderable
      */
     public function beforeRendering(FormRuntime $formRuntime, RootRenderableInterface $renderable)
     {

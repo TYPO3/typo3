@@ -57,9 +57,6 @@ class CropVariant
     protected $coverAreas;
 
     /**
-     * @param string $id
-     * @param string $title
-     * @param Area $cropArea
      * @param Ratio[] $allowedAspectRatios
      * @param string|null $selectedRatio
      * @param Area|null $focusArea
@@ -93,8 +90,6 @@ class CropVariant
     }
 
     /**
-     * @param string $id
-     * @param array $config
      * @return CropVariant
      * @throws InvalidConfigurationException
      */
@@ -168,7 +163,6 @@ class CropVariant
     }
 
     /**
-     * @param FileInterface $file
      * @return CropVariant
      */
     public function applyRatioRestrictionToSelectedCropArea(FileInterface $file): CropVariant
@@ -184,7 +178,6 @@ class CropVariant
     }
 
     /**
-     * @param Ratio ...$ratios
      * @throws InvalidConfigurationException
      */
     protected function setAllowedAspectRatios(Ratio ...$ratios)
@@ -196,7 +189,6 @@ class CropVariant
     }
 
     /**
-     * @param Ratio $ratio
      * @throws InvalidConfigurationException
      */
     protected function addAllowedAspectRatio(Ratio $ratio)
@@ -208,7 +200,6 @@ class CropVariant
     }
 
     /**
-     * @param Area ...$areas
      * @throws InvalidConfigurationException
      */
     protected function setCoverAreas(Area ...$areas)
@@ -220,7 +211,6 @@ class CropVariant
     }
 
     /**
-     * @param Area $area
      * @throws InvalidConfigurationException
      */
     protected function addCoverArea(Area $area)

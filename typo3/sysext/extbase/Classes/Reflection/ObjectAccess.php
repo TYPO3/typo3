@@ -357,8 +357,6 @@ class ObjectAccess
     }
 
     /**
-     * @param object $subject
-     * @param PropertyPath $propertyPath
      * @return mixed
      * @throws Exception\PropertyNotAccessibleException
      */
@@ -374,8 +372,6 @@ class ObjectAccess
     }
 
     /**
-     * @param array $subject
-     * @param PropertyPath $propertyPath
      * @return mixed
      */
     private static function getArrayIndexValue(array $subject, PropertyPath $propertyPath)
@@ -384,7 +380,6 @@ class ObjectAccess
     }
 
     /**
-     * @param PropertyPath $propertyPath
      * @return PropertyPath
      */
     private static function convertToArrayPropertyPath(PropertyPath $propertyPath): PropertyPath
@@ -397,7 +392,6 @@ class ObjectAccess
     }
 
     /**
-     * @param string $segment
      * @return string
      */
     private static function wrap(string $segment): string

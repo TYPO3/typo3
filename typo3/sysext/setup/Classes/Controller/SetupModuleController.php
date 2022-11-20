@@ -779,7 +779,6 @@ class SetupModuleController
      *
      * @param int $beUserId
      * @param numeric-string|''|'delete' $fileUid either a file UID, an empty string, or `delete`
-     * @param array $storeRec
      */
     protected function setAvatarFileUid($beUserId, $fileUid, array &$storeRec)
     {

@@ -71,7 +71,6 @@ class ImageProcessingService
     /**
      * Check whether a processed file was already processed
      *
-     * @param ProcessedFile $processedFile
      * @throws FileAlreadyProcessedException
      */
     private function validateProcessedFile(ProcessedFile $processedFile): void

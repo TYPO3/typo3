@@ -22,9 +22,6 @@ interface NodeInterface
 {
     /**
      * All nodes get an instance of the NodeFactory and the main data array
-     *
-     * @param NodeFactory $nodeFactory
-     * @param array $data
      */
     public function __construct(NodeFactory $nodeFactory, array $data);
 

@@ -47,8 +47,6 @@ class EmConfUtility implements SingletonInterface
     /**
      * Generates the content for the ext_emconf.php file
      *
-     * @param string $extensionKey
-     * @param array $emConf
      * @return string
      */
     public function constructEmConf(string $extensionKey, array $emConf)
@@ -75,7 +73,6 @@ $EM_CONF[$_EXTKEY] = ' . $emConf . ';
     /**
      * Fix the em conf - Converts old / ter em_conf format to new format
      *
-     * @param array $emConf
      * @return array
      */
     protected function fixEmConf(array $emConf)

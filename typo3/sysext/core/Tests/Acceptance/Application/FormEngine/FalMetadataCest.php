@@ -28,9 +28,6 @@ class FalMetadataCest
 {
     /**
      * Call backend and open page module of styleguide page
-     *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -46,9 +43,6 @@ class FalMetadataCest
      * - modifies image metadata
      * - checks if metadata is propagated to tt_content
      *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
-     * @param FileTree $fileTree
      * @throws \Exception
      */
     public function checkIfUpdatedFileMetadataIsUpdatedInContent(ApplicationTester $I, PageTree $pageTree, FileTree $fileTree): void
@@ -198,8 +192,6 @@ class FalMetadataCest
     /**
      * This scenario tests whether activating a null placeholder checkbox focuses its assigned text field
      *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      * @depends checkIfUpdatedFileMetadataIsUpdatedInContent
      * @throws \Exception
      */
@@ -241,9 +233,6 @@ class FalMetadataCest
 
     /**
      * Open page module of styleguide page
-     *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      */
     private function goToPageModule(ApplicationTester $I, PageTree $pageTree): void
     {

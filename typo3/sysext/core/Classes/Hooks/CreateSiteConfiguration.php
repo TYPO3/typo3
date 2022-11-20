@@ -125,8 +125,6 @@ class CreateSiteConfiguration
 
     /**
      * Updates the slug of the given pageId by spinning up a new DataHandler instance.
-     *
-     * @param int $pageId
      */
     protected function updateSlugForPage(int $pageId): void
     {

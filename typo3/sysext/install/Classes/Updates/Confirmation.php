@@ -49,14 +49,6 @@ class Confirmation
      */
     protected $required;
 
-    /**
-     * @param string $title
-     * @param string $message
-     * @param bool $defaultValue
-     * @param string $confirm
-     * @param string $deny
-     * @param bool $required
-     */
     public function __construct(
         string $title,
         string $message,

@@ -28,8 +28,6 @@ class AvailableTcaTables
 {
     /**
      * itemsProcFunc for adding all available TCA tables
-     *
-     * @param array $fieldDefinition
      */
     public function populateTables(array &$fieldDefinition): void
     {

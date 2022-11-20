@@ -53,7 +53,6 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface
      * The handler can decide whether to re-throw the exception or
      * return a nice error message for production context.
      *
-     * @param \Exception $exception
      * @param AbstractContentObject|null $contentObject
      * @param array $contentObjectConfiguration
      * @return string

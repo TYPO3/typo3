@@ -40,8 +40,6 @@ class SqlReader
     protected $packageManager;
 
     /**
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param PackageManager $packageManager
      * @throws \InvalidArgumentException
      */
     public function __construct(EventDispatcherInterface $eventDispatcher, PackageManager $packageManager)
@@ -132,7 +130,6 @@ class SqlReader
     /**
      * Extract only INSERT statements from SQL dump
      *
-     * @param string $dumpContent
      * @return array
      */
     public function getInsertStatementArray(string $dumpContent): array
@@ -143,7 +140,6 @@ class SqlReader
     /**
      * Extract only CREATE TABLE statements from SQL dump
      *
-     * @param string $dumpContent
      * @return array
      */
     public function getCreateTableStatementArray(string $dumpContent): array

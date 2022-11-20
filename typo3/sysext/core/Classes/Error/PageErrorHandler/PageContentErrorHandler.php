@@ -47,8 +47,6 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
 
     /**
      * PageContentErrorHandler constructor.
-     * @param int $statusCode
-     * @param array $configuration
      * @throws \InvalidArgumentException
      */
     public function __construct(int $statusCode, array $configuration)

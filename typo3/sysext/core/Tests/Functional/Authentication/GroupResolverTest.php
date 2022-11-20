@@ -68,7 +68,6 @@ class GroupResolverTest extends FunctionalTestCase
      * @test
      * @dataProvider findAllUsersOfGroupsHandlesRecursiveCallsDataProvider
      * @param int[] $groupIds
-     * @param array $expectedUsers
      */
     public function findAllUsersOfGroupsHandlesRecursiveCalls(array $groupIds, array $expectedUsers): void
     {

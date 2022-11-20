@@ -219,7 +219,6 @@ class BackendController
     }
 
     /**
-     * @param ServerRequestInterface $request
      * @return ToolbarItemInterface[]
      */
     protected function getToolbarItems(ServerRequestInterface $request): array

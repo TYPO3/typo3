@@ -42,8 +42,6 @@ class FluidPageErrorHandler implements PageErrorHandlerInterface
 
     /**
      * FluidPageErrorHandler constructor.
-     * @param int $statusCode
-     * @param array $configuration
      */
     public function __construct(int $statusCode, array $configuration)
     {
@@ -62,9 +60,6 @@ class FluidPageErrorHandler implements PageErrorHandlerInterface
     }
 
     /**
-     * @param ServerRequestInterface $request
-     * @param string $message
-     * @param array $reasons
      * @return ResponseInterface
      */
     public function handlePageError(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface

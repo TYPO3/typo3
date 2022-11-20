@@ -125,7 +125,6 @@ class LocaleModifierTest extends AbstractEnhancerSiteRequestTest
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider localeModifierDataProvider
      */
@@ -153,7 +152,6 @@ class LocaleModifierTest extends AbstractEnhancerSiteRequestTest
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider pageTypeDecoratorIsAppliedDataProvider
      */

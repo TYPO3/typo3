@@ -80,9 +80,6 @@ class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, Chatty
         return empty($result['errors']);
     }
 
-    /**
-     * @param OutputInterface $output
-     */
     public function setOutput(OutputInterface $output): void
     {
         $this->output = $output;

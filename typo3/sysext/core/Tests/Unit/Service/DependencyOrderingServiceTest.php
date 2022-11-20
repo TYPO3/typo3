@@ -25,10 +25,6 @@ class DependencyOrderingServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider orderByDependenciesBuildsCorrectOrderDataProvider
-     * @param array $items
-     * @param string $beforeKey
-     * @param string $afterKey
-     * @param array $expectedOrderedItems
      */
     public function orderByDependenciesBuildsCorrectOrder(array $items, string $beforeKey, string $afterKey, array $expectedOrderedItems): void
     {
@@ -216,8 +212,6 @@ class DependencyOrderingServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider buildDependencyGraphBuildsValidGraphDataProvider
-     * @param array $dependencies
-     * @param array $expectedGraph
      */
     public function buildDependencyGraphBuildsValidGraph(array $dependencies, array $expectedGraph): void
     {
@@ -588,8 +582,6 @@ class DependencyOrderingServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider calculateOrderResolvesCorrectOrderDataProvider
-     * @param array $graph
-     * @param array $expectedList
      */
     public function calculateOrderResolvesCorrectOrder(array $graph, array $expectedList): void
     {
@@ -703,10 +695,6 @@ class DependencyOrderingServiceTest extends UnitTestCase
     }
 
     /**
-     * @param array $graph
-     * @param string $from
-     * @param string $to
-     * @param array $expected
      * @test
      * @dataProvider findPathInGraphReturnsCorrectPathDataProvider
      */

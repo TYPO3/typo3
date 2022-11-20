@@ -144,11 +144,6 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
     }
 
     /**
-     * @param string $incomingUrl
-     * @param string $expectedRedirectUrl
-     * @param Site $site
-     * @param SiteLanguage|null $language
-     * @param string $tail
      * @dataProvider doRedirectOnMissingOrSuperfluousRequestUrlDataProvider
      * @test
      */
@@ -183,10 +178,6 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
     }
 
     /**
-     * @param string $url
-     * @param int $expectedStatusCode
-     * @param int $languageId
-     *
      * @test
      * @dataProvider checkIf404IsSiteLanguageIsDisabledInFrontendDataProvider
      */
@@ -272,10 +263,6 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
     }
 
     /**
-     * @param string $incomingUrl
-     * @param Site $site
-     * @param SiteLanguage|null $language
-     * @param string $tail
      * @dataProvider doNotRedirectOnBaseWithoutQueryDataProvider
      * @test
      */

@@ -84,7 +84,6 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      * @param TEntity $parentObject The object instance this proxy is part of
      * @param string $propertyName The name of the proxied property in it's parent
      * @param mixed $fieldValue The raw field value.
-     * @param DataMapper|null $dataMapper
      */
     public function __construct($parentObject, $propertyName, $fieldValue, ?DataMapper $dataMapper = null)
     {
@@ -126,8 +125,6 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
 
     // Delegation to the ObjectStorage methods below
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $storage
-     *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::addAll
      */
     public function addAll(ObjectStorage $storage): void

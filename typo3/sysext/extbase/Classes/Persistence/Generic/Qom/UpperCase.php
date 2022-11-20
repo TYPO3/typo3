@@ -35,8 +35,6 @@ class UpperCase implements UpperCaseInterface
 
     /**
      * Constructs this UpperCase instance
-     *
-     * @param PropertyValueInterface $operand
      */
     public function __construct(PropertyValueInterface $operand)
     {

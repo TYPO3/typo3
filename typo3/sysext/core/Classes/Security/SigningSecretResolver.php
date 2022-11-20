@@ -29,9 +29,6 @@ class SigningSecretResolver
      */
     protected array $providers;
 
-    /**
-     * @param array $providers
-     */
     public function __construct(array $providers)
     {
         $this->providers = array_filter(

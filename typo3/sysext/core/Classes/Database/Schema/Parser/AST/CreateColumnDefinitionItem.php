@@ -112,9 +112,6 @@ class CreateColumnDefinitionItem extends AbstractCreateDefinitionItem
 
     /**
      * CreateColumnDefinitionItem constructor.
-     *
-     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier $columnName
-     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\AbstractDataType $dataType
      */
     public function __construct(Identifier $columnName, AbstractDataType $dataType)
     {

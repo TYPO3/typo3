@@ -61,7 +61,6 @@ class IconController
     }
 
     /**
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @internal
      */

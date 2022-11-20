@@ -139,7 +139,6 @@ class SwitchUserController
     /**
      * Generates a list of users to whom where switched in the past. This is limited by RECENT_USERS_LIMIT.
      *
-     * @param int $targetUserUid
      * @return int[]
      */
     protected function generateListOfMostRecentSwitchedUsers(int $targetUserUid): array

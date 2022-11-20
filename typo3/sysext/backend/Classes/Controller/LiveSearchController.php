@@ -42,7 +42,6 @@ class LiveSearchController
     /**
      * Processes all AJAX calls and sends back a JSON object
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function searchAction(ServerRequestInterface $request): ResponseInterface

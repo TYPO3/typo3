@@ -67,7 +67,6 @@ class WorkspaceTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider contextDataProvider
-     * @param string $context
      */
     public function countReturnsCorrectNumberOfBlogs(string $context): void
     {
@@ -90,7 +89,6 @@ class WorkspaceTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider contextDataProvider
-     * @param string $context
      */
     public function fetchingHiddenBlogInWorkspace(string $context): void
     {
@@ -140,7 +138,6 @@ class WorkspaceTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider contextDataProvider
-     * @param string $context
      */
     public function fetchingAllBlogsReturnsCorrectNumberOfBlogs(string $context): void
     {
@@ -175,7 +172,6 @@ class WorkspaceTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider contextDataProvider
-     * @param string $context
      */
     public function fetchingBlogReturnsOverlaidWorkspaceVersionForRelations(string $context): void
     {

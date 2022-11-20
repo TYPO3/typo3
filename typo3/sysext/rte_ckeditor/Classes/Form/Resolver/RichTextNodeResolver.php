@@ -35,9 +35,6 @@ class RichTextNodeResolver implements NodeResolverInterface
 
     /**
      * Default constructor receives full data array
-     *
-     * @param NodeFactory $nodeFactory
-     * @param array $data
      */
     public function __construct(NodeFactory $nodeFactory, array $data)
     {

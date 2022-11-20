@@ -350,7 +350,6 @@ class FluidTemplateContentObject extends AbstractContentObject
     /**
      * Applies stdWrap on Fluid path definitions
      *
-     * @param array $paths
      *
      * @return array
      */

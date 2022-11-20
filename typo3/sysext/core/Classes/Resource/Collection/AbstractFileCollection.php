@@ -160,8 +160,6 @@ abstract class AbstractFileCollection extends AbstractRecordCollection
      * Similar to method in \TYPO3\CMS\Core\Collection\AbstractRecordCollection,
      * but without $this->itemTableName= $array['table_name'],
      * but with $this->storageItemsFieldContent = $array[self::$storageItemsField];
-     *
-     * @param array $array
      */
     public function fromArray(array $array)
     {
@@ -193,8 +191,6 @@ abstract class AbstractFileCollection extends AbstractRecordCollection
 
     /**
      * Adds a file to this collection.
-     *
-     * @param FileInterface $data
      */
     public function add(FileInterface $data)
     {
@@ -203,8 +199,6 @@ abstract class AbstractFileCollection extends AbstractRecordCollection
 
     /**
      * Adds all files of another collection to the current one.
-     *
-     * @param CollectionInterface $other
      */
     public function addAll(CollectionInterface $other)
     {
@@ -216,8 +210,6 @@ abstract class AbstractFileCollection extends AbstractRecordCollection
 
     /**
      * Removes a file from this collection.
-     *
-     * @param File $file
      */
     public function remove(File $file)
     {

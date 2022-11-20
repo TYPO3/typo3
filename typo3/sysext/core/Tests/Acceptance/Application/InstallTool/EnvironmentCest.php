@@ -33,9 +33,6 @@ class EnvironmentCest extends AbstractCest
 
     /**
      * @dataProvider cardsDataProvider
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
-     * @param Example $testData
      */
     public function seeCardsAndModals(ApplicationTester $I, ModalDialog $modalDialog, Example $testData): void
     {

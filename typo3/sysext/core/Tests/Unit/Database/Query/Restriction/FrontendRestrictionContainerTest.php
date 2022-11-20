@@ -117,14 +117,6 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
     }
 
     /**
-     * @param string $tableName
-     * @param string $tableAlias
-     * @param int $workspaceId
-     * @param bool $hiddenPagePreview
-     * @param bool $hiddenRecordPreview
-     * @param array $frontendUserGroups
-     * @param string $expectedSQL
-     *
      * @test
      * @dataProvider frontendStatesDataProvider
      */

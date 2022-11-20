@@ -505,8 +505,6 @@ class GridDataService implements LoggerAwareInterface
      * Only elements on the first level (0) or below the same
      * parent element are directly sortable.
      *
-     * @param array $a
-     * @param array $b
      * @return bool
      */
     protected function isSortable(array $a, array $b)
@@ -534,7 +532,6 @@ class GridDataService implements LoggerAwareInterface
      * a column that is visible in the grid view.
      *
      * @param string $filterText
-     * @param array $versionArray
      * @return bool
      */
     protected function isFilterTextInVisibleColumns($filterText, array $versionArray)
@@ -676,7 +673,6 @@ class GridDataService implements LoggerAwareInterface
     /**
      * Calculate the "real" start value by also taking collection children into account
      *
-     * @param int $start
      * @return int
      */
     protected function calculateStartWithCollections(int $start): int
@@ -718,8 +714,6 @@ class GridDataService implements LoggerAwareInterface
      * Also adds the related collection children, but without increasing the corresponding
      * parent records count.
      *
-     * @param int $start
-     * @param int $end
      * @return array
      */
     private function fillDataArrayPart(int $start, int $end): array
@@ -757,10 +751,6 @@ class GridDataService implements LoggerAwareInterface
 
     /**
      * Add collection children to the data array part recursively
-     *
-     * @param array $item
-     * @param int $recordsCount
-     * @param array $dataArrayPart
      */
     protected function addCollectionChildrenRecursive(array $item, int &$recordsCount, array &$dataArrayPart = []): void
     {
@@ -788,7 +778,6 @@ class GridDataService implements LoggerAwareInterface
     /**
      * Gets all available system languages.
      *
-     * @param int $pageId
      * @return array
      */
     protected function getSystemLanguages(int $pageId)

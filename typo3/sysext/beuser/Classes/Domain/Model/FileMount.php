@@ -111,9 +111,6 @@ class FileMount extends AbstractEntity
         return $this->identifier;
     }
 
-    /**
-     * @param string $identifier
-     */
     public function setIdentifier(string $identifier): void
     {
         $this->identifier = $identifier;
@@ -127,9 +124,6 @@ class FileMount extends AbstractEntity
         return $this->hidden;
     }
 
-    /**
-     * @param bool $hidden
-     */
     public function setHidden(bool $hidden): void
     {
         $this->hidden = $hidden;

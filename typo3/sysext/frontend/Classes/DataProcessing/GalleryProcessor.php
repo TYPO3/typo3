@@ -467,9 +467,7 @@ class GalleryProcessor implements DataProcessorInterface
      * When retrieving the height or width for a media file
      * a possible cropping needs to be taken into account.
      *
-     * @param FileInterface $fileObject
      * @param string $dimensionalProperty 'width' or 'height'
-     *
      * @return int
      */
     protected function getCroppedDimensionalProperty(FileInterface $fileObject, $dimensionalProperty)

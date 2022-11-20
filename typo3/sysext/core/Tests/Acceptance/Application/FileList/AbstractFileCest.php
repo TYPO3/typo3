@@ -27,9 +27,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\FileTree;
  */
 abstract class AbstractFileCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
     public function _before(ApplicationTester $I, FileTree $tree): void
     {
         $I->useExistingSession('admin');
@@ -38,8 +35,6 @@ abstract class AbstractFileCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param string $name
      * @throws \Exception
      */
     protected function uploadFile(ApplicationTester $I, string $name): void
@@ -49,8 +44,6 @@ abstract class AbstractFileCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param string $title
      * @return RemoteWebElement
      */
     protected function openActionDropdown(ApplicationTester $I, string $title): RemoteWebElement

@@ -167,7 +167,6 @@ class Typo3tempFileService
     /**
      * Clears files and folders in a typo3temp/assets/ folder (not _processed_!)
      *
-     * @param string $folderName
      * @return bool TRUE if all went well
      * @throws \RuntimeException If folder path is not valid
      */

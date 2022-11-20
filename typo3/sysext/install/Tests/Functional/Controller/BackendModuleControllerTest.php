@@ -56,8 +56,6 @@ class BackendModuleControllerTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider environmentContextIsRespectedTestDataProvider
-     *
-     * @param string $module
      */
     public function environmentContextIsRespectedTest(string $module): void
     {

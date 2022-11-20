@@ -144,8 +144,6 @@ class PageRepository implements LoggerAwareInterface
     /**
      * PageRepository constructor to set the base context, this will effectively remove the necessity for
      * setting properties from the outside.
-     *
-     * @param Context $context
      */
     public function __construct(Context $context = null)
     {
@@ -496,7 +494,6 @@ class PageRepository implements LoggerAwareInterface
      * Checks whether the passed (translated or default language) page is accessible with the given language settings.
      *
      * @param array $page the page translation record or the page in the default language
-     * @param LanguageAspect $languageAspect
      * @return bool true if the given page translation record is suited for the given language ID
      * @internal
      */
@@ -525,7 +522,6 @@ class PageRepository implements LoggerAwareInterface
     /**
      * Returns the cleaned fallback chain from the current language aspect, if there is one.
      *
-     * @param LanguageAspect|null $languageAspect
      * @return int[]
      */
     protected function getLanguageFallbackChain(?LanguageAspect $languageAspect): array
@@ -1907,11 +1903,6 @@ class PageRepository implements LoggerAwareInterface
      * and also checks for permissions of the pages AND resolves mountpoints.
      *
      * @param int $pageId must be a valid page record (this is not checked)
-     * @param int $depth
-     * @param int $begin
-     * @param array $excludePageIds
-     * @param bool $bypassEnableFieldsCheck
-     * @param array $prevId_array
      * @return int[]
      */
     protected function getSubpagesRecursive(int $pageId, int $depth, int $begin, array $excludePageIds, bool $bypassEnableFieldsCheck, array $prevId_array = []): array
@@ -2122,7 +2113,6 @@ class PageRepository implements LoggerAwareInterface
      * Purges computed properties from database rows,
      * such as _ORIG_uid or _ORIG_pid for instance.
      *
-     * @param array $row
      * @return array
      */
     protected function purgeComputedProperties(array $row)

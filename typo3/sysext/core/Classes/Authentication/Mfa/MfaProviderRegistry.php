@@ -62,7 +62,6 @@ class MfaProviderRegistry
     /**
      * Whether the given user has active providers
      *
-     * @param AbstractUserAuthentication $user
      * @return bool
      */
     public function hasActiveProviders(AbstractUserAuthentication $user): bool
@@ -73,7 +72,6 @@ class MfaProviderRegistry
     /**
      * Get all active providers for the given user
      *
-     * @param AbstractUserAuthentication $user
      * @return MfaProviderManifestInterface[]
      */
     public function getActiveProviders(AbstractUserAuthentication $user): array
@@ -88,7 +86,6 @@ class MfaProviderRegistry
      * This is either the user specified default provider, or the first active
      * provider based on the providers configured ordering.
      *
-     * @param AbstractUserAuthentication $user
      * @return MfaProviderManifestInterface
      */
     public function getFirstAuthenticationAwareProvider(AbstractUserAuthentication $user): ?MfaProviderManifestInterface
@@ -110,7 +107,6 @@ class MfaProviderRegistry
     /**
      * Whether the given user has locked providers
      *
-     * @param AbstractUserAuthentication $user
      * @return bool
      */
     public function hasLockedProviders(AbstractUserAuthentication $user): bool
@@ -121,7 +117,6 @@ class MfaProviderRegistry
     /**
      * Get all locked providers for the given user
      *
-     * @param AbstractUserAuthentication $user
      * @return MfaProviderManifestInterface[]
      */
     public function getLockedProviders(AbstractUserAuthentication $user): array

@@ -35,9 +35,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
  */
 trait SiteBasedTestTrait
 {
-    /**
-     * @param array $items
-     */
     protected static function failIfArrayIsNotEmpty(array $items): void
     {
         if (empty($items)) {
@@ -50,12 +47,6 @@ trait SiteBasedTestTrait
         );
     }
 
-    /**
-     * @param string $identifier
-     * @param array $site
-     * @param array $languages
-     * @param array $errorHandling
-     */
     protected function writeSiteConfiguration(
         string $identifier,
         array $site = [],
@@ -84,10 +75,6 @@ trait SiteBasedTestTrait
         }
     }
 
-    /**
-     * @param string $identifier
-     * @param array $overrides
-     */
     protected function mergeSiteConfiguration(
         string $identifier,
         array $overrides
@@ -107,8 +94,6 @@ trait SiteBasedTestTrait
     }
 
     /**
-     * @param int $rootPageId
-     * @param string $base
      * @return array
      */
     protected function buildSiteConfiguration(
@@ -122,8 +107,6 @@ trait SiteBasedTestTrait
     }
 
     /**
-     * @param string $identifier
-     * @param string $base
      * @return array
      */
     protected function buildDefaultLanguageConfiguration(
@@ -138,10 +121,6 @@ trait SiteBasedTestTrait
     }
 
     /**
-     * @param string $identifier
-     * @param string $base
-     * @param array $fallbackIdentifiers
-     * @param string $fallbackType
      * @return array
      */
     protected function buildLanguageConfiguration(
@@ -182,8 +161,6 @@ trait SiteBasedTestTrait
     }
 
     /**
-     * @param string $handler
-     * @param array $codes
      * @return array
      */
     protected function buildErrorHandlingConfiguration(
@@ -233,7 +210,6 @@ trait SiteBasedTestTrait
     }
 
     /**
-     * @param string $identifier
      * @return mixed
      */
     protected function resolveLanguagePreset(string $identifier)
@@ -248,8 +224,6 @@ trait SiteBasedTestTrait
     }
 
     /**
-     * @param InternalRequest $request
-     * @param AbstractInstruction ...$instructions
      * @return InternalRequest
      *
      * @todo Instruction handling should be part of Testing Framework (multiple instructions per identifier, merge in interface)
@@ -274,8 +248,6 @@ trait SiteBasedTestTrait
     }
 
     /**
-     * @param AbstractInstruction $current
-     * @param AbstractInstruction $other
      * @return AbstractInstruction
      */
     protected function mergeInstruction(AbstractInstruction $current, AbstractInstruction $other): AbstractInstruction

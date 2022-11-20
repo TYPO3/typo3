@@ -113,13 +113,6 @@ class Backend implements BackendInterface, SingletonInterface
 
     /**
      * Constructs the backend
-     *
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     * @param Session $session
-     * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface $storageBackend
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
-     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ConfigurationManagerInterface $configurationManager,
@@ -142,9 +135,6 @@ class Backend implements BackendInterface, SingletonInterface
         $this->changedEntities = new ObjectStorage();
     }
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
-     */
     public function setPersistenceManager(PersistenceManagerInterface $persistenceManager)
     {
         $this->persistenceManager = $persistenceManager;
@@ -153,7 +143,6 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Returns the number of records matching the query.
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @return int
      */
     public function getObjectCountByQuery(QueryInterface $query)
@@ -164,7 +153,6 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Returns the object data matching the $query.
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @return array
      */
     public function getObjectDataByQuery(QueryInterface $query)
@@ -238,8 +226,6 @@ class Backend implements BackendInterface, SingletonInterface
 
     /**
      * Sets the aggregate root objects
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects
      */
     public function setAggregateRootObjects(ObjectStorage $objects)
     {
@@ -248,8 +234,6 @@ class Backend implements BackendInterface, SingletonInterface
 
     /**
      * Sets the changed objects
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities
      */
     public function setChangedEntities(ObjectStorage $entities)
     {
@@ -258,8 +242,6 @@ class Backend implements BackendInterface, SingletonInterface
 
     /**
      * Sets the deleted objects
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities
      */
     public function setDeletedEntities(ObjectStorage $entities)
     {
@@ -467,8 +449,6 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Updates the fields defining the relation between the object and the parent object.
      *
-     * @param DomainObjectInterface $object
-     * @param DomainObjectInterface $parentObject
      * @param string $parentPropertyName
      * @param int $sortingPosition
      */
@@ -487,8 +467,6 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Updates the fields defining the relation between the object and the parent object.
      *
-     * @param DomainObjectInterface $object
-     * @param DomainObjectInterface $parentObject
      * @param string $parentPropertyName
      * @param int $sortingPosition
      */
@@ -506,8 +484,6 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Updates fields defining the relation between the object and the parent object in relation has-many.
      *
-     * @param DomainObjectInterface $object
-     * @param DomainObjectInterface $parentObject
      * @param string $parentPropertyName
      * @param int $sortingPosition
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException
@@ -548,8 +524,6 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Updates the fields defining the relation between the object and the parent object.
      *
-     * @param DomainObjectInterface $object
-     * @param DomainObjectInterface $parentObject
      * @param string $parentPropertyName
      */
     protected function detachObjectFromParentObject(DomainObjectInterface $object, DomainObjectInterface $parentObject, $parentPropertyName)
@@ -822,9 +796,6 @@ class Backend implements BackendInterface, SingletonInterface
 
     /**
      * Adds common database fields to a row
-     *
-     * @param DomainObjectInterface $object
-     * @param array $row
      */
     protected function addCommonFieldsToRow(DomainObjectInterface $object, array &$row)
     {
@@ -841,7 +812,6 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Adjusts the common date fields of the given row to the current time
      *
-     * @param DomainObjectInterface $object
      * @param array $row The row to be updated
      */
     protected function addCommonDateFieldsToRow(DomainObjectInterface $object, array &$row)

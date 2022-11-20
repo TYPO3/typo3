@@ -72,7 +72,6 @@ class FailsafeContainer implements ContainerInterface
     }
 
     /**
-     * @param string $id
      * @return bool
      */
     public function has(string $id): bool
@@ -81,7 +80,6 @@ class FailsafeContainer implements ContainerInterface
     }
 
     /**
-     * @param string $id
      * @return mixed
      */
     private function create(string $id)
@@ -109,7 +107,6 @@ class FailsafeContainer implements ContainerInterface
     }
 
     /**
-     * @param string $id
      * @return mixed
      */
     public function get(string $id)

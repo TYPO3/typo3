@@ -108,7 +108,6 @@ class SqlReaderTest extends UnitTestCase
     }
 
     /**
-     * @param string $comment
      * @dataProvider commentProvider
      * @test
      */

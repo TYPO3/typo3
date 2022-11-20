@@ -69,9 +69,6 @@ class Offer extends AbstractEntity
         return $this->prices;
     }
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $prices
-     */
     public function setPrices(ObjectStorage $prices): void
     {
         $this->prices = $prices;

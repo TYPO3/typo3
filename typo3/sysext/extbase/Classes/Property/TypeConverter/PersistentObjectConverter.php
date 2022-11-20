@@ -75,7 +75,6 @@ class PersistentObjectConverter extends ObjectConverter
     protected $persistenceManager;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager): void
@@ -87,7 +86,6 @@ class PersistentObjectConverter extends ObjectConverter
      * We can only convert if the $targetType is either tagged with entity or value object.
      *
      * @param mixed $source
-     * @param string $targetType
      * @return bool
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
@@ -118,8 +116,6 @@ class PersistentObjectConverter extends ObjectConverter
      * The type of a property is determined by the reflection service.
      *
      * @param string $targetType
-     * @param string $propertyName
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
@@ -143,9 +139,6 @@ class PersistentObjectConverter extends ObjectConverter
      * Convert an object from $source to an entity or a value object.
      *
      * @param mixed $source
-     * @param string $targetType
-     * @param array $convertedChildProperties
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @throws \InvalidArgumentException
      * @return object|null the target type
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
@@ -191,10 +184,6 @@ class PersistentObjectConverter extends ObjectConverter
     /**
      * Handle the case if $source is an array.
      *
-     * @param array $source
-     * @param string $targetType
-     * @param array $convertedChildProperties
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return object
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
      */
@@ -222,7 +211,6 @@ class PersistentObjectConverter extends ObjectConverter
      * Fetch an object from persistence layer.
      *
      * @param mixed $identity
-     * @param string $targetType
      * @throws \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
      * @return object

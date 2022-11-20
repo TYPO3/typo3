@@ -85,7 +85,6 @@ class TableBuilder
     /**
      * TableBuilder constructor.
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      * @throws \InvalidArgumentException
      * @throws \Doctrine\DBAL\Exception
      */
@@ -107,7 +106,6 @@ class TableBuilder
     /**
      * Create a Doctrine Table object based on the parsed MySQL SQL command.
      *
-     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement $tableStatement
      * @return \Doctrine\DBAL\Schema\Table
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \RuntimeException
@@ -148,7 +146,6 @@ class TableBuilder
     }
 
     /**
-     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem $item
      * @return \Doctrine\DBAL\Schema\Column
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \RuntimeException
@@ -219,7 +216,6 @@ class TableBuilder
     }
 
     /**
-     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateIndexDefinitionItem $item
      * @return \Doctrine\DBAL\Schema\Index
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
@@ -271,8 +267,6 @@ class TableBuilder
 
     /**
      * Prepare an explicit foreign key definition item to be added to the table being built.
-     *
-     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateForeignKeyDefinitionItem $item
      */
     protected function addForeignKey(CreateForeignKeyDefinitionItem $item)
     {
@@ -290,8 +284,6 @@ class TableBuilder
      * Add a foreign key constraint to the table being built.
      *
      * @param string[] $localColumnNames
-     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\ReferenceDefinition $referenceDefinition
-     * @param string $indexName
      */
     protected function addForeignKeyConstraint(
         array $localColumnNames,
@@ -321,7 +313,6 @@ class TableBuilder
     }
 
     /**
-     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\AbstractDataType $dataType
      * @return string
      * @throws \RuntimeException
      */
@@ -415,7 +406,6 @@ class TableBuilder
     /**
      * Build the table specific options as far as they are supported by Doctrine.
      *
-     * @param array $tableOptions
      * @return array
      */
     protected function buildTableOptions(array $tableOptions): array

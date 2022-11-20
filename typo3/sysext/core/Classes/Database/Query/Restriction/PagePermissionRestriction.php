@@ -82,8 +82,6 @@ class PagePermissionRestriction implements QueryRestrictionInterface
     }
 
     /**
-     * @param ExpressionBuilder $expressionBuilder
-     * @param string $tableAlias
      * @return string|CompositeExpression|null
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException
      */

@@ -29,8 +29,6 @@ class CommandCest
 
     /**
      * @dataProvider commandTestDataProvider
-     * @param ApplicationTester $I
-     * @param Example $testData
      */
     public function runCommand(ApplicationTester $I, Example $testData): void
     {

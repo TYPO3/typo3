@@ -34,7 +34,6 @@ class AddHmacDataConverter extends AbstractConverter
      * "_orig_<propertyName>" will be used to validate the form definition on saving.
      * @see \TYPO3\CMS\Form\Domain\Configuration\FormDefinitionValidationService::validateFormDefinitionProperties()
      *
-     * @param string $key
      * @param mixed $value
      */
     public function __invoke(string $key, $value): void

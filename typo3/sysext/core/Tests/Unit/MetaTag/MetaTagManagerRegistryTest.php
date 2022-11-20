@@ -40,9 +40,6 @@ class MetaTagManagerRegistryTest extends UnitTestCase
     }
 
     /**
-     * @param array $managersToRegister
-     * @param array $expected
-     *
      * @dataProvider registerMetaTagManagersProvider
      * @test
      */

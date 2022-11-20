@@ -23,7 +23,6 @@ interface NodeResolverInterface
     /**
      * Main data array is received by NodeFactory
      *
-     * @param NodeFactory $nodeFactory
      * @param array $data Main data array
      */
     public function __construct(NodeFactory $nodeFactory, array $data);

@@ -30,8 +30,6 @@ class CreateDefinition
 
     /**
      * CreateDefinition constructor.
-     *
-     * @param array $items
      */
     public function __construct(array $items)
     {

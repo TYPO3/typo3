@@ -59,9 +59,6 @@ class WidgetRegistryTest extends UnitTestCase
     }
 
     /**
-     * @param array $expectedValues
-     * @param array $widgetsToRegister
-     *
      * @test
      * @dataProvider widgetsToRegister
      */
@@ -73,9 +70,6 @@ class WidgetRegistryTest extends UnitTestCase
     }
 
     /**
-     * @param array $expectedValues
-     * @param array $widgetsToRegister
-     *
      * @test
      * @dataProvider widgetsToRegister
      */
@@ -93,9 +87,6 @@ class WidgetRegistryTest extends UnitTestCase
     }
 
     /**
-     * @param array $expectedValues
-     * @param array $widgetsToRegister
-     *
      * @test
      * @dataProvider widgetsToRegister
      */
@@ -118,9 +109,6 @@ class WidgetRegistryTest extends UnitTestCase
     }
 
     /**
-     * @param array $expectedValues
-     * @param array $widgetsToRegister
-     *
      * @test
      * @dataProvider widgetsToRegister
      */

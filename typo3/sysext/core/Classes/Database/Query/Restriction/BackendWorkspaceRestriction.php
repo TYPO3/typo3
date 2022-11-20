@@ -40,7 +40,6 @@ class BackendWorkspaceRestriction implements QueryRestrictionInterface
     protected $includeRowsForWorkspaceOverlay;
 
     /**
-     * @param int $workspaceId
      * @param bool $includeRowsForWorkspaceOverlay
      */
     public function __construct(int $workspaceId = null, $includeRowsForWorkspaceOverlay = true)

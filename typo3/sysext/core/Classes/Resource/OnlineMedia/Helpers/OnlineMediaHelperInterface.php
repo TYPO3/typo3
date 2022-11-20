@@ -34,7 +34,6 @@ interface OnlineMediaHelperInterface
      * Try to transform given URL to a File
      *
      * @param string $url
-     * @param Folder $targetFolder
      * @return File|null
      */
     public function transformUrlToFile($url, Folder $targetFolder);
@@ -42,7 +41,6 @@ interface OnlineMediaHelperInterface
     /**
      * Get Online Media item id
      *
-     * @param File $file
      * @return string
      */
     public function getOnlineMediaId(File $file);

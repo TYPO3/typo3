@@ -320,7 +320,6 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getValueByPathInvalidPathDataProvider
-     * @param array $array
      * @param string $path
      */
     public function getValueByPathThrowsExceptionIfPathNotExists(array $array, $path): void
@@ -333,8 +332,6 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getValueByPathInvalidPathDataProvider
-     * @param array $array
-     * @param string $path
      */
     public function getValueByPathThrowsSpecificExceptionIfPathNotExists(array $array, string $path): void
     {
@@ -452,7 +449,6 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getValueByPathValidDataProvider
-     * @param array $array
      * @param string $path
      * @param mixed $expectedResult
      */
@@ -738,7 +734,6 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider setValueByPathSetsCorrectValueDataProvider
-     * @param array $array
      * @param string $path
      * @param string $value
      * @param array $expectedResult
@@ -913,7 +908,6 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider removeByPathRemovesCorrectPathDataProvider
-     * @param array $array
      * @param string $path
      * @param array $expectedResult
      */
@@ -1085,7 +1079,6 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider sortArraysByKeyCheckIfSortingIsCorrectDataProvider
-     * @param array $array
      * @param string $key
      * @param bool $ascending
      * @param array $expectedResult
@@ -1342,8 +1335,6 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param array $array
-     * @param array $expected
      * @dataProvider flattenCalculatesExpectedResultDataProvider
      */
     public function flattenCalculatesExpectedResult(array $array, array $expected): void
@@ -1518,8 +1509,6 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param array $array
-     * @param array $expected
      * @dataProvider flattenPlainCalculatesExpectedResultDataProvider
      */
     public function flattenPlainCalculatesExpectedResult(array $array, array $expected): void
@@ -1640,8 +1629,6 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param array $array
-     * @param array $expected
      * @dataProvider flattenWithKeepDotsCalculatesExpectedResultDataProvider
      */
     public function flattenWithKeepDotsCalculatesExpectedResult(array $array, array $expected): void
@@ -1816,8 +1803,6 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param array $array
-     * @param array $expected
      * @dataProvider unflattenCalculatesExpectedResultDataProvider
      */
     public function unflattenCalculatesExpectedResult(array $array, array $expected): void
@@ -2028,9 +2013,6 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param array $source
-     * @param array $mask
-     * @param array $expected
      * @dataProvider intersectRecursiveCalculatesExpectedResultDataProvider
      */
     public function intersectRecursiveCalculatesExpectedResult(array $source, array $mask, array $expected): void
@@ -2166,8 +2148,6 @@ class ArrayUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param array $inputArray
-     * @param array $expected
      * @dataProvider renumberKeysToAvoidLeapsIfKeysAreAllNumericDataProvider
      */
     public function renumberKeysToAvoidLeapsIfKeysAreAllNumericReturnsExpectedOrder(array $inputArray, array $expected): void
@@ -3122,8 +3102,6 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      *
-     * @param array $arrayToSort
-     * @param array $expectedArray
      *
      * @dataProvider sortArrayWithIntegerKeysDataProvider
      */
@@ -3460,8 +3438,6 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider filterRecursiveFiltersFalseElementsDataProvider
-     * @param array $input
-     * @param array $expectedResult
      */
     public function filterRecursiveFiltersFalseElements(array $input, array $expectedResult): void
     {
@@ -3540,8 +3516,6 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider filterRecursiveCallbackFiltersEmptyElementsWithoutIntegerZeroByCallbackDataProvider
-     * @param array $input
-     * @param array $expectedResult
      */
     public function filterRecursiveCallbackFiltersEmptyElementsWithoutIntegerByCallback(array $input, array $expectedResult): void
     {
@@ -3619,9 +3593,6 @@ class ArrayUtilityTest extends UnitTestCase
      * @dataProvider filterRecursiveSupportsCallableCallbackDataProvider
      * @see https://forge.typo3.org/issues/84485
      *
-     * @param array $input
-     * @param array $expectedResult
-     * @param callable $callback
      * @param 0|ARRAY_FILTER_USE_KEY|ARRAY_FILTER_USE_BOTH $mode
      */
     public function filterRecursiveSupportsCallableCallback(array $input, array $expectedResult, callable $callback, int $mode = 0): void
@@ -3666,8 +3637,6 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider isAssociativeCorrectlyFindsStringKeysDataProvider
-     * @param array $array
-     * @param bool  $expectedResult
      */
     public function isAssociativeCorrectlyFindsStringKeys(array $array, bool $expectedResult): void
     {
@@ -3754,9 +3723,6 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider replaceAndAppendScalarValuesRecursiveCorrectlyMergesArraysDataProvider
-     * @param array $array1
-     * @param array $array2
-     * @param array $expectedResult
      */
     public function replaceAndAppendScalarValuesRecursiveCorrectlyMergesArrays(array $array1, array $array2, array $expectedResult): void
     {

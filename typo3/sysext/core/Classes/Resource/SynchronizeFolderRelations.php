@@ -48,7 +48,6 @@ class SynchronizeFolderRelations
     /**
      * Synchronize file collection relations after a folder was renamed
      *
-     * @param AfterFolderRenamedEvent $event
      *
      * @throws \TYPO3\CMS\Core\Exception
      */
@@ -90,7 +89,6 @@ class SynchronizeFolderRelations
     /**
      * Synchronize file mount relations after a folder was renamed
      *
-     * @param AfterFolderRenamedEvent $event
      *
      * @throws \TYPO3\CMS\Core\Exception
      */

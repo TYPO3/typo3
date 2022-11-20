@@ -32,8 +32,6 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
     /**
      * Open styleguide elements basic page in list module
      *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      * @throws \Exception
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
@@ -57,9 +55,6 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         $I->click('text');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function seeTableWizardWithContent(ApplicationTester $I): void
     {
         $I->amGoingTo('check for correct data in each column');
@@ -72,9 +67,6 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         }
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function addAndRemoveTableColumnsAndRows(ApplicationTester $I): void
     {
         $formSection = $this->getTable($I);
@@ -89,9 +81,6 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         }
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function moveTableColumnsAndRows(ApplicationTester $I): void
     {
         $formSection = $this->getTable($I);
@@ -133,7 +122,6 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
      * Click field resize button to see if
      * input fields change to textarea
      *
-     * @param ApplicationTester $I
      * @throws \Exception
      */
     public function clickSmallFieldsButton(ApplicationTester $I): void
@@ -152,9 +140,6 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         $I->assertCount($fieldCount, $inputFields);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function seeTableWizardInitialWithoutContent(ApplicationTester $I): void
     {
         $I->amGoingTo('check for expected initial columns');

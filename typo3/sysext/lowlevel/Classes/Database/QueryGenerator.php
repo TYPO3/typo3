@@ -2402,7 +2402,6 @@ class QueryGenerator
     /**
      * Convert ISO-8601 timestamp (string) into unix timestamp (int)
      *
-     * @param array $conf
      * @return array
      */
     protected function convertIso8601DatetimeStringToUnixTimestamp(array $conf): array

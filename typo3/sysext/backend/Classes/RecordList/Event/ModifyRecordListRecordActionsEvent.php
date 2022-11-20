@@ -78,8 +78,6 @@ final class ModifyRecordListRecordActionsEvent
      * Whether the action exists in the given group. In case non or
      * an invalid $group is provided, both groups will be checked.
      *
-     * @param string $actionName
-     * @param string $group
      * @return bool
      */
     public function hasAction(string $actionName, string $group = ''): bool
@@ -96,8 +94,6 @@ final class ModifyRecordListRecordActionsEvent
      * and non or an invalid $group is provided, the action from the
      * "primary" group will be returned.
      *
-     * @param string $actionName
-     * @param string $group
      * @return string|null
      */
     public function getAction(string $actionName, string $group = ''): ?string
@@ -114,8 +110,6 @@ final class ModifyRecordListRecordActionsEvent
      * and non or an invalid $group is provided, the action will be removed
      * from both groups.
      *
-     * @param string $actionName
-     * @param string $group
      * @return bool Whether the action could be removed - Will therefore
      *              return FALSE if the action to remove does not exist.
      */
@@ -144,7 +138,6 @@ final class ModifyRecordListRecordActionsEvent
     /**
      * Get the actions of a specific group
      *
-     * @param string $group
      * @return array|null
      */
     public function getActionGroup(string $group): ?array

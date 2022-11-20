@@ -57,9 +57,6 @@ class ReferenceDefinition
 
     /**
      * ReferenceDefinition constructor.
-     *
-     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier $tableName
-     * @param array $columnNames
      */
     public function __construct(Identifier $tableName, array $columnNames)
     {

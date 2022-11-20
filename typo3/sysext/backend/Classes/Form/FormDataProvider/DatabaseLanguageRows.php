@@ -31,7 +31,6 @@ class DatabaseLanguageRows implements FormDataProviderInterface
      * unserialize transOrigDiffSourceField if it is defined,
      * fetch additional languages if requested.
      *
-     * @param array $result
      * @return array
      * @throws DatabaseDefaultLanguageException
      */
@@ -125,8 +124,6 @@ class DatabaseLanguageRows implements FormDataProviderInterface
     /**
      * Retrieve the requested row from the database
      *
-     * @param string $tableName
-     * @param int $uid
      * @return array
      */
     protected function getRecordWorkspaceOverlay(string $tableName, int $uid): array

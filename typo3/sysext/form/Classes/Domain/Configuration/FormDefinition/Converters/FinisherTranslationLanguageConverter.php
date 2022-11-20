@@ -28,7 +28,6 @@ class FinisherTranslationLanguageConverter extends AbstractConverter
      * If "finishers.x.options.translation.language" is empty then set the value to "default" and remove
      * the hmac.
      *
-     * @param string $key
      * @param mixed $value
      */
     public function __invoke(string $key, $value): void

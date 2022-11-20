@@ -25,7 +25,6 @@ interface TextExtractorInterface
     /**
      * Checks if the given file can be read by this extractor
      *
-     * @param FileInterface $file
      * @return bool
      */
     public function canExtractText(FileInterface $file);

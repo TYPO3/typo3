@@ -69,7 +69,6 @@ class WorkspaceRecord extends AbstractRecord
 
     /**
      * @param int $uid
-     * @param array $record
      * @return WorkspaceRecord
      */
     public static function get($uid, array $record = null)
@@ -195,9 +194,6 @@ class WorkspaceRecord extends AbstractRecord
         return $this->stages[$nextStageId];
     }
 
-    /**
-     * @param StageRecord $stage
-     */
     protected function addStage(StageRecord $stage)
     {
         $this->stages[$stage->getUid()] = $stage;

@@ -259,8 +259,6 @@ class LanguageMenuProcessor implements DataProcessorInterface
     /**
      * This is called from UserContentObject via ContentObjectRenderer->callUserFunction()
      * for nested menu items - those use a USER content object for getFieldAsJson().
-     *
-     * @param ContentObjectRenderer $cObj
      */
     public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
     {
@@ -270,7 +268,6 @@ class LanguageMenuProcessor implements DataProcessorInterface
     /**
      * Get configuration value from processorConfiguration
      *
-     * @param string $key
      * @return string
      */
     protected function getConfigurationValue(string $key): string
@@ -432,7 +429,6 @@ class LanguageMenuProcessor implements DataProcessorInterface
     /**
      * This UserFunc gets the link and the target
      *
-     * @param array $menuItem
      * @return array
      */
     public function replacePlaceholderInRenderedMenuItem(array $menuItem): array

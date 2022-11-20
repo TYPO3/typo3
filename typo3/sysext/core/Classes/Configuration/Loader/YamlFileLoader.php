@@ -101,7 +101,6 @@ class YamlFileLoader implements LoggerAwareInterface
     /**
      * Put into a separate method to ease the pains with unit tests
      *
-     * @param string $fileName
      * @return string the contents
      */
     protected function getFileContents(string $fileName): string
@@ -147,8 +146,6 @@ class YamlFileLoader implements LoggerAwareInterface
     /**
      * Checks for the special "imports" key on the main level of a file,
      * which calls "load" recursively.
-     * @param array $content
-     * @param string|null $fileName
      * @return array
      */
     protected function processImports(array $content, ?string $fileName): array
@@ -201,8 +198,6 @@ class YamlFileLoader implements LoggerAwareInterface
     }
 
     /**
-     * @param string $line
-     * @param array $referenceArray
      * @return mixed
      */
     protected function processPlaceholderLine(string $line, array $referenceArray)
@@ -229,9 +224,6 @@ class YamlFileLoader implements LoggerAwareInterface
     }
 
     /**
-     * @param string $placeholder
-     * @param string $value
-     * @param array $referenceArray
      * @return mixed
      */
     protected function processSinglePlaceholder(string $placeholder, string $value, array $referenceArray)
@@ -257,7 +249,6 @@ class YamlFileLoader implements LoggerAwareInterface
     }
 
     /**
-     * @param string $placeholders
      * @return array
      */
     protected function getParts(string $placeholders): array

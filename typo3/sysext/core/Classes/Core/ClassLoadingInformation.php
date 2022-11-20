@@ -66,7 +66,6 @@ class ClassLoadingInformation
     /**
      * Sets the package manager instance
      *
-     * @param ClassLoader $classLoader
      * @internal
      */
     public static function setClassLoader(ClassLoader $classLoader)
@@ -104,7 +103,6 @@ class ClassLoadingInformation
     }
 
     /**
-     * @param AfterPackageDeactivationEvent $event
      * @internal
      */
     public static function updateClassLoadingInformationAfterPackageDeactivation(AfterPackageDeactivationEvent $event): void
@@ -116,7 +114,6 @@ class ClassLoadingInformation
     }
 
     /**
-     * @param AfterPackageActivationEvent $event
      * @internal
      */
     public static function updateClassLoadingInformationAfterPackageActivation(AfterPackageActivationEvent $event): void
@@ -165,7 +162,6 @@ class ClassLoadingInformation
     /**
      * Sets class loading information for a package for the current web request
      *
-     * @param PackageInterface $package
      * @throws \TYPO3\CMS\Core\Error\Exception
      */
     public static function registerTransientClassLoadingInformationForPackage(PackageInterface $package)

@@ -102,9 +102,6 @@ class ImageInfoTest extends UnitTestCase
     /**
      * @test
      * @dataProvider doesNotBreakOnImageInfoWithInvalidSvgDataProvider
-     * @param string $svg
-     * @param int $width
-     * @param int $height
      */
     public function doesNotBreakOnImageInfoWithInvalidSvg(string $svg, int $width, int $height): void
     {
@@ -155,9 +152,6 @@ class ImageInfoTest extends UnitTestCase
     /**
      * @test
      * @dataProvider canDetectImageSizesDataProvider
-     * @param string $file
-     * @param int $width
-     * @param int $height
      */
     public function canDetectImageSizes(string $file, int $width, int $height): void
     {

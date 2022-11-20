@@ -38,10 +38,6 @@ class File extends AbstractFile
     /**
      * Constructor for a file object. Should normally not be used directly, use
      * the corresponding factory methods instead.
-     *
-     * @param array $fileData
-     * @param ResourceStorage $storage
-     * @param array $metaData
      */
     public function __construct(array $fileData, ResourceStorage $storage, array $metaData = [])
     {

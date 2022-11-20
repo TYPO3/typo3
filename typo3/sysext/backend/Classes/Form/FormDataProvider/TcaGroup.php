@@ -30,7 +30,6 @@ class TcaGroup implements FormDataProviderInterface
     /**
      * Initialize new row with default values from various sources
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

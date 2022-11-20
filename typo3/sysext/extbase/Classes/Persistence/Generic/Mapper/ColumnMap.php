@@ -194,9 +194,6 @@ class ColumnMap
         $this->propertyName = $propertyName;
     }
 
-    /**
-     * @param string $typeOfRelation
-     */
     public function setTypeOfRelation(string $typeOfRelation): void
     {
         $this->typeOfRelation = $typeOfRelation;
@@ -226,9 +223,6 @@ class ColumnMap
         return $this->columnName;
     }
 
-    /**
-     * @param string|null $childTableName
-     */
     public function setChildTableName(?string $childTableName): void
     {
         $this->childTableName = $childTableName;
@@ -242,9 +236,6 @@ class ColumnMap
         return $this->childTableName;
     }
 
-    /**
-     * @param string|null $childSortByFieldName
-     */
     public function setChildSortByFieldName(?string $childSortByFieldName): void
     {
         $this->childSortByFieldName = $childSortByFieldName;
@@ -258,9 +249,6 @@ class ColumnMap
         return $this->childSortByFieldName;
     }
 
-    /**
-     * @param string|null $relationTableName
-     */
     public function setRelationTableName(?string $relationTableName): void
     {
         $this->relationTableName = $relationTableName;
@@ -274,9 +262,6 @@ class ColumnMap
         return $this->relationTableName;
     }
 
-    /**
-     * @param string $relationTablePageIdColumnName
-     */
     public function setRelationTablePageIdColumnName(string $relationTablePageIdColumnName): void
     {
         $this->relationTablePageIdColumnName = $relationTablePageIdColumnName;
@@ -290,9 +275,6 @@ class ColumnMap
         return $this->relationTablePageIdColumnName;
     }
 
-    /**
-     * @param array|null $relationTableMatchFields
-     */
     public function setRelationTableMatchFields(?array $relationTableMatchFields): void
     {
         $this->relationTableMatchFields = $relationTableMatchFields;
@@ -306,9 +288,6 @@ class ColumnMap
         return $this->relationTableMatchFields;
     }
 
-    /**
-     * @param array $relationTableInsertFields
-     */
     public function setRelationTableInsertFields(array $relationTableInsertFields): void
     {
         $this->relationTableInsertFields = $relationTableInsertFields;
@@ -322,9 +301,6 @@ class ColumnMap
         return $this->relationTableInsertFields;
     }
 
-    /**
-     * @param string|null $parentKeyFieldName
-     */
     public function setParentKeyFieldName(?string $parentKeyFieldName): void
     {
         $this->parentKeyFieldName = $parentKeyFieldName;
@@ -338,9 +314,6 @@ class ColumnMap
         return $this->parentKeyFieldName;
     }
 
-    /**
-     * @param string|null $parentTableFieldName
-     */
     public function setParentTableFieldName(?string $parentTableFieldName): void
     {
         $this->parentTableFieldName = $parentTableFieldName;
@@ -354,9 +327,6 @@ class ColumnMap
         return $this->parentTableFieldName;
     }
 
-    /**
-     * @param string $childKeyFieldName
-     */
     public function setChildKeyFieldName(string $childKeyFieldName): void
     {
         $this->childKeyFieldName = $childKeyFieldName;
@@ -370,9 +340,6 @@ class ColumnMap
         return $this->childKeyFieldName;
     }
 
-    /**
-     * @param string|null $dateTimeStorageFormat
-     */
     public function setDateTimeStorageFormat(?string $dateTimeStorageFormat): void
     {
         $this->dateTimeStorageFormat = $dateTimeStorageFormat;
@@ -386,9 +353,6 @@ class ColumnMap
         return $this->dateTimeStorageFormat;
     }
 
-    /**
-     * @param TableColumnType $type
-     */
     public function setType(TableColumnType $type): void
     {
         $this->type = $type;

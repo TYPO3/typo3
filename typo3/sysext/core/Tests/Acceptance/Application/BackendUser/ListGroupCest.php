@@ -24,9 +24,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class ListGroupCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
@@ -40,9 +37,6 @@ class ListGroupCest
         $I->canSee('Backend User Group Listing', 'h1');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function canEditBeGroupsFromListView(ApplicationTester $I): void
     {
         $groupname = $I->grabTextFrom('table.table-striped > tbody > tr:nth-child(1) > td.title > a > b');
@@ -56,9 +50,6 @@ class ListGroupCest
         $this->openAndCloseTheEditForm($I, $groupname);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function canEditSubGroupFromListView(ApplicationTester $I): void
     {
         $I->amGoingTo('test the subgroup edit form');
@@ -67,10 +58,6 @@ class ListGroupCest
         $this->openAndCloseTheEditForm($I, $groupname);
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param string $groupName
-     */
     private function openAndCloseTheEditForm(ApplicationTester $I, string $groupName): void
     {
         $I->waitForText('Edit Backend usergroup "' . $groupName . '" on root level', 120);

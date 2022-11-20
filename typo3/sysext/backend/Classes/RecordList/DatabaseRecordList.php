@@ -413,8 +413,6 @@ class DatabaseRecordList
      * Returns a list of all fields / columns including meta columns such as
      * "_REF_" or "_PATH_" which should be rendered for the databsae table.
      *
-     * @param string $table
-     * @param bool $includeMetaColumns
      * @return array
      */
     public function getColumnsToRender(string $table, bool $includeMetaColumns): array
@@ -469,8 +467,6 @@ class DatabaseRecordList
      * Based on the columns which should be rendered this method returns a list of actual
      * database fields to be selected from the query string.
      *
-     * @param string $table
-     * @param array $columnsToRender
      * @return string[] a list of all database table fields
      */
     public function getFieldsToSelect(string $table, array $columnsToRender): array
@@ -815,7 +811,6 @@ class DatabaseRecordList
     /**
      * If new records can be created on this page, create a button
      *
-     * @param string $table
      * @return string
      */
     protected function createNewRecordButton(string $table): string
@@ -930,8 +925,6 @@ class DatabaseRecordList
     /**
      * Get preview link for pages or tt_content records
      *
-     * @param string $table
-     * @param array $row
      *
      * @return PreviewUriBuilder
      */
@@ -1284,9 +1277,6 @@ class DatabaseRecordList
     /**
      * Creates a page browser for tables with many records
      *
-     * @param string $table
-     * @param int $totalItems
-     * @param int $itemsPerPage
      * @return string Navigation HTML
      */
     protected function renderListNavigation(string $table, int $totalItems, int $itemsPerPage): string
@@ -1856,7 +1846,6 @@ class DatabaseRecordList
      *
      * @param string $table The table
      * @param mixed[] $row The record for which to make the localization panel.
-     * @param array $translations
      * @return string
      */
     public function makeLocalizationPanel($table, $row, array $translations): string
@@ -2090,9 +2079,6 @@ class DatabaseRecordList
             && VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER);
     }
 
-    /**
-     * @param bool $isEditable
-     */
     public function setIsEditable(bool $isEditable): void
     {
         $this->editable = $isEditable;
@@ -2100,7 +2086,6 @@ class DatabaseRecordList
 
     /**
      * Check if the table is readonly or editable
-     * @param string $table
      * @return bool
      */
     public function isEditable(string $table): bool
@@ -2283,9 +2268,6 @@ class DatabaseRecordList
      *
      * @param string $table Table name
      * @param string[] $fields Field list to select, * for all
-     * @param bool $addSorting
-     * @param int $firstResult
-     * @param int $maxResult
      * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
      */
     public function getQueryBuilder(
@@ -2401,7 +2383,6 @@ class DatabaseRecordList
      *
      * @param string $table Table, in which the fields are being searched.
      * @param int $currentPid Page id for the possible search limit
-     * @param QueryBuilder $queryBuilder
      * @return string Returns part of WHERE-clause for searching, if applicable.
      */
     protected function makeSearchString(string $table, int $currentPid, QueryBuilder $queryBuilder)
@@ -2784,9 +2765,6 @@ class DatabaseRecordList
      * Add conditions to the QueryBuilder object ($queryBuilder) to limit a
      * query to a list of page IDs based on the current search level setting.
      *
-     * @param string $tableName
-     * @param QueryBuilder $queryBuilder
-     * @param int $searchLevels
      * @return QueryBuilder Modified QueryBuilder object
      */
     protected function addPageIdConstraint(string $tableName, QueryBuilder $queryBuilder, int $searchLevels): QueryBuilder
@@ -2954,8 +2932,6 @@ class DatabaseRecordList
     /**
      * Return the icon for the language
      *
-     * @param string $table
-     * @param array $row
      * @return string Language icon
      */
     protected function languageFlag(string $table, array $row): string
@@ -3046,8 +3022,6 @@ class DatabaseRecordList
     /**
      * Render the multi record selection actions, which are shown as soon as one record is selected
      *
-     * @param string $table
-     * @param array $currentIdList
      * @return string
      */
     protected function renderMultiRecordSelectionActions(string $table, array $currentIdList): string
@@ -3142,8 +3116,6 @@ class DatabaseRecordList
     /**
      * If enabled, only translations are shown (= only with l10n_parent)
      * See the use case in RecordList class, where a list of page translations is rendered before.
-     *
-     * @param bool $showOnlyTranslatedRecords
      */
     public function showOnlyTranslatedRecords(bool $showOnlyTranslatedRecords)
     {
@@ -3153,7 +3125,6 @@ class DatabaseRecordList
     /**
      * Creates data attributes to be handles in moddule `TYPO3/CMS/Backend/ActionDispatcher`
      *
-     * @param string $arguments
      * @return string
      */
     protected function createShowItemTagAttributes(string $arguments): string
@@ -3170,7 +3141,6 @@ class DatabaseRecordList
     }
 
     /**
-     * @param array $languagesAllowedForUser
      * @return DatabaseRecordList
      */
     public function setLanguagesAllowedForUser(array $languagesAllowedForUser): DatabaseRecordList
@@ -3182,8 +3152,6 @@ class DatabaseRecordList
     /**
      * Check if a given record is a localization
      *
-     * @param string $table
-     * @param array $row
      *
      * @return bool
      */
@@ -3199,7 +3167,6 @@ class DatabaseRecordList
      * Returns the configuration of mod.web_list.noViewWithDokTypes or the
      * default value 254 (Sys Folders) and 255 (Recycler), if not set.
      *
-     * @param array $tsConfig
      * @return array
      */
     protected function getNoViewWithDokTypes(array $tsConfig): array
@@ -3222,8 +3189,6 @@ class DatabaseRecordList
      * In case a row is given, this checks if the record is neither
      * a "delete placeholder", nor a translation.
      *
-     * @param string $table
-     * @param array $row
      * @return bool
      */
     protected function isClipboardFunctionalityEnabled(string $table, array $row = []): bool
@@ -3241,8 +3206,6 @@ class DatabaseRecordList
 
     /**
      * Add a divider to the secondary cell gorup, if not already present
-     *
-     * @param array $cells
      */
     protected function addDividerToCellGroup(array &$cells): void
     {

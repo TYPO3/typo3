@@ -42,7 +42,6 @@ class ContextMenuController
     /**
      * Renders a context menu
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function getContextMenuAction(ServerRequestInterface $request): ResponseInterface
@@ -59,7 +58,6 @@ class ContextMenuController
     }
 
     /**
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function clipboardAction(ServerRequestInterface $request): ResponseInterface

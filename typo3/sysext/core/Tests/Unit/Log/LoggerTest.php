@@ -114,7 +114,6 @@ class LoggerTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $shorthandMethod
      * @dataProvider loggerLogsRecordsThroughShorthandMethodDataProvider
      */
     public function loggerLogsRecordsThroughShorthandMethod(string $shorthandMethod): void

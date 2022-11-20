@@ -50,8 +50,6 @@ class TaskTypeRegistry implements SingletonInterface
 
     /**
      * @param string $taskType
-     * @param ProcessedFile $processedFile
-     * @param array $processingConfiguration
      * @return TaskInterface
      * @throws \RuntimeException
      */

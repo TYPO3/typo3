@@ -105,8 +105,6 @@ If you want to get more detailed information, use the --verbose option.')
      * - find data in sys_refindex (softrefs and regular references) where the reference points to a non-existing record or offline version
      * - remove these files if --dry-run is not set (not possible for refindexes)
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -383,7 +381,6 @@ If you want to get more detailed information, use the --verbose option.')
     /**
      * Formats a sys_refindex entry to something readable
      *
-     * @param array $record
      * @return string
      */
     protected function formatReferenceIndexEntryToString(array $record): string

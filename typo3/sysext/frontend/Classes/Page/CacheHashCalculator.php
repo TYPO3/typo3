@@ -230,8 +230,6 @@ class CacheHashCalculator implements SingletonInterface
 
     /**
      * Extends (or overrides) property names of current configuration.
-     *
-     * @param array $configuration
      */
     public function setConfiguration(array $configuration)
     {

@@ -111,7 +111,6 @@ class PackageManager implements SingletonInterface
     protected ?string $packagePathMatchRegex;
 
     /**
-     * @param DependencyOrderingService $dependencyOrderingService
      * @param string|null $packagesBasePath
      * @param string|null $packageStatesPathAndFilename
      */
@@ -123,7 +122,6 @@ class PackageManager implements SingletonInterface
     }
 
     /**
-     * @param PackageCacheInterface $packageCache
      * @internal
      */
     public function setPackageCache(PackageCacheInterface $packageCache)
@@ -229,9 +227,6 @@ class PackageManager implements SingletonInterface
         }
     }
 
-    /**
-     * @param PackageInterface $package
-     */
     protected function registerActivePackage(PackageInterface $package)
     {
         // reset the active packages so they are rebuilt.
@@ -264,7 +259,6 @@ class PackageManager implements SingletonInterface
     /**
      * Resolves a path in the form EXT:vendor/package/Path/To/Resource to an absolute filesystem path
      *
-     * @param string $path
      * @return string
      * @throws UnknownPackageException
      * @throws UnknownPackagePathException
@@ -280,7 +274,6 @@ class PackageManager implements SingletonInterface
     /**
      * Extracts the package key from a path in the form EXT:vendor/package/Path/To/Resource
      *
-     * @param string $path
      * @return string
      * @throws UnknownPackageException
      * @throws UnknownPackagePathException
@@ -319,8 +312,6 @@ class PackageManager implements SingletonInterface
 
     /**
      * Event listener to retrigger scanning of available packages.
-     *
-     * @param PackagesMayHaveChangedEvent $event
      */
     public function packagesMayHaveChanged(PackagesMayHaveChangedEvent $event): void
     {
@@ -365,7 +356,6 @@ class PackageManager implements SingletonInterface
     /**
      * Requires and registers all packages which were defined in packageStatesConfiguration
      *
-     * @param array $packages
      * @param bool $registerOnlyNewPackages
      * @throws Exception\InvalidPackageStateException
      * @throws Exception\PackageStatesFileNotWritableException
@@ -576,7 +566,6 @@ class PackageManager implements SingletonInterface
     }
 
     /**
-     * @param PackageInterface $package
      * @throws \TYPO3\CMS\Core\Exception
      */
     protected function registerTransientClassLoadingInformationForPackage(PackageInterface $package)
@@ -830,8 +819,6 @@ class PackageManager implements SingletonInterface
     /**
      * Returns contents of Composer manifest as a stdObject
      *
-     * @param string $manifestPath
-     * @param bool $ignoreExtEmConf
      * @return \stdClass
      * @throws InvalidPackageManifestException
      * @internal
@@ -870,8 +857,6 @@ class PackageManager implements SingletonInterface
      * Fetches MetaData information from ext_emconf.php, used for
      * resolving dependencies as well.
      *
-     * @param string $packagePath
-     * @param string $packageKey
      * @return array|null if no ext_emconf.php was found, or the contents of the ext_emconf.php file.
      * @throws Exception\InvalidPackageManifestException
      */
@@ -894,8 +879,6 @@ class PackageManager implements SingletonInterface
      * Fetches information from ext_emconf.php and maps it so it is treated as it would come from composer.json
      *
      * @param string $packageKey
-     * @param array $extensionManagerConfiguration
-     * @param \stdClass $composerManifest
      * @return \stdClass
      * @throws Exception\InvalidPackageManifestException
      */
@@ -963,7 +946,6 @@ class PackageManager implements SingletonInterface
     }
 
     /**
-     * @param \stdClass $manifest
      * @param string $property
      * @param mixed $value
      * @return \stdClass
@@ -983,7 +965,6 @@ class PackageManager implements SingletonInterface
      * in the result.
      *
      * @param string $packageKey The package key to fetch the dependencies for
-     * @param array $dependentPackageKeys
      * @param array $trace An array of already visited package keys, to detect circular dependencies
      * @return array|null An array of direct or indirect dependent packages
      * @throws Exception\InvalidPackageKeyException
@@ -1061,7 +1042,6 @@ class PackageManager implements SingletonInterface
     /**
      * Returns true if the given path has valid subdirectories, false otherwise.
      *
-     * @param string $path
      * @return bool
      */
     protected function hasSubDirectories(string $path): bool
@@ -1070,7 +1050,6 @@ class PackageManager implements SingletonInterface
     }
 
     /**
-     * @param array $packageStatesConfiguration
      * @return array Returns the packageStatesConfiguration sorted by dependencies
      * @throws \UnexpectedValueException
      */
@@ -1138,7 +1117,6 @@ class PackageManager implements SingletonInterface
      * Checks whether the given package name is a Composer dependency.
      * In non Composer mode this is always false
      *
-     * @param string $packageName
      * @return bool
      */
     protected function isComposerDependency(string $packageName): bool
@@ -1196,7 +1174,6 @@ class PackageManager implements SingletonInterface
     }
 
     /**
-     * @param array $packageStateConfiguration
      * @return array
      */
     protected function findFrameworkPackages(array $packageStateConfiguration)

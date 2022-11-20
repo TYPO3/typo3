@@ -413,7 +413,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
-     * @param Page $page
      * @return string|null
      */
     protected function getHoneypotNameFromSession(Page $page)
@@ -432,10 +431,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         return $honeypotNameFromSession;
     }
 
-    /**
-     * @param Page $page
-     * @param string $honeypotName
-     */
     protected function setHoneypotNameInSession(Page $page, string $honeypotName)
     {
         if ($this->isFrontendUserAuthenticated()) {
@@ -553,7 +548,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
-     * @param Page $page
      * @return Result
      * @throws PropertyMappingException
      */
@@ -941,7 +935,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * @param string $identifier
-     * @param mixed $value
      * @internal
      */
     public function offsetSet(mixed $identifier, mixed $value): void
@@ -963,7 +956,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     /**
      * Returns the value of the specified element
      *
-     * @param string $identifier
      * @return mixed
      */
     public function getElementValue(string $identifier)

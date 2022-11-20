@@ -53,8 +53,6 @@ class RecoveryCodes
     /**
      * Generate given amount of plain recovery codes with the given length
      *
-     * @param int $length
-     * @param int $quantity
      * @return string[]
      */
     public function generatePlainRecoveryCodes(int $length = 8, int $quantity = 8): array
@@ -89,7 +87,6 @@ class RecoveryCodes
     /**
      * Hash the given plain recovery codes with the default hash instance and return them
      *
-     * @param array $codes
      * @return array
      */
     public function generatedHashedRecoveryCodes(array $codes): array
@@ -108,8 +105,6 @@ class RecoveryCodes
      * Compare given recovery code against all hashed codes and
      * unset the corresponding code on success.
      *
-     * @param string $recoveryCode
-     * @param array $codes
      * @return bool
      */
     public function verifyRecoveryCode(string $recoveryCode, array &$codes): bool

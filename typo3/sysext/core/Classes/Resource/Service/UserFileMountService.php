@@ -105,7 +105,6 @@ class UserFileMountService
      * Simple function to make a hierarchical subfolder request into
      * a "flat" option list
      *
-     * @param Folder $parentFolder
      * @param int $level a limiter
      * @return Folder[]
      */

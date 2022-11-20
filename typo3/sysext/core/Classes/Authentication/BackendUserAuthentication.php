@@ -820,7 +820,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * This is not bound to an actual record, but to the mere fact if the user is in a workspace
      * and depending on the table settings.
      *
-     * @param string $table
      * @return bool
      * @internal should only be used from within TYPO3 Core
      */
@@ -1594,7 +1593,6 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      * storage with the default settings.
      * Admin users will always get the default settings.
      *
-     * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject
      * @return array
      */
     public function getFilePermissionsForStorage(ResourceStorage $storageObject)
@@ -2230,7 +2228,6 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
 
     /**
      * Remove any "locked records" added for editing for the given user (= current backend user)
-     * @param int $userId
      */
     protected function releaseLockedRecords(int $userId)
     {

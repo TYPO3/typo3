@@ -101,8 +101,6 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
     /**
      * Execute scheduler tasks
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      * @todo: this should at some point become a protected method
      */
@@ -153,8 +151,6 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
 
     /**
      * Stop task
-     *
-     * @param AbstractTask $task
      */
     protected function stopTask(AbstractTask $task)
     {
@@ -168,7 +164,6 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
     /**
      * Return task a task for a given UID
      *
-     * @param int $taskUid
      * @return AbstractTask|null
      */
     protected function getTask(int $taskUid)
@@ -252,8 +247,6 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
 
     /**
      * When in stop mode the given task is stopped. Otherwise the task is executed.
-     *
-     * @param AbstractTask $task
      */
     protected function executeOrStopTask(AbstractTask $task): void
     {

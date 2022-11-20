@@ -116,7 +116,6 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider routeDefaultsForSingleParameterAreConsideredDataProvider
      */
@@ -211,7 +210,6 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider routeDefaultsForMultipleParametersAreConsideredDataProvider
      */
@@ -290,7 +288,6 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider routeRequirementsHavingAspectsAreConsideredDataProvider
      */
@@ -300,7 +297,6 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider nestedRouteArgumentsAreConsideredDataProvider
      */

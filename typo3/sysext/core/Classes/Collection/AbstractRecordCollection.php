@@ -407,8 +407,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
 
     /**
      * Loads the properties of this collection from an array
-     *
-     * @param array $array
      */
     public function fromArray(array $array)
     {

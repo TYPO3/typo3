@@ -111,9 +111,6 @@ class ImageContentObjectTest extends UnitTestCase
      *
      * @test
      * @dataProvider getImageTagTemplateReturnTemplateElementIdentifiedByKeyDataProvider
-     * @param string $key
-     * @param array $configuration
-     * @param string $expectation
      */
     public function getImageTagTemplateReturnTemplateElementIdentifiedByKey(string $key, array $configuration, string $expectation): void
     {
@@ -138,9 +135,6 @@ class ImageContentObjectTest extends UnitTestCase
      *
      * @test
      * @dataProvider getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefinedDataProvider
-     * @param string|null $layoutKey
-     * @param array|null $configuration
-     * @param string|null $file
      */
     public function getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefined(
         ?string $layoutKey,
@@ -247,8 +241,6 @@ class ImageContentObjectTest extends UnitTestCase
      *
      * @test
      * @dataProvider getImageSourceCollectionRendersDefinedLayoutKeyDataDefaultProvider
-     * @param string $layoutKey
-     * @param array $configuration
      */
     public function getImageSourceCollectionRendersDefinedLayoutKeyDefault(string $layoutKey, array $configuration): void
     {
@@ -364,10 +356,6 @@ class ImageContentObjectTest extends UnitTestCase
      *
      * @test
      * @dataProvider getImageSourceCollectionRendersDefinedLayoutKeyDataDataProvider
-     * @param string $layoutKey
-     * @param array $configuration
-     * @param string $xhtmlDoctype
-     * @param string $expectedHtml
      */
     public function getImageSourceCollectionRendersDefinedLayoutKeyData(
         string $layoutKey,
@@ -476,8 +464,6 @@ class ImageContentObjectTest extends UnitTestCase
     /**
      * Handles the arguments that have been sent to the getImgResource hook.
      *
-     * @param array $sourceRenderConfiguration
-     * @param array $sourceConfiguration
      * @return string
      * @see getImageSourceCollectionHookCalled
      */

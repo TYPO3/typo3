@@ -270,8 +270,6 @@ class ActionControllerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider templateRootPathDataProvider
-     * @param array $configuration
-     * @param array $expected
      */
     public function setViewConfigurationResolvesTemplateRootPathsForTemplateRootPath(array $configuration, array $expected): void
     {
@@ -346,9 +344,6 @@ class ActionControllerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider layoutRootPathDataProvider
-     *
-     * @param array $configuration
-     * @param array $expected
      */
     public function setViewConfigurationResolvesLayoutRootPathsForLayoutRootPath(array $configuration, array $expected): void
     {
@@ -423,9 +418,6 @@ class ActionControllerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider partialRootPathDataProvider
-     *
-     * @param array $configuration
-     * @param array $expected
      */
     public function setViewConfigurationResolvesPartialRootPathsForPartialRootPath(array $configuration, array $expected): void
     {
@@ -499,8 +491,6 @@ class ActionControllerTest extends UnitTestCase
 
     /**
      * @param FluidTemplateView $viewMock
-     * @param string|null $expectedHeader
-     * @param string|null $expectedFooter
      * @test
      * @dataProvider headerAssetDataProvider
      * @todo Review type from $viewMock (type declaration in method signature leads to test bench errors)

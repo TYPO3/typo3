@@ -88,9 +88,6 @@ class YamlFileLoaderTest extends UnitTestCase
      *
      * @dataProvider loadWithEnvVarDataProvider
      * @test
-     * @param array $envs
-     * @param string $yamlContent
-     * @param array $expected
      */
     public function loadWithEnvVarPlaceholders(array $envs, string $yamlContent, array $expected): void
     {
@@ -201,8 +198,6 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
     /**
      * @dataProvider isPlaceholderDataProvider
      * @test
-     * @param mixed $placeholderValue
-     * @param bool $expected
      */
     public function containsPlaceholderTest(mixed $placeholderValue, bool $expected): void
     {

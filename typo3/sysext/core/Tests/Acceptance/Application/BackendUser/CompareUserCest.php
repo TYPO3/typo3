@@ -24,9 +24,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class CompareUserCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
@@ -36,9 +33,6 @@ class CompareUserCest
         $I->switchToContentFrame();
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function editingBeUserRecordsFromCompareViewWorks(ApplicationTester $I): void
     {
         // put two users into compare list
@@ -71,9 +65,6 @@ class CompareUserCest
         $I->canSee('Edit Backend user "' . $usernameFirstCompare . '" on root level');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function accessingBackendUserCompareViewWorks(ApplicationTester $I): void
     {
         $I->amGoingTo('Switch to user group listing');

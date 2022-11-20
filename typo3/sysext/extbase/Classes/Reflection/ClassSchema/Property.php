@@ -38,10 +38,6 @@ class Property
      */
     private $characteristics;
 
-    /**
-     * @param string $name
-     * @param array $definition
-     */
     public function __construct(string $name, array $definition)
     {
         $this->name = $name;

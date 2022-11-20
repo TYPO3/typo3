@@ -133,8 +133,6 @@ class IndexSearchRepository
      *
      * @param array $settings the extbase plugin settings
      * @param array $searchData the search data
-     * @param array $externalParsers
-     * @param int|string $searchRootPageIdList
      */
     public function initialize(array $settings, array $searchData, array $externalParsers, int|string $searchRootPageIdList): void
     {

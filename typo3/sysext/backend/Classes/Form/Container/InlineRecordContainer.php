@@ -63,9 +63,6 @@ class InlineRecordContainer extends AbstractContainer
 
     /**
      * Default constructor
-     *
-     * @param NodeFactory $nodeFactory
-     * @param array $data
      */
     public function __construct(NodeFactory $nodeFactory, array $data)
     {
@@ -228,7 +225,6 @@ class InlineRecordContainer extends AbstractContainer
     /**
      * Render inner child
      *
-     * @param array $data
      * @return array Result array
      */
     protected function renderChild(array $data)

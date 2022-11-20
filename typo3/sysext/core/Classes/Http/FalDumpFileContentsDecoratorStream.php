@@ -48,11 +48,6 @@ class FalDumpFileContentsDecoratorStream implements StreamInterface, SelfEmittab
      */
     protected $size;
 
-    /**
-     * @param string $identifier
-     * @param DriverInterface $driver
-     * @param int $size
-     */
     public function __construct(string $identifier, DriverInterface $driver, int $size)
     {
         $this->identifier = $identifier;

@@ -73,7 +73,6 @@ class DataProviderCollection implements SingletonInterface
      * backend layouts. Each data provider returns its own
      * backend layout collection.
      *
-     * @param DataProviderContext $dataProviderContext
      * @return array|BackendLayoutCollection[]
      */
     public function getBackendLayoutCollections(DataProviderContext $dataProviderContext)

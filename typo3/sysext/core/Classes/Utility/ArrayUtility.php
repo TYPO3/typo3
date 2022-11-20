@@ -957,7 +957,6 @@ class ArrayUtility
      * Check whether the array has non-integer keys. If there is at least one string key, $array will be
      * regarded as an associative array.
      *
-     * @param array $array
      * @return bool True in case a string key was found.
      * @internal
      */

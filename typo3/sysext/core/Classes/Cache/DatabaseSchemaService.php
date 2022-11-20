@@ -25,7 +25,6 @@ final class DatabaseSchemaService
     /**
      * An event listener to inject the required caching framework database tables to the
      * tables definitions string
-     * @param AlterTableDefinitionStatementsEvent $event
      */
     public function addCachingFrameworkDatabaseSchema(AlterTableDefinitionStatementsEvent $event): void
     {

@@ -94,9 +94,6 @@ class ValidatorClassNameResolverTest extends UnitTestCase
     /**
      * @test
      * @dataProvider namespacedShorthandValidatorNamesDataProvider
-     *
-     * @param string $validatorName
-     * @param string $expectedClassName
      */
     public function resolveWithShortHandNotationReturnsValidatorNameIfClassExists(string $validatorName, string $expectedClassName): void
     {

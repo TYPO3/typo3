@@ -60,7 +60,6 @@ class CommandMap
     /**
      * Creates this object.
      *
-     * @param array $commandMap
      * @param int $workspace
      */
     public function __construct(array $commandMap, $workspace)
@@ -83,7 +82,6 @@ class CommandMap
     /**
      * Sets the command map.
      *
-     * @param array $commandMap
      * @return CommandMap
      */
     public function set(array $commandMap)
@@ -165,10 +163,8 @@ class CommandMap
     /**
      * Adds workspaces elements for swapping/publishing.
      *
-     * @param DependencyResolver $dependency
      * @param string $table
      * @param int $liveId
-     * @param array $properties
      */
     protected function addWorkspacesSwapElements(DependencyResolver $dependency, $table, $liveId, array $properties)
     {
@@ -214,10 +210,8 @@ class CommandMap
     /**
      * Adds workspaces elements for staging.
      *
-     * @param DependencyResolver $dependency
      * @param string $table
      * @param int $versionId
-     * @param array $properties
      */
     protected function addWorkspacesSetStageElements(DependencyResolver $dependency, $table, $versionId, array $properties)
     {
@@ -252,7 +246,6 @@ class CommandMap
      * @throws \RuntimeException
      * @param string $table
      * @param string $versionIdList
-     * @param array $properties
      */
     protected function explodeSetStage($table, $versionIdList, array $properties)
     {
@@ -274,7 +267,6 @@ class CommandMap
      * Applies the workspaces dependencies and removes incomplete structures or automatically
      * completes them
      *
-     * @param DependencyResolver $dependency
      * @param string $scope
      */
     protected function applyWorkspacesDependencies(DependencyResolver $dependency, $scope)
@@ -304,8 +296,6 @@ class CommandMap
     /**
      * Updates the command map accordant to valid structures and takes care of the correct order.
      *
-     * @param ElementEntity $intersectingElement
-     * @param array $elements
      * @param string $scope
      */
     protected function update(ElementEntity $intersectingElement, array $elements, $scope)
@@ -334,8 +324,6 @@ class CommandMap
 
     /**
      * Merges command map elements to the top of the current command map..
-     *
-     * @param array $commandMap
      */
     protected function mergeToTop(array $commandMap)
     {
@@ -345,8 +333,6 @@ class CommandMap
 
     /**
      * Merges command map elements to the bottom of the current command map.
-     *
-     * @param array $commandMap
      */
     protected function mergeToBottom(array $commandMap)
     {
@@ -372,7 +358,6 @@ class CommandMap
     /**
      * Callback to get the liveId of a dependent element.
      *
-     * @param ElementEntity $element
      * @return int
      */
     protected function getElementLiveIdCallback(ElementEntity $element)
@@ -383,7 +368,6 @@ class CommandMap
     /**
      * Callback to get the real id of a dependent element.
      *
-     * @param ElementEntity $element
      * @return int
      */
     protected function getElementIdCallback(ElementEntity $element)
@@ -394,7 +378,6 @@ class CommandMap
     /**
      * Callback to get the specific properties of a dependent element for swapping/publishing.
      *
-     * @param ElementEntity $element
      * @return array
      */
     protected function getElementSwapPropertiesCallback(ElementEntity $element)
@@ -407,7 +390,6 @@ class CommandMap
     /**
      * Callback to get common properties of dependent elements for clearing.
      *
-     * @param ElementEntity $element
      * @return array
      */
     protected function getCommonClearPropertiesCallback(ElementEntity $element)
@@ -423,7 +405,6 @@ class CommandMap
     /**
      * Callback to get common properties of dependent elements for swapping/publishing.
      *
-     * @param ElementEntity $element
      * @return array
      */
     protected function getCommonSwapPropertiesCallback(ElementEntity $element)
@@ -446,7 +427,6 @@ class CommandMap
     /**
      * Callback to get the specific properties of a dependent element for staging.
      *
-     * @param ElementEntity $element
      * @return array
      */
     protected function getElementSetStagePropertiesCallback(ElementEntity $element)
@@ -457,7 +437,6 @@ class CommandMap
     /**
      * Callback to get common properties of dependent elements for staging.
      *
-     * @param ElementEntity $element
      * @return array
      */
     protected function getCommonSetStagePropertiesCallback(ElementEntity $element)
@@ -582,7 +561,6 @@ class CommandMap
      * Gets a new callback to be used in the dependency resolver utility.
      *
      * @param string $method
-     * @param array $targetArguments
      * @return EventCallback
      */
     protected function getDependencyCallback($method, array $targetArguments = [])
@@ -599,7 +577,6 @@ class CommandMap
      * Processes a local callback inside this object.
      *
      * @param string $method
-     * @param array $callbackArguments
      * @return mixed
      */
     protected function processCallback($method, array $callbackArguments)

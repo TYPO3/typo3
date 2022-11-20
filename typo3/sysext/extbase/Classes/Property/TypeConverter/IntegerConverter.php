@@ -47,8 +47,6 @@ class IntegerConverter extends AbstractTypeConverter
      * Actually convert from $source to $targetType, in fact a noop here.
      *
      * @param int|string|null $source
-     * @param string $targetType
-     * @param array $convertedChildProperties
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return int|\TYPO3\CMS\Extbase\Error\Error
      */

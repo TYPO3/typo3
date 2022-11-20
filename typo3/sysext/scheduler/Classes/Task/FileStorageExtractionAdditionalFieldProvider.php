@@ -193,7 +193,6 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
      * Since the class name can be very long considering the namespace, only take the final
      * part for better readability. The FQN of the class will be displayed as tooltip.
      *
-     * @param ExtractorInterface $extractor
      * @return string
      */
     protected function formatExtractorClassName(ExtractorInterface $extractor)

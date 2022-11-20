@@ -259,8 +259,6 @@ class ElementHistoryController
 
     /**
      * Shows the full change log
-     *
-     * @param array $historyEntries
      */
     protected function displayHistory(array $historyEntries)
     {

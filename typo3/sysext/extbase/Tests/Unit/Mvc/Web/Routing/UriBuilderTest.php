@@ -311,8 +311,6 @@ class UriBuilderTest extends UnitTestCase
     /**
      * @test
      * @dataProvider buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSetDataProvider
-     * @param array $parameters
-     * @param array $excluded
      * @param string $expected
      */
     public function buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSet(array $parameters, array $excluded, $expected): void

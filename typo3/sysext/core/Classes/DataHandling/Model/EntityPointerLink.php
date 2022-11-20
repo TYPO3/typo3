@@ -32,9 +32,6 @@ class EntityPointerLink
      */
     protected $ancestor;
 
-    /**
-     * @param EntityPointer $subject
-     */
     public function __construct(EntityPointer $subject)
     {
         $this->subject = $subject;
@@ -69,7 +66,6 @@ class EntityPointerLink
     }
 
     /**
-     * @param EntityPointerLink $ancestor
      * @return EntityPointerLink
      */
     public function withAncestor(EntityPointerLink $ancestor): self

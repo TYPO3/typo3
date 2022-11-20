@@ -27,7 +27,6 @@ interface DelayedTransportInterface extends TransportInterface
     /**
      * Sends messages using the given transport instance
      *
-     * @param TransportInterface $transport
      * @return int the number of messages sent
      */
     public function flushQueue(TransportInterface $transport): int;

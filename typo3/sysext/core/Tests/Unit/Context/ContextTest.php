@@ -47,7 +47,6 @@ class ContextTest extends UnitTestCase
     /**
      * @test
      * @dataProvider validAspectKeysDataProvider
-     * @param string $aspectName
      */
     public function hasAspectReturnsTrueOnExistingAspect(string $aspectName): void
     {
@@ -75,7 +74,6 @@ class ContextTest extends UnitTestCase
     /**
      * @test
      * @dataProvider invalidAspectKeysDataProvider
-     * @param string $aspectName
      */
     public function hasAspectReturnsFalseOnNonExistingAspect(string $aspectName): void
     {

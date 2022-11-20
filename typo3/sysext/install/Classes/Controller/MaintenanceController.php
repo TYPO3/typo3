@@ -60,7 +60,6 @@ class MaintenanceController extends AbstractController
     /**
      * Main "show the cards" view
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
@@ -94,7 +93,6 @@ class MaintenanceController extends AbstractController
     /**
      * Clear typo3temp files statistics action
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function clearTypo3tempFilesStatsAction(ServerRequestInterface $request): ResponseInterface
@@ -125,7 +123,6 @@ class MaintenanceController extends AbstractController
     /**
      * Clear typo3temp/assets or FAL processed Files
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function clearTypo3tempFilesAction(ServerRequestInterface $request): ResponseInterface
@@ -193,7 +190,6 @@ class MaintenanceController extends AbstractController
     /**
      * Get main database analyzer modal HTML
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function databaseAnalyzerAction(ServerRequestInterface $request): ResponseInterface
@@ -221,7 +217,6 @@ class MaintenanceController extends AbstractController
     /**
      * Analyze current database situation
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function databaseAnalyzerAnalyzeAction(ServerRequestInterface $request): ResponseInterface
@@ -377,7 +372,6 @@ class MaintenanceController extends AbstractController
     /**
      * Apply selected database changes
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function databaseAnalyzerExecuteAction(ServerRequestInterface $request): ResponseInterface
@@ -419,7 +413,6 @@ class MaintenanceController extends AbstractController
     /**
      * Clear table overview statistics action
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function clearTablesStatsAction(ServerRequestInterface $request): ResponseInterface
@@ -445,7 +438,6 @@ class MaintenanceController extends AbstractController
     /**
      * Truncate a specific table
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws \RuntimeException
      */
@@ -471,7 +463,6 @@ class MaintenanceController extends AbstractController
     /**
      * Create Admin Get Data action
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function createAdminGetDataAction(ServerRequestInterface $request): ResponseInterface
@@ -496,7 +487,6 @@ class MaintenanceController extends AbstractController
     /**
      * Create a backend administrator from given username and password
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function createAdminAction(ServerRequestInterface $request): ResponseInterface
@@ -590,7 +580,6 @@ class MaintenanceController extends AbstractController
      * * list of available languages with details like active or not and last update
      * * list of loaded extensions
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function languagePacksGetDataAction(ServerRequestInterface $request): ResponseInterface
@@ -620,7 +609,6 @@ class MaintenanceController extends AbstractController
     /**
      * Activate a language and any possible dependency it may have
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function languagePacksActivateLanguageAction(ServerRequestInterface $request): ResponseInterface
@@ -674,7 +662,6 @@ class MaintenanceController extends AbstractController
     /**
      * Deactivate a language if no other active language depends on it
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws \RuntimeException
      */
@@ -751,7 +738,6 @@ class MaintenanceController extends AbstractController
     /**
      * Update a pack of one extension and one language
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws \RuntimeException
      */
@@ -772,7 +758,6 @@ class MaintenanceController extends AbstractController
     /**
      * Set "last updated" time in registry for fully updated language packs.
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function languagePacksUpdateIsoTimesAction(ServerRequestInterface $request): ResponseInterface

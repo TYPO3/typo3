@@ -121,9 +121,6 @@ class AudioTagRendererTest extends UnitTestCase
     /**
      * @test
      * @dataProvider renderArgumentsDataProvider
-     * @param string $url
-     * @param array $arguments
-     * @param string $expected
      */
     public function renderOutputIsCorrect(string $url, array $arguments, string $expected): void
     {

@@ -59,7 +59,6 @@ class VideoTagRenderer implements FileRendererInterface
     /**
      * Render for given File(Reference) HTML output
      *
-     * @param FileInterface $file
      * @param int|string $width TYPO3 known format; examples: 220, 200m or 200c
      * @param int|string $height TYPO3 known format; examples: 220, 200m or 200c
      * @param array $options controls = TRUE/FALSE (default TRUE), autoplay = TRUE/FALSE (default FALSE), loop = TRUE/FALSE (default FALSE)

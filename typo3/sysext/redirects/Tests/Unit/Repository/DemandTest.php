@@ -42,8 +42,6 @@ class DemandTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getParametersRespectsDemandStateStateDataProvider
-     * @param array $input
-     * @param array $expected
      */
     public function getParametersRespectsDemandState(array $input, array $expected): void
     {

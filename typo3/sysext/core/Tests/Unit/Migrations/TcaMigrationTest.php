@@ -414,9 +414,6 @@ class TcaMigrationTest extends UnitTestCase
     }
 
     /**
-     * @param array $tca
-     * @param array $expectation
-     *
      * @test
      * @dataProvider ctrlIntegrityColumnsAreAvailableDataProvider
      */

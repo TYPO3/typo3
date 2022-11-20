@@ -1320,7 +1320,6 @@ tt_content.' . $key . $suffix . ' {
     /**
      * Create cache entry for concatenated ext_localconf.php files
      *
-     * @param FrontendInterface $codeCache
      * @internal
      */
     public static function createExtLocalconfCacheEntry(FrontendInterface $codeCache): void

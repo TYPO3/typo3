@@ -36,8 +36,6 @@ interface DomainObjectInterface
 
     /**
      * Setter for the pid.
-     *
-     * @param int $pid
      */
     public function setPid(int $pid);
 
@@ -59,7 +57,6 @@ interface DomainObjectInterface
     /**
      * Reconstitutes a property. Only for internal use.
      *
-     * @param string $propertyName
      * @param mixed $value
      * @internal
      */
@@ -68,7 +65,6 @@ interface DomainObjectInterface
     /**
      * Returns the property value of the given property name. Only for internal use.
      *
-     * @param string $propertyName
      * @return mixed The propertyValue
      * @internal
      */

@@ -79,7 +79,6 @@ class Folder implements FolderInterface
     /**
      * Initialization of the folder
      *
-     * @param ResourceStorage $storage
      * @param string $identifier
      * @param string $name
      */
@@ -239,7 +238,6 @@ class Folder implements FolderInterface
      * Returns a file search result based on the given demand.
      * The result also includes matches in meta data fields that are defined in TCA.
      *
-     * @param FileSearchDemand $searchDemand
      * @param int $filterMode The filter mode to use for the found files
      * @return FileSearchResultInterface
      */
@@ -256,7 +254,6 @@ class Folder implements FolderInterface
      * Returns amount of all files within this folder, optionally filtered by
      * the given pattern
      *
-     * @param array $filterMethods
      * @param bool $recursive
      * @return int
      * @throws Exception\InsufficientFolderAccessPermissionsException
@@ -407,7 +404,6 @@ class Folder implements FolderInterface
     /**
      * Fetches a file from a folder, must be a direct descendant of a folder.
      *
-     * @param string $fileName
      * @return File|ProcessedFile|null
      */
     public function getFile(string $fileName)
@@ -521,8 +517,6 @@ class Folder implements FolderInterface
     /**
      * Sets the filters to use when listing files. These are only used if the filter mode is one of
      * FILTER_MODE_USE_OWN_FILTERS and FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS
-     *
-     * @param array $filters
      */
     public function setFileAndFolderNameFilters(array $filters)
     {

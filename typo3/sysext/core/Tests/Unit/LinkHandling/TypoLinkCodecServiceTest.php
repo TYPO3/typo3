@@ -36,8 +36,6 @@ class TypoLinkCodecServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider encodeReturnsExpectedResultDataProvider
-     * @param array $parts
-     * @param string $expected
      */
     public function encodeReturnsExpectedResult(array $parts, string $expected): void
     {
@@ -83,8 +81,6 @@ class TypoLinkCodecServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider decodeReturnsExpectedResultDataProvider
-     * @param string $typoLink
-     * @param array $expected
      */
     public function decodeReturnsExpectedResult(string $typoLink, array $expected): void
     {

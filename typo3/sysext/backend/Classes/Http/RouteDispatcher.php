@@ -74,8 +74,6 @@ class RouteDispatcher extends Dispatcher
      * value) - attempts to ensure the value is given using a HTML client refresh.
      * see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer
      *
-     * @param ServerRequestInterface $request
-     * @param Route $route
      * @return ResponseInterface|null
      */
     protected function enforceReferrer(ServerRequestInterface $request, Route $route): ?ResponseInterface
@@ -100,8 +98,6 @@ class RouteDispatcher extends Dispatcher
      * created by the same instance. Should be called for all routes in the backend except
      * for the ones that don't require a login.
      *
-     * @param ServerRequestInterface $request
-     * @param Route $route
      * @see UriBuilder where the token is generated.
      */
     protected function assertRequestToken(ServerRequestInterface $request, Route $route): void

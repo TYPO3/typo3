@@ -50,11 +50,6 @@ class MetaTagManagerRegistry implements SingletonInterface
 
     /**
      * Add a MetaTagManager to the registry
-     *
-     * @param string $name
-     * @param string $className
-     * @param array $before
-     * @param array $after
      */
     public function registerManager(string $name, string $className, array $before = ['generic'], array $after = [])
     {
@@ -73,7 +68,6 @@ class MetaTagManagerRegistry implements SingletonInterface
     /**
      * Get the MetaTagManager for a specific property
      *
-     * @param string $property
      * @return MetaTagManagerInterface
      */
     public function getManagerForProperty(string $property): MetaTagManagerInterface
@@ -126,7 +120,6 @@ class MetaTagManagerRegistry implements SingletonInterface
     }
 
     /**
-     * @param array $state
      * @internal
      */
     public function updateState(array $state): void

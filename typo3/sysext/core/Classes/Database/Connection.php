@@ -170,7 +170,6 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * positional information. In the first case quote the field names
      * accordingly.
      *
-     * @param array $input
      * @return array
      */
     protected function quoteColumnTypes(array $input): array
@@ -406,8 +405,6 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
 
     /**
      * Execute commands after initializing a new connection.
-     *
-     * @param string $commands
      */
     public function prepareConnection(string $commands)
     {
@@ -433,7 +430,6 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * are not required / and only the table name is passed through.
      *
      * @param string|null $tableName
-     * @param string $fieldName
      * @return string
      */
     public function lastInsertId($tableName = null, string $fieldName = 'uid'): string

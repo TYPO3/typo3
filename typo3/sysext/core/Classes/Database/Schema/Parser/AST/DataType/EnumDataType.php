@@ -24,9 +24,6 @@ class EnumDataType extends AbstractDataType
 {
     /**
      * EnumDataType constructor.
-     *
-     * @param array $values
-     * @param array $options
      */
     public function __construct(array $values, array $options)
     {

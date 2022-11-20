@@ -40,7 +40,6 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
     /**
      * Sanitize config options and resolve select items if requested.
      *
-     * @param array $result
      * @return array
      * @throws \UnexpectedValueException
      */
@@ -198,7 +197,6 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
     /**
      * Determines whether the current field is a valid target for this DataProvider
      *
-     * @param array $fieldConfig
      * @return bool
      */
     protected function isTargetRenderType(array $fieldConfig)

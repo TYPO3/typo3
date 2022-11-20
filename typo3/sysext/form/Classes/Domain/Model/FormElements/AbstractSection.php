@@ -169,8 +169,6 @@ abstract class AbstractSection extends AbstractCompositeRenderable
 
     /**
      * Remove $elementToRemove from this Section/Page
-     *
-     * @param FormElementInterface $elementToRemove
      */
     public function removeElement(FormElementInterface $elementToRemove)
     {

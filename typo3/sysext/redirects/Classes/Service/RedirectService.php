@@ -154,7 +154,6 @@ class RedirectService implements LoggerAwareInterface
     /**
      * Check if a redirect record matches the starttime and endtime and disable restrictions
      *
-     * @param array $redirectRecord
      * @return bool whether the redirect is active and should be used for redirecting the current request
      */
     protected function isRedirectActive(array $redirectRecord): bool
@@ -175,7 +174,6 @@ class RedirectService implements LoggerAwareInterface
     /**
      * Check if the current request is actually a redirect, and then process the redirect.
      *
-     * @param string $redirectTarget
      * @return array the link details from the linkService
      */
     protected function resolveLinkDetailsFromLinkTarget(string $redirectTarget): array

@@ -212,7 +212,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     /**
      * Returns the object data matching the $query.
      *
-     * @param QueryInterface $query
      * @return array
      * @throws SqlErrorException
      */
@@ -261,7 +260,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     /**
      * Returns the object data using a custom statement
      *
-     * @param Qom\Statement $statement
      * @return array
      * @throws SqlErrorException when the raw SQL statement fails in the database
      */
@@ -307,7 +305,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     /**
      * Returns the number of tuples matching the query.
      *
-     * @param QueryInterface $query
      * @return int The number of matching tuples
      * @throws BadConstraintException
      * @throws SqlErrorException
@@ -418,8 +415,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      * detected (depending on FE or BE context). You can also explicitly set the language/workspace id.
      *
      * @param Qom\SourceInterface $source The source (selector or join)
-     * @param array $rows
-     * @param QueryInterface $query
      * @param int|null $workspaceUid
      * @return array
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
@@ -505,10 +500,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     /**
      * Takes one specific row, as defined in TCA and does all overlays.
      *
-     * @param string $tableName
-     * @param array $row
-     * @param PageRepository $pageRepository
-     * @param QueryInterface $query
      * @return array|int|mixed|null the overlaid row or false or null if overlay failed.
      */
     protected function overlayLanguageAndWorkspaceForSingleRecord(string $tableName, array $row, PageRepository $pageRepository, QueryInterface $query)

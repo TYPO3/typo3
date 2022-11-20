@@ -84,7 +84,6 @@ class GeneratorClassesResolver extends NodeVisitorAbstract
      * Substitutes class-string values with their corresponding class constant
      * representation (`'Vendor\\ClassName'` -> `\Vendor\ClassName::class`).
      *
-     * @param Expr $argValue
      * @return ClassConstFetch|null
      */
     protected function substituteClassString(Expr $argValue): ?ClassConstFetch
@@ -105,8 +104,6 @@ class GeneratorClassesResolver extends NodeVisitorAbstract
      * Substitutes `makeInstance` invocations with proper `new` invocations.
      * `GeneralUtility(\Vendor\ClassName::class, 'a', 'b')` -> `new \Vendor\ClassName('a', 'b')`
      *
-     * @param StaticCall $node
-     * @param Expr $argValue
      * @return New_|null
      */
     protected function substituteMakeInstance(StaticCall $node, Expr $argValue): ?New_
@@ -129,9 +126,6 @@ class GeneratorClassesResolver extends NodeVisitorAbstract
      * Duplicates node positions in source file, based on the assumption
      * that only lines are relevant. In case this shall be used for
      * code-migration, real offset positions would be required.
-     *
-     * @param Node $source
-     * @param Node ...$targets
      */
     protected function duplicateNodeAttributes(Node $source, Node ...$targets): void
     {

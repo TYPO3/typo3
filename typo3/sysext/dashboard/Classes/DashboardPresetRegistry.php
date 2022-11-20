@@ -52,9 +52,6 @@ class DashboardPresetRegistry implements SingletonInterface
         return $this->dashboardPresets;
     }
 
-    /**
-     * @param DashboardPreset $dashboardPreset
-     */
     public function registerDashboardPreset(DashboardPreset $dashboardPreset): void
     {
         $this->dashboardPresets[$dashboardPreset->getIdentifier()] = $dashboardPreset;

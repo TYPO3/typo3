@@ -67,7 +67,6 @@ interface ExtractorInterface
     /**
      * Checks if the given file can be processed by this Extractor
      *
-     * @param Resource\File $file
      * @return bool
      */
     public function canProcess(File $file);

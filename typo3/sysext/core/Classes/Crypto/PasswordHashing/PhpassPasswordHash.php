@@ -47,8 +47,6 @@ class PhpassPasswordHash implements PasswordHashInterface
 
     /**
      * Constructor sets options if given
-     *
-     * @param array $options
      */
     public function __construct(array $options = [])
     {

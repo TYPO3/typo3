@@ -81,7 +81,6 @@ class RenameFileController
     /**
      * Processes the request, currently everything is handled and put together via "renderContent()"
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface the response with the content
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
@@ -95,7 +94,6 @@ class RenameFileController
     /**
      * Initialize
      *
-     * @param ServerRequestInterface $request
      * @throws InsufficientFileAccessPermissionsException
      */
     protected function init(ServerRequestInterface $request): void

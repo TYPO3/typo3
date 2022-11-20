@@ -199,7 +199,6 @@ class DependencyOrderingService
     /**
      * Get the number of incoming edges in the dependency graph for given identifier
      *
-     * @param array $dependencyGraph
      * @param string $identifier
      * @return int
      */

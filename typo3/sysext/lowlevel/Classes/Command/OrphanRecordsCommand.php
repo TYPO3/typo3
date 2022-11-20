@@ -74,8 +74,6 @@ Manual repair suggestions:
      * Executes the command to find records not attached to the pagetree
      * and permanently delete these records
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -243,7 +241,6 @@ Manual repair suggestions:
      *
      * @param array $orphanedRecords two level array with tables and uids
      * @param bool $dryRun check if the records should NOT be deleted (use --dry-run to avoid)
-     * @param SymfonyStyle $io
      */
     protected function deleteRecords(array $orphanedRecords, bool $dryRun, SymfonyStyle $io)
     {

@@ -43,9 +43,6 @@ class ExtensionService implements SingletonInterface
      */
     protected $targetPidPluginCache = [];
 
-    /**
-     * @param ConfigurationManagerInterface $configurationManager
-     */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;

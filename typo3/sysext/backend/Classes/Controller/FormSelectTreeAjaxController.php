@@ -33,7 +33,6 @@ class FormSelectTreeAjaxController
     /**
      * Returns json representing category tree
      *
-     * @param ServerRequestInterface $request
      * @throws \RuntimeException
      * @return ResponseInterface
      */

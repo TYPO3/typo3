@@ -1505,9 +1505,6 @@ abstract class ImportExport
         return $this->pid;
     }
 
-    /**
-     * @param int $pid
-     */
     public function setPid(int $pid): void
     {
         $this->pid = $pid;
@@ -1566,9 +1563,6 @@ abstract class ImportExport
         return $this->excludeMap;
     }
 
-    /**
-     * @param array $excludeMap
-     */
     public function setExcludeMap(array $excludeMap): void
     {
         $this->excludeMap = $excludeMap;
@@ -1582,9 +1576,6 @@ abstract class ImportExport
         return $this->softrefCfg;
     }
 
-    /**
-     * @param array $softrefCfg
-     */
     public function setSoftrefCfg(array $softrefCfg): void
     {
         $this->softrefCfg = $softrefCfg;
@@ -1598,9 +1589,6 @@ abstract class ImportExport
         return $this->extensionDependencies;
     }
 
-    /**
-     * @param array $extensionDependencies
-     */
     public function setExtensionDependencies(array $extensionDependencies): void
     {
         $this->extensionDependencies = $extensionDependencies;
@@ -1614,9 +1602,6 @@ abstract class ImportExport
         return $this->showStaticRelations;
     }
 
-    /**
-     * @param bool $showStaticRelations
-     */
     public function setShowStaticRelations(bool $showStaticRelations): void
     {
         $this->showStaticRelations = $showStaticRelations;
@@ -1630,9 +1615,6 @@ abstract class ImportExport
         return $this->relStaticTables;
     }
 
-    /**
-     * @param array $relStaticTables
-     */
     public function setRelStaticTables(array $relStaticTables): void
     {
         $this->relStaticTables = $relStaticTables;
@@ -1646,9 +1628,6 @@ abstract class ImportExport
         return $this->errorLog;
     }
 
-    /**
-     * @param array $errorLog
-     */
     public function setErrorLog(array $errorLog): void
     {
         $this->errorLog = $errorLog;
@@ -1662,9 +1641,6 @@ abstract class ImportExport
         return $this->update;
     }
 
-    /**
-     * @param bool $update
-     */
     public function setUpdate(bool $update): void
     {
         $this->update = $update;
@@ -1678,9 +1654,6 @@ abstract class ImportExport
         return $this->importMode;
     }
 
-    /**
-     * @param array $importMode
-     */
     public function setImportMode(array $importMode): void
     {
         $this->importMode = $importMode;
@@ -1694,9 +1667,6 @@ abstract class ImportExport
         return $this->globalIgnorePid;
     }
 
-    /**
-     * @param bool $globalIgnorePid
-     */
     public function setGlobalIgnorePid(bool $globalIgnorePid): void
     {
         $this->globalIgnorePid = $globalIgnorePid;
@@ -1710,9 +1680,6 @@ abstract class ImportExport
         return $this->forceAllUids;
     }
 
-    /**
-     * @param bool $forceAllUids
-     */
     public function setForceAllUids(bool $forceAllUids): void
     {
         $this->forceAllUids = $forceAllUids;
@@ -1726,9 +1693,6 @@ abstract class ImportExport
         return $this->showDiff;
     }
 
-    /**
-     * @param bool $showDiff
-     */
     public function setShowDiff(bool $showDiff): void
     {
         $this->showDiff = $showDiff;
@@ -1742,9 +1706,6 @@ abstract class ImportExport
         return $this->softrefInputValues;
     }
 
-    /**
-     * @param array $softrefInputValues
-     */
     public function setSoftrefInputValues(array $softrefInputValues): void
     {
         $this->softrefInputValues = $softrefInputValues;
@@ -1758,9 +1719,6 @@ abstract class ImportExport
         return $this->mode;
     }
 
-    /**
-     * @param string $mode
-     */
     public function setMode(string $mode): void
     {
         $this->mode = $mode;
@@ -1774,9 +1732,6 @@ abstract class ImportExport
         return $this->importMapId;
     }
 
-    /**
-     * @param array $importMapId
-     */
     public function setImportMapId(array $importMapId): void
     {
         $this->importMapId = $importMapId;

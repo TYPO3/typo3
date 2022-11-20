@@ -38,7 +38,6 @@ class SuggestWizardController
     /**
      * Ajax handler for the "suggest" feature in FormEngine.
      *
-     * @param ServerRequestInterface $request
      * @throws \RuntimeException for incomplete or invalid arguments
      * @return ResponseInterface
      */
@@ -182,7 +181,6 @@ class SuggestWizardController
     /**
      * Returns TRUE if a table has been marked as hidden in the configuration
      *
-     * @param array $tableConfig
      * @return bool
      */
     protected function isTableHidden(array $tableConfig)
@@ -194,7 +192,6 @@ class SuggestWizardController
      * Checks if the current backend user is allowed to access the given table, based on the ctrl-section of the
      * table's configuration array (TCA) entry.
      *
-     * @param array $tableConfig
      * @return bool
      */
     protected function currentBackendUserMayAccessTable(array $tableConfig)
@@ -260,7 +257,6 @@ class SuggestWizardController
      * Checks the given field configuration for the tables that should be used for querying and returns them as an
      * array.
      *
-     * @param array $fieldConfig
      * @return array
      */
     protected function getTablesToQueryFromFieldConfiguration(array $fieldConfig)
@@ -293,7 +289,6 @@ class SuggestWizardController
      * is configured and should be used; it could e.g. be used to limit to a certain subset of records from the
      * foreign table
      *
-     * @param array $fieldConfig
      * @return string
      */
     protected function getWhereClause(array $fieldConfig)

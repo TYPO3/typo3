@@ -71,8 +71,6 @@ class FileCollector implements \Countable, LoggerAwareInterface
 
     /**
      * Add files
-     *
-     * @param array $fileUids
      */
     public function addFiles(array $fileUids = [])
     {
@@ -108,8 +106,6 @@ class FileCollector implements \Countable, LoggerAwareInterface
 
     /**
      * Add files from UIDs of a reference
-     *
-     * @param array $fileReferenceUids
      */
     public function addFileReferences(array $fileReferenceUids = [])
     {

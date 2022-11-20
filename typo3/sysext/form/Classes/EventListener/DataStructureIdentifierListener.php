@@ -264,8 +264,6 @@ class DataStructureIdentifierListener
     /**
      * Boilerplate XML array of a new sheet
      *
-     * @param string $sheetIdentifier
-     * @param string $finisherName
      * @throws \InvalidArgumentException
      * @return array
      */
@@ -290,8 +288,6 @@ class DataStructureIdentifierListener
     }
 
     /**
-     * @param string $persistenceIdentifier
-     * @param array $dataStructure
      * @return array
      */
     protected function addSelectedPersistenceIdentifier(string $persistenceIdentifier, array $dataStructure): array
@@ -309,9 +305,6 @@ class DataStructureIdentifierListener
         return $dataStructure;
     }
 
-    /**
-     * @param \Exception $e
-     */
     protected function addInvalidFrameworkConfigurationFlashMessage(\Exception $e): void
     {
         $messageText = sprintf(
@@ -333,10 +326,6 @@ class DataStructureIdentifierListener
     }
 
     /**
-     * @param string $persistenceIdentifier
-     * @param string $prototypeName
-     * @param string $formIdentifier
-     * @param string $finisherIdentifier
      * @return string
      */
     protected function buildFlexformSheetIdentifier(
@@ -356,9 +345,6 @@ class DataStructureIdentifierListener
     }
 
     /**
-     * @param string $finisherIdentifier
-     * @param array $finishersDefinition
-     * @param array $prototypeConfiguration
      * @return array
      */
     protected function translateFinisherDefinitionByIdentifier(

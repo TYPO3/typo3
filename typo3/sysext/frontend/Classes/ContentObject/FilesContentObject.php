@@ -87,7 +87,6 @@ class FilesContentObject extends AbstractContentObject
      * Function to check for references, collections, folders and
      * accumulates into one etc.
      *
-     * @param array $conf
      * @return FileCollector
      */
     protected function findAndSortFiles(array $conf)
@@ -152,7 +151,6 @@ class FilesContentObject extends AbstractContentObject
      *
      * @param array $configuration TypoScript configuration
      * @param array $element The parent element referencing to files
-     * @param FileCollector $fileCollector
      */
     protected function addFileReferences(array $configuration, array $element, FileCollector $fileCollector)
     {

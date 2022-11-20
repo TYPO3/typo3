@@ -121,7 +121,6 @@ class FileDownloadController
     }
 
     /**
-     * @param array $items
      * @return FileInterface[]
      */
     protected function collectFiles(array $items): array

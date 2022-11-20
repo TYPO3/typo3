@@ -66,7 +66,6 @@ class RemoteServer
     /**
      * Checks integrity of elements before performing actions on them.
      *
-     * @param \stdClass $parameters
      * @return array
      */
     public function checkIntegrity(\stdClass $parameters)
@@ -383,7 +382,6 @@ class RemoteServer
     /**
      * Prepares all comments of the stage change history entries for returning the JSON structure
      *
-     * @param array $historyEntries
      * @param array $additionalChangesFromLog this is not in use since 2022 anymore, and can be removed in TYPO3 v13.0 the latest.
      * @return array
      */
@@ -489,7 +487,6 @@ class RemoteServer
      * and the default origin record - thus, the default record would be
      * affected if the translation overlay shall be published.
      *
-     * @param \stdClass $parameters
      * @return array
      */
     protected function getAffectedElements(\stdClass $parameters)
@@ -523,7 +520,6 @@ class RemoteServer
      * Validates whether the submitted language parameter can be
      * interpreted as integer value.
      *
-     * @param \stdClass $parameters
      * @return int|null
      */
     protected function validateLanguageParameter(\stdClass $parameters)
@@ -548,8 +544,6 @@ class RemoteServer
     /**
      * Gets the fields suitable for being displayed in new and delete diff views
      *
-     * @param string $table
-     * @param int $uid
      * @return array
      */
     protected function getSuitableFields(string $table, int $uid): array

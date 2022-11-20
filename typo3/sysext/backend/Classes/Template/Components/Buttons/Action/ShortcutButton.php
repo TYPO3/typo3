@@ -78,7 +78,6 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     /**
      * Sets the route identifier for the shortcut.
      *
-     * @param string $routeIdentifier
      * @return ShortcutButton
      */
     public function setRouteIdentifier(string $routeIdentifier): self
@@ -110,7 +109,6 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     }
 
     /**
-     * @param array $arguments
      * @return $this
      */
     public function setArguments(array $arguments): self
@@ -123,7 +121,6 @@ class ShortcutButton implements ButtonInterface, PositionInterface
      * Defines whether the shortcut button should be extended to also
      * allow copying the current URL to the operating systems' clipboard.
      *
-     * @param bool $copyUrlToClipboard
      * @return $this
      */
     public function setCopyUrlToClipboard(bool $copyUrlToClipboard): self
@@ -292,9 +289,6 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     /**
      * Returns HTML attributes for client-side `ActionDispatcher` of the "add shortcut" button.
      *
-     * @param string $routeIdentifier
-     * @param string $encodedArguments
-     * @param string $confirmationText
      * @return string
      */
     protected function getDispatchActionAttrs(string $routeIdentifier, string $encodedArguments, string $confirmationText): string

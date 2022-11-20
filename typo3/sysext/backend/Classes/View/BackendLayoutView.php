@@ -66,7 +66,6 @@ class BackendLayoutView implements SingletonInterface
      * Also used in the info module, since we need those items with
      * the appropriate labels and backend layout identifiers there, too.
      *
-     * @param array $parameters
      * @todo This method should return the items array instead of
      *       using the whole parameters array as reference. This
      *       has to be adjusted, as soon as the itemsProcFunc
@@ -112,7 +111,6 @@ class BackendLayoutView implements SingletonInterface
      * Determines the page id for a given record of a database table.
      *
      * @param string $tableName
-     * @param array $data
      * @return int|false Returns page id or false on error
      */
     protected function determinePageId($tableName, array $data)
@@ -192,7 +190,6 @@ class BackendLayoutView implements SingletonInterface
     /**
      * Gets backend layout identifiers to be excluded
      *
-     * @param array $pageTSconfig
      * @return array
      */
     protected function getIdentifiersToBeExcluded(array $pageTSconfig)
@@ -214,8 +211,6 @@ class BackendLayoutView implements SingletonInterface
      * Gets colPos items to be shown in the forms engine.
      * This method is called as "itemsProcFunc" with the accordant context
      * for tt_content.colPos.
-     *
-     * @param array $parameters
      */
     public function colPosListItemProcFunc(array $parameters)
     {
@@ -319,7 +314,6 @@ class BackendLayoutView implements SingletonInterface
 
     /**
      * Get the BackendLayout object and parse the structure based on the UserTSconfig
-     * @param int $pageId
      * @return BackendLayout
      */
     public function getBackendLayoutForPage(int $pageId): ?BackendLayout
@@ -345,7 +339,6 @@ class BackendLayoutView implements SingletonInterface
     }
 
     /**
-     * @param BackendLayout $backendLayout
      * @return array
      * @internal
      */

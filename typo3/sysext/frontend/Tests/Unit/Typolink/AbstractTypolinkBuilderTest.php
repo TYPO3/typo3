@@ -341,12 +341,6 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     /**
      * @test
      * @dataProvider resolveTargetAttributeDataProvider
-     * @param string $expected
-     * @param array $conf
-     * @param string $name
-     * @param bool $respectFrameSetOption
-     * @param string $fallbackTarget
-     * @param string|null $doctype
      */
     public function canResolveTheTargetAttribute(
         string $expected,

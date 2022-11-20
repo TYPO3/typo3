@@ -143,8 +143,6 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
     /**
      * @test
      *
-     * @param string $input
-     * @param array $expected
      *
      * @dataProvider resolveParametersForNonFilesDataProvider
      */
@@ -157,9 +155,6 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
     /**
      * @test
      *
-     * @param string $input
-     * @param array $parameters
-     * @param string $expected
      *
      * @throws \TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException
      * @dataProvider resolveParametersForNonFilesDataProvider
@@ -261,8 +256,6 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
      *
      * @test
      *
-     * @param string $input
-     * @param array $expected
      *
      * @dataProvider resolveParametersForFilesDataProvider
      */
@@ -310,9 +303,6 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
      *
      * @test
      *
-     * @param string $input
-     * @param array $parameters
-     * @param string $expected
      *
      * @throws \TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException
      * @dataProvider resolveParametersForFilesDataProvider
@@ -386,7 +376,6 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
     /**
      * @test
      *
-     * @param string $pharUrl
      *
      * @dataProvider resolveThrowExceptionWithPharReferencesDataProvider
      */

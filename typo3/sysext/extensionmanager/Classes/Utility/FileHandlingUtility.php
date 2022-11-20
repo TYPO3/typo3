@@ -49,17 +49,11 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
     protected LanguageServiceFactory $languageServiceFactory;
     protected ?LanguageService $languageService = null;
 
-    /**
-     * @param EmConfUtility $emConfUtility
-     */
     public function injectEmConfUtility(EmConfUtility $emConfUtility)
     {
         $this->emConfUtility = $emConfUtility;
     }
 
-    /**
-     * @param InstallUtility $installUtility
-     */
     public function injectInstallUtility(InstallUtility $installUtility)
     {
         $this->installUtility = $installUtility;
@@ -82,8 +76,6 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * Unpack an extension in t3x data format and write files
      *
-     * @param string $extensionKey
-     * @param array $extensionData
      * @param string $pathType
      */
     public function unpackExtensionFromExtensionDataArray(string $extensionKey, array $extensionData, $pathType = 'Local')
@@ -102,7 +94,6 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * Extract needed directories from given extensionDataFilesArray
      *
-     * @param array $files
      * @return array
      */
     protected function extractDirectoriesFromExtensionData(array $files)
@@ -120,9 +111,6 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * Loops over an array of directories and creates them in the given root path
      * It also creates nested directory structures
-     *
-     * @param array $directories
-     * @param string $rootPath
      */
     protected function createDirectoriesForExtensionFiles(array $directories, string $rootPath)
     {
@@ -152,7 +140,6 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * Loops over an array of files and writes them to the given rootPath
      *
-     * @param array $files
      * @param string $rootPath
      */
     protected function writeExtensionFiles(array $files, $rootPath)
@@ -245,10 +232,6 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
 
     /**
      * Constructs emConf and writes it to corresponding file
-     *
-     * @param string $extensionKey
-     * @param array $emConfData
-     * @param string $rootPath
      */
     protected function writeEmConfToFile(string $extensionKey, array $emConfData, string $rootPath)
     {
@@ -259,7 +242,6 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * Returns relative path
      *
-     * @param string $absolutePath
      * @return string
      */
     protected function getRelativePath(string $absolutePath): string

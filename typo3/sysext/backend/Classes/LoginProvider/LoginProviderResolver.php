@@ -52,7 +52,6 @@ class LoginProviderResolver
     /**
      * Validates the registered login providers
      *
-     * @param array $providers
      * @return array the sorted login providers
      * @throws \RuntimeException
      */
@@ -97,7 +96,6 @@ class LoginProviderResolver
     /**
      * Check if the login provider is registered.
      *
-     * @param string $identifier
      * @return bool
      * @internal
      */
@@ -125,8 +123,6 @@ class LoginProviderResolver
      * Fetches the login provider identifier from a ServerRequest, checking for POST Body, then Query Param,
      * and then checks for the cookie.
      *
-     * @param ServerRequestInterface $request
-     * @param string $cookieName
      * @return string
      */
     public function resolveLoginProviderIdentifierFromRequest(ServerRequestInterface $request, string $cookieName): string

@@ -87,8 +87,6 @@ abstract class AbstractDomainObject implements DomainObjectInterface, ObjectMoni
 
     /**
      * Setter for the pid.
-     *
-     * @param int $pid
      */
     public function setPid(int $pid): void
     {
@@ -111,7 +109,6 @@ abstract class AbstractDomainObject implements DomainObjectInterface, ObjectMoni
     /**
      * Reconstitutes a property. Only for internal use.
      *
-     * @param string $propertyName
      * @param mixed $propertyValue
      * @return bool
      * @internal
@@ -128,7 +125,6 @@ abstract class AbstractDomainObject implements DomainObjectInterface, ObjectMoni
     /**
      * Returns the property value of the given property name. Only for internal use.
      *
-     * @param string $propertyName
      * @return mixed The propertyValue
      * @internal
      */

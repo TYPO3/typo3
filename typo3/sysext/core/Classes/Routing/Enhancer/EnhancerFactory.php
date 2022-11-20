@@ -38,8 +38,6 @@ class EnhancerFactory
     }
 
     /**
-     * @param string $type
-     * @param array $settings
      * @return EnhancerInterface
      * @throws \InvalidArgumentException
      * @throws \OutOfRangeException

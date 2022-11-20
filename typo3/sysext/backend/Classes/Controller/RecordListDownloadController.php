@@ -156,7 +156,6 @@ class RecordListDownloadController
     /**
      * Generate settings form for the download request
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function downloadSettingsAction(ServerRequestInterface $request): ResponseInterface
@@ -189,9 +188,6 @@ class RecordListDownloadController
     /**
      * Generating an download in CSV format
      *
-     * @param ServerRequestInterface $request
-     * @param array $headerRow
-     * @param array $records
      * @return ResponseInterface
      */
     protected function csvDownloadAction(
@@ -215,9 +211,6 @@ class RecordListDownloadController
     /**
      * Generating an download in JSON format
      *
-     * @param ServerRequestInterface $request
-     * @param array $headerRow
-     * @param array $records
      * @return ResponseInterface
      */
     protected function jsonDownloadAction(
@@ -268,7 +261,6 @@ class RecordListDownloadController
     /**
      * Get site languages, available for the current backend user
      *
-     * @param ServerRequestInterface $request
      * @return array
      */
     protected function getSiteLanguages(ServerRequestInterface $request): array
@@ -281,7 +273,6 @@ class RecordListDownloadController
      * Return an evaluated and processed custom filename or a
      * default, if non or an invalid custom filename was provided.
      *
-     * @param string $filename
      * @return string
      */
     protected function generateFilename(string $filename): string

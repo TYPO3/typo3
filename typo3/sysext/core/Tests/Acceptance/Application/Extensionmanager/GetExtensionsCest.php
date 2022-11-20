@@ -25,9 +25,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class GetExtensionsCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
@@ -43,27 +40,18 @@ class GetExtensionsCest
         $I->seeNumberOfElements('#terTable tbody tr', 2);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function checkRetrievedExtensionsFromTerAreDisplayed(ApplicationTester $I): void
     {
         $I->see('superext');
         $I->see('neededext');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function checkPaginationIsNotDisplayedForTwoRecords(ApplicationTester $I): void
     {
         $I->dontSeeElement('.pagination-wrap');
         $I->dontSee('Extensions 1 - 2');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function checkSearchFilterListFindsExtensionKey(ApplicationTester $I): void
     {
         $I->fillField('input[name="search"]', 'superext');
@@ -86,9 +74,6 @@ class GetExtensionsCest
         $I->see('Needed Extension');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function checkSearchFilterListFindsPartOfExtensionKey(ApplicationTester $I): void
     {
         $I->fillField('input[name="search"]', 'ext');

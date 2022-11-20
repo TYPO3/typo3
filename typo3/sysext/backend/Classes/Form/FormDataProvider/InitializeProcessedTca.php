@@ -25,7 +25,6 @@ class InitializeProcessedTca implements FormDataProviderInterface
     /**
      * Add processed TCA as copy from vanilla TCA and sanitize some details
      *
-     * @param array $result
      * @return array
      * @throws \UnexpectedValueException
      */

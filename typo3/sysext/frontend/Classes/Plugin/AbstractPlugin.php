@@ -218,7 +218,6 @@ class AbstractPlugin
      * Will also set $this->LLkey based on the config.language setting.
      *
      * @param null $_ unused,
-     * @param TypoScriptFrontendController $frontendController
      */
     public function __construct($_ = null, TypoScriptFrontendController $frontendController = null)
     {
@@ -242,8 +241,6 @@ class AbstractPlugin
     /**
      * This setter is called when the plugin is called from UserContentObject (USER)
      * via ContentObjectRenderer->callUserFunction().
-     *
-     * @param ContentObjectRenderer $cObj
      */
     public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
     {
@@ -303,7 +300,6 @@ class AbstractPlugin
     /**
      * Remove the internal array key _typoScriptNodeValue
      *
-     * @param array $typoscript
      * @return array
      */
     protected function removeInternalNodeValue(array $typoscript): array

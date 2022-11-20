@@ -39,7 +39,6 @@ class UserInformationService
 
     /**
      * Get all relevant information for a backend usergroup
-     * @param int $groupId
      * @return array
      */
     public function getGroupInformation(int $groupId): array
@@ -82,7 +81,6 @@ class UserInformationService
     /**
      * Get all relevant information of the user
      *
-     * @param int $userId
      * @return array
      */
     public function getUserInformation(int $userId): array
@@ -104,7 +102,6 @@ class UserInformationService
      * Convert hard readable user & group information into structured
      * data which can be rendered later
      *
-     * @param BackendUserAuthentication $user
      * @return array
      */
     protected function convert(BackendUserAuthentication $user): array

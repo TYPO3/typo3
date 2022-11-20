@@ -56,7 +56,6 @@ class IconController extends AbstractController
     }
 
     /**
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @internal
      */

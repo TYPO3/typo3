@@ -207,9 +207,6 @@ class Post extends AbstractEntity
         return $this->secondAuthor;
     }
 
-    /**
-     * @param Person $secondAuthor
-     */
     public function setSecondAuthor(Person $secondAuthor): void
     {
         $this->secondAuthor = $secondAuthor;
@@ -223,9 +220,6 @@ class Post extends AbstractEntity
         return $this->reviewer;
     }
 
-    /**
-     * @param Person $reviewer
-     */
     public function setReviewer(Person $reviewer): void
     {
         $this->reviewer = $reviewer;
@@ -263,8 +257,6 @@ class Post extends AbstractEntity
 
     /**
      * Adds a comment to this post
-     *
-     * @param Comment $comment
      */
     public function addComment(Comment $comment): void
     {
@@ -273,8 +265,6 @@ class Post extends AbstractEntity
 
     /**
      * Removes Comment from this post
-     *
-     * @param Comment $commentToDelete
      */
     public function removeComment(Comment $commentToDelete): void
     {
@@ -312,8 +302,6 @@ class Post extends AbstractEntity
 
     /**
      * Adds a related post
-     *
-     * @param Post $post
      */
     public function addRelatedPost(Post $post): void
     {

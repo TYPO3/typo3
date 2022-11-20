@@ -173,7 +173,6 @@ class LinkAnalyzer
     }
 
     /**
-     * @param array $links
      * @param array<int,string> $linkTypes
      */
     protected function checkLinks(array $links, array $linkTypes)
@@ -236,12 +235,8 @@ class LinkAnalyzer
     /**
      * Recheck for broken links for one field in table for record.
      *
-     * @param array $checkOptions
      * @param string $recordUid uid of record to check
-     * @param string $table
-     * @param string $field
      * @param int $timestamp - only recheck if timestamp changed
-     * @param bool $considerHidden
      */
     public function recheckLinks(
         array $checkOptions,

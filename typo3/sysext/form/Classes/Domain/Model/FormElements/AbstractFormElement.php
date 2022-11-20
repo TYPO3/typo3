@@ -157,7 +157,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
     /**
      * Set a property of the element
      *
-     * @param string $key
      * @param mixed $value
      */
     public function setProperty(string $key, $value)

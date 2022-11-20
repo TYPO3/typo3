@@ -60,7 +60,6 @@ abstract class AbstractPlatform implements PlatformCheckInterface
     /**
      * Validate the database name
      *
-     * @param string $databaseName
      * @return bool
      */
     public static function isValidDatabaseName(string $databaseName): bool

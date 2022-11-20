@@ -54,7 +54,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
     protected array $coreExtensionsToLoad = ['workspaces'];
 
     /**
-     * @param array $array
      * @return array
      */
     protected function wrapInArray(array $array): array
@@ -116,7 +115,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
     }
 
     /**
-     * @param array $typoScript
      * @return ArrayValueInstruction
      */
     protected function createTypoLinkUrlInstruction(array $typoScript): ArrayValueInstruction
@@ -134,7 +132,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
     }
 
     /**
-     * @param array $typoScript
      * @return ArrayValueInstruction
      */
     protected function createHierarchicalMenuProcessorInstruction(array $typoScript): ArrayValueInstruction
@@ -156,7 +153,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
     }
 
     /**
-     * @param array $typoScript
      * @return ArrayValueInstruction
      */
     protected function createLanguageMenuProcessorInstruction(array $typoScript): ArrayValueInstruction
@@ -180,8 +176,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
     /**
      * Filters and keeps only desired names.
      *
-     * @param array $menu
-     * @param array $keepNames
      * @return array
      */
     protected function filterMenu(

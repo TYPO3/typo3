@@ -184,8 +184,6 @@ class NewRecordController
 
     /**
      * Constructor function for the class
-     *
-     * @param ServerRequestInterface $request
      */
     protected function init(ServerRequestInterface $request): void
     {

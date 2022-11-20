@@ -42,7 +42,6 @@ class FileLinkHandler implements LinkHandlingInterface
     /**
      * Returns the link to a file as a string
      *
-     * @param array $parameters
      * @return string
      */
     public function asString(array $parameters): string
@@ -86,7 +85,6 @@ class FileLinkHandler implements LinkHandlingInterface
     }
 
     /**
-     * @param array $data
      * @return FileInterface|null
      * @throws FileDoesNotExistException
      */

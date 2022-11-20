@@ -53,7 +53,6 @@ class CleanerFieldProviderTest extends UnitTestCase
     }
 
     /**
-     * @param array $mockedMethods
      * @return MockObject|SchedulerModuleController
      */
     protected function getScheduleModuleControllerMock(array $mockedMethods = [])

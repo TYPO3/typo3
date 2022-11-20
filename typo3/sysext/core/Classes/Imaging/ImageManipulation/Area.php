@@ -41,12 +41,6 @@ class Area
      */
     protected $height;
 
-    /**
-     * @param float $x
-     * @param float $y
-     * @param float $width
-     * @param float $height
-     */
     public function __construct(float $x, float $y, float $width, float $height)
     {
         $this->x = $x;
@@ -56,7 +50,6 @@ class Area
     }
 
     /**
-     * @param array $config
      * @return Area
      * @throws InvalidConfigurationException
      */
@@ -75,7 +68,6 @@ class Area
     }
 
     /**
-     * @param array $config
      * @return Area[]
      * @throws InvalidConfigurationException
      */
@@ -131,7 +123,6 @@ class Area
     }
 
     /**
-     * @param FileInterface $file
      * @return Area
      */
     public function makeAbsoluteBasedOnFile(FileInterface $file)
@@ -145,7 +136,6 @@ class Area
     }
 
     /**
-     * @param FileInterface $file
      * @return Area
      */
     public function makeRelativeBasedOnFile(FileInterface $file)
@@ -166,7 +156,6 @@ class Area
     }
 
     /**
-     * @param Ratio $ratio
      * @return Area
      */
     public function applyRatioRestriction(Ratio $ratio): Area

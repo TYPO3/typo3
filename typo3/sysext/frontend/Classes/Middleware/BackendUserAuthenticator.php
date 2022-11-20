@@ -52,8 +52,6 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     /**
      * Creates a backend user authentication object, tries to authenticate a user
      *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -87,7 +85,6 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     /**
      * Creates the backend user object and returns it.
      *
-     * @param ServerRequestInterface $request
      * @return FrontendBackendUserAuthentication|null the backend user object or null if there was no valid user found
      * @throws \TYPO3\CMS\Core\Exception
      */
@@ -117,8 +114,6 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     /**
      * Implementing the access checks that the TYPO3 CMS bootstrap script does before a user is ever logged in.
      *
-     * @param FrontendBackendUserAuthentication $user
-     * @param NormalizedParams $normalizedParams
      * @return bool Returns TRUE if access is OK
      */
     protected function isAuthenticated(FrontendBackendUserAuthentication $user, NormalizedParams $normalizedParams)

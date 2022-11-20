@@ -37,8 +37,6 @@ class InfoModuleCest
 
     /**
      * @dataProvider infoMenuDataProvider
-     * @param ApplicationTester $I
-     * @param Example $exampleData
      */
     public function seeInfoSubModules(ApplicationTester $I, Example $exampleData): void
     {

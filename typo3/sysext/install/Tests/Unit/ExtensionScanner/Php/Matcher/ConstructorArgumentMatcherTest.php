@@ -73,9 +73,6 @@ class ConstructorArgumentMatcherTest extends TestCase
     }
 
     /**
-     * @param array $configuration
-     * @param array $expectation
-     *
      * @test
      * @dataProvider hitsFromFixtureAreFoundDataProvider
      */

@@ -139,7 +139,6 @@ abstract class AbstractRequestHandlingTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $rawMessage
      * @return array<string, string>
      */
     protected function parseRawHeaders(string $rawMessage): array

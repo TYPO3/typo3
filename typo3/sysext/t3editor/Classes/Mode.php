@@ -61,7 +61,6 @@ class Mode
     }
 
     /**
-     * @param string $formatCode
      * @return Mode
      */
     public function setFormatCode(string $formatCode): Mode
@@ -72,7 +71,6 @@ class Mode
     }
 
     /**
-     * @param array $fileExtensions
      * @return self
      */
     public function bindToFileExtensions(array $fileExtensions): Mode

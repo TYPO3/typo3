@@ -316,7 +316,6 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     /**
      * Helper which initializes the property mapping configuration and returns arguments
      *
-     * @param array $trustedProperties
      *
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\Arguments
      */

@@ -46,8 +46,6 @@ class BackendLayoutViewTest extends UnitTestCase
 
     /**
      * @param bool|string $expected
-     * @param array $page
-     * @param array $rootLine
      * @test
      * @dataProvider selectedCombinedIdentifierIsDeterminedDataProvider
      */

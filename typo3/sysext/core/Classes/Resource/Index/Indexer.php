@@ -54,9 +54,6 @@ class Indexer implements LoggerAwareInterface
      */
     protected $extractorService;
 
-    /**
-     * @param ResourceStorage $storage
-     */
     public function __construct(ResourceStorage $storage)
     {
         $this->storage = $storage;
@@ -95,7 +92,6 @@ class Indexer implements LoggerAwareInterface
     /**
      * Update index entry
      *
-     * @param File $fileObject
      * @return File
      */
     public function updateIndexEntry(File $fileObject): File
@@ -149,8 +145,6 @@ class Indexer implements LoggerAwareInterface
 
     /**
      * Extract metadata for given fileObject
-     *
-     * @param File $fileObject
      */
     public function extractMetaData(File $fileObject)
     {
@@ -184,8 +178,6 @@ class Indexer implements LoggerAwareInterface
     /**
      * Check whether the extractor service supports this file according to file type restrictions.
      *
-     * @param File $file
-     * @param ExtractorInterface $extractor
      * @return bool
      */
     protected function isFileTypeSupportedByExtractor(File $file, ExtractorInterface $extractor)
@@ -200,8 +192,6 @@ class Indexer implements LoggerAwareInterface
 
     /**
      * Adds updated files to the processing queue
-     *
-     * @param array $fileIdentifierArray
      */
     protected function detectChangedFilesInStorage(array $fileIdentifierArray)
     {
@@ -284,7 +274,6 @@ class Indexer implements LoggerAwareInterface
      * Since the core desperately needs image sizes in metadata table put them there
      * This should be called after every "content" update and "record" creation
      *
-     * @param File $fileObject
      * @return array
      */
     protected function extractRequiredMetaData(File $fileObject): array
@@ -365,7 +354,6 @@ class Indexer implements LoggerAwareInterface
      * properties the driver returns in getFileInfo.
      * Therefore a mapping must happen.
      *
-     * @param array $fileInfo
      * @return array
      */
     protected function transformFromDriverFileInfoArrayToFileObjectFormat(array $fileInfo)

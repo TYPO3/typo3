@@ -45,7 +45,6 @@ class TableDiff extends \Doctrine\DBAL\Schema\TableDiff
     /**
      * Setter for table options
      *
-     * @param array $tableOptions
      * @return \TYPO3\CMS\Core\Database\Schema\TableDiff
      */
     public function setTableOptions(array $tableOptions): TableDiff
@@ -58,7 +57,6 @@ class TableDiff extends \Doctrine\DBAL\Schema\TableDiff
     /**
      * Check if a table options has been set.
      *
-     * @param string $optionName
      * @return bool
      */
     public function hasTableOption(string $optionName): bool
@@ -67,7 +65,6 @@ class TableDiff extends \Doctrine\DBAL\Schema\TableDiff
     }
 
     /**
-     * @param string $optionName
      * @return string
      */
     public function getTableOption(string $optionName): string

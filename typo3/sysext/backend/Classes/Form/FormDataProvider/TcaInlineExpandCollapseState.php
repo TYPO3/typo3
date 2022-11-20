@@ -27,7 +27,6 @@ class TcaInlineExpandCollapseState implements FormDataProviderInterface
     /**
      * Add inline expand / collapse state
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

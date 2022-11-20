@@ -69,9 +69,6 @@ class BitSet
      */
     protected $set;
 
-    /**
-     * @param int $set
-     */
     public function __construct(int $set = 0)
     {
         $this->set = $set;
@@ -80,18 +77,12 @@ class BitSet
     /**
      * Performs the same operation as {@see or()} without the need to create a BitSet instance from
      * an integer value.
-     *
-     * @param int $bitIndex
      */
     public function set(int $bitIndex): void
     {
         $this->set |= $bitIndex;
     }
 
-    /**
-     * @param int $bitIndex
-     * @param bool $value
-     */
     public function setValue(int $bitIndex, bool $value): void
     {
         if ($value) {
@@ -104,8 +95,6 @@ class BitSet
     /**
      * Performs the same operation as {@see andNot()} without the need to create a BitSet instance from
      * an integer value.
-     *
-     * @param int $bitIndex
      */
     public function unset(int $bitIndex): void
     {
@@ -113,7 +102,6 @@ class BitSet
     }
 
     /**
-     * @param int $bitIndex
      * @return bool
      */
     public function get(int $bitIndex): bool
@@ -133,8 +121,6 @@ class BitSet
      * Performs a logical AND of this target bit set with the argument bit set. This bit set is
      * modified so that each bit in it has the value true if and only if it both initially had the
      * value true and the corresponding bit in the bit set argument also had the value true.
-     *
-     * @param BitSet $set
      */
     public function and(BitSet $set): void
     {
@@ -145,8 +131,6 @@ class BitSet
      * Performs a logical OR of this bit set with the bit set argument. This bit set is modified so
      * that a bit in it has the value true if and only if it either already had the value true or
      * the corresponding bit in the bit set argument has the value true.
-     *
-     * @param BitSet $set
      */
     public function or(BitSet $set): void
     {
@@ -171,8 +155,6 @@ class BitSet
 
     /**
      * Clears all of the bits in this BitSet whose corresponding bit is set in the specified BitSet.
-     *
-     * @param BitSet $set
      */
     public function andNot(BitSet $set): void
     {

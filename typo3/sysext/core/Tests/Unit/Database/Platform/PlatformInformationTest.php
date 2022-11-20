@@ -61,7 +61,6 @@ class PlatformInformationTest extends UnitTestCase
     /**
      * @test
      * @dataProvider platformDataProvider
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      */
     public function maxIdentifierLength(AbstractPlatform $platform): void
     {

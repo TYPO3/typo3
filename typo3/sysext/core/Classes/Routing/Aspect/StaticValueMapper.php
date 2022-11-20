@@ -71,7 +71,6 @@ class StaticValueMapper implements StaticMappableAspectInterface, SiteLanguageAw
     protected $localeMap;
 
     /**
-     * @param array $settings
      * @throws \InvalidArgumentException
      */
     public function __construct(array $settings)

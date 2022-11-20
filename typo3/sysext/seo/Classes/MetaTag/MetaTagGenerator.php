@@ -41,8 +41,6 @@ class MetaTagGenerator
 
     /**
      * Generate the meta tags that can be set in backend and add them to frontend by using the MetaTag API
-     *
-     * @param array $params
      */
     public function generate(array $params)
     {

@@ -34,9 +34,6 @@ trait SiteLanguageAccessorTrait
     /**
      * Resolves one record out of given language fallbacks.
      *
-     * @param array $results
-     * @param string|null $languageFieldName
-     * @param array|null $languageIds
      * @return array|null
      */
     protected function resolveLanguageFallback(array $results, ?string $languageFieldName, ?array $languageIds): ?array

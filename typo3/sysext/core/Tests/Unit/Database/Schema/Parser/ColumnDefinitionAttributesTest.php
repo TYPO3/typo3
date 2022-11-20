@@ -338,17 +338,7 @@ class ColumnDefinitionAttributesTest extends UnitTestCase
     /**
      * @test
      * @dataProvider canParseColumnDefinitionAttributesDataProvider
-     * @param string $columnAttribute
-     * @param bool $allowNull
-     * @param bool $hasDefaultValue
      * @param mixed $defaultValue
-     * @param bool $autoIncrement
-     * @param bool $createIndex
-     * @param bool $createUniqueIndex
-     * @param bool $isPrimaryKey
-     * @param string $comment
-     * @param string $columnFormat
-     * @param string $storage
      */
     public function canParseColumnDefinitionAttributes(
         string $columnAttribute,
@@ -382,7 +372,6 @@ class ColumnDefinitionAttributesTest extends UnitTestCase
     /**
      * Parse the CREATE TABLE statement and return the reference definition
      *
-     * @param string $statement
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem
      */
     protected function createSubject(string $statement): CreateColumnDefinitionItem

@@ -84,9 +84,6 @@ class CreateTableFragmentTest extends UnitTestCase
     /**
      * @test
      * @dataProvider canParseCreateTableFragmentDataProvider
-     * @param string $statement
-     * @param string $tableName
-     * @param bool $isTemporary
      */
     public function canParseCreateTableFragment(string $statement, string $tableName, bool $isTemporary): void
     {
@@ -99,7 +96,6 @@ class CreateTableFragmentTest extends UnitTestCase
     /**
      * Parse the CREATE TABLE statement and return the reference definition
      *
-     * @param string $statement
      * @return AbstractCreateStatement|CreateTableStatement
      */
     protected function createSubject(string $statement): AbstractCreateStatement

@@ -45,11 +45,6 @@ class Method
      */
     private $parameters = [];
 
-    /**
-     * @param string $name
-     * @param array $definition
-     * @param string $className
-     */
     public function __construct(string $name, array $definition, string $className)
     {
         $this->name = $name;
@@ -122,7 +117,6 @@ class Method
     /**
      * @throws NoSuchMethodParameterException
      *
-     * @param string $parameterName
      * @return MethodParameter
      */
     public function getParameter(string $parameterName): MethodParameter

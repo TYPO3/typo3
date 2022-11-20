@@ -78,8 +78,6 @@ class Maintenance implements MiddlewareInterface
     /**
      * Handles an Install Tool request for normal operations
      *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -243,7 +241,6 @@ class Maintenance implements MiddlewareInterface
      * Warning: Order of these methods is security relevant and interferes with different access
      * conditions (new/existing installation). See the single method comments for details.
      *
-     * @param ServerRequestInterface $request
      * @return bool Returns always TRUE
      */
     protected function canHandleRequest(ServerRequestInterface $request): bool
@@ -270,8 +267,6 @@ class Maintenance implements MiddlewareInterface
     /**
      * Use form protection API to find out if protected POST forms are ok.
      *
-     * @param ServerRequestInterface $request
-     * @param SessionService $session
      * @return bool
      */
     protected function checkSessionToken(ServerRequestInterface $request, SessionService $session): bool
@@ -305,7 +300,6 @@ class Maintenance implements MiddlewareInterface
      * Check if session expired.
      * If the session has expired, the login form is displayed.
      *
-     * @param SessionService $session
      * @return bool True if session lifetime is OK
      */
     protected function checkSessionLifetime(SessionService $session): bool
@@ -347,7 +341,6 @@ class Maintenance implements MiddlewareInterface
      * value) - attempts to ensure the value is given using a HTML client refresh.
      * see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface|null
      */
     protected function enforceReferrer(ServerRequestInterface $request): ?ResponseInterface

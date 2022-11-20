@@ -121,11 +121,6 @@ class SiteLanguage
 
     /**
      * SiteLanguage constructor.
-     *
-     * @param int $languageId
-     * @param string $locale
-     * @param UriInterface $base
-     * @param array $configuration
      */
     public function __construct(int $languageId, string $locale, UriInterface $base, array $configuration)
     {

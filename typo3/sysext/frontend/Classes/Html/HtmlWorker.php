@@ -120,7 +120,6 @@ class HtmlWorker
     /**
      * @param DOMElement $element current element encountered failure
      * @param array{node: string, attr: string} $subject node-attr combination
-     * @param int $flags
      */
     protected function onTransformUriFailure(DOMElement $element, array $subject, int $flags): void
     {
@@ -144,7 +143,6 @@ class HtmlWorker
     }
 
     /**
-     * @param string $selector
      * @return array{node: string, attr: string}[]
      */
     protected function parseSelector(string $selector): array

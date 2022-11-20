@@ -91,7 +91,6 @@ class GeneralUtilityTest extends UnitTestCase
      * Helper method to create a random directory and return the path.
      * The path will be registered for deletion upon test ending
      *
-     * @param string $prefix
      * @return string
      */
     protected function getTestDirectory(string $prefix = 'root_'): string
@@ -475,7 +474,6 @@ class GeneralUtilityTest extends UnitTestCase
     ///////////////////////////////
     /**
      * @test
-     * @param string $haystack
      * @dataProvider inListForItemContainedReturnsTrueDataProvider
      */
     public function inListForItemContainedReturnsTrue(string $haystack): void
@@ -500,7 +498,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $haystack
      * @dataProvider inListForItemNotContainedReturnsFalseDataProvider
      */
     public function inListForItemNotContainedReturnsFalse(string $haystack): void
@@ -527,8 +524,6 @@ class GeneralUtilityTest extends UnitTestCase
     ///////////////////////////////
     /**
      * @test
-     * @param string $list
-     * @param string $expectation
      * @dataProvider expandListExpandsIntegerRangesDataProvider
      */
     public function expandListExpandsIntegerRanges(string $list, string $expectation): void
@@ -964,12 +959,6 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider trimExplodeReturnsCorrectResultDataProvider
-     *
-     * @param string $delimiter
-     * @param string $testString
-     * @param bool $removeEmpty
-     * @param int $limit
-     * @param array $expectedResult
      */
     public function trimExplodeReturnsCorrectResult(string $delimiter, string $testString, bool $removeEmpty, int $limit, array $expectedResult): void
     {
@@ -1484,7 +1473,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $path
      * @dataProvider sanitizeLocalUrlValidPathsDataProvider
      */
     public function sanitizeLocalUrlAcceptsNotEncodedValidPaths(string $path): void
@@ -1505,7 +1493,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $path
      * @dataProvider sanitizeLocalUrlValidPathsDataProvider
      */
     public function sanitizeLocalUrlAcceptsEncodedValidPaths(string $path): void
@@ -1557,9 +1544,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $url
-     * @param string $host
-     * @param string $subDirectory
      * @dataProvider sanitizeLocalUrlValidUrlsDataProvider
      */
     public function sanitizeLocalUrlAcceptsNotEncodedValidUrls(string $url, string $host, string $subDirectory): void
@@ -1582,9 +1566,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $url
-     * @param string $host
-     * @param string $subDirectory
      * @dataProvider sanitizeLocalUrlValidUrlsDataProvider
      */
     public function sanitizeLocalUrlAcceptsEncodedValidUrls(string $url, string $host, string $subDirectory): void
@@ -1625,7 +1606,6 @@ class GeneralUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param string $url
      * @test
      * @dataProvider sanitizeLocalUrlInvalidDataProvider
      */
@@ -1648,7 +1628,6 @@ class GeneralUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param string $url
      * @test
      * @dataProvider sanitizeLocalUrlInvalidDataProvider
      */
@@ -2008,8 +1987,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $input
-     * @param string $expected
      * @dataProvider quoteJsValueDataProvider
      */
     public function quoteJsValueTest(string $input, string $expected): void
@@ -3423,8 +3400,6 @@ class GeneralUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param string $path
-     * @param string $expected
      * @test
      * @dataProvider getFileAbsFileNameDataProvider
      */
@@ -3495,7 +3470,6 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Tests whether invalid characters are detected.
      *
-     * @param string $path
      * @dataProvider validPathStrInvalidCharactersDataProvider
      * @test
      */
@@ -3583,16 +3557,13 @@ class GeneralUtilityTest extends UnitTestCase
     /////////////////////////////////////////////////////////////////////////////////////
     // Tests concerning deprecation log
     /////////////////////////////////////////////////////////////////////////////////////
-
     ///////////////////////////////////////////////////
     // Tests concerning callUserFunction
     ///////////////////////////////////////////////////
-
     /**
      * @test
      * @dataProvider callUserFunctionInvalidParameterDataprovider
      * @param non-empty-string $functionName
-     * @param int $expectedException
      */
     public function callUserFunctionWillThrowExceptionForInvalidParameters(string $functionName, int $expectedException): void
     {
@@ -3948,8 +3919,6 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider xml2ArrayProcessHandlesBigXmlContentDataProvider
-     * @param string $input
-     * @param string $testValue
      */
     public function xml2ArrayProcessHandlesBigXmlContent(string $input, string $testValue): void
     {
@@ -4081,9 +4050,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $path
-     * @param string $host
-     * @param string $expected
      * @dataProvider locationHeaderUrlDataProvider
      * @throws \TYPO3\CMS\Core\Exception
      */

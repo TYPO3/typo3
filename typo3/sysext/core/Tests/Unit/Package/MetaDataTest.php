@@ -50,9 +50,6 @@ class MetaDataTest extends UnitTestCase
     }
 
     /**
-     * @param string|null $type
-     * @param bool $isExtension
-     * @param bool $isFramework
      * @test
      * @dataProvider typeIsCorrectlyResolvedDataProvider
      */

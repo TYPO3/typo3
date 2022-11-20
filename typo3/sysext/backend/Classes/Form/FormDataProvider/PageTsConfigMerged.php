@@ -26,7 +26,6 @@ class PageTsConfigMerged implements FormDataProviderInterface
     /**
      * Merge type specific page TS to pageTsConfig
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

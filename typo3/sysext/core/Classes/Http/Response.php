@@ -122,7 +122,6 @@ class Response extends Message implements ResponseInterface
      * @param StreamInterface|string|null $body
      * @param int $statusCode
      * @param array $headers
-     * @param string $reasonPhrase
      * @throws \InvalidArgumentException if any of the given arguments are given
      */
     public function __construct($body = 'php://temp', $statusCode = 200, $headers = [], string $reasonPhrase = '')

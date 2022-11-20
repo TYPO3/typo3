@@ -89,7 +89,6 @@ class TextExtractorRegistry implements SingletonInterface
      * Checks whether any registered text extractor can deal with a given file
      * and returns it.
      *
-     * @param FileInterface $file
      * @return TextExtractorInterface|null
      */
     public function getTextExtractor(FileInterface $file)

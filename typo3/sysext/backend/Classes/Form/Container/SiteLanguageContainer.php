@@ -49,9 +49,6 @@ class SiteLanguageContainer extends AbstractContainer
 
     /**
      * Container objects give $nodeFactory down to other containers.
-     *
-     * @param NodeFactory $nodeFactory
-     * @param array $data
      */
     public function __construct(NodeFactory $nodeFactory, array $data)
     {

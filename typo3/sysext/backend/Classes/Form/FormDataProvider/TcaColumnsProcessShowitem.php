@@ -27,7 +27,6 @@ class TcaColumnsProcessShowitem implements FormDataProviderInterface
      * Determine which fields are shown to the user and add those to the list of
      * columns that must be processed by the next data providers.
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

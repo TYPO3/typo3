@@ -150,7 +150,6 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
     }
 
     /**
-     * @param ServerRequestInterface $request
      * @return bool
      * @throws \InvalidArgumentException
      */

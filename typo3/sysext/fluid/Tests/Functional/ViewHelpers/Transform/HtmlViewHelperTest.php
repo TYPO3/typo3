@@ -109,8 +109,6 @@ class HtmlViewHelperTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $payload
-     * @param string $expectation
      * @test
      * @dataProvider isTransformedDataProvider
      */
@@ -148,9 +146,6 @@ class HtmlViewHelperTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $selector
-     * @param string $payload
-     * @param string $expectation
      * @test
      * @dataProvider isTransformedWithSelectorDataProvider
      */
@@ -198,9 +193,6 @@ class HtmlViewHelperTest extends FunctionalTestCase
     }
 
     /**
-     * @param string|null $onFailure
-     * @param string $payload
-     * @param string $expectation
      * @test
      * @dataProvider isTransformedWithOnFailureDataProvider
      */

@@ -49,9 +49,6 @@ class Repository implements RepositoryInterface, SingletonInterface
      */
     protected $defaultQuerySettings;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
-     */
     public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager)
     {
         $this->persistenceManager = $persistenceManager;

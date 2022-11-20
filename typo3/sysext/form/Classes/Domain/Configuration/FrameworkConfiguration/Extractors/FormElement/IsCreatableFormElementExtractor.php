@@ -26,9 +26,7 @@ use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\Abstra
 class IsCreatableFormElementExtractor extends AbstractExtractor
 {
     /**
-     * @param string $_
      * @param mixed $value
-     * @param array $matches
      */
     public function __invoke(string $_, $value, array $matches)
     {

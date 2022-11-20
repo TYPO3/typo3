@@ -82,7 +82,6 @@ class FileStorageTreeProvider
     /**
      * Fetch all file storages / file mounts visible for a user.
      *
-     * @param BackendUserAuthentication $user
      * @return array
      */
     public function getRootNodes(BackendUserAuthentication $user): array
@@ -98,8 +97,6 @@ class FileStorageTreeProvider
     /**
      * Fetch all folders recursively in a single store.
      *
-     * @param ResourceStorage $resourceStorage
-     * @param BackendUserAuthentication $user
      * @return array
      */
     protected function getFoldersInStorage(ResourceStorage $resourceStorage, BackendUserAuthentication $user): array
@@ -132,8 +129,6 @@ class FileStorageTreeProvider
     /**
      * Filter a tree by a search word
      *
-     * @param BackendUserAuthentication $user
-     * @param string $search
      * @return FolderInterface[]
      * @throws \Exception
      */
@@ -231,8 +226,6 @@ class FileStorageTreeProvider
     /**
      * Fetches all "root level folders" of a storage. If a user has filemounts in this storage, they are properly resolved.
      *
-     * @param ResourceStorage $resourceStorage
-     * @param BackendUserAuthentication $user
      * @return array|array[]
      */
     protected function getMountsInStorage(ResourceStorage $resourceStorage, BackendUserAuthentication $user): array
@@ -262,7 +255,6 @@ class FileStorageTreeProvider
      * The state identifier is the folder stored in the user settings, and also used to uniquely identify
      * a folder throughout the folder tree structure.
      *
-     * @param Folder $folder
      * @return string
      */
     protected function getStateIdentifier(Folder $folder): string
@@ -273,8 +265,6 @@ class FileStorageTreeProvider
     /**
      * Checks if a folder was previously opened by the user.
      *
-     * @param Folder $folder
-     * @param bool $fallback
      * @return bool
      */
     protected function isExpanded(Folder $folder, bool $fallback = false): bool

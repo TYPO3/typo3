@@ -26,17 +26,12 @@ interface RoutingEnhancerInterface extends EnhancerInterface
 {
     /**
      * Extends route collection with all routes. Used during URL resolving.
-     *
-     * @param RouteCollection $collection
      */
     public function enhanceForMatching(RouteCollection $collection): void;
 
     /**
      * Extends route collection with routes that are relevant for given
      * parameters. Used during URL generation.
-     *
-     * @param RouteCollection $collection
-     * @param array $parameters
      */
     public function enhanceForGeneration(RouteCollection $collection, array $parameters): void;
 }

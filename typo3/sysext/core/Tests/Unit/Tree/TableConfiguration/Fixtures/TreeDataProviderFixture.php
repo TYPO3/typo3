@@ -22,9 +22,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures;
  */
 class TreeDataProviderFixture
 {
-    /**
-     * @param array $configuration
-     */
     public function __construct(array $configuration)
     {
     }

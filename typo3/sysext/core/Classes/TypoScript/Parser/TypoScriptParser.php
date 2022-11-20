@@ -1105,7 +1105,6 @@ class TypoScriptParser
      *
      * @param string  $string Template content
      * @param int $cycle_counter Counter for detecting endless loops
-     * @param array   $extractedFileNames
      * @param string  $parentFilenameOrPath
      *
      * @throws \RuntimeException

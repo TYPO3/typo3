@@ -108,8 +108,6 @@ class DashboardRepository
     }
 
     /**
-     * @param string $identifier
-     * @param array $values
      * @return int|null
      */
     public function updateDashboardSettings(string $identifier, array $values)
@@ -153,7 +151,6 @@ class DashboardRepository
     }
 
     /**
-     * @param string $identifier
      * @return Dashboard
      */
     public function getDashboardByIdentifier(string $identifier): ?Dashboard
@@ -172,7 +169,6 @@ class DashboardRepository
     }
 
     /**
-     * @param Dashboard $dashboard
      * @param string[] $widgets
      */
     public function updateWidgetConfig(Dashboard $dashboard, array $widgets): void
@@ -185,9 +181,6 @@ class DashboardRepository
             ->executeStatement();
     }
 
-    /**
-     * @param Dashboard $dashboard
-     */
     public function delete(Dashboard $dashboard): void
     {
         $queryBuilder = $this->getQueryBuilder();
@@ -199,7 +192,6 @@ class DashboardRepository
     }
 
     /**
-     * @param array $row
      * @return Dashboard
      */
     protected function createFromRow(array $row): Dashboard

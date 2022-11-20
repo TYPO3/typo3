@@ -119,7 +119,6 @@ class Router implements SingletonInterface
     /**
      * Tries to match a URI against the registered routes
      *
-     * @param ServerRequestInterface $request
      * @return Route the first Route object found
      */
     public function matchRequest(ServerRequestInterface $request)

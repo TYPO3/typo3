@@ -42,7 +42,6 @@ interface DecoratingEnhancerInterface extends EnhancerInterface
      * Decorates route collection to be processed during URL resolving.
      * Executed before invoking routing enhancers.
      *
-     * @param RouteCollection $collection
      * @param string $routePath URL path
      */
     public function decorateForMatching(RouteCollection $collection, string $routePath): void;
@@ -51,7 +50,6 @@ interface DecoratingEnhancerInterface extends EnhancerInterface
      * Decorates route collection during URL URL generation.
      * Executed before invoking routing enhancers.
      *
-     * @param RouteCollection $collection
      * @param array $parameters query parameters
      */
     public function decorateForGeneration(RouteCollection $collection, array $parameters): void;

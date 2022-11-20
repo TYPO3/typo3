@@ -99,8 +99,6 @@ class ApplicationEnvironment extends BackendEnvironment
 
     /**
      * Generate styleguide data
-     *
-     * @param SuiteEvent $suiteEvent
      */
     public function bootstrapTypo3Environment(SuiteEvent $suiteEvent): void
     {

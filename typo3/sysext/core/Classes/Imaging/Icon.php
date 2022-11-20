@@ -219,8 +219,6 @@ class Icon
 
     /**
      * Sets the state of the icon
-     *
-     * @param IconState $state
      */
     public function setState(IconState $state)
     {

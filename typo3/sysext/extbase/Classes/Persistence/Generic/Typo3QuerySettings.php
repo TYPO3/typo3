@@ -212,7 +212,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
     }
 
     /**
-     * @param LanguageAspect $languageAspect
      * @return $this to allow method chaining
      */
     public function setLanguageAspect(LanguageAspect $languageAspect)

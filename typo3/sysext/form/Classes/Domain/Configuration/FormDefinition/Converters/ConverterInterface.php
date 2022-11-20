@@ -22,14 +22,9 @@ namespace TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters;
  */
 interface ConverterInterface
 {
-    /**
-     * @param ConverterDto $converterDto
-     * @param string $sessionToken
-     */
     public function __construct(ConverterDto $converterDto, string $sessionToken = '');
 
     /**
-     * @param string $key
      * @param mixed $value
      */
     public function __invoke(string $key, $value);

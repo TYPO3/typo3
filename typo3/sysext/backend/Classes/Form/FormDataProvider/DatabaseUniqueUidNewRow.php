@@ -26,7 +26,6 @@ class DatabaseUniqueUidNewRow implements FormDataProviderInterface
     /**
      * Initialize new row with unique uid
      *
-     * @param array $result
      * @return array
      * @throws \InvalidArgumentException
      */

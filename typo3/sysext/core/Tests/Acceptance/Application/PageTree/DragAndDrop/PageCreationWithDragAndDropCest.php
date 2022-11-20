@@ -36,8 +36,6 @@ class PageCreationWithDragAndDropCest
     /**
      * Open list module of styleguide elements basic page
      *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      * @throws \Exception
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
@@ -54,8 +52,6 @@ class PageCreationWithDragAndDropCest
 
     /**
      * Check drag and drop for new pages into nodes without children.
-     *
-     * @param ApplicationTester $I
      */
     public function dragAndDropNewPageInNodeWithoutChildren(ApplicationTester $I): void
     {
@@ -66,7 +62,6 @@ class PageCreationWithDragAndDropCest
     /**
      * Check drag and drop for new pages into nodes with children.
      *
-     * @param ApplicationTester $I
      * @param PageTree $pageTree
      */
     public function dragAndDropNewPageInNodeWithChildren(ApplicationTester $I): void
@@ -78,8 +73,6 @@ class PageCreationWithDragAndDropCest
     /**
      * Check drag and drop for new pages and quit page creation using Escape key.
      *
-     * @param ApplicationTester $I
-     * @param Mouse $mouse
      * @throws \Exception
      */
     public function dragAndDropNewPageAndQuitPageCreation(ApplicationTester $I, Mouse $mouse): void
@@ -94,8 +87,6 @@ class PageCreationWithDragAndDropCest
     /**
      * Check drag and drop for new pages and quit page creation using empty page title.
      *
-     * @param ApplicationTester $I
-     * @param Mouse $mouse
      * @throws \Exception
      */
     public function dragAndDropNewPageAndLeavePageTitleEmpty(ApplicationTester $I, Mouse $mouse): void

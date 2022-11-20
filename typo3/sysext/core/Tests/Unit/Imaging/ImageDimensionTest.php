@@ -183,8 +183,6 @@ class ImageDimensionTest extends UnitTestCase
     }
 
     /**
-     * @param TaskInterface $task
-     * @param ImageDimension $expectedImageDimension
      * @dataProvider givenProcessingInstructionsCalculatesCorrectDimensionDataProvider
      * @test
      */

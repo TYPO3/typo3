@@ -34,9 +34,6 @@ class StateTest extends UnitTestCase
     }
 
     /**
-     * @param string $tableName
-     * @param array $states
-     *
      * @test
      * @dataProvider stateObjectCanBeCreatedDataProvider
      */
@@ -65,9 +62,6 @@ class StateTest extends UnitTestCase
     }
 
     /**
-     * @param array $states
-     * @param array $expected
-     *
      * @test
      * @dataProvider statesAreEnrichedAndSanitizedOnObjectCreationDataProvider
      */

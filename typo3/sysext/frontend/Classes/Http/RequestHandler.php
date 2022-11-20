@@ -102,7 +102,6 @@ class RequestHandler implements RequestHandlerInterface
     /**
      * Handles a frontend request, after finishing running middlewares
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -168,8 +167,6 @@ class RequestHandler implements RequestHandlerInterface
      * Generates the main body part for the page, and if "config.disableAllHeaderCode" is not active, triggers
      * pageRenderer to evaluate includeCSS, headTag etc. TypoScript processing to populate the pageRenderer.
      *
-     * @param TypoScriptFrontendController $controller
-     * @param ServerRequestInterface $request
      * @return string
      */
     protected function generatePageContent(TypoScriptFrontendController $controller, ServerRequestInterface $request): string
@@ -203,7 +200,6 @@ class RequestHandler implements RequestHandlerInterface
      * render everything that can be cached, otherwise put placeholders for COA_INT/USER_INT objects
      * in the content that is processed later-on.
      *
-     * @param TypoScriptFrontendController $controller
      * @return string
      */
     protected function generatePageBodyContent(TypoScriptFrontendController $controller): string
@@ -224,10 +220,6 @@ class RequestHandler implements RequestHandlerInterface
      * that has been registered by cacheable plugins.
      * PageRenderer is now populated with all <head> data and additional JavaScript/CSS/FooterData/HeaderData that can be cached.
      * Once finished, the content is added to the >addBodyContent() functionality.
-     *
-     * @param TypoScriptFrontendController $controller
-     * @param SiteLanguage $siteLanguage
-     * @param ServerRequestInterface $request
      */
     protected function processHtmlBasedRenderingSettings(TypoScriptFrontendController $controller, SiteLanguage $siteLanguage, ServerRequestInterface $request): void
     {
@@ -871,7 +863,6 @@ class RequestHandler implements RequestHandlerInterface
      * Generate meta tags from meta tag TypoScript
      *
      * @param array $metaTagTypoScript TypoScript configuration for meta tags (e.g. $GLOBALS['TSFE']->pSetup['meta.'])
-     * @param ContentObjectRenderer $cObj
      */
     protected function generateMetaTagHtml(array $metaTagTypoScript, ContentObjectRenderer $cObj)
     {
@@ -925,7 +916,6 @@ class RequestHandler implements RequestHandlerInterface
     /**
      * Adds inline CSS code, by respecting the inlineStyle2TempFile option
      *
-     * @param TypoScriptFrontendController $controller
      * @param string $cssStyles the inline CSS styling
      * @param bool $excludeFromConcatenation option to see if it should be concatenated
      * @param string $inlineBlockName the block name to add it
@@ -1019,7 +1009,6 @@ class RequestHandler implements RequestHandlerInterface
     /**
      * Include the preview block in case we're looking at a hidden page in the LIVE workspace
      *
-     * @param TypoScriptFrontendController $controller
      * @internal this method might get moved to a PSR-15 middleware at some point
      */
     protected function displayPreviewInfoMessage(TypoScriptFrontendController $controller)

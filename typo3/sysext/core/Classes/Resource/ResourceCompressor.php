@@ -489,8 +489,6 @@ class ResourceCompressor
     }
 
     /**
-     * @param string $contents
-     * @param string $filename
      * @return string
      */
     protected function cssFixRelativeUrlPaths(string $contents, string $filename): string

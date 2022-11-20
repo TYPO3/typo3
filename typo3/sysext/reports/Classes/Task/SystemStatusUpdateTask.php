@@ -142,9 +142,6 @@ class SystemStatusUpdateTask extends AbstractTask
         return $this->notificationAll;
     }
 
-    /**
-     * @param bool $notificationAll
-     */
     public function setNotificationAll(bool $notificationAll)
     {
         $this->notificationAll = $notificationAll;

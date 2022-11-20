@@ -47,9 +47,6 @@ class AuthenticationService
      */
     protected $templatePaths;
 
-    /**
-     * @param SessionService $sessionService
-     */
     public function __construct(SessionService $sessionService)
     {
         $this->sessionService = $sessionService;
@@ -87,8 +84,6 @@ class AuthenticationService
 
     /**
      * If install tool login mail is set, send a mail for a successful login.
-     *
-     * @param ServerRequestInterface $request
      */
     protected function sendLoginSuccessfulMail(ServerRequestInterface $request)
     {
@@ -108,8 +103,6 @@ class AuthenticationService
 
     /**
      * If install tool login mail is set, send a mail for a failed login.
-     *
-     * @param ServerRequestInterface $request
      */
     protected function sendLoginFailedMail(ServerRequestInterface $request)
     {
@@ -132,7 +125,6 @@ class AuthenticationService
     /**
      * Sends an email and gracefully logs if the mail could not be sent due to configuration errors.
      *
-     * @param RawMessage $email
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
     protected function sendEmail(RawMessage $email): void

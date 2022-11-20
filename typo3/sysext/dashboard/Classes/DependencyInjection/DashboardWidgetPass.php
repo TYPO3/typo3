@@ -35,17 +35,11 @@ final class DashboardWidgetPass implements CompilerPassInterface
      */
     private $tagName;
 
-    /**
-     * @param string $tagName
-     */
     public function __construct(string $tagName)
     {
         $this->tagName = $tagName;
     }
 
-    /**
-     * @param ContainerBuilder $container
-     */
     public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition(WidgetRegistry::class)) {

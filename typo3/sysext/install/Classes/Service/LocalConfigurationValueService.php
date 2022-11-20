@@ -65,10 +65,6 @@ class LocalConfigurationValueService
      * Because configuration entries can be at any sub-array level, we need
      * to check entries recursively.
      *
-     * @param array $sections
-     * @param array $sectionsFromCurrentConfiguration
-     * @param array $descriptions
-     * @param array $path
      * @return array
      */
     protected function recursiveConfigurationFetching(array $sections, array $sectionsFromCurrentConfiguration, array $descriptions, array $path = []): array

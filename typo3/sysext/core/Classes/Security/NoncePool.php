@@ -48,7 +48,6 @@ class NoncePool implements SigningProviderInterface
     protected array $changeItems = [];
 
     /**
-     * @param array $nonces
      * @param array<string, mixed> $options
      */
     public function __construct(array $nonces = [], array $options = [])

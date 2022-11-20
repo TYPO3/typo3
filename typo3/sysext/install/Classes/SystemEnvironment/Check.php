@@ -615,10 +615,6 @@ class Check implements CheckInterface
 
     /**
      * Checks if a specific PHP extension is loaded.
-     *
-     * @param string $extension
-     * @param bool $required
-     * @param string $purpose
      */
     public function checkPhpExtension(string $extension, bool $required = true, string $purpose = '')
     {

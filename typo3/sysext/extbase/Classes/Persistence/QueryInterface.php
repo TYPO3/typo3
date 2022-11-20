@@ -155,16 +155,12 @@ interface QueryInterface
     /**
      * Performs a logical conjunction of the two given constraints. The method
      * takes an arbitrary number of constraints and concatenates them with a boolean AND.
-     *
-     * @param ConstraintInterface ...$constraints
      */
     public function logicalAnd(ConstraintInterface ...$constraints): AndInterface;
 
     /**
      * Performs a logical disjunction of the two given constraints. The method
      * takes an arbitrary number of constraints and concatenates them with a boolean OR.
-     *
-     * @param ConstraintInterface ...$constraints
      */
     public function logicalOr(ConstraintInterface ...$constraints): OrInterface;
 
@@ -332,8 +328,6 @@ interface QueryInterface
 
     /**
      * Sets the source to fetch the result from
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source
      */
     public function setSource(SourceInterface $source);
 

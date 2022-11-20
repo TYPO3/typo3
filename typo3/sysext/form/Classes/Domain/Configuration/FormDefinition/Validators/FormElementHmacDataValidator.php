@@ -25,7 +25,6 @@ class FormElementHmacDataValidator extends ElementBasedValidator
     /**
      * Checks if the form element property value matches to its hmac hash.
      *
-     * @param string $key
      * @param mixed $value
      */
     public function __invoke(string $key, $value): void

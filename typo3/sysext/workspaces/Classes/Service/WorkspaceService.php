@@ -407,11 +407,6 @@ class WorkspaceService implements SingletonInterface
      * Find all versionized elements which are new (= do not have a live counterpart),
      * so this method does not need to have a JOIN SQL statement.
      *
-     * @param string $table
-     * @param string $pageList
-     * @param int $wsid
-     * @param int $stage
-     * @param int|null $language
      * @return array
      */
     protected function getNewVersionsForPages(
@@ -754,9 +749,6 @@ class WorkspaceService implements SingletonInterface
      * Recursively fetch all children of a given page
      *
      * @param int $pid uid of the page
-     * @param int $depth
-     * @param int $begin
-     * @param string $permsClause
      * @return int[] List of child row $uid's
      */
     protected function getPageChildrenRecursive(int $pid, int $depth, int $begin, string $permsClause): array

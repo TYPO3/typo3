@@ -252,7 +252,6 @@ class TreeController
     /**
      * Returns JSON representing page tree
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function fetchDataAction(ServerRequestInterface $request): ResponseInterface
@@ -282,7 +281,6 @@ class TreeController
     /**
      * Returns JSON representing page tree filtered by keyword
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function filterDataAction(ServerRequestInterface $request): ResponseInterface
@@ -310,7 +308,6 @@ class TreeController
     /**
      * Sets a temporary mount point
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws \RuntimeException
      */
@@ -491,7 +488,6 @@ class TreeController
     /**
      * Fetches all pages for all tree entry points the user is allowed to see
      *
-     * @param int $startPid
      * @param string $query The search query can either be a string to be found in the title or the nav_title of a page or the uid of a page.
      * @return array
      */
@@ -608,7 +604,6 @@ class TreeController
     /**
      * Returns the first configured domain name for a page
      *
-     * @param int $pageId
      * @return string
      */
     protected function getDomainNameForPage(int $pageId): string
@@ -628,7 +623,6 @@ class TreeController
     /**
      * Returns the mount point path for a temporary mount or the given id
      *
-     * @param int $uid
      * @return string
      */
     protected function getMountPointPath(int $uid): string

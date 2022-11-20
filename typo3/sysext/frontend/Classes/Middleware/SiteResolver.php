@@ -48,8 +48,6 @@ class SiteResolver implements MiddlewareInterface
     /**
      * Resolve the site/language information by checking the page ID or the URL.
      *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

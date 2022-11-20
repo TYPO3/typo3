@@ -31,9 +31,6 @@ class PrerequisiteCollection implements \IteratorAggregate
         $this->prerequisites = new \ArrayObject();
     }
 
-    /**
-     * @param string $prerequisiteClass
-     */
     public function add(string $prerequisiteClass): void
     {
         if (

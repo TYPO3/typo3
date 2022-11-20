@@ -52,7 +52,6 @@ class BootstrapRenderer implements FlashMessageRendererInterface
     /**
      * Gets the message severity class name
      *
-     * @param FlashMessage $flashMessage
      *
      * @return string The message severity class name
      */
@@ -64,7 +63,6 @@ class BootstrapRenderer implements FlashMessageRendererInterface
     /**
      * Gets the message severity icon name
      *
-     * @param FlashMessage $flashMessage
      *
      * @return string The message severity icon name
      */

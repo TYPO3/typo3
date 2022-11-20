@@ -92,7 +92,6 @@ class ElementEntity
      * @param string $table
      * @param int $id
      * @param array $data (optional)
-     * @param DependencyResolver $dependency
      */
     public function __construct($table, $id, array $data, DependencyResolver $dependency)
     {

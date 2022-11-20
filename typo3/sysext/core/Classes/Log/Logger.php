@@ -128,7 +128,6 @@ class Logger implements LoggerInterface
     /**
      * Adds a writer to this logger
      *
-     * @param string $minimumLevel
      * @param \TYPO3\CMS\Core\Log\Writer\WriterInterface $writer Writer object
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
@@ -160,7 +159,6 @@ class Logger implements LoggerInterface
     /**
      * Adds a processor to the logger.
      *
-     * @param string $minimumLevel
      * @param \TYPO3\CMS\Core\Log\Processor\ProcessorInterface $processor The processor to add.
      */
     public function addProcessor(string $minimumLevel, ProcessorInterface $processor)
@@ -230,8 +228,6 @@ class Logger implements LoggerInterface
 
     /**
      * Passes the \TYPO3\CMS\Core\Log\LogRecord to all registered writers.
-     *
-     * @param \TYPO3\CMS\Core\Log\LogRecord $record
      */
     protected function writeLog(LogRecord $record)
     {

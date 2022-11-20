@@ -36,9 +36,6 @@ class CreateTableClause
 
     /**
      * CreateTableClause constructor.
-     *
-     * @param Identifier $tableName
-     * @param bool $isTemporary
      */
     public function __construct(Identifier $tableName, bool $isTemporary = false)
     {

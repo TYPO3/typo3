@@ -110,8 +110,6 @@ class DebugExceptionHandlerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider exampleUrlsForTokenAnonymization
-     * @param string $originalUrl
-     * @param string $expectedUrl
      */
     public function logEntriesContainAnonymousTokens(string $originalUrl, string $expectedUrl): void
     {

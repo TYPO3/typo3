@@ -43,8 +43,6 @@ class AspectFactory
 
     /**
      * AspectFactory constructor.
-     *
-     * @param Context $context
      */
     public function __construct(Context $context = null)
     {
@@ -55,9 +53,6 @@ class AspectFactory
     /**
      * Create aspects from the given settings.
      *
-     * @param array $aspects
-     * @param SiteLanguage $language
-     * @param Site $site
      * @return AspectInterface[]
      */
     public function createAspects(array $aspects, SiteLanguage $language, Site $site): array
@@ -77,8 +72,6 @@ class AspectFactory
     /**
      * Creates an aspect
      *
-     * @param string $type
-     * @param array $settings
      * @return AspectInterface
      * @throws \InvalidArgumentException
      * @throws \OutOfRangeException
@@ -107,9 +100,6 @@ class AspectFactory
     /**
      * Checks for the language aware trait, and adds the site language.
      *
-     * @param AspectInterface $aspect
-     * @param SiteLanguage $language
-     * @param Site $site
      * @return AspectInterface
      */
     protected function enrich(AspectInterface $aspect, SiteLanguage $language, Site $site): AspectInterface
@@ -141,8 +131,6 @@ class AspectFactory
      * Sorts aspects with putting persisted aspects to the end, thus
      * non-persisted aspects can be executed earlier without invoking database.
      *
-     * @param AspectInterface $first
-     * @param AspectInterface $second
      * @return int
      */
     protected function sortAspects(AspectInterface $first, AspectInterface $second): int

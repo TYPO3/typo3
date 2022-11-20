@@ -34,7 +34,6 @@ class ContentDataProcessor
     /**
      * Check for the availability of processors, defined in TypoScript, and use them for data processing
      *
-     * @param ContentObjectRenderer $cObject
      * @param array $configuration Configuration array
      * @param array $variables the variables to be processed
      * @return array the processed data and variables as key/value store

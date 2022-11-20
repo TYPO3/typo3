@@ -51,7 +51,6 @@ class FormFileProvider extends FileProvider
     }
 
     /**
-     * @param array $items
      * @return array
      */
     public function addItems(array $items): array

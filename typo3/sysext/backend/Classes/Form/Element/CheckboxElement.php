@@ -67,10 +67,6 @@ class CheckboxElement extends AbstractFormElement
         ],
     ];
 
-    /**
-     * @param NodeFactory $nodeFactory
-     * @param array $data
-     */
     public function __construct(NodeFactory $nodeFactory, array $data)
     {
         parent::__construct($nodeFactory, $data);

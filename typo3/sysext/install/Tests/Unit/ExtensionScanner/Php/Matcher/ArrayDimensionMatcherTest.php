@@ -124,9 +124,6 @@ class ArrayDimensionMatcherTest extends UnitTestCase
     /**
      * @test
      * @dataProvider matchesReturnsExpectedRestFilesDataProvider
-     * @param array $configuration
-     * @param string $phpCode
-     * @param array $expected
      */
     public function matchesReturnsExpectedRestFiles(array $configuration, string $phpCode, array $expected): void
     {

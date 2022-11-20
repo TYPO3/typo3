@@ -613,7 +613,6 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * @param array $control
      * @internal
      */
     public function setControl(array $control)
@@ -2360,8 +2359,6 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Applies the filter methods from a column's TCA configuration to a value array.
      *
-     * @param array $tcaFieldConfiguration
-     * @param array $values
      * @return array|mixed
      * @throws \RuntimeException
      */
@@ -3097,7 +3094,6 @@ class DataHandler implements LoggerAwareInterface
      * @param array $dataStructure Data structure for the form (might be sheets or not). Only values in the data array which has a configuration in the data structure will be processed.
      * @param array $pParams A set of parameters to pass through for the calling of the evaluation functions
      * @param string $callBackFunc Optional call back function, see checkValue_flex_procInData_travDS()  DEPRECATED, use \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools instead for traversal!
-     * @param array $workspaceOptions
      * @return array The modified 'data' part.
      * @see checkValue_flex_procInData_travDS()
      * @internal should only be used from within DataHandler
@@ -3134,7 +3130,6 @@ class DataHandler implements LoggerAwareInterface
      * @param array $pParams A set of parameters to pass through for the calling of the evaluation functions / call back function
      * @param string $callBackFunc Call back function, default is checkValue_SW(). If $this->callBackObj is set to an object, the callback function in that object is called instead.
      * @param string $structurePath
-     * @param array $workspaceOptions
      * @see checkValue_flex_procInData()
      * @internal should only be used from within DataHandler
      */
@@ -4061,7 +4056,6 @@ class DataHandler implements LoggerAwareInterface
      * @param array $conf
      * @param int $realDestPid
      * @param int $language
-     * @param array $workspaceOptions
      * @return string
      */
     protected function copyRecord_processRelation(
@@ -5010,9 +5004,6 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Returns true if a localization of a record exists.
      *
-     * @param string $table
-     * @param int $uid
-     * @param int $language
      * @return bool
      */
     protected function isRecordLocalized(string $table, int $uid, int $language): bool
@@ -8425,8 +8416,6 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * Add delete restriction if not disabled
-     *
-     * @param QueryRestrictionContainerInterface $restrictions
      */
     protected function addDeleteRestriction(QueryRestrictionContainerInterface $restrictions)
     {
@@ -8653,7 +8642,6 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * Check if there are subpages that need an adoption as well
-     * @param int $pageId
      */
     protected function fixUniqueInSiteForSubpages(int $pageId)
     {
@@ -9800,9 +9788,6 @@ class DataHandler implements LoggerAwareInterface
         }
     }
 
-    /**
-     * @param CorrelationId $correlationId
-     */
     public function setCorrelationId(CorrelationId $correlationId): void
     {
         $this->correlationId = $correlationId;
@@ -9820,9 +9805,6 @@ class DataHandler implements LoggerAwareInterface
      * Entry point to post process a database insert. Currently bails early unless a UID has been forced
      * and the database platform is not MySQL.
      *
-     * @param \TYPO3\CMS\Core\Database\Connection $connection
-     * @param string $tableName
-     * @param int $suggestedUid
      * @return int
      */
     protected function postProcessDatabaseInsert(Connection $connection, string $tableName, int $suggestedUid): int
@@ -9843,9 +9825,6 @@ class DataHandler implements LoggerAwareInterface
      * PostgreSQL works with sequences for auto increment columns. A sequence is not updated when a value is
      * written to such a column. To avoid clashes when the sequence returns an existing ID this helper will
      * update the sequence to the current max value of the column.
-     *
-     * @param \TYPO3\CMS\Core\Database\Connection $connection
-     * @param string $tableName
      */
     protected function postProcessPostgresqlInsert(Connection $connection, string $tableName)
     {

@@ -33,7 +33,6 @@ class ReferenceEntity
     /**
      * Creates this object.
      *
-     * @param ElementEntity $element
      * @param string $field
      */
     public function __construct(ElementEntity $element, $field)

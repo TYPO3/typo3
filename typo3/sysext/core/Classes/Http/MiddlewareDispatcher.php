@@ -45,11 +45,6 @@ class MiddlewareDispatcher implements RequestHandlerInterface
      */
     protected $container;
 
-    /**
-     * @param RequestHandlerInterface $kernel
-     * @param iterable $middlewares
-     * @param ContainerInterface $container
-     */
     public function __construct(
         RequestHandlerInterface $kernel,
         iterable $middlewares = [],
@@ -70,7 +65,6 @@ class MiddlewareDispatcher implements RequestHandlerInterface
     /**
      * Invoke the middleware stack
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -80,8 +74,6 @@ class MiddlewareDispatcher implements RequestHandlerInterface
 
     /**
      * Seed the middleware stack with the inner request handler
-     *
-     * @param RequestHandlerInterface $kernel
      */
     protected function seedMiddlewareStack(RequestHandlerInterface $kernel)
     {

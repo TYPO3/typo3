@@ -64,9 +64,6 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
     /**
      * Create new instance
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     * @param QueryFactoryInterface $queryFactory
-     * @param BackendInterface $backend
-     * @param Session $persistenceSession
      */
     public function __construct(
         QueryFactoryInterface $queryFactory,
@@ -95,7 +92,6 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
     /**
      * Returns the number of records matching the query.
      *
-     * @param QueryInterface $query
      * @return int
      */
     public function getObjectCountByQuery(QueryInterface $query)
@@ -106,7 +102,6 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
     /**
      * Returns the object data matching the $query.
      *
-     * @param QueryInterface $query
      * @return array
      */
     public function getObjectDataByQuery(QueryInterface $query)

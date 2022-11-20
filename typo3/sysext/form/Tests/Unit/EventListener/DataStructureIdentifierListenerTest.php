@@ -191,9 +191,6 @@ class DataStructureIdentifierListenerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider modifyDataStructureDataProvider
-     *
-     * @param array $formDefinition
-     * @param array $expectedItem
      */
     public function modifyDataStructureAddsExistingFormItems(array $formDefinition, array $expectedItem): void
     {

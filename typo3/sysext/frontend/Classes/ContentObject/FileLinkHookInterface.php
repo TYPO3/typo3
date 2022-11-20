@@ -25,7 +25,6 @@ interface FileLinkHookInterface
     /**
      * Finds alternative previewImage for given File.
      *
-     * @param File $file
      * @return File
      * @abstract
      */

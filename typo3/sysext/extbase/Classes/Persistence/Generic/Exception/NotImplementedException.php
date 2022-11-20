@@ -24,10 +24,6 @@ use TYPO3\CMS\Extbase\Persistence\Exception;
  */
 class NotImplementedException extends Exception
 {
-    /**
-     * @param string $method
-     * @param int $exceptionCode
-     */
     public function __construct(string $method, int $exceptionCode = null)
     {
         parent::__construct(

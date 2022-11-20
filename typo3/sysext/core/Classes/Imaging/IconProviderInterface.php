@@ -22,9 +22,6 @@ interface IconProviderInterface
 {
     /**
      * Prepare the icon markup and set it to the icon by setMarkup()
-     *
-     * @param Icon $icon
-     * @param array $options
      */
     public function prepareIconMarkup(Icon $icon, array $options = []);
 }

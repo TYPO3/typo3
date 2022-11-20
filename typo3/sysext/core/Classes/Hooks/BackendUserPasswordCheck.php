@@ -43,7 +43,6 @@ class BackendUserPasswordCheck
      * @param array $incomingFieldArray
      * @param string $table
      * @param string $id
-     * @param DataHandler $dataHandler
      */
     public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, DataHandler $dataHandler)
     {

@@ -76,10 +76,6 @@ class FixedPointTypesTest extends AbstractDataTypeBaseTestCase
     /**
      * @test
      * @dataProvider canParseFixedPointTypesProvider
-     * @param string $columnDefinition
-     * @param string $className
-     * @param int $precision
-     * @param int $scale
      */
     public function canParseDataType(
         string $columnDefinition,

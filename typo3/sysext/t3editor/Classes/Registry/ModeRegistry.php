@@ -40,7 +40,6 @@ class ModeRegistry implements SingletonInterface
     /**
      * Registers modes for t3editor
      *
-     * @param Mode $mode
      * @return self
      */
     public function register(Mode $mode): ModeRegistry
@@ -56,7 +55,6 @@ class ModeRegistry implements SingletonInterface
     /**
      * Removes registered modes
      *
-     * @param string $formatCode
      * @return self
      */
     public function unregister(string $formatCode): ModeRegistry
@@ -69,7 +67,6 @@ class ModeRegistry implements SingletonInterface
     }
 
     /**
-     * @param string $formatCode
      * @return bool
      */
     public function isRegistered(string $formatCode): bool
@@ -78,7 +75,6 @@ class ModeRegistry implements SingletonInterface
     }
 
     /**
-     * @param string $formatCode
      * @return Mode
      * @throws InvalidModeException
      */
@@ -94,7 +90,6 @@ class ModeRegistry implements SingletonInterface
     }
 
     /**
-     * @param string $fileExtension
      * @return Mode
      * @throws InvalidModeException
      */

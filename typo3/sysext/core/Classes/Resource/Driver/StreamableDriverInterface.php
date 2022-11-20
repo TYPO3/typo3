@@ -30,8 +30,6 @@ interface StreamableDriverInterface
     /**
      * Streams a file using a PSR-7 Response object.
      *
-     * @param string $identifier
-     * @param array $properties
      * @return ResponseInterface
      */
     public function streamFile(string $identifier, array $properties): ResponseInterface;

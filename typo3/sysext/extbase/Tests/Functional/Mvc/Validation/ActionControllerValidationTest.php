@@ -63,9 +63,6 @@ class ActionControllerValidationTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider forwardedActionValidatesPreviouslyIgnoredArgumentDataProvider
-     * @param array $blogPostArgument
-     * @param array $trustedProperties
-     * @param array $expectedErrorCodes
      */
     public function forwardedActionValidatesPreviouslyIgnoredArgument(array $blogPostArgument, array $trustedProperties, array $expectedErrorCodes): void
     {
@@ -247,7 +244,6 @@ class ActionControllerValidationTest extends FunctionalTestCase
     }
 
     /**
-     * @param array $formFieldNames
      * @return string
      */
     protected function generateTrustedPropertiesToken(array $formFieldNames): string

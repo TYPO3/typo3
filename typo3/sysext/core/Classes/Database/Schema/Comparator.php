@@ -44,8 +44,6 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
 
     /**
      * Comparator constructor.
-     *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      */
     public function __construct(AbstractPlatform $platform = null)
     {
@@ -106,8 +104,6 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
      * by first checking the doctrine diffColumn. Extend the Doctrine
      * method by taking into account MySQL TINY/MEDIUM/LONG type variants.
      *
-     * @param \Doctrine\DBAL\Schema\Column $column1
-     * @param \Doctrine\DBAL\Schema\Column $column2
      * @return array
      */
     public function diffColumn(Column $column1, Column $column2)

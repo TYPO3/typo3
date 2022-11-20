@@ -33,10 +33,6 @@ class MethodParameter
      */
     private $definition;
 
-    /**
-     * @param string $name
-     * @param array $definition
-     */
     public function __construct(string $name, array $definition)
     {
         $this->name = $name;

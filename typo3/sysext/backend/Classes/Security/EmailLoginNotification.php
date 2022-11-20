@@ -98,10 +98,6 @@ class EmailLoginNotification implements LoggerAwareInterface
 
     /**
      * Sends an email.
-     *
-     * @param string $recipient
-     * @param AbstractUserAuthentication $user
-     * @param string|null $subjectPrefix
      */
     protected function sendEmail(string $recipient, AbstractUserAuthentication $user, ?string $subjectPrefix = null): void
     {

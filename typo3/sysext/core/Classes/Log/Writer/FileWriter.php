@@ -61,8 +61,6 @@ class FileWriter extends AbstractWriter
 
     /**
      * Constructor, opens the log file handle
-     *
-     * @param array $options
      */
     public function __construct(array $options = [])
     {

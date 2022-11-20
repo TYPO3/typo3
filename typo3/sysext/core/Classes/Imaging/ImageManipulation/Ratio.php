@@ -48,7 +48,6 @@ class Ratio
     }
 
     /**
-     * @param array $config
      * @return Ratio[]
      * @throws \TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException
      */

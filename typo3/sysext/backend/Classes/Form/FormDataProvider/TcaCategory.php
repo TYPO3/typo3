@@ -40,7 +40,6 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
     /**
      * Sanitize config options and resolve category items if requested.
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result): array
@@ -170,8 +169,6 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
     /**
      * Validate and sanitize the category field value.
      *
-     * @param array $result
-     * @param string $fieldName
      * @return array
      */
     protected function processCategoryFieldValue(array $result, string $fieldName): array

@@ -146,7 +146,6 @@ class Route extends SymfonyRoute
      * Sets an aspect for the given key.
      *
      * @param string $key The key
-     * @param AspectInterface $aspect
      * @return $this
      */
     public function setAspect(string $key, AspectInterface $aspect): self

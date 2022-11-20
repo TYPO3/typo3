@@ -112,7 +112,6 @@ class NullSite implements SiteInterface
     /**
      * Returns a language of this site, given by the sys_language_uid
      *
-     * @param int $languageId
      * @return SiteLanguage
      * @throws \InvalidArgumentException
      */
@@ -180,7 +179,6 @@ class NullSite implements SiteInterface
     /**
      * Returns a ready-to-use error handler, to be used within the ErrorController
      *
-     * @param int $statusCode
      * @return PageErrorHandlerInterface
      * @throws \RuntimeException
      */

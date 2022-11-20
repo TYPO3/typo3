@@ -87,7 +87,6 @@ class InaccessibleFolder extends Folder
      * Returns amount of all files within this folder, optionally filtered by
      * the given pattern
      *
-     * @param array $filterMethods
      * @param bool $recursive
      * @throws Exception\InsufficientFolderReadPermissionsException
      */
@@ -255,8 +254,6 @@ class InaccessibleFolder extends Folder
     /**
      * Sets the filters to use when listing files. These are only used if the filter mode is one of
      * FILTER_MODE_USE_OWN_FILTERS and FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS
-     *
-     * @param array $filters
      */
     public function setFileAndFolderNameFilters(array $filters): never
     {

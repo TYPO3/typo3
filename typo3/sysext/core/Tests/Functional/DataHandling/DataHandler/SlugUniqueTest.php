@@ -52,7 +52,6 @@ class SlugUniqueTest extends AbstractDataHandlerActionTestCase
     /**
      * @dataProvider getEvalSettingDataProvider
      * @test
-     * @param string $uniqueSetting
      */
     public function differentUniqueEvalSettingsDeDuplicateSlug(string $uniqueSetting): void
     {
@@ -78,7 +77,6 @@ class SlugUniqueTest extends AbstractDataHandlerActionTestCase
     /**
      * @dataProvider getEvalSettingDataProvider
      * @test
-     * @param string $uniqueSetting
      */
     public function currentRecordIsExcludedWhenDeDuplicateSlug(string $uniqueSetting): void
     {
@@ -104,7 +102,6 @@ class SlugUniqueTest extends AbstractDataHandlerActionTestCase
     /**
      * @dataProvider getEvalSettingDataProvider
      * @test
-     * @param string $uniqueSetting
      */
     public function differentUniqueEvalSettingsDeDuplicateSlugWhenCreatingNewRecords(string $uniqueSetting): void
     {

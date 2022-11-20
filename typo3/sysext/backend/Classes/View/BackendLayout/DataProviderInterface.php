@@ -23,9 +23,6 @@ interface DataProviderInterface
 {
     /**
      * Adds backend layouts to the given backend layout collection.
-     *
-     * @param DataProviderContext $dataProviderContext
-     * @param BackendLayoutCollection $backendLayoutCollection
      */
     public function addBackendLayouts(DataProviderContext $dataProviderContext, BackendLayoutCollection $backendLayoutCollection);
 

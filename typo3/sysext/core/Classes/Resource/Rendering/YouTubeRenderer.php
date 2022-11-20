@@ -60,7 +60,6 @@ class YouTubeRenderer implements FileRendererInterface
     /**
      * Get online media helper
      *
-     * @param FileInterface $file
      * @return false|OnlineMediaHelperInterface
      */
     protected function getOnlineMediaHelper(FileInterface $file)
@@ -82,10 +81,8 @@ class YouTubeRenderer implements FileRendererInterface
     /**
      * Render for given File(Reference) html output
      *
-     * @param FileInterface $file
      * @param int|string $width TYPO3 known format; examples: 220, 200m or 200c
      * @param int|string $height TYPO3 known format; examples: 220, 200m or 200c
-     * @param array $options
      * @return string
      */
     public function render(FileInterface $file, $width, $height, array $options = [])
@@ -102,8 +99,6 @@ class YouTubeRenderer implements FileRendererInterface
     }
 
     /**
-     * @param array $options
-     * @param FileInterface $file
      * @return array
      */
     protected function collectOptions(array $options, FileInterface $file)
@@ -129,8 +124,6 @@ class YouTubeRenderer implements FileRendererInterface
     }
 
     /**
-     * @param array $options
-     * @param FileInterface $file
      * @return string
      */
     protected function createYouTubeUrl(array $options, FileInterface $file)
@@ -168,7 +161,6 @@ class YouTubeRenderer implements FileRendererInterface
     }
 
     /**
-     * @param FileInterface $file
      * @return string
      */
     protected function getVideoIdFromFile(FileInterface $file)
@@ -185,7 +177,6 @@ class YouTubeRenderer implements FileRendererInterface
     /**
      * @param int|string $width
      * @param int|string $height
-     * @param array $options
      * @return array pairs of key/value; not yet html-escaped
      */
     protected function collectIframeAttributes($width, $height, array $options)
@@ -221,7 +212,6 @@ class YouTubeRenderer implements FileRendererInterface
 
     /**
      * @internal
-     * @param array $attributes
      * @return string
      */
     protected function implodeAttributes(array $attributes): string

@@ -25,9 +25,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
  */
 class FileOperationsCest extends AbstractFileCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
     public function fileCrud(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $fileTextareaSelector = 'textarea[name="data[editfile][0][data]"]';
@@ -69,7 +66,6 @@ class FileOperationsCest extends AbstractFileCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @throws \Exception
      */
     public function seeUploadFile(ApplicationTester $I): void

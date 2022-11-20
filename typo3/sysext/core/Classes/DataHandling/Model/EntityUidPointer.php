@@ -32,10 +32,6 @@ class EntityUidPointer implements EntityPointer
      */
     protected $identifier;
 
-    /**
-     * @param string $name
-     * @param string $identifier
-     */
     public function __construct(string $name, string $identifier)
     {
         $this->name = $name;
@@ -59,7 +55,6 @@ class EntityUidPointer implements EntityPointer
     }
 
     /**
-     * @param string $identifier
      * @return static
      */
     public function withUid(string $identifier): self
@@ -81,7 +76,6 @@ class EntityUidPointer implements EntityPointer
     }
 
     /**
-     * @param EntityPointer $other
      * @return bool
      */
     public function isEqualTo(EntityPointer $other): bool

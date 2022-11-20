@@ -186,7 +186,6 @@ class RecordProvider extends AbstractProvider
     /**
      * This provider works as a fallback if there is no provider dedicated for certain table, thus it's only kicking in when $items are empty.
      *
-     * @param array $items
      * @return array
      */
     public function addItems(array $items): array
@@ -201,8 +200,6 @@ class RecordProvider extends AbstractProvider
     /**
      * Whether a given item can be rendered (e.g. user has enough permissions)
      *
-     * @param string $itemName
-     * @param string $type
      * @return bool
      */
     protected function canRender(string $itemName, string $type): bool
@@ -277,7 +274,6 @@ class RecordProvider extends AbstractProvider
      * Returns true if a current user have access to given permission
      *
      * @see BackendUserAuthentication::doesUserHaveAccess()
-     * @param int $permission
      * @return bool
      */
     protected function hasPagePermission(int $permission): bool
@@ -288,7 +284,6 @@ class RecordProvider extends AbstractProvider
     /**
      * Additional attributes for JS
      *
-     * @param string $itemName
      * @return array
      */
     protected function getAdditionalAttributes(string $itemName): array
@@ -628,7 +623,6 @@ class RecordProvider extends AbstractProvider
      * Checks if table have "disable" column (e.g. "hidden"), if user has access to this column
      * and if it contains given value
      *
-     * @param int $value
      * @return bool
      */
     protected function hasDisableColumnWithValue(int $value): bool

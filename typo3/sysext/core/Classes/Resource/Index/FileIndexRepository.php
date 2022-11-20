@@ -118,10 +118,8 @@ class FileIndexRepository implements SingletonInterface
     /**
      * Retrieves Index record for a given $storageUid and $identifier
      *
-     * @param ResourceStorage $storage
      * @param string $identifier
      * @return array|bool
-     *
      * @internal only for use from FileRepository
      */
     public function findOneByStorageAndIdentifier(ResourceStorage $storage, $identifier)
@@ -133,9 +131,7 @@ class FileIndexRepository implements SingletonInterface
     /**
      * Retrieves Index record for a given $fileObject
      *
-     * @param FileInterface $fileObject
      * @return array|bool
-     *
      * @internal only for use from FileRepository
      */
     public function findOneByFileObject(FileInterface $fileObject)
@@ -174,7 +170,6 @@ class FileIndexRepository implements SingletonInterface
     /**
      * Find all records for files in a Folder
      *
-     * @param Folder $folder
      * @return array|null
      */
     public function findByFolder(Folder $folder)
@@ -279,8 +274,6 @@ class FileIndexRepository implements SingletonInterface
 
     /**
      * Adds a file to the index
-     *
-     * @param File $file
      */
     public function add(File $file)
     {
@@ -297,7 +290,6 @@ class FileIndexRepository implements SingletonInterface
     /**
      * Add data from record (at indexing time)
      *
-     * @param array $data
      * @return array
      */
     public function addRaw(array $data)
@@ -309,7 +301,6 @@ class FileIndexRepository implements SingletonInterface
     /**
      * Helper to reduce code duplication
      *
-     * @param array $data
      *
      * @return int
      */
@@ -331,7 +322,6 @@ class FileIndexRepository implements SingletonInterface
     /**
      * Checks if a file is indexed
      *
-     * @param File $file
      * @return bool
      */
     public function hasIndexRecord(File $file)
@@ -367,8 +357,6 @@ class FileIndexRepository implements SingletonInterface
 
     /**
      * Updates the index record in the database
-     *
-     * @param File $file
      */
     public function update(File $file)
     {
@@ -404,7 +392,6 @@ class FileIndexRepository implements SingletonInterface
     /**
      * Finds the files needed for second indexer step
      *
-     * @param ResourceStorage $storage
      * @param int $limit
      * @return array
      */
@@ -433,7 +420,6 @@ class FileIndexRepository implements SingletonInterface
     /**
      * Helper function for the Indexer to detect missing files
      *
-     * @param ResourceStorage $storage
      * @param int[] $uidList
      * @return array
      */

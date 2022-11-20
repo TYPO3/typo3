@@ -1062,10 +1062,6 @@ class RelationTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @param QueryInterface $query
-     * @param array $queryRequest
-     */
     protected function applyQueryRequest(QueryInterface $query, array $queryRequest): void
     {
         if (isset($queryRequest['order']) && !$queryRequest['order']) {
@@ -1115,7 +1111,6 @@ class RelationTest extends FunctionalTestCase
     }
 
     /**
-     * @param int $publisherId
      * @return QueryInterface
      */
     protected function provideFindPostsByPublisherQuery(int $publisherId): QueryInterface
@@ -1169,7 +1164,6 @@ class RelationTest extends FunctionalTestCase
     }
 
     /**
-     * @param \DateTime $date
      * @return QueryInterface
      */
     protected function provideFindBlogsByPostsSinceQuery(\DateTime $date): QueryInterface
@@ -1216,7 +1210,6 @@ class RelationTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $tagName
      * @return QueryInterface
      */
     protected function provideFindPersonsByTagNameQuery(string $tagName): QueryInterface
@@ -1266,7 +1259,6 @@ class RelationTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $tagName
      * @return QueryInterface
      */
     protected function provideFindPostsByAuthorTagName(string $tagName): QueryInterface
@@ -1307,7 +1299,6 @@ class RelationTest extends FunctionalTestCase
     }
 
     /**
-     * @param array $records
      * @return int[]
      */
     protected function resolveRecordIds(array $records): array
@@ -1318,7 +1309,6 @@ class RelationTest extends FunctionalTestCase
     /**
      * Counts amount of distinct IDS.
      *
-     * @param array $ids
      * @return int
      */
     protected function countDistinctIds(array $ids): int
@@ -1329,8 +1319,6 @@ class RelationTest extends FunctionalTestCase
     /**
      * Asserts distinct IDs by comparing the sum of the occurrence of
      * a particular ID to the amount of existing distinct IDs.
-     *
-     * @param array $ids
      */
     protected function assertDistinctIds(array $ids): void
     {

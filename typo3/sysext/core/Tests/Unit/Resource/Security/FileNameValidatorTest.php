@@ -39,7 +39,6 @@ class FileNameValidatorTest extends TestCase
     /**
      * Tests whether validator detects files with nul character without file deny pattern.
      *
-     * @param string $deniedFile
      * @test
      * @dataProvider deniedFilesWithoutDenyPatternDataProvider
      */
@@ -121,7 +120,6 @@ class FileNameValidatorTest extends TestCase
     /**
      * Tests whether the basic FILE_DENY_PATTERN detects denied files.
      *
-     * @param string $deniedFile
      * @test
      * @dataProvider deniedFilesWithDefaultDenyPatternDataProvider
      */
@@ -144,7 +142,6 @@ class FileNameValidatorTest extends TestCase
     }
 
     /**
-     * @param string $fileName
      * @test
      * @dataProvider insecureFilesDataProvider
      */
@@ -174,7 +171,6 @@ class FileNameValidatorTest extends TestCase
     /**
      * Tests whether the basic file deny pattern accepts allowed files.
      *
-     * @param string $allowedFile
      * @test
      * @dataProvider allowedFilesDataProvider
      */
@@ -234,7 +230,6 @@ class FileNameValidatorTest extends TestCase
      *
      * @test
      * @dataProvider phpExtensionDataProvider
-     * @param string $fileName
      */
     public function defaultFileDenyPatternMatchesPhpExtension(string $fileName): void
     {
@@ -246,7 +241,6 @@ class FileNameValidatorTest extends TestCase
      *
      * @test
      * @dataProvider phpExtensionDataProvider
-     * @param string $fileName
      */
     public function invalidPhpExtensionIsDetected(string $fileName): void
     {

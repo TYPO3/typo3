@@ -665,7 +665,6 @@ class DefaultTcaSchema
      * This has is done for cosmetically reasons to improve readability of db schema when
      * opening tables in a database browser.
      *
-     * @param string $tableName
      * @return string[]
      */
     public function getPrioritizedFieldNames(string $tableName): array
@@ -741,7 +740,6 @@ class DefaultTcaSchema
      * True if table with given table name is defined within incoming $tables array
      *
      * @param Table[] $tables
-     * @param string $tableName
      * @return bool
      */
     protected function isTableDefined(array $tables, string $tableName): bool
@@ -759,8 +757,6 @@ class DefaultTcaSchema
      * array of Table's.
      *
      * @param Table[] $tables
-     * @param string $tableName
-     * @param string $fieldName
      * @return bool
      */
     protected function isColumnDefinedForTable(array $tables, string $tableName, string $fieldName): bool
@@ -784,8 +780,6 @@ class DefaultTcaSchema
      * array of Table's.
      *
      * @param Table[] $tables
-     * @param string $tableName
-     * @param string $indexName
      * @return bool
      */
     protected function isIndexDefinedForTable(array $tables, string $tableName, string $indexName): bool
@@ -814,7 +808,6 @@ class DefaultTcaSchema
      * @todo to contain a table only once before this class is entered.
      *
      * @param Table[] $tables
-     * @param string $tableName
      * @return int
      * @throws \RuntimeException
      */
@@ -829,7 +822,6 @@ class DefaultTcaSchema
     }
 
     /**
-     * @param string $identifier
      * @return string
      */
     protected function quote(string $identifier): string

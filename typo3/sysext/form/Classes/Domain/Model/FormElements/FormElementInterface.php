@@ -74,7 +74,6 @@ interface FormElementInterface extends RenderableInterface
     /**
      * Set an element-specific configuration property.
      *
-     * @param string $key
      * @param mixed $value
      */
     public function setProperty(string $key, $value);
@@ -89,7 +88,6 @@ interface FormElementInterface extends RenderableInterface
     /**
      * Set a rendering option
      *
-     * @param string $key
      * @param mixed $value
      */
     public function setRenderingOption(string $key, $value);
@@ -104,8 +102,6 @@ interface FormElementInterface extends RenderableInterface
 
     /**
      * Registers a validator for this element
-     *
-     * @param ValidatorInterface $validator
      */
     public function addValidator(ValidatorInterface $validator);
 

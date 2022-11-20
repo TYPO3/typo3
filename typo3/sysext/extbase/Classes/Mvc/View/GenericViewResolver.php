@@ -38,7 +38,6 @@ class GenericViewResolver implements ViewResolverInterface
     }
 
     /**
-     * @param string $defaultViewClass
      * @internal
      */
     public function setDefaultViewClass(string $defaultViewClass): void

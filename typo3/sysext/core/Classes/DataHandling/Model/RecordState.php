@@ -55,11 +55,6 @@ class RecordState
      */
     protected $versionLink;
 
-    /**
-     * @param EntityContext $context
-     * @param EntityPointer $node
-     * @param EntityUidPointer $subject
-     */
     public function __construct(EntityContext $context, EntityPointer $node, EntityUidPointer $subject)
     {
         $this->context = $context;
@@ -100,7 +95,6 @@ class RecordState
     }
 
     /**
-     * @param EntityPointerLink|null $languageLink
      * @return static
      */
     public function withLanguageLink(?EntityPointerLink $languageLink): self
@@ -122,7 +116,6 @@ class RecordState
     }
 
     /**
-     * @param EntityPointerLink|null $versionLink
      * @return static
      */
     public function withVersionLink(?EntityPointerLink $versionLink): self

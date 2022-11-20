@@ -79,8 +79,6 @@ final class HtmlViewHelper extends AbstractViewHelper
 
     /**
      * @param array{selector: string} $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return string transformed markup
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string

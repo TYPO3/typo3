@@ -43,7 +43,6 @@ class Model extends AbstractEntity
     }
 
     /**
-     * @param string $value
      * @return self
      */
     public function setValue(string $value): self
@@ -61,7 +60,6 @@ class Model extends AbstractEntity
     }
 
     /**
-     * @param Model $model
      * @return self
      */
     public function setModel(Model $model): self

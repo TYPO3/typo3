@@ -352,9 +352,6 @@ class TcaSlugTest extends UnitTestCase
     /**
      * @test
      * @dataProvider resultArrayDataProvider
-     *
-     * @param array $input
-     * @param array $expected
      */
     public function getSlugPrefixForDefinedLanguagesAndUserFunc(array $input, array $expected): void
     {

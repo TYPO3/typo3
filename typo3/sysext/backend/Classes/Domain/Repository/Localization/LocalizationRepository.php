@@ -47,8 +47,6 @@ class LocalizationRepository
     /**
      * Fetch the language from which the records in a certain language were initially localized
      *
-     * @param int $pageId
-     * @param int $localizedLanguage
      * @return array
      */
     public function fetchOriginLanguage(int $pageId, int $localizedLanguage): array
@@ -90,8 +88,6 @@ class LocalizationRepository
      * Returns number of localized records in given page and language
      * Records which were added to the language directly (not through translation) are not counted.
      *
-     * @param int $pageId
-     * @param int $languageId
      * @return int
      */
     public function getLocalizedRecordCount(int $pageId, int $languageId): int
@@ -123,8 +119,6 @@ class LocalizationRepository
     /**
      * Fetch all available languages
      *
-     * @param int $pageId
-     * @param int $languageId
      * @return array
      */
     public function fetchAvailableLanguages(int $pageId, int $languageId): array
@@ -152,11 +146,6 @@ class LocalizationRepository
     /**
      * Builds additional query constraints to exclude hidden languages and
      * limit a backend user to its allowed languages (unless the user is an admin)
-     *
-     * @param int $pageId
-     * @param QueryBuilder $queryBuilder
-     * @param BackendUserAuthentication $backendUser
-     * @param string $alias
      */
     protected function getAllowedLanguageConstraintsForBackendUser(int $pageId, QueryBuilder $queryBuilder, BackendUserAuthentication $backendUser, string $alias = ''): void
     {
@@ -176,10 +165,6 @@ class LocalizationRepository
     /**
      * Get records for copy process
      *
-     * @param int $pageId
-     * @param int $destLanguageId
-     * @param int $languageId
-     * @param string $fields
      * @return Result
      */
     public function getRecordsToCopyDatabaseResult(int $pageId, int $destLanguageId, int $languageId, string $fields = '*')
@@ -244,7 +229,6 @@ class LocalizationRepository
      * Get a QueryBuilder for the given table with preconfigured restrictions
      * to not retrieve workspace placeholders or deleted records.
      *
-     * @param string $tableName
      * @return QueryBuilder
      */
     protected function getQueryBuilderWithWorkspaceRestriction(string $tableName): QueryBuilder

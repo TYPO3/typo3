@@ -46,7 +46,6 @@ class ConfigurationManagerTest extends UnitTestCase
      * Helper method to create a random directory and return the path.
      * The path will be registered for deletion upon test ending
      *
-     * @param string $prefix
      * @return string
      */
     protected function getTestDirectory(string $prefix = 'root_'): string
@@ -57,9 +56,6 @@ class ConfigurationManagerTest extends UnitTestCase
         return $path;
     }
 
-    /**
-     * @param array $methods
-     */
     protected function createSubjectWithMockedMethods(array $methods): void
     {
         $this->subject = $this->getMockBuilder(ConfigurationManager::class)

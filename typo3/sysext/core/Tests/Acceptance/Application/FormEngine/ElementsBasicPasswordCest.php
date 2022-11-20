@@ -28,9 +28,6 @@ class ElementsBasicPasswordCest extends AbstractElementsBasicCest
 {
     /**
      * Open list module of styleguide elements basic page
-     *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -71,8 +68,6 @@ class ElementsBasicPasswordCest extends AbstractElementsBasicCest
 
     /**
      * @dataProvider passwordInputFieldsDataProvider
-     * @param ApplicationTester $I
-     * @param Example $testData
      */
     public function passwordInputFields(ApplicationTester $I, Example $testData): void
     {

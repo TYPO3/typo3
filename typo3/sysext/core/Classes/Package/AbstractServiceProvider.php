@@ -65,8 +65,6 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param ArrayObject $middlewares
      * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      * @return ArrayObject
      */
@@ -84,8 +82,6 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param ArrayObject $routes
      * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      * @param string|null $packageName supplied when invoked internally through PseudoServiceProvider
      * @return ArrayObject
@@ -143,8 +139,6 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param ArrayObject $modules
      * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      * @param string|null $packageName supplied when invoked internally through PseudoServiceProvider
      * @return ArrayObject
@@ -184,7 +178,6 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     /**
      * Create an instance of a class. Supports auto injection of the logger.
      *
-     * @param ContainerInterface $container
      * @param string $className name of the class to instantiate, must not be empty and not start with a backslash
      * @param array $constructorArguments Arguments for the constructor
      * @return mixed

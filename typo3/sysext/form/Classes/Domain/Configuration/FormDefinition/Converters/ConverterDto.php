@@ -52,9 +52,6 @@ class ConverterDto
      */
     protected $propertyCollectionElementIdentifier = '';
 
-    /**
-     * @param array $formDefinition
-     */
     public function __construct(array $formDefinition)
     {
         $this->formDefinition = $formDefinition;
@@ -69,7 +66,6 @@ class ConverterDto
     }
 
     /**
-     * @param array $formDefinition
      * @return ConverterDto
      */
     public function setFormDefinition(array $formDefinition): ConverterDto
@@ -87,7 +83,6 @@ class ConverterDto
     }
 
     /**
-     * @param array $renderablePathParts
      * @return ConverterDto
      */
     public function setRenderablePathParts(array $renderablePathParts): ConverterDto
@@ -105,7 +100,6 @@ class ConverterDto
     }
 
     /**
-     * @param string $formElementIdentifier
      * @return ConverterDto
      */
     public function setFormElementIdentifier(string $formElementIdentifier): ConverterDto
@@ -123,7 +117,6 @@ class ConverterDto
     }
 
     /**
-     * @param int $propertyCollectionIndex
      * @return ConverterDto
      */
     public function setPropertyCollectionIndex(int $propertyCollectionIndex): ConverterDto
@@ -141,7 +134,6 @@ class ConverterDto
     }
 
     /**
-     * @param string $propertyCollectionName
      * @return ConverterDto
      */
     public function setPropertyCollectionName(string $propertyCollectionName): ConverterDto
@@ -159,7 +151,6 @@ class ConverterDto
     }
 
     /**
-     * @param string $propertyCollectionElementIdentifier
      * @return ConverterDto
      */
     public function setPropertyCollectionElementIdentifier(string $propertyCollectionElementIdentifier): ConverterDto

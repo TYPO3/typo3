@@ -427,8 +427,6 @@ class SchemaMigratorTest extends FunctionalTestCase
 
     /**
      * Create the base table for all migration tests
-     *
-     * @param bool $createOnly
      */
     protected function prepareTestTable(bool $createOnly = true): void
     {
@@ -449,7 +447,6 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * Helper to read a fixture SQL file and convert it into a statement array.
      *
-     * @param string $fixtureName
      * @return array
      */
     protected function readFixtureFile(string $fixtureName): array

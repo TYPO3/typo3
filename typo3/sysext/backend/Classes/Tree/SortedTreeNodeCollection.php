@@ -26,7 +26,6 @@ class SortedTreeNodeCollection extends TreeNodeCollection
     /**
      * Checks if a specific node is inside the collection
      *
-     * @param TreeNode $node
      * @return bool
      */
     public function contains(TreeNode $node)
@@ -37,7 +36,6 @@ class SortedTreeNodeCollection extends TreeNodeCollection
     /**
      * Returns the offset key of given node
      *
-     * @param TreeNode $node
      * @return int
      */
     protected function offsetOf(TreeNode $node)
@@ -48,7 +46,6 @@ class SortedTreeNodeCollection extends TreeNodeCollection
     /**
      * Binary search that returns the offset of a given node
      *
-     * @param TreeNode $node
      * @param int $start
      * @param int $end
      * @return int

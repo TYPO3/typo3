@@ -32,8 +32,6 @@ interface VariableRenderableInterface
      * Every property which has a corresponding set* method can be set using
      * the passed $options array.
      *
-     * @param array $options
-     * @param bool $reset
      * @internal
      */
     public function setOptions(array $options, bool $reset = false);
@@ -47,8 +45,6 @@ interface VariableRenderableInterface
 
     /**
      * Adds the specified variant to this form element
-     *
-     * @param RenderableVariantInterface $variant
      */
     public function addVariant(RenderableVariantInterface $variant);
 }

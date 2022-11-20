@@ -42,8 +42,6 @@ class ImageService implements SingletonInterface
 
     /**
      * ImageService constructor.
-     *
-     * @param ResourceFactory $resourceFactory
      */
     public function __construct(ResourceFactory $resourceFactory)
     {
@@ -54,7 +52,6 @@ class ImageService implements SingletonInterface
      * Create a processed file
      *
      * @param FileInterface|FileReference $image
-     * @param array $processingInstructions
      * @return ProcessedFile
      */
     public function applyProcessingInstructions($image, array $processingInstructions): ProcessedFile
@@ -78,7 +75,6 @@ class ImageService implements SingletonInterface
     /**
      * Get public url of image depending on the environment
      *
-     * @param FileInterface $image
      * @param bool|false $absolute Force absolute URL
      * @return string
      */
@@ -152,8 +148,6 @@ class ImageService implements SingletonInterface
     /**
      * Get File or FileReference object by src
      *
-     * @param string $src
-     * @param bool $treatIdAsReference
      * @return FileInterface|null
      */
     protected function getImageFromSourceString(string $src, bool $treatIdAsReference): ?FileInterface
@@ -187,8 +181,6 @@ class ImageService implements SingletonInterface
     /**
      * Set compatibility values to frontend controller object
      * in case we are in frontend environment.
-     *
-     * @param ProcessedFile $processedImage
      */
     protected function setCompatibilityValues(ProcessedFile $processedImage): void
     {
@@ -208,7 +200,6 @@ class ImageService implements SingletonInterface
      * This is duplicate code taken from ContentObjectRenderer::getImgResource()
      * Ideally we should get rid of this code in both places.
      *
-     * @param ProcessedFile $processedImage
      * @return array
      */
     protected function getCompatibilityImageResourceValues(ProcessedFile $processedImage): array

@@ -154,8 +154,6 @@ class FileProvider extends AbstractProvider
     /**
      * Checks whether certain item can be rendered (e.g. check for disabled items or permissions)
      *
-     * @param string $itemName
-     * @param string $type
      * @return bool
      */
     protected function canRender(string $itemName, string $type): bool
@@ -413,7 +411,6 @@ class FileProvider extends AbstractProvider
     }
 
     /**
-     * @param string $itemName
      * @return array
      */
     protected function getAdditionalAttributes(string $itemName): array

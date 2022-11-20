@@ -42,12 +42,6 @@ class FlexFormFinisherOverridesConverterDto
      */
     protected $flexFormSheetSettings = [];
 
-    /**
-     * @param array $prototypeFinisherDefinition
-     * @param array $finisherDefinition
-     * @param string $finisherIdentifier
-     * @param array $flexFormSheetSettings
-     */
     public function __construct(
         array $prototypeFinisherDefinition,
         array $finisherDefinition,
@@ -77,7 +71,6 @@ class FlexFormFinisherOverridesConverterDto
     }
 
     /**
-     * @param array $finisherDefinition
      * @return FlexFormFinisherOverridesConverterDto
      */
     public function setFinisherDefinition(array $finisherDefinition): FlexFormFinisherOverridesConverterDto

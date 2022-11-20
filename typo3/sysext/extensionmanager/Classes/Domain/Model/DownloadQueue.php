@@ -43,7 +43,6 @@ class DownloadQueue implements SingletonInterface
      * If the extension was already requested in a different version
      * an exception is thrown.
      *
-     * @param Extension $extension
      * @param string $stack
      * @throws ExtensionManagerException
      */
@@ -78,7 +77,6 @@ class DownloadQueue implements SingletonInterface
     /**
      * Remove an extension from download queue
      *
-     * @param Extension $extension
      * @param string $stack Stack to remove extension from (download, update or install)
      * @throws ExtensionManagerException
      */

@@ -34,8 +34,6 @@ class MboxTransport extends AbstractTransport
      * Create a new MailTransport
      *
      * @param string $mboxFile The file into which to write mail.
-     * @param ?EventDispatcherInterface $dispatcher
-     * @param ?LoggerInterface $logger
      */
     public function __construct(
         private readonly string $mboxFile,
@@ -49,7 +47,6 @@ class MboxTransport extends AbstractTransport
     /**
      * Outputs the mail to a text file according to RFC 4155.
      *
-     * @param SentMessage $message
      * @throws LockAcquireException
      * @throws LockAcquireWouldBlockException
      * @throws LockCreateException

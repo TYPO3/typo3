@@ -38,7 +38,6 @@ class DependencyEntityFactory
      * @param string $table
      * @param int $id
      * @param array $data (optional)
-     * @param DependencyResolver $dependency
      * @return ElementEntity
      */
     public function getElement($table, $id, array $data, DependencyResolver $dependency)
@@ -54,7 +53,6 @@ class DependencyEntityFactory
     /**
      * Gets and registers a new reference.
      *
-     * @param ElementEntity $element
      * @param string $field
      * @return ReferenceEntity
      */
@@ -74,7 +72,6 @@ class DependencyEntityFactory
      * @param int $id
      * @param string $field
      * @param array $data (optional)
-     * @param DependencyResolver $dependency
      * @return ReferenceEntity
      * @see getElement
      * @see getReference

@@ -27,9 +27,6 @@ abstract class AbstractProcessor implements ProcessorInterface
      */
     protected $converterDto;
 
-    /**
-     * @param ProcessorDto $converterDto
-     */
     public function __construct(ProcessorDto $converterDto)
     {
         $this->converterDto = $converterDto;

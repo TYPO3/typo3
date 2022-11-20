@@ -181,7 +181,6 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
      * Returns true if a comment before a statement is
      * marked as "@extensionScannerIgnoreLine"
      *
-     * @param Node $node
      * @return bool
      */
     protected function isLineIgnored(Node $node): bool
@@ -214,7 +213,6 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
      * Return true if the node is ignored since the entire file is ignored.
      * Sets ignore status if a class node is given having the annotation.
      *
-     * @param Node $node
      * @return bool
      */
     protected function isFileIgnored(Node $node): bool

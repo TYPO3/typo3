@@ -28,7 +28,6 @@ class WriterFailing implements WriterInterface
     /**
      * Try to write the log entry - but throw an exception in our case
      *
-     * @param LogRecord $record
      * @return WriterInterface|void
      * @throws \RuntimeException
      */

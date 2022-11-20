@@ -35,7 +35,6 @@ class TcaInputPlaceholders implements FormDataProviderInterface
      * strings will be returned unmodified. Placeholders beginning with __row are
      * being resolved, possibly traversing multiple tables.
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

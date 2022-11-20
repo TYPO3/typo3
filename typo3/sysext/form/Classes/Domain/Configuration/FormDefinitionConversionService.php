@@ -41,7 +41,6 @@ class FormDefinitionConversionService implements SingletonInterface
      * "_orig_<propertyName>" will be used to validate the form definition on saving.
      * @see \TYPO3\CMS\Form\Domain\Configuration\FormDefinitionValidationService::validateFormDefinitionProperties()
      *
-     * @param array $formDefinition
      * @return array
      */
     public function addHmacData(array $formDefinition): array
@@ -71,7 +70,6 @@ class FormDefinitionConversionService implements SingletonInterface
     /**
      * Remove the "_orig_<propertyName>" values from the form definition.
      *
-     * @param array $formDefinition
      * @return array
      */
     public function removeHmacData(array $formDefinition): array
@@ -96,7 +94,6 @@ class FormDefinitionConversionService implements SingletonInterface
     /**
      * Migrate various finisher options
      *
-     * @param array $formDefinition
      * @return array
      */
     public function migrateFinisherConfiguration(array $formDefinition): array
@@ -118,9 +115,6 @@ class FormDefinitionConversionService implements SingletonInterface
         return $converterDto->getFormDefinition();
     }
 
-    /**
-     * @param string $sessionToken
-     */
     protected function persistSessionToken(string $sessionToken)
     {
         $this->getBackendUser()->setAndSaveSessionData('extFormProtectionSessionToken', $sessionToken);

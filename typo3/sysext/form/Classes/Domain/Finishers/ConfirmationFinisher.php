@@ -72,18 +72,12 @@ class ConfirmationFinisher extends AbstractFinisher
      */
     protected $contentObjectRenderer;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
         $this->typoScriptSetup = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
     }
 
-    /**
-     * @param ContentObjectRenderer $contentObjectRenderer
-     */
     public function injectContentObjectRenderer(ContentObjectRenderer $contentObjectRenderer)
     {
         $this->contentObjectRenderer = $contentObjectRenderer;
@@ -135,7 +129,6 @@ class ConfirmationFinisher extends AbstractFinisher
     }
 
     /**
-     * @param FormRuntime $formRuntime
      * @return StandaloneView
      * @throws FinisherException
      */

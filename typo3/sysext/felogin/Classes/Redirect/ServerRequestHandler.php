@@ -43,7 +43,6 @@ class ServerRequestHandler
     /**
      * Returns a property that exists in post or get context
      *
-     * @param string $propertyName
      * @return mixed|null
      */
     public function getPropertyFromGetAndPost(string $propertyName)

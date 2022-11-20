@@ -27,7 +27,6 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
     /**
      * Resolve select items
      *
-     * @param array $result
      * @return array
      * @throws \UnexpectedValueException
      */
@@ -178,7 +177,6 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
     /**
      * Determines whether the current field is a valid target for this DataProvider
      *
-     * @param array $fieldConfig
      * @return bool
      */
     protected function isTargetRenderType(array $fieldConfig)
@@ -280,7 +278,6 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
      * Sort given items by label or value or a custom user function built like
      * "MyVendor\MyExtension\TcaSorter->sortItems" or a callable.
      *
-     * @param array $items
      * @param array $sortOrders should be something like like [label => desc]
      * @return array the sorted items
      */

@@ -40,7 +40,6 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
     /**
      * Resolve inline fields
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

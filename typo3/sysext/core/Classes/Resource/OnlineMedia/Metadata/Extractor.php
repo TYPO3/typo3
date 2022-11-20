@@ -69,7 +69,6 @@ class Extractor implements ExtractorInterface
     /**
      * Checks if the given file can be processed by this Extractor
      *
-     * @param File $file
      * @return bool
      */
     public function canProcess(File $file)
@@ -81,7 +80,6 @@ class Extractor implements ExtractorInterface
      * The actual processing TASK
      * Should return an array with database properties for sys_file_metadata to write
      *
-     * @param File $file
      * @param array $previousExtractedData optional, contains the array of already extracted data
      * @return array
      */

@@ -100,7 +100,6 @@ class SyslogWriter extends AbstractWriter
     /**
      * Returns the data of the record in syslog format
      *
-     * @param LogRecord $record
      * @return string
      */
     public function getMessageForSyslog(LogRecord $record): string

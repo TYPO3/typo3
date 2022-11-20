@@ -28,9 +28,6 @@ final class MetaDataEventListener
 {
     private const TABLE_NAME = 'sys_file_metadata';
 
-    /**
-     * @param AfterFileMetaDataUpdatedEvent $event
-     */
     public function afterFileMetaDataUpdated(AfterFileMetaDataUpdatedEvent $event): void
     {
         $record = $event->getRecord();

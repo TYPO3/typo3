@@ -98,7 +98,6 @@ class CsvStreamFilter extends \php_user_filter
     }
 
     /**
-     * @param string $sequence
      * @return \Closure
      */
     protected static function buildStreamFilterModifier(string $sequence): \Closure

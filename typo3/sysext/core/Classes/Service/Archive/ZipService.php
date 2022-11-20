@@ -30,8 +30,6 @@ class ZipService
     /**
      * Extracts the zip archive to a given directory. This method makes sure a file cannot be placed outside the directory.
      *
-     * @param string $fileName
-     * @param string $directory
      * @return bool
      * @throws ExtractException
      */
@@ -57,7 +55,6 @@ class ZipService
     }
 
     /**
-     * @param string $fileName
      * @return bool
      * @throws ExtractException
      */
@@ -88,9 +85,6 @@ class ZipService
         return true;
     }
 
-    /**
-     * @param string $directory
-     */
     private function assertDirectoryIsWritable(string $directory): void
     {
         if (!is_dir($directory)) {

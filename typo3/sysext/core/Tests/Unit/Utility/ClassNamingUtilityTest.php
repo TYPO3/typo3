@@ -67,8 +67,6 @@ class ClassNamingUtilityTest extends UnitTestCase
 
     /**
      * @dataProvider repositoryAndModelClassNames
-     * @param string $expectedRepositoryName
-     * @param string $modelName
      * @test
      */
     public function translateModelNameToRepositoryName(string $expectedRepositoryName, string $modelName): void
@@ -79,8 +77,6 @@ class ClassNamingUtilityTest extends UnitTestCase
 
     /**
      * @dataProvider repositoryAndModelClassNames
-     * @param string $repositoryName
-     * @param string $expectedModelName
      * @test
      */
     public function translateRepositoryNameToModelName(string $repositoryName, string $expectedModelName): void
@@ -148,8 +144,6 @@ class ClassNamingUtilityTest extends UnitTestCase
     /**
      * @dataProvider controllerObjectNamesAndMatches
      *
-     * @param string $controllerObjectName
-     * @param array $expectedMatches
      * @test
      */
     public function explodeObjectControllerName(string $controllerObjectName, array $expectedMatches): void

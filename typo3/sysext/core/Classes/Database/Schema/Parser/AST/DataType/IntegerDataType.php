@@ -24,9 +24,6 @@ class IntegerDataType extends AbstractDataType
 {
     /**
      * IntegerDataType constructor.
-     *
-     * @param int $length
-     * @param array $options
      */
     public function __construct(int $length, array $options)
     {

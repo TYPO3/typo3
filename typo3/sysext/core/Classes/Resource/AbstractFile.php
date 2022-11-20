@@ -425,7 +425,6 @@ abstract class AbstractFile implements FileInterface
      * \TYPO3\CMS\Core\Resource-internal usage; don't use it to move files.
      *
      * @internal Should only be used by other parts of the File API (e.g. drivers after moving a file)
-     * @param ResourceStorage $storage
      * @return File
      */
     public function setStorage(ResourceStorage $storage)
@@ -598,8 +597,6 @@ abstract class AbstractFile implements FileInterface
      * Updates properties of this object.
      * This method is used to reconstitute settings from the
      * database into this object after being instantiated.
-     *
-     * @param array $properties
      */
     abstract public function updateProperties(array $properties);
 

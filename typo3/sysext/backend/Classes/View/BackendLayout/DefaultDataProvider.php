@@ -40,9 +40,6 @@ class DefaultDataProvider implements DataProviderInterface
      * Adds backend layouts to the given backend layout collection.
      * The default backend layout ('default_default') is not added
      * since it's the default fallback if nothing is specified.
-     *
-     * @param DataProviderContext $dataProviderContext
-     * @param BackendLayoutCollection $backendLayoutCollection
      */
     public function addBackendLayouts(
         DataProviderContext $dataProviderContext,
@@ -101,7 +98,6 @@ class DefaultDataProvider implements DataProviderInterface
     /**
      * Creates a new backend layout using the given record data.
      *
-     * @param array $data
      * @return BackendLayout
      */
     protected function createBackendLayout(array $data)
@@ -115,7 +111,6 @@ class DefaultDataProvider implements DataProviderInterface
     /**
      * Resolves the icon from the database record
      *
-     * @param array $icon
      * @return string
      */
     protected function getIconPath(array $icon)
@@ -213,7 +208,6 @@ class DefaultDataProvider implements DataProviderInterface
     /**
      * Returns the storage PID from TCEFORM.
      *
-     * @param array $pageTsConfig
      * @return int
      */
     protected function getStoragePid(array $pageTsConfig)
@@ -230,7 +224,6 @@ class DefaultDataProvider implements DataProviderInterface
     /**
      * Returns the page TSconfig from TCEFORM.
      *
-     * @param array $pageTsConfig
      * @return array
      */
     protected function getPageTSconfigIds(array $pageTsConfig)

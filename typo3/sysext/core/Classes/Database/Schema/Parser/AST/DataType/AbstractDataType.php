@@ -82,9 +82,6 @@ abstract class AbstractDataType
         return $this->length;
     }
 
-    /**
-     * @param int $length
-     */
     public function setLength(int $length)
     {
         $this->length = $length;
@@ -98,9 +95,6 @@ abstract class AbstractDataType
         return $this->precision;
     }
 
-    /**
-     * @param int $precision
-     */
     public function setPrecision(int $precision)
     {
         $this->precision = $precision;
@@ -114,9 +108,6 @@ abstract class AbstractDataType
         return $this->scale;
     }
 
-    /**
-     * @param int $scale
-     */
     public function setScale(int $scale)
     {
         $this->scale = $scale;
@@ -130,9 +121,6 @@ abstract class AbstractDataType
         return $this->fixed;
     }
 
-    /**
-     * @param bool $fixed
-     */
     public function setFixed(bool $fixed)
     {
         $this->fixed = $fixed;
@@ -146,9 +134,6 @@ abstract class AbstractDataType
         return $this->options;
     }
 
-    /**
-     * @param array $options
-     */
     public function setOptions(array $options)
     {
         $this->options = $options;
@@ -162,9 +147,6 @@ abstract class AbstractDataType
         return $this->unsigned;
     }
 
-    /**
-     * @param bool $unsigned
-     */
     public function setUnsigned(bool $unsigned)
     {
         $this->unsigned = $unsigned;
@@ -178,9 +160,6 @@ abstract class AbstractDataType
         return $this->values;
     }
 
-    /**
-     * @param array $values
-     */
     public function setValues(array $values)
     {
         $this->values = $values;

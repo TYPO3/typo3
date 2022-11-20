@@ -35,9 +35,6 @@ class SvgHookHandler
         $this->typeCheck = $typeCheck;
     }
 
-    /**
-     * @param array $parameters
-     */
     public function processMoveUploadedFile(array $parameters)
     {
         $filePath = $parameters['source'] ?? null;

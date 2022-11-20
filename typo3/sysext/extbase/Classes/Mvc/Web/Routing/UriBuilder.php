@@ -131,7 +131,6 @@ class UriBuilder
     protected $argumentPrefix;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
@@ -140,7 +139,6 @@ class UriBuilder
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectExtensionService(ExtensionService $extensionService): void
@@ -183,7 +181,6 @@ class UriBuilder
      * If you want to "prefix" arguments, you can pass in multidimensional arrays:
      * array('prefix1' => array('foo' => 'bar')) gets "&prefix1[foo]=bar"
      *
-     * @param array $arguments
      * @return static the current UriBuilder to allow method chaining
      */
     public function setArguments(array $arguments): UriBuilder
@@ -204,7 +201,6 @@ class UriBuilder
     /**
      * If specified, adds a given HTML anchor to the URI (#...)
      *
-     * @param string $section
      * @return static the current UriBuilder to allow method chaining
      */
     public function setSection(string $section): UriBuilder
@@ -225,7 +221,6 @@ class UriBuilder
     /**
      * Specifies the format of the target (e.g. "html" or "xml")
      *
-     * @param string $format
      * @return static the current UriBuilder to allow method chaining
      */
     public function setFormat(string $format): UriBuilder
@@ -246,7 +241,6 @@ class UriBuilder
     /**
      * If set, the URI is prepended with the current base URI. Defaults to FALSE.
      *
-     * @param bool $createAbsoluteUri
      * @return static the current UriBuilder to allow method chaining
      */
     public function setCreateAbsoluteUri(bool $createAbsoluteUri): UriBuilder
@@ -287,7 +281,6 @@ class UriBuilder
 
     /**
      * Enforces a URI / link to a page to a specific language (or use "current")
-     * @param string|null $language
      * @return UriBuilder
      */
     public function setLanguage(?string $language): UriBuilder
@@ -304,7 +297,6 @@ class UriBuilder
     /**
      * If set, the current query parameters will be merged with $this->arguments. Defaults to FALSE.
      *
-     * @param bool $addQueryString
      * @return static the current UriBuilder to allow method chaining
      * @see https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Functions/Typolink.html#addquerystring
      */
@@ -327,7 +319,6 @@ class UriBuilder
      * A list of arguments to be excluded from the query parameters
      * Only active if addQueryString is set
      *
-     * @param array $argumentsToBeExcludedFromQueryString
      * @return static the current UriBuilder to allow method chaining
      * @see https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Functions/Typolink.html#addquerystring
      * @see setAddQueryString()
@@ -350,7 +341,6 @@ class UriBuilder
     /**
      * Specifies the prefix to be used for all arguments.
      *
-     * @param string $argumentPrefix
      * @return static the current UriBuilder to allow method chaining
      */
     public function setArgumentPrefix(string $argumentPrefix): UriBuilder
@@ -371,7 +361,6 @@ class UriBuilder
     /**
      * If set, URIs for pages without access permissions will be created
      *
-     * @param bool $linkAccessRestrictedPages
      * @return static the current UriBuilder to allow method chaining
      */
     public function setLinkAccessRestrictedPages(bool $linkAccessRestrictedPages): UriBuilder
@@ -392,7 +381,6 @@ class UriBuilder
     /**
      * Uid of the target page
      *
-     * @param int $targetPageUid
      * @return static the current UriBuilder to allow method chaining
      */
     public function setTargetPageUid(int $targetPageUid): UriBuilder
@@ -415,7 +403,6 @@ class UriBuilder
     /**
      * Sets the page type of the target URI. Defaults to 0
      *
-     * @param int $targetPageType
      * @return static the current UriBuilder to allow method chaining
      */
     public function setTargetPageType(int $targetPageType): UriBuilder
@@ -436,7 +423,6 @@ class UriBuilder
     /**
      * by default FALSE; if TRUE, &no_cache=1 will be appended to the URI
      *
-     * @param bool $noCache
      * @return static the current UriBuilder to allow method chaining
      */
     public function setNoCache(bool $noCache): UriBuilder
@@ -762,7 +748,6 @@ class UriBuilder
     }
 
     /**
-     * @param \Iterator $iterator
      * @return array
      */
     protected function convertIteratorToArray(\Iterator $iterator): array
@@ -778,7 +763,6 @@ class UriBuilder
     /**
      * Converts a given object recursively into an array.
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject $object
      * @return array
      * @todo Refactor this into convertDomainObjectsToIdentityArrays()
      * @internal only to be used within Extbase, not part of TYPO3 Core API.

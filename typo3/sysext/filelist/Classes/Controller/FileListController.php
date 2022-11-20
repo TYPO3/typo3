@@ -643,7 +643,6 @@ class FileListController implements LoggerAwareInterface
     /**
      * Generate a response by either the given $html or by rendering the module content.
      *
-     * @param string $html
      * @return ResponseInterface
      */
     protected function htmlResponse(string $html): ResponseInterface
@@ -658,10 +657,6 @@ class FileListController implements LoggerAwareInterface
 
     /**
      * Adds a flash message to the default flash message queue
-     *
-     * @param string $message
-     * @param string $title
-     * @param ContextualFeedbackSeverity $severity
      */
     protected function addFlashMessage(string $message, string $title = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::INFO): void
     {

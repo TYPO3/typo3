@@ -413,8 +413,6 @@ class DataMapperTest extends UnitTestCase
 
     /**
      * @param string|int|null $value
-     * @param string|null $storageFormat
-     * @param string|null $expectedValue
      * @test
      * @dataProvider mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZoneDataProvider
      */

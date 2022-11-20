@@ -88,7 +88,6 @@ class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterfa
     }
 
     /**
-     * @param array $pageTitleCache
      * @internal
      */
     public function setPageTitleCache(array $pageTitleCache): void
@@ -111,7 +110,6 @@ class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterfa
     }
 
     /**
-     * @param array $orderInformation
      * @return string[]
      * @throws \UnexpectedValueException
      */

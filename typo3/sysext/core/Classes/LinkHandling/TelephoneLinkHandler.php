@@ -25,7 +25,6 @@ class TelephoneLinkHandler implements LinkHandlingInterface
     /**
      * Returns the link to a telephone number as a string
      *
-     * @param array $parameters
      * @return string
      */
     public function asString(array $parameters): string
@@ -39,7 +38,6 @@ class TelephoneLinkHandler implements LinkHandlingInterface
      * Returns the telephone number without the "tel:" prefix
      * in the 'telephone' property of the array.
      *
-     * @param array $data
      * @return array
      */
     public function resolveHandlerData(array $data): array

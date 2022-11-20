@@ -71,9 +71,6 @@ class ScenarioGTest extends AbstractLocalizedPagesTestCase
     }
 
     /**
-     * @param string $url
-     * @param array $expectedMenu
-     *
      * @test
      * @dataProvider menuDataProvider
      */

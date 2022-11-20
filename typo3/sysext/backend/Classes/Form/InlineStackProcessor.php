@@ -37,8 +37,6 @@ class InlineStackProcessor
 
     /**
      * One of two possible initialize methods setting a given structure.
-     *
-     * @param array $structure
      */
     public function initializeByGivenStructure(array $structure = [])
     {
@@ -132,8 +130,6 @@ class InlineStackProcessor
 
     /**
      * Add a stable structure to the stack
-     *
-     * @param array $structureItem
      */
     public function pushStableStructureItem(array $structureItem = [])
     {

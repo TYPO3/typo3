@@ -67,9 +67,6 @@ class Content extends AbstractEntity
         return $this->hotels;
     }
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $hotels
-     */
     public function setHotels(ObjectStorage $hotels): void
     {
         $this->hotels = $hotels;

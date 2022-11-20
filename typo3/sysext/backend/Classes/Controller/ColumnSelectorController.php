@@ -56,7 +56,6 @@ class ColumnSelectorController
     /**
      * Update the columns to be displayed for the given table
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function updateVisibleColumnsAction(ServerRequestInterface $request): ResponseInterface
@@ -85,7 +84,6 @@ class ColumnSelectorController
     /**
      * Generate the show columns selector form
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function showColumnsSelectorAction(ServerRequestInterface $request): ResponseInterface
@@ -108,8 +106,6 @@ class ColumnSelectorController
     /**
      * Retrieve all columns for the table, which can be selected
      *
-     * @param string $table
-     * @param int $pageId
      * @return array
      */
     protected function getColumns(string $table, int $pageId): array

@@ -79,7 +79,6 @@ class PersistedAliasMapperTest extends AbstractEnhancerLinkGeneratorTestCase
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider persistedAliasMapperDataProvider
      */
@@ -135,7 +134,6 @@ class PersistedAliasMapperTest extends AbstractEnhancerLinkGeneratorTestCase
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider pageTypeDecoratorIsAppliedDataProvider
      */

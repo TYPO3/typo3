@@ -84,8 +84,6 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     /**
      * Calls the bootstrap process to set up $GLOBALS['BE_USER'] AND $GLOBALS['LANG']
      *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -169,8 +167,6 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
      * Backend requests should always apply Set-Cookie information and never be cacheable.
      * This is also needed if there is a redirect from somewhere in the code.
      *
-     * @param ResponseInterface $response
-     * @param BackendUserAuthentication|null $userAuthentication
      * @return ResponseInterface
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */

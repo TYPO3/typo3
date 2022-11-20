@@ -84,9 +84,6 @@ class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
     /**
      * @test
      * @dataProvider canParseDateTimeTypeProvider
-     * @param string $columnDefinition
-     * @param string $className
-     * @param int $length
      */
     public function canParseDataType(string $columnDefinition, string $className, int $length = null): void
     {

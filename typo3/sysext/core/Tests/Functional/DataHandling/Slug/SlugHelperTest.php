@@ -145,8 +145,6 @@ class SlugHelperTest extends AbstractDataHandlerActionTestCase
 
     /**
      * @dataProvider generateRespectsFallbackLanguageOfParentPageSlugDataProvider
-     * @param string $expected
-     * @param array $page
      * @test
      */
     public function generateRespectsFallbackLanguageOfParentPageSlug(string $expected, array $page): void

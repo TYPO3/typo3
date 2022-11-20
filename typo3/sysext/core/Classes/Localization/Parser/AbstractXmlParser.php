@@ -41,9 +41,6 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
      * New method for parsing xml files, not part of an interface as the plan is to replace
      * the entire API for labels with something different in TYPO3 12
      *
-     * @param string $sourcePath
-     * @param string $languageKey
-     * @param string $fileNamePattern
      * @return array
      */
     public function parseExtensionResource(string $sourcePath, string $languageKey, string $fileNamePattern): array

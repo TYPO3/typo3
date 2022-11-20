@@ -199,9 +199,6 @@ class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $useAbsoluteUrls
-     * @param string $compressorAspect
-     * @param array $expectations
      * @test
      * @dataProvider urisAreRenderedUsingForceAbsoluteUrlsDataProvider
      */
@@ -266,10 +263,6 @@ class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
 
     /**
      * Adds TypoScript constants snippet to the existing template record
-     *
-     * @param int $pageId
-     * @param string $constants
-     * @param bool $append
      */
     protected function setTypoScriptConstantsToTemplateRecord(int $pageId, string $constants, bool $append = false): void
     {
@@ -289,7 +282,6 @@ class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
     }
 
     /**
-     * @param array $constants
      * @return string
      */
     protected function compileTypoScriptConstants(array $constants): string

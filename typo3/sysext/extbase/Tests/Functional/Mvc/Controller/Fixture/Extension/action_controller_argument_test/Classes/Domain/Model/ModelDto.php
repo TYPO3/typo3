@@ -41,7 +41,6 @@ class ModelDto
     }
 
     /**
-     * @param string $value
      * @return self
      */
     public function setValue(string $value): self
@@ -59,7 +58,6 @@ class ModelDto
     }
 
     /**
-     * @param ModelDto $model
      * @return self
      */
     public function setModel(ModelDto $model): self

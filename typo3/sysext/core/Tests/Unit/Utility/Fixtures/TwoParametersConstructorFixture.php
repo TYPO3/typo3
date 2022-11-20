@@ -25,10 +25,6 @@ class TwoParametersConstructorFixture
     public ?string $constructorParameter1;
     public ?string $constructorParameter2;
 
-    /**
-     * @param string $parameter1
-     * @param string $parameter2
-     */
     public function __construct(string $parameter1, string $parameter2)
     {
         $this->constructorParameter1 = $parameter1;

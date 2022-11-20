@@ -28,9 +28,6 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
 {
     /**
      * Open list module of styleguide elements basic page
-     *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -107,8 +104,6 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
 
     /**
      * @dataProvider simpleRangeAndMd5FieldsDataProvider
-     * @param ApplicationTester $I
-     * @param Example $testData
      */
     public function simpleRangeAndMd5Fields(ApplicationTester $I, Example $testData): void
     {

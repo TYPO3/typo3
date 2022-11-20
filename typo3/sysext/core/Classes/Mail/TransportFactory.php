@@ -196,7 +196,6 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
     /**
      * Creates a spool from mail settings.
      *
-     * @param array $mailSettings
      * @return DelayedTransportInterface
      * @throws \RuntimeException
      */

@@ -281,7 +281,6 @@ class HookTest extends AbstractDataHandlerActionTestCase
 
     /**
      * @param string[] $methodNames
-     * @param int $count
      */
     protected function assertHookInvocationsCount(array $methodNames, int $count): void
     {
@@ -298,7 +297,6 @@ class HookTest extends AbstractDataHandlerActionTestCase
 
     /**
      * @param string[] $methodNames
-     * @param array $assertions
      */
     protected function assertHookInvocationsPayload(array $methodNames, array $assertions): void
     {
@@ -307,10 +305,6 @@ class HookTest extends AbstractDataHandlerActionTestCase
         }
     }
 
-    /**
-     * @param string $methodName
-     * @param array $assertions
-     */
     protected function assertHookInvocationPayload(string $methodName, array $assertions): void
     {
         $message = 'Unexpected hook payload amount found for method "%s"';
@@ -330,8 +324,6 @@ class HookTest extends AbstractDataHandlerActionTestCase
     }
 
     /**
-     * @param array $haystack
-     * @param array $assertion
      * @return int[]
      */
     protected function findAllArrayValuesInHaystack(array $haystack, array $assertion): array
@@ -346,8 +338,6 @@ class HookTest extends AbstractDataHandlerActionTestCase
     }
 
     /**
-     * @param array $left
-     * @param array $right
      * @return bool
      */
     protected function equals(array $left, array $right): bool

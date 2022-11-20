@@ -33,9 +33,6 @@ class ArrayProcessor
      */
     protected $data;
 
-    /**
-     * @param array $data
-     */
     public function __construct(array $data)
     {
         $this->data = ArrayUtility::flattenPlain($data);
@@ -73,7 +70,6 @@ class ArrayProcessor
     }
 
     /**
-     * @param array $allProcessings
      * @return ArrayProcessing[]
      * @throws ArrayProcessorException
      */

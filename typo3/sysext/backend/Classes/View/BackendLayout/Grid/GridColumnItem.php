@@ -331,7 +331,6 @@ class GridColumnItem extends AbstractGridObject
      * Gets the number of records referencing the record with the UID $uid in
      * the table tt_content.
      *
-     * @param int $uid
      * @return int The number of references to record $uid in table
      */
     protected function getReferenceCount(int $uid): int

@@ -44,7 +44,6 @@ class FolderLinkHandler implements LinkHandlingInterface
     /**
      * Returns a link notation to a folder
      *
-     * @param array $parameters
      *
      * @return string
      */

@@ -1152,7 +1152,6 @@ class QueryBuilderTest extends UnitTestCase
      * @test
      * @dataProvider createNamedParameterInput
      * @param mixed $input
-     * @param int $type
      */
     public function setWithNamedParameterPassesGivenTypeToCreateNamedParameter($input, int $type): void
     {

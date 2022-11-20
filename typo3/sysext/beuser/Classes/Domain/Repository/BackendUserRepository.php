@@ -34,7 +34,6 @@ class BackendUserRepository extends Repository
     /**
      * Finds Backend Users on a given list of uids
      *
-     * @param array $uidList
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
      */
     public function findByUidList(array $uidList)
@@ -49,7 +48,6 @@ class BackendUserRepository extends Repository
     /**
      * Find Backend Users matching to Demand object properties
      *
-     * @param Demand $demand
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
      */
     public function findDemanded(Demand $demand)

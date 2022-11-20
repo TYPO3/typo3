@@ -27,7 +27,6 @@ class RemoveHmacDataConverter extends AbstractConverter
     /**
      * Remove the hmac data ("_orig_<propertyName>") for the corresponding property.
      *
-     * @param string $key
      * @param mixed $value
      */
     public function __invoke(string $key, $value): void

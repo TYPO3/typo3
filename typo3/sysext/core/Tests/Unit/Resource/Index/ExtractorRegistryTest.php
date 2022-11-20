@@ -206,7 +206,6 @@ class ExtractorRegistryTest extends UnitTestCase
     /**
      * Initialize an ExtractorRegistry and mock createExtractorInstance()
      *
-     * @param array $createsExtractorInstances
      * @return \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry
      */
     protected function getMockExtractorRegistry(array $createsExtractorInstances = [])

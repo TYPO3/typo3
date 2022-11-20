@@ -34,9 +34,6 @@ class ContextMenu
     }
 
     /**
-     * @param string $table
-     * @param string $identifier
-     * @param string $context
      * @return array
      */
     public function getItems(string $table, string $identifier, string $context = ''): array
@@ -49,9 +46,6 @@ class ContextMenu
     }
 
     /**
-     * @param string $table
-     * @param string $identifier
-     * @param string $context
      * @return ProviderInterface[]
      */
     protected function getAvailableProviders(string $table, string $identifier, string $context): array
@@ -73,7 +67,6 @@ class ContextMenu
      * Clean up double dividers.
      * Don't render menu when there are no item or submenu.
      *
-     * @param array $items
      * @return array
      */
     protected function cleanItems(array $items): array

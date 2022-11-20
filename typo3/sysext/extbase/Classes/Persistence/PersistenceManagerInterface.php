@@ -71,7 +71,6 @@ interface PersistenceManagerInterface
     /**
      * Returns the number of records matching the query.
      *
-     * @param QueryInterface $query
      * @return int
      */
     public function getObjectCountByQuery(QueryInterface $query);
@@ -79,7 +78,6 @@ interface PersistenceManagerInterface
     /**
      * Returns the object data matching the $query.
      *
-     * @param QueryInterface $query
      * @return array
      */
     public function getObjectDataByQuery(QueryInterface $query);

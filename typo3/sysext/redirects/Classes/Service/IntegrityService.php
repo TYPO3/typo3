@@ -86,7 +86,6 @@ class IntegrityService
     }
 
     /**
-     * @param string|null $siteIdentifier
      * @return Site[]
      */
     private function getSites(?string $siteIdentifier): array

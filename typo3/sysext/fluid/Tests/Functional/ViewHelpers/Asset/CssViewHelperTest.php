@@ -42,7 +42,6 @@ class CssViewHelperTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $href
      * @test
      * @dataProvider sourceDataProvider
      */

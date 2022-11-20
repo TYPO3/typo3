@@ -103,7 +103,6 @@ class RouteRedirect
     /**
      * Checks if the route can be resolved as a redirect.
      *
-     * @param Router $router
      * @throws RouteNotFoundException
      * @throws MethodNotAllowedException
      * @throws RouteTypeNotAllowedException

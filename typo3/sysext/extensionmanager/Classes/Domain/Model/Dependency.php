@@ -127,7 +127,6 @@ class Dependency
      * possible version number of this dependency (e.g. "typo3") to
      * determine if the given version is "compatible".
      *
-     * @param string $version
      * @return bool TRUE if the version number is compatible
      */
     public function isVersionCompatible(string $version): bool

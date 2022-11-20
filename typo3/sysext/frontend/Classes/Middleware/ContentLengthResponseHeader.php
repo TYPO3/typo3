@@ -37,8 +37,6 @@ class ContentLengthResponseHeader implements MiddlewareInterface
     /**
      * Adds the content length
      *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

@@ -213,8 +213,6 @@ class SaveToDatabaseFinisher extends AbstractFinisher
     /**
      * Prepare data for saving to database
      *
-     * @param array $elementsConfiguration
-     * @param array $databaseData
      * @return array
      */
     protected function prepareData(array $elementsConfiguration, array $databaseData)
@@ -264,8 +262,6 @@ class SaveToDatabaseFinisher extends AbstractFinisher
 
     /**
      * Perform the current database operation
-     *
-     * @param int $iterationCount
      */
     protected function process(int $iterationCount)
     {
@@ -300,10 +296,6 @@ class SaveToDatabaseFinisher extends AbstractFinisher
     /**
      * Save or insert the values from
      * $databaseData into the table $table
-     *
-     * @param array $databaseData
-     * @param string $table
-     * @param int $iterationCount
      */
     protected function saveToDatabase(array $databaseData, string $table, int $iterationCount)
     {
@@ -362,7 +354,6 @@ class SaveToDatabaseFinisher extends AbstractFinisher
     /**
      * Returns a form element object for a given identifier.
      *
-     * @param string $elementIdentifier
      * @return FormElementInterface|null
      */
     protected function getElementByIdentifier(string $elementIdentifier)

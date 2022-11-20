@@ -57,8 +57,6 @@ class BackendRouteInitialization implements MiddlewareInterface
     /**
      * Resolve the &route (or &M) GET/POST parameter, and also resolves a Route object
      *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

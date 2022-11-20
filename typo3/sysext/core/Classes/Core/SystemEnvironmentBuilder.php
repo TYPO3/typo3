@@ -56,7 +56,6 @@ class SystemEnvironmentBuilder
      *
      * @internal This method should not be used by 3rd party code. It will change without further notice.
      * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
-     * @param int $requestType
      */
     public static function run(int $entryPointLevel = 0, int $requestType = self::REQUESTTYPE_FE)
     {
@@ -112,7 +111,6 @@ class SystemEnvironmentBuilder
      * web calls, or '.../bin/typo3' or similar for cli calls.
      *
      * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
-     * @param int $requestType
      * @return string Absolute path to entry script
      */
     protected static function calculateScriptPath(int $entryPointLevel, int $requestType): string
@@ -195,10 +193,6 @@ class SystemEnvironmentBuilder
 
     /**
      * Initialize the Environment class
-     *
-     * @param int $requestType
-     * @param string $scriptPath
-     * @param string $sitePath
      */
     protected static function initializeEnvironment(int $requestType, string $scriptPath, string $sitePath)
     {
@@ -348,7 +342,6 @@ class SystemEnvironmentBuilder
      * Checks if request type is cli.
      * Falls back to check PHP_SAPI in case request type is not provided
      *
-     * @param int|null $requestType
      * @return bool
      */
     protected static function isCliRequestType(?int $requestType): bool

@@ -47,9 +47,6 @@ abstract class AbstractFileFolderConverter extends AbstractTypeConverter
      */
     protected $fileFactory;
 
-    /**
-     * @param \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory
-     */
     public function injectFileFactory(ResourceFactory $fileFactory): void
     {
         $this->fileFactory = $fileFactory;
@@ -60,8 +57,6 @@ abstract class AbstractFileFolderConverter extends AbstractTypeConverter
      * built $convertedChildProperties and $configuration.
      *
      * @param string|int $source
-     * @param string $targetType
-     * @param array $convertedChildProperties
      * @param PropertyMappingConfigurationInterface|null $configuration
      * @return AbstractFileFolder
      * @throws Exception

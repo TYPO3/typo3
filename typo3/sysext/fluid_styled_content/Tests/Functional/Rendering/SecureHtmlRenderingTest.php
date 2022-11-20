@@ -113,8 +113,6 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $payload
-     * @param string$expectation
      * @test
      * @dataProvider defaultParseFuncRteAvoidsCrossSiteScriptingDataProvider
      */
@@ -195,9 +193,6 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $type
-     * @param string $payload
-     * @param string $expectation
      * @test
      * @dataProvider htmlViewHelperAvoidsCrossSiteScriptingDataProvider
      */
@@ -250,8 +245,6 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
     /**
      * Uses a custom parseFunc that does not have `parseFunc.htmlSanitize` defined (which is deprecated).
      *
-     * @param string $payload
-     * @param string$expectation
      * @test
      * @dataProvider customParseFuncAvoidsCrossSiteScriptingDataProvider
      */
@@ -264,9 +257,6 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    /**
-     * @param AbstractInstruction ...$instructions
-     */
     private function invokeFrontendRendering(AbstractInstruction ...$instructions): ResponseInterface
     {
         $sourcePageId = 1100;

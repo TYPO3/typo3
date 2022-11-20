@@ -134,8 +134,6 @@ class UserSession
     /**
      * Overrides the whole data array. Can also be used to unset the array.
      * This also sets the `$wasUpdated` pointer to `true`
-     *
-     * @param array $data
      */
     public function overrideData(array $data): void
     {
@@ -218,8 +216,6 @@ class UserSession
      * Creates a new user session based on the provided session record
      *
      * @param string $id the session identifier
-     * @param array $record
-     * @param bool $markAsNew
      * @return UserSession
      */
     public static function createFromRecord(string $id, array $record, bool $markAsNew = false): self
@@ -242,7 +238,6 @@ class UserSession
      * Creates a non fixated user session. This means the
      * session does not belong to a logged-in user
      *
-     * @param string $identifier
      * @return UserSession
      */
     public static function createNonFixated(string $identifier): self

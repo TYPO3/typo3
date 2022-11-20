@@ -267,7 +267,6 @@ class TemplatesPathsTest extends FunctionalTestCase
     }
 
     /**
-     * @param array $requestArguments
      * @return string
      */
     protected function fetchFrontendResponseBody(array $requestArguments): string

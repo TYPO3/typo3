@@ -295,9 +295,6 @@ class Extension extends AbstractEntity
         return $this->extensionKey;
     }
 
-    /**
-     * @param \DateTime $lastUpdated
-     */
     public function setLastUpdated(\DateTime $lastUpdated)
     {
         $this->lastUpdated = $lastUpdated;
@@ -527,9 +524,6 @@ class Extension extends AbstractEntity
         return null;
     }
 
-    /**
-     * @param Dependency $dependency
-     */
     public function addDependency(Dependency $dependency)
     {
         $this->dependencies->attach($dependency);
@@ -607,9 +601,6 @@ class Extension extends AbstractEntity
         return $this->documentationLink;
     }
 
-    /**
-     * @param string $documentationLink
-     */
     public function setDocumentationLink(string $documentationLink): void
     {
         $this->documentationLink = $documentationLink;
@@ -623,7 +614,6 @@ class Extension extends AbstractEntity
     /**
      * Map a legacy extension array to an object
      *
-     * @param array $extensionArray
      * @return Extension
      */
     public static function createFromExtensionArray(array $extensionArray): self
@@ -643,7 +633,6 @@ class Extension extends AbstractEntity
     /**
      * Converts string dependencies to an object storage of dependencies
      *
-     * @param string $dependencies
      * @return \SplObjectStorage<Dependency>
      */
     protected function convertDependenciesToObjects(string $dependencies): \SplObjectStorage

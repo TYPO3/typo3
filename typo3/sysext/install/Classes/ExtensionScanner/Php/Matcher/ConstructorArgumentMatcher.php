@@ -60,7 +60,6 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
      * Called by PhpParser.
      * Test for "->deprecated()" (weak match)
      *
-     * @param Node $node
      * @return void|null
      */
     public function enterNode(Node $node)

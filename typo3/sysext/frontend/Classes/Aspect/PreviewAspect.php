@@ -46,7 +46,6 @@ class PreviewAspect implements AspectInterface
     /**
      * Get a property from aspect
      *
-     * @param string $name
      * @return mixed
      * @throws AspectPropertyNotFoundException
      */

@@ -182,9 +182,7 @@ class DatabaseCheck implements CheckInterface
     /**
      * Get the status of a specific database platform
      *
-     * @param string $databaseDriver
      * @return FlashMessageQueue
-     *
      * @throws Exception
      */
     public function checkDatabasePlatformRequirements(string $databaseDriver): FlashMessageQueue
@@ -240,9 +238,7 @@ class DatabaseCheck implements CheckInterface
     }
 
     /**
-     * @param string $databaseDriverName
      * @return string
-     *
      * @throws Exception
      */
     public static function retrieveDatabasePlatformByDriverName(string $databaseDriverName): string
@@ -259,7 +255,6 @@ class DatabaseCheck implements CheckInterface
     }
 
     /**
-     * @param string $driverName
      * @return string
      * @throws Exception
      */

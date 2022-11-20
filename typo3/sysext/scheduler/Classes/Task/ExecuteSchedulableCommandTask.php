@@ -55,9 +55,6 @@ class ExecuteSchedulableCommandTask extends AbstractTask
      */
     protected $defaults = [];
 
-    /**
-     * @param string $commandIdentifier
-     */
     public function setCommandIdentifier(string $commandIdentifier)
     {
         $this->commandIdentifier = $commandIdentifier;
@@ -179,7 +176,6 @@ class ExecuteSchedulableCommandTask extends AbstractTask
     }
 
     /**
-     * @param string $argumentName
      * @param mixed $argumentValue
      */
     public function addDefaultValue(string $argumentName, $argumentValue)

@@ -283,8 +283,6 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
 
     /**
      * Mark a single updater as done
-     *
-     * @param RowUpdaterInterface $updater
      */
     protected function setRowUpdaterExecuted(RowUpdaterInterface $updater)
     {
@@ -315,14 +313,6 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
         return $startPosition;
     }
 
-    /**
-     * @param Connection $connectionForTable
-     * @param string $table
-     * @param array $updatedFields
-     * @param int $uid
-     * @param Connection $connectionForSysRegistry
-     * @param array $startPosition
-     */
     protected function updateOrDeleteRow(Connection $connectionForTable, Connection $connectionForSysRegistry, string $table, int $uid, array $updatedFields, array $startPosition): void
     {
         $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'] ?? null;

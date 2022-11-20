@@ -23,8 +23,6 @@ namespace TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception;
 class NoSuchPropertyException extends \Exception
 {
     /**
-     * @param string $className
-     * @param string $propertyName
      * @return NoSuchPropertyException
      */
     public static function create(string $className, string $propertyName): NoSuchPropertyException

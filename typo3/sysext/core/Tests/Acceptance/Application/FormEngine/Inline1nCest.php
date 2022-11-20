@@ -30,8 +30,6 @@ class Inline1nCest
     /**
      * Open styleguide inline 1n page in list module
      *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      * @throws \Exception
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void

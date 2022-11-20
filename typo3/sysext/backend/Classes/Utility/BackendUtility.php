@@ -185,7 +185,6 @@ class BackendUtility
     /**
      * Purges computed property names starting with underscore character ('_').
      *
-     * @param array $propertyNames
      * @return array
      * @internal should only be used from within TYPO3 Core
      */
@@ -1084,8 +1083,6 @@ class BackendUtility
     }
 
     /**
-     * @param int $fileId
-     * @param array $configuration
      * @return string
      */
     public static function getThumbnailUrl(int $fileId, array $configuration): string
@@ -1192,7 +1189,6 @@ class BackendUtility
     /**
      * Returns the combined markup for Bootstraps tooltips
      *
-     * @param array $row
      * @param string $table
      * @return string
      */
@@ -1744,11 +1740,8 @@ class BackendUtility
     /**
      * Helper method to fetch all labels for all relations of processed Values.
      *
-     * @param array $theColConf
-     * @param string $table
      * @param string|int|null $recordId
      * @param string|int $value
-     * @param bool $noRecordLookup
      * @return array
      */
     protected static function resolveRelationLabels(array $theColConf, string $table, $recordId, $value, bool $noRecordLookup): array
@@ -3228,12 +3221,10 @@ class BackendUtility
      * Miscellaneous
      *
      *******************************************/
-
     /**
      * Creates ADMCMD parameters for the "viewpage" extension / frontend
      *
      * @param array $pageInfo Page record
-     * @param \TYPO3\CMS\Core\Context\Context $context
      * @return string Query-parameters
      * @internal this method will be removed in TYPO3 v13.0 along with BackendUtility::getPreviewUrl()
      */

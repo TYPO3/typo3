@@ -96,7 +96,6 @@ class PageRouter implements RouterInterface
     /**
      * A page router is always bound to a specific site.
      *
-     * @param Site $site
      * @param \TYPO3\CMS\Core\Context\Context|null $context
      */
     public function __construct(Site $site, Context $context = null)
@@ -111,7 +110,6 @@ class PageRouter implements RouterInterface
     /**
      * Finds a RouteResult based on the given request.
      *
-     * @param ServerRequestInterface $request
      * @param RouteResultInterface|SiteRouteResult|null $previousResult
      * @return SiteRouteResult
      * @throws RouteNotFoundException
@@ -453,8 +451,6 @@ class PageRouter implements RouterInterface
      * Fetch possible enhancers + aspects based on the current page configuration and the site configuration put
      * into "routeEnhancers"
      *
-     * @param int $pageId
-     * @param SiteLanguage $language
      * @return EnhancerInterface[]
      */
     protected function getEnhancersForPage(int $pageId, SiteLanguage $language): array
@@ -481,8 +477,6 @@ class PageRouter implements RouterInterface
     }
 
     /**
-     * @param int $pageId
-     * @param PageArguments $arguments
      * @return string
      */
     protected function generateCacheHash(int $pageId, PageArguments $arguments): string
@@ -493,8 +487,6 @@ class PageRouter implements RouterInterface
     }
 
     /**
-     * @param int $pageId
-     * @param PageArguments $arguments
      * @return array
      */
     protected function getCacheHashParameters(int $pageId, PageArguments $arguments): array
@@ -554,7 +546,6 @@ class PageRouter implements RouterInterface
     /**
      * Retrieves type from processed route and modifies remaining query parameters.
      *
-     * @param Route $route
      * @param array $remainingQueryParameters reference to remaining query parameters
      * @return string
      */
@@ -578,8 +569,6 @@ class PageRouter implements RouterInterface
      * (such as StaticRangeMapper) is limited to 10000 in order to avoid
      * brute-force scenarios and the risk of cache-flooding.
      *
-     * @param Route $route
-     * @param array $variableNames
      * @throws \OverflowException
      */
     protected function assertMaximumStaticMappableAmount(Route $route, array $variableNames = [])
@@ -609,7 +598,6 @@ class PageRouter implements RouterInterface
     /**
      * Determine parameters that have been processed.
      *
-     * @param Route $route
      * @param array $results
      * @return array
      */

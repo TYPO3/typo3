@@ -25,7 +25,6 @@ use Psr\Http\Message\ServerRequestInterface;
 final class AfterPageTreeItemsPreparedEvent
 {
     /**
-     * @param ServerRequestInterface $request
      * @param array<int, array<string, mixed>> $items
      */
     public function __construct(

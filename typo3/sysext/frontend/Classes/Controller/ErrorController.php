@@ -40,9 +40,6 @@ class ErrorController
      * Used for creating a 500 response ("Internal Server Error"), usually due some misconfiguration
      * but if configured, a RedirectResponse could be returned as well.
      *
-     * @param ServerRequestInterface $request
-     * @param string $message
-     * @param array $reasons
      * @return ResponseInterface
      * @throws InternalServerErrorException
      */
@@ -62,9 +59,6 @@ class ErrorController
      * Used for creating a 503 response ("Service Unavailable"), to be used for maintenance mode
      * or when the server is overloaded, a RedirectResponse could be returned as well.
      *
-     * @param ServerRequestInterface $request
-     * @param string $message
-     * @param array $reasons
      * @return ResponseInterface
      * @throws ServiceUnavailableException
      */
@@ -84,9 +78,6 @@ class ErrorController
      * Used for creating a 404 response ("Page Not Found"),
      * but if configured, a RedirectResponse could be returned as well.
      *
-     * @param ServerRequestInterface $request
-     * @param string $message
-     * @param array $reasons
      * @return ResponseInterface
      * @throws PageNotFoundException
      */
@@ -107,9 +98,6 @@ class ErrorController
      * Used for creating a 403 response ("Access denied"),
      * but if configured, a RedirectResponse could be returned as well.
      *
-     * @param ServerRequestInterface $request
-     * @param string $message
-     * @param array $reasons
      * @return ResponseInterface
      * @throws PageNotFoundException
      */
@@ -130,7 +118,6 @@ class ErrorController
      * Checks whether the devIPMask matches the current visitor's IP address.
      * Note: the name of this method is a misnomer (legacy code),
      *
-     * @param ServerRequestInterface $request
      * @return bool True if the server error handler should be used.
      */
     protected function isPageUnavailableHandlerConfigured(ServerRequestInterface $request): bool
@@ -142,8 +129,6 @@ class ErrorController
     /**
      * Checks if a site is configured, and an error handler is configured for this specific status code.
      *
-     * @param ServerRequestInterface $request
-     * @param int $statusCode
      * @return PageErrorHandlerInterface|null
      */
     protected function getErrorHandlerFromSite(ServerRequestInterface $request, int $statusCode): ?PageErrorHandlerInterface
@@ -162,9 +147,6 @@ class ErrorController
     /**
      * Ensures that a response object is created as a "fallback" when no error handler is configured.
      *
-     * @param ServerRequestInterface $request
-     * @param int $statusCode
-     * @param string $reason
      * @return ResponseInterface
      */
     protected function handleDefaultError(ServerRequestInterface $request, int $statusCode, string $reason = ''): ResponseInterface

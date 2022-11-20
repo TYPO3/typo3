@@ -30,7 +30,6 @@ interface SessionBackendInterface
      * Initializes the session backend
      *
      * @param string $identifier Name of the session type, e.g. FE or BE
-     * @param array $configuration
      * @internal To be used only by SessionManager
      */
     public function initialize(string $identifier, array $configuration);
@@ -53,7 +52,6 @@ interface SessionBackendInterface
     /**
      * Read session data
      *
-     * @param string $sessionId
      * @return array Returns the session data
      * @throws SessionNotFoundException
      */
@@ -62,7 +60,6 @@ interface SessionBackendInterface
     /**
      * Delete a session record
      *
-     * @param string $sessionId
      * @return bool true if the session was deleted, false it session could not be found
      */
     public function remove(string $sessionId): bool;
@@ -72,8 +69,6 @@ interface SessionBackendInterface
      * ses_id will always be set to $sessionId and overwritten if existing in $sessionData
      * This method updates ses_tstamp automatically
      *
-     * @param string $sessionId
-     * @param array $sessionData
      * @return array The newly created session record.
      * @throws SessionNotCreatedException
      */
@@ -84,7 +79,6 @@ interface SessionBackendInterface
      * ses_id will always be set to $sessionId and overwritten if existing in $sessionData
      * This method updates ses_tstamp automatically
      *
-     * @param string $sessionId
      * @param array $sessionData The session data to update. Data may be partial.
      * @return array $sessionData The newly updated session record.
      * @throws SessionNotUpdatedException

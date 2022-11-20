@@ -184,8 +184,6 @@ class ExtensionTest extends UnitTestCase
     /**
      * @test
      * @dataProvider convertDependenciesToObjectSetsVersionDataProvider
-     * @param array $dependencies
-     * @param array $returnValue
      */
     public function convertDependenciesToObjectSetsVersion(array $dependencies, array $returnValue): void
     {

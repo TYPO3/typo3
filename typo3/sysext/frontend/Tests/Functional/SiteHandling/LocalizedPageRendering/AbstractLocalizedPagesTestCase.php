@@ -45,10 +45,6 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         });
     }
 
-    /**
-     * @param string $url
-     * @param array $scopes
-     */
     protected function assertScopes(string $url, array $scopes): void
     {
         $this->setUpFrontendRootPage(
@@ -67,9 +63,6 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         }
     }
 
-    /**
-     * @param string $url
-     */
     protected function assertResponseStatusCode(string $url): void
     {
         $this->setUpFrontendRootPage(
@@ -81,10 +74,6 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         self::assertSame(404, $response->getStatusCode());
     }
 
-    /**
-     * @param string $url
-     * @param array $expectation
-     */
     protected function assertMenu(string $url, array $expectation): void
     {
         $this->setUpFrontendRootPage(

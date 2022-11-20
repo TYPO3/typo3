@@ -121,9 +121,6 @@ class FilePathSanitizerTest extends UnitTestCase
     }
 
     /**
-     * @param string $givenPathOrUrl
-     * @param string $expectedPathOrUrl
-     * @param bool|null $allowExtensionPath
      * @test
      * @dataProvider publicAssetsInComposerModeResolvedCorrectlyDataProvider
      */
@@ -177,9 +174,6 @@ class FilePathSanitizerTest extends UnitTestCase
     }
 
     /**
-     * @param string $givenPathOrUrl
-     * @param string $expectedPathOrUrl
-     * @param bool|null $allowExtensionPath
      * @test
      * @dataProvider sanitizeCorrectlyResolvesPathsAndUrlsDataProvider
      */

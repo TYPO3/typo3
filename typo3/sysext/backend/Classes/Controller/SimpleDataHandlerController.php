@@ -123,7 +123,6 @@ class SimpleDataHandlerController
     /**
      * Processes all AJAX calls and returns a JSON formatted string
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
@@ -163,8 +162,6 @@ class SimpleDataHandlerController
 
     /**
      * Initialization of the class
-     *
-     * @param ServerRequestInterface $request
      */
     protected function init(ServerRequestInterface $request): void
     {

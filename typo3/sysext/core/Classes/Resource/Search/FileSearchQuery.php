@@ -57,7 +57,6 @@ class FileSearchQuery
     /**
      * Prepares a query based on a search demand to be used to fetch rows.
      *
-     * @param FileSearchDemand $searchDemand
      * @param QueryBuilder|null $queryBuilder
      * @return FileSearchQuery
      */
@@ -127,7 +126,6 @@ class FileSearchQuery
     /**
      * Prepares a query based on a search demand to be used to count rows.
      *
-     * @param FileSearchDemand $searchDemand
      * @param QueryBuilder|null $queryBuilder
      * @return FileSearchQuery
      */
@@ -158,7 +156,6 @@ class FileSearchQuery
      * by starting the iteration over the result.
      * Can be accessed by subclasses to add further restrictions to the query.
      *
-     * @param QueryRestrictionInterface $additionalRestriction
      * @throws \RuntimeException
      */
     public function additionalRestriction(QueryRestrictionInterface $additionalRestriction): void

@@ -232,7 +232,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * Currently needed for various unit tests, until start() and checkAuthentication() methods
      * are smaller and extracted from this class.
      *
-     * @param UserSessionManager|null $userSessionManager
      * @internal
      */
     public function initializeUserSessionManager(?UserSessionManager $userSessionManager = null): void
@@ -249,8 +248,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * c) Lookup a session attached to a user and check timeout etc.
      * d) Garbage collection, setting of no-cache headers.
      * If a user is authenticated the database record of the user (array) will be set in the ->user internal variable.
-     *
-     * @param ServerRequestInterface $request
      */
     public function start(ServerRequestInterface $request)
     {
@@ -290,7 +287,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     /**
      * Used to apply a cookie to a PSR-7 Response.
      *
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
     public function appendCookieToResponse(ResponseInterface $response): ResponseInterface
@@ -420,7 +416,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     /**
      * Checks if a submission of username and password is present or use other authentication by auth services
      *
-     * @param ServerRequestInterface $request
      * @throws MfaRequiredException
      * @internal
      */
@@ -657,9 +652,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     /**
      * Loads users from various sources (= authentication services) as an array of arrays.
      *
-     * @param array $loginData
-     * @param bool $activeLogin
-     * @param bool $isExistingSession
      * @param array|null $authenticatedUserFromSession if we have a user from an existing session, this is set here, otherwise null
      * @return array
      */
@@ -756,7 +748,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * Initializes authentication services to be used in a foreach loop
      *
      * @param string $subType e.g. getUserFE
-     * @param array $loginData
      * @param array|null $authenticatedUserFromSession the user which was loaded from the session, or null if none was found
      * @return \Traversable A generator of service objects
      */
@@ -818,8 +809,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
     /**
      * Updates the last login column in the user with the given id
-     *
-     * @param int $userId
      */
     protected function updateLoginTimestamp(int $userId)
     {

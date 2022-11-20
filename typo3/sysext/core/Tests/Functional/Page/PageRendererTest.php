@@ -211,8 +211,6 @@ class PageRendererTest extends FunctionalTestCase
     }
 
     /**
-     * @param int $requestType
-     *
      * @test
      * @dataProvider pageRendererRendersFooterValuesDataProvider
      */

@@ -31,9 +31,6 @@ trait SiteLanguageAwareTrait
      */
     protected $siteLanguage;
 
-    /**
-     * @param Entity\SiteLanguage $siteLanguage
-     */
     public function setSiteLanguage(SiteLanguage $siteLanguage)
     {
         $this->siteLanguage = $siteLanguage;

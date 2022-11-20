@@ -102,7 +102,6 @@ abstract class AbstractImagePreset extends AbstractPreset
     /**
      * Find executable in path, wrapper for specific ImageMagick/GraphicsMagick find methods.
      *
-     * @param array $searchPaths
      * @return mixed
      */
     abstract protected function findExecutableInPath(array $searchPaths);

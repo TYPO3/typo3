@@ -27,9 +27,6 @@ class ElementsGroupCest
 {
     /**
      * Open list module of styleguide elements group page
-     *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -48,9 +45,6 @@ class ElementsGroupCest
         $I->waitForText('Edit Form', 3, 'h1');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function sortElementsInGroup(ApplicationTester $I): void
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
@@ -93,9 +87,6 @@ class ElementsGroupCest
         $I->see($multiselect[1], $select . ' > option:nth-child(3)');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function addARecordWithRecordBrowserGroup(ApplicationTester $I): void
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
@@ -115,9 +106,6 @@ class ElementsGroupCest
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 5);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function addTwoRecordWithRecordBrowserGroup(ApplicationTester $I): void
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
@@ -139,9 +127,6 @@ class ElementsGroupCest
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 6);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function searchForARecordWithRecordBrowserGroup(ApplicationTester $I): void
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';

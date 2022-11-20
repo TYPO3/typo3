@@ -39,8 +39,6 @@ final class AttributesViewHelper extends AbstractViewHelper
 
     /**
      * @param array{class?: ToolbarItemInterface} $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return string
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string

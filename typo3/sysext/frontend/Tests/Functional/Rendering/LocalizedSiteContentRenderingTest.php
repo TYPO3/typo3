@@ -292,12 +292,6 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
      * Page title is always [DK]Page, the content language is always "1"
      * @test
      * @dataProvider dutchDataProvider
-     *
-     * @param array $languageConfiguration
-     * @param array $visibleRecords
-     * @param string $fallbackType
-     * @param string $fallbackChain
-     * @param string $overlayType
      */
     public function renderingOfDutchLanguage(array $languageConfiguration, array $visibleRecords, string $fallbackType, string $fallbackChain, string $overlayType): void
     {
@@ -628,14 +622,6 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
      * @test
      * @dataProvider contentOnNonTranslatedPageDataProvider
      *
-     * @param array $languageConfiguration
-     * @param array $visibleRecords
-     * @param string $pageTitle
-     * @param int $languageId
-     * @param int $contentLanguageId
-     * @param string $fallbackType
-     * @param string $fallbackChain
-     * @param string $overlayMode
      * @param int $statusCode 200 or 404
      */
     public function contentOnNonTranslatedPageGerman(array $languageConfiguration, array $visibleRecords, string $pageTitle, int $languageId, int $contentLanguageId, string $fallbackType, string $fallbackChain, string $overlayMode, int $statusCode = 200): void
@@ -807,12 +793,6 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
      *
      * @test
      * @dataProvider contentOnPartiallyTranslatedPageDataProvider
-     *
-     * @param array $languageConfiguration
-     * @param array $visibleHeaders
-     * @param string $fallbackType
-     * @param string $fallbackChain
-     * @param string $overlayType
      */
     public function contentOnPartiallyTranslatedPage(array $languageConfiguration, array $visibleHeaders, string $fallbackType, string $fallbackChain, string $overlayType): void
     {
@@ -861,7 +841,6 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
     /**
      * Helper function to ease asserting that rest of the data set is not visible
      *
-     * @param array $visibleHeaders
      * @return array
      */
     protected function getNonVisibleHeaders(array $visibleHeaders): array
@@ -887,7 +866,6 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
     /**
      * Helper function to ease asserting that rest of the files are not present
      *
-     * @param array $visibleTitles
      * @return array
      */
     protected function getNonVisibleFileTitles(array $visibleTitles): array

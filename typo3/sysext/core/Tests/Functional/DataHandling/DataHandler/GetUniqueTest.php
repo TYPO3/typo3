@@ -56,8 +56,6 @@ class GetUniqueTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $value
-     * @param string $expected
      * @test
      * @dataProvider getUniqueDataProvider
      */

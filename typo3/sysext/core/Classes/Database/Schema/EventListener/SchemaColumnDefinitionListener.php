@@ -32,7 +32,6 @@ class SchemaColumnDefinitionListener
      * Listener for column definition events. This intercepts definitions
      * for custom doctrine types and builds the appropriate Column Object.
      *
-     * @param \Doctrine\DBAL\Event\SchemaColumnDefinitionEventArgs $event
      * @throws \Doctrine\DBAL\Exception
      */
     public function onSchemaColumnDefinition(SchemaColumnDefinitionEventArgs $event)
@@ -57,8 +56,6 @@ class SchemaColumnDefinitionListener
     /**
      * Build a Doctrine column object for TYPE/TYPE columns.
      *
-     * @param array $tableColumn
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      * @return \Doctrine\DBAL\Schema\Column
      * @throws \Doctrine\DBAL\Exception
      * @todo: The $tableColumn source currently only support MySQL definition style.
@@ -89,7 +86,6 @@ class SchemaColumnDefinitionListener
     /**
      * Extract the field type from the definition string
      *
-     * @param string $typeDefinition
      * @return string
      */
     protected function getDatabaseType(string $typeDefinition): string
@@ -101,7 +97,6 @@ class SchemaColumnDefinitionListener
     }
 
     /**
-     * @param string $typeDefinition
      * @return array
      */
     protected function getUnquotedEnumerationValues(string $typeDefinition): array

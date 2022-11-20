@@ -78,7 +78,6 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider matchRedirectReturnsRedirectOnFlatMatchDataProvider
-     * @param string $path
      */
     public function matchRedirectReturnsRedirectOnFlatMatch(string $path = ''): void
     {

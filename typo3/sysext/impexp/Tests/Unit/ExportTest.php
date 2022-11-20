@@ -43,8 +43,6 @@ class ExportTest extends UnitTestCase
     /**
      * @test
      * @dataProvider setExportFileNameSanitizesFileNameProvider
-     * @param string $fileName
-     * @param string $expected
      */
     public function setExportFileNameSanitizesFileName(string $fileName, string $expected): void
     {
@@ -107,7 +105,6 @@ class ExportTest extends UnitTestCase
     /**
      * @test
      * @dataProvider setExportFileTypeSucceedsWithSupportedFileTypeProvider
-     * @param string $fileType
      */
     public function setExportFileTypeSucceedsWithSupportedFileType(string $fileType): void
     {

@@ -65,7 +65,6 @@ class SettingsController extends AbstractController
     /**
      * Main "show the cards" view
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
@@ -81,7 +80,6 @@ class SettingsController extends AbstractController
     /**
      * Change install tool password
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function changeInstallToolPasswordGetDataAction(ServerRequestInterface $request): ResponseInterface
@@ -110,7 +108,6 @@ class SettingsController extends AbstractController
     /**
      * Change install tool password
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function changeInstallToolPasswordAction(ServerRequestInterface $request): ResponseInterface
@@ -159,7 +156,6 @@ class SettingsController extends AbstractController
     /**
      * Return a list of possible and active system maintainers
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function systemMaintainerGetListAction(ServerRequestInterface $request): ResponseInterface
@@ -219,7 +215,6 @@ class SettingsController extends AbstractController
     /**
      * Write new system maintainer list
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function systemMaintainerWriteAction(ServerRequestInterface $request): ResponseInterface
@@ -287,7 +282,6 @@ class SettingsController extends AbstractController
     /**
      * Main LocalConfiguration card content
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function localConfigurationGetContentAction(ServerRequestInterface $request): ResponseInterface
@@ -326,7 +320,6 @@ class SettingsController extends AbstractController
     /**
      * Write given LocalConfiguration settings
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws \RuntimeException
      */
@@ -366,7 +359,6 @@ class SettingsController extends AbstractController
     /**
      * Main preset card content
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function presetsGetContentAction(ServerRequestInterface $request): ResponseInterface
@@ -400,7 +392,6 @@ class SettingsController extends AbstractController
     /**
      * Write selected presets
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function presetsActivateAction(ServerRequestInterface $request): ResponseInterface
@@ -445,7 +436,6 @@ class SettingsController extends AbstractController
     /**
      * Render a list of extensions with their configuration form.
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function extensionConfigurationGetContentAction(ServerRequestInterface $request): ResponseInterface
@@ -513,7 +503,6 @@ class SettingsController extends AbstractController
     /**
      * Write extension configuration
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function extensionConfigurationWriteAction(ServerRequestInterface $request): ResponseInterface
@@ -548,7 +537,6 @@ class SettingsController extends AbstractController
     /**
      * Render feature toggles
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function featuresGetContentAction(ServerRequestInterface $request): ResponseInterface
@@ -597,7 +585,6 @@ class SettingsController extends AbstractController
     /**
      * Update feature toggles state
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function featuresSaveAction(ServerRequestInterface $request): ResponseInterface

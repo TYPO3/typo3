@@ -63,7 +63,6 @@ class RecordLinkHandlerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider missingParameterDataProvider
-     * @param array $parameters
      */
     public function resolveHandlerDataThrowsExceptionIfParameterIsMissing(array $parameters): void
     {
@@ -77,7 +76,6 @@ class RecordLinkHandlerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider missingParameterDataProvider
-     * @param array $parameters
      */
     public function asStringThrowsExceptionIfParameterIsMissing(array $parameters): void
     {

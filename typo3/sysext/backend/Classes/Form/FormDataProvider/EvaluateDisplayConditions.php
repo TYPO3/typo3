@@ -614,7 +614,6 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
      * Loop through TCA, find prepared conditions and evaluate them. Delete either the
      * field itself if the condition did not match, or the 'displayCond' in TCA.
      *
-     * @param array $result
      * @return array
      */
     protected function evaluateConditions(array $result): array

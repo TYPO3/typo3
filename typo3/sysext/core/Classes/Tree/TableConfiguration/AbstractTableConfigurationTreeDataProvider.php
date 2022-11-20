@@ -143,7 +143,6 @@ abstract class AbstractTableConfigurationTreeDataProvider extends AbstractTreeDa
     /**
      * Gets the expanded state of a given node
      *
-     * @param TreeNode $node
      * @return bool
      */
     protected function isExpanded(TreeNode $node)
@@ -221,8 +220,6 @@ abstract class AbstractTableConfigurationTreeDataProvider extends AbstractTreeDa
 
     /**
      * Setter for the itemWhiteList
-     *
-     * @param array $itemWhiteList
      */
     public function setItemWhiteList(array $itemWhiteList)
     {
@@ -241,8 +238,6 @@ abstract class AbstractTableConfigurationTreeDataProvider extends AbstractTreeDa
 
     /**
      * Setter for $itemUnselectableList
-     *
-     * @param array $itemUnselectableList
      */
     public function setItemUnselectableList(array $itemUnselectableList)
     {

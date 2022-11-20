@@ -52,9 +52,6 @@ class ConfigurationManager implements ConfigurationManagerInterface
         }
     }
 
-    /**
-     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject
-     */
     public function setContentObject(ContentObjectRenderer $contentObject): void
     {
         $this->concreteConfigurationManager->setContentObject($contentObject);

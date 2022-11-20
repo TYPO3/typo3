@@ -67,11 +67,6 @@ class IconFactory
 
     protected ContainerInterface $container;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param IconRegistry $iconRegistry
-     * @param ContainerInterface $container
-     */
     public function __construct(EventDispatcherInterface $eventDispatcher, IconRegistry $iconRegistry, ContainerInterface $container)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -85,7 +80,6 @@ class IconFactory
      * @param string $identifier
      * @param string $size "default", "small", "medium" or "large", see the constants of the Icon class
      * @param string $overlayIdentifier
-     * @param IconState $state
      * @return Icon
      */
     public function getIcon($identifier, $size = Icon::SIZE_MEDIUM, $overlayIdentifier = null, IconState $state = null)
@@ -272,7 +266,6 @@ class IconFactory
     /**
      * Returns a possible configured icon for the given plugin name
      *
-     * @param string $pluginName
      * @return string|null
      */
     protected function getIconForPlugin(string $pluginName): ?string
@@ -292,9 +285,6 @@ class IconFactory
     /**
      * Returns recordType for icon based on a typeName and a suffix.
      * Fallback to page as typeName if resulting type is not configured.
-     * @param string $typeName
-     * @param string $suffix
-     * @param string $table
      * @return string
      */
     protected function getRecordTypeForPageType(string $typeName, string $suffix, string $table): string

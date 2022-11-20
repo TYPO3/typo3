@@ -48,9 +48,6 @@ class CommandRegistry implements CommandLoaderInterface, SingletonInterface
      */
     protected $aliases = [];
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -99,7 +96,6 @@ class CommandRegistry implements CommandLoaderInterface, SingletonInterface
     }
 
     /**
-     * @param string $identifier
      * @throws UnknownCommandException
      * @return Command
      */

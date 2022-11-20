@@ -77,8 +77,6 @@ class BootService
      * to the original booting container if no container
      * is specified
      *
-     * @param ContainerInterface $container
-     * @param array $backup
      * @return array
      */
     public function makeCurrent(ContainerInterface $container = null, array $backup = []): array

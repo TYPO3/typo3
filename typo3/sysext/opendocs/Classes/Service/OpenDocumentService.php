@@ -86,8 +86,6 @@ class OpenDocumentService
 
     /**
      * Store a list of open documents
-     *
-     * @param array $openDocuments
      */
     protected function storeOpenDocuments(array $openDocuments): void
     {

@@ -44,11 +44,6 @@ class ProcessorDto
      */
     protected $result = [];
 
-    /**
-     * @param string $finisherIdentifier
-     * @param array $finisherDefinitionFromSetup
-     * @param array $finisherDefinitionFromFormDefinition
-     */
     public function __construct(
         string $finisherIdentifier,
         array $finisherDefinitionFromSetup,
@@ -92,7 +87,6 @@ class ProcessorDto
     }
 
     /**
-     * @param array $result
      * @return ProcessorDto
      */
     public function setResult(array $result): ProcessorDto

@@ -137,7 +137,6 @@ class Query implements QueryInterface
     }
 
     /**
-     * @param QueryInterface|null $parentQuery
      * @internal
      */
     public function setParentQuery(?QueryInterface $parentQuery): void
@@ -182,8 +181,6 @@ class Query implements QueryInterface
 
     /**
      * Sets the source to fetch the result from
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source
      */
     public function setSource(SourceInterface $source)
     {
@@ -381,8 +378,6 @@ class Query implements QueryInterface
     /**
      * Performs a logical conjunction of the two given constraints. The method
      * takes an arbitrary number of constraints and concatenates them with a boolean AND.
-     *
-     * @param ConstraintInterface ...$constraints
      */
     public function logicalAnd(ConstraintInterface ...$constraints): AndInterface
     {
@@ -406,8 +401,6 @@ class Query implements QueryInterface
     /**
      * Performs a logical disjunction of the two given constraints. The method
      * takes an arbitrary number of constraints and concatenates them with a boolean OR.
-     *
-     * @param ConstraintInterface ...$constraints
      */
     public function logicalOr(ConstraintInterface ...$constraints): OrInterface
     {

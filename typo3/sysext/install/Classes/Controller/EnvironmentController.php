@@ -63,7 +63,6 @@ class EnvironmentController extends AbstractController
     /**
      * Main "show the cards" view
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
@@ -78,7 +77,6 @@ class EnvironmentController extends AbstractController
     /**
      * System Information Get Data action
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function systemInformationGetDataAction(ServerRequestInterface $request): ResponseInterface
@@ -100,7 +98,6 @@ class EnvironmentController extends AbstractController
     /**
      * System Information Get Data action
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function phpInfoGetDataAction(ServerRequestInterface $request): ResponseInterface
@@ -115,7 +112,6 @@ class EnvironmentController extends AbstractController
     /**
      * Get environment status
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function environmentCheckGetStatusAction(ServerRequestInterface $request): ResponseInterface
@@ -160,7 +156,6 @@ class EnvironmentController extends AbstractController
     /**
      * Get folder structure status
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function folderStructureGetStatusAction(ServerRequestInterface $request): ResponseInterface
@@ -224,7 +219,6 @@ class EnvironmentController extends AbstractController
     /**
      * System Information Get Data action
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function mailTestGetDataAction(ServerRequestInterface $request): ResponseInterface
@@ -250,7 +244,6 @@ class EnvironmentController extends AbstractController
     /**
      *  Send a test mail
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function mailTestAction(ServerRequestInterface $request): ResponseInterface
@@ -312,7 +305,6 @@ class EnvironmentController extends AbstractController
     /**
      * System Information Get Data action
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function imageProcessingGetDataAction(ServerRequestInterface $request): ResponseInterface
@@ -1004,7 +996,6 @@ class EnvironmentController extends AbstractController
     /**
      * Convert to jpg from given input format
      *
-     * @param string $inputFormat
      * @return ResponseInterface
      */
     protected function convertImageFormatsToJpg(string $inputFormat): ResponseInterface
@@ -1145,7 +1136,6 @@ class EnvironmentController extends AbstractController
     /**
      * Create a JsonResponse from single image tests
      *
-     * @param array $testResult
      * @return ResponseInterface
      */
     protected function getImageTestResponse(array $testResult): ResponseInterface

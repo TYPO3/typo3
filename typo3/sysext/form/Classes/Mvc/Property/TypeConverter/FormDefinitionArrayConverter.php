@@ -61,8 +61,6 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
      *
      * @param string $source
      * @param string $targetType
-     * @param array $convertedChildProperties
-     * @param PropertyMappingConfigurationInterface $configuration
      * @return FormDefinitionArray
      * @throws PropertyException
      */
@@ -154,7 +152,6 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
      * Remove keys from an array if the key value is an empty array
      *
      * @todo ArrayUtility?
-     * @param array $array
      * @return array
      */
     protected function filterEmptyArrays(array $array): array

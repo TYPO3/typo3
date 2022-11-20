@@ -77,7 +77,6 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
     /**
      * Entry method called in Composer post-dump-autoload hook
      *
-     * @param Event $event
      * @return bool
      * @throws InvalidPackageKeyException
      * @throws InvalidPackageManifestException
@@ -110,8 +109,6 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
     /**
      * Sets a title for the package from ext_emconf.php in case this file exists
      * @todo deprecate or remove in TYPO3 v12
-     *
-     * @param Package $package
      */
     private function setTitleFromExtEmConf(Package $package): void
     {

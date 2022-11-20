@@ -65,7 +65,6 @@ class BackendUserConfiguration
     /**
      * Sets user settings by key/value pair
      *
-     * @param string $key
      * @param mixed $value
      */
     public function set(string $key, $value): void
@@ -83,7 +82,6 @@ class BackendUserConfiguration
      * Adds a value to a Comma-separated list
      * stored in $key of user settings
      *
-     * @param string $key
      * @param mixed $value
      */
     public function addToList(string $key, $value): void
@@ -103,7 +101,6 @@ class BackendUserConfiguration
      * Removes a value from a Comma-separated list
      * stored in $key of user settings
      *
-     * @param string $key
      * @param mixed $value
      */
     public function removeFromList(string $key, $value): void
@@ -127,8 +124,6 @@ class BackendUserConfiguration
 
     /**
      * Unsets a key in user settings
-     *
-     * @param string $key
      */
     public function unsetOption(string $key): void
     {
@@ -164,7 +159,6 @@ class BackendUserConfiguration
     /**
      * Sets the value of a key written in dotted notation
      *
-     * @param string $key
      * @param mixed $value
      */
     protected function setFromDottedNotation(string $key, $value): void

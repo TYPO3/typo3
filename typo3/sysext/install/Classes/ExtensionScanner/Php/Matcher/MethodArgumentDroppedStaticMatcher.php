@@ -44,8 +44,6 @@ class MethodArgumentDroppedStaticMatcher extends AbstractCoreMatcher
     /**
      * Called by PhpParser.
      * Test for "->deprecated()" (weak match)
-     *
-     * @param Node $node
      */
     public function enterNode(Node $node)
     {

@@ -52,9 +52,6 @@ class MvcPropertyMappingConfigurationService implements SingletonInterface
      */
     protected $hashService;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
-     */
     public function injectHashService(HashService $hashService)
     {
         $this->hashService = $hashService;
@@ -126,8 +123,6 @@ class MvcPropertyMappingConfigurationService implements SingletonInterface
      * Initialize the property mapping configuration in $controllerArguments if
      * the trusted properties are set inside the request.
      *
-     * @param \TYPO3\CMS\Extbase\Mvc\Request $request
-     * @param \TYPO3\CMS\Extbase\Mvc\Controller\Arguments $controllerArguments
      * @throws BadRequestException
      */
     public function initializePropertyMappingConfigurationFromRequest(Request $request, Arguments $controllerArguments)

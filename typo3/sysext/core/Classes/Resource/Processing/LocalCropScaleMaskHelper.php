@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Core\Resource\Processing;
 
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -56,8 +55,6 @@ class LocalCropScaleMaskHelper
      * Does the heavy lifting prescribed in processTask()
      * except that the processing can be performed on any given local image
      *
-     * @param TaskInterface $task
-     * @param string $originalFileName
      * @return array|null
      */
     public function processWithLocalFile(TaskInterface $task, string $originalFileName): ?array
@@ -210,9 +207,6 @@ class LocalCropScaleMaskHelper
     }
 
     /**
-     * @param Resource\ProcessedFile $processedFile
-     * @param \TYPO3\CMS\Frontend\Imaging\GifBuilder $gifBuilder
-     *
      * @return array
      */
     protected function getConfigurationForImageCropScaleMask(ProcessedFile $processedFile, GifBuilder $gifBuilder)
@@ -244,7 +238,6 @@ class LocalCropScaleMaskHelper
     /**
      * Returns the filename for a cropped/scaled/masked file.
      *
-     * @param TaskInterface $task
      * @return string
      */
     protected function getFilenameForImageCropScaleMask(TaskInterface $task)

@@ -130,8 +130,6 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
 
     /**
      * Overridden setter with enforced sorting behavior
-     *
-     * @param array $templateRootPaths
      */
     public function setTemplateRootPaths(array $templateRootPaths)
     {
@@ -142,8 +140,6 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
 
     /**
      * Overridden setter with enforced sorting behavior
-     *
-     * @param array $layoutRootPaths
      */
     public function setLayoutRootPaths(array $layoutRootPaths)
     {
@@ -154,8 +150,6 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
 
     /**
      * Overridden setter with enforced sorting behavior
-     *
-     * @param array $partialRootPaths
      */
     public function setPartialRootPaths(array $partialRootPaths)
     {

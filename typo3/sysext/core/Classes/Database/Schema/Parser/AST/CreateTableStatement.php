@@ -44,9 +44,6 @@ class CreateTableStatement extends AbstractCreateStatement
 
     /**
      * CreateTableStatement constructor.
-     *
-     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableClause $createTableClause
-     * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateDefinition $createDefinition
      */
     public function __construct(CreateTableClause $createTableClause, CreateDefinition $createDefinition)
     {

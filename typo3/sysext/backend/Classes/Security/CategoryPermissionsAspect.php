@@ -41,8 +41,6 @@ final class CategoryPermissionsAspect
 
     /**
      * The listener for the event in DatabaseTreeDataProvider, which only affects the TYPO3 Backend
-     *
-     * @param ModifyTreeDataEvent $event
      */
     public function addUserPermissionsToCategoryTreeData(ModifyTreeDataEvent $event): void
     {
@@ -104,8 +102,6 @@ final class CategoryPermissionsAspect
     /**
      * Recursively look up for a category mount point within a tree.
      *
-     * @param int $categoryMountPoint
-     * @param TreeNodeCollection $treeNodeCollection
      * @return TreeNode|null
      */
     private function lookUpCategoryMountPointInTreeNodes(int $categoryMountPoint, TreeNodeCollection $treeNodeCollection)
@@ -135,7 +131,6 @@ final class CategoryPermissionsAspect
     /**
      * Find parent uids in rootline
      *
-     * @param int $uid
      * @return array
      */
     private function findUidsInRootline(int $uid)

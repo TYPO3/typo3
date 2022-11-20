@@ -103,8 +103,6 @@ class FolderBasedFileCollection extends AbstractFileCollection
      * Similar to method in \TYPO3\CMS\Core\Collection\AbstractRecordCollection,
      * but without $this->itemTableName= $array['table_name'],
      * but with $this->storageItemsFieldContent = $array[self::$storageItemsField];
-     *
-     * @param array $array
      */
     public function fromArray(array $array)
     {

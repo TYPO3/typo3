@@ -77,8 +77,6 @@ class CleanFlexFormsCommand extends Command
     /**
      * Executes the command to find and update records with FlexForms where the values do not match the datastructures
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -257,10 +255,6 @@ class CleanFlexFormsCommand extends Command
 
     /**
      * Actually cleans the database record fields with a new FlexForm as chosen currently for this record
-     *
-     * @param array $records
-     * @param bool $dryRun
-     * @param SymfonyStyle $io
      */
     protected function cleanFlexFormRecords(array $records, bool $dryRun, SymfonyStyle $io)
     {

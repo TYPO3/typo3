@@ -63,7 +63,6 @@ class PageLinkBuilderTest extends UnitTestCase
     /**
      * Encodes square brackets in URL.
      *
-     * @param string $string
      * @return string
      */
     private function rawUrlEncodeSquareBracketsInUrl(string $string): string

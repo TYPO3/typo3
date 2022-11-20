@@ -112,7 +112,6 @@ class DebugUtilityTest extends UnitTestCase
      * @test
      * @dataProvider convertVariableToStringReturnsVariableContentDataProvider
      * @param mixed $variable
-     * @param string $expected
      */
     public function convertVariableToStringReturnsVariableContent($variable, string $expected): void
     {

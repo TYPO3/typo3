@@ -29,8 +29,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class SvgSpriteIconProvider extends AbstractSvgIconProvider
 {
     /**
-     * @param Icon $icon
-     * @param array $options
      * @return string
      * @throws \InvalidArgumentException
      */
@@ -45,7 +43,6 @@ class SvgSpriteIconProvider extends AbstractSvgIconProvider
     }
 
     /**
-     * @param array $options
      * @return string
      * @throws \InvalidArgumentException
      */

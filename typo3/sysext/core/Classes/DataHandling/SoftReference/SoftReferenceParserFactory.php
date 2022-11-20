@@ -39,8 +39,6 @@ class SoftReferenceParserFactory
     /**
      * Adds a parser via DI.
      *
-     * @param SoftReferenceParserInterface $softReferenceParser
-     * @param string $parserKey
      * @internal
      */
     public function addParser(SoftReferenceParserInterface $softReferenceParser, string $parserKey): void
@@ -83,7 +81,6 @@ class SoftReferenceParserFactory
     }
 
     /**
-     * @param string $softRefParserList
      * @param array|null $forcedParameters
      * @return iterable<SoftReferenceParserInterface>
      */
@@ -107,7 +104,6 @@ class SoftReferenceParserFactory
     }
 
     /**
-     * @param string $softReferenceParserKey
      * @return bool
      */
     public function hasSoftReferenceParser(string $softReferenceParserKey): bool

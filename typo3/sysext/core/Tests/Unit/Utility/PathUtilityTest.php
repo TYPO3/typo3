@@ -29,7 +29,6 @@ class PathUtilityTest extends UnitTestCase
     protected bool $backupEnvironment = true;
 
     /**
-     * @param array $paths
      * @param string $expected
      * @dataProvider isCommonPrefixResolvedCorrectlyDataProvider
      * @test
@@ -359,8 +358,6 @@ class PathUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param string $inputName
-     * @param string $expectedResult
      * @test
      * @dataProvider getCanonicalPathCorrectlyCleansPathDataProvider
      */
@@ -412,8 +409,6 @@ class PathUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param string $inputPath
-     * @param string $expectedResult
      * @test
      * @dataProvider dirnameDuringBootstrapCorrectlyFetchesParentDataProvider
      */
@@ -453,8 +448,6 @@ class PathUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param string $inputPath
-     * @param string $expectedResult
      * @test
      * @dataProvider basenameDuringBootstrapCorrectlyFetchesBasenameDataProvider
      */
@@ -523,9 +516,6 @@ class PathUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param string $inputPath
-     * @param bool $isWindows
-     * @param bool $expectedResult
      * @test
      * @dataProvider isAbsolutePathRespectsAllOperatingSystemsPathDataProvider
      */

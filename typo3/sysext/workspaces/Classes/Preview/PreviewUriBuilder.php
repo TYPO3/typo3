@@ -103,7 +103,6 @@ class PreviewUriBuilder
     /**
      * Generate workspace preview links for all available languages of a page
      *
-     * @param int $pageId
      * @return array
      */
     public function buildUrisForAllLanguagesOfPage(int $pageId): array
@@ -246,7 +245,6 @@ class PreviewUriBuilder
      * the results are cached at run-time to avoid too many database-queries
      *
      * @throws \InvalidArgumentException
-     * @param int $uid
      * @return int
      */
     protected function getLivePageUid(int $uid): int
@@ -265,7 +263,6 @@ class PreviewUriBuilder
     /**
      * Get the available languages of a certain page, including language=0 if the user has access to it.
      *
-     * @param int $pageId
      * @return array assoc array with the languageId as key and the languageTitle as value
      */
     protected function getAvailableLanguages(int $pageId): array

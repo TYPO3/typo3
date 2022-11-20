@@ -29,7 +29,6 @@ class DatabaseEditRow extends AbstractDatabaseRecordProvider implements FormData
     /**
      * Fetch existing record from database
      *
-     * @param array $result
      * @return array
      * @throws \UnexpectedValueException
      * @throws DatabaseRecordWorkspaceDeletePlaceholderException

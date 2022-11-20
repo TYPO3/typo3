@@ -82,8 +82,6 @@ class ItemsProcessorFunctions
 
     /**
      * Return language items for use in site_languages.fallbacks
-     *
-     * @param array $fieldDefinition
      */
     public function populateFallbackLanguages(array &$fieldDefinition): void
     {

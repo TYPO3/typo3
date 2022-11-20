@@ -30,7 +30,6 @@ class DestroySessionHook
      * @param string $table
      * @param int $id
      * @param array $fieldArray
-     * @param DataHandler $dataHandler
      */
     public function processDatamap_postProcessFieldArray($status, $table, $id, $fieldArray, DataHandler $dataHandler)
     {

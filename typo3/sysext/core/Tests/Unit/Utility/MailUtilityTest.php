@@ -142,8 +142,6 @@ class MailUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider replyToProvider
-     * @param array $configuration
-     * @param array $expectedReplyTo
      */
     public function getSystemReplyToTest(array $configuration, array $expectedReplyTo): void
     {

@@ -66,7 +66,6 @@ class LocaleModifier implements ModifiableAspectInterface, SiteLanguageAwareInte
     protected $default;
 
     /**
-     * @param array $settings
      * @throws \InvalidArgumentException
      */
     public function __construct(array $settings)

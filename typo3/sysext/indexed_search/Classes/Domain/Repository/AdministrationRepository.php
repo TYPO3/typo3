@@ -442,8 +442,6 @@ class AdministrationRepository
 
     /**
      * Add additional information to the result row
-     *
-     * @param array $row
      */
     protected function addAdditionalInformation(array &$row)
     {

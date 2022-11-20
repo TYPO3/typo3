@@ -67,7 +67,6 @@ abstract class BackendUserAuthenticator implements MiddlewareInterface
      * Get the http headers to be sent if an authenticated user is available,
      * in order to disallow browsers to store the response on the client side.
      *
-     * @param ResponseInterface $response
      * @return ResponseInterface the modified response object.
      */
     protected function applyHeadersToResponse(ResponseInterface $response): ResponseInterface
@@ -88,7 +87,6 @@ abstract class BackendUserAuthenticator implements MiddlewareInterface
     /**
      * Register the backend user as aspect
      *
-     * @param BackendUserAuthentication|null $user
      * @param int|null $alternativeWorkspaceId
      */
     protected function setBackendUserAspect(?BackendUserAuthentication $user, int $alternativeWorkspaceId = null): void

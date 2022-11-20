@@ -187,8 +187,6 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
      * Retrieve all optimizable tables for a connection, optionally restricted to the subset
      * of table names in the $tableNames array.
      *
-     * @param Connection $connection
-     * @param array $tableNames
      * @return array
      */
     protected function getOptimizableTablesForConnection(Connection $connection, array $tableNames = []): array

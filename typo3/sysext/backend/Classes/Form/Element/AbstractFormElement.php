@@ -63,9 +63,6 @@ abstract class AbstractFormElement extends AbstractNode
 
     /**
      * Container objects give $nodeFactory down to other containers.
-     *
-     * @param NodeFactory $nodeFactory
-     * @param array $data
      */
     public function __construct(NodeFactory $nodeFactory, array $data)
     {
@@ -318,9 +315,6 @@ abstract class AbstractFormElement extends AbstractNode
      * This is used by a couple of renderType's like various type="input", should
      * be used with care and is internal for now.
      *
-     * @param array $resultArray
-     * @param string $name
-     * @param object|null $evalObject
      * @return array
      * @internal
      */
@@ -403,7 +397,6 @@ abstract class AbstractFormElement extends AbstractNode
      * Calculates the bootstrap grid classes based on the amount of columns
      * defined in the checkbox item TCA
      *
-     * @param int $cols
      * @return array
      * @internal
      */

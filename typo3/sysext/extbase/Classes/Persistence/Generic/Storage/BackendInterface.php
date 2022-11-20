@@ -64,7 +64,6 @@ interface BackendInterface
     /**
      * Returns the number of items matching the query.
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @return int
      */
     public function getObjectCountByQuery(QueryInterface $query): int;
@@ -72,7 +71,6 @@ interface BackendInterface
     /**
      * Returns the object data matching the $query.
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @return array
      */
     public function getObjectDataByQuery(QueryInterface $query): array;

@@ -200,11 +200,6 @@ class PersistedAliasMapperTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $identifier
-     * @param string $requestValue
-     * @param string $language
-     * @param string|null $expectation
-     *
      * @test
      * @dataProvider languageAwareRecordsAreResolvedDataProvider
      */
@@ -279,10 +274,6 @@ class PersistedAliasMapperTest extends FunctionalTestCase
     }
 
     /**
-     * @param Context $context
-     * @param array $parameters
-     * @param bool $expectation
-     *
      * @test
      * @dataProvider recordVisibilityDataProvider
      */
@@ -294,10 +285,6 @@ class PersistedAliasMapperTest extends FunctionalTestCase
     }
 
     /**
-     * @param Context $context
-     * @param array $parameters
-     * @param bool $expectation
-     *
      * @test
      * @dataProvider recordVisibilityDataProvider
      */

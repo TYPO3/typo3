@@ -52,9 +52,7 @@ class IpAnonymizationUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider anonymizeIpReturnsCorrectValueDataProvider
-     * @param string $address
      * @param int|null $mask
-     * @param string $expected
      */
     public function anonymizeIpReturnsCorrectValue(string $address, int $mask = null, string $expected): void
     {

@@ -76,8 +76,6 @@ class DeletedRecordsCommand extends Command
     /**
      * Executes the command to find and permanently delete records which are marked as deleted
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -282,7 +280,6 @@ class DeletedRecordsCommand extends Command
      *
      * @param array $deletedRecords two level array with tables and uids
      * @param bool $dryRun check if the records should NOT be deleted (use --dry-run to avoid)
-     * @param SymfonyStyle $io
      */
     protected function deleteRecords(array $deletedRecords, bool $dryRun, SymfonyStyle $io)
     {

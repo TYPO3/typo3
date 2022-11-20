@@ -24,9 +24,6 @@ class VarCharDataType extends AbstractDataType
 {
     /**
      * VarCharDataType constructor.
-     *
-     * @param int $length
-     * @param array $options
      */
     public function __construct(int $length, array $options)
     {

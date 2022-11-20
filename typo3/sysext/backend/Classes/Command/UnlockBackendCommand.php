@@ -29,8 +29,6 @@ class UnlockBackendCommand extends Command
     /**
      * Executes the command for removing the lock file
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int

@@ -53,7 +53,6 @@ class PageUriMatcher
     /**
      * Matches a path segment against the route collection
      *
-     * @param string $urlPath
      * @return array
      * @throws ResourceNotFoundException
      */
@@ -104,7 +103,6 @@ class PageUriMatcher
      * Resolves an optional route specific decorated route path that has been
      * assigned by DecoratingEnhancerInterface instances.
      *
-     * @param Route $route
      * @return string|null
      */
     protected function getDecoratedRoutePath(Route $route): ?string

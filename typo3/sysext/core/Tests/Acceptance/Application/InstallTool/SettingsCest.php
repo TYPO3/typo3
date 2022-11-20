@@ -33,8 +33,6 @@ class SettingsCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
      * @throws \Exception
      */
     public function seeExtensionConfiguration(ApplicationTester $I, ModalDialog $modalDialog): void

@@ -113,7 +113,6 @@ class AbstractButton extends AbstractControl implements ButtonInterface
     /**
      * Set if button needs to be disabled
      *
-     * @param bool $disabled
      * @return AbstractButton
      */
     public function setDisabled(bool $disabled): AbstractButton

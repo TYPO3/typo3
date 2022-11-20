@@ -25,7 +25,6 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
     /**
      * Resolve checkbox items
      *
-     * @param array $result
      * @return array
      * @throws \UnexpectedValueException
      */
@@ -71,9 +70,6 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
     }
 
     /**
-     * @param array $config
-     * @param string $fieldName
-     * @param string $tableName
      * @return array
      * @throws \UnexpectedValueException
      */
@@ -97,10 +93,7 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
     }
 
     /**
-     * @param string $fieldName
-     * @param string $tableName
      * @param mixed $checkboxEntry
-     * @param int $checkboxKey
      * @throws \UnexpectedValueException
      */
     private function basicChecks(string $fieldName, string $tableName, $checkboxEntry, int $checkboxKey)
@@ -120,9 +113,6 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
     }
 
     /**
-     * @param array $item
-     * @param int $itemKey
-     * @param array $newItems
      * @return array
      */
     private function sanitizeToggleCheckbox(array $item, int $itemKey, array $newItems)
@@ -136,9 +126,6 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
     }
 
     /**
-     * @param array $item
-     * @param int $itemKey
-     * @param array $newItems
      * @return array
      */
     private function sanitizeLabeledToggleCheckbox(array $item, int $itemKey, array $newItems)
@@ -158,9 +145,6 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
     }
 
     /**
-     * @param array $item
-     * @param int $itemKey
-     * @param array $newItems
      * @return array
      */
     private function sanitizeIconToggleCheckbox(array $item, int $itemKey, array $newItems)

@@ -97,9 +97,6 @@ class RemoteServerTest extends UnitTestCase
     }
 
     /**
-     * @param string $fileFileReferenceList
-     * @param string $versionFileReferenceList
-     * @param bool $useThumbnails
      * @param array|null $expected
      * @dataProvider prepareFileReferenceDifferencesAreCorrectDataProvider
      * @test

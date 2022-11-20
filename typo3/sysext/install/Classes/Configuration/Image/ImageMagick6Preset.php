@@ -50,7 +50,6 @@ class ImageMagick6Preset extends AbstractImagePreset
     /**
      * Find executable in path, wrapper for specific ImageMagick/GraphicsMagick find methods.
      *
-     * @param array $searchPaths
      * @return mixed
      */
     protected function findExecutableInPath(array $searchPaths)

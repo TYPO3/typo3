@@ -46,7 +46,6 @@ abstract class AbstractMfaController
     /**
      * Main action for handling the request and returning the response
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     abstract public function handleRequest(ServerRequestInterface $request): ResponseInterface;

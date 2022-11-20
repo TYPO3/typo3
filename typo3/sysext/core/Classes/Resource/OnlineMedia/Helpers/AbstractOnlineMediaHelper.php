@@ -55,7 +55,6 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
     /**
      * Get Online Media item id
      *
-     * @param File $file
      * @return string
      */
     public function getOnlineMediaId(File $file)
@@ -75,7 +74,6 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
      * Search for files with same onlineMediaId by content hash in indexed storage
      *
      * @param string $onlineMediaId
-     * @param Folder $targetFolder
      * @param string $fileExtension
      * @return File|null
      */
@@ -103,7 +101,6 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
      * Create new OnlineMedia item container file.
      * This is created inside typo3temp/ and then moved from FAL to the proper storage.
      *
-     * @param Folder $targetFolder
      * @param string $fileName
      * @param string $onlineMediaId
      * @return File

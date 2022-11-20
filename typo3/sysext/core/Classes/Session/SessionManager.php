@@ -47,7 +47,6 @@ class SessionManager implements SingletonInterface
     /**
      * Gets the currently running session backend for the given context
      *
-     * @param string $identifier
      * @return SessionBackendInterface
      * @throws \InvalidArgumentException
      */
@@ -72,8 +71,6 @@ class SessionManager implements SingletonInterface
      * Removes all sessions for a specific user ID
      *
      * @param SessionBackendInterface $backend see constants
-     * @param int $userId
-     * @param AbstractUserAuthentication $userAuthentication
      */
     public function invalidateAllSessionsByUserId(SessionBackendInterface $backend, int $userId, AbstractUserAuthentication $userAuthentication = null)
     {

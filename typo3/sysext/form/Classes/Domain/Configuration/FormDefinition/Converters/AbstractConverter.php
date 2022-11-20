@@ -32,10 +32,6 @@ abstract class AbstractConverter implements ConverterInterface
      */
     protected $converterDto;
 
-    /**
-     * @param ConverterDto $converterDto
-     * @param string $sessionToken
-     */
     public function __construct(ConverterDto $converterDto, string $sessionToken = '')
     {
         $this->converterDto = $converterDto;

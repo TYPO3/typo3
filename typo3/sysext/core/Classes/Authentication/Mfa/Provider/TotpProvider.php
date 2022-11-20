@@ -50,7 +50,6 @@ class TotpProvider implements MfaProviderInterface
     /**
      * Check if a TOTP is given in the current request
      *
-     * @param ServerRequestInterface $request
      * @return bool
      */
     public function canProcess(ServerRequestInterface $request): bool
@@ -62,7 +61,6 @@ class TotpProvider implements MfaProviderInterface
      * Evaluate if the provider is activated by checking the
      * active state and the secret from the provider properties.
      *
-     * @param MfaProviderPropertyManager $propertyManager
      * @return bool
      */
     public function isActive(MfaProviderPropertyManager $propertyManager): bool
@@ -75,7 +73,6 @@ class TotpProvider implements MfaProviderInterface
      * Evaluate if the provider is temporarily locked by checking
      * the current attempts state from the provider properties.
      *
-     * @param MfaProviderPropertyManager $propertyManager
      * @return bool
      */
     public function isLocked(MfaProviderPropertyManager $propertyManager): bool
@@ -90,8 +87,6 @@ class TotpProvider implements MfaProviderInterface
     /**
      * Verify the given TOTP and update the provider properties in case the TOTP is valid.
      *
-     * @param ServerRequestInterface $request
-     * @param MfaProviderPropertyManager $propertyManager
      * @return bool
      */
     public function verify(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
@@ -120,8 +115,6 @@ class TotpProvider implements MfaProviderInterface
      * Activate the provider by checking the necessary parameters,
      * verifying the TOTP and storing the provider properties.
      *
-     * @param ServerRequestInterface $request
-     * @param MfaProviderPropertyManager $propertyManager
      * @return bool
      */
     public function activate(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
@@ -165,8 +158,6 @@ class TotpProvider implements MfaProviderInterface
     /**
      * Handle the save action by updating the provider properties
      *
-     * @param ServerRequestInterface $request
-     * @param MfaProviderPropertyManager $propertyManager
      * @return bool
      */
     public function update(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
@@ -188,8 +179,6 @@ class TotpProvider implements MfaProviderInterface
     /**
      * Handle the unlock action by resetting the attempts provider property
      *
-     * @param ServerRequestInterface $request
-     * @param MfaProviderPropertyManager $propertyManager
      * @return bool
      */
     public function unlock(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
@@ -208,8 +197,6 @@ class TotpProvider implements MfaProviderInterface
      * is completely deleted and setting up this provider again, will therefore
      * create a brand new entry.
      *
-     * @param ServerRequestInterface $request
-     * @param MfaProviderPropertyManager $propertyManager
      * @return bool
      */
     public function deactivate(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
@@ -227,9 +214,6 @@ class TotpProvider implements MfaProviderInterface
      * Initialize view and forward to the appropriate implementation
      * based on the view type to be returned.
      *
-     * @param ServerRequestInterface $request
-     * @param MfaProviderPropertyManager $propertyManager
-     * @param string $type
      * @return ResponseInterface
      */
     public function handleRequest(
@@ -302,7 +286,6 @@ class TotpProvider implements MfaProviderInterface
     /**
      * Internal helper method for fetching the TOTP from the request
      *
-     * @param ServerRequestInterface $request
      * @return string
      */
     protected function getTotp(ServerRequestInterface $request): string
@@ -313,7 +296,6 @@ class TotpProvider implements MfaProviderInterface
     /**
      * Internal helper method for generating a svg QR-code for TOTP applications
      *
-     * @param string $content
      * @return string
      */
     protected function getSvgQrCode(string $content): string
@@ -329,7 +311,6 @@ class TotpProvider implements MfaProviderInterface
     /**
      * Return the timestamp as local time (date string) by applying the globally configured format
      *
-     * @param int $timestamp
      * @return string
      */
     protected function getDateTime(int $timestamp): string

@@ -37,8 +37,6 @@ class MaintenanceMode implements MiddlewareInterface
      * Calls the "unavailableAction" of the error controller if the system is in maintenance mode.
      * This only applies if the REMOTE_ADDR does not match the devIpMask
      *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

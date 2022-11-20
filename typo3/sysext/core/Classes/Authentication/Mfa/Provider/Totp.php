@@ -129,9 +129,6 @@ class Totp
     /**
      * Generate and return the otpauth URL for TOTP
      *
-     * @param string $issuer
-     * @param string $account
-     * @param array $additionalParameters
      * @return string
      */
     public function getTotpAuthUrl(string $issuer, string $account = '', array $additionalParameters = []): string
@@ -184,7 +181,6 @@ class Totp
     /**
      * Generate the counter value (moving factor) from the given timestamp
      *
-     * @param int $timestamp
      * @return int
      */
     protected function getTimeCounter(int $timestamp): int
@@ -196,7 +192,6 @@ class Totp
      * Generate the shared secret (K) by using a random and applying
      * additional authentication factors like username or email address.
      *
-     * @param array $additionalAuthFactors
      * @return string
      */
     public static function generateEncodedSecret(array $additionalAuthFactors = []): string

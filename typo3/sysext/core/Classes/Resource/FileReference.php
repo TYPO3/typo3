@@ -59,7 +59,6 @@ class FileReference implements FileInterface
      * Constructor for a file in use object. Should normally not be used
      * directly, use the corresponding factory methods instead.
      *
-     * @param array $fileReferenceData
      * @param ResourceFactory $factory
      *
      * @throws \InvalidArgumentException
@@ -75,10 +74,8 @@ class FileReference implements FileInterface
     }
 
     /**
-     * @param int $uidLocal
      * @param ResourceFactory|null $factory
      * @return FileInterface
-     *
      * @throws Exception\FileDoesNotExistException
      */
     private function getFileObject(int $uidLocal, ResourceFactory $factory = null): FileInterface

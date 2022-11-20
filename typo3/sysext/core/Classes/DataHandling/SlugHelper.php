@@ -102,7 +102,6 @@ class SlugHelper
     /**
      * Cleans a slug value so it is used directly in the path segment of a URL.
      *
-     * @param string $slug
      * @return string
      */
     public function sanitize(string $slug): string
@@ -148,7 +147,6 @@ class SlugHelper
      * Extracts payload of slug and removes wrapping delimiters,
      * e.g. `/hello/world/` will become `hello/world`.
      *
-     * @param string $slug
      * @return string
      */
     public function extract(string $slug): string
@@ -161,7 +159,6 @@ class SlugHelper
     /**
      * Used when no slug exists for a record
      *
-     * @param array $recordData
      * @param int $pid The uid of the page to generate the slug for
      * @return string
      */
@@ -243,8 +240,6 @@ class SlugHelper
     /**
      * Checks if there are other records with the same slug that are located on the same PID.
      *
-     * @param string $slug
-     * @param RecordState $state
      * @return bool
      */
     public function isUniqueInPid(string $slug, RecordState $state): bool
@@ -270,8 +265,6 @@ class SlugHelper
     /**
      * Check if there are other records with the same slug that are located on the same site.
      *
-     * @param string $slug
-     * @param RecordState $state
      * @return bool
      * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
@@ -337,8 +330,6 @@ class SlugHelper
     /**
      * Check if there are other records with the same slug.
      *
-     * @param string $slug
-     * @param RecordState $state
      * @return bool
      * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
@@ -376,7 +367,6 @@ class SlugHelper
      * Generate a slug with a suffix "/mytitle-1" if that is in use already.
      *
      * @param string $slug proposed slug
-     * @param RecordState $state
      * @param callable $isUnique Callback to check for uniqueness
      * @return string
      * @throws SiteNotFoundException
@@ -404,7 +394,6 @@ class SlugHelper
      * Generate a slug with a suffix "/mytitle-1" if that is in use already.
      *
      * @param string $slug proposed slug
-     * @param RecordState $state
      * @return string
      * @throws SiteNotFoundException
      */
@@ -417,7 +406,6 @@ class SlugHelper
      * Generate a slug with a suffix "/mytitle-1" if the suggested slug is in use already.
      *
      * @param string $slug proposed slug
-     * @param RecordState $state
      * @return string
      */
     public function buildSlugForUniqueInPid(string $slug, RecordState $state): string
@@ -429,7 +417,6 @@ class SlugHelper
      * Generate a slug with a suffix "/mytitle-1" if that is in use already.
      *
      * @param string $slug proposed slug
-     * @param RecordState $state
      * @return string
      * @throws SiteNotFoundException
      */
@@ -467,10 +454,6 @@ class SlugHelper
         return $queryBuilder;
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     * @param RecordState $state
-     */
     protected function applyWorkspaceConstraint(QueryBuilder $queryBuilder, RecordState $state)
     {
         if (!$this->workspaceEnabled) {
@@ -489,10 +472,6 @@ class SlugHelper
         }
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     * @param int $languageId
-     */
     protected function applyLanguageConstraint(QueryBuilder $queryBuilder, int $languageId)
     {
         $languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
@@ -509,10 +488,6 @@ class SlugHelper
         );
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     * @param string $slug
-     */
     protected function applySlugConstraint(QueryBuilder $queryBuilder, string $slug)
     {
         $queryBuilder->where(
@@ -523,10 +498,6 @@ class SlugHelper
         );
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     * @param int $pageId
-     */
     protected function applyPageIdConstraint(QueryBuilder $queryBuilder, int $pageId)
     {
         if ($pageId < 0) {
@@ -548,7 +519,6 @@ class SlugHelper
     }
 
     /**
-     * @param QueryBuilder $queryBuilder
      * @param string|int $recordId
      */
     protected function applyRecordConstraint(QueryBuilder $queryBuilder, $recordId)
@@ -570,7 +540,6 @@ class SlugHelper
     }
 
     /**
-     * @param array $records
      * @return array
      */
     protected function resolveVersionOverlays(array $records): array
@@ -601,8 +570,6 @@ class SlugHelper
 
     /**
      * Fetch a parent page, but exclude spacers, recyclers and sys-folders
-     * @param int $pid
-     * @param int $languageId
      * @return array|null
      */
     protected function resolveParentPageRecord(int $pid, int $languageId): ?array

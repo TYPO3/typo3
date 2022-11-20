@@ -123,10 +123,6 @@ class BulkExtensionRepositoryWriter implements \SplObserver
     /**
      * Method retrieves and initializes extension XML parser instance.
      *
-     * @param ExtensionRepository $repository
-     * @param Extension $extension
-     * @param ConnectionPool $connectionPool
-     * @param ExtensionXmlParser $parser
      * @throws DBALException
      */
     public function __construct(
@@ -297,7 +293,6 @@ class BulkExtensionRepositoryWriter implements \SplObserver
      * This is done by doing a LEFT JOIN to itself ("a" and "b") and comparing
      * both integer_version fields.
      *
-     * @param string $remoteIdentifier
      * @return array
      */
     protected function fetchMaximalVersionsForAllExtensions(string $remoteIdentifier): array

@@ -134,8 +134,6 @@ class OpendocsToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
     /**
      * Returns the data for a recent or open document
      *
-     * @param array $document
-     * @param string $identifier
      * @return array The data of a recent or closed document, or empty array if no record was found (e.g. deleted)
      */
     protected function getMenuEntry(array $document, string $identifier): array

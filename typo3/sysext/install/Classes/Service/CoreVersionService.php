@@ -177,7 +177,6 @@ class CoreVersionService
     }
 
     /**
-     * @param string $url
      * @return array
      * @throws \TYPO3\CMS\Install\Service\Exception\RemoteFetchException
      */
@@ -205,7 +204,6 @@ class CoreVersionService
     /**
      * Helper method to throw same exception in multiple places
      *
-     * @param string $url
      * @throws \TYPO3\CMS\Install\Service\Exception\RemoteFetchException
      */
     protected function throwFetchException(string $url): void

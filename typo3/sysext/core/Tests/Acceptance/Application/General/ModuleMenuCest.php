@@ -29,9 +29,6 @@ class ModuleMenuCest
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function checkIfModuleMenuIsCollapsible(ApplicationTester $I): void
     {
         // A sub-element of web module is shown

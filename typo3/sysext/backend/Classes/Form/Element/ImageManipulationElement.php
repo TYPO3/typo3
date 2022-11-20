@@ -131,10 +131,6 @@ class ImageManipulationElement extends AbstractFormElement
      */
     protected $uriBuilder;
 
-    /**
-     * @param NodeFactory $nodeFactory
-     * @param array $data
-     */
     public function __construct(NodeFactory $nodeFactory, array $data)
     {
         parent::__construct($nodeFactory, $data);
@@ -221,7 +217,6 @@ class ImageManipulationElement extends AbstractFormElement
     /**
      * Get file object
      *
-     * @param array $row
      * @param string $fieldName
      * @return File|null
      */
@@ -242,7 +237,6 @@ class ImageManipulationElement extends AbstractFormElement
     }
 
     /**
-     * @param array $baseConfiguration
      * @return array
      * @throws InvalidConfigurationException
      */
@@ -293,9 +287,6 @@ class ImageManipulationElement extends AbstractFormElement
     }
 
     /**
-     * @param array $config
-     * @param string $elementValue
-     * @param File $file
      * @return array
      * @throws \TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException
      */
@@ -320,8 +311,6 @@ class ImageManipulationElement extends AbstractFormElement
     }
 
     /**
-     * @param array $cropVariants
-     * @param File $image
      * @return array
      */
     protected function getWizardPayload(array $cropVariants, File $image): array

@@ -63,7 +63,6 @@ class MetaDataRepository implements SingletonInterface
     /**
      * Returns array of meta-data properties
      *
-     * @param File $file
      * @return array
      */
     public function findByFile(File $file)
@@ -134,7 +133,6 @@ class MetaDataRepository implements SingletonInterface
      * Create empty
      *
      * @param int $fileUid
-     * @param array $additionalFields
      * @return array
      */
     public function createMetaDataRecord($fileUid, array $additionalFields = [])

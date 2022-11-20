@@ -76,7 +76,6 @@ class RequireJsController
     }
 
     /**
-     * @param string $name
      * @return array
      */
     protected function findConfiguration(string $name): array

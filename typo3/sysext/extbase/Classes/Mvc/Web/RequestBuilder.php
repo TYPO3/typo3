@@ -98,17 +98,11 @@ class RequestBuilder implements SingletonInterface
      */
     private $controllerClassToAliasMapping = [];
 
-    /**
-     * @param ConfigurationManagerInterface $configurationManager
-     */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
     }
 
-    /**
-     * @param ExtensionService $extensionService
-     */
     public function injectExtensionService(ExtensionService $extensionService)
     {
         $this->extensionService = $extensionService;
@@ -148,7 +142,6 @@ class RequestBuilder implements SingletonInterface
     /**
      * Builds a web request object from the raw HTTP information and the configuration
      *
-     * @param ServerRequestInterface $mainRequest
      * @return Request The web request as an object
      */
     public function build(ServerRequestInterface $mainRequest)
@@ -262,7 +255,6 @@ class RequestBuilder implements SingletonInterface
      * If no controller is specified, the defaultControllerName will be returned.
      * If that's not available, an exception is thrown.
      *
-     * @param array $parameters
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException
      * @throws MvcException if the controller could not be resolved
      * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
@@ -299,7 +291,6 @@ class RequestBuilder implements SingletonInterface
      * If that's not available or the specified action is not defined in the current plugin, an exception is thrown.
      *
      * @param string $controllerClassName
-     * @param array $parameters
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException
      * @throws MvcException
      * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException

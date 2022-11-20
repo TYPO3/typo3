@@ -119,7 +119,6 @@ class TranslationStatusController extends InfoModuleController
      * Rendering the localization information table.
      *
      * @param PageTreeView $tree The Page tree data
-     * @param ServerRequestInterface $request
      * @return string HTML for the localization information table.
      */
     protected function renderL10nTable(PageTreeView $tree, ServerRequestInterface $request): string

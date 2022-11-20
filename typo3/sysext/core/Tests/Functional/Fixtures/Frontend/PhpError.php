@@ -37,10 +37,6 @@ class PhpError implements PageErrorHandlerInterface
      */
     private $configuration;
 
-    /**
-     * @param int $statusCode
-     * @param array $configuration
-     */
     public function __construct(int $statusCode, array $configuration)
     {
         $this->statusCode = $statusCode;
@@ -48,9 +44,6 @@ class PhpError implements PageErrorHandlerInterface
     }
 
     /**
-     * @param ServerRequestInterface $request
-     * @param string $message
-     * @param array $reasons
      * @return ResponseInterface
      */
     public function handlePageError(

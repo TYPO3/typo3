@@ -51,7 +51,6 @@ class FileRepository extends AbstractRepository
     /**
      * Creates an object managed by this repository.
      *
-     * @param array $databaseRow
      * @return File
      */
     protected function createDomainObject(array $databaseRow)
@@ -162,8 +161,6 @@ class FileRepository extends AbstractRepository
 
     /**
      * As sorting might have changed due to workspace overlays, PHP does the sorting again.
-     *
-     * @param array $itemList
      */
     protected function reapplySorting(array $itemList): array
     {

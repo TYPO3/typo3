@@ -49,8 +49,6 @@ class ClassLoadingInformationGenerator
     protected $isDevMode;
 
     /**
-     * @param ClassLoader $classLoader
-     * @param array $activeExtensionPackages
      * @param string $installationRoot
      * @param bool $isDevMode
      */

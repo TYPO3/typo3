@@ -22,15 +22,9 @@ namespace TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators;
  */
 interface ValidatorInterface
 {
-    /**
-     * @param array $currentElement
-     * @param string $sessionToken
-     * @param ValidationDto $validationDto
-     */
     public function __construct(array $currentElement, string $sessionToken, ValidationDto $validationDto);
 
     /**
-     * @param string $key
      * @param mixed $value
      */
     public function __invoke(string $key, $value);

@@ -45,9 +45,6 @@ final class TranslateElementPropertyViewHelper extends AbstractViewHelper
     /**
      * Return array element by key.
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return string|array
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)

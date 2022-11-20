@@ -29,8 +29,6 @@ interface EditableCollectionInterface
 
     /**
      * Adds a set of entries to the collection
-     *
-     * @param CollectionInterface $other
      */
     public function addAll(CollectionInterface $other);
 

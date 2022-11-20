@@ -42,9 +42,6 @@ class AssetRendererTest extends UnitTestCase
 
     /**
      * @test
-     * @param array $files
-     * @param array $expectedResult
-     * @param array $expectedMarkup
      * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::filesDataProvider
      */
     public function styleSheets(array $files, array $expectedResult, array $expectedMarkup): void
@@ -60,9 +57,6 @@ class AssetRendererTest extends UnitTestCase
 
     /**
      * @test
-     * @param array $files
-     * @param array $expectedResult
-     * @param array $expectedMarkup
      * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::filesDataProvider
      */
     public function javaScript(array $files, array $expectedResult, array $expectedMarkup): void
@@ -78,9 +72,6 @@ class AssetRendererTest extends UnitTestCase
 
     /**
      * @test
-     * @param array $sources
-     * @param array $expectedResult
-     * @param array $expectedMarkup
      * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::inlineDataProvider
      */
     public function inlineJavaScript(array $sources, array $expectedResult, array $expectedMarkup): void
@@ -96,9 +87,6 @@ class AssetRendererTest extends UnitTestCase
 
     /**
      * @test
-     * @param array $sources
-     * @param array $expectedResult
-     * @param array $expectedMarkup
      * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::inlineDataProvider
      */
     public function inlineStyleSheets(array $sources, array $expectedResult, array $expectedMarkup): void
@@ -114,10 +102,6 @@ class AssetRendererTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $renderMethodName
-     * @param bool $isInline
-     * @param bool $priority
-     * @param string $eventClassName
      * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::renderMethodsAndEventsDataProvider
      */
     public function beforeRenderingEvent(

@@ -64,7 +64,6 @@ class RecoveryCodesProvider implements MfaProviderInterface
     /**
      * Check if a recovery code is given in the current request
      *
-     * @param ServerRequestInterface $request
      * @return bool
      */
     public function canProcess(ServerRequestInterface $request): bool
@@ -78,7 +77,6 @@ class RecoveryCodesProvider implements MfaProviderInterface
      * furthermore has a mannerism that it only works if at least
      * one other MFA provider is activated for the user.
      *
-     * @param MfaProviderPropertyManager $propertyManager
      * @return bool
      */
     public function isActive(MfaProviderPropertyManager $propertyManager): bool
@@ -92,7 +90,6 @@ class RecoveryCodesProvider implements MfaProviderInterface
      * the current attempts state from the provider properties and
      * if there are still recovery codes left.
      *
-     * @param MfaProviderPropertyManager $propertyManager
      * @return bool
      */
     public function isLocked(MfaProviderPropertyManager $propertyManager): bool
@@ -109,8 +106,6 @@ class RecoveryCodesProvider implements MfaProviderInterface
      * Verify the given recovery code and remove it from the
      * provider properties if valid.
      *
-     * @param ServerRequestInterface $request
-     * @param MfaProviderPropertyManager $propertyManager
      *
      * @return bool
      */
@@ -143,9 +138,6 @@ class RecoveryCodesProvider implements MfaProviderInterface
     /**
      * Render the provider specific response for the given content type
      *
-     * @param ServerRequestInterface $request
-     * @param MfaProviderPropertyManager $propertyManager
-     * @param string $type
      * @return ResponseInterface
      * @throws PropagateResponseException
      */
@@ -202,8 +194,6 @@ class RecoveryCodesProvider implements MfaProviderInterface
     /**
      * Activate the provider by hashing and storing the given recovery codes
      *
-     * @param ServerRequestInterface $request
-     * @param MfaProviderPropertyManager $propertyManager
      * @return bool
      */
     public function activate(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
@@ -244,8 +234,6 @@ class RecoveryCodesProvider implements MfaProviderInterface
     /**
      * Handle the deactivate action by removing the provider entry
      *
-     * @param ServerRequestInterface $request
-     * @param MfaProviderPropertyManager $propertyManager
      * @return bool
      */
     public function deactivate(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
@@ -266,8 +254,6 @@ class RecoveryCodesProvider implements MfaProviderInterface
      * Handle the unlock action by resetting the attempts
      * provider property and issuing new codes.
      *
-     * @param ServerRequestInterface $request
-     * @param MfaProviderPropertyManager $propertyManager
      * @return bool
      */
     public function unlock(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
@@ -346,7 +332,6 @@ class RecoveryCodesProvider implements MfaProviderInterface
     /**
      * Check if the current user has other active providers
      *
-     * @param MfaProviderPropertyManager $currentPropertyManager
      * @return bool
      */
     protected function activeProvidersExist(MfaProviderPropertyManager $currentPropertyManager): bool
@@ -364,7 +349,6 @@ class RecoveryCodesProvider implements MfaProviderInterface
     /**
      * Internal helper method for fetching the recovery code from the request
      *
-     * @param ServerRequestInterface $request
      * @return string
      */
     protected function getRecoveryCode(ServerRequestInterface $request): string
@@ -375,7 +359,6 @@ class RecoveryCodesProvider implements MfaProviderInterface
     /**
      * Determine the mode (used for the hash instance) based on the current users table
      *
-     * @param MfaProviderPropertyManager $propertyManager
      * @return string
      */
     protected function getMode(MfaProviderPropertyManager $propertyManager): string
@@ -386,10 +369,6 @@ class RecoveryCodesProvider implements MfaProviderInterface
     /**
      * Add a custom flash message for this provider
      * Note: The flash messages added by the main controller are still shown to the user.
-     *
-     * @param string $message
-     * @param string $title
-     * @param ContextualFeedbackSeverity $severity
      */
     protected function addFlashMessage(string $message, string $title = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::INFO): void
     {
@@ -401,7 +380,6 @@ class RecoveryCodesProvider implements MfaProviderInterface
     /**
      * Return the timestamp as local time (date string) by applying the globally configured format
      *
-     * @param int $timestamp
      * @return string
      */
     protected function getDateTime(int $timestamp): string

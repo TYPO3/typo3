@@ -80,7 +80,6 @@ class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTest
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider persistedAliasMapperDataProvider
      */
@@ -108,7 +107,6 @@ class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTest
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider pageTypeDecoratorIsAppliedDataProvider
      */

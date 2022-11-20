@@ -152,7 +152,6 @@ class TcaMigration
     /**
      * Removes $TCA['pages_language_overlay'] if defined.
      *
-     * @param array $tca
      * @return array the modified TCA structure
      */
     protected function migratePagesLanguageOverlayRemoval(array $tca)
@@ -169,7 +168,6 @@ class TcaMigration
     /**
      * Removes configuration removeEnableMultiSelectFilterTextfield
      *
-     * @param array $tca
      * @return array the modified TCA structure
      */
     protected function removeEnableMultiSelectFilterTextfieldConfiguration(array $tca): array
@@ -195,7 +193,6 @@ class TcaMigration
     /**
      * Removes $TCA[$mytable][ctrl][selicon_field_path]
      *
-     * @param array $tca
      * @return array the modified TCA structure
      */
     protected function removeSelIconFieldPath(array $tca): array
@@ -214,7 +211,6 @@ class TcaMigration
     /**
      * Removes $TCA[$mytable][ctrl][setToDefaultOnCopy]
      *
-     * @param array $tca
      * @return array the modified TCA structure
      */
     protected function removeSetToDefaultOnCopy(array $tca): array
@@ -274,7 +270,6 @@ class TcaMigration
     /**
      * Removes $TCA[$mytable][columns][_transOrigPointerField_][exclude] if defined
      *
-     * @param array $tca
      *
      * @return array
      */
@@ -298,7 +293,6 @@ class TcaMigration
      * Removes $TCA[$mytable]['interface']['showRecordFieldList'] and also $TCA[$mytable]['interface']
      * if `showRecordFieldList` was the only key in the array.
      *
-     * @param array $tca
      * @return array
      */
     protected function removeShowRecordFieldListField(array $tca): array
@@ -322,7 +316,6 @@ class TcaMigration
      * Removes $TCA[$mytable][ctrl][shadowColumnsForMovePlaceholders]
      * and $TCA[$mytable][ctrl][shadowColumnsForNewPlaceholders]
      *
-     * @param array $tca
      * @return array the modified TCA structure
      */
     protected function removeWorkspacePlaceholderShadowColumnsConfiguration(array $tca): array
@@ -348,7 +341,6 @@ class TcaMigration
      * Replaces $TCA[$mytable][columns][$TCA[$mytable][ctrl][languageField]][config] with
      * $TCA[$mytable][columns][$TCA[$mytable][ctrl][languageField]][config][type] = 'language'
      *
-     * @param array $tca
      * @return array
      */
     protected function migrateLanguageFieldToTcaTypeLanguage(array $tca): array
@@ -374,7 +366,6 @@ class TcaMigration
      * Replaces $TCA[$mytable][columns][field][config][special] = 'languages' with
      * $TCA[$mytable][columns][field][config][type] = 'language'
      *
-     * @param array $tca
      * @return array
      */
     protected function migrateSpecialLanguagesToTcaTypeLanguage(array $tca): array
@@ -427,7 +418,6 @@ class TcaMigration
      * Moves the "fileFolder" configuration of TCA columns type=select
      * into sub array "fileFolderConfig", while renaming those options.
      *
-     * @param array $tca
      * @return array
      */
     protected function migrateFileFolderConfiguration(array $tca): array
@@ -475,7 +465,6 @@ class TcaMigration
      * this wizard sets those options to false and unsets the
      * invalid levelLinksPosition value.
      *
-     * @param array $tca
      * @return array
      */
     protected function migrateLevelLinksPosition(array $tca): array
@@ -509,7 +498,6 @@ class TcaMigration
     /**
      * If a column has [treeConfig][rootUid] defined, migrate to [treeConfig][startingPoints] on the same level.
      *
-     * @param array $tca
      * @return array
      */
     protected function migrateRootUidToStartingPoints(array $tca): array

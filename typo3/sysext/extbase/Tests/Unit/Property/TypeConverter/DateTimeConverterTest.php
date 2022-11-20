@@ -340,7 +340,6 @@ class DateTimeConverterTest extends UnitTestCase
     /**
      * @param array $source the array to be converted
      * @param bool $isValid TRUE if the conversion is expected to be successful, otherwise FALSE
-     * @param string|null $expectedResult
      * @test
      * @dataProvider convertFromArrayDataProvider
      */

@@ -24,8 +24,6 @@ class TestPasswordHash
 {
     /**
      * TestPasswordHash constructor.
-     *
-     * @param array $options
      */
     public function __construct(array $options = [])
     {

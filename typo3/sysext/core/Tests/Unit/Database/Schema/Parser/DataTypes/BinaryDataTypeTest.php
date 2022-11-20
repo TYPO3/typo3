@@ -57,9 +57,6 @@ class BinaryDataTypeTest extends AbstractDataTypeBaseTestCase
     /**
      * @test
      * @dataProvider canParseBinaryDataTypeProvider
-     * @param string $columnDefinition
-     * @param string $className
-     * @param int $length
      */
     public function canParseDataType(string $columnDefinition, string $className, int $length): void
     {

@@ -71,7 +71,6 @@ class FileStorageExtractionTask extends AbstractTask
     /**
      * Gets the indexer
      *
-     * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
      * @return \TYPO3\CMS\Core\Resource\Index\Indexer
      */
     protected function getIndexer(ResourceStorage $storage)

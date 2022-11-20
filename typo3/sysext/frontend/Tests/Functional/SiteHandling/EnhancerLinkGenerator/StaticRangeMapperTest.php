@@ -89,7 +89,6 @@ class StaticRangeMapperTest extends AbstractEnhancerLinkGeneratorTestCase
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider staticRangeMapperDataProvider
      */
@@ -145,7 +144,6 @@ class StaticRangeMapperTest extends AbstractEnhancerLinkGeneratorTestCase
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider pageTypeDecoratorIsAppliedDataProvider
      */

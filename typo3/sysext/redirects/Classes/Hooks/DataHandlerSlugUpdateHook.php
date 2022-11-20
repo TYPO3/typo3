@@ -48,10 +48,7 @@ class DataHandlerSlugUpdateHook
     /**
      * Collects slugs of persisted records before having been updated.
      *
-     * @param array $incomingFieldArray
-     * @param string $table
      * @param string|int $id (id could be string, for this reason no type hint)
-     * @param DataHandler $dataHandler
      */
     public function processDatamap_preProcessFieldArray(array $incomingFieldArray, string $table, $id, DataHandler $dataHandler): void
     {

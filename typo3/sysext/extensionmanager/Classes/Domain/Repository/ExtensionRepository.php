@@ -39,9 +39,6 @@ class ExtensionRepository extends Repository
 
     protected ?QuerySettingsInterface $querySettings = null;
 
-    /**
-     * @param QuerySettingsInterface $querySettings
-     */
     public function injectQuerySettings(QuerySettingsInterface $querySettings)
     {
         $this->querySettings = $querySettings;
@@ -252,7 +249,6 @@ class ExtensionRepository extends Repository
     /**
      * Finds all extensions with category "distribution" not published by the TYPO3 CMS Team
      *
-     * @param bool $showUnsuitableDistributions
      * @return Extension[]
      */
     public function findAllCommunityDistributions(bool $showUnsuitableDistributions = false): array
@@ -275,7 +271,6 @@ class ExtensionRepository extends Repository
     /**
      * Finds all extensions with category "distribution" that are published by the TYPO3 CMS Team
      *
-     * @param bool $showUnsuitableDistributions
      * @return Extension[]
      */
     public function findAllOfficialDistributions(bool $showUnsuitableDistributions = false): array
@@ -372,7 +367,6 @@ class ExtensionRepository extends Repository
      * the highest version number.
      *
      * @param Extension[] $extensions
-     * @param bool $showUnsuitable
      * @return Extension[]
      */
     protected function filterYoungestVersionOfExtensionList(array $extensions, bool $showUnsuitable): array

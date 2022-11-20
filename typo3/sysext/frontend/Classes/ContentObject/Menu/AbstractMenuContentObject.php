@@ -201,7 +201,6 @@ abstract class AbstractMenuContentObject
      * @param array $conf The TypoScript configuration for the HMENU cObject
      * @param int $menuNumber Menu number; 1,2,3. Should probably be 1
      * @param string $objSuffix Submenu Object suffix. This offers submenus a way to use alternative configuration for specific positions in the menu; By default "1 = TMENU" would use "1." for the TMENU configuration, but if this string is set to eg. "a" then "1a." would be used for configuration instead (while "1 = " is still used for the overall object definition of "TMENU")
-     * @param ServerRequestInterface|null $request
      * @return bool Returns TRUE on success
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::HMENU()
      */
@@ -1238,7 +1237,6 @@ abstract class AbstractMenuContentObject
      *
      * @param int $uid Page id of the current page for which a submenu MAY be produced (if conditions are met)
      * @param string $objSuffix Object prefix, see ->start()
-     * @param int $menuItemKey
      * @return string HTML content of the submenu
      */
     protected function subMenu(int $uid, string $objSuffix, int $menuItemKey)
@@ -1767,7 +1765,6 @@ abstract class AbstractMenuContentObject
      * Set the parentMenuArr and key to provide the parentMenu information to the
      * subMenu, special fur IProcFunc and itemArrayProcFunc user functions.
      *
-     * @param array $menuArr
      * @param int $menuItemKey
      * @internal
      */
@@ -1844,7 +1841,6 @@ abstract class AbstractMenuContentObject
     }
 
     /**
-     * @param string $mode
      * @return string
      */
     private function getMode(string $mode = ''): string

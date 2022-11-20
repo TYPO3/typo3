@@ -45,9 +45,6 @@ class CorrelationIdTest extends UnitTestCase
     }
 
     /**
-     * @param string $string
-     * @param array $expectations
-     *
      * @test
      * @dataProvider canBeParsedDataProvider
      */

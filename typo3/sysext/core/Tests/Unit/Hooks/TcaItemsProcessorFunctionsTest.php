@@ -405,9 +405,6 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider populateExplicitAuthValuesTestDataProvider
-     *
-     * @param array $tca
-     * @param array $expectedItems
      */
     public function populateExplicitAuthValuesTest(array $tca, array $expectedItems): void
     {

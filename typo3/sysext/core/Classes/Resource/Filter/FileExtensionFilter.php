@@ -82,8 +82,6 @@ class FileExtensionFilter
     /**
      * Entry method for use as DataHandler "inline" field filter
      *
-     * @param array $parameters
-     * @param DataHandler|DatabaseRecordList $dataHandler
      * @return array
      * @deprecated Will be removed in TYPO3 v13. Use filterFileReferences() directly instead.
      */

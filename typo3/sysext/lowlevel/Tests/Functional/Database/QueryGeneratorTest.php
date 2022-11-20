@@ -283,8 +283,6 @@ class QueryGeneratorTest extends FunctionalTestCase
      *
      * @param mixed $inputValue
      * @param mixed $inputValue1
-     * @param string $expected
-     * @param int $comparison
      */
     public function getQueryWithIdOrDate($inputValue, $inputValue1, string $expected, int $comparison = 64): void
     {

@@ -84,8 +84,6 @@ class RecordHistory
 
     /**
      * If a specific history entry is selected, then the relevant element is resolved for that.
-     *
-     * @param int $lastHistoryEntry
      */
     public function setLastHistoryEntryNumber(int $lastHistoryEntry): void
     {
@@ -101,8 +99,6 @@ class RecordHistory
     /**
      * Define the maximum amount of history entries to be shown. Beware of side-effects when using
      * "showSubElements" as well.
-     *
-     * @param int $maxSteps
      */
     public function setMaxSteps(int $maxSteps): void
     {
@@ -112,8 +108,6 @@ class RecordHistory
     /**
      * Defines to show the history of a specific record or its subelements (when it's a page)
      * as well.
-     *
-     * @param bool $showSubElements
      */
     public function setShowSubElements(bool $showSubElements): void
     {
@@ -154,11 +148,9 @@ class RecordHistory
      * build up history
      *
      *******************************/
-
     /**
      * Creates a diff between the current version of the records and the selected version
      *
-     * @param array $changeLog
      * @return array Diff for many elements
      */
     public function getDiff(array $changeLog): array
@@ -207,9 +199,6 @@ class RecordHistory
     /**
      * Fetches the history data of a record + includes subelements if this is from a page
      *
-     * @param string $table
-     * @param int $uid
-     * @param bool $includeSubEntries
      * @param int $lastHistoryEntry the highest entry to be evaluated
      * @return array
      */
@@ -300,7 +289,6 @@ class RecordHistory
     /**
      * Resolve tablename + record uid from sys_history UID
      *
-     * @param int $lastHistoryEntry
      * @return array
      */
     protected function getHistoryEntry(int $lastHistoryEntry): array
@@ -363,10 +351,6 @@ class RecordHistory
      * Queries the DB and prepares the results
      * Resolving a WSOL of the UID and checking permissions is explicitly not part of this method
      *
-     * @param string $table
-     * @param int $uid
-     * @param int $limit
-     * @param int $minimumUid
      * @return array
      */
     public function findEventsForRecord(string $table, int $uid, int $limit = 0, int $minimumUid = null): array
@@ -518,7 +502,6 @@ class RecordHistory
     /**
      * Evaluates if the rollback field is correct
      *
-     * @param string $value
      * @return string
      */
     protected function sanitizeRollbackFieldsValue(string $value): string

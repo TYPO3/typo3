@@ -275,7 +275,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * Set all options for the given $typeConverter.
      *
      * @param string $typeConverter class name of type converter
-     * @param array $options
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
      */
     public function setTypeConverterOptions($typeConverter, array $options)
@@ -336,7 +335,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     /**
      * Traverse the property configuration. Only used by forProperty().
      *
-     * @param array $splittedPropertyPath
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration (or a subclass thereof)
      */
     public function traverseProperties(array $splittedPropertyPath)
@@ -370,7 +368,6 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     /**
      * Set a type converter which should be used for this specific conversion.
      *
-     * @param \TYPO3\CMS\Extbase\Property\TypeConverterInterface $typeConverter
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration this
      */
     public function setTypeConverter(TypeConverterInterface $typeConverter)

@@ -89,8 +89,6 @@ class TemplatePathsTest extends UnitTestCase
      * @test
      * @dataProvider getPathSetterMethodTestValues
      * @param string $method
-     * @param array $paths
-     * @param array $expected
      */
     public function pathSetterMethodSortsPathsByKeyDescending($method, array $paths, array $expected): void
     {

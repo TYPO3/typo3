@@ -26,7 +26,6 @@ class DatabaseRowDateTimeFields implements FormDataProviderInterface
     /**
      * Migrate date and datetime db field values to timestamp
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

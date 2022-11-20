@@ -37,7 +37,6 @@ interface RouterInterface
     public const ABSOLUTE_PATH = 'absolute';
 
     /**
-     * @param ServerRequestInterface $request
      * @param RouteResultInterface|null $previousResult
      * @return RouteResultInterface
      * @throws RouteNotFoundException

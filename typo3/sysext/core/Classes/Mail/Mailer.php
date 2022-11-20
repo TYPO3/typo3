@@ -50,7 +50,6 @@ class Mailer implements MailerInterface
      * When constructing, also initializes the Symfony Transport like configured
      *
      * @param TransportInterface|null $transport optionally pass a transport to the constructor.
-     * @param EventDispatcherInterface|null $eventDispatcher
      * @throws CoreException
      */
     public function __construct(
@@ -146,7 +145,6 @@ class Mailer implements MailerInterface
     /**
      * This method is only used in unit tests
      *
-     * @param array $mailSettings
      * @internal
      */
     public function injectMailSettings(array $mailSettings = null)

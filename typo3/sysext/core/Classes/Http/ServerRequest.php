@@ -366,7 +366,6 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * Recursively validate the structure in an uploaded files array.
      *
-     * @param array $uploadedFiles
      * @throws \InvalidArgumentException if any leaf is not an UploadedFileInterface instance.
      */
     protected function validateUploadedFiles(array $uploadedFiles)

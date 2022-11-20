@@ -45,7 +45,6 @@ class MassActionHandler
     /**
      * Publishes the current workspace.
      *
-     * @param \stdClass $parameters
      * @return array
      */
     public function publishWorkspace(\stdClass $parameters)
@@ -74,7 +73,6 @@ class MassActionHandler
     /**
      * Flushes the current workspace.
      *
-     * @param \stdClass $parameters
      * @return array
      */
     public function flushWorkspace(\stdClass $parameters)
@@ -198,7 +196,6 @@ class MassActionHandler
      * Validates whether the submitted language parameter can be
      * interpreted as integer value.
      *
-     * @param \stdClass $parameters
      * @return int|null
      */
     protected function validateLanguageParameter(\stdClass $parameters)

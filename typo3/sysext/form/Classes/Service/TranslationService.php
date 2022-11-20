@@ -86,8 +86,6 @@ class TranslationService implements SingletonInterface
      *
      * @param mixed $key The key from the LOCAL_LANG array for which to return the value.
      * @param array $arguments the arguments of the extension, being passed over to vsprintf
-     * @param string $locallangPathAndFilename
-     * @param string $language
      * @param mixed $defaultValue
      * @return mixed The value from LOCAL_LANG or $defaultValue if no translation was found.
      * @internal
@@ -167,8 +165,6 @@ class TranslationService implements SingletonInterface
     /**
      * Recursively translate values.
      *
-     * @param array $array
-     * @param array $translationFiles
      * @return array the modified array
      * @internal
      */
@@ -198,9 +194,6 @@ class TranslationService implements SingletonInterface
     }
 
     /**
-     * @param string $key
-     * @param array $arguments
-     * @param array $translationFiles
      * @return array the modified array
      * @internal
      */
@@ -227,11 +220,6 @@ class TranslationService implements SingletonInterface
     }
 
     /**
-     * @param FormRuntime $formRuntime
-     * @param string $finisherIdentifier
-     * @param string $optionKey
-     * @param string $optionValue
-     * @param array $renderingOptions
      * @return string
      * @throws \InvalidArgumentException
      */
@@ -303,9 +291,6 @@ class TranslationService implements SingletonInterface
     }
 
     /**
-     * @param RootRenderableInterface $element
-     * @param array $propertyParts
-     * @param FormRuntime $formRuntime
      * @return string|array
      * @throws \InvalidArgumentException
      * @internal
@@ -442,11 +427,6 @@ class TranslationService implements SingletonInterface
     }
 
     /**
-     * @param RootRenderableInterface $element
-     * @param int $code
-     * @param string $defaultValue
-     * @param array $arguments
-     * @param FormRuntime $formRuntime
      * @return string
      * @throws \InvalidArgumentException
      * @internal
@@ -512,7 +492,6 @@ class TranslationService implements SingletonInterface
     }
 
     /**
-     * @param string $languageKey
      * @internal
      */
     public function setLanguage(string $languageKey)
@@ -530,9 +509,6 @@ class TranslationService implements SingletonInterface
     }
 
     /**
-     * @param array $translationKeyChain
-     * @param string $language
-     * @param array $arguments
      * @return string|null
      */
     protected function processTranslationChain(
@@ -550,9 +526,6 @@ class TranslationService implements SingletonInterface
         return $translatedValue;
     }
 
-    /**
-     * @param string $locallangPathAndFilename
-     */
     protected function initializeLocalization(string $locallangPathAndFilename)
     {
         if (empty($this->languageKey)) {
@@ -668,7 +641,6 @@ class TranslationService implements SingletonInterface
     /**
      * If the array contains numerical keys only, sort it in descending order
      *
-     * @param array $array
      * @return array
      */
     protected function sortArrayWithIntegerKeysDescending(array $array)

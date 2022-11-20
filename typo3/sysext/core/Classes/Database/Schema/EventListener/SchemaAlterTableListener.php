@@ -31,7 +31,6 @@ class SchemaAlterTableListener
      * of ALTER TABLE statements and adds the required statements to
      * change the ENGINE type on MySQL platforms if necessary.
      *
-     * @param \Doctrine\DBAL\Event\SchemaAlterTableEventArgs $event
      * @return bool
      * @throws \Doctrine\DBAL\Exception
      */

@@ -838,8 +838,6 @@ class NormalizedParams
     /**
      * Determine site script
      *
-     * @param string $requestUrl
-     * @param string $siteUrl
      * @return string
      */
     protected static function determineSiteScript(string $requestUrl, string $siteUrl): string
@@ -867,7 +865,6 @@ class NormalizedParams
     /**
      * Factory method for creating normalized params from a PSR-7 server request object
      *
-     * @param ServerRequestInterface $request
      * @param array|null $systemConfiguration
      * @return static
      */

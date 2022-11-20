@@ -35,7 +35,6 @@ final class StoragePermissionsAspect
 {
     /**
      * The event listener for the event where storage objects are created
-     * @param AfterResourceStorageInitializationEvent $event
      */
     public function addUserPermissionsToStorage(AfterResourceStorageInitializationEvent $event): void
     {
@@ -56,8 +55,6 @@ final class StoragePermissionsAspect
 
     /**
      * Adds file mounts from the user's file mount records
-     *
-     * @param ResourceStorage $storage
      */
     private function addFileMountsToStorage(ResourceStorage $storage)
     {

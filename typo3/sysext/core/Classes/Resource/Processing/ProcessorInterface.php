@@ -23,15 +23,12 @@ interface ProcessorInterface
     /**
      * Returns TRUE if this processor can process the given task.
      *
-     * @param TaskInterface $task
      * @return bool
      */
     public function canProcessTask(TaskInterface $task);
 
     /**
      * Processes the given task and sets the processing result in the task object.
-     *
-     * @param TaskInterface $task
      */
     public function processTask(TaskInterface $task);
 }

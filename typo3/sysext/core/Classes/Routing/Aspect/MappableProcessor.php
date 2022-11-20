@@ -25,8 +25,6 @@ use TYPO3\CMS\Core\Routing\Route;
 class MappableProcessor
 {
     /**
-     * @param Route $route
-     * @param array $attributes
      * @return bool
      */
     public function resolve(Route $route, array &$attributes): bool
@@ -52,8 +50,6 @@ class MappableProcessor
     }
 
     /**
-     * @param Route $route
-     * @param array $attributes
      * @return bool
      */
     public function generate(Route $route, array &$attributes): bool
@@ -79,9 +75,6 @@ class MappableProcessor
     }
 
     /**
-     * @param Route $route
-     * @param array $attributes
-     * @param string $type
      * @return MappableAspectInterface[]
      */
     protected function fetchMappers(Route $route, array $attributes, string $type = MappableAspectInterface::class): array

@@ -595,9 +595,6 @@ abstract class AbstractTask implements LoggerAwareInterface
         return self::TYPE_SINGLE;
     }
 
-    /**
-     * @param \Exception $e
-     */
     protected function logException(\Exception $e)
     {
         $this->logger->error('A Task Exception was captured.', ['exception' => $e]);

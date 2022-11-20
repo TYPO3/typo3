@@ -33,31 +33,24 @@ interface FormPersistenceManagerInterface
     /**
      * Load the array form representation identified by $persistenceIdentifier, and return it
      *
-     * @param string $persistenceIdentifier
      * @return array
      */
     public function load(string $persistenceIdentifier): array;
 
     /**
      * Save the array form representation identified by $persistenceIdentifier
-     *
-     * @param string $persistenceIdentifier
-     * @param array $formDefinition
      */
     public function save(string $persistenceIdentifier, array $formDefinition);
 
     /**
      * Check whether a form with the specified $persistenceIdentifier exists
      *
-     * @param string $persistenceIdentifier
      * @return bool TRUE if a form with the given $persistenceIdentifier can be loaded, otherwise FALSE
      */
     public function exists(string $persistenceIdentifier): bool;
 
     /**
      * Delete the form representation identified by $persistenceIdentifier
-     *
-     * @param string $persistenceIdentifier
      */
     public function delete(string $persistenceIdentifier);
 
@@ -89,8 +82,6 @@ interface FormPersistenceManagerInterface
     /**
      * This takes a form identifier and returns a unique persistence identifier for it.
      *
-     * @param string $formIdentifier
-     * @param string $savePath
      * @return string
      */
     public function getUniquePersistenceIdentifier(string $formIdentifier, string $savePath): string;
@@ -98,7 +89,6 @@ interface FormPersistenceManagerInterface
     /**
      * Check if an identifier is already used by a formDefinition.
      *
-     * @param string $identifier
      * @return bool
      */
     public function checkForDuplicateIdentifier(string $identifier): bool;

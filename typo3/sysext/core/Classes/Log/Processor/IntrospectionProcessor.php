@@ -134,7 +134,6 @@ class IntrospectionProcessor extends AbstractProcessor
     /**
      * Shift the first item from the backtrace
      *
-     * @param array $backtrace
      * @return array
      */
     protected function shiftBacktraceLevel(array $backtrace)

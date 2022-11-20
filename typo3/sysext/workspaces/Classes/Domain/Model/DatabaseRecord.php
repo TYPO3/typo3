@@ -129,8 +129,6 @@ class DatabaseRecord
 
     /**
      * Sets the database record row.
-     *
-     * @param array $row
      */
     public function setRow(array $row)
     {

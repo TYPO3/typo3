@@ -163,7 +163,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Creates an object managed by this repository.
      *
      * @abstract
-     * @param array $databaseRow
      * @return object
      */
     abstract protected function createDomainObject(array $databaseRow);

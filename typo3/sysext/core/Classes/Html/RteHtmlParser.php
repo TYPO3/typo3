@@ -130,8 +130,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     /**
      * Sanitize and streamline given options (usually from RichTextConfiguration results "proc."
      * and set them to the respective properties.
-     *
-     * @param array $processingConfiguration
      */
     protected function setProcessingConfiguration(array $processingConfiguration): void
     {
@@ -165,8 +163,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * Main entry point for transforming RTE content in the database so the Rich Text Editor can deal with
      * e.g. links.
      *
-     * @param string $value
-     * @param array $processingConfiguration
      * @return string
      */
     public function transformTextForRichTextEditor(string $value, array $processingConfiguration): string
@@ -199,8 +195,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     /**
      * Called to process HTML content before it is stored in the database.
      *
-     * @param string $value
-     * @param array $processingConfiguration
      * @return string
      */
     public function transformTextForPersistence(string $value, array $processingConfiguration): string
@@ -242,7 +236,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     /**
      * Ensures what transformation modes should be executed, and that they are only executed once.
      *
-     * @param string $direction
      * @return array the resolved transformation modes
      */
     protected function resolveAppliedTransformationModes(string $direction): array
@@ -706,7 +699,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     /**
      * Wrap <hr> tags with LFs, and also remove double LFs, used when transforming from RTE to DB
      *
-     * @param string $content
      * @return string the modified content
      */
     protected function sanitizeLineBreaksForContentOnly(string $content)
@@ -755,7 +747,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * Checks all <a> tags which reference a t3://page and checks if the page is available
      * If not, some offensive styling is added.
      *
-     * @param string $content
      * @return string the modified content
      */
     protected function markBrokenLinks(string $content): string

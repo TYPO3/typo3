@@ -83,8 +83,6 @@ class SiteConfiguration implements SingletonInterface
     protected EventDispatcherInterface $eventDispatcher;
 
     /**
-     * @param string $configPath
-     * @param EventDispatcherInterface $eventDispatcher
      * @param PhpFrontend|null $coreCache
      */
     public function __construct(string $configPath, EventDispatcherInterface $eventDispatcher, PhpFrontend $coreCache = null)
@@ -100,7 +98,6 @@ class SiteConfiguration implements SingletonInterface
     /**
      * Return all site objects which have been found in the filesystem.
      *
-     * @param bool $useCache
      * @return Site[]
      */
     public function getAllExistingSites(bool $useCache = true): array
@@ -114,9 +111,6 @@ class SiteConfiguration implements SingletonInterface
     /**
      * Creates a site configuration with one language "English" which is the de-facto default language for TYPO3 in general.
      *
-     * @param string $identifier
-     * @param int $rootPageId
-     * @param string $base
      * @throws SiteConfigurationWriteException
      */
     public function createNewBasicSite(string $identifier, int $rootPageId, string $base): void
@@ -148,7 +142,6 @@ class SiteConfiguration implements SingletonInterface
     /**
      * Resolve all site objects which have been found in the filesystem.
      *
-     * @param bool $useCache
      * @return Site[]
      */
     public function resolveAllExistingSites(bool $useCache = true): array
@@ -191,7 +184,6 @@ class SiteConfiguration implements SingletonInterface
     /**
      * Read the site configuration from config files.
      *
-     * @param bool $useCache
      * @return array
      * @throws InvalidDataException
      */
@@ -267,8 +259,6 @@ class SiteConfiguration implements SingletonInterface
     /**
      * Add or update a site configuration
      *
-     * @param string $siteIdentifier
-     * @param array $configuration
      * @throws SiteConfigurationWriteException
      */
     public function write(string $siteIdentifier, array $configuration): void
@@ -305,8 +295,6 @@ class SiteConfiguration implements SingletonInterface
     /**
      * Renames a site identifier (and moves the folder)
      *
-     * @param string $currentIdentifier
-     * @param string $newIdentifier
      * @throws SiteConfigurationWriteException
      */
     public function rename(string $currentIdentifier, string $newIdentifier): void
@@ -322,7 +310,6 @@ class SiteConfiguration implements SingletonInterface
      * Removes the config.yaml file of a site configuration.
      * Also clears the cache.
      *
-     * @param string $siteIdentifier
      * @throws SiteNotFoundException|SiteConfigurationWriteException
      */
     public function delete(string $siteIdentifier): void
@@ -343,7 +330,6 @@ class SiteConfiguration implements SingletonInterface
     }
 
     /**
-     * @param array $newConfiguration
      * @return array
      */
     protected function sortConfiguration(array $newConfiguration): array

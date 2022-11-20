@@ -90,7 +90,6 @@ class I18nSanitizerBuilder implements BuilderInterface
     }
 
     /**
-     * @param string ...$names
      * @return Behavior\Attr[]
      */
     protected function createAttrs(string ...$names): array

@@ -123,9 +123,6 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getHttpHostReturnsSanitizedValueDataProvider
-     * @param array $serverParams
-     * @param array $configuration
-     * @param string $expected
      */
     public function getHttpHostReturnsSanitizedValue(array $serverParams, array $configuration, string $expected): void
     {
@@ -329,9 +326,6 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider isHttpsReturnSanitizedValueDataProvider
-     * @param array $serverParams
-     * @param array $configuration
-     * @param bool $expected
      */
     public function isHttpsReturnSanitizedValue(array $serverParams, array $configuration, bool $expected): void
     {
@@ -467,9 +461,6 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getScriptNameReturnsExpectedValueDataProvider
-     * @param array $serverParams
-     * @param array $configuration
-     * @param string $expected
      */
     public function getScriptNameReturnsExpectedValue(array $serverParams, array $configuration, string $expected): void
     {
@@ -563,9 +554,6 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getRequestUriReturnsExpectedValueDataProvider
-     * @param array $serverParams
-     * @param array $configuration
-     * @param string $expected
      */
     public function getRequestUriReturnsExpectedValue(array $serverParams, array $configuration, string $expected): void
     {
@@ -681,9 +669,6 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider isBehindReverseProxyReturnsExpectedValueDataProvider
-     * @param array $serverParams
-     * @param array $configuration
-     * @param bool $expected
      */
     public function isBehindReverseProxyReturnsExpectedValue(array $serverParams, array $configuration, bool $expected): void
     {
@@ -747,9 +732,6 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getRemoteAddressReturnsExpectedValueDataProvider
-     * @param array $serverParams
-     * @param array $configuration
-     * @param string $expected
      */
     public function getRemoteAddressReturnsExpectedValue(array $serverParams, array $configuration, string $expected): void
     {
@@ -817,8 +799,6 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getRequestHostOnlyReturnsExpectedValueDataProvider
-     * @param array $serverParams
-     * @param string $expected
      */
     public function getRequestHostOnlyReturnsExpectedValue(array $serverParams, string $expected): void
     {
@@ -886,8 +866,6 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getRequestPortOnlyReturnsExpectedValueDataProvider
-     * @param array $serverParams
-     * @param int $expected
      */
     public function getRequestPortReturnsExpectedValue(array $serverParams, int $expected): void
     {
@@ -991,10 +969,6 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getSitePathReturnsExpectedPathDataProvider
-     * @param array $serverParams
-     * @param string $pathThisScript
-     * @param string $pathSite
-     * @param string $expected
      */
     public function getSitePathReturnsExpectedPath(array $serverParams, string $pathThisScript, string $pathSite, string $expected): void
     {
@@ -1042,10 +1016,6 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getSiteScriptReturnsExpectedPathDataProvider
-     * @param array $serverParams
-     * @param string $pathThisScript
-     * @param string $pathSite
-     * @param string $expected
      */
     public function getSiteScriptReturnsExpectedPath(array $serverParams, string $pathThisScript, string $pathSite, string $expected): void
     {

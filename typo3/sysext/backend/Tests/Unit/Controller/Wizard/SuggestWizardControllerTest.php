@@ -114,8 +114,6 @@ class SuggestWizardControllerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider isTableHiddenIsProperlyRetrievedDataProvider
-     * @param bool $expected
-     * @param array $array
      */
     public function isTableHiddenIsProperlyRetrieved(bool $expected, array $array): void
     {

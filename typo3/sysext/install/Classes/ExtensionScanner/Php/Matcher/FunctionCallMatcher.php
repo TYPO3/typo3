@@ -42,8 +42,6 @@ class FunctionCallMatcher extends AbstractCoreMatcher
     /**
      * Called by PhpParser.
      * Test for "removedFunction()" (strong match)
-     *
-     * @param Node $node
      */
     public function enterNode(Node $node)
     {

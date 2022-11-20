@@ -55,7 +55,6 @@ class ColumnDefinitionItemTest extends UnitTestCase
     /**
      * Parse the CREATE TABLE statement and return the reference definition
      *
-     * @param string $statement
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem
      */
     protected function createSubject(string $statement): CreateColumnDefinitionItem

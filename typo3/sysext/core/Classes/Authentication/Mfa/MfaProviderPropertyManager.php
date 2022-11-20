@@ -62,7 +62,6 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
     /**
      * Check if a provider property exists
      *
-     * @param string $key
      * @return bool
      */
     public function hasProperty(string $key): bool
@@ -94,7 +93,6 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
      * Note: If no entry exists yet, use createProviderEntry() instead.
      *       This can be checked with hasProviderEntry().
      *
-     * @param array $properties
      * @return bool
      */
     public function updateProperties(array $properties): bool
@@ -121,7 +119,6 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
      * Note: If a entry already exists, use updateProperties() instead.
      *       This can be checked with hasProviderEntry().
      *
-     * @param array $properties
      * @return bool
      */
     public function createProviderEntry(array $properties): bool
@@ -215,8 +212,6 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
     /**
      * Create property manager for the user with the given provider
      *
-     * @param MfaProviderManifestInterface $provider
-     * @param AbstractUserAuthentication $user
      * @return MfaProviderPropertyManager
      */
     public static function create(MfaProviderManifestInterface $provider, AbstractUserAuthentication $user): self

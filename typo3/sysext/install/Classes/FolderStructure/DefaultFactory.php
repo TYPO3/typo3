@@ -255,8 +255,6 @@ class DefaultFactory
     /**
      * Get public path structure while resolving nested paths
      *
-     * @param string $publicPath
-     * @param array $subStructure
      * @return array
      */
     protected function getPublicStructure(string $publicPath, array $subStructure): array

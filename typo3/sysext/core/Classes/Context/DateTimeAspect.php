@@ -38,9 +38,6 @@ class DateTimeAspect implements AspectInterface
      */
     protected $dateTimeObject;
 
-    /**
-     * @param \DateTimeImmutable $dateTimeImmutable
-     */
     public function __construct(\DateTimeImmutable $dateTimeImmutable)
     {
         $this->dateTimeObject = $dateTimeImmutable;
@@ -49,7 +46,6 @@ class DateTimeAspect implements AspectInterface
     /**
      * Fetch a property of the date time object or the object itself ("full").
      *
-     * @param string $name
      * @return \DateTimeImmutable|string|int
      * @throws AspectPropertyNotFoundException
      */

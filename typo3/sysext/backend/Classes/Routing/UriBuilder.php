@@ -91,10 +91,7 @@ class UriBuilder implements SingletonInterface
      * Creates a link to a page with a route targetted as a redirect, if a "deep link" is possible.
      * Currently works just fine for URLs built for "main" and "login" pages.
      *
-     * @param string $name
-     * @param array $parameters
      * @param RouteRedirect|null $redirect
-     * @param string $referenceType
      * @return UriInterface
      * @throws RouteNotFoundException
      * @internal this is experimental API used for creating logins to redirect to a different route

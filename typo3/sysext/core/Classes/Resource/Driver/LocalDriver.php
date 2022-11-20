@@ -73,9 +73,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         'user_upload' => FolderInterface::ROLE_USERUPLOAD,
     ];
 
-    /**
-     * @param array $configuration
-     */
     public function __construct(array $configuration = [])
     {
         parent::__construct($configuration);
@@ -150,7 +147,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * Calculates the absolute path to this drivers storage location.
      *
      * @throws Exception\InvalidConfigurationException
-     * @param array $configuration
      * @return string
      * @throws Exception\InvalidPathException
      */
@@ -1002,7 +998,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * Creates a map of old and new file/folder identifiers after renaming or
      * moving a folder. The old identifier is used as the key, the new one as the value.
      *
-     * @param array $filesAndFolders
      * @param string $sourceFolderIdentifier
      * @param string $targetFolderIdentifier
      *
@@ -1409,8 +1404,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Stream file using a PSR-7 Response object.
      *
-     * @param string $identifier
-     * @param array $properties
      * @return ResponseInterface
      */
     public function streamFile(string $identifier, array $properties): ResponseInterface

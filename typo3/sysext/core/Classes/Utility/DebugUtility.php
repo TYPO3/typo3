@@ -47,7 +47,6 @@ class DebugUtility
     /**
      * Converts a variable to a string
      *
-     * @param mixed $variable
      * @return string Plain, not HTML encoded string
      */
     public static function convertVariableToString(mixed $variable): string
@@ -184,8 +183,6 @@ class DebugUtility
     /**
      * Renders the dump according to the context, either for command line or as HTML output
      *
-     * @param mixed $variable
-     * @param string $title
      * @param bool|null $plainText Omit or pass null to use the current default.
      * @param bool|null $ansiColors Omit or pass null to use the current default.
      * @return string

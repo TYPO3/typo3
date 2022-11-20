@@ -59,8 +59,6 @@ class FileNameFilterTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getItemsAndPathsWithoutHiddenFilesAndFolders_dataProvider
-     * @param string $itemName
-     * @param string $itemIdentifier
      * @param bool|int $expected
      */
     public function filterHiddenFilesAndFoldersFiltersHiddenFilesAndFolders(string $itemName, string $itemIdentifier, $expected): void
@@ -82,8 +80,6 @@ class FileNameFilterTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getItemsAndPathsWithHiddenFilesAndFolders_dataProvider
-     * @param string $itemName
-     * @param string $itemIdentifier
      * @param bool|int $expected
      */
     public function filterHiddenFilesAndFoldersAllowsHiddenFilesAndFolders(string $itemName, string $itemIdentifier, $expected): void

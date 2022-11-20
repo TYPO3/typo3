@@ -188,7 +188,6 @@ class RouteSorter
     /**
      * Filters route variable defaults that are actually used in route path.
      *
-     * @param Route $route
      * @return array<string, string>
      */
     protected function getActualRouteDefaults(Route $route): array
@@ -200,7 +199,6 @@ class RouteSorter
     }
 
     /**
-     * @param Route $route
      * @return array<string, int>
      */
     protected function getAllRouteVariables(Route $route): array
@@ -209,7 +207,6 @@ class RouteSorter
     }
 
     /**
-     * @param Route $route
      * @return array<string, int>
      */
     protected function getMandatoryRouteVariables(Route $route): array
@@ -221,7 +218,6 @@ class RouteSorter
     }
 
     /**
-     * @param Route $route
      * @return array<string, string>
      */
     protected function getRouteParameters(Route $route): array

@@ -142,8 +142,6 @@ class HtmlParserTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $source
-     * @param string $expected
      * @dataProvider cDataWillRemainUnmodifiedDataProvider
      */
     public function xHtmlCleaningDoesNotModifyCDATA(string $source, string $expected): void
@@ -175,8 +173,6 @@ class HtmlParserTest extends UnitTestCase
 
     /**
      * @test
-     * @param string $content
-     * @param string $expectedResult
      * @dataProvider spanTagCorrectlyRemovedWhenRmTagIfNoAttribIsConfiguredDataProvider
      */
     public function tagCorrectlyRemovedWhenRmTagIfNoAttribIsConfigured(string $content, string $expectedResult): void
@@ -242,8 +238,6 @@ class HtmlParserTest extends UnitTestCase
     /**
      * @test
      * @dataProvider localNestingCorrectlyRemovesInvalidTagsDataProvider
-     * @param string $content
-     * @param string $expectedResult
      */
     public function localNestingCorrectlyRemovesInvalidTags(string $content, string $expectedResult): void
     {
@@ -288,8 +282,6 @@ class HtmlParserTest extends UnitTestCase
     /**
      * @test
      * @dataProvider globalNestingCorrectlyRemovesInvalidTagsDataProvider
-     * @param string $content
-     * @param string $expectedResult
      */
     public function globalNestingCorrectlyRemovesInvalidTags(string $content, string $expectedResult): void
     {
@@ -596,7 +588,6 @@ class HtmlParserTest extends UnitTestCase
      * @test
      * @dataProvider removeFirstAndLastTagDataProvider
      * @param string $str String to process
-     * @param string $expectedResult
      */
     public function removeFirstAndLastTag(string $str, string $expectedResult): void
     {
@@ -641,7 +632,6 @@ class HtmlParserTest extends UnitTestCase
      * @test
      * @dataProvider getTagAttributesDataProvider
      * @param string $tag String to process
-     * @param array $expectedResult
      */
     public function getTagAttributes(string $tag, array $expectedResult): void
     {
@@ -695,7 +685,6 @@ class HtmlParserTest extends UnitTestCase
      * @param string $tagList The comma separated list of tags to be stripped.
      *                        If empty, all empty tags will be stripped
      * @param bool $treatNonBreakingSpaceAsEmpty If TRUE tags containing only &nbsp; entities will be treated as empty.
-     * @param string $expectedResult
      */
     public function rawStripEmptyTagsTest(
         string $content,

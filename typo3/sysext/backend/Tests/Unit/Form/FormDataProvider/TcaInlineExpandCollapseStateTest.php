@@ -323,9 +323,6 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
     /**
      * @test
      * @dataProvider addDataAddsCorrectIsInlineChildExpandedDataProvider
-     *
-     * @param array $input
-     * @param bool $expectedIsInlineChildExpanded
      */
     public function addDataAddsCorrectIsInlineChildExpanded(array $input, bool $expectedIsInlineChildExpanded): void
     {

@@ -116,9 +116,6 @@ text
 
     /**
      * @test
-     * @param string $content
-     * @param string $marker
-     * @param string $expected
      * @dataProvider getSubpartDataProvider
      */
     public function getSubpart(string $content, string $marker, string $expected): void
@@ -249,12 +246,7 @@ hello
 
     /**
      * @test
-     * @param string $content
-     * @param string $marker
      * @param string|array $subpartContent
-     * @param bool $recursive
-     * @param bool $keepMarker
-     * @param string $expected
      * @dataProvider substituteSubpartDataProvider
      */
     public function substituteSubpart(
@@ -354,7 +346,6 @@ hello
      * @param string $wrap A wrap value - [part 1] | [part 2] - for the markers before substitution
      * @param bool $uppercase If set, all marker string substitution is done with upper-case markers.
      * @param bool $deleteUnused If set, all unused marker are deleted.
-     * @param string $expected
      */
     public function substituteMarkerArray(
         string $content,
@@ -430,9 +421,6 @@ world
 
     /**
      * @test
-     * @param string $content
-     * @param array $subpartsContent
-     * @param string $expected
      * @dataProvider substituteSubpartArrayDataProvider
      */
     public function substituteSubpartArray(string $content, array $subpartsContent, string $expected): void
@@ -639,12 +627,6 @@ Value 2.2
 
     /**
      * @test
-     * @param string $template
-     * @param array $markersAndSubparts
-     * @param string $wrap
-     * @param bool $uppercase
-     * @param bool $deleteUnused
-     * @param string $expected
      * @dataProvider substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider
      */
     public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray(
@@ -769,12 +751,6 @@ Value 2.2
     /**
      * @test
      * @dataProvider substituteMarkerArrayCachedReturnsExpectedContentDataProvider
-     *
-     * @param string $content
-     * @param array $markContentArray
-     * @param array $subpartContentArray
-     * @param array $wrappedSubpartContentArray
-     * @param string $expectedContent
      */
     public function substituteMarkerArrayCachedReturnsExpectedContent(
         string $content,

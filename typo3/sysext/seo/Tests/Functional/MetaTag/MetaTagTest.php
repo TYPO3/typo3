@@ -68,8 +68,6 @@ class MetaTagTest extends AbstractTestCase
     /**
      * @test
      * @dataProvider ensureMetaDataAreCorrectDataProvider
-     * @param int $pageId
-     * @param array $expectedMetaTags
      */
     public function ensureMetaDataAreCorrect(int $pageId, array $expectedMetaTags): void
     {

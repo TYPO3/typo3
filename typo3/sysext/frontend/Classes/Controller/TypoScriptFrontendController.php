@@ -1098,7 +1098,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Fetches the arguments that are relevant for creating the hash base from the given PageArguments object.
      * Excluded parameters are not taken into account when calculating the hash base.
      *
-     * @param PageArguments $pageArguments
      * @return array
      */
     protected function getRelevantParametersForCachingFromPageArguments(PageArguments $pageArguments): array
@@ -1524,7 +1523,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @see getFromCache()
      * @see setPageCacheContent()
-     * @param array $cachedData
      * @internal
      */
     protected function populatePageDataFromCache(array $cachedData): void
@@ -1632,7 +1630,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Setting the language key that will be used by the current page.
      * In this function it should be checked, 1) that this language exists, 2) that a page_overlay_record exists, .. and if not the default language, 0 (zero), should be set.
      *
-     * @param ServerRequestInterface $request
      * @internal
      */
     protected function settingLanguage(ServerRequestInterface $request)
@@ -1823,7 +1820,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Instantiate \TYPO3\CMS\Frontend\ContentObject to generate the correct target URL
      *
-     * @param ServerRequestInterface $request
      * @return string
      */
     protected function getUriToCurrentPageForRedirect(ServerRequestInterface $request): string
@@ -1935,7 +1931,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Set the SYS_LASTCHANGED register value, is also called when a translated page is in use,
      * so the register reflects the state of the translated page, not the page in the default language.
      *
-     * @param array $page
      * @internal
      * @see setSysLastChanged()
      */
@@ -2333,7 +2328,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Add HTTP headers to the response object.
      *
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
     public function applyHttpHeadersToResponse(ResponseInterface $response): ResponseInterface
@@ -2749,9 +2743,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Log the page access failure with additional request information
-     *
-     * @param string $message
-     * @param ServerRequestInterface $request
      */
     protected function logPageAccessFailure(string $message, ServerRequestInterface $request): void
     {

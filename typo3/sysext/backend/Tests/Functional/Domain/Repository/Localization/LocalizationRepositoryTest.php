@@ -97,9 +97,6 @@ class LocalizationRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @param int $pageId
-     * @param int $localizedLanguage
-     * @param array $expectedResult
      * @dataProvider fetchOriginLanguageDataProvider
      * @test
      */
@@ -154,9 +151,6 @@ class LocalizationRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @param int $pageId
-     * @param int $localizedLanguage
-     * @param int $expectedResult
      * @dataProvider getLocalizedRecordCountDataProvider
      * @test
      */
@@ -216,10 +210,6 @@ class LocalizationRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @param int $pageId
-     * @param int $destLanguageId
-     * @param int $languageId
-     * @param array $expectedResult
      * @dataProvider getRecordsToCopyDatabaseResultDataProvider
      * @test
      * @throws \Doctrine\DBAL\Driver\Exception

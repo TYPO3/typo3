@@ -304,7 +304,6 @@ class ExtendedFileUtility extends BasicFileUtility
      * Adds a localized FlashMessage to the message queue
      *
      * @param string $localizationKey
-     * @param array $replaceMarkers
      * @param ContextualFeedbackSeverity $severity
      * @throws \InvalidArgumentException
      */
@@ -549,7 +548,6 @@ class ExtendedFileUtility extends BasicFileUtility
      * Maps results from the fal file reference table on the
      * structure of  the normal reference index table.
      *
-     * @param array $referenceRecord
      * @return array
      */
     protected function transformFileReferenceToRecordReference(array $referenceRecord)
@@ -1107,7 +1105,6 @@ class ExtendedFileUtility extends BasicFileUtility
      * Replaces a file on the filesystem and changes the identifier of the persisted file object in sys_file if
      * keepFilename is not checked. If keepFilename is checked, only the file content will be replaced.
      *
-     * @param array $cmdArr
      * @return array|bool
      * @throws Exception\InsufficientFileAccessPermissionsException
      * @throws Exception\InvalidFileException
@@ -1177,8 +1174,6 @@ class ExtendedFileUtility extends BasicFileUtility
 
     /**
      * Add flash message to message queue
-     *
-     * @param FlashMessage $flashMessage
      */
     protected function addFlashMessage(FlashMessage $flashMessage)
     {
@@ -1191,7 +1186,6 @@ class ExtendedFileUtility extends BasicFileUtility
     /**
      * Gets Indexer
      *
-     * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
      * @return \TYPO3\CMS\Core\Resource\Index\Indexer
      */
     protected function getIndexer(ResourceStorage $storage)

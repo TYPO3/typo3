@@ -59,9 +59,6 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
      */
     protected $map;
 
-    /**
-     * @param array $configuration
-     */
     public function __construct(array $configuration)
     {
         $default = $configuration['default'] ?? '';
@@ -181,7 +178,6 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
     /**
      * Checks if the value exists inside the map.
      *
-     * @param string|null $type
      * @return string
      */
     protected function resolveValue(?string $type): string
@@ -196,7 +192,6 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
     /**
      * Builds a regexp out of the map.
      *
-     * @param bool $useNames
      * @return string
      */
     protected function buildRegularExpressionPattern(bool $useNames = true): string
@@ -231,7 +226,6 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
     /**
      * Helper method for regexps.
      *
-     * @param string $value
      * @return string
      */
     protected function quoteForRegularExpressionPattern(string $value): string
@@ -242,7 +236,6 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
     /**
      * Checks if a slash should be prefixed.
      *
-     * @param string $value
      * @return bool
      */
     protected function needsSlashPrefix(string $value): bool

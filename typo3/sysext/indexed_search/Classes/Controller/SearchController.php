@@ -171,9 +171,6 @@ class SearchController extends ActionController
      */
     protected $typoScriptService;
 
-    /**
-     * @param \TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService
-     */
     public function injectTypoScriptService(TypoScriptService $typoScriptService)
     {
         $this->typoScriptService = $typoScriptService;
@@ -1583,9 +1580,6 @@ class SearchController extends ActionController
      * Internal method to build the page uri and link target.
      * @todo make use of the UriBuilder
      *
-     * @param int $pageUid
-     * @param array $row
-     * @param array $urlParameters
      * @return array
      */
     protected function preparePageLink(int $pageUid, array $row, array $urlParameters): array
@@ -1612,7 +1606,6 @@ class SearchController extends ActionController
      * Create a tag for "path" key in search result
      *
      * @param string $linkText Link text (nodeValue) (should be hsc'ed already)
-     * @param array $linkData
      * @return string HTML <A> tag wrapped title string.
      */
     protected function linkPageATagWrap(string $linkText, array $linkData): string

@@ -40,8 +40,6 @@ class ArrayFormFactory extends AbstractFormFactory
     /**
      * Build a form definition, depending on some configuration.
      *
-     * @param array $configuration
-     * @param string $prototypeName
      * @return FormDefinition
      * @throws RenderingException
      * @internal
@@ -88,8 +86,6 @@ class ArrayFormFactory extends AbstractFormFactory
     /**
      * Add form elements to the $parentRenderable
      *
-     * @param array $nestedRenderableConfiguration
-     * @param CompositeRenderableInterface $parentRenderable
      * @return mixed
      * @throws IdentifierNotValidException
      * @throws UnknownCompositRenderableException

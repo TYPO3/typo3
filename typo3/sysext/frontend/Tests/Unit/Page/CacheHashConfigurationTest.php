@@ -37,7 +37,6 @@ class CacheHashConfigurationTest extends TestCase
     }
 
     /**
-     * @param string $aspect
      * @param mixed $value
      *
      * @test
@@ -64,7 +63,6 @@ class CacheHashConfigurationTest extends TestCase
     }
 
     /**
-     * @param string $aspect
      * @param mixed $value
      *
      * @test
@@ -91,9 +89,6 @@ class CacheHashConfigurationTest extends TestCase
     }
 
     /**
-     * @param string $aspect
-     * @param string $value
-     *
      * @test
      * @dataProvider emptyIndicatedValueThrowsExceptionDataProvider
      */
@@ -120,11 +115,6 @@ class CacheHashConfigurationTest extends TestCase
     }
 
     /**
-     * @param string $aspect
-     * @param array $values
-     * @param array $positives
-     * @param array $negatives
-     *
      * @test
      * @dataProvider equalsResolvesParameterValueDataProvider
      */
@@ -155,11 +145,6 @@ class CacheHashConfigurationTest extends TestCase
     }
 
     /**
-     * @param string $aspect
-     * @param array $values
-     * @param array $positives
-     * @param array $negatives
-     *
      * @test
      * @dataProvider startsWithResolvesParameterValueDataProvider
      */
@@ -190,11 +175,6 @@ class CacheHashConfigurationTest extends TestCase
     }
 
     /**
-     * @param string $aspect
-     * @param array $values
-     * @param array $positives
-     * @param array $negatives
-     *
      * @test
      * @dataProvider containsResolvesParameterValueDataProvider
      */
@@ -216,11 +196,6 @@ class CacheHashConfigurationTest extends TestCase
     }
 
     /**
-     * @param string $aspect
-     * @param array $values
-     * @param array $positives
-     * @param array $negatives
-     *
      * @test
      * @dataProvider appliesResolvesParameterValueDataProvider
      */

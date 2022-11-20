@@ -57,8 +57,6 @@ class IndexedSearchUtility
      * Sets up search words with operators.
      *
      * @param string $sword The input search-word string.
-     * @param string $defaultOperator
-     * @param array $operatorTranslateTable
      * @return array
      */
     public static function getExplodedSearchString(string $sword, string $defaultOperator, array $operatorTranslateTable): array

@@ -24,8 +24,6 @@ interface ListableRemoteInterface
 {
     /**
      * Fetches a list of available packages / extensions from a remote source.
-     *
-     * @param bool $force
      */
     public function getAvailablePackages(bool $force = false): void;
 

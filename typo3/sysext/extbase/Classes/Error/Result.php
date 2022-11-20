@@ -70,8 +70,6 @@ class Result
     /**
      * Injects the parent result and propagates the
      * cached error states upwards
-     *
-     * @param Result $parent
      */
     public function setParent(Result $parent): void
     {
@@ -91,8 +89,6 @@ class Result
 
     /**
      * Add an error to the current Result object
-     *
-     * @param Error $error
      */
     public function addError(Error $error): void
     {
@@ -102,8 +98,6 @@ class Result
 
     /**
      * Add a warning to the current Result object
-     *
-     * @param Warning $warning
      */
     public function addWarning(Warning $warning): void
     {
@@ -113,8 +107,6 @@ class Result
 
     /**
      * Add a notice to the current Result object
-     *
-     * @param Notice $notice
      */
     public function addNotice(Notice $notice): void
     {
@@ -191,7 +183,6 @@ class Result
      * $result->forProperty('foo.bar')->getErrors() -- to get all errors
      * for property "foo.bar"
      *
-     * @param string|null $propertyPath
      * @return Result
      */
     public function forProperty(?string $propertyPath): Result
@@ -212,9 +203,7 @@ class Result
     /**
      * @todo: consider making this method protected as it will and should not be called from an outside scope
      *
-     * @param array $pathSegments
      * @return Result
-     *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function recurseThroughResult(array $pathSegments): Result
@@ -397,10 +386,6 @@ class Result
         return $result;
     }
 
-    /**
-     * @param array $result
-     * @param array $level
-     */
     protected function flattenErrorTree(array &$result, array $level): void
     {
         if (count($this->errors) > 0) {
@@ -413,10 +398,6 @@ class Result
         }
     }
 
-    /**
-     * @param array $result
-     * @param array $level
-     */
     protected function flattenWarningsTree(array &$result, array $level): void
     {
         if (count($this->warnings) > 0) {
@@ -429,10 +410,6 @@ class Result
         }
     }
 
-    /**
-     * @param array $result
-     * @param array $level
-     */
     protected function flattenNoticesTree(array &$result, array $level): void
     {
         if (count($this->notices) > 0) {
@@ -447,8 +424,6 @@ class Result
 
     /**
      * Merge the given Result object into this one.
-     *
-     * @param Result $otherResult
      */
     public function merge(Result $otherResult): void
     {
@@ -475,10 +450,6 @@ class Result
 
     /**
      * Merge a single property from the other result object.
-     *
-     * @param Result $otherResult
-     * @param string $getterName
-     * @param string $adderName
      */
     protected function mergeProperty(Result $otherResult, string $getterName, string $adderName): void
     {

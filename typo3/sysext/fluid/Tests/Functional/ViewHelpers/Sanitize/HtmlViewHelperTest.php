@@ -33,8 +33,6 @@ class HtmlViewHelperTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $payload
-     * @param string $expectation
      * @test
      * @dataProvider isSanitizedDataProvider
      */
@@ -46,8 +44,6 @@ class HtmlViewHelperTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $payload
-     * @param string $expectation
      * @test
      * @dataProvider isSanitizedDataProvider
      */

@@ -40,11 +40,6 @@ class ArrayProcessing
      */
     protected $processor;
 
-    /**
-     * @param string $identifier
-     * @param string $expression
-     * @param callable $processor
-     */
     public function __construct(string $identifier, string $expression, callable $processor)
     {
         $this->identifier = $identifier;

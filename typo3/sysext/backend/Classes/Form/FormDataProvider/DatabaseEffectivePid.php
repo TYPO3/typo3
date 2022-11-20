@@ -26,7 +26,6 @@ class DatabaseEffectivePid implements FormDataProviderInterface
      * Effective pid is used to determine entry point for page ts and is also
      * the pid where new records are stored later.
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

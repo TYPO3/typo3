@@ -122,8 +122,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
 
     /**
      * Set the identifier of the element
-     *
-     * @param string $identifier
      */
     public function setIdentifier(string $identifier)
     {
@@ -134,9 +132,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * Set multiple properties of this object at once.
      * Every property which has a corresponding set* method can be set using
      * the passed $options array.
-     *
-     * @param array $options
-     * @param bool $resetValidators
      */
     public function setOptions(array $options, bool $resetValidators = false)
     {
@@ -236,8 +231,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
 
     /**
      * Set the datatype
-     *
-     * @param string $dataType
      */
     public function setDataType(string $dataType)
     {
@@ -268,7 +261,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
     /**
      * Set the rendering option $key to $value.
      *
-     * @param string $key
      * @param mixed $value
      * @return mixed
      */
@@ -296,8 +288,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
 
     /**
      * Set the parent renderable
-     *
-     * @param CompositeRenderableInterface $parentRenderable
      */
     public function setParentRenderable(CompositeRenderableInterface $parentRenderable)
     {
@@ -376,7 +366,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
     /**
      * Set the index of the renderable
      *
-     * @param int $index
      * @internal
      */
     public function setIndex(int $index)
@@ -396,8 +385,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
 
     /**
      * Set the label which shall be displayed next to the form element
-     *
-     * @param string $label
      */
     public function setLabel(string $label)
     {
@@ -437,7 +424,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
     }
 
     /**
-     * @param array $options
      * @return RenderableVariantInterface
      */
     public function createVariant(array $options): RenderableVariantInterface
@@ -453,8 +439,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
 
     /**
      * Adds the specified variant to this form element
-     *
-     * @param RenderableVariantInterface $variant
      */
     public function addVariant(RenderableVariantInterface $variant)
     {
@@ -464,8 +448,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
     /**
      * Apply the specified variant to this form element
      * regardless of their conditions
-     *
-     * @param RenderableVariantInterface $variant
      */
     public function applyVariant(RenderableVariantInterface $variant)
     {

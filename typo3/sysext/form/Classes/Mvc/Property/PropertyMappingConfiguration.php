@@ -128,7 +128,6 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
     }
 
     /**
-     * @param string $saveToFileMountIdentifier
      * @return bool
      * @internal
      */
@@ -170,9 +169,6 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
      * for the file uploads.
      * This is done by setting `UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_SEED`
      * type converter option.
-     *
-     * @param FormRuntime $formRuntime
-     * @param RenderableInterface $renderable
      */
     protected function adjustPropertyMappingForFileUploadsAtRuntime(
         FormRuntime $formRuntime,

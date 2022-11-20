@@ -155,7 +155,6 @@ class WorkspacePreview implements MiddlewareInterface
      * Renders the logout template when the "logout" button was pressed.
      * Returns a string which can be put into a HttpResponse.
      *
-     * @param UriInterface $currentUrl
      * @return string
      */
     protected function getLogoutTemplateMessage(UriInterface $currentUrl): string
@@ -189,8 +188,6 @@ class WorkspacePreview implements MiddlewareInterface
      * open up for a preview that doesn't require login. Thus it's useful for sending in an email
      * to someone without backend account.
      *
-     * @param ServerRequestInterface $request
-     * @param string $inputCode
      * @return int|null Workspace ID stored in the preview configuration array of a sys_preview record.
      * @throws \Exception
      */
@@ -230,9 +227,6 @@ class WorkspacePreview implements MiddlewareInterface
     /**
      * Adds a cookie for logging in a preview user into the HTTP response
      *
-     * @param string $keyword
-     * @param NormalizedParams $normalizedParams
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
     protected function addCookie(string $keyword, NormalizedParams $normalizedParams, ResponseInterface $response): ResponseInterface
@@ -261,7 +255,6 @@ class WorkspacePreview implements MiddlewareInterface
      * Returns the input code value from the admin command variable
      * If no inputcode and a cookie is set, load input code from cookie
      *
-     * @param ServerRequestInterface $request
      * @return string keyword
      */
     protected function getPreviewInputCode(ServerRequestInterface $request): string
@@ -272,7 +265,6 @@ class WorkspacePreview implements MiddlewareInterface
     /**
      * Look for keyword configuration record in the database, but check if the keyword has expired already
      *
-     * @param string $keyword
      * @return mixed array of the result set or null
      */
     protected function getPreviewData(string $keyword)
@@ -365,7 +357,6 @@ class WorkspacePreview implements MiddlewareInterface
     /**
      * Fetches the title of the workspace
      *
-     * @param int $workspaceId
      * @return string the title of the workspace
      */
     protected function getWorkspaceTitle(int $workspaceId): string
@@ -389,8 +380,6 @@ class WorkspacePreview implements MiddlewareInterface
     /**
      * Used for generating URLs (e.g. in logout page) without the existing ADMCMD_prev keyword as GET variable
      *
-     * @param UriInterface $url
-     * @param string $newAdminCommand
      * @return UriInterface
      */
     protected function removePreviewParameterFromUrl(UriInterface $url, string $newAdminCommand = ''): UriInterface

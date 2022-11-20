@@ -59,8 +59,6 @@ abstract class AbstractDriver implements DriverInterface
 
     /**
      * Creates this object.
-     *
-     * @param array $configuration
      */
     public function __construct(array $configuration = [])
     {

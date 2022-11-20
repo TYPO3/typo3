@@ -47,9 +47,6 @@ class StringConverter extends AbstractTypeConverter
      * built $convertedChildProperties and $configuration.
      *
      * @param string $source
-     * @param string $targetType
-     * @param array $convertedChildProperties
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string
      */
     public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): string

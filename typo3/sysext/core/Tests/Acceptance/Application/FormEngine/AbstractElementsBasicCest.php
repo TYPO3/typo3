@@ -31,8 +31,6 @@ abstract class AbstractElementsBasicCest
     /**
      * Method to run basic elements input field test details
      *
-     * @param ApplicationTester $I
-     * @param Example $testData
      * @throws \Exception
      */
     protected function runInputFieldTest(ApplicationTester $I, Example $testData): void
@@ -85,7 +83,6 @@ abstract class AbstractElementsBasicCest
     /**
      * Return the visible input field of element in question.
      *
-     * @param RemoteWebElement $formSection
      * @return RemoteWebElement
      */
     protected function getInputField(RemoteWebElement $formSection): RemoteWebElement
@@ -96,8 +93,6 @@ abstract class AbstractElementsBasicCest
     /**
      * Return the hidden input field of element in question.
      *
-     * @param RemoteWebElement $formSection
-     * @param RemoteWebElement $inputField
      * @return RemoteWebElement
      */
     protected function getHiddenField(RemoteWebElement $formSection, RemoteWebElement $inputField): RemoteWebElement
@@ -109,8 +104,6 @@ abstract class AbstractElementsBasicCest
     /**
      * Find this element in form.
      *
-     * @param ApplicationTester $I
-     * @param string $fieldLabel
      * @return RemoteWebElement
      */
     protected function getFormSectionByFieldLabel(ApplicationTester $I, string $fieldLabel): RemoteWebElement

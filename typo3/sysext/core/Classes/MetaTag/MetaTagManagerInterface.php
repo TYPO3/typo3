@@ -21,20 +21,12 @@ interface MetaTagManagerInterface
 {
     /**
      * Add a property
-     *
-     * @param string $property
-     * @param string $content
-     * @param array $subProperties
-     * @param bool $replace
-     * @param string $type
      */
     public function addProperty(string $property, string $content, array $subProperties = [], bool $replace = false, string $type = '');
 
     /**
      * Get a specific property that is set before
      *
-     * @param string $property
-     * @param string $type
      * @return array
      */
     public function getProperty(string $property, string $type = ''): array;
@@ -42,7 +34,6 @@ interface MetaTagManagerInterface
     /**
      * Check if this manager can handle the given property
      *
-     * @param string $property
      * @return bool
      */
     public function canHandleProperty(string $property): bool;
@@ -64,7 +55,6 @@ interface MetaTagManagerInterface
     /**
      * Render a meta tag for a specific property
      *
-     * @param string $property
      * @return string
      */
     public function renderProperty(string $property): string;
@@ -72,9 +62,6 @@ interface MetaTagManagerInterface
     /**
      * Remove one property from the MetaTagManager
      * If there are multiple occurrences of a property, they all will be removed
-     *
-     * @param string $property
-     * @param string $type
      */
     public function removeProperty(string $property, string $type = '');
 

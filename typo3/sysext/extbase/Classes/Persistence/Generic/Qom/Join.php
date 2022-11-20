@@ -47,7 +47,6 @@ class Join implements JoinInterface
      * @param SourceInterface $left the left node-tuple source; non-null
      * @param SourceInterface $right the right node-tuple source; non-null
      * @param string $joinType One of Query::JCR_JOIN_TYPE_*
-     * @param JoinConditionInterface $joinCondition
      */
     public function __construct(SourceInterface $left, SourceInterface $right, $joinType, JoinConditionInterface $joinCondition)
     {

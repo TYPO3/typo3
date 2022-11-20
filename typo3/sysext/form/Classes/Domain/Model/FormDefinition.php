@@ -340,8 +340,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * Every property which has a corresponding set* method can be set using
      * the passed $options array.
      *
-     * @param array $options
-     * @param bool $resetFinishers
      * @internal
      */
     public function setOptions(array $options, bool $resetFinishers = false)
@@ -459,7 +457,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     /**
      * Check whether a page with the given $index exists
      *
-     * @param int $index
      * @return bool TRUE if a page with the given $index exists, otherwise FALSE
      */
     public function hasPageWithIndex(int $index): bool
@@ -486,8 +483,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
 
     /**
      * Adds the specified finisher to this form
-     *
-     * @param FinisherInterface $finisher
      */
     public function addFinisher(FinisherInterface $finisher)
     {
@@ -529,7 +524,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     /**
      * Add an element to the ElementsByIdentifier Cache.
      *
-     * @param RenderableInterface $renderable
      * @throws DuplicateFormElementException
      * @internal
      */
@@ -546,7 +540,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     /**
      * Remove an element from the ElementsByIdentifier cache
      *
-     * @param RenderableInterface $renderable
      * @internal
      */
     public function unregisterRenderable(RenderableInterface $renderable)
@@ -611,9 +604,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
 
     /**
      * Move $pageToMove before $referencePage
-     *
-     * @param Page $pageToMove
-     * @param Page $referencePage
      */
     public function movePageBefore(Page $pageToMove, Page $referencePage)
     {
@@ -622,9 +612,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
 
     /**
      * Move $pageToMove after $referencePage
-     *
-     * @param Page $pageToMove
-     * @param Page $referencePage
      */
     public function movePageAfter(Page $pageToMove, Page $referencePage)
     {
@@ -633,8 +620,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
 
     /**
      * Remove $pageToRemove from form
-     *
-     * @param Page $pageToRemove
      */
     public function removePage(Page $pageToRemove)
     {
@@ -655,7 +640,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     }
 
     /**
-     * @param string $propertyPath
      * @return ProcessingRule
      */
     public function getProcessingRule(string $propertyPath): ProcessingRule
@@ -708,8 +692,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
 
     /**
      * Set the renderer class name
-     *
-     * @param string $rendererClassName
      */
     public function setRendererClassName(string $rendererClassName)
     {

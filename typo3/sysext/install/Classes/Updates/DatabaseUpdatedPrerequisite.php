@@ -69,9 +69,6 @@ class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterf
         return count($adds) === 0;
     }
 
-    /**
-     * @param OutputInterface $output
-     */
     public function setOutput(OutputInterface $output): void
     {
         $this->output = $output;

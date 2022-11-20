@@ -49,9 +49,6 @@ class ElementBrowserPageTreeView extends BrowseTreeView
         $this->clause = ' AND doktype <> ' . PageRepository::DOKTYPE_RECYCLER . $this->clause;
     }
 
-    /**
-     * @param LinkParameterProviderInterface $linkParameterProvider
-     */
     public function setLinkParameterProvider(LinkParameterProviderInterface $linkParameterProvider)
     {
         $this->linkParameterProvider = $linkParameterProvider;

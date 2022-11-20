@@ -74,8 +74,6 @@ class ContentFetcher
      * Gets content records per column.
      * This is required for correct workspace overlays.
      *
-     * @param int|null $columnNumber
-     * @param int|null $languageId
      * @return array Associative array for each column (colPos) or for all columns if $columnNumber is null
      */
     public function getContentRecordsPerColumn(?int $columnNumber = null, ?int $languageId = null): array

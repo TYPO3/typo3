@@ -41,11 +41,6 @@ abstract class AbstractValidator implements ValidatorInterface
      */
     protected $validationDto;
 
-    /**
-     * @param array $currentElement
-     * @param string $sessionToken
-     * @param ValidationDto $validationDto
-     */
     public function __construct(array $currentElement, string $sessionToken, ValidationDto $validationDto)
     {
         $this->currentElement = $currentElement;
@@ -56,7 +51,6 @@ abstract class AbstractValidator implements ValidatorInterface
     /**
      * Builds the path in which the hmac value is expected based on the property path.
      *
-     * @param string $propertyPath
      * @return string
      */
     protected function buildHmacDataPath(string $propertyPath): string

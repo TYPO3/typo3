@@ -28,7 +28,6 @@ interface AspectInterface
     /**
      * Get a property from an aspect
      *
-     * @param string $name
      * @return mixed
      * @throws AspectPropertyNotFoundException
      */

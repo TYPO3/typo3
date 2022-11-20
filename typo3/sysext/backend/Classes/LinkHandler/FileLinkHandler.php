@@ -180,9 +180,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     }
 
     /**
-     * @param Folder $folder
      * @param string $extensionList
-     *
      * @return FileInterface[]|Folder[]
      */
     protected function getFolderContent(Folder $folder, $extensionList)
@@ -198,7 +196,6 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     /**
      * Renders a single item displayed in the current folder
      *
-     * @param ResourceInterface $fileOrFolderObject
      *
      * @return array
      * @throws \InvalidArgumentException

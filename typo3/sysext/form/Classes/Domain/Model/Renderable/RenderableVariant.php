@@ -53,9 +53,6 @@ class RenderableVariant implements RenderableVariantInterface
     protected $applied = false;
 
     /**
-     * @param string $identifier
-     * @param array $options
-     * @param VariableRenderableInterface $renderable
      * @throws IdentifierNotValidException
      */
     public function __construct(
@@ -89,7 +86,6 @@ class RenderableVariant implements RenderableVariantInterface
     }
 
     /**
-     * @param Resolver $conditionResolver
      * @return bool
      */
     public function conditionMatches(Resolver $conditionResolver): bool

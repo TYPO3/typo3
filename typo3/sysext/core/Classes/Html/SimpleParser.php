@@ -113,8 +113,6 @@ class SimpleParser
 
     /**
      * Processes token sequence and creates corresponding `Node` instances.
-     *
-     * @param string $string
      */
     protected function process(string $string): void
     {
@@ -188,8 +186,6 @@ class SimpleParser
 
     /**
      * Triggers creating "next" node instance, resets current state.
-     *
-     * @param int $nextType
      */
     protected function next(int $nextType): void
     {

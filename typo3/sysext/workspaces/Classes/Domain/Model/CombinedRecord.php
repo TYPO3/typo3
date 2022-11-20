@@ -71,8 +71,6 @@ class CombinedRecord
      * Creates this object.
      *
      * @param string $table
-     * @param DatabaseRecord $liveRecord
-     * @param DatabaseRecord $versionRecord
      */
     public function __construct($table, DatabaseRecord $liveRecord, DatabaseRecord $versionRecord)
     {
@@ -113,8 +111,6 @@ class CombinedRecord
 
     /**
      * Sets the live-record object.
-     *
-     * @param DatabaseRecord $liveRecord
      */
     public function setLiveRecord(DatabaseRecord $liveRecord)
     {
@@ -133,8 +129,6 @@ class CombinedRecord
 
     /**
      * Sets the version-record object.
-     *
-     * @param DatabaseRecord $versionRecord
      */
     public function setVersionRecord(DatabaseRecord $versionRecord)
     {

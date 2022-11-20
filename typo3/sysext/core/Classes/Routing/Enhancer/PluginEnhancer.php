@@ -108,8 +108,6 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
     /**
      * Builds a variant of a route based on the given configuration.
      *
-     * @param Route $defaultPageRoute
-     * @param array $configuration
      * @return Route
      */
     protected function getVariant(Route $defaultPageRoute, array $configuration): Route
@@ -157,8 +155,6 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
     }
 
     /**
-     * @param Route $route
-     * @param array $parameters
      * @return array
      */
     protected function deflateParameters(Route $route, array $parameters): array

@@ -228,7 +228,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Constructor for a storage object.
      *
-     * @param Driver\DriverInterface $driver
      * @param array $storageRecord The storage record row from the database
      * @param EventDispatcherInterface|null $eventDispatcher
      */
@@ -288,8 +287,6 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Sets the configuration.
-     *
-     * @param array $configuration
      */
     public function setConfiguration(array $configuration)
     {
@@ -309,7 +306,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Sets the storage that belongs to this storage.
      *
-     * @param Driver\DriverInterface $driver
      * @return ResourceStorage
      */
     public function setDriver(DriverInterface $driver)
@@ -434,7 +430,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Search for files in a storage based on given restrictions
      * and a possibly given folder.
      *
-     * @param FileSearchDemand $searchDemand
      * @param Folder|null $folder
      * @param bool $useFilters Whether storage filters should be applied
      * @return FileSearchResultInterface
@@ -674,8 +669,6 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Sets the user permissions of the storage.
-     *
-     * @param array $userPermissions
      */
     public function setUserPermissions(array $userPermissions)
     {
@@ -896,7 +889,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Assures read permission for given file.
      *
-     * @param FileInterface $file
      * @throws Exception\InsufficientFileAccessPermissionsException
      * @throws Exception\IllegalFileExtensionException
      */
@@ -919,7 +911,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Assures write permission for given file.
      *
-     * @param FileInterface $file
      * @throws Exception\IllegalFileExtensionException
      * @throws Exception\InsufficientFileWritePermissionsException
      * @throws Exception\InsufficientUserPermissionsException
@@ -938,7 +929,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Assure replace permission for given file.
      *
-     * @param FileInterface $file
      * @throws Exception\InsufficientFileWritePermissionsException
      * @throws Exception\InsufficientFolderWritePermissionsException
      */
@@ -957,7 +947,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Assures delete permission for given file.
      *
-     * @param FileInterface $file
      * @throws Exception\IllegalFileExtensionException
      * @throws Exception\InsufficientFileWritePermissionsException
      * @throws Exception\InsufficientFolderWritePermissionsException
@@ -1047,8 +1036,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\InsufficientFolderAccessPermissionsException
      * @throws Exception\InsufficientUserPermissionsException
      * @throws Exception\IllegalFileExtensionException
-     * @param FileInterface $file
-     * @param Folder $targetFolder
      * @param string $targetFileName
      */
     protected function assureFileMovePermissions(FileInterface $file, Folder $targetFolder, $targetFileName)
@@ -1074,7 +1061,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Checks for permissions to rename a file.
      *
-     * @param FileInterface $file
      * @param string $targetFileName
      * @throws Exception\InsufficientFileWritePermissionsException
      * @throws Exception\IllegalFileExtensionException
@@ -1104,8 +1090,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Check if a file has the permission to be copied on a File/Folder/Storage,
      * if not throw an exception
      *
-     * @param FileInterface $file
-     * @param Folder $targetFolder
      * @param string $targetFileName
      *
      * @throws Exception
@@ -1138,8 +1122,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Check if a file has the permission to be copied on a File/Folder/Storage,
      * if not throw an exception
      *
-     * @param FolderInterface $folderToCopy
-     * @param FolderInterface $targetParentFolder
      *
      * @throws Exception
      * @throws Exception\InsufficientFolderWritePermissionsException
@@ -1174,8 +1156,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Check if a file has the permission to be copied on a File/Folder/Storage,
      * if not throw an exception
      *
-     * @param FolderInterface $folderToMove
-     * @param FolderInterface $targetParentFolder
      *
      * @throws \InvalidArgumentException
      * @throws Exception\InsufficientFolderWritePermissionsException
@@ -1288,8 +1268,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Updates a processed file with a new file from the local filesystem.
      *
      * @param string $localFilePath
-     * @param ProcessedFile $processedFile
-     * @param Folder $processingFolder
      * @return FileInterface
      * @throws \InvalidArgumentException
      * @internal use only
@@ -1311,7 +1289,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Creates a (cryptographic) hash for a file.
      *
-     * @param FileInterface $fileObject
      * @param string $hash
      * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidHashException
      * @return string
@@ -1409,7 +1386,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FileInterface $fileObject The file object
      * @param string $context
-     * @param array $configuration
      *
      * @return ProcessedFile
      * @throws \InvalidArgumentException
@@ -1427,7 +1403,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Copies a file from the storage for local processing.
      *
-     * @param FileInterface $fileObject
      * @param bool $writable
      * @return string Path to local file (either original or copied to some temporary local location)
      */
@@ -1457,7 +1432,6 @@ class ResourceStorage implements ResourceStorageInterface
      * If the file is outside of the process folder, it gets indexed and returned as file object afterwards
      * If the file is within processing folder, the file object will be directly returned
      *
-     * @param string $fileIdentifier
      * @return File|ProcessedFile|null
      */
     public function getFileByIdentifier(string $fileIdentifier)
@@ -1480,7 +1454,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Gets information about a file.
      *
-     * @param FileInterface $fileObject
      * @return array
      * @internal
      */
@@ -1493,7 +1466,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Gets information about a file by its identifier.
      *
      * @param string $identifier
-     * @param array $propertiesToExtract
      * @return array
      * @internal
      */
@@ -1542,7 +1514,6 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
-     * @param array $filters
      * @return $this
      */
     public function setFileAndFolderNameFilters(array $filters)
@@ -1573,7 +1544,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Get file from folder
      *
      * @param string $fileName
-     * @param Folder $folder
      * @return File|ProcessedFile|null
      */
     public function getFileInFolder($fileName, Folder $folder)
@@ -1583,7 +1553,6 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
-     * @param Folder $folder
      * @param int $start
      * @param int $maxNumberOfItems
      * @param bool $useFilters
@@ -1638,7 +1607,6 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
-     * @param Folder $folder
      * @param bool $useFilters
      * @param bool $recursive
      * @return int Number of files in folder
@@ -1711,7 +1679,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Returns TRUE if folder that is in current storage  is set as
      * processing folder for one of the existing storages
      *
-     * @param Folder $folder
      * @return bool
      */
     public function isProcessingFolder(Folder $folder)
@@ -1730,7 +1697,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Checks if the queried file in the given folder exists
      *
      * @param string $fileName
-     * @param Folder $folder
      * @return bool
      */
     public function hasFileInFolder($fileName, Folder $folder)
@@ -1756,7 +1722,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Returns a PSR-7 Response which can be used to stream the requested file
      *
-     * @param FileInterface $file
      * @param bool $asDownload If set Content-Disposition attachment is sent, inline otherwise
      * @param string $alternativeFilename the filename for the download (if $asDownload is set)
      * @param string $overrideMimeType If set this will be used as Content-Type header instead of the automatically detected mime type.
@@ -1783,7 +1748,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Wrap DriverInterface::dumpFileContents into a SelfEmittableStreamInterface
      *
-     * @param FileInterface $file
      * @param bool $asDownload If set Content-Disposition attachment is sent, inline otherwise
      * @param string $alternativeFilename the filename for the download (if $asDownload is set)
      * @param string $overrideMimeType If set this will be used as Content-Type header instead of the automatically detected mime type.
@@ -1816,7 +1780,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Set contents of a file object.
      *
-     * @param AbstractFile $file
      * @param string $contents
      *
      * @throws \Exception|\RuntimeException
@@ -1920,8 +1883,6 @@ class ResourceStorage implements ResourceStorageInterface
      * copies a source file (from any location) in to the target
      * folder, the latter has to be part of this storage
      *
-     * @param FileInterface $file
-     * @param Folder $targetFolder
      * @param string $targetFileName an optional destination fileName
      * @param string $conflictMode a value of the DuplicationBehavior enumeration
      *
@@ -2094,7 +2055,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Replaces a file with a local file (e.g. a freshly uploaded file)
      *
-     * @param FileInterface $file
      * @param string $localFilePath
      *
      * @return FileInterface
@@ -2168,7 +2128,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Returns an array with all file objects in a folder and its subfolders, with the file identifiers as keys.
      * @todo check if this is a duplicate
-     * @param Folder $folder
      * @return File[]
      */
     protected function getAllFileObjectsInFolder(Folder $folder)
@@ -2247,8 +2206,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Moves the given folder from a different storage to the target folder in this storage.
      *
-     * @param Folder $folderToMove
-     * @param Folder $targetParentFolder
      * @param string $newFolderName
      * @throws NotImplementedMethodException
      */
@@ -2312,8 +2269,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Copies a folder between storages.
      *
-     * @param FolderInterface $folderToCopy
-     * @param FolderInterface $targetParentFolder
      * @param string $newFolderName
      * @throws NotImplementedMethodException
      */
@@ -2402,7 +2357,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Returns the Identifier for a folder within a given folder.
      *
      * @param string $folderName The name of the target folder
-     * @param Folder $parentFolder
      * @param bool $returnInaccessibleFolderObject
      * @return Folder|InaccessibleFolder
      * @throws \Exception
@@ -2415,7 +2369,6 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
-     * @param Folder $folder
      * @param int $start
      * @param int $maxNumberOfItems
      * @param bool $useFilters
@@ -2451,7 +2404,6 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
-     * @param Folder  $folder
      * @param bool $useFilters
      * @param bool $recursive
      * @return int Number of subfolders
@@ -2480,7 +2432,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Checks if the given file exists in the given folder
      *
      * @param string $folderName
-     * @param Folder $folder
      * @return bool
      */
     public function hasFolderInFolder($folderName, Folder $folder)
@@ -2533,7 +2484,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Retrieves information about a folder
      *
-     * @param Folder $folder
      * @return array
      */
     public function getFolderInfo(Folder $folder)
@@ -2609,8 +2559,6 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Checks if a resource (file or folder) is within the given folder
      *
-     * @param Folder $folder
-     * @param ResourceInterface $resource
      * @return bool
      * @throws \InvalidArgumentException
      */
@@ -2649,7 +2597,6 @@ class ResourceStorage implements ResourceStorageInterface
      * This function is used by fx. DataHandler when files are attached to records
      * and needs to be uniquely named in the uploads/* folders
      *
-     * @param FolderInterface $folder
      * @param string $theFile The input fileName to check
      * @param bool $dontCheckForUnique If set the fileName is returned with the path prepended without checking whether it already existed!
      *
@@ -2828,8 +2775,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Getter function to return the the file's corresponding hashed subfolder
      * of the processed folder
      *
-     * @param File $file
-     * @param Folder $rootProcessingFolder
      * @return Folder
      * @throws Exception\InsufficientFolderWritePermissionsException
      */

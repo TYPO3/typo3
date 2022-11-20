@@ -69,7 +69,6 @@ class BlogController extends ActionController
     }
 
     /**
-     * @param \ExtbaseTeam\BlogExample\Domain\Model\Post $blogPost
      * // needs to be imported entirely, else the annotationChecker test script complains
      * @IgnoreValidation("blogPost")
      */
@@ -78,18 +77,11 @@ class BlogController extends ActionController
         return (new ForwardResponse('testForwardTarget'))->withArguments(['blogPost' => $blogPost]);
     }
 
-    /**
-     * @param \ExtbaseTeam\BlogExample\Domain\Model\Post $blogPost
-     */
     public function testForwardTargetAction(Post $blogPost): ResponseInterface
     {
         return $this->htmlResponse('testForwardTargetAction');
     }
 
-    /**
-     * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog
-     * @param \ExtbaseTeam\BlogExample\Domain\Model\Post|null $blogPost
-     */
     public function testRelatedObjectAction(Blog $blog, ?Post $blogPost = null): ResponseInterface
     {
         return $this->htmlResponse('testRelatedObject');

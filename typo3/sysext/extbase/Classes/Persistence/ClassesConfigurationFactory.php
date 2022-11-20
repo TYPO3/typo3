@@ -74,7 +74,6 @@ final class ClassesConfigurationFactory
     /**
      * todo: this method is flawed, see https://forge.typo3.org/issues/87566
      *
-     * @param array $classes
      * @return array
      */
     private function inheritPropertiesFromParentClasses(array $classes): array

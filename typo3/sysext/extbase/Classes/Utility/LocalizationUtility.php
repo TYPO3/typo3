@@ -138,10 +138,7 @@ class LocalizationUtility
      * Loads local-language values by looking for a "locallang.xlf" file in the plugin resources directory and if found includes it.
      * Also locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.xlf" file.
      *
-     * @param string $languageFilePath
-     * @param string $languageKey
      * @param string[] $alternativeLanguageKeys
-     * @param string $extensionName
      */
     protected static function initializeLocalization(string $languageFilePath, string $languageKey, array $alternativeLanguageKeys, string $extensionName = null): void
     {
@@ -173,7 +170,6 @@ class LocalizationUtility
     /**
      * Returns the default path and filename for an extension
      *
-     * @param string $extensionName
      * @return string
      */
     protected static function getLanguageFilePath(string $extensionName): string
@@ -221,9 +217,6 @@ class LocalizationUtility
      * Overwrites labels that are set via TypoScript.
      * TS locallang labels have to be configured like:
      * plugin.tx_myextension._LOCAL_LANG.languageKey.key = value
-     *
-     * @param string $extensionName
-     * @param string $languageFilePath
      */
     protected static function loadTypoScriptLabels(string $extensionName, string $languageFilePath): void
     {

@@ -26,8 +26,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class HttpUtilityTest extends UnitTestCase
 {
     /**
-     * @param array $urlParts
-     * @param string $expected
      * @dataProvider isUrlBuiltCorrectlyDataProvider
      * @test
      */
@@ -86,9 +84,6 @@ class HttpUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider queryStringDataProvider
-     * @param string $name
-     * @param array $input
-     * @param string $expected
      */
     public function buildQueryStringBuildsValidParameterString(string $name, array $input, string $expected): void
     {

@@ -60,9 +60,6 @@ class TotpTest extends UnitTestCase
     /**
      * @test
      * @dataProvider totpDataProvider
-     *
-     * @param string $expectedTotp
-     * @param array  $arguments
      */
     public function generateTotpTest(string $expectedTotp, array $arguments): void
     {
@@ -77,9 +74,6 @@ class TotpTest extends UnitTestCase
     /**
      * @test
      * @dataProvider totpDataProvider
-     *
-     * @param string $totp
-     * @param array $arguments
      */
     public function verifyTotpTest(string $totp, array $arguments): void
     {
@@ -132,10 +126,6 @@ class TotpTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getTotpAuthUrlTestDataProvider
-     *
-     * @param array $constructorArguments
-     * @param array $methodArguments
-     * @param string $expected
      */
     public function getTotpAuthUrlTest(array $constructorArguments, array $methodArguments, string $expected): void
     {

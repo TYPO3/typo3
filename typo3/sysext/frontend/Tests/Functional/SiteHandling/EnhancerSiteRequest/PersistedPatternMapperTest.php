@@ -80,7 +80,6 @@ class PersistedPatternMapperTest extends AbstractEnhancerSiteRequestTest
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider persistedPatternMapperDataProvider
      */
@@ -108,7 +107,6 @@ class PersistedPatternMapperTest extends AbstractEnhancerSiteRequestTest
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider pageTypeDecoratorIsAppliedDataProvider
      */

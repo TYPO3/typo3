@@ -101,7 +101,6 @@ class LocaleModifierTest extends AbstractEnhancerLinkGeneratorTestCase
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider localeModifierDataProvider
      */
@@ -161,7 +160,6 @@ class LocaleModifierTest extends AbstractEnhancerLinkGeneratorTestCase
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider pageTypeDecoratorIsAppliedDataProvider
      */

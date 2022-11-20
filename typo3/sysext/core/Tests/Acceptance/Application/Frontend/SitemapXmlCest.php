@@ -30,9 +30,6 @@ class SitemapXmlCest
 {
     protected string $sidebar = '.sidebar.list-group';
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function _before(ApplicationTester $I, PageTree $pageTree)
     {
         $I->useExistingSession('admin');
@@ -55,8 +52,6 @@ class SitemapXmlCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param int $attempt
      * @return string
      */
     private function getCurrentURL(ApplicationTester $I, int $attempt = 1): string
@@ -79,7 +74,6 @@ class SitemapXmlCest
 
     /**
      * @dataProvider sitemapDataProvider
-     * @param ApplicationTester $I
      */
     public function seeSitemapXml(ApplicationTester $I, Example $testData): void
     {
@@ -132,9 +126,6 @@ class SitemapXmlCest
     /**
      * Find text by given slug part
      *
-     * @param ApplicationTester $I
-     * @param string $slug
-     * @param int $sibling
      * @return RemoteWebElement
      */
     protected function getTableColumn(ApplicationTester $I, string $slug, int $sibling = 3): RemoteWebElement

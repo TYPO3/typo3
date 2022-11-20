@@ -56,7 +56,6 @@ class CorrelationId implements \JsonSerializable
     protected $aspects = [];
 
     /**
-     * @param string $scope
      * @return static
      */
     public static function forScope(string $scope): self
@@ -74,7 +73,6 @@ class CorrelationId implements \JsonSerializable
     }
 
     /**
-     * @param string $correlationId
      * @return static
      */
     public static function fromString(string $correlationId): self

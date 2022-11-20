@@ -34,8 +34,6 @@ class LowerCase implements LowerCaseInterface
 
     /**
      * Constructs this LowerCase instance
-     *
-     * @param PropertyValueInterface $operand
      */
     public function __construct(PropertyValueInterface $operand)
     {

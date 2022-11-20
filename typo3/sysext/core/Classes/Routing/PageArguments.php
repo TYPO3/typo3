@@ -103,7 +103,6 @@ class PageArguments implements RouteResultInterface
     }
 
     /**
-     * @param string $name
      * @return string|array<string, string|array>|null
      */
     public function get(string $name): mixed
@@ -227,7 +226,6 @@ class PageArguments implements RouteResultInterface
     }
 
     /**
-     * @param mixed $offset
      * @return string|array<string, string|array>|null
      */
     public function offsetGet(mixed $offset): mixed

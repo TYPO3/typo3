@@ -225,7 +225,6 @@ class MailMessage extends Email
     /**
      * Ask for a delivery receipt from the recipient to be sent to $addresses.
      *
-     * @param string $address
      * @return MailMessage
      */
     public function setReadReceiptTo(string $address): self

@@ -201,8 +201,6 @@ class TcaItemsProcessorFunctions
 
     /**
      * Populates a list of category fields (with the defined relationships) for the given table
-     *
-     * @param array $fieldDefinition
      */
     public function populateAvailableCategoryFields(array &$fieldDefinition): void
     {

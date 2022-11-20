@@ -142,8 +142,6 @@ class Permutation
     }
 
     /**
-     * @param TestSet $target
-     * @param Applicable ...$applicables
      * @return Applicable[]
      */
     private function includeTargetApplicables(TestSet $target, Applicable ...$applicables): array

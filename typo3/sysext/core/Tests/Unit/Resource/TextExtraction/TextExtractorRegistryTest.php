@@ -31,7 +31,6 @@ class TextExtractorRegistryTest extends UnitTestCase
     /**
      * Initialize a TextExtractorRegistry and mock createTextExtractorInstance()
      *
-     * @param array $createsTextExtractorInstances
      * @return MockObject|TextExtractorRegistry
      */
     protected function getTextExtractorRegistry(array $createsTextExtractorInstances = [])

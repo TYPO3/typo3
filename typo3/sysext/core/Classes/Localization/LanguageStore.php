@@ -243,7 +243,6 @@ class LanguageStore implements SingletonInterface
     /**
      * Gets the relative labels file pattern.
      *
-     * @param string $fileReference
      * @return string
      * @throws \InvalidArgumentException
      */

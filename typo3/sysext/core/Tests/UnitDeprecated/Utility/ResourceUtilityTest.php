@@ -69,8 +69,6 @@ class ResourceUtilityTest extends UnitTestCase
     /**
      * @dataProvider recursiveFileListSortingHelperTestDataProvider
      * @test
-     * @param array $unsortedList
-     * @param array $expectedList
      */
     public function recursiveFileListSortingHelperCorrectlySorts(array $unsortedList, array $expectedList): void
     {

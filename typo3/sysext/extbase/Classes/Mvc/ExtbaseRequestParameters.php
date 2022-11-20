@@ -335,7 +335,6 @@ class ExtbaseRequestParameters
     /**
      * Recursively validate the structure in an uploaded files array.
      *
-     * @param array $uploadedFiles
      * @throws \InvalidArgumentException if any leaf is not an UploadedFileInterface instance.
      */
     protected function validateUploadedFiles(array $uploadedFiles): void

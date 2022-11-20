@@ -73,33 +73,21 @@ class ListUtility implements SingletonInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @param EmConfUtility $emConfUtility
-     */
     public function injectEmConfUtility(EmConfUtility $emConfUtility)
     {
         $this->emConfUtility = $emConfUtility;
     }
 
-    /**
-     * @param ExtensionRepository $extensionRepository
-     */
     public function injectExtensionRepository(ExtensionRepository $extensionRepository)
     {
         $this->extensionRepository = $extensionRepository;
     }
 
-    /**
-     * @param PackageManager $packageManager
-     */
     public function injectPackageManager(PackageManager $packageManager)
     {
         $this->packageManager = $packageManager;
     }
 
-    /**
-     * @param DependencyUtility $dependencyUtility
-     */
     public function injectDependencyUtility(DependencyUtility $dependencyUtility)
     {
         $this->dependencyUtility = $dependencyUtility;
@@ -108,7 +96,6 @@ class ListUtility implements SingletonInterface
     /**
      * Returns the list of available, but not necessarily loaded extensions
      *
-     * @param string $filter
      * @return array[] All extensions with info
      */
     public function getAvailableExtensions(string $filter = ''): array
@@ -164,7 +151,6 @@ class ListUtility implements SingletonInterface
     /**
      * Returns "System", "Global" or "Local" based on extension position in filesystem.
      *
-     * @param PackageInterface $package
      * @return string
      */
     protected function getInstallTypeForPackage(PackageInterface $package)
@@ -183,7 +169,6 @@ class ListUtility implements SingletonInterface
     /**
      * Enrich the output of getAvailableExtensions() with an array key installed = 1 if an extension is loaded.
      *
-     * @param array $availableExtensions
      * @return array
      */
     public function getAvailableAndInstalledExtensions(array $availableExtensions)
@@ -199,7 +184,6 @@ class ListUtility implements SingletonInterface
     /**
      * Adds the information from the emconf array to the extension information
      *
-     * @param array $extensions
      * @return array
      */
     public function enrichExtensionsWithEmConfInformation(array $extensions)
@@ -218,7 +202,6 @@ class ListUtility implements SingletonInterface
     /**
      * Adds the information from the emconf array and TER to the extension information
      *
-     * @param array $extensions
      * @return array
      */
     public function enrichExtensionsWithEmConfAndTerInformation(array $extensions)
@@ -276,7 +259,6 @@ class ListUtility implements SingletonInterface
      * Gets all available and installed extension with additional information
      * from em_conf and TER (if available)
      *
-     * @param string $filter
      * @return array
      */
     public function getAvailableAndInstalledExtensionsWithAdditionalInformation(string $filter = ''): array
@@ -289,7 +271,6 @@ class ListUtility implements SingletonInterface
     /**
      * Returns the updateable version for an extension which also resolves dependencies.
      *
-     * @param Extension $extensionData
      * @return Extension|null null if no update available otherwise latest possible update
      */
     protected function getUpdateableVersion(Extension $extensionData): ?Extension

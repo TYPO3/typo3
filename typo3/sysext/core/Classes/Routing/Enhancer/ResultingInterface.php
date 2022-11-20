@@ -27,9 +27,6 @@ use TYPO3\CMS\Core\Routing\Route;
 interface ResultingInterface
 {
     /**
-     * @param Route $route
-     * @param array $results
-     * @param array $remainingQueryParameters
      * @return PageArguments
      */
     public function buildResult(Route $route, array $results, array $remainingQueryParameters = []): PageArguments;

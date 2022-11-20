@@ -110,7 +110,6 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
     /**
      * Not used in this implementation
      *
-     * @param string $key
      * @param mixed $value
      * @internal
      */

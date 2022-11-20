@@ -136,11 +136,6 @@ class VariableProcessorTest extends UnitTestCase
     }
 
     /**
-     * @param string|null $namespace
-     * @param array $arguments
-     * @param string $inflatedRoutePath
-     * @param string $deflatedRoutePath
-     *
      * @test
      * @dataProvider routePathDataProvider
      */
@@ -182,9 +177,6 @@ class VariableProcessorTest extends UnitTestCase
     }
 
     /**
-     * @param array $arguments
-     * @param array $deflatedParameters
-     *
      * @test
      * @dataProvider parametersDataProvider
      */
@@ -263,10 +255,6 @@ class VariableProcessorTest extends UnitTestCase
     }
 
     /**
-     * @param string $namespace
-     * @param array $arguments
-     * @param array $deflatedParameters
-     *
      * @test
      * @dataProvider namespaceParametersDataProvider
      */
@@ -354,10 +342,6 @@ class VariableProcessorTest extends UnitTestCase
     }
 
     /**
-     * @param string|null $namespace
-     * @param array $arguments
-     * @param array $deflatedKeys
-     *
      * @test
      * @dataProvider keysDataProvider
      */
@@ -375,10 +359,6 @@ class VariableProcessorTest extends UnitTestCase
     }
 
     /**
-     * @param string|null $namespace
-     * @param array $arguments
-     * @param array $deflatedKeys
-     *
      * @test
      * @dataProvider specialKeysDataProvider
      */

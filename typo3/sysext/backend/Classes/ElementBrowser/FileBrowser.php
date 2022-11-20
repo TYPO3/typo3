@@ -384,8 +384,6 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     /**
      * Get a list of Files in a folder filtered by extension
      *
-     * @param Folder $folder
-     * @param array $extensionList
      * @return File[]
      */
     protected function getFilesInFolder(Folder $folder, array $extensionList)

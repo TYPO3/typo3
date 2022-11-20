@@ -184,7 +184,6 @@ class ClassSchema
     }
 
     /**
-     * @param \ReflectionClass $reflectionClass
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
      */
@@ -302,7 +301,6 @@ class ClassSchema
     }
 
     /**
-     * @param \ReflectionClass $reflectionClass
      * @throws InvalidTypeHintException
      * @throws InvalidValidationConfigurationException
      * @throws \Doctrine\Common\Annotations\AnnotationException
@@ -544,7 +542,6 @@ MESSAGE;
     /**
      * @throws NoSuchPropertyException
      *
-     * @param string $propertyName
      * @return Property
      */
     public function getProperty(string $propertyName): Property
@@ -613,7 +610,6 @@ MESSAGE;
     /**
      * @throws NoSuchMethodException
      *
-     * @param string $methodName
      * @return Method
      */
     public function getMethod(string $methodName): Method
@@ -636,7 +632,6 @@ MESSAGE;
     }
 
     /**
-     * @param \ReflectionMethod $reflectionMethod
      * @return bool
      */
     protected function hasInjectMethodName(\ReflectionMethod $reflectionMethod): bool
@@ -691,7 +686,6 @@ MESSAGE;
     }
 
     /**
-     * @param string $methodName
      * @return bool
      */
     public function hasMethod(string $methodName): bool

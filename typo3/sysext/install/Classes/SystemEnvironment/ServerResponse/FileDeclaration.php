@@ -115,7 +115,6 @@ class FileDeclaration
     }
 
     /**
-     * @param ResponseInterface $response
      * @return StatusMessage[]
      */
     public function getMismatches(ResponseInterface $response): array

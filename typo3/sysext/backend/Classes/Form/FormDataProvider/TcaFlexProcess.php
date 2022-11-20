@@ -35,7 +35,6 @@ class TcaFlexProcess implements FormDataProviderInterface
      * value and ds, call FormDataCompiler with set FlexFormSegment group to resolve
      * single field stuff like item processor functions.
      *
-     * @param array $result
      * @throws \RuntimeException
      * @return array
      */

@@ -262,7 +262,6 @@ class ExportPageTreeView extends AbstractTreeView
     /**
      * Get page icon for the row.
      *
-     * @param array $row
      * @return string Icon image tag.
      */
     protected function getPageIcon(array $row): string

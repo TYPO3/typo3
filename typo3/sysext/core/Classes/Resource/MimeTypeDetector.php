@@ -34,7 +34,6 @@ final class MimeTypeDetector
     }
 
     /**
-     * @param string $fileExtension
      * @return array<int, string>
      */
     public function getMimeTypesForFileExtension(string $fileExtension): array
@@ -50,7 +49,6 @@ final class MimeTypeDetector
     }
 
     /**
-     * @param string $mimeType
      * @return array<int, string>
      */
     public function getFileExtensionsForMimeType(string $mimeType): array

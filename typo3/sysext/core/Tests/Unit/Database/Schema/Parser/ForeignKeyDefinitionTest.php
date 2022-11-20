@@ -68,11 +68,6 @@ class ForeignKeyDefinitionTest extends UnitTestCase
     /**
      * @test
      * @dataProvider canParseForeignKeyDefinitionDataProvider
-     * @param string $indexDefinition
-     * @param string $indexName
-     * @param array $indexColumns
-     * @param string $foreignTableName
-     * @param array $foreignTableColumns
      */
     public function canParseForeignKeyDefinition(
         string $indexDefinition,
@@ -104,7 +99,6 @@ class ForeignKeyDefinitionTest extends UnitTestCase
     /**
      * Parse the CREATE TABLE statement and return the reference definition
      *
-     * @param string $statement
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateForeignKeyDefinitionItem
      */
     protected function createSubject(string $statement): CreateForeignKeyDefinitionItem

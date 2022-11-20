@@ -48,7 +48,6 @@ class BcryptPasswordHash implements PasswordHashInterface
     /**
      * Constructor sets options if given
      *
-     * @param array $options
      * @throws \InvalidArgumentException
      */
     public function __construct(array $options = [])
@@ -152,7 +151,6 @@ class BcryptPasswordHash implements PasswordHashInterface
      * 2. base64 will never produce NUL bytes (bcrypt truncates on NUL bytes)
      * 3. sha384 is resistant to length extension attacks
      *
-     * @param string $password
      * @return string
      */
     protected function processPlainPassword(string $password): string
@@ -162,7 +160,6 @@ class BcryptPasswordHash implements PasswordHashInterface
 
     /**
      * @see https://github.com/php/php-src/blob/php-7.2.0/ext/standard/password.c#L441-L444
-     * @param int $cost
      * @return bool
      */
     protected function isValidBcryptCost(int $cost): bool

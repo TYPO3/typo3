@@ -98,7 +98,6 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
     protected $slugUniqueInSite;
 
     /**
-     * @param array $settings
      * @throws \InvalidArgumentException
      */
     public function __construct(array $settings)
@@ -182,7 +181,6 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
     }
 
     /**
-     * @param string|null $value
      * @return string
      */
     protected function purgeRouteValuePrefix(?string $value): ?string

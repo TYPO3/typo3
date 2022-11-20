@@ -52,7 +52,6 @@ interface RenderableInterface extends RootRenderableInterface
     /**
      * Set the index of this renderable inside the parent renderable
      *
-     * @param int $index
      * @internal
      */
     public function setIndex(int $index);

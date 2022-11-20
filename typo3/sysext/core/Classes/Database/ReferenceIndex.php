@@ -270,8 +270,6 @@ class ReferenceIndex implements LoggerAwareInterface
     /**
      * Returns the amount of references for the given record
      *
-     * @param string $tableName
-     * @param int $uid
      * @return int
      */
     public function getNumberOfReferencedRecords(string $tableName, int $uid): int
@@ -570,7 +568,6 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param array $conf Field configuration array of type "TCA/columns
      * @param int $uid Field uid
      * @param string $table Table name
-     * @param array $row
      * @return array|bool If field type is OK it will return an array with the database relations. Else FALSE
      */
     protected function getRelations_procDB($value, $conf, $uid, $table = '', array $row = [])
@@ -1228,8 +1225,6 @@ class ReferenceIndex implements LoggerAwareInterface
     /**
      * Get one record from database.
      *
-     * @param string $tableName
-     * @param int $uid
      * @return array|false
      */
     protected function getRecord(string $tableName, int $uid)

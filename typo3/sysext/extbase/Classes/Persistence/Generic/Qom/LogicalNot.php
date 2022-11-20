@@ -28,9 +28,6 @@ class LogicalNot implements NotInterface
      */
     protected $constraint;
 
-    /**
-     * @param ConstraintInterface $constraint
-     */
     public function __construct(ConstraintInterface $constraint)
     {
         $this->constraint = $constraint;

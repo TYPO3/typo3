@@ -235,8 +235,6 @@ class SecurityTest extends FunctionalTestCase
      * the factory-default configuration of TYPO3 when editing content via backend
      * user interface.
      *
-     * @param string $input
-     * @param array $expectations
      *
      * @test
      * @dataProvider crossSiteScriptingDataProvider
@@ -265,8 +263,6 @@ class SecurityTest extends FunctionalTestCase
      * the factory-default configuration of TYPO3 when editing content via backend
      * user interface.
      *
-     * @param string $input
-     * @param array $expectations
      *
      * @test
      * @dataProvider crossSiteScriptingDataProvider

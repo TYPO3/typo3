@@ -116,7 +116,6 @@ class ImageMagickFile
     ];
 
     /**
-     * @param string $filePath
      * @param int|null $frame
      * @return ImageMagickFile
      */
@@ -130,7 +129,6 @@ class ImageMagickFile
     }
 
     /**
-     * @param string $filePath
      * @param int|null $frame
      * @throws UnsupportedFileException
      */
@@ -197,7 +195,6 @@ class ImageMagickFile
     }
 
     /**
-     * @param string $value
      * @return string
      */
     protected function escape(string $value): string
@@ -206,7 +203,6 @@ class ImageMagickFile
     }
 
     /**
-     * @param string $extension
      * @return bool
      */
     protected function isInAllowedExtensions(string $extension): bool
@@ -215,7 +211,6 @@ class ImageMagickFile
     }
 
     /**
-     * @param string $filePath
      * @return FileInfo
      */
     protected function getFileInfo(string $filePath): FileInfo

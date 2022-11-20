@@ -248,11 +248,6 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider validateAllPropertyValuesFromCreatableFormElementDataProvider
-     * @param array $mockConfiguration
-     * @param array $formElement
-     * @param string $sessionToken
-     * @param int $exceptionCode
-     * @param ValidationDto $validationDto
      */
     public function validateAllPropertyValuesFromCreatableFormElement(
         array $mockConfiguration,
@@ -302,11 +297,6 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider validateAllPropertyValuesFromCreatablePropertyCollectionElementDataProvider
-     * @param array $mockConfiguration
-     * @param array $formElement
-     * @param string $sessionToken
-     * @param int $exceptionCode
-     * @param ValidationDto $validationDto
      */
     public function validateAllPropertyValuesFromCreatablePropertyCollectionElement(
         array $mockConfiguration,

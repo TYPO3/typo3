@@ -42,8 +42,6 @@ class PropertyAnnotationMatcher extends AbstractCoreMatcher
     /**
      * Called by PhpParser.
      * Test for property annotations (strong match)
-     *
-     * @param Node $node
      */
     public function enterNode(Node $node)
     {

@@ -26,8 +26,6 @@ interface ChattyInterface
 {
     /**
      * Setter injection for output into upgrade wizards
-     *
-     * @param OutputInterface $output
      */
     public function setOutput(OutputInterface $output): void;
 }

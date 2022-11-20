@@ -336,7 +336,6 @@ class IconRegistry implements SingletonInterface
      *
      * @param string $identifier
      * @param string $iconProviderClassName
-     * @param array $options
      *
      * @throws \InvalidArgumentException
      */

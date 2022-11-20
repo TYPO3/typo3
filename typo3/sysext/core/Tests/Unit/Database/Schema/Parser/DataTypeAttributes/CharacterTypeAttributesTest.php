@@ -59,8 +59,6 @@ class CharacterTypeAttributesTest extends AbstractDataTypeBaseTestCase
     /**
      * @test
      * @dataProvider canParseCharacterDataTypeAttributesProvider
-     * @param string $columnDefinition
-     * @param array $options
      */
     public function canParseDataType(string $columnDefinition, array $options): void
     {

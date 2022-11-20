@@ -24,15 +24,10 @@ namespace TYPO3\CMS\Form\Domain\Configuration\FlexformConfiguration\Processors;
  */
 interface ProcessorInterface
 {
-    /**
-     * @param ProcessorDto $converterDto
-     */
     public function __construct(ProcessorDto $converterDto);
 
     /**
-     * @param string $key
      * @param mixed $value
-     * @param array $matches
      */
     public function __invoke(string $key, $value, array $matches);
 }

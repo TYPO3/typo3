@@ -70,7 +70,6 @@ class AddController extends AbstractWizardController
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
@@ -190,7 +189,6 @@ class AddController extends AbstractWizardController
 
     /**
      * Initialization of the class.
-     * @param ServerRequestInterface $request
      */
     protected function init(ServerRequestInterface $request): void
     {

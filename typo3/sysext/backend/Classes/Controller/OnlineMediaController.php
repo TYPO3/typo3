@@ -40,7 +40,6 @@ class OnlineMediaController
     /**
      * AJAX endpoint for storing the URL as a sys_file record
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function createAction(ServerRequestInterface $request): ResponseInterface
@@ -65,7 +64,6 @@ class OnlineMediaController
     /**
      * Process add media request, and redirects to the previous page
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws \RuntimeException
      */
@@ -138,8 +136,6 @@ class OnlineMediaController
 
     /**
      * Add flash message to message queue
-     *
-     * @param FlashMessage $flashMessage
      */
     protected function addFlashMessage(FlashMessage $flashMessage)
     {

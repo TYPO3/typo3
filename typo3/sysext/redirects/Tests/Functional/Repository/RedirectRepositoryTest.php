@@ -79,9 +79,6 @@ class RedirectRepositoryTest extends FunctionalTestCase
     /**
      * @dataProvider demandProvider
      * @test
-     * @param Demand $demand
-     * @param int $redirectBeforeCleanup
-     * @param int $redirectAfterCleanup
      */
     public function removeByDemandWorks(
         Demand $demand,

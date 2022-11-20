@@ -35,8 +35,6 @@ class Identifier
 
     /**
      * Identifier constructor.
-     *
-     * @param string $schemaObjectName
      */
     public function __construct(string $schemaObjectName = null)
     {

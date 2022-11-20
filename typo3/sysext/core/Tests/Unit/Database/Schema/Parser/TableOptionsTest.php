@@ -143,8 +143,6 @@ class TableOptionsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider canParseTableOptionsDataProvider
-     * @param string $tableOptionsSQL
-     * @param array $expectedTableOptions
      */
     public function canParseTableOptions(
         string $tableOptionsSQL,
@@ -160,7 +158,6 @@ class TableOptionsTest extends UnitTestCase
     /**
      * Parse the CREATE TABLE statement and return the reference definition
      *
-     * @param string $statement
      * @return AbstractCreateStatement|CreateTableStatement
      */
     protected function createSubject(string $statement): AbstractCreateStatement

@@ -172,10 +172,6 @@ final class CObjectViewHelper extends AbstractViewHelper
     /**
      * Renders single content object and increases time tracker stack pointer
      *
-     * @param ContentObjectRenderer $contentObjectRenderer
-     * @param array $setup
-     * @param string $typoscriptObjectPath
-     * @param string $lastSegment
      * @return string
      */
     protected static function renderContentObject(ContentObjectRenderer $contentObjectRenderer, array $setup, string $typoscriptObjectPath, string $lastSegment): string

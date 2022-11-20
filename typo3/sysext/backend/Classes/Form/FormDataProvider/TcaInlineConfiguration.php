@@ -26,7 +26,6 @@ class TcaInlineConfiguration implements FormDataProviderInterface
     /**
      * Find all inline fields and force proper configuration
      *
-     * @param array $result
      * @return array
      * @throws \UnexpectedValueException If inline configuration is broken
      */

@@ -24,8 +24,6 @@ class MediumTextDataType extends TextDataType
 {
     /**
      * MediumTextDataType constructor.
-     *
-     * @param array $options
      */
     public function __construct(array $options)
     {

@@ -36,7 +36,6 @@ class TypoScriptReferenceController
     /**
      * Load TypoScript reference
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function loadReference(ServerRequestInterface $request): ResponseInterface

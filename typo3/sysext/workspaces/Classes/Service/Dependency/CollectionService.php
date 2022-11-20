@@ -89,7 +89,6 @@ class CollectionService implements SingletonInterface
      * Gets a new callback to be used in the dependency resolver utility.
      *
      * @param string $method
-     * @param array $targetArguments
      * @return Dependency\EventCallback
      */
     protected function getDependencyCallback($method, array $targetArguments = [])
@@ -119,7 +118,6 @@ class CollectionService implements SingletonInterface
     /**
      * Processes the data array
      *
-     * @param array $dataArray
      * @return array
      */
     public function process(array $dataArray)
@@ -154,7 +152,6 @@ class CollectionService implements SingletonInterface
      * Applies structures to instance data array and
      * ensures children are added below accordant parent
      *
-     * @param array $dataArray
      * @return array
      */
     protected function finalize(array $dataArray)
@@ -179,7 +176,6 @@ class CollectionService implements SingletonInterface
     /**
      * Resolves nested child dependencies.
      *
-     * @param Dependency\ElementEntity $parent
      * @param int $collection
      * @param string $nextParentIdentifier
      * @param int $collectionLevel

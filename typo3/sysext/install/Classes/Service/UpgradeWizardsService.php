@@ -307,7 +307,6 @@ class UpgradeWizardsService
     /**
      * Execute the "get user input" step of a wizard
      *
-     * @param string $identifier
      * @return array
      * @throws \RuntimeException
      */
@@ -359,7 +358,6 @@ class UpgradeWizardsService
     /**
      * Execute a single update wizard
      *
-     * @param string $identifier
      * @return FlashMessageQueue
      * @throws \RuntimeException
      */
@@ -432,7 +430,6 @@ class UpgradeWizardsService
      * Marks some wizard as being "seen" so that it not shown again.
      * Writes the info in system/settings.php
      *
-     * @param string $identifier
      * @throws \RuntimeException
      */
     public function markWizardAsDone(string $identifier): void
@@ -446,7 +443,6 @@ class UpgradeWizardsService
     /**
      * Checks if this wizard has been "done" before
      *
-     * @param string $identifier
      * @return bool TRUE if wizard has been done before, FALSE otherwise
      * @throws \RuntimeException
      */
@@ -461,7 +457,6 @@ class UpgradeWizardsService
     /**
      * Validate identifier exists in upgrade wizard list
      *
-     * @param string $identifier
      * @throws \RuntimeException
      */
     protected function assertIdentifierIsValid(string $identifier): void

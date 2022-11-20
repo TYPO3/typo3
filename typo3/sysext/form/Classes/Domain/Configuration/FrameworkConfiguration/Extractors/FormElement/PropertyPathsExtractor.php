@@ -26,9 +26,7 @@ use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\Abstra
 class PropertyPathsExtractor extends AbstractExtractor
 {
     /**
-     * @param string $_
      * @param mixed $value
-     * @param array $matches
      */
     public function __invoke(string $_, $value, array $matches)
     {
@@ -40,8 +38,6 @@ class PropertyPathsExtractor extends AbstractExtractor
     }
 
     /**
-     * @param string $value
-     * @param array $matches
      * @return array
      */
     protected function getPropertyPaths(string $value, array $matches): array

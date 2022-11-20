@@ -67,9 +67,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
     /**
      * Creates a ProcessedFile object from a file object and a processing configuration
      *
-     * @param FileInterface $originalFile
      * @param string $taskType
-     * @param array $configuration
      * @return ProcessedFile
      */
     public function createNewProcessedFileObject(FileInterface $originalFile, $taskType, array $configuration)
@@ -83,7 +81,6 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
     }
 
     /**
-     * @param array $databaseRow
      * @return ProcessedFile
      */
     protected function createDomainObject(array $databaseRow)
@@ -111,9 +108,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
     }
 
     /**
-     * @param ResourceStorage $storage
      * @param string $identifier
-     *
      * @return ProcessedFile|null
      */
     public function findByStorageAndIdentifier(ResourceStorage $storage, $identifier)
@@ -148,7 +143,6 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
      * Count processed files by storage. This is used in the install tool
      * to render statistics of processed files.
      *
-     * @param ResourceStorage $storage
      * @return int
      */
     public function countByStorage(ResourceStorage $storage): int
@@ -220,9 +214,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
     }
 
     /**
-     * @param \TYPO3\CMS\Core\Resource\File $file
      * @param string $taskType The task that should be executed on the file
-     * @param array $configuration
      *
      * @return ProcessedFile
      */
@@ -256,7 +248,6 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
     }
 
     /**
-     * @param FileInterface $file
      * @return ProcessedFile[]
      * @throws \InvalidArgumentException
      */
@@ -349,7 +340,6 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
     /**
      * Removes all array keys which cannot be persisted
      *
-     * @param array $data
      *
      * @return array
      */

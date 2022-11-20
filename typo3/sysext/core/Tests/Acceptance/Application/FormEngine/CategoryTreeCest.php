@@ -24,17 +24,11 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class CategoryTreeCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function checkIfCategoryListIsAvailable(ApplicationTester $I): void
     {
         // A sub-element of web module is show
@@ -45,9 +39,6 @@ class CategoryTreeCest
         $I->seeNumberOfElements('#recordlist-sys_category table > tbody > tr', [5, 100]);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function editCategoryItem(ApplicationTester $I): void
     {
         // A sub-element of web module is show

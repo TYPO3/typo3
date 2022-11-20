@@ -68,33 +68,21 @@ class DependencyUtility implements SingletonInterface
      */
     protected $skipDependencyCheck = false;
 
-    /**
-     * @param ExtensionRepository $extensionRepository
-     */
     public function injectExtensionRepository(ExtensionRepository $extensionRepository)
     {
         $this->extensionRepository = $extensionRepository;
     }
 
-    /**
-     * @param ListUtility $listUtility
-     */
     public function injectListUtility(ListUtility $listUtility)
     {
         $this->listUtility = $listUtility;
     }
 
-    /**
-     * @param EmConfUtility $emConfUtility
-     */
     public function injectEmConfUtility(EmConfUtility $emConfUtility)
     {
         $this->emConfUtility = $emConfUtility;
     }
 
-    /**
-     * @param ExtensionManagementService $managementService
-     */
     public function injectManagementService(ExtensionManagementService $managementService)
     {
         $this->managementService = $managementService;
@@ -119,8 +107,6 @@ class DependencyUtility implements SingletonInterface
 
     /**
      * Checks dependencies for special cases (currently typo3 and php)
-     *
-     * @param Extension $extension
      */
     public function checkDependencies(Extension $extension)
     {
@@ -183,8 +169,6 @@ class DependencyUtility implements SingletonInterface
     /**
      * Returns true if current TYPO3 version fulfills extension requirements
      *
-     * @param Dependency $dependency
-     * @param string $version
      * @return bool
      * @throws Exception\UnresolvedTypo3DependencyException
      */
@@ -215,8 +199,6 @@ class DependencyUtility implements SingletonInterface
     /**
      * Returns true if current php version fulfills extension requirements
      *
-     * @param Dependency $dependency
-     * @param string $version
      * @throws Exception\UnresolvedPhpDependencyException
      * @return bool
      */
@@ -252,7 +234,6 @@ class DependencyUtility implements SingletonInterface
      * - remote (TER) extension in matching version? - mark for download
      *
      * @todo handle exceptions / markForUpload
-     * @param Dependency $dependency
      * @throws Exception\MissingVersionDependencyException
      * @return bool
      */
@@ -331,8 +312,6 @@ class DependencyUtility implements SingletonInterface
     /**
      * Handles checks to find a compatible extension version from TER to fulfill given dependency
      *
-     * @param string $extensionKey
-     * @param Dependency $dependency
      * @throws MissingExtensionDependencyException
      */
     protected function downloadExtensionFromRemote(string $extensionKey, Dependency $dependency)
@@ -392,7 +371,6 @@ class DependencyUtility implements SingletonInterface
     }
 
     /**
-     * @param Dependency $dependency
      * @return bool
      */
     protected function isLoadedVersionCompatible(Dependency $dependency): bool
@@ -405,7 +383,6 @@ class DependencyUtility implements SingletonInterface
      * Checks whether the needed extension is available
      * (not necessarily installed, but present in system)
      *
-     * @param string $extensionKey
      * @return bool
      */
     protected function isDependentExtensionAvailable(string $extensionKey): bool
@@ -417,7 +394,6 @@ class DependencyUtility implements SingletonInterface
     /**
      * Checks whether the available version is compatible
      *
-     * @param Dependency $dependency
      * @return bool
      */
     protected function isAvailableVersionCompatible(Dependency $dependency): bool
@@ -433,7 +409,6 @@ class DependencyUtility implements SingletonInterface
     /**
      * Checks whether a ter extension with $extensionKey exists
      *
-     * @param string $extensionKey
      * @return bool
      */
     protected function isExtensionDownloadableFromRemote(string $extensionKey): bool
@@ -444,7 +419,6 @@ class DependencyUtility implements SingletonInterface
     /**
      * Checks whether a compatible version of the extension exists in TER
      *
-     * @param Dependency $dependency
      * @return bool
      */
     protected function isDownloadableVersionCompatible(Dependency $dependency): bool
@@ -461,7 +435,6 @@ class DependencyUtility implements SingletonInterface
      * Get the latest compatible version of an extension that's
      * compatible with the current core and PHP version.
      *
-     * @param iterable $extensions
      * @return Extension|null
      */
     protected function getCompatibleExtension(iterable $extensions): ?Extension
@@ -487,7 +460,6 @@ class DependencyUtility implements SingletonInterface
      * Get the latest compatible version of an extension that
      * fulfills the given dependency from TER
      *
-     * @param Dependency $dependency
      * @return Extension|null
      */
     protected function getLatestCompatibleExtensionByDependency(Dependency $dependency): ?Extension

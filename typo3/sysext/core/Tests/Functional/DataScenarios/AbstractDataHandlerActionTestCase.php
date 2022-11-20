@@ -115,9 +115,6 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     /**
      * Create a simple site config for the tests that
      * call a frontend page.
-     *
-     * @param int $pageId
-     * @param array $additionalLanguages
      */
     protected function setUpFrontendSite(int $pageId, array $additionalLanguages = []): void
     {
@@ -155,9 +152,6 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
         }
     }
 
-    /**
-     * @param int $workspaceId
-     */
     protected function setWorkspaceId(int $workspaceId): void
     {
         $this->backendUser->workspace = $workspaceId;

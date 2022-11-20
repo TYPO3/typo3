@@ -99,7 +99,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * override it by TypoScript settings, and return it. Only files with
      * the extension .yaml or .form.yaml are loaded.
      *
-     * @param string $persistenceIdentifier
      * @return array
      * @internal
      */
@@ -143,8 +142,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * persistenceManager.allowSaveToExtensionPaths
      * is set to true.
      *
-     * @param string $persistenceIdentifier
-     * @param array $formDefinition
      * @throws PersistenceManagerException
      * @internal
      */
@@ -182,7 +179,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * Delete the form representation identified by $persistenceIdentifier.
      * Only files with the extension .form.yaml are removed.
      *
-     * @param string $persistenceIdentifier
      * @throws PersistenceManagerException
      * @internal
      */
@@ -218,7 +214,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * Check whether a form with the specified $persistenceIdentifier exists
      *
-     * @param string $persistenceIdentifier
      * @return bool TRUE if a form with the given $persistenceIdentifier can be loaded, otherwise FALSE
      * @internal
      */
@@ -498,7 +493,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * exists a suffix is appended until the persistence identifier is unique.
      *
      * @param string $formIdentifier lowerCamelCased form identifier
-     * @param string $savePath
      * @return string unique form persistence identifier
      * @throws NoUniquePersistenceIdentifierException
      * @internal
@@ -532,7 +526,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * If a formDefinition with the same identifier already exists a suffix is
      * appended until the identifier is unique.
      *
-     * @param string $identifier
      * @return string unique form identifier
      * @throws NoUniqueIdentifierException
      * @internal
@@ -561,7 +554,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * Check if an identifier is already used by a formDefinition.
      *
-     * @param string $identifier
      * @return bool
      * @internal
      */
@@ -584,7 +576,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * If the input is a persistence identifier an additional check for a
      * valid file extension will be performed.
      * .
-     * @param string $persistencePath
      * @return bool
      * @internal
      */
@@ -651,7 +642,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @param string $path
      * @return bool
      */
     protected function pathIsIntendedAsExtensionPath(string $path): bool
@@ -660,7 +650,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @param string $path
      * @return bool
      */
     protected function pathIsIntendedAsFileMountPath(string $path): bool
@@ -682,7 +671,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * If no file for this identifier exists a new object will be
      * created.
      *
-     * @param string $persistenceIdentifier
      * @return File
      * @throws PersistenceManagerException
      */
@@ -721,7 +709,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * Returns a ResourceStorage for a given uid
      *
-     * @param int $storageUid
      * @return ResourceStorage
      * @throws PersistenceManagerException
      */
@@ -784,7 +771,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @param string $maybeRawFormDefinition
      * @return array
      */
     protected function extractMetaDataFromCouldBeFormDefinition(string $maybeRawFormDefinition): array
@@ -820,8 +806,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @param array $formDefinition
-     * @param string $persistenceIdentifier
      * @throws PersistenceManagerException
      */
     protected function generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension(array $formDefinition, string $persistenceIdentifier): void
@@ -835,7 +819,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @param string $persistenceIdentifier
      * @return File
      * @throws PersistenceManagerException
      * @throws NoSuchFileException
@@ -863,7 +846,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @param string $persistenceIdentifier
      * @throws PersistenceManagerException
      * @throws NoSuchFileException
      */
@@ -883,7 +865,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @param string $fileName
      * @return bool
      * @internal only to be used within TYPO3 Core, not part of TYPO3 Core API
      */
@@ -893,7 +874,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @param string $fileName
      * @return bool
      */
     protected function isFileWithinAccessibleExtensionFolders(string $fileName): bool
@@ -905,7 +885,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @param string $fileName
      * @return bool
      */
     protected function isFileWithinAccessibleFormStorageFolders(string $fileName): bool
@@ -917,7 +896,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @param string $folderName
      * @return bool
      */
     protected function isAccessibleExtensionFolder(string $folderName): bool
@@ -927,7 +905,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @param string $folderName
      * @return bool
      */
     protected function isAccessibleFormStorageFolder(string $folderName): bool
@@ -937,7 +914,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @param array $data
      * @return bool
      */
     protected function looksLikeAFormDefinition(array $data): bool
@@ -946,7 +922,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * @param array $forms
      * @return array
      */
     protected function sortForms(array $forms): array

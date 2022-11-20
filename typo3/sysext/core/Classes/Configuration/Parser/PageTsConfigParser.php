@@ -117,7 +117,6 @@ class PageTsConfigParser
      * Does the actual parsing using the TypoScriptParser "parse" method by applying a condition matcher.
      *
      * @param string $content The TSConfig being parsed
-     * @param ConditionMatcherInterface $matcher
      * @return array Array containing the parsed TSConfig, the encountered sections, the matched sections. This is stored in cache.
      */
     protected function parseAndMatch(string $content, ConditionMatcherInterface $matcher): array
@@ -134,7 +133,6 @@ class PageTsConfigParser
      * Is just going through an array of conditions to determine which are matching (for getting correct cache entry)
      *
      * @param array $sectionsToMatch An array containing the sections to match
-     * @param ConditionMatcherInterface $matcher
      * @return array The input array with matching sections to be filled into the "match" key
      */
     protected function matching(array $sectionsToMatch, ConditionMatcherInterface $matcher): array

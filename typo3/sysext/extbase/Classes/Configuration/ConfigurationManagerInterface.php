@@ -30,9 +30,6 @@ interface ConfigurationManagerInterface extends SingletonInterface
     public const CONFIGURATION_TYPE_SETTINGS = 'Settings';
     public const CONFIGURATION_TYPE_FULL_TYPOSCRIPT = 'FullTypoScript';
 
-    /**
-     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject
-     */
     public function setContentObject(ContentObjectRenderer $contentObject): void;
 
     /**

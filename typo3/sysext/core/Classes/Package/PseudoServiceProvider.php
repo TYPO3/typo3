@@ -29,9 +29,6 @@ final class PseudoServiceProvider extends AbstractServiceProvider
      */
     private $package;
 
-    /**
-     * @param PackageInterface $package
-     */
     public function __construct(PackageInterface $package)
     {
         $this->package = $package;

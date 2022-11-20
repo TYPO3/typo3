@@ -55,8 +55,6 @@ class FinisherContext
     private Request $request;
 
     /**
-     * @param FormRuntime $formRuntime
-     * @param Request $request
      * @internal
      */
     public function __construct(FormRuntime $formRuntime, Request $request)

@@ -63,9 +63,6 @@ class UserSessionManager implements LoggerAwareInterface
     /**
      * Constructor. Marked as internal, as it is recommended to use the factory method "create"
      *
-     * @param SessionBackendInterface $sessionBackend
-     * @param int $sessionLifetime
-     * @param IpLocker $ipLocker
      * @internal it is recommended to use the factory method "create"
      */
     public function __construct(SessionBackendInterface $sessionBackend, int $sessionLifetime, IpLocker $ipLocker)
@@ -87,7 +84,6 @@ class UserSessionManager implements LoggerAwareInterface
      * `$cookieName` can not be obtained from the request an anonymous
      * session will be returned.
      *
-     * @param ServerRequestInterface $request
      * @param string $cookieName Name of the cookie that might contain the session
      * @return UserSession An existing session if one is stored in the cookie, an anonymous session otherwise
      */
@@ -253,7 +249,6 @@ class UserSessionManager implements LoggerAwareInterface
      * is marked as "needs update" (which means the current timestamp is
      * greater than "last updated + a specified grace-time").
      *
-     * @param UserSession $session
      * @return UserSession a modified user session with a last updated value if needed
      * @throws Backend\Exception\SessionNotUpdatedException
      */
@@ -320,7 +315,6 @@ class UserSessionManager implements LoggerAwareInterface
      * Tries to fetch a user session form the session backend.
      * If none is given, an anonymous session will be created.
      *
-     * @param string $id
      * @return UserSession|null The created user session object or null
      */
     protected function getSessionFromSessionId(string $id): ?UserSession
@@ -392,7 +386,6 @@ class UserSessionManager implements LoggerAwareInterface
      * Recreates a `UserSession` object from the existing session data - keeping `new` state.
      * This method shall be used to reflect updated low-level session data in corresponding `UserSession` object.
      *
-     * @param UserSession $session
      * @param array|null $sessionRecord
      * @return UserSession
      * @throws SessionNotFoundException

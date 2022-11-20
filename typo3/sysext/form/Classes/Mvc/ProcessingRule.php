@@ -79,7 +79,6 @@ class ProcessingRule
     }
 
     /**
-     * @param string $dataType
      * @internal
      */
     public function setDataType(string $dataType)
@@ -99,7 +98,6 @@ class ProcessingRule
     }
 
     /**
-     * @param ValidatorInterface $validator
      * @internal
      */
     public function addValidator(ValidatorInterface $validator)

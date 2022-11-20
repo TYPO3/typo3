@@ -107,9 +107,6 @@ class IntegerTypesTest extends AbstractDataTypeBaseTestCase
     /**
      * @test
      * @dataProvider canParseIntegerDataTypeProvider
-     * @param string $columnDefinition
-     * @param string $className
-     * @param int $length
      */
     public function canParseDataType(string $columnDefinition, string $className, int $length): void
     {

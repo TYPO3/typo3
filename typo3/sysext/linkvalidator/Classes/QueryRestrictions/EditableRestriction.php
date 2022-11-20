@@ -57,7 +57,6 @@ class EditableRestriction implements QueryRestrictionInterface
     /**
      * @param array<string, string> $searchFields array of 'table' => 'field1, field2'
      *   in which linkvalidator searches for broken links.
-     * @param QueryBuilder $queryBuilder
      */
     public function __construct(array $searchFields, QueryBuilder $queryBuilder)
     {
@@ -102,8 +101,6 @@ class EditableRestriction implements QueryRestrictionInterface
      * Returns the allowed types for the current user. Should only be called if the
      * table has a type field (defined by TCA ctrl => type) which contains 'authMode'.
      *
-     * @param string $table
-     * @param string $typeField
      * @return string[]
      */
     protected function getExplicitAllowTypesForCurrentUser(string $table, string $typeField): array

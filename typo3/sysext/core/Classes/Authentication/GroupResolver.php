@@ -68,7 +68,6 @@ class GroupResolver
      * Load a list of group uids, and take into account if groups have been loaded before.
      *
      * @param int[] $groupIds
-     * @param array $processedGroupIds
      * @return array
      */
     protected function fetchGroupsRecursive(array $groupIds, array $processedGroupIds = []): array
@@ -102,7 +101,6 @@ class GroupResolver
     /**
      * Does the database query. Does not care about ordering, this is done by caller.
      *
-     * @param array $groupIds
      * @return array Full records with record uid as key
      */
     protected function fetchRowsFromDatabase(array $groupIds): array
@@ -203,7 +201,6 @@ class GroupResolver
      * Find all groups that have a FIND_IN_SET(subgroups, [$subgroupIds]) => the parent groups
      * via one SQL query.
      *
-     * @param array $subgroupIds
      * @return array
      */
     protected function fetchParentGroupsFromDatabase(array $subgroupIds): array

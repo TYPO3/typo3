@@ -62,7 +62,6 @@ class DownloadController extends AbstractController
     /**
      * Check extension dependencies
      *
-     * @param Extension $extension
      * @return ResponseInterface
      */
     public function checkDependenciesAction(Extension $extension): ResponseInterface
@@ -153,8 +152,6 @@ class DownloadController extends AbstractController
     /**
      * Install an extension from TER action
      *
-     * @param Extension $extension
-     * @param string $downloadPath
      * @return ResponseInterface
      */
     public function installFromTerAction(Extension $extension, string $downloadPath = 'Local'): ResponseInterface
@@ -174,7 +171,6 @@ class DownloadController extends AbstractController
     /**
      * Check extension dependencies with special dependencies
      *
-     * @param Extension $extension
      * @return ResponseInterface
      */
     public function installExtensionWithoutSystemDependencyCheckAction(Extension $extension): ResponseInterface
@@ -186,8 +182,6 @@ class DownloadController extends AbstractController
     /**
      * Action for installing a distribution -
      * redirects directly to configuration after installing
-     *
-     * @param Extension $extension
      */
     public function installDistributionAction(Extension $extension): ResponseInterface
     {
@@ -302,8 +296,6 @@ class DownloadController extends AbstractController
      * Install an extension from TER
      * Downloads the extension, resolves dependencies and installs it
      *
-     * @param Extension $extension
-     * @param string $downloadPath
      * @return array{0: bool, 1: array<string, array<int, array{code: int, message: string}>>}
      */
     protected function installFromTer(Extension $extension, string $downloadPath = 'Local'): array

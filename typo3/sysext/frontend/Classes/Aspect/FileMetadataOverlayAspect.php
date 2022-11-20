@@ -35,7 +35,6 @@ final class FileMetadataOverlayAspect
 {
     /**
      * Do translation and workspace overlay
-     * @param EnrichFileMetaDataEvent $event
      */
     public function languageAndWorkspaceOverlay(EnrichFileMetaDataEvent $event): void
     {

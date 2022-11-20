@@ -69,9 +69,6 @@ class ObjectConverter extends AbstractTypeConverter
      */
     protected $reflectionService;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-     */
     public function injectReflectionService(ReflectionService $reflectionService): void
     {
         $this->reflectionService = $reflectionService;
@@ -86,7 +83,6 @@ class ObjectConverter extends AbstractTypeConverter
      * Only convert non-persistent types
      *
      * @param mixed $source
-     * @param string $targetType
      * @return bool
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
@@ -113,9 +109,6 @@ class ObjectConverter extends AbstractTypeConverter
     /**
      * The type of a property is determined by the reflection service.
      *
-     * @param string $targetType
-     * @param string $propertyName
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string
      * @throws InvalidTargetException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
@@ -169,9 +162,6 @@ class ObjectConverter extends AbstractTypeConverter
      * Convert an object from $source to an object.
      *
      * @param mixed $source
-     * @param string $targetType
-     * @param array $convertedChildProperties
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return object|null the target type
      * @throws InvalidTargetException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
@@ -199,8 +189,6 @@ class ObjectConverter extends AbstractTypeConverter
      * Determines the target type based on the source's (optional) __type key.
      *
      * @param mixed $source
-     * @param string $originalTargetType
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidDataTypeException
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
@@ -237,8 +225,6 @@ class ObjectConverter extends AbstractTypeConverter
      * $possibleConstructorArgumentValues: They are considered "handled" by __construct and will
      * not be mapped calling setters later.
      *
-     * @param array $possibleConstructorArgumentValues
-     * @param string $objectType
      * @return object The created instance
      * @throws InvalidTargetException if a required constructor argument is missing
      */

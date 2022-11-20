@@ -39,9 +39,6 @@ class RecordHistoryRollback
 
     /**
      * Perform rollback via DataHandler
-     * @param string $rollbackFields
-     * @param array $diff
-     * @param BackendUserAuthentication|null $backendUserAuthentication
      */
     public function performRollback(string $rollbackFields, array $diff, ?BackendUserAuthentication $backendUserAuthentication = null): void
     {

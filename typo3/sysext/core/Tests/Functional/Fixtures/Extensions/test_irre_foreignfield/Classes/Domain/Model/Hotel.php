@@ -69,9 +69,6 @@ class Hotel extends AbstractEntity
         return $this->offers;
     }
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $offers
-     */
     public function setOffers(ObjectStorage $offers): void
     {
         $this->offers = $offers;

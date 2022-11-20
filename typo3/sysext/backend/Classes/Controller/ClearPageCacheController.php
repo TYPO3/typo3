@@ -47,7 +47,6 @@ class ClearPageCacheController
     /**
      * Clear page cache
      *
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface

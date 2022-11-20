@@ -25,7 +25,6 @@ final class ModifyVersionDifferencesEvent
     /**
      * @param list<array{field: string, label: string, content: string}> $versionDifferences
      * @param list<array{field: string, label: string, content: string}> $liveRecordData
-     * @param \stdClass $parameters
      */
     public function __construct(
         private array $versionDifferences,

@@ -66,9 +66,6 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
 
     /**
      * Set data to data array and register node factory to render sub elements
-     *
-     * @param NodeFactory $nodeFactory
-     * @param array $data
      */
     public function __construct(NodeFactory $nodeFactory, array $data)
     {
@@ -158,7 +155,6 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
     /**
      * Build JSON string for validations rules.
      *
-     * @param array $config
      * @return string
      */
     protected function getValidationDataAsJsonString(array $config): string

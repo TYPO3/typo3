@@ -86,7 +86,6 @@ class ClearTableService
     /**
      * Truncate a table from $this->tableList
      *
-     * @param string $tableName
      * @throws \RuntimeException
      */
     public function clearSelectedTable(string $tableName)

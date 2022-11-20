@@ -63,9 +63,6 @@ abstract class AbstractRecord
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @param array $record
-     */
     public function __construct(array $record)
     {
         $this->record = $record;

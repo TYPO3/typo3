@@ -164,7 +164,6 @@ class ConnectionPool
     /**
      * Map custom driver class for certain driver
      *
-     * @param array $connectionParams
      * @return array
      */
     protected function mapCustomDriver(array $connectionParams): array
@@ -180,7 +179,6 @@ class ConnectionPool
     /**
      * Creates a connection object based on the specified parameters
      *
-     * @param array $connectionParams
      * @return Connection
      */
     protected function getDatabaseConnection(array $connectionParams): Connection
@@ -235,7 +233,6 @@ class ConnectionPool
      * Returns the connection specific query builder object that can be used to build
      * complex SQL queries using and object oriented approach.
      *
-     * @param string $tableName
      * @return QueryBuilder
      */
     public function getQueryBuilderForTable(string $tableName): QueryBuilder

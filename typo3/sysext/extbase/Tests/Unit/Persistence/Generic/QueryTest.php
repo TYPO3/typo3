@@ -141,7 +141,6 @@ class QueryTest extends UnitTestCase
      * @dataProvider equalsForCaseSensitiveFalseLowercasesOperandProvider
      * @param string $propertyName The name of the property to compare against
      * @param mixed $operand The value to compare with
-     * @param string $expectedOperand
      */
     public function equalsForCaseSensitiveFalseLowercasesOperand(string $propertyName, $operand, string $expectedOperand): void
     {

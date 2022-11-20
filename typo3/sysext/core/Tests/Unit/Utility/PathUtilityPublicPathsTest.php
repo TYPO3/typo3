@@ -42,9 +42,6 @@ class PathUtilityPublicPathsTest extends UnitTestCase
 
     /**
      * Sets up Environment to simulate a frontend web request
-     *
-     * @param string $publicDir
-     * @param string $subDirectory
      */
     protected static function simulateWebRequest(string $publicDir, string $subDirectory = '/'): void
     {
@@ -137,9 +134,6 @@ class PathUtilityPublicPathsTest extends UnitTestCase
     }
 
     /**
-     * @param string $pathReference
-     * @param string $expectedUrl
-     * @param callable $setup
      * @throws InvalidFileException
      * @dataProvider getPublicResourceWebPathResolvesUrlsCorrectlyDataProvider
      * @test

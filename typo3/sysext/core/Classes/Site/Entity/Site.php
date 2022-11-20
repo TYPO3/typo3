@@ -153,8 +153,6 @@ class Site implements SiteInterface
     /**
      * Checks if the base has variants, and takes the first variant which matches an expression.
      *
-     * @param string $baseUrl
-     * @param array|null $baseVariants
      * @return string
      */
     protected function resolveBaseWithVariants(string $baseUrl, ?array $baseVariants): string
@@ -240,7 +238,6 @@ class Site implements SiteInterface
     /**
      * Returns a language of this site, given by the sys_language_uid
      *
-     * @param int $languageId
      * @return SiteLanguage
      * @throws \InvalidArgumentException
      */
@@ -288,7 +285,6 @@ class Site implements SiteInterface
     /**
      * Returns a ready-to-use error handler, to be used within the ErrorController
      *
-     * @param int $statusCode
      * @return PageErrorHandlerInterface
      * @throws PageErrorHandlerNotConfiguredException
      * @throws InvalidPageErrorHandlerException
@@ -330,7 +326,6 @@ class Site implements SiteInterface
     /**
      * Returns a single configuration attribute
      *
-     * @param string $attributeName
      * @return mixed
      * @throws \InvalidArgumentException
      */
@@ -349,7 +344,6 @@ class Site implements SiteInterface
      * If a site base contains "/" or "www.domain.com", it is ensured that
      * parse_url() can handle this kind of configuration properly.
      *
-     * @param string $base
      * @return string
      */
     protected function sanitizeBaseUrl(string $base): string

@@ -31,10 +31,6 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
  */
 interface TaskInterface
 {
-    /**
-     * @param \TYPO3\CMS\Core\Resource\ProcessedFile $targetFile
-     * @param array $configuration
-     */
     public function __construct(ProcessedFile $targetFile, array $configuration);
 
     /**

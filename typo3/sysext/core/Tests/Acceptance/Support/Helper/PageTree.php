@@ -30,8 +30,6 @@ class PageTree extends AbstractPageTree
 
     /**
      * Inject our core AcceptanceTester actor into PageTree
-     *
-     * @param ApplicationTester $I
      */
     public function __construct(ApplicationTester $I, Mouse $mouse)
     {
@@ -67,7 +65,6 @@ class PageTree extends AbstractPageTree
     /**
      * Get node identifier of given page.
      *
-     * @param string $pageName
      * @return string
      */
     public function getPageXPathByPageName(string $pageName): string

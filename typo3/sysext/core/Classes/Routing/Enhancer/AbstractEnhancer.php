@@ -37,7 +37,6 @@ abstract class AbstractEnhancer implements EnhancerInterface
     protected $variableProcessor;
 
     /**
-     * @param Route $route
      * @param AspectInterface[] $aspects
      * @param string|null $namespace
      */
@@ -52,8 +51,6 @@ abstract class AbstractEnhancer implements EnhancerInterface
     }
 
     /**
-     * @param Route $route
-     * @param array $requirements
      * @param string|null $namespace
      */
     protected function applyRequirements(Route $route, array $requirements, string $namespace = null)
@@ -109,9 +106,6 @@ abstract class AbstractEnhancer implements EnhancerInterface
      * Overrides items having an aspect definition with a given
      * $overrideValue in target $targetValue array.
      *
-     * @param Route $route
-     * @param array $values
-     * @param string $targetValue
      * @return array
      */
     protected function overrideValuesByAspect(Route $route, array $values, string $targetValue): array
@@ -126,9 +120,6 @@ abstract class AbstractEnhancer implements EnhancerInterface
      * Define items having an aspect definition in case they are not defined
      * with a given $targetValue in target $targetValue array.
      *
-     * @param Route $route
-     * @param array $values
-     * @param string $targetValue
      * @return array
      */
     protected function defineValuesByAspect(Route $route, array $values, string $targetValue): array
@@ -174,7 +165,6 @@ abstract class AbstractEnhancer implements EnhancerInterface
     /**
      * Retrieves type from processed route and modifies remaining query parameters.
      *
-     * @param Route $route
      * @param array $remainingQueryParameters reference to remaining query parameters
      * @return string
      */

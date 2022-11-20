@@ -132,8 +132,6 @@ class Package implements PackageInterface
 
     /**
      * Creates the package meta data object of this package.
-     *
-     * @param PackageManager $packageManager
      */
     protected function createPackageMetaData(PackageManager $packageManager)
     {
@@ -238,8 +236,6 @@ class Package implements PackageInterface
     /**
      * Used by PackageArtifactBuilder to make package path relative
      *
-     * @param Filesystem $filesystem
-     * @param string $composerRootPath
      * @internal
      */
     public function makePathRelative(Filesystem $filesystem, string $composerRootPath): void

@@ -24,8 +24,6 @@ class LongTextDataType extends TextDataType
 {
     /**
      * LongTextDataType constructor.
-     *
-     * @param array $options
      */
     public function __construct(array $options)
     {

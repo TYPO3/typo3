@@ -67,7 +67,6 @@ class Config extends Module
     /**
      * Retrieves configuration of a different module.
      *
-     * @param string $moduleName
      * @param string|null $parameter
      * @return array|string|null
      * @throws \Codeception\Exception\ModuleException

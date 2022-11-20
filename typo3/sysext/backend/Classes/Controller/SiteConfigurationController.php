@@ -755,7 +755,6 @@ class SiteConfigurationController
      * Get all entry duplicates which are used multiple times
      *
      * @param Site[] $allSites
-     * @param array $pages
      * @return array
      */
     protected function getDuplicatedEntryPoints(array $allSites, array $pages): array

@@ -28,7 +28,6 @@ class TcaColumnsProcessCommon implements FormDataProviderInterface
      * columns that must be processed by the next data providers. Common fields
      * are for example uid, transOrigPointerField or transOrigDiffSourceField.
      *
-     * @param array $result
      *
      * @return array
      */

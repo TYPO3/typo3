@@ -43,7 +43,6 @@ interface RenderableVariantInterface
     public function isApplied(): bool;
 
     /**
-     * @param Resolver $conditionResolver
      * @return bool
      */
     public function conditionMatches(Resolver $conditionResolver): bool;

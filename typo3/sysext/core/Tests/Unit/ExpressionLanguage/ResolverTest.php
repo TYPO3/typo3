@@ -119,7 +119,6 @@ class ResolverTest extends UnitTestCase
     /**
      * @test
      * @dataProvider basicExpressionsWithVariablesAndExpressionLanguageProviderDataHandler
-     * @param string $expression
      * @param mixed $expectedResult
      */
     public function basicExpressionHandlingWithCustomVariablesAndExpressionLanguageProviderWorksAsExpected(string $expression, $expectedResult): void

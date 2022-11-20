@@ -63,10 +63,6 @@ class VariableFrontendTest extends FunctionalTestCase
      * @dataProvider insertSerializedArrayIntoLobAndRetrieveItDataProvider
      *
      * @test
-     *
-     * @param array $expected
-     * @param string $identifier
-     * @param array $arrayToSerialize
      */
     public function insertSerializedArrayIntoLobAndRetrieveIt(
         array $expected,

@@ -33,9 +33,6 @@ class RecyclerModuleCest
     protected static string $contentTitle = 'Dummy Recycler Content';
     protected static string $pageTitle = 'Dummy 1-styleguide TCA demo-new';
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function _before(ApplicationTester $I, PageTree $pageTree, ModalDialog $modalDialog): void
     {
         $this->pageTree = $pageTree;
@@ -63,7 +60,6 @@ class RecyclerModuleCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @throws \Exception
      */
     public function deleteAndRecoverRecords(ApplicationTester $I): void
@@ -132,9 +128,6 @@ class RecyclerModuleCest
         $I->cantSee(static::$pageTitle);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     private function deletePage(ApplicationTester $I): void
     {
         $I->switchToMainFrame();
@@ -151,7 +144,6 @@ class RecyclerModuleCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @throws \Exception
      */
     private function goToRecyclerModule(ApplicationTester $I): void

@@ -142,7 +142,6 @@ class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterfa
     }
 
     /**
-     * @param ResourceStorage $storage
      * @return File[]
      * @throws InsufficientFolderAccessPermissionsException
      */

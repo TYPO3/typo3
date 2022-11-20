@@ -117,7 +117,6 @@ class StorageRepository implements LoggerAwareInterface
     }
 
     /**
-     * @param int $uid
      * @return array
      */
     protected function fetchRecordDataByUid(int $uid): array
@@ -468,7 +467,6 @@ class StorageRepository implements LoggerAwareInterface
     /**
      * Creates a storage object from a storage database row.
      *
-     * @param array $storageRecord
      * @param array|null $storageConfiguration Storage configuration (if given, this won't be extracted from the FlexForm value but the supplied array used instead)
      * @return ResourceStorage
      */
@@ -486,7 +484,6 @@ class StorageRepository implements LoggerAwareInterface
     /**
      * Converts a flexform data string to a flat array with key value pairs
      *
-     * @param string $flexFormData
      * @return array Array with key => value pairs of the field data in the FlexForm
      */
     protected function convertFlexFormDataToConfigurationArray(string $flexFormData): array
@@ -513,7 +510,6 @@ class StorageRepository implements LoggerAwareInterface
     }
 
     /**
-     * @param array $storageRecord
      * @return ResourceStorage
      * @internal
      */

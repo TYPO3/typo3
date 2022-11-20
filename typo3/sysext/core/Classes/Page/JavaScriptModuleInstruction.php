@@ -75,7 +75,6 @@ class JavaScriptModuleInstruction implements \JsonSerializable
     }
 
     /**
-     * @param array $state
      * @return self
      * @internal
      */
@@ -89,7 +88,6 @@ class JavaScriptModuleInstruction implements \JsonSerializable
 
     /**
      * @param string $name Module name
-     * @param int $flags
      */
     public function __construct(string $name, int $flags)
     {
@@ -136,7 +134,6 @@ class JavaScriptModuleInstruction implements \JsonSerializable
     }
 
     /**
-     * @param int ...$flags
      * @return $this
      */
     public function addFlags(int ...$flags): self

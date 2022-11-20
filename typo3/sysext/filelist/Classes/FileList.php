@@ -244,7 +244,6 @@ class FileList
     /**
      * Returns a table with directories and files listed.
      *
-     * @param FileSearchDemand|null $searchDemand
      * @return string HTML-table
      */
     public function getTable(?FileSearchDemand $searchDemand = null): string
@@ -1194,7 +1193,6 @@ class FileList
     /**
      * Generate readable path
      *
-     * @param ResourceInterface $resource
      * @return string
      */
     protected function makePath(ResourceInterface $resource): string
@@ -1221,7 +1219,6 @@ class FileList
      * the current state, either a new translation can be created or
      * an existing translation can be edited.
      *
-     * @param File $file
      * @return string
      */
     protected function makeTranslations(File $file): string
@@ -1406,7 +1403,6 @@ class FileList
      * Determine the concrete table name by checking if
      * the field exists, while sys_file takes precedence.
      *
-     * @param string $fieldName
      * @return string
      */
     protected function getConcreteTableName(string $fieldName): string

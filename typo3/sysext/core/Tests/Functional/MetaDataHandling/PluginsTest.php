@@ -57,8 +57,6 @@ class PluginsTest extends AbstractTestCase
     /**
      * @test
      * @dataProvider ensurePageSetupIsOkDataProvider
-     * @param int $pageId
-     * @param bool $expectPluginOutput
      */
     public function ensurePageSetupIsOk(int $pageId, bool $expectPluginOutput): void
     {
@@ -95,9 +93,6 @@ class PluginsTest extends AbstractTestCase
      *
      * @test
      * @dataProvider ensureMetaDataAreCorrectDataProvider
-     * @param int $pageId
-     * @param string $expectedTitle
-     * @param string $expectedMetaOgTitle
      */
     public function ensureMetaDataAreCorrect(int $pageId, string $expectedTitle, string $expectedMetaOgTitle): void
     {

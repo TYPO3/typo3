@@ -110,7 +110,6 @@ class DataProviderContext implements SingletonInterface
     }
 
     /**
-     * @param array $data
      * @return DataProviderContext
      */
     public function setData(array $data)
@@ -128,7 +127,6 @@ class DataProviderContext implements SingletonInterface
     }
 
     /**
-     * @param array $pageTsConfig
      * @return DataProviderContext
      */
     public function setPageTsConfig(array $pageTsConfig)

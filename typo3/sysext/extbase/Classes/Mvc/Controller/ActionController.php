@@ -190,7 +190,6 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * @param ConfigurationManagerInterface $configurationManager
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
@@ -201,7 +200,6 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectValidatorResolver(ValidatorResolver $validatorResolver)
@@ -210,7 +208,6 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * @param ViewResolverInterface $viewResolver
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectViewResolver(ViewResolverInterface $viewResolver)
@@ -219,7 +216,6 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectReflectionService(ReflectionService $reflectionService)
@@ -228,7 +224,6 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * @param HashService $hashService
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectHashService(HashService $hashService)
@@ -236,9 +231,6 @@ abstract class ActionController implements ControllerInterface
         $this->hashService = $hashService;
     }
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService $mvcPropertyMappingConfigurationService
-     */
     public function injectMvcPropertyMappingConfigurationService(MvcPropertyMappingConfigurationService $mvcPropertyMappingConfigurationService)
     {
         $this->mvcPropertyMappingConfigurationService = $mvcPropertyMappingConfigurationService;
@@ -250,7 +242,6 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * @param PropertyMapper $propertyMapper
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectPropertyMapper(PropertyMapper $propertyMapper): void
@@ -875,7 +866,6 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * @param Argument $argument
      * @param mixed $rawValue
      */
     private function setArgumentValue(Argument $argument, $rawValue): void

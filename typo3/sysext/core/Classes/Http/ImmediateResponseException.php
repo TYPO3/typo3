@@ -38,10 +38,6 @@ class ImmediateResponseException extends \Exception
      */
     private $response;
 
-    /**
-     * @param ResponseInterface $response
-     * @param int $code
-     */
     public function __construct(ResponseInterface $response, int $code = 0)
     {
         $this->response = $response;

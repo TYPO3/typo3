@@ -60,8 +60,6 @@ class Context implements SingletonInterface
 
     /**
      * Sets up the context with pre-defined aspects
-     *
-     * @param array $defaultAspects
      */
     public function __construct(array $defaultAspects = [])
     {
@@ -75,7 +73,6 @@ class Context implements SingletonInterface
     /**
      * Checks if an aspect exists in the context
      *
-     * @param string $name
      * @return bool
      */
     public function hasAspect(string $name): bool
@@ -98,7 +95,6 @@ class Context implements SingletonInterface
     /**
      * Returns an aspect, if it is set
      *
-     * @param string $name
      * @return AspectInterface
      * @throws AspectNotFoundException
      */
@@ -138,8 +134,6 @@ class Context implements SingletonInterface
     /**
      * Returns a property from the aspect, but only if the property is found.
      *
-     * @param string $name
-     * @param string $property
      * @param mixed $default
      * @return mixed|null
      * @throws AspectNotFoundException
@@ -158,9 +152,6 @@ class Context implements SingletonInterface
 
     /**
      * Sets an aspect, or overrides an existing aspect if an aspect is already set
-     *
-     * @param string $name
-     * @param AspectInterface $aspect
      */
     public function setAspect(string $name, AspectInterface $aspect): void
     {

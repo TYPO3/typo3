@@ -41,7 +41,6 @@ class ResultTest extends UnitTestCase
     }
 
     /**
-     * @param string $type
      * @return MockObject
      */
     protected function getMockMessage(string $type): MockObject
@@ -52,8 +51,6 @@ class ResultTest extends UnitTestCase
     /**
      * @test
      * @dataProvider dataTypes
-     * @param string $dataTypeInSingular
-     * @param string $dataTypeInPlural
      */
     public function addedMessagesShouldBeRetrievableAgain(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
@@ -67,8 +64,6 @@ class ResultTest extends UnitTestCase
     /**
      * @test
      * @dataProvider dataTypes
-     * @param string $dataTypeInSingular
-     * @param string $dataTypeInPlural
      */
     public function getMessageShouldNotBeRecursive(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
@@ -82,8 +77,6 @@ class ResultTest extends UnitTestCase
     /**
      * @test
      * @dataProvider dataTypes
-     * @param string $dataTypeInSingular
-     * @param string $dataTypeInPlural
      */
     public function getFirstMessageShouldReturnFirstMessage(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
@@ -127,8 +120,6 @@ class ResultTest extends UnitTestCase
     /**
      * @test
      * @dataProvider dataTypes
-     * @param string $dataTypeInSingular
-     * @param string $dataTypeInPlural
      */
     public function hasMessagesShouldReturnTrueIfTopLevelObjectHasMessages(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
@@ -142,8 +133,6 @@ class ResultTest extends UnitTestCase
     /**
      * @test
      * @dataProvider dataTypes
-     * @param string $dataTypeInSingular
-     * @param string $dataTypeInPlural
      */
     public function hasMessagesShouldReturnTrueIfSubObjectHasErrors(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
@@ -157,8 +146,6 @@ class ResultTest extends UnitTestCase
     /**
      * @test
      * @dataProvider dataTypes
-     * @param string $dataTypeInSingular
-     * @param string $dataTypeInPlural
      */
     public function hasMessagesShouldReturnFalseIfSubObjectHasNoErrors(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
@@ -171,8 +158,6 @@ class ResultTest extends UnitTestCase
     /**
      * @test
      * @dataProvider dataTypes
-     * @param string $dataTypeInSingular
-     * @param string $dataTypeInPlural
      */
     public function getFlattenedMessagesShouldReturnAllSubMessages(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
@@ -200,8 +185,6 @@ class ResultTest extends UnitTestCase
     /**
      * @test
      * @dataProvider dataTypes
-     * @param string $dataTypeInSingular
-     * @param string $dataTypeInPlural
      */
     public function getFlattenedMessagesShouldNotContainEmptyResults(string $dataTypeInSingular, string $dataTypeInPlural): void
     {

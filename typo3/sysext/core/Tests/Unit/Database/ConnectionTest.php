@@ -135,8 +135,6 @@ class ConnectionTest extends UnitTestCase
     /**
      * @test
      * @dataProvider quoteIdentifierDataProvider
-     * @param string $input
-     * @param string $expected
      */
     public function quoteIdentifier(string $input, string $expected): void
     {
@@ -201,10 +199,6 @@ class ConnectionTest extends UnitTestCase
     /**
      * @test
      * @dataProvider insertQueriesDataProvider
-     * @param array $args
-     * @param string $expectedQuery
-     * @param array $expectedValues
-     * @param array $expectedTypes
      */
     public function insertQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
@@ -273,10 +267,6 @@ class ConnectionTest extends UnitTestCase
     /**
      * @test
      * @dataProvider updateQueriesDataProvider
-     * @param array $args
-     * @param string $expectedQuery
-     * @param array $expectedValues
-     * @param array $expectedTypes
      */
     public function updateQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
@@ -332,10 +322,6 @@ class ConnectionTest extends UnitTestCase
     /**
      * @test
      * @dataProvider deleteQueriesDataProvider
-     * @param array $args
-     * @param string $expectedQuery
-     * @param array $expectedValues
-     * @param array $expectedTypes
      */
     public function deleteQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
@@ -423,9 +409,6 @@ class ConnectionTest extends UnitTestCase
     /**
      * @test
      * @dataProvider selectQueriesDataProvider
-     * @param array $args
-     * @param string $expectedQuery
-     * @param array $expectedParameters
      */
     public function selectQueries(array $args, string $expectedQuery, array $expectedParameters): void
     {
@@ -473,9 +456,6 @@ class ConnectionTest extends UnitTestCase
     /**
      * @test
      * @dataProvider countQueriesDataProvider
-     * @param array $args
-     * @param string $expectedQuery
-     * @param array $expectedParameters
      */
     public function countQueries(array $args, string $expectedQuery, array $expectedParameters): void
     {

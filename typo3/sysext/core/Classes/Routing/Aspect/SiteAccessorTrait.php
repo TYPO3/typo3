@@ -39,9 +39,6 @@ trait SiteAccessorTrait
      */
     protected $siteMatcher;
 
-    /**
-     * @param Site $site
-     */
     public function setSite(Site $site): void
     {
         $this->site = $site;
@@ -86,7 +83,6 @@ trait SiteAccessorTrait
      * Determines whether page is contained in current site
      * (resolved from current SiteLanguage).
      *
-     * @param int $pageId
      * @return bool
      */
     protected function isPageIdContainedInSite(int $pageId): bool

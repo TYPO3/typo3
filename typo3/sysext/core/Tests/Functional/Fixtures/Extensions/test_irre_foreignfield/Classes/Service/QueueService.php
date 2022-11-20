@@ -39,9 +39,6 @@ class QueueService implements SingletonInterface
      */
     protected $active = false;
 
-    /**
-     * @param array $calls
-     */
     public function set(array $calls): void
     {
         $this->calls = $calls;

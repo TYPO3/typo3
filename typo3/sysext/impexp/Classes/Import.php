@@ -1081,9 +1081,6 @@ class Import extends ImportExport
     /**
      * Selects sys_file_metadata database record.
      *
-     * @param int $pid
-     * @param int $file
-     * @param int $sysLanguageUid
      * @return array|null
      */
     protected function getSysFileMetaDataFromDatabase(int $pid, int $file, int $sysLanguageUid): ?array
@@ -1814,9 +1811,6 @@ class Import extends ImportExport
         return $this->enableLogging;
     }
 
-    /**
-     * @param bool $enableLogging
-     */
     public function setEnableLogging(bool $enableLogging): void
     {
         $this->enableLogging = $enableLogging;

@@ -66,8 +66,6 @@ class PageSlugCandidateProvider
     /**
      * Fetches an array of possible URLs that match the current site + language (incl. fallbacks)
      *
-     * @param string $urlPath
-     * @param SiteLanguage $language
      * @return array<int,array<string,mixed>>
      */
     public function getCandidatesForPath(string $urlPath, SiteLanguage $language): array
@@ -186,8 +184,6 @@ class PageSlugCandidateProvider
     /**
      * Check for records in the database which matches one of the slug candidates.
      *
-     * @param array $slugCandidates
-     * @param int $languageId
      * @param array $excludeUids when called recursively this is the mountpoint parameter of the original prefix
      * @return array[]|array
      * @throws SiteNotFoundException

@@ -40,7 +40,6 @@ abstract class AbstractArgon2PasswordHash implements PasswordHashInterface, Argo
     /**
      * Constructor sets options if given
      *
-     * @param array $options
      * @throws \InvalidArgumentException
      */
     public function __construct(array $options = [])

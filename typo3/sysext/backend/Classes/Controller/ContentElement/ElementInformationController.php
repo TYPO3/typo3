@@ -457,7 +457,6 @@ class ElementInformationController
      *
      * @param string $table
      * @param int $uid
-     * @param ServerRequestInterface $request
      * @return array
      * @throws RouteNotFoundException
      */
@@ -504,7 +503,6 @@ class ElementInformationController
      *
      * @param string $table Table name
      * @param int|File $ref Filename or uid
-     * @param ServerRequestInterface $request
      * @return array
      * @throws RouteNotFoundException
      */
@@ -604,7 +602,6 @@ class ElementInformationController
      *
      * @param string $table Table name
      * @param int $ref Filename or uid
-     * @param ServerRequestInterface $request
      * @return array
      */
     protected function makeRefFrom($table, $ref, ServerRequestInterface $request): array

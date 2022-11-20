@@ -49,9 +49,6 @@ class ObjectStorageConverter extends AbstractTypeConverter
      * built $convertedChildProperties and $configuration.
      *
      * @param mixed $source
-     * @param string $targetType
-     * @param array $convertedChildProperties
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
     public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): ObjectStorage
@@ -81,8 +78,6 @@ class ObjectStorageConverter extends AbstractTypeConverter
      * Return the type of a given sub-property inside the $targetType
      *
      * @param string $targetType
-     * @param string $propertyName
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string
      */
     public function getTypeOfChildProperty($targetType, string $propertyName, PropertyMappingConfigurationInterface $configuration): string

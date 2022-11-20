@@ -171,7 +171,6 @@ class DataMapFactory implements SingletonInterface
     /**
      * Resolve the table name for the given class name
      *
-     * @param string $className
      * @return string The table name
      */
     protected function resolveTableName(string $className): string
@@ -214,8 +213,6 @@ class DataMapFactory implements SingletonInterface
     }
 
     /**
-     * @param DataMap $dataMap
-     * @param string $tableName
      * @return DataMap
      */
     protected function addMetaDataColumnNames(DataMap $dataMap, string $tableName): DataMap
@@ -270,8 +267,6 @@ class DataMapFactory implements SingletonInterface
     /**
      * Set the table column type
      *
-     * @param ColumnMap $columnMap
-     * @param array $columnConfiguration
      * @return ColumnMap
      */
     protected function setType(ColumnMap $columnMap, array $columnConfiguration): ColumnMap
@@ -291,8 +286,6 @@ class DataMapFactory implements SingletonInterface
      *
      * @param ColumnMap $columnMap The column map
      * @param array|null $columnConfiguration The column configuration from $TCA
-     * @param string|null $type
-     * @param string|null $elementType
      * @return ColumnMap
      */
     protected function setRelations(ColumnMap $columnMap, ?array $columnConfiguration, ?string $type, ?string $elementType): ColumnMap
@@ -459,8 +452,6 @@ class DataMapFactory implements SingletonInterface
     /**
      * Creates the ColumnMap object for the given columnName and propertyName
      *
-     * @param string $columnName
-     * @param string $propertyName
      *
      * @return ColumnMap
      */

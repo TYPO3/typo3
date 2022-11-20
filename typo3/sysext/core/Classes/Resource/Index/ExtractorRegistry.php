@@ -97,8 +97,6 @@ class ExtractorRegistry implements SingletonInterface
      * We want the result to be ordered from high to low so a higher
      * priority comes before a lower.
      *
-     * @param ExtractorInterface $extractorA
-     * @param ExtractorInterface $extractorB
      * @return int -1 a > b, 0 a == b, 1 a < b
      */
     protected function compareExtractorPriority(ExtractorInterface $extractorA, ExtractorInterface $extractorB)

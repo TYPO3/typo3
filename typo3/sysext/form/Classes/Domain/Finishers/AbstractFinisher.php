@@ -207,9 +207,7 @@ abstract class AbstractFinisher implements FinisherInterface
      *
      * @param string|array $subject
      * @param FormRuntime $formRuntime
-     * @param string $optionName
      * @param string|array $optionValue
-     * @param array $translationOptions
      * @return array|string
      */
     protected function translateFinisherOption(
@@ -319,8 +317,6 @@ abstract class AbstractFinisher implements FinisherInterface
     /**
      * Resolving property by name from submitted form data.
      *
-     * @param string $property
-     * @param FormRuntime $formRuntime
      * @return int|string|array
      */
     protected function resolveRuntimeReference(string $property, FormRuntime $formRuntime)

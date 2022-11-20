@@ -160,7 +160,6 @@ class ServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * @param ContainerInterface $container
      * @return ArrayObject
      * @throws InvalidDataException
      * @throws CoreException

@@ -48,8 +48,6 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
     /**
      * FrontendRestrictionContainer constructor.
      * Initializes the default restrictions for frontend requests
-     *
-     * @param Context $context
      */
     public function __construct(Context $context = null)
     {

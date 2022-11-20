@@ -34,10 +34,6 @@ abstract class AbstractSvgIconProvider implements IconProviderInterface
     abstract protected function generateMarkup(Icon $icon, array $options): string;
     abstract protected function generateInlineMarkup(array $options): string;
 
-    /**
-     * @param Icon $icon
-     * @param array $options
-     */
     public function prepareIconMarkup(Icon $icon, array $options = []): void
     {
         $icon->setMarkup($this->generateMarkup($icon, $options));
@@ -47,7 +43,6 @@ abstract class AbstractSvgIconProvider implements IconProviderInterface
     /**
      * Calculate public path of SVG file
      *
-     * @param string $source
      * @return string
      */
     protected function getPublicPath(string $source): string

@@ -55,8 +55,6 @@ class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
     /**
      * Tests whether ExtbasePluginEnhancer applies `defaultController` values correctly but keeps additional Query Parameters.
      *
-     * @param string $additionalParameters
-     * @param string $expectation
      * @test
      * @dataProvider defaultExtbaseControllerActionNamesAreAppliedWithAdditionalNonMappedQueryArgumentsDataProvider
      */
@@ -137,8 +135,6 @@ class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
     /**
      * Tests whether ExtbasePluginEnhancer applies `defaultController` values correctly.
      *
-     * @param string $additionalParameters
-     * @param string $expectation
      * @test
      * @dataProvider defaultExtbaseControllerActionNamesAreAppliedDataProvider
      */

@@ -453,7 +453,6 @@ class ActionHandler
     /**
      * Process TCA command map array.
      *
-     * @param array $cmdMapArray
      * @return array
      */
     protected function processTcaCmd(array $cmdMapArray)

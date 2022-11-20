@@ -27,10 +27,6 @@ class BitmapIconProvider implements IconProviderInterface
 {
     public const MARKUP_IDENTIFIER_INLINE = 'inline';
 
-    /**
-     * @param Icon $icon
-     * @param array $options
-     */
     public function prepareIconMarkup(Icon $icon, array $options = [])
     {
         $icon->setMarkup($this->generateMarkup($icon, $options));
@@ -38,8 +34,6 @@ class BitmapIconProvider implements IconProviderInterface
     }
 
     /**
-     * @param Icon $icon
-     * @param array $options
      * @return string
      * @throws \InvalidArgumentException
      */
@@ -57,7 +51,6 @@ class BitmapIconProvider implements IconProviderInterface
     /**
      * Calculate public path of image file
      *
-     * @param string $source
      * @return string
      */
     protected function getPublicPath(string $source): string
@@ -70,8 +63,6 @@ class BitmapIconProvider implements IconProviderInterface
     }
 
     /**
-     * @param Icon $icon
-     * @param array $options
      * @return string
      * @throws \InvalidArgumentException
      */

@@ -33,7 +33,6 @@ class SchemaIndexDefinitionListener
      * for indexes and builds the appropriate Index Object taking the sub
      * part length into account when a MySQL platform has been detected.
      *
-     * @param \Doctrine\DBAL\Event\SchemaIndexDefinitionEventArgs $event
      * @throws \Doctrine\DBAL\Exception
      * @throws \InvalidArgumentException
      */
@@ -83,7 +82,6 @@ class SchemaIndexDefinitionListener
      * Build a Doctrine Index Object based on the information
      * gathered from the MySQL information schema.
      *
-     * @param array $tableIndexRows
      * @return \Doctrine\DBAL\Schema\Index
      * @throws \InvalidArgumentException
      */

@@ -51,7 +51,6 @@ class FluidTemplateCache extends PhpFrontend implements FluidCacheInterface
     /**
      * @param string $entryIdentifier
      * @param string $sourceCode
-     * @param array $tags
      * @param int $lifetime
      * @throws InvalidDataException
      */

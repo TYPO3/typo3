@@ -34,7 +34,6 @@ class PasswordPolicy
 
     /**
      * @param array<class-string<AbstractPasswordValidator>, array<string, mixed>> $validators
-     * @param PasswordPolicyAction $action
      */
     public function __construct(array $validators, protected PasswordPolicyAction $action)
     {

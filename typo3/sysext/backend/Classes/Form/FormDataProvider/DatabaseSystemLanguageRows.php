@@ -32,7 +32,6 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
     /**
      * Fetch available system languages and resolve iso code if necessary.
      *
-     * @param array $result
      * @return array
      * @throws \LogicException
      */

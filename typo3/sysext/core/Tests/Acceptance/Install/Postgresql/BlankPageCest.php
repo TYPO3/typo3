@@ -26,8 +26,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\InstallTester;
 class BlankPageCest
 {
     /**
-     * @param InstallTester $I
-     * @param Scenario $scenario
      * @env postgresql
      */
     public function installTypo3OnPgSql(InstallTester $I, Scenario $scenario): void

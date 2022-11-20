@@ -24,9 +24,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class ListUserCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
@@ -37,9 +34,6 @@ class ListUserCest
         $I->switchToContentFrame();
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function showsHeadingAndListsBackendUsers(ApplicationTester $I): void
     {
         $I->see('Backend User Listing');
@@ -51,9 +45,6 @@ class ListUserCest
         $this->checkCountOfUsers($I, 4);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function filterUsersByUsername(ApplicationTester $I): void
     {
         $I->wantTo('See the table of users');
@@ -80,9 +71,6 @@ class ListUserCest
         $this->checkCountOfUsers($I, 0);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function filterUsersByAdmin(ApplicationTester $I): void
     {
         $I->wantTo('See the table of users');
@@ -109,9 +97,6 @@ class ListUserCest
         $this->checkCountOfUsers($I, 2);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function filterUsersByStatus(ApplicationTester $I): void
     {
         $I->wantTo('See the table of users');
@@ -138,9 +123,6 @@ class ListUserCest
         $this->checkCountOfUsers($I, 2);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function filterUsersByLogin(ApplicationTester $I): void
     {
         $I->wantTo('See the table of users');
@@ -167,9 +149,6 @@ class ListUserCest
         $this->checkCountOfUsers($I, 2);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function filterUsersByUserGroup(ApplicationTester $I): void
     {
         $I->wantTo('See the table of users');
@@ -188,9 +167,6 @@ class ListUserCest
         $this->checkCountOfUsers($I, 1);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function canEditUsersFromIndexListView(ApplicationTester $I): void
     {
         $I->canSee('Backend User Listing', 'h1');
@@ -209,10 +185,6 @@ class ListUserCest
         $this->openAndCloseTheEditForm($I, $username);
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param int $countOfUsers
-     */
     private function checkCountOfUsers(ApplicationTester $I, int $countOfUsers): void
     {
         $I->canSeeNumberOfElements('#typo3-backend-user-list tbody tr', $countOfUsers);
@@ -221,10 +193,6 @@ class ListUserCest
         $I->see($countOfUsers . ' Users', '#typo3-backend-user-list tfoot tr');
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param string $username
-     */
     private function openAndCloseTheEditForm(ApplicationTester $I, string $username): void
     {
         $I->waitForElementNotVisible('#t3js-ui-block');

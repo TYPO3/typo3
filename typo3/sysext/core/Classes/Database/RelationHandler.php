@@ -215,7 +215,6 @@ class RelationHandler
     /**
      * Setter to carry the 'deferred' reference index updater registry around.
      *
-     * @param ReferenceIndexUpdater $updater
      * @internal Used internally within DataHandler only
      */
     public function setReferenceIndexUpdater(ReferenceIndexUpdater $updater): void
@@ -1348,7 +1347,6 @@ class RelationHandler
      * Purges ids that are versioned.
      *
      * @param string $tableName
-     * @param array $ids
      * @return array
      */
     protected function purgeVersionedIds($tableName, array $ids)
@@ -1391,7 +1389,6 @@ class RelationHandler
      * Purges ids that are live but have an accordant version.
      *
      * @param string $tableName
-     * @param array $ids
      * @return array
      */
     protected function purgeLiveVersionedIds($tableName, array $ids)
@@ -1435,7 +1432,6 @@ class RelationHandler
      * Purges ids that have a delete placeholder
      *
      * @param string $tableName
-     * @param array $ids
      * @return array
      */
     protected function purgeDeletePlaceholder($tableName, array $ids)
@@ -1592,7 +1588,6 @@ class RelationHandler
     /**
      * @param string $tableName
      * @param int[] $ids
-     * @param array $sortingStatement
      * @return PlainDataResolver
      */
     protected function getResolver($tableName, array $ids, array $sortingStatement = null)
@@ -1610,7 +1605,6 @@ class RelationHandler
     }
 
     /**
-     * @param string $tableName
      * @return Connection
      */
     protected function getConnectionForTableName(string $tableName)

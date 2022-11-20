@@ -371,7 +371,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * Associates the identifier with the given tags
      *
      * @param string $entryIdentifier
-     * @param array $tags
      */
     protected function addIdentifierToTags($entryIdentifier, array $tags)
     {

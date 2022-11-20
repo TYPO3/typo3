@@ -64,7 +64,6 @@ interface FolderInterface extends ResourceInterface
     /**
      * Fetches a file from a folder, must be a direct descendant of a folder.
      *
-     * @param string $fileName
      * @return File|ProcessedFile|null
      */
     public function getFile(string $fileName);

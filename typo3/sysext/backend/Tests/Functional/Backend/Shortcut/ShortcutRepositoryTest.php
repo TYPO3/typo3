@@ -48,11 +48,6 @@ class ShortcutRepositoryTest extends FunctionalTestCase
     /**
      * @dataProvider shortcutExistsTestDataProvider
      * @test
-     *
-     * @param string $routeIdentifier
-     * @param array  $arguments
-     * @param int    $userid
-     * @param bool   $exists
      */
     public function shortcutExistsTest(string $routeIdentifier, array $arguments, int $userid, bool $exists): void
     {

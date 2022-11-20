@@ -344,7 +344,6 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * @param array $state
      * @internal
      */
     public function updateState(array $state): void
@@ -599,7 +598,6 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * @param string $scope
      * @return array
      */
     public function getRequireJsConfig(string $scope = null): array
@@ -982,8 +980,6 @@ class PageRenderer implements SingletonInterface
     /**
      * Returns the requested meta tag
      *
-     * @param string $type
-     * @param string $name
      *
      * @return array
      */
@@ -1008,9 +1004,6 @@ class PageRenderer implements SingletonInterface
 
     /**
      * Unset the requested meta tag
-     *
-     * @param string $type
-     * @param string $name
      */
     public function removeMetaTag(string $type, string $name)
     {
@@ -1546,9 +1539,7 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * @param array $array
      * @param string[] $keys
-     * @param bool $keep
      * @return array
      */
     protected function filterArrayKeys(array $array, array $keys, bool $keep = true): array
@@ -1630,7 +1621,6 @@ class PageRenderer implements SingletonInterface
     /**
      * Determines requireJS base module name (if defined).
      *
-     * @param string $moduleName
      * @return string|null
      */
     protected function findRequireJsBaseModuleName(string $moduleName)
@@ -1661,8 +1651,6 @@ class PageRenderer implements SingletonInterface
      * Adds Javascript Inline Label Array. This will occur in TYPO3.lang - object
      * The label can be used in scripts with TYPO3.lang.<key>
      * Array will be merged with existing array.
-     *
-     * @param array $array
      */
     public function addInlineLanguageLabelArray(array $array)
     {
@@ -1720,7 +1708,6 @@ class PageRenderer implements SingletonInterface
      * Array will be merged with existing array.
      *
      * @param string $namespace
-     * @param array $array
      */
     public function addInlineSettingArray($namespace, array $array)
     {
@@ -2137,8 +2124,6 @@ class PageRenderer implements SingletonInterface
 
     /**
      * Make URLs to all backend ajax handlers available as inline setting.
-     *
-     * @param bool $publicRoutesOnly
      */
     protected function addAjaxUrlsToInlineSettings(bool $publicRoutesOnly = false)
     {
@@ -2206,8 +2191,6 @@ class PageRenderer implements SingletonInterface
     /**
      * Create link (inline=0) or style (inline=1) tag
      *
-     * @param array $properties
-     * @param string $file
      * @return string
      */
     private function createCssTag(array $properties, string $file): string
@@ -2683,7 +2666,6 @@ class PageRenderer implements SingletonInterface
      * Resolving the absolute path in the frontend with conflict with
      * applying config.absRefPrefix in frontend rendering process.
      *
-     * @param string $file
      * @return string
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setAbsRefPrefix()
      */
@@ -2810,7 +2792,6 @@ class PageRenderer implements SingletonInterface
      * Creates a CSS inline tag
      *
      * @param string $file the filename to process
-     * @param array $properties
      * @return string
      */
     protected function createInlineCssTagFromFile(string $file, array $properties): string

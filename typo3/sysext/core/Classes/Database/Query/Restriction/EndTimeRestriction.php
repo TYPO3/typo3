@@ -30,9 +30,6 @@ class EndTimeRestriction implements QueryRestrictionInterface
      */
     protected $accessTimeStamp;
 
-    /**
-     * @param int $accessTimeStamp
-     */
     public function __construct(int $accessTimeStamp = null)
     {
         $this->accessTimeStamp = $accessTimeStamp ?: ($GLOBALS['SIM_ACCESS_TIME'] ?? null);

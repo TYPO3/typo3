@@ -75,7 +75,6 @@ class Sqlite extends AbstractPlatform
      * SQLite does not have any limitation for the length of the database name,
      * but must start with a letter or _
      *
-     * @param string $databaseName
      * @return bool
      */
     public static function isValidDatabaseName(string $databaseName): bool

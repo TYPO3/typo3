@@ -30,8 +30,6 @@ class FileTree extends AbstractPageTree
 
     /**
      * Inject our core AcceptanceTester actor into PageTree
-     *
-     * @param ApplicationTester $I
      */
     public function __construct(ApplicationTester $I)
     {

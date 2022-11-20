@@ -92,7 +92,6 @@ class PathUtility
      * Dedicated method to resolve the path of public extension resources
      *
      * @internal This method should not be used for now except for TYPO3 core. It may be removed or be changed any time
-     * @param string $resourcePath
      * @param bool $prefixWithSitePath Don't use this argument. It is only used by TYPO3 in one place, which is subject to removal.
      * @return string
      */
@@ -116,7 +115,6 @@ class PathUtility
     /**
      * Checks whether the given path is an extension resource
      *
-     * @param string $path
      * @return bool
      */
     public static function isExtensionPath(string $path): bool
@@ -343,7 +341,6 @@ class PathUtility
      * is also unavailable. The path of the parent directory is determined with a regular expression
      * to avoid issues with locales.
      *
-     * @param string $path
      *
      * @return string Path without trailing slash
      */
@@ -358,7 +355,6 @@ class PathUtility
      * is also unavailable. The filename part is determined with a regular expression to avoid issues
      * with locales.
      *
-     * @param string $path
      *
      * @return string
      */

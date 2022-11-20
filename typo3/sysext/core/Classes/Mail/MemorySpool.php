@@ -113,7 +113,6 @@ class MemorySpool extends AbstractTransport implements SingletonInterface, Delay
 
     /**
      * Stores a message in the queue.
-     * @param SentMessage $message
      */
     protected function doSend(SentMessage $message): void
     {

@@ -30,7 +30,6 @@ class RecordStateFactory
     protected $name;
 
     /**
-     * @param string $name
      * @return static
      */
     public static function forName(string $name): self
@@ -41,16 +40,12 @@ class RecordStateFactory
         );
     }
 
-    /**
-     * @param string $name
-     */
     public function __construct(string $name)
     {
         $this->name = $name;
     }
 
     /**
-     * @param array $data
      * @param int|string|null $pageId
      * @param int|string|null $recordId
      * @return RecordState
@@ -94,7 +89,6 @@ class RecordStateFactory
     }
 
     /**
-     * @param array $data
      * @return array
      */
     protected function resolveAspectFieldValues(array $data): array
@@ -108,7 +102,6 @@ class RecordStateFactory
     }
 
     /**
-     * @param array $aspectFieldNames
      * @return EntityPointerLink|null
      */
     protected function resolveLanguageLink(array $aspectFieldNames): ?EntityPointerLink
@@ -140,7 +133,6 @@ class RecordStateFactory
     }
 
     /**
-     * @param array $aspectFieldNames
      * @return EntityPointerLink|null
      */
     protected function resolveVersionLink(array $aspectFieldNames): ?EntityPointerLink

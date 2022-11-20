@@ -2886,7 +2886,6 @@ class GeneralUtility
     }
 
     /**
-     * @param ContainerInterface $container
      * @internal
      */
     public static function setContainer(ContainerInterface $container): void

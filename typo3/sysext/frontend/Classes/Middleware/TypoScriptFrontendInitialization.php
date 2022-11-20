@@ -50,8 +50,6 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
     /**
      * Creates an instance of TSFE and sets it as a global variable.
      *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

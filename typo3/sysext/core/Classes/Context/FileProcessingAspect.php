@@ -40,7 +40,6 @@ class FileProcessingAspect implements AspectInterface
     /**
      * Fetch the values
      *
-     * @param string $name
      * @return bool
      * @throws AspectPropertyNotFoundException
      */

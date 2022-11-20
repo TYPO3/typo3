@@ -128,8 +128,6 @@ class BackendUserController extends ActionController
      * Displays all BackendUsers
      *
      * @param Demand|null $demand
-     * @param int $currentPage
-     * @param string $operation
      * @return ResponseInterface
      */
     public function indexAction(Demand $demand = null, int $currentPage = 1, string $operation = ''): ResponseInterface
@@ -300,8 +298,6 @@ class BackendUserController extends ActionController
 
     /**
      * Starts the password reset process for a selected user.
-     *
-     * @param int $user
      */
     public function initiatePasswordResetAction(int $user): ResponseInterface
     {
@@ -379,7 +375,6 @@ class BackendUserController extends ActionController
     /**
      * Displays all BackendUserGroups
      *
-     * @param int $currentPage
      * @return ResponseInterface
      */
     public function groupsAction(int $currentPage = 1): ResponseInterface
@@ -535,8 +530,6 @@ class BackendUserController extends ActionController
 
     /**
      * Doc header main drop down
-     *
-     * @param string $currentAction
      */
     protected function addMainMenu(string $currentAction): void
     {

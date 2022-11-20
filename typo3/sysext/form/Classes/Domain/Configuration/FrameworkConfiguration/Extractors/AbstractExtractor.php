@@ -27,9 +27,6 @@ abstract class AbstractExtractor implements ExtractorInterface
      */
     protected $extractorDto;
 
-    /**
-     * @param ExtractorDto $extractorDto
-     */
     public function __construct(ExtractorDto $extractorDto)
     {
         $this->extractorDto = $extractorDto;

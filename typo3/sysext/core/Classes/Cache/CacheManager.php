@@ -69,9 +69,6 @@ class CacheManager implements SingletonInterface
      */
     protected $disableCaching = false;
 
-    /**
-     * @param bool $disableCaching
-     */
     public function __construct(bool $disableCaching = false)
     {
         $this->disableCaching = $disableCaching;

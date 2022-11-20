@@ -222,7 +222,6 @@ class TcaRecordTitle implements FormDataProviderInterface
 
     /**
      * @param int $value
-     * @param array $children
      * @return string
      */
     protected function getRecordTitleForInlineType($value, array $children)

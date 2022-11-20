@@ -40,9 +40,6 @@ interface RendererInterface
      */
     public function render(): string;
 
-    /**
-     * @param FormRuntime $formRuntime
-     */
     public function setFormRuntime(FormRuntime $formRuntime);
 
     /**

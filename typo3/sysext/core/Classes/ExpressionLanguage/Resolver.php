@@ -41,10 +41,6 @@ class Resolver
      */
     public $expressionLanguageVariables = [];
 
-    /**
-     * @param string $context
-     * @param array $variables
-     */
     public function __construct(string $context, array $variables)
     {
         $functionProviderInstances = [];

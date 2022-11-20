@@ -184,7 +184,6 @@ class ActionController extends AbstractController
     /**
      * Create a zip file from an extension
      *
-     * @param string $extensionKey
      * @return string Name and path of create zip file
      */
     protected function createZipFileFromExtension(string $extensionKey): string

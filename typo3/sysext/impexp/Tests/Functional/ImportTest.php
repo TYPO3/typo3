@@ -38,7 +38,6 @@ class ImportTest extends AbstractImportExportTestCase
     /**
      * @test
      * @dataProvider loadingFileFromWithinTypo3BaseFolderSucceedsProvider
-     * @param string $filePath
      */
     public function loadingFileFromWithinTypo3BaseFolderSucceeds(string $filePath): void
     {
@@ -64,7 +63,6 @@ class ImportTest extends AbstractImportExportTestCase
     /**
      * @test
      * @dataProvider loadingFileFailsProvider
-     * @param string $filePath
      */
     public function loadingFileFails(string $filePath): void
     {

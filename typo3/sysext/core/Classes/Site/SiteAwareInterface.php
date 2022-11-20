@@ -24,9 +24,6 @@ use TYPO3\CMS\Core\Site\Entity\Site;
  */
 interface SiteAwareInterface
 {
-    /**
-     * @param Entity\Site $site
-     */
     public function setSite(Site $site): void;
 
     /**

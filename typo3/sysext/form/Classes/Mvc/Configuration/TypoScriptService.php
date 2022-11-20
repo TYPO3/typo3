@@ -38,7 +38,6 @@ class TypoScriptService
      * Parse a configuration with ContentObjectRenderer::cObjGetSingle()
      * and return the result.
      *
-     * @param array $configuration
      * @return array
      * @internal
      */

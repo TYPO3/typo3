@@ -37,10 +37,6 @@ class TwitterCardMetaTagManagerTest extends UnitTestCase
      * @dataProvider propertiesProvider
      *
      * @test
-     *
-     * @param array $property
-     * @param array $expected
-     * @param string $expectedRenderedTag
      */
     public function checkIfPropertyIsStoredAfterAddingProperty(array $property, array $expected, string $expectedRenderedTag): void
     {

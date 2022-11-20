@@ -61,7 +61,6 @@ class SiteLanguageTest extends UnitTestCase
      * @dataProvider languageFallbackIdConversionDataProvider
      * @test
      * @param string|array|null $input
-     * @param array $expected
      */
     public function languageFallbackIdConversion($input, array $expected): void
     {

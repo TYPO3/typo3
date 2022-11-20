@@ -509,7 +509,6 @@ class BackendUtilityTest extends UnitTestCase
      * @dataProvider inputTypeDateDisplayOptions
      *
      * @param bool|int $input
-     * @param string $expected
      */
     public function getProcessedValueHandlesAgeDisplayCorrectly($input, string $expected): void
     {

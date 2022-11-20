@@ -105,7 +105,6 @@ class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider staticValueMapperDataProvider
      */
@@ -164,7 +163,6 @@ class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
     }
 
     /**
-     * @param TestSet $testSet
      * @test
      * @dataProvider pageTypeDecoratorIsAppliedDataProvider
      */

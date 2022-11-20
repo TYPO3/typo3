@@ -25,7 +25,6 @@ class TcaColumnsOverrides implements FormDataProviderInterface
     /**
      * Merge columnsOverrides
      *
-     * @param array $result
      * @return array
      */
     public function addData(array $result)

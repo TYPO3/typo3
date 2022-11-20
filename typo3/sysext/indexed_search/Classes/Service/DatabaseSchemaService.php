@@ -28,8 +28,6 @@ final class DatabaseSchemaService
     /**
      * A event listener to inject the required mysql fulltext definition
      * to schema migration.
-     *
-     * @param AlterTableDefinitionStatementsEvent $event
      */
     public function addMysqlFulltextIndex(AlterTableDefinitionStatementsEvent $event): void
     {

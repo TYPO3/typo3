@@ -103,7 +103,6 @@ class ParserTest extends UnitTestCase
     }
 
     /**
-     * @param string $html
      * @param string[] $expectation
      * @test
      * @dataProvider nodesAreResolvedDataProvider

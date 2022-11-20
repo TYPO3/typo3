@@ -39,12 +39,6 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
 
     /**
      * Add a property (including subProperties)
-     *
-     * @param string $property
-     * @param string $content
-     * @param array $subProperties
-     * @param bool $replace
-     * @param string $type
      */
     public function addProperty(string $property, string $content, array $subProperties = [], bool $replace = false, string $type = 'name')
     {
@@ -64,8 +58,6 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
     /**
      * Get the data of a specific property
      *
-     * @param string $property
-     * @param string $type
      * @return array
      */
     public function getProperty(string $property, string $type = 'name'): array
@@ -106,7 +98,6 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
     /**
      * Render a specific property including subproperties of that property
      *
-     * @param string $property
      * @return string
      */
     public function renderProperty(string $property): string
@@ -137,9 +128,6 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
     /**
      * Remove one property from the MetaTagManager
      * If there are multiple occurrences of a property, they all will be removed
-     *
-     * @param string $property
-     * @param string $type
      */
     public function removeProperty(string $property, string $type = '')
     {
@@ -159,7 +147,6 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
     }
 
     /**
-     * @param string $property
      * @return bool
      */
     public function canHandleProperty(string $property): bool
