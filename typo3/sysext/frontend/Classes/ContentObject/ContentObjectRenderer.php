@@ -3356,7 +3356,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $contentAccum[$contentAccumP] = preg_replace('/^[ ]*' . CR . '?' . LF . '/', '', $contentAccum[$contentAccumP]);
                             $contentAccum[$contentAccumP] = preg_replace('/' . CR . '?' . LF . '[ ]*$/', '', $contentAccum[$contentAccumP]);
                         }
-                        $this->data[$this->currentValKey] = $contentAccum[$contentAccumP];
+                        $this->data[$this->currentValKey] = $contentAccum[$contentAccumP] ?? null;
                         $newInput = $this->cObjGetSingle($theName, $theConf, '/parseFunc/.tags.' . $tag[0]);
                         // fetch the content object
                         $contentAccum[$contentAccumP] = $newInput;
