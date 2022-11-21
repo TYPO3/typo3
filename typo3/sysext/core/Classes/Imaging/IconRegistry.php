@@ -613,7 +613,7 @@ class IconRegistry implements SingletonInterface
      */
     public function detectIconProvider($iconReference)
     {
-        if (str_ends_with(strtolower($iconReference), 'svg')) {
+        if (str_ends_with(strtolower((string)$iconReference), 'svg')) {
             return SvgIconProvider::class;
         }
         return BitmapIconProvider::class;
