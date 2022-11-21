@@ -31,8 +31,8 @@ class TypoScriptService
      * Extbase converts the "classical" TypoScript (with trailing dot) to a format without trailing dot,
      * to be more future-proof and not to have any conflicts with Fluid object accessor syntax.
      *
-     * @param array $typoScriptArray The TypoScript array (e.g. array('foo' => 'TEXT', 'foo.' => array('bar' => 'baz')))
-     * @return array e.g. array('foo' => array('_typoScriptNodeValue' => 'TEXT', 'bar' => 'baz'))
+     * @param array<string|int, mixed> $typoScriptArray for example `['foo' => 'TEXT', 'foo.' => ['bar' => 'baz']]`
+     * @return array<string|int, mixed> for example `['foo' => ['_typoScriptNodeValue' => 'TEXT', 'bar' => 'baz']]`
      * @internal Avoid using this method. This has been invented for Extbase, which decided to move TypoScript
      *           arrays around in just another different way.
      * @todo: Usages should be removed mid-term to work on the TypoScript object tree directly.

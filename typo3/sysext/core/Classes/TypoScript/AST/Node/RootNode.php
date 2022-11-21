@@ -73,6 +73,9 @@ final class RootNode extends AbstractNode
         return true;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $result = [];
