@@ -1075,7 +1075,7 @@ class AbstractPlugin
             // Fetches the list of PIDs to select from.
             // TypoScript property .pidList is a comma list of pids. If blank, current page id is used.
             // TypoScript property .recursive is an int+ which determines how many levels down from the pids in the pid-list subpages should be included in the select.
-            $pidList = GeneralUtility::intExplode(',', $this->pi_getPidList($this->conf['pidList'], $this->conf['recursive']), true);
+            $pidList = GeneralUtility::intExplode(',', $this->pi_getPidList($this->conf['pidList'] ?? '', (int)($this->conf['recursive'] ?? 0)), true);
             if (is_array($mm_cat)) {
                 $queryBuilder->from($mm_cat['table'])
                     ->from($mm_cat['mmtable'])
