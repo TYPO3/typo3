@@ -17,20 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileFactoryInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Http\UploadedFileFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for \TYPO3\CMS\Core\Http\UploadedFileFactory
- */
 class UploadedFileFactoryTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -45,9 +39,9 @@ class UploadedFileFactoryTest extends UnitTestCase
      */
     public function createUploadedFile(): void
     {
-        $streamProphecy = $this->prophesize(StreamInterface::class);
+        $stream = new Stream('php://memory');
         $factory = new UploadedFileFactory();
-        $uploadedFile = $factory->createUploadedFile($streamProphecy->reveal(), 0);
+        $uploadedFile = $factory->createUploadedFile($stream, 0);
 
         self::assertInstanceOf(UploadedFileInterface::class, $uploadedFile);
         self::assertSame(UPLOAD_ERR_OK, $uploadedFile->getError());
@@ -60,9 +54,9 @@ class UploadedFileFactoryTest extends UnitTestCase
      */
     public function createUploadedFileWithParams(): void
     {
-        $streamProphecy = $this->prophesize(StreamInterface::class);
+        $stream = new Stream('php://memory');
         $factory = new UploadedFileFactory();
-        $uploadedFile = $factory->createUploadedFile($streamProphecy->reveal(), 0, UPLOAD_ERR_NO_FILE, 'filename.html', 'text/html');
+        $uploadedFile = $factory->createUploadedFile($stream, 0, UPLOAD_ERR_NO_FILE, 'filename.html', 'text/html');
 
         self::assertInstanceOf(UploadedFileInterface::class, $uploadedFile);
         self::assertSame(UPLOAD_ERR_NO_FILE, $uploadedFile->getError());
@@ -75,11 +69,11 @@ class UploadedFileFactoryTest extends UnitTestCase
      */
     public function createUploadedFileCreateSizeFromStreamSize(): void
     {
-        $streamProphecy = $this->prophesize(StreamInterface::class);
-        $streamProphecy->getSize()->willReturn(5);
+        $stream = new Stream('php://memory', 'rw');
+        $stream->write('12345');
 
         $factory = new UploadedFileFactory();
-        $uploadedFile = $factory->createUploadedFile($streamProphecy->reveal());
+        $uploadedFile = $factory->createUploadedFile($stream);
 
         self::assertSame(5, $uploadedFile->getSize());
     }
@@ -92,11 +86,11 @@ class UploadedFileFactoryTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1566823423);
 
-        $streamProphecy = $this->prophesize(StreamInterface::class);
-        $streamProphecy->getSize()->willReturn(null);
+        $stream = new Stream('php://memory');
+        $stream->detach();
 
         $factory = new UploadedFileFactory();
-        $uploadedFile = $factory->createUploadedFile($streamProphecy->reveal());
+        $uploadedFile = $factory->createUploadedFile($stream);
 
         self::assertSame(3, $uploadedFile->getSize());
     }

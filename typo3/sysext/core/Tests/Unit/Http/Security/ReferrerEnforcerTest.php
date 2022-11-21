@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http\Security;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Security\InvalidReferrerException;
@@ -28,8 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ReferrerEnforcerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     private static function buildRefreshContentPattern(string $uri): string
     {
         return sprintf(
@@ -191,15 +188,15 @@ class ReferrerEnforcerTest extends UnitTestCase
         $dir = $host . rtrim(dirname($requestUriInstance->getPath()), '/') . '/';
         parse_str($requestUriInstance->getQuery(), $queryParams);
 
-        $normalizedParams = $this->prophesize(NormalizedParams::class);
-        $normalizedParams->getRequestHost()->willReturn($host);
-        $normalizedParams->getRequestDir()->willReturn($dir);
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('normalizedParams')->willReturn($normalizedParams);
-        $request->getServerParams()->willReturn(['HTTP_REFERER' => $referrer]);
-        $request->getUri()->willReturn($requestUriInstance);
-        $request->getQueryParams()->willReturn($queryParams);
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getRequestHost')->willReturn($host);
+        $normalizedParams->method('getRequestDir')->willReturn($dir);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getAttribute')->with('normalizedParams')->willReturn($normalizedParams);
+        $request->method('getServerParams')->willReturn(['HTTP_REFERER' => $referrer]);
+        $request->method('getUri')->willReturn($requestUriInstance);
+        $request->method('getQueryParams')->willReturn($queryParams);
 
-        return new ReferrerEnforcer($request->reveal());
+        return new ReferrerEnforcer($request);
     }
 }

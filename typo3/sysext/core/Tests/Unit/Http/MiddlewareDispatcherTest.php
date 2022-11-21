@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -31,8 +30,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class MiddlewareDispatcherTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -230,12 +227,11 @@ class MiddlewareDispatcherTest extends UnitTestCase
             }
         };
 
-        $containerProphecy = $this->prophesize();
-        $containerProphecy->willImplement(ContainerInterface::class);
-        $containerProphecy->has('somemiddlewarename')->willReturn(true);
-        $containerProphecy->get('somemiddlewarename')->willReturn($middleware);
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock->method('has')->with('somemiddlewarename')->willReturn(true);
+        $containerMock->method('get')->with('somemiddlewarename')->willReturn($middleware);
 
-        $dispatcher = new MiddlewareDispatcher($kernel, ['somemiddlewarename'], $containerProphecy->reveal());
+        $dispatcher = new MiddlewareDispatcher($kernel, ['somemiddlewarename'], $containerMock);
         $response = $dispatcher->handle(new ServerRequest());
 
         self::assertSame(404, $response->getStatusCode());

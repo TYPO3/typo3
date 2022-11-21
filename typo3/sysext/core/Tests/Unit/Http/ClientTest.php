@@ -25,7 +25,6 @@ use GuzzleHttp\Handler\MockHandler as GuzzleMockHandler;
 use GuzzleHttp\HandlerStack as GuzzleHandlerStack;
 use GuzzleHttp\Middleware as GuzzleMiddleware;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Client\NetworkExceptionInterface;
@@ -38,8 +37,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ClientTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -88,11 +85,9 @@ class ClientTest extends UnitTestCase
     public function requestException(): void
     {
         $request = new Request('https://example.com', 'GET', 'php://temp');
-        $exception = $this->prophesize(GuzzleRequestException::class);
-        $exception->getRequest()->willReturn($request);
-        $mock = new GuzzleMockHandler([
-            $exception->reveal(),
-        ]);
+        $exception = $this->createMock(GuzzleRequestException::class);
+        $exception->method('getRequest')->willReturn($request);
+        $mock = new GuzzleMockHandler([$exception]);
         $handler = GuzzleHandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
 
@@ -106,11 +101,9 @@ class ClientTest extends UnitTestCase
     public function networkException(): void
     {
         $request = new Request('https://example.com', 'GET', 'php://temp');
-        $exception = $this->prophesize(GuzzleConnectException::class);
-        $exception->getRequest()->willReturn($request);
-        $mock = new GuzzleMockHandler([
-            $exception->reveal(),
-        ]);
+        $exception = $this->createMock(GuzzleConnectException::class);
+        $exception->method('getRequest')->willReturn($request);
+        $mock = new GuzzleMockHandler([$exception]);
         $handler = GuzzleHandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
 

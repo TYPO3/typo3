@@ -18,18 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use ArrayObject;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
-use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class MiddlewareStackResolverTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -40,19 +36,15 @@ class MiddlewareStackResolverTest extends UnitTestCase
             require __DIR__ . '/Fixtures/Package1/Configuration/RequestMiddlewares.php',
             require __DIR__ . '/Fixtures/Package2/Configuration/RequestMiddlewares.php'
         ));
-        $containerProphecy = $this->prophesize();
-        $containerProphecy->willImplement(ContainerInterface::class);
-        $containerProphecy->get('middlewares')->willReturn($middlewares);
-        $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
-        $dependencyOrderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
-        $phpFrontendCacheProphecy = $this->prophesize(PhpFrontend::class);
-        $phpFrontendCacheProphecy->has(Argument::cetera())->willReturn(false);
-        $phpFrontendCacheProphecy->set(Argument::cetera())->willReturn(false);
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock->method('get')->with('middlewares')->willReturn($middlewares);
+        $dependencyOrderingServiceMock = $this->createMock(DependencyOrderingService::class);
+        $dependencyOrderingServiceMock->method('orderByDependencies')->with(self::anything())->willReturnArgument(0);
 
         $subject = new MiddlewareStackResolver(
-            $containerProphecy->reveal(),
-            $dependencyOrderingServiceProphecy->reveal(),
-            $phpFrontendCacheProphecy->reveal(),
+            $containerMock,
+            $dependencyOrderingServiceMock,
+            new NullFrontend('test'),
             ''
         );
         $expected = [
@@ -68,19 +60,15 @@ class MiddlewareStackResolverTest extends UnitTestCase
     public function resolveReturnsEmptyMiddlewareStackForZeroPackages(): void
     {
         $middlewares = new ArrayObject();
-        $containerProphecy = $this->prophesize();
-        $containerProphecy->willImplement(ContainerInterface::class);
-        $containerProphecy->get('middlewares')->willReturn($middlewares);
-        $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
-        $dependencyOrderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
-        $phpFrontendCacheProphecy = $this->prophesize(PhpFrontend::class);
-        $phpFrontendCacheProphecy->has(Argument::cetera())->willReturn(false);
-        $phpFrontendCacheProphecy->set(Argument::cetera())->willReturn(false);
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock->method('get')->with('middlewares')->willReturn($middlewares);
+        $dependencyOrderingServiceMock = $this->createMock(DependencyOrderingService::class);
+        $dependencyOrderingServiceMock->method('orderByDependencies')->with(self::anything())->willReturnArgument(0);
 
         $subject = new MiddlewareStackResolver(
-            $containerProphecy->reveal(),
-            $dependencyOrderingServiceProphecy->reveal(),
-            $phpFrontendCacheProphecy->reveal(),
+            $containerMock,
+            $dependencyOrderingServiceMock,
+            new NullFrontend('test'),
             'PackageDependentCacheIdentifier'
         );
         // empty array expected
@@ -93,24 +81,20 @@ class MiddlewareStackResolverTest extends UnitTestCase
      */
     public function resolveAllowsDisablingAMiddleware(): void
     {
-        $middlewares =  new ArrayObject(array_replace_recursive(
+        $middlewares = new ArrayObject(array_replace_recursive(
             [],
             require __DIR__ . '/Fixtures/Package1/Configuration/RequestMiddlewares.php',
             require __DIR__ . '/Fixtures/Package2Disables1/Configuration/RequestMiddlewares.php'
         ));
-        $containerProphecy = $this->prophesize();
-        $containerProphecy->willImplement(ContainerInterface::class);
-        $containerProphecy->get('middlewares')->willReturn($middlewares);
-        $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
-        $dependencyOrderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
-        $phpFrontendCacheProphecy = $this->prophesize(PhpFrontend::class);
-        $phpFrontendCacheProphecy->has(Argument::cetera())->willReturn(false);
-        $phpFrontendCacheProphecy->set(Argument::cetera())->willReturn(false);
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock->method('get')->with('middlewares')->willReturn($middlewares);
+        $dependencyOrderingServiceMock = $this->createMock(DependencyOrderingService::class);
+        $dependencyOrderingServiceMock->method('orderByDependencies')->with(self::anything())->willReturnArgument(0);
 
         $subject = new MiddlewareStackResolver(
-            $containerProphecy->reveal(),
-            $dependencyOrderingServiceProphecy->reveal(),
-            $phpFrontendCacheProphecy->reveal(),
+            $containerMock,
+            $dependencyOrderingServiceMock,
+            new NullFrontend('test'),
             'PackageDependentCacheIdentifier'
         );
         $expected = [
@@ -130,19 +114,15 @@ class MiddlewareStackResolverTest extends UnitTestCase
             require __DIR__ . '/Fixtures/Package1/Configuration/RequestMiddlewares.php',
             require __DIR__ . '/Fixtures/Package2Replaces1/Configuration/RequestMiddlewares.php'
         ));
-        $containerProphecy = $this->prophesize();
-        $containerProphecy->willImplement(ContainerInterface::class);
-        $containerProphecy->get('middlewares')->willReturn($middlewares);
-        $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
-        $dependencyOrderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
-        $phpFrontendCacheProphecy = $this->prophesize(PhpFrontend::class);
-        $phpFrontendCacheProphecy->has(Argument::cetera())->willReturn(false);
-        $phpFrontendCacheProphecy->set(Argument::cetera())->willReturn(false);
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock->method('get')->with('middlewares')->willReturn($middlewares);
+        $dependencyOrderingServiceMock = $this->createMock(DependencyOrderingService::class);
+        $dependencyOrderingServiceMock->method('orderByDependencies')->with(self::anything())->willReturnArgument(0);
 
         $subject = new MiddlewareStackResolver(
-            $containerProphecy->reveal(),
-            $dependencyOrderingServiceProphecy->reveal(),
-            $phpFrontendCacheProphecy->reveal(),
+            $containerMock,
+            $dependencyOrderingServiceMock,
+            new NullFrontend('test'),
             'PackageDependentCacheIdentifier'
         );
         $expected = [
