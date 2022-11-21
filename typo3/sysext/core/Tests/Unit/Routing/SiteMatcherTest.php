@@ -113,9 +113,9 @@ final class SiteMatcherTest extends UnitTestCase
         $request = new ServerRequest('http://www.example.com/');
         /** @var SiteRouteResult $result */
         $result = $subject->matchRequest($request);
-        // Nothing found, only the empty site, but finds a random site ("main") according to the algorithm
+        // Nothing found, only the empty site, but finds the last site ("second") according to the algorithm
         self::assertNull($result->getLanguage());
-        self::assertEquals('main', $result->getSite()->getIdentifier());
+        self::assertEquals('second', $result->getSite()->getIdentifier());
     }
 
     /**

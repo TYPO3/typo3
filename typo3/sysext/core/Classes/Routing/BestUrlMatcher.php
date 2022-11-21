@@ -146,6 +146,11 @@ class BestUrlMatcher extends UrlMatcher
         }
         // index `1` refers to the array index containing the corresponding `tail` match
         // @todo not sure, whether `tail` can be defined generic, it's hard coded in `SiteMatcher`
-        return $b->getPathMatchScore(1) <=> $a->getPathMatchScore(1);
+        if ($b->getPathMatchScore(1) !== $a->getPathMatchScore(1)) {
+            return $b->getPathMatchScore(1) <=> $a->getPathMatchScore(1);
+        }
+        // fallback for behavior prior to issue #93240, using reverse sorted site identifier
+        // (side note: site identifier did not contain any URL relevant information)
+        return $b->getSiteIdentifier() <=> $a->getSiteIdentifier();
     }
 }
