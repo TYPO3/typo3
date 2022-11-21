@@ -5342,7 +5342,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             // expects to be wrapped with (at least) 3 characters (before, middle, after)
             // anything else is not taken into account
             $wrapArr = explode($char, $wrap, 4);
-            $content = $wrapArr[1] . $content . $wrapArr[2];
+            $content = ($wrapArr[1] ?? '') . $content . ($wrapArr[2] ?? '');
         }
         return $content;
     }
