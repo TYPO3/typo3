@@ -482,7 +482,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
         if ($language->enabled()) {
             $language = $language->toArray();
         } else {
-            $language = null;
+            return $this->jsonEncode(null);
         }
 
         // Check field for return exists
