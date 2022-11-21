@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Routing;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 
 /**
  * @internal
@@ -83,5 +84,11 @@ class MatchedRoute
         // otherwise, find length of complete match that does not contain tail
         // example: complete: `/french/other`, tail: `/other` -> `strlen` of `/french`
         return strpos($completeMatch, $tailMatch);
+    }
+
+    public function getSiteIdentifier(): string
+    {
+        $site = $this->route->getDefault('site');
+        return $site instanceof SiteInterface ? $site->getIdentifier() : '';
     }
 }
