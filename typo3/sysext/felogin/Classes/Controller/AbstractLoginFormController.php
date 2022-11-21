@@ -28,8 +28,8 @@ abstract class AbstractLoginFormController extends ActionController
      */
     protected function getStorageFolders(): array
     {
-        if ((bool)($GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] ?? false) === false) {
-            return [0];
+        if (!($GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] ?? false)) {
+            return [];
         }
         $storagePids = GeneralUtility::intExplode(',', (string)($this->settings['pages'] ?? ''), true);
         return GeneralUtility::makeInstance(PageRepository::class)->getPageIdsRecursive($storagePids, (int)($this->settings['recursive'] ?? 0));
