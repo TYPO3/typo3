@@ -27,8 +27,8 @@ abstract class AbstractLoginFormController extends ActionController
      */
     protected function getStorageFolders(): array
     {
-        if ((bool)($GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] ?? false) === false) {
-            return [0];
+        if (!($GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] ?? false)) {
+            return [];
         }
         $storagePids = explode(',', $this->settings['pages'] ?? '');
         $storagePids = array_map('intval', $storagePids);
