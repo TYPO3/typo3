@@ -52,17 +52,18 @@ class FileOperationsCest extends AbstractFileCest
         // Save file
         $I->amGoingTo('close the file and return to the list view');
         $I->click('.module-docheader .btn[title="Cancel"]');
-        $I->see($fileName, '.col-title');
+        $I->see($fileName, '[data-multi-record-selection-element="true"]');
 
         // Delete file
         $I->amGoingTo('delete the file');
-        $I->click('a[data-identifier="1:/' . $fileName . '"]');
+        $I->clickWithRightButton('a[data-contextmenu-uid="1:/' . $fileName . '"]');
+        $I->click('[data-title="Delete"]');
         $modalDialog->canSeeDialog();
         $modalDialog->clickButtonInDialog('Yes, delete this file');
-        $I->waitForElementNotVisible('a[data-identifier="1:/' . $fileName . '"]');
+        $I->waitForElementNotVisible('a[data-contextmenu-uid="1:/' . $fileName . '"]');
         $I->switchToContentFrame();
         $I->see('File deleted', $flashMessageSelector);
-        $I->dontSee($fileName, '.col-title');
+        $I->dontSee($fileName, '[data-multi-record-selection-element="true"]');
     }
 
     /**
@@ -82,6 +83,6 @@ class FileOperationsCest extends AbstractFileCest
         $I->switchToContentFrame();
         $I->see($fileName, '.upload-queue-item');
         $I->click('a[title="Reload"]');
-        $I->see($fileName, '.responsive-title');
+        $I->see($fileName, '[data-multi-record-selection-element="true"]');
     }
 }

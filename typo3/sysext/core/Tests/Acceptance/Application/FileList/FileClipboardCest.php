@@ -44,6 +44,9 @@ class FileClipboardCest extends AbstractFileCest
         $I->click('//*[text()="styleguide"]');
         $I->click('.scaffold-content-navigation-switcher-close');
         $I->switchToContentFrame();
+        $I->click('//*[text()="View"]');
+        $I->click('//*[text()="List"]');
+
         $this->openActionDropdown($I, $fileName)->click();
         $I->click('Cut');
         $I->see($fileName, '.clipboard-panel a');
@@ -59,6 +62,8 @@ class FileClipboardCest extends AbstractFileCest
         $I->click('//*[text()="styleguide"]');
         $I->click('.scaffold-content-navigation-switcher-close');
         $I->switchToContentFrame();
+        $I->click('//*[text()="View"]');
+        $I->click('//*[text()="List"]');
 
         $I->amGoingTo('add multiple elements to clipboard');
         $I->click('Clipboard #1 (multi-selection mode)');

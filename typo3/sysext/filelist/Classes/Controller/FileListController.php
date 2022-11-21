@@ -28,9 +28,11 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownDivider;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -52,6 +54,7 @@ use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Filelist\FileList;
+use TYPO3\CMS\Filelist\Type\ViewMode;
 
 /**
  * Script Class for creating the list of files in the File > Filelist module
@@ -64,7 +67,7 @@ class FileListController implements LoggerAwareInterface
     protected string $id = '';
     protected string $cmd = '';
     protected string $searchTerm = '';
-    protected int $pointer = 0;
+    protected int $currentPage = 1;
 
     protected ?Folder $folderObject = null;
     protected ?DuplicationBehavior $overwriteExistingFiles = null;
@@ -78,6 +81,7 @@ class FileListController implements LoggerAwareInterface
         protected readonly IconFactory $iconFactory,
         protected readonly ResourceFactory $resourceFactory,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly BackendViewFactory $viewFactory,
         protected readonly ResponseFactoryInterface $responseFactory,
     ) {
     }
@@ -98,7 +102,7 @@ class FileListController implements LoggerAwareInterface
         $this->id = (string)($parsedBody['id'] ?? $queryParams['id'] ?? '');
         $this->cmd = (string)($parsedBody['cmd'] ?? $queryParams['cmd'] ?? '');
         $this->searchTerm = (string)($parsedBody['searchTerm'] ?? $queryParams['searchTerm'] ?? '');
-        $this->pointer = (int)($request->getParsedBody()['pointer'] ?? $request->getQueryParams()['pointer'] ?? 0);
+        $this->currentPage = (int)($parsedBody['currentPage'] ?? $queryParams['currentPage'] ?? 1);
         $this->overwriteExistingFiles = DuplicationBehavior::cast(
             $parsedBody['overwriteExistingFiles'] ?? $queryParams['overwriteExistingFiles'] ?? null
         );
@@ -210,7 +214,7 @@ class FileListController implements LoggerAwareInterface
         $this->initializeFileList($request);
 
         // Generate the file listing markup
-        $this->generateFileList();
+        $this->generateFileList($request);
 
         // Generate the clipboard, if enabled
         $this->view->assign('showClipboardPanel', (bool)$this->moduleData->get('clipBoard'));
@@ -268,6 +272,7 @@ class FileListController implements LoggerAwareInterface
     {
         // Create the file list
         $this->filelist = GeneralUtility::makeInstance(FileList::class, $request);
+        $this->filelist->viewMode = ViewMode::tryFrom($this->moduleData->get('viewMode')) ?? ViewMode::TILES;
         $this->filelist->thumbs = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && $this->moduleData->get('displayThumbs');
 
         // Create clipboard object and initialize it
@@ -315,14 +320,14 @@ class FileListController implements LoggerAwareInterface
         // Start up the file list by including processed settings.
         $this->filelist->start(
             $this->folderObject,
-            MathUtility::forceIntegerInRange($this->pointer, 0, 100000),
+            MathUtility::forceIntegerInRange($this->currentPage, 1, 100000),
             (string)$this->moduleData->get('sort'),
             (bool)$this->moduleData->get('reverse')
         );
         $this->filelist->setColumnsToRender($this->getBackendUser()->getModuleData('list/displayFields')['_FILE'] ?? []);
     }
 
-    protected function generateFileList(): void
+    protected function generateFileList(ServerRequestInterface $request): void
     {
         $lang = $this->getLanguageService();
 
@@ -333,9 +338,10 @@ class FileListController implements LoggerAwareInterface
 
         // Generate the list, if accessible
         if ($this->folderObject->getStorage()->isBrowsable()) {
+            $fileListView = $this->viewFactory->create($request);
             $this->view->assignMultiple([
-                'listHtml' => $this->filelist->getTable($searchDemand),
-                'listUrl' => $this->filelist->listURL(),
+                'listHtml' => $this->filelist->render($searchDemand, $fileListView),
+                'listUrl' => $this->filelist->createModuleUri(),
                 'fileUploadUrl' => $this->getFileUploadUrl(),
                 'totalItems' => $this->filelist->totalItems,
             ]);
@@ -344,7 +350,7 @@ class FileListController implements LoggerAwareInterface
                 'editActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
                     'idField' => 'metadataUid',
                     'table' => 'sys_file_metadata',
-                    'returnUrl' => $this->filelist->listURL(),
+                    'returnUrl' => $this->filelist->createModuleUri(),
                 ], true),
                 'deleteActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
                     'ok' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
@@ -424,19 +430,31 @@ class FileListController implements LoggerAwareInterface
 
         // ViewMode
         $viewModeItems = [];
+        $viewModeItems[] = GeneralUtility::makeInstance(DropDownRadio::class)
+            ->setActive($this->moduleData->get('viewMode') === ViewMode::TILES->value)
+            ->setHref($this->filelist->createModuleUri(['viewMode' => ViewMode::TILES->value]))
+            ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.tiles'))
+            ->setIcon($this->iconFactory->getIcon('actions-viewmode-tiles'));
+        $viewModeItems[] = GeneralUtility::makeInstance(DropDownRadio::class)
+            ->setActive($this->moduleData->get('viewMode') === ViewMode::LIST->value)
+            ->setHref($this->filelist->createModuleUri(['viewMode' => ViewMode::LIST->value]))
+            ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.list'))
+            ->setIcon($this->iconFactory->getIcon('actions-viewmode-list'));
+        $viewModeItems[] = GeneralUtility::makeInstance(DropdownDivider::class);
         if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'selectable') {
             $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
                 ->setActive((bool)$this->moduleData->get('displayThumbs'))
-                ->setHref($this->filelist->listURL(['displayThumbs' => $this->moduleData->get('displayThumbs') ? 0 : 1]))
+                ->setHref($this->filelist->createModuleUri(['displayThumbs' => $this->moduleData->get('displayThumbs') ? 0 : 1]))
                 ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showThumbnails'))
                 ->setIcon($this->iconFactory->getIcon('actions-image'));
         }
         $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
             ->setActive((bool)$this->moduleData->get('clipBoard'))
-            ->setHref($this->filelist->listURL(['clipBoard' => $this->moduleData->get('clipBoard') ? 0 : 1]))
+            ->setHref($this->filelist->createModuleUri(['clipBoard' => $this->moduleData->get('clipBoard') ? 0 : 1]))
             ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showClipboard'))
             ->setIcon($this->iconFactory->getIcon('actions-clipboard'));
-        if ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['displayColumnSelector'] ?? true) {
+        if (($this->getBackendUser()->getTSConfig()['options.']['file_list.']['displayColumnSelector'] ?? true)
+            && $this->moduleData->get('viewMode') === ViewMode::LIST->value) {
             $viewModeItems[] = GeneralUtility::makeInstance(DropDownDivider::class);
             $viewModeItems[] = GeneralUtility::makeInstance(DropDownItem::class)
                 ->setTag('typo3-backend-column-selector-button')
@@ -446,7 +464,7 @@ class FileListController implements LoggerAwareInterface
                         'ajax_show_columns_selector',
                         ['id' => $this->id, 'table' => '_FILE']
                     ),
-                    'target' => $this->filelist->listURL(),
+                    'target' => $this->filelist->createModuleUri(),
                     'title' => sprintf(
                         $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumnsSelection'),
                         $lang->sL($GLOBALS['TCA']['sys_file']['ctrl']['title'] ?? ''),
@@ -524,7 +542,7 @@ class FileListController implements LoggerAwareInterface
                     'file_newfolder',
                     [
                         'target' => $this->folderObject->getCombinedIdentifier(),
-                        'returnUrl' => $this->filelist->listURL(),
+                        'returnUrl' => $this->filelist->createModuleUri(),
                     ]
                 ))
                 ->setShowLabelText(true)
@@ -542,7 +560,7 @@ class FileListController implements LoggerAwareInterface
                     'file_create',
                     [
                         'target' => $this->folderObject->getCombinedIdentifier(),
-                        'returnUrl' => $this->filelist->listURL(),
+                        'returnUrl' => $this->filelist->createModuleUri(),
                     ]
                 ))
                 ->setShowLabelText(true)
@@ -669,7 +687,7 @@ class FileListController implements LoggerAwareInterface
             'file_upload',
             [
                 'target' => $this->folderObject->getCombinedIdentifier(),
-                'returnUrl' => $this->filelist->listURL(),
+                'returnUrl' => $this->filelist->createModuleUri(),
             ]
         );
     }

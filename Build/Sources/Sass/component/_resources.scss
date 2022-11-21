@@ -1,0 +1,176 @@
+//
+// Tiles
+//
+.resource-tiles {
+    --resource-tiles-grid-spacing: .5rem;
+    --resource-tiles-grid-width: 150px;
+    --resource-tile-spacing: 1rem;
+    --resource-tile-border-radius: 4px;
+    --resource-tile-nameplate-size: 12px;
+    --resource-tile-nameplate-activity-size: 10px;
+    --resource-tile-checkbox-size: 16px;
+    --resource-tile-color: #313131;
+    --resource-tile-bg: #fff;
+    --resource-tile-border-color: #{$gray-300};
+    --resource-tile-hover-color: var(--resource-tile-color);
+    --resource-tile-hover-bg: rgba(0, 0, 0, .05);
+    --resource-tile-hover-border-color: #{$gray-300};
+    --resource-tile-focus-color: var(--resource-tile-color);
+    --resource-tile-focus-bg: rgba(0, 0, 0, .05);
+    --resource-tile-focus-border-color: #{$gray-500};
+    --resource-tile-active-color: var(--resource-tile-color);
+    --resource-tile-active-bg: #{tint-color($primary, 95%)};
+    --resource-tile-active-border-color: #{tint-color($primary, 20%)};
+    display: grid;
+    grid-template-columns: repeat(auto-fill, var(--resource-tiles-grid-width));
+    gap: var(--resource-tiles-grid-spacing);
+    user-select: none;
+    margin-bottom: $spacer;
+}
+
+@media (min-width: 480px) {
+    .resource-tiles {
+        --resource-tiles-grid-width: 170px;
+    }
+}
+
+@media (min-width: 768px) {
+    .resource-tiles {
+        --resource-tiles-grid-width: 200px;
+    }
+}
+
+.resource-tile {
+    position: relative;
+    padding-top: 98%;
+    color: var(--resource-tile-color);
+    background-color: var(--resource-tile-bg);
+    border: 1px solid var(--resource-tile-border-color);
+    border-radius: var(--resource-tile-border-radius);
+
+    a {
+        color: inherit;
+    }
+}
+
+.resource-tile:hover {
+    --resource-tile-color: var(--resource-tile-hover-color);
+    --resource-tile-bg: var(--resource-tile-hover-bg);
+    --resource-tile-border-color: var(--resource-tile-hover-border-color);
+    text-decoration: none;
+}
+
+.resource-tile:focus-within {
+    --resource-tile-color: var(--resource-tile-focus-color);
+    --resource-tile-bg: var(--resource-tile-focus-bg);
+    --resource-tile-border-color: var(--resource-tile-focus-border-color);
+}
+
+.resource-tile.active {
+    --resource-tile-color: var(--resource-tile-active-color);
+    --resource-tile-bg: var(--resource-tile-active-bg);
+    --resource-tile-border-color: var(--resource-tile-active-border-color);
+}
+
+.resource-tile.active,
+.resource-tile:hover {
+    .resource-tile-checkbox {
+        display: block;
+    }
+}
+
+.resource-tile a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    outline: none;
+}
+
+.resource-tile-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.resource-tile-preview {
+    flex: 1;
+    position: relative;
+    margin: var(--resource-tile-spacing);
+    margin-bottom: 0;
+}
+
+.resource-tile-preview-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.resource-tile-icon {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.resource-tile-image {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.resource-tile-image img {
+    max-height: 100%;
+    max-width: 100%;
+    outline: 2px solid #fff;
+    outline-offset: 0;
+    border-radius: 2px;
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, .05);
+}
+
+.resource-tile-image-icon {
+    position: absolute;
+    top: calc(var(--resource-tile-spacing) * -.5);
+    left: calc(var(--resource-tile-spacing) * -.5);
+}
+
+.resource-tile-nameplate {
+    display: flex;
+    flex-direction: column;
+    padding: var(--resource-tile-spacing);
+    text-align: center;
+    font-size: var(--resource-tile-nameplate-size);
+}
+
+.resource-tile-nameplate-label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.resource-tile-nameplate-activity {
+    font-size: var(--resource-tile-nameplate-activity-size);
+    opacity: .75;
+}
+
+.resource-tile-checkbox {
+    display: none;
+    position: absolute;
+    font-size: var(--resource-tile-checkbox-size);
+    right: calc(var(--resource-tile-spacing) / 2);
+    top: calc(var(--resource-tile-spacing) / 2);
+}

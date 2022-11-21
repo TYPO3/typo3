@@ -189,12 +189,14 @@ class DragUploaderPlugin {
       this.$fileList = $('<table />')
         .attr('id', 'typo3-filelist')
         .addClass('table table-striped table-hover upload-queue')
-        .html('<tbody></tbody>').hide();
+        .html('<tbody></tbody>');
+      let $tableContainer = $('<div/>', {'class': 'table-fit'}).hide()
+        .append(this.$fileList);
 
       if (this.dropZoneInsertBefore) {
-        this.$fileList.insertAfter(this.$dropzone);
+        $tableContainer.insertAfter(this.$dropzone);
       } else {
-        this.$fileList.insertBefore(this.$dropzone);
+        $tableContainer.insertBefore(this.$dropzone);
       }
       this.fileListColumnCount = 8;
       this.manualTable = true;
@@ -206,9 +208,8 @@ class DragUploaderPlugin {
     });
 
     // Allow the user to hide the dropzone with the "Escape" key
-    // @todo Enable this also for manual (fake) tables when DragUploader can handle multiple full sized dropzones
     document.addEventListener('keydown', (event: KeyboardEvent): void => {
-      if (event.code === 'Escape' && this.$dropzone.is(':visible') && !this.manualTable) {
+      if (event.code === 'Escape' && this.$dropzone.is(':visible')) {
         this.hideDropzone(event);
       }
     });
@@ -281,9 +282,9 @@ class DragUploaderPlugin {
   public processFiles(files: FileList): void {
     this.queueLength = files.length;
 
-    if (!this.$fileList.is(':visible')) {
+    if (!this.$fileList.parent().is(':visible')) {
       // Show the filelist (table)
-      this.$fileList.show();
+      this.$fileList.parent().show();
       // Remove hidden state from table container (also makes column selection etc. visible)
       this.$fileList.closest('.t3-filelist-table-container')?.removeClass('hidden');
       // Hide the information container
@@ -331,9 +332,7 @@ class DragUploaderPlugin {
   public fileOutOfDropzone = (): void => {
     this.$dropzone.removeClass('drop-status-ok');
     // In case dropzone was not manually triggered and this is no manual (fake) table, hide it when leaving
-    // @todo This is disabled for manual tables since this will currently lead to a flicker effect.
-    //        Should be enabled when DragUploader is capable of dealing with multiple full sized dropzones.
-    if (!this.manuallyTriggered && !this.manualTable) {
+    if (!this.manuallyTriggered) {
       this.$dropzone.hide();
     }
   }
@@ -366,7 +365,8 @@ class DragUploaderPlugin {
             Notification.showMessage(flashMessage.title, flashMessage.message, flashMessage.severity);
           }
         }
-        if (this.reloadUrl && !this.manualTable) {
+
+        if (this.reloadUrl) {
           // After 5 seconds (when flash messages have disappeared), provide the user the option to reload the module
           setTimeout(() => {
             Notification.info(
@@ -558,8 +558,8 @@ class FileQueueItem {
       // Add selector cell, if this is a real table (e.g. not in FormEngine)
       this.$selector = $('<td />').addClass('col-selector').appendTo(this.$row);
     }
-    this.$iconCol = $('<td />').addClass('col-icon').appendTo(this.$row);
-    this.$fileName = $('<td />').text(file.name).appendTo(this.$row);
+    this.$iconCol = $('<td />', {'class': 'col-icon'}).appendTo(this.$row);
+    this.$fileName = $('<td />', {'class': 'col-title col-responsive'}).text(file.name).appendTo(this.$row);
     this.$progress = $('<td />').attr('colspan', this.dragUploader.fileListColumnCount - this.$row.find('td').length).appendTo(this.$row);
     this.$progressContainer = $('<div />').addClass('upload-queue-progress').appendTo(this.$progress);
     this.$progressBar = $('<div />').addClass('upload-queue-progress-bar').appendTo(this.$progressContainer);
@@ -731,7 +731,7 @@ class FileQueueItem {
           .html(
             '<a href="#" data-contextmenu-trigger="click" data-contextmenu-uid="'
             + combinedIdentifier + '" data-contextmenu-table="sys_file">'
-            + data.upload[0].icon + '&nbsp;</span></a>',
+            + data.upload[0].icon + '</span></a>',
           );
       }
 
@@ -771,7 +771,7 @@ class FileQueueItem {
       $('<td />').text(fileInfo.path).appendTo(this.$row);
     }
     // Controls column is deliberately empty
-    $('<td />').text('').appendTo(this.$row);
+    $('<td />', {'class': 'col-control'}).text('').appendTo(this.$row);
     $('<td />').text(TYPO3.lang['type.file'] + ' (' + fileInfo.extension.toUpperCase() + ')').appendTo(this.$row);
     $('<td />').text(DragUploader.fileSizeAsString(fileInfo.size)).appendTo(this.$row);
     let permissions = '';

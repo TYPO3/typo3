@@ -178,6 +178,12 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.view" resname="labels.view">
 				<source>View</source>
 			</trans-unit>
+			<trans-unit id="labels.view.list" resname="labels.view.list">
+				<source>List</source>
+			</trans-unit>
+			<trans-unit id="labels.view.tiles" resname="labels.view.tiles">
+				<source>Tiles</source>
+			</trans-unit>
 			<trans-unit id="labels.view.showThumbnails" resname="labels.view.showThumbnails">
 				<source>Show thumbnails</source>
 			</trans-unit>

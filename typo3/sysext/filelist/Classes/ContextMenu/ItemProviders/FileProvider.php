@@ -371,8 +371,19 @@ class FileProvider extends AbstractProvider
             'data-callback-module' => '@typo3/filelist/context-menu-actions',
         ];
         if ($itemName === 'delete' && $this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
-            $title = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete');
-
+            $title = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete');
+            if ($this->isFolder()) {
+                $attributes += [
+                    'data-button-close-text' => $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_folder.no'),
+                    'data-button-ok-text' => $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_folder.yes'),
+                ];
+            }
+            if ($this->isFile()) {
+                $attributes += [
+                    'data-button-close-text' => $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_file.no'),
+                    'data-button-ok-text' => $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_file.yes'),
+                ];
+            }
             $recordInfo = GeneralUtility::fixed_lgd_cs($this->record->getName(), (int)($this->backendUser->uc['titleLen'] ?? 0));
             if ($this->isFolder()) {
                 if ($this->backendUser->shallDisplayDebugInformation()) {
@@ -399,13 +410,9 @@ class FileProvider extends AbstractProvider
                     LF . $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFile')
                 );
             }
-            $closeText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:button.cancel');
-            $deleteText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:button.delete');
             $attributes += [
                 'data-title' => htmlspecialchars($title),
                 'data-message' => htmlspecialchars($confirmMessage),
-                'data-button-close-text' => htmlspecialchars($closeText),
-                'data-button-ok-text' => htmlspecialchars($deleteText),
             ];
         }
         if ($itemName === 'pasteInto' && $this->backendUser->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {

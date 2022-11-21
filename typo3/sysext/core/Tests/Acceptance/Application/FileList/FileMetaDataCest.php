@@ -39,7 +39,7 @@ class FileMetaDataCest
 
         $I->fillField('input[name="searchTerm"]', 'bus');
         $I->click('button[type="submit"]');
-        $I->waitForElementVisible('table.table-striped');
+        $I->waitForElementVisible('.t3-filelist-container');
 
         $I->click('bus_lane.jpg');
         $I->waitForElementNotVisible('#t3js-ui-block');

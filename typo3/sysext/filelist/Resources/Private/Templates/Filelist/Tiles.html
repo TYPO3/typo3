@@ -1,0 +1,88 @@
+<div class="resource-tiles">
+    <f:if condition="{pagination.backward}">
+        <f:render section="PaginationTile" arguments="{
+            iconIdentifier: 'actions-move-left',
+            link: pagination.backward,
+            id: 'pagination-backward'
+        }" />
+    </f:if>
+    <f:for each="{resources}" as="resource">
+        <f:render section="ResourceTile" arguments="{resource: resource, displayThumbs: displayThumbs}" />
+    </f:for>
+    <f:if condition="{pagination.forward}">
+        <f:render section="PaginationTile" arguments="{
+            iconIdentifier: 'actions-move-right',
+            link: pagination.forward,
+            id: 'pagination-forward'
+        }" />
+    </f:if>
+</div>
+
+<f:section name="PaginationTile">
+    <div class="resource-tile" aria-labelledby="resource-tile-label-{uid}">
+        <a
+            href="{link.uri}"
+            draggable="false"
+        >
+            <span class="resource-tile-label" id="resource-tile-label-{uid}">{link.label}</span>
+            <span class="resource-tile-preview" role="presentation">
+                <span class="resource-tile-preview-content">
+                    <span class="resource-tile-icon">
+                        <core:icon identifier="{iconIdentifier}" size="large" />
+                    </span>
+                </span>
+            </span>
+            <span class="resource-tile-nameplate">
+                <span class="resource-tile-nameplate-label">{link.label}</span>
+            </span>
+        </a>
+    </div>
+</f:section>
+
+<f:section name="ResourceTile">
+    <div
+        class="resource-tile"
+        aria-labelledby="resource-tile-label-{resource.uid}"
+        data-type="{resource.type}"
+        data-file-uid="{resource.uid}"
+        data-multi-record-selection-element="true"
+        {f:if(condition: resource.metaDataUid, then: 'data-metadata-uid="{resource.metaDataUid}"')}
+    >
+        <a
+            href="{f:if(condition: resource.moduleUri, then: resource.moduleUri, else: 'javascript:;')}"
+            draggable="false"
+            data-contextmenu-trigger="contextmenu"
+            data-contextmenu-table="{resource.contextMenuConfig.table}"
+            data-contextmenu-uid="{resource.contextMenuConfig.uid}"
+        >
+            <span class="resource-tile-label" id="resource-tile-label-{resource.uid}">{resource.name}</span>
+            <span class="resource-tile-preview" role="presentation">
+                <span class="resource-tile-preview-content">
+
+                    <f:if condition="{displayThumbs} && {resource.preview}">
+                        <f:then>
+                            <span class="resource-tile-image">
+                                <f:image image="{resource.preview}" maxHeight="115" maxWidth="166" additionalAttributes="{draggable: 'false'}" />
+                            </span>
+                        </f:then>
+                        <f:else>
+                            <span class="resource-tile-icon">
+                                {resource.iconLarge -> f:format.raw()}
+                            </span>
+                        </f:else>
+                    </f:if>
+
+                </span>
+            </span>
+            <span class="resource-tile-nameplate">
+                <span class="resource-tile-nameplate-label">{resource.name}</span>
+                <span class="resource-tile-nameplate-activity">{resource.updatedAt -> f:format.date()}</span>
+            </span>
+        </a>
+        <span class="resource-tile-checkbox" role="checkbox" aria-label="{resource.name}">
+            <div class="form-check">
+                <input class="form-check-input {resource.checkboxConfig.class}" type="checkbox" name="{resource.checkboxConfig.name}" value="{resource.checkboxConfig.value}">
+            </div>
+        </span>
+    </div>
+</f:section>

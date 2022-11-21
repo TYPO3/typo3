@@ -27,8 +27,8 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
-use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
@@ -44,7 +44,15 @@ use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\View\ViewInterface;
+use TYPO3\CMS\Filelist\Dto\PaginationLink;
+use TYPO3\CMS\Filelist\Dto\ResourceCollection;
+use TYPO3\CMS\Filelist\Dto\ResourceView;
+use TYPO3\CMS\Filelist\Dto\UserPermissions;
 use TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent;
+use TYPO3\CMS\Filelist\Pagination\ResourceCollectionPaginator;
+use TYPO3\CMS\Filelist\Type\NavigationDirection;
+use TYPO3\CMS\Filelist\Type\ViewMode;
 
 /**
  * Class for rendering of File>Filelist (basically used in FileListController)
@@ -53,90 +61,64 @@ use TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent;
  */
 class FileList
 {
+    public ViewMode $viewMode = ViewMode::TILES;
+
     /**
      * Default Max items shown
-     *
-     * @var int
      */
-    public $iLimit = 40;
+    public int $itemsPerPage = 40;
 
     /**
-     * Thumbnails on records containing files (pictures)
-     *
-     * @var bool
+     * Current Page
      */
-    public $thumbs = false;
+    public int $currentPage = 1;
 
     /**
-     * Space icon used for alignment when no button is available
-     *
-     * @var string
+     * Total file size of the current selection
      */
-    public $spaceIcon;
+    public int $totalbytes = 0;
 
     /**
-     * Max length of strings
-     *
-     * @var int
+     * Total count of folders and files
      */
-    public $fixedL = 30;
+    public int $totalItems = 0;
 
     /**
      * The field to sort by
-     *
-     * @var string
      */
-    public $sort = '';
+    public string $sort = '';
 
     /**
      * Reverse sorting flag
-     *
-     * @var bool
      */
-    public $sortRev = true;
+    public bool $sortRev = true;
 
     /**
-     * @var int
+     * Thumbnails on records containing files (pictures)
      */
-    public $firstElementNumber = 0;
+    public bool $thumbs = false;
 
     /**
-     * @var int
+     * Space icon used for alignment when no button is available
      */
-    public $totalbytes = 0;
+    public string $spaceIcon;
 
     /**
-     * This could be set to the total number of items. Used by the fwd_rew_navigation...
-     *
-     * @var int
+     * Max length of strings
      */
-    public $totalItems = 0;
+    public int $maxTitleLength = 30;
 
     /**
      * Decides the columns shown. Filled with values that refers to the keys of the data-array. $this->fieldArray[0] is the title column.
-     *
-     * @var array
      */
-    public $fieldArray = [];
-
-    /**
-     * Counter increased for each element. Used to index elements for the JavaScript-code that transfers to the clipboard
-     *
-     * @var int
-     */
-    public $counter = 0;
-
-    /**
-     * @var TranslationConfigurationProvider
-     */
-    public $translateTools;
+    public array $fieldArray = [];
 
     /**
      * Keys are fieldnames and values are td-css-classes to add in addElement();
      *
-     * @var array
+     * @var array<string, string>
      */
-    public $addElement_tdCssClass = [
+    public array $addElement_tdCssClass = [
         '_CONTROL_' => 'col-control',
         '_SELECTOR_' => 'col-selector',
         'icon' => 'col-icon',
@@ -149,49 +131,30 @@ class FileList
     protected $folderObject;
 
     /**
-     * @var array
-     */
-    public $CBnames = [];
-
-    /**
      * @var Clipboard $clipObj
      */
     public $clipObj;
 
-    /**
-     * @var ResourceFactory
-     */
-    protected $resourceFactory;
-
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
-     * @var int
-     */
-    protected $id = 0;
-
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
     protected ?FileSearchDemand $searchDemand = null;
     protected ?FileExtensionFilter $fileExtensionFilter = null;
-
     protected EventDispatcherInterface $eventDispatcher;
+    protected ServerRequestInterface $request;
+    protected IconFactory $iconFactory;
+    protected ResourceFactory $resourceFactory;
+    protected UriBuilder $uriBuilder;
+    protected TranslationConfigurationProvider $translateTools;
 
-    public function __construct(?ServerRequestInterface $request = null)
+    public function __construct(ServerRequestInterface $request)
     {
-        // Setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->fixedL)
-        $this->fixedL = max($this->fixedL, (int)($this->getBackendUser()->uc['titleLen'] ?? 1));
+        $this->request = $request;
+
+        // Setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->maxTitleLength)
+        $this->maxTitleLength = max($this->maxTitleLength, (int)($this->getBackendUser()->uc['titleLen'] ?? 1));
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
-        $this->iLimit = MathUtility::forceIntegerInRange(
-            $this->getBackendUser()->getTSConfig()['options.']['file_list.']['filesPerPage'] ?? $this->iLimit,
+        $this->itemsPerPage = MathUtility::forceIntegerInRange(
+            $this->getBackendUser()->getTSConfig()['options.']['file_list.']['filesPerPage'] ?? $this->itemsPerPage,
             1
         );
         // Create clipboard object and initialize that
@@ -219,18 +182,17 @@ class FileList
      * Initialization of class
      *
      * @param Folder $folderObject The folder to work on
-     * @param int $pointer Pointer
+     * @param int $currentPage The current page to render
      * @param string $sort Sorting column
      * @param bool $sortRev Sorting direction
      */
-    public function start(Folder $folderObject, $pointer, $sort, $sortRev)
+    public function start(Folder $folderObject, int $currentPage, $sort, $sortRev)
     {
         $this->folderObject = $folderObject;
-        $this->counter = 0;
         $this->totalbytes = 0;
         $this->sort = $sort;
         $this->sortRev = $sortRev;
-        $this->firstElementNumber = $pointer;
+        $this->currentPage = MathUtility::forceIntegerInRange($currentPage, 1, 100000);
         $this->fieldArray = [
             '_SELECTOR_', 'icon', 'name', '_CONTROL_', 'record_type', 'size', 'rw', '_REF_',
         ];
@@ -241,131 +203,45 @@ class FileList
         $this->fieldArray = array_unique(array_merge($this->fieldArray, $additionalFields));
     }
 
-    /**
-     * Returns a table with directories and files listed.
-     *
-     * @return string HTML-table
-     */
-    public function getTable(?FileSearchDemand $searchDemand = null): string
+    protected function renderTiles(ResourceCollectionPaginator $paginator, ViewInterface $view): string
     {
-        if ($searchDemand !== null) {
-            // Store given search demand
-            $this->searchDemand = $searchDemand;
-            // Search currently only works for files
-            $folders = [];
-            // Find files by the given search demand
-            $files = iterator_to_array($this->folderObject->searchFiles($this->searchDemand));
-            // @todo Currently files, which got deleted in the file system, are still found.
-            //       Therefore we have to ask their parent folder if it still contains the file.
-            $files = array_filter($files, static function (FileInterface $file): bool {
-                try {
-                    if ($file->getParentFolder()->hasFile($file->getName())) {
-                        return true;
-                    }
-                } catch (ResourceDoesNotExistException $e) {
-                    // Nothing to do, file does not longer exist in folder
-                }
-                return false;
-            });
-
-            // @todo We have to manually slice the search result, since it may
-            //       contain invalid files, which were manually filtered out above.
-            //       This should be fixed, so we can use the $firstResult and $maxResults
-            //       properties of the search demand directly.
-            $this->totalItems = count($files);
-            if (trim($this->sort) !== '') {
-                // Sort the files before applying the pagination
-                $files = $this->sortFiles($files);
-            }
-            $filesNum = $this->firstElementNumber + $this->iLimit > $this->totalItems
-                ? $this->totalItems - $this->firstElementNumber
-                : $this->iLimit;
-            $files = array_slice($files, $this->firstElementNumber, $filesNum);
-
-            // Add special "Path" field for the search result
-            array_splice($this->fieldArray, 3, 0, '_PATH_');
-        } else {
-            // @todo use folder methods directly when they support filters
-            $storage = $this->folderObject->getStorage();
-            $storage->resetFileAndFolderNameFiltersToDefault();
-
-            // Only render the contents of a browsable storage
-            if (!$this->folderObject->getStorage()->isBrowsable()) {
-                return '';
-            }
-            try {
-                $foldersCount = $storage->countFoldersInFolder($this->folderObject);
-                $filesCount = $storage->countFilesInFolder($this->folderObject);
-            } catch (InsufficientFolderAccessPermissionsException $e) {
-                $foldersCount = 0;
-                $filesCount = 0;
-            }
-
-            if ($foldersCount <= $this->firstElementNumber) {
-                $foldersFrom = false;
-                $foldersNum = false;
-            } else {
-                $foldersFrom = $this->firstElementNumber;
-                if ($this->firstElementNumber + $this->iLimit > $foldersCount) {
-                    $foldersNum = $foldersCount - $this->firstElementNumber;
-                } else {
-                    $foldersNum = $this->iLimit;
-                }
-            }
-            if ($foldersCount >= $this->firstElementNumber + $this->iLimit) {
-                $filesFrom = false;
-                $filesNum  = false;
-            } elseif ($this->firstElementNumber <= $foldersCount) {
-                $filesFrom = 0;
-                $filesNum  = $this->iLimit - $foldersNum;
-            } else {
-                $filesFrom = $this->firstElementNumber - $foldersCount;
-                if ($filesFrom + $this->iLimit > $filesCount) {
-                    $filesNum = $filesCount - $filesFrom;
-                } else {
-                    $filesNum = $this->iLimit;
-                }
-            }
-
-            // Initialize files and folders
-            $files = [];
-            $folders = [];
-
-            if (trim($this->sort) !== '') {
-                // Note: In case sorting is requested, this can not be done by the driver because
-                //       the sorting field might be a metadata field, which is not known to the
-                //       driver (see #97443). This therefore requires to fetch all files and folders
-                //       first. They are then sorted and sliced to respect the current pagination.
-                if ($foldersNum) {
-                    // Only perform find/sort/slice in case at least one folder is available
-                    $folders = $this->sortFolders($storage->getFoldersInFolder($this->folderObject));
-                    $folders = array_slice($folders, $foldersFrom, $foldersNum);
-                }
-                if ($filesNum) {
-                    // Only perform find/sort/slice in case at least one file is available
-                    $files = $this->sortFiles($this->folderObject->getFiles());
-                    $files = array_slice($files, $filesFrom, $filesNum);
-                }
-            } else {
-                $folders = $storage->getFoldersInFolder($this->folderObject, $foldersFrom, $foldersNum);
-                $files = $this->folderObject->getFiles($filesFrom, $filesNum, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, false);
-            }
-
-            $this->totalItems = $foldersCount + $filesCount;
+        // Prepare Resources for View
+        $resourceViews = [];
+        $userPermissions = $this->getUserPermissions();
+        foreach ($paginator->getPaginatedItems() as $resource) {
+            $resourceView = new ResourceView(
+                $resource,
+                $userPermissions,
+                $this->iconFactory->getIconForResource($resource, Icon::SIZE_SMALL)
+            );
+            $resourceView->moduleUri = $this->createModuleUriForResource($resource);
+            $resourceView->editDataUri = $this->createEditDataUriForResource($resource);
+            $resourceView->editContentUri = $this->createEditContentUriForResource($resource);
+            $resourceView->replaceUri = $this->createReplaceUriForResource($resource);
+            $resourceView->renameUri = $this->createRenameUriForResource($resource);
+            $resourceViews[] = $resourceView;
         }
 
-        $iOut = '';
-        // Directories are added
-        $iOut .= $this->fwd_rwd_nav($this->firstElementNumber);
+        $view->assign('displayThumbs', $this->thumbs);
+        $view->assign('pagination', [
+            'backward' => $this->getPaginationLinkForDirection($paginator, NavigationDirection::BACKWARD),
+            'forward' => $this->getPaginationLinkForDirection($paginator, NavigationDirection::FORWARD),
+        ]);
+        $view->assign('resources', $resourceViews);
 
-        $iOut .= $this->formatDirList($folders);
-        // Files are added
-        $iOut .= $this->formatFileList($files);
+        return $view->render('Filelist/Tiles');
+    }
 
-        $amountOfItemsShownOnCurrentPage = $this->firstElementNumber + $this->iLimit < $this->totalItems
-            ? $this->firstElementNumber + $this->iLimit
-            : -1;
-        $iOut .= $this->fwd_rwd_nav($amountOfItemsShownOnCurrentPage);
+    protected function renderList(ResourceCollectionPaginator $paginator, ViewInterface $view): string
+    {
+        $resources = $paginator->getPaginatedItems();
+        $folders = $resources->getFolders();
+        $files = $resources->getFiles();
+
+        $output = $this->renderListForwardBackwardNavigation($paginator, NavigationDirection::BACKWARD);
+        $output .= $this->formatDirList($folders);
+        $output .= $this->formatFileList($files);
+        $output .= $this->renderListForwardBackwardNavigation($paginator, NavigationDirection::FORWARD);
 
         // Header line is drawn
         $theData = [];
@@ -385,13 +261,77 @@ class FileList
             }
         }
 
-        return '
-            <div class="table-fit mb-4">
-                <table class="table table-striped table-hover" id="typo3-filelist">
-                    <thead>' . $this->addElement($theData, [], true) . '</thead>
-                    <tbody data-multi-record-selection-row-selection="true">' . $iOut . '</tbody>
-                </table>
-            </div>';
+        $view->assign('tableHeaderHtml', $this->addElement($theData, [], true));
+        $view->assign('tableBodyHtml', $output);
+
+        return $view->render('Filelist/List');
+    }
+
+    protected function renderListForwardBackwardNavigation(
+        ResourceCollectionPaginator $paginator,
+        NavigationDirection $direction
+    ): string {
+        if (!$link = $this->getPaginationLinkForDirection($paginator, $direction)) {
+            return '';
+        }
+
+        $iconIdentifier = null;
+        switch ($direction) {
+            case NavigationDirection::BACKWARD:
+                $iconIdentifier = 'actions-move-up';
+                break;
+            case NavigationDirection::FORWARD:
+                $iconIdentifier = 'actions-move-down';
+                break;
+        }
+
+        $data = [];
+        $data['_SELECTOR_'] = '<a href="' . htmlspecialchars($link->uri) . '">'
+            . ($iconIdentifier !== null ? $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() : '')
+            . '<i>[' . $link->label . ']</i>'
+            . '</a>';
+
+        return $this->addElement($data);
+    }
+
+    public function render(?FileSearchDemand $searchDemand, ViewInterface $view): string
+    {
+        if ($searchDemand !== null) {
+            $this->searchDemand = $searchDemand;
+            $folders = [];
+            $files = iterator_to_array($this->folderObject->searchFiles($this->searchDemand));
+            // Add special "Path" field for the search result
+            array_splice($this->fieldArray, 3, 0, '_PATH_');
+        } else {
+            $storage = $this->folderObject->getStorage();
+            $storage->resetFileAndFolderNameFiltersToDefault();
+            if (!$this->folderObject->getStorage()->isBrowsable()) {
+                return '';
+            }
+            $folders = $storage->getFoldersInFolder($this->folderObject);
+            $files = $this->folderObject->getFiles();
+        }
+
+        // Remove processing folders
+        $folders = array_filter($folders, static function (Folder $folder) {
+            return $folder->getRole() !== FolderInterface::ROLE_PROCESSING;
+        });
+
+        $resourceCollection = new ResourceCollection($folders + $files);
+        $this->totalItems = $resourceCollection->getTotalCount();
+        $this->totalbytes = $resourceCollection->getTotalBytes();
+
+        // Sort the files before sending it to the renderer
+        if (trim($this->sort) !== '') {
+            $resourceCollection->setResources($this->sortResources($resourceCollection->getResources(), $this->sort));
+        }
+
+        $pagination = new ResourceCollectionPaginator($resourceCollection, $this->currentPage, $this->itemsPerPage);
+        if ($this->viewMode === ViewMode::TILES) {
+            return $this->renderTiles($pagination, $view);
+        }
+
+        return $this->renderList($pagination, $view);
     }
 
     /**
@@ -434,7 +374,7 @@ class FileList
             $cols[] = '<' . $colType . ' class="' . $cssClass . '"' . $colspan . '>' . $data[$lastField] . '</' . $colType . '>';
         }
 
-        // Add the the table row
+        // Add the table row
         return '
             <tr ' . GeneralUtility::implodeAttributes($attributes, true) . '>
                 ' . implode(PHP_EOL, $cols) . '
@@ -442,69 +382,28 @@ class FileList
     }
 
     /**
-     * Creates a forward/reverse button based on the status of ->eCounter, ->firstElementNumber, ->iLimit
-     *
-     * @return string the table-row code for the element
-     */
-    public function fwd_rwd_nav(int $currentItemCount): string
-    {
-        $code = '';
-        if ($currentItemCount >= $this->firstElementNumber && $currentItemCount < $this->firstElementNumber + $this->iLimit) {
-            if ($this->firstElementNumber && $currentItemCount == $this->firstElementNumber) {
-                // 	Reverse
-                $theData = [];
-                $href = $this->listURL(['pointer' => ($currentItemCount - $this->iLimit)]);
-                $theData['_SELECTOR_'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
-                    'actions-move-up',
-                    Icon::SIZE_SMALL
-                )->render() . ' <i>[' . (max(0, $currentItemCount - $this->iLimit) + 1) . ' - ' . $currentItemCount . ']</i></a>';
-                $code = $this->addElement($theData);
-            }
-            return $code;
-        }
-        if ($currentItemCount === $this->firstElementNumber + $this->iLimit) {
-            // 	Forward
-            $theData = [];
-            $href = $this->listURL(['pointer' => $currentItemCount]);
-            $theData['_SELECTOR_'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
-                'actions-move-down',
-                Icon::SIZE_SMALL
-            )->render() . ' <i>[' . ($currentItemCount + 1) . ' - ' . $this->totalItems . ']</i></a>';
-            $code = $this->addElement($theData);
-        }
-        return $code;
-    }
-
-    /**
      * Gets the number of files and total size of a folder
-     *
-     * @return string
      */
-    public function getFolderInfo()
+    public function getFolderInfo(): string
     {
-        if ($this->counter == 1) {
-            $fileLabel = htmlspecialchars($this->getLanguageService()->getLL('file'));
+        if ($this->totalItems == 1) {
+            $fileLabel = $this->getLanguageService()->getLL('file');
         } else {
-            $fileLabel = htmlspecialchars($this->getLanguageService()->getLL('files'));
+            $fileLabel = $this->getLanguageService()->getLL('files');
         }
-        return $this->counter . ' ' . $fileLabel . ', ' . GeneralUtility::formatSize($this->totalbytes, htmlspecialchars($this->getLanguageService()->getLL('byteSizeUnits')));
+        return $this->totalItems . ' ' . htmlspecialchars($fileLabel) . ', ' . GeneralUtility::formatSize($this->totalbytes, htmlspecialchars($this->getLanguageService()->getLL('byteSizeUnits')));
     }
 
     /**
      * This returns tablerows for the directories in the array $items['sorting'].
      *
-     * @param Folder[] $folders Folders of \TYPO3\CMS\Core\Resource\Folder
-     * @return string HTML table rows.
+     * @param Folder[] $folders
      */
-    public function formatDirList(array $folders)
+    protected function formatDirList(array $folders): string
     {
         $out = '';
         foreach (ListUtility::resolveSpecialFolderNames($folders) as $folderName => $folderObject) {
             $role = $folderObject->getRole();
-            if ($role === FolderInterface::ROLE_PROCESSING) {
-                // don't show processing-folder
-                continue;
-            }
             if ($role !== FolderInterface::ROLE_DEFAULT) {
                 $displayName = '<strong>' . htmlspecialchars($folderName) . '</strong>';
             } else {
@@ -513,9 +412,6 @@ class FileList
 
             $isLocked = $folderObject instanceof InaccessibleFolder;
             $isWritable = $folderObject->checkActionPermission('write');
-
-            // Initialization
-            $this->counter++;
 
             // The icon - will be linked later on, if not locked
             $theIcon = $this->getFileOrFolderIcon($folderName, $folderObject);
@@ -572,7 +468,7 @@ class FileList
                             $theData[$field] = $this->makePath($folderObject);
                             break;
                         default:
-                            $theData[$field] = GeneralUtility::fixed_lgd_cs($theData[$field] ?? '', $this->fixedL);
+                            $theData[$field] = GeneralUtility::fixed_lgd_cs($theData[$field] ?? '', $this->maxTitleLength);
                     }
                 }
             }
@@ -586,13 +482,12 @@ class FileList
      *
      * @param string $title String to be wrapped in links
      * @param Folder $folderObject Folder to work on
-     * @return string HTML
      */
-    public function linkWrapDir($title, Folder $folderObject)
+    protected function linkWrapDir(string $title, Folder $folderObject): string
     {
-        $href = $this->listURL(['id' => $folderObject->getCombinedIdentifier(), 'searchTerm' => '', 'pointer' => 0]);
+        $href = $this->createModuleUriForResource($folderObject);
         // Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
-        if ((string)$title === strip_tags($title)) {
+        if ($title === strip_tags($title)) {
             return '<a href="' . htmlspecialchars($href) . '" title="' . htmlspecialchars($title) . '">' . $title . '</a>';
         }
         return '<a href="' . htmlspecialchars($href) . '">' . $title . '</a>';
@@ -603,9 +498,8 @@ class FileList
      *
      * @param string $code String to be wrapped in links
      * @param File $fileObject File to be linked
-     * @return string HTML
      */
-    public function linkWrapFile($code, File $fileObject)
+    protected function linkWrapFile(string $code, File $fileObject): string
     {
         try {
             if ($this->isEditMetadataAllowed($fileObject)
@@ -617,7 +511,7 @@ class FileList
                             $metaDataUid => 'edit',
                         ],
                     ],
-                    'returnUrl' => $this->listURL(),
+                    'returnUrl' => $this->createModuleUri(),
                 ];
                 $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
@@ -630,33 +524,14 @@ class FileList
     }
 
     /**
-     * Returns list URL; This is the URL of the current script with id and imagemode parameters, that's all.
-     *
-     * @return string URL
-     */
-    public function listURL(array $params = []): string
-    {
-        $params = array_replace_recursive([
-            'pointer' => $this->firstElementNumber,
-            'id' => $this->folderObject->getCombinedIdentifier(),
-            'searchTerm' => $this->searchDemand ? $this->searchDemand->getSearchTerm() : '',
-        ], $params);
-        return (string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', $params);
-    }
-
-    /**
      * This returns tablerows for the files in the array $items['sorting'].
      *
      * @param File[] $files File items
-     * @return string HTML table rows.
      */
-    public function formatFileList(array $files)
+    protected function formatFileList(array $files): string
     {
         $out = '';
         foreach ($files as $fileObject) {
-            // Initialization
-            $this->counter++;
-            $this->totalbytes += $fileObject->getSize();
             $ext = $fileObject->getExtension();
             $fileUid = $fileObject->getUid();
             $fileName = trim($fileObject->getName());
@@ -733,7 +608,6 @@ class FileList
                     default:
                         $theData[$field] = '';
                         if ($fileObject->hasProperty($field)) {
-                            $concreteTableName = $this->getConcreteTableName($field);
                             if ($field === 'storage') {
                                 // Fetch storage name of the current file
                                 $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid((int)$fileObject->getProperty($field));
@@ -746,7 +620,7 @@ class FileList
                                         $this->getConcreteTableName($field),
                                         $field,
                                         $fileObject->getProperty($field),
-                                        $this->fixedL,
+                                        $this->maxTitleLength,
                                         $fileObject->getMetaData()->offsetGet('uid')
                                     )
                                 );
@@ -800,7 +674,6 @@ class FileList
      *
      * @param string $fieldName The field to sort
      * @param string $label The label to be wrapped - will be determined if not given
-     * @return string The constructed link - HTML
      */
     public function linkWrapSort(string $fieldName, string $label = ''): string
     {
@@ -820,7 +693,7 @@ class FileList
             }
         }
 
-        $params = ['sort' => $fieldName, 'pointer' => 0];
+        $params = ['sort' => $fieldName, 'currentPage' => 0];
 
         if ($this->sort === $fieldName) {
             // Check reverse sorting
@@ -830,7 +703,7 @@ class FileList
             $params['reverse'] = 0;
             $sortArrow = '';
         }
-        $href = $this->listURL($params);
+        $href = $this->createModuleUri($params);
 
         return '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($label) . ' ' . $sortArrow . '</a>';
     }
@@ -839,7 +712,6 @@ class FileList
      * Creates the clipboard actions
      *
      * @param File|Folder $fileOrFolderObject Array with information about the file/directory for which to make the clipboard actions for the listing.
-     * @return array clipboard actions
      */
     public function makeClip($fileOrFolderObject): array
     {
@@ -924,7 +796,6 @@ class FileList
         $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
         $md5 = md5($fullIdentifier);
         $identifier = '_FILE|' . $md5;
-        $this->CBnames[] = $identifier;
 
         return '
             <span class="form-check form-toggle">
@@ -936,9 +807,8 @@ class FileList
      * Creates the edit control section
      *
      * @param File|Folder $fileOrFolderObject Array with information about the file/directory for which to make the edit control section for the listing.
-     * @return string HTML-table
      */
-    public function makeEdit($fileOrFolderObject)
+    public function makeEdit($fileOrFolderObject): string
     {
         $cells = [];
         $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
@@ -946,7 +816,7 @@ class FileList
         // Edit file content (if editable)
         if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('write') && $fileOrFolderObject->isTextFile()) {
             $attributes = [
-                'href' => (string)$this->uriBuilder->buildUriFromRoute('file_edit', ['target' => $fullIdentifier, 'returnUrl' => $this->listURL()]),
+                'href' => $this->createEditContentUriForResource($fileOrFolderObject),
                 'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent'),
             ];
             $cells['edit'] = '<a class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>'
@@ -959,17 +829,9 @@ class FileList
         // Edit metadata of file
         if ($fileOrFolderObject instanceof File
             && $this->isEditMetadataAllowed($fileOrFolderObject)
-            && ($metaDataUid = $fileOrFolderObject->getMetaData()->offsetGet('uid'))
+            && $fileOrFolderObject->getMetaData()->offsetGet('uid')
         ) {
-            $urlParameters = [
-                'edit' => [
-                    'sys_file_metadata' => [
-                        $metaDataUid => 'edit',
-                    ],
-                ],
-                'returnUrl' => $this->listURL(),
-            ];
-            $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+            $url = $this->createEditDataUriForResource($fileOrFolderObject);
             $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
             $cells['metadata'] = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
         }
@@ -994,7 +856,7 @@ class FileList
         // replace file
         if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('replace')) {
             $attributes = [
-                'href' => (string)$this->uriBuilder->buildUriFromRoute('file_replace', ['target' => $fullIdentifier, 'uid' => $fileOrFolderObject->getUid(), 'returnUrl' => $this->listURL()]),
+                'href' => $this->createReplaceUriForResource($fileOrFolderObject),
                 'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.replace'),
             ];
             $cells['replace'] = '<a class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $this->iconFactory->getIcon('actions-edit-replace', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1003,7 +865,7 @@ class FileList
         // rename the file
         if ($fileOrFolderObject->checkActionPermission('rename')) {
             $attributes = [
-                'href' => (string)$this->uriBuilder->buildUriFromRoute('file_rename', ['target' => $fullIdentifier, 'returnUrl' => $this->listURL()]),
+                'href' => $this->createRenameUriForResource($fileOrFolderObject),
                 'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename'),
             ];
             $cells['rename'] = '<a class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $this->iconFactory->getIcon('actions-edit-rename', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1030,7 +892,7 @@ class FileList
         if ($fileOrFolderObject->getStorage()->checkUserActionPermission('add', 'File') && $fileOrFolderObject->checkActionPermission('write')) {
             if ($fileOrFolderObject instanceof Folder) {
                 $attributes = [
-                    'href' => (string)$this->uriBuilder->buildUriFromRoute('file_upload', ['target' => $fullIdentifier, 'returnUrl' => $this->listURL()]),
+                    'href' => (string)$this->uriBuilder->buildUriFromRoute('file_upload', ['target' => $fullIdentifier, 'returnUrl' => $this->createModuleUri()]),
                     'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload'),
                 ];
                 $cells['upload'] = '<a class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $this->iconFactory->getIcon('actions-edit-upload', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1040,9 +902,9 @@ class FileList
         if ($fileOrFolderObject->checkActionPermission('read')) {
             $attributes = [
                 'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info'),
+                'data-filelist-show-item-type' => $fileOrFolderObject instanceof File ? '_FILE' : '_FOLDER',
+                'data-filelist-show-item-identifier' => $fullIdentifier,
             ];
-            $attributes['data-filelist-show-item-type'] = $fileOrFolderObject instanceof File ? '_FILE' : '_FOLDER';
-            $attributes['data-filelist-show-item-identifier'] = $fullIdentifier;
             $cells['info'] = '<a href="#" class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>'
                 . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
@@ -1259,7 +1121,7 @@ class FileList
                                 $existingTranslations[$languageId]['uid'] => 'edit',
                             ],
                         ],
-                        'returnUrl' => $this->listURL(),
+                        'returnUrl' => $this->createModuleUri(),
                     ]
                 );
             } else {
@@ -1273,7 +1135,7 @@ class FileList
                         'record_edit',
                         [
                             'justLocalized' => 'sys_file_metadata:' . $metaDataRecordId . ':' . $languageId,
-                            'returnUrl' => $this->listURL(),
+                            'returnUrl' => $this->createModuleUri(),
                         ]
                     )
                 );
@@ -1309,7 +1171,7 @@ class FileList
     {
         return $file->isIndexed()
             && $file->checkActionPermission('editMeta')
-            && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata');
+            && $this->getUserPermissions()->editMetaData;
     }
 
     /**
@@ -1411,97 +1273,218 @@ class FileList
         return (bool)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['fileDownload.']['enabled'] ?? true);
     }
 
-    /**
-     * @param File[] $files
-     * @return File[]
-     */
-    protected function sortFiles(array $files): array
+    protected function getPaginationLinkForDirection(ResourceCollectionPaginator $paginator, NavigationDirection $direction): ?PaginationLink
     {
-        $sortedFiles = [];
-        foreach ($files as $file) {
-            switch ($this->sort) {
-                case 'fileext':
-                    $sortingKey = $file->getExtension();
-                    break;
-                case 'size':
-                    $sortingKey = '0' . $file->getSize() . 's';
-                    break;
-                case 'rw':
-                    $sortingKey = ($file->checkActionPermission('read') ? 'R' : '')
-                        . ($file->checkActionPermission('write') ? 'W' : '');
-                    break;
-                case '_REF_':
-                    $sortingKey = '0' . $this->getFileReferenceCount($file) . 'ref';
-                    break;
-                case 'tstamp':
-                    $sortingKey = $file->getModificationTime() . 't';
-                    break;
-                case 'crdate':
-                    $sortingKey = $file->getCreationTime() . 'c';
-                    break;
-                default:
-                    $sortingKey = $file->hasProperty($this->sort) ? (string)$file->getProperty($this->sort) : '';
-            }
-            $i = 0;
-            while (isset($sortedFiles[$sortingKey . $i])) {
-                $i++;
-            }
-            $sortedFiles[$sortingKey . $i] = $file;
-        }
-        uksort($sortedFiles, 'strnatcasecmp');
-
-        if ($this->sortRev) {
-            $sortedFiles = array_reverse($sortedFiles);
+        $currentPagination = new SimplePagination($paginator);
+        $targetPage = null;
+        switch ($direction) {
+            case NavigationDirection::BACKWARD:
+                $targetPage = $currentPagination->getPreviousPageNumber();
+                break;
+            case NavigationDirection::FORWARD:
+                $targetPage = $currentPagination->getNextPageNumber();
+                break;
         }
 
-        return $sortedFiles;
+        return $this->getPaginationLinkForPage($paginator, $targetPage);
+    }
+
+    protected function getPaginationLinkForPage(ResourceCollectionPaginator $paginator, ?int $targetPage = null): ?PaginationLink
+    {
+        if ($targetPage === null) {
+            return null;
+        }
+        if ($targetPage > $paginator->getNumberOfPages()) {
+            return null;
+        }
+        if ($targetPage < 1) {
+            return null;
+        }
+
+        $targetPaginator = $paginator->withCurrentPageNumber($targetPage);
+        $targetPagination = new SimplePagination($targetPaginator);
+
+        return new PaginationLink(
+            $targetPagination->getStartRecordNumber() . '-' . $targetPagination->getEndRecordNumber(),
+            $this->createModuleUri(['currentPage' => $targetPage])
+        );
     }
 
     /**
-     * @param Folder[] $folders
-     * @return Folder[]
+     * Returns list URL; This is the URL of the current script with id and imagemode parameters, that's all.
      */
-    protected function sortFolders(array $folders): array
+    public function createModuleUri(array $params = []): string
     {
-        if (!in_array($this->sort, ['size', 'rw', 'name'], true)) {
-            // Early return in case the sorting field is not supported on folders.
-            return $folders;
+        $params = array_replace_recursive([
+            'currentPage' => $this->currentPage,
+            'id' => $this->folderObject->getCombinedIdentifier(),
+            'searchTerm' => $this->searchDemand ? $this->searchDemand->getSearchTerm() : '',
+        ], $params);
+
+        $params = array_filter($params, static function ($value) {
+            return $value !== null && trim($value) !== '';
+        });
+
+        return (string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', $params);
+    }
+
+    protected function createEditDataUriForResource(ResourceInterface $resource): ?string
+    {
+        if ($resource instanceof File
+            && $this->isEditMetadataAllowed($resource)
+            && ($metaDataUid = $resource->getMetaData()->offsetGet('uid'))
+        ) {
+            $parameter = [
+                'edit' => ['sys_file_metadata' => [$metaDataUid => 'edit']],
+                'returnUrl' => $this->createModuleUri(),
+            ];
+            return (string)$this->uriBuilder->buildUriFromRoute('record_edit', $parameter);
         }
 
-        $sortedFolders = [];
-        foreach ($folders as $folder) {
-            switch ($this->sort) {
-                case 'size':
-                    try {
-                        $fileCount = $folder->getFileCount();
-                    } catch (InsufficientFolderAccessPermissionsException $e) {
-                        $fileCount = 0;
-                    }
-                    $sortingKey = '0' . $fileCount . 's';
-                    break;
-                case 'rw':
-                    $sortingKey = ($folder->checkActionPermission('read') ? 'R' : '')
-                        . ($folder->checkActionPermission('write') ? 'W' : '');
-                    break;
-                case 'name':
-                    $sortingKey = $folder->getName();
-                    break;
-                default:
-                    $sortingKey = '';
-            }
-            $i = 0;
-            while (isset($sortedFolders[$sortingKey . $i])) {
-                $i++;
-            }
-            $sortedFolders[$sortingKey . $i] = $folder;
+        return null;
+    }
+
+    protected function createEditContentUriForResource(ResourceInterface $resource): ?string
+    {
+        if ($resource instanceof File
+            && $resource->checkActionPermission('write')
+            && $resource->isTextFile()
+        ) {
+            $parameter = [
+                'target' => $resource->getCombinedIdentifier(),
+                'returnUrl' => $this->createModuleUri(),
+            ];
+            return (string)$this->uriBuilder->buildUriFromRoute('file_edit', $parameter);
         }
-        uksort($sortedFolders, 'strnatcasecmp');
+
+        return null;
+    }
+
+    protected function createModuleUriForResource(ResourceInterface $resource): ?string
+    {
+        if ($resource instanceof Folder) {
+            $parameter = [
+                'id' => $resource->getCombinedIdentifier(),
+                'searchTerm' => '',
+                'currentPage' => 1,
+            ];
+            return (string)$this->createModuleUri($parameter);
+        }
+
+        if ($resource instanceof File) {
+            return $this->createEditDataUriForResource($resource);
+        }
+
+        return null;
+    }
+
+    protected function createReplaceUriForResource(ResourceInterface $resource): ?string
+    {
+        if ($resource instanceof File
+            && $resource->checkActionPermission('replace')
+        ) {
+            $parameter = [
+                'target' => $resource->getCombinedIdentifier(),
+                'uid' => $resource->getUid(),
+                'returnUrl' => $this->createModuleUri(),
+            ];
+            return (string)$this->uriBuilder->buildUriFromRoute('file_replace', $parameter);
+        }
+        return null;
+    }
+
+    protected function createRenameUriForResource(ResourceInterface $resource): ?string
+    {
+        if (($resource instanceof File || $resource instanceof Folder)
+            && $resource->checkActionPermission('rename')
+        ) {
+            $parameter = [
+                'target' => $resource->getCombinedIdentifier(),
+                'returnUrl' => $this->createModuleUri(),
+            ];
+            return (string)$this->uriBuilder->buildUriFromRoute('file_rename', $parameter);
+        }
+
+        return null;
+    }
+
+    /**
+     * @return ResourceInterface[]
+     */
+    protected function sortResources(array $resources, string $sortField): array
+    {
+        usort($resources, function (ResourceInterface $resource1, ResourceInterface $resource2) use ($sortField, $resources) {
+            // Folders are always priotized above files
+            if ($resource1 instanceof File && $resource2 instanceof Folder) {
+                return 1;
+            }
+            if ($resource1 instanceof Folder && $resource2 instanceof File) {
+                return -1;
+            }
+            return strnatcasecmp(
+                $this->getSortingValue($resource1, $sortField) . array_search($resource1, $resources),
+                $this->getSortingValue($resource2, $sortField) . array_search($resource2, $resources)
+            );
+        });
 
         if ($this->sortRev) {
-            $sortedFolders = array_reverse($sortedFolders);
+            $resources = array_reverse($resources);
         }
 
-        return $sortedFolders;
+        return $resources;
+    }
+
+    protected function getSortingValue(ResourceInterface $resource, string $sortField): string
+    {
+        if ($resource instanceof File) {
+            return $this->getSortingValueForFile($resource, $sortField);
+        }
+        if ($resource instanceof Folder) {
+            return $this->getSortingValueForFolder($resource, $sortField);
+        }
+
+        return '';
+    }
+
+    protected function getSortingValueForFile(File $resource, string $sortField): string
+    {
+        switch ($sortField) {
+            case 'fileext':
+                return $resource->getExtension();
+            case 'size':
+                return $resource->getSize() . 's';
+            case 'rw':
+                return ($resource->checkActionPermission('read') ? 'R' : '')
+                    . ($resource->checkActionPermission('write') ? 'W' : '');
+            case '_REF_':
+                return $this->getFileReferenceCount($resource) . 'ref';
+            case 'tstamp':
+                return $resource->getModificationTime() . 't';
+            case 'crdate':
+                return $resource->getCreationTime() . 'c';
+            default:
+                return $resource->hasProperty($sortField) ? (string)$resource->getProperty($sortField) : '';
+        }
+    }
+
+    protected function getSortingValueForFolder(Folder $resource, string $sortField): string
+    {
+        switch ($sortField) {
+            case 'size':
+                try {
+                    $fileCount = $resource->getFileCount();
+                } catch (InsufficientFolderAccessPermissionsException $e) {
+                    $fileCount = 0;
+                }
+                return '0' . $fileCount . 's';
+            case 'rw':
+                return ($resource->checkActionPermission('read') ? 'R' : '')
+                    . ($resource->checkActionPermission('write') ? 'W' : '');
+            case 'name':
+                return $resource->getName();
+            default:
+                return '';
+        }
     }
 
     /**
@@ -1531,6 +1514,11 @@ class FileList
             )
             ->executeQuery()
             ->fetchOne();
+    }
+
+    protected function getUserPermissions(): UserPermissions
+    {
+        return new UserPermissions($this->getBackendUser()->check('tables_modify', 'sys_file_metadata'));
     }
 
     protected function getLanguageService(): LanguageService
