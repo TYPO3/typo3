@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Type\File;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Log\Logger;
@@ -28,8 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ImageInfoTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -57,13 +54,13 @@ class ImageInfoTest extends UnitTestCase
             return true;
         };
 
-        $loggerProphecy = $this->prophesize(Logger::class);
-        $loggerProphecy->error(Argument::type('string'), Argument::that($exceptionIsLogged))->shouldBeCalledOnce();
-        $loggerProphecy->warning('I could not retrieve the image size for file {file}', ['file' => $testFile])
-            ->shouldBeCalledOnce();
+        $loggerMock = $this->createMock(Logger::class);
+        $loggerMock->expects(self::once())->method('error')->with(self::isType('string'), self::callback($exceptionIsLogged));
+        $loggerMock->expects(self::once())->method('warning')
+            ->with('I could not retrieve the image size for file {file}', ['file' => $testFile]);
 
         $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $testFile);
-        $imageInfo->setLogger($loggerProphecy->reveal());
+        $imageInfo->setLogger($loggerMock);
         self::assertEquals(0, $imageInfo->getHeight());
         self::assertEquals(0, $imageInfo->getWidth());
     }
@@ -119,14 +116,12 @@ class ImageInfoTest extends UnitTestCase
             'vimeo' => 'video/vimeo',
         ];
 
-        $graphicalFunctionsProphecy = $this->prophesize(GraphicalFunctions::class);
-        $graphicalFunctionsProphecy->imageMagickIdentify($testFile)->willReturn(null);
-        GeneralUtility::addInstance(GraphicalFunctions::class, $graphicalFunctionsProphecy->reveal());
-
-        $loggerProphecy = $this->prophesize(Logger::class);
+        $graphicalFunctionsMock = $this->createMock(GraphicalFunctions::class);
+        $graphicalFunctionsMock->method('imageMagickIdentify')->with($testFile)->willReturn(null);
+        GeneralUtility::addInstance(GraphicalFunctions::class, $graphicalFunctionsMock);
 
         $imageInfo = new ImageInfo($testFile);
-        $imageInfo->setLogger($loggerProphecy->reveal());
+        $imageInfo->setLogger(new NullLogger());
 
         self::assertSame($width, $imageInfo->getWidth());
         self::assertSame($height, $imageInfo->getHeight());
@@ -149,9 +144,8 @@ class ImageInfoTest extends UnitTestCase
      */
     public function canDetectImageSizes(string $file, int $width, int $height): void
     {
-        $logger = $this->prophesize(Logger::class)->reveal();
         $imageInfo = new ImageInfo(__DIR__ . '/../Fixture/' . $file);
-        $imageInfo->setLogger($logger);
+        $imageInfo->setLogger(new NullLogger());
 
         self::assertSame($width, $imageInfo->getWidth());
         self::assertSame($height, $imageInfo->getHeight());
