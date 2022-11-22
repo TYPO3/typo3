@@ -27,7 +27,7 @@
     <div class="media-body">
         <strong>{item.wizardInformation.title -> f:format.htmlspecialchars()}</strong>
         <br/>
-        {item.wizardInformation.description -> f:format.nl2br() -> f:format.htmlspecialchars()}
+        {item.wizardInformation.description -> f:format.htmlspecialchars() -> f:format.nl2br()}
     </div>
 </f:section>
 </html>
