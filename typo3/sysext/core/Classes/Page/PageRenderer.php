@@ -150,6 +150,7 @@ class PageRenderer implements SingletonInterface
 
     /**
      * @var string
+     * @deprecated will be removed in TYPO3 v13.0.
      */
     protected $baseUrl;
 
@@ -206,6 +207,7 @@ class PageRenderer implements SingletonInterface
 
     /**
      * @var string
+     * @deprecated will be removed in TYPO3 v13.0.
      */
     protected $baseUrlTag = '<base href="|" />';
 
@@ -560,9 +562,14 @@ class PageRenderer implements SingletonInterface
      * Sets HTML base URL
      *
      * @param string $baseUrl HTML base URL
+     * @param bool $isInternalCall only to be used by TYPO3 Core to avoid multiple deprecations.
+     * @deprecated will be removed in TYPO3 v13.0 - <base> tags are not supported anymore in TYPO3.
      */
-    public function setBaseUrl($baseUrl)
+    public function setBaseUrl($baseUrl, bool $isInternalCall = false)
     {
+        if (!$isInternalCall) {
+            trigger_error('PageRenderer->setBaseUrl() will be removed in TYPO3 v13.0, as <base> tags are not supported by default anymore in TYPO3', E_USER_DEPRECATED);
+        }
         $this->baseUrl = $baseUrl;
     }
 
@@ -835,9 +842,11 @@ class PageRenderer implements SingletonInterface
      * Gets HTML base URL
      *
      * @return string $url
+     * @deprecated will be removed in TYPO3 v13.0.
      */
     public function getBaseUrl()
     {
+        trigger_error('PageRenderer->getBaseUrl() will be removed in TYPO3 v13.0, as <base> tags are not supported by default anymore in TYPO3', E_USER_DEPRECATED);
         return $this->baseUrl;
     }
 

@@ -5386,4 +5386,25 @@ return [
             'Deprecation-99201-UserSessionManager-createFromGlobalCookieOrAnonymous.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Page\PageRenderer->setBaseUrl' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-99170-ConfigbaseURLAndBaseTagFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->getBaseUrl' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-99170-ConfigbaseURLAndBaseTagFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->baseUrlWrap' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-99170-ConfigbaseURLAndBaseTagFunctionality.rst',
+        ],
+    ],
 ];

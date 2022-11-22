@@ -2474,11 +2474,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Designed as a wrapper functions for use with all frontend links that are processed by JavaScript (for "realurl" compatibility!). So each time a URL goes into window.open, window.location.href or otherwise, wrap it with this function!
      *
      * @param string $url Input URL, relative or absolute
+     * @param bool $internal used for TYPO3 Core to avoid deprecation errors in v12 when calling this method directly.
      * @return string Processed input value.
      * @internal only for TYPO3 Core internal purposes. Might be removed at a later point as it was related to RealURL functionality.
+     * @deprecated will be removed in TYPO3 v13.0 along with config.baseURL
      */
-    public function baseUrlWrap($url)
+    public function baseUrlWrap($url, bool $internal = false)
     {
+        if (!$internal) {
+            trigger_error('Calling $TSFE->baseUrlWrap will not work anymore in TYPO3 v13.0. Use SiteHandling and config.forceAbsoluteUrls anymore, or build your own <base> tag via TypoScript headerData.', E_USER_DEPRECATED);
+        }
         if ($this->config['config']['baseURL'] ?? false) {
             $urlParts = parse_url($url);
             if (empty($urlParts['scheme']) && $url[0] !== '/') {

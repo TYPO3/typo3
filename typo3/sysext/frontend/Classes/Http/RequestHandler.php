@@ -349,7 +349,8 @@ class RequestHandler implements RequestHandlerInterface
         $pageRenderer->addInlineComment(GeneralUtility::makeInstance(Typo3Information::class)->getInlineHeaderComment());
         $baseUrl = $controller->config['config']['baseURL'] ?? '';
         if ($baseUrl) {
-            $pageRenderer->setBaseUrl($baseUrl);
+            $controller->logDeprecatedTyposcript('config.baseURL', 'This setting will be removed in TYPO3 v13.0 - <base> tags are not supported anymore in TYPO3.');
+            $pageRenderer->setBaseUrl($baseUrl, true);
         }
         if ($controller->pSetup['shortcutIcon'] ?? false) {
             try {

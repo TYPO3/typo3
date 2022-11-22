@@ -56,6 +56,6 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     {
         $subject = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->onlyMethods([])->getMock();
         $subject->config['config']['baseURL'] = $baseUrl;
-        self::assertSame($expected, $subject->baseUrlWrap($url));
+        self::assertSame($expected, $subject->baseUrlWrap($url, true));
     }
 }

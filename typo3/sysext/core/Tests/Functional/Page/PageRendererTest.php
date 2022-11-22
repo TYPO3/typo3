@@ -87,10 +87,6 @@ class PageRendererTest extends FunctionalTestCase
         $subject->setFavIcon($favouriteIcon);
         $expectedFavouriteIconPartOne = '<link rel="icon" href="' . $favouriteIcon . '" />';
 
-        $baseUrl = 'http://google.com/';
-        $subject->setBaseUrl($baseUrl);
-        $expectedBaseUrlString = '<base href="' . $baseUrl . '" />';
-
         $subject->setMetaTag('property', 'og:type', 'foobar');
         $subject->setMetaTag('name', 'author', 'husel');
         $subject->setMetaTag('name', 'author', 'foobar');
@@ -152,7 +148,6 @@ class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString($expectedTitleString, $renderedString);
         self::assertStringContainsString($expectedCharsetString, $renderedString);
         self::assertStringContainsString($expectedFavouriteIconPartOne, $renderedString);
-        self::assertStringContainsString($expectedBaseUrlString, $renderedString);
         self::assertStringContainsString($expectedInlineCommentString, $renderedString);
         self::assertStringContainsString($expectedHeaderData, $renderedString);
         self::assertStringContainsString($expectedJavaScriptModuleString, $renderedString);
@@ -180,7 +175,6 @@ class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString($expectedTitleString, $stateBasedRenderedString);
         self::assertStringContainsString($expectedCharsetString, $stateBasedRenderedString);
         self::assertStringContainsString($expectedFavouriteIconPartOne, $stateBasedRenderedString);
-        self::assertStringContainsString($expectedBaseUrlString, $stateBasedRenderedString);
         self::assertStringContainsString($expectedInlineCommentString, $stateBasedRenderedString);
         self::assertStringContainsString($expectedHeaderData, $stateBasedRenderedString);
         self::assertStringContainsString($expectedJavaScriptModuleString, $stateBasedRenderedString);

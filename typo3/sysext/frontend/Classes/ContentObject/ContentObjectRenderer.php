@@ -1022,7 +1022,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
                 $attrs = [
                     'href' => (string)$url,
-                    'data-window-url' => $this->getTypoScriptFrontendController()->baseUrlWrap($url),
+                    'data-window-url' => $this->getTypoScriptFrontendController()->baseUrlWrap($url, true),
                     'data-window-target' => $newWindow ? md5((string)$url) : 'thePicture',
                     'data-window-features' => rtrim($paramString, ','),
                 ];
