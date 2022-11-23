@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Localization;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
@@ -29,32 +27,30 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class LocalizationFactoryTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
     public function getParsedDataCallsLocalizationOverrideIfFileNotFoundExceptionIsThrown(): void
     {
-        $languageStoreProphecy = $this->prophesize(LanguageStore::class);
-        $languageStoreProphecy->hasData(Argument::cetera())->willReturn(false);
-        $languageStoreProphecy->getData(Argument::cetera())->willReturn(['default' => []]);
-        $languageStoreProphecy->setData(Argument::cetera())->shouldBeCalled();
-        $languageStoreProphecy->setConfiguration(Argument::cetera())->willThrow(new FileNotFoundException('testing', 1476049512));
-        $languageStoreProphecy->getFileReferenceWithoutExtension(Argument::cetera())->willReturn('');
-        $languageStoreProphecy->getSupportedExtensions()->willReturn([]);
-        $languageStoreProphecy->getDataByLanguage(Argument::cetera())->willReturn([]);
+        $languageStoreMock = $this->createMock(LanguageStore::class);
+        $languageStoreMock->method('hasData')->with(self::anything())->willReturn(false);
+        $languageStoreMock->method('getData')->with(self::anything())->willReturn(['default' => []]);
+        $languageStoreMock->expects(self::atLeastOnce())->method('setData')->with(self::anything());
+        $languageStoreMock->method('setConfiguration')->with(self::anything())->willThrowException(new FileNotFoundException('testing', 1476049512));
+        $languageStoreMock->method('getFileReferenceWithoutExtension')->with(self::anything())->willReturn('');
+        $languageStoreMock->method('getSupportedExtensions')->willReturn([]);
+        $languageStoreMock->method('getDataByLanguage')->with(self::anything())->willReturn([]);
 
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheFrontendProphecy->set(Argument::cetera())->shouldBeCalled();
+        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
+        $cacheFrontendMock->method('get')->with(self::anything())->willReturn(false);
+        $cacheFrontendMock->expects(self::atLeastOnce())->method('set')->with(self::anything());
 
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheManagerMock->method('getCache')->with('l10n')->willReturn($cacheFrontendMock);
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] = ['foo' => 'bar'];
 
-        (new LocalizationFactory($languageStoreProphecy->reveal(), $cacheManagerProphecy->reveal()))
+        (new LocalizationFactory($languageStoreMock, $cacheManagerMock))
             ->getParsedData(__DIR__ . '/Fixtures/locallang.invalid', 'default');
     }
 
@@ -63,19 +59,19 @@ class LocalizationFactoryTest extends UnitTestCase
      */
     public function ensureLocalizationIsProperlyCached(): void
     {
-        $packageManagerProphecy = $this->prophesize(PackageManager::class);
-        $packageManagerProphecy->extractPackageKeyFromPackagePath('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf')->willReturn('core');
+        $packageManagerMock = $this->createMock(PackageManager::class);
+        $packageManagerMock->method('extractPackageKeyFromPackagePath')->with('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf')->willReturn('core');
 
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheFrontendProphecy->get(Argument::type('string'))->shouldBeCalled()->willReturn(false);
-        $cacheFrontendProphecy->set(Argument::type('string'), Argument::exact([
+        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
+        $cacheFrontendMock->expects(self::atLeastOnce())->method('get')->with(self::isType('string'))->willReturn(false);
+        $cacheFrontendMock->expects(self::atLeastOnce())->method('set')->with(self::isType('string'), [
             'label1' => [['source' => 'This is label #1', 'target' => 'This is label #1']],
-        ]))->shouldBeCalled()->willReturn(null);
+        ])->willReturn(null);
 
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheManagerMock->method('getCache')->with('l10n')->willReturn($cacheFrontendMock);
 
-        (new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()))
+        (new LocalizationFactory(new LanguageStore($packageManagerMock), $cacheManagerMock))
             ->getParsedData('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf', 'default');
     }
 }
