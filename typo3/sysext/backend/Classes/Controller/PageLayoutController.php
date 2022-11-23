@@ -168,6 +168,7 @@ class PageLayoutController
         $configuration->setShowHidden((bool)$this->moduleData->get('showHidden'));
         $configuration->setLanguageColumns($this->MOD_MENU['language']);
         $configuration->setSelectedLanguageId($this->currentSelectedLanguage);
+        $configuration->setAllowInconsistentLanguageHandling((bool)($tsConfig['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false));
         if ((int)$this->moduleData->get('function') === 2) {
             $configuration->setLanguageMode(true);
         }
