@@ -40,6 +40,11 @@ class DrawingConfiguration
     protected $selectedLanguageId = 0;
 
     /**
+     * Corresponds to web.layout.allowInconsistentLanguageHandling TSconfig property
+     */
+    protected bool $allowInconsistentLanguageHandling = false;
+
+    /**
      * Determines whether rendering should happen with a visually aligned
      * connection between default language and translation. When rendered
      * with this flag enabled, any translated versions are vertically
@@ -88,6 +93,16 @@ class DrawingConfiguration
     public function setSelectedLanguageId(int $selectedLanguageId): void
     {
         $this->selectedLanguageId = $selectedLanguageId;
+    }
+
+    public function getAllowInconsistentLanguageHandling(): bool
+    {
+        return $this->allowInconsistentLanguageHandling;
+    }
+
+    public function setAllowInconsistentLanguageHandling(bool $allowInconsistentLanguageHandling): void
+    {
+        $this->allowInconsistentLanguageHandling = $allowInconsistentLanguageHandling;
     }
 
     public function getDefaultLanguageBinding(): bool

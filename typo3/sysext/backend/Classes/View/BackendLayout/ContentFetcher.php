@@ -188,17 +188,21 @@ class ContentFetcher
                 && $languageTranslationInfo['hasTranslations']
             ) {
                 $languageTranslationInfo['mode'] = 'mixed';
-                $siteLanguage = $this->context->getSiteLanguage($language);
 
-                $message = GeneralUtility::makeInstance(
-                    FlashMessage::class,
-                    $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:staleTranslationWarning'),
-                    sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:staleTranslationWarningTitle'), $siteLanguage->getTitle()),
-                    ContextualFeedbackSeverity::WARNING
-                );
-                $service = GeneralUtility::makeInstance(FlashMessageService::class);
-                $queue = $service->getMessageQueueByIdentifier();
-                $queue->addMessage($message);
+                // We do not want to show the staleTranslationWarning if allowInconsistentLanguageHandling is enabled
+                $allowInconsistentLanguageHandling = (bool)(BackendUtility::getPagesTSconfig($this->context->getPageId())['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
+                if (!$this->context->getDrawingConfiguration()->getAllowInconsistentLanguageHandling()) {
+                    $siteLanguage = $this->context->getSiteLanguage($language);
+                    $message = GeneralUtility::makeInstance(
+                        FlashMessage::class,
+                        $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:staleTranslationWarning'),
+                        sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:staleTranslationWarningTitle'), $siteLanguage->getTitle()),
+                        ContextualFeedbackSeverity::WARNING
+                    );
+                    $service = GeneralUtility::makeInstance(FlashMessageService::class);
+                    $queue = $service->getMessageQueueByIdentifier();
+                    $queue->addMessage($message);
+                }
             }
 
             $this->getRuntimeCache()->set('ContentFetcher_TranslationInfo_' . $language, $languageTranslationInfo);
