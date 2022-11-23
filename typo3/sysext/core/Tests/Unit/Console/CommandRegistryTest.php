@@ -17,32 +17,22 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Console;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for CommandRegistry
- */
 class CommandRegistryTest extends UnitTestCase
 {
-    use ProphecyTrait;
+    protected ContainerInterface&MockObject $containerMock;
 
-    /** @var ObjectProphecy<ContainerInterface> */
-    protected ObjectProphecy $containerProphecy;
-
-    /**
-     * Set up this testcase
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->containerProphecy = $this->prophesize(ContainerInterface::class);
+        $this->containerMock = $this->createMock(ContainerInterface::class);
     }
 
     /**
@@ -50,7 +40,7 @@ class CommandRegistryTest extends UnitTestCase
      */
     public function implementsCommandLoaderInterface(): void
     {
-        $commandRegistry = new CommandRegistry($this->containerProphecy->reveal());
+        $commandRegistry = new CommandRegistry($this->containerMock);
         self::assertInstanceof(CommandLoaderInterface::class, $commandRegistry);
     }
 
@@ -62,10 +52,12 @@ class CommandRegistryTest extends UnitTestCase
         $command1MockClass = $this->getMockClass(Command::class, ['dummy']);
         $command2MockClass = $this->getMockClass(Command::class, ['dummy']);
 
-        $this->containerProphecy->get('command1')->willReturn(new $command1MockClass());
-        $this->containerProphecy->get('command2')->willReturn(new $command2MockClass());
+        $this->containerMock->method('get')->willReturnMap([
+            ['command1', new $command1MockClass()],
+            ['command2', new $command2MockClass()],
+        ]);
 
-        $commandRegistry = new CommandRegistry($this->containerProphecy->reveal());
+        $commandRegistry = new CommandRegistry($this->containerMock);
         $commandRegistry->addLazyCommand('test:command', 'command1');
         $commandRegistry->addLazyCommand('test:command2', 'command2');
 
