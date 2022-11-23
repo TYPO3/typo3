@@ -92,6 +92,12 @@
                 <core:icon identifier="actions-document-view" size="small" alternativeMarkupIdentifier="inline" />
                 <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.show" />
             </a>
+            <f:if condition="{editMetadataUrl}">
+                <a class="btn btn-default" href="{editMetadataUrl}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata')}">
+                    <core:icon identifier="actions-file-edit" size="small" alternativeMarkupIdentifier="inline" />
+                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata" />
+                </a>
+            </f:if>
         </p>
     </f:if>
     <div class="table-fit table-fit-wrap">

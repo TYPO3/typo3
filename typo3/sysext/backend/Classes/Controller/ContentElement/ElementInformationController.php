@@ -141,7 +141,7 @@ class ElementInformationController
         $pageTitle = $this->getPageTitle();
         $view->setTitle($pageTitle['table'] . ': ' . $pageTitle['title']);
         $view->assignMultiple($pageTitle);
-        $view->assignMultiple($this->getPreview());
+        $view->assignMultiple($this->getPreview($request));
         $view->assignMultiple($this->getPropertiesForTable($request));
         $view->assignMultiple($this->getReferences($request, $uid));
         $view->assign('returnUrl', GeneralUtility::sanitizeLocalUrl($request->getQueryParams()['returnUrl'] ?? ''));
@@ -175,7 +175,7 @@ class ElementInformationController
     /**
      * Get preview for current record
      */
-    protected function getPreview(): array
+    protected function getPreview(ServerRequestInterface $request): array
     {
         $preview = [];
         // Perhaps @todo in future: Also display preview for records - without fileObject
@@ -190,6 +190,24 @@ class ElementInformationController
             $rendererRegistry = GeneralUtility::makeInstance(RendererRegistry::class);
             $fileRenderer = $rendererRegistry->getRenderer($this->fileObject);
             $preview['url'] = $this->fileObject->getPublicUrl() ?? '';
+
+            // Add "edit metadata" button
+            $preview['editMetadataUrl'] = '';
+            if (($metaDataUid = $this->fileObject->getProperties()['metadata_uid'] ?? false)
+                && $this->fileObject->isIndexed()
+                && $this->fileObject->checkActionPermission('editMeta')
+                && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')
+            ) {
+                $urlParameters = [
+                    'edit' => [
+                        'sys_file_metadata' => [
+                            $metaDataUid => 'edit',
+                        ],
+                    ],
+                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+                ];
+                $preview['editMetadataUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+            }
 
             $width = min(590, $this->fileObject->getMetaData()['width'] ?? 590) . 'm';
             $height = min(400, $this->fileObject->getMetaData()['height'] ?? 400) . 'm';
