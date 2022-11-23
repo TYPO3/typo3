@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extensionmanager\Controller\ActionController;
@@ -73,6 +74,7 @@ class ActionControllerTest extends UnitTestCase
             [
                 $installUtility,
                 $this->createMock(ExtensionManagementService::class),
+                $this->createMock(Registry::class),
             ]
         );
 

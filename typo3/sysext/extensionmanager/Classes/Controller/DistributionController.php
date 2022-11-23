@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -69,7 +68,7 @@ class DistributionController extends AbstractController
             ->setHref($uri)
             ->setTitle($title)
             ->setIcon($icon);
-        $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT);
+        $buttonBar->addButton($button);
         return $view;
     }
 }

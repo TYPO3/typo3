@@ -22,7 +22,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 use TYPO3\CMS\Extensionmanager\Remote\TerExtensionRemote;
@@ -34,12 +33,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ExtensionStatusTest extends UnitTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->resetSingletonInstances = true;
-    }
-
     /**
      * @test
      */
@@ -102,13 +95,17 @@ class ExtensionStatusTest extends UnitTestCase
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())
             ->willReturn($this->createMock(LanguageService::class));
-        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryMock);
 
-        $remoteRegistryMock = $this->setUpRegistryStatusTests();
+        $listUtilityMock = $this->setUpRegistryStatusTests();
+        $remoteRegistryMock = $this->setUpRemoteRegistryMock();
         $remoteRegistryMock->method('getDefaultRemote')->willReturn($this->getDefaultTerExtensionRemote());
         $remoteRegistryMock->expects(self::atLeastOnce())->method('hasDefaultRemote');
 
-        $subject = new ExtensionStatus($remoteRegistryMock);
+        $subject = new ExtensionStatus(
+            $remoteRegistryMock,
+            $listUtilityMock,
+            $languageServiceFactoryMock
+        );
         $subject->getStatus();
     }
 
@@ -120,11 +117,15 @@ class ExtensionStatusTest extends UnitTestCase
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())
             ->willReturn($this->createMock(LanguageService::class));
-        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryMock);
 
-        $remoteRegistryMock = $this->setUpRegistryStatusTests(0, true, false);
+        $listUtilityMock = $this->setUpRegistryStatusTests(0, true);
+        $remoteRegistryMock = $this->setUpRemoteRegistryMock(false);
         $remoteRegistryMock->method('getDefaultRemote')->willReturn($this->getDefaultTerExtensionRemote());
-        $subject = new ExtensionStatus($remoteRegistryMock);
+        $subject = new ExtensionStatus(
+            $remoteRegistryMock,
+            $listUtilityMock,
+            $languageServiceFactoryMock
+        );
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -139,7 +140,6 @@ class ExtensionStatusTest extends UnitTestCase
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())
             ->willReturn($this->createMock(LanguageService::class));
-        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryMock);
 
         $remote = new class () extends TerExtensionRemote {
             public function __construct()
@@ -157,9 +157,14 @@ class ExtensionStatusTest extends UnitTestCase
             }
         };
 
-        $remoteRegistryMock = $this->setUpRegistryStatusTests();
+        $listUtilityMock = $this->setUpRegistryStatusTests();
+        $remoteRegistryMock = $this->setUpRemoteRegistryMock();
         $remoteRegistryMock->method('getDefaultRemote')->willReturn($remote);
-        $subject = new ExtensionStatus($remoteRegistryMock);
+        $subject = new ExtensionStatus(
+            $remoteRegistryMock,
+            $listUtilityMock,
+            $languageServiceFactoryMock
+        );
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -174,11 +179,15 @@ class ExtensionStatusTest extends UnitTestCase
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())
             ->willReturn($this->createMock(LanguageService::class));
-        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryMock);
 
-        $remoteRegistryMock = $this->setUpRegistryStatusTests();
+        $listUtilityMock = $this->setUpRegistryStatusTests();
+        $remoteRegistryMock = $this->setUpRemoteRegistryMock();
         $remoteRegistryMock->method('getDefaultRemote')->willReturn($this->getDefaultTerExtensionRemote());
-        $subject = new ExtensionStatus($remoteRegistryMock);
+        $subject = new ExtensionStatus(
+            $remoteRegistryMock,
+            $listUtilityMock,
+            $languageServiceFactoryMock
+        );
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -195,11 +204,15 @@ class ExtensionStatusTest extends UnitTestCase
         $languageServiceMock->method('getLL')->with(self::anything())->willReturn('');
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
-        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryMock);
 
-        $remoteRegistryMock = $this->setUpRegistryStatusTests(-1);
+        $listUtilityMock = $this->setUpRegistryStatusTests(-1);
+        $remoteRegistryMock = $this->setUpRemoteRegistryMock();
         $remoteRegistryMock->method('getDefaultRemote')->willReturn($this->getDefaultTerExtensionRemote());
-        $subject = new ExtensionStatus($remoteRegistryMock);
+        $subject = new ExtensionStatus(
+            $remoteRegistryMock,
+            $listUtilityMock,
+            $languageServiceFactoryMock
+        );
         $status = $subject->getStatus();
         $statusObject = $status['extensionsSecurityStatusInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -216,11 +229,15 @@ class ExtensionStatusTest extends UnitTestCase
         $languageServiceMock->method('getLL')->with(self::anything())->willReturn('');
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
-        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryMock);
 
-        $remoteRegistryMock = $this->setUpRegistryStatusTests(0, false);
+        $listUtilityMock = $this->setUpRegistryStatusTests(0, false);
+        $remoteRegistryMock = $this->setUpRemoteRegistryMock();
         $remoteRegistryMock->method('getDefaultRemote')->willReturn($this->getDefaultTerExtensionRemote());
-        $subject = new ExtensionStatus($remoteRegistryMock);
+        $subject = new ExtensionStatus(
+            $remoteRegistryMock,
+            $listUtilityMock,
+            $languageServiceFactoryMock
+        );
         $status = $subject->getStatus();
         foreach ($status as $statusObject) {
             self::assertInstanceOf(Status::class, $statusObject);
@@ -238,11 +255,15 @@ class ExtensionStatusTest extends UnitTestCase
         $languageServiceMock->method('getLL')->with(self::anything())->willReturn('');
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
-        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryMock);
 
-        $remoteRegistryMock = $this->setUpRegistryStatusTests(-1, false);
+        $listUtilityMock = $this->setUpRegistryStatusTests(-1, false);
+        $remoteRegistryMock = $this->setUpRemoteRegistryMock();
         $remoteRegistryMock->method('getDefaultRemote')->willReturn($this->getDefaultTerExtensionRemote());
-        $subject = new ExtensionStatus($remoteRegistryMock);
+        $subject = new ExtensionStatus(
+            $remoteRegistryMock,
+            $listUtilityMock,
+            $languageServiceFactoryMock
+        );
         $status = $subject->getStatus();
         $statusObject = $status['extensionsSecurityStatusNotInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -259,11 +280,15 @@ class ExtensionStatusTest extends UnitTestCase
         $languageServiceMock->method('getLL')->with(self::anything())->willReturn('');
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
-        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryMock);
 
-        $remoteRegistryMock = $this->setUpRegistryStatusTests(-2, true);
+        $listUtilityMock = $this->setUpRegistryStatusTests(-2, true);
+        $remoteRegistryMock = $this->setUpRemoteRegistryMock();
         $remoteRegistryMock->method('getDefaultRemote')->willReturn($this->getDefaultTerExtensionRemote());
-        $subject = new ExtensionStatus($remoteRegistryMock);
+        $subject = new ExtensionStatus(
+            $remoteRegistryMock,
+            $listUtilityMock,
+            $languageServiceFactoryMock
+        );
         $status = $subject->getStatus();
         $statusObject = $status['extensionsOutdatedStatusInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -280,11 +305,15 @@ class ExtensionStatusTest extends UnitTestCase
         $languageServiceMock->method('getLL')->with(self::anything())->willReturn('');
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
-        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryMock);
 
-        $remoteRegistryMock = $this->setUpRegistryStatusTests(-2, false);
+        $listUtilityMock = $this->setUpRegistryStatusTests(-2, false);
+        $remoteRegistryMock = $this->setUpRemoteRegistryMock();
         $remoteRegistryMock->method('getDefaultRemote')->willReturn($this->getDefaultTerExtensionRemote());
-        $subject = new ExtensionStatus($remoteRegistryMock);
+        $subject = new ExtensionStatus(
+            $remoteRegistryMock,
+            $listUtilityMock,
+            $languageServiceFactoryMock
+        );
         $status = $subject->getStatus();
         $statusObject = $status['extensionsOutdatedStatusNotInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -293,9 +322,8 @@ class ExtensionStatusTest extends UnitTestCase
 
     protected function setUpRegistryStatusTests(
         int $reviewState = 0,
-        bool $installed = true,
-        bool $setupRepositoryStatusOk = true
-    ): RemoteRegistry&MockObject {
+        bool $installed = true
+    ): ListUtility&MockObject {
         $mockTerObject = new Extension();
         $mockTerObject->setVersion('1.0.6');
         $mockTerObject->setReviewState($reviewState);
@@ -312,8 +340,11 @@ class ExtensionStatusTest extends UnitTestCase
                     'terObject' => $mockTerObject,
                 ],
             ]);
+        return $mockListUtility;
+    }
 
-        GeneralUtility::setSingletonInstance(ListUtility::class, $mockListUtility);
+    protected function setUpRemoteRegistryMock(bool $setupRepositoryStatusOk = true): RemoteRegistry&MockObject
+    {
         $remoteRegistryMock = $this->createMock(RemoteRegistry::class);
         if ($setupRepositoryStatusOk) {
             $remoteRegistryMock->method('hasRemote')->with(self::anything())->willReturn(true);

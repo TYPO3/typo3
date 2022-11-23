@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Extensionmanager\Controller\DownloadController;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
@@ -41,7 +42,11 @@ class DownloadControllerTest extends UnitTestCase
         $extensionManagementServiceMock = $this->getMockBuilder(ExtensionManagementService::class)->disableOriginalConstructor()->getMock();
         $extensionManagementServiceMock->method('setDownloadPath')->willThrowException($dummyException);
 
-        $subject = new DownloadController($this->createMock(ExtensionRepository::class), $extensionManagementServiceMock);
+        $subject = new DownloadController(
+            $this->createMock(ExtensionRepository::class),
+            $extensionManagementServiceMock,
+            $this->createMock(ExtensionConfiguration::class)
+        );
 
         $reflectionClass = new \ReflectionClass($subject);
         $reflectionMethod = $reflectionClass->getMethod('installFromTer');

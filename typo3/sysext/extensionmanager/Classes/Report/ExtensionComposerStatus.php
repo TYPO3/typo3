@@ -33,20 +33,10 @@ use TYPO3\CMS\Reports\Status as ReportStatus;
  */
 class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
 {
-    /**
-     * @var ComposerDeficitDetector
-     */
-    protected $composerDeficitDetector;
-
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    public function __construct(ComposerDeficitDetector $composerDeficitDetector, UriBuilder $uriBuilder)
-    {
-        $this->composerDeficitDetector = $composerDeficitDetector;
-        $this->uriBuilder = $uriBuilder;
+    public function __construct(
+        protected readonly ComposerDeficitDetector $composerDeficitDetector,
+        protected readonly UriBuilder $uriBuilder
+    ) {
     }
 
     public function getStatus(ServerRequestInterface $request = null): array

@@ -47,12 +47,8 @@ class AbstractController extends ActionController
 
     /**
      * Translation shortcut
-     *
-     * @param string $key
-     * @param array|null $arguments
-     * @return string
      */
-    protected function translate($key, $arguments = null)
+    protected function translate(string $key, ?array $arguments = null): string
     {
         return LocalizationUtility::translate($key, 'extensionmanager', $arguments) ?? '';
     }
@@ -62,7 +58,7 @@ class AbstractController extends ActionController
      * widget if an extension with backend modules has been enabled
      * or disabled.
      */
-    protected function handleTriggerArguments(ModuleTemplate $view)
+    protected function handleTriggerArguments(ModuleTemplate $view): void
     {
         $triggers = [];
         foreach ($this->triggerArguments as $triggerArgument) {
@@ -125,7 +121,7 @@ class AbstractController extends ActionController
 
         foreach ($menuItems as  $menuItemConfig) {
             if ($request->getControllerName() === $menuItemConfig['controller']) {
-                $isActive = $request->getControllerActionName() === $menuItemConfig['action'] ? true : false;
+                $isActive = $request->getControllerActionName() === $menuItemConfig['action'];
             } else {
                 $isActive = false;
             }

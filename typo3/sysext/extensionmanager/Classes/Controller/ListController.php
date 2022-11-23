@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -30,7 +29,6 @@ use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -54,7 +52,9 @@ class ListController extends AbstractController
         protected readonly ExtensionRepository $extensionRepository,
         protected readonly ListUtility $listUtility,
         protected readonly DependencyUtility $dependencyUtility,
-        protected readonly IconFactory $iconFactory
+        protected readonly IconFactory $iconFactory,
+        protected readonly RemoteRegistry $remoteRegistry,
+        protected readonly ExtensionConfiguration $extensionConfiguration,
     ) {
     }
 
@@ -64,7 +64,7 @@ class ListController extends AbstractController
     protected function initializeAction(): void
     {
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
-        $this->settings['offlineMode'] = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'offlineMode');
+        $this->settings['offlineMode'] = (bool)$this->extensionConfiguration->get('extensionmanager', 'offlineMode');
     }
 
     /**
@@ -173,8 +173,7 @@ class ListController extends AbstractController
         $view = $this->initializeModuleTemplate($this->request);
         if ($importExportInstalled) {
             try {
-                $remoteRegistry = GeneralUtility::makeInstance(RemoteRegistry::class);
-                foreach ($remoteRegistry->getListableRemotes() as $remote) {
+                foreach ($this->remoteRegistry->getListableRemotes() as $remote) {
                     $remote->getAvailablePackages();
                 }
             } catch (ExtensionManagerException $e) {
@@ -234,7 +233,7 @@ class ListController extends AbstractController
             ->setShowLabelText(true)
             ->setClasses($classes)
             ->setIcon($icon);
-        $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT);
+        $buttonBar->addButton($button);
         return $view;
     }
 

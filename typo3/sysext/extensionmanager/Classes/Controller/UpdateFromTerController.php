@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
@@ -46,10 +45,8 @@ class UpdateFromTerController extends AbstractController
 
     /**
      * Update extension list from TER
-     *
-     * @param bool $forceUpdateCheck
      */
-    public function updateExtensionListFromTerAction($forceUpdateCheck = false): ResponseInterface
+    public function updateExtensionListFromTerAction(bool $forceUpdateCheck = false): ResponseInterface
     {
         $updated = false;
         $errorMessage = '';
@@ -70,14 +67,14 @@ class UpdateFromTerController extends AbstractController
             $errorMessage = $e->getMessage();
         }
 
-        $timeFormat = $this->getLanguageService()->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.lastUpdate.fullTimeFormat');
+        $timeFormat = $this->translate('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.lastUpdate.fullTimeFormat');
         if ($lastUpdate === null) {
-            $lastUpdatedSince = $this->getLanguageService()->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.never');
+            $lastUpdatedSince = $this->translate('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.never');
             $lastUpdateTime = date($timeFormat);
         } else {
             $lastUpdatedSince = BackendUtility::calcAge(
                 $GLOBALS['EXEC_TIME'] - $lastUpdate->format('U'),
-                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                $this->translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
             );
             $lastUpdateTime = $lastUpdate->format($timeFormat);
         }
@@ -89,10 +86,5 @@ class UpdateFromTerController extends AbstractController
         ]);
 
         return $this->jsonResponse();
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }

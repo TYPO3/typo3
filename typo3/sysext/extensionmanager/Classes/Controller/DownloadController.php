@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -38,9 +37,6 @@ use TYPO3\CMS\Fluid\View\TemplateView;
  */
 class DownloadController extends AbstractController
 {
-    protected ExtensionRepository $extensionRepository;
-    protected ExtensionManagementService $managementService;
-
     /**
      * @var string
      */
@@ -52,11 +48,10 @@ class DownloadController extends AbstractController
     protected $view;
 
     public function __construct(
-        ExtensionRepository $extensionRepository,
-        ExtensionManagementService $managementService
+        protected readonly ExtensionRepository $extensionRepository,
+        protected readonly ExtensionManagementService $managementService,
+        protected readonly ExtensionConfiguration $extensionConfiguration,
     ) {
-        $this->extensionRepository = $extensionRepository;
-        $this->managementService = $managementService;
     }
 
     /**
@@ -74,7 +69,7 @@ class DownloadController extends AbstractController
                 'dependencies' => [],
             ],
         ];
-        $isAutomaticInstallationEnabled = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'automaticInstallation');
+        $isAutomaticInstallationEnabled = (bool)$this->extensionConfiguration->get('extensionmanager', 'automaticInstallation');
         if (!$isAutomaticInstallationEnabled) {
             // if automatic installation is deactivated, no dependency check is needed (download only)
             $action = 'installExtensionWithoutSystemDependencyCheck';
@@ -153,7 +148,7 @@ class DownloadController extends AbstractController
     public function installFromTerAction(Extension $extension, string $downloadPath = 'Local'): ResponseInterface
     {
         [$result, $errorMessages] = $this->installFromTer($extension, $downloadPath);
-        $isAutomaticInstallationEnabled = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'automaticInstallation');
+        $isAutomaticInstallationEnabled = (bool)$this->extensionConfiguration->get('extensionmanager', 'automaticInstallation');
         $this->view->assignMultiple([
             'result'  => $result,
             'extension' => $extension,
@@ -296,7 +291,7 @@ class DownloadController extends AbstractController
         $errorMessages = [];
         try {
             $this->managementService->setDownloadPath($downloadPath);
-            $isAutomaticInstallationEnabled = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'automaticInstallation');
+            $isAutomaticInstallationEnabled = (bool)$this->extensionConfiguration->get('extensionmanager', 'automaticInstallation');
             $this->managementService->setAutomaticInstallationEnabled($isAutomaticInstallationEnabled);
             if (($result = $this->managementService->installExtension($extension)) === false) {
                 $errorMessages = $this->managementService->getDependencyErrors();

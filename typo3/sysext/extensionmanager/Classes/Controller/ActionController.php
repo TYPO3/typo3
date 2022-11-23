@@ -43,16 +43,15 @@ class ActionController extends AbstractController
 {
     public function __construct(
         protected readonly InstallUtility $installUtility,
-        protected readonly ExtensionManagementService $managementService
+        protected readonly ExtensionManagementService $managementService,
+        protected readonly Registry $registry,
     ) {
     }
 
     /**
      * Toggle extension installation state action
-     *
-     * @param string $extensionKey
      */
-    protected function toggleExtensionInstallationStateAction($extensionKey): ResponseInterface
+    protected function toggleExtensionInstallationStateAction(string $extensionKey): ResponseInterface
     {
         try {
             if (Environment::isComposerMode()) {
@@ -93,10 +92,8 @@ class ActionController extends AbstractController
 
     /**
      * Install an extension and omit dependency checking
-     *
-     * @param string $extensionKey
      */
-    public function installExtensionWithoutSystemDependencyCheckAction($extensionKey): ResponseInterface
+    public function installExtensionWithoutSystemDependencyCheckAction(string $extensionKey): ResponseInterface
     {
         $this->managementService->setSkipDependencyCheck(true);
         return (new ForwardResponse('toggleExtensionInstallationState'))->withArguments(['extensionKey' => $extensionKey]);
@@ -104,10 +101,8 @@ class ActionController extends AbstractController
 
     /**
      * Remove an extension (if it is still installed, uninstall it first)
-     *
-     * @param string $extension
      */
-    protected function removeExtensionAction($extension): ResponseInterface
+    protected function removeExtensionAction(string $extension): ResponseInterface
     {
         try {
             if (Environment::isComposerMode()) {
@@ -136,10 +131,8 @@ class ActionController extends AbstractController
 
     /**
      * Download an extension as a zip file
-     *
-     * @param string $extension
      */
-    protected function downloadExtensionZipAction($extension): ResponseInterface
+    protected function downloadExtensionZipAction(string $extension): ResponseInterface
     {
         if (Environment::isComposerMode()) {
             throw new ExtensionManagerException(
@@ -163,16 +156,13 @@ class ActionController extends AbstractController
 
     /**
      * Reloads the static SQL data of an extension
-     *
-     * @param string $extension
      */
-    protected function reloadExtensionDataAction($extension): ResponseInterface
+    protected function reloadExtensionDataAction(string $extension): ResponseInterface
     {
         $extension = $this->installUtility->enrichExtensionWithDetails($extension, false);
         $registryKey = PathUtility::stripPathSitePrefix($extension['packagePath']) . 'ext_tables_static+adt.sql';
 
-        $registry = GeneralUtility::makeInstance(Registry::class);
-        $registry->remove('extensionDataImport', $registryKey);
+        $this->registry->remove('extensionDataImport', $registryKey);
 
         $this->installUtility->processExtensionSetup($extension['key']);
 

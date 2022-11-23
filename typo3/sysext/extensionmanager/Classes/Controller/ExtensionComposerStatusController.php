@@ -21,7 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -135,14 +134,9 @@ class ExtensionComposerStatusController extends AbstractController
                     ->makeLinkButton()
                     ->setHref($this->returnUrl)
                     ->setClasses('typo3-goBack')
-                    ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                    ->setTitle($this->translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                     ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
             );
         }
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }

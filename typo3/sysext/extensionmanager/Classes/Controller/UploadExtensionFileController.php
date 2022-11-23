@@ -37,19 +37,13 @@ class UploadExtensionFileController extends AbstractController
 {
     use BlockSerializationTrait;
 
-    /**
-     * @var string
-     */
-    protected $extensionBackupPath = '';
-
-    /**
-     * @var bool
-     */
-    protected $removeFromOriginalPath = false;
+    protected string $extensionBackupPath = '';
+    protected bool $removeFromOriginalPath = false;
 
     public function __construct(
         protected readonly FileHandlingUtility $fileHandlingUtility,
-        protected readonly ExtensionManagementService $managementService
+        protected readonly ExtensionManagementService $managementService,
+        protected readonly ExtensionConfiguration $extensionConfiguration,
     ) {
     }
 
@@ -81,7 +75,7 @@ class UploadExtensionFileController extends AbstractController
      *
      * @param bool $overwrite Overwrite existing extension if TRUE
      */
-    public function extractAction($overwrite = false): ResponseInterface
+    public function extractAction(bool $overwrite = false): ResponseInterface
     {
         if (Environment::isComposerMode()) {
             throw new ExtensionManagerException(
@@ -115,20 +109,18 @@ class UploadExtensionFileController extends AbstractController
                 );
             }
             $this->extractExtensionFromZipFile($tempFile, $extensionKey, (bool)$overwrite);
-            $isAutomaticInstallationEnabled = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'automaticInstallation');
+            $isAutomaticInstallationEnabled = (bool)$this->extensionConfiguration->get('extensionmanager', 'automaticInstallation');
             if (!$isAutomaticInstallationEnabled) {
                 $this->addFlashMessage(
                     $this->translate('extensionList.uploadFlashMessage.message', [$extensionKey]),
-                    $this->translate('extensionList.uploadFlashMessage.title'),
-                    ContextualFeedbackSeverity::OK
+                    $this->translate('extensionList.uploadFlashMessage.title')
                 );
             } else {
                 // @todo This cannot work without reloading the package information
                 if ($this->activateExtension($extensionKey)) {
                     $this->addFlashMessage(
                         $this->translate('extensionList.installedFlashMessage.message', [$extensionKey]),
-                        '',
-                        ContextualFeedbackSeverity::OK
+                        ''
                     );
                 } else {
                     return $this->redirect(
@@ -173,11 +165,7 @@ class UploadExtensionFileController extends AbstractController
         }
     }
 
-    /**
-     * @param string $extensionKey
-     * @return bool
-     */
-    protected function activateExtension($extensionKey)
+    protected function activateExtension(string $extensionKey): bool
     {
         $this->managementService->reloadPackageInformation($extensionKey);
         $extension = $this->managementService->getExtension($extensionKey);
@@ -214,18 +202,15 @@ class UploadExtensionFileController extends AbstractController
      * @param string $fileName
      * @return string
      */
-    protected function getExtensionKeyFromFileName($fileName)
+    protected function getExtensionKeyFromFileName(string $fileName): string
     {
         return (string)preg_replace('/_(\\d+)(\\.|\\-)(\\d+)(\\.|\\-)(\\d+).*/i', '', strtolower(substr($fileName, 0, -4)));
     }
 
     /**
      * Copies current extension folder to typo3temp directory as backup
-     *
-     * @param string $extensionKey
-     * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
      */
-    protected function copyExtensionFolderToTempFolder($extensionKey)
+    protected function copyExtensionFolderToTempFolder(string $extensionKey): void
     {
         $this->extensionBackupPath = Environment::getVarPath() . '/transient/' . $extensionKey . substr(sha1($extensionKey . microtime()), 0, 7) . '/';
         GeneralUtility::mkdir($this->extensionBackupPath);
@@ -241,7 +226,7 @@ class UploadExtensionFileController extends AbstractController
      * @param string $fileName
      * @see UploadExtensionFileController::extractAction
      */
-    protected function removeExtensionAndRestoreFromBackup($fileName)
+    protected function removeExtensionAndRestoreFromBackup(string $fileName): void
     {
         $extDirPath = $this->fileHandlingUtility->getExtensionDir($this->getExtensionKeyFromFileName($fileName));
         if ($this->removeFromOriginalPath && is_dir($extDirPath)) {
@@ -256,7 +241,7 @@ class UploadExtensionFileController extends AbstractController
     /**
      * Removes the backup folder in typo3temp
      */
-    protected function removeBackupFolder()
+    protected function removeBackupFolder(): void
     {
         if (!empty($this->extensionBackupPath)) {
             GeneralUtility::rmdir($this->extensionBackupPath, true);

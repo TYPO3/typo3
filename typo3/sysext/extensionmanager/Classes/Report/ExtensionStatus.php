@@ -31,45 +31,17 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
  */
 class ExtensionStatus implements StatusProviderInterface
 {
-    /**
-     * @var string
-     */
-    protected $ok = '';
+    protected string $ok = '';
+    protected string $error = '';
 
-    /**
-     * @var string
-     */
-    protected $upToDate = '';
+    protected LanguageService $languageService;
 
-    /**
-     * @var string
-     */
-    protected $error = '';
-
-    /**
-     * @var RemoteRegistry
-     */
-    protected $remoteRegistry;
-
-    /**
-     * @var ListUtility
-     */
-    protected $listUtility;
-
-    /**
-     * @var LanguageService
-     */
-    protected $languageService;
-
-    /**
-     * @param RemoteRegistry|null  $remoteRegistry
-     */
-    public function __construct(RemoteRegistry $remoteRegistry = null)
-    {
-        $this->remoteRegistry = $remoteRegistry ?? GeneralUtility::makeInstance(RemoteRegistry::class);
-        $this->listUtility = GeneralUtility::makeInstance(ListUtility::class);
-
-        $this->languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
+    public function __construct(
+        protected readonly RemoteRegistry $remoteRegistry,
+        protected readonly ListUtility $listUtility,
+        protected readonly LanguageServiceFactory $languageServiceFactory,
+    ) {
+        $this->languageService = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
         $this->languageService->includeLLFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
     }
 
