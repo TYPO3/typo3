@@ -17,21 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Session;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Tests for the SessionManager
- */
 class SessionManagerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -46,16 +39,15 @@ class SessionManagerTest extends UnitTestCase
      */
     public function getSessionBackendReturnsExpectedSessionBackendBasedOnConfiguration(): void
     {
-        $backendProphecy = $this->prophesize(SessionBackendInterface::class);
-        $backendRevelation = $backendProphecy->reveal();
-        $backendClassName = get_class($backendRevelation);
+        $backendMock = $this->createMock(SessionBackendInterface::class);
+        $backendClassName = get_class($backendMock);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['session']['myidentifier'] = [
             'backend'  => $backendClassName,
             'options' => [],
         ];
-        $backendProphecy->initialize(Argument::cetera())->shouldBeCalled();
-        $backendProphecy->validateConfiguration(Argument::cetera())->shouldBeCalled();
-        GeneralUtility::addInstance($backendClassName, $backendRevelation);
+        $backendMock->expects(self::atLeastOnce())->method('initialize')->with(self::anything());
+        $backendMock->expects(self::atLeastOnce())->method('validateConfiguration');
+        GeneralUtility::addInstance($backendClassName, $backendMock);
         $subject = new SessionManager();
         self::assertInstanceOf($backendClassName, $subject->getSessionBackend('myidentifier'));
     }
