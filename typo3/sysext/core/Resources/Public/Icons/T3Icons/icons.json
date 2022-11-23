@@ -510,11 +510,23 @@
       "svg": "svgs/actions/actions-close.svg",
       "sprite": "sprites/actions.svg#actions-close"
     },
+    "actions-cloud-download": {
+      "identifier": "actions-cloud-download",
+      "category": "actions",
+      "svg": "svgs/actions/actions-cloud-download.svg",
+      "sprite": "sprites/actions.svg#actions-cloud-download"
+    },
     "actions-cloud-slash": {
       "identifier": "actions-cloud-slash",
       "category": "actions",
       "svg": "svgs/actions/actions-cloud-slash.svg",
       "sprite": "sprites/actions.svg#actions-cloud-slash"
+    },
+    "actions-cloud-upload": {
+      "identifier": "actions-cloud-upload",
+      "category": "actions",
+      "svg": "svgs/actions/actions-cloud-upload.svg",
+      "sprite": "sprites/actions.svg#actions-cloud-upload"
     },
     "actions-cloud": {
       "identifier": "actions-cloud",
@@ -737,6 +749,48 @@
       "category": "actions",
       "svg": "svgs/actions/actions-device-unidentified.svg",
       "sprite": "sprites/actions.svg#actions-device-unidentified"
+    },
+    "actions-dice-1": {
+      "identifier": "actions-dice-1",
+      "category": "actions",
+      "svg": "svgs/actions/actions-dice-1.svg",
+      "sprite": "sprites/actions.svg#actions-dice-1"
+    },
+    "actions-dice-2": {
+      "identifier": "actions-dice-2",
+      "category": "actions",
+      "svg": "svgs/actions/actions-dice-2.svg",
+      "sprite": "sprites/actions.svg#actions-dice-2"
+    },
+    "actions-dice-3": {
+      "identifier": "actions-dice-3",
+      "category": "actions",
+      "svg": "svgs/actions/actions-dice-3.svg",
+      "sprite": "sprites/actions.svg#actions-dice-3"
+    },
+    "actions-dice-4": {
+      "identifier": "actions-dice-4",
+      "category": "actions",
+      "svg": "svgs/actions/actions-dice-4.svg",
+      "sprite": "sprites/actions.svg#actions-dice-4"
+    },
+    "actions-dice-5": {
+      "identifier": "actions-dice-5",
+      "category": "actions",
+      "svg": "svgs/actions/actions-dice-5.svg",
+      "sprite": "sprites/actions.svg#actions-dice-5"
+    },
+    "actions-dice-6": {
+      "identifier": "actions-dice-6",
+      "category": "actions",
+      "svg": "svgs/actions/actions-dice-6.svg",
+      "sprite": "sprites/actions.svg#actions-dice-6"
+    },
+    "actions-dice": {
+      "identifier": "actions-dice",
+      "category": "actions",
+      "svg": "svgs/actions/actions-dice.svg",
+      "sprite": "sprites/actions.svg#actions-dice"
     },
     "actions-document-add": {
       "identifier": "actions-document-add",
@@ -1805,6 +1859,18 @@
       "category": "actions",
       "svg": "svgs/actions/actions-variable.svg",
       "sprite": "sprites/actions.svg#actions-variable"
+    },
+    "actions-viewmode-compare": {
+      "identifier": "actions-viewmode-compare",
+      "category": "actions",
+      "svg": "svgs/actions/actions-viewmode-compare.svg",
+      "sprite": "sprites/actions.svg#actions-viewmode-compare"
+    },
+    "actions-viewmode-layout": {
+      "identifier": "actions-viewmode-layout",
+      "category": "actions",
+      "svg": "svgs/actions/actions-viewmode-layout.svg",
+      "sprite": "sprites/actions.svg#actions-viewmode-layout"
     },
     "actions-viewmode-list": {
       "identifier": "actions-viewmode-list",
@@ -4388,6 +4454,12 @@
     "actions-edit-restore": "actions-delete-restore",
     "actions-edit-delete": "actions-delete",
     "actions-selection-delete": "actions-delete",
+    "actions-dice-one": "actions-dice-1",
+    "actions-dice-two": "actions-dice-2",
+    "actions-dice-three": "actions-dice-3",
+    "actions-dice-four": "actions-dice-4",
+    "actions-dice-five": "actions-dice-5",
+    "actions-dice-six": "actions-dice-6",
     "actions-document-new": "actions-document-add",
     "actions-document-open": "actions-document-edit",
     "actions-document-open-read-only": "actions-document-readonly",
