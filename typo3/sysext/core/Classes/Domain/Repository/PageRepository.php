@@ -285,7 +285,7 @@ class PageRepository implements LoggerAwareInterface
         $queryBuilder->select('*')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('uid', (int)$uid),
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$uid, Connection::PARAM_INT)),
                 QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del)
             );
 
@@ -336,7 +336,7 @@ class PageRepository implements LoggerAwareInterface
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $row = $queryBuilder->select('*')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('uid', (int)$uid))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$uid, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchAssociative();
 
