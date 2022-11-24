@@ -17,17 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Tests for EditDocumentController
- */
 class EditDocumentControllerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
