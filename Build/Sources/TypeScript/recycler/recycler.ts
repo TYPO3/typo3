@@ -18,7 +18,7 @@ import '@typo3/backend/element/icon-element';
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
-import Severity from '@typo3/backend/severity';
+import {SeverityEnum} from '@typo3/backend/enum/severity';
 import RegularEvent from '@typo3/core/event/regular-event';
 
 enum RecyclerIdentifiers {
@@ -337,21 +337,27 @@ class Recycler {
       message = this.createMessage(message, [recordTitle, '[' + records[0] + ']']);
     }
 
-    Modal.confirm(TYPO3.lang['modal.delete.header'], message, Severity.error, [
-      {
-        text: TYPO3.lang['button.cancel'],
-        btnClass: 'btn-default',
-        trigger: function(): void {
-          Modal.dismiss();
+    Modal.advanced({
+      title: TYPO3.lang['modal.delete.header'],
+      content: message,
+      severity: SeverityEnum.error,
+      staticBackdrop: true,
+      buttons: [
+        {
+          text: TYPO3.lang['button.cancel'],
+          btnClass: 'btn-default',
+          trigger: function(): void {
+            Modal.dismiss();
+          },
+        }, {
+          text: TYPO3.lang['button.delete'],
+          btnClass: 'btn-danger',
+          action: new DeferredAction(() => {
+            Promise.resolve(this.callAjaxAction('delete', records, isMassDelete));
+          }),
         },
-      }, {
-        text: TYPO3.lang['button.delete'],
-        btnClass: 'btn-danger',
-        action: new DeferredAction(() => {
-          Promise.resolve(this.callAjaxAction('delete', records, isMassDelete));
-        }),
-      },
-    ]);
+      ]
+    });
   }
 
   private undoRecord = (e: Event): void => {
@@ -400,26 +406,32 @@ class Recycler {
       $message = $('<p />').text(messageText);
     }
 
-    Modal.confirm(TYPO3.lang['modal.undo.header'], $message, Severity.ok, [
-      {
-        text: TYPO3.lang['button.cancel'],
-        btnClass: 'btn-default',
-        trigger: function(): void {
-          Modal.dismiss();
+    Modal.advanced({
+      title: TYPO3.lang['modal.undo.header'],
+      content: $message,
+      severity: SeverityEnum.ok,
+      staticBackdrop: true,
+      buttons: [
+        {
+          text: TYPO3.lang['button.cancel'],
+          btnClass: 'btn-default',
+          trigger: function(): void {
+            Modal.dismiss();
+          },
+        }, {
+          text: TYPO3.lang['button.undo'],
+          btnClass: 'btn-success',
+          action: new DeferredAction(() => {
+            Promise.resolve(this.callAjaxAction(
+              'undo',
+              typeof records === 'object' ? records : [records],
+              isMassUndo,
+              $message.find('#undo-recursive').prop('checked'),
+            ));
+          }),
         },
-      }, {
-        text: TYPO3.lang['button.undo'],
-        btnClass: 'btn-success',
-        action: new DeferredAction(() => {
-          Promise.resolve(this.callAjaxAction(
-            'undo',
-            typeof records === 'object' ? records : [records],
-            isMassUndo,
-            $message.find('#undo-recursive').prop('checked'),
-          ));
-        }),
-      },
-    ]);
+      ]
+    });
   }
 
   /**
