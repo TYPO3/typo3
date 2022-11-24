@@ -17,12 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\UnitDeprecated\Form\FormDataProvider;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,18 +28,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaFlexPrepareTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected TcaFlexPrepare $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
         // Suppress cache foo in xml helpers of GeneralUtility
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache(Argument::cetera())->willReturn($cacheFrontendProphecy->reveal());
+        $cacheManager = new CacheManager();
+        $cacheManager->registerCache(new NullFrontend('runtime'));
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
 
         $eventDispatcher = new MockEventDispatcher();
         GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
@@ -50,9 +45,6 @@ class TcaFlexPrepareTest extends UnitTestCase
         $this->subject = new TcaFlexPrepare();
     }
 
-    /**
-     * Tear down
-     */
     protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
