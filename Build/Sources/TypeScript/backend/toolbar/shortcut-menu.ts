@@ -129,7 +129,6 @@ class ShortcutMenu {
       this.refreshMenu();
     }).on('click', Identifiers.shortcutJumpSelector, (evt: JQueryEventObject): void => {
       evt.preventDefault();
-      evt.stopImmediatePropagation();
       const pageId = $(evt.currentTarget).data('pageid');
       if (pageId) {
         ModuleStateStorage.updateWithCurrentMount('web', pageId, true);
