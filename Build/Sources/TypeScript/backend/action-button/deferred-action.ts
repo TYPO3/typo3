@@ -20,15 +20,21 @@ import Icons from '../icons';
 class DeferredAction extends AbstractAction {
   protected callback: () => Promise<any>;
 
-  public async execute(el: HTMLElement): Promise<any> {
+  public async execute(el: HTMLAnchorElement|HTMLButtonElement): Promise<any> {
+    el.dataset.actionLabel = el.innerText;
+    el.classList.add('disabled');
+
     Icons.getIcon('spinner-circle-light', Icons.sizes.small).then((spinner: string): void => {
       el.innerHTML = spinner;
     });
-    return await this.executeCallback();
+    return await this.executeCallback(el);
   }
 
-  private async executeCallback(): Promise<any> {
-    return await this.callback();
+  private async executeCallback(el: HTMLElement): Promise<any> {
+    return await this.callback().finally(() => {
+      el.innerText = el.dataset.actionLabel;
+      el.classList.remove('disabled');
+    });
   }
 }
 

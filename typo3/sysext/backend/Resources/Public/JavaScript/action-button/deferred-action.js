@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import{AbstractAction}from"@typo3/backend/action-button/abstract-action.js";import Icons from"@typo3/backend/icons.js";class DeferredAction extends AbstractAction{async execute(t){return Icons.getIcon("spinner-circle-light",Icons.sizes.small).then((e=>{t.innerHTML=e})),await this.executeCallback()}async executeCallback(){return await this.callback()}}export default DeferredAction;
+import{AbstractAction}from"@typo3/backend/action-button/abstract-action.js";import Icons from"@typo3/backend/icons.js";class DeferredAction extends AbstractAction{async execute(e){return e.dataset.actionLabel=e.innerText,e.classList.add("disabled"),Icons.getIcon("spinner-circle-light",Icons.sizes.small).then((t=>{e.innerHTML=t})),await this.executeCallback(e)}async executeCallback(e){return await this.callback().finally((()=>{e.innerText=e.dataset.actionLabel,e.classList.remove("disabled")}))}}export default DeferredAction;
