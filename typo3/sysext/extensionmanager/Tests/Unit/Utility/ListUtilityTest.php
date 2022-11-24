@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
@@ -28,18 +27,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ListUtilityTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ListUtility
-     */
-    protected $subject;
+    protected ListUtility $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->subject = new ListUtility();
-        $this->subject->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
+        $this->subject->injectEventDispatcher(new NoopEventDispatcher());
         $packageManagerMock = $this->getMockBuilder(PackageManager::class)
             ->disableOriginalConstructor()
             ->getMock();
