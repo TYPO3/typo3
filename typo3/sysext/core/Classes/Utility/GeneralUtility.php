@@ -843,7 +843,7 @@ class GeneralUtility
      */
     public static function intExplode($delimiter, $string, $removeEmptyValues = false, $limit = 0)
     {
-        $result = explode($delimiter, $string) ?: [];
+        $result = explode($delimiter, $string);
         foreach ($result as $key => &$value) {
             if ($removeEmptyValues && ($value === '' || trim($value) === '')) {
                 unset($result[$key]);
@@ -891,7 +891,7 @@ class GeneralUtility
         if ($count <= 1) {
             return [$string];
         }
-        $explodedValues = explode($delimiter, strrev($string), $count) ?: [];
+        $explodedValues = explode($delimiter, strrev($string), $count);
         $explodedValues = array_map('strrev', $explodedValues);
         return array_reverse($explodedValues);
     }
@@ -914,7 +914,7 @@ class GeneralUtility
      */
     public static function trimExplode($delim, $string, $removeEmptyValues = false, $limit = 0): array
     {
-        $result = explode($delim, (string)$string) ?: [];
+        $result = explode($delim, (string)$string);
         if ($removeEmptyValues) {
             // Remove items that are just whitespace, but leave whitespace intact for the rest.
             $result = array_values(array_filter($result, static fn ($item) => trim($item) !== ''));
