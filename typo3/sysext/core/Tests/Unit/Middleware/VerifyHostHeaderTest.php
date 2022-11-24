@@ -17,17 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Middleware;
 
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class VerifyHostHeaderTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -214,49 +211,37 @@ class VerifyHostHeaderTest extends UnitTestCase
     }
 
     /**
-     * @param string $httpHost HTTP_HOST string
-     * @param string $hostNamePattern trusted hosts pattern
      * @test
      * @dataProvider hostnamesNotMatchingTrustedHostsConfigurationDataProvider
      */
     public function processThrowsExceptionForNotAllowedHostnameValues(string $httpHost, string $hostNamePattern): void
     {
+        $serverParams = $_SERVER;
+        $serverParams['HTTP_HOST'] = $httpHost;
+        $subject = new VerifyHostHeader($hostNamePattern);
+        $request = new ServerRequest(serverParams: $serverParams);
+        $requestHandlerMock = $this->createMock(RequestHandlerInterface::class);
+
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1396795884);
 
-        $serverParams = $_SERVER;
-        $serverParams['HTTP_HOST'] = $httpHost;
-
-        $subject = new VerifyHostHeader($hostNamePattern);
-
-        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $requestProphecy->getServerParams()->willReturn($serverParams);
-
-        $requestHandlerProphecy = $this->prophesize(RequestHandlerInterface::class);
-
-        $subject->process($requestProphecy->reveal(), $requestHandlerProphecy->reveal());
+        $subject->process($request, $requestHandlerMock);
     }
 
     /**
-     * @param string $httpHost HTTP_HOST string
-     * @param string $hostNamePattern trusted hosts pattern (not used in this test currently)
      * @test
      * @dataProvider hostnamesNotMatchingTrustedHostsConfigurationDataProvider
      */
-    public function processAllowsAllHostnameValuesIfHostPatternIsSetToAllowAll(string $httpHost, string $hostNamePattern): void
+    public function processAllowsAllHostnameValuesIfHostPatternIsSetToAllowAll(string $httpHost): void
     {
         $serverParams = $_SERVER;
         $serverParams['HTTP_HOST'] = $httpHost;
-
         $subject = new VerifyHostHeader(VerifyHostHeader::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL);
-        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
-        $requestProphecy->getServerParams()->willReturn($serverParams);
+        $request = new ServerRequest(serverParams: $serverParams);
+        $requestHandlerMock = $this->createMock(RequestHandlerInterface::class);
 
-        $responseProphecy = $this->prophesize(ResponseInterface::class);
+        $requestHandlerMock->expects(self::atLeastOnce())->method('handle')->with($request)->willReturn(new Response());
 
-        $requestHandlerProphecy = $this->prophesize(RequestHandlerInterface::class);
-        $requestHandlerProphecy->handle($requestProphecy)->willReturn($responseProphecy->reveal())->shouldBeCalled();
-
-        $subject->process($requestProphecy->reveal(), $requestHandlerProphecy->reveal());
+        $subject->process($request, $requestHandlerMock);
     }
 }
