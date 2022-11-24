@@ -59,9 +59,6 @@ class DataHandlerTest extends UnitTestCase
      */
     protected $backEndUser;
 
-    /**
-     * Set up the tests
-     */
     protected function setUp(): void
     {
         parent::setUp();

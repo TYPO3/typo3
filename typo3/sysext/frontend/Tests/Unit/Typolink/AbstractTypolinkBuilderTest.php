@@ -42,9 +42,6 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
      */
     protected MockObject $frontendControllerMock;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

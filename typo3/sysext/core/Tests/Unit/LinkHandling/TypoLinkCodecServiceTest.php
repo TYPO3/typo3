@@ -24,9 +24,6 @@ class TypoLinkCodecServiceTest extends UnitTestCase
 {
     protected TypoLinkCodecService $subject;
 
-    /**
-     * Set up test subject
-     */
     protected function setUp(): void
     {
         parent::setUp();

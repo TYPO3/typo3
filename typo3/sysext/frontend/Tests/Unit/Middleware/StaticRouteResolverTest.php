@@ -33,9 +33,6 @@ class StaticRouteResolverTest extends UnitTestCase
 {
     protected RequestHandlerInterface $requestHandler;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

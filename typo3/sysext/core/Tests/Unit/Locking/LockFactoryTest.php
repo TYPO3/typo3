@@ -43,9 +43,6 @@ class LockFactoryTest extends UnitTestCase
      */
     protected $strategiesConfigBackup = [];
 
-    /**
-     * Set up the tests
-     */
     protected function setUp(): void
     {
         parent::setUp();

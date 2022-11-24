@@ -34,9 +34,6 @@ class YouTubeRendererTest extends UnitTestCase
      */
     protected $subject;
 
-    /**
-     * Set up the test
-     */
     protected function setUp(): void
     {
         parent::setUp();

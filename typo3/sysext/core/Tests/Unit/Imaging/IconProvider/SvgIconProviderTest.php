@@ -35,9 +35,6 @@ class SvgIconProviderTest extends UnitTestCase
      */
     protected $icon;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

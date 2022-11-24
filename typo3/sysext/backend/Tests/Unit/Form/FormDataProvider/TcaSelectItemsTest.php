@@ -48,9 +48,6 @@ class TcaSelectItemsTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

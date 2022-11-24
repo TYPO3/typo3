@@ -58,9 +58,6 @@ class TranslationServiceTest extends UnitTestCase
      */
     protected $store;
 
-    /**
-     * Set up
-     */
     public function setUp(): void
     {
         $packageManagerProphecy = $this->prophesize(PackageManager::class);

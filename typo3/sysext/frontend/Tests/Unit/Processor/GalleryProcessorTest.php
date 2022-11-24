@@ -34,9 +34,6 @@ class GalleryProcessorTest extends UnitTestCase
      */
     protected MockObject $contentObjectRenderer;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

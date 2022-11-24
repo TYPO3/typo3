@@ -38,9 +38,6 @@ class ResourceFactoryTest extends UnitTestCase
 
     protected array $filesCreated = [];
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

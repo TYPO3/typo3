@@ -35,9 +35,6 @@ class ServiceProviderRegistryTest extends UnitTestCase
     /** @var ObjectProphecy<PackageManager> */
     protected ObjectProphecy $packageManagerProphecy;
 
-    /**
-     * Set up this testcase
-     */
     protected function setUp(): void
     {
         parent::setUp();

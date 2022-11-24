@@ -47,9 +47,6 @@ class FlexFormToolsTest extends FunctionalTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * Set up
-     */
     public function setUp(): void
     {
         parent::setUp();

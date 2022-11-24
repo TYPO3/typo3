@@ -28,9 +28,6 @@ class WorkspaceServiceTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

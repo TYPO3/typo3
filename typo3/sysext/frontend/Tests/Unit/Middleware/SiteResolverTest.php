@@ -45,9 +45,6 @@ class SiteResolverTest extends UnitTestCase
     protected RequestHandlerInterface $siteFoundRequestHandler;
     protected string $originalLocale;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

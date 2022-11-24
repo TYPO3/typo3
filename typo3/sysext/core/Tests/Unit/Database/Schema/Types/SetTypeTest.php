@@ -24,9 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SetTypeTest extends UnitTestCase
 {
-    /**
-     * Set up the test subject
-     */
     protected function setUp(): void
     {
         parent::setUp();

@@ -24,9 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class Typo3StatusTest extends UnitTestCase
 {
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

@@ -34,9 +34,6 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
     protected SchemaColumnDefinitionListener $subject;
     protected Connection&MockObject $connectionMock;
 
-    /**
-     * Set up the test subject
-     */
     protected function setUp(): void
     {
         parent::setUp();

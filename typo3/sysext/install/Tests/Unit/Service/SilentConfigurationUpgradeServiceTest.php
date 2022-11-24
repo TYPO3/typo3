@@ -46,9 +46,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     protected $backupPackageManager;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();

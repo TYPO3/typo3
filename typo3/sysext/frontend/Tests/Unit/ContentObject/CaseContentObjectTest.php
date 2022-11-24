@@ -33,9 +33,6 @@ class CaseContentObjectTest extends UnitTestCase
 
     protected CaseContentObject $subject;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

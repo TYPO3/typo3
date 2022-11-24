@@ -37,9 +37,6 @@ class RedisBackendTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         if (!getenv('typo3TestingRedisHost')) {

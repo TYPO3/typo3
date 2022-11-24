@@ -24,9 +24,6 @@ class StateTest extends UnitTestCase
 {
     public const TABLE_NAME = 'tx_test_table';
 
-    /**
-     * Set up the tests
-     */
     protected function setUp(): void
     {
         parent::setUp();

@@ -33,9 +33,6 @@ class ObjectAccessTest extends UnitTestCase
 
     protected DummyClassWithGettersAndSetters $dummyObject;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

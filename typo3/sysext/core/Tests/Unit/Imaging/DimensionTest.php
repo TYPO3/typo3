@@ -30,9 +30,6 @@ class DimensionTest extends UnitTestCase
     protected int $width = 32;
     protected int $height = 32;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

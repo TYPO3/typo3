@@ -31,9 +31,6 @@ class FileSpoolTest extends UnitTestCase
 
     protected ?FileSpool $subject;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

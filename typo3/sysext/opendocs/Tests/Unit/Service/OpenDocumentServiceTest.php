@@ -27,9 +27,6 @@ class OpenDocumentServiceTest extends UnitTestCase
     protected OpenDocumentService $subject;
     protected MockObject&BackendUserAuthentication $backendUser;
 
-    /**
-     * Set up this test case
-     */
     protected function setUp(): void
     {
         parent::setUp();

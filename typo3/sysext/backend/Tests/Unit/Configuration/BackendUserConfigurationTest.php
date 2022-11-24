@@ -27,9 +27,6 @@ class BackendUserConfigurationTest extends UnitTestCase
     protected BackendUserConfiguration $backendUserConfiguration;
     protected BackendUserAuthentication&MockObject $backendUserMock;
 
-    /**
-     * Set up this testcase
-     */
     protected function setUp(): void
     {
         parent::setUp();

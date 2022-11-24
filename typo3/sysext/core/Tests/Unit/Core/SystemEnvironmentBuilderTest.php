@@ -31,9 +31,6 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
      */
     protected $subject;
 
-    /**
-     * Set up testcase
-     */
     protected function setUp(): void
     {
         parent::setUp();

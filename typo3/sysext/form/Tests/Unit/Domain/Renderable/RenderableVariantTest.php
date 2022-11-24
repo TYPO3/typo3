@@ -25,9 +25,6 @@ class RenderableVariantTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * Set up
-     */
     public function setUp(): void
     {
         parent::setUp();

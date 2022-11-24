@@ -36,9 +36,6 @@ class ConnectionMigratorTest extends UnitTestCase
     protected AccessibleObjectInterface&MockObject $subject;
     protected int $maxIdentifierLength = -1;
 
-    /**
-     * Set up the test subject
-     */
     protected function setUp(): void
     {
         parent::setUp();

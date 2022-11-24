@@ -34,9 +34,6 @@ class TcaFlexPrepareTest extends UnitTestCase
 
     protected TcaFlexPrepare $subject;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

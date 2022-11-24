@@ -39,9 +39,6 @@ class ImageContentObjectTest extends UnitTestCase
      */
     protected $subject;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

@@ -35,9 +35,6 @@ class VimeoHelperTest extends UnitTestCase
 
     protected ?string $extension;
 
-    /**
-     * Set up the test
-     */
     protected function setUp(): void
     {
         parent::setUp();

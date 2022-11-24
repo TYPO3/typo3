@@ -32,9 +32,6 @@ class ApcuBackendTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

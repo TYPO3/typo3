@@ -128,9 +128,6 @@ class ContentObjectRendererTest extends UnitTestCase
 
     protected bool $backupEnvironment = true;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

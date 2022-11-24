@@ -31,9 +31,6 @@ class ContentDataProcessorTest extends UnitTestCase
     protected Container $container;
     protected MockObject&DataProcessorRegistry $dataProcessorRegistryMock;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();

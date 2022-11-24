@@ -37,9 +37,6 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
 
     protected RequestHandlerInterface $siteFoundRequestHandler;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();
