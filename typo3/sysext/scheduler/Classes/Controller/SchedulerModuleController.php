@@ -403,7 +403,7 @@ class SchedulerModuleController
             'task_group' => (int)($parsedBody['task_group'] ?? 0),
             'type' => (int)($parsedBody['type'] ?? AbstractTask::TYPE_RECURRING),
             'start' => $parsedBody['start'] ?? $this->context->getAspect('date')->get('timestamp'),
-            'end' => $parsedBody['start'] ?? 0,
+            'end' => $parsedBody['end'] ?? 0,
             'frequency' => $parsedBody['frequency'] ?? '',
             'multiple' => (bool)($parsedBody['multiple'] ?? false),
             'description' => $parsedBody['description'] ?? '',
@@ -794,7 +794,7 @@ class SchedulerModuleController
                 $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidStartDate'), ContextualFeedbackSeverity::ERROR);
             }
         }
-        if ($type === AbstractTask::TYPE_RECURRING && $endTime < $startTime) {
+        if ($type === AbstractTask::TYPE_RECURRING && $endTime > 0 && $endTime < $startTime) {
             $result = false;
             $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.endDateSmallerThanStartDate'), ContextualFeedbackSeverity::ERROR);
         }

@@ -24,7 +24,7 @@
             <label for="tceforms-datetimefield-task_end_row"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.end"/></label>
             <div class="form-control-wrap">
                 <div class="input-group" id="tceforms-datetimefield-task_end_row-wrapper">
-                    <f:variable name="formattedEnd"><f:if condition="{currentData.end} != 0"><f:then>{f:format.date(format:'H:i d-m-Y', date:currentData.end)}</f:then><f:else></f:else></f:if></f:variable>
+                    <f:variable name="formattedEnd"><f:if condition="{currentData.end}"><f:then>{f:format.date(format:'H:i d-m-Y', date:currentData.end)}</f:then><f:else></f:else></f:if></f:variable>
                     <input
                         name="tx_scheduler[end]_hr"
                         value="{formattedEnd}"
