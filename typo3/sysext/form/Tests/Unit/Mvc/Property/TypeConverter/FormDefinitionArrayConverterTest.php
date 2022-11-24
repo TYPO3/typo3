@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Property\TypeConverter;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionValidationService;
@@ -28,13 +26,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FormDefinitionArrayConverterTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * Set up
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -71,10 +64,10 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
              ],
         ];
 
-        $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, ['getFormDefinitionValidationService', 'retrieveSessionToken'], [], '', false);
-        $formDefinitionValidationService = $this->prophesize(FormDefinitionValidationService::class);
-        $formDefinitionValidationService->validateFormDefinitionProperties(Argument::cetera())->shouldBeCalled();
-        $formDefinitionValidationService->isPropertyValueEqualToHistoricalValue(Argument::cetera())->willReturn(true);
+        $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, ['getFormDefinitionValidationService', 'retrieveSessionToken'], callOriginalConstructor: false);
+        $formDefinitionValidationServiceMock = $this->createMock(FormDefinitionValidationService::class);
+        $formDefinitionValidationServiceMock->expects(self::atLeastOnce())->method('validateFormDefinitionProperties')->with(self::anything());
+        $formDefinitionValidationServiceMock->method('isPropertyValueEqualToHistoricalValue')->with(self::anything())->willReturn(true);
 
         $typeConverter->method(
             'retrieveSessionToken'
@@ -82,7 +75,7 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
 
         $typeConverter->method(
             'getFormDefinitionValidationService'
-        )->willReturn($formDefinitionValidationService->reveal());
+        )->willReturn($formDefinitionValidationServiceMock);
 
         $input = json_encode($data);
         $expected = [
