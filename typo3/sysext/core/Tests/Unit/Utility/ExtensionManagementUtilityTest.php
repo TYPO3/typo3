@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
@@ -36,8 +34,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ExtensionManagementUtilityTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
     protected ?PackageManager $backUpPackageManager;
 
@@ -1336,9 +1332,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCache->expects(self::once())->method('require')->willReturn(false);
         $mockCache->expects(self::once())->method('set')->with(self::anything(), self::stringContains($uniqueStringInTableConfiguration), self::anything());
 
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $eventDispatcher->dispatch(Argument::any())->shouldBeCalled()->willReturnArgument(0);
-        ExtensionManagementUtility::setEventDispatcher($eventDispatcher->reveal());
+        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcherMock->expects(self::atLeastOnce())->method('dispatch')->with(self::anything())->willReturnArgument(0);
+        ExtensionManagementUtility::setEventDispatcher($eventDispatcherMock);
 
         ExtensionManagementUtility::loadBaseTca(true);
     }
