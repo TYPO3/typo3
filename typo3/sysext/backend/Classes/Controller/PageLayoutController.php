@@ -59,17 +59,13 @@ class PageLayoutController
 {
     /**
      * Page uid for which to make the listing
-     *
-     * @internal
      */
-    public int $id;
+    protected int $id = 0;
 
     /**
      * Current page record
-     *
-     * @internal
      */
-    public array $pageinfo;
+    protected array|bool $pageinfo = false;
 
     protected int $currentSelectedLanguage;
     protected array $MOD_MENU;
@@ -77,7 +73,7 @@ class PageLayoutController
     /**
      * @var SiteLanguage[]
      */
-    protected $availableLanguages;
+    protected array $availableLanguages = [];
 
     protected ?ModuleData $moduleData = null;
 
@@ -90,7 +86,19 @@ class PageLayoutController
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly ModuleProvider $moduleProvider,
         protected readonly BackendLayoutRenderer $backendLayoutRenderer,
+        protected readonly BackendLayoutView $backendLayoutView,
     ) {
+    }
+
+    protected function initialize(ServerRequestInterface $request): void
+    {
+        $backendUser = $this->getBackendUser();
+        $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
+        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
+        $this->moduleData = $request->getAttribute('moduleData');
+        $this->pageinfo = BackendUtility::readPageAccess($this->id, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
+        $this->availableLanguages = $request->getAttribute('site')->getAvailableLanguages($backendUser, false, $this->id);
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
     }
 
     /**
@@ -99,16 +107,11 @@ class PageLayoutController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $backendUser = $this->getBackendUser();
+        $this->initialize($request);
         $languageService = $this->getLanguageService();
-        $languageService->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
-
-        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
-        $this->moduleData = $request->getAttribute('moduleData');
-        $pageInfo = BackendUtility::readPageAccess($this->id, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
 
         $view = $this->moduleTemplateFactory->create($request);
-        if ($this->id === 0 || $pageInfo === false) {
+        if ($this->id === 0 || $this->pageinfo === false) {
             // Page uid 0 or no access.
             $view->setTitle($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));
             $view->assignMultiple([
@@ -118,31 +121,19 @@ class PageLayoutController
             return $view->renderResponse('PageLayout/PageModuleNoAccess');
         }
 
-        $this->pageinfo = $pageInfo;
-        $pageLayoutContext = GeneralUtility::makeInstance(PageLayoutContext::class, $this->pageinfo, GeneralUtility::makeInstance(BackendLayoutView::class)->getBackendLayoutForPage($this->id));
-        $this->availableLanguages = $request->getAttribute('site')->getAvailableLanguages($backendUser, false, $this->id);
         $tsConfig = BackendUtility::getPagesTSconfig($this->id);
         $this->menuConfig($request);
         $this->currentSelectedLanguage = (int)$this->moduleData->get('language');
-        $this->addJavaScriptModuleInstructions($this->id, $pageLayoutContext, $this->currentSelectedLanguage);
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
+        $this->addJavaScriptModuleInstructions();
         $this->makeLanguageMenu($view);
         $this->makeActionMenu($view, $tsConfig);
         $this->makeButtons($view, $request, $tsConfig);
         $this->initializeClipboard($request);
         $event = $this->eventDispatcher->dispatch(new ModifyPageLayoutContentEvent($request, $view));
 
-        $configuration = $pageLayoutContext->getDrawingConfiguration();
-        $configuration->setDefaultLanguageBinding(!empty($tsConfig['mod.']['web_layout.']['defLangBinding']));
-        $configuration->setActiveColumns($this->getActiveColumnsArray($pageLayoutContext, $tsConfig));
-        $configuration->setShowHidden((bool)$this->moduleData->get('showHidden'));
-        $configuration->setLanguageColumns($this->MOD_MENU['language']);
-        $configuration->setSelectedLanguageId($this->currentSelectedLanguage);
-        if ((int)$this->moduleData->get('function') === 2) {
-            $configuration->setLanguageMode(true);
-        }
+        $pageLayoutContext = $this->createPageLayoutContext();
         $mainLayoutHtml = $this->backendLayoutRenderer->drawContent($request, $pageLayoutContext);
-        $numberOfHiddenElements = $this->getNumberOfHiddenElements($configuration->getLanguageColumns());
+        $numberOfHiddenElements = $this->getNumberOfHiddenElements($pageLayoutContext->getDrawingConfiguration()->getLanguageColumns());
 
         $view->setTitle($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'), $this->pageinfo['title']);
         $view->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
@@ -153,12 +144,28 @@ class PageLayoutController
             'localizedPageTitle' => $this->getLocalizedPageTitle($this->currentSelectedLanguage, $this->pageinfo),
             'eventContentHtmlTop' => $event->getHeaderContent(),
             'mainContentHtml' => $mainLayoutHtml,
-            'hiddenElementsShowToggle' => ($backendUser->check('tables_select', 'tt_content') && ($numberOfHiddenElements > 0)),
+            'hiddenElementsShowToggle' => ($this->getBackendUser()->check('tables_select', 'tt_content') && ($numberOfHiddenElements > 0)),
             'hiddenElementsState' => (bool)$this->moduleData->get('showHidden'),
             'hiddenElementsCount' => $numberOfHiddenElements,
             'eventContentHtmlBottom' => $event->getFooterContent(),
         ]);
         return $view->renderResponse('PageLayout/PageModule');
+    }
+
+    protected function createPageLayoutContext(): PageLayoutContext
+    {
+        $tsConfig = BackendUtility::getPagesTSconfig($this->id);
+        $pageLayoutContext = GeneralUtility::makeInstance(PageLayoutContext::class, $this->pageinfo, $this->backendLayoutView->getBackendLayoutForPage($this->id));
+        $configuration = $pageLayoutContext->getDrawingConfiguration();
+        $configuration->setDefaultLanguageBinding(!empty($tsConfig['mod.']['web_layout.']['defLangBinding']));
+        $configuration->setActiveColumns($this->getActiveColumnsArray($pageLayoutContext, $tsConfig));
+        $configuration->setShowHidden((bool)$this->moduleData->get('showHidden'));
+        $configuration->setLanguageColumns($this->MOD_MENU['language']);
+        $configuration->setSelectedLanguageId($this->currentSelectedLanguage);
+        if ((int)$this->moduleData->get('function') === 2) {
+            $configuration->setLanguageMode(true);
+        }
+        return $pageLayoutContext;
     }
 
     /**
@@ -176,7 +183,7 @@ class PageLayoutController
                 2 => $languageService->getLL('m_function_2'),
             ],
             'language' => [
-                0 => $languageService->getLL('m_default'),
+                0 => isset($this->availableLanguages[0]) ? $this->availableLanguages[0]->getTitle() : $languageService->getLL('m_default'),
             ],
         ];
 
@@ -185,27 +192,12 @@ class PageLayoutController
         if ($this->id) {
             // Compile language data for pid != 0 only. The language drop-down is not shown on pid 0
             // since pid 0 can't be localized.
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-            $statement = $queryBuilder->select('uid', $GLOBALS['TCA']['pages']['ctrl']['languageField'])
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
-                    )
-                )->executeQuery();
-            while ($pageTranslation = $statement->fetchAssociative()) {
+            $pageTranslations = $this->getExistingPageTranslations();
+            foreach ($pageTranslations as $pageTranslation) {
                 $languageId = $pageTranslation[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
                 if (isset($this->availableLanguages[$languageId])) {
                     $this->MOD_MENU['language'][$languageId] = $this->availableLanguages[$languageId]->getTitle();
                 }
-            }
-            // Override the label
-            if (isset($this->availableLanguages[0])) {
-                $this->MOD_MENU['language'][0] = $this->availableLanguages[0]->getTitle();
             }
 
             // Add special "-1" in case translations of the current page exist
@@ -236,6 +228,64 @@ class PageLayoutController
                 $this->moduleData->set('language', 0);
             }
         }
+    }
+
+    /**
+     * Fetch all records of the current page ID.
+     * Does not do workspace overlays, and also does not check permissions
+     */
+    protected function getExistingPageTranslations(): array
+    {
+        if ($this->id === 0) {
+            return [];
+        }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
+        return $queryBuilder
+            ->select('uid', $GLOBALS['TCA']['pages']['ctrl']['languageField'])
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                    $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
+                )
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+    }
+
+    protected function getLocalizedPageRecord(int $languageId): ?array
+    {
+        if ($languageId === 0) {
+            return null;
+        }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
+        $overlayRecord = $queryBuilder
+            ->select('*')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                    $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    $GLOBALS['TCA']['pages']['ctrl']['languageField'],
+                    $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
+                )
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+        if ($overlayRecord) {
+            BackendUtility::workspaceOL('pages', $overlayRecord, $this->getBackendUser()->workspace);
+        }
+        return is_array($overlayRecord) ? $overlayRecord : null;
     }
 
     /**
@@ -410,15 +460,12 @@ class PageLayoutController
         return $infoBoxes;
     }
 
-    protected function addJavaScriptModuleInstructions(int $pageId, PageLayoutContext $pageLayoutContext, int $currentSelectedLanguage): void
+    protected function addJavaScriptModuleInstructions(): void
     {
         $pageActionsInstruction = JavaScriptModuleInstruction::create('@typo3/backend/page-actions.js');
-        if ($pageLayoutContext->isPageEditable()) {
+        if ($this->isPageEditable($this->currentSelectedLanguage)) {
             $languageOverlayId = 0;
-            $pageLocalizationRecord = BackendUtility::getRecordLocalization('pages', $pageId, $currentSelectedLanguage);
-            if (is_array($pageLocalizationRecord)) {
-                $pageLocalizationRecord = reset($pageLocalizationRecord);
-            }
+            $pageLocalizationRecord = $this->getLocalizedPageRecord($this->currentSelectedLanguage);
             if (!empty($pageLocalizationRecord['uid'])) {
                 $languageOverlayId = $pageLocalizationRecord['uid'];
             }
@@ -458,30 +505,11 @@ class PageLayoutController
         if ($currentSelectedLanguage <= 0) {
             return $pageInfo['title'];
         }
-        $backendUser = $this->getBackendUser();
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $backendUser->workspace));
-        $localizedPage = $queryBuilder
-            ->select('*')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                    $queryBuilder->createNamedParameter($currentSelectedLanguage, Connection::PARAM_INT)
-                )
-            )
-            ->setMaxResults(1)
-            ->executeQuery()
-            ->fetchAssociative();
-        BackendUtility::workspaceOL('pages', $localizedPage);
-        return $localizedPage['title'];
+        $pageLocalizationRecord = $this->getLocalizedPageRecord($currentSelectedLanguage);
+        if (!is_array($pageLocalizationRecord)) {
+            return $pageInfo['title'];
+        }
+        return $pageLocalizationRecord['title'] ?? '';
     }
 
     /**
@@ -498,7 +526,7 @@ class PageLayoutController
         if (!empty($elFromTable) && $this->isContentEditable($this->currentSelectedLanguage)) {
             $pasteItem = (int)substr((string)key($elFromTable), 11);
             $pasteRecord = BackendUtility::getRecordWSOL('tt_content', $pasteItem);
-            $pasteTitle = BackendUtility::getRecordTitle('tt_content', $pasteRecord, false, true);
+            $pasteTitle = BackendUtility::getRecordTitle('tt_content', $pasteRecord);
             $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
                 JavaScriptModuleInstruction::create('@typo3/backend/layout-module/paste.js')
                     ->assign([
@@ -556,7 +584,7 @@ class PageLayoutController
                 ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
                 ->setShowLabelText(true)
                 ->setHref('#');
-            $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+            $buttonBar->addButton($viewButton);
         }
 
         // Shortcut
@@ -607,28 +635,7 @@ class PageLayoutController
             && $this->currentSelectedLanguage > 0
             && $this->isPageEditable($this->currentSelectedLanguage)
         ) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-            $overlayRecord = $queryBuilder
-                ->select('uid')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                        $queryBuilder->createNamedParameter($this->currentSelectedLanguage, Connection::PARAM_INT)
-                    )
-                )
-                ->setMaxResults(1)
-                ->executeQuery()
-                ->fetchAssociative();
-            BackendUtility::workspaceOL('pages', $overlayRecord, $this->getBackendUser()->workspace);
+            $overlayRecord = $this->getLocalizedPageRecord($this->currentSelectedLanguage);
             $url = (string)$this->uriBuilder->buildUriFromRoute(
                 'record_edit',
                 [
@@ -744,7 +751,8 @@ class PageLayoutController
         if ($GLOBALS['TCA']['pages']['ctrl']['adminOnly'] ?? false) {
             return false;
         }
-        return $this->pageinfo !== []
+        return is_array($this->pageinfo)
+            && $this->pageinfo !== []
             && !(bool)($this->pageinfo[$GLOBALS['TCA']['pages']['ctrl']['editlock'] ?? null] ?? false)
             && $backendUser->doesUserHaveAccess($this->pageinfo, Permission::PAGE_EDIT)
             && $backendUser->checkLanguageAccess($languageId)
@@ -759,7 +767,7 @@ class PageLayoutController
         if ($this->getBackendUser()->isAdmin()) {
             return true;
         }
-        return !$this->pageinfo['editlock']
+        return !($this->pageinfo['editlock'] ?? false)
             && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
             && $this->getBackendUser()->check('tables_modify', 'tt_content')
             && $this->getBackendUser()->checkLanguageAccess($languageId);
