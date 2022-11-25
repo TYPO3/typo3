@@ -348,7 +348,7 @@ class Recycler {
         text: TYPO3.lang['button.delete'],
         btnClass: 'btn-danger',
         action: new DeferredAction(() => {
-          return Promise.resolve(this.callAjaxAction('delete', records, isMassDelete));
+          Promise.resolve(this.callAjaxAction('delete', records, isMassDelete));
         }),
       },
     ]);
@@ -411,7 +411,7 @@ class Recycler {
         text: TYPO3.lang['button.undo'],
         btnClass: 'btn-success',
         action: new DeferredAction(() => {
-          return Promise.resolve(this.callAjaxAction(
+          Promise.resolve(this.callAjaxAction(
             'undo',
             typeof records === 'object' ? records : [records],
             isMassUndo,

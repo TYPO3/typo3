@@ -60,6 +60,11 @@ export enum Types {
 
 type ModalCallbackFunction = (modal: ModalElement) => void;
 
+export enum PostActionModalBehavior {
+  KEEP_OPEN,
+  CLOSE
+}
+
 export interface Button {
   text: string;
   active?: boolean;
@@ -176,7 +181,19 @@ export class ModalElement extends LitElement {
     const buttonElement = event.currentTarget as HTMLButtonElement;
     if (button.action) {
       this.activeButton = button;
-      button.action.execute(buttonElement).then((): void => this.bootstrapModal.hide());
+      button.action.execute(buttonElement).then((postActionBehavior: PostActionModalBehavior = PostActionModalBehavior.CLOSE): void => {
+        this.activeButton = null;
+
+        // Safety-net if 3rd party code doesn't provide a valid PostActionModalBehavior
+        const isValidEnumValue = Object.values(PostActionModalBehavior).includes(postActionBehavior as unknown as string);
+        if (!isValidEnumValue) {
+          console.warn(`postActionBehavior ${postActionBehavior} provided but expected any of ${Object.values(PostActionModalBehavior).join(',')}. Falling back to PostActionModalBehavior.CLOSE`);
+          postActionBehavior = PostActionModalBehavior.CLOSE;
+        }
+        if (postActionBehavior === PostActionModalBehavior.CLOSE) {
+          this.bootstrapModal.hide();
+        }
+      });
     } else if (button.trigger) {
       button.trigger(event, this);
     }
