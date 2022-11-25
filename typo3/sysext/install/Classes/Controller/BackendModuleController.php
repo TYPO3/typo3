@@ -112,7 +112,7 @@ class BackendModuleController
      */
     public function maintenanceAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->getBackendUserConfirmationRedirect('maintenance')
+        return $this->getBackendUserConfirmationRedirect('maintenance', $request)
             ?? $this->setAuthorizedAndRedirect('maintenance', $request);
     }
 
@@ -121,7 +121,7 @@ class BackendModuleController
      */
     public function settingsAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->getBackendUserConfirmationRedirect('settings')
+        return $this->getBackendUserConfirmationRedirect('settings', $request)
             ?? $this->setAuthorizedAndRedirect('settings', $request);
     }
 
@@ -130,7 +130,7 @@ class BackendModuleController
      */
     public function upgradeAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->getBackendUserConfirmationRedirect('upgrade')
+        return $this->getBackendUserConfirmationRedirect('upgrade', $request)
             ?? $this->setAuthorizedAndRedirect('upgrade', $request);
     }
 
@@ -139,16 +139,16 @@ class BackendModuleController
      */
     public function environmentAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->getBackendUserConfirmationRedirect('environment')
+        return $this->getBackendUserConfirmationRedirect('environment', $request)
             ?? $this->setAuthorizedAndRedirect('environment', $request);
     }
 
     /**
      * Creates redirect response to backend user confirmation (if required).
      */
-    protected function getBackendUserConfirmationRedirect(string $targetController): ?ResponseInterface
+    protected function getBackendUserConfirmationRedirect(string $targetController, ServerRequestInterface $request): ?ResponseInterface
     {
-        if ($this->getSessionService()->isAuthorizedBackendUserSession()) {
+        if ($this->getSessionService()->isAuthorizedBackendUserSession($request)) {
             return null;
         }
         if (Environment::getContext()->isDevelopment()) {

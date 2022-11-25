@@ -120,10 +120,10 @@ class Maintenance implements MiddlewareInterface
 
         // the backend user has an active session but the admin / maintainer
         // rights have been revoked or the user was disabled or deleted in the meantime
-        if ($session->isAuthorizedBackendUserSession() && !$session->hasActiveBackendUserRoleAndSession()) {
+        if ($session->isAuthorizedBackendUserSession($request) && !$session->hasActiveBackendUserRoleAndSession()) {
             // log out the user and destroy the session
             $session->resetSession();
-            $session->destroySession();
+            $session->destroySession($request);
             $formProtection = $this->formProtectionFactory->createFromRequest($request);
             $formProtection->clean();
 
@@ -133,13 +133,13 @@ class Maintenance implements MiddlewareInterface
         if ($actionName === 'preAccessCheck') {
             $response = new JsonResponse([
                 'installToolLocked' => !$this->checkEnableInstallToolFile(),
-                'isAuthorized' => $session->isAuthorized(),
+                'isAuthorized' => $session->isAuthorized($request),
             ]);
         } elseif ($actionName === 'checkLogin') {
-            if (!$this->checkEnableInstallToolFile() && !$session->isAuthorizedBackendUserSession()) {
+            if (!$this->checkEnableInstallToolFile() && !$session->isAuthorizedBackendUserSession($request)) {
                 throw new \RuntimeException('Not authorized', 1505563556);
             }
-            if ($session->isAuthorized()) {
+            if ($session->isAuthorized($request)) {
                 $session->refreshSession();
                 $response = new JsonResponse([
                     'success' => true,
@@ -158,7 +158,7 @@ class Maintenance implements MiddlewareInterface
                 throw new \RuntimeException('Not authorized', 1505567462);
             }
             $this->checkSessionToken($request, $session);
-            $this->checkSessionLifetime($session);
+            $this->checkSessionLifetime($request, $session);
             $password = $request->getParsedBody()['install']['password'] ?? null;
             $authService = new AuthenticationService($session);
             if ($authService->loginWithPassword($password, $request)) {
@@ -194,7 +194,7 @@ class Maintenance implements MiddlewareInterface
             }
             $formProtection = $this->formProtectionFactory->createFromRequest($request);
             $formProtection->clean();
-            $session->destroySession();
+            $session->destroySession($request);
             $response = new JsonResponse([
                 'success' => true,
             ]);
@@ -206,8 +206,8 @@ class Maintenance implements MiddlewareInterface
             $session->initializeSession();
             if (
                 !$this->checkSessionToken($request, $session)
-                || !$this->checkSessionLifetime($session)
-                || !$session->isAuthorized()
+                || !$this->checkSessionLifetime($request, $session)
+                || !$session->isAuthorized($request)
             ) {
                 return new HtmlResponse('', 403);
             }
@@ -298,9 +298,9 @@ class Maintenance implements MiddlewareInterface
      *
      * @return bool True if session lifetime is OK
      */
-    protected function checkSessionLifetime(SessionService $session): bool
+    protected function checkSessionLifetime(ServerRequestInterface $request, SessionService $session): bool
     {
-        $isExpired = $session->isExpired();
+        $isExpired = $session->isExpired($request);
         if ($isExpired) {
             // Session expired, log out user, start new session
             $session->resetSession();

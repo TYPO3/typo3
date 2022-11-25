@@ -44,10 +44,10 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
         $tsfe = $this->getTypoScriptFrontendController();
         return new ModuleData(
             [
-                'post' => $_POST,
-                'get' => $_GET,
-                'cookie' => $_COOKIE,
-                'server' => $_SERVER,
+                'post' => $request->getParsedBody(),
+                'get' => $request->getQueryParams(),
+                'cookie' => $request->getCookieParams(),
+                'server' => $request->getServerParams(),
                 'info' => [
                     'pageUid' => $tsfe->id,
                     'pageType' => $tsfe->type,

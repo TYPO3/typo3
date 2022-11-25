@@ -101,7 +101,8 @@ Public Methods within `UserSessionManager`
 | createFromGlobalCookieOrAnonymous($cookieName)                | Creates and returns a session from a global cookie (:php:`$_COOKIE`). |
 |                                                               | If no cookie can be found for the given name, an anonymous session    |
 |                                                               | will be returned.                                                     |
-|                                                               | It is recommended to use the PSR-7 Request based method instead.      |
+|                                                               | It is recommended to use the PSR-7 Request based method instead,      |
+|                                                               | as this method is scheduled for removal in TYPO3 v13.0.               |
 +---------------------------------------------------------------+-----------------------------------------------------------------------+
 | createAnonymousSession()                                      | Creates and returns an anonymous session object (not persisted).      |
 +---------------------------------------------------------------+-----------------------------------------------------------------------+

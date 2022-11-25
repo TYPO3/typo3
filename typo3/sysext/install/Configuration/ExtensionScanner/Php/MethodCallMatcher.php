@@ -5379,4 +5379,11 @@ return [
             'Deprecation-99075-Fe_usersAndFe_groupsTSconfig.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Session\UserSessionManager->createFromGlobalCookieOrAnonymous' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-99201-UserSessionManager-createFromGlobalCookieOrAnonymous.rst',
+        ],
+    ],
 ];

@@ -353,7 +353,7 @@ class LoginController
         // If no cookie has been set previously, we tell people that this is a problem.
         // This assumes that a cookie-setting script (like this one) has been hit at
         // least once prior to this instance.
-        if (!isset($_COOKIE[BackendUserAuthentication::getCookieName()])) {
+        if (!isset($request->getCookieParams()[BackendUserAuthentication::getCookieName()])) {
             if ($this->submitValue === 'setCookie') {
                 // we tried it a second time but still no cookie
                 throw new \RuntimeException('Login-error: Yeah, that\'s a classic. No cookies, no TYPO3. ' .

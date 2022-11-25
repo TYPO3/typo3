@@ -224,7 +224,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
     public function canLoadExistingAuthenticatedSession(): void
     {
         $uniqueSessionId = StringUtility::getUniqueId('test');
-        $_COOKIE['fe_typo_user'] = $uniqueSessionId;
         $currentTime = $GLOBALS['EXEC_TIME'];
 
         // Main session backend setup

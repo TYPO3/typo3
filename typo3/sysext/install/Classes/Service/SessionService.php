@@ -15,12 +15,14 @@
 
 namespace TYPO3\CMS\Install\Service;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
+use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\Session\Backend\HashableSessionBackendInterface;
@@ -126,9 +128,10 @@ class SessionService implements SingletonInterface
     /**
      * Destroys a session
      */
-    public function destroySession()
+    public function destroySession(?ServerRequestInterface $request)
     {
-        if ($this->hasSessionCookie()) {
+        $request = $request ?? ServerRequestFactory::fromGlobals();
+        if ($this->hasSessionCookie($request)) {
             $this->initializeSession();
             $_SESSION = [];
             $params = session_get_cookie_params();
@@ -168,11 +171,11 @@ class SessionService implements SingletonInterface
     }
 
     /**
-     * Checks whether whether is session cookie is set
+     * Checks whether is session cookie is set
      */
-    public function hasSessionCookie(): bool
+    public function hasSessionCookie(ServerRequestInterface $request): bool
     {
-        return isset($_COOKIE[$this->cookieName]);
+        return isset($request->getCookieParams()[$this->cookieName]);
     }
 
     /**
@@ -225,16 +228,16 @@ class SessionService implements SingletonInterface
      *
      * @return bool TRUE if this session has been authorized before (by a correct password)
      */
-    public function isAuthorized()
+    public function isAuthorized(ServerRequestInterface $request)
     {
-        if (!$this->hasSessionCookie()) {
+        if (!$this->hasSessionCookie($request)) {
             return false;
         }
         $this->initializeSession();
         if (empty($_SESSION['authorized'])) {
             return false;
         }
-        return !$this->isExpired();
+        return !$this->isExpired($request);
     }
 
     /**
@@ -242,16 +245,16 @@ class SessionService implements SingletonInterface
      *
      * @return bool TRUE if this session has been authorized before and initialized by a backend system maintainer
      */
-    public function isAuthorizedBackendUserSession(): bool
+    public function isAuthorizedBackendUserSession(ServerRequestInterface $request): bool
     {
-        if (!$this->hasSessionCookie()) {
+        if (!$this->hasSessionCookie($request)) {
             return false;
         }
         $this->initializeSession();
         if (empty($_SESSION['authorized']) || empty($_SESSION['isBackendSession'])) {
             return false;
         }
-        return !$this->isExpired();
+        return !$this->isExpired($request);
     }
 
     /**
@@ -308,9 +311,9 @@ class SessionService implements SingletonInterface
      *
      * @return bool TRUE if an authorized session exists, but is expired
      */
-    public function isExpired()
+    public function isExpired(ServerRequestInterface $request)
     {
-        if (!$this->hasSessionCookie()) {
+        if (!$this->hasSessionCookie($request)) {
             // Session never existed, means it is not "expired"
             return false;
         }

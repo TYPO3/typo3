@@ -47,11 +47,11 @@ class RequestInformation extends AbstractSubModule implements DataProviderInterf
     {
         return new ModuleData(
             [
-                'post' => $_POST,
-                'get' => $_GET,
-                'cookie' => $_COOKIE,
+                'post' => $request->getParsedBody(),
+                'get' => $request->getQueryParams(),
+                'cookie' => $request->getCookieParams(),
                 'session' => isset($_SESSION) ? $_SESSION : null,
-                'server' => $_SERVER,
+                'server' => $request->getServerParams(),
             ]
         );
     }

@@ -76,7 +76,7 @@ class Installer implements MiddlewareInterface
             // With main folder layout available, sessions can be handled
             $session = new SessionService();
             $session->startSession();
-            if ($session->isExpired()) {
+            if ($session->isExpired($request)) {
                 $session->refreshSession();
             }
             $postValues = $request->getParsedBody()['install'] ?? [];
@@ -111,7 +111,7 @@ class Installer implements MiddlewareInterface
 
             if ($actionName === 'executeDefaultConfiguration') {
                 // Executing last step cleans session
-                $session->destroySession();
+                $session->destroySession($request);
             }
         }
 
