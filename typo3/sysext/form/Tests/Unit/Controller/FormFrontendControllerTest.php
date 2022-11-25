@@ -17,11 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Controller;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,16 +31,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FormFrontendControllerTest extends UnitTestCase
 {
-    use ProphecyTrait;
     public function setUp(): void
     {
         parent::setUp();
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheFrontendProphecy->reveal());
-        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+        $cacheManager = new CacheManager();
+        $cacheManager->registerCache(new NullFrontend('runtime'));
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
     }
 
     public function tearDown(): void
@@ -60,8 +54,8 @@ class FormFrontendControllerTest extends UnitTestCase
             'dummy',
         ], [], '', false);
 
-        $configurationServiceProphecy = $this->prophesize(ConfigurationService::class);
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationServiceProphecy->reveal());
+        $configurationServiceMock = $this->createMock(ConfigurationService::class);
+        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationServiceMock);
 
         $sheetIdentifier = md5(
             implode('', [
@@ -114,7 +108,7 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $mockController->_set('configurationManager', $frontendConfigurationManager);
 
-        $configurationServiceProphecy->getPrototypeConfiguration(Argument::cetera())->willReturn([
+        $configurationServiceMock->method('getPrototypeConfiguration')->with(self::anything())->willReturn([
             'finishersDefinition' => [
                 'EmailToReceiver' => [
                     'FormEngine' => [
@@ -193,8 +187,8 @@ class FormFrontendControllerTest extends UnitTestCase
             'dummy',
         ], [], '', false);
 
-        $configurationServiceProphecy = $this->prophesize(ConfigurationService::class);
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationServiceProphecy->reveal());
+        $configurationServiceMock = $this->createMock(ConfigurationService::class);
+        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationServiceMock);
 
         $sheetIdentifier = md5(
             implode('', [
@@ -247,7 +241,7 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $mockController->_set('configurationManager', $frontendConfigurationManager);
 
-        $configurationServiceProphecy->getPrototypeConfiguration(Argument::cetera())->willReturn([
+        $configurationServiceMock->method('getPrototypeConfiguration')->with(self::anything())->willReturn([
             'finishersDefinition' => [
                 'EmailToReceiver' => [
                     'FormEngine' => [
@@ -349,8 +343,8 @@ class FormFrontendControllerTest extends UnitTestCase
             'dummy',
         ], [], '', false);
 
-        $configurationServiceProphecy = $this->prophesize(ConfigurationService::class);
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationServiceProphecy->reveal());
+        $configurationServiceMock = $this->createMock(ConfigurationService::class);
+        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationServiceMock);
 
         $sheetIdentifier = md5(
             implode('', [
@@ -407,7 +401,7 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $mockController->_set('configurationManager', $frontendConfigurationManager);
 
-        $configurationServiceProphecy->getPrototypeConfiguration(Argument::cetera())->willReturn([
+        $configurationServiceMock->method('getPrototypeConfiguration')->with(self::anything())->willReturn([
             'finishersDefinition' => [
                 'EmailToReceiver' => [
                     'FormEngine' => [
