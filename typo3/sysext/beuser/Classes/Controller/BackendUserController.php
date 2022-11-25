@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder as BackendUriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Beuser\Domain\Dto\BackendUserGroup;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
@@ -373,11 +374,27 @@ class BackendUserController extends ActionController
 
     /**
      * Displays all BackendUserGroups
+     *
+     * @param BackendUserGroup|null $userGroupDto
      */
-    public function groupsAction(int $currentPage = 1): ResponseInterface
+    public function groupsAction(BackendUserGroup $userGroupDto = null, int $currentPage = 1, string $operation = ''): ResponseInterface
     {
-        /** @var QueryResultInterface $backendUsers */
-        $backendUsers = $this->backendUserGroupRepository->findAll();
+        $backendUser = $this->getBackendUser();
+
+        if ($operation === 'reset-filters') {
+            $this->moduleData->set('userGroupDto', []);
+            $userGroupDto = null;
+        }
+
+        if ($userGroupDto === null) {
+            $userGroupDto = BackendUserGroup::fromUc((array)$this->moduleData->get('userGroupDto', []));
+        } else {
+            $this->moduleData->set('userGroupDto', $userGroupDto->forUc());
+        }
+
+        $backendUser->pushModuleData($this->moduleData->getModuleIdentifier(), $this->moduleData->toArray());
+
+        $backendUsers = $this->backendUserGroupRepository->findByFilter($userGroupDto);
         $paginator = new QueryResultPaginator($backendUsers, $currentPage, 50);
         $pagination = new SimplePagination($paginator);
         $compareGroupUidList = array_keys((array)$this->moduleData->get('compareGroupUidList', []));
@@ -390,6 +407,7 @@ class BackendUserController extends ActionController
                     return 1;
                 }, array_flip($compareGroupUidList)),
                 'compareGroupList' => !empty($compareGroupUidList) ? $this->backendUserGroupRepository->findByUidList($compareGroupUidList) : [],
+                'userGroupDto' => $userGroupDto,
             ]
         );
 

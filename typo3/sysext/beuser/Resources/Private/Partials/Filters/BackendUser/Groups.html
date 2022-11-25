@@ -1,0 +1,15 @@
+<f:form action="groups" objectName="userGroupDto" object="{userGroupDto}">
+    <div class="row row-cols-auto align-items-end g-3 mb-4">
+        <div class="col">
+            <label for="tx_Beugroups_title" class="form-label"><f:translate key="userGroupTitle" /></label>
+            <f:form.textfield
+                id="tx_Beugroups_title"
+                class="form-control"
+                property="title"/>
+        </div>
+        <div class="col">
+            <f:form.button type="submit" name="operation" value="filter" class="btn btn-light">{f:translate(key: 'filter')}</f:form.button>
+            <f:form.button type="submit" name="operation" value="reset-filters" class="btn btn-link">{f:translate(key: 'reset')}</f:form.button>
+        </div>
+    </div>
+</f:form>

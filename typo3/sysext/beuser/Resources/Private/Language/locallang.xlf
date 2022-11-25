@@ -9,6 +9,9 @@
 			<trans-unit id="userName" resname="userName">
 				<source>Username</source>
 			</trans-unit>
+			<trans-unit id="userGroupTitle" resname="userGroupTitle">
+				<source>Grouptitle or group ID</source>
+			</trans-unit>
 			<trans-unit id="realName" resname="realName">
 				<source>Real Name</source>
 			</trans-unit>

@@ -52,6 +52,9 @@
         <h3>{f:translate(key: 'section.allUserGroups', default: 'All User Groups')}</h3>
     </f:if>
 
+    <f:render partial="Filters/BackendUser/Groups" arguments="{userGroupDto: userGroupDto, backendUserGroups: backendUserGroups}" />
+
     <f:render partial="BackendUserGroup/PaginatedList" arguments="{_all}" />
+
 </f:section>
 </html>
