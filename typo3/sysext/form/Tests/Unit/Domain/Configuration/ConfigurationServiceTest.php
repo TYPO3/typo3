@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Configuration;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
@@ -28,8 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ConfigurationServiceTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -41,8 +38,8 @@ class ConfigurationServiceTest extends UnitTestCase
      */
     public function getPrototypeConfigurationReturnsPrototypeConfiguration(): void
     {
-        $configurationManager = $this->prophesize(ConfigurationManagerInterface::class);
-        $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form')
+        $configurationManagerMock = $this->createMock(ConfigurationManagerInterface::class);
+        $configurationManagerMock->method('getConfiguration')->with(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form')
             ->willReturn([
                 'prototypes' => [
                     'standard' => [
@@ -50,7 +47,7 @@ class ConfigurationServiceTest extends UnitTestCase
                     ],
                 ],
             ]);
-        $configurationService = new ConfigurationService($configurationManager->reveal());
+        $configurationService = new ConfigurationService($configurationManagerMock);
 
         $expected = [
             'key' => 'value',
@@ -64,14 +61,14 @@ class ConfigurationServiceTest extends UnitTestCase
      */
     public function getPrototypeConfigurationThrowsExceptionIfNoPrototypeFound(): void
     {
-        $configurationManager = $this->prophesize(ConfigurationManagerInterface::class);
-        $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form')
+        $configurationManagerMock = $this->createMock(ConfigurationManagerInterface::class);
+        $configurationManagerMock->method('getConfiguration')->with(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form')
             ->willReturn([
                 'prototypes' => [
                     'noStandard' => [],
                 ],
             ]);
-        $configurationService = new ConfigurationService($configurationManager->reveal());
+        $configurationService = new ConfigurationService($configurationManagerMock);
 
         $this->expectException(PrototypeNotFoundException::class);
         $this->expectExceptionCode(1475924277);
@@ -84,8 +81,8 @@ class ConfigurationServiceTest extends UnitTestCase
      */
     public function getSelectablePrototypeNamesDefinedInFormEditorSetupReturnsPrototypes(): void
     {
-        $configurationManager = $this->prophesize(ConfigurationManagerInterface::class);
-        $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form')
+        $configurationManagerMock = $this->createMock(ConfigurationManagerInterface::class);
+        $configurationManagerMock->method('getConfiguration')->with(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form')
             ->willReturn([
                 'formManager' => [
                     'selectablePrototypesConfiguration' => [
@@ -101,7 +98,7 @@ class ConfigurationServiceTest extends UnitTestCase
                     ],
                 ],
             ]);
-        $configurationService = new ConfigurationService($configurationManager->reveal());
+        $configurationService = new ConfigurationService($configurationManagerMock);
 
         $expected = [
             'standard',
