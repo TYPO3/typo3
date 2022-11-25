@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
@@ -31,8 +28,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AbstractFinisherTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -98,9 +93,7 @@ class AbstractFinisherTest extends UnitTestCase
             'foo1' => false,
         ]);
 
-        $expected = false;
-
-        self::assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'foo1'));
+        self::assertFalse($mockAbstractFinisher->_call('parseOption', 'foo1'));
     }
 
     /**
@@ -131,18 +124,17 @@ class AbstractFinisherTest extends UnitTestCase
             'subject' => $expected,
         ]);
 
-        $finisherContextProphecy = $this->prophesize(FinisherContext::class);
+        $finisherContextMock = $this->createMock(FinisherContext::class);
 
-        $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
-        $formRuntimeProphecy->offsetExists(Argument::cetera())->willReturn(true);
-        $formRuntimeProphecy->offsetGet(Argument::cetera())->willReturn(null);
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $formRuntimeMock->method('offsetExists')->with(self::anything())->willReturn(true);
+        $formRuntimeMock->method('offsetGet')->with(self::anything())->willReturn(null);
 
-        $finisherContextProphecy->getFormRuntime(Argument::cetera())
-            ->willReturn($formRuntimeProphecy->reveal());
-        $finisherContextProphecy->getFinisherVariableProvider(Argument::cetera())
+        $finisherContextMock->method('getFormRuntime')->willReturn($formRuntimeMock);
+        $finisherContextMock->method('getFinisherVariableProvider')
             ->willReturn(new FinisherVariableProvider());
 
-        $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
+        $mockAbstractFinisher->_set('finisherContext', $finisherContextMock);
 
         self::assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
     }
@@ -178,16 +170,15 @@ class AbstractFinisherTest extends UnitTestCase
             'subject' => $expected,
         ]);
 
-        $finisherContextProphecy = $this->prophesize(FinisherContext::class);
+        $finisherContextMock = $this->createMock(FinisherContext::class);
 
-        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            $elementIdentifier => '',
-        ]);
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
+        $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn('');
 
-        $finisherContextProphecy->getFormRuntime(Argument::cetera())
-            ->willReturn($formRuntimeProphecy->reveal());
+        $finisherContextMock->method('getFormRuntime')->willReturn($formRuntimeMock);
 
-        $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
+        $mockAbstractFinisher->_set('finisherContext', $finisherContextMock);
 
         self::assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
     }
@@ -224,16 +215,15 @@ class AbstractFinisherTest extends UnitTestCase
             'subject' => '',
         ]);
 
-        $finisherContextProphecy = $this->prophesize(FinisherContext::class);
+        $finisherContextMock = $this->createMock(FinisherContext::class);
 
-        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            $elementIdentifier => $elementValue,
-        ]);
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
+        $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn($elementValue);
 
-        $finisherContextProphecy->getFormRuntime(Argument::cetera())
-            ->willReturn($formRuntimeProphecy->reveal());
+        $finisherContextMock->method('getFormRuntime')->willReturn($formRuntimeMock);
 
-        $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
+        $mockAbstractFinisher->_set('finisherContext', $finisherContextMock);
 
         self::assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
     }
@@ -250,12 +240,12 @@ class AbstractFinisherTest extends UnitTestCase
             false
         );
 
-        $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
 
         $input = ['bar', 'foobar', ['x', 'y']];
         $expected = ['bar', 'foobar', ['x', 'y']];
 
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
     /**
@@ -270,12 +260,12 @@ class AbstractFinisherTest extends UnitTestCase
             false
         );
 
-        $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
 
         $input = 'foobar';
         $expected = 'foobar';
 
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
     /**
@@ -294,11 +284,11 @@ class AbstractFinisherTest extends UnitTestCase
         $input = '{' . $elementIdentifier . '}';
         $expected = 'element-value';
 
-        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            $elementIdentifier => $expected,
-        ]);
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
+        $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn($expected);
 
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
     /**
@@ -321,12 +311,17 @@ class AbstractFinisherTest extends UnitTestCase
         $input = '{' . $elementIdentifier1 . '},{' . $elementIdentifier2 . '}';
         $expected = $elementValue1 . ',' . $elementValue2;
 
-        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            $elementIdentifier1 => $elementValue1,
-            $elementIdentifier2 => $elementValue2,
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $formRuntimeMock->method('offsetExists')->willReturnMap([
+            [$elementIdentifier1, true],
+            [$elementIdentifier2, true],
+        ]);
+        $formRuntimeMock->method('offsetGet')->willReturnMap([
+            [$elementIdentifier1, $elementValue1],
+            [$elementIdentifier2, $elementValue2],
         ]);
 
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
     /**
@@ -345,11 +340,11 @@ class AbstractFinisherTest extends UnitTestCase
         $input = '{' . $elementIdentifier . '}';
         $expected = ['bar', 'foobar'];
 
-        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            $elementIdentifier => $expected,
-        ]);
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
+        $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn($expected);
 
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
     /**
@@ -388,12 +383,17 @@ class AbstractFinisherTest extends UnitTestCase
             ],
         ];
 
-        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            $elementIdentifier1 => $elementValue1,
-            $elementIdentifier2 => $elementValue2,
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $formRuntimeMock->method('offsetExists')->willReturnMap([
+            [$elementIdentifier1, true],
+            [$elementIdentifier2, true],
+        ]);
+        $formRuntimeMock->method('offsetGet')->willReturnMap([
+            [$elementIdentifier1, $elementValue1],
+            [$elementIdentifier2, $elementValue2],
         ]);
 
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
     /**
@@ -412,15 +412,15 @@ class AbstractFinisherTest extends UnitTestCase
         $input = '{' . $elementIdentifier . '}';
         $expected = '{' . $elementIdentifier . '}';
 
-        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            $elementIdentifier => $expected,
-        ]);
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
+        $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn($expected);
 
-        $finisherContextProphecy = $this->prophesize(FinisherContext::class);
-        $finisherContextProphecy->getFinisherVariableProvider(Argument::cetera())->willReturn(new FinisherVariableProvider());
-        $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
+        $finisherContextMock = $this->createMock(FinisherContext::class);
+        $finisherContextMock->method('getFinisherVariableProvider')->willReturn(new FinisherVariableProvider());
+        $mockAbstractFinisher->_set('finisherContext', $finisherContextMock);
 
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
     /**
@@ -438,11 +438,11 @@ class AbstractFinisherTest extends UnitTestCase
         $input = '{__currentTimestamp}';
         $expected = '#^([0-9]{10})$#';
 
-        $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
 
         self::assertMatchesRegularExpression(
             $expected,
-            (string)$mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal())
+            (string)$mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock)
         );
     }
 
@@ -476,12 +476,17 @@ class AbstractFinisherTest extends UnitTestCase
             ],
         ];
 
-        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            $elementIdentifier1 => $elementValue1,
-            $elementIdentifier2 => $elementValue2,
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $formRuntimeMock->method('offsetExists')->willReturnMap([
+            [$elementIdentifier1, true],
+            [$elementIdentifier2, true],
+        ]);
+        $formRuntimeMock->method('offsetGet')->willReturnMap([
+            [$elementIdentifier1, $elementValue1],
+            [$elementIdentifier2, $elementValue2],
         ]);
 
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
     /**
@@ -490,9 +495,9 @@ class AbstractFinisherTest extends UnitTestCase
     public function substituteRuntimeReferencesConvertsObjectsToString(): void
     {
         $date = new \DateTime('@1574415600');
-        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            'date-1' => $date,
-        ]);
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $formRuntimeMock->method('offsetExists')->with('date-1')->willReturn(true);
+        $formRuntimeMock->method('offsetGet')->with('date-1')->willReturn($date);
 
         $stringableElement = new class () implements StringableFormElementInterface {
             /**
@@ -503,9 +508,9 @@ class AbstractFinisherTest extends UnitTestCase
                 return $value->format('Y-m-d');
             }
         };
-        $formDefinitionProphecy = $this->prophesize(FormDefinition::class);
-        $formDefinitionProphecy->getElementByIdentifier('date-1')->willReturn($stringableElement);
-        $formRuntimeProphecy->getFormDefinition()->willReturn($formDefinitionProphecy->reveal());
+        $formDefinitionMock = $this->createMock(FormDefinition::class);
+        $formDefinitionMock->method('getElementByIdentifier')->with('date-1')->willReturn($stringableElement);
+        $formRuntimeMock->method('getFormDefinition')->willReturn($formDefinitionMock);
 
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
             AbstractFinisher::class,
@@ -516,7 +521,7 @@ class AbstractFinisherTest extends UnitTestCase
         $result = $mockAbstractFinisher->_call(
             'substituteRuntimeReferences',
             'When: {date-1}',
-            $formRuntimeProphecy->reveal()
+            $formRuntimeMock
         );
 
         self::assertSame('When: 2019-11-22', $result);
@@ -527,12 +532,12 @@ class AbstractFinisherTest extends UnitTestCase
      */
     public function substituteRuntimeReferencesThrowsExceptionOnObjectWithoutStringableElement(): void
     {
-        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            'date-1' => new \DateTime(),
-        ]);
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $formRuntimeMock->method('offsetExists')->with('date-1')->willReturn(true);
+        $formRuntimeMock->method('offsetGet')->with('date-1')->willReturn(new \DateTime());
 
-        $formDefinitionProphecy = $this->prophesize(FormDefinition::class);
-        $formRuntimeProphecy->getFormDefinition()->willReturn($formDefinitionProphecy->reveal());
+        $formDefinitionMock = $this->createMock(FormDefinition::class);
+        $formRuntimeMock->method('getFormDefinition')->willReturn($formDefinitionMock);
 
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
             AbstractFinisher::class,
@@ -547,7 +552,7 @@ class AbstractFinisherTest extends UnitTestCase
         $mockAbstractFinisher->_call(
             'substituteRuntimeReferences',
             'When: {date-1}',
-            $formRuntimeProphecy->reveal()
+            $formRuntimeMock
         );
     }
 
@@ -566,13 +571,13 @@ class AbstractFinisherTest extends UnitTestCase
         $elementIdentifier = 'element-identifier-1';
         $input = 'BEFORE {' . $elementIdentifier . '} AFTER';
 
-        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            $elementIdentifier => ['value-1', 'value-2'],
-        ]);
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
+        $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn(['value-1', 'value-2']);
 
-        $finisherContextProphecy = $this->prophesize(FinisherContext::class);
-        $finisherContextProphecy->getFinisherVariableProvider(Argument::cetera())->willReturn(new FinisherVariableProvider());
-        $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
+        $finisherContextMock = $this->createMock(FinisherContext::class);
+        $finisherContextMock->method('getFinisherVariableProvider')->willReturn(new FinisherVariableProvider());
+        $mockAbstractFinisher->_set('finisherContext', $finisherContextMock);
 
         $this->expectException(FinisherException::class);
         $this->expectExceptionCode(1519239265);
@@ -580,21 +585,7 @@ class AbstractFinisherTest extends UnitTestCase
         $mockAbstractFinisher->_call(
             'substituteRuntimeReferences',
             $input,
-            $formRuntimeProphecy->reveal()
+            $formRuntimeMock
         );
-    }
-
-    /**
-     * @param array $values Key/Value pairs to be retrievable
-     * @return ObjectProphecy<FormRuntime>
-     */
-    protected function createFormRuntimeProphecy(array $values): ObjectProphecy
-    {
-        $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
-        foreach ($values as $key => $value) {
-            $formRuntimeProphecy->offsetExists(Argument::exact($key))->willReturn(true);
-            $formRuntimeProphecy->offsetGet(Argument::exact($key))->willReturn($value);
-        }
-        return $formRuntimeProphecy;
     }
 }
