@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -35,8 +33,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RedirectFinisherTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
@@ -47,13 +43,13 @@ class RedirectFinisherTest extends UnitTestCase
     public function pageUidOptionForFinisherAcceptsVariousPageRepresentations($pageUid, int $expectedPage): void
     {
         $uriPrefix = 'https://site.test/?id=';
-        $contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
-        $contentObjectRendererProphecy->createUrl(Argument::type('array'))->will(static function ($arguments) use ($uriPrefix) {
-            return $uriPrefix . $arguments[0]['parameter'];
+        $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
+        $contentObjectRendererMock->method('createUrl')->with(self::isType('array'))->willReturnCallback(static function ($arguments) use ($uriPrefix) {
+            return $uriPrefix . $arguments['parameter'];
         });
-        $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);
-        $frontendController = $frontendControllerProphecy->reveal();
-        $frontendController->cObj = $contentObjectRendererProphecy->reveal();
+        $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
+        $frontendController = $frontendControllerMock;
+        $frontendController->cObj = $contentObjectRendererMock;
         $GLOBALS['TSFE'] = $frontendController;
 
         $redirectFinisherMock = $this->getAccessibleMock(RedirectFinisher::class, null, [], '', false);
@@ -61,22 +57,22 @@ class RedirectFinisherTest extends UnitTestCase
             'pageUid' => $pageUid,
         ]);
 
-        $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
-        $formRuntimeProphecy->getRequest()->willReturn($request);
-        $formRuntimeProphecy->getResponse()->willReturn(new Response());
+        $formRuntimeMock->method('getRequest')->willReturn($request);
+        $formRuntimeMock->method('getResponse')->willReturn(new Response());
 
-        $finisherContextProphecy = $this->prophesize(FinisherContext::class);
-        $finisherContextProphecy->getFormRuntime()->willReturn($formRuntimeProphecy->reveal());
-        $finisherContextProphecy->cancel()->shouldBeCalledOnce();
+        $finisherContextMock = $this->createMock(FinisherContext::class);
+        $finisherContextMock->method('getFormRuntime')->willReturn($formRuntimeMock);
+        $finisherContextMock->expects(self::once())->method('cancel');
 
-        $translationServiceProphecy = $this->prophesize(TranslationService::class);
-        GeneralUtility::setSingletonInstance(TranslationService::class, $translationServiceProphecy->reveal());
-        $translationServiceProphecy->translateFinisherOption(Argument::cetera())->willReturnArgument(3);
+        $translationServiceMock = $this->createMock(TranslationService::class);
+        $translationServiceMock->method('translateFinisherOption')->with(self::anything())->willReturnArgument(3);
+        GeneralUtility::setSingletonInstance(TranslationService::class, $translationServiceMock);
 
         try {
-            $redirectFinisherMock->execute($finisherContextProphecy->reveal());
+            $redirectFinisherMock->execute($finisherContextMock);
             self::fail('RedirectFinisher did not throw expected exception.');
         } /** @noinspection PhpRedundantCatchClauseInspection */ catch (PropagateResponseException $e) {
             $response = $e->getResponse();
