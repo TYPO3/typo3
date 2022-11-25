@@ -17,9 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Hooks;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
+use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory;
 use TYPO3\CMS\Redirects\Service\SlugService;
 
 /**
@@ -28,21 +29,17 @@ use TYPO3\CMS\Redirects\Service\SlugService;
 class DataHandlerSlugUpdateHook
 {
     /**
-     * @var SlugService
-     */
-    protected $slugService;
-
-    /**
      * Persisted slug values per record UID
-     * e.g. `[13 => 'slug-a', 14 => 'slug-x/example']`
+     * e.g. `[13 => SlugRedirectChangeItem( $original = ['slug' => 'slug-a'] ), 14 => SlugRedirectChangeItem( $original = ['slug' => 'slug-x/example'] )`
      *
-     * @var string[]
+     * @var array<int, SlugRedirectChangeItem>
      */
-    protected $persistedSlugValues;
+    protected $persistedChangedItems;
 
-    public function __construct(SlugService $slugService)
-    {
-        $this->slugService = $slugService;
+    public function __construct(
+        protected SlugService $slugService,
+        protected SlugRedirectChangeItemFactory $slugRedirectChangeItemFactory,
+    ) {
     }
 
     /**
@@ -62,8 +59,7 @@ class DataHandlerSlugUpdateHook
             return;
         }
 
-        $record = BackendUtility::getRecordWSOL($table, (int)$id, 'slug');
-        $this->persistedSlugValues[(int)$id] = $record['slug'];
+        $this->persistedChangedItems[(int)$id] = $this->slugRedirectChangeItemFactory->create((int)$id);
     }
 
     /**
@@ -74,20 +70,20 @@ class DataHandlerSlugUpdateHook
      */
     public function processDatamap_postProcessFieldArray(string $status, string $table, $id, array $fieldArray, DataHandler $dataHandler): void
     {
-        $persistedSlugValue = $this->persistedSlugValues[(int)$id] ?? null;
+        $persistedChangedItem = $this->persistedChangedItems[(int)$id] ?? null;
 
         if (
             $table !== 'pages'
             || $status !== 'update'
             || empty($fieldArray['slug'])
-            || $persistedSlugValue === null
-            || $persistedSlugValue === $fieldArray['slug']
+            || !($persistedChangedItem instanceof SlugRedirectChangeItem)
+            || $persistedChangedItem->getOriginal()['slug'] === $fieldArray['slug']
             || $this->isNestedHookInvocation($dataHandler)
         ) {
             return;
         }
 
-        $this->slugService->rebuildSlugsForSlugChange($id, $persistedSlugValue, $fieldArray['slug'], $dataHandler->getCorrelationId());
+        $this->slugService->rebuildSlugsForSlugChange($id, $persistedChangedItem, $dataHandler->getCorrelationId());
     }
 
     /**

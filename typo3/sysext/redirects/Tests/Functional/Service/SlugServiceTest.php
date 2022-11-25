@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\SlugService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -115,7 +116,9 @@ class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSite();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.csv');
-        $this->subject->rebuildSlugsForSlugChange(2, '/dummy-1-2', '/test-new', $this->correlationId);
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
+        $this->setPageSlug(2, '/test-new');
+        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
         $slugs = [
@@ -131,7 +134,7 @@ class SlugServiceTest extends FunctionalTestCase
             '/dummy-1-4/dummy-1-4-10',
         ];
 
-        // This redirects should exists, after rebuildSlugsForSlugChange() has run
+        // This redirects should exist, after rebuildSlugsForSlugChange() has run
         $redirects = [
             ['source_host' => '*', 'source_path' => '/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
             ['source_host' => '*', 'source_path' => '/dummy-1-2/dummy-1-2-5', 'target' => 't3://page?uid=5&_language=0'],
@@ -154,7 +157,9 @@ class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSite();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test2.csv');
-        $this->subject->rebuildSlugsForSlugChange(1, '/', '/new-home', $this->correlationId);
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(1);
+        $this->setPageSlug(1, '/new-home');
+        $this->subject->rebuildSlugsForSlugChange(1, $changeItem, $this->correlationId);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
         $slugs = [
@@ -170,7 +175,7 @@ class SlugServiceTest extends FunctionalTestCase
             '/new-home/dummy-1-4/dummy-1-4-10',
         ];
 
-        // This redirects should exists, after rebuildSlugsForSlugChange() has run
+        // This redirects should exist, after rebuildSlugsForSlugChange() has run
         $redirects = [
             ['source_host' => '*', 'source_path' => '/', 'target' => 't3://page?uid=1&_language=0'],
             ['source_host' => '*', 'source_path' => '/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
@@ -199,7 +204,9 @@ class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSiteInSubfolder();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.csv');
-        $this->subject->rebuildSlugsForSlugChange(2, '/dummy-1-2', '/test-new', $this->correlationId);
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
+        $this->setPageSlug(2, '/test-new');
+        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
         $slugs = [
@@ -228,7 +235,7 @@ class SlugServiceTest extends FunctionalTestCase
 
     /**
      * This test should prove, that a renaming of a subtree works as expected
-     * and all slugs of sub pages are renamed and redirects are created.
+     * and all slugs of sub-pages are renamed and redirects are created.
      *
      * We test here that rebuildSlugsForSlugChange works for a setup with languages.
      * @test
@@ -238,7 +245,9 @@ class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSiteWithLanguages();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.csv');
-        $this->subject->rebuildSlugsForSlugChange(31, '/dummy-1-3', '/test-new', $this->correlationId);
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(31);
+        $this->setPageSlug(31, '/test-new');
+        $this->subject->rebuildSlugsForSlugChange(31, $changeItem, $this->correlationId);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
         $slugs = [
@@ -256,7 +265,7 @@ class SlugServiceTest extends FunctionalTestCase
             '/dummy-1-4/dummy-1-4-10',
         ];
 
-        // This redirects should exists, after rebuildSlugsForSlugChange() has run
+        // This redirects should exist, after rebuildSlugsForSlugChange() has run
         $redirects = [
             ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-3', 'target' => 't3://page?uid=3&_language=1'],
             ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=8&_language=1'],
@@ -267,7 +276,7 @@ class SlugServiceTest extends FunctionalTestCase
 
     /**
      * This test should prove, that a renaming of a subtree works as expected
-     * and all slugs of sub pages are renamed and redirects are created.
+     * and all slugs of sub-pages are renamed and redirects are created.
      *
      * We test here that rebuildSlugsForSlugChange works with languages and a base in a sub-folder.
      * @test
@@ -277,7 +286,9 @@ class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSiteWithLanguagesInSubFolder();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.csv');
-        $this->subject->rebuildSlugsForSlugChange(31, '/dummy-1-3', '/test-new', $this->correlationId);
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(31);
+        $this->setPageSlug(31, '/test-new');
+        $this->subject->rebuildSlugsForSlugChange(31, $changeItem, $this->correlationId);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
         $slugs = [
@@ -295,7 +306,7 @@ class SlugServiceTest extends FunctionalTestCase
             '/dummy-1-4/dummy-1-4-10',
         ];
 
-        // This redirects should exists, after rebuildSlugsForSlugChange() has run
+        // This redirects should exist, after rebuildSlugsForSlugChange() has run
         $redirects = [
             ['source_host' => 'de.example.com', 'source_path' => '/sub-folder/dummy-1-3', 'target' => 't3://page?uid=3&_language=1'],
             ['source_host' => 'de.example.com', 'source_path' => '/sub-folder/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=8&_language=1'],
@@ -306,7 +317,7 @@ class SlugServiceTest extends FunctionalTestCase
 
     /**
      * This test should prove, that a renaming of a subtree works as expected
-     * and all slugs of sub pages are renamed and redirects are created.
+     * and all slugs of sub-pages are renamed and redirects are created.
      *
      * We test here that rebuildSlugsForSlugChange works with languages and a base in a sub-folder.
      * @test
@@ -316,7 +327,9 @@ class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSiteWithLanguagesInSubFolder();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.csv');
-        $this->subject->rebuildSlugsForSlugChange(3, '/dummy-1-3', '/test-new', $this->correlationId);
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(3);
+        $this->setPageSlug(3, '/test-new');
+        $this->subject->rebuildSlugsForSlugChange(3, $changeItem, $this->correlationId);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
         $slugs = [
@@ -334,7 +347,7 @@ class SlugServiceTest extends FunctionalTestCase
             '/dummy-1-4/dummy-1-4-10',
         ];
 
-        // This redirects should exists, after rebuildSlugsForSlugChange() has run
+        // This redirects should exist, after rebuildSlugsForSlugChange() has run
         $redirects = [
             ['source_host' => '*', 'source_path' => '/sub-folder/en/dummy-1-3', 'target' => 't3://page?uid=3&_language=0'],
             ['source_host' => '*', 'source_path' => '/sub-folder/en/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=8&_language=0'],
@@ -346,7 +359,7 @@ class SlugServiceTest extends FunctionalTestCase
 
     /**
      * This test should prove, that a renaming of a subtree works as expected
-     * and all slugs of sub pages are renamed and redirects are created.
+     * and all slugs of sub-pages are renamed and redirects are created.
      *
      * We test here that rebuildSlugsForSlugChange works when changing a L>0 siteroot which has pid=0
      * @test
@@ -356,7 +369,9 @@ class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSiteWithLanguages();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test4.csv');
-        $this->subject->rebuildSlugsForSlugChange(5, '/', '/test-new', $this->correlationId);
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(5);
+        $this->setPageSlug(5, '/test-new');
+        $this->subject->rebuildSlugsForSlugChange(5, $changeItem, $this->correlationId);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
         $slugs = [
@@ -370,7 +385,7 @@ class SlugServiceTest extends FunctionalTestCase
             '/test-new/dummy-1-2/dummy-1-2-3',
         ];
 
-        // This redirects should exists, after rebuildSlugsForSlugChange() has run
+        // This redirects should exist, after rebuildSlugsForSlugChange() has run
         $redirects = [
             ['source_host' => 'de.example.com', 'source_path' => '/', 'target' => 't3://page?uid=1&_language=1'],
             ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-2', 'target' => 't3://page?uid=2&_language=1'],
@@ -439,7 +454,8 @@ class SlugServiceTest extends FunctionalTestCase
             GeneralUtility::makeInstance(SiteFinder::class),
             GeneralUtility::makeInstance(PageRepository::class),
             GeneralUtility::makeInstance(LinkService::class),
-            GeneralUtility::makeInstance(RedirectCacheService::class)
+            GeneralUtility::makeInstance(RedirectCacheService::class),
+            $this->get(SlugRedirectChangeItemFactory::class),
         );
         $this->subject->setLogger(new NullLogger());
     }
@@ -462,5 +478,19 @@ class SlugServiceTest extends FunctionalTestCase
             ];
             self::assertContains($combination, $redirects, 'wrong redirect found');
         }
+    }
+
+    protected function setPageSlug(int $pageId, string $slug): void
+    {
+        $this->getConnectionPool()->getConnectionForTable('pages')
+            ->update(
+                'pages',
+                [
+                    'slug' => $slug,
+                ],
+                [
+                    'uid' => $pageId,
+                ]
+            );
     }
 }

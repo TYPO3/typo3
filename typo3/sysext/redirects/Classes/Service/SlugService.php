@@ -35,10 +35,14 @@ use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook;
+use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
+use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory;
 
 /**
  * @internal Due to some possible refactorings in TYPO3 v10
@@ -92,39 +96,41 @@ class SlugService implements LoggerAwareInterface
         protected readonly SiteFinder $siteFinder,
         protected readonly PageRepository $pageRepository,
         protected readonly LinkService $linkService,
-        protected readonly RedirectCacheService $redirectCacheService
+        protected readonly RedirectCacheService $redirectCacheService,
+        protected readonly SlugRedirectChangeItemFactory $slugRedirectChangeItemFactory,
     ) {
     }
 
-    public function rebuildSlugsForSlugChange(int $pageId, string $currentSlug, string $newSlug, CorrelationId $correlationId): void
+    public function rebuildSlugsForSlugChange(int $pageId, SlugRedirectChangeItem $changeItem, CorrelationId $correlationId): void
     {
         $currentPageRecord = BackendUtility::getRecord('pages', $pageId);
         if ($currentPageRecord === null) {
             return;
         }
-        $defaultPageId = (int)$currentPageRecord['sys_language_uid'] > 0 ? (int)$currentPageRecord['l10n_parent'] : $pageId;
-        $this->initializeSettings($defaultPageId);
+        $changeItem = $changeItem->withChanged($currentPageRecord);
+        $this->initializeSettings($changeItem->getSite());
         if ($this->autoUpdateSlugs || $this->autoCreateRedirects) {
-            $createdRedirect = null;
+            $sourceHosts = [];
             $this->createCorrelationIds($pageId, $correlationId);
             if ($this->autoCreateRedirects) {
-                $createdRedirect = $this->createRedirect($currentSlug, $defaultPageId, (int)$currentPageRecord['sys_language_uid']);
+                $sourceHosts = $this->createRedirects($changeItem, $changeItem->getDefaultLanguagePageId(), (int)$currentPageRecord['sys_language_uid']);
             }
             if ($this->autoUpdateSlugs) {
-                $this->checkSubPages($currentPageRecord, $currentSlug, $newSlug);
+                $sourceHosts += $this->checkSubPages($currentPageRecord, $changeItem);
             }
             $this->sendNotification();
             // rebuild caches only for matched source hosts
-            if ($createdRedirect) {
-                $this->redirectCacheService->rebuildForHost($createdRedirect['source_host'] ?: '*');
+            if ($sourceHosts !== []) {
+                foreach (array_unique($sourceHosts) as $sourceHost) {
+                    $this->redirectCacheService->rebuildForHost($sourceHost);
+                }
             }
         }
     }
 
-    protected function initializeSettings(int $pageId): void
+    protected function initializeSettings(Site $site): void
     {
-        $this->site = $this->siteFinder->getSiteByPageId($pageId);
-        $settings = $this->site->getSettings();
+        $settings = $site->getSettings();
         $this->autoUpdateSlugs = (bool)$settings->get('redirects.autoUpdateSlugs', true);
         $this->autoCreateRedirects = (bool)$settings->get('redirects.autoCreateRedirects', true);
         if (!$this->context->getPropertyFromAspect('workspace', 'isLive')) {
@@ -146,65 +152,84 @@ class SlugService implements LoggerAwareInterface
     }
 
     /**
-     * @return array The created redirect record
+     * @return string[] All unique source hosts for created redirects.
      */
-    protected function createRedirect(string $originalSlug, int $pageId, int $languageId): array
+    protected function createRedirects(SlugRedirectChangeItem $changeItem, int $pageId, int $languageId): array
     {
-        $storagePid = $this->site->getRootPageId();
-        $siteLanguage = $this->site->getLanguageById($languageId);
-        $basePath = rtrim($siteLanguage->getBase()->getPath(), '/');
-
-        /** @var DateTimeAspect $date */
-        $date = $this->context->getAspect('date');
-        $endtime = $date->getDateTime()->modify('+' . $this->redirectTTL . ' days');
-        $targetLink = $this->linkService->asString([
-            'type' => 'page',
-            'pageuid' => $pageId,
-            'parameters' => '_language=' . $languageId,
-        ]);
-        $record = [
-            'pid' => $storagePid,
-            'updatedon' => $date->get('timestamp'),
-            'createdon' => $date->get('timestamp'),
-            'deleted' => 0,
-            'disabled' => 0,
-            'starttime' => 0,
-            'endtime' => $this->redirectTTL > 0 ? $endtime->getTimestamp() : 0,
-            'source_host' => $siteLanguage->getBase()->getHost() ?: '*',
-            'source_path' => $basePath . $originalSlug,
-            'is_regexp' => 0,
-            'force_https' => 0,
-            'respect_query_parameters' => 0,
-            'target' => $targetLink,
-            'target_statuscode' => $this->httpStatusCode,
-            'hitcount' => 0,
-            'lasthiton' => 0,
-            'disable_hitcount' => 0,
-            'creation_type' => 0,
-        ];
-        //todo use dataHandler to create records
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('sys_redirect');
-        $connection->insert('sys_redirect', $record);
-        $id = (int)$connection->lastInsertId('sys_redirect');
-        $record['uid'] = $id;
-        $this->getRecordHistoryStore()->addRecord('sys_redirect', $id, $record, $this->correlationIdRedirectCreation);
-        return $record;
+        $sourceHosts = [];
+        $storagePid = $changeItem->getSite()->getRootPageId();
+        foreach ($changeItem->getSourcesCollection()->all() as $source) {
+            /** @var DateTimeAspect $date */
+            $date = $this->context->getAspect('date');
+            $endtime = $date->getDateTime()->modify('+' . $this->redirectTTL . ' days');
+            $targetLinkParameters = array_replace(['_language' => $languageId], $source->getTargetLinkParameters());
+            $targetLink = $this->linkService->asString([
+                'type' => 'page',
+                'pageuid' => $pageId,
+                'parameters' => HttpUtility::buildQueryString($targetLinkParameters),
+            ]);
+            $record = [
+                'pid' => $storagePid,
+                'updatedon' => $date->get('timestamp'),
+                'createdon' => $date->get('timestamp'),
+                'deleted' => 0,
+                'disabled' => 0,
+                'starttime' => 0,
+                'endtime' => $this->redirectTTL > 0 ? $endtime->getTimestamp() : 0,
+                'source_host' => $source->getHost(),
+                'source_path' => $source->getPath(),
+                'is_regexp' => 0,
+                'force_https' => 0,
+                'respect_query_parameters' => 0,
+                'target' => $targetLink,
+                'target_statuscode' => $this->httpStatusCode,
+                'hitcount' => 0,
+                'lasthiton' => 0,
+                'disable_hitcount' => 0,
+                'creation_type' => 0,
+            ];
+            // @todo Add a pre-create event here, which can be used to change the record before it is persisted.
+            // @todo Use dataHandler to create records
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('sys_redirect');
+            $connection->insert('sys_redirect', $record);
+            $id = (int)$connection->lastInsertId('sys_redirect');
+            $record['uid'] = $id;
+            $this->getRecordHistoryStore()->addRecord('sys_redirect', $id, $record, $this->correlationIdRedirectCreation);
+            // @todo Add a post-create event here, thus extensions can trigger stuff based on the created redirect.
+            if (!in_array($source->getHost(), $sourceHosts)) {
+                $sourceHosts[] = $source->getHost();
+            }
+        }
+        return $sourceHosts;
     }
 
-    protected function checkSubPages(array $currentPageRecord, string $oldSlugOfParentPage, string $newSlugOfParentPage): void
+    /**
+     * @return string[] All unique source hosts for created redirects.
+     */
+    protected function checkSubPages(array $currentPageRecord, SlugRedirectChangeItem $parentChangeItem): array
     {
+        $sourceHosts = [];
         $languageUid = (int)$currentPageRecord['sys_language_uid'];
         // resolveSubPages needs the page id of the default language
         $pageId = $languageUid === 0 ? (int)$currentPageRecord['uid'] : (int)$currentPageRecord['l10n_parent'];
         $subPageRecords = $this->resolveSubPages($pageId, $languageUid);
         foreach ($subPageRecords as $subPageRecord) {
-            $newSlug = $this->updateSlug($subPageRecord, $oldSlugOfParentPage, $newSlugOfParentPage);
-            if ($newSlug !== null && $this->autoCreateRedirects) {
+            $changeItem = $this->slugRedirectChangeItemFactory->create(
+                pageId: (int)$subPageRecord['uid'],
+                original: $subPageRecord
+            );
+            if ($changeItem === null) {
+                continue;
+            }
+            $updatedPageRecord = $this->updateSlug($subPageRecord, $parentChangeItem);
+            if ($updatedPageRecord !== null && $this->autoCreateRedirects) {
                 $subPageId = (int)$subPageRecord['sys_language_uid'] === 0 ? (int)$subPageRecord['uid'] : (int)$subPageRecord['l10n_parent'];
-                $this->createRedirect($subPageRecord['slug'], $subPageId, $languageUid);
+                $changeItem = $changeItem->withChanged($updatedPageRecord);
+                $sourceHosts += array_values($this->createRedirects($changeItem, $subPageId, $languageUid));
             }
         }
+        return $sourceHosts;
     }
 
     protected function resolveSubPages(int $id, int $languageUid): array
@@ -255,12 +280,15 @@ class SlugService implements LoggerAwareInterface
      * Update a slug by given record, old parent page slug and new parent page slug.
      * In case no update is required, the method returns null else the new slug.
      */
-    protected function updateSlug(array $subPageRecord, string $oldSlugOfParentPage, string $newSlugOfParentPage): ?string
+    protected function updateSlug(array $subPageRecord, SlugRedirectChangeItem $changeItem): ?array
     {
-        if (!str_starts_with($subPageRecord['slug'], $oldSlugOfParentPage)) {
+        if ($changeItem->getChanged() === null
+            || !str_starts_with($subPageRecord['slug'], $changeItem->getOriginal()['slug'])
+        ) {
             return null;
         }
-
+        $oldSlugOfParentPage = $changeItem->getOriginal()['slug'];
+        $newSlugOfParentPage = $changeItem->getChanged()['slug'];
         $newSlug = rtrim($newSlugOfParentPage, '/') . '/'
             . substr($subPageRecord['slug'], strlen(rtrim($oldSlugOfParentPage, '/') . '/'));
         $state = RecordStateFactory::forName('pages')
@@ -273,7 +301,7 @@ class SlugService implements LoggerAwareInterface
         }
 
         $this->persistNewSlug((int)$subPageRecord['uid'], $newSlug);
-        return $newSlug;
+        return BackendUtility::getRecord('pages', (int)$subPageRecord['uid']);
     }
 
     protected function persistNewSlug(int $uid, string $newSlug): void
