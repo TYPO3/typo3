@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher;
@@ -26,8 +25,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SaveToDatabaseFinisherTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
      * @test
      */
@@ -66,7 +63,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
                 'two',
             ],
         ]);
-        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
+        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->createMock(FormElementInterface::class));
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
         self::assertSame('one,two', $databaseData['bar']);
@@ -89,7 +86,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
 
         $saveToDatabaseFinisher->expects(self::once())->method('process')->with(0);
 
-        $saveToDatabaseFinisher->execute($this->prophesize(FinisherContext::class)->reveal());
+        $saveToDatabaseFinisher->execute($this->createMock(FinisherContext::class));
     }
 
     public function skipIfValueIsEmptyDataProvider(): array
@@ -140,7 +137,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
         $saveToDatabaseFinisher->method('getFormValues')->willReturn([
             'foo' => $value,
         ]);
-        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
+        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->createMock(FormElementInterface::class));
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
         self::assertSame($expectedEmpty, empty($databaseData));
@@ -171,7 +168,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
 
         $saveToDatabaseFinisher->expects(self::exactly(2))->method('process')->withConsecutive([0], [1]);
 
-        $saveToDatabaseFinisher->execute($this->prophesize(FinisherContext::class)->reveal());
+        $saveToDatabaseFinisher->execute($this->createMock(FinisherContext::class));
     }
 
     /**
@@ -189,7 +186,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
         $saveToDatabaseFinisher->method('getFormValues')->willReturn([
             'date' => new \DateTime(),
         ]);
-        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
+        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->createMock(FormElementInterface::class));
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
         $expected = '#^([0-9]{10})$#';
@@ -212,7 +209,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
         $saveToDatabaseFinisher->method('getFormValues')->willReturn([
             'date' => new \DateTime('2018-06-12'),
         ]);
-        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
+        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->createMock(FormElementInterface::class));
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
         self::assertSame('2018.06.12', $databaseData['date']);
