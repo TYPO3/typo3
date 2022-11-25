@@ -7,25 +7,27 @@
 //
 // Variables
 //
-$module-bg: #fff !default;
-$module-color: inherit !default;
-$module-dark-bg: #333 !default;
-$module-dark-color: #ccc !default;
-$module-docheader-bg: #eee !default;
-$module-docheader-border: #c3c3c3 !default;
-$module-docheader-zindex: 300 !default;
-$module-docheader-height: 65px !default;
-$module-docheader-padding-vertical: 0 !default;
-$module-docheader-padding-horizontal: 24px !default;
-$module-docheader-padding: $module-docheader-padding-vertical $module-docheader-padding-horizontal !default;
-$module-docheader-bar-height: 26px !default;
-$module-docheader-bar-margin-vertical: 4px !default;
-$module-docheader-bar-margin-horizontal: 0 !default;
-$module-docheader-bar-margin: $module-docheader-bar-margin-vertical $module-docheader-bar-margin-horizontal !default;
-$module-docheader-scroll-offset: $module-docheader-bar-height + $module-docheader-bar-margin-vertical !default;
-$module-body-padding-vertical: 24px !default;
-$module-body-padding-horizontal: 24px !default;
-$module-body-padding: $module-body-padding-vertical $module-body-padding-horizontal !default;
+:root {
+    --module-bg: #fff;
+    --module-color: inherit;
+    --module-dark-bg: #333;
+    --module-dark-color: #ccc;
+    --module-docheader-height: 67px;
+    --module-docheader-zindex: 300;
+    --module-docheader-padding-y: 5px;
+    --module-docheader-padding-x: 24px;
+    --module-docheader-padding: var(--module-docheader-padding-y) var(--module-docheader-padding-x);
+    --module-docheader-spacing-y: 4px;
+    --module-docheader-spacing-x: 8px;
+    --module-docheader-spacing: var(--module-docheader-spacing-y) var(--module-docheader-spacing-x);
+    --module-docheader-bg: #eee;
+    --module-docheader-border: #c3c3c3;
+    --module-docheader-bar-height: 26px;
+    --module-docheader-scroll-offset: calc(-1 * (var(--module-docheader-bar-height) + var(--module-docheader-padding-y)));
+    --module-body-padding-y: 24px;
+    --module-body-padding-x: 24px;
+    --module-body-padding: var(--module-body-padding-y) var(--module-body-padding-x);
+}
 
 //
 // Template
@@ -33,16 +35,16 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
 .module {
     height: 100%;
     width: 100%;
-    background-color: $module-bg;
-    color: $module-color;
+    background-color: var(--module-bg);
+    color: var(--module-color);
     // Use overflow-y: auto to ensure ckeditor dropdowns
     // do not conflict with height: 100% on <body>
     overflow-y: auto;
 }
 
 .module-dark {
-    background-color: $module-dark-bg;
-    color: $module-dark-color;
+    --module-color: var(--module-dark-color);
+    --module-bg: var(--module-dark-bg);
 }
 
 //
@@ -64,102 +66,47 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
 // Docheader
 //
 .module-docheader {
-    @extend .clearfix;
     position: sticky;
     width: 100%;
     top: 0;
     left: 0;
     display: flex;
-    flex-flow: row wrap;
-    min-height: $module-docheader-height;
-    z-index: $module-docheader-zindex;
-    background-color: $module-docheader-bg;
-    border-bottom: 1px solid $module-docheader-border;
-    padding: $module-docheader-padding;
+    flex-direction: column;
+    min-height: var(--module-docheader-height);
+    z-index: var(--module-docheader-zindex);
+    background-color: var(--module-docheader-bg);
+    border-bottom: 1px solid var(--module-docheader-border);
+    padding: var(--module-docheader-padding);
+    gap: var(--module-docheader-spacing);
 
     @include transition(transform .3s ease-in-out);
 
     &-folded {
-        transform: translateY(-$module-docheader-scroll-offset);
+        transform: translateY(var(--module-docheader-scroll-offset));
     }
 
     .module-docheader-bar {
-        @extend .clearfix;
-        flex: 1 0 100%;
-        min-height: $module-docheader-bar-height;
-        line-height: $module-docheader-bar-height;
-        margin-bottom: $module-docheader-bar-margin-vertical;
-
-        &:first-child {
-            margin-top: $module-docheader-bar-margin-vertical;
-        }
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: var(--module-docheader-spacing);
+        min-height: var(--module-docheader-bar-height);
+        line-height: var(--module-docheader-bar-height);
 
         label {
             margin-top: 0;
             margin-bottom: 0;
         }
 
-        .form-inline {
-            .form-group {
-                display: table;
-
-                label {
-                    display: table-cell;
-                    font-size: 11px;
-                    font-weight: normal;
-                    line-height: ($module-docheader-bar-height - 10px);
-                    padding: 4px;
-                    border-radius: 2px 0 0 2px;
-                    border: 1px solid #bbb;
-                    border-right: 0;
-                    background-color: rgba(0, 0, 0, .05);
-                }
-
-                label + select {
-                    display: table-cell;
-                    border-top-left-radius: 0;
-                    border-bottom-left-radius: 0;
-                }
-            }
-        }
-
         .form-group {
-            vertical-align: top;
             margin: 0;
-            display: inline-block;
-
-            .form-control {
-                vertical-align: top;
-            }
         }
 
-        @media (max-width: $screen-sm) {
-            .text-end {
-                text-align: left !important;
-            }
+        &-container {
+            display: flex;
+            gap: var(--module-docheader-spacing);
+            flex-wrap: wrap;
         }
-    }
-
-    .module-docheader-bar-column-left {
-        float: left;
-    }
-
-    .module-docheader-bar-column-right {
-        float: right;
-    }
-}
-
-.module-docheader-bar-navigation {
-    .module-docheader-bar-column-left {
-        white-space: nowrap;
-
-        @media (max-width: $screen-sm) {
-            white-space: normal;
-        }
-    }
-
-    .form-group select {
-        width: 100%;
     }
 }
 
@@ -167,7 +114,7 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
 // Body
 //
 .module-body {
-    padding: $module-body-padding;
+    padding: var(--module-body-padding);
 
     > .callout:first-child {
         margin-top: 0;

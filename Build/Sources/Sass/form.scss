@@ -161,7 +161,7 @@ $tree-line-height: 20px;
 
 #t3-form-structure-panel {
     overflow: auto;
-    padding-top: $module-docheader-height;
+    padding-top: var(--module-docheader-height);
     height: 100%;
 
     .icon {
@@ -321,7 +321,7 @@ $tree-line-height: 20px;
 #t3-form-inspector-panels-container {
     overflow: hidden;
     right: 0;
-    padding-top: $module-docheader-height;
+    padding-top: var(--module-docheader-height);
 }
 
 #t3-form-inspector-panels {
@@ -337,7 +337,7 @@ $tree-line-height: 20px;
     h4 {
         margin: 0;
         padding: .1em .2em .2em .5em;
-        border-top: 1px solid $module-docheader-border;
+        border-top: 1px solid var(--module-docheader-border);
         clear: both;
         font: inherit;
         font-weight: bold;
@@ -346,7 +346,7 @@ $tree-line-height: 20px;
     h2 {
         padding-bottom: 1em;
         border: none;
-        border-bottom: 1px solid $module-docheader-border;
+        border-bottom: 1px solid var(--module-docheader-border);
     }
 
     > h2:first-child {
@@ -390,7 +390,7 @@ $tree-line-height: 20px;
 
     > .t3-form-remove-element-button {
         padding-top: 1rem;
-        border-top: 1px solid $module-docheader-border;
+        border-top: 1px solid var(--module-docheader-border);
 
         .btn {
             width: 100%;
@@ -473,7 +473,7 @@ $tree-line-height: 20px;
 .t3-form-collection-element {
     position: relative;
     margin-bottom: .5em;
-    border: 1px solid $module-docheader-border;
+    border: 1px solid var(--module-docheader-border);
     border-top: none;
     background: $navigation-bg;
 
@@ -573,8 +573,8 @@ $tree-line-height: 20px;
 
     .form-sortable-ghost {
         height: 45px;
-        border-left: 1px solid $module-docheader-border !important;
-        border-right: 1px solid $module-docheader-border !important;
+        border-left: 1px solid var(--module-docheader-border) !important;
+        border-right: 1px solid var(--module-docheader-border) !important;
         outline-offset: -5px !important;
     }
 
@@ -598,7 +598,7 @@ $tree-line-height: 20px;
 #t3-form-stage-container {
     overflow: auto;
     position: relative;
-    height: calc(100% - #{$module-docheader-height});
+    height: calc(100% - #{var(--module-docheader-height)});
     max-height: 100%;
     text-align: center;
 
@@ -950,7 +950,7 @@ $tree-line-height: 20px;
             font-size: 12px;
             line-height: $line-height-base;
             background-image: none;
-            border: 1px solid $module-docheader-border;
+            border: 1px solid var(--module-docheader-border);
             border-radius: 2px;
             box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
             transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
@@ -970,7 +970,7 @@ $tree-line-height: 20px;
         }
 
         legend.t3-form-form-element-selected {
-            border-color: $module-docheader-border;
+            border-color: var(--module-docheader-border);
         }
 
         .form-navigation {

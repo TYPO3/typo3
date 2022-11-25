@@ -1,36 +1,18 @@
 <div class="module-loading-indicator"></div>
 <div class="module-docheader t3js-module-docheader">
-    <div class="module-docheader-bar module-docheader-bar-navigation t3js-module-docheader-bar t3js-module-docheader-bar-navigation row">
-        <f:variable name="columnCssClass">module-docheader-bar-column-left col-12 text-end</f:variable>
-        <f:if condition="{docHeader.menus}">
-            <f:if condition="{docHeader.menus -> f:count()} > 1">
-                <f:then>
-                    <f:variable name="columnCssClass">module-docheader-bar-column-right col-12 col-sm-7 col-md-6 col-lg-8 text-end</f:variable>
-                    <div class="module-docheader-bar-column-left col-12 col-sm-5 col-md-6 col-lg-4">
-                        <div class="row-cols-auto row">
-                            <f:for each="{docHeader.menus}" as="menu">
-                                <div class="form-group form-group-sm col">
-                                    <f:render partial="Menus/SelectBoxJumpMenu" arguments="{menu:menu}"/>
-                                </div>
-                            </f:for>
+    <div class="module-docheader-bar module-docheader-bar-navigation t3js-module-docheader-bar t3js-module-docheader-bar-navigation">
+        <div class="module-docheader-bar-column-left">
+            <f:if condition="{docHeader.menus}">
+                <div class="module-docheader-bar-container">
+                    <f:for each="{docHeader.menus}" as="menu">
+                        <div class="form-group form-group-sm">
+                            <f:render partial="Menus/SelectBoxJumpMenu" arguments="{menu:menu}"/>
                         </div>
-                    </div>
-                </f:then>
-                <f:else>
-                    <f:variable name="columnCssClass">module-docheader-bar-column-right col-12 col-sm-9 text-end</f:variable>
-                    <div class="module-docheader-bar-column-left col">
-                        <div class="row-cols-auto row">
-                            <f:for each="{docHeader.menus}" as="menu">
-                                <div class="col">
-                                    <f:render partial="Menus/SelectBoxJumpMenu" arguments="{menu:menu}"/>
-                                </div>
-                            </f:for>
-                        </div>
-                    </div>
-                </f:else>
+                    </f:for>
+                </div>
             </f:if>
-        </f:if>
-        <div class="{columnCssClass}">
+        </div>
+        <div class="module-docheader-bar-column-right">
             <f:if condition="{docHeader.metaInformation.recordInformation}">
                 <f:if condition="{docHeader.metaInformation.fileOrFolder}">
                     <f:then>
@@ -44,7 +26,8 @@
                 </f:if>
                 <strong>
                     <f:format.raw>
-                        {docHeader.metaInformation.recordInformationIcon} {docHeader.metaInformation.recordInformationTitle} <f:if condition="{docHeader.metaInformation.recordInformationUid}">[{docHeader.metaInformation.recordInformationUid}]</f:if>
+                        {docHeader.metaInformation.recordInformationIcon} {docHeader.metaInformation.recordInformationTitle}
+                        <f:if condition="{docHeader.metaInformation.recordInformationUid}">[{docHeader.metaInformation.recordInformationUid}]</f:if>
                     </f:format.raw>
                 </strong>
                 {docHeader.metaInformation.recordInformationAdditionalInfo}

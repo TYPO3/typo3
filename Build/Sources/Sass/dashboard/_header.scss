@@ -4,8 +4,8 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    margin: (- $module-body-padding-vertical) (- $module-body-padding-horizontal) $module-body-padding-vertical;
-    padding: $module-body-padding-vertical $module-body-padding-horizontal 0;
+    margin: calc(-1 * var(--module-body-padding-y)) calc(-1 * var(--module-body-padding-x)) var(--module-body-padding-y);
+    padding: var(--module-body-padding-y) var(--module-body-padding-x) 0;
     background: $dashboard-header-background;
     border-bottom: 1px solid darken($dashboard-header-background, 5%);
 }
