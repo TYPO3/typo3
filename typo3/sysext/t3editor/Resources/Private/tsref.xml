@@ -4299,6 +4299,18 @@ The list in ".value" may not have spaces between elements!!]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="contains" type="stdWrap">
+			<description><![CDATA[returns true if content string is in the haystack of ".value".]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="startsWith" type="stdWrap">
+            <description><![CDATA[returns true if content string is the start of ".value".]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="endsWith" type="stdWrap">
+            <description><![CDATA[returns true if content string is the end of ".value".]]></description>
+			<default><![CDATA[]]></default>
+		</property>
 		<property name="isLessThan" type="stdWrap">
 			<description><![CDATA[returns false if content is not less than ".value"]]></description>
 			<default><![CDATA[

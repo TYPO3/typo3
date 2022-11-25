@@ -2580,52 +2580,70 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
         }
         if (isset($conf['isTrue']) || isset($conf['isTrue.'])) {
-            $isTrue = trim((string)$this->stdWrapValue('isTrue', $conf ?? []));
+            $isTrue = trim((string)$this->stdWrapValue('isTrue', $conf));
             if (!$isTrue) {
                 $flag = false;
             }
         }
         if (isset($conf['isFalse']) || isset($conf['isFalse.'])) {
-            $isFalse = trim((string)$this->stdWrapValue('isFalse', $conf ?? []));
+            $isFalse = trim((string)$this->stdWrapValue('isFalse', $conf));
             if ($isFalse) {
                 $flag = false;
             }
         }
         if (isset($conf['isPositive']) || isset($conf['isPositive.'])) {
-            $number = $this->calc((string)$this->stdWrapValue('isPositive', $conf ?? []));
+            $number = $this->calc((string)$this->stdWrapValue('isPositive', $conf));
             if ($number < 1) {
                 $flag = false;
             }
         }
         if ($flag) {
-            $value = trim((string)$this->stdWrapValue('value', $conf ?? []));
+            $comparisonValue = trim((string)$this->stdWrapValue('value', $conf));
             if (isset($conf['isGreaterThan']) || isset($conf['isGreaterThan.'])) {
-                $number = trim((string)$this->stdWrapValue('isGreaterThan', $conf ?? []));
-                if ($number <= $value) {
+                $number = trim((string)$this->stdWrapValue('isGreaterThan', $conf));
+                if ($number <= $comparisonValue) {
                     $flag = false;
                 }
             }
             if (isset($conf['isLessThan']) || isset($conf['isLessThan.'])) {
-                $number = trim((string)$this->stdWrapValue('isLessThan', $conf ?? []));
-                if ($number >= $value) {
+                $number = trim((string)$this->stdWrapValue('isLessThan', $conf));
+                if ($number >= $comparisonValue) {
                     $flag = false;
                 }
             }
             if (isset($conf['equals']) || isset($conf['equals.'])) {
-                $number = trim((string)$this->stdWrapValue('equals', $conf ?? []));
-                if ($number != $value) {
+                $number = trim((string)$this->stdWrapValue('equals', $conf));
+                if ($number != $comparisonValue) {
+                    $flag = false;
+                }
+            }
+            if (isset($conf['contains']) || isset($conf['contains.'])) {
+                $needle = trim((string)$this->stdWrapValue('contains', $conf));
+                if (!str_contains($comparisonValue, $needle)) {
+                    $flag = false;
+                }
+            }
+            if (isset($conf['startsWith']) || isset($conf['startsWith.'])) {
+                $needle = trim((string)$this->stdWrapValue('startsWith', $conf));
+                if (!str_starts_with($comparisonValue, $needle)) {
+                    $flag = false;
+                }
+            }
+            if (isset($conf['endsWith']) || isset($conf['endsWith.'])) {
+                $needle = trim((string)$this->stdWrapValue('endsWith', $conf));
+                if (!str_ends_with($comparisonValue, $needle)) {
                     $flag = false;
                 }
             }
             if (isset($conf['isInList']) || isset($conf['isInList.'])) {
-                $number = trim((string)$this->stdWrapValue('isInList', $conf ?? []));
-                if (!GeneralUtility::inList($value, $number)) {
+                $singleValueWhichNeedsToBeInList = trim((string)$this->stdWrapValue('isInList', $conf));
+                if (!GeneralUtility::inList($comparisonValue, $singleValueWhichNeedsToBeInList)) {
                     $flag = false;
                 }
             }
             if (isset($conf['bitAnd']) || isset($conf['bitAnd.'])) {
-                $number = (int)trim((string)$this->stdWrapValue('bitAnd', $conf ?? []));
-                if ((new BitSet($number))->get($value) === false) {
+                $number = (int)trim((string)$this->stdWrapValue('bitAnd', $conf));
+                if ((new BitSet($number))->get($comparisonValue) === false) {
                     $flag = false;
                 }
             }

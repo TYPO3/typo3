@@ -5585,6 +5585,18 @@ class ContentObjectRendererTest extends UnitTestCase
             'negate true bitAnd the same' => [false, ['bitAnd' => '4', 'value' => '4', 'negate' => '1']],
             'negate true bitAnd included' => [false, ['bitAnd' => '6', 'value' => '4', 'negate' => '1']],
             'negate false bitAnd' => [true, ['bitAnd' => '3', 'value' => '4', 'negate' => '1']],
+            'contains matches' => [true, ['contains' => 'long text', 'value' => 'this is a long text']],
+            'contains does not match' => [false, ['contains' => 'short text', 'value' => 'this is a long text']],
+            'negate contains does not match' => [false, ['contains' => 'long text', 'value' => 'this is a long text', 'negate' => '1']],
+            'negate contains does not match but matches' => [true, ['contains' => 'short text', 'value' => 'this is a long text', 'negate' => '1']],
+            'startsWith matches' => [true, ['startsWith' => 'this is', 'value' => 'this is a long text']],
+            'startsWith does not match' => [false, ['startsWith' => 'a long text', 'value' => 'this is a long text']],
+            'negate startsWith does not match' => [false, ['startsWith' => 'this is', 'value' => 'this is a long text', 'negate' => '1']],
+            'negate startsWith does not match but matches' => [true, ['startsWith' => 'a long text', 'value' => 'this is a long text', 'negate' => '1']],
+            'endsWith matches' => [true, ['endsWith' => 'a long text', 'value' => 'this is a long text']],
+            'endsWith does not match' => [false, ['endsWith' => 'this is', 'value' => 'this is a long text']],
+            'negate endsWith does not match' => [false, ['endsWith' => 'a long text', 'value' => 'this is a long text', 'negate' => '1']],
+            'negate endsWith does not match but matches' => [true, ['endsWith' => 'this is', 'value' => 'this is a long text', 'negate' => '1']],
         ];
     }
 
