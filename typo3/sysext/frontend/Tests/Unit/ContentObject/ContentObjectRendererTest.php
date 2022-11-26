@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
@@ -1395,19 +1396,60 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * @test
+     */
+    public function getDataWithTypeDbReturnsCorrectTitle()
+    {
+        $dummyRecord = ['uid' => 5, 'title' => 'someTitle'];
+        $GLOBALS['TSFE']->sys_page->expects(self::once())->method('getRawRecord')->with('tt_content', '106')->willReturn($dummyRecord);
+        self::assertSame('someTitle', $this->subject->getData('db:tt_content:106:title'));
+    }
+
+    public function getDataWithTypeDbDataProvider(): array
+    {
+        return [
+            'identifier with missing table, uid and column' => [
+                'identifier' => 'db',
+                'expectsMethodCall' => self::never(),
+            ],
+            'identifier with empty table, missing uid and column' => [
+                'identifier' => 'db:',
+                'expectsMethodCall' => self::never(),
+            ],
+            'identifier with missing table and column' => [
+                'identifier' => 'db:tt_content',
+                'expectsMethodCall' => self::never(),
+            ],
+            'identifier with empty table and missing uid and column' => [
+                'identifier' => 'db:tt_content:',
+                'expectsMethodCall' => self::never(),
+            ],
+            'identifier with empty uid and missing column' => [
+                'identifier' => 'db:tt_content:106',
+                'expectsMethodCall' => self::once(),
+            ],
+            'identifier with empty uid and column' => [
+                'identifier' => 'db:tt_content:106:',
+                'expectsMethodCall' => self::once(),
+            ],
+            'identifier with empty uid and not existing column' => [
+                'identifier' => 'db:tt_content:106:not_existing_column',
+                'expectsMethodCall' => self::once(),
+            ],
+        ];
+    }
+
+    /**
      * Checks if getData() works with type "db"
      *
      * @test
+     * @dataProvider getDataWithTypeDbDataProvider
      */
-    public function getDataWithTypeDb(): void
+    public function getDataWithTypeDbReturnsEmptyStringOnInvalidIdentifiers(string $identifier, InvocationOrder $expectsMethodCall): void
     {
         $dummyRecord = ['uid' => 5, 'title' => 'someTitle'];
-
-        $GLOBALS['TSFE']->sys_page->expects(self::atLeastOnce())->method('getRawRecord')->with(
-            'tt_content',
-            '106'
-        )->willReturn($dummyRecord);
-        self::assertEquals($dummyRecord['title'], $this->subject->getData('db:tt_content:106:title'));
+        $GLOBALS['TSFE']->sys_page->expects($expectsMethodCall)->method('getRawRecord')->with('tt_content', '106')->willReturn($dummyRecord);
+        self::assertSame('', $this->subject->getData($identifier));
     }
 
     /**
