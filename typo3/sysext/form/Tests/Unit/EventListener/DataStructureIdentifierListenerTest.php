@@ -17,10 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\EventListener;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -31,20 +29,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DataStructureIdentifierListenerTest extends UnitTestCase
 {
-    use ProphecyTrait;
     protected bool $resetSingletonInstances = true;
 
     public function setUp(): void
     {
         parent::setUp();
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
-        $cacheProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheProphecy->set(Argument::cetera())->willReturn(false);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-        $languageService = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService->reveal();
+        $cacheManager = new CacheManager();
+        $cacheManager->registerCache(new NullFrontend('runtime'));
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
     }
 
     /**
@@ -194,10 +187,9 @@ class DataStructureIdentifierListenerTest extends UnitTestCase
      */
     public function modifyDataStructureAddsExistingFormItems(array $formDefinition, array $expectedItem): void
     {
-        $formPersistenceManagerProphecy = $this->prophesize(FormPersistenceManagerInterface::class);
-        GeneralUtility::addInstance(FormPersistenceManagerInterface::class, $formPersistenceManagerProphecy->reveal());
-
-        $formPersistenceManagerProphecy->listForms()->shouldBeCalled()->willReturn([$formDefinition]);
+        $formPersistenceManagerMock = $this->createMock(FormPersistenceManagerInterface::class);
+        $formPersistenceManagerMock->expects(self::atLeastOnce())->method('listForms')->willReturn([$formDefinition]);
+        GeneralUtility::addInstance(FormPersistenceManagerInterface::class, $formPersistenceManagerMock);
 
         $incomingDataStructure = [
             'sheets' => [
