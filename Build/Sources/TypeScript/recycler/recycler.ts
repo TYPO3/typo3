@@ -20,6 +20,8 @@ import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
 import RegularEvent from '@typo3/core/event/regular-event';
+import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 
 enum RecyclerIdentifiers {
   searchForm = '#recycler-form',
@@ -245,74 +247,62 @@ class Recycler {
 
   /**
    * Loads all tables which contain deleted records.
-   *
    */
-  private loadAvailableTables(): JQueryXHR {
-    return $.ajax({
-      url: TYPO3.settings.ajaxUrls.recycler,
-      dataType: 'json',
-      data: {
-        action: 'getTables',
-        startUid: TYPO3.settings.Recycler.startUid,
-        depth: this.elements.$depthSelector.find('option:selected').val(),
-      },
-      beforeSend: () => {
-        NProgress.start();
-        this.elements.$tableSelector.val('');
-        this.paging.currentPage = 1;
-      },
-      success: (data: any) => {
-        const tables: Array<JQuery> = [];
-        this.elements.$tableSelector.children().remove();
-        $.each(data, (_: number, value: Array<string>) => {
-          const tableName = value[0];
-          const deletedRecords = value[1];
-          const tableDescription = value[2] ? value[2] : TYPO3.lang.label_allrecordtypes;
-          const optionText = tableDescription + ' (' + deletedRecords + ')';
-          tables.push($('<option />').val(tableName).text(optionText));
-        });
+  private loadAvailableTables(): Promise<AjaxResponse> {
+    NProgress.start();
+    this.elements.$tableSelector.val('');
+    this.paging.currentPage = 1;
 
-        if (tables.length > 0) {
-          this.elements.$tableSelector.append(tables);
-          if (TYPO3.settings.Recycler.tableSelection !== '') {
-            this.elements.$tableSelector.val(TYPO3.settings.Recycler.tableSelection);
-          }
+    return new AjaxRequest(TYPO3.settings.ajaxUrls.recycler).withQueryArguments({
+      action: 'getTables',
+      startUid: TYPO3.settings.Recycler.startUid,
+      depth: this.elements.$depthSelector.find('option:selected').val(),
+    }).get().then(async (response: AjaxResponse): Promise<AjaxResponse> => {
+      const data = await response.resolve();
+      const tables: Array<JQuery> = [];
+
+      this.elements.$tableSelector.children().remove();
+      for (let value of data) {
+        const tableName = value[0];
+        const deletedRecords = value[1];
+        const tableDescription = value[2] ? value[2] : TYPO3.lang.label_allrecordtypes;
+        const optionText = tableDescription + ' (' + deletedRecords + ')';
+        tables.push($('<option />').val(tableName).text(optionText));
+      }
+
+      if (tables.length > 0) {
+        this.elements.$tableSelector.append(tables);
+        if (TYPO3.settings.Recycler.tableSelection !== '') {
+          this.elements.$tableSelector.val(TYPO3.settings.Recycler.tableSelection);
         }
-      },
-      complete: () => {
-        NProgress.done();
-      },
-    });
+      }
+
+      return response;
+    }).finally(() => NProgress.done());
   }
 
   /**
    * Loads the deleted elements, based on the filters
    */
-  private loadDeletedElements(): JQueryXHR {
-    return $.ajax({
-      url: TYPO3.settings.ajaxUrls.recycler,
-      dataType: 'json',
-      data: {
-        action: 'getDeletedRecords',
-        depth: this.elements.$depthSelector.find('option:selected').val(),
-        startUid: TYPO3.settings.Recycler.startUid,
-        table: this.elements.$tableSelector.find('option:selected').val(),
-        filterTxt: this.elements.$searchTextField.val(),
-        start: (this.paging.currentPage - 1) * this.paging.itemsPerPage,
-        limit: this.paging.itemsPerPage,
-      },
-      beforeSend: () => {
-        NProgress.start();
-        this.resetMassActionButtons();
-      },
-      success: (data: any) => {
-        this.elements.$tableBody.html(data.rows);
-        this.buildPaginator(data.totalItems);
-      },
-      complete: () => {
-        NProgress.done();
-      },
-    });
+  private loadDeletedElements(): Promise<AjaxResponse> {
+    NProgress.start();
+    this.resetMassActionButtons();
+
+    return new AjaxRequest(TYPO3.settings.ajaxUrls.recycler).withQueryArguments({
+      action: 'getDeletedRecords',
+      depth: this.elements.$depthSelector.find('option:selected').val(),
+      startUid: TYPO3.settings.Recycler.startUid,
+      table: this.elements.$tableSelector.find('option:selected').val(),
+      filterTxt: this.elements.$searchTextField.val(),
+      start: (this.paging.currentPage - 1) * this.paging.itemsPerPage,
+      limit: this.paging.itemsPerPage,
+    }).get().then(async (response: AjaxResponse): Promise<AjaxResponse> => {
+      const data = await response.resolve();
+      this.elements.$tableBody.html(data.rows);
+      this.buildPaginator(data.totalItems);
+
+      return response;
+    }).finally(() => NProgress.done());
   }
 
   private deleteRecord = (e: Event): void => {
@@ -353,7 +343,7 @@ class Recycler {
           text: TYPO3.lang['button.delete'],
           btnClass: 'btn-danger',
           action: new DeferredAction(() => {
-            Promise.resolve(this.callAjaxAction('delete', records, isMassDelete));
+            this.callAjaxAction('delete', records, isMassDelete);
           }),
         },
       ]
@@ -422,12 +412,12 @@ class Recycler {
           text: TYPO3.lang['button.undo'],
           btnClass: 'btn-success',
           action: new DeferredAction(() => {
-            Promise.resolve(this.callAjaxAction(
+            this.callAjaxAction(
               'undo',
               typeof records === 'object' ? records : [records],
               isMassUndo,
               $message.find('#undo-recursive').prop('checked'),
-            ));
+            );
           }),
         },
       ]
@@ -440,7 +430,7 @@ class Recycler {
    * @param {boolean} isMassAction
    * @param {boolean} recursive
    */
-  private callAjaxAction(action: string, records: Object, isMassAction: boolean, recursive: boolean = false): JQueryXHR|void {
+  private callAjaxAction(action: string, records: Object, isMassAction: boolean, recursive: boolean = false): Promise<AjaxResponse>|null {
     let data: any = {
       records: records,
       action: '',
@@ -453,41 +443,34 @@ class Recycler {
     } else if (action === 'delete') {
       data.action = 'deleteRecords';
     } else {
-      return;
+      return null;
     }
 
-    return $.ajax({
-      url: TYPO3.settings.ajaxUrls.recycler,
-      type: 'POST',
-      dataType: 'json',
-      data: data,
-      beforeSend: () => {
-        NProgress.start();
-      },
-      success: (responseData: any) => {
-        if (responseData.success) {
-          Notification.success('', responseData.message);
-        } else {
-          Notification.error('', responseData.message);
+    NProgress.start();
+    return new AjaxRequest(TYPO3.settings.ajaxUrls.recycler).post(data).then(async (response: AjaxResponse): Promise<AjaxResponse> => {
+      const responseData = await response.resolve();
+
+      if (responseData.success) {
+        Notification.success('', responseData.message);
+      } else {
+        Notification.error('', responseData.message);
+      }
+
+      // reload recycler data
+      this.paging.currentPage = 1;
+
+      this.loadAvailableTables().then((): void => {
+        this.loadDeletedElements();
+        if (isMassAction) {
+          this.resetMassActionButtons();
         }
 
-        // reload recycler data
-        this.paging.currentPage = 1;
+        if (reloadPageTree) {
+          Recycler.refreshPageTree();
+        }
+      });
 
-        $.when(this.loadAvailableTables()).done((): void => {
-          this.loadDeletedElements();
-          if (isMassAction) {
-            this.resetMassActionButtons();
-          }
-
-          if (reloadPageTree) {
-            Recycler.refreshPageTree();
-          }
-        });
-      },
-      complete: () => {
-        NProgress.done();
-      },
+      return response;
     });
   }
 
