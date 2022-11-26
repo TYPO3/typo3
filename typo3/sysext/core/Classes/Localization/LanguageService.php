@@ -237,7 +237,9 @@ class LanguageService
                             $fieldName = implode('.', $keyParts);
                         } else {
                             $fieldName = $keyParts[0];
-                            $type = $keyParts[1];
+                            // not having the second part is an error in the xliff file, but we should avoid
+                            // undefined array key access warning for PHP8.0+ anyway.
+                            $type = $keyParts[1] ?? '';
                         }
                         // Detecting 'hidden' labels, converting to normal fieldname
                         if ($fieldName === '_') {
