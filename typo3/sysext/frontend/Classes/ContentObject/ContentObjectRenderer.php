@@ -4383,10 +4383,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $retVal = $this->data[$this->currentValKey] ?? null;
                         break;
                     case 'db':
-                        $selectParts = GeneralUtility::trimExplode(':', $key);
-                        $db_rec = $tsfe->sys_page->getRawRecord($selectParts[0], $selectParts[1]);
-                        if (is_array($db_rec) && $selectParts[2]) {
-                            $retVal = $db_rec[$selectParts[2]];
+                        $selectParts = GeneralUtility::trimExplode(':', $key, true);
+                        if (!isset($selectParts[1])) {
+                            break;
+                        }
+                        $dbRecord = $tsfe->sys_page->getRawRecord($selectParts[0], $selectParts[1]);
+                        if (is_array($dbRecord) && isset($selectParts[2])) {
+                            $retVal = $dbRecord[$selectParts[2]] ?? '';
                         }
                         break;
                     case 'lll':
