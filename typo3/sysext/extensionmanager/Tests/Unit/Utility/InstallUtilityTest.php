@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -27,6 +26,7 @@ use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
@@ -34,35 +34,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class InstallUtilityTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var string
-     */
-    protected $extensionKey;
-
-    /**
-     * @var array
-     */
-    protected $extensionData = [];
+    protected string $extensionKey;
+    protected array $extensionData = [];
 
     /**
      * @var array List of created fake extensions to be deleted in tearDown() again
      */
-    protected $fakedExtensions = [];
+    protected array $fakedExtensions = [];
 
     protected bool $backupEnvironment = true;
-
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|InstallUtility|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
-     */
-    protected $installMock;
+    protected InstallUtility&MockObject&AccessibleObjectInterface $installMock;
 
     protected function setUp(): void
     {
@@ -90,15 +78,15 @@ class InstallUtilityTest extends UnitTestCase
                 'importInitialFiles',
             ]
         );
-        $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
-        $this->installMock->injectEventDispatcher($eventDispatcherProphecy->reveal());
-        $this->installMock->injectBootService($this->prophesize(BootService::class)->reveal());
-        $containerProphecy = $this->prophesize(ContainerInterface::class);
-        $containerProphecy->get(EventDispatcherInterface::class)->willReturn($eventDispatcherProphecy->reveal());
-        $bootServiceProphecy = $this->prophesize(BootService::class);
-        $bootServiceProphecy->getContainer(false)->willReturn($containerProphecy->reveal());
-        $bootServiceProphecy->makeCurrent(Argument::cetera())->willReturn([]);
-        $this->installMock->injectBootService($bootServiceProphecy->reveal());
+        $eventDispatcher = new NoopEventDispatcher();
+        $this->installMock->injectEventDispatcher($eventDispatcher);
+        $this->installMock->injectBootService($this->createMock(BootService::class));
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock->method('get')->with(EventDispatcherInterface::class)->willReturn($eventDispatcher);
+        $bootServiceMock = $this->createMock(BootService::class);
+        $bootServiceMock->method('getContainer')->with(false)->willReturn($containerMock);
+        $bootServiceMock->method('makeCurrent')->with(self::anything())->willReturn([]);
+        $this->installMock->injectBootService($bootServiceMock);
         $this->installMock
             ->method('getExtensionArray')
             ->with($this->extensionKey)
@@ -108,9 +96,9 @@ class InstallUtilityTest extends UnitTestCase
             ->with($this->extensionKey)
             ->willReturnCallback([$this, 'getExtensionData']);
 
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheManagerProphecy->getCache('core')->willReturn(new NullFrontend('core'));
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheManagerMock->method('getCache')->with('core')->willReturn(new NullFrontend('core'));
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
     }
 
     protected function tearDown(): void
@@ -304,14 +292,21 @@ class InstallUtilityTest extends UnitTestCase
             ->willReturn($packageMock);
 
         $subject = new InstallUtility();
-        $subject->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
+        $subject->injectEventDispatcher(new NoopEventDispatcher());
         $subject->injectPackageManager($packageManagerMock);
 
-        $registry = $this->prophesize(Registry::class);
-        $registry->get('extensionDataImport', Argument::any())->willReturn('some folder name');
-        $registry->get('siteConfigImport', Argument::any())->willReturn(null);
-        $registry->set('siteConfigImport', Argument::cetera())->shouldBeCalled();
-        $subject->injectRegistry($registry->reveal());
+        $registry = $this->createMock(Registry::class);
+        $registry->method('get')->willReturnMap([
+            ['extensionDataImport', self::anything(), 'some folder name'],
+            ['siteConfigImport', self::anything(), null],
+        ]);
+        $registry->expects(self::atLeastOnce())->method('set')->withConsecutive(
+            ['extensionDataImport', self::anything()],
+            ['siteConfigImport', self::anything()],
+            ['siteConfigImport', $siteIdentifier, 1],
+        );
+
+        $subject->injectRegistry($registry);
 
         // provide function result inside test output folder
         $environment = new Environment();
@@ -332,7 +327,6 @@ class InstallUtilityTest extends UnitTestCase
         );
         $subject->processExtensionSetup($extKey);
 
-        $registry->set('siteConfigImport', $siteIdentifier, 1)->shouldHaveBeenCalled();
         $siteConfigFile = $configDir . '/sites/' . $siteIdentifier . '/config.yaml';
         self::assertFileExists($siteConfigFile);
         self::assertStringEqualsFile($siteConfigFile, $config);
@@ -388,14 +382,17 @@ class InstallUtilityTest extends UnitTestCase
             ->willReturn($packageMock);
 
         $subject = new InstallUtility();
-        $subject->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
+        $subject->injectEventDispatcher(new NoopEventDispatcher());
         $subject->injectPackageManager($packageManagerMock);
 
-        $registry = $this->prophesize(Registry::class);
-        $registry->get('extensionDataImport', Argument::any())->willReturn('some folder name');
-        $registry->get('siteConfigImport', Argument::any())->willReturn(null);
-        $registry->set('siteConfigImport', Argument::cetera())->shouldNotBeCalled();
-        $subject->injectRegistry($registry->reveal());
+        $registry = $this->createMock(Registry::class);
+        $registry->method('get')->willReturnMap([
+            ['extensionDataImport', self::anything(), 'some folder name'],
+            ['siteConfigImport', self::anything(), null],
+        ]);
+        // Note, that test will fail if `set` is called with `siteConfigImport` as first argument.
+        $registry->expects(self::atLeastOnce())->method('set')->with('extensionDataImport', self::anything());
+        $subject->injectRegistry($registry);
 
         $environment = new Environment();
 
