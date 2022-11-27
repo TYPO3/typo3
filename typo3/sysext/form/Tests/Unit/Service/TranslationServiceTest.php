@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Service;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -39,60 +37,86 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TranslationServiceTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var ConfigurationManager|MockObject|AccessibleObjectInterface
-     */
-    protected $mockConfigurationManager;
-
-    /**
-     * @var TranslationService|MockObject|AccessibleObjectInterface
-     */
-    protected $mockTranslationService;
-
-    /**
-     * @var LanguageStore
-     */
-    protected $store;
+    protected ConfigurationManager&MockObject&AccessibleObjectInterface $mockConfigurationManager;
+    protected TranslationService&MockObject&AccessibleObjectInterface $mockTranslationService;
+    protected LanguageStore $store;
 
     public function setUp(): void
     {
-        $packageManagerProphecy = $this->prophesize(PackageManager::class);
+        $packageManagerMock = $this->createMock(PackageManager::class);
         parent::setUp();
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
-        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
 
-        $localizationFactory = $this->prophesize(LocalizationFactory::class);
-        $localizationFactory
-            ->getParsedData('EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf', 'default')
-            ->willReturn(include __DIR__ . '/Fixtures/locallang_form.php');
-        $localizationFactory
-            ->getParsedData('EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf', 'de')
-            ->willReturn(include __DIR__ . '/Fixtures/de.locallang_form.php');
-        $localizationFactory
-            ->getParsedData('EXT:form/Tests/Unit/Service/Fixtures/locallang_additional_text.xlf', 'default')
-            ->willReturn(include __DIR__ . '/Fixtures/locallang_additional_text.php');
-        $localizationFactory
-            ->getParsedData('EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_01.xlf', 'default')
-            ->willReturn(include __DIR__ . '/Fixtures/locallang_ceuid_suffix_01.php');
-        $localizationFactory
-            ->getParsedData('EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_02.xlf', 'default')
-            ->willReturn(include __DIR__ . '/Fixtures/locallang_ceuid_suffix_02.php');
-        $localizationFactory
-            ->getParsedData('EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf', 'default')
-            ->willReturn(include __DIR__ . '/Fixtures/locallang_text.php');
-        $localizationFactory
-            ->getParsedData('EXT:form/Tests/Unit/Service/Fixtures/locallang_empty_values.xlf', 'default')
-            ->willReturn(include __DIR__ . '/Fixtures/locallang_empty_values.php');
+        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
+        $cacheFrontendMock->method('get')->with(self::anything())->willReturn(false);
+        $cacheFrontendMock->method('set')->with(self::anything())->willReturn(null);
 
-        GeneralUtility::setSingletonInstance(LocalizationFactory::class, $localizationFactory->reveal());
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheManagerMock->method('getCache')->with('l10n')->willReturn($cacheFrontendMock);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
+
+        $localizationFactory = $this->createMock(LocalizationFactory::class);
+        $localizationFactory->method('getParsedData')->willReturnMap([
+            [
+                'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf',
+                'default',
+                null,
+                null,
+                false,
+                include __DIR__ . '/Fixtures/locallang_form.php',
+            ],
+            [
+                'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf',
+                'de',
+                null,
+                null,
+                false,
+                include __DIR__ . '/Fixtures/de.locallang_form.php',
+            ],
+            [
+                'EXT:form/Tests/Unit/Service/Fixtures/locallang_additional_text.xlf',
+                'default',
+                null,
+                null,
+                false,
+                include __DIR__ . '/Fixtures/locallang_additional_text.php',
+            ],
+            [
+                'EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_01.xlf',
+                'default',
+                null,
+                null,
+                false,
+                include __DIR__ . '/Fixtures/locallang_ceuid_suffix_01.php',
+            ],
+            [
+                'EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_02.xlf',
+                'default',
+                null,
+                null,
+                false,
+                include __DIR__ . '/Fixtures/locallang_ceuid_suffix_02.php',
+            ],
+            [
+                'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf',
+                'default',
+                null,
+                null,
+                false,
+                include __DIR__ . '/Fixtures/locallang_text.php',
+            ],
+            [
+                'EXT:form/Tests/Unit/Service/Fixtures/locallang_empty_values.xlf',
+                'default',
+                null,
+                null,
+                false,
+                include __DIR__ . '/Fixtures/locallang_empty_values.php',
+            ],
+        ]);
+
+        GeneralUtility::setSingletonInstance(LocalizationFactory::class, $localizationFactory);
 
         $this->mockConfigurationManager = $this->getAccessibleMock(ConfigurationManager::class, ['getConfiguration'], [], '', false);
 
@@ -101,14 +125,14 @@ class TranslationServiceTest extends UnitTestCase
             'getLanguageService',
         ], [], '', false);
 
-        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerMock), $cacheManagerMock), $cacheFrontendMock);
         $this->mockTranslationService
             ->method('getLanguageService')
             ->willReturn($languageService);
 
         $this->mockTranslationService->_set('configurationManager', $this->mockConfigurationManager);
 
-        $this->store = GeneralUtility::makeInstance(LanguageStore::class, $packageManagerProphecy->reveal());
+        $this->store = GeneralUtility::makeInstance(LanguageStore::class, $packageManagerMock);
         $this->store->initialize();
     }
 
@@ -903,20 +927,20 @@ class TranslationServiceTest extends UnitTestCase
 
         $this->store->flushData($formRuntimeXlfPaths);
 
-        $formRuntime = $this->prophesize(FormRuntime::class);
-        $formRuntime->getIdentifier()->willReturn('my-form-runtime-identifier');
-        $formRuntime->getRenderingOptions()->willReturn([
+        $formRuntime = $this->createMock(FormRuntime::class);
+        $formRuntime->method('getIdentifier')->willReturn('my-form-runtime-identifier');
+        $formRuntime->method('getRenderingOptions')->willReturn([
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true,
             ],
         ]);
 
-        $element = $this->prophesize(RootRenderableInterface::class);
-        $element->getIdentifier()->willReturn('my-form-element-with-translation-arguments');
-        $element->getType()->willReturn(RootRenderableInterface::class);
-        $element->getLabel()->willReturn('See %s or %s');
-        $element->getRenderingOptions()->willReturn([
+        $element = $this->createMock(RootRenderableInterface::class);
+        $element->method('getIdentifier')->willReturn('my-form-element-with-translation-arguments');
+        $element->method('getType')->willReturn(RootRenderableInterface::class);
+        $element->method('getLabel')->willReturn('See %s or %s');
+        $element->method('getRenderingOptions')->willReturn([
             'translation' => [
                 'arguments' => [
                         'label' => [
@@ -928,7 +952,7 @@ class TranslationServiceTest extends UnitTestCase
         ]);
 
         $expected = 'See this or that';
-        $result = $this->mockTranslationService->_call('translateFormElementValue', $element->reveal(), ['label'], $formRuntime->reveal());
+        $result = $this->mockTranslationService->_call('translateFormElementValue', $element, ['label'], $formRuntime);
 
         self::assertEquals($expected, $result);
     }
@@ -993,9 +1017,9 @@ class TranslationServiceTest extends UnitTestCase
 
         $this->store->flushData($formRuntimeXlfPaths);
 
-        $formRuntime = $this->prophesize(FormRuntime::class);
-        $formRuntime->getIdentifier()->willReturn('my-form-runtime-identifier');
-        $formRuntime->getRenderingOptions()->willReturn([
+        $formRuntime = $this->createMock(FormRuntime::class);
+        $formRuntime->method('getIdentifier')->willReturn('my-form-runtime-identifier');
+        $formRuntime->method('getRenderingOptions')->willReturn([
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
                 'translatePropertyValueIfEmpty' => true,
@@ -1010,7 +1034,7 @@ class TranslationServiceTest extends UnitTestCase
         ];
 
         $expected = 'My awesome subject';
-        $result = $this->mockTranslationService->_call('translateFinisherOption', $formRuntime->reveal(), 'EmailToReceiverWithTranslationArguments', 'subject', 'My %s subject', $renderingOptions);
+        $result = $this->mockTranslationService->_call('translateFinisherOption', $formRuntime, 'EmailToReceiverWithTranslationArguments', 'subject', 'My %s subject', $renderingOptions);
 
         self::assertEquals($expected, $result);
     }
