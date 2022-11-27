@@ -83,6 +83,13 @@ class CreateAdmin extends AbstractInteractableModule {
         data.status.forEach((element: any): void => {
           Notification.showMessage(element.title, element.message, element.severity);
         });
+        if (data.userCreated) {
+          this.findInModal('.t3js-createAdmin-user').val('');
+          this.findInModal('.t3js-createAdmin-password').val('');
+          this.findInModal('.t3js-createAdmin-password-check').val('');
+          this.findInModal('.t3js-createAdmin-email').val('');
+          this.findInModal('.t3js-createAdmin-system-maintainer').prop('checked', false);
+        }
       } else {
         Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
       }
@@ -92,11 +99,6 @@ class CreateAdmin extends AbstractInteractableModule {
       this.setModalButtonsState(true);
 
       this.getModuleContent().find(':input').prop('disabled', false);
-      this.findInModal('.t3js-createAdmin-user').val('');
-      this.findInModal('.t3js-createAdmin-password').val('');
-      this.findInModal('.t3js-createAdmin-password-check').val('');
-      this.findInModal('.t3js-createAdmin-email').val('');
-      this.findInModal('.t3js-createAdmin-system-maintainer').prop('checked', false);
     });
   }
 }

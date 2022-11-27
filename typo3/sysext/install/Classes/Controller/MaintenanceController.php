@@ -468,6 +468,7 @@ class MaintenanceController extends AbstractController
      */
     public function createAdminAction(ServerRequestInterface $request): ResponseInterface
     {
+        $userCreated = false;
         $username = preg_replace('/\\s/i', '', $request->getParsedBody()['install']['userName']);
         $password = $request->getParsedBody()['install']['userPassword'];
         $passwordCheck = $request->getParsedBody()['install']['userPasswordCheck'];
@@ -522,6 +523,7 @@ class MaintenanceController extends AbstractController
                     $adminUserFields['email'] = $email;
                 }
                 $connectionPool->getConnectionForTable('be_users')->insert('be_users', $adminUserFields);
+                $userCreated = true;
 
                 if ($isSystemMaintainer) {
                     // Get the new admin user uid just created
@@ -549,6 +551,7 @@ class MaintenanceController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'status' => $messages,
+            'userCreated' => $userCreated,
         ]);
     }
 
