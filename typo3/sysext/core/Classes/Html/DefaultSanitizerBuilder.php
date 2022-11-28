@@ -62,7 +62,7 @@ class DefaultSanitizerBuilder extends CommonBuilder implements SingletonInterfac
     {
         $behavior = $this->createBehavior();
         $visitor = GeneralUtility::makeInstance(CommonVisitor::class, $behavior);
-        return GeneralUtility::makeInstance(Sanitizer::class, $visitor);
+        return GeneralUtility::makeInstance(Sanitizer::class, $behavior, $visitor);
     }
 
     protected function createBasicTags(): array
