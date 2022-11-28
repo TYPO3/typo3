@@ -12,6 +12,11 @@
         <f:render partial="PageLayout/Record/{item.record.CType}/Footer" arguments="{_all}" optional="1">
             <f:render partial="PageLayout/RecordDefault/Footer" arguments="{_all}" />
         </f:render>
+        <f:if condition="{item.inconsistentLanguage}">
+            <div class="t3-page-ce-footer">
+                <span class="badge badge-warning">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.inconsistentLanguageWarning')}</span>
+            </div>
+        </f:if>
     </div>
     <f:if condition="{allowEditContent} && {item.column.contentEditable} && {column.context.allowNewContent} && {column.active}">
         <div class="t3-page-ce-actions t3js-page-new-ce" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">

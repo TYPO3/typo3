@@ -27,6 +27,8 @@ html {
     --pagemodule-element-bg: #fff;
     --pagemodule-element-border-radius: 2px;
     --pagemodule-element-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, .15);
+    --pagemodule-element-warning-bg: #{shift-color($warning, -85%)};
+    --pagemodule-element-warning-border-color: #f6dab1;
     --pagemodule-element-hidden-bg: #f2f2f2;
     --pagemodule-dropzone-bg: #{shift-color($warning, -85%)};
     --pagemodule-dropzone-possible-bg: #{shift-color($success, -85%)};
@@ -149,6 +151,12 @@ html {
         &:hover {
             opacity: 1;
         }
+    }
+
+    .t3-page-ce-warning & {
+        border: 1px solid var(--pagemodule-element-warning-border-color);
+        background-color: var(--pagemodule-element-warning-bg);
+        box-shadow: none;
     }
 }
 
