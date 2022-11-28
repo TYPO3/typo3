@@ -993,7 +993,7 @@ class QueryBuilderTest extends UnitTestCase
         $databasePlatformMock = $this->createMock($platform);
         $databasePlatformMock->method('getIdentifierQuoteCharacter')->willReturn($quoteChar);
         $connectionMock->method('getDatabasePlatform')->willReturn($databasePlatformMock);
-        $subject = $this->getAccessibleMock(QueryBuilder::class, ['dummy'], [$connectionMock]);
+        $subject = $this->getAccessibleMock(QueryBuilder::class, null, [$connectionMock]);
         $result = $subject->_call('unquoteSingleIdentifier', $input);
         self::assertEquals($expected, $result);
     }

@@ -87,7 +87,7 @@ class YamlSourceTest extends UnitTestCase
      */
     public function loadOverruleNonArrayValuesOverArrayValues(): void
     {
-        $mockYamlSource = $this->getAccessibleMock(YamlSource::class, ['dummy'], [], '', false);
+        $mockYamlSource = $this->getAccessibleMock(YamlSource::class, null, [], '', false);
 
         $input = [
             'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/OverruleNonArrayValuesOverArrayValues1.yaml',
@@ -109,7 +109,7 @@ class YamlSourceTest extends UnitTestCase
      */
     public function loadRemovesVendorNamespacePrefixFromConfiguration(): void
     {
-        $mockYamlSource = $this->getAccessibleMock(YamlSource::class, ['dummy'], [], '', false);
+        $mockYamlSource = $this->getAccessibleMock(YamlSource::class, null, [], '', false);
 
         $input = [
             'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/ConfigurationWithVendorNamespacePrefix1.yaml',

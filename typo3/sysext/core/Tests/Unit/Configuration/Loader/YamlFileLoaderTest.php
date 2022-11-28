@@ -200,7 +200,7 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
      */
     public function containsPlaceholderTest(mixed $placeholderValue, bool $expected): void
     {
-        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['dummy']);
+        $subject = $this->getAccessibleMock(YamlFileLoader::class, null);
         $output = $subject->_call('containsPlaceholder', $placeholderValue);
         self::assertSame($expected, $output);
     }

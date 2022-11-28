@@ -45,7 +45,7 @@ class ImageContentObjectTest extends UnitTestCase
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $GLOBALS['TSFE'] = $tsfe;
         $contentObjectRenderer = new ContentObjectRenderer($tsfe);
-        $this->subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy'], [
+        $this->subject = $this->getAccessibleMock(ImageContentObject::class, null, [
             new MarkerBasedTemplateService(
                 new NullFrontend('hash'),
                 new NullFrontend('runtime'),
@@ -373,7 +373,7 @@ class ImageContentObjectTest extends UnitTestCase
             ->with(self::equalTo('testImageName'))
             ->willReturn([100, 100, null, 'bar-file.jpg']);
 
-        $subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy'], [
+        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [
             new MarkerBasedTemplateService(
                 new NullFrontend('hash'),
                 new NullFrontend('runtime'),

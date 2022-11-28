@@ -49,8 +49,8 @@ class CommandRegistryTest extends UnitTestCase
      */
     public function iteratesLazyCommandsOfActivePackages(): void
     {
-        $command1MockClass = $this->getMockClass(Command::class, ['dummy']);
-        $command2MockClass = $this->getMockClass(Command::class, ['dummy']);
+        $command1MockClass = $this->getMockClass(Command::class, null);
+        $command2MockClass = $this->getMockClass(Command::class, null);
 
         $this->containerMock->method('get')->willReturnMap([
             ['command1', new $command1MockClass()],

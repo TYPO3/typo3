@@ -28,7 +28,7 @@ class SiteConfigurationControllerTest extends UnitTestCase
      */
     public function duplicateEntryPointsAreRecognized(): void
     {
-        $mockedSiteConfigurationController = $this->getAccessibleMock(SiteConfigurationController::class, ['dummy'], [], '', false);
+        $mockedSiteConfigurationController = $this->getAccessibleMock(SiteConfigurationController::class, null, [], '', false);
 
         $sites = [
             new Site('site-1', 1, [
@@ -132,7 +132,7 @@ class SiteConfigurationControllerTest extends UnitTestCase
      */
     public function languageBaseVariantsAreKept(): void
     {
-        $mockedSiteConfigurationController = $this->getAccessibleMock(SiteConfigurationController::class, ['dummy'], [], '', false);
+        $mockedSiteConfigurationController = $this->getAccessibleMock(SiteConfigurationController::class, null, [], '', false);
 
         $currentSiteConfig = [
             'base' => '//domain1.tld/',

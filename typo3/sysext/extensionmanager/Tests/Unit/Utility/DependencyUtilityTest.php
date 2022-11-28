@@ -241,7 +241,7 @@ class DependencyUtilityTest extends UnitTestCase
             ->getMock();
         $listUtilityMock->injectEventDispatcher($eventDispatcher);
         $listUtilityMock->expects(self::atLeastOnce())->method('getAvailableExtensions')->willReturn($availableExtensions);
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
+        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, null);
         $dependencyUtility->injectListUtility($listUtilityMock);
 
         self::assertTrue($dependencyUtility->_call('isDependentExtensionAvailable', 'dummy'));
@@ -263,7 +263,7 @@ class DependencyUtilityTest extends UnitTestCase
             ->getMock();
         $listUtilityMock->injectEventDispatcher($eventDispatcher);
         $listUtilityMock->expects(self::atLeastOnce())->method('getAvailableExtensions')->willReturn($availableExtensions);
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
+        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, null);
         $dependencyUtility->injectListUtility($listUtilityMock);
 
         self::assertFalse($dependencyUtility->_call('isDependentExtensionAvailable', '42'));
@@ -302,7 +302,7 @@ class DependencyUtilityTest extends UnitTestCase
             ->addMethods(['countByExtensionKey'])
             ->getMock();
         $extensionRepositoryMock->expects(self::once())->method('countByExtensionKey')->with('test123')->willReturn(1);
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
+        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, null);
         $dependencyUtility->injectExtensionRepository($extensionRepositoryMock);
         $count = $dependencyUtility->_call('isExtensionDownloadableFromRemote', 'test123');
 
@@ -318,7 +318,7 @@ class DependencyUtilityTest extends UnitTestCase
             ->addMethods(['countByExtensionKey'])
             ->getMock();
         $extensionRepositoryMock->expects(self::once())->method('countByExtensionKey')->with('test123')->willReturn(0);
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
+        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, null);
         $dependencyUtility->injectExtensionRepository($extensionRepositoryMock);
         $count = $dependencyUtility->_call('isExtensionDownloadableFromRemote', 'test123');
 
@@ -335,7 +335,7 @@ class DependencyUtilityTest extends UnitTestCase
             ->onlyMethods(['countByVersionRangeAndExtensionKey'])
             ->getMock();
         $extensionRepositoryMock->expects(self::once())->method('countByVersionRangeAndExtensionKey')->with('dummy', 1000000, 10000000)->willReturn(2);
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
+        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, null);
         $dependencyUtility->injectExtensionRepository($extensionRepositoryMock);
         $count = $dependencyUtility->_call('isDownloadableVersionCompatible', $dependency);
 

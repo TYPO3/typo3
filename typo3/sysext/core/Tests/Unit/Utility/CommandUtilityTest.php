@@ -81,7 +81,7 @@ class CommandUtilityTest extends UnitTestCase
     public function getConfiguredApps($globalsBinSetup, $expected): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup'] = $globalsBinSetup;
-        $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, ['dummy']);
+        $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, null);
         $result = $commandUtilityMock->_call('getConfiguredApps');
         self::assertSame($expected, $result);
     }
@@ -195,7 +195,7 @@ class CommandUtilityTest extends UnitTestCase
      */
     public function unQuoteFilenameUnquotesCorrectly(string $source, array $expectedQuoted): void
     {
-        $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, ['dummy']);
+        $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, null);
         $actualQuoted = $commandUtilityMock->_call('unQuoteFilenames', $source);
         self::assertEquals($expectedQuoted, $actualQuoted);
     }
@@ -209,7 +209,7 @@ class CommandUtilityTest extends UnitTestCase
      */
     public function getCommandWithPhpReturnsPathToPhpExecutable(): void
     {
-        $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, ['dummy']);
+        $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, null);
         $command = $commandUtilityMock->_call('getCommand', 'php');
 
         self::assertIsString($command);

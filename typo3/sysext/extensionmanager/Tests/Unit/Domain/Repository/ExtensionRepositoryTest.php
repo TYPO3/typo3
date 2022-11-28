@@ -49,7 +49,7 @@ class ExtensionRepositoryTest extends UnitTestCase
         $bar3->setVersion('1.0.3');
 
         $input = [$foo1, $foo2, $bar1, $bar2, $bar3];
-        $subject = $this->getAccessibleMock(ExtensionRepository::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(ExtensionRepository::class, null, [], '', false);
         self::assertEquals(['foo' => $foo2, 'bar' => $bar1], $subject->_call('filterYoungestVersionOfExtensionList', $input, true));
     }
 
@@ -90,7 +90,7 @@ class ExtensionRepositoryTest extends UnitTestCase
         $bar2->setDependencies($suitableDependencies);
 
         $input = [$foo1, $foo2, $bar1, $bar2];
-        $subject = $this->getAccessibleMock(ExtensionRepository::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(ExtensionRepository::class, null, [], '', false);
         self::assertEquals(['foo' => $foo1, 'bar' => $bar2], $subject->_call('filterYoungestVersionOfExtensionList', $input, false));
     }
 
@@ -116,7 +116,7 @@ class ExtensionRepositoryTest extends UnitTestCase
         $unsuitableExtension->setDependencies($unsuitableDependencies);
 
         $input = [$suitableExtension, $unsuitableExtension];
-        $subject = $this->getAccessibleMock(ExtensionRepository::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(ExtensionRepository::class, null, [], '', false);
 
         self::assertSame($this->count($subject->_call('getExtensionsSuitableForTypo3Version', $input)), 1);
     }

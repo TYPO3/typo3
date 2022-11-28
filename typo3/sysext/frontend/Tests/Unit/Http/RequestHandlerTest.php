@@ -480,7 +480,7 @@ class RequestHandlerTest extends UnitTestCase
         $_POST = $postVars;
         $request = ServerRequestFactory::fromGlobals();
 
-        $subject = $this->getAccessibleMock(RequestHandler::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(RequestHandler::class, null, [], '', false);
         $subject->_call('resetGlobalsToCurrentRequest', $request);
         self::assertEquals($_GET, $getVars);
         self::assertEquals($_POST, $postVars);
@@ -506,7 +506,7 @@ class RequestHandlerTest extends UnitTestCase
         $request = $request->withQueryParams($modifiedGetVars);
         $request = $request->withParsedBody($modifiedPostVars);
 
-        $subject = $this->getAccessibleMock(RequestHandler::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(RequestHandler::class, null, [], '', false);
         $subject->_call('resetGlobalsToCurrentRequest', $request);
         self::assertEquals($_GET, $modifiedGetVars);
         self::assertEquals($_POST, $modifiedPostVars);

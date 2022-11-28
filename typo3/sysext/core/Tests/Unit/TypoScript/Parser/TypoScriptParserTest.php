@@ -36,7 +36,7 @@ class TypoScriptParserTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->typoScriptParser = $this->getAccessibleMock(TypoScriptParser::class, ['dummy']);
+        $this->typoScriptParser = $this->getAccessibleMock(TypoScriptParser::class, null);
     }
 
     protected function tearDown(): void

@@ -114,7 +114,7 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
      */
     public function transformMultiValueElementsForFormFrameworkTransformValues(): void
     {
-        $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, ['dummy'], [], '', false);
+        $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, null, [], '', false);
 
         $input = [
             'foo1' => 'bar',

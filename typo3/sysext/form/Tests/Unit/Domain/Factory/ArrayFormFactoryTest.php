@@ -34,7 +34,7 @@ class ArrayFormFactoryTest extends UnitTestCase
         $this->expectExceptionCode(1329289436);
 
         $section = new Section('test', 'page');
-        $arrayFormFactory = $this->getAccessibleMock(ArrayFormFactory::class, ['dummy']);
+        $arrayFormFactory = $this->getAccessibleMock(ArrayFormFactory::class, null);
 
         $arrayFormFactory->_call('addNestedRenderable', [], $section);
     }
@@ -51,7 +51,7 @@ class ArrayFormFactoryTest extends UnitTestCase
             'identifier' => 'test-3',
             'type' => 'Foo',
         ];
-        $arrayFormFactory = $this->getAccessibleMock(ArrayFormFactory::class, ['dummy']);
+        $arrayFormFactory = $this->getAccessibleMock(ArrayFormFactory::class, null);
         $result = $arrayFormFactory->_call('addNestedRenderable', $configuration, $section);
         self::assertSame($unknownElement, $result);
     }

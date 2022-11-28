@@ -183,7 +183,7 @@ class LinkVarsCalculatorTest extends UnitTestCase
      */
     public function splitLinkVarsStringSplitsStringByComma(string $string, array $expected): void
     {
-        $subject = $this->getAccessibleMock(LinkVarsCalculator::class, ['dummy']);
+        $subject = $this->getAccessibleMock(LinkVarsCalculator::class, null);
         self::assertEquals($expected, $subject->_call('splitLinkVarsString', $string));
     }
 }

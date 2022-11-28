@@ -225,7 +225,7 @@ class CoreVersionServiceTest extends UnitTestCase
             ]
         );
 
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['dummy']);
+        $instance = $this->getAccessibleMock(CoreVersionService::class, null);
         $result = $instance->getSupportedMajorReleases();
 
         $expectation = [

@@ -275,7 +275,7 @@ class ApcuBackendTest extends UnitTestCase
     {
         $cache = $this->createMock(FrontendInterface::class);
         if ($accessible) {
-            $backend = $this->getAccessibleMock(ApcuBackend::class, ['dummy'], ['Testing']);
+            $backend = $this->getAccessibleMock(ApcuBackend::class, null, ['Testing']);
         } else {
             $backend = new ApcuBackend('Testing');
         }

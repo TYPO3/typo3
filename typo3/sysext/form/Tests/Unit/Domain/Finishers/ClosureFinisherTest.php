@@ -33,7 +33,7 @@ class ClosureFinisherTest extends UnitTestCase
             return 'foobar';
         };
 
-        $mockClosureFinisher = $this->getAccessibleMock(ClosureFinisher::class, ['dummy'], [], '', false);
+        $mockClosureFinisher = $this->getAccessibleMock(ClosureFinisher::class, null, [], '', false);
         $mockClosureFinisher->_set('options', [
             'closure' => $closure,
         ]);

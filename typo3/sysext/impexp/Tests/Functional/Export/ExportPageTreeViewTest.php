@@ -51,7 +51,7 @@ class ExportPageTreeViewTest extends AbstractImportExportTestCase
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/irre_tutorial.csv');
 
-        $exportPageTreeView = $this->getAccessibleMock(ExportPageTreeView::class, ['dummy']);
+        $exportPageTreeView = $this->getAccessibleMock(ExportPageTreeView::class, null);
         GeneralUtility::addInstance(ExportPageTreeView::class, $exportPageTreeView);
 
         $subject = $this->getAccessibleMock(Export::class, [

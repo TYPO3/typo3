@@ -59,7 +59,7 @@ class PageRendererTest extends UnitTestCase
      */
     public function addBodyContentAddsContent(): void
     {
-        $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(PageRenderer::class, null, [], '', false);
         $expectedReturnValue = 'ABCDE';
         $subject->addBodyContent('A');
         $subject->addBodyContent('B');
@@ -75,7 +75,7 @@ class PageRendererTest extends UnitTestCase
      */
     public function addInlineLanguageLabelFileSetsInlineLanguageLabelFiles(): void
     {
-        $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(PageRenderer::class, null, [], '', false);
         $fileReference = StringUtility::getUniqueId('file_');
         $selectionPrefix = StringUtility::getUniqueId('prefix_');
         $stripFromSelectionName = StringUtility::getUniqueId('strip_');
@@ -97,7 +97,7 @@ class PageRendererTest extends UnitTestCase
      */
     public function addInlineLanguageLabelFileSetsTwoDifferentInlineLanguageLabelFiles(): void
     {
-        $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(PageRenderer::class, null, [], '', false);
         $fileReference1 = StringUtility::getUniqueId('file1_');
         $selectionPrefix1 = StringUtility::getUniqueId('prefix1_');
         $stripFromSelectionName1 = StringUtility::getUniqueId('strip1_');
@@ -128,7 +128,7 @@ class PageRendererTest extends UnitTestCase
      */
     public function addInlineLanguageLabelFileDoesNotSetSameLanguageFileTwice(): void
     {
-        $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(PageRenderer::class, null, [], '', false);
         $fileReference = StringUtility::getUniqueId('file2_');
         $selectionPrefix = StringUtility::getUniqueId('prefix2_');
         $stripFromSelectionName = StringUtility::getUniqueId('strip2_');
@@ -146,7 +146,7 @@ class PageRendererTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1284906026);
 
-        $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(PageRenderer::class, null, [], '', false);
         $subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
     }
 
@@ -286,7 +286,7 @@ class PageRendererTest extends UnitTestCase
      */
     public function parseLanguageLabelsForJavaScriptReturnsEmptyStringIfEmpty(): void
     {
-        $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(PageRenderer::class, null, [], '', false);
         $inlineLanguageLabels = [];
         $subject->_set('inlineLanguageLabels', $inlineLanguageLabels);
         $actual = $subject->_call('parseLanguageLabelsForJavaScript');
@@ -298,7 +298,7 @@ class PageRendererTest extends UnitTestCase
      */
     public function parseLanguageLabelsForJavaScriptReturnsFlatArray(): void
     {
-        $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(PageRenderer::class, null, [], '', false);
         $inlineLanguageLabels = [
             'key' => 'label',
             'foo' => 'bar',

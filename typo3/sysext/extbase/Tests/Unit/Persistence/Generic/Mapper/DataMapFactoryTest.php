@@ -184,7 +184,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockColumnMap->expects(self::once())
             ->method('setRelationTableMatchFields')
             ->with($matchFields);
-        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);
+        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, null, [], '', false);
         $mockDataMapFactory->_call('setOneToOneRelation', $mockColumnMap, $columnConfiguration);
     }
 
@@ -207,7 +207,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockColumnMap->expects(self::once())
             ->method('setRelationTableMatchFields')
             ->with($matchFields);
-        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);
+        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, null, [], '', false);
         $mockDataMapFactory->_call('setOneToManyRelation', $mockColumnMap, $columnConfiguration);
     }
 
@@ -234,7 +234,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockColumnMap->expects(self::never())->method('setParentTableFieldName');
         $mockColumnMap->expects(self::never())->method('setRelationTableMatchFields');
         $mockColumnMap->expects(self::never())->method('setRelationTableInsertFields');
-        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);
+        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, null, [], '', false);
         $mockDataMapFactory->_call('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
     }
 
@@ -261,7 +261,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockColumnMap->expects(self::never())->method('setParentTableFieldName');
         $mockColumnMap->expects(self::never())->method('setRelationTableMatchFields');
         $mockColumnMap->expects(self::never())->method('setRelationTableInsertFields');
-        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);
+        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, null, [], '', false);
         $mockDataMapFactory->_call('setManyToManyRelation', $mockColumnMap, $rightColumnsDefinition['lefts']);
     }
 
@@ -416,7 +416,7 @@ class DataMapFactoryTest extends UnitTestCase
      */
     public function resolveTableNameReturnsExpectedTablenames($className, $expected): void
     {
-        $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);
+        $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, null, [], '', false);
         self::assertSame($expected, $dataMapFactory->_call('resolveTableName', $className));
     }
 
@@ -425,7 +425,7 @@ class DataMapFactoryTest extends UnitTestCase
      */
     public function createColumnMapReturnsAValidColumnMap(): void
     {
-        $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);
+        $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, null, [], '', false);
 
         $columnMap = $this->getMockBuilder(ColumnMap::class)
             ->setConstructorArgs(['column', 'property'])
@@ -472,9 +472,9 @@ class DataMapFactoryTest extends UnitTestCase
      */
     public function setTypeDetectsTypeProperly(array $columnConfiguration, string $type): void
     {
-        $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);
+        $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, null, [], '', false);
 
-        $columnMap = $this->getAccessibleMock(ColumnMap::class, ['dummy'], [], '', false);
+        $columnMap = $this->getAccessibleMock(ColumnMap::class, null, [], '', false);
 
         $dataMapFactory->_call('setType', $columnMap, $columnConfiguration);
 

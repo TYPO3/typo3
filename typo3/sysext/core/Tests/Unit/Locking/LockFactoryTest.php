@@ -46,7 +46,7 @@ class LockFactoryTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->mockFactory = $this->getAccessibleMock(LockFactory::class, ['dummy']);
+        $this->mockFactory = $this->getAccessibleMock(LockFactory::class, null);
 
         // backup global configuration
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'])) {

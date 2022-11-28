@@ -42,7 +42,7 @@ class SwitchUserControllerTest extends UnitTestCase
         $GLOBALS['BE_USER']->uc = [
             'recentSwitchedToUsers' => [],
         ];
-        $this->subject = $this->getAccessibleMock(SwitchUserController::class, ['dummy'], [], '', false);
+        $this->subject = $this->getAccessibleMock(SwitchUserController::class, null, [], '', false);
     }
 
     /**

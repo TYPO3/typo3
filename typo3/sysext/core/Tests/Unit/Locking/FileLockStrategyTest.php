@@ -42,7 +42,7 @@ class FileLockStrategyTest extends UnitTestCase
      */
     public function constructorSetsFilePathToExpectedValue(): void
     {
-        $lock = $this->getAccessibleMock(FileLockStrategy::class, ['dummy'], ['999999999']);
+        $lock = $this->getAccessibleMock(FileLockStrategy::class, null, ['999999999']);
         self::assertSame(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER . 'flock_' . md5('999999999'), $lock->_get('filePath'));
     }
 

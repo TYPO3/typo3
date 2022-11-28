@@ -427,7 +427,7 @@ class ConfigurationServiceTest extends UnitTestCase
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528633966);
 
-        $configurationService = $this->getAccessibleMock(ConfigurationService::class, ['dummy'], [], '', false);
+        $configurationService = $this->getAccessibleMock(ConfigurationService::class, null, [], '', false);
         $input = ['dummy'];
 
         $configurationService->_call('addAdditionalPropertyPathsFromHook', '', '', $input, []);
@@ -441,7 +441,7 @@ class ConfigurationServiceTest extends UnitTestCase
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528634966);
 
-        $configurationService = $this->getAccessibleMock(ConfigurationService::class, ['dummy'], [], '', false);
+        $configurationService = $this->getAccessibleMock(ConfigurationService::class, null, [], '', false);
         $validationDto = new ValidationDto('Bar', 'Foo');
         $input = [$validationDto];
 

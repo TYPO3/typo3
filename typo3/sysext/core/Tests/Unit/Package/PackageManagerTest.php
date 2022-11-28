@@ -186,7 +186,7 @@ class PackageManagerTest extends UnitTestCase
             file_put_contents($packagePath . 'ext_emconf.php', '<?php' . LF . '$EM_CONF[$_EXTKEY] = [];');
         }
 
-        $packageManager = $this->getAccessibleMock(PackageManager::class, ['dummy'], [new DependencyOrderingService()]);
+        $packageManager = $this->getAccessibleMock(PackageManager::class, null, [new DependencyOrderingService()]);
         $packageManager->_set('packagesBasePaths', $packagePaths);
         $packageManager->_set('packagesBasePath', $this->testRoot . 'Packages/');
         $packageManager->_set('packageStatesPathAndFilename', $this->testRoot . 'Configuration/PackageStates.php');

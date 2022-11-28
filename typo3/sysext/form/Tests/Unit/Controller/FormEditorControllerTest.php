@@ -44,7 +44,7 @@ class FormEditorControllerTest extends UnitTestCase
             ->method('translate')
             ->willReturnArgument(4);
 
-        $subject = $this->getAccessibleMock(FormEditorController::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
         $subject->_set('prototypeConfiguration', [
             'formEditor' => [
                 'formElementGroups' => [
@@ -129,7 +129,7 @@ class FormEditorControllerTest extends UnitTestCase
             ->method('translateValuesRecursive')
             ->willReturnArgument(0);
 
-        $subject = $this->getAccessibleMock(FormEditorController::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
         $subject->_set('prototypeConfiguration', [
             'formEditor' => [
                 'someOtherValues' => [

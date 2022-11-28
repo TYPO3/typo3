@@ -43,7 +43,7 @@ class ImportTest extends AbstractImportExportTestCase
     {
         $filePath = str_replace('%EnvironmentPublicPath%', Environment::getPublicPath(), $filePath);
 
-        $importMock = $this->getAccessibleMock(Import::class, ['dummy']);
+        $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->loadFile($filePath);
 
         self::assertTrue(true);
@@ -81,7 +81,7 @@ class ImportTest extends AbstractImportExportTestCase
     {
         $renderPreviewImport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecords.php';
 
-        $importMock = $this->getAccessibleMock(Import::class, ['dummy']);
+        $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml');
         $previewData = $importMock->renderPreview();
@@ -102,7 +102,7 @@ class ImportTest extends AbstractImportExportTestCase
     {
         $renderPreviewImport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsByUpdate.php';
 
-        $importMock = $this->getAccessibleMock(Import::class, ['dummy']);
+        $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml');
         $importMock->importData();
@@ -125,7 +125,7 @@ class ImportTest extends AbstractImportExportTestCase
     {
         $renderPreviewImport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsWithDiff.php';
 
-        $importMock = $this->getAccessibleMock(Import::class, ['dummy']);
+        $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml');
         $importMock->importData();
@@ -149,7 +149,7 @@ class ImportTest extends AbstractImportExportTestCase
     {
         $renderPreviewImport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsByUpdateWithDiff.php';
 
-        $importMock = $this->getAccessibleMock(Import::class, ['dummy']);
+        $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml');
         $importMock->importData();
@@ -174,7 +174,7 @@ class ImportTest extends AbstractImportExportTestCase
     {
         $renderPreviewImport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsWithSoftRefs.php';
 
-        $importMock = $this->getAccessibleMock(Import::class, ['dummy']);
+        $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-softrefs.xml');
         $previewData = $importMock->renderPreview();
@@ -246,7 +246,7 @@ class ImportTest extends AbstractImportExportTestCase
      */
     public function loadXmlSucceeds(): void
     {
-        $importMock = $this->getAccessibleMock(Import::class, ['dummy']);
+        $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
         $importMock->loadFile(
             'EXT:impexp/Tests/Functional/Fixtures/XmlExports/empty.xml',
@@ -260,7 +260,7 @@ class ImportTest extends AbstractImportExportTestCase
      */
     public function loadT3dSucceeds(): void
     {
-        $importMock = $this->getAccessibleMock(Import::class, ['dummy']);
+        $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
         $importMock->loadFile(
             'EXT:impexp/Tests/Functional/Fixtures/T3dExports/empty.t3d',
@@ -276,7 +276,7 @@ class ImportTest extends AbstractImportExportTestCase
     {
         $this->expectException(LoadingFileFailedException::class);
 
-        $importMock = $this->getAccessibleMock(Import::class, ['dummy']);
+        $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
         $importMock->loadFile(
             'EXT:impexp/Tests/Functional/Fixtures/T3dExports/empty-with-wrong-checksum.t3d',
@@ -293,7 +293,7 @@ class ImportTest extends AbstractImportExportTestCase
             self::markTestSkipped('The function gzuncompress() is not available for decompression.');
         }
 
-        $importMock = $this->getAccessibleMock(Import::class, ['dummy']);
+        $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
         $importMock->loadFile(
             'EXT:impexp/Tests/Functional/Fixtures/T3dExports/empty-z.t3d',
@@ -310,7 +310,7 @@ class ImportTest extends AbstractImportExportTestCase
         $fileDirectory = Environment::getVarPath() . '/transient';
         $numTemporaryFilesAndFoldersBeforeImport = iterator_count(new \FilesystemIterator($fileDirectory, \FilesystemIterator::SKIP_DOTS));
 
-        $importMock = $this->getAccessibleMock(Import::class, ['dummy']);
+        $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
         // Simulation of import of TCA field type=group with internal_type=file
         // which is not supported anymore since TYPO3 v10 but there are still remains in EXT:impexp.

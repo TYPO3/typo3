@@ -165,7 +165,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
             ->getMock();
         $hashService->expects(self::once())->method('appendHmac')->with(json_encode($formFieldArray))->willReturn(json_encode($formFieldArray) . $mockHash);
 
-        $requestHashService = $this->getAccessibleMock(MvcPropertyMappingConfigurationService::class, ['dummy']);
+        $requestHashService = $this->getAccessibleMock(MvcPropertyMappingConfigurationService::class, null);
         $requestHashService->injectHashService($hashService);
 
         $expected = json_encode($formFieldArray) . $mockHash;
@@ -323,7 +323,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
             ->getMock();
         $mockHashService->expects(self::once())->method('validateAndStripHmac')->with('fooTrustedProperties')->willReturn(json_encode($trustedProperties));
 
-        $requestHashService = $this->getAccessibleMock(MvcPropertyMappingConfigurationService::class, ['dummy']);
+        $requestHashService = $this->getAccessibleMock(MvcPropertyMappingConfigurationService::class, null);
         $requestHashService->_set('hashService', $mockHashService);
 
         $mockArgument = $this->getAccessibleMock(Argument::class, ['getName'], [], '', false);
@@ -333,7 +333,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $mockArgument->_set('propertyMappingConfiguration', $propertyMappingConfiguration);
         $mockArgument->method('getName')->willReturn('foo');
 
-        $arguments = $this->getAccessibleMock(Arguments::class, ['dummy']);
+        $arguments = $this->getAccessibleMock(Arguments::class, null);
         $arguments->addNewArgument('foo');
 
         $requestHashService->initializePropertyMappingConfigurationFromRequest($extbaseRequest, $arguments);

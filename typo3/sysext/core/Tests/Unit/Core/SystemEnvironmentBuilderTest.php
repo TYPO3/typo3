@@ -34,7 +34,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = $this->getAccessibleMock(SystemEnvironmentBuilder::class, ['dummy']);
+        $this->subject = $this->getAccessibleMock(SystemEnvironmentBuilder::class, null);
     }
 
     /**

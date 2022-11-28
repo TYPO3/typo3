@@ -35,7 +35,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getNameReturnsSetName(): void
     {
-        $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
         $name = StringUtility::getUniqueId('name_');
         $node->_set('name', $name);
         self::assertSame($name, $node->getName());
@@ -46,7 +46,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getTargetPermissionReturnsSetTargetPermission(): void
     {
-        $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
         $permission = '1234';
         $node->_set('targetPermission', $permission);
         self::assertSame($permission, $node->_call('getTargetPermission'));
@@ -57,7 +57,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getChildrenReturnsSetChildren(): void
     {
-        $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
         $children = ['1234'];
         $node->_set('children', $children);
         self::assertSame($children, $node->_call('getChildren'));
@@ -68,7 +68,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getParentReturnsSetParent(): void
     {
-        $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
         $node->_set('parent', $parent);
         self::assertSame($parent, $node->_call('getParent'));
@@ -79,7 +79,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getAbsolutePathCallsParentForPathAndAppendsOwnName(): void
     {
-        $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
         $parentPath = '/foo/bar';
         $parent->expects(self::once())->method('getAbsolutePath')->willReturn($parentPath);
@@ -94,7 +94,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function isWritableCallsParentIsWritable(): void
     {
-        $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
         $parentMock = $this->createMock(NodeInterface::class);
         $parentMock->expects(self::once())->method('isWritable');
         $node->_set('parent', $parentMock);
@@ -106,7 +106,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function isWritableReturnsWritableStatusOfParent(): void
     {
-        $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
         $parentMock = $this->createMock(NodeInterface::class);
         $parentMock->expects(self::once())->method('isWritable')->willReturn(true);
         $node->_set('parent', $parentMock);
@@ -253,7 +253,7 @@ class AbstractNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366398198);
-        $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
         $node->_call('getRelativePathBelowSiteRoot', '/tmp');
     }
 
@@ -278,7 +278,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getRelativePathBelowSiteRootReturnsSingleForwardSlashIfGivenPathEqualsPathSiteConstant(): void
     {
-        $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
         $result = $node->_call('getRelativePathBelowSiteRoot', Environment::getPublicPath() . '/');
         self::assertSame('/', $result);
     }
@@ -288,7 +288,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getRelativePathBelowSiteRootReturnsSubPath(): void
     {
-        $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
         $result = $node->_call('getRelativePathBelowSiteRoot', Environment::getPublicPath() . '/foo/bar');
         self::assertSame('/foo/bar', $result);
     }

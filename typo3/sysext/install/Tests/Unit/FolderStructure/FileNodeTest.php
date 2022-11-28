@@ -38,7 +38,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366927513);
-        $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
         $node->__construct([], null);
     }
 
@@ -50,7 +50,7 @@ class FileNodeTest extends FolderStructureTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366222207);
         $parent = $this->createMock(NodeInterface::class);
-        $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
         $structure = [
             'name' => 'foo/bar',
         ];
@@ -63,7 +63,7 @@ class FileNodeTest extends FolderStructureTestCase
     public function constructorSetsParent(): void
     {
         $parent = $this->createMock(NodeInterface::class);
-        $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
         $structure = [
             'name' => 'foo',
         ];
@@ -77,7 +77,7 @@ class FileNodeTest extends FolderStructureTestCase
     public function constructorSetsTargetPermission(): void
     {
         $parent = $this->createMock(NodeInterface::class);
-        $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
         $targetPermission = '0660';
         $structure = [
             'name' => 'foo',
@@ -92,7 +92,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function constructorSetsName(): void
     {
-        $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
         $name = StringUtility::getUniqueId('test_');
         $node->__construct(['name' => $name], $parent);
@@ -106,7 +106,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1380364361);
-        $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
         $structure = [
             'name' => 'foo',
@@ -121,7 +121,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function constructorSetsTargetContent(): void
     {
-        $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
         $targetContent = StringUtility::getUniqueId('content_');
         $structure = [
@@ -137,7 +137,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function constructorSetsTargetContentToContentOfTargetContentFile(): void
     {
-        $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
         $targetFile = $this->getTestFilePath('test_');
         $targetContent = StringUtility::getUniqueId('content_');
@@ -157,7 +157,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1380364362);
-        $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
         $targetFile = $this->getTestFilePath('test_');
         $structure = [
@@ -172,7 +172,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function targetContentIsNullIfNotGiven(): void
     {
-        $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
         $structure = [
             'name' => 'foo',

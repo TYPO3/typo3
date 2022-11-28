@@ -29,7 +29,7 @@ class StructureFacadeTest extends UnitTestCase
      */
     public function getStatusReturnsStatusOfStructureAndReturnsItsResult(): void
     {
-        $facade = $this->getAccessibleMock(StructureFacade::class, ['dummy'], [], '', false);
+        $facade = $this->getAccessibleMock(StructureFacade::class, null, [], '', false);
         $root = $this->createMock(RootNode::class);
         $root->expects(self::once())->method('getStatus')->willReturn([]);
         $facade->_set('structure', $root);
@@ -42,7 +42,7 @@ class StructureFacadeTest extends UnitTestCase
      */
     public function fixCallsFixOfStructureAndReturnsItsResult(): void
     {
-        $facade = $this->getAccessibleMock(StructureFacade::class, ['dummy'], [], '', false);
+        $facade = $this->getAccessibleMock(StructureFacade::class, null, [], '', false);
         $root = $this->createMock(RootNode::class);
         $root->expects(self::once())->method('fix')->willReturn([]);
         $facade->_set('structure', $root);

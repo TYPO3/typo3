@@ -375,7 +375,7 @@ class TranslationServiceTest extends UnitTestCase
         $this->store->flushData($formRuntimeXlfPaths);
         $this->store->flushData($textElementXlfPaths);
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('renderingOptions', $formElementRenderingOptions);
@@ -419,7 +419,7 @@ class TranslationServiceTest extends UnitTestCase
         $this->store->flushData($formRuntimeXlfPaths);
         $this->store->flushData($textElementXlfPaths);
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('renderingOptions', $formElementRenderingOptions);
@@ -463,7 +463,7 @@ class TranslationServiceTest extends UnitTestCase
         $this->store->flushData($formRuntimeXlfPaths);
         $this->store->flushData($textElementXlfPaths);
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('renderingOptions', $formElementRenderingOptions);
@@ -507,7 +507,7 @@ class TranslationServiceTest extends UnitTestCase
         $this->store->flushData($formRuntimeXlfPaths);
         $this->store->flushData($textElementXlfPaths);
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('renderingOptions', $formElementRenderingOptions);
@@ -551,7 +551,7 @@ class TranslationServiceTest extends UnitTestCase
         $this->store->flushData($formRuntimeXlfPaths);
         $this->store->flushData($textElementXlfPaths);
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('renderingOptions', $formElementRenderingOptions);
@@ -598,7 +598,7 @@ class TranslationServiceTest extends UnitTestCase
         $this->store->flushData($formRuntimeXlfPaths);
         $this->store->flushData($textElementXlfPaths);
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('renderingOptions', $formElementRenderingOptions);
@@ -645,7 +645,7 @@ class TranslationServiceTest extends UnitTestCase
         $this->store->flushData($formRuntimeXlfPaths);
         $this->store->flushData($textElementXlfPaths);
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('renderingOptions', $formElementRenderingOptions);
@@ -690,7 +690,7 @@ class TranslationServiceTest extends UnitTestCase
         $this->store->flushData($formRuntimeXlfPaths);
         $this->store->flushData($textElementXlfPaths);
 
-        $mockFormElement = $this->getAccessibleMock(Page::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(Page::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Page');
         $mockFormElement->_set('renderingOptions', $formElementRenderingOptions);
@@ -742,7 +742,7 @@ class TranslationServiceTest extends UnitTestCase
         $this->store->flushData($formRuntimeXlfPaths);
         $this->store->flushData($textElementXlfPaths);
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('renderingOptions', $formElementRenderingOptions);
@@ -795,7 +795,7 @@ class TranslationServiceTest extends UnitTestCase
         $this->store->flushData($formRuntimeXlfPaths);
         $this->store->flushData($textElementXlfPaths);
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('renderingOptions', $formElementRenderingOptions);
@@ -904,7 +904,7 @@ class TranslationServiceTest extends UnitTestCase
         $this->store->flushData($formRuntimeXlfPaths);
         $this->store->flushData($textElementXlfPaths);
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('renderingOptions', $formElementRenderingOptions);
@@ -1075,7 +1075,7 @@ class TranslationServiceTest extends UnitTestCase
             $this->store->flushData($textElementXlfPath);
         }
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('renderingOptions', $formElementRenderingOptions);
@@ -1115,7 +1115,7 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
         $mockFormRuntime->method('getType')->willReturn('Form');
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('identifier', $formElementIdentifier);
@@ -1155,7 +1155,7 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
         $mockFormRuntime->method('getType')->willReturn('Form');
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('identifier', $formElementIdentifier);
@@ -1194,7 +1194,7 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormRuntime->method('getType')->willReturn('Form');
         $mockFormRuntime->method('getProperties')->willReturn([]);
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('identifier', $formElementIdentifier);
@@ -1235,7 +1235,7 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormRuntime->method('getType')->willReturn('Form');
         $mockFormRuntime->method('getProperties')->willReturn([]);
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('identifier', $formElementIdentifier);
@@ -1337,7 +1337,7 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormRuntime->method('getType')->willReturn('Form');
         $mockFormRuntime->method('getProperties')->willReturn([]);
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('identifier', $formElementIdentifier);
@@ -1380,7 +1380,7 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
         $mockFormRuntime->method('getType')->willReturn('Form');
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'Text');
         $mockFormElement->_set('identifier', $formElementIdentifier);

@@ -263,7 +263,7 @@ class InlineStackProcessorTest extends UnitTestCase
      */
     public function initializeByParsingDomObjectIdStringParsesStructureString(string $string, array $expectedInlineStructure, array $_): void
     {
-        $subject = $this->getAccessibleMock(InlineStackProcessor::class, ['dummy']);
+        $subject = $this->getAccessibleMock(InlineStackProcessor::class, null);
         $subject->initializeByParsingDomObjectIdString($string);
         $structure = $subject->_get('inlineStructure');
         self::assertEquals($expectedInlineStructure, $structure);

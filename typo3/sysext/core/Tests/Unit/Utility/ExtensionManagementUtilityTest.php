@@ -1017,7 +1017,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function executePositionedStringInsertionTrimsCorrectCharacters(string $string, string $expectedResult): void
     {
-        $extensionManagementUtility = $this->getAccessibleMock(ExtensionManagementUtility::class, ['dummy']);
+        $extensionManagementUtility = $this->getAccessibleMock(ExtensionManagementUtility::class, null);
         $string = $extensionManagementUtility->_call('executePositionedStringInsertion', $string, '');
         self::assertEquals($expectedResult, $string);
     }

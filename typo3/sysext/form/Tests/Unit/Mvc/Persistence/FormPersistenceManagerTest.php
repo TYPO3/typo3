@@ -40,7 +40,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1477679819);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
 
         $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
             ->onlyMethods(['get', 'set'])
@@ -65,7 +65,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1484071985);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
 
         $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
             ->onlyMethods(['get', 'set'])
@@ -96,7 +96,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1477679820);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
 
         $input = '-1:/user_uploads/_example.php';
         $mockFormPersistenceManager->_call('save', $input, []);
@@ -110,7 +110,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1477680881);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
 
         $mockFormPersistenceManager->_set('formSettings', [
             'persistenceManager' => [
@@ -130,7 +130,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1484073571);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
 
         $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
             ->onlyMethods(['get', 'set'])
@@ -162,7 +162,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1472239534);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
 
         $input = '-1:/user_uploads/_example.php';
         $mockFormPersistenceManager->_call('delete', $input);
@@ -286,7 +286,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function existsReturnsTrueIfPersistenceIdentifierIsExtensionLocationAndFileExistsAndFileHasYamlExtension(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
 
         $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
             ->onlyMethods(['get', 'set'])
@@ -316,7 +316,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function existsReturnsFalseIfPersistenceIdentifierIsExtensionLocationAndFileExistsAndFileHasNoYamlExtension(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
         $input = 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.txt';
         self::assertFalse($mockFormPersistenceManager->_call('exists', $input));
     }
@@ -326,7 +326,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function existsReturnsFalseIfPersistenceIdentifierIsExtensionLocationAndFileExistsAndExtensionLocationIsNotAllowed(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
 
         $mockFormPersistenceManager->_set('formSettings', [
             'persistenceManager' => [
@@ -343,7 +343,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function existsReturnsFalseIfPersistenceIdentifierIsExtensionLocationAndFileNotExistsAndFileHasYamlExtension(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
         $input = 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/_BlankForm.yaml';
         self::assertFalse($mockFormPersistenceManager->_call('exists', $input));
     }
@@ -602,7 +602,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function metaDataIsExtracted(string $maybeRawFormDefinition, array $expectedMetaData): void
     {
-        $formPersistenceManagerMock = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
+        $formPersistenceManagerMock = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
         self::assertSame($expectedMetaData, $formPersistenceManagerMock->_call('extractMetaDataFromCouldBeFormDefinition', $maybeRawFormDefinition));
     }
 
@@ -611,7 +611,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function overrideByTypoScriptSettingsReturnsNotOverriddenConfigurationIfNoTypoScriptOverridesExists(): void
     {
-        $mockController = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
+        $mockController = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
         $mockController->_set('typoScriptSettings', [
             'formDefinitionOverrides' => [
             ],

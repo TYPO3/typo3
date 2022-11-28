@@ -110,7 +110,7 @@ class QueryGeneratorTest extends UnitTestCase
      */
     public function getSubscriptReturnsExpectedValues($input, array $expectedArray): void
     {
-        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         self::assertSame($expectedArray, $subject->_call('getSubscript', $input));
     }
 }

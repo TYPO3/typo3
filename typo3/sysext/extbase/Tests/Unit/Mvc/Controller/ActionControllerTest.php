@@ -273,7 +273,7 @@ class ActionControllerTest extends UnitTestCase
      */
     public function setViewConfigurationResolvesTemplateRootPathsForTemplateRootPath(array $configuration, array $expected): void
     {
-        $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['dummy']);
+        $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, []);
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
@@ -344,7 +344,7 @@ class ActionControllerTest extends UnitTestCase
      */
     public function setViewConfigurationResolvesLayoutRootPathsForLayoutRootPath(array $configuration, array $expected): void
     {
-        $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['dummy']);
+        $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, []);
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
@@ -415,7 +415,7 @@ class ActionControllerTest extends UnitTestCase
      */
     public function setViewConfigurationResolvesPartialRootPathsForPartialRootPath(array $configuration, array $expected): void
     {
-        $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['dummy']);
+        $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, []);
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);

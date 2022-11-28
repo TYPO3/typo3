@@ -117,7 +117,7 @@ class SuggestWizardControllerTest extends UnitTestCase
      */
     public function isTableHiddenIsProperlyRetrieved(bool $expected, array $array): void
     {
-        $subject = $this->getAccessibleMock(SuggestWizardController::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(SuggestWizardController::class, null, [], '', false);
         self::assertEquals($expected, $subject->_call('isTableHidden', $array));
     }
 
@@ -138,7 +138,7 @@ class SuggestWizardControllerTest extends UnitTestCase
      */
     public function whereClauseIsProperlyRetrieved(string $expected, array $array): void
     {
-        $subject = $this->getAccessibleMock(SuggestWizardController::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(SuggestWizardController::class, null, [], '', false);
         self::assertEquals($expected, $subject->_call('getWhereClause', $array));
     }
 

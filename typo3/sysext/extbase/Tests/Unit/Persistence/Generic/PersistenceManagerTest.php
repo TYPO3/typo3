@@ -332,7 +332,7 @@ class PersistenceManagerTest extends UnitTestCase
         $changedEntities = new ObjectStorage();
         $entity1 = new $classNameWithNamespace();
 
-        $repository = $this->getAccessibleMock($repositoryClassNameWithNamespace, ['dummy']);
+        $repository = $this->getAccessibleMock($repositoryClassNameWithNamespace, null);
         $repository->_set('objectType', get_class($entity1));
 
         $mockBackend = $this->getMockBuilder(Backend::class)

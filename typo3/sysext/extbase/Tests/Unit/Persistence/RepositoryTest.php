@@ -90,7 +90,7 @@ class RepositoryTest extends UnitTestCase
         $this->mockQueryFactory->method('create')->willReturn($this->mockQuery);
         $this->mockSession = $this->createMock(Session::class);
         $this->mockConfigurationManager = $this->createMock(ConfigurationManager::class);
-        $this->mockBackend = $this->getAccessibleMock(Backend::class, ['dummy'], [$this->mockConfigurationManager], '', false);
+        $this->mockBackend = $this->getAccessibleMock(Backend::class, null, [$this->mockConfigurationManager], '', false);
         $this->mockBackend->_set('session', $this->mockSession);
         $this->mockPersistenceManager = $this->getAccessibleMock(
             PersistenceManager::class,
@@ -103,7 +103,7 @@ class RepositoryTest extends UnitTestCase
         );
         $this->mockBackend->setPersistenceManager($this->mockPersistenceManager);
         $this->mockPersistenceManager->method('createQueryForType')->willReturn($this->mockQuery);
-        $this->repository = $this->getAccessibleMock(Repository::class, ['dummy']);
+        $this->repository = $this->getAccessibleMock(Repository::class, null);
         $this->repository->injectPersistenceManager($this->mockPersistenceManager);
     }
 
@@ -329,7 +329,7 @@ class RepositoryTest extends UnitTestCase
     {
         $this->expectException(IllegalObjectTypeException::class);
         $this->expectExceptionCode(1249479625);
-        $repository = $this->getAccessibleMock(Repository::class, ['dummy']);
+        $repository = $this->getAccessibleMock(Repository::class, null);
         $repository->_set('objectType', 'ExpectedObjectType');
 
         $repository->update(new \stdClass());

@@ -32,7 +32,7 @@ class EditDocumentControllerTest extends UnitTestCase
     {
         $GLOBALS['TCA'][$tableName]['columns'] = $configuration;
 
-        $editDocumentControllerMock = $this->getAccessibleMock(EditDocumentController::class, ['dummy'], [], '', false);
+        $editDocumentControllerMock = $this->getAccessibleMock(EditDocumentController::class, null, [], '', false);
         $editDocumentControllerMock->_set('columnsOnly', $selectedFields);
         $queryParams = [
             'edit' => [
@@ -125,7 +125,7 @@ class EditDocumentControllerTest extends UnitTestCase
         $table = 'pages';
         $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] = 'l10n_parent';
 
-        $mock = $this->getAccessibleMock(EditDocumentController::class, ['dummy'], [], '', false);
+        $mock = $this->getAccessibleMock(EditDocumentController::class, null, [], '', false);
         $result = $mock->_call('resolvePreviewRecordId', $table, $recordArray, $previewConfiguration);
         self::assertSame($expected, $result);
     }
@@ -157,7 +157,7 @@ class EditDocumentControllerTest extends UnitTestCase
         $recordArray = ['uid' => 2];
         $table = 'dummy_table';
 
-        $mock = $this->getAccessibleMock(EditDocumentController::class, ['dummy'], [], '', false);
+        $mock = $this->getAccessibleMock(EditDocumentController::class, null, [], '', false);
         $result = $mock->_call('resolvePreviewRecordId', $table, $recordArray, $previewConfiguration);
         self::assertSame($expected, $result);
     }

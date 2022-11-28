@@ -82,7 +82,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     public function constructorSetsParent(): void
     {
         $parent = $this->createMock(NodeInterface::class);
-        $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(DirectoryNode::class, null, [], '', false);
         $structure = [
             'name' => 'foo',
         ];
@@ -96,7 +96,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     public function constructorSetsTargetPermission(): void
     {
         $parent = $this->createMock(NodeInterface::class);
-        $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(DirectoryNode::class, null, [], '', false);
         $targetPermission = '2550';
         $structure = [
             'name' => 'foo',
@@ -451,7 +451,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366222204);
-        $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(DirectoryNode::class, null, [], '', false);
         $brokenStructure = [
             [
                 'name' => 'foo',
@@ -467,7 +467,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366222205);
-        $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(DirectoryNode::class, null, [], '', false);
         $brokenStructure = [
             [
                 'type' => 'foo',
@@ -483,7 +483,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366222206);
-        $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(DirectoryNode::class, null, [], '', false);
         $brokenStructure = [
             [
                 'type' => DirectoryNode::class,
@@ -502,7 +502,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function getChildrenReturnsCreatedChild(): void
     {
-        $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
+        $node = $this->getAccessibleMock(DirectoryNode::class, null, [], '', false);
         $parent = $this->createMock(NodeInterface::class);
         $childName = StringUtility::getUniqueId('test_');
         $structure = [

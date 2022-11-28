@@ -28,7 +28,7 @@ class ExtensionXmlParserTest extends UnitTestCase
      */
     public function isValidVersionNumber(string $versionNumber, bool $isValid): void
     {
-        $subject = $this->getAccessibleMock(ExtensionXmlParser::class, ['dummy']);
+        $subject = $this->getAccessibleMock(ExtensionXmlParser::class, null);
         $subject->_set('version', $versionNumber);
 
         self::assertEquals($isValid, $subject->isValidVersionNumber());

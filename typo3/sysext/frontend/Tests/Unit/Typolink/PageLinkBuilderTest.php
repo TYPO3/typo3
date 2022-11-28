@@ -54,7 +54,7 @@ class PageLinkBuilderTest extends UnitTestCase
         $GLOBALS['TSFE'] = new \stdClass();
         $cObj = new ContentObjectRenderer();
         $cObj->setRequest($request);
-        $subject = $this->getAccessibleMock(PageLinkBuilder::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(PageLinkBuilder::class, null, [], '', false);
         $subject->_set('contentObjectRenderer', $cObj);
         $actualResult = $subject->_call('getQueryArguments', 'untrusted', $configuration);
         self::assertEquals($expectedResult, $actualResult);

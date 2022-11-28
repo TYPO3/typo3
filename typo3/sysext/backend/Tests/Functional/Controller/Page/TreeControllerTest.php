@@ -75,7 +75,7 @@ class TreeControllerTest extends FunctionalTestCase
         // Regular editor, non admin
         $this->backendUser = $this->setUpBackendUser(9);
         $this->context = GeneralUtility::makeInstance(Context::class);
-        $this->subject = $this->getAccessibleMock(TreeController::class, ['dummy']);
+        $this->subject = $this->getAccessibleMock(TreeController::class, null);
     }
 
     protected function tearDown(): void

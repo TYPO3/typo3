@@ -157,7 +157,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
      */
     public function prepareDependenciesBuildsFullIdentifierList(array $dependencies, array $expectedDependencies): void
     {
-        $dependencyOrderingService = $this->getAccessibleMock(DependencyOrderingService::class, ['dummy']);
+        $dependencyOrderingService = $this->getAccessibleMock(DependencyOrderingService::class, null);
         $preparedDependencies = $dependencyOrderingService->_call('prepareDependencies', $dependencies);
         self::assertEquals($expectedDependencies, $preparedDependencies);
     }
@@ -685,7 +685,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
      */
     public function findPathInGraphReturnsCorrectPath(array $graph, string $from, string $to, array $expected): void
     {
-        $dependencyOrderingService = $this->getAccessibleMock(DependencyOrderingService::class, ['dummy']);
+        $dependencyOrderingService = $this->getAccessibleMock(DependencyOrderingService::class, null);
         $path = $dependencyOrderingService->_call('findPathInGraph', $graph, $from, $to);
 
         self::assertSame($expected, $path);

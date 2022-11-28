@@ -58,7 +58,7 @@ class QueryResultTest extends UnitTestCase
         $this->mockPersistenceManager->method('getObjectCountByQuery')->willReturn(2);
         $this->mockDataMapper = $this->createMock(DataMapper::class);
         $this->mockQuery = $this->createMock(QueryInterface::class);
-        $this->queryResult = $this->getAccessibleMock(QueryResult::class, ['dummy'], [], '', false);
+        $this->queryResult = $this->getAccessibleMock(QueryResult::class, null, [], '', false);
         $this->queryResult->_set('persistenceManager', $this->mockPersistenceManager);
         $this->queryResult->_set('dataMapper', $this->mockDataMapper);
         $this->sampleResult = [['foo' => 'Foo1', 'bar' => 'Bar1'], ['foo' => 'Foo2', 'bar' => 'Bar2']];
@@ -219,7 +219,7 @@ class QueryResultTest extends UnitTestCase
      */
     public function initializeExecutesQueryWithArrayFetchMode(): void
     {
-        $queryResult = $this->getAccessibleMock(QueryResult::class, ['dummy'], [], '', false);
+        $queryResult = $this->getAccessibleMock(QueryResult::class, null, [], '', false);
         $queryResult->_set('persistenceManager', $this->mockPersistenceManager);
         $queryResult->_set('dataMapper', $this->mockDataMapper);
         $queryResult->setQuery($this->mockQuery);

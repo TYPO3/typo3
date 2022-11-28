@@ -322,7 +322,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             new Context(),
             $this->prophesize(ConfigurationManagerInterface::class)->reveal()
         );
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $sql = $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
@@ -344,7 +344,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             $this->prophesize(ConfigurationManagerInterface::class)->reveal()
         );
         $querySettings->setLanguageAspect(new LanguageAspect(1));
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $sql = $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
@@ -365,7 +365,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             new Context(),
             $this->prophesize(ConfigurationManagerInterface::class)->reveal()
         );
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $sql = $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
@@ -388,7 +388,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             $this->prophesize(ConfigurationManagerInterface::class)->reveal()
         );
         $querySettings->setLanguageAspect(new LanguageAspect(0));
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $sql = $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
@@ -410,7 +410,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             $this->prophesize(ConfigurationManagerInterface::class)->reveal()
         );
         $querySettings->setLanguageAspect(new LanguageAspect(2));
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $sql = $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
@@ -435,7 +435,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $querySettings->setIgnoreEnableFields(true);
         $querySettings->setIncludeDeleted(true);
         $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_MIXED));
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
 
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();
 
@@ -464,7 +464,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_MIXED));
         $querySettings->setIgnoreEnableFields(true);
         $querySettings->setIncludeDeleted(true);
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $compositeExpression= $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
@@ -490,7 +490,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $querySettings->setLanguageAspect(new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_MIXED));
         $querySettings->setIgnoreEnableFields(true);
         $querySettings->setIncludeDeleted(true);
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
 
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();
 
@@ -520,7 +520,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $queryBuilderProphet->addOrderBy('tx_myext_tablename.converted_fieldname', 'ASC')->shouldBeCalledTimes(1);
 
         $orderings = ['fooProperty' => QueryInterface::ORDER_ASCENDING];
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
         $mockTypo3DbQueryParser->_set('dataMapper', $mockDataMapper);
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $mockTypo3DbQueryParser->_call('parseOrderings', $orderings, $mockSource);
@@ -545,7 +545,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockDataMapper->expects(self::never())->method('convertClassNameToTableName');
         $mockDataMapper->expects(self::never())->method('convertPropertyNameToColumnName');
         $orderings = ['fooProperty' => 'unsupported_order'];
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
         $mockTypo3DbQueryParser->_set('dataMapper', $mockDataMapper);
 
         $mockTypo3DbQueryParser->_call('parseOrderings', $orderings, $mockSource);
@@ -571,7 +571,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             'fooProperty' => QueryInterface::ORDER_ASCENDING,
             'barProperty' => QueryInterface::ORDER_DESCENDING,
         ];
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
         $mockTypo3DbQueryParser->_set('dataMapper', $mockDataMapper);
 
         $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
@@ -654,7 +654,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
                 ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         }
 
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
         $resultSql = $mockTypo3DbQueryParser->_call('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
         self::assertSame($expectedSql, $resultSql);
         unset($GLOBALS['TCA'][$tableName]);
@@ -720,7 +720,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
                 ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         }
 
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
         $actualSql = $mockTypo3DbQueryParser->_call('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
         self::assertSame($expectedSql, $actualSql);
         unset($GLOBALS['TCA'][$tableName]);
@@ -786,7 +786,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockQuerySettings->setIgnoreEnableFields(!$respectEnableFields);
         $mockQuerySettings->setIncludeDeleted(!$respectEnableFields);
 
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
         $actualSql = $mockTypo3DbQueryParser->_call('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
         self::assertSame($expectedSql, $actualSql);
         unset($GLOBALS['TCA'][$tableName]);
@@ -817,7 +817,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
 
         $mockTypo3DbQueryParser->_call('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
         unset($GLOBALS['TCA'][$tableName]);
@@ -868,7 +868,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'rootLevel' => $rootLevel,
         ];
-        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
+        $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, null, [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
         $sql = $mockTypo3DbQueryParser->_call('getPageIdStatement', $table, $table, $storagePageIds);

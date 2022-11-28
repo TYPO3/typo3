@@ -46,7 +46,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528588036);
 
-        $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, ['dummy'], [], '', false);
+        $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
 
         $prototypeName = 'standard';
         $identifier = 'some-text';
@@ -74,7 +74,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528588037);
 
-        $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, ['dummy'], [], '', false);
+        $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
 
         $prototypeName = 'standard';
         $identifier = 'some-text';
@@ -95,7 +95,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
      */
     public function validateAllFormElementPropertyValuesByHmacThrowsNoExceptionIfHmacIsValid(): void
     {
-        $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, ['dummy'], [], '', false);
+        $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
 
         $prototypeName = 'standard';
         $identifier = 'some-text';
@@ -134,7 +134,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528591586);
 
-        $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, ['dummy'], [], '', false);
+        $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
 
         $prototypeName = 'standard';
         $identifier = 'some-text';
@@ -174,7 +174,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528591585);
 
-        $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, ['dummy'], [], '', false);
+        $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
 
         $prototypeName = 'standard';
         $identifier = 'some-text';
@@ -207,7 +207,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
      */
     public function validateAllPropertyCollectionElementValuesByHmacThrowsNoExceptionIfHmacIsValid(): void
     {
-        $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, ['dummy'], [], '', false);
+        $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
 
         $prototypeName = 'standard';
         $identifier = 'some-text';

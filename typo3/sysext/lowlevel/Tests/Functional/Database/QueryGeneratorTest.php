@@ -42,7 +42,7 @@ class QueryGeneratorTest extends FunctionalTestCase
     {
         $id = 1;
         $depth = 0;
-        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertEquals($id, $treeList);
     }
@@ -54,7 +54,7 @@ class QueryGeneratorTest extends FunctionalTestCase
     {
         $id = 0;
         $depth = 1;
-        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertEquals($id, $treeList);
     }
@@ -66,7 +66,7 @@ class QueryGeneratorTest extends FunctionalTestCase
     {
         $id = -1;
         $depth = 0;
-        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertEquals(1, $treeList);
     }
@@ -79,7 +79,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $id = 0;
         $depth = 0;
         $begin = 1;
-        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth, $begin);
         self::assertSame('', $treeList);
     }
@@ -91,7 +91,7 @@ class QueryGeneratorTest extends FunctionalTestCase
     {
         $id = 1;
         $depth = 1;
-        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertEquals($id, $treeList);
     }
@@ -104,7 +104,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeStraightTreeSet.csv');
         $id = 1;
         $depth = 99;
-        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth, 0, 'hidden=0');
         self::assertSame('1,2,3,4,5', $treeList);
     }
@@ -116,7 +116,7 @@ class QueryGeneratorTest extends FunctionalTestCase
     public function getTreeListReturnsListOfIdsWithBeginSetToZero(int $id, int $depth, string $expectation): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeStraightTreeSet.csv');
-        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertSame($expectation, $treeList);
     }
@@ -155,7 +155,7 @@ class QueryGeneratorTest extends FunctionalTestCase
     public function getTreeListReturnsListOfIdsWithBeginSetToMinusOne(int $id, int $depth, string $expectation): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeStraightTreeSet.csv');
-        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth, -1);
         self::assertSame($expectation, $treeList);
     }
@@ -195,7 +195,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $id = 1;
         $depth = 3;
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeBranchedTreeSet.csv');
-        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertSame('1,2,3,4,5', $treeList);
     }
@@ -209,7 +209,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $depth = 3;
         $begin = 1;
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeBranchedTreeSet.csv');
-        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth, $begin);
         self::assertSame('2,3,4,5', $treeList);
     }
@@ -223,7 +223,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $depth = 3;
         $begin = 2;
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeBranchedTreeSet.csv');
-        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth, $begin);
         self::assertSame('3,5', $treeList);
     }
@@ -294,7 +294,7 @@ class QueryGeneratorTest extends FunctionalTestCase
                 'inputValue1' => $inputValue1,
             ],
         ];
-        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         $subject->_call('init', 'queryConfig', 'aTable');
         self::assertSame($expected, trim($subject->_call('getQuery', $inputConf), "\n\r"));
     }
@@ -309,7 +309,7 @@ class QueryGeneratorTest extends FunctionalTestCase
             // ' ECT
             'INJ %quoteCharacter%%commentStart% %commentEnd%%quoteCharacter% ECT',
         ];
-        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         $comparisons = array_keys($subject->_get('compSQL'));
         foreach ($injectors as $injector) {
             foreach ($comparisons as $comparison) {
@@ -366,7 +366,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $iconFactoryMock = $this->getMockBuilder(IconFactory::class)->disableOriginalConstructor()->getMock();
         $iconFactoryMock->method('getIcon')->willReturn($iconMock);
 
-        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         $subject->_set('iconFactory', $iconFactoryMock);
         $subject->_call('init', 'queryConfig', $settings['queryTable']);
         $subject->_call('makeSelectorTable', $settings);

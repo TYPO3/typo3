@@ -120,7 +120,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     public function addDirectoryAddsDirectory(): void
     {
         $extDirPath = $this->testRoot . StringUtility::getUniqueId('test-extensions-');
-        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['dummy']);
+        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, null);
         $fileHandlerMock->_call('addDirectory', $extDirPath);
         self::assertDirectoryExists($extDirPath);
     }
@@ -132,7 +132,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     {
         $extDirPath = $this->testRoot . StringUtility::getUniqueId('test-extensions-');
         @mkdir($extDirPath);
-        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['dummy']);
+        $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, null);
         $fileHandlerMock->_call('removeDirectory', $extDirPath);
         self::assertDirectoryDoesNotExist($extDirPath);
     }

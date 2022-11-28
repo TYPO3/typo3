@@ -177,7 +177,7 @@ class JsonViewTest extends UnitTestCase
     {
         GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
 
-        $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
+        $jsonView = $this->getAccessibleMock(JsonView::class, null, [], '', false);
 
         $actual = $jsonView->_call('transformValue', $object, $configuration);
 
@@ -349,7 +349,7 @@ class JsonViewTest extends UnitTestCase
     {
         GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
 
-        $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
+        $jsonView = $this->getAccessibleMock(JsonView::class, null, [], '', false);
         $jsonView->_set('configuration', $configuration);
         $jsonView->_set('variablesToRender', [$variableToRender]);
         $jsonView->_call('assign', $variableToRender, $object);
@@ -402,7 +402,7 @@ class JsonViewTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getIdentifierByObject'])
             ->getMock();
-        $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
+        $jsonView = $this->getAccessibleMock(JsonView::class, null, [], '', false);
         $jsonView->_set('persistenceManager', $persistenceManagerMock);
 
         $persistenceManagerMock->expects(self::once())->method('getIdentifierByObject')->with($object->value1)->willReturn($dummyIdentifier);
@@ -468,7 +468,7 @@ class JsonViewTest extends UnitTestCase
 
         GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
 
-        $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
+        $jsonView = $this->getAccessibleMock(JsonView::class, null, [], '', false);
         $actual = $jsonView->_call('transformValue', $object, $configuration);
         self::assertSame($expected, $actual);
     }

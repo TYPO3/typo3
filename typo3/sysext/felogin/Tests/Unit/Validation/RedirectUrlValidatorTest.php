@@ -60,7 +60,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
 
         $this->testHostName = 'hostname.tld';
         $this->testSitePath = '/';
-        $this->accessibleFixture = $this->getAccessibleMock(RedirectUrlValidator::class, ['dummy'], [$mockedSiteFinder]);
+        $this->accessibleFixture = $this->getAccessibleMock(RedirectUrlValidator::class, null, [$mockedSiteFinder]);
         $this->accessibleFixture->setLogger(new NullLogger());
         $this->setUpFakeSitePathAndHost();
     }

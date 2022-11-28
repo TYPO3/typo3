@@ -41,7 +41,7 @@ class ResourceFactoryTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['dummy'], [], '', false);
+        $this->subject = $this->getAccessibleMock(ResourceFactory::class, null, [], '', false);
     }
 
     /**

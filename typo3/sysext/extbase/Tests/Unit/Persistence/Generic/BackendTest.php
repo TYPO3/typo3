@@ -42,7 +42,7 @@ class BackendTest extends UnitTestCase
     public function insertRelationInRelationtableSetsMmMatchFieldsInRow(): void
     {
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Backend|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
-        $fixture = $this->getAccessibleMock(Backend::class, ['dummy'], [], '', false);
+        $fixture = $this->getAccessibleMock(Backend::class, null, [], '', false);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper|\PHPUnit\Framework\MockObject\MockObject */
         $dataMapFactory = $this->createMock(DataMapFactory::class);
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap|\PHPUnit\Framework\MockObject\MockObject */
@@ -105,7 +105,7 @@ class BackendTest extends UnitTestCase
 
         $session->expects(self::once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
 
-        $backend = $this->getAccessibleMock(Backend::class, ['dummy'], [$configurationManager], '', false);
+        $backend = $this->getAccessibleMock(Backend::class, null, [$configurationManager], '', false);
         $backend->_set('session', $session);
 
         self::assertEquals($backend->getIdentifierByObject($object), $fakeUuid);
@@ -132,7 +132,7 @@ class BackendTest extends UnitTestCase
         $proxy->expects(self::once())->method('_loadRealInstance')->willReturn($object);
         $session->expects(self::once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
 
-        $backend = $this->getAccessibleMock(Backend::class, ['dummy'], [$configurationManager], '', false);
+        $backend = $this->getAccessibleMock(Backend::class, null, [$configurationManager], '', false);
         $backend->_set('session', $session);
 
         self::assertEquals($backend->getIdentifierByObject($proxy), $fakeUuid);

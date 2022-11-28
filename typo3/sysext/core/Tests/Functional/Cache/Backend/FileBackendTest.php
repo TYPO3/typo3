@@ -54,7 +54,7 @@ class FileBackendTest extends FunctionalTestCase
      */
     public function setCacheDirectoryAllowsAbsolutePathWithoutTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
         $subject->setCacheDirectory('/tmp/foo');
         self::assertEquals('/tmp/foo/', $subject->_get('temporaryCacheDirectory'));
     }
@@ -64,7 +64,7 @@ class FileBackendTest extends FunctionalTestCase
      */
     public function setCacheDirectoryAllowsAbsolutePathWithTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
         $subject->setCacheDirectory('/tmp/foo/');
         self::assertEquals('/tmp/foo/', $subject->_get('temporaryCacheDirectory'));
     }
@@ -74,7 +74,7 @@ class FileBackendTest extends FunctionalTestCase
      */
     public function setCacheDirectoryAllowsRelativePathWithoutTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
         $subject->setCacheDirectory('tmp/foo');
         $path = Environment::getProjectPath();
         self::assertEquals($path . '/tmp/foo/', $subject->_get('temporaryCacheDirectory'));
@@ -85,7 +85,7 @@ class FileBackendTest extends FunctionalTestCase
      */
     public function setCacheDirectoryAllowsRelativePathWithTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
         $subject->setCacheDirectory('tmp/foo/');
         $path = Environment::getProjectPath();
         self::assertEquals($path . '/tmp/foo/', $subject->_get('temporaryCacheDirectory'));
@@ -96,7 +96,7 @@ class FileBackendTest extends FunctionalTestCase
      */
     public function setCacheDirectoryAllowsRelativeDottedPathWithoutTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
         $subject->setCacheDirectory('../tmp/foo');
         $path = Environment::getProjectPath();
         self::assertEquals($path . '/../tmp/foo/', $subject->_get('temporaryCacheDirectory'));
@@ -107,7 +107,7 @@ class FileBackendTest extends FunctionalTestCase
      */
     public function setCacheDirectoryAllowsRelativeDottedPathWithTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
         $subject->setCacheDirectory('../tmp/foo/');
         $path = Environment::getProjectPath();
         self::assertEquals($path . '/../tmp/foo/', $subject->_get('temporaryCacheDirectory'));
@@ -118,7 +118,7 @@ class FileBackendTest extends FunctionalTestCase
      */
     public function setCacheDirectoryAllowsAbsoluteDottedPathWithoutTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
         $subject->setCacheDirectory('/tmp/../foo');
         self::assertEquals('/tmp/../foo/', $subject->_get('temporaryCacheDirectory'));
     }
@@ -128,7 +128,7 @@ class FileBackendTest extends FunctionalTestCase
      */
     public function setCacheDirectoryAllowsAbsoluteDottedPathWithTrailingSlash(): void
     {
-        $subject = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
         $subject->setCacheDirectory('/tmp/../foo/');
         self::assertEquals('/tmp/../foo/', $subject->_get('temporaryCacheDirectory'));
     }

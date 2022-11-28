@@ -53,7 +53,7 @@ class RenderableVariantTest extends UnitTestCase
             ],
         ];
 
-        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
 
         $mockFormElement->_set('type', 'SingleSelect');
         $mockFormElement->_set('identifier', $formElementIdentifier);

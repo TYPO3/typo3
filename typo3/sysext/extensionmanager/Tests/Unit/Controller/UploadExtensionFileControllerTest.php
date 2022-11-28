@@ -68,7 +68,7 @@ class UploadExtensionFileControllerTest extends UnitTestCase
      */
     public function getExtensionKeyFromFileNameExtractsExtensionKey(string $filename, string $expectedKey): void
     {
-        $subject = $this->getAccessibleMock(UploadExtensionFileController::class, ['dummy'], [], '', false);
+        $subject = $this->getAccessibleMock(UploadExtensionFileController::class, null, [], '', false);
         self::assertEquals($expectedKey, $subject->_call('getExtensionKeyFromFileName', $filename));
     }
 }

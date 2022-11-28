@@ -536,7 +536,7 @@ class ConfigurationManagerTest extends UnitTestCase
      */
     public function isValidLocalConfigurationPathAcceptsAllowedPath(): void
     {
-        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
+        $subject = $this->getAccessibleMock(ConfigurationManager::class, null);
         $subject->_set('allowedSettingsPaths', ['foo/bar']);
         self::assertTrue($subject->_call('isValidLocalConfigurationPath', 'foo/bar/baz'));
     }
@@ -546,7 +546,7 @@ class ConfigurationManagerTest extends UnitTestCase
      */
     public function isValidLocalConfigurationPathDeniesNotAllowedPath(): void
     {
-        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
+        $subject = $this->getAccessibleMock(ConfigurationManager::class, null);
         $subject->_set('allowedSettingsPaths', ['foo/bar']);
         self::assertFalse($subject->_call('isValidLocalConfigurationPath', 'bar/baz'));
     }

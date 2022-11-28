@@ -71,7 +71,7 @@ class FileExtensionFilterTest extends UnitTestCase
         string $disallowedExtensions,
         bool $isAllowed
     ): void {
-        $filter = $this->getAccessibleMock(FileExtensionFilter::class, ['dummy']);
+        $filter = $this->getAccessibleMock(FileExtensionFilter::class, null);
         $filter->setAllowedFileExtensions($allowedExtensions);
         $filter->setDisallowedFileExtensions($disallowedExtensions);
         $result = $filter->_call('isAllowed', $fileExtension);

@@ -319,7 +319,7 @@ class CacheManagerTest extends UnitTestCase
      */
     public function getCacheCreatesCacheInstanceWithFallbackToDefaultFrontend(): void
     {
-        $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
+        $manager = $this->getAccessibleMock(CacheManager::class, null, [], '', false);
         $cacheIdentifier = StringUtility::getUniqueId('Test');
         $configuration = [
             $cacheIdentifier => [
@@ -344,7 +344,7 @@ class CacheManagerTest extends UnitTestCase
      */
     public function getCacheCreatesCacheInstanceWithFallbackToDefaultBackend(): void
     {
-        $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
+        $manager = $this->getAccessibleMock(CacheManager::class, null, [], '', false);
         $cacheIdentifier = StringUtility::getUniqueId('Test');
         $configuration = [
             $cacheIdentifier => [
@@ -427,7 +427,7 @@ class CacheManagerTest extends UnitTestCase
      */
     public function flushCachesInGroupByTagsWithEmptyTagsArrayDoesNotFlushCaches(): void
     {
-        $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
+        $manager = $this->getAccessibleMock(CacheManager::class, null, [], '', false);
         $cacheIdentifier = 'aTest';
 
         $cacheGroups = [
@@ -462,7 +462,7 @@ class CacheManagerTest extends UnitTestCase
      */
     public function flushCachesInGroupByTagsDeletesByTag(): void
     {
-        $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
+        $manager = $this->getAccessibleMock(CacheManager::class, null, [], '', false);
         $cacheIdentifier = 'aTest';
 
         $cacheGroups = [
@@ -501,7 +501,7 @@ class CacheManagerTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1596980032);
 
-        $manager = $this->getAccessibleMock(CacheManager::class, ['dummy']);
+        $manager = $this->getAccessibleMock(CacheManager::class, null);
         $manager->setCacheConfigurations([
             '' => [
                 'frontend' => VariableFrontend::class,
