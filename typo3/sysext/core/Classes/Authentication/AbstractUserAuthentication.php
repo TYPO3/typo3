@@ -367,17 +367,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     }
 
     /**
-     * Get the value of a specified cookie.
-     *
-     * @param string $cookieName The cookie ID
-     * @return string The value stored in the cookie
-     */
-    protected function getCookie($cookieName)
-    {
-        return isset($_COOKIE[$cookieName]) ? stripslashes($_COOKIE[$cookieName]) : '';
-    }
-
-    /**
      * Determine whether a session cookie needs to be set (lifetime=0)
      *
      * @return bool
@@ -899,7 +888,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $this->userSession = $this->userSessionManager->createAnonymousSession();
         $this->user = null;
         if ($this->isCookieSet()) {
-            $this->removeCookie($this->name);
+            $this->removeCookie();
         }
     }
 
@@ -931,7 +920,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function isCookieSet()
     {
-        return isset($this->setCookie) || $this->getCookie($this->name);
+        return $this->setCookie instanceof Cookie || isset($_COOKIE[$this->name]);
     }
 
     /*************************

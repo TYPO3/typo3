@@ -413,7 +413,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
                 $this->removeSessionData();
                 // Remove cookie if not logged in as the session data is removed as well
                 if (empty($this->user['uid']) && $this->isCookieSet()) {
-                    $this->removeCookie($this->name);
+                    $this->removeCookie();
                 }
             } elseif (!$this->userSessionManager->isSessionPersisted($this->userSession)) {
                 // Create a new session entry in the backend
