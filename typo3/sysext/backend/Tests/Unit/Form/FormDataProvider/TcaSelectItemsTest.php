@@ -598,6 +598,72 @@ class TcaSelectItemsTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataAddsItemsByAddItemsWithGroupFromPageTsConfig(): void
+    {
+        $input = [
+            'databaseRow' => [
+                'aField' => '',
+            ],
+            'tableName' => 'aTable',
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                0 => [
+                                    0 => 'keepMe',
+                                    1 => 'keep',
+                                    null,
+                                    'none',
+                                    null,
+                                ],
+                            ],
+                            'maxitems' => 99999,
+                        ],
+                    ],
+                ],
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'addItems.' => [
+                                '1' => 'addMe',
+                                '1.' => [
+                                    'group' => 'custom-group',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        $expected['databaseRow']['aField'] = [];
+        $expected['processedTca']['columns']['aField']['config']['items'][1] = [
+            'custom-group',
+            '--div--',
+            null,
+            'custom-group',
+            null,
+        ];
+        $expected['processedTca']['columns']['aField']['config']['items'][2] = [
+            0 => 'addMe',
+            1 => 1,
+            null,
+            'custom-group',
+            null,
+        ];
+
+        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+    }
+
+    /**
+     * @test
+     */
     public function addDataAddsItemsByAddItemsWithDuplicateValuesFromPageTsConfig(): void
     {
         $input = [

@@ -143,18 +143,23 @@ abstract class AbstractItemProvider
             $addItemsArray = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['addItems.'];
             foreach ($addItemsArray as $value => $label) {
                 // If the value ends with a dot, it is a subelement like "34.icon = mylabel.png", skip it
-                if (substr($value, -1) === '.') {
+                if (str_ends_with($value, '.')) {
                     continue;
                 }
-                // Check if value "34 = mylabel" also has a "34.icon = myImage.png"
+                // Check if value "34 = mylabel" also has a "34.icon = my-icon-identifier"
+                // or "34.group = my-group-identifier"
                 $iconIdentifier = null;
-                if (isset($addItemsArray[$value . '.'])
-                    && is_array($addItemsArray[$value . '.'])
-                    && !empty($addItemsArray[$value . '.']['icon'])
-                ) {
-                    $iconIdentifier = $addItemsArray[$value . '.']['icon'];
+                $group = null;
+                if (is_array($addItemsArray[$value . '.'] ?? null)) {
+                    if (!empty($addItemsArray[$value . '.']['icon'])) {
+                        $iconIdentifier = $addItemsArray[$value . '.']['icon'];
+                    }
+                    if (!empty($addItemsArray[$value . '.']['group'])) {
+                        $group = $addItemsArray[$value . '.']['group'];
+                    }
                 }
-                $items[] = [$label, $value, $iconIdentifier];
+
+                $items[] = [$label, $value, $iconIdentifier, $group];
             }
         }
         return $items;
