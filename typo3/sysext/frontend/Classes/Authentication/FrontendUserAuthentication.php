@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\SetCookieService;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -210,8 +211,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     protected function isSetSessionCookie()
     {
-        return ($this->userSession->isNew() || $this->forceSetCookie)
-            && ((int)$this->lifetime === 0 || !$this->userSession->isPermanent());
+        return SetCookieService::create($this->name, $this->loginType)->isSetSessionCookie($this->userSession, $this->forceSetCookie);
     }
 
     /**
@@ -222,7 +222,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     protected function isRefreshTimeBasedCookie()
     {
-        return $this->lifetime > 0 && $this->userSession->isPermanent();
+        return SetCookieService::create($this->name, $this->loginType)->isRefreshTimeBasedCookie($this->userSession);
     }
 
     /**

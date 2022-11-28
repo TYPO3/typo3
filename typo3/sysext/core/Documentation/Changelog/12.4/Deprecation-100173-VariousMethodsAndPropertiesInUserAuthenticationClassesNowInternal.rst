@@ -41,6 +41,7 @@ user authetication related classes (extending
 * :php:`removeCookie()`
 * :php:`isCookieSet()`
 * :php:`unpack_uc()`
+* :php:`appendCookieToResponse()`
 
 Additionally are the following properties of the
 :php:`TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication`

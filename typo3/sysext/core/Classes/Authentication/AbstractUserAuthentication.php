@@ -44,6 +44,9 @@ use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\CookieHeaderTrait;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\SetCookieBehavior;
+use TYPO3\CMS\Core\Http\SetCookieService;
 use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Session\UserSessionManager;
@@ -87,6 +90,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         'removeCookie' => 'Using AbstractUserAuthentication->removeCookie() is marked as internal and cannot be called directly anymore in TYPO3 v13.0.',
         'isCookieSet' => 'Using AbstractUserAuthentication->isCookieSet() is marked as internal and cannot be called directly anymore in TYPO3 v13.0.',
         'unpack_uc' => 'Using AbstractUserAuthentication->unpack_uc() is marked as internal and cannot be called directly anymore in TYPO3 v13.0.',
+        'appendCookieToResponse' => 'Using AbstractUserAuthentication->appendCookieToResponse() is marked as internal and cannot be called directly anymore in TYPO3 v13.0.',
     ];
 
     /**
@@ -173,17 +177,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     protected $formfield_status = '';
 
     /**
-     * Lifetime for the session-cookie (on the client)
-     *
-     * If >0: permanent cookie with given lifetime
-     * If 0: session-cookie
-     * Session-cookie means the browser will remove it when the browser is closed.
-     *
-     * @var int
-     */
-    protected $lifetime = 0;
-
-    /**
      * Decides if the writelog() function is called at login and logout
      * @var bool
      */
@@ -250,7 +243,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     /**
      * If set, this cookie will be set to the response.
      */
-    protected ?Cookie $setCookie = null;
+    protected SetCookieBehavior $setCookie = SetCookieBehavior::None;
 
     /**
      * Initialize some important variables
@@ -263,7 +256,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if (empty($this->loginType)) {
             throw new Exception('No loginType defined, must be set explicitly by subclass', 1476045345);
         }
-        $this->lifetime = (int)($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['lifetime'] ?? 0);
     }
 
     /**
@@ -305,15 +297,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $this->checkAuthentication($request);
         } catch (MfaRequiredException $mfaRequiredException) {
             // Ensure the cookie is still set to keep the user session available
-            if (!$this->dontSetCookie || $this->isRefreshTimeBasedCookie()) {
-                $this->setSessionCookie();
-            }
+            $this->setSessionCookie();
             throw $mfaRequiredException;
         }
-        // Set cookie if generally enabled or if the current session is a non-session cookie (FE permalogin)
-        if (!$this->dontSetCookie || $this->isRefreshTimeBasedCookie()) {
-            $this->setSessionCookie();
-        }
+        $this->setSessionCookie();
         // Hook for alternative ways of filling the $this->user array (is used by the "timtaw" extension)
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'] ?? [] as $funcName) {
             $_params = [
@@ -325,84 +312,45 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
     /**
      * Used to apply a cookie to a PSR-7 Response.
+     *
+     * @todo: should go into a middleware?
+     * @internal since TYPO3 v12. This is not considered public API anymore, as this method should be defined in another
+     * place in the future. If really needed implement the logic in an AuthenticationService or custom PHP class.
      */
-    public function appendCookieToResponse(ResponseInterface $response): ResponseInterface
+    public function appendCookieToResponse(ResponseInterface $response, ?NormalizedParams $normalizedParams = null): ResponseInterface
     {
-        if ($this->setCookie !== null) {
-            $response = $response->withAddedHeader('Set-Cookie', $this->setCookie->__toString());
+        if ($this->setCookie === SetCookieBehavior::None) {
+            return $response;
+        }
+        if ($normalizedParams === null) {
+            $normalizedParams = NormalizedParams::createFromRequest($GLOBALS['TYPO3_REQUEST']);
+        }
+        $setCookieService = SetCookieService::create($this->name, $this->loginType);
+        if ($this->setCookie === SetCookieBehavior::Send) {
+            $cookieObject = $setCookieService->setSessionCookie($this->userSession, $normalizedParams);
+            if ($cookieObject) {
+                $response = $response->withAddedHeader('Set-Cookie', $cookieObject->__toString());
+            }
+        }
+        if ($this->setCookie === SetCookieBehavior::Remove) {
+            $cookieObject = $setCookieService->removeCookie($normalizedParams);
+            $response = $response->withAddedHeader('Set-Cookie', $cookieObject->__toString());
         }
         return $response;
     }
 
     /**
-     * Sets the session cookie for the current disposal.
+     * Sets the setCookie directive to "Send" if generally enabled or if the current
+     * session is a non-session cookie (FE permalogin). This will then result in
+     * appending a new cookie to the PSR-7 response, see appendCookieToResponse().
      */
     protected function setSessionCookie()
     {
-        $isRefreshTimeBasedCookie = $this->isRefreshTimeBasedCookie();
-        if ($this->isSetSessionCookie() || $isRefreshTimeBasedCookie) {
-            // Get the domain to be used for the cookie (if any):
-            $cookieDomain = $this->getCookieDomain();
-            // If no cookie domain is set, use the base path:
-            $cookiePath = $cookieDomain ? '/' : GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-            // If the cookie lifetime is set, use it:
-            $cookieExpire = $isRefreshTimeBasedCookie ? $GLOBALS['EXEC_TIME'] + $this->lifetime : 0;
-            // Valid options are "strict", "lax" or "none", whereas "none" only works in HTTPS requests (default & fallback is "strict")
-            $cookieSameSite = $this->sanitizeSameSiteCookieValue(
-                strtolower($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['cookieSameSite'] ?? Cookie::SAMESITE_STRICT)
-            );
-            // Use the secure option when the current request is served by a secure connection:
-            // SameSite "none" needs the secure option (only allowed on HTTPS)
-            $isSecure = $cookieSameSite === Cookie::SAMESITE_NONE || GeneralUtility::getIndpEnv('TYPO3_SSL');
-            $sessionId = $this->userSession->getIdentifier();
-            $cookieValue = $this->userSession->getJwt();
-            $this->setCookie = new Cookie(
-                $this->name,
-                $cookieValue,
-                $cookieExpire,
-                $cookiePath,
-                $cookieDomain,
-                $isSecure,
-                true,
-                false,
-                $cookieSameSite
-            );
-            $message = $isRefreshTimeBasedCookie ? 'Updated Cookie: {session}, {domain}' : 'Set Cookie: {session}, {domain}';
-            $this->logger->debug($message, [
-                'session' => sha1($sessionId),
-                'domain' => $cookieDomain,
-            ]);
+        if (!$this->dontSetCookie
+            || SetCookieService::create($this->name, $this->loginType)->isRefreshTimeBasedCookie($this->userSession)
+        ) {
+            $this->setCookie = SetCookieBehavior::Send;
         }
-    }
-
-    /**
-     * Gets the domain to be used on setting cookies.
-     * The information is taken from the value in $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'].
-     *
-     * @return string The domain to be used on setting cookies
-     */
-    protected function getCookieDomain()
-    {
-        $result = '';
-        $cookieDomain = $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'] ?? '';
-        // If a specific cookie domain is defined for a given application type, use that domain
-        if (!empty($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['cookieDomain'])) {
-            $cookieDomain = $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['cookieDomain'];
-        }
-        if ($cookieDomain) {
-            if ($cookieDomain[0] === '/') {
-                $match = [];
-                $matchCnt = @preg_match($cookieDomain, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
-                if ($matchCnt === false) {
-                    $this->logger->critical('The regular expression for the cookie domain ({domain}) contains errors. The session is not shared across sub-domains.', ['domain' => $cookieDomain]);
-                } elseif ($matchCnt) {
-                    $result = $match[0];
-                }
-            } else {
-                $result = $cookieDomain;
-            }
-        }
-        return $result;
     }
 
     /**
@@ -413,7 +361,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     protected function isSetSessionCookie()
     {
-        return $this->userSession->isNew() && $this->lifetime === 0;
+        return SetCookieService::create($this->name, $this->loginType)->isSetSessionCookie($this->userSession);
     }
 
     /**
@@ -424,7 +372,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     protected function isRefreshTimeBasedCookie()
     {
-        return $this->lifetime > 0;
+        return SetCookieService::create($this->name, $this->loginType)->isRefreshTimeBasedCookie($this->userSession);
     }
 
     /**
@@ -976,17 +924,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function removeCookie($cookieName = null)
     {
-        $cookieName = $cookieName ?? $this->name;
-        $cookieDomain = $this->getCookieDomain();
-        // If no cookie domain is set, use the base path
-        $cookiePath = $cookieDomain ? '/' : GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-        $this->setCookie = new Cookie(
-            $cookieName,
-            '',
-            -1,
-            $cookiePath,
-            $cookieDomain
-        );
+        $this->setCookie = SetCookieBehavior::Remove;
     }
 
     /**
@@ -998,7 +936,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     protected function isCookieSet()
     {
-        return $this->setCookie instanceof Cookie || isset($_COOKIE[$this->name]);
+        return SetCookieService::create($this->name, $this->loginType)->isCookieSet(
+            $GLOBALS['TYPO3_REQUEST'] ?? null,
+            $this->userSession
+        );
     }
 
     /*************************

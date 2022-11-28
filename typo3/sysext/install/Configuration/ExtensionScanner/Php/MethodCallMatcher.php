@@ -5701,6 +5701,13 @@ return [
             'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->appendCookieToResponse' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+        ],
+    ],
     'TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface->isFeatureEnabled' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,

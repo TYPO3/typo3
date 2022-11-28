@@ -120,7 +120,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
                     RouteRedirect::createFromRoute($route, $request->getQueryParams())
                 );
                 $response = new RedirectResponse($uri);
-                return $this->enrichResponseWithHeadersAndCookieInformation($response, $GLOBALS['BE_USER']);
+                return $this->enrichResponseWithHeadersAndCookieInformation($request, $response, $GLOBALS['BE_USER']);
             }
             if (!$GLOBALS['BE_USER']->isUserAllowedToLogin()) {
                 $content = GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
@@ -130,7 +130,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
                     503
                 );
                 $response = new HtmlResponse($content, 503);
-                return $this->enrichResponseWithHeadersAndCookieInformation($response, $GLOBALS['BE_USER']);
+                return $this->enrichResponseWithHeadersAndCookieInformation($request, $response, $GLOBALS['BE_USER']);
             }
         }
         if ($this->context->getAspect('backend.user')->isLoggedIn()) {
@@ -157,7 +157,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         $this->setBackendUserAspect($GLOBALS['BE_USER']);
         $response = $handler->handle($request);
         $this->sessionGarbageCollection();
-        return $this->enrichResponseWithHeadersAndCookieInformation($response, $GLOBALS['BE_USER']);
+        return $this->enrichResponseWithHeadersAndCookieInformation($request, $response, $GLOBALS['BE_USER']);
     }
 
     /**
@@ -167,6 +167,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
     protected function enrichResponseWithHeadersAndCookieInformation(
+        ServerRequestInterface $request,
         ResponseInterface $response,
         ?BackendUserAuthentication $userAuthentication
     ): ResponseInterface {
@@ -176,7 +177,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
                 $userAuthentication->removeCookie();
             }
             // Ensure to always apply a cookie
-            $response = $userAuthentication->appendCookieToResponse($response);
+            $response = $userAuthentication->appendCookieToResponse($response, $request->getAttribute('normalizedParams'));
         }
         // Additional headers to never cache any PHP request should be sent at any time when
         // accessing the TYPO3 Backend
@@ -206,7 +207,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         );
         // Add necessary cookies and headers to the response so
         // the already passed authentication step is not lost.
-        $response = $user->appendCookieToResponse($response);
+        $response = $user->appendCookieToResponse($response, $request->getAttribute('normalizedParams'));
         $response = $this->applyHeadersToResponse($response);
         return $response;
     }

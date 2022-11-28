@@ -75,7 +75,7 @@ class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInter
         // Store session data for fe_users if it still exists
         if ($frontendUser instanceof FrontendUserAuthentication) {
             $frontendUser->storeSessionData();
-            $response = $frontendUser->appendCookieToResponse($response);
+            $response = $frontendUser->appendCookieToResponse($response, $request->getAttribute('normalizedParams'));
             // Collect garbage in Frontend requests, which aren't fully cacheable (e.g. with cookies)
             if ($response->hasHeader('Set-Cookie')) {
                 $this->sessionGarbageCollection();
