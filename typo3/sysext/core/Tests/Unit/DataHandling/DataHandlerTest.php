@@ -17,18 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling;
 
-use Prophecy\PhpUnit\ProphecyTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
-use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
+use TYPO3\CMS\Core\SysLog;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\InvalidHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\UserOddNumberFilter;
@@ -40,36 +39,20 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DataHandlerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
-
-    /**
-     * A backup of registered singleton instances
-     */
-    protected array $singletonInstances = [];
-
-    /**
-     * @var DataHandler|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface
-     */
-    protected $subject;
-
-    /**
-     * @var BackendUserAuthentication a mock logged-in back-end user
-     */
-    protected $backEndUser;
+    protected DataHandler&MockObject&AccessibleObjectInterface $subject;
+    protected BackendUserAuthentication&MockObject $backendUserMock;
 
     protected function setUp(): void
     {
         parent::setUp();
         $GLOBALS['TCA'] = [];
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheFrontendProphecy->reveal());
-        $this->backEndUser = $this->createMock(BackendUserAuthentication::class);
+        $cacheManager = new CacheManager();
+        $cacheManager->registerCache(new NullFrontend('runtime'));
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
+        $this->backendUserMock = $this->createMock(BackendUserAuthentication::class);
         $this->subject = $this->getAccessibleMock(DataHandler::class, null);
-        $this->subject->start([], [], $this->backEndUser);
+        $this->subject->start([], [], $this->backendUserMock);
     }
 
     /**
@@ -107,7 +90,7 @@ class DataHandlerTest extends UnitTestCase
     public function nonAdminWithTableModifyAccessIsAllowedToModifyNonAdminTable(): void
     {
         $this->subject->admin = false;
-        $this->backEndUser->groupData['tables_modify'] = 'tt_content';
+        $this->backendUserMock->groupData['tables_modify'] = 'tt_content';
         self::assertTrue($this->subject->checkModifyAccessList('tt_content'));
     }
 
@@ -143,7 +126,7 @@ class DataHandlerTest extends UnitTestCase
             ],
         ];
         $this->subject->admin = false;
-        $this->backEndUser->groupData['tables_modify'] = $tableName;
+        $this->backendUserMock->groupData['tables_modify'] = $tableName;
         self::assertFalse($this->subject->checkModifyAccessList($tableName));
     }
 
@@ -197,12 +180,12 @@ class DataHandlerTest extends UnitTestCase
      * @test
      * @dataProvider checkValueForColorDataProvider
      */
-    public function checkValueForColor(string $input, mixed $expected, array $addiitonalFieldConfig = []): void
+    public function checkValueForColor(string $input, mixed $expected, array $additionalFieldConfig = []): void
     {
         $output = $this->subject->_call(
             'checkValueForColor',
             $input,
-            array_replace_recursive(['type' => 'datetime'], $addiitonalFieldConfig)
+            array_replace_recursive(['type' => 'datetime'], $additionalFieldConfig)
         );
 
         self::assertEquals($expected, $output['value'] ?? null);
@@ -230,10 +213,7 @@ class DataHandlerTest extends UnitTestCase
         self::assertNotSame($inputValue, $result['value']);
     }
 
-    /**
-     * Data provider for inputValueCheckRecognizesStringValuesAsIntegerValuesCorrectly
-     */
-    public function numberValuesStringsDataProvider(): array
+    public function numberValueCheckRecognizesStringValuesAsIntegerValuesCorrectlyDataProvider(): array
     {
         return [
             'Empty string returns zero as integer' => [
@@ -265,7 +245,7 @@ class DataHandlerTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider numberValuesStringsDataProvider
+     * @dataProvider numberValueCheckRecognizesStringValuesAsIntegerValuesCorrectlyDataProvider
      */
     public function numberValueCheckRecognizesStringValuesAsIntegerValuesCorrectly(string $value, int $expectedReturnValue): void
     {
@@ -489,9 +469,6 @@ class DataHandlerTest extends UnitTestCase
         self::assertSame($expected, $returnValue['value']);
     }
 
-    /**
-     * @returns array
-     */
     public function datetimeValueCheckDbtypeIsIndependentFromTimezoneDataProvider(): array
     {
         return [
@@ -610,9 +587,9 @@ class DataHandlerTest extends UnitTestCase
         $subject = $this->getMockBuilder(DataHandler::class)
             ->onlyMethods(['log'])
             ->getMock();
-        $this->backEndUser->workspace = 1;
-        $this->backEndUser->workspaceRec = ['freeze' => true];
-        $subject->BE_USER = $this->backEndUser;
+        $this->backendUserMock->workspace = 1;
+        $this->backendUserMock->workspaceRec = ['freeze' => true];
+        $subject->BE_USER = $this->backendUserMock;
         self::assertFalse($subject->process_datamap());
     }
 
@@ -747,8 +724,7 @@ class DataHandlerTest extends UnitTestCase
             0,
         ];
 
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
         $this->subject->checkValue_flex_procInData_travDS($dataValues, [], $DSelements, $pParams, '', '');
         self::assertSame($expected, $dataValues);
     }
@@ -765,7 +741,7 @@ class DataHandlerTest extends UnitTestCase
         $backendUser->expects(self::once())->method('writelog');
         $this->subject->enableLogging = true;
         $this->subject->BE_USER = $backendUser;
-        $this->subject->log('', 23, SystemLogGenericAction::UNDEFINED, 42, SystemLogErrorClassification::MESSAGE, 'details');
+        $this->subject->log('', 23, SysLog\Action::UNDEFINED, 42, SysLog\Error::MESSAGE, 'details');
     }
 
     /**
@@ -777,7 +753,7 @@ class DataHandlerTest extends UnitTestCase
         $backendUser->expects(self::never())->method('writelog');
         $this->subject->enableLogging = false;
         $this->subject->BE_USER = $backendUser;
-        $this->subject->log('', 23, SystemLogGenericAction::UNDEFINED, 42, SystemLogErrorClassification::MESSAGE, 'details');
+        $this->subject->log('', 23, SysLog\Action::UNDEFINED, 42, SysLog\Error::MESSAGE, 'details');
     }
 
     /**
@@ -790,7 +766,7 @@ class DataHandlerTest extends UnitTestCase
         $this->subject->enableLogging = true;
         $this->subject->errorLog = [];
         $logDetailsUnique = StringUtility::getUniqueId('details');
-        $this->subject->log('', 23, SystemLogGenericAction::UNDEFINED, 42, SystemLogErrorClassification::USER_ERROR, $logDetailsUnique);
+        $this->subject->log('', 23, SysLog\Action::UNDEFINED, 42, SysLog\Error::USER_ERROR, $logDetailsUnique);
         self::assertArrayHasKey(0, $this->subject->errorLog);
         self::assertStringEndsWith($logDetailsUnique, $this->subject->errorLog[0]);
     }
@@ -805,7 +781,7 @@ class DataHandlerTest extends UnitTestCase
         $this->subject->enableLogging = true;
         $this->subject->errorLog = [];
         $logDetails = StringUtility::getUniqueId('details');
-        $this->subject->log('', 23, SystemLogGenericAction::UNDEFINED, 42, SystemLogErrorClassification::USER_ERROR, '%1$s' . $logDetails . '%2$s', -1, ['foo', 'bar']);
+        $this->subject->log('', 23, SysLog\Action::UNDEFINED, 42, SysLog\Error::USER_ERROR, '%1$s' . $logDetails . '%2$s', -1, ['foo', 'bar']);
         $expected = 'foo' . $logDetails . 'bar';
         self::assertStringEndsWith($expected, $this->subject->errorLog[0]);
     }
@@ -820,23 +796,17 @@ class DataHandlerTest extends UnitTestCase
         $this->subject->enableLogging = true;
         $this->subject->errorLog = [];
         $logDetails = 'An error occurred on {table}:{uid} when localizing';
-        $this->subject->log('', 23, SystemLogGenericAction::UNDEFINED, 42, SystemLogErrorClassification::USER_ERROR, $logDetails, -1, ['table' => 'tx_sometable', 0 => 'some random value']);
+        $this->subject->log('', 23, SysLog\Action::UNDEFINED, 42, SysLog\Error::USER_ERROR, $logDetails, -1, ['table' => 'tx_sometable', 0 => 'some random value']);
         // UID is kept as non-replaced, and other properties are not replaced.
         $expected = 'An error occurred on tx_sometable:{uid} when localizing';
         self::assertStringEndsWith($expected, $this->subject->errorLog[0]);
     }
 
     /**
-     * @param bool $expected
-     * @param string $submittedValue
-     * @param string $storedValue
-     * @param string $storedType
-     * @param bool $allowNull
-     *
      * @dataProvider equalSubmittedAndStoredValuesAreDeterminedDataProvider
      * @test
      */
-    public function equalSubmittedAndStoredValuesAreDetermined($expected, $submittedValue, $storedValue, $storedType, $allowNull): void
+    public function equalSubmittedAndStoredValuesAreDetermined(bool $expected, string|int|null $submittedValue, string|int|null $storedValue, string $storedType, bool $allowNull): void
     {
         $result = \Closure::bind(function () use ($submittedValue, $storedValue, $storedType, $allowNull) {
             return $this->isSubmittedValueEqualToStoredValue($submittedValue, $storedValue, $storedType, $allowNull);
@@ -1098,14 +1068,10 @@ class DataHandlerTest extends UnitTestCase
     }
 
     /**
-     * @param string $value
-     * @param string $expectedValue
-     *
      * @dataProvider checkValue_checkReturnsExpectedValuesDataProvider
      * @test
-     * @todo Specifying the datatype in the parameter list results in test bench failures (runTest.ch)
      */
-    public function checkValue_checkReturnsExpectedValues($value, $expectedValue): void
+    public function checkValue_checkReturnsExpectedValues(string|int $value, string|int $expectedValue): void
     {
         $expectedResult = [
             'value' => $expectedValue,
@@ -1131,12 +1097,10 @@ class DataHandlerTest extends UnitTestCase
     }
 
     /**
-     * @param mixed $value
-     * @param int|string $expected
      * @test
      * @dataProvider referenceValuesAreCastedDataProvider
      */
-    public function referenceValuesAreCasted($value, array $configuration, bool $isNew, $expected): void
+    public function referenceValuesAreCasted(string $value, array $configuration, bool $isNew, int|string $expected): void
     {
         self::assertEquals(
             $expected,
@@ -1195,9 +1159,9 @@ class DataHandlerTest extends UnitTestCase
      */
     public function clearPrefixFromValueRemovesPrefix(string $input, string $expected): void
     {
-        $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->sL('testLabel')->willReturn('(copy %s)');
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceMock->method('sL')->with('testLabel')->willReturn('(copy %s)');
+        $GLOBALS['LANG'] = $languageServiceMock;
         $GLOBALS['TCA']['testTable']['ctrl']['prependAtCopy'] = 'testLabel';
         self::assertEquals($expected, (new DataHandler())->clearPrefixFromValue('testTable', $input));
     }
