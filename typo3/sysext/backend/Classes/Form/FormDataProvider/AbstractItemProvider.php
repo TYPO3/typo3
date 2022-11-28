@@ -154,7 +154,15 @@ abstract class AbstractItemProvider
                 ) {
                     $iconIdentifier = $addItemsArray[$value . '.']['icon'];
                 }
-                $items[] = [$label, $value, $iconIdentifier];
+                $group = null;
+                // Check if value "34 = mylabel" also has a "34.group = groupId"
+                if (isset($addItemsArray[$value . '.'])
+                    && is_array($addItemsArray[$value . '.'])
+                    && !empty($addItemsArray[$value . '.']['group'])
+                ) {
+                    $group = $addItemsArray[$value . '.']['group'];
+                }
+                $items[] = [$label, $value, $iconIdentifier, $group];
             }
         }
         return $items;
