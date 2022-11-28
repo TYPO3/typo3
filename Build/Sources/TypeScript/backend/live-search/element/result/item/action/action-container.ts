@@ -36,7 +36,6 @@ export class ActionContainer extends LitElement {
 
   private renderActionItem(resultItem: ResultItemInterface, action: ResultItemActionInterface): TemplateResult {
     return html`<typo3-backend-live-search-result-item-action
-      tabindex="1"
       .resultItem="${resultItem}"
       .resultItemAction="${action}"
       @click="${() => this.invokeAction(this.resultItem, action)}">

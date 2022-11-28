@@ -36,9 +36,6 @@ export default class PageProviderResultItem extends LitElement {
       <div class="livesearch-result-item-title">
         ${this.itemTitle}<br><small>${this.extraData.breadcrumb}</small>
       </div>
-      <div class="livesearch-result-item-type">
-        ${this.typeLabel}
-      </div>
     `;
   }
 }

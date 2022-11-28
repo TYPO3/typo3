@@ -17,6 +17,8 @@ import './item';
 import '../../provider/default-result-item';
 import {Item, ResultItemActionInterface, ResultItemInterface} from './item';
 
+type GroupedResultItems = { [key: string ]: ResultItemInterface[] };
+
 export const componentName = 'typo3-backend-live-search-result-item-container';
 
 @customElement(componentName)
@@ -24,15 +26,44 @@ export class ItemContainer extends LitElement {
   @property({type: Object, attribute: false}) results: ResultItemInterface[]|null = null;
   @property({type: Object, attribute: false}) renderers: { [key: string]: Function } = {};
 
+  public connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('scroll', this.onScroll);
+  }
+
+  public disconnectedCallback() {
+    this.removeEventListener('scroll', this.onScroll);
+    super.disconnectedCallback();
+  }
+
   public createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
   protected render(): TemplateResult {
+    const groupedResults: GroupedResultItems = {};
+    this.results.forEach((result: ResultItemInterface): void => {
+      if (!(result.typeLabel in groupedResults)) {
+        groupedResults[result.typeLabel] = [result];
+      } else {
+        groupedResults[result.typeLabel].push(result);
+      }
+    });
+
     return html`<typo3-backend-live-search-result-list>
-      ${this.results.map((result: ResultItemInterface) => this.renderResultItem(result))}
+      ${this.renderGroupedResults(groupedResults)}
     </typo3-backend-live-search-result-list>`;
+  }
+
+  private renderGroupedResults(groupedResults: GroupedResultItems): TemplateResult {
+    const items = [];
+    for (let [type, results] of Object.entries(groupedResults)) {
+      items.push(html`<h6 class="livesearch-result-item-group-label">${type}</h6>`);
+      items.push(...results.map((result: ResultItemInterface) => this.renderResultItem(result)));
+    }
+
+    return html`${items}`
   }
 
   private renderResultItem(resultItem: ResultItemInterface): TemplateResult {
@@ -51,7 +82,6 @@ export class ItemContainer extends LitElement {
     }
 
     return html`<typo3-backend-live-search-result-item
-      tabindex="1"
       .resultItem="${resultItem}"
       @click="${() => this.invokeAction(resultItem, resultItem.actions[0])}"
       @focus="${() => this.requestActions(resultItem)}">
@@ -75,6 +105,12 @@ export class ItemContainer extends LitElement {
       }
     }));
   }
+
+  private onScroll(e: Event): void {
+    this.querySelectorAll('.livesearch-result-item-group-label').forEach((groupLabel: HTMLElement): void => {
+      groupLabel.classList.toggle('sticky', groupLabel.offsetTop <= (e.target as HTMLElement).scrollTop);
+    });
+  }
 }
 
 @customElement('typo3-backend-live-search-result-list')
@@ -97,6 +133,12 @@ export class ResultList extends LitElement {
     this.addEventListener('keyup', this.handleKeyUp);
   }
 
+  public disconnectedCallback() {
+    this.removeEventListener('keydown', this.handleKeyDown);
+    this.removeEventListener('keyup', this.handleKeyUp);
+    super.disconnectedCallback();
+  }
+
   protected render(): TemplateResult {
     return html`<slot></slot>`;
   }
@@ -105,7 +147,9 @@ export class ResultList extends LitElement {
     if (!['ArrowDown', 'ArrowUp', 'ArrowRight'].includes(e.key)) {
       return;
     }
-    if (document.activeElement.tagName.toLowerCase() !== 'typo3-backend-live-search-result-item') {
+
+    const expectedTagName = 'typo3-backend-live-search-result-item';
+    if (document.activeElement.tagName.toLowerCase() !== expectedTagName) {
       return;
     }
 
@@ -113,9 +157,17 @@ export class ResultList extends LitElement {
 
     let focusableCandidate;
     if (e.key === 'ArrowDown') {
-      focusableCandidate = document.activeElement.nextElementSibling
+      let nextSibling = document.activeElement.nextElementSibling;
+      while (nextSibling !== null && nextSibling.tagName.toLowerCase() !== expectedTagName) {
+        nextSibling = nextSibling.nextElementSibling;
+      }
+      focusableCandidate = nextSibling;
     } else if (e.key === 'ArrowUp') {
-      focusableCandidate = document.activeElement.previousElementSibling;
+      let prevSibling = document.activeElement.previousElementSibling;
+      while (prevSibling !== null && prevSibling.tagName.toLowerCase() !== expectedTagName) {
+        prevSibling = prevSibling.previousElementSibling;
+      }
+      focusableCandidate = prevSibling;
       if (focusableCandidate === null) {
         // No possible candidate found, fall back to search input
         focusableCandidate = (document.querySelector('typo3-backend-live-search').querySelector('input[type="search"]'));

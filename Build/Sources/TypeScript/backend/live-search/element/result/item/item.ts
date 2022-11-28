@@ -44,6 +44,10 @@ export class Item extends LitElement {
 
     super.connectedCallback();
 
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', '0');
+    }
+
     this.addEventListener('focus', (e: Event): void => {
       const target = e.target as HTMLElement;
       target.parentElement.querySelector('.active')?.classList.remove('active');

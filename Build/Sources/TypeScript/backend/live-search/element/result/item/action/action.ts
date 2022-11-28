@@ -22,6 +22,14 @@ export class Action extends LitElement {
   @property({type: Object, attribute: false}) resultItem: ResultItemInterface;
   @property({type: Object, attribute: false}) resultItemAction: ResultItemActionInterface;
 
+  public connectedCallback() {
+    super.connectedCallback();
+
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', '0');
+    }
+  }
+
   public createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;

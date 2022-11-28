@@ -44,7 +44,7 @@ class SearchCest
 
         $I->fillField(self::$searchField, 'adm');
 
-        $I->canSee('Backend user', self::$searchResultItem);
+        $I->canSee('admin', self::$searchResultItem);
         $I->click(self::$searchResultItem . ' [title~="admin"]');
 
         $I->switchToContentFrame();

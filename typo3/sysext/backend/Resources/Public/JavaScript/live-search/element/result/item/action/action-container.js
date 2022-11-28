@@ -10,10 +10,9 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(e,t,n,r){var i,o=arguments.length,c=o<3?t:null===r?r=Object.getOwnPropertyDescriptor(t,n):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)c=Reflect.decorate(e,t,n,r);else for(var s=e.length-1;s>=0;s--)(i=e[s])&&(c=(o<3?i(c):o>3?i(t,n,c):i(t,n))||c);return o>3&&c&&Object.defineProperty(t,n,c),c};import{customElement,property}from"lit/decorators.js";import{css,html,LitElement}from"lit";import"@typo3/backend/live-search/element/result/item/action/action.js";export const componentName="typo3-backend-live-search-result-item-action-container";let ActionContainer=class extends LitElement{constructor(){super(...arguments),this.resultItem=null}createRenderRoot(){return this}render(){return html`<typo3-backend-live-search-result-action-list>
+var __decorate=function(e,t,n,r){var o,i=arguments.length,c=i<3?t:null===r?r=Object.getOwnPropertyDescriptor(t,n):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)c=Reflect.decorate(e,t,n,r);else for(var s=e.length-1;s>=0;s--)(o=e[s])&&(c=(i<3?o(c):i>3?o(t,n,c):o(t,n))||c);return i>3&&c&&Object.defineProperty(t,n,c),c};import{customElement,property}from"lit/decorators.js";import{css,html,LitElement}from"lit";import"@typo3/backend/live-search/element/result/item/action/action.js";export const componentName="typo3-backend-live-search-result-item-action-container";let ActionContainer=class extends LitElement{constructor(){super(...arguments),this.resultItem=null}createRenderRoot(){return this}render(){return html`<typo3-backend-live-search-result-action-list>
       ${this.resultItem.actions.map((e=>this.renderActionItem(this.resultItem,e)))}
     </typo3-backend-live-search-result-action-list>`}renderActionItem(e,t){return html`<typo3-backend-live-search-result-item-action
-      tabindex="1"
       .resultItem="${e}"
       .resultItemAction="${t}"
       @click="${()=>this.invokeAction(this.resultItem,t)}">

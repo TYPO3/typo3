@@ -18,7 +18,4 @@ var __decorate=function(e,t,r,i){var o,a=arguments.length,l=a<3?t:null===i?i=Obj
       <div class="livesearch-result-item-title">
         ${this.itemTitle}<br><small>${this.extraData.breadcrumb}</small>
       </div>
-      <div class="livesearch-result-item-type">
-        ${this.typeLabel}
-      </div>
     `}};__decorate([property({type:Object,attribute:!1})],PageProviderResultItem.prototype,"icon",void 0),__decorate([property({type:String,attribute:!1})],PageProviderResultItem.prototype,"itemTitle",void 0),__decorate([property({type:String,attribute:!1})],PageProviderResultItem.prototype,"typeLabel",void 0),__decorate([property({type:Object,attribute:!1})],PageProviderResultItem.prototype,"extraData",void 0),PageProviderResultItem=__decorate([customElement("typo3-backend-live-search-result-item-page-provider")],PageProviderResultItem);export default PageProviderResultItem;

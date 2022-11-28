@@ -7,6 +7,19 @@ typo3-backend-live-search {
     height: 100%;
 }
 
+typo3-backend-live-search-result-item-container,
+typo3-backend-live-search-result-item-detail-container {
+    position: relative;
+    flex-grow: 1;
+    flex-basis: 50%;
+    overflow: auto;
+    padding: var(--bs-modal-padding);
+}
+
+typo3-backend-live-search-result-item-container {
+    padding-top: 0;
+}
+
 typo3-backend-live-search-result-container {
     // Variables
     --livesearch-item-opacity: .5;
@@ -19,19 +32,29 @@ typo3-backend-live-search-result-container {
     overflow: auto;
 }
 
-typo3-backend-live-search-result-item-container,
-typo3-backend-live-search-result-item-detail-container {
-    flex-grow: 1;
-    flex-basis: 50%;
-    overflow: auto;
-    padding: var(--bs-modal-padding);
-}
-
 typo3-backend-live-search-result-list,
 typo3-backend-live-search-result-action-list {
     display: flex;
     flex-direction: column;
     gap: 1px;
+}
+
+typo3-backend-live-search-result-list {
+    .livesearch-result-item-group-label {
+        font-weight: bold;
+        line-height: inherit;
+        padding: var(--typo3-list-item-padding-y) 0;
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
+        margin-bottom: var(--typo3-list-item-padding-y);
+        background-color: #{$white};
+        z-index: 20;
+
+        &.sticky {
+            position: sticky;
+            top: 0;
+            z-index: 15;
+        }
+    }
 }
 
 typo3-backend-live-search-result-item-detail-container {
@@ -104,16 +127,11 @@ typo3-backend-live-search-result-item-action {
 
         .livesearch-result-item-title {
             flex-grow: 1;
+            word-break: break-word;
 
             small {
                 opacity: var(--livesearch-item-opacity);
             }
-        }
-
-        .livesearch-result-item-type {
-            flex-shrink: 0;
-            flex-grow: 0;
-            opacity: var(--livesearch-item-opacity);
         }
     }
 }
