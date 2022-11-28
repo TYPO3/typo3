@@ -66,7 +66,7 @@ class I18nSanitizerBuilder implements BuilderInterface
             );
 
         $visitor = GeneralUtility::makeInstance(CommonVisitor::class, $behavior);
-        return GeneralUtility::makeInstance(Sanitizer::class, $visitor);
+        return GeneralUtility::makeInstance(Sanitizer::class, $behavior, $visitor);
     }
 
     /**
