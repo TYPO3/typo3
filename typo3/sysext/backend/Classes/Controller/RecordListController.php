@@ -374,7 +374,6 @@ class RecordListController
                 ->setHref('#')
                 ->setDataAttributes(['id' => $this->id])
                 ->setClasses('t3js-clear-page-cache')
-                ->setShowLabelText(true)
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
             $buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT);
