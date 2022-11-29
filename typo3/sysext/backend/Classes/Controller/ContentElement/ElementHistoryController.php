@@ -197,7 +197,7 @@ class ElementHistoryController
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                 ->setShowLabelText(true)
                 ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL));
-            $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
+            $buttonBar->addButton($backButton);
         }
     }
 
