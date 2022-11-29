@@ -1613,6 +1613,7 @@ class EditDocumentController
             $columnsOnlyButton = $buttonBar->makeLinkButton()
                 ->setHref($this->R_URI . '&columnsOnly=')
                 ->setTitle($this->getLanguageService()->getLL('editWholeRecord'))
+                ->setShowLabelText(true)
                 ->setIcon($this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL));
 
             $buttonBar->addButton($columnsOnlyButton, $position, $group);
