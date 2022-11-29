@@ -183,7 +183,10 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                     ->setUrl($editLink);
             }
 
-            $extraData = [];
+            $extraData = [
+                'table' => $tableName,
+                'uid' => $row['uid'],
+            ];
             if (!($GLOBALS['TCA'][$tableName]['ctrl']['rootLevel'] ?? false)) {
                 $extraData['breadcrumb'] = BackendUtility::getRecordPath($row['pid'], 'AND ' . $this->userPermissions, 0);
             }
@@ -195,6 +198,9 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                 ->setIcon($icon)
                 ->setActions(...$actions)
                 ->setExtraData($extraData)
+                ->setInternalData([
+                    'row' => $row,
+                ])
             ;
         }
 

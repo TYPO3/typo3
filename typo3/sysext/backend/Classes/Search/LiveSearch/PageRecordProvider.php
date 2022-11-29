@@ -200,6 +200,9 @@ final class PageRecordProvider implements SearchProviderInterface
                     'breadcrumb' => BackendUtility::getRecordPath($row['pid'], 'AND ' . $this->userPermissions, 0),
                     'flagIcon' => $flagIconData,
                 ])
+                ->setInternalData([
+                    'row' => $row,
+                ])
             ;
         }
 

@@ -34,12 +34,18 @@ final class ResultItem implements \JsonSerializable
      */
     private array $actions = [];
     private array $extraData = [];
+    private array $internalData = [];
 
     /**
      * @param class-string $providerClassName
      */
     public function __construct(private readonly string $providerClassName)
     {
+    }
+
+    public function getProviderClassName(): string
+    {
+        return $this->providerClassName;
     }
 
     public function setItemTitle(string $itemTitle): self
@@ -70,9 +76,33 @@ final class ResultItem implements \JsonSerializable
         return $this;
     }
 
+    public function addAction(ResultItemAction $action): self
+    {
+        $this->actions[] = $action;
+
+        return $this;
+    }
+
+    public function getExtraData(): array
+    {
+        return $this->extraData;
+    }
+
     public function setExtraData(array $extraData): ResultItem
     {
         $this->extraData = $extraData;
+        return $this;
+    }
+
+    public function getInternalData(): array
+    {
+        return $this->internalData;
+    }
+
+    public function setInternalData(array $internalData): ResultItem
+    {
+        $this->internalData = $internalData;
+
         return $this;
     }
 

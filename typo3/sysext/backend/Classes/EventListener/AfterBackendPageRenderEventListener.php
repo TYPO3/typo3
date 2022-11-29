@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\EventListener;
 
+use TYPO3\CMS\Backend\Search\LiveSearch\DatabaseRecordProvider;
 use TYPO3\CMS\Backend\Search\LiveSearch\PageRecordProvider;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -33,6 +34,10 @@ final class AfterBackendPageRenderEventListener
     public function __invoke(): void
     {
         $javaScriptRenderer = $this->pageRenderer->getJavaScriptRenderer();
+        $javaScriptRenderer->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::create('@typo3/backend/live-search/result-types/default-result-type.js', 'registerType')
+                ->invoke(null, DatabaseRecordProvider::class)
+        );
         $javaScriptRenderer->addJavaScriptModuleInstruction(
             JavaScriptModuleInstruction::create('@typo3/backend/live-search/result-types/page-result-type.js', 'registerRenderer')
                 ->invoke(null, PageRecordProvider::class)

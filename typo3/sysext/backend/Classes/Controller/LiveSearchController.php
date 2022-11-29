@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Search\Event\ModifyResultItemInLiveSearchEvent;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchProviderRegistry;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
@@ -38,6 +40,7 @@ class LiveSearchController
     public function __construct(
         protected readonly SearchProviderRegistry $searchProviderRegistry,
         protected readonly BackendViewFactory $backendViewFactory,
+        protected readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -66,6 +69,10 @@ class LiveSearchController
 
             $searchDemand = new SearchDemand($queryString, $remainingItems, 0);
             $providerResult = $provider->find($searchDemand);
+            foreach ($providerResult as $key => $resultItem) {
+                $modifyRecordEvent = $this->eventDispatcher->dispatch(new ModifyResultItemInLiveSearchEvent($resultItem));
+                $providerResult[$key] = $modifyRecordEvent->getResultItem();
+            }
             $remainingItems -= count($providerResult);
 
             $searchResults[] = $providerResult;

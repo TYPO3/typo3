@@ -154,6 +154,12 @@ services:
       - name: event.listener
         event: TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent
 
+  TYPO3\CMS\Backend\Search\EventListener\AddLiveSearchResultActionsListener:
+    tags:
+      -
+        name: event.listener
+        identifier: 'typo3/cms-backend/add-live-search-result-actions-listener'
+
   TYPO3\CMS\Backend\Search\EventListener\ExcludePagesFromSearchFieldsLookup:
     tags:
       -
