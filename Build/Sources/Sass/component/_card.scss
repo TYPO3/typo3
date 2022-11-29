@@ -392,3 +392,18 @@ a.card:hover {
 .card-footer {
     border-top: none;
 }
+
+//
+// Table
+//
+.card-table {
+    th:first-child,
+    td:first-child {
+        padding-left: $card-padding;
+    }
+
+    th:last-child,
+    td:last-child {
+        padding-right: $card-padding;
+    }
+}
