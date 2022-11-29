@@ -40,7 +40,7 @@ use TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard;
 use TYPO3\CMS\Install\Updates\RepeatableInterface;
 
 /**
- * Service class helping to manage upgrade wizards
+ * Service class helping to manage database related settings and operations required to set up TYPO3
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  *
  * @phpstan-import-type Params from DriverManager
@@ -249,7 +249,7 @@ class SetupDatabaseService
         return strlen($name) <= 50;
     }
 
-    public function isValidBeUserPassword(string $password): bool
+    public function isValidBackendUserPassword(string $password): bool
     {
         return strlen($password) >= 8;
     }

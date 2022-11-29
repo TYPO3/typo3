@@ -521,7 +521,7 @@ final class InstallerController
         // Check password and return early if not good enough
         $password = $postValues['password'];
         $email = $postValues['email'] ?? '';
-        if (!$this->setupDatabaseService->isValidBeUserPassword($password)) {
+        if (!$this->setupDatabaseService->isValidBackendUserPassword($password)) {
             $messages[] = new FlashMessage(
                 'You are setting an important password here! It gives an attacker full control over your instance if cracked.'
                 . ' It should be strong (include lower and upper case characters, special characters and numbers) and must be at least eight characters long.',

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Service;
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
@@ -32,7 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Configuration\FeatureManager;
 
 /**
- * Service class helping managing upgrade wizards
+ * Service class helping to manage parts of the setup process (set configuration, create backend user, create a basic site)
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 class SetupService
@@ -50,6 +51,7 @@ class SetupService
 
     /**
      * Creates a site configuration with one language "English" which is the de-facto default language for TYPO3 in general.
+     * @throws SiteConfigurationWriteException
      */
     public function createSiteConfiguration(string $identifier, int $rootPageId, string $siteUrl)
     {

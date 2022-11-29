@@ -93,6 +93,7 @@ class ServiceProvider extends AbstractServiceProvider
             Command\LanguagePackCommand::class => [ static::class, 'getLanguagePackCommand' ],
             Command\UpgradeWizardRunCommand::class => [ static::class, 'getUpgradeWizardRunCommand' ],
             Command\UpgradeWizardListCommand::class => [ static::class, 'getUpgradeWizardListCommand' ],
+            Command\SetupCommand::class => [ static::class, 'getSetupCommand' ],
             Database\PermissionsCheck::class => [ static::class, 'getPermissionsCheck' ],
         ];
     }
@@ -339,6 +340,16 @@ class ServiceProvider extends AbstractServiceProvider
         );
     }
 
+    public static function getSetupCommand(ContainerInterface $container): Command\SetupCommand
+    {
+        return new Command\SetupCommand(
+            'setup',
+            $container->get(Service\SetupDatabaseService::class),
+            $container->get(Service\SetupService::class),
+            $container->get(ConfigurationManager::class)
+        );
+    }
+
     public static function getPermissionsCheck(ContainerInterface $container): Database\PermissionsCheck
     {
         return new Database\PermissionsCheck();
@@ -362,6 +373,11 @@ class ServiceProvider extends AbstractServiceProvider
             'upgrade:list',
             Command\UpgradeWizardListCommand::class,
             'List available upgrade wizards.'
+        );
+        $commandRegistry->addLazyCommand(
+            'setup',
+            Command\SetupCommand::class,
+            'Setup TYPO3 via CLI.'
         );
         return $commandRegistry;
     }
