@@ -67,6 +67,7 @@ class DistributionController extends AbstractController
         $button = $buttonBar->makeLinkButton()
             ->setHref($uri)
             ->setTitle($title)
+            ->setShowLabelText(true)
             ->setIcon($icon);
         $buttonBar->addButton($button);
         return $view;

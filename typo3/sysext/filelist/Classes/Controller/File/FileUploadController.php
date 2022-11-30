@@ -92,6 +92,7 @@ class FileUploadController
         $backButton = $buttonBar->makeLinkButton()
             ->setHref($returnUrl)
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+            ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
         $buttonBar->addButton($backButton);
     }

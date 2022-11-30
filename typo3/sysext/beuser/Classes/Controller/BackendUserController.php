@@ -228,6 +228,7 @@ class BackendUserController extends ActionController
         $backButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+            ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('system_BeuserTxBeuser'));
         $buttonBar->addButton($backButton);
         $editButton = $buttonBar->makeLinkButton()
@@ -285,6 +286,7 @@ class BackendUserController extends ActionController
         $backButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+            ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('system_BeuserTxBeuser'));
         $buttonBar->addButton($backButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
@@ -452,6 +454,7 @@ class BackendUserController extends ActionController
         $backButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+            ->setShowLabelText(true)
             ->setHref($this->uriBuilder->uriFor('groups'));
         $buttonBar->addButton($backButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
