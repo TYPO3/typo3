@@ -142,6 +142,36 @@ needs to verify that the request-token has the expected `'my/process'` scope.
         }
     }
 
+Intercept & Adjust Request Token
+--------------------------------
+
+Scenarios that are not using a login callback without having the possibility to
+submit a request-token, :php:`\TYPO3\CMS\Core\Authentication\Event\BeforeRequestTokenProcessedEvent`
+can be used to generate the token individually.
+
+..  code-block:: php
+
+    use TYPO3\CMS\Core\Authentication\Event\BeforeRequestTokenProcessedEvent;
+    use TYPO3\CMS\Core\Security\RequestToken;
+
+    final class ProcessRequestTokenListener
+    {
+        public function __invoke(BeforeRequestTokenProcessedEvent $event): void
+        {
+            $user = $event->getUser();
+            $requestToken = $event->getRequestToken();
+            // fine, there is a valid request-token
+            if ($requestToken instanceof RequestToken) {
+                return;
+            }
+            // validate individual requirements/checks
+            // ...
+            $event->setRequestToken(
+                RequestToken::create('core/user-auth/' . $user->loginType);
+            );
+        }
+    }
+
 Impact
 ======
 

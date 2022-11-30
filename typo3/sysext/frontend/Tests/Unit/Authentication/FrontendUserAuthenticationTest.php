@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Authentication;
 use Doctrine\DBAL\Result;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Core\Context\SecurityAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Security\JwtTrait;
 use TYPO3\CMS\Core\Security\RequestToken;
@@ -283,6 +285,11 @@ class FrontendUserAuthenticationTest extends UnitTestCase
     public function canLogUserInWithoutAnonymousSession(): void
     {
         $GLOBALS['BE_USER'] = [];
+
+        GeneralUtility::setSingletonInstance(
+            EventDispatcherInterface::class,
+            $this->getMockBuilder(EventDispatcher::class)->disableOriginalConstructor()->getMock()
+        );
 
         // provide request-token
         $context = GeneralUtility::makeInstance(Context::class);

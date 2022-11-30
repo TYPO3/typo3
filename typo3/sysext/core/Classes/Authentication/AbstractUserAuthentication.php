@@ -15,11 +15,13 @@
 
 namespace TYPO3\CMS\Core\Authentication;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\Cookie;
+use TYPO3\CMS\Core\Authentication\Event\BeforeRequestTokenProcessedEvent;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
 use TYPO3\CMS\Core\Context\Context;
@@ -482,6 +484,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $context = GeneralUtility::makeInstance(Context::class);
             $securityAspect = SecurityAspect::provideIn($context);
             $requestToken = $securityAspect->getReceivedRequestToken();
+
+            $event = new BeforeRequestTokenProcessedEvent($this, $requestToken);
+            GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
+            $requestToken = $event->getRequestToken();
+
             $requestTokenScopeMatches = ($requestToken->scope ?? null) === 'core/user-auth/' . strtolower($this->loginType);
             if (!$requestTokenScopeMatches) {
                 $this->logger->debug('Missing or invalid request token during login', ['requestToken' => $requestToken]);
