@@ -41,17 +41,15 @@ class TasksCest
         $I->waitForElementNotVisible('#task_SystemStatusUpdateNotificationEmail');
 
         $I->amGoingTo('check save action in case no settings given');
-        $I->click('button.dropdown-toggle', '.module-docheader');
-        $I->click("//a[contains(@data-value,'saveclose')]");
+        $I->click('button[value="saveclose"]');
         $I->waitForText('No frequency was defined, either as an interval or as a cron command.');
 
         $I->selectOption('#task_class', 'System Status Update');
         $I->seeElement('#task_SystemStatusUpdateNotificationEmail');
         $I->selectOption('#task_type', 'Single');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
-        $I->click('button.dropdown-toggle', '.module-docheader');
         $I->wantTo('Click "Save and close"');
-        $I->click("//a[contains(@data-value,'saveclose')]");
+        $I->click('button[value="saveclose"]');
         $I->waitForText('The task was added successfully.');
     }
 
@@ -76,9 +74,8 @@ class TasksCest
         $I->waitForText('Edit scheduled task "System Status Update (reports)"');
         $I->seeInField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'foo@local.typo3.org');
-        $I->click('button.dropdown-toggle', '.module-docheader');
         $I->wantTo('Click "Save and close"');
-        $I->click("//a[contains(@data-value,'saveclose')]");
+        $I->click('button[value="saveclose"]');
         $I->waitForText('The task was updated successfully.');
     }
 
@@ -166,7 +163,7 @@ class TasksCest
         $I->selectOption('select#task_group', 'new task group');
         $I->click('button[value="save"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
-        $I->click('a[title="Cancel"]');
+        $I->click('a[title="Close"]');
         $I->waitForElementVisible('div.tx_scheduler_mod1');
 
         $I->canSee('new task group', '.panel-heading');

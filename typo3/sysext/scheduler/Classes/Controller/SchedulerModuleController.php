@@ -73,7 +73,7 @@ class SchedulerModuleController
      * There are three arguments involved regarding main module routing:
      * * 'submodule': Third level module selection - "scheduler" (list, add, edit), "info", "check"
      * * 'action': Sub module "scheduler" only: add, edit, delete, toggleHidden, ...
-     * * 'CMD': Sub module "scheduler" only. "save", "saveclose", "savenew" when adding / editing a task.
+     * * 'CMD': Sub module "scheduler" only. "save", "close", "new" when adding / editing a task.
      *          A better naming would be "nextAction", but the split button ModuleTemplate and
      *          DocumentSaveActions.ts can not cope with a renaming here and need "CMD".
      */
@@ -130,7 +130,7 @@ class SchedulerModuleController
         }
 
         if (($parsedBody['action'] ?? '') === Action::ADD
-            && in_array($parsedBody['CMD'], ['save', 'saveclose', 'savenew'], true)
+            && in_array($parsedBody['CMD'], ['save', 'saveclose', 'close'], true)
         ) {
             // Received data for adding a new task - validate, persist, render requested 'next' action.
             $isTaskDataValid = $this->isSubmittedTaskDataValid($view, $request, true);
@@ -138,8 +138,8 @@ class SchedulerModuleController
                 return $this->renderAddTaskFormView($view, $request);
             }
             $newTaskUid = $this->createTask($view, $request);
-            if ($parsedBody['CMD'] === 'savenew') {
-                return $this->renderAddTaskFormView($view, $request);
+            if ($parsedBody['CMD'] === 'close') {
+                return $this->renderListTasksView($view, $moduleData);
             }
             if ($parsedBody['CMD'] === 'saveclose') {
                 return $this->renderListTasksView($view, $moduleData);
@@ -150,7 +150,7 @@ class SchedulerModuleController
         }
 
         if (($parsedBody['action'] ?? '') === Action::EDIT
-            && in_array($parsedBody['CMD'], ['save', 'saveclose', 'savenew'], true)
+            && in_array($parsedBody['CMD'], ['save', 'close', 'saveclose', 'new'], true)
         ) {
             // Received data for updating existing task - validate, persist, render requested 'next' action.
             $isTaskDataValid = $this->isSubmittedTaskDataValid($view, $request, false);
@@ -158,8 +158,11 @@ class SchedulerModuleController
                 return $this->renderEditTaskFormView($view, $request);
             }
             $this->updateTask($view, $request);
-            if ($parsedBody['CMD'] === 'savenew') {
+            if ($parsedBody['CMD'] === 'new') {
                 return $this->renderAddTaskFormView($view, $request);
+            }
+            if ($parsedBody['CMD'] === 'close') {
+                return $this->renderListTasksView($view, $moduleData);
             }
             if ($parsedBody['CMD'] === 'saveclose') {
                 return $this->renderListTasksView($view, $moduleData);
@@ -546,6 +549,7 @@ class SchedulerModuleController
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.edit'), $taskName)
         );
+        $this->addDocHeaderNewButton($view);
         $this->addDocHeaderDeleteButton($view, $taskUid);
         $this->addDocHeaderShortcutButton(
             $view,
@@ -1020,11 +1024,19 @@ class SchedulerModuleController
         $languageService = $this->getLanguageService();
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $closeButton = $buttonBar->makeLinkButton()
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel'))
+            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:close'))
             ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL))
+            ->setShowLabelText(true)
             ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_txschedulerM1'));
         $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
-        $saveButtonDropdown = $buttonBar->makeSplitButton();
+        $saveAndCloseButton = $buttonBar->makeInputButton()
+            ->setName('CMD')
+            ->setValue('saveclose')
+            ->setForm('tx_scheduler_form')
+            ->setIcon($this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL))
+            ->setShowLabelText(true)
+            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:saveAndClose'));
+        $buttonBar->addButton($saveAndCloseButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
         $saveButton = $buttonBar->makeInputButton()
             ->setName('CMD')
             ->setValue('save')
@@ -1032,22 +1044,21 @@ class SchedulerModuleController
             ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:save'))
             ->setShowLabelText(true);
-        $saveButtonDropdown->addItem($saveButton);
-        $saveAndNewButton = $buttonBar->makeInputButton()
+        $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
+    }
+
+    protected function addDocHeaderNewButton(ModuleTemplate $moduleTemplate): void
+    {
+        $languageService = $this->getLanguageService();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $newButton = $buttonBar->makeInputButton()
             ->setName('CMD')
-            ->setValue('savenew')
+            ->setValue('new')
             ->setForm('tx_scheduler_form')
-            ->setIcon($this->iconFactory->getIcon('actions-document-save-new', Icon::SIZE_SMALL))
-            ->setTitle($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.saveAndCreateNewTask'));
-        $saveButtonDropdown->addItem($saveAndNewButton);
-        $saveAndCloseButton = $buttonBar->makeInputButton()
-            ->setName('CMD')
-            ->setValue('saveclose')
-            ->setForm('tx_scheduler_form')
-            ->setIcon($this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL))
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:saveAndClose'));
-        $saveButtonDropdown->addItem($saveAndCloseButton);
-        $buttonBar->addButton($saveButtonDropdown, ButtonBar::BUTTON_POSITION_LEFT, 3);
+            ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
+            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:new'))
+            ->setShowLabelText(true);
+        $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
     }
 
     protected function addDocHeaderDeleteButton(ModuleTemplate $moduleTemplate, int $taskUid): void
@@ -1066,7 +1077,7 @@ class SchedulerModuleController
             ->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete'))
             ->setShowLabelText(true);
-        $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
+        $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 6);
     }
 
     protected function addDocHeaderShortcutButton(ModuleTemplate $moduleTemplate, string $moduleMenuIdentifier, string $name, string $action = '', int $taskUid = 0): void
