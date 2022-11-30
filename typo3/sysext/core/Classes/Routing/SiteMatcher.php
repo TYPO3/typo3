@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Routing;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Routing\Exception\NoConfigurationException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -48,19 +47,10 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
  */
 class SiteMatcher implements SingletonInterface
 {
-    /**
-     * @var SiteFinder
-     */
-    protected $finder;
-
-    /**
-     * Injects necessary objects.
-     *
-     * @param SiteFinder|null $finder
-     */
-    public function __construct(SiteFinder $finder = null)
-    {
-        $this->finder = $finder ?? GeneralUtility::makeInstance(SiteFinder::class);
+    public function __construct(
+        protected readonly SiteFinder $finder,
+        protected readonly RequestContextFactory $requestContextFactory
+    ) {
     }
 
     /**
@@ -135,17 +125,8 @@ class SiteMatcher implements SingletonInterface
         // on the incoming URL.
         if (!($language instanceof SiteLanguage)) {
             $collection = $this->getRouteCollectionForAllSites();
-            $context = new RequestContext(
-                '',
-                $request->getMethod(),
-                (string)idn_to_ascii($uri->getHost()),
-                $uri->getScheme(),
-                // Ports are only necessary for URL generation in Symfony which is not used by TYPO3
-                80,
-                443,
-                $uri->getPath()
-            );
-            $matcher = new BestUrlMatcher($collection, $context);
+            $requestContext = $this->requestContextFactory->fromUri($uri, $request->getMethod());
+            $matcher = new BestUrlMatcher($collection, $requestContext);
             try {
                 $result = $matcher->match($uri->getPath());
                 return new SiteRouteResult(

@@ -32,19 +32,16 @@ class SiteFinder
     /**
      * @var Site[]
      */
-    protected $sites = [];
+    protected array $sites = [];
 
     /**
-     * Short-hand to quickly fetch a site based on a rootPageId
+     * Shorthand to quickly fetch a site based on a rootPageId
      *
      * @var array
      */
-    protected $mappingRootPageIdToIdentifier = [];
+    protected array $mappingRootPageIdToIdentifier = [];
 
-    /**
-     * @var SiteConfiguration
-     */
-    protected $siteConfiguration;
+    protected SiteConfiguration $siteConfiguration;
 
     /**
      * Fetches all existing configurations as Site objects

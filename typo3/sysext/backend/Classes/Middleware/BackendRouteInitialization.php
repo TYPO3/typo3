@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Routing\RequestContextFactory;
 
 /**
  * Injects the Router and tries to match the current request with a
@@ -51,6 +52,7 @@ class BackendRouteInitialization implements MiddlewareInterface
     public function __construct(
         protected readonly Router $router,
         protected readonly UriBuilder $uriBuilder,
+        protected readonly RequestContextFactory $requestContextFactory,
     ) {
     }
 
@@ -61,11 +63,13 @@ class BackendRouteInitialization implements MiddlewareInterface
     {
         // @todo Find another place for this call, since it's not related to this middleware anymore
         Bootstrap::loadExtTables();
+        $this->uriBuilder->setRequestContext($this->requestContextFactory->fromBackendRequest($request));
 
         try {
-            $route = $this->router->matchRequest($request);
-            $request = $request->withAttribute('route', $route);
-            $request = $request->withAttribute('target', $route->getOption('target'));
+            $routeResult = $this->router->matchResult($request);
+            $request = $request->withAttribute('routing', $routeResult);
+            $request = $request->withAttribute('route', $routeResult->getRoute());
+            $request = $request->withAttribute('target', $routeResult->getRoute()->getOption('target'));
         } catch (MethodNotAllowedException $e) {
             return new Response(null, 405);
         } catch (ResourceNotFoundException $e) {

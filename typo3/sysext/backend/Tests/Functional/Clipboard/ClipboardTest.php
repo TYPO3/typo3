@@ -18,8 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Clipboard;
 
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
@@ -43,6 +46,10 @@ class ClipboardTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $request = new ServerRequest('https://localhost/typo3/');
+        $requestContextFactory = $this->get(RequestContextFactory::class);
+        $uriBuilder = $this->get(UriBuilder::class);
+        $uriBuilder->setRequestContext($requestContextFactory->fromBackendRequest($request));
         $this->subject = GeneralUtility::makeInstance(Clipboard::class);
         $this->withDatabaseSnapshot(
             function () {

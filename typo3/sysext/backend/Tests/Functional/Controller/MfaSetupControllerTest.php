@@ -72,7 +72,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
         );
         $this->subject->injectMfaProviderRegistry($this->get(MfaProviderRegistry::class));
 
-        $this->request = (new ServerRequest())
+        $this->request = (new ServerRequest('https://example.com/typo3/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
     }

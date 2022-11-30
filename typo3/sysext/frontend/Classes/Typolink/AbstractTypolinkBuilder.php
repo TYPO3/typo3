@@ -231,15 +231,18 @@ abstract class AbstractTypolinkBuilder
             $language = $site->getDefaultLanguage();
         }
 
-        $id = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? $site->getRootPageId();
-        $type = $request->getQueryParams()['type'] ?? $request->getParsedBody()['type'] ?? '0';
-
+        $pageArguments = $request->getAttribute('routing');
+        if (!($pageArguments instanceof PageArguments)) {
+            $id = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? $site->getRootPageId();
+            $type = $request->getQueryParams()['type'] ?? $request->getParsedBody()['type'] ?? '0';
+            $pageArguments = new PageArguments((int)$id, (string)$type, []);
+        }
         $this->typoScriptFrontendController = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,
             GeneralUtility::makeInstance(Context::class),
             $site,
             $language,
-            $request->getAttribute('routing', new PageArguments((int)$id, (string)$type, [])),
+            $pageArguments,
             GeneralUtility::makeInstance(FrontendUserAuthentication::class)
         );
         $this->typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);

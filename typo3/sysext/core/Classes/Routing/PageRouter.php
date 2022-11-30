@@ -21,7 +21,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -68,35 +67,15 @@ use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
  */
 class PageRouter implements RouterInterface
 {
-    /**
-     * @var Site
-     */
-    protected $site;
-
-    /**
-     * @var EnhancerFactory
-     */
-    protected $enhancerFactory;
-
-    /**
-     * @var AspectFactory
-     */
-    protected $aspectFactory;
-
-    /**
-     * @var CacheHashCalculator
-     */
-    protected $cacheHashCalculator;
-
-    /**
-     * @var \TYPO3\CMS\Core\Context\Context
-     */
-    protected $context;
+    protected Site $site;
+    protected EnhancerFactory $enhancerFactory;
+    protected AspectFactory $aspectFactory;
+    protected CacheHashCalculator $cacheHashCalculator;
+    protected Context $context;
+    protected RequestContextFactory $requestContextFactory;
 
     /**
      * A page router is always bound to a specific site.
-     *
-     * @param \TYPO3\CMS\Core\Context\Context|null $context
      */
     public function __construct(Site $site, Context $context = null)
     {
@@ -105,6 +84,7 @@ class PageRouter implements RouterInterface
         $this->enhancerFactory = GeneralUtility::makeInstance(EnhancerFactory::class);
         $this->aspectFactory = GeneralUtility::makeInstance(AspectFactory::class, $this->context);
         $this->cacheHashCalculator = GeneralUtility::makeInstance(CacheHashCalculator::class);
+        $this->requestContextFactory = GeneralUtility::makeInstance(RequestContextFactory::class);
     }
 
     /**
@@ -306,18 +286,9 @@ class PageRouter implements RouterInterface
             }
         }
 
-        $scheme = $language->getBase()->getScheme();
         $mappableProcessor = new MappableProcessor();
-        $context = new RequestContext(
-            // page segment (slug & enhanced part) is supposed to start with '/'
-            rtrim($language->getBase()->getPath(), '/'),
-            'GET',
-            $language->getBase()->getHost(),
-            $scheme ?: 'https',
-            $scheme === 'http' ? $language->getBase()->getPort() ?? 80 : 80,
-            $scheme === 'https' ? $language->getBase()->getPort() ?? 443 : 443
-        );
-        $generator = new UrlGenerator($collection, $context);
+        $requestContext = $this->requestContextFactory->fromSiteLanguage($language);
+        $generator = new UrlGenerator($collection, $requestContext);
         $generator->injectMappableProcessor($mappableProcessor);
         // set default route flag after all routes have been processed
         $defaultRouteForPage->setOption('_isDefault', true);

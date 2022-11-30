@@ -20,9 +20,12 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Backend\Shortcut;
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ShortcutRepositoryTest extends FunctionalTestCase
@@ -37,11 +40,16 @@ class ShortcutRepositoryTest extends FunctionalTestCase
         $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
 
+        $request = new ServerRequest('https://localhost/typo3/');
+        $requestContextFactory = $this->get(RequestContextFactory::class);
+        $uriBuilder = $this->get(UriBuilder::class);
+        $uriBuilder->setRequestContext($requestContextFactory->fromBackendRequest($request));
         $this->subject = new ShortcutRepository(
             $this->get(ConnectionPool::class),
             $this->get(IconFactory::class),
             $this->get(ModuleProvider::class),
-            $this->get(Router::class)
+            $this->get(Router::class),
+            $this->get(UriBuilder::class),
         );
     }
 

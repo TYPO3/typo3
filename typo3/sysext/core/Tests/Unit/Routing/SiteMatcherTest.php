@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Routing;
 
+use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
+use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Routing\SiteRouteResult;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -71,8 +74,9 @@ class SiteMatcherTest extends UnitTestCase
                 ],
             ],
         ]);
-        $finderMock = $this->createSiteFinderMock($site, $secondSite);
-        $subject = new SiteMatcher($finderMock);
+        $finderMock = $this->createSiteFinder($site, $secondSite);
+        $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
+        $subject = new SiteMatcher($finderMock, $requestContextFactory);
 
         $request = new ServerRequest('http://9-5.typo3.test/da/my-page/');
         /** @var SiteRouteResult $result */
@@ -166,8 +170,9 @@ class SiteMatcherTest extends UnitTestCase
                 ],
             ],
         ]);
-        $finderMock = $this->createSiteFinderMock($site, $secondSite);
-        $subject = new SiteMatcher($finderMock);
+        $finderMock = $this->createSiteFinder($site, $secondSite);
+        $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
+        $subject = new SiteMatcher($finderMock, $requestContextFactory);
 
         $request = new ServerRequest('https://www.example.com/de');
         /** @var SiteRouteResult $result */
@@ -247,8 +252,9 @@ class SiteMatcherTest extends UnitTestCase
             ],
         ]);
 
-        $finderMock = $this->createSiteFinderMock($mainSite, $dkSite, $frSite);
-        $subject = new SiteMatcher($finderMock);
+        $finderMock = $this->createSiteFinder($mainSite, $dkSite, $frSite);
+        $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
+        $subject = new SiteMatcher($finderMock, $requestContextFactory);
 
         $request = new ServerRequest($requestUri);
         /** @var SiteRouteResult $result */
@@ -258,18 +264,23 @@ class SiteMatcherTest extends UnitTestCase
         self::assertSame($expectedLocale, $result->getLanguage()->getLocale());
     }
 
-    private function createSiteFinderMock(Site ...$sites): SiteFinder
+    private function createSiteFinder(Site ...$sites): SiteFinder
     {
-        /** @var SiteFinder $finderMock */
-        $finderMock = $this
-            ->getMockBuilder(SiteFinder::class)
-            ->onlyMethods(['getAllSites'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $finderMock->method('getAllSites')->willReturn(array_combine(
-            array_map(static function (Site $site) { return $site->getIdentifier(); }, $sites),
-            $sites
-        ));
-        return $finderMock;
+        $siteConfiguration = new class ($sites) extends SiteConfiguration {
+            public function __construct(
+                protected array $sites
+            ) {
+                // empty by default
+            }
+
+            public function getAllExistingSites(bool $useCache = true): array
+            {
+                return array_combine(
+                    array_map(static function (Site $site) { return $site->getIdentifier(); }, $this->sites),
+                    $this->sites
+                );
+            }
+        };
+        return new SiteFinder(new $siteConfiguration($sites));
     }
 }

@@ -454,7 +454,7 @@ class PageRendererTest extends FunctionalTestCase
 
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER']);
 
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://example.com/typo3/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
         $subject = $this->createPageRenderer();

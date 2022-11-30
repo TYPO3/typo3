@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Backend\Shortcut;
 
-use Symfony\Component\Routing\Route;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -56,7 +55,8 @@ class ShortcutRepository
         protected readonly ConnectionPool $connectionPool,
         protected readonly IconFactory $iconFactory,
         protected readonly ModuleProvider $moduleProvider,
-        protected readonly Router $router
+        protected readonly Router $router,
+        protected readonly UriBuilder $uriBuilder,
     ) {
         $this->shortcutGroups = $this->initShortcutGroups();
         $this->shortcuts = $this->initShortcuts();
@@ -468,7 +468,7 @@ class ShortcutRepository
             $shortcut['group'] = $shortcutGroup;
             $shortcut['icon'] = $this->getShortcutIcon($routeIdentifier, $moduleName, $shortcut);
             $shortcut['label'] = ($row['description'] ?? false) ?: 'Shortcut'; // Fall back to "Shortcut", see: addShortcut()
-            $shortcut['href'] = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute($routeIdentifier, $arguments);
+            $shortcut['href'] = (string)$this->uriBuilder->buildUriFromRoute($routeIdentifier, $arguments);
             $shortcut['route'] = $routeIdentifier;
             $shortcut['module'] = $moduleName;
             $shortcut['pageId'] = $pageId;

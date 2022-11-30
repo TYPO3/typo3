@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class RouterTest extends FunctionalTestCase
@@ -35,7 +34,7 @@ class RouterTest extends FunctionalTestCase
      */
     public function routerReturnsRouteForAlias(): void
     {
-        $subject = GeneralUtility::makeInstance(Router::class);
+        $subject = $this->get(Router::class);
         $subject->addRoute(
             'new_route_identifier',
             new Route('/new/route/path', []),
@@ -48,50 +47,62 @@ class RouterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function matchRequestFindsProperRoute(): void
+    public function matchResultFindsProperRoute(): void
     {
-        $subject = GeneralUtility::makeInstance(Router::class);
+        $subject = $this->get(Router::class);
         $request = new ServerRequest('https://example.com/login', 'GET');
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $resultRoute = $subject->matchRequest($request);
-        self::assertInstanceOf(Route::class, $resultRoute);
-        self::assertEquals('/login', $resultRoute->getPath());
+        $result = $subject->matchResult($request);
+        self::assertEquals('/login', $result->getRoute()->getPath());
     }
 
     /**
      * @test
      */
-    public function matchRequestThrowsExceptionOnInvalidRoute(): void
+    public function matchResultThrowsExceptionOnInvalidRoute(): void
     {
-        $subject = GeneralUtility::makeInstance(Router::class);
+        $subject = $this->get(Router::class);
         $request = new ServerRequest('https://example.com/this-path/does-not-exist', 'GET');
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $this->expectException(ResourceNotFoundException::class);
-        $subject->matchRequest($request);
+        $subject->matchResult($request);
     }
 
     /**
      * @test
      */
-    public function matchRequestThrowsInvalidMethodForValidRoute(): void
+    public function matchResultThrowsInvalidMethodForValidRoute(): void
     {
-        $subject = GeneralUtility::makeInstance(Router::class);
+        $subject = $this->get(Router::class);
         $request = new ServerRequest('https://example.com/login/password-reset/initiate-reset', 'GET');
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $this->expectException(MethodNotAllowedException::class);
-        $subject->matchRequest($request);
+        $subject->matchResult($request);
     }
 
     /**
      * @test
      */
-    public function matchRequestReturnsRouteWithMethodLimitation(): void
+    public function matchResultReturnsRouteWithMethodLimitation(): void
     {
-        $subject = GeneralUtility::makeInstance(Router::class);
+        $subject = $this->get(Router::class);
         $request = new ServerRequest('https://example.com/login/password-reset/initiate-reset', 'POST');
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $resultRoute = $subject->matchRequest($request);
-        self::assertInstanceOf(Route::class, $resultRoute);
-        self::assertEquals('/login/password-reset/initiate-reset', $resultRoute->getPath());
+        $result = $subject->matchResult($request);
+        self::assertEquals('/login/password-reset/initiate-reset', $result->getRoute()->getPath());
+    }
+
+    /**
+     * @test
+     */
+    public function matchResultReturnsRouteWithPlaceholderAndMethodLimitation(): void
+    {
+        $subject = $this->get(Router::class);
+        $subject->addRoute('custom-route', new Route('/my-path/{identifier}', []));
+        $request = new ServerRequest('https://example.com/my-path/my-identifier', 'POST');
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+        $result = $subject->matchResult($request);
+        self::assertEquals('custom-route', $result->getRouteName());
+        self::assertEquals(['identifier' => 'my-identifier'], $result->getArguments());
     }
 }

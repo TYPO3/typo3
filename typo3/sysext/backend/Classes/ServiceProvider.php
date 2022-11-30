@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
+use TYPO3\CMS\Core\Routing\RequestContextFactory;
 
 /**
  * @internal
@@ -120,8 +121,8 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, UriBuilder::class, [
             $container->get(Router::class),
-            $container->get(BackendEntryPointResolver::class),
             $container->get(FormProtectionFactory::class),
+            $container->get(RequestContextFactory::class),
         ]);
     }
 

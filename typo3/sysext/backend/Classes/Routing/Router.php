@@ -17,11 +17,11 @@ namespace TYPO3\CMS\Backend\Routing;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
+use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -42,8 +42,9 @@ class Router implements SingletonInterface
      */
     protected SymfonyRouteCollection $routeCollection;
 
-    public function __construct()
-    {
+    public function __construct(
+        protected readonly RequestContextFactory $requestContextFactory
+    ) {
         $this->routeCollection = new SymfonyRouteCollection();
     }
     /**
@@ -116,11 +117,9 @@ class Router implements SingletonInterface
     }
 
     /**
-     * Tries to match a URI against the registered routes
-     *
-     * @return Route the first Route object found
+     * Matches a PSR-7 Request and returns a RouteResult with parameters and the resolved route.
      */
-    public function matchRequest(ServerRequestInterface $request)
+    public function matchResult(ServerRequestInterface $request): RouteResult
     {
         $path = $request->getUri()->getPath();
         if (($normalizedParams = $request->getAttribute('normalizedParams')) !== null) {
@@ -132,14 +131,9 @@ class Router implements SingletonInterface
             // (consolidate RouteDispatcher::evaluateReferrer() when changing 'login' to something different)
             $path = '/login';
         }
-        $context = new RequestContext(
-            $path,
-            $request->getMethod(),
-            (string)idn_to_ascii($request->getUri()->getHost()),
-            $request->getUri()->getScheme()
-        );
+        $requestContext = $this->requestContextFactory->fromBackendRequest($request);
         try {
-            $result = (new UrlMatcher($this->routeCollection, $context))->match($path);
+            $result = (new UrlMatcher($this->routeCollection, $requestContext))->match($path);
             $matchedSymfonyRoute = $this->routeCollection->get($result['_route']);
             if ($matchedSymfonyRoute === null) {
                 throw new ResourceNotFoundException('The requested resource "' . $path . '" was not found.', 1607596900);
@@ -158,6 +152,18 @@ class Router implements SingletonInterface
             $route->setMethods($methods);
         }
         $route->setOption('_identifier', $result['_route']);
-        return $route;
+        unset($result['_route']);
+        return new RouteResult($route, $result);
+    }
+
+    /**
+     * Tries to match a URI against the registered routes.
+     * Use ->matchResult() instead, as this method will be deprecated in the future.
+     *
+     * @return Route the first Route object found
+     */
+    public function matchRequest(ServerRequestInterface $request)
+    {
+        return $this->matchResult($request)->getRoute();
     }
 }

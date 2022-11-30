@@ -76,8 +76,10 @@ class BackendModuleValidatorTest extends FunctionalTestCase
             ]
         );
 
+        $request = $this->request->withAttribute('route', new Route('/some/route', ['module' => $module]));
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         $response = $this->subject->process(
-            $this->request->withAttribute('route', new Route('/some/route', ['module' => $module])),
+            $request,
             $this->requestHandler
         );
 
@@ -102,10 +104,13 @@ class BackendModuleValidatorTest extends FunctionalTestCase
             ]
         );
 
+        $request = $this->request
+            ->withQueryParams(['pointer' => 0, 'reverse' => true])
+            ->withAttribute('route', new Route('/some/route', ['module' => $module]));
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+
         $response = $this->subject->process(
-            $this->request
-                ->withQueryParams(['pointer' => 0, 'reverse' => true])
-                ->withAttribute('route', new Route('/some/route', ['module' => $module])),
+            $request,
             $this->requestHandler
         );
 
@@ -198,10 +203,12 @@ class BackendModuleValidatorTest extends FunctionalTestCase
             ]
         );
 
+        $request = $this->request
+            ->withHeader('Sec-Fetch-Dest', 'document')
+            ->withAttribute('route', new Route('/some/route', ['_identifier' => 'web_layout', 'module' => $module]));
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         $response = $this->subject->process(
-            $this->request
-                ->withHeader('Sec-Fetch-Dest', 'document')
-                ->withAttribute('route', new Route('/some/route', ['_identifier' => 'web_layout', 'module' => $module])),
+            $request,
             $this->requestHandler
         );
 

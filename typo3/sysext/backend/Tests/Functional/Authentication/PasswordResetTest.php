@@ -21,7 +21,9 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PasswordResetTest extends FunctionalTestCase
@@ -172,7 +174,10 @@ class PasswordResetTest extends FunctionalTestCase
         $subject = new PasswordReset();
         $subject->setLogger($this->logger);
         $context = new Context();
-        $request = new ServerRequest();
+        $uri = new Uri('https://localhost/typo3/');
+        $request = new ServerRequest($uri);
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         $subject->initiateReset($request, $context, $emailAddress);
         self::assertEquals('info', $this->logger->records[0]['level']);
         self::assertEquals($emailAddress, $this->logger->records[0]['context']['email']);

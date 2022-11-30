@@ -53,7 +53,7 @@ class PageViewHelperTest extends FunctionalTestCase
      */
     public function renderInBackendCoreContextCreatesNoUriWithoutRoute(): void
     {
-        $request = new ServerRequest();
+        $request = new ServerRequest('http://localhost/typo3/');
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $view = new StandaloneView();
         $view->setRequest($request);
@@ -67,7 +67,7 @@ class PageViewHelperTest extends FunctionalTestCase
      */
     public function renderInBackendCoreContextCreatesUriWithRouteFromQueryString(): void
     {
-        $request = new ServerRequest();
+        $request = new ServerRequest('http://localhost/typo3/');
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withQueryParams(['route' => 'web_layout']);
         $view = new StandaloneView();
@@ -82,7 +82,7 @@ class PageViewHelperTest extends FunctionalTestCase
      */
     public function renderInBackendCoreContextCreatesUriWithRouteFromAdditionalParams(): void
     {
-        $request = new ServerRequest();
+        $request = new ServerRequest('http://localhost/typo3/');
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $view = new StandaloneView();
         $view->setRequest($request);
@@ -96,7 +96,7 @@ class PageViewHelperTest extends FunctionalTestCase
      */
     public function renderInBackendCoreContextCreatesUriWithRouteFromRequest(): void
     {
-        $request = new ServerRequest();
+        $request = new ServerRequest('http://localhost/typo3/');
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('dummy', ['_identifier' => 'web_layout']));
         $view = new StandaloneView();
@@ -111,7 +111,7 @@ class PageViewHelperTest extends FunctionalTestCase
      */
     public function renderInBackendCoreContextAddsSection(): void
     {
-        $request = new ServerRequest();
+        $request = new ServerRequest('http://localhost/typo3/');
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('dummy', ['_identifier' => 'web_layout']));
         $view = new StandaloneView();
@@ -126,7 +126,7 @@ class PageViewHelperTest extends FunctionalTestCase
      */
     public function renderInBackendCoreContextCreatesAbsoluteUri(): void
     {
-        $request = new ServerRequest(null, null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => 'typo3/index.php']);
+        $request = new ServerRequest('http://localhost/typo3/', null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => 'typo3/index.php']);
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('dummy', ['_identifier' => 'web_layout']));
         $GLOBALS['TYPO3_REQUEST'] = $request;
@@ -142,7 +142,7 @@ class PageViewHelperTest extends FunctionalTestCase
      */
     public function renderInBackendExtbaseContextCreatesUriWithId(): void
     {
-        $request = new ServerRequest();
+        $request = new ServerRequest('http://localhost/typo3/');
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('module/web/layout', ['_identifier' => 'web_layout']));
         $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
@@ -161,7 +161,7 @@ class PageViewHelperTest extends FunctionalTestCase
      */
     public function renderInBackendExtbaseContextCreatesAbsoluteUriWithId(): void
     {
-        $request = new ServerRequest(null, null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => 'typo3/index.php']);
+        $request = new ServerRequest('http://localhost/typo3/', null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => 'typo3/index.php']);
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('module/web/layout', ['_identifier' => 'web_layout']));
         $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());

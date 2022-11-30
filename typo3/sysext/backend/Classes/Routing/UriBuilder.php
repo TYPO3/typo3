@@ -15,19 +15,20 @@
 
 namespace TYPO3\CMS\Backend\Routing;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteTypeNotAllowedException;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
+use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Main UrlGenerator for creating URLs for the Backend. Generates a URL based on
@@ -55,18 +56,27 @@ class UriBuilder implements SingletonInterface
     public const SHAREABLE_URL = 'share';
 
     /**
-     * @var array
+     * @var array<non-empty-string, UriInterface>
      */
-    protected $generated = [];
+    protected array $generated = [];
 
+    protected RequestContext|null $requestContext = null;
     /**
      * Loads the router to fetch the available routes from the Router to be used for generating routes
      */
     public function __construct(
         protected readonly Router $router,
-        protected readonly BackendEntryPointResolver $backendEntryPointResolver,
-        protected readonly FormProtectionFactory $formProtectionFactory
+        protected readonly FormProtectionFactory $formProtectionFactory,
+        protected readonly RequestContextFactory $requestContextFactory
     ) {
+    }
+
+    /**
+     * @internal
+     */
+    public function setRequestContext(RequestContext $requestContext): void
+    {
+        $this->requestContext = $requestContext;
     }
 
     /**
@@ -149,27 +159,30 @@ class UriBuilder implements SingletonInterface
             ] + $parameters;
         }
 
-        $this->generated[$cacheIdentifier] = $this->buildUri($route->getPath(), $parameters, (string)$referenceType);
+        $this->generated[$cacheIdentifier] = $this->buildUri($name, $parameters, (string)$referenceType);
         return $this->generated[$cacheIdentifier];
     }
 
     /**
      * Internal method building a Uri object, merging the GET parameters array into a flat queryString
      *
-     * @param string $route The route path to prepend
+     * @param string $routeName The route name in the collection
      * @param array $parameters An array of GET parameters
      * @param string $referenceType The type of reference to be generated (one of the constants)
      */
-    protected function buildUri(string $route, array $parameters, string $referenceType): UriInterface
+    protected function buildUri(string $routeName, array $parameters, string $referenceType): UriInterface
     {
-        $path = ltrim($route . HttpUtility::buildQueryString($parameters, '?'), '/');
-        if ($referenceType === self::ABSOLUTE_PATH) {
-            $uri = PathUtility::getAbsoluteWebPath(Environment::getBackendPath() . '/' . $path);
-        } elseif (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
-            $uri = $this->backendEntryPointResolver->getUriFromRequest($GLOBALS['TYPO3_REQUEST'], $path);
+        if (isset($this->requestContext)) {
+            $requestContext = $this->requestContext;
+        } elseif (isset($GLOBALS['TYPO3_REQUEST'])) {
+            $requestContext = $this->requestContextFactory->fromBackendRequest($GLOBALS['TYPO3_REQUEST']);
+        } elseif (!Environment::isCli()) {
+            $requestContext = $this->requestContextFactory->fromBackendRequest(ServerRequestFactory::fromGlobals()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE));
         } else {
-            $uri = $path;
+            $requestContext = new RequestContext('/typo3/');
         }
-        return $uri instanceof UriInterface ? $uri : GeneralUtility::makeInstance(Uri::class, $uri);
+        $urlGenerator = new UrlGenerator($this->router->getRouteCollection(), $requestContext);
+        $url = $urlGenerator->generate($routeName, $parameters, $referenceType === self::ABSOLUTE_PATH ? UrlGeneratorInterface::ABSOLUTE_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
+        return new Uri($url);
     }
 }

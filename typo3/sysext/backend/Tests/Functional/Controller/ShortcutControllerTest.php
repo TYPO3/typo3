@@ -47,7 +47,8 @@ class ShortcutControllerTest extends FunctionalTestCase
             $this->get(ShortcutRepository::class),
             new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class))
         );
-        $this->request = (new ServerRequest())->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
+        $this->request = (new ServerRequest('https://example.com/typo3/'))->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
+        $GLOBALS['TYPO3_REQUEST'] = $this->request;
     }
 
     /**

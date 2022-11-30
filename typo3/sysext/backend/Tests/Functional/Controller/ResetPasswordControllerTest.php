@@ -74,7 +74,7 @@ class ResetPasswordControllerTest extends FunctionalTestCase
             $this->get(BackendViewFactory::class),
         );
 
-        $this->request = (new ServerRequest())
+        $this->request = (new ServerRequest('https://example.com/typo3/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
 
@@ -94,6 +94,7 @@ class ResetPasswordControllerTest extends FunctionalTestCase
 
         $this->expectExceptionCode(1618342858);
         $this->expectException(PropagateResponseException::class);
+        $GLOBALS['TYPO3_REQUEST'] = $this->request;
         $this->subject->forgetPasswordFormAction($this->request);
     }
 

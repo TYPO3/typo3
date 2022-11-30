@@ -64,7 +64,7 @@ class ShortcutButtonTest extends FunctionalTestCase
         $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
         $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'SCRIPT_NAME' => '/typo3/index.php']);
-        $request = new ServerRequest('https://example.com/typo3/index.php', 'GET', null, $serverParams);
+        $request = new ServerRequest('http://example.com/typo3/index.php', 'GET', null, $serverParams);
         $GLOBALS['TYPO3_REQUEST'] = $request
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', NormalizedParams::createFromServerParams($serverParams));

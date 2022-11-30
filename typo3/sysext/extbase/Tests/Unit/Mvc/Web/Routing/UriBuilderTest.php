@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
+use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -93,13 +94,14 @@ class UriBuilderTest extends UnitTestCase
         $this->uriBuilder->injectExtensionService($this->mockExtensionService);
         $this->uriBuilder->initializeObject();
         $this->uriBuilder->_set('contentObject', $this->mockContentObject);
-        $router = GeneralUtility::makeInstance(Router::class);
+        $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
+        $router = new Router($requestContextFactory);
         $router->addRoute('module_key', new Route('/test/Path', []));
         $router->addRoute('module_key2', new Route('/test/Path2', []));
         $router->addRoute('', new Route('', []));
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createForType')->willReturn(new DisabledFormProtection());
-        GeneralUtility::setSingletonInstance(BackendUriBuilder::class, new BackendUriBuilder($router, new BackendEntryPointResolver(), $formProtectionFactory));
+        GeneralUtility::setSingletonInstance(BackendUriBuilder::class, new BackendUriBuilder($router, $formProtectionFactory, $requestContextFactory));
     }
 
     /**
@@ -382,7 +384,7 @@ class UriBuilderTest extends UnitTestCase
         $_SERVER['SCRIPT_NAME'] = '/index.php';
         $_SERVER['ORIG_SCRIPT_NAME'] = '/index.php';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-        $GLOBALS['TYPO3_REQUEST'] = $this->getRequestWithRouteAttribute()
+        $GLOBALS['TYPO3_REQUEST'] = $this->getRequestWithRouteAttribute(baseUri: 'http://baseuri/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', NormalizedParams::createFromServerParams($_SERVER));
         $this->uriBuilder->setCreateAbsoluteUri(true);
@@ -880,8 +882,8 @@ class UriBuilderTest extends UnitTestCase
         self::assertIsArray($result);
     }
 
-    protected function getRequestWithRouteAttribute(string $path = '/test/Path'): ServerRequestInterface
+    protected function getRequestWithRouteAttribute(string $path = '/test/Path', string $baseUri = ''): ServerRequestInterface
     {
-        return (new ServerRequest(new Uri('')))->withAttribute('route', new Route($path, []));
+        return (new ServerRequest(new Uri($baseUri)))->withAttribute('route', new Route($path, []));
     }
 }

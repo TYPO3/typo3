@@ -1441,11 +1441,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Repository/AbstractRepositoryTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteFinder\\:\\:method\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Routing/SiteMatcherTest.php
-
-		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Tree\\\\TableConfiguration\\\\Fixtures\\\\TreeDataProviderFixture has an unused parameter \\$configuration\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Tree/TableConfiguration/Fixtures/TreeDataProviderFixture.php
@@ -2833,11 +2828,6 @@ parameters:
 		-
 			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\Middleware\\\\SiteResolverTest\\:\\:\\$siteFinder with type TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteFinder\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface is not subtype of native type TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\.$#"
 			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteResolverTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$finder of class TYPO3\\\\CMS\\\\Core\\\\Routing\\\\SiteMatcher constructor expects TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteFinder\\|null, TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface given\\.$#"
-			count: 4
 			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteResolverTest.php
 
 		-

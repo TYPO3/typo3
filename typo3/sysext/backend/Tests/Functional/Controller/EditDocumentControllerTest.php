@@ -65,13 +65,13 @@ class EditDocumentControllerTest extends FunctionalTestCase
         $queryParams = $this->getQueryParamsWithDefaults($defaultValues);
         $parsedBody = $this->getParsedBody();
 
-        $response = $this->subject->mainAction(
-            $request
-                ->withAttribute('normalizedParams', $this->normalizedParams)
-                ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
-                ->withQueryParams($queryParams)
-                ->withParsedBody($parsedBody)
-        );
+        $request = $request
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
+            ->withQueryParams($queryParams)
+            ->withParsedBody($parsedBody);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->mainAction($request);
 
         $newRecord = BackendUtility::getRecord('tt_content', 2);
         self::assertEquals(
@@ -96,14 +96,13 @@ class EditDocumentControllerTest extends FunctionalTestCase
 
         $queryParams = $this->getQueryParamsWithDefaults($defaultValues);
         $parsedBody = $this->getParsedBody(['colPos' => 0, 'CType' => 'text']);
-
-        $response = $this->subject->mainAction(
-            $request
-                ->withAttribute('normalizedParams', $this->normalizedParams)
-                ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
-                ->withQueryParams($queryParams)
-                ->withParsedBody($parsedBody)
-        );
+        $request = $request
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
+            ->withQueryParams($queryParams)
+            ->withParsedBody($parsedBody);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->mainAction($request);
 
         $newRecord = BackendUtility::getRecord('tt_content', 2);
         self::assertEquals(

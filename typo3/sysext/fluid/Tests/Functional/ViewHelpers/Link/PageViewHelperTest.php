@@ -111,7 +111,7 @@ class PageViewHelperTest extends FunctionalTestCase
      */
     public function renderInBackendCoreContextAddsSection(): void
     {
-        $request = new ServerRequest();
+        $request = new ServerRequest('http://localhost/typo3/');
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('dummy', ['_identifier' => 'web_layout']));
         $view = new StandaloneView();
@@ -126,7 +126,7 @@ class PageViewHelperTest extends FunctionalTestCase
      */
     public function renderInBackendCoreContextCreatesAbsoluteLink(): void
     {
-        $request = new ServerRequest(null, null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => 'typo3/index.php']);
+        $request = new ServerRequest('http://localhost/typo3/', null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => 'typo3/index.php']);
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('dummy', ['_identifier' => 'web_layout']));
         $GLOBALS['TYPO3_REQUEST'] = $request;
@@ -142,7 +142,7 @@ class PageViewHelperTest extends FunctionalTestCase
      */
     public function renderInBackendExtbaseContextCreatesLinkWithId(): void
     {
-        $request = new ServerRequest();
+        $request = new ServerRequest('http://localhost/typo3/');
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('module/web/layout', ['_identifier' => 'web_layout']));
         $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
@@ -161,7 +161,7 @@ class PageViewHelperTest extends FunctionalTestCase
      */
     public function renderInBackendExtbaseContextCreatesAbsoluteLinkWithId(): void
     {
-        $request = new ServerRequest(null, null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => 'typo3/index.php']);
+        $request = new ServerRequest('http://localhost/typo3/', null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => 'typo3/index.php']);
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('module/web/layout', ['_identifier' => 'web_layout']));
         $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
@@ -216,7 +216,7 @@ class PageViewHelperTest extends FunctionalTestCase
             'test',
             $this->buildSiteConfiguration(1, '/'),
         );
-        $request = new ServerRequest();
+        $request = new ServerRequest('http://localhost/typo3/');
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);

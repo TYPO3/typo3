@@ -21,9 +21,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
+use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -98,20 +101,18 @@ class SiteResolverTest extends UnitTestCase
     {
         $incomingUrl = 'https://a-random-domain.com/mysite/';
         $siteIdentifier = 'full-site';
-        $this->siteFinder->_set('sites', [
-            $siteIdentifier => new Site($siteIdentifier, 13, [
-                'base' => '/mysite/',
-                'languages' => [
-                    0 => [
-                        'languageId' => 0,
-                        'locale' => 'fr_FR.UTF-8',
-                        'base' => '/',
-                    ],
+        $siteFinder = $this->createSiteFinder(new Site($siteIdentifier, 13, [
+            'base' => '/mysite/',
+            'languages' => [
+                0 => [
+                    'languageId' => 0,
+                    'locale' => 'fr_FR.UTF-8',
+                    'base' => '/',
                 ],
-            ]),
-        ]);
-
-        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
+            ],
+        ]));
+        $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
+        $subject = new SiteResolver(new SiteMatcher($siteFinder, $requestContextFactory));
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
@@ -141,8 +142,8 @@ class SiteResolverTest extends UnitTestCase
     public function detectSubsiteInsideNestedUrlStructure(): void
     {
         $incomingUrl = 'https://www.random-result.com/mysubsite/you-know-why/';
-        $this->siteFinder->_set('sites', [
-            'outside-site' => new Site('outside-site', 13, [
+        $siteFinder = $this->createSiteFinder(
+            new Site('outside-site', 13, [
                 'base' => '/',
                 'languages' => [
                     0 => [
@@ -152,7 +153,7 @@ class SiteResolverTest extends UnitTestCase
                     ],
                 ],
             ]),
-            'sub-site' => new Site('sub-site', 15, [
+            new Site('sub-site', 15, [
                 'base' => '/mysubsite/',
                 'languages' => [
                     0 => [
@@ -162,9 +163,10 @@ class SiteResolverTest extends UnitTestCase
                     ],
                 ],
             ]),
-        ]);
+        );
 
-        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
+        $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
+        $subject = new SiteResolver(new SiteMatcher($siteFinder, $requestContextFactory));
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
@@ -221,8 +223,8 @@ class SiteResolverTest extends UnitTestCase
      */
     public function detectSubSubsiteInsideNestedUrlStructure($incomingUrl, $expectedSiteIdentifier, $expectedRootPageId, $expectedBase): void
     {
-        $this->siteFinder->_set('sites', [
-            'outside-site' => new Site('outside-site', 13, [
+        $siteFinder = $this->createSiteFinder(
+            new Site('outside-site', 13, [
                 'base' => '/',
                 'languages' => [
                     0 => [
@@ -232,7 +234,7 @@ class SiteResolverTest extends UnitTestCase
                     ],
                 ],
             ]),
-            'sub-site' => new Site('sub-site', 14, [
+            new Site('sub-site', 14, [
                 'base' => '/mysubsite/',
                 'languages' => [
                     0 => [
@@ -242,7 +244,7 @@ class SiteResolverTest extends UnitTestCase
                     ],
                 ],
             ]),
-            'subsub-site' => new Site('subsub-site', 15, [
+            new Site('subsub-site', 15, [
                 'base' => '/mysubsite/micro-site/',
                 'languages' => [
                     0 => [
@@ -252,9 +254,10 @@ class SiteResolverTest extends UnitTestCase
                     ],
                 ],
             ]),
-        ]);
+        );
 
-        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
+        $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
+        $subject = new SiteResolver(new SiteMatcher($siteFinder, $requestContextFactory));
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
@@ -326,8 +329,8 @@ class SiteResolverTest extends UnitTestCase
      */
     public function detectProperLanguageByIncomingUrl($incomingUrl, $expectedSiteIdentifier, $expectedRootPageId, $expectedLanguageId, $expectedBase): void
     {
-        $this->siteFinder->_set('sites', [
-            'outside-site' => new Site('outside-site', 13, [
+        $siteFinder = $this->createSiteFinder(
+            new Site('outside-site', 13, [
                 'base' => '/',
                 'languages' => [
                     0 => [
@@ -342,7 +345,7 @@ class SiteResolverTest extends UnitTestCase
                     ],
                 ],
             ]),
-            'sub-site' => new Site('sub-site', 14, [
+            new Site('sub-site', 14, [
                 'base' => '/mysubsite/',
                 'languages' => [
                     2 => [
@@ -352,7 +355,7 @@ class SiteResolverTest extends UnitTestCase
                     ],
                 ],
             ]),
-            'subsub-site' => new Site('subsub-site', 15, [
+            new Site('subsub-site', 15, [
                 'base' => '/mysubsite/micro-site/',
                 'languages' => [
                     13 => [
@@ -362,9 +365,10 @@ class SiteResolverTest extends UnitTestCase
                     ],
                 ],
             ]),
-        ]);
+        );
 
-        $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
+        $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
+        $subject = new SiteResolver(new SiteMatcher($siteFinder, $requestContextFactory));
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
@@ -379,5 +383,25 @@ class SiteResolverTest extends UnitTestCase
             self::assertEquals($expectedLanguageId, $result['language-id']);
             self::assertEquals($expectedBase, $result['language-base']);
         }
+    }
+
+    private function createSiteFinder(Site ...$sites): SiteFinder
+    {
+        $siteConfiguration = new class ($sites) extends SiteConfiguration {
+            public function __construct(
+                protected array $sites
+            ) {
+                // empty by default
+            }
+
+            public function getAllExistingSites(bool $useCache = true): array
+            {
+                return array_combine(
+                    array_map(static function (Site $site) { return $site->getIdentifier(); }, $this->sites),
+                    $this->sites
+                );
+            }
+        };
+        return new SiteFinder(new $siteConfiguration($sites));
     }
 }

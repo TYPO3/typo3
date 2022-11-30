@@ -61,10 +61,11 @@ class BackendControllerTest extends FunctionalTestCase
         $eventListener = GeneralUtility::makeInstance(ListenerProvider::class);
         $eventListener->addListener(AfterBackendPageRenderEvent::class, 'after-backend-page-render-listener');
 
-        $request = (new ServerRequest())
+        $request = (new ServerRequest('https://example.com/typo3/main'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/main', ['packageName' => 'typo3/cms-backend', '_identifier' => 'main']));
 
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         $subject = $this->get(BackendController::class);
         $subject->mainAction($request);
 
