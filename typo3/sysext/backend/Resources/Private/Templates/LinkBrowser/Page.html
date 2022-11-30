@@ -28,14 +28,16 @@
             </f:else>
         </f:if>
 
-        <h4 class="mt-4 mb-3"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:contentElements" /></h4>
-        <div class="list-group list-group-flush">
-            <f:for each="{contentElements}" as="content">
-                <a href="{content.url}"  class="t3js-pageLink list-group-item list-group-item-action {f:if(condition: content.isSelected, then: ' active')}">
-                    {content.icon -> f:format.raw()} {content.title -> f:format.raw()}
-                </a>
-            </f:for>
-        </div>
+        <f:if condition="{contentElements}">
+            <h4 class="mt-4 mb-3"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:contentElements" /></h4>
+            <div class="list-group list-group-flush">
+                <f:for each="{contentElements}" as="content">
+                    <a href="{content.url}"  class="t3js-pageLink list-group-item list-group-item-action {f:if(condition: content.isSelected, then: ' active')}">
+                        {content.icon -> f:format.raw()} {content.title -> f:format.raw()}
+                    </a>
+                </f:for>
+            </div>
+        </f:if>
     </f:if>
 </f:section>
 
