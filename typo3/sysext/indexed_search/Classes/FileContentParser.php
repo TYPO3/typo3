@@ -796,7 +796,7 @@ class FileContentParser
             foreach ($pdfInfoArray as $line) {
                 $parts = explode(':', $line, 2);
                 if (count($parts) > 1 && trim($parts[0])) {
-                    $res[strtolower(trim($parts[0]))] = trim($parts[1]);
+                    $res[strtolower(trim($parts[0]))] = mb_convert_encoding(trim($parts[1]), 'UTF-8', 'ISO-8859-1');
                 }
             }
         }
