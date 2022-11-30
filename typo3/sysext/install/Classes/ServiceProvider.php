@@ -44,6 +44,8 @@ use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
+use TYPO3\CMS\Install\Service\SetupDatabaseService;
+use TYPO3\CMS\Install\Service\SetupService;
 use TYPO3\CMS\Install\Service\WebServerConfigurationFileService;
 
 /**
@@ -76,6 +78,8 @@ class ServiceProvider extends AbstractServiceProvider
             Service\SilentTemplateFileUpgradeService::class => [ static::class, 'getSilentTemplateFileUpgradeService' ],
             Service\WebServerConfigurationFileService::class => [ static::class, 'getWebServerConfigurationFileService' ],
             Service\UpgradeWizardsService::class => [ static::class, 'getUpgradeWizardsService' ],
+            Service\SetupService::class => [ static::class, 'getSetupService' ],
+            Service\SetupDatabaseService::class => [ static::class, 'getSetupDatabaseService' ],
             Middleware\Installer::class => [ static::class, 'getInstallerMiddleware' ],
             Middleware\Maintenance::class => [ static::class, 'getMaintenanceMiddleware' ],
             Controller\EnvironmentController::class => [ static::class, 'getEnvironmentController' ],
@@ -190,6 +194,24 @@ class ServiceProvider extends AbstractServiceProvider
         return new Service\UpgradeWizardsService();
     }
 
+    public static function getSetupService(ContainerInterface $container): Service\SetupService
+    {
+        return new Service\SetupService(
+            $container->get(ConfigurationManager::class),
+            $container->get(SiteConfiguration::class),
+        );
+    }
+
+    public static function getSetupDatabaseService(ContainerInterface $container): Service\SetupDatabaseService
+    {
+        return new Service\SetupDatabaseService(
+            $container->get(Service\LateBootService::class),
+            $container->get(ConfigurationManager::class),
+            $container->get(PermissionsCheck::class),
+            $container->get(Registry::class),
+        );
+    }
+
     public static function getInstallerMiddleware(ContainerInterface $container): Middleware\Installer
     {
         return new Middleware\Installer(
@@ -232,12 +254,11 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Service\SilentConfigurationUpgradeService::class),
             $container->get(Service\SilentTemplateFileUpgradeService::class),
             $container->get(ConfigurationManager::class),
-            $container->get(SiteConfiguration::class),
-            $container->get(Registry::class),
             $container->get(FailsafePackageManager::class),
             $container->get(VerifyHostHeader::class),
-            $container->get(PermissionsCheck::class),
-            $container->get(FormProtectionFactory::class)
+            $container->get(FormProtectionFactory::class),
+            $container->get(SetupService::class),
+            $container->get(SetupDatabaseService::class),
         );
     }
 

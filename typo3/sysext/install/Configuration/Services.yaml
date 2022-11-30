@@ -1,6 +1,6 @@
 # HEADS UP:
 # This file is intended for NON install tool context services only.
-# Therefore all services in this file are registered explictily and an
+# Therefore all services in this file are registered explicitly and an
 # include-all directive like `resource: '../Classes/*'` avoided on purpose.
 #
 # All *regular* EXT:install services are registered in
