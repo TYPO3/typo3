@@ -25,7 +25,6 @@
  */
 import $ from 'jquery';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
-import DocumentSaveActions from '@typo3/backend/document-save-actions';
 import Icons from '@typo3/backend/icons';
 import {default as Modal, ModalElement} from '@typo3/backend/modal';
 import * as MessageUtility from '@typo3/backend/utility/message-utility';
@@ -72,12 +71,30 @@ export default (function() {
       FormEngine.saveDocument();
       return;
     }
-    const modal = Modal.confirm(TYPO3.lang['FormEngine.refreshRequiredTitle'], TYPO3.lang['FormEngine.refreshRequiredContent']);
-    modal.addEventListener('button.clicked', (evt: Event) => {
-      if ((evt.target as HTMLButtonElement).name == 'ok') {
-        FormEngine.saveDocument();
-      }
-      modal.hideModal();
+    const modal = Modal.advanced({
+      title: TYPO3.lang['FormEngine.refreshRequiredTitle'],
+      content: TYPO3.lang['FormEngine.refreshRequiredContent'],
+      severity: Severity.warning,
+      staticBackdrop: true,
+      buttons: [
+        {
+          text: TYPO3.lang['button.cancel'] || 'Cancel',
+          active: true,
+          btnClass: 'btn-default',
+          name: 'cancel',
+          trigger: () => {
+            modal.hideModal();
+          }
+        },
+        {
+          text: TYPO3.lang['button.ok'] || 'OK',
+          btnClass: 'btn-' + Severity.getCssClass(Severity.warning),
+          name: 'ok',
+          trigger: () => {
+            FormEngine.saveDocument();
+          }
+        }
+      ]
     });
   });
   // @see \TYPO3\CMS\Backend\Form\Behavior\UpdateBitmaskOnFieldChange
@@ -838,18 +855,31 @@ export default (function() {
 
   FormEngine.requestFormEngineUpdate = function(showConfirmation: boolean): void {
     if (showConfirmation) {
-      const modal = Modal.confirm(
-        TYPO3.lang['FormEngine.refreshRequiredTitle'],
-        TYPO3.lang['FormEngine.refreshRequiredContent']
-      );
-
-      modal.addEventListener('button.clicked', function(e: Event) {
-        if ((e.target as HTMLButtonElement).name === 'ok') {
-          FormEngine.closeModalsRecursive();
-          FormEngine.saveDocument();
-        } else {
-          modal.hideModal();
-        }
+      const modal = Modal.advanced({
+        title: TYPO3.lang['FormEngine.refreshRequiredTitle'],
+        content: TYPO3.lang['FormEngine.refreshRequiredContent'],
+        severity: Severity.warning,
+        staticBackdrop: true,
+        buttons: [
+          {
+            text: TYPO3.lang['button.cancel'] || 'Cancel',
+            active: true,
+            btnClass: 'btn-default',
+            name: 'cancel',
+            trigger: () => {
+              modal.hideModal();
+            }
+          },
+          {
+            text: TYPO3.lang['button.ok'] || 'OK',
+            btnClass: 'btn-' + Severity.getCssClass(Severity.warning),
+            name: 'ok',
+            trigger: () => {
+              FormEngine.closeModalsRecursive();
+              FormEngine.saveDocument();
+            }
+          }
+        ]
       });
     } else {
       FormEngine.saveDocument();
