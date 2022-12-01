@@ -21,6 +21,9 @@ use Symfony\Component\HttpFoundation\Cookie;
 
 trait CookieHeaderTrait
 {
+    /**
+     * @return Cookie::SAMESITE_*
+     */
     private function sanitizeSameSiteCookieValue(string $cookieSameSite): string
     {
         if (!in_array($cookieSameSite, [Cookie::SAMESITE_STRICT, Cookie::SAMESITE_LAX, Cookie::SAMESITE_NONE], true)) {
