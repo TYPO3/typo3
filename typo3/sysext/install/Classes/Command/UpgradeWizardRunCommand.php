@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -229,6 +230,7 @@ class UpgradeWizardRunCommand extends Command
                 ),
                 $confirmation->getDefaultValue()
             );
+            /** @var QuestionHelper $helper */
             $helper = $this->getHelper('question');
             if (!$helper->ask($this->input, $this->output, $question)) {
                 if ($confirmation->isRequired()) {

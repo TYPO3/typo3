@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Input\InputInterface;
@@ -93,6 +94,7 @@ class ExtensionListCommand extends Command
         ]);
         $table->setColumnWidths([30, 10, 8, 6]);
 
+        /** @var FormatterHelper $formatter */
         $formatter = $this->getHelper('formatter');
         foreach ($packages as $package) {
             $isActivePackage = $this->packageManager->isPackageActive($package->getPackageKey());

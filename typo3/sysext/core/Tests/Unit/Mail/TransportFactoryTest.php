@@ -203,7 +203,7 @@ class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
-        $eventDispatcher->expects(self::once())->method('dispatch')->with(self::anything());
+        $eventDispatcher->expects(self::atLeastOnce())->method('dispatch')->with(self::anything());
 
         $message = new MailMessage();
         $message->setTo(['foo@bar.com'])
@@ -266,7 +266,7 @@ class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
-        $eventDispatcher->expects(self::once())->method('dispatch')->with(self::anything());
+        $eventDispatcher->expects(self::atLeastOnce())->method('dispatch')->with(self::anything());
 
         $message = new MailMessage();
         $message->setTo(['foo@bar.com'])
@@ -302,7 +302,7 @@ class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
-        $eventDispatcher->expects(self::once())->method('dispatch')->with(self::anything());
+        $eventDispatcher->expects(self::atLeastOnce())->method('dispatch')->with(self::anything());
 
         $message = new MailMessage();
         $message->setTo(['foo@bar.com'])
@@ -338,7 +338,7 @@ class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
-        $eventDispatcher->expects(self::once())->method('dispatch')->with(self::anything());
+        $eventDispatcher->expects(self::atLeastOnce())->method('dispatch')->with(self::anything());
 
         $message = new MailMessage();
         $message->setTo(['foo@bar.com'])
