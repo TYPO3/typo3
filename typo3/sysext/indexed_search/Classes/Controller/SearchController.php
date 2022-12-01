@@ -793,7 +793,7 @@ class SearchController extends ActionController
         }
         $regExString = '(' . implode('|', $swForReg) . ')';
         // Split and combine:
-        $parts = preg_split('/' . $regExString . '/i', ' ' . $str . ' ', 20000, PREG_SPLIT_DELIM_CAPTURE);
+        $parts = preg_split('/' . $regExString . '/iu', ' ' . $str . ' ', 20000, PREG_SPLIT_DELIM_CAPTURE);
         $parts = $parts ?: [];
         // Constants:
         $summaryMax = $this->settings['results.']['markupSW_summaryMax'];
