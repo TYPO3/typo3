@@ -23,6 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\ElementBrowser\CreateFolderBrowser;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -39,6 +40,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception;
@@ -184,7 +186,10 @@ class FileListController implements LoggerAwareInterface
         }
 
         $this->view->assign('currentIdentifier', $this->folderObject ? $this->folderObject->getCombinedIdentifier() : '');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-list.js');
+        $javaScriptRenderer = $this->pageRenderer->getJavaScriptRenderer();
+        $javaScriptRenderer->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::create('@typo3/filelist/file-list.js')->instance()
+        );
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-delete.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/clipboard-panel.js');
@@ -538,13 +543,12 @@ class FileListController implements LoggerAwareInterface
         // New folder button
         if ($this->folderObject && $this->folderObject->checkActionPermission('write') && $this->folderObject->checkActionPermission('add')) {
             $newButton = $buttonBar->makeLinkButton()
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute(
-                    'file_newfolder',
-                    [
-                        'target' => $this->folderObject->getCombinedIdentifier(),
-                        'returnUrl' => $this->filelist->createModuleUri(),
-                    ]
-                ))
+                ->setClasses('t3js-element-browser')
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser'))
+                ->setDataAttributes([
+                    'identifier' => $this->folderObject->getCombinedIdentifier(),
+                    'mode' => CreateFolderBrowser::IDENTIFIER,
+                ])
                 ->setShowLabelText(true)
                 ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.create_folder'))
                 ->setIcon($this->iconFactory->getIcon('actions-folder-add', Icon::SIZE_SMALL));

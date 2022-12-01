@@ -90,9 +90,6 @@
 			<trans-unit id="file_newfolder.php.pagetitle" resname="file_newfolder.php.pagetitle">
 				<source>New file or folder</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.newfolders" resname="file_newfolder.php.newfolders">
-				<source>Create new folders</source>
-			</trans-unit>
 			<trans-unit id="file_newfolder.php.label_newfolder" resname="file_newfolder.php.label_newfolder">
 				<source>Folder</source>
 			</trans-unit>

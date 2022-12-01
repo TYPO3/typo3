@@ -56,10 +56,15 @@ enum Selectors {
 }
 
 /**
+ * @internal
+ */
+export const fileListOpenElementBrowser = 'typo3:filelist:openElementBrowser';
+
+/**
  * Module: @typo3/filelist/filelist
  * @exports @typo3/filelist/filelist
  */
-class Filelist {
+export default class Filelist {
   public static submitClipboardFormWithCommand(cmd: string, target: HTMLButtonElement): void {
     const fileListForm: HTMLFormElement = target.closest(Selectors.fileListFormSelector);
     if (!fileListForm) {
@@ -131,7 +136,38 @@ class Filelist {
 
   constructor() {
     Filelist.processTriggers();
+
+    new RegularEvent(fileListOpenElementBrowser, (e: CustomEvent): void => {
+      const url = new URL(e.detail.actionUrl, window.location.origin);
+
+      url.searchParams.set('expandFolder', e.detail.identifier);
+      url.searchParams.set('mode', e.detail.mode);
+
+      const modal = Modal.advanced({
+        type: Modal.types.iframe,
+        content: url.toString(),
+        size: Modal.sizes.large
+      });
+      modal.addEventListener('typo3-modal-hidden', (): void => {
+        // @todo: this needs to be done when a folder was created. Apparently, backend user signals are not parsed in
+        //        the modal's context. The best solution is probably to reload the "document space" via AJAX.
+        top.list_frame.document.location.reload();
+      });
+    }).bindTo(document);
+
     DocumentService.ready().then((): void => {
+      new RegularEvent('click', (e: Event, trigger: HTMLAnchorElement): void => {
+        e.preventDefault();
+
+        document.dispatchEvent(new CustomEvent(fileListOpenElementBrowser, {
+          detail: {
+            actionUrl: trigger.href,
+            identifier: trigger.dataset.identifier,
+            mode: trigger.dataset.mode,
+          }
+        }));
+      }).delegateTo(document, '.t3js-element-browser');
+
       Tooltip.initialize('.table-fit a[title]');
       // file index events
       new RegularEvent('click', (event: Event, target: HTMLElement): void => {
@@ -316,5 +352,3 @@ class Filelist {
       });
   }
 }
-
-export default new Filelist();

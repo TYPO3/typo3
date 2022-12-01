@@ -12,60 +12,42 @@
  */
 
 import DocumentService from '@typo3/core/document-service';
-import Modal from '@typo3/backend/modal';
 import RegularEvent from '@typo3/core/event/regular-event';
+import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import {default as Modal} from '@typo3/backend/modal';
 
 /**
  * Module: @typo3/filelist/create-folder
  * @exports @typo3/filelist/create-folder
  */
-class CreateFolder {
-  private selfUrl: string;
-  private confirmTitle: string;
-  private confirmText: string;
-  private changed: boolean = false;
-
+export default class CreateFolder {
   constructor() {
     DocumentService.ready().then((): void => {
-      const mainElement: HTMLElement = document.querySelector('.filelist-create-folder-main');
-      if (!(mainElement instanceof HTMLElement)) {
-        throw new Error('Main element not found');
-      }
-      this.selfUrl = mainElement.dataset.selfUrl;
-      this.confirmTitle = mainElement.dataset.confirmTitle;
-      this.confirmText = mainElement.dataset.confirmText;
-      this.registerEvents();
+      new RegularEvent('click', (e: Event, target: HTMLAnchorElement): void => {
+        e.preventDefault();
+
+        const url = new URL(target.href, window.location.origin);
+        url.searchParams.set('contentOnly', '1');
+
+        (new AjaxRequest(url.toString())).get()
+          .then((response: AjaxResponse) => response.resolve())
+          .then((response) => {
+            const contentContainer = document.querySelector('.element-browser-main-content .element-browser-body') as HTMLElement;
+            contentContainer.innerHTML = response;
+          });
+      }).delegateTo(document, '[data-filelist-action="list-folders"]');
+
+      new RegularEvent('click', (e: Event, target: HTMLAnchorElement): void => {
+        e.preventDefault();
+
+        top.list_frame.document.location.href = target.href;
+        Modal.currentModal.addEventListener('typo3-modal-hide', (modalEvent: Event): void => {
+          // stop event propagation to avoid `typo3-modal-hidden` being triggered
+          modalEvent.stopImmediatePropagation();
+        });
+        Modal.dismiss();
+      }).delegateTo(document, '[data-filelist-action="open-module"]');
     });
   }
-
-  public reload(amount: number): void {
-    const url = this.selfUrl.replace(/AMOUNT/, amount.toString());
-    if (!this.changed) {
-      window.location.href = url;
-    } else {
-      const modal = Modal.confirm(this.confirmTitle, this.confirmText);
-      modal.addEventListener('confirm.button.cancel', (): void => {
-        modal.hideModal();
-      });
-      modal.addEventListener('confirm.button.ok', (): void => {
-        modal.hideModal();
-        window.location.href = url;
-      });
-    }
-  }
-
-  private registerEvents(): void {
-    const inputElementSelectors = [
-      'input[type="text"][name^="data[newfolder]"]',
-    ];
-    new RegularEvent('change', (): void => {
-      this.changed = true;
-    }).delegateTo(document, inputElementSelectors.join(','));
-    new RegularEvent('change', (e: Event): void => {
-      const amount = parseInt((e.target as HTMLSelectElement).value, 10);
-      this.reload(amount);
-    }).bindTo(document.getElementById('number-of-new-folders'));
-  }
 }
-
-export default new CreateFolder();

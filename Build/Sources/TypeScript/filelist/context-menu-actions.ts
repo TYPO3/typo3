@@ -17,6 +17,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Notification from '@typo3/backend/notification';
 import Modal from '@typo3/backend/modal';
 import Md5 from '@typo3/backend/hashing/md5';
+import {fileListOpenElementBrowser} from '@typo3/filelist/file-list';
 
 /**
  * Module: @typo3/filelist/context-menu-actions
@@ -83,6 +84,16 @@ class ContextMenuActions {
     top.TYPO3.Backend.ContentContainer.setUrl(
       actionUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
+  }
+
+  public static createFolder(table: string, uid: string, dataset: DOMStringMap): void {
+    top.TYPO3.Backend.ContentContainer.get().document.dispatchEvent(new CustomEvent(fileListOpenElementBrowser, {
+      detail: {
+        actionUrl: dataset.actionUrl,
+        identifier: dataset.identifier,
+        mode: dataset.mode,
+      }
+    }));
   }
 
   public static createFile(table: string, uid: string, dataset: DOMStringMap): void {

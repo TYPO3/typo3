@@ -129,6 +129,9 @@
 			<trans-unit id="folderSelector" resname="folderSelector">
 				<source>Folder selector</source>
 			</trans-unit>
+			<trans-unit id="createFolder" resname="createFolder">
+				<source>Create new folder</source>
+			</trans-unit>
 			<trans-unit id="page_id" resname="page_id">
 				<source>Page ID</source>
 			</trans-unit>

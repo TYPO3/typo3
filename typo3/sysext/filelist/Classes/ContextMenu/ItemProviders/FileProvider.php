@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Filelist\ContextMenu\ItemProviders;
 
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\AbstractProvider;
+use TYPO3\CMS\Backend\ElementBrowser\CreateFolderBrowser;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -65,7 +66,7 @@ class FileProvider extends AbstractProvider
         'new' => [
             'label' => 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.create_folder',
             'iconIdentifier' => 'actions-folder-add',
-            'callbackAction' => 'createFile',
+            'callbackAction' => 'createFolder',
         ],
         'newFile' => [
             'label' => 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.create_file',
@@ -415,6 +416,12 @@ class FileProvider extends AbstractProvider
                 'data-message' => htmlspecialchars($confirmMessage),
             ];
         }
+        if ($itemName === 'new' && $this->isFolder()) {
+            $attributes += [
+                'data-identifier' => $this->record->getCombinedIdentifier(),
+                'data-mode' => CreateFolderBrowser::IDENTIFIER,
+            ];
+        }
         if ($itemName === 'pasteInto' && $this->backendUser->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
             $elArr = $this->clipboard->elFromTable('_FILE');
             $selItem = reset($elArr);
@@ -466,7 +473,7 @@ class FileProvider extends AbstractProvider
                 $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_upload'));
                 break;
             case 'new':
-                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_newfolder'));
+                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('wizard_element_browser'));
                 break;
             case 'newFile':
                 $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_create'));
