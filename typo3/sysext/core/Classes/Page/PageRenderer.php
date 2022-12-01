@@ -499,12 +499,10 @@ class PageRenderer implements SingletonInterface
         $this->lang = $lang;
         $this->languageDependencies = [];
 
-        // Language is found. Configure it:
-        if (in_array($this->lang, $this->locales->getLocales())) {
-            $this->languageDependencies[] = $this->lang;
-            foreach ($this->locales->getLocaleDependencies($this->lang) as $language) {
-                $this->languageDependencies[] = $language;
-            }
+        // Language is found. Configure the dependencies
+        if ($this->locales->isValidLanguageKey($this->lang)) {
+            $this->languageDependencies = array_merge([$this->lang], $this->locales->getLocaleDependencies($this->lang));
+            $this->languageDependencies = array_reverse($this->languageDependencies);
         }
     }
 
@@ -2436,32 +2434,20 @@ class PageRenderer implements SingletonInterface
      */
     protected function readLLfile($fileRef)
     {
-        if ($this->lang !== 'default') {
-            $languages = array_reverse($this->languageDependencies);
-            // At least we need to have English
-            if (empty($languages)) {
-                $languages[] = 'default';
-            }
-        } else {
-            $languages = ['default'];
-        }
-
-        $localLanguage = [];
-        foreach ($languages as $language) {
+        $labels = [];
+        foreach ($this->languageDependencies as $language) {
             $tempLL = $this->localizationFactory->getParsedData($fileRef, $language);
-
-            $localLanguage['default'] = $tempLL['default'];
-            if (!isset($localLanguage[$this->lang])) {
-                $localLanguage[$this->lang] = $localLanguage['default'];
+            $labels['default'] = $tempLL['default'];
+            if (!isset($labels[$this->lang])) {
+                $labels[$this->lang] = $labels['default'];
             }
             if ($this->lang !== 'default' && isset($tempLL[$language])) {
                 // Merge current language labels onto labels from previous language
                 // This way we have a labels with fall back applied
-                ArrayUtility::mergeRecursiveWithOverrule($localLanguage[$this->lang], $tempLL[$language], true, false);
+                ArrayUtility::mergeRecursiveWithOverrule($labels[$this->lang], $tempLL[$language], true, false);
             }
         }
-
-        return $localLanguage;
+        return $labels;
     }
 
     /*****************************************************/

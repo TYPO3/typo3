@@ -131,8 +131,7 @@ class TranslationService implements SingletonInterface
             // Local language translation for key exists
             $value = $this->LOCAL_LANG[$this->languageKey][$key][0]['target'];
         } elseif (!empty($this->alternativeLanguageKeys)) {
-            $languages = array_reverse($this->alternativeLanguageKeys);
-            foreach ($languages as $language) {
+            foreach ($this->alternativeLanguageKeys as $language) {
                 if (isset($this->LOCAL_LANG[$language][$key][0]['target'])
                     || isset($this->LOCAL_LANG_UNSET[$language][$key])
                 ) {
@@ -549,7 +548,6 @@ class TranslationService implements SingletonInterface
     protected function setLanguageKeys()
     {
         $this->languageKey = 'default';
-
         $this->alternativeLanguageKeys = [];
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
@@ -557,10 +555,9 @@ class TranslationService implements SingletonInterface
             $this->languageKey = $this->getCurrentSiteLanguage()->getTypo3Language();
             if ($this->languageKey !== 'default') {
                 $locales = GeneralUtility::makeInstance(Locales::class);
-                if (in_array($this->languageKey, $locales->getLocales(), true)) {
-                    foreach ($locales->getLocaleDependencies($this->languageKey) as $language) {
-                        $this->alternativeLanguageKeys[] = $language;
-                    }
+                if ($locales->isValidLanguageKey($this->languageKey)) {
+                    $this->alternativeLanguageKeys = $locales->getLocaleDependencies($this->languageKey);
+                    $this->alternativeLanguageKeys = array_reverse($this->alternativeLanguageKeys);
                 }
             }
         } elseif (!empty($GLOBALS['BE_USER']->user['lang'])) {

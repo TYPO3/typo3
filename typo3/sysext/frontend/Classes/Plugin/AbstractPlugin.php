@@ -230,11 +230,10 @@ class AbstractPlugin
         $this->LLkey = $this->frontendController->getLanguage()->getTypo3Language();
 
         $locales = GeneralUtility::makeInstance(Locales::class);
-        if (in_array($this->LLkey, $locales->getLocales())) {
-            foreach ($locales->getLocaleDependencies($this->LLkey) as $language) {
-                $this->altLLkey .= $language . ',';
-            }
-            $this->altLLkey = rtrim($this->altLLkey, ',');
+        if ($locales->isValidLanguageKey($this->LLkey)) {
+            $alternativeLanguageKeys = $locales->getLocaleDependencies($this->LLkey);
+            $alternativeLanguageKeys = array_reverse($alternativeLanguageKeys);
+            $this->altLLkey = implode(',', $alternativeLanguageKeys);
         }
     }
 
@@ -900,7 +899,6 @@ class AbstractPlugin
             $word = $this->LOCAL_LANG[$this->LLkey][$key][0]['target'];
         } elseif ($this->altLLkey) {
             $alternativeLanguageKeys = GeneralUtility::trimExplode(',', $this->altLLkey, true);
-            $alternativeLanguageKeys = array_reverse($alternativeLanguageKeys);
             foreach ($alternativeLanguageKeys as $languageKey) {
                 if (!empty($this->LOCAL_LANG[$languageKey][$key][0]['target'])
                     || isset($this->LOCAL_LANG_UNSET[$languageKey][$key])

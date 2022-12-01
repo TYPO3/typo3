@@ -181,6 +181,11 @@ class Locales implements SingletonInterface
         return array_keys($this->languages);
     }
 
+    public function isValidLanguageKey(string $locale): bool
+    {
+        return in_array($locale, $this->getLocales(), true);
+    }
+
     /**
      * Returns the supported languages indexed by their corresponding locale.
      * @return array<non-empty-string, non-empty-string>

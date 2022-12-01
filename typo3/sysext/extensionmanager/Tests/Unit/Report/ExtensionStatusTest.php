@@ -200,7 +200,7 @@ class ExtensionStatusTest extends UnitTestCase
     public function getStatusReturnsErrorForLoadedExtensionIfInsecureExtensionIsLoaded(): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('includeLLFile')->with(self::anything())->willReturn('');
+        $languageServiceMock->method('includeLLFile')->with(self::anything())->willReturn([]);
         $languageServiceMock->method('getLL')->with(self::anything())->willReturn('');
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
@@ -225,7 +225,7 @@ class ExtensionStatusTest extends UnitTestCase
     public function getStatusReturnsOkForExistingExtensionIfNoInsecureExtensionExists(): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('includeLLFile')->with(self::anything())->willReturn('');
+        $languageServiceMock->method('includeLLFile')->with(self::anything())->willReturn([]);
         $languageServiceMock->method('getLL')->with(self::anything())->willReturn('');
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
@@ -251,7 +251,7 @@ class ExtensionStatusTest extends UnitTestCase
     public function getStatusReturnsWarningForExistingExtensionIfInsecureExtensionExistsButIsNotLoaded(): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('includeLLFile')->with(self::anything())->willReturn('');
+        $languageServiceMock->method('includeLLFile')->with(self::anything())->willReturn([]);
         $languageServiceMock->method('getLL')->with(self::anything())->willReturn('');
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
@@ -276,7 +276,7 @@ class ExtensionStatusTest extends UnitTestCase
     public function getStatusReturnsWarningForLoadedExtensionIfOutdatedExtensionIsLoaded(): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('includeLLFile')->with(self::anything())->willReturn('');
+        $languageServiceMock->method('includeLLFile')->with(self::anything())->willReturn([]);
         $languageServiceMock->method('getLL')->with(self::anything())->willReturn('');
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
@@ -301,7 +301,7 @@ class ExtensionStatusTest extends UnitTestCase
     public function getStatusReturnsErrorForExistingExtensionIfOutdatedExtensionExists(): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('includeLLFile')->with(self::anything())->willReturn('');
+        $languageServiceMock->method('includeLLFile')->with(self::anything())->willReturn([]);
         $languageServiceMock->method('getLL')->with(self::anything())->willReturn('');
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);

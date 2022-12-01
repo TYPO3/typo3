@@ -34,42 +34,42 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * As TYPO3 internally does not match the proper ISO locale standard, the "locale" here
  * is actually a list of supported language keys, (see Locales class), whereas "English"
  * has the language key "default".
+ *
+ * Further usages on setting up your own LanguageService in BE:
+ * $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)
+ *   ->createFromUserPreferences($GLOBALS['BE_USER']);
  */
 class LanguageService
 {
     /**
      * This is set to the language that is currently running for the user
-     *
-     * @var string
      */
-    public $lang = 'default';
+    public string $lang = 'default';
 
     /**
      * If TRUE, will show the key/location of labels in the backend.
-     *
-     * @var bool
      */
-    public $debugKey = false;
+    public bool $debugKey = false;
 
     /**
      * List of language dependencies for an actual language. This setting is used for local variants of a language
      * that depend on their "main" language, like Brazilian Portuguese or Canadian French.
      *
-     * @var array
+     * @var array<int, string>
      */
-    protected $languageDependencies = [];
+    protected array $languageDependencies = [];
 
     /**
      * @var string[][]
      */
-    protected $labels = [];
+    protected array $labels = [];
 
     protected Locales $locales;
     protected LocalizationFactory $localizationFactory;
     protected FrontendInterface $runtimeCache;
 
     /**
-     * @internal use one of the factory methods instead
+     * @internal use LanguageServiceFactory instead
      */
     public function __construct(Locales $locales, LocalizationFactory $localizationFactory, FrontendInterface $runtimeCache)
     {
@@ -91,29 +91,26 @@ class LanguageService
      * @param string $languageKey The language key (two character string from backend users profile)
      * @internal use one of the factory methods instead
      */
-    public function init($languageKey)
+    public function init(string $languageKey): void
     {
         // Find the requested language in this list based on the $languageKey
         // Language is found. Configure it:
-        if (in_array($languageKey, $this->locales->getLocales(), true)) {
+        if ($this->locales->isValidLanguageKey($languageKey)) {
             // The current language key
             $this->lang = $languageKey;
-            $this->languageDependencies[] = $languageKey;
-            foreach ($this->locales->getLocaleDependencies($languageKey) as $language) {
-                $this->languageDependencies[] = $language;
-            }
+            $this->languageDependencies = array_merge([$languageKey], $this->locales->getLocaleDependencies($languageKey));
+            $this->languageDependencies = array_reverse($this->languageDependencies);
         }
     }
 
     /**
      * Debugs the localization key.
      *
-     * @param string $value value to debug
-     * @return string
+     * @param string $labelIdentifier to be shown next to the value
      */
-    protected function debugLL($value)
+    protected function debugLL(string $labelIdentifier): string
     {
-        return $this->debugKey ? '[' . $value . ']' : '';
+        return $this->debugKey ? '[' . $labelIdentifier . ']' : '';
     }
 
     /**
@@ -135,7 +132,7 @@ class LanguageService
      * @param array $localLanguage $LOCAL_LANG array to get label key from
      * @return string
      */
-    protected function getLLL($index, $localLanguage)
+    protected function getLLL(string $index, array $localLanguage): string
     {
         // Get Local Language. Special handling for all extensions that
         // read PHP LL files and pass arrays here directly.
@@ -206,7 +203,7 @@ class LanguageService
      * @param string $fileRef $fileRef is a file-reference
      * @return array returns the loaded label file
      */
-    public function includeLLFile($fileRef)
+    public function includeLLFile(string $fileRef): array
     {
         $localLanguage = $this->readLLfile($fileRef);
         if (!empty($localLanguage)) {
@@ -216,34 +213,12 @@ class LanguageService
     }
 
     /**
-     * Includes a locallang file (and possibly additional localized version if configured for),
-     * and then puts everything into "default", so "default" is kept as fallback
-     *
-     * @param string $fileRef a file-reference
-     * @return array
-     */
-    protected function includeLanguageFileRaw($fileRef)
-    {
-        $labels = $this->readLLfile($fileRef);
-        if (!empty($labels)) {
-            // Merge local onto default
-            if ($this->lang !== 'default' && is_array($labels[$this->lang]) && is_array($labels['default'])) {
-                // array_merge can be used so far the keys are not
-                // numeric - which we assume they are not...
-                $labels['default'] = array_merge($labels['default'], $labels[$this->lang]);
-                unset($labels[$this->lang]);
-            }
-        }
-        return $labels;
-    }
-
-    /**
      * Includes a locallang file and returns the $LOCAL_LANG array found inside.
      *
      * @param string $fileRef Input is a file-reference to be a 'local_lang' file containing a $LOCAL_LANG array
      * @return array value of $LOCAL_LANG found in the included file, empty if none found
      */
-    protected function readLLfile($fileRef): array
+    protected function readLLfile(string $fileRef): array
     {
         $cacheIdentifier = 'labels_file_' . md5($fileRef . $this->lang);
         $cacheEntry = $this->runtimeCache->get($cacheIdentifier);
@@ -251,11 +226,7 @@ class LanguageService
             return $cacheEntry;
         }
 
-        if ($this->lang !== 'default') {
-            $languages = array_reverse($this->languageDependencies);
-        } else {
-            $languages = ['default'];
-        }
+        $languages = $this->lang === 'default' ? ['default'] : $this->languageDependencies;
         $localLanguage = [];
         foreach ($languages as $language) {
             $tempLL = $this->localizationFactory->getParsedData($fileRef, $language);

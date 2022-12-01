@@ -106,8 +106,7 @@ class LocalizationUtility
             // Local language translation for key exists
             $value = self::$LOCAL_LANG[$languageFilePath][$languageKey][$key][0]['target'];
         } elseif (!empty($alternativeLanguageKeys)) {
-            $languages = array_reverse($alternativeLanguageKeys);
-            foreach ($languages as $language) {
+            foreach ($alternativeLanguageKeys as $language) {
                 if (!empty(self::$LOCAL_LANG[$languageFilePath][$language][$key][0]['target'])
                     || isset(self::$LOCAL_LANG_UNSET[$languageFilePath][$language][$key])
                 ) {
@@ -196,10 +195,9 @@ class LocalizationUtility
             }
 
             $locales = GeneralUtility::makeInstance(Locales::class);
-            if (in_array($languageKeys['languageKey'], $locales->getLocales())) {
-                foreach ($locales->getLocaleDependencies($languageKeys['languageKey']) as $language) {
-                    $languageKeys['alternativeLanguageKeys'][] = $language;
-                }
+            if ($locales->isValidLanguageKey($languageKeys['languageKey'])) {
+                $languageKeys['alternativeLanguageKeys'] = $locales->getLocaleDependencies($languageKeys['languageKey']);
+                $languageKeys['alternativeLanguageKeys'] = array_reverse($languageKeys['alternativeLanguageKeys']);
             }
         } elseif (!empty($GLOBALS['BE_USER']->user['lang'])) {
             $languageKeys['languageKey'] = $GLOBALS['BE_USER']->user['lang'];
