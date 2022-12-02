@@ -37,17 +37,14 @@ class ReactionRepository
     public function findAll(): array
     {
         return $this->map($this->getQueryBuilder()
-            ->select('*')
-            ->from('sys_reaction')
             ->executeQuery()
             ->fetchAllAssociative());
     }
 
     public function countAll(): int
     {
-        return (int)$this->getQueryBuilder()
+        return (int)$this->getQueryBuilder(false)
             ->count('*')
-            ->from('sys_reaction')
             ->executeQuery()
             ->fetchOne();
     }
@@ -69,8 +66,6 @@ class ReactionRepository
             ->add(GeneralUtility::makeInstance(StartTimeRestriction::class))
             ->add(GeneralUtility::makeInstance(EndTimeRestriction::class));
         $result = $queryBuilder
-            ->select('*')
-            ->from('sys_reaction')
             ->where(
                 $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($identifier))
             )
@@ -93,15 +88,15 @@ class ReactionRepository
 
     protected function getQueryBuilderForDemand(ReactionDemand $demand): QueryBuilder
     {
-        $queryBuilder = $this->getQueryBuilder();
-        $queryBuilder
-            ->select('*')
-            ->from('sys_reaction');
-
+        $queryBuilder = $this->getQueryBuilder(false);
         $queryBuilder->orderBy(
             $demand->getOrderField(),
             $demand->getOrderDirection()
         );
+        // Ensure deterministic ordering.
+        if ($demand->getOrderField() !== 'uid') {
+            $queryBuilder->addOrderBy('uid', 'asc');
+        }
 
         $constraints = [];
         if ($demand->hasName()) {
@@ -139,7 +134,7 @@ class ReactionRepository
         return new ReactionInstruction($row);
     }
 
-    protected function getQueryBuilder(): QueryBuilder
+    protected function getQueryBuilder(bool $addDefaultOrderByClause=true): QueryBuilder
     {
         // @todo ConnectionPool could be injected
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -147,7 +142,13 @@ class ReactionRepository
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        return $queryBuilder
-            ->orderBy('name');
+        $queryBuilder->select('*')->from('sys_reaction');
+        if ($addDefaultOrderByClause) {
+            $queryBuilder
+                ->orderBy('name', 'asc')
+                // Ensure deterministic ordering.
+                ->addOrderBy('uid', 'asc');
+        }
+        return $queryBuilder;
     }
 }
