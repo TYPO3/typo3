@@ -3,6 +3,10 @@
     <file source-language="en" datatype="plaintext" original="EXT:reactions/Resources/Private/Language/locallang_db.xlf" date="2022-08-15T20:22:32Z" product-name="reactions">
         <header/>
         <body>
+			<trans-unit id="reactions" resname="reactions">
+				<source>Reactions</source>
+			</trans-unit>
+
             <trans-unit id="sys_reaction" resname="sys_reaction">
                 <source>System Reactions</source>
             </trans-unit>

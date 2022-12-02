@@ -19,3 +19,11 @@ services:
 
   TYPO3\CMS\Reactions\Form\ReactionItemsProcFunc:
     public: true
+
+  lowlevel.configuration.module.provider.reactions:
+    class: 'TYPO3\CMS\Reactions\ConfigurationModuleProvider\ReactionsProvider'
+    tags:
+      - name: 'lowlevel.configuration.module.provider'
+        identifier: 'reactions'
+        label: 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:reactions'
+        after: 'mfaproviders'

@@ -51,6 +51,7 @@ The Configuration module displays various configuration settings:
 - :ref:`Form: YAML Configuration <ext_form:concepts-configuration>` (with installed :doc:`Form system extension <ext_form:Index>`)
 - `Backend Toolbar Items`
 - `Symfony Expression Language Providers`
+- `Reactions`
 
 
 Extending the Configuration module

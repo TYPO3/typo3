@@ -22,6 +22,9 @@
 		"symfony/uid": "^6.2",
 		"typo3/cms-core": "12.1.*@dev"
 	},
+	"suggest": {
+		"typo3/cms-lowlevel": "To display registered reactions in the configuration module"
+	},
 	"conflict": {
 		"typo3/cms": "*"
 	},
