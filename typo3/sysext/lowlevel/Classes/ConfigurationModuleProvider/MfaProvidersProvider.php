@@ -32,10 +32,19 @@ class MfaProvidersProvider extends AbstractProvider
     {
         $providers = $this->mfaProviderRegistry->getProviders();
         $configuration = [];
+        $languageService = $this->getLanguageService();
         foreach ($providers as $identifier => $provider) {
+            $title = $languageService->sL($provider->getTitle());
+            if ($title !== $provider->getTitle()) {
+                $title .= ' [' . $provider->getTitle() . ']';
+            }
+            $description = $languageService->sL($provider->getDescription());
+            if ($description !== $provider->getDescription()) {
+                $description .= ' [' . $provider->getDescription() . ']';
+            }
             $configuration[$identifier] = [
-                'title' => $this->getLanguageService()->sL($provider->getTitle()),
-                'description' => $this->getLanguageService()->sL($provider->getDescription()),
+                'title' => $title,
+                'description' => $description,
                 'isDefaultAllowed' => $provider->isDefaultProviderAllowed(),
             ];
         }
