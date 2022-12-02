@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\ExpressionLanguage;
 
-use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider;
@@ -30,8 +29,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ResolverTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     public function setUp(): void
     {
         parent::setUp();
