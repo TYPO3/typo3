@@ -3,7 +3,7 @@
 #
 CREATE TABLE sys_reaction (
 	name varchar(100) DEFAULT '' NOT NULL,
-	reactiontype varchar(255) DEFAULT '' NOT NULL,
+	reaction_type varchar(255) DEFAULT '' NOT NULL,
 	identifier varchar(36) DEFAULT '' NOT NULL,
 	secret varchar(255) DEFAULT '' NOT NULL,
 	impersonate_user int(11) unsigned DEFAULT '0' NOT NULL,
@@ -12,5 +12,5 @@ CREATE TABLE sys_reaction (
 	fields json NOT NULL,
 
 	UNIQUE identifier_key (identifier),
-	KEY index_source (reactiontype(5))
+	KEY index_source (reaction_type(5))
 );

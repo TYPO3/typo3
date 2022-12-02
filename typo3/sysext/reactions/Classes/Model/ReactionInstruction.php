@@ -42,7 +42,7 @@ class ReactionInstruction
 
     public function getType(): string
     {
-        return $this->record['reactiontype'];
+        return $this->record['reaction_type'];
     }
 
     public function getIdentifier(): string

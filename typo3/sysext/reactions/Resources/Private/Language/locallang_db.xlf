@@ -33,16 +33,16 @@
             <trans-unit id="sys_reaction.secret.passwordGenerator" resname="sys_reaction.secret.passwordGenerator">
                 <source>Generate secret token</source>
             </trans-unit>
-            <trans-unit id="sys_reaction.reactiontype" resname="sys_reaction.reactiontype">
+            <trans-unit id="sys_reaction.reaction_type" resname="sys_reaction.reaction_type">
                 <source>Reaction Type</source>
             </trans-unit>
-            <trans-unit id="sys_reactions.reactiontype.description" resname="sys_reactions.reactiontype.description">
+            <trans-unit id="sys_reactions.reaction_type.description" resname="sys_reactions.reaction_type.description">
                 <source>Select the reaction type to be configured.</source>
             </trans-unit>
-            <trans-unit id="sys_reaction.reactiontype.select" resname="sys_reaction.reactiontype.select">
+            <trans-unit id="sys_reaction.reaction_type.select" resname="sys_reaction.reaction_type.select">
                 <source>Select a reaction</source>
             </trans-unit>
-            <trans-unit id="sys_reaction.reactiontype.create_record" resname="sys_reaction.reactiontype.create_record">
+            <trans-unit id="sys_reaction.reaction_type.create_record" resname="sys_reaction.reaction_type.create_record">
                 <source>Create database record</source>
             </trans-unit>
             <trans-unit id="sys_reaction.impersonate_user" resname="sys_reaction.impersonate_user">

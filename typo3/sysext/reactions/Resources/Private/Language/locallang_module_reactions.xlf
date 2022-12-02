@@ -44,10 +44,13 @@
             <trans-unit id="filter.resetButton" resname="filter.resetButton">
                 <source>Reset</source>
             </trans-unit>
-            <trans-unit id="filter.reaction" resname="filter.reaction">
+            <trans-unit id="filter.name" resname="filter.name">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="filter.reaction_type" resname="filter.reaction_type">
                 <source>Reaction Type</source>
             </trans-unit>
-            <trans-unit id="filter.reaction.showAll" resname="filter.reaction.showAll">
+            <trans-unit id="filter.reaction_type.showAll" resname="filter.reaction_type.showAll">
                 <source>Show all</source>
             </trans-unit>
 

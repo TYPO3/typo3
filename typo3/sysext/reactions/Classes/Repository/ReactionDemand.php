@@ -38,8 +38,7 @@ class ReactionDemand
         protected string $orderField = self::DEFAULT_ORDER_FIELD,
         protected string $orderDirection = self::ORDER_ASCENDING,
         protected string $name = '',
-        // @todo Rename to $reactionType
-        protected string $reaction = ''
+        protected string $reactionType = ''
     ) {
         if (!in_array($orderField, self::ORDER_FIELDS, true)) {
             $orderField = self::DEFAULT_ORDER_FIELD;
@@ -61,8 +60,8 @@ class ReactionDemand
             return new self($page, $orderField, $orderDirection);
         }
         $name = (string)($demand['name'] ?? '');
-        $reaction = (string)($demand['reaction'] ?? '');
-        return new self($page, $orderField, $orderDirection, $name, $reaction);
+        $reactionType = (string)($demand['reaction_type'] ?? '');
+        return new self($page, $orderField, $orderDirection, $name, $reactionType);
     }
 
     public function getOrderField(): string
@@ -95,20 +94,20 @@ class ReactionDemand
         return $this->name !== '';
     }
 
-    public function getReaction(): string
+    public function getReactionType(): string
     {
-        return $this->reaction;
+        return $this->reactionType;
     }
 
-    public function hasReaction(): bool
+    public function hasReactionType(): bool
     {
-        return $this->reaction !== '';
+        return $this->reactionType !== '';
     }
 
     public function hasConstraints(): bool
     {
         return $this->hasName()
-            || $this->hasReaction();
+            || $this->hasReactionType();
     }
 
     public function getPage(): int
@@ -132,8 +131,8 @@ class ReactionDemand
         if ($this->hasName()) {
             $parameters['name'] = $this->getName();
         }
-        if ($this->hasReaction()) {
-            $parameters['reaction'] = $this->getReaction();
+        if ($this->hasReactionType()) {
+            $parameters['reaction_type'] = $this->getReactionType();
         }
         return $parameters;
     }

@@ -48,7 +48,7 @@ class CreateRecordReaction implements ReactionInterface
 
     public static function getDescription(): string
     {
-        return 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.reactiontype.create_record';
+        return 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.reaction_type.create_record';
     }
 
     public static function getIconIdentifier(): string

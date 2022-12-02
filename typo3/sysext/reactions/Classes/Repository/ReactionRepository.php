@@ -111,10 +111,10 @@ class ReactionRepository
                 $queryBuilder->createNamedParameter($escapedLikeString)
             );
         }
-        if ($demand->hasReaction()) {
+        if ($demand->hasReactionType()) {
             $constraints[] = $queryBuilder->expr()->eq(
-                'reactiontype',
-                $queryBuilder->createNamedParameter($demand->getReaction())
+                'reaction_type',
+                $queryBuilder->createNamedParameter($demand->getReactionType())
             );
         }
 

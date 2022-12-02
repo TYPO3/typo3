@@ -153,15 +153,15 @@
         <input type="hidden" name="orderDirection" value="{demand.orderDirection}">
         <div class="row row-cols-auto align-items-end g-3 mb-4">
             <div class="col">
-                <label for="demand-name" class="form-label"><f:translate key="LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.name"/></label>
+                <label for="demand-name" class="form-label"><f:translate key="LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:filter.name"/></label>
                 <input type="text" id="demand-name" class="form-control" name="demand[name]" value="{demand.name}"/>
             </div>
             <div class="col">
-                <label for="demand-reaction" class="form-label"><f:translate key="LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:filter.reaction"/></label>
-                <select id="demand-reaction" class="form-select" name="demand[reaction]" data-on-change="submit">
-                    <option value=""><f:translate key="LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:filter.reaction.showAll"/></option>
+                <label for="demand-reaction-type" class="form-label"><f:translate key="LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:filter.reaction_type"/></label>
+                <select id="demand-reaction-type" class="form-select" name="demand[reaction_type]" data-on-change="submit">
+                    <option value=""><f:translate key="LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:filter.reaction_type.showAll"/></option>
                     <f:for each="{reactionTypes}" key="type" as="reaction">
-                        <option value="{type}" {f:if(condition: '{type} == {demand.reaction}', then: 'selected')}>
+                        <option value="{type}" {f:if(condition: '{type} == {demand.reactionType}', then: 'selected')}>
                             <f:translate key="{reaction.description}" default="{reaction.description}"/>
                         </option>
                     </f:for>

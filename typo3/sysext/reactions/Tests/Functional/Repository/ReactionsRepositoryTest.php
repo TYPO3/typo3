@@ -31,8 +31,8 @@ class ReactionsRepositoryTest extends FunctionalTestCase
             'default demand' => [$this->getDemand(), 2],
             'filter by name: Test' => [$this->getDemand('Test'), 2],
             'filter by name: Random' => [$this->getDemand('Random'), 1],
-            'filter by reaction: CreateRecordReaction' => [$this->getDemand('', 'create-record'), 1],
-            'filter by name and reaction: CreateRecordReaction' => [$this->getDemand('Test', 'create-record'), 1],
+            'filter by reaction type: CreateRecordReaction' => [$this->getDemand('', 'create-record'), 1],
+            'filter by name and reaction type: CreateRecordReaction' => [$this->getDemand('Test', 'create-record'), 1],
         ];
     }
 
@@ -73,14 +73,14 @@ class ReactionsRepositoryTest extends FunctionalTestCase
 
     private function getDemand(
         string $name = '',
-        string $reaction = ''
+        string $reactionType = ''
     ): ReactionDemand {
         return new ReactionDemand(
             1,
             '',
             '',
             $name,
-            $reaction,
+            $reactionType,
         );
     }
 }

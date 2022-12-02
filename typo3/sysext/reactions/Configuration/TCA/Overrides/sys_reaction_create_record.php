@@ -44,7 +44,7 @@
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
     'sys_reaction',
-    'reactiontype',
+    'reaction_type',
     [
         \TYPO3\CMS\Reactions\Reaction\CreateRecordReaction::getDescription(),
         \TYPO3\CMS\Reactions\Reaction\CreateRecordReaction::getType(),

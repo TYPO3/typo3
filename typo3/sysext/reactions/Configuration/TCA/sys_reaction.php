@@ -11,8 +11,8 @@ return [
         'rootLevel' => 1,
         'groupName' => 'system',
         'default_sortby' => 'name',
-        'type' => 'reactiontype',
-        'typeicon_column' => 'reactiontype',
+        'type' => 'reaction_type',
+        'typeicon_column' => 'reaction_type',
         'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_reaction',
         ],
@@ -38,7 +38,7 @@ return [
         'config' => [
             'label' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:palette.config',
             'description' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:palette.config.description',
-            'showitem' => 'reactiontype, --linebreak--, name, description, --linebreak--, identifier, secret',
+            'showitem' => 'reaction_type, --linebreak--, name, description, --linebreak--, identifier, secret',
         ],
         'access' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.access',
@@ -46,15 +46,15 @@ return [
         ],
     ],
     'columns' => [
-        'reactiontype' => [
-            'label' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.reactiontype',
-            'description' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.reactiontype.description',
+        'reaction_type' => [
+            'label' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.reaction_type',
+            'description' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.reaction_type.description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'required' => true,
                 'items' => [
-                    ['LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.reactiontype.select', ''],
+                    ['LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.reaction_type.select', ''],
                 ],
             ],
         ],
