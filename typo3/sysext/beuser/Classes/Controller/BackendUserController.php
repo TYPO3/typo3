@@ -230,7 +230,7 @@ class BackendUserController extends ActionController
             ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
             ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('system_BeuserTxBeuser'));
-        $buttonBar->addButton($backButton);
+        $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         $editButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.edit'))
@@ -239,7 +239,7 @@ class BackendUserController extends ActionController
                 'edit' => ['be_users' => [$uid => 'edit']],
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
-        $buttonBar->addButton($editButton);
+        $buttonBar->addButton($editButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         $addUserButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
@@ -248,7 +248,7 @@ class BackendUserController extends ActionController
                 'edit' => ['be_users' => [0 => 'new']],
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
-        $buttonBar->addButton($addUserButton);
+        $buttonBar->addButton($addUserButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
         $username = empty($data['user']['username']) ? '' : ': ' . $data['user']['username'];
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('system_BeuserTxBeuser')

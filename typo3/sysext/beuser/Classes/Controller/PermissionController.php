@@ -410,7 +410,7 @@ class PermissionController
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
                 ->setShowLabelText(true)
                 ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
-            $buttonBar->addButton($saveButton);
+            $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         }
 
         if ($action === 'index' && count($this->getDepthOptions()) > 0) {
