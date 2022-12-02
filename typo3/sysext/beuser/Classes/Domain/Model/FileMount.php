@@ -38,7 +38,7 @@ class FileMount extends AbstractEntity
     /**
      * Description of the file mount.
      */
-    protected string $description;
+    protected string $description = '';
 
     /**
      * Identifier of the filemount
@@ -128,11 +128,13 @@ class FileMount extends AbstractEntity
      */
     public function getPath(): string
     {
-        $segments = preg_split('#:/#', $this->identifier);
-        return $segments[1] ?? '';
+        return explode(':/', $this->identifier)[1] ?? '';
     }
 
-    public function getStorage(): ResourceStorage
+    /**
+     * @todo This should be part of the ORM not the model class
+     */
+    public function getStorage(): ?ResourceStorage
     {
         return GeneralUtility::makeInstance(StorageRepository::class)->findByCombinedIdentifier($this->identifier);
     }
