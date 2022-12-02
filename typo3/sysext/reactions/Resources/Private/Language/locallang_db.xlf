@@ -77,7 +77,7 @@
                 <source>Configuration</source>
             </trans-unit>
             <trans-unit id="palette.config.description" resname="palette.config.description">
-                <source>Generel configuration of the reaction.</source>
+                <source>General configuration of the reaction.</source>
             </trans-unit>
             <trans-unit id="palette.additional" resname="palette.additional">
                 <source>Additional configuration</source>
