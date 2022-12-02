@@ -34,11 +34,10 @@ class PageDoktypeProvider extends AbstractProvider
         ksort($providerConfiguration);
         foreach ($providerConfiguration as $pageType => $typeConfiguration) {
             if (isset($allLabels[$pageType])) {
-                $label = $this->getLanguageService()->sL($allLabels[$pageType]) . ' [doktype=' . $pageType . ']';
+                $configuration[$pageType] = array_merge_recursive(['name' => $this->getLanguageService()->sL($allLabels[$pageType])], $typeConfiguration);
             } else {
-                $label = $pageType;
+                $configuration[$pageType] = $typeConfiguration;
             }
-            $configuration[$label] = array_merge_recursive(['doktype' => $pageType], $typeConfiguration);
         }
         return $configuration;
     }
