@@ -51,6 +51,7 @@ final class TableColumnType extends Enumeration
     public const NUMBER = 'NUMBER';
     public const FILE = 'FILE';
     public const JSON = 'JSON';
+    public const UUID = 'UUID';
 
     /**
      * @param mixed $type

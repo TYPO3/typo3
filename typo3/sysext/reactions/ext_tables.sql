@@ -4,7 +4,6 @@
 CREATE TABLE sys_reaction (
 	name varchar(100) DEFAULT '' NOT NULL,
 	reaction_type varchar(255) DEFAULT '' NOT NULL,
-	identifier varchar(36) DEFAULT '' NOT NULL,
 	secret varchar(255) DEFAULT '' NOT NULL,
 	impersonate_user int(11) unsigned DEFAULT '0' NOT NULL,
 	table_name varchar(255) DEFAULT '' NOT NULL,

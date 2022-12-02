@@ -346,6 +346,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
             'link',
             'color',
             'slug',
+            'uuid',
         ];
 
         return in_array($fieldType, $searchableFieldTypes, true);

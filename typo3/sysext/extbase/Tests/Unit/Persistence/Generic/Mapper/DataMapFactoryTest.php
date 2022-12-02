@@ -464,6 +464,7 @@ class DataMapFactoryTest extends UnitTestCase
             [['type' => 'number'], TableColumnType::NUMBER],
             [['type' => 'file'], TableColumnType::FILE],
             [['type' => 'json'], TableColumnType::JSON],
+            [['type' => 'uuid'], TableColumnType::UUID],
         ];
     }
 

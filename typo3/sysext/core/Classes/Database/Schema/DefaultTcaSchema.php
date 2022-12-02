@@ -521,6 +521,25 @@ class DefaultTcaSchema
                     ]
                 );
             }
+
+            // Add uuid fields for all tables, defining uuid columns (TCA type=uuid)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'uuid'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+
+                $tables[$tablePosition]->addColumn(
+                    $this->quote($fieldName),
+                    'string',
+                    [
+                        'length' => 36,
+                        'default' => '',
+                        'notnull' => true,
+                    ]
+                );
+            }
         }
 
         return $tables;

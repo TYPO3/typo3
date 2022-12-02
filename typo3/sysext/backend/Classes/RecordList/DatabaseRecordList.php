@@ -2389,15 +2389,7 @@ class DatabaseRecordList
                             $expressionBuilder->eq($tablePidField, (int)$currentPid)
                         );
                     }
-                } elseif ($fieldType === 'input'
-                    || $fieldType === 'text'
-                    || $fieldType === 'json'
-                    || $fieldType === 'flex'
-                    || $fieldType === 'email'
-                    || $fieldType === 'link'
-                    || $fieldType === 'slug'
-                    || $fieldType === 'color'
-                ) {
+                } elseif ($this->isTextFieldType($fieldType)) {
                     $constraints[] = $expressionBuilder->like(
                         $fieldName,
                         $queryBuilder->quote('%' . (int)$this->searchString . '%')
@@ -2434,18 +2426,8 @@ class DatabaseRecordList
                         );
                     }
                 }
-                if ($fieldType === 'input'
-                    || $fieldType === 'text'
-                    || $fieldType === 'json'
-                    || $fieldType === 'flex'
-                    || $fieldType === 'email'
-                    || $fieldType === 'link'
-                    || $fieldType === 'slug'
-                    || $fieldType === 'color'
-                ) {
-                    if ($searchConstraint->count() !== 0) {
-                        $constraints[] = $searchConstraint;
-                    }
+                if ($this->isTextFieldType($fieldType) && $searchConstraint->count() !== 0) {
+                    $constraints[] = $searchConstraint;
                 }
             }
         }
@@ -3156,12 +3138,29 @@ class DatabaseRecordList
     }
 
     /**
-     * Add a divider to the secondary cell gorup, if not already present
+     * Add a divider to the secondary cell group, if not already present
      */
     protected function addDividerToCellGroup(array &$cells): void
     {
         if (!($cells['secondary']['divider'] ?? false)) {
             $this->addActionToCellGroup($cells, '<hr class="dropdown-divider">', 'divider');
         }
+    }
+
+    protected function isTextFieldType(string $fieldType): bool
+    {
+        $textFieldTypes = [
+            'input',
+            'text',
+            'json',
+            'flex',
+            'email',
+            'link',
+            'slug',
+            'color',
+            'uuid',
+        ];
+
+        return in_array($fieldType, $textFieldTypes, true);
     }
 }

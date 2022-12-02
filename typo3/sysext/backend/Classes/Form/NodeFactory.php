@@ -108,6 +108,7 @@ class NodeFactory
         'passthrough' => Element\PassThroughElement::class,
         'belayoutwizard' => Element\BackendLayoutWizardElement::class,
         'json' => Element\JsonElement::class,
+        'uuid' => Element\UuidElement::class,
 
         // Default classes to enrich single elements
         'fieldControl' => NodeExpansion\FieldControl::class,

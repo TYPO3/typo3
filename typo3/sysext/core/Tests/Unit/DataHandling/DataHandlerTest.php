@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Uid\Uuid;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
@@ -1093,6 +1094,49 @@ class DataHandlerTest extends UnitTestCase
                 ['type' => 'json']
             )
         );
+    }
+
+    /**
+     * @test
+     */
+    public function checkValueForUuidReturnsValidUuidUnmodified(): void
+    {
+        self::assertEquals(
+            'b3190536-1431-453e-afbb-25b8c5022513',
+            Uuid::isValid($this->subject->_call('checkValueForUuid', 'b3190536-1431-453e-afbb-25b8c5022513', [])['value'])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function checkValueForUuidCreatesValidUuidValueForReqiredFieldsWithInvalidUuidGiven(): void
+    {
+        self::assertTrue(Uuid::isValid($this->subject->_call('checkValueForUuid', '', [])['value']));
+        self::assertTrue(Uuid::isValid($this->subject->_call('checkValueForUuid', '-_invalid_-', [])['value']));
+    }
+
+    /**
+     * @test
+     */
+    public function checkValueForUuidDiscardsInvalidUuidIfFieldIsNotRequired(): void
+    {
+        self::assertEmpty($this->subject->_call('checkValueForUuid', '', ['required' => false]));
+        self::assertEmpty($this->subject->_call('checkValueForUuid', '-_invalid_-', ['required' => false]));
+    }
+
+    /**
+     * @test
+     */
+    public function checkValueForUuidCreatesValidUuidValueWithDefinedVersion(): void
+    {
+        self::assertEquals(6, (int)$this->subject->_call('checkValueForUuid', '', ['version' => 6])['value'][14]);
+        self::assertEquals(7, (int)$this->subject->_call('checkValueForUuid', '', ['version' => 7])['value'][14]);
+        self::assertEquals(4, (int)$this->subject->_call('checkValueForUuid', '', ['version' => 4])['value'][14]);
+        // Defaults to 4
+        self::assertEquals(4, (int)$this->subject->_call('checkValueForUuid', '', ['version' => 123456678])['value'][14]);
+        // Defaults to 4
+        self::assertEquals(4, (int)$this->subject->_call('checkValueForUuid', '', [])['value'][14]);
     }
 
     /**

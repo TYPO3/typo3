@@ -177,6 +177,7 @@ class TcaRecordTitle implements FormDataProviderInterface
                 break;
             case 'input':
             case 'number':
+            case 'uuid':
                 $recordTitle = $rawValue ?? '';
                 break;
             case 'text':

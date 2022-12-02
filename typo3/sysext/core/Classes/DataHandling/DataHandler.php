@@ -21,6 +21,7 @@ use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\JsonType;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Uid\Uuid;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -1503,6 +1504,7 @@ class DataHandler implements LoggerAwareInterface
             'text' => $this->checkValueForText($value, $tcaFieldConf, $table, $realPid, $field),
             'group', 'folder', 'select' => $this->checkValueForGroupFolderSelect($res, $value, $tcaFieldConf, $table, $id, $status, $field),
             'json' => $this->checkValueForJson($value, $tcaFieldConf),
+            'uuid' => $this->checkValueForUuid((string)$value, $tcaFieldConf),
             'passthrough', 'imageManipulation', 'user' => ['value' => $value],
             default => [],
         };
@@ -2383,6 +2385,32 @@ class DataHandler implements LoggerAwareInterface
             unset($res['value']);
         }
         return $res;
+    }
+
+    /**
+     * Evaluate "uuid" type values. Will create a new uuid in case
+     * an invalid uuid is provided and the field is marked as required.
+     *
+     * @param string $value The value to set.
+     * @param array $tcaFieldConf Field configuration from TCA
+     *
+     * @return array $res The result array. The processed value (if any!) is set in the "value" key.
+     */
+    protected function checkValueForUuid(string $value, array $tcaFieldConf): array
+    {
+        if (Uuid::isValid($value)) {
+            return ['value' => $value];
+        }
+
+        if ($tcaFieldConf['required'] ?? true) {
+            return ['value' => (string)match ((int)($tcaFieldConf['version'] ?? 0)) {
+                6 => Uuid::v6(),
+                7 => Uuid::v7(),
+                default => Uuid::v4()
+            }];
+        }
+        // Unset invalid uuid - in case a field value is not required
+        return [];
     }
 
     /**

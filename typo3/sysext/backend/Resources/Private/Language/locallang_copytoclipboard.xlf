@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_copytoclipboard.xlf" date="2021-06-01T12:43:12Z" product-name="backend">
 		<header/>
 		<body>
+			<trans-unit id="copyToClipboard.title" resname="copyToClipboard.title">
+				<source>Copy %s to clipboard</source>
+			</trans-unit>
 			<trans-unit id="copyToClipboard.success" resname="copyToClipboard.success">
 				<source>Copied to clipboard</source>
 			</trans-unit>

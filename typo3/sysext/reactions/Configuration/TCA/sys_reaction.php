@@ -80,8 +80,7 @@ return [
             'label' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.identifier',
             'description' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.identifier.description',
             'config' => [
-                'type' => 'user',
-                'renderType' => 'uuid',
+                'type' => 'uuid',
             ],
         ],
         'secret' => [

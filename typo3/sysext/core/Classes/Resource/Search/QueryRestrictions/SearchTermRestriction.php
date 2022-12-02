@@ -113,6 +113,7 @@ class SearchTermRestriction implements QueryRestrictionInterface
                     || $fieldType === 'link'
                     || $fieldType === 'color'
                     || $fieldType === 'input'
+                    || $fieldType === 'uuid'
                 ) {
                     $constraintsForParts[] = $searchConstraint;
                 }
