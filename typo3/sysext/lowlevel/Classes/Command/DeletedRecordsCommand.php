@@ -70,6 +70,13 @@ class DeletedRecordsCommand extends Command
                 null,
                 InputOption::VALUE_NONE,
                 'If this option is set, the records will not actually be deleted, but just the output which records would be deleted are shown'
+            )
+            ->addOption(
+                'min-age',
+                'm',
+                InputOption::VALUE_REQUIRED,
+                'Minimum age in days records need to be marked for deletion before actual deletion',
+                0
             );
     }
 
@@ -94,6 +101,12 @@ class DeletedRecordsCommand extends Command
             $depth = MathUtility::forceIntegerInRange((int)$input->getOption('depth'), 0);
         }
 
+        $minimumAge = 0;
+        if (MathUtility::canBeInterpretedAsInteger($input->getOption('min-age'))) {
+            $minimumAge = MathUtility::forceIntegerInRange((int)$input->getOption('min-age'), 0);
+        }
+        $maximumTimestamp = $GLOBALS['EXEC_TIME'] - ($minimumAge * 86400);
+
         if ($io->isVerbose()) {
             $io->section('Searching the database now for deleted records.');
         }
@@ -102,7 +115,7 @@ class DeletedRecordsCommand extends Command
         $dryRun = $input->hasOption('dry-run') && $input->getOption('dry-run') != false ? true : false;
 
         // find all records that should be deleted
-        $deletedRecords = $this->findAllFlaggedRecordsInPage($startingPoint, $depth);
+        $deletedRecords = $this->findAllFlaggedRecordsInPage($startingPoint, $depth, $maximumTimestamp);
 
         if (!$io->isQuiet()) {
             $totalAmountOfTables = count($deletedRecords);
@@ -133,20 +146,20 @@ class DeletedRecordsCommand extends Command
      *
      * @param int $pageId the uid of the pages record (can also be 0)
      * @param int $depth The current depth of levels to go down
+     * @param int $maximumTimestamp maximum value of records tstamp
      * @param array $deletedRecords the records that are already marked as deleted (used when going recursive)
      *
      * @return array the modified $deletedRecords array
      */
-    protected function findAllFlaggedRecordsInPage(int $pageId, int $depth, array $deletedRecords = []): array
+    protected function findAllFlaggedRecordsInPage(int $pageId, int $depth, int $maximumTimestamp, array $deletedRecords = []): array
     {
         $queryBuilderForPages = $this->connectionPool
             ->getQueryBuilderForTable('pages');
         $queryBuilderForPages->getRestrictions()->removeAll();
 
-        $pageId = (int)$pageId;
         if ($pageId > 0) {
-            $queryBuilderForPages
-                ->select('uid', 'deleted')
+            $pageQuery = $queryBuilderForPages
+                ->count('uid')
                 ->from('pages')
                 ->where(
                     $queryBuilderForPages->expr()->and(
@@ -154,26 +167,30 @@ class DeletedRecordsCommand extends Command
                             'uid',
                             $queryBuilderForPages->createNamedParameter($pageId, Connection::PARAM_INT)
                         ),
-                        $queryBuilderForPages->expr()->neq('deleted', 0)
+                        $queryBuilderForPages->expr()->neq(
+                            'deleted',
+                            $queryBuilderForPages->createNamedParameter(0, Connection::PARAM_INT)
+                        )
                     )
-                )
-                // @todo Executing and not assigning and use the result looks weired, at least with the
-                //       circumstance that the same QueryBuilder is reused as count query and executed
-                //       directly afterwards - must be rechecked and either solved or proper commented
-                //       why this mystery is needed here as this is not obvious and against general
-                //       recommendation to not reuse the QueryBuilder.
-                ->executeQuery();
-            $rowCount = $queryBuilderForPages
-                ->count('uid')
-                ->executeQuery()
-                ->fetchOne();
+                );
+
+            if ($maximumTimestamp > 0) {
+                $pageQuery->andWhere(
+                    $queryBuilderForPages->expr()->lt(
+                        'tstamp',
+                        $queryBuilderForPages->createNamedParameter($maximumTimestamp, Connection::PARAM_INT)
+                    )
+                );
+            }
+
             // Register if page itself is deleted
-            if ($rowCount > 0) {
+            if ($pageQuery->executeQuery()->fetchOne() > 0) {
                 $deletedRecords['pages'][$pageId] = $pageId;
             }
         }
 
-        $databaseTables = $this->getTablesWithDeletedFlags();
+        $databaseTables = $this->getTablesWithFlag('delete');
+        $databaseTablesWithTstamp = $this->getTablesWithFlag('tstamp');
         // Traverse tables of records that belongs to page
         foreach ($databaseTables as $tableName => $deletedField) {
             // Select all records belonging to page
@@ -182,7 +199,7 @@ class DeletedRecordsCommand extends Command
 
             $queryBuilder->getRestrictions()->removeAll();
 
-            $result = $queryBuilder
+            $query = $queryBuilder
                 ->select('uid', $deletedField)
                 ->from($tableName)
                 ->where(
@@ -190,8 +207,19 @@ class DeletedRecordsCommand extends Command
                         'pid',
                         $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                     )
-                )
-                ->executeQuery();
+                );
+            if (!isset($deletedRecords['pages'][$pageId])
+                && $maximumTimestamp > 0
+                && array_key_exists($tableName, $databaseTablesWithTstamp)
+            ) {
+                $query->andWhere(
+                    $queryBuilder->expr()->lt(
+                        $databaseTablesWithTstamp[$tableName],
+                        $queryBuilder->createNamedParameter($maximumTimestamp, Connection::PARAM_INT)
+                    )
+                );
+            }
+            $result = $query->executeQuery();
 
             while ($recordOnPage = $result->fetchAssociative()) {
                 // Register record as deleted
@@ -230,7 +258,7 @@ class DeletedRecordsCommand extends Command
                 ->executeQuery();
 
             while ($subPage = $result->fetchAssociative()) {
-                $deletedRecords = $this->findAllFlaggedRecordsInPage($subPage['uid'], $depth, $deletedRecords);
+                $deletedRecords = $this->findAllFlaggedRecordsInPage($subPage['uid'], $depth, $maximumTimestamp, $deletedRecords);
             }
         }
 
@@ -246,7 +274,7 @@ class DeletedRecordsCommand extends Command
             if (is_array($versions)) {
                 foreach ($versions as $verRec) {
                     if (!$verRec['_CURRENT_VERSION']) {
-                        $deletedRecords = $this->findAllFlaggedRecordsInPage($verRec['uid'], $depth, $deletedRecords);
+                        $deletedRecords = $this->findAllFlaggedRecordsInPage($verRec['uid'], $depth, $maximumTimestamp, $deletedRecords);
                     }
                 }
             }
@@ -256,17 +284,17 @@ class DeletedRecordsCommand extends Command
     }
 
     /**
-     * Fetches all tables registered in the TCA with a deleted
+     * Fetches all tables registered in the TCA with a $flag
      * and that are not pages (which are handled separately)
      *
      * @return array an associative array with the table as key and the
      */
-    protected function getTablesWithDeletedFlags(): array
+    protected function getTablesWithFlag(string $flag): array
     {
         $tables = [];
         foreach ($GLOBALS['TCA'] as $tableName => $configuration) {
-            if ($tableName !== 'pages' && isset($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
-                $tables[$tableName] = $GLOBALS['TCA'][$tableName]['ctrl']['delete'];
+            if ($tableName !== 'pages' && isset($GLOBALS['TCA'][$tableName]['ctrl'][$flag])) {
+                $tables[$tableName] = $GLOBALS['TCA'][$tableName]['ctrl'][$flag];
             }
         }
         ksort($tables);
