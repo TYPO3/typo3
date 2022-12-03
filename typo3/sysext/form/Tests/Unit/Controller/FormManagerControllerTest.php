@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Controller;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -33,8 +31,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FormManagerControllerTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected bool $resetSingletonInstances = true;
 
     /**
@@ -46,34 +42,34 @@ class FormManagerControllerTest extends UnitTestCase
             'dummy',
         ], [], '', false);
 
-        $formPersistenceManagerProphecy = $this->prophesize(FormPersistenceManager::class);
+        $formPersistenceManagerMock = $this->createMock(FormPersistenceManager::class);
 
-        $mockController->_set('formPersistenceManager', $formPersistenceManagerProphecy->reveal());
+        $mockController->_set('formPersistenceManager', $formPersistenceManagerMock);
         $mockController->_set('formSettings', [
             'persistenceManager' => [
                 'allowSaveToExtensionPaths' => true,
             ],
         ]);
 
-        $storageProphecy1 = $this->prophesize(ResourceStorage::class);
-        $storageProphecy2 = $this->prophesize(ResourceStorage::class);
+        $storageMock1 = $this->createMock(ResourceStorage::class);
+        $storageMock2 = $this->createMock(ResourceStorage::class);
 
-        $storageProphecy1->isPublic()->willReturn(true);
-        $storageProphecy2->isPublic()->willReturn(false);
+        $storageMock1->method('isPublic')->willReturn(true);
+        $storageMock2->method('isPublic')->willReturn(false);
 
-        $folder1Prophecy = $this->prophesize(Folder::class);
-        $folder1Prophecy->getPublicUrl()->willReturn('/fileadmin/user_upload/');
-        $folder1Prophecy->getStorage()->willReturn($storageProphecy1->reveal());
+        $folder1Mock = $this->createMock(Folder::class);
+        $folder1Mock->method('getPublicUrl')->willReturn('/fileadmin/user_upload/');
+        $folder1Mock->method('getStorage')->willReturn($storageMock1);
 
-        $folder2Prophecy = $this->prophesize(Folder::class);
-        $folder2Prophecy->getStorage()->willReturn($storageProphecy2->reveal());
+        $folder2Mock = $this->createMock(Folder::class);
+        $folder2Mock->method('getStorage')->willReturn($storageMock2);
 
-        $formPersistenceManagerProphecy->getAccessibleFormStorageFolders(Argument::cetera())->willReturn([
-            '1:/user_upload/' => $folder1Prophecy->reveal(),
-            '2:/forms/' => $folder2Prophecy->reveal(),
+        $formPersistenceManagerMock->method('getAccessibleFormStorageFolders')->willReturn([
+            '1:/user_upload/' => $folder1Mock,
+            '2:/forms/' => $folder2Mock,
         ]);
 
-        $formPersistenceManagerProphecy->getAccessibleExtensionFolders(Argument::cetera())->willReturn([
+        $formPersistenceManagerMock->method('getAccessibleExtensionFolders')->willReturn([
             'EXT:form/Resources/Forms/' => '/some/path/form/Resources/Forms/',
             'EXT:form_additions/Resources/Forms/' => '/some/path/form_additions/Resources/Forms/',
         ]);
@@ -163,13 +159,13 @@ class FormManagerControllerTest extends UnitTestCase
             'dummy',
         ], [], '', false);
 
-        $formPersistenceManagerProphecy = $this->prophesize(FormPersistenceManager::class);
-        $mockController->_set('formPersistenceManager', $formPersistenceManagerProphecy->reveal());
+        $formPersistenceManagerMock = $this->createMock(FormPersistenceManager::class);
+        $mockController->_set('formPersistenceManager', $formPersistenceManagerMock);
 
-        $databaseService = $this->prophesize(DatabaseService::class);
-        $mockController->_set('databaseService', $databaseService->reveal());
+        $databaseService = $this->createMock(DatabaseService::class);
+        $mockController->_set('databaseService', $databaseService);
 
-        $formPersistenceManagerProphecy->listForms(Argument::cetera())->willReturn([
+        $formPersistenceManagerMock->method('listForms')->willReturn([
             0 => [
                 'identifier' => 'ext-form-identifier',
                 'name' => 'some name',
@@ -181,11 +177,11 @@ class FormManagerControllerTest extends UnitTestCase
             ],
         ]);
 
-        $databaseService->getAllReferencesForFileUid(Argument::cetera())->willReturn([
+        $databaseService->method('getAllReferencesForFileUid')->willReturn([
             0 => 0,
         ]);
 
-        $databaseService->getAllReferencesForPersistenceIdentifier(Argument::cetera())->willReturn([
+        $databaseService->method('getAllReferencesForPersistenceIdentifier')->willReturn([
             '1:/user_uploads/someFormName.yaml' => 2,
         ]);
 
@@ -225,11 +221,11 @@ class FormManagerControllerTest extends UnitTestCase
      */
     public function getProcessedReferencesRowsReturnsProcessedArray(): void
     {
-        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-        $iconProphecy = $this->prophesize(Icon::class);
-        $iconFactoryProphecy->getIconForRecord(Argument::cetera())->willReturn($iconProphecy->reveal());
-        $iconProphecy->render()->shouldBeCalled()->willReturn('');
+        $iconFactoryMock = $this->createMock(IconFactory::class);
+        $iconMock = $this->createMock(Icon::class);
+        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('');
+        $iconFactoryMock->method('getIconForRecord')->withAnyParameters()->willReturn($iconMock);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
 
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
             'getModuleUrl',
@@ -237,10 +233,10 @@ class FormManagerControllerTest extends UnitTestCase
             'getRecordTitle',
         ], [], '', false);
 
-        $databaseService = $this->prophesize(DatabaseService::class);
-        $mockController->_set('databaseService', $databaseService->reveal());
+        $databaseService = $this->createMock(DatabaseService::class);
+        $mockController->_set('databaseService', $databaseService);
 
-        $databaseService->getReferencesByPersistenceIdentifier(Argument::cetera())->willReturn([
+        $databaseService->method('getReferencesByPersistenceIdentifier')->with(self::anything())->willReturn([
             0 => [
                 'tablename' => 'tt_content',
                 'recuid' => -1,
