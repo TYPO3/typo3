@@ -17,9 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Service;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Remote\ExtensionDownloaderRemoteInterface;
@@ -32,39 +31,37 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ExtensionManagementServiceTest extends UnitTestCase
 {
-    use ProphecyTrait;
+    protected bool $resetSingletonInstances = true;
 
-    protected $managementService;
-    protected $dependencyUtilityProphecy;
-    protected $installUtilityProphecy;
-    protected $downloadQueue;
-    protected $remoteRegistry;
-    protected $remote;
-    protected $fileHandlingUtility;
+    protected ExtensionManagementService $managementService;
+    protected DependencyUtility&MockObject $dependencyUtilityMock;
+    protected InstallUtility&MockObject $installUtilityMock;
+    protected DownloadQueue $downloadQueue;
+    protected ExtensionDownloaderRemoteInterface&MockObject $remoteMock;
+    protected FileHandlingUtility&MockObject $fileHandlingUtilityMock;
 
     public function setUp(): void
     {
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extensionmanager']['offlineMode'] = false;
-        $this->resetSingletonInstances = true;
-        $this->remoteRegistry = $this->prophesize(RemoteRegistry::class);
-        $this->remote = $this->prophesize(ExtensionDownloaderRemoteInterface::class);
-        $this->remoteRegistry->hasRemote(Argument::cetera())->willReturn(true);
-        $this->remoteRegistry->getRemote(Argument::cetera())->willReturn($this->remote->reveal());
-        $this->fileHandlingUtility = $this->prophesize(FileHandlingUtility::class);
+        $this->remoteMock = $this->createMock(ExtensionDownloaderRemoteInterface::class);
+        $remoteRegistryMock = $this->createMock(RemoteRegistry::class);
+        $remoteRegistryMock->method('hasRemote')->with(self::anything())->willReturn(true);
+        $remoteRegistryMock->method('getRemote')->with(self::anything())->willReturn($this->remoteMock);
+        $this->fileHandlingUtilityMock = $this->createMock(FileHandlingUtility::class);
 
         $this->managementService = new ExtensionManagementService(
-            $this->remoteRegistry->reveal(),
-            $this->fileHandlingUtility->reveal()
+            $remoteRegistryMock,
+            $this->fileHandlingUtilityMock
         );
-        $this->managementService->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
+        $this->managementService->injectEventDispatcher(new NoopEventDispatcher());
 
-        $this->dependencyUtilityProphecy = $this->prophesize(DependencyUtility::class);
-        $this->installUtilityProphecy = $this->prophesize(InstallUtility::class);
+        $this->dependencyUtilityMock = $this->createMock(DependencyUtility::class);
+        $this->installUtilityMock = $this->createMock(InstallUtility::class);
         $this->downloadQueue = new DownloadQueue();
 
-        $this->managementService->injectDependencyUtility($this->dependencyUtilityProphecy->reveal());
-        $this->managementService->injectInstallUtility($this->installUtilityProphecy->reveal());
+        $this->managementService->injectDependencyUtility($this->dependencyUtilityMock);
+        $this->managementService->injectInstallUtility($this->installUtilityMock);
         $this->managementService->injectDownloadQueue($this->downloadQueue);
     }
 
@@ -80,14 +77,14 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $extension->_setProperty('uid', 123);
         $extension->_setProperty('remote', 'ter');
 
-        $this->managementService->installExtension($extension);
-        $this->remote->downloadExtension(
+        $this->remoteMock->expects(self::once())->method('downloadExtension')->with(
             $extension->getExtensionKey(),
             $extension->getVersion(),
-            $this->fileHandlingUtility,
+            $this->fileHandlingUtilityMock,
             $extension->getMd5hash(),
             'Local'
-        )->shouldHaveBeenCalled();
+        );
+        $this->managementService->installExtension($extension);
     }
 
     /**
@@ -96,10 +93,9 @@ class ExtensionManagementServiceTest extends UnitTestCase
     public function installExtensionReturnsFalseIfDependenciesCannotBeResolved(): void
     {
         $extension = new Extension();
-        $this->dependencyUtilityProphecy->setSkipDependencyCheck(false)->willReturn();
-        $this->dependencyUtilityProphecy->checkDependencies($extension)->willReturn();
-
-        $this->dependencyUtilityProphecy->hasDependencyErrors()->willReturn(true);
+        $this->dependencyUtilityMock->expects(self::atLeastOnce())->method('setSkipDependencyCheck')->with(false);
+        $this->dependencyUtilityMock->expects(self::atLeastOnce())->method('checkDependencies')->with($extension);
+        $this->dependencyUtilityMock->method('hasDependencyErrors')->willReturn(true);
 
         $result = $this->managementService->installExtension($extension);
         self::assertFalse($result);
@@ -128,12 +124,12 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $extension->_setProperty('remote', 'ter');
         $downloadQueue->addExtensionToQueue($extension);
         $this->managementService->injectDownloadQueue($downloadQueue);
-        $this->installUtilityProphecy->enrichExtensionWithDetails('foo')->willReturn([
+        $this->installUtilityMock->method('enrichExtensionWithDetails')->with('foo')->willReturn([
             'key' => 'foo',
             'remote' => 'ter',
         ]);
-        $this->installUtilityProphecy->reloadAvailableExtensions()->willReturn();
-        $this->installUtilityProphecy->install('foo')->willReturn();
+        $this->installUtilityMock->expects(self::atLeastOnce())->method('reloadAvailableExtensions');
+        $this->installUtilityMock->expects(self::atLeastOnce())->method('install')->with('foo');
 
         $result = $this->managementService->installExtension($extension);
         self::assertSame(['downloaded' => ['foo' => $extension], 'installed' => ['foo' => 'foo']], $result);
@@ -150,15 +146,15 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $extension->_setProperty('remote', 'ter');
         $downloadQueue->addExtensionToQueue($extension, 'update');
         $this->managementService->injectDownloadQueue($downloadQueue);
-        $this->installUtilityProphecy->enrichExtensionWithDetails('foo')->willReturn([
+        $this->installUtilityMock->method('enrichExtensionWithDetails')->with('foo')->willReturn([
             'key' => 'foo',
             'remote' => 'ter',
         ]);
-        $this->installUtilityProphecy->reloadAvailableExtensions()->willReturn();
+        $this->installUtilityMock->expects(self::atLeastOnce())->method('reloadAvailableExtensions');
 
         // an extension update will uninstall the extension and install it again
-        $this->installUtilityProphecy->uninstall('foo')->shouldBeCalled();
-        $this->installUtilityProphecy->install('foo')->shouldBeCalled();
+        $this->installUtilityMock->expects(self::atLeastOnce())->method('uninstall')->with('foo');
+        $this->installUtilityMock->expects(self::atLeastOnce())->method('install')->with('foo');
 
         $result = $this->managementService->installExtension($extension);
 
@@ -172,12 +168,11 @@ class ExtensionManagementServiceTest extends UnitTestCase
     {
         $extension = new Extension();
         $extension->setExtensionKey('foo');
-        $this->dependencyUtilityProphecy->hasDependencyErrors()->willReturn(false);
-        $this->dependencyUtilityProphecy->checkDependencies($extension)->shouldBeCalled();
+        $this->dependencyUtilityMock->method('hasDependencyErrors')->willReturn(false);
+        $this->dependencyUtilityMock->expects(self::once())->method('checkDependencies')->with($extension);
 
         $this->managementService->markExtensionForDownload($extension);
 
-        $this->dependencyUtilityProphecy->checkDependencies($extension)->shouldHaveBeenCalled();
         self::assertSame(['download' => ['foo' => $extension]], $this->downloadQueue->getExtensionQueue());
     }
 
@@ -188,12 +183,11 @@ class ExtensionManagementServiceTest extends UnitTestCase
     {
         $extension = new Extension();
         $extension->setExtensionKey('foo');
-        $this->dependencyUtilityProphecy->hasDependencyErrors()->willReturn(false);
-        $this->dependencyUtilityProphecy->checkDependencies($extension)->shouldBeCalled();
+        $this->dependencyUtilityMock->method('hasDependencyErrors')->willReturn(false);
+        $this->dependencyUtilityMock->expects(self::once())->method('checkDependencies')->with($extension);
 
         $this->managementService->markExtensionForUpdate($extension);
 
-        $this->dependencyUtilityProphecy->checkDependencies($extension)->shouldHaveBeenCalled();
         self::assertSame(['update' => ['foo' => $extension]], $this->downloadQueue->getExtensionQueue());
     }
 }
