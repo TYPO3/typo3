@@ -25,6 +25,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Uid\Uuid;
+use TYPO3\CMS\Backend\Routing\RouteResult;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reactions\Authentication\ReactionUserAuthentication;
 use TYPO3\CMS\Reactions\Http\ReactionHandler;
@@ -50,15 +51,16 @@ class ReactionResolver implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // 1. We only listen to the "reaction" endpoint
-        $route = $request->getAttribute('route');
-        if ($route->getOption('_identifier') !== 'reaction') {
+        /** @var RouteResult $routeResult */
+        $routeResult = $request->getAttribute('routing');
+        if (!($routeResult instanceof RouteResult) || $routeResult->getRouteName() !== 'reaction') {
             return $handler->handle($request);
         }
 
         // 2. Security check
-        $reactionIdentifier = $this->resolveReactionIdentifier($request);
+        $reactionIdentifier = (string)($routeResult->getArguments()['reactionIdentifier'] ?? '');
         $secretKey = $this->resolveReactionSecret($request);
-        if ($secretKey === '' || $reactionIdentifier === null || !Uuid::isValid($reactionIdentifier)) {
+        if ($secretKey === '' || !Uuid::isValid($reactionIdentifier)) {
             return $this->jsonResponse(['Invalid information'], 503);
         }
 
@@ -84,13 +86,6 @@ class ReactionResolver implements MiddlewareInterface
 
         // 4. Handle reaction
         return $this->reactionHandler->handleReaction($request, $reaction, $user);
-    }
-
-    protected function resolveReactionIdentifier(ServerRequestInterface $request): ?string
-    {
-        // @todo: this should be handled in Backend Routing in the future
-        [$path, $reactionId] = GeneralUtility::revExplode('/', $request->getUri()->getPath(), 2);
-        return $reactionId !== '' ? $reactionId : null;
     }
 
     protected function resolveReactionSecret(ServerRequestInterface $request): string
