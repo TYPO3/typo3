@@ -14,7 +14,7 @@
             </trans-unit>
 
             <trans-unit id="heading_text" resname="heading_text">
-                <source>Reactions — Manage Incoming HTTP Web Hooks</source>
+                <source>Reactions — Manage Incoming HTTP Webhooks</source>
             </trans-unit>
             <trans-unit id="reaction_not_found.title" resname="reaction_not_found.title">
                 <source>No reactions found!</source>
