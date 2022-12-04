@@ -15,14 +15,37 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper\Fixture;
+namespace TYPO3Tests\TestDataMapper\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-/**
- * Fixture
- */
-class DummyParentEntity extends AbstractEntity
+class TraversableDomainObjectExample extends AbstractEntity implements \Iterator
 {
-    public DummyChildEntity $relationProperty;
+    public function getUid(): ?int
+    {
+        return 1;
+    }
+
+    public function current(): mixed
+    {
+        return [];
+    }
+
+    public function next(): void
+    {
+    }
+
+    public function key(): mixed
+    {
+        return 1;
+    }
+
+    public function valid(): bool
+    {
+        return true;
+    }
+
+    public function rewind(): void
+    {
+    }
 }
