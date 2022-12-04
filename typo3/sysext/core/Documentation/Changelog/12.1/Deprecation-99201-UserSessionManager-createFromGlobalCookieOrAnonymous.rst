@@ -13,9 +13,9 @@ Description
 
 The PHP method :php:`\TYPO3\CMS\Core\Session\UserSessionManager->createFromGlobalCookieOrAnonymous`
 has been deprecated. It served as a low-level API to create a user session based
-on the superglobal :php:`$_COOKIE` variable. However, as the usage of PHP
+on the superglobal :php:`$_COOKIE` variable. However, the usage of PHP
 superglobals should be avoided in TYPO3 code. As TYPO3 Core is moving towards
-accessing request information via PSR-7 Request attribute, this method is also
+accessing request information via PSR-7 request attribute, this method is also
 deprecated, even though it was only introduced in TYPO3 v11.0.
 
 
@@ -35,14 +35,14 @@ legacy code, which is why it is very unlikely that this method is called directl
 in any TYPO3 extension. However, the Extension Scanner will pick up any
 usages of this method.
 
-TYPO3 Extensions usually do not use the UserSessionManager directly to create
-a user-session.
+TYPO3 extensions usually do not use the :php:`UserSessionManager` directly to create
+a user session.
 
 
 Migration
 =========
 
-The UserSessionManager API also provides the
+The :php:`UserSessionManager` API also provides the
 :php:`createFromRequestOrAnonymous(ServerRequestInterface $request)` method when
 the API itself was added. The method achieves the same logic based on a PSR-7
 request. Use this method instead and use PSR-7 as much as possible.

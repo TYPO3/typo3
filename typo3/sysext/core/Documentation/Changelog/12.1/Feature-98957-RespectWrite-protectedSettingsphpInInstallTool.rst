@@ -11,8 +11,8 @@ See :issue:`98957`
 Description
 ===========
 
-The "System" section in the Install Tool now informs a system maintainer if the
-file :file:`system/settings.php` is write-protected.
+The :guilabel:`Admin Tools > Settings` backend module now informs a system
+maintainer if the :file:`system/settings.php` file is write-protected.
 
 This allows to make the settings file read-only after deployments.
 
@@ -21,7 +21,7 @@ Impact
 ======
 
 An info box is rendered in the module and each submodule, informing the system
-maintainer that the file :file:`system/settings.php` is write-protected.
+maintainer that the :file:`system/settings.php` file is write-protected.
 In that case, all input fields are disabled and the submit buttons are not
 available.
 

@@ -23,8 +23,9 @@ were removed subsequently within TYPO3 Core since TYPO3 v9, as various improveme
 were made to the database layer when working with Workspaces.
 
 In TYPO3 v9.5.x a new restriction :php:`\TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction`
-was added, which superseded both existing Workspace-related restrictions, solving
-almost all cases needed when reading rows from the database.
+:ref:`was added <important-84985>`, which superseded both existing
+Workspace-related restrictions, solving almost all cases needed when reading
+rows from the database.
 
 The former restriction classes have now been marked as deprecated.
 
@@ -43,7 +44,7 @@ will trigger a PHP deprecation notice.
 Affected installations
 ======================
 
-TYPO3 Installations with custom extensions explicitly using one of the
+TYPO3 installations with custom extensions explicitly using one of the
 restrictions. Affected extensions can be detected via the Extension Scanner
 in the Install Tool / Maintenance Area.
 
@@ -52,10 +53,10 @@ Migration
 =========
 
 Use the class :php:`\TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction`
-instead. It allows to hand in the current Workspace ID, which then fetches all
-records from the database only for a certain Workspace (unlike
-FrontendWorkspaceRestriction which did not limit the database query to one workspace
-in certain cases).
+instead. It allows to hand in the current workspace ID, which then fetches all
+records from the database only for a certain workspace (unlike
+:php:`FrontendWorkspaceRestriction` which did not limit the database query to
+one workspace in certain cases).
 
 When querying the database, ensure to use the Overlay APIs in
 :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->versionOL` (Frontend)
@@ -65,10 +66,10 @@ filter the invalid records.
 Example
 -------
 
-This shows a regular example within the TYPO3 Backend to query records
+This shows a regular example within the TYPO3 backend to query records
 within
 
-.. code-block:: php
+..  code-block:: php
 
     $context = GeneralUtility::makeInstance(Context::class);
     $workspaceId = $context->getPropertyFromAspect('workspace', 'id', 0);

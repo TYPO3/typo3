@@ -11,15 +11,15 @@ See :issue:`99047`
 Description
 ===========
 
-Site Settings have been introduced with TYPO3 v10 as part of the configuration
+Site settings have been introduced with TYPO3 v10 as part of the configuration
 of a site. In contrast to the site configuration, they are mostly used to
 provide sane defaults for TypoScript constants and have a layer of arbitrary
 configuration available in any context.
 
 In order to separate these settings from the system site configuration, make them
-accessible and editable in the TYPO3 Backend, and to distinguish between required
+accessible and editable in the TYPO3 backend, and to distinguish between required
 site configuration and optional settings, the "settings" part of the settings are
-moved to a separate "settings.yaml" file in the site configuration folder.
+moved to a separate :file:`settings.yaml` file in the site configuration folder.
 
 A migration wizard is provided as upgrade wizard to migrate settings into the
 new file.
@@ -28,7 +28,7 @@ new file.
 Impact
 ======
 
-Settings are now loaded from a separate file called "settings.yaml" residing
+Settings are now loaded from a separate file called :file:`settings.yaml` residing
 next to the :file:`config.yaml` of a site.
 Executing the upgrade wizard will load all settings of a site and create that
 file for the user. The migration wizard will not remove / rewrite the

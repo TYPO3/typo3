@@ -2,9 +2,9 @@
 
 .. _deprecation-99084-1667981931:
 
-============================================================
-Deprecation: #99084 - Make Context Menu Trigger Configurable
-============================================================
+===============================================================
+Deprecation: #99084 - Make trigger of context menu configurable
+===============================================================
 
 See :issue:`99084`
 
@@ -13,7 +13,7 @@ Description
 
 The context menu JavaScript API was adapted to also support opening
 the menu through the "contextmenu" event type (right click) only.
-Configuration for the context menu was streamlined and now reflects
+The configuration for the context menu was streamlined and now reflects
 its purpose. The trigger can now be set to "click" or "contextmenu".
 
 
@@ -32,13 +32,14 @@ All extensions that use the context menu.
 Migration
 =========
 
-Replace the trigger `class="t3js-contextmenutrigger"` with `data-contextmenu-trigger="click"`.
-Prefix all configuration with `data-contextmenu-`.
+Replace the trigger :html:`class="t3js-contextmenutrigger"` with
+:html:`data-contextmenu-trigger="click"`. Prefix all configuration with
+:html:`data-contextmenu-`.
 
 Before
 ------
 
-.. code-block:: html
+..  code-block:: html
 
     <a href="#"
         class="t3js-contextmenutrigger"
@@ -50,7 +51,7 @@ Before
 After
 -----
 
-.. code-block:: html
+..  code-block:: html
 
     <a href="#"
         data-contextmenu-trigger="click"

@@ -20,12 +20,12 @@ usually shown in select fields with groups available.
 Impact
 ======
 
-When using the TSconfig :typoscript:`addItems` feature, the `group` property can
-now be used:
+When using the TSconfig :typoscript:`addItems` feature, the :typoscript:`group`
+property can now be used:
 
 Example:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     TCEFORM.tt_content.layout.addItems {
         new-layout = My new layout

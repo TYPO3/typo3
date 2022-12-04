@@ -11,20 +11,20 @@ See :issue:`99118`
 Description
 ===========
 
-A new PSR-14 :php:`\TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent`
 has been introduced. It allows to define whether a file can be selected in the
-:guilabel:`File Selector`. This was previously only possible by overriding the
+file browser. Previously, this was only possible by overriding the
 :php:`\TYPO3\CMS\Backend\ElementBrowser\FileBrowser->fileIsSelectableInFileList()`
-method via a XCLass.
+method via an XCLASS.
 
 The event features the following methods:
 
-- :php:`getFile()`: Returns the :php:`FileInterface` in question
+- :php:`getFile()`: Returns the :php:`\TYPO3\CMS\Core\Resource\FileInterface` in question
 - :php:`isFileSelectable()`: Whether the file is allowed to be selected
 - :php:`allowFileSelection()`: Allow selection of the file in question
 - :php:`denyFileSelection()`: Deny selection of the file in question
 
-.. note::
+..  note::
 
     The :php:`fileIsSelectableInFileList()` method allowed to access the image
     dimensions (`width` and `height`) via the second parameter :php:`$imgInfo`.
@@ -53,7 +53,7 @@ The corresponding event listener class:
         {
             // Deny selection of "png" images
             if ($event->getFile()->getExtension() === 'png') {
-                $event->denyFileSelecttion();
+                $event->denyFileSelection();
             }
         }
     }
@@ -61,8 +61,8 @@ The corresponding event listener class:
 Impact
 ======
 
-It's now possible to decide whether a file can be selected in the
-:guilabel:`File Selector`, using an improved PSR-14 approach instead
+It is now possible to decide whether a file can be selected in the
+file browser, using an improved PSR-14 approach instead
 of cross classing.
 
 .. index:: Backend, ext:backend

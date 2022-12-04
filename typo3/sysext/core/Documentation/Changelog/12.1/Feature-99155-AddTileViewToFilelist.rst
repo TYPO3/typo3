@@ -12,10 +12,10 @@ Description
 ===========
 
 The listing of resources in a table has some specific use
-cases but for the editor, hard to get an overview of file
+cases, but it is hard for the editor to get an overview of file
 resources since the thumbnails are small.
 
-To provide a better overview of assets in the file module we
+To provide a better overview of assets in the :guilabel:`Filelist` module we
 are introducing a tile view with bigger thumbnails and reduced
 meta information. The user can now choose the desired display
 mode of the assets depending on the current requirements.
@@ -31,6 +31,6 @@ Impact
 ======
 
 The user can now change the display mode of resources
-in the file list module.
+in the :guilabel:`Filelist` module.
 
 .. index:: Backend, ext:filelist

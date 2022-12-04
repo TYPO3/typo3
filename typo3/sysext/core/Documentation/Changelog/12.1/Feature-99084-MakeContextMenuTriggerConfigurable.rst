@@ -3,7 +3,7 @@
 .. _feature-99084-1667981931:
 
 ========================================================
-Feature: #99084 - Make Context Menu Trigger Configurable
+Feature: #99084 - Make context menu trigger configurable
 ========================================================
 
 See :issue:`99084`
@@ -19,14 +19,15 @@ its purpose. The trigger can now be set to "click" or "contextmenu".
 New options
 -----------
 
-data-contextmenu-trigger:
-- click: Opens the context menu click and contextmenu
-- contextmenu: Opens the context menu only on contextmenu
+:html:`data-contextmenu-trigger`:
+
+- :html:`click`: Opens the context menu on "click" and on "contextmenu"
+- :html:`contextmenu`: Opens the context menu only on "contextmenu"
 
 Examples
 --------
 
-.. code-block:: html
+..  code-block:: html
 
     <a href="#"
         data-contextmenu-trigger="click"
@@ -34,7 +35,7 @@ Examples
         data-contextmenu-uid="10"
     >Click and Contextmenu</a>
 
-.. code-block:: html
+..  code-block:: html
 
     <a href="#"
         data-contextmenu-trigger="contextmenu"

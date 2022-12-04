@@ -19,20 +19,20 @@ Impact
 ======
 
 You can now use `./bin/typo3 setup` to set up your TYPO3 installation without
-needing to run through the Web installer.
+needing to run through the web installer.
 
 Example
-^^^^^^^
+-------
 
-Interactive / Guided setup (Questions/Answers):
+Interactive / guided setup (questions/answers):
 
-.. code-block:: bash
+..  code-block:: bash
 
     ./bin/typo3 setup
 
 Automated setup:
 
-.. code-block:: bash
+..  code-block:: bash
 
     TYPO3_DB_DRIVER=mysqli \
     TYPO3_DB_USERNAME=db \
@@ -44,7 +44,7 @@ Automated setup:
     TYPO3_SETUP_ADMIN_USERNAME=admin \
     TYPO3_SETUP_PASSWORD=password \
     TYPO3_PROJECT_NAME="Automated Setup" \
-    TYPO3_CREATE_SITE="https://your-typo3-site.com/" \
+    TYPO3_CREATE_SITE="https://your-typo3-site.example.com/" \
     ./bin/typo3 setup --force
 
 

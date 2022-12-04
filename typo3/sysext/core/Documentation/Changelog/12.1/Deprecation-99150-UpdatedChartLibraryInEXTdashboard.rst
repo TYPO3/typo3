@@ -11,7 +11,7 @@ See :issue:`99150`
 Description
 ===========
 
-The library :js:`chart.js` used to render charts in an dashboard has been
+The library `chart.js` used to render charts in a dashboard has been
 updated to version 4.x, introducing some breaking changes. A migration layer is
 in place to migrate known and used affected settings.
 
@@ -28,7 +28,7 @@ If a migration is executed, an entry will we written into the deprecation log.
 Affected installations
 ======================
 
-All plugins providing 3rd party chart widgets are affected.
+All plugins providing third-party chart widgets are affected.
 
 
 Migration

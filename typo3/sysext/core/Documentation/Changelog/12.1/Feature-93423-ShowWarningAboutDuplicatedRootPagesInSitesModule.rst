@@ -14,8 +14,8 @@ Description
 It might happen that the same root page ID is configured for multiple site
 configurations, e.g. in case corresponding files were copied manually. This
 might lead to misbehavior, since always the last site with this root page
-id defined is used by TYPO3. As such configuration errors might be hard to
-spot does the :guilabel:`Sites` module now inform about such duplications in
+ID defined is used by TYPO3. As such configuration errors might be hard to
+spot, the :guilabel:`Sites` module now informs about such duplications in
 the site configuration overview view.
 
 Impact

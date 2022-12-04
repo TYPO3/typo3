@@ -15,10 +15,10 @@ The TYPO3 backend search (aka "Live Search") is using the
 :php:`\TYPO3\CMS\Backend\Search\LiveSearch\DatabaseRecordProvider` to search
 for records in database tables, having :php:`searchFields` configured in TCA.
 
-In some individual cases it may not be desired to search in a certain table.
+In some individual cases, it may not be desired to search in a certain table.
 Therefore, the new event :php:`\TYPO3\CMS\Backend\Search\Event\BeforeSearchInDatabaseRecordProviderEvent`
-has been introduced, which allows to exclude / ignore such table by adding them
-to a deny list. Additionally, the new PSR-14 Event can be used to further
+has been introduced, which allows to exclude / ignore such tables by adding them
+to a deny list. Additionally, the new PSR-14 event can be used to further
 limit the search result on certain page IDs or to modify the search query
 altogether.
 
@@ -33,7 +33,7 @@ The event features the following methods:
 - :php:`isTableIgnored()`: Returns whether a specific table is ignored
 - :php:`getIgnoredTables()`: Returns all tables to be ignored from the lookup
 
-Registration of the event in your extensions' :file:`Services.yaml`:
+Registration of the event in your extension's :file:`Services.yaml`:
 
 ..  code-block:: yaml
 
@@ -59,8 +59,8 @@ The corresponding event listener class:
 Impact
 ======
 
-It's now possible to ignore specific tables from the backend search using
-the new PSR-14 :php:`BeforeSearchInDatabaseRecordProviderEvent`. The event
+It is now possible to ignore specific tables from the backend search using
+the new PSR-14 event :php:`BeforeSearchInDatabaseRecordProviderEvent`. The event
 also allows to adjust the page IDs to search in as well as to modify the
 corresponding :php:`SearchDemand` object.
 

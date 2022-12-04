@@ -3,7 +3,7 @@
 .. _feature-99169-1669832578:
 
 ===============================================
-Feature: #99169 - Add Backend User Group Filter
+Feature: #99169 - Add backend user group filter
 ===============================================
 
 See :issue:`99169`
@@ -11,15 +11,15 @@ See :issue:`99169`
 Description
 ===========
 
-The backend module "Backend Users" now offers the possibility to filter for
+The :guilabel:`Backend Users` module now offers the possibility to filter for
 backend user groups. A new search field allows to filter by arbitrary string or
-user group id.
+user group ID.
 
 
 Impact
 ======
 
 Administrators in the backend are now able to filter the backend user groups in
-the backend users module.
+the :guilabel:`Backend Users` module.
 
 .. index:: Backend, ext:beuser

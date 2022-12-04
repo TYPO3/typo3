@@ -16,12 +16,12 @@ constructed in a static class manner in TYPO3 v6.2, using a static property
 based instance cache to avoid recreating instances for a specific typed
 FormProtection implementation. This design made it impossible to retrieve an
 instance of this class via dependency injection. Another side-effect was that
-ensuring properly cleared state between tests has been hard and often
-populated to other tests and thus influencing them.
+ensuring a properly cleared state between tests has been hard and often
+spread to other tests and thus influencing them.
 
 To mitigate these issues, :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory`
 is now transformed to a non-static class usage with injected services
-and the core runtime cache, removing the static property cache.
+and the Core runtime cache, removing the static property cache.
 
 Based on these changes, the old static methods :php:`get()` and
 :php:`purgeInstances()` are now deprecated.
@@ -38,7 +38,7 @@ Possible types for :php:`$formProtectionFactory->createForType()` are `frontend`
 Impact
 ======
 
-Using any of following class methods
+Using any of the following class methods
 
 * :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()`
 * :php:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::purgeInstances()`
@@ -109,7 +109,7 @@ To create a specific type directly, using following replacements:
     // Default / Disabled FormProtection
     $formProtection = $formProtectionFactory->createFromType('disabled');
 
-Custom FormProtection based implementation
+Custom FormProtection-based implementation
 ------------------------------------------
 
 Before

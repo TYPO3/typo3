@@ -11,7 +11,7 @@ See :issue:`97391`
 Description
 ===========
 
-The password reset feature for TYPO3 backend users does now consider the
+The password reset feature for TYPO3 backend users now considers the
 configurable password policy introduced in :ref:`#97388 <feature-97388>`.
 
 

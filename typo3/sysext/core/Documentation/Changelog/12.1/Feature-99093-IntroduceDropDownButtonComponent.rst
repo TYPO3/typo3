@@ -2,9 +2,9 @@
 
 .. _feature-99093-1668065501:
 
-=====================================================
-Feature: #99093 - Introduce DropDown Button Component
-=====================================================
+====================================================
+Feature: #99093 - Introduce DropDownButton component
+====================================================
 
 See :issue:`99093`
 
@@ -14,15 +14,14 @@ Description
 The module menu button bar now can display dropdowns.
 This enables new interface interactions, like switching
 the current view from list to tiles or group actions
-like clipboard and thumbnail visibility. It will help
-declutter views and help the user to see more information
-at a glance.
+like clipboard and thumbnail visibility. It make the views
+clearer and the user to see more information at a glance.
 
 Each dropdown consists of different items ranging from
-headlines to items links that can display the current
-status. The button will automaticly change the icon
+headlines to item links that can display the current
+status. The button automatically changes the icon
 representation to the icon of the the first active radio
-icon in the dropdown.
+icon in the dropdown list.
 
 
 DropDownButton
@@ -31,11 +30,13 @@ DropDownButton
 This button type is a container for dropdown items.
 It will render a dropdown containing all items attached
 to it. There are different kinds available, each item
-needs to implement the DropDownItemInterface. When this
-type contains elements of type DropDownRadio it will use
-the icon of the first active item of this type.
+needs to implement the
+:php:`\TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItemInterface`.
+When this type contains elements of type
+:php:`\TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio` it
+will use the icon of the first active item of this type.
 
-.. code-block:: php
+..  code-block:: php
 
     $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
     $dropDownButton = $buttonBar->makeDropDownButton()
@@ -55,7 +56,9 @@ DropDown\DropDownDivider
 
 This dropdown item type renders the divider element.
 
-.. code-block:: php
+..  code-block:: php
+
+    // use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownDivider;
 
     $item = GeneralUtility::makeInstance(DropDownDivider::class);
     $dropDownButton->addItem($item);
@@ -64,11 +67,13 @@ This dropdown item type renders the divider element.
 DropDown\DropDownHeader
 -----------------------
 
-This dropdown item type renders a noninteractive text
+This dropdown item type renders a non-interactive text
 element to group items and gives more meaning to a set
 of options.
 
-.. code-block:: php
+..  code-block:: php
+
+    // use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownHeader;
 
     $item = GeneralUtility::makeInstance(DropDownHeader::class)
         ->setLabel('Label');
@@ -81,7 +86,9 @@ DropDown\DropDownItem
 This dropdown item type renders a simple element.
 Use this element if you need a link, button.
 
-.. code-block:: php
+..  code-block:: php
+
+    // use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
 
     $item = GeneralUtility::makeInstance(DropDownItem::class)
         ->setTag('a')
@@ -106,7 +113,9 @@ so a user has a choice of a state to select.
 
 Example: Viewmode -> List / Tiles
 
-.. code-block:: php
+..  code-block:: php
+
+    // use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
 
     $item = GeneralUtility::makeInstance(DropDownRadio::class)
         ->setHref('#')
@@ -134,7 +143,9 @@ This dropdown item type renders an element with an active state.
 When set to active, it will show a checkmark in front of the icon
 and text to indicate the current state.
 
-.. code-block:: php
+..  code-block:: php
+
+    // use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
 
     $item = GeneralUtility::makeInstance(DropDownToggle::class)
         ->setHref('#')

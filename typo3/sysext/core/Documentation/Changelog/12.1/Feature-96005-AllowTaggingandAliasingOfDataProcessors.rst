@@ -14,32 +14,33 @@ Description
 It is now possible to set an alias / identifier for data processors by
 tagging them with the :yaml:`data.processor` tag in the
 :file:`Configuration/Services.yaml` file and defining the :yaml:`identifier`
-key. This on the one hand improves readability in corresponding TypoScript
+key. On the one hand, this improves readability in corresponding TypoScript
 configurations, since those aliases / identifiers can be used instead of
-the FQCN, while also providing DI out of the box. On the other hand this
-allows improving and enhancing data processor functionality in the future
-due to automatically adding of tagged processors to a registry.
+the fully-qualified class name, while also providing dependency injection out
+of the box. On the other hand, this allows improving and enhancing the
+functionality of data processors in the future by automatically adding
+tagged processors to a registry.
 
 Tagging a data processor in the :file:`Configuration/Services.yaml` file:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-  Vendor\MyExt\DataProcessing\AwesomeProcessor:
-    tags:
-      - { name: 'data.processor', identifier: 'awesome' }
+    Vendor\MyExt\DataProcessing\AwesomeProcessor:
+      tags:
+        - { name: 'data.processor', identifier: 'awesome' }
 
 Usage in TypoScript:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     dataProcessing.10 = awesome
 
-All data processors shipped by TYPO3 are already tagged and therefore
-can also be used with their alias / identifier in your TypoScript configuration:
+All data processors shipped by TYPO3 are already tagged and can therefore
+be used with their alias / identifier in your TypoScript configuration:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-    # Default with FQCN (still supported):
+    # Default with fully-qualified class name (still supported):
     dataProcessing {
         10 = TYPO3\CMS\Frontend\DataProcessing\CommaSeparatedValueProcessor
         20 = TYPO3\CMS\Frontend\DataProcessing\DatabaseQueryProcessor
@@ -67,19 +68,19 @@ can also be used with their alias / identifier in your TypoScript configuration:
         100 = split
     }
 
-.. note::
+..  note::
 
     The standard service aliasing mechanism is still supported. However,
-    it is recommanded to tag the data processors instead, because this will
+    it is recommended to tag the data processors instead, because this will
     automatically add them to the internal :php:`DataProcessorRegistry`,
-    enabling DI by default. Otherwise the service would need to be set
-    :yaml:`public`.
+    enabling dependency injection by default. Otherwise the service would need
+    to be set :yaml:`public`.
 
 Impact
 ======
 
 Data processors can now be tagged with the :yaml:`data.processor` tag. This
 allows to define an alias / identifier, which can then be used instead of
-the fully-qualified class name in e.g. TypoScript configurations.
+the fully-qualified class name, e.g. in TypoScript configurations.
 
 .. index:: TypoScript, Frontend, ext:frontend

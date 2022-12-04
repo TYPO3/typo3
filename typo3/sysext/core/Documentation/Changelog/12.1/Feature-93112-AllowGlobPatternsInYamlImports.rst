@@ -11,8 +11,8 @@ See :issue:`93112`
 Description
 ===========
 
-The TYPO3 YamlFileLoader (used for example when loading site configurations) does
-now support importing files with glob patterns. This will simplify configuration
+The TYPO3 :php:`YamlFileLoader` (used, for example, when loading site configurations) does
+now support importing files with glob patterns. This will simplify the configuration
 and allow for more compact configuration files.
 
 To enable globbing, set the option :yaml:`glob: true` on the import level.
@@ -25,7 +25,7 @@ You can now use `glob()` syntax when importing configuration files in YAML.
 
 Example:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     imports:
       - { resource: "./**/*.yaml", glob: true }

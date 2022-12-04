@@ -12,7 +12,7 @@ Description
 ===========
 
 The Modal API is now able to render a static backdrop to avoid closing the modal
-when clicking it which may come handy in case closing the modal would result in
+when clicking it. This may be handy in case closing the modal would result in
 a negative user experience, e.g. in the image cropper.
 
 
@@ -20,11 +20,11 @@ Impact
 ======
 
 The new boolean configuration option :js:`staticBackdrop` controls whether a
-static backdrop should be rendered or not, defaulting to :js:`false`.
+static backdrop should be rendered or not; the default is :js:`false`.
 
 Example:
 
-.. code-block:: js
+..  code-block:: js
 
     import {default as Modal} from './modal';
 
@@ -35,19 +35,19 @@ Example:
       staticBackdrop: true
     );
 
-Templates, using the HTML class :html:`.t3js-modal-trigger` to initialize
-a modal dialog are also able to use the new option by adding the
+Templates using the HTML class :html:`.t3js-modal-trigger` to initialize
+a modal dialog can also use the new option by adding the
 :html:`data-static-backdrop` attribute to the corresponding element.
 
 Example:
 
-.. code-block:: html
+..  code-block:: html
 
     <button class="btn btn-default t3js-modal-trigger"
-       data-title="Hello"
-       data-bs-content="This modal is not closable via clicking the backdrop."
-       data-static-backdrop>
-        Open modal
+        data-title="Hello"
+        data-bs-content="This modal is not closable via clicking the backdrop."
+        data-static-backdrop>
+            Open modal
     </button>
 
 .. index:: Backend, JavaScript, ext:backend

@@ -3,7 +3,7 @@
 .. _feature-98373-1663587471:
 
 =========================================================
-Feature: #98373 - Reactions - Incoming WebHooks for TYPO3
+Feature: #98373 - Reactions - Incoming webhooks for TYPO3
 =========================================================
 
 See :issue:`98373`
@@ -11,41 +11,41 @@ See :issue:`98373`
 Description
 ===========
 
-This feature adds the possibility to send incoming webhooks to a TYPO3 instance.
+This feature adds the possibility to receive webhooks in TYPO3.
 
-With the new backend module, it is possible to configure the reactions triggered
-by any webhook.
+With the new :guilabel:`System > Reactions` backend module it is possible to
+configure the reactions triggered by any webhook.
 
 A webhook is defined as an authorized POST request to the backend.
 
 The core provides a basic default reaction that can be used to create
 records triggered and enriched by data from the caller.
 
-Additionally, the core provides the :php:`\TYPO3\CMS\Reactions\Reaction\ReactionInterface`
+Additionally, the Core provides the :php:`\TYPO3\CMS\Reactions\Reaction\ReactionInterface`
 to allow extension authors to add their own reaction types.
 
-Any reaction record is defined by a unique uid and also requires a secret. Both
-information are generated in the backend. The secret is only visible once and
+Any reaction record is defined by a unique uid (UUID) and also requires a secret.
+Both information are generated in the backend. The secret is only visible once and
 stored in the database as an encrypted value like a backend user password.
 
-Next to static field values does the "create record" reaction feature placeholders,
-which can be used to dynamically set field values, by resolving the incoming
-data from the webhooks' payload. The syntax to for those values is :code:`${key}`.
+Next to static field values, the "create record" reaction features placeholders,
+which can be used to dynamically set field values by resolving the incoming
+data from the webhook's payload. The syntax for those values is :code:`${key}`.
 The key can be a simple string or a path to a nested value like :code:`${key.nested}`.
 
-Definition of the placeholders in the record:
----------------------------------------------
+Definition of the placeholders in the record
+--------------------------------------------
 
-.. code-block:: text
+..  code-block:: text
 
     ${title}
     ${description}
     ${key.nested}
 
-Example payload for placeholders:
----------------------------------
+Example payload for placeholders
+--------------------------------
 
-.. code-block:: json
+..  code-block:: json
 
     {
         "title": "My title",

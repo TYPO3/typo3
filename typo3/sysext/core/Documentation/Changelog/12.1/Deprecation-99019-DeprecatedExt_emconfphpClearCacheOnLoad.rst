@@ -12,7 +12,7 @@ Description
 ===========
 
 The array keys :php:`clearCacheOnLoad` and :php:`clearcacheonload`
-in extensions :file:`ext_emconf.php` files have been deprecated and
+in extension's :file:`ext_emconf.php` files have been deprecated and
 can be removed.
 
 When loading or unloading extensions using the extension manager,

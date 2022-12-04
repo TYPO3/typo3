@@ -11,7 +11,7 @@ See :issue:`98912`
 Description
 ===========
 
-With TYPO3 v12, it is possible to set up a global services configuration for a
+It is possible to set up a global services configuration for a
 project that can be used in multiple project-specific extensions. This way you
 can, for example, alias an interface with a concrete implementation to be used in
 several extensions. It is also possible to register project-specific CLI commands

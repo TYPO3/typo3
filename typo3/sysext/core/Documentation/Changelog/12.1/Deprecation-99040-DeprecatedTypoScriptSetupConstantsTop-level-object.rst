@@ -11,7 +11,7 @@ See :issue:`99040`
 Description
 ===========
 
-The Frontend TypoScript setup (!) top-level-object :typoscript:`constants` can be
+The frontend TypoScript setup (!) top-level-object :typoscript:`constants` can be
 used to define constants for replacement inside a :typoscript:`parseFunc`.
 If :typoscript:`parseFunc` somewhere is configured with :typoscript:`.constants = 1`,
 then all occurrences of the constant in the text will be substituted with the
@@ -34,9 +34,10 @@ Affected installations
 
 This is a relatively rarely used feature, not well-known by many integrators.
 TYPO3 integrators should watch out for :typoscript:`###` markers within
-TypoScript, the Backend Template module search functionality should help here.
+TypoScript, the :guilabel:`Template` backend module search functionality should
+help here.
 
-The Template Analyzer will also show usages of the setup top-level-object
+The :guilabel:`Template Analyzer` will also show usages of the setup top-level-object
 :typoscript:`constants`.
 
 
@@ -48,7 +49,7 @@ for simple cases.
 
 A simple example usage before:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     TypoScript setup:
 
@@ -60,7 +61,7 @@ A simple example usage before:
 
 Switching to a TypoScript constant / setting:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     TypoScript constants / settings:
 
@@ -77,14 +78,14 @@ When :sql:`tt_content` rich text content elements contain such substitution stri
 replaced by :typoscript:`parseFunc` accordingly. For instance, a tt_content RTE element with the
 content `Send an email to ###EMAIL###` would substitute to `Send an email to email@example.com` *if*
 the top-level setup :typoscript:`constants` object has been set up. This substitution
-relies on the the fact that editors actively know about and use this construct: If only one content
+relies on the fact that editors actively know about and use this construct: If only one content
 element did not prepare for this - since an editor forgot or hasn't been trained about it, changing
-such a constant on TypoScript level would still lead to faulty Frontend output, rendering the
+such a constant on TypoScript level would still lead to faulty frontend output, rendering the
 entire substitution approach useless.
 
 In case instances still rely on this magic substitution principle, and made sure all editors
 always know and follow this approach, instances can use the :typoscript:`userFunc`
-property of :typoscript:`parseFunc` to re-implement the functionality: Basically by
+property of :typoscript:`parseFunc` to re-implement the functionality: basically by
 copying the deprecated code to an own class and registering the :typoscript:`userFunc`
 in :typoscript:`lib.parseFunc_RTE`.
 

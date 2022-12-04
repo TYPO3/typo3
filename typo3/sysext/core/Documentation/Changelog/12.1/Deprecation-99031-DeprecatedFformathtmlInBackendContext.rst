@@ -12,12 +12,12 @@ Description
 ===========
 
 The :html:`<f:format.html />` ViewHelper :php:`TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlViewHelper`
-should not be used in TYPO3 Backend context anymore.
+should not be used in TYPO3 backend context anymore.
 
-Using this ViewHelper in Backend context triggers Frontend :typoscript:`parseFunc` logic, which
+Using this ViewHelper in backend context triggers frontend :typoscript:`parseFunc` logic, which
 should be avoided in the backend.
 
-There are other ViewHelpers to output and parse HTML in Backend context. See description of
+There are other ViewHelpers to output and parse HTML in backend context. See description of
 the :ref:`f:sanitize.html <feature-94825-1667998632>` ViewHelper for more details.
 
 
@@ -30,7 +30,7 @@ Using :html:`<f:format.html />` logs a deprecation level warning.
 Affected installations
 ======================
 
-Instances with extensions that come with Backend modules using Fluid rendering and
+Instances with extensions that come with backend modules using Fluid rendering and
 accessing :html:`<f:format.html />` are affected.
 
 

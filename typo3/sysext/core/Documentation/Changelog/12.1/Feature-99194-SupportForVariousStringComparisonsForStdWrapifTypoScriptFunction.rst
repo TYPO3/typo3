@@ -24,18 +24,18 @@ The new TypoScript properties for `if.` are called:
 * :typoscript:`if.endsWith`
 
 All of the mentioned properties can be assigned a static value, and support
-:typoscript:`stdWrap` as their sub properties.
+:typoscript:`stdWrap` as their sub-properties.
 
 
 Impact
 ======
 
-As :typoscript:`if.` is available in most Content Objects, stdWrap or
-dataProcessors, it can now be used more exhaustive.
+As :typoscript:`if.` is available in most content objects, :typoscript:`stdWrap` or
+data processors, it can now be used more exhaustive.
 
 Example for :typoscript:`ìf.contains`:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     # Add a span tag before the page title if the page title
     # contains the string "media"
@@ -50,6 +50,8 @@ Example for :typoscript:`ìf.contains`:
 
 Example for :typoscript:`ìf.endsWith`:
 
+..  code-block:: typoscript
+
     # Add a footer note, if the page author ends with "Kott"
     page.100 = TEXT
     page.100.value = This is an article from Benji
@@ -59,6 +61,8 @@ Example for :typoscript:`ìf.endsWith`:
     page.100.wrap = <footer>|</footer>
 
 Example for :typoscript:`ìf.startsWith`:
+
+..  code-block:: typoscript
 
     page.10 = TEXT
     page.10.value = Your editor added the magic word in the header field

@@ -22,15 +22,15 @@ language or other detail can be represented. Specifying `null` removes the
 corresponding parameter from the route result. In this way, it is up to the
 developer to react accordingly.
 
-In the case of Extbase Extensions, the developer can define the parameters in
-his calling controller action as nullable and deliver corresponding
-FlashMessages that explain the current scenario better than a 404 HTTP
+In the case of Extbase extensions, the developer can define the parameters in
+their calling controller action as nullable and deliver corresponding
+flash messages that explain the current scenario better than a 404 HTTP
 status code.
 
 Examples
 --------
 
-.. code-block:: yaml
+..  code-block:: yaml
 
     routeEnhancers:
       NewsPlugin:
@@ -58,7 +58,7 @@ Custom mapper implementations can incorporate this behavior by implementing
 the new :php:`\TYPO3\CMS\Core\Routing\Aspect\UnresolvedValueInterface` which
 is provided by :php:`\TYPO3\CMS\Core\Routing\Aspect\UnresolvedValueTrait`.
 
-.. code-block:: php
+..  code-block:: php
 
     use TYPO3\CMS\Core\Routing\Aspect\MappableAspectInterface;
     use TYPO3\CMS\Core\Routing\Aspect\UnresolvedValueInterface;
