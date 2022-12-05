@@ -80,7 +80,11 @@ final class SchemaInformation
     ) {
         $this->connectionIdentifier = sprintf(
             '%s-%s',
-            (string)$connection->getDatabase(),
+            str_replace(
+                ['.', ':', '/', '\\', '!', '?'],
+                '_',
+                (string)$connection->getDatabase()
+            ),
             // hash connection params, which holds various information like host,
             // port etc. to get a descriptive hash for this connection.
             hash('xxh3', serialize($connection->getParams()))
