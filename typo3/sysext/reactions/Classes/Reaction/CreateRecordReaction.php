@@ -53,7 +53,7 @@ class CreateRecordReaction implements ReactionInterface
 
     public static function getIconIdentifier(): string
     {
-        return 'mimetypes-x-sys_reaction';
+        return 'content-database';
     }
 
     public function react(ServerRequestInterface $request, array $payload, ReactionInstruction $reaction): ResponseInterface

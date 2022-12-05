@@ -8,7 +8,8 @@
 <f:section name="Content">
     <f:be.pageRenderer
         includeJavaScriptModules="{
-            0: '@typo3/backend/modal.js'
+            0: '@typo3/backend/context-menu.js',
+            1: '@typo3/backend/modal.js'
         }"
     />
     <h1><f:translate key="LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:heading_text"/></h1>
@@ -58,8 +59,8 @@
         <table class="table table-striped table-hover">
             <thead>
             <tr>
-                <th><f:render section="listHeaderSorting" arguments="{field: 'name', label: 'sys_reaction.name'}"/></th>
-                <th><f:render section="listHeaderSorting" arguments="{field: 'reaction', label: 'sys_reaction.reaction'}"/></th>
+                <th colspan="2"><f:render section="listHeaderSorting" arguments="{field: 'name', label: 'sys_reaction.name', demand: demand}"/></th>
+                <th><f:render section="listHeaderSorting" arguments="{field: 'reaction_type', label: 'sys_reaction.reaction_type', demand: demand}"/></th>
                 <th>URL</th>
                 <th></th>
             </tr>
@@ -67,6 +68,17 @@
             <tbody>
             <f:for each="{reactionRecords}" key="reactionId" as="reaction">
                 <tr>
+                    <td class="col-icon">
+                        <a
+                            href="#"
+                            data-contextmenu-trigger="click"
+                            data-contextmenu-table="sys_reaction"
+                            data-contextmenu-uid="{reaction.uid}"
+                            title="{reaction.name}"
+                        >
+                            <core:iconForRecord table="sys_reaction" row="{reaction as array}" />
+                        </a>
+                    </td>
                     <td>
                         <be:link.editRecord
                             returnUrl="{returnUrl}"
@@ -77,11 +89,13 @@
                             {reaction.name}
                         </be:link.editRecord>
                     </td>
-                    <td>{reactionTypes.{reaction.type}.description}</td>
+                    <td>
+                        <f:translate key="{reactionTypes.{reaction.type}.description}" />
+                    </td>
                     <td>
                         <f:render section="codesnippet" arguments="{reaction: reaction}" />
                     </td>
-                    <td class="text-align-end">
+                    <td class="col-control">
                         <div class="btn-group">
                             <be:link.editRecord
                                 returnUrl="{returnUrl}"

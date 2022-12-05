@@ -29,7 +29,7 @@ class ReactionDemand
     protected const ORDER_DESCENDING = 'desc';
     protected const ORDER_ASCENDING = 'asc';
     protected const DEFAULT_ORDER_FIELD = 'name';
-    protected const ORDER_FIELDS = ['name'];
+    protected const ORDER_FIELDS = ['name', 'reaction_type'];
 
     protected int $limit = 15;
 

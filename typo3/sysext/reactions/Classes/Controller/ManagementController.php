@@ -63,7 +63,7 @@ class ManagementController
 
         return $view->assignMultiple([
             'demand' => $demand,
-            'reactionTypes' => $this->reactionRegistry->getAvailableReactionTypes(),
+            'reactionTypes' => iterator_to_array($this->reactionRegistry->getAvailableReactionTypes()),
             'paginator' => $paginator,
             'pagination' => $pagination,
             'reactionRecords' => $reactionRecords,

@@ -14,7 +14,7 @@ return [
         'type' => 'reaction_type',
         'typeicon_column' => 'reaction_type',
         'typeicon_classes' => [
-            'default' => 'mimetypes-x-sys_reaction',
+            'default' => 'content-webhook',
         ],
         'delete' => 'deleted',
         'enablecolumns' => [
