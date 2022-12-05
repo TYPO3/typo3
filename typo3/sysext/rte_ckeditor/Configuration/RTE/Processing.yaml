@@ -26,6 +26,8 @@ processing:
     - div
     - dt
     - em
+    - figure
+    - figcaption
     - footer
     - header
     - h1
@@ -65,7 +67,7 @@ processing:
     - var
 
   ## Tags that are allowed outside of paragraphs
-  allowTagsOutside: [address, article, aside, blockquote, footer, header, hr, nav, section, div]
+  allowTagsOutside: [address, article, aside, blockquote, figure, figcaption, footer, header, hr, nav, section, div]
 
   ## allowed default attributes
   allowAttributes: [class, id, title, dir, lang, xml:lang, itemscope, itemtype, itemprop]
