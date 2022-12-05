@@ -393,7 +393,7 @@ class FileListController implements LoggerAwareInterface
                 'permissions.read' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:read'),
                 'permissions.write' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:write'),
             ]);
-            $this->view->assign('drapUploader', [
+            $this->view->assign('dragUploader', [
                 'fileDenyPattern' => $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] ?? null,
                 'maxFileSize' => GeneralUtility::getMaxUploadFileSize() * 1024,
                 'defaultDuplicationBehaviourAction' => $this->getDefaultDuplicationBehaviourAction(),
