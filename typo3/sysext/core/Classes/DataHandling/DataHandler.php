@@ -7732,6 +7732,15 @@ class DataHandler implements LoggerAwareInterface
                         // @todo Check explicitly for one type is fishy. However needed to avoid array to string
                         //       conversion errors. Find a better way do handle this.
                         if ($columnType === 'user' && $columnDbType === 'json') {
+                            // To ensure a proper comparison we need to sort the array structure based on array keys
+                            // in a recursive manner. Otherwise, we would emit an error just because the ordering was
+                            // different. This must be done for value and the value in the row to be safe.
+                            if (is_array($value)) {
+                                ArrayUtility::naturalKeySortRecursive($value);
+                            }
+                            if (is_array($row[$key])) {
+                                ArrayUtility::naturalKeySortRecursive($row[$key]);
+                            }
                             if ($row[$key] !== $value) {
                                 $errors[] = $key;
                             }
