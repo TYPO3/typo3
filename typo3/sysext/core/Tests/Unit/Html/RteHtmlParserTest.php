@@ -742,4 +742,15 @@ class RteHtmlParserTest extends UnitTestCase
         $subject = new RteHtmlParser($eventDispatcher);
         self::assertEquals($expectedResult, $subject->transformTextForRichTextEditor($subject->transformTextForPersistence($content, $this->procOptions), $this->procOptions));
     }
+
+    /**
+     * @test
+     */
+    public function tableAndFigureApplyCorrectlyOutsideOfParagraphTags(): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $subject = new RteHtmlParser($eventDispatcher);
+        self::assertEquals('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '</figure>', $subject->transformTextForRichTextEditor('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '</figure>', $this->procOptions));
+        self::assertEquals('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '<figcaption>My Logo</figcaption></figure>', $subject->transformTextForRichTextEditor('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '<figcaption>My Logo</figcaption></figure>', $this->procOptions));
+    }
 }
