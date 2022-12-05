@@ -25,7 +25,7 @@ class RteHtmlParserTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected array $procOptions = ['overruleMode' => 'default', 'allowTagsOutside' => 'hr,abbr'];
+    protected array $procOptions = ['overruleMode' => 'default', 'allowTagsOutside' => 'hr,abbr,figure'];
 
     /**
      * Data provider for hrTagCorrectlyTransformedOnWayToDataBase
@@ -742,5 +742,16 @@ class RteHtmlParserTest extends UnitTestCase
         $subject = new RteHtmlParser($eventDispatcher);
         self::assertEquals('<abbr>Allowed outside of p-tag</abbr>', $subject->transformTextForRichTextEditor('<abbr>Allowed outside of p-tag</abbr>', $this->procOptions));
         self::assertEquals('<p><span>Not allowed outside of p-tag</span></p>', $subject->transformTextForRichTextEditor('<span>Not allowed outside of p-tag</span>', $this->procOptions));
+    }
+
+    /**
+     * @test
+     */
+    public function tableAndFigureApplyCorrectlyOutsideOfParagraphTags(): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $subject = new RteHtmlParser($eventDispatcher);
+        self::assertEquals('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '</figure>', $subject->transformTextForRichTextEditor('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '</figure>', $this->procOptions));
+        self::assertEquals('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '<figcaption>My Logo</figcaption></figure>', $subject->transformTextForRichTextEditor('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '<figcaption>My Logo</figcaption></figure>', $this->procOptions));
     }
 }

@@ -42,13 +42,13 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * List of elements that are not wrapped into a "p" tag while doing the transformation.
      * @var string
      */
-    protected $blockElementList = 'DIV,TABLE,BLOCKQUOTE,PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD,HEADER,SECTION,FOOTER,NAV,ARTICLE,ASIDE';
+    protected $blockElementList = 'DIV,TABLE,BLOCKQUOTE,PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD,HEADER,SECTION,FOOTER,NAV,ARTICLE,ASIDE,FIGURE';
 
     /**
      * List of all tags that are allowed by default
      * @var string
      */
-    protected $defaultAllowedTagsList = 'b,i,u,a,img,br,div,center,pre,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,span,abbr,acronym,dfn';
+    protected $defaultAllowedTagsList = 'b,i,u,a,img,br,div,center,pre,figure,figcaption,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,span,abbr,acronym,dfn';
 
     /**
      * Set to the TSconfig options coming from Page TSconfig
@@ -111,6 +111,8 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         'blockquote',
         'div',
         'footer',
+        'figure',
+        'figcaption',
         'header',
         'hr',
         'nav',
