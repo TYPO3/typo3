@@ -692,6 +692,8 @@ class BackendUtility
 
     /**
      * Returns the PageTsConfig for page with uid $pageUid
+     *
+     * @param int $pageUid
      */
     public static function getPagesTSconfig($pageUid): array
     {

@@ -31,16 +31,16 @@ class ItemProcessingService
      * Executes an itemsProcFunc if defined in TCA and returns the combined result (predefined + processed items)
      *
      * @param string $table
-     * @param int $pageId
+     * @param int $realPid Record pid. This is the pid of the record.
      * @param string $field
      * @param array $row
      * @param array $tcaConfig The TCA configuration of $field
      * @param array $selectedItems The items already defined in the TCA configuration
      * @return array The processed items (including the predefined items)
      */
-    public function getProcessingItems($table, $pageId, $field, $row, $tcaConfig, $selectedItems)
+    public function getProcessingItems($table, $realPid, $field, $row, $tcaConfig, $selectedItems)
     {
-        $pageId = $table === 'pages' ? $row['uid'] : $row['pid'];
+        $pageId = (int)($table === 'pages' ? ($row['uid'] ?? $realPid) : ($row['pid'] ?? $realPid));
         $TSconfig = BackendUtility::getPagesTSconfig($pageId);
         $fieldTSconfig = $TSconfig['TCEFORM.'][$table . '.'][$field . '.'] ?? [];
 
@@ -53,7 +53,7 @@ class ItemProcessingService
         $params['field'] = $field;
 
         // The itemsProcFunc method may throw an exception.
-        // If it does display an error message and return items unchanged.
+        // If it does, display an error message and return items unchanged.
         try {
             GeneralUtility::callUserFunction($tcaConfig['itemsProcFunc'], $params, $this);
         } catch (\Exception $exception) {
