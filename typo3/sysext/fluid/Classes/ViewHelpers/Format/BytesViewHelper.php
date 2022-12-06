@@ -117,7 +117,7 @@ class BytesViewHelper extends AbstractViewHelper
             '%s %s',
             number_format(
                 round($bytes, 4 * $arguments['decimals']),
-                $arguments['decimals'],
+                (int)$arguments['decimals'],
                 $arguments['decimalSeparator'],
                 $arguments['thousandsSeparator']
             ),

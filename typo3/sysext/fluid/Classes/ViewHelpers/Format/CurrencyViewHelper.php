@@ -118,7 +118,7 @@ class CurrencyViewHelper extends AbstractViewHelper
         $thousandsSeparator = $arguments['thousandsSeparator'];
         $prependCurrency = $arguments['prependCurrency'];
         $separateCurrency = $arguments['separateCurrency'];
-        $decimals = $arguments['decimals'];
+        $decimals = (int)$arguments['decimals'];
         $useDash = $arguments['useDash'];
 
         $floatToFormat = $renderChildrenClosure();
