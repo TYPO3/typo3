@@ -50,7 +50,7 @@ lib.parseFunc {
 lib.parseFunc_RTE < lib.parseFunc
 lib.parseFunc_RTE {
     # Processing <ol>, <ul> and <table> blocks separately
-    externalBlocks = article, aside, blockquote, div, dd, dl, footer, header, nav, ol, section, table, ul, pre
+    externalBlocks = article, aside, blockquote, div, dd, dl, footer, header, nav, ol, section, table, ul, pre, figure
     externalBlocks {
         ol {
             stripNL = 1
@@ -95,6 +95,7 @@ lib.parseFunc_RTE {
         }
         article < .div
         aside < .div
+        figure < .div
         blockquote < .div
         footer < .div
         header < .div
