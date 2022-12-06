@@ -53,7 +53,7 @@
                 <f:if condition="{displayConstantSubstitutions} && {child.originalValueTokenStream}">
                     <span class="diff-item-result diff-item-result-inline text-monospace text-normal p-0 ps-4">
                         <f:format.raw>
-                            <f:variable name="trimmedStream"><ts:trim>{child.originalValueTokenStream}</ts:trim></f:variable>
+                            <f:variable name="trimmedStream"><f:format.trim>{child.originalValueTokenStream}</f:format.trim></f:variable>
                             <f:translate
                                 key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:valueWithConstant"
                                 arguments="{
@@ -76,7 +76,7 @@
                         <f:if condition="!{iterator.isFirst}">
                             <br />
                         </f:if>
-                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:comment" /> <ts:trim>{comment}</ts:trim>
+                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:comment" /> <f:format.trim>{comment}</f:format.trim>
                     </f:for>
                 </span>
             </f:if>
