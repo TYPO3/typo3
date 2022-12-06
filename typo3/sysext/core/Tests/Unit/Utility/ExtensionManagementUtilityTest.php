@@ -1757,4 +1757,24 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         ExtensionManagementUtility::addTcaSelectItemGroup('tt_content', 'CType', $groupId, $groupLabel, $position);
         self::assertEquals($expectedGroups, $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups']);
     }
+
+    /**
+     * @test
+     */
+    public function addServiceDoesNotFailIfValueIsNotSet(): void
+    {
+        ExtensionManagementUtility::addService(
+            'myprovider',
+            'auth',
+            'myclass',
+            [
+                'title' => 'My authentication provider',
+                'description' => 'Authentication with my provider',
+                'subtype' => 'processLoginDataBE,getUserBE,authUserBE',
+                'available' => true,
+                'priority' => 80,
+                'quality' => 100,
+            ]
+        );
+    }
 }
