@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Logger Test',
     'description' => 'Logger Test',
     'category' => 'example',
-    'version' => '12.1.0',
+    'version' => '12.2.0',
     'state' => 'beta',
     'author' => 'Larry Garfield',
     'author_email' => 'larry.garfield@typo3.org',
     'author_company' => 'TYPO3 GmbH',
     'constraints' => [
         'depends' => [
-            'typo3' => '12.1.0',
+            'typo3' => '12.2.0',
         ],
         'conflicts' => [],
         'suggests' => [],
