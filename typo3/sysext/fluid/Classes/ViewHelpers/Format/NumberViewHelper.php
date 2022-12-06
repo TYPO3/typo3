@@ -71,7 +71,7 @@ final class NumberViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $decimals = $arguments['decimals'];
+        $decimals = (int)$arguments['decimals'];
         $decimalSeparator = $arguments['decimalSeparator'];
         $thousandsSeparator = $arguments['thousandsSeparator'];
         $stringToFormat = $renderChildrenClosure();
