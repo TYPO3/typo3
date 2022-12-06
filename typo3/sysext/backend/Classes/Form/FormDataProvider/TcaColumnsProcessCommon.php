@@ -66,10 +66,11 @@ class TcaColumnsProcessCommon implements FormDataProviderInterface
         $recordTypeValue = $result['recordTypeValue'];
         if (!empty($result['processedTca']['types'][$recordTypeValue]['subtype_value_field'])) {
             $subtypeFieldName = $result['processedTca']['types'][$recordTypeValue]['subtype_value_field'];
-            if (!empty($result['processedTca']['types'][$recordTypeValue]['subtypes_addlist'][$result['databaseRow'][$subtypeFieldName]])) {
+            $fieldName = $result['databaseRow'][$subtypeFieldName] ?? null;
+            if ($fieldName !== null && !empty($result['processedTca']['types'][$recordTypeValue]['subtypes_addlist'][$fieldName])) {
                 $fields = GeneralUtility::trimExplode(
                     ',',
-                    $result['processedTca']['types'][$recordTypeValue]['subtypes_addlist'][$result['databaseRow'][$subtypeFieldName]],
+                    $result['processedTca']['types'][$recordTypeValue]['subtypes_addlist'][$fieldName],
                     true
                 );
                 foreach ($fields as $field) {
