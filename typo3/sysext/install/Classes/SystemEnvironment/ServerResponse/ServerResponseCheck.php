@@ -23,10 +23,13 @@ use GuzzleHttp\Exception\BadResponseException;
 use function GuzzleHttp\Promise\settle;
 
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Controller\ServerResponseCheckController;
 use TYPO3\CMS\Install\SystemEnvironment\CheckInterface;
 use TYPO3\CMS\Reports\Status;
 
@@ -100,7 +103,7 @@ class ServerResponseCheck implements CheckInterface
             $severity = ContextualFeedbackSeverity::WARNING;
         }
         return new Status(
-            'Server Response on static files',
+            'Server Response',
             $title ?? 'OK',
             $this->wrapList($messages, $label ?? '', self::WRAP_NESTED),
             $severity ?? ContextualFeedbackSeverity::OK
@@ -122,6 +125,7 @@ class ServerResponseCheck implements CheckInterface
         }
         try {
             $this->buildFileDeclarations();
+            $this->processHostCheck($messageQueue);
             $this->processFileDeclarations($messageQueue);
             $this->finishMessageQueue($messageQueue);
         } finally {
@@ -206,6 +210,45 @@ class ServerResponseCheck implements CheckInterface
     {
         GeneralUtility::rmdir($this->assetLocation->getFilePath(), true);
         GeneralUtility::rmdir($this->fileadminLocation->getFilePath(), true);
+    }
+
+    protected function processHostCheck(FlashMessageQueue $messageQueue): void
+    {
+        $random = GeneralUtility::makeInstance(Random::class);
+        $randomHost = $random->generateRandomHexString(10) . '.random.example.org';
+        $time = (string)time();
+        $url = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
+            'install.server-response-check.host',
+            ['src-time' => $time, 'src-hash' => ServerResponseCheckController::hmac($time)],
+            UriBuilder::ABSOLUTE_URL
+        );
+        try {
+            $client = new Client(['timeout' => 10]);
+            $response = $client->request('GET', (string)$url, ['headers' => ['Host' => $randomHost]]);
+        } catch (BadResponseException $exception) {
+            // it is expected that the previous request fails
+            return;
+        }
+        // in case we end up here, the server processed an HTTP request with invalid HTTP host header
+        $messageParts = [];
+        $data = json_decode((string)$response->getBody(), true);
+        $serverHttpHost = $data['server.HTTP_HOST'] ?? null;
+        $serverServerName = $data['server.SERVER_NAME'] ?? null;
+        if ($serverHttpHost === $randomHost) {
+            $messageParts[] = sprintf('HTTP_HOST contained unexpected "%s"', $randomHost);
+        }
+        if ($serverServerName === $randomHost) {
+            $messageParts[] = sprintf('SERVER_NAME contained unexpected "%s"', $randomHost);
+        }
+        if ($messageParts !== []) {
+            $messageQueue->addMessage(
+                new FlashMessage(
+                    $this->wrapList($messageParts, (string)$url, self::WRAP_FLAT),
+                    'Unexpected server response',
+                    ContextualFeedbackSeverity::ERROR
+                )
+            );
+        }
     }
 
     protected function processFileDeclarations(FlashMessageQueue $messageQueue): void

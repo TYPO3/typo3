@@ -171,7 +171,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function configureBackendRouter(ContainerInterface $container, Router $router = null): Router
     {
-        $router = $router ?? self::new($container, Router::class);
+        $router = $router ?? self::new($container, Router::class, [$container->get(RequestContextFactory::class)]);
         $cache = $container->get('cache.core');
 
         $cacheIdentifier = $container->get(PackageDependentCacheIdentifier::class)->withPrefix('BackendRoutes')->toString();

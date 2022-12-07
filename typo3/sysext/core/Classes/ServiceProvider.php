@@ -84,6 +84,7 @@ class ServiceProvider extends AbstractServiceProvider
             Package\FailsafePackageManager::class => [ static::class, 'getFailsafePackageManager' ],
             Package\Cache\PackageDependentCacheIdentifier::class => [ static::class, 'getPackageDependentCacheIdentifier' ],
             Routing\BackendEntryPointResolver::class => [ static::class, 'getBackendEntryPointResolver' ],
+            Routing\RequestContextFactory::class => [ static::class, 'getRequestContextFactory' ],
             Registry::class => [ static::class, 'getRegistry' ],
             Resource\Index\FileIndexRepository::class => [ static::class, 'getFileIndexRepository' ],
             Resource\Index\MetaDataRepository::class => [ static::class, 'getMetaDataRepository' ],
@@ -517,6 +518,13 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getBackendEntryPointResolver(ContainerInterface $container): Routing\BackendEntryPointResolver
     {
         return self::new($container, Routing\BackendEntryPointResolver::class);
+    }
+
+    public static function getRequestContextFactory(ContainerInterface $container): Routing\RequestContextFactory
+    {
+        return self::new($container, Routing\RequestContextFactory::class, [
+            $container->get(Routing\BackendEntryPointResolver::class),
+        ]);
     }
 
     public static function getFormProtectionFactory(ContainerInterface $container): FormProtection\FormProtectionFactory
