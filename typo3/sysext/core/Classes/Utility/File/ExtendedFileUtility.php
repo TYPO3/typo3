@@ -982,7 +982,7 @@ class ExtendedFileUtility extends BasicFileUtility
             $fileObject->setContents($content);
             clearstatcache();
             $this->writeLog(SystemLogFileAction::EDIT, SystemLogErrorClassification::MESSAGE, 'File saved to "{identifier}", bytes: {size}', ['identifier' => $fileObject->getIdentifier(), 'size' => $fileObject->getSize()]);
-            $this->addMessageToFlashMessageQueue('FileUtility.FileSavedToBytesMd5', [$fileObject->getIdentifier(), $fileObject->getSize(), md5($content)], ContextualFeedbackSeverity::OK);
+            $this->addMessageToFlashMessageQueue('FileUtility.FileSavedTo', [$fileObject->getIdentifier()], ContextualFeedbackSeverity::OK);
             return true;
         } catch (InsufficientUserPermissionsException $e) {
             $this->writeLog(SystemLogFileAction::EDIT, SystemLogErrorClassification::USER_ERROR, 'You are not allowed to edit files');

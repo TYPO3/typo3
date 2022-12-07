@@ -108,8 +108,8 @@
 			<trans-unit id="FileUtility.FileRenamedSameName" resname="FileUtility.FileRenamedSameName">
 				<source>File "%s" was not renamed. (Same name as before)</source>
 			</trans-unit>
-			<trans-unit id="FileUtility.FileSavedToBytesMd5" resname="FileUtility.FileSavedToBytesMd5">
-				<source>File saved to "%s", bytes: %s, MD5: %s.</source>
+			<trans-unit id="FileUtility.FileSavedTo" resname="FileUtility.FileSavedTo">
+				<source>File saved to "%s".</source>
 			</trans-unit>
 			<trans-unit id="FileUtility.FileWasNotCopiedTo" resname="FileUtility.FileWasNotCopiedTo">
 				<source>File "%s" WAS NOT copied to "%s"! There might be a problem with write permissions.</source>
