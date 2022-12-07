@@ -34,17 +34,21 @@ class CreateRecordReactionTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['reactions'];
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        $this->importCSVDataSet(__DIR__ . '/../../../../core/Tests/Functional/Fixtures/be_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_reactions.csv');
+    }
+
     /**
      * @test
      */
     public function reactWorksForAValidRequest(): void
     {
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)
-            ->create('default');
-
-        $this->importCSVDataSet(__DIR__ . '/../../../../core/Tests/Functional/Fixtures/be_users.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_pages.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_reactions.csv');
         $reactionRecord = (new ReactionRepository())->getReactionRecordByIdentifier('visual-reaction-uuid');
         $reaction = GeneralUtility::makeInstance(CreateRecordReaction::class);
         $request = new ServerRequest('http://localhost/', 'POST');
@@ -66,6 +70,40 @@ class CreateRecordReactionTest extends FunctionalTestCase
 
         self::assertEquals(201, $response->getStatusCode());
         self::assertCount(1, $this->getTestPages());
+    }
+
+    /**
+     * @test
+     */
+    public function reactFailsOnInvalidTable(): void
+    {
+        $reactionRecord = (new ReactionRepository())->getReactionRecordByIdentifier('invalid-table');
+        $reaction = GeneralUtility::makeInstance(CreateRecordReaction::class);
+        $request = new ServerRequest('http://localhost/', 'POST');
+        $user = $this->setUpReactionBackendUser($request, $reactionRecord);
+        $request = $request->withHeader('x-api-key', $reactionRecord->toArray()['secret']);
+        $request = $request->withAttribute('backend.user', $user);
+
+        $response = $reaction->react($request, [], $reactionRecord);
+        self::assertEquals(400, $response->getStatusCode());
+        self::assertEquals('Invalid argument "table_name"', json_decode((string)$response->getBody(), true)['error']);
+    }
+
+    /**
+     * @test
+     */
+    public function reactFailsOnInvalidFields(): void
+    {
+        $reactionRecord = (new ReactionRepository())->getReactionRecordByIdentifier('invalid-fields');
+        $reaction = GeneralUtility::makeInstance(CreateRecordReaction::class);
+        $request = new ServerRequest('http://localhost/', 'POST');
+        $user = $this->setUpReactionBackendUser($request, $reactionRecord);
+        $request = $request->withHeader('x-api-key', $reactionRecord->toArray()['secret']);
+        $request = $request->withAttribute('backend.user', $user);
+
+        $response = $reaction->react($request, [], $reactionRecord);
+        self::assertEquals(400, $response->getStatusCode());
+        self::assertEquals('No fields given.', json_decode((string)$response->getBody(), true)['error']);
     }
 
     protected function getTestPages(): array

@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Reactions\Form;
 
-use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Reactions\Validation\CreateRecordReactionTable;
 
 /**
  * Helper method for TCA / FormEngine to list tables available for reactions
@@ -26,27 +26,20 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
  */
 class ReactionItemsProcFunc
 {
-    public function __construct(
-        private readonly IconFactory $iconFactory
-    ) {
-    }
-
-    public function populateAvailableContentTables(array &$fieldDefinition): void
+    /**
+     * Validate the tables, added to the tables select list
+     */
+    public function validateAllowedTablesForExternalCreation(array &$fieldDefinition): void
     {
-        foreach ($GLOBALS['TCA'] as $tableName => $tableConfiguration) {
-            if ($tableConfiguration['ctrl']['adminOnly'] ?? false) {
-                // Hide "admin only" tables
-                continue;
+        foreach ($fieldDefinition['items'] as $key => $item) {
+            if (!CreateRecordReactionTable::fromProcFuncItem($item)->isAllowedForItemsProcFunc()) {
+                unset($fieldDefinition['items'][$key]);
             }
-            if (($tableConfiguration['ctrl']['groupName'] ?? '') !== 'content' && $tableName !== 'pages') {
-                // Hide tables that are not in the content group
-                continue;
-            }
-            $fieldDefinition['items'][] = [
-                ($tableConfiguration['ctrl']['title'] ?? '') ?: $tableName,
-                $tableName,
-                $this->iconFactory->mapRecordTypeToIconIdentifier($tableName, []),
-            ];
         }
+        // Add default select option at the top
+        $fieldDefinition['items'] = array_merge(
+            [['LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.table_name.select', '']],
+            $fieldDefinition['items']
+        );
     }
 }

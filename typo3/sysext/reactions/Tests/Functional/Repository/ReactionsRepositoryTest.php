@@ -28,9 +28,10 @@ class ReactionsRepositoryTest extends FunctionalTestCase
     public function demandProvider(): array
     {
         return [
-            'default demand' => [$this->getDemand(), 2],
+            'default demand' => [$this->getDemand(), 4],
             'filter by name: Test' => [$this->getDemand('Test'), 2],
             'filter by name: Random' => [$this->getDemand('Random'), 1],
+            'filter by name: INVALID' => [$this->getDemand('INVALID'), 2],
             'filter by reaction type: CreateRecordReaction' => [$this->getDemand('', 'create-record'), 1],
             'filter by name and reaction type: CreateRecordReaction' => [$this->getDemand('Test', 'create-record'), 1],
         ];
@@ -58,7 +59,7 @@ class ReactionsRepositoryTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_reactions.csv');
         $results = (new ReactionRepository())->findAll();
-        self::assertCount(2, $results);
+        self::assertCount(4, $results);
     }
 
     /**
@@ -68,7 +69,7 @@ class ReactionsRepositoryTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_reactions.csv');
         $reactions = (new ReactionRepository())->getReactionRecords();
-        self::assertCount(2, $reactions);
+        self::assertCount(4, $reactions);
     }
 
     private function getDemand(

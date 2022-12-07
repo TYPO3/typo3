@@ -105,6 +105,8 @@ return [
                 ],
             ],
         ],
+        // "impersonate_user" is not referenced in this TCA but needs to be defined here since
+        // EXT:reactions relies on the field at some points, e.g. in the ReactionInstruction model.
         'impersonate_user' => [
             'label' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.impersonate_user',
             'description' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.impersonate_user.description',
@@ -113,6 +115,21 @@ return [
                 'allowed' => 'be_users',
                 'size' => 1,
                 'maxitems' => 1,
+            ],
+        ],
+        // "table_name" is not referenced in this TCA but needs to be defined here to ensure extensions can
+        // add their own table names in their TCA overrides (using the allowTableForCreateRecordReaction() API)
+        'table_name' => [
+            'label' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.table_name',
+            'description' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.table_name.description',
+            'onChange' => 'reload',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'required' => true,
+                'default' => '',
+                'items' => [],
+                'itemsProcFunc' => \TYPO3\CMS\Reactions\Form\ReactionItemsProcFunc::class . '->validateAllowedTablesForExternalCreation',
             ],
         ],
         'disabled' => [

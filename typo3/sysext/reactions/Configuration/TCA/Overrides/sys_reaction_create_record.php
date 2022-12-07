@@ -3,21 +3,6 @@
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
     'sys_reaction',
     [
-        'table_name' => [
-            'label' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.table_name',
-            'description' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.table_name.description',
-            'onChange' => 'reload',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'required' => true,
-                'default' => '',
-                'items' => [
-                    ['LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.table_name.select', ''],
-                ],
-                'itemsProcFunc' => \TYPO3\CMS\Reactions\Form\ReactionItemsProcFunc::class . '->populateAvailableContentTables',
-            ],
-        ],
         'storage_pid' => [
             'label' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.storage_pid',
             'description' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.storage_pid.description',
@@ -49,6 +34,34 @@
         \TYPO3\CMS\Reactions\Reaction\CreateRecordReaction::getDescription(),
         \TYPO3\CMS\Reactions\Reaction\CreateRecordReaction::getType(),
         \TYPO3\CMS\Reactions\Reaction\CreateRecordReaction::getIconIdentifier(),
+    ]
+);
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+    'sys_reaction',
+    'table_name',
+    [
+        ($GLOBALS['TCA']['pages']['ctrl']['title'] ?? '') ?: 'pages',
+        'pages',
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class)->mapRecordTypeToIconIdentifier('pages', []),
+    ]
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+    'sys_reaction',
+    'table_name',
+    [
+        ($GLOBALS['TCA']['sys_category']['ctrl']['title'] ?? '') ?: 'sys_category',
+        'sys_category',
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class)->mapRecordTypeToIconIdentifier('sys_category', []),
+    ]
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+    'sys_reaction',
+    'table_name',
+    [
+        ($GLOBALS['TCA']['sys_file_collection']['ctrl']['title'] ?? '') ?: 'sys_file_collection',
+        'sys_file_collection',
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class)->mapRecordTypeToIconIdentifier('sys_file_collection', []),
     ]
 );
 

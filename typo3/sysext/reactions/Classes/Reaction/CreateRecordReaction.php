@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Reactions\Model\ReactionInstruction;
+use TYPO3\CMS\Reactions\Validation\CreateRecordReactionTable;
 
 /**
  * A reaction that creates a database record based on the payload within a request.
@@ -64,7 +65,7 @@ class CreateRecordReaction implements ReactionInterface
         $table = (string)($reaction->toArray()['table_name'] ?? '');
         $fields = (array)($reaction->toArray()['fields'] ?? []);
 
-        if ($table === '' || !isset($GLOBALS['TCA'][$table])) {
+        if (!(new CreateRecordReactionTable($table))->isAllowedForCreation()) {
             return $this->jsonResponse(['success' => false, 'error' => 'Invalid argument "table_name"'], 400);
         }
 

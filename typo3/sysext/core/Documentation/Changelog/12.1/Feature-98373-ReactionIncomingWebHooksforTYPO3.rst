@@ -55,6 +55,29 @@ Example payload for placeholders
         }
     }
 
+By default, only a few tables can be selected for external creation in the
+create record reaction. In case you want to allow your own tables to be
+available in the reactions' table selection, add the table in a coresponding TCA
+override file with:
+
+.. code-block:: php
+
+    if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('reactions')) {
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+            'sys_reaction',
+            'table_name',
+            [
+                'LLL:EXT:myext/Resources/Private/Language/locallang.xlf:my_table',
+                'my_table',
+                'myext-my_table-icon',
+            ]
+        );
+    }
+
+In case your extension depends on EXT:reactions the :php:`isLoaded()` check
+might be skipped. Please note that tables with :php:`adminOnly` set are not
+allowed.
+
 Impact
 ======
 
