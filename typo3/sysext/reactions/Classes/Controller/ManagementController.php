@@ -55,7 +55,7 @@ class ManagementController
         $view = $this->moduleTemplateFactory->create($request);
         $demand = ReactionDemand::fromRequest($request);
 
-        $this->registerDocHeaderButtons($view, $request->getAttribute('normalizedParams')->getRequestUri());
+        $this->registerDocHeaderButtons($view, $request->getAttribute('normalizedParams')->getRequestUri(), $demand);
 
         $reactionRecords = $this->reactionRepository->getReactionRecords($demand);
         $paginator = new DemandedArrayPaginator($reactionRecords, $demand->getPage(), $demand->getLimit(), $this->reactionRepository->countAll());
@@ -70,7 +70,7 @@ class ManagementController
         ])->renderResponse('Management/Overview');
     }
 
-    protected function registerDocHeaderButtons(ModuleTemplate $view, string $requestUri): void
+    protected function registerDocHeaderButtons(ModuleTemplate $view, string $requestUri, ReactionDemand $demand): void
     {
         $languageService = $this->getLanguageService();
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
@@ -97,10 +97,14 @@ class ManagementController
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // Shortcut
-        // @todo Demand should be respected for shortcuts
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('system_reactions')
-            ->setDisplayName($languageService->sL('LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:mlang_labels_tablabel'));
+            ->setDisplayName($languageService->sL('LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:mlang_labels_tablabel'))
+            ->setArguments(array_filter([
+                'demand' => $demand->getParameters(),
+                'orderField' => $demand->getOrderField(),
+                'orderDirection' => $demand->getOrderDirection(),
+            ]));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
