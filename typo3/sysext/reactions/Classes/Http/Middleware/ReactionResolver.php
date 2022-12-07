@@ -28,6 +28,7 @@ use Symfony\Component\Uid\Uuid;
 use TYPO3\CMS\Backend\Routing\RouteResult;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reactions\Authentication\ReactionUserAuthentication;
+use TYPO3\CMS\Reactions\Exception\ReactionNotFoundException;
 use TYPO3\CMS\Reactions\Http\ReactionHandler;
 use TYPO3\CMS\Reactions\Repository\ReactionRepository;
 
@@ -61,22 +62,16 @@ class ReactionResolver implements MiddlewareInterface
         $reactionIdentifier = (string)($routeResult->getArguments()['reactionIdentifier'] ?? '');
         $secretKey = $this->resolveReactionSecret($request);
         if ($secretKey === '' || !Uuid::isValid($reactionIdentifier)) {
-            return $this->jsonResponse(['Invalid information'], 503);
+            return $this->getFailureResponse('Invalid information', $request);
         }
 
         $reaction = $this->reactionRepository->getReactionRecordByIdentifier($reactionIdentifier);
         if ($reaction === null) {
-            $this->logger->warning('No reaction found for given identifier', [
-                'request' => $request,
-            ]);
-            return $this->jsonResponse(['No reaction found for given identifier'], 503);
+            return $this->getFailureResponse('No reaction found for given identifier', $request, 404);
         }
 
         if (!$reaction->isSecretValid($secretKey)) {
-            $this->logger->error('Invalid secret given', [
-                'request' => $request,
-            ]);
-            return $this->jsonResponse(['Invalid secret given'], 503);
+            return $this->getFailureResponse('Invalid secret given', $request, 401);
         }
 
         // 3. Handle reaction user authentication
@@ -85,7 +80,11 @@ class ReactionResolver implements MiddlewareInterface
         $user->start($request);
 
         // 4. Handle reaction
-        return $this->reactionHandler->handleReaction($request, $reaction, $user);
+        try {
+            return $this->reactionHandler->handleReaction($request, $reaction, $user);
+        } catch (ReactionNotFoundException $e) {
+            return $this->getFailureResponse($e->getMessage(), $request, 404);
+        }
     }
 
     protected function resolveReactionSecret(ServerRequestInterface $request): string
@@ -93,11 +92,18 @@ class ReactionResolver implements MiddlewareInterface
         return $request->getHeaderLine('x-api-key');
     }
 
-    protected function jsonResponse(array $data, int $statusCode = 200): ResponseInterface
-    {
+    protected function getFailureResponse(
+        string $errorMessage,
+        ServerRequestInterface $request,
+        int $statusCode = 400
+    ): ResponseInterface {
+        $this->logger->warning($errorMessage, ['request' => $request]);
+
         return $this->responseFactory
             ->createResponse($statusCode)
             ->withHeader('Content-Type', 'application/json')
-            ->withBody($this->streamFactory->createStream((string)json_encode($data)));
+            ->withBody(
+                $this->streamFactory->createStream((string)json_encode(['success' => false, 'error' => $errorMessage]))
+            );
     }
 }
