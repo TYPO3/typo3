@@ -1,0 +1,9 @@
+[request.getNormalizedParams().isHttps()]
+  page = PAGE
+  page.10 = TEXT
+  page.10.value = https-condition-on
+[else]
+  page = PAGE
+  page.10 = TEXT
+  page.10.value = https-condition-off
+[end]

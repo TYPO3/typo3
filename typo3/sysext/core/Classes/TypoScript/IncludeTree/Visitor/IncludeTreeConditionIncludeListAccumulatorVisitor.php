@@ -55,6 +55,6 @@ final class IncludeTreeConditionIncludeListAccumulatorVisitor implements Include
 
     public function visit(IncludeInterface $include, int $currentDepth): void
     {
-        // Implement interface
+        // Noop, just implement interface.
     }
 }

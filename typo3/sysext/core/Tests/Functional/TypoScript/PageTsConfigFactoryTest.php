@@ -156,6 +156,29 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function pageTsConfigMatchesRequestHttpsElseCondition(): void
+    {
+        $request = new ServerRequest('http://www.example.com/');
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $rootLine = [
+            [
+                'uid' => 1,
+                'TSconfig' => '[request.getNormalizedParams().isHttps()]'
+                    . chr(10) . '  isHttps = on'
+                    . chr(10) . '[else]'
+                    . chr(10) . '  isHttps = off',
+            ],
+        ];
+        /** @var PageTsConfigFactory $subject */
+        $subject = $this->get(PageTsConfigFactory::class);
+        $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
+        self::assertSame('off', $pageTsConfig->getPageTsConfigArray()['isHttps']);
+    }
+
+    /**
+     * @test
+     */
     public function pageTsConfigMatchesRequestHttpsConditionUsingSiteConstant(): void
     {
         $request = (new ServerRequest('https://www.example.com/', null, 'php://input', [], ['HTTPS' => 'ON']));

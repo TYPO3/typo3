@@ -86,5 +86,6 @@ final class IncludeTreeSetupConditionConstantSubstitutionVisitor implements Incl
 
     public function visit(IncludeInterface $include, int $currentDepth): void
     {
+        // Noop, just implement interface
     }
 }

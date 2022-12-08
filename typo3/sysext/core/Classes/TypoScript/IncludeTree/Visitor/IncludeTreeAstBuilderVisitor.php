@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SysTemplateInclude;
  *
  * This visitor is usually only used together with ConditionVerdictAwareIncludeTreeTraverser,
  * and the IncludeTreeConditionMatcherVisitor is added *before* this visitor to determine
- * condition verdicts, so AST is only extended for matching conditions.
+ * condition verdicts, so AST is only extended for conditions with "true" verdict.
  *
  * When parsing "setup", "flattened" constants should be assigned to this visitor, so
  * the AstBuilder can resolve constants.
@@ -65,6 +65,10 @@ final class IncludeTreeAstBuilderVisitor implements IncludeTreeVisitorInterface
         return $this->ast;
     }
 
+    /**
+     * Reset AST if "clear" flag is set. That's a sys_template record specific thing
+     * to restart with a new RootNode and drop any AST calculated already.
+     */
     public function visitBeforeChildren(IncludeInterface $include, int $currentDepth): void
     {
         if ($include instanceof SysTemplateInclude && $include->isClear()) {
@@ -73,10 +77,15 @@ final class IncludeTreeAstBuilderVisitor implements IncludeTreeVisitorInterface
         }
     }
 
+    /**
+     * Extend current AST with given LineStream of include node.
+     */
     public function visit(IncludeInterface $include, int $currentDepth): void
     {
         $tokenStream = $include->getLineStream();
         if ($tokenStream && !$include->isSplit()) {
+            // A "split" include means that the entire TypoScript is split into child includes. The
+            // TokenStream of the split include itself must not be parsed, so it's excluded here.
             $this->ast = $this->astBuilder->build($tokenStream, $this->ast, $this->flatConstants);
         }
     }

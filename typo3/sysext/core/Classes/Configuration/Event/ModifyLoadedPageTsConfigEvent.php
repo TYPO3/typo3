@@ -24,6 +24,6 @@ namespace TYPO3\CMS\Core\Configuration\Event;
  *             When removing, delete the class, adapt test_typoscript_pagetsconfigfactory test extension, related test and
  *             set event \TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent final.
  */
-class ModifyLoadedPageTsConfigEvent extends \TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent
+final class ModifyLoadedPageTsConfigEvent extends \TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent
 {
 }

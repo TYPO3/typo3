@@ -48,17 +48,12 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
         ],
     ];
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
-    }
-
     /**
      * @test
      */
     public function headerAndFooterMarkersAreReplacedDuringIntProcessing(): void
     {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
             ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageWithUserInt.typoscript']
@@ -99,6 +94,7 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
      */
     public function localizationReturnsUnchangedStringIfNotLocallangLabel(): void
     {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
             ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageWithUserObjectUsingSlWithoutLLL.typoscript']
@@ -127,6 +123,7 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
      */
     public function localizationReturnsLocalizedStringWithLocallangLabel(): void
     {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
             ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageWithUserObjectUsingSlWithLLL.typoscript']
@@ -174,6 +171,7 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
      */
     public function mountPointParameterContainsOnlyValidMPValues(string $inputMp, string $expected): void
     {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
             ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageExposingTsfeMpParameter.typoscript']
@@ -378,6 +376,7 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
      */
     public function getFromCacheSetsConfigRootlineToLocalRootline(int $pid, array $expectedRootLine, array $expectedConfigRootLine, bool $nocache): void
     {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
             ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageExposingTsfeMpParameter.typoscript']
@@ -397,5 +396,45 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
         self::assertSame($expectedConfigRootLine, $GLOBALS['TSFE']->config['rootLine']);
         // @deprecated: b/w compat. Drop when TemplateService is removed.
         self::assertSame($expectedConfigRootLine, $GLOBALS['TSFE']->tmpl->rootLine);
+    }
+
+    /**
+     * @test
+     */
+    public function applicationConsidersTrueConditionVerdict(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
+        $this->setUpFrontendRootPage(
+            2,
+            ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageHttpsConditionHelloWorld.typoscript']
+        );
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(2, 'https://website.local/'),
+            [$this->buildDefaultLanguageConfiguration('EN', '/en/')]
+        );
+        $request = (new InternalRequest('https://website.local/en/'))->withPageId(2);
+        $response = $this->executeFrontendSubRequest($request);
+        self::assertStringContainsString('https-condition-on', (string)$response->getBody());
+    }
+
+    /**
+     * @test
+     */
+    public function applicationConsidersFalseConditionVerdictToElseBranch(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
+        $this->setUpFrontendRootPage(
+            2,
+            ['typo3/sysext/frontend/Tests/Functional/Controller/Fixtures/PageHttpsConditionHelloWorld.typoscript']
+        );
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(2, 'http://website.local/'),
+            [$this->buildDefaultLanguageConfiguration('EN', '/en/')]
+        );
+        $request = (new InternalRequest('http://website.local/en/'))->withPageId(2);
+        $response = $this->executeFrontendSubRequest($request);
+        self::assertStringContainsString('https-condition-off', (string)$response->getBody());
     }
 }

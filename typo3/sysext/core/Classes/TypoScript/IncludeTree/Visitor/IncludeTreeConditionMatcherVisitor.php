@@ -59,11 +59,16 @@ final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInte
         $conditionValue = $include->getConditionToken()->getValue();
         // @todo: This bracket handling is stupid, it's removed in matcher again ...
         $verdict = $this->conditionMatcher->match('[' . $conditionValue . ']');
+        if ($include->isConditionNegated()) {
+            // Honor ConditionElseInclude "[ELSE]" which negates the verdict of the main condition.
+            $verdict = !$verdict;
+        }
         $this->conditionList[$conditionValue] = $verdict;
         $include->setConditionVerdict($verdict);
     }
 
     public function visit(IncludeInterface $include, int $currentDepth): void
     {
+        // Noop, just implement interface
     }
 }

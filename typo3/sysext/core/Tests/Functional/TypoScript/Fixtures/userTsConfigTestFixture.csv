@@ -4,9 +4,17 @@
 ,2,0,"user2",0,,"loadedFromUser = loadedFromUser"
 ,3,0,"user3",0,"1",
 ,4,0,"user4",0,"1,2",
-,5,0,"user5",1,,"isHttps = off
+,5,0,"user5",1,,"
+isHttps = off
 [request.getNormalizedParams().isHttps()]
   isHttps = on
+[end]
+"
+,6,0,"user5",1,,"
+[request.getNormalizedParams().isHttps()]
+  isHttps = on
+[else]
+  isHttps = off
 [end]
 "
 "be_groups"
