@@ -144,10 +144,21 @@ abstract class AbstractAstBuilder
                 // Add new node as new child of current last element in path
                 $foundNode = new ChildNode($identifierTokenValue);
                 $node->addChild($foundNode);
-            } elseif (!($foundNode = $node->getChildByName($identifierTokenValue)) && $nextIdentifier === null) {
+            } elseif (!$node->getChildByName($identifierTokenValue) && $nextIdentifier === null) {
+                // Parent of target node exists, but target node does not. Add new reference child.
                 $foundNode = new ReferenceChildNode($identifierTokenValue);
                 $foundNode->setReferenceSourceStream($line->getValueTokenStream());
                 $node->addChild($foundNode);
+            } elseif (($foundNode = $node->getChildByName($identifierTokenValue)) && $nextIdentifier === null) {
+                // Target node exists already. We create a new one, remove old, but transfer existing children from old to new.
+                $newNode = new ReferenceChildNode($identifierTokenValue);
+                $newNode->setReferenceSourceStream($line->getValueTokenStream());
+                foreach ($foundNode->getNextChild() as $existingNodeChild) {
+                    $newNode->addChild($existingNodeChild);
+                }
+                $node->removeChildByName($identifierTokenValue);
+                $node->addChild($newNode);
+                $foundNode = $newNode;
             }
             $node = $foundNode;
         }

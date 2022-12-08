@@ -1461,7 +1461,7 @@ class AstBuilderInterfaceTest extends UnitTestCase
             'bar =< foo',
             $expectedAst,
             [
-                'foo'  => 'foo1',
+                'foo' => 'foo1',
                 'bar' => '< foo',
             ],
         ];
@@ -1577,6 +1577,81 @@ class AstBuilderInterfaceTest extends UnitTestCase
                     'level2First.' => [
                         'level3First' => '< source',
                         'level3Second' => 'newSource2Value',
+                    ],
+                ],
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $sourceNode = new ChildNode('source');
+        $expectedAst->addChild($sourceNode);
+        $sourceNode->setValue('source');
+        $sourceChildNode = new ChildNode('childsource');
+        $sourceNode->addChild($sourceChildNode);
+        $sourceChildNode->setValue('childsource');
+        $fooNode = new ReferenceChildNode('foo');
+        $expectedAst->addChild($fooNode);
+        $fooNode->setReferenceSourceStream(
+            (new IdentifierTokenStream())
+                ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'source', 4, 7)))
+        );
+        $fooChildNode = new ChildNode('childfoo');
+        $fooNode->addChild($fooChildNode);
+        $fooChildNode->setValue('childfoo');
+        yield 'reference operator turns existing node into reference node and keeps children' => [
+            "foo = foo\n" .
+            "foo.childfoo = childfoo\n" .
+            "source = source\n" .
+            "source.childsource = childsource\n" .
+            "foo =< source\n",
+            $expectedAst,
+            [
+                'source' => 'source',
+                'source.' => [
+                    'childsource' => 'childsource',
+                ],
+                'foo' => '< source',
+                'foo.' => [
+                    'childfoo' => 'childfoo',
+                ],
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $sourceNode = new ChildNode('source');
+        $expectedAst->addChild($sourceNode);
+        $sourceNode->setValue('source');
+        $sourceChildNode = new ChildNode('childsource');
+        $sourceNode->addChild($sourceChildNode);
+        $sourceChildNode->setValue('childsource');
+        $fooNode = new ChildNode('foo');
+        $expectedAst->addChild($fooNode);
+        $fooChildNode = new ReferenceChildNode('childfoo');
+        $fooChildNode->setReferenceSourceStream(
+            (new IdentifierTokenStream())
+                ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'source', 4, 16)))
+                ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'childsource', 4, 23)))
+        );
+        $fooNode->addChild($fooChildNode);
+        $fooChildChildNode = new ChildNode('childchildfoo');
+        $fooChildNode->addChild($fooChildChildNode);
+        $fooChildChildNode->setValue('childchildfoo');
+        yield 'reference operator turns nested existing node into reference node and keeps children' => [
+            "foo.childfoo =< childfoo\n" .
+            "foo.childfoo.childchildfoo = childchildfoo\n" .
+            "source = source\n" .
+            "source.childsource = childsource\n" .
+            "foo.childfoo =< source.childsource\n",
+            $expectedAst,
+            [
+                'source' => 'source',
+                'source.' => [
+                    'childsource' => 'childsource',
+                ],
+                'foo.' => [
+                    'childfoo' => '< source.childsource',
+                    'childfoo.' => [
+                        'childchildfoo' => 'childchildfoo',
                     ],
                 ],
             ],

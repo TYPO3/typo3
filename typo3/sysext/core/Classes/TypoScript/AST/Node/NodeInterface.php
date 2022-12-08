@@ -47,7 +47,7 @@ interface NodeInterface
     public function removeChildByName(string $name): void;
     public function hasChildren(): bool;
     /**
-     * @return iterable<NodeInterface>
+     * @return iterable<ChildNodeInterface>
      */
     public function getNextChild(): iterable;
     public function sortChildren(): void;
