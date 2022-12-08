@@ -34,6 +34,9 @@
             <trans-unit id="reaction_no_filter" resname="reaction_no_filter">
                 <source>Remove all filter</source>
             </trans-unit>
+            <trans-unit id="reaction_no_implementation_class" resname="reaction_no_implementation_class">
+                <source>Implementation class for reaction type "%s" is missing.</source>
+            </trans-unit>
             <trans-unit id="reaction_example" resname="reaction_example">
                 <source>Example</source>
             </trans-unit>

@@ -55,7 +55,7 @@ class ReactionHandler
         }
         $reaction = $this->reactionRegistry->getReactionByType($reactionInstruction->getType());
         if ($reaction === null) {
-            throw new ReactionNotFoundException('No reaction found for given identifier', 1662458842);
+            throw new ReactionNotFoundException('No reaction found for given reaction type', 1662458842);
         }
 
         // Prepare the user and language object before calling the reaction execution process

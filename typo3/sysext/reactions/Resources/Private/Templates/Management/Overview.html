@@ -67,76 +67,58 @@
             </thead>
             <tbody>
             <f:for each="{reactionRecords}" key="reactionId" as="reaction">
+                <f:variable name="reactionRecord" value="{reaction as array}"/>
                 <tr>
-                    <td class="col-icon">
-                        <a
-                            href="#"
-                            data-contextmenu-trigger="click"
-                            data-contextmenu-table="sys_reaction"
-                            data-contextmenu-uid="{reaction.uid}"
-                            title="{reaction.name}"
-                        >
-                            <core:iconForRecord table="sys_reaction" row="{reaction as array}" />
-                        </a>
-                    </td>
-                    <td>
-                        <be:link.editRecord
-                            returnUrl="{returnUrl}"
-                            table="sys_reaction"
-                            uid="{reaction.uid}"
-                            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}: {reaction.title}"
-                        >
-                            {reaction.name}
-                        </be:link.editRecord>
-                    </td>
-                    <td>
-                        <f:translate key="{reactionTypes.{reaction.type}.description}" />
-                    </td>
-                    <td>
-                        <f:render section="codesnippet" arguments="{reaction: reaction}" />
-                    </td>
-                    <td class="col-control">
-                        <div class="btn-group">
-                            <be:link.editRecord
-                                returnUrl="{returnUrl}"
-                                class="btn btn-default"
-                                table="sys_reaction"
-                                uid="{reaction.uid}"
-                                title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}"
-                            >
-                                <core:icon identifier="actions-open" />
-                            </be:link.editRecord>
-                            <f:if condition="{reaction.disabled} == 1">
-                                <f:then>
-                                    <a
-                                        class="btn btn-default"
-                                        href="{be:moduleLink(route:'tce_db', query:'data[sys_reaction][{reaction.uid}][disabled]=0', arguments:'{redirect: returnUrl}')}"
-                                        title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide')}"
-                                    >
-                                        <core:icon identifier="actions-edit-unhide" />
-                                    </a>
-                                </f:then>
-                                <f:else>
-                                    <a
-                                        class="btn btn-default"
-                                        href="{be:moduleLink(route:'tce_db', query:'data[sys_reaction][{reaction.uid}][disabled]=1', arguments:'{redirect: returnUrl}')}"
-                                        title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide')}"
-                                    >
-                                        <core:icon identifier="actions-edit-hide" />
-                                    </a>
-                                </f:else>
-                            </f:if>
-                            <a class="btn btn-default t3js-modal-trigger"
-                                href="{be:moduleLink(route:'tce_db', query:'cmd[sys_reaction][{reaction.uid}][delete]=1', arguments:'{redirect: returnUrl}')}"
-                                title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete')}"
-                                data-severity="warning"
-                                data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
-                                data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}"
-                                data-button-close-text="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.no')}">
-                                <core:icon identifier="actions-delete" />
-                            </a>
-                        </div>
-                    </td>
+                    <f:if condition="{reactionTypes.{reaction.type}}">
+                        <f:then>
+                            <td class="col-icon">
+                                <a
+                                    href="#"
+                                    data-contextmenu-trigger="click"
+                                    data-contextmenu-table="sys_reaction"
+                                    data-contextmenu-uid="{reaction.uid}"
+                                    title="{reaction.name}"
+                                >
+                                    <core:iconForRecord table="sys_reaction" row="{reactionRecord}" />
+                                </a>
+                            </td>
+                            <td>
+                                <be:link.editRecord
+                                    returnUrl="{returnUrl}"
+                                    table="sys_reaction"
+                                    uid="{reaction.uid}"
+                                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}: {reaction.name}"
+                                >
+                                    {reaction.name}
+                                </be:link.editRecord>
+                            </td>
+                            <td>
+                                <f:translate key="{reactionTypes.{reaction.type}.description}" default="{reactionTypes.{reaction.type}.description}"/>
+                            </td>
+                            <td>
+                                <f:render section="codesnippet" arguments="{reaction: reaction}" />
+                            </td>
+                            <td class="col-control">
+                                <f:render section="controls" arguments="{_all}" />
+                            </td>
+                        </f:then>
+                        <f:else>
+                            <td class="col-icon">
+                                <core:iconForRecord table="sys_reaction" row="{reactionRecord}" />
+                            </td>
+                            <td>
+                                {reaction.name}
+                            </td>
+                            <td colspan="2">
+                                <span class="badge badge-danger">
+                                    <f:translate key="LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:reaction_no_implementation_class" arguments="{0: reaction.type}" />
+                                </span>
+                            </td>
+                            <td class="col-control">
+                                <f:render section="controls" arguments="{_all}" />
+                            </td>
+                        </f:else>
+                    </f:if>
                 </tr>
             </f:for>
             </tbody>
@@ -204,6 +186,58 @@
     <span>  -H </span><span class="text-info">'accept: application/json'</span><span> \</span>
     <span>  -H </span><span class="text-info">'x-api-key: ***your-secret***'</span>
 </code></pre>
+    </div>
+</f:section>
+
+<f:section name="controls">
+    <div class="btn-group">
+        <f:if condition="{reactionTypes.{reaction.type}}">
+            <f:then>
+                <be:link.editRecord
+                    returnUrl="{returnUrl}"
+                    class="btn btn-default"
+                    table="sys_reaction"
+                    uid="{reaction.uid}"
+                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}"
+                >
+                    <core:icon identifier="actions-open" />
+                </be:link.editRecord>
+            </f:then>
+            <f:else>
+                <span class="btn btn-default disabled">
+                    <core:icon identifier="empty-empty" />
+                </span>
+            </f:else>
+        </f:if>
+        <f:if condition="{reactionRecord.disabled} == 1">
+            <f:then>
+                <a
+                    class="btn btn-default"
+                    href="{be:moduleLink(route:'tce_db', query:'data[sys_reaction][{reaction.uid}][disabled]=0', arguments:'{redirect: returnUrl}')}"
+                    title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide')}"
+                >
+                    <core:icon identifier="actions-edit-unhide" />
+                </a>
+            </f:then>
+            <f:else>
+                <a
+                    class="btn btn-default"
+                    href="{be:moduleLink(route:'tce_db', query:'data[sys_reaction][{reaction.uid}][disabled]=1', arguments:'{redirect: returnUrl}')}"
+                    title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide')}"
+                >
+                    <core:icon identifier="actions-edit-hide" />
+                </a>
+            </f:else>
+        </f:if>
+        <a class="btn btn-default t3js-modal-trigger"
+            href="{be:moduleLink(route:'tce_db', query:'cmd[sys_reaction][{reaction.uid}][delete]=1', arguments:'{redirect: returnUrl}')}"
+            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete')}"
+            data-severity="warning"
+            data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
+            data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}"
+            data-button-close-text="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.no')}">
+            <core:icon identifier="actions-delete" />
+        </a>
     </div>
 </f:section>
 </html>
