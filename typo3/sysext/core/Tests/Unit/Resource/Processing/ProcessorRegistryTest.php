@@ -51,6 +51,7 @@ class ProcessorRegistryTest extends UnitTestCase
      */
     public function getProcessorWhenNoneIsRegistered(): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['processors'] = [];
         $this->expectExceptionCode(1560876294);
 
         $subject = new ProcessorRegistry();

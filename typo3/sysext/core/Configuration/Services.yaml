@@ -303,6 +303,9 @@ services:
   TYPO3\CMS\Core\Resource\Security\SvgTypeCheck:
     public: true
 
+  TYPO3\CMS\Core\Resource\OnlineMedia\Processing\PreviewProcessing:
+    public: true
+
   TYPO3\CMS\Core\Domain\Access\RecordAccessVoter:
     public: true
 

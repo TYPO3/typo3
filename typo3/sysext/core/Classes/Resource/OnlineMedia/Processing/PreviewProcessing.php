@@ -15,36 +15,58 @@
 
 namespace TYPO3\CMS\Core\Resource\OnlineMedia\Processing;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\OnlineMedia\Event\AfterVideoPreviewFetchedEvent;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor;
 use TYPO3\CMS\Core\Resource\Processing\ProcessorInterface;
 use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Preview of Online Media item Processing
  */
 final class PreviewProcessing implements ProcessorInterface
 {
+    public function __construct(
+        protected readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly LocalImageProcessor $localImageProcessor,
+    ) {
+    }
+
     public function canProcessTask(TaskInterface $task): bool
     {
-        return $task->getType() === 'Image'
-            && in_array($task->getName(), ['Preview', 'CropScaleMask'], true)
-            && ($helperRegistry = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class))->hasOnlineMediaHelper(($sourceFile = $task->getSourceFile())->getExtension())
-            && ($previewImageFile = $helperRegistry->getOnlineMediaHelper($sourceFile)->getPreviewImage($sourceFile))
-            && !empty($previewImageFile)
-            && file_exists($previewImageFile);
+        if ($task->getType() !== 'Image') {
+            return false;
+        }
+        if (!in_array($task->getName(), ['Preview', 'CropScaleMask'], true)) {
+            return false;
+        }
+        $sourceFile = $task->getSourceFile();
+        if (!$this->onlineMediaHelperRegistry->hasOnlineMediaHelper($sourceFile->getExtension())) {
+            return false;
+        }
+        $previewImageFile = $this->getPreviewImageFromOnlineMedia($sourceFile);
+        return !empty($previewImageFile) && file_exists($previewImageFile);
     }
 
     public function processTask(TaskInterface $task): void
     {
-        $file = $task->getSourceFile();
-        GeneralUtility::makeInstance(LocalImageProcessor::class)
-            ->processTaskWithLocalFile(
-                $task,
-                GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)
-                    ->getOnlineMediaHelper($file)
-                    ->getPreviewImage($file)
-            );
+        $this->localImageProcessor->processTaskWithLocalFile(
+            $task,
+            $this->getPreviewImageFromOnlineMedia($task->getSourceFile())
+        );
+    }
+
+    protected function getPreviewImageFromOnlineMedia(File $file): string
+    {
+        $onlineMediaHelper = $this->onlineMediaHelperRegistry->getOnlineMediaHelper($file);
+        $previewImage = $onlineMediaHelper->getPreviewImage($file);
+
+        $videoPreviewEvent = new AfterVideoPreviewFetchedEvent($file, $onlineMediaHelper, $previewImage);
+        $this->eventDispatcher->dispatch($videoPreviewEvent);
+
+        return $videoPreviewEvent->getPreviewImageFilename();
     }
 }

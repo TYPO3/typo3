@@ -956,11 +956,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/Index/Indexer.php
 
 		-
-			message: "#^Variable \\$previewImageFile in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/OnlineMedia/Processing/PreviewProcessing.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between string and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/Processing/TaskTypeRegistry.php
