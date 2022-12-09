@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
@@ -872,7 +873,8 @@ class DataMapProcessor
             return [];
         }
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
+        $queryBuilder = $connection->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll()
             // NOT using WorkspaceRestriction here since it's wrong in this case. See ws OR restriction below.
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -898,22 +900,27 @@ class DataMapProcessor
                 ),
             );
         }
-        $queryBuilder
-            ->select(...array_values($fieldNames))
-            ->from($tableName)
-            ->where(
-                $queryBuilder->expr()->in(
-                    'uid',
-                    $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
-                ),
-                $queryBuilder->expr()->or(...$expressions)
-            );
-
-        $result = $queryBuilder->executeQuery();
 
         $translationValues = [];
-        while ($record = $result->fetchAssociative()) {
-            $translationValues[$record['uid']] = $record;
+        $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
+        // We are using the max bind parameter value as way to retrieve the data in chunks. However, we are not
+        // using up the placeholders by providing the id list directly, we keep this calculation to avoid hitting
+        // max query size limitation in most cases. If that is hit, it can be increased by adjusting the dbms setting.
+        foreach (array_chunk($ids, $maxBindParameters, true) as $chunk) {
+            $result = $queryBuilder
+                ->select(...array_values($fieldNames))
+                ->from($tableName)
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'uid',
+                        $queryBuilder->quoteArrayBasedValueListToIntegerList($chunk)
+                    ),
+                    $queryBuilder->expr()->or(...$expressions)
+                )
+                ->executeQuery();
+            while ($record = $result->fetchAssociative()) {
+                $translationValues[$record['uid']] = $record;
+            }
         }
         return $translationValues;
     }
@@ -1103,70 +1110,75 @@ class DataMapProcessor
             return [];
         }
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($tableName);
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->backendUser->workspace));
-
-        $zeroParameter = $queryBuilder->createNamedParameter(0, Connection::PARAM_INT);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($tableName);
         $ids = $this->filterNumericIds($ids);
-        $idsParameter = $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY);
-
-        // fetch by language dependency
-        if (!empty($fieldNames['language']) && !empty($fieldNames['parent'])) {
-            $ancestorPredicates = [
-                $queryBuilder->expr()->in(
-                    $fieldNames['parent'],
-                    $idsParameter
-                ),
-            ];
-            if (!empty($fieldNames['source'])) {
-                $ancestorPredicates[] = $queryBuilder->expr()->in(
-                    $fieldNames['source'],
-                    $idsParameter
-                );
-            }
-            $predicates = [
-                // must be any kind of localization
-                $queryBuilder->expr()->gt(
-                    $fieldNames['language'],
-                    $zeroParameter
-                ),
-                // must be in connected mode
-                $queryBuilder->expr()->gt(
-                    $fieldNames['parent'],
-                    $zeroParameter
-                ),
-                // any parent or source pointers
-                $queryBuilder->expr()->orX(...$ancestorPredicates),
-            ];
-        } elseif (!empty($fieldNames['origin'])) {
-            // fetch by origin dependency ("copied from")
-            $predicates = [
-                $queryBuilder->expr()->in(
-                    $fieldNames['origin'],
-                    $idsParameter
-                ),
-            ];
-        } else {
-            // otherwise: stop execution
-            throw new \InvalidArgumentException(
-                'Invalid combination of query field names given',
-                1487192370
-            );
-        }
-
-        $statement = $queryBuilder
-            ->select(...array_values($fieldNames))
-            ->from($tableName)
-            ->andWhere(...$predicates)
-            ->executeQuery();
+        $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
 
         $dependentElements = [];
-        while ($record = $statement->fetchAssociative()) {
-            $dependentElements[] = $record;
+        foreach (array_chunk($ids, $maxBindParameters, true) as $idsChunked) {
+            $queryBuilder = $connection->createQueryBuilder();
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->backendUser->workspace));
+
+            $zeroParameter = $queryBuilder->createNamedParameter(0, Connection::PARAM_INT);
+            $idsParameter = $queryBuilder->quoteArrayBasedValueListToIntegerList($idsChunked);
+
+            // fetch by language dependency
+            if (!empty($fieldNames['language']) && !empty($fieldNames['parent'])) {
+                $ancestorPredicates = [
+                    $queryBuilder->expr()->in(
+                        $fieldNames['parent'],
+                        $idsParameter
+                    ),
+                ];
+                if (!empty($fieldNames['source'])) {
+                    $ancestorPredicates[] = $queryBuilder->expr()->in(
+                        $fieldNames['source'],
+                        $idsParameter
+                    );
+                }
+                $predicates = [
+                    // must be any kind of localization
+                    $queryBuilder->expr()->gt(
+                        $fieldNames['language'],
+                        $zeroParameter
+                    ),
+                    // must be in connected mode
+                    $queryBuilder->expr()->gt(
+                        $fieldNames['parent'],
+                        $zeroParameter
+                    ),
+                    // any parent or source pointers
+                    $queryBuilder->expr()->or(...$ancestorPredicates),
+                ];
+            } elseif (!empty($fieldNames['origin'])) {
+                // fetch by origin dependency ("copied from")
+                $predicates = [
+                    $queryBuilder->expr()->in(
+                        $fieldNames['origin'],
+                        $idsParameter
+                    ),
+                ];
+            } else {
+                // otherwise: stop execution
+                throw new \InvalidArgumentException(
+                    'Invalid combination of query field names given',
+                    1487192370
+                );
+            }
+
+            $statement = $queryBuilder
+                ->select(...array_values($fieldNames))
+                ->from($tableName)
+                ->andWhere(...$predicates)
+                ->executeQuery();
+
+            while ($record = $statement->fetchAssociative()) {
+                $dependentElements[] = $record;
+            }
         }
         return $dependentElements;
     }
