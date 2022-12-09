@@ -608,6 +608,13 @@ class PageLayoutController
             ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
         $buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
 
+        // Reload
+        $reloadButton = $buttonBar->makeLinkButton()
+            ->setHref($request->getAttribute('normalizedParams')->getRequestUri())
+            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
+            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
+        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
         // Edit page properties
         if ($this->isPageEditable(0)) {
             $url = (string)$this->uriBuilder->buildUriFromRoute(
