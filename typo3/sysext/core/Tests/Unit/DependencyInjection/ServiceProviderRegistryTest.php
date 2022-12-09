@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\DependencyInjection\ServiceProviderRegistry;
 use TYPO3\CMS\Core\Package\Package;
@@ -30,34 +28,22 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ServiceProviderRegistryTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /** @var ObjectProphecy<PackageManager> */
-    protected ObjectProphecy $packageManagerProphecy;
+    protected PackageManager&MockObject $packageManagerMock;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->packageManagerProphecy = $this->prophesize(PackageManager::class);
-        $this->packageManagerProphecy->isPackageActive(Argument::any())->willReturn(false);
-        $this->packageManagerProphecy->getActivePackages()->willReturn([]);
+        $this->packageManagerMock = $this->createMock(PackageManager::class);
     }
 
-    protected function mockPackages($packages): void
+    protected function mockPackage(string $packageKey, string $serviceProvider): void
     {
-        $active = [];
-        foreach ($packages as $packageKey => $serviceProvider) {
-            $this->packageManagerProphecy->isPackageActive($packageKey)->willReturn(true);
-
-            $package = $this->prophesize(Package::class);
-            $package->getPackageKey()->willReturn($packageKey);
-            $package->getServiceProvider()->willReturn($serviceProvider);
-
-            $this->packageManagerProphecy->getPackage($packageKey)->willReturn($package->reveal());
-            $active[] = $package->reveal();
-        }
-
-        $this->packageManagerProphecy->getActivePackages()->willReturn($active);
+        $this->packageManagerMock->method('isPackageActive')->with($packageKey)->willReturn(true);
+        $package = $this->createMock(Package::class);
+        $package->method('getPackageKey')->willReturn($packageKey);
+        $package->method('getServiceProvider')->willReturn($serviceProvider);
+        $this->packageManagerMock->method('getPackage')->with($packageKey)->willReturn($package);
+        $this->packageManagerMock->method('getActivePackages')->willReturn([$package]);
     }
 
     /**
@@ -65,8 +51,8 @@ class ServiceProviderRegistryTest extends UnitTestCase
      */
     public function registry(): void
     {
-        $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
-        $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
+        $this->mockPackage('core', TestRegistryServiceProvider::class);
+        $registry = new ServiceProviderRegistry($this->packageManagerMock);
 
         self::assertEquals(new TestRegistryServiceProvider(), $registry->get('core'));
     }
@@ -76,8 +62,8 @@ class ServiceProviderRegistryTest extends UnitTestCase
      */
     public function registryCaches(): void
     {
-        $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
-        $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
+        $this->mockPackage('core', TestRegistryServiceProvider::class);
+        $registry = new ServiceProviderRegistry($this->packageManagerMock);
 
         self::assertEquals(new TestRegistryServiceProvider(), $registry->get('core'));
         self::assertSame($registry->get('core'), $registry->get('core'));
@@ -88,8 +74,8 @@ class ServiceProviderRegistryTest extends UnitTestCase
      */
     public function registryPassesPackageAsConstructorArgument(): void
     {
-        $this->mockPackages(['core' => TestStatefulServiceProvider::class]);
-        $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
+        $this->mockPackage('core', TestStatefulServiceProvider::class);
+        $registry = new ServiceProviderRegistry($this->packageManagerMock);
 
         self::assertInstanceOf(TestStatefulServiceProvider::class, $registry->get('core'));
         self::assertInstanceOf(Package::class, $registry->get('core')->package);
@@ -101,8 +87,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
     public function getException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
-        $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
+        $registry = new ServiceProviderRegistry($this->packageManagerMock);
 
         $registry->get('backend');
     }
@@ -112,8 +97,8 @@ class ServiceProviderRegistryTest extends UnitTestCase
      */
     public function getServices(): void
     {
-        $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
-        $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
+        $this->mockPackage('core', TestRegistryServiceProvider::class);
+        $registry = new ServiceProviderRegistry($this->packageManagerMock);
 
         $services = $registry->getFactories('core');
         self::assertArrayHasKey('serviceA', $services);
@@ -128,8 +113,8 @@ class ServiceProviderRegistryTest extends UnitTestCase
      */
     public function extendServices(): void
     {
-        $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
-        $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
+        $this->mockPackage('core', TestRegistryServiceProvider::class);
+        $registry = new ServiceProviderRegistry($this->packageManagerMock);
 
         $services = $registry->getExtensions('core');
         self::assertArrayHasKey('serviceB', $services);
@@ -144,11 +129,11 @@ class ServiceProviderRegistryTest extends UnitTestCase
      */
     public function getServiceFactory(): void
     {
-        $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
-        $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
+        $this->mockPackage('core', TestRegistryServiceProvider::class);
+        $registry = new ServiceProviderRegistry($this->packageManagerMock);
 
-        $containerProphecy = $this->prophesize(ContainerInterface::class);
-        $service = $registry->createService('core', 'param', $containerProphecy->reveal());
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $service = $registry->createService('core', 'param', $containerMock);
 
         self::assertEquals(42, $service);
     }
@@ -158,11 +143,11 @@ class ServiceProviderRegistryTest extends UnitTestCase
      */
     public function getServiceExtension(): void
     {
-        $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
-        $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
+        $this->mockPackage('core', TestRegistryServiceProvider::class);
+        $registry = new ServiceProviderRegistry($this->packageManagerMock);
 
-        $containerProphecy = $this->prophesize(ContainerInterface::class);
-        $service = $registry->extendService('core', 'serviceB', $containerProphecy->reveal(), null);
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $service = $registry->extendService('core', 'serviceB', $containerMock);
 
         self::assertInstanceOf(\stdClass::class, $service);
     }
@@ -176,8 +161,21 @@ class ServiceProviderRegistryTest extends UnitTestCase
             'core' => TestRegistryServiceProvider::class,
             'backend' => TestRegistryServiceProvider::class,
         ];
-        $this->mockPackages($packages);
-        $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
+
+        $this->packageManagerMock->method('isPackageActive')->withConsecutive(['core', 'backend'])->willReturn(true);
+
+        $packageCore = $this->createMock(Package::class);
+        $packageCore->method('getPackageKey')->willReturn('core');
+        $packageCore->method('getServiceProvider')->willReturn(TestRegistryServiceProvider::class);
+
+        $packageBackend = $this->createMock(Package::class);
+        $packageBackend->method('getPackageKey')->willReturn('backend');
+        $packageBackend->method('getServiceProvider')->willReturn(TestRegistryServiceProvider::class);
+
+        $this->packageManagerMock->method('getPackage')->withConsecutive(['core', 'backend'])->willReturnOnConsecutiveCalls($packageCore, $packageBackend);
+        $this->packageManagerMock->method('getActivePackages')->willReturn([$packageCore, $packageBackend]);
+
+        $registry = new ServiceProviderRegistry($this->packageManagerMock);
 
         $i = 0;
         foreach ($registry as $key => $provider) {
