@@ -393,6 +393,12 @@ class RecordListController
                 $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_LEFT, 50);
             }
         }
+        // Reload
+        $reloadButton = $buttonBar->makeLinkButton()
+            ->setHref($listUrl)
+            ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
+            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
+        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // Shortcut
         $shortCutButton = $buttonBar->makeShortcutButton()->setRouteIdentifier('web_list');
