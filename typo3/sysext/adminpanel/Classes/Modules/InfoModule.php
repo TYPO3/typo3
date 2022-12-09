@@ -46,10 +46,15 @@ class InfoModule extends AbstractModule implements ShortInfoProviderInterface
 
     public function getShortInfo(): string
     {
+        $phpInformation = $this->moduleData->offsetGet($this->subModules['info_php']);
         $parseTime = $this->getTimeTracker()->getParseTime();
-        return sprintf($this->getLanguageService()->sL(
-            'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:module.shortinfo'
-        ), $parseTime);
+        return sprintf(
+            $this->getLanguageService()->sL(
+                'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:module.shortinfoLoadAndMemory'
+            ),
+            $parseTime,
+            $phpInformation['general']['Peak Memory Usage']
+        );
     }
 
     protected function getTimeTracker(): TimeTracker

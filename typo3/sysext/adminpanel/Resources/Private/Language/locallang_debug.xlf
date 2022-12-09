@@ -7,8 +7,8 @@
 			<trans-unit id="module.label" resname="module.label">
 				<source>Debug</source>
 			</trans-unit>
-			<trans-unit id="module.shortinfo" resname="module.shortinfo">
-				<source>(%s Errors/Warnings)</source>
+			<trans-unit id="module.shortinfoErrorsAndSQL" resname="module.shortinfoErrorsAndSQL">
+				<source>(%1$u Errors/Warnings, SQL: %2$ux / %3$u ms)</source>
 			</trans-unit>
 			<trans-unit id="submodule.log.label" resname="submodule.log.label">
 				<source>Log</source>

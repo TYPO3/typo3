@@ -32,6 +32,7 @@ abstract class AbstractModule implements ModuleInterface, ConfigurableInterface,
     /** Main Configuration (from UserTSConfig, admPanel) */
     protected array $mainConfiguration;
     protected ConfigurationService $configurationService;
+    protected ModuleDataStorageCollection $moduleData;
 
     public function injectConfigurationService(ConfigurationService $configurationService): void
     {
@@ -79,6 +80,11 @@ abstract class AbstractModule implements ModuleInterface, ConfigurableInterface,
             }
         }
         return $hasSettings;
+    }
+
+    public function setModuleData(ModuleDataStorageCollection $moduleData): void
+    {
+        $this->moduleData = $moduleData;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

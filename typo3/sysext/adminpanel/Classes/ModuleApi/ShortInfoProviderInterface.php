@@ -37,4 +37,11 @@ interface ShortInfoProviderInterface
      * Icon identifier - needs to be registered in iconRegistry
      */
     public function getIconIdentifier(): string;
+
+    /**
+     * @todo Add this function in TYPO3 v13.0
+     *
+     * Allow using collected data in short info
+     */
+    //public function setModuleData(ModuleDataStorageCollection $moduleData): void;
 }

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleDataStorageCollection;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\OnSubmitActorInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
@@ -134,6 +135,13 @@ class MainModuleFixture implements
     public function hasSubmoduleSettings(): bool
     {
         return false;
+    }
+
+    /**
+     * Set data for usage in getShortinfo()
+     */
+    public function setModuleData(ModuleDataStorageCollection $moduleData): void
+    {
     }
 
     /**

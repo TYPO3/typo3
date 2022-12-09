@@ -108,6 +108,20 @@ class MainController
                     return $module instanceof SubmoduleProviderInterface && $module instanceof ShortInfoProviderInterface;
                 }
             );
+            foreach ($parentModules as $parentModule) {
+                if ($parentModule instanceof ShortInfoProviderInterface) {
+                    if (method_exists($parentModule, 'setModuleData')) {
+                        $parentModule->setModuleData($data);
+                    } else {
+                        trigger_error(
+                            'Using ' . ShortInfoProviderInterface::class . ' without implementing' .
+                            ' setModuleData() is deprecated in v12 and breaking in v13.',
+                            E_USER_DEPRECATED
+                        );
+                    }
+                }
+            }
+
             $frontendController = $request->getAttribute('frontend.controller');
             $routeIdentifier = 'web_layout';
             $arguments = [

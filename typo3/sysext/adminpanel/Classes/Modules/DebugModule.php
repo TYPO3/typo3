@@ -52,8 +52,14 @@ class DebugModule extends AbstractModule implements ShortInfoProviderInterface
         $errorsAndWarnings = array_filter($logRecords, static function (LogRecord $entry) {
             return LogLevel::normalizeLevel($entry->getLevel()) <= 4;
         });
-        return sprintf($this->getLanguageService()->sL(
-            'LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:module.shortinfo'
-        ), count($errorsAndWarnings));
+
+        $queryInformation = $this->moduleData->offsetGet($this->subModules['debug_queryinformation']);
+
+        return sprintf(
+            $this->getLanguageService()->sL('LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:module.shortinfoErrorsAndSQL'),
+            count($errorsAndWarnings),
+            $queryInformation->offsetGet('totalQueries'),
+            round($queryInformation->offsetGet('totalTime'))
+        );
     }
 }

@@ -6,8 +6,8 @@
             <trans-unit id="module.label" resname="module.label">
                 <source>Info</source>
             </trans-unit>
-            <trans-unit id="module.shortinfo" resname="module.shortinfo">
-                <source>(Load Time: %s ms)</source>
+            <trans-unit id="module.shortinfoLoadAndMemory" resname="module.shortinfoLoadAndMemory">
+                <source>(Load Time: %1$u ms, Memory: %2$s)</source>
             </trans-unit>
             <trans-unit id="imagesOnPage" resname="imagesOnPage">
                 <source>Images on this page</source>

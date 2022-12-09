@@ -237,8 +237,13 @@ body.typo3-adminPanel-noscroll {
 #{$adminPanel-prefix} {
     .typo3-adminPanel-module-group {
         width: 100%;
-        overflow: hidden;
         display: flex;
+    }
+
+    @media (max-width: 1200px) {
+        .typo3-adminPanel-module-group {
+            overflow: hidden;
+        }
     }
 }
 
