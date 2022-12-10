@@ -100,9 +100,57 @@ some details:
       # This is an object path specification, too, and not supported:
       foo < {$bar}
 
-* TSconfig *does* support constant substitution: Site constants can be used
-  in TSconfig. This has been introduced with TYPO3 v10, see
+* PageTsConfig *does* support constant substitution: Site constants can be used
+  in PageTsconfig. This has been introduced with TYPO3 v10, see
   :ref:`feature-91080-1657827157` for details.
+
+File includes are always top level
+----------------------------------
+
+File includes with :typoscript:`@include` and :typoscript:`<INCLUDE_TYPOSCRIPT:` within
+curly braces are not relative anymore. A construct like this is invalid:
+
+..  code-block:: typoscript
+
+    page = PAGE
+    page {
+        @include 'EXT:my_extension/Configuration/TypoScript/bar.typoscript'
+        20 = TEXT
+        20.value = bar
+    }
+
+With :file:`EXT:my_extension/Configuration/TypoScript/bar.typoscript` having this content:
+
+..  code-block:: typoscript
+
+    10 = TEXT
+    10.value = foo
+
+This *no longer* leads to this TypoScript:
+
+..  code-block:: typoscript
+
+    page = PAGE
+    page.10 = TEXT
+    page.10.value = foo
+    page.20 = TEXT
+    page.20.value = bar
+
+Instead, the following TypoScript will be calculated:
+
+..  code-block:: typoscript
+
+    page = PAGE
+    10 = TEXT
+    10.value = foo
+    20 = TEXT
+    20.value = bar
+
+This means :typoscript:`@include` and :typoscript:`<INCLUDE_TYPOSCRIPT:` basically break
+any curly braces level, resetting current scope to top level. While inclusion of files has
+never been documented to be valid within braces assignments, it still worked until TYPO3 v11.
+This is now disallowed and must not be used anymore.
+
 
 UTF-8 BOM in TypoScript files
 -----------------------------
