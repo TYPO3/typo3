@@ -29,8 +29,8 @@ class TemplateCest
         $I->useExistingSession('admin');
 
         $I->switchToMainFrame();
-        $I->see('Template');
-        $I->click('Template');
+        $I->see('TypoScript');
+        $I->click('TypoScript');
         $I->waitForElement('svg .nodes .node');
         $I->switchToContentFrame();
     }

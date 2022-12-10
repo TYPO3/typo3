@@ -147,7 +147,7 @@ class SiteModuleCest
         // Select the root page
         $I->switchToMainFrame();
         $I->amGoingTo('Access template module');
-        $I->click('Template');
+        $I->click('TypoScript');
         // click on PID=0
         $I->waitForElement('svg .nodes .node');
         $I->clickWithLeftButton('#identifier-0_0 text.node-name');
@@ -157,7 +157,7 @@ class SiteModuleCest
 
         $I->amGoingTo('Select the root page and switch back to content frame');
         $I->switchToMainFrame();
-        $I->click('Template');
+        $I->click('TypoScript');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
         $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Info/Modify');
@@ -195,7 +195,7 @@ page.10.value = This is a default text for default rendering without dynamic con
 
         $I->amGoingTo('Delete the site template record again');
         $I->amOnPage('/typo3/index.php');
-        $I->click('Template');
+        $I->click('TypoScript');
         // click on PID=0
         $I->waitForElement('svg .nodes .node');
         $I->clickWithLeftButton('#identifier-0_0 text.node-name');
