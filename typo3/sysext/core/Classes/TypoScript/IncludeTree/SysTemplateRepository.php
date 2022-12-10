@@ -56,7 +56,8 @@ final class SysTemplateRepository
      * @param ServerRequestInterface|null $request Nullable since Request is not a hard dependency ond just convenient for the Event
      *
      * @todo: It's potentially possible to get rid of this method in the frontend by joining sys_template
-     *        into the Page rootline resolving as soon as it uses a CTE.
+     *        into the Page rootline resolving as soon as it uses a CTE: This would save one query in *all* FE
+     *        requests, even for fully-cached page requests.
      */
     public function getSysTemplateRowsByRootline(array $rootline, ?ServerRequestInterface $request = null): array
     {

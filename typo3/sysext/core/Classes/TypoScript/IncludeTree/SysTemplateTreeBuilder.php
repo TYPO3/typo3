@@ -111,6 +111,28 @@ final class SysTemplateTreeBuilder
         $this->includedSysTemplateUids = [];
 
         $includeTree = new RootInclude();
+        if (empty($sysTemplateRows)) {
+            return $includeTree;
+        }
+
+        // Convenience code: Usually, at least one sys_template records needs to have 'clear' set. This resets
+        // the AST and triggers inclusion of "globals" TypoScript. When integrators missed to set the clear flags,
+        // important globals TypoScript is not loaded, leading to pretty hard to find issues in Frontend
+        // rendering. Since the details of the 'clear' flags are rather complex anyway, this code scans the given
+        // sys_template records if the flag is set somewhere and if not, actively sets it dynamically for the
+        // first templates. As a result, integrators do not need to think about the 'clear' flags at all for
+        // simple instances, it 'just works'.
+        $atLeastOneSysTemplateRowHasClearFlag = false;
+        foreach ($sysTemplateRows as $sysTemplateRow) {
+            if (($this->type === 'constants' && $sysTemplateRow['clear'] & 1) || ($this->type === 'setup' && $sysTemplateRow['clear'] & 2)) {
+                $atLeastOneSysTemplateRowHasClearFlag = true;
+            }
+        }
+        if (!$atLeastOneSysTemplateRowHasClearFlag) {
+            $firstRow = reset($sysTemplateRows);
+            $firstRow['clear'] = $this->type === 'constants' ? 1 : 2;
+            $sysTemplateRows[array_key_first($sysTemplateRows)] = $firstRow;
+        }
 
         foreach ($sysTemplateRows as $sysTemplateRow) {
             $identifier = $this->getSysTemplateRowCacheIdentifier($sysTemplateRow);
@@ -136,9 +158,7 @@ final class SysTemplateTreeBuilder
                 $includeNode->setRoot(true);
             }
             $clear = $sysTemplateRow['clear'];
-            if (($this->type === 'constants' && $clear & 1)
-                || ($this->type === 'setup' && $clear & 2)
-            ) {
+            if (($this->type === 'constants' && $clear & 1) || ($this->type === 'setup' && $clear & 2)) {
                 $includeNode->setClear(true);
             }
             $this->handleSysTemplateRecordInclude($includeNode, $sysTemplateRow, $site);

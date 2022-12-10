@@ -176,6 +176,68 @@ class SysTemplateTreeBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function twoPagesTwoTemplatesWithoutClearForConstantsStillLoadsFromGlobals(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/twoPagesTwoTemplatesNoClearForConstants.csv');
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'] = 'globalsConstant = globalsConstantValue';
+        $rootline = [
+            [
+                'uid' => 2,
+                'pid' => 1,
+                'is_siteroot' => 0,
+            ],
+            [
+                'uid' => 1,
+                'pid' => 0,
+                'is_siteroot' => 0,
+            ],
+        ];
+        /** @var SysTemplateRepository $sysTemplateRepository */
+        $sysTemplateRepository = $this->get(SysTemplateRepository::class);
+        /** @var SysTemplateTreeBuilder $subject */
+        $subject = $this->get(SysTemplateTreeBuilder::class);
+        $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
+        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
+        $ast = $this->getAst($includeTree);
+        self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
+        self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
+        self::assertSame('globalsConstantValue', $ast->getChildByName('globalsConstant')->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function twoPagesTwoTemplatesWithoutClearForSetupStillLoadsFromGlobals(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/twoPagesTwoTemplatesNoClearForSetup.csv');
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'] = 'globalsKey = globalsValue';
+        $rootline = [
+            [
+                'uid' => 2,
+                'pid' => 1,
+                'is_siteroot' => 0,
+            ],
+            [
+                'uid' => 1,
+                'pid' => 0,
+                'is_siteroot' => 0,
+            ],
+        ];
+        /** @var SysTemplateRepository $sysTemplateRepository */
+        $sysTemplateRepository = $this->get(SysTemplateRepository::class);
+        /** @var SysTemplateTreeBuilder $subject */
+        $subject = $this->get(SysTemplateTreeBuilder::class);
+        $includeTree = $subject->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
+        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
+        $ast = $this->getAst($includeTree);
+        self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
+        self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
+        self::assertSame('globalsValue', $ast->getChildByName('globalsKey')->getValue());
+    }
+
+    /**
+     * @test
+     */
     public function twoPagesTwoTemplatesBothClear(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/twoPagesTwoTemplatesBothClear.csv');
