@@ -65,10 +65,18 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         // Load specific dependencies which are necessary for a valid Backend User
         // like $GLOBALS['LANG'] for labels in the language of the BE User, the router, and ext_tables.php for all modules
         // So things like Frontend Editing and Admin Panel can use this for generating links to the TYPO3 Backend.
-        if ($GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
+        if ($backendUserObject instanceof FrontendBackendUserAuthentication) {
             $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
             Bootstrap::loadExtTables();
             $this->setBackendUserAspect($GLOBALS['BE_USER']);
+            if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)
+                && (strtolower($request->getServerParams()['HTTP_CACHE_CONTROL'] ?? '') === 'no-cache'
+                    || strtolower($request->getServerParams()['HTTP_PRAGMA'] ?? '') === 'no-cache')
+            ) {
+                // Detecting if shift-reload has been clicked to set noCache attribute if so.
+                // This is only done if a backend user is logged in to prevent DoS-attacks for "casual" requests.
+                $request = $request->withAttribute('noCache', true);
+            }
         }
 
         $response = $handler->handle($request);

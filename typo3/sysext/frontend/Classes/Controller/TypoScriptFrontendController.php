@@ -1563,15 +1563,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function shouldAcquireCacheData(ServerRequestInterface $request): bool
     {
-        $shouldUseCachedPageData = true;
-        if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)
-            && (strtolower($request->getServerParams()['HTTP_CACHE_CONTROL'] ?? '') === 'no-cache'
-                || strtolower($request->getServerParams()['HTTP_PRAGMA'] ?? '') === 'no-cache')) {
-            $shouldUseCachedPageData = false;
-        }
-
         // Trigger event for possible by-pass of requiring of page cache (for re-caching purposes)
-        $event = new ShouldUseCachedPageDataIfAvailableEvent($request, $this, $shouldUseCachedPageData);
+        $event = new ShouldUseCachedPageDataIfAvailableEvent($request, $this, $this->no_cache);
         GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
         return $event->shouldUseCachedPageData();
     }
