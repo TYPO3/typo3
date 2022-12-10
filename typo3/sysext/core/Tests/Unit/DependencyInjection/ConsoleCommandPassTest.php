@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
@@ -32,35 +30,34 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ConsoleCommandPassTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected function buildContainer(string $uniqid, array $packages = []): ContainerInterface
     {
-        $packageManagerProphecy = $this->prophesize(PackageManager::class);
+        $packageManagerMock = $this->createMock(PackageManager::class);
         $activePackages = [];
         foreach ($packages as $packageKey => $config) {
-            $packageProphecy = $this->prophesize(Package::class);
-            $packageProphecy->getPackageKey()->willReturn($packageKey);
-            $packageProphecy->getPackagePath()->willReturn($config['path']);
-            $packageProphecy->isPartOfMinimalUsableSystem()->willReturn(false);
-            $packageProphecy->getServiceProvider()->willReturn($config['serviceProvider'] ?? NullServiceProvider::class);
-            $activePackages[$packageKey] = $packageProphecy->reveal();
-
-            $packageManagerProphecy->getPackage($packageKey)->willReturn($packageProphecy->reveal());
-            $packageManagerProphecy->isPackageActive($packageKey)->willReturn(true);
+            $packageMock = $this->createMock(Package::class);
+            $packageMock->method('getPackageKey')->willReturn($packageKey);
+            $packageMock->method('getPackagePath')->willReturn($config['path']);
+            $packageMock->method('isPartOfMinimalUsableSystem')->willReturn(false);
+            $packageMock->method('getServiceProvider')->willReturn($config['serviceProvider'] ?? NullServiceProvider::class);
+            $activePackages[$packageKey] = $packageMock;
         }
-        $packageManagerProphecy->getCacheIdentifier()->willReturn('PackageManager.' . $uniqid);
-        $packageManagerProphecy->getActivePackages()->willReturn($activePackages);
 
-        $cache = $this->prophesize(PhpFrontend::class);
-        $cache->requireOnce(Argument::type('string'))->willReturn(false);
-        $cache->set(Argument::type('string'), Argument::type('string'))->will(function ($args) {
+        $consecutiveCallArguments = array_map(fn ($packageKey): array => [$packageKey], array_keys($activePackages));
+        $packageManagerMock->method('getPackage')->withConsecutive($consecutiveCallArguments)->willReturn(array_values($activePackages));
+        $packageManagerMock->method('isPackageActive')->withConsecutive($consecutiveCallArguments)->willReturn(true);
+
+        $packageManagerMock->method('getCacheIdentifier')->willReturn('PackageManager.' . $uniqid);
+        $packageManagerMock->method('getActivePackages')->willReturn($activePackages);
+
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('requireOnce')->with(self::isType('string'))->willReturn(false);
+        $cacheMock->method('set')->with(self::isType('string'), self::isType('string'))->willReturnCallback(function (...$args) {
             $sourceCode = $args[1];
             eval($sourceCode);
         });
 
-        $containerBuilder = new ContainerBuilder([]);
-        return $containerBuilder->createDependencyInjectionContainer($packageManagerProphecy->reveal(), $cache->reveal());
+        return (new ContainerBuilder([]))->createDependencyInjectionContainer($packageManagerMock, $cacheMock);
     }
 
     /**
