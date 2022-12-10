@@ -55,7 +55,7 @@ The change has impact on Frontend caching, hooks, some classes and properties. I
   This has impact on cache invalidation when developing Frontend TypoScript:
   First, changing :sql:`sys_template` records always has immediate effect to all requests, even without clearing caches manually.
   The system detects field changes of :sql:`sys_template` changes automatically, reloading a page in the Frontend will trigger
-  re-calculation of TypoScript and thus re-rendering of the page. Note this is only true for directly loaded :syl:`sys_template`
+  re-calculation of TypoScript and thus re-rendering of the page. Note this is only true for directly loaded :sql:`sys_template`
   records. Changes on records included indirectly via the relatively seldom used :sql:`basedOn` field are *not* detected
   automatically, and the same systematics as outlined below for file includes kicks in.
 
