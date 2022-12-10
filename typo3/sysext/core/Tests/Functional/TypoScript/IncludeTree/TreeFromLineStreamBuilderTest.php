@@ -715,6 +715,35 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
             $expectedTree,
         ];
 
+        $atImportStatement = '@import "EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/RelativeImport/hasRelative6.typoscript"';
+        $atImportLineStream = (new LosslessTokenizer())->tokenize($atImportStatement);
+        $expectedTree = new FileInclude();
+        $expectedTree->setLineStream($atImportLineStream);
+        $expectedTree->setSplit();
+        $subNode = new AtImportInclude();
+        $subNode->setIdentifier('EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/RelativeImport/hasRelative6.typoscript');
+        $subNode->setName('EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/RelativeImport/hasRelative6.typoscript');
+        $subNode->setLineStream((new LosslessTokenizer())->tokenize("@import './RelativeSubDirectory/*.typoscript'\n"));
+        $subNode->setOriginalLine(iterator_to_array($atImportLineStream->getNextLine())[0]);
+        $subNode->setSplit();
+        $expectedTree->addChild($subNode);
+        $subSubNode1 = new AtImportInclude();
+        $subSubNode1->setIdentifier('EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/RelativeImport/RelativeSubDirectory/relativeTarget.typoscript');
+        $subSubNode1->setName('EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/RelativeImport/RelativeSubDirectory/relativeTarget.typoscript');
+        $subSubNode1->setLineStream((new LosslessTokenizer())->tokenize("relativeTarget.typoscript\n"));
+        $subSubNode1->setOriginalLine(iterator_to_array((new LosslessTokenizer())->tokenize("@import './RelativeSubDirectory/*.typoscript'\n")->getNextLine())[0]);
+        $subNode->addChild($subSubNode1);
+        $subSubNode2 = new AtImportInclude();
+        $subSubNode2->setIdentifier('EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/RelativeImport/RelativeSubDirectory/relativeTarget2.typoscript');
+        $subSubNode2->setName('EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/RelativeImport/RelativeSubDirectory/relativeTarget2.typoscript');
+        $subSubNode2->setLineStream((new LosslessTokenizer())->tokenize("relativeTarget2.typoscript\n"));
+        $subSubNode2->setOriginalLine(iterator_to_array((new LosslessTokenizer())->tokenize("@import './RelativeSubDirectory/*.typoscript'\n")->getNextLine())[0]);
+        $subNode->addChild($subSubNode2);
+        yield 'atImport with relative sub directory include with wildcards' => [
+            $atImportLineStream,
+            $expectedTree,
+        ];
+
         $atImportStatement = '@import "EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/InvalidImport/pathTraversal1.typoscript"';
         $atImportLineStream = (new LosslessTokenizer())->tokenize($atImportStatement);
         $expectedTree = new FileInclude();

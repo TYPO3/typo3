@@ -257,8 +257,14 @@ final class TreeFromLineStreamBuilder
         } elseif (str_contains($absoluteFileName, '*')) {
             // Something with * in file part
             $directory = rtrim(dirname($absoluteFileName) . '/');
+            if (!is_dir($directory) && str_starts_with($atImportValue, './')) {
+                // See if we can import some relative wildcard like "./Setup/*" or "./Setup/*.typoscript"
+                $parentPath = rtrim(dirname($node->getIdentifier()), '/') . '/';
+                $this->processAtImport($node, $atImportValueToken, $atImportLine, $parentPath);
+                return;
+            }
             $filePattern = basename($absoluteFileName);
-            if (!is_dir($directory) || !str_contains($filePattern, '*')) {
+            if (!str_contains($filePattern, '*')) {
                 return;
             }
             if (str_ends_with($absoluteFileName, '*')) {
