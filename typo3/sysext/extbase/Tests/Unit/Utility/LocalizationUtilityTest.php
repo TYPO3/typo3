@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -35,14 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class LocalizationUtilityTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * Instance of configurationManagerInterface, injected to subject
-     *
-     * @var ObjectProphecy<ConfigurationManagerInterface>
-     */
-    protected ObjectProphecy $configurationManagerInterfaceProphecy;
+    protected ConfigurationManagerInterface&MockObject $configurationManagerInterfaceMock;
 
     /**
      * LOCAL_LANG array fixture
@@ -188,14 +179,14 @@ class LocalizationUtilityTest extends UnitTestCase
 
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
-        $this->configurationManagerInterfaceProphecy = $this->prophesize(ConfigurationManagerInterface::class);
+        $this->configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
         $property = $reflectionClass->getProperty('configurationManager');
         $property->setAccessible(true);
-        $property->setValue($this->configurationManagerInterfaceProphecy->reveal());
+        $property->setValue($this->configurationManagerInterfaceMock);
 
-        $localizationFactoryProphecy = $this->prophesize(LocalizationFactory::class);
-        GeneralUtility::setSingletonInstance(LocalizationFactory::class, $localizationFactoryProphecy->reveal());
-        $localizationFactoryProphecy->getParsedData(Argument::cetera(), 'foo')->willReturn([]);
+        $localizationFactoryMock = $this->createMock(LocalizationFactory::class);
+        $localizationFactoryMock->method('getParsedData')->with(self::anything())->willReturn([]);
+        GeneralUtility::setSingletonInstance(LocalizationFactory::class, $localizationFactoryMock);
     }
 
     /**
@@ -309,16 +300,19 @@ class LocalizationUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param string $key
-     * @param string $languageKey
-     * @param string $expected
      * @dataProvider translateDataProvider
      * @test
      */
-    public function translateTestWithBackendUserLanguage($key, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null): void
-    {
-        $this->configurationManagerInterfaceProphecy
-            ->getConfiguration('Framework', 'core', null)
+    public function translateTestWithBackendUserLanguage(
+        string $key,
+        string $languageKey,
+        string $expected,
+        array $altLanguageKeys = [],
+        array $arguments = null
+    ): void {
+        $this->configurationManagerInterfaceMock
+            ->method('getConfiguration')
+            ->with('Framework', 'core', null)
             ->willReturn([]);
 
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
@@ -327,8 +321,7 @@ class LocalizationUtilityTest extends UnitTestCase
         $property->setAccessible(true);
         $property->setValue($this->LOCAL_LANG);
 
-        $backendUserAuthenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $backendUserAuthentication = $backendUserAuthenticationProphecy->reveal();
+        $backendUserAuthentication = $this->createMock(BackendUserAuthentication::class);
         $backendUserAuthentication->user = [
             'lang' => $languageKey,
         ];
@@ -339,17 +332,20 @@ class LocalizationUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param string $key
-     * @param string $languageKey
-     * @param string $expected
      * @dataProvider translateDataProvider
      * @test
      */
-    public function translateTestWithExplicitLanguageParameters($key, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null): void
-    {
-        $packageManagerProphecy = $this->prophesize(PackageManager::class);
-        $this->configurationManagerInterfaceProphecy
-            ->getConfiguration('Framework', 'core', null)
+    public function translateTestWithExplicitLanguageParameters(
+        string $key,
+        string $languageKey,
+        string $expected,
+        array $altLanguageKeys = [],
+        array $arguments = null
+    ): void {
+        $packageManagerMock = $this->createMock(PackageManager::class);
+        $this->configurationManagerInterfaceMock
+            ->method('getConfiguration')
+            ->with('Framework', 'core', null)
             ->willReturn([]);
 
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
@@ -357,12 +353,12 @@ class LocalizationUtilityTest extends UnitTestCase
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
         $property->setValue($this->LOCAL_LANG);
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
-        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
-        $GLOBALS['LANG'] = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
+        $cacheManagerMock->method('getCache')->with('l10n')->willReturn($cacheFrontendMock);
+        $cacheFrontendMock->method('get')->with(self::anything())->willReturn(false);
+        $cacheFrontendMock->method('set')->with(self::anything())->willReturn(null);
+        $GLOBALS['LANG'] = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerMock), $cacheManagerMock), $cacheFrontendMock);
         self::assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, $languageKey, $altLanguageKeys));
     }
 
@@ -458,11 +454,10 @@ class LocalizationUtilityTest extends UnitTestCase
     /**
      * Tests whether labels from xml are overwritten by TypoScript labels
      *
-     * @param string $languageKey
      * @dataProvider loadTypoScriptLabelsProvider
      * @test
      */
-    public function loadTypoScriptLabels(array $LOCAL_LANG, array $typoScriptLocalLang, $languageKey, array $expected): void
+    public function loadTypoScriptLabels(array $LOCAL_LANG, array $typoScriptLocalLang, string $languageKey, array $expected): void
     {
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
@@ -471,9 +466,10 @@ class LocalizationUtilityTest extends UnitTestCase
         $property->setValue($LOCAL_LANG);
 
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
-        $this->configurationManagerInterfaceProphecy
-            ->getConfiguration($configurationType, 'core', null)
-            ->shouldBeCalled()
+        $this->configurationManagerInterfaceMock
+            ->expects(self::atLeastOnce())
+            ->method('getConfiguration')
+            ->with($configurationType, 'core', null)
             ->willReturn($typoScriptLocalLang);
 
         $method = $reflectionClass->getMethod('loadTypoScriptLabels');
@@ -492,7 +488,7 @@ class LocalizationUtilityTest extends UnitTestCase
      */
     public function clearLabelWithTypoScript(): void
     {
-        $packageManagerProphecy = $this->prophesize(PackageManager::class);
+        $packageManagerMock = $this->createMock(PackageManager::class);
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
         $property = $reflectionClass->getProperty('LOCAL_LANG');
@@ -508,21 +504,22 @@ class LocalizationUtilityTest extends UnitTestCase
         ];
 
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
-        $this->configurationManagerInterfaceProphecy
-            ->getConfiguration($configurationType, 'core', null)
-            ->shouldBeCalled()
+        $this->configurationManagerInterfaceMock
+            ->expects(self::atLeastOnce())
+            ->method('getConfiguration')
+            ->with($configurationType, 'core', null)
             ->willReturn($typoScriptLocalLang);
 
         $method = $reflectionClass->getMethod('loadTypoScriptLabels');
         $method->setAccessible(true);
         $method->invoke(null, 'core', $this->languageFilePath);
 
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
-        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
-        $GLOBALS['LANG'] = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
+        $cacheManagerMock->method('getCache')->with('l10n')->willReturn($cacheFrontendMock);
+        $cacheFrontendMock->method('get')->with(self::anything())->willReturn(false);
+        $cacheFrontendMock->method('set')->with(self::anything())->willReturn(null);
+        $GLOBALS['LANG'] = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerMock), $cacheManagerMock), $cacheFrontendMock);
 
         $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
         self::assertNotNull($result);
@@ -544,7 +541,7 @@ class LocalizationUtilityTest extends UnitTestCase
      */
     public function translateWillReturnLabelsFromTsEvenIfNoXlfFileExists(): void
     {
-        $packageManagerProphecy = $this->prophesize(PackageManager::class);
+        $packageManagerMock = $this->createMock(PackageManager::class);
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
         $typoScriptLocalLang = [
@@ -556,21 +553,22 @@ class LocalizationUtilityTest extends UnitTestCase
         ];
 
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
-        $this->configurationManagerInterfaceProphecy
-            ->getConfiguration($configurationType, 'core', null)
-            ->shouldBeCalled()
+        $this->configurationManagerInterfaceMock
+            ->expects(self::atLeastOnce())
+            ->method('getConfiguration')
+            ->with($configurationType, 'core', null)
             ->willReturn($typoScriptLocalLang);
 
         $method = $reflectionClass->getMethod('loadTypoScriptLabels');
         $method->setAccessible(true);
         $method->invoke(null, 'core', ''); // setting the language file path to an empty string here
 
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
-        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
-        $GLOBALS['LANG'] = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
+        $cacheManagerMock->method('getCache')->with('l10n')->willReturn($cacheFrontendMock);
+        $cacheFrontendMock->method('get')->with(self::anything())->willReturn(false);
+        $cacheFrontendMock->method('set')->with(self::anything())->willReturn(null);
+        $GLOBALS['LANG'] = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerMock), $cacheManagerMock), $cacheFrontendMock);
 
         $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
         self::assertNotNull($result);
