@@ -2137,12 +2137,14 @@ class DataHandler implements LoggerAwareInterface
         $isNativeDateTimeField = false;
         $nativeDateTimeFieldFormat = '';
         $nativeDateTimeFieldEmptyValue = '';
+        $nativeDateTimeFieldResetValue = '';
         $nativeDateTimeType = $tcaFieldConf['dbType'] ?? '';
         if (in_array($nativeDateTimeType, QueryHelper::getDateTimeTypes(), true)) {
             $isNativeDateTimeField = true;
             $dateTimeFormats = QueryHelper::getDateTimeFormats();
             $nativeDateTimeFieldFormat = $dateTimeFormats[$nativeDateTimeType]['format'];
             $nativeDateTimeFieldEmptyValue = $dateTimeFormats[$nativeDateTimeType]['empty'];
+            $nativeDateTimeFieldResetValue = $dateTimeFormats[$nativeDateTimeType]['reset'];
             if (empty($value)) {
                 $value = null;
             } else {
@@ -2184,35 +2186,38 @@ class DataHandler implements LoggerAwareInterface
             }
         }
 
-        // Set the value to null if we have an empty value for a native field
-        $res['value'] = $isNativeDateTimeField && !$value ? null : $value;
-
         // Skip range validation, if the default value equals 0 and the input value is 0, "0" or an empty string.
         // This is needed for timestamp date fields with ['range']['lower'] set.
         $skipRangeValidation =
-            isset($tcaFieldConf['default'], $res['value'])
+            isset($tcaFieldConf['default'], $value)
             && (int)$tcaFieldConf['default'] === 0
-            && ($res['value'] === '' || $res['value'] === '0' || $res['value'] === 0);
+            && ($value === '' || $value === '0' || $value === 0);
 
         // Checking range of value:
-        if (!$skipRangeValidation && isset($tcaFieldConf['range']) && is_array($tcaFieldConf['range'])) {
-            if (isset($tcaFieldConf['range']['upper']) && ceil($res['value']) > (int)$tcaFieldConf['range']['upper']) {
-                $res['value'] = (int)$tcaFieldConf['range']['upper'];
+        if (!$skipRangeValidation && is_array($tcaFieldConf['range'] ?? null)) {
+            if (isset($tcaFieldConf['range']['upper']) && ceil($value) > (int)$tcaFieldConf['range']['upper']) {
+                $value = (int)$tcaFieldConf['range']['upper'];
             }
-            if (isset($tcaFieldConf['range']['lower']) && floor($res['value']) < (int)$tcaFieldConf['range']['lower']) {
-                $res['value'] = (int)$tcaFieldConf['range']['lower'];
+            if (isset($tcaFieldConf['range']['lower']) && floor($value) < (int)$tcaFieldConf['range']['lower']) {
+                $value = (int)$tcaFieldConf['range']['lower'];
             }
         }
 
         // Handle native date/time fields
         if ($isNativeDateTimeField) {
-            // Convert the timestamp back to a date/time
-            $res['value'] = $res['value'] ? gmdate($nativeDateTimeFieldFormat, $res['value']) : $nativeDateTimeFieldEmptyValue;
+            if ($tcaFieldConf['nullable'] ?? false) {
+                // Convert the timestamp back to a date/time if not null
+                $value = $value !== null ? gmdate($nativeDateTimeFieldFormat, $value) : null;
+            } else {
+                // Convert the timestamp back to a date/time
+                $value = $value !== null ? gmdate($nativeDateTimeFieldFormat, $value) : $nativeDateTimeFieldResetValue;
+            }
         } else {
             // Ensure value is always an int if no native field is used
-            $res['value'] = (int)($res['value'] ?? 0);
+            $value = (int)$value;
         }
 
+        $res['value'] = $value;
         return $res;
     }
 

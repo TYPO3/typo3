@@ -196,7 +196,7 @@ class QueryHelper
             'time' => [
                 'empty' => '00:00:00',
                 'format' => 'H:i:s',
-                'reset' => 0,
+                'reset' => '00:00:00',
             ],
         ];
     }

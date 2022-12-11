@@ -536,6 +536,91 @@ final class DataHandlerTest extends UnitTestCase
         self::assertEquals($expectedOutput, $returnValue['value']);
     }
 
+    public static function inputValueCheckNativeDbTypeDataProvider(): array
+    {
+        return [
+            'Datetime at unix epoch' => [
+                '1970-01-01T00:00:00Z',
+                'datetime',
+                'datetime',
+                false,
+                '1970-01-01 00:00:00',
+            ],
+            'Default datetime' => [
+                '0000-00-00 00:00:00',
+                'datetime',
+                'datetime',
+                false,
+                null,
+            ],
+            'Default date' => [
+                '0000-00-00',
+                'date',
+                'date',
+                false,
+                null,
+            ],
+            'Default time' => [
+                '00:00:00',
+                'time',
+                'time',
+                false,
+                '00:00:00',
+            ],
+            'Null on nullable time' => [
+                null,
+                'time',
+                'time',
+                true,
+                null,
+            ],
+            'Null on not nullable time' => [
+                null,
+                'time',
+                'time',
+                false,
+                '00:00:00',
+            ],
+            'Minimum mysql datetime' => [
+                '1000-01-01 00:00:00',
+                'datetime',
+                'datetime',
+                false,
+                '1000-01-01 00:00:00',
+            ],
+            'Maximum mysql datetime' => [
+                '9999-12-31 23:59:59',
+                'datetime',
+                'datetime',
+                false,
+                '9999-12-31 23:59:59',
+            ],
+        ];
+    }
+
+    /**
+     * @param string|null $value
+     * @param string $dbType
+     * @param string $format
+     * @param bool $nullable
+     * @param mixed|null $expectedOutput
+     * @dataProvider inputValueCheckNativeDbTypeDataProvider
+     * @test
+     */
+    public function inputValueCheckNativeDbType(string|null $value, string $dbType, string $format, bool $nullable, $expectedOutput): void
+    {
+        $tcaFieldConf = [
+            'input' => [],
+            'dbType' => $dbType,
+            'format' => $dbType,
+            'nullable' => $nullable,
+        ];
+
+        $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
+
+        self::assertEquals($expectedOutput, $returnValue['value']);
+    }
+
     ///////////////////////////////////////////
     // Tests concerning checkModifyAccessList
     ///////////////////////////////////////////
