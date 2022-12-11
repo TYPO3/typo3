@@ -1,0 +1,4 @@
+be_groups,,,,,,,,,,,,
+,uid,pid,title,workspace_perms,db_mountpoints,tstamp,crdate,deleted,hidden,subgroup,TSconfig,availableWidgets,
+,1,0,backend group1,0,0,1544454571,1542360853,0,0,,,"test-widget1,test-widget2,test-widget3,test-widget4",
+,2,0,backend group2,0,0,1544454571,1542360853,0,0,,,"test-widget1,test-widget2",
