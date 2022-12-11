@@ -4,19 +4,19 @@
 		<header/>
 		<body>
 			<trans-unit id="objectBrowserTitle" resname="objectBrowserTitle">
-				<source>Object Browser</source>
+				<source>TypoScript Tree</source>
 			</trans-unit>
 			<trans-unit id="objectBrowserTitleWithTemplate" resname="objectBrowserTitleWithTemplate">
-				<source>Object Browser for template "%s"</source>
+				<source>Tree for TypoScript template "%s"</source>
 			</trans-unit>
 			<trans-unit id="objectBrowserEditTitle" resname="objectBrowserEditTitle">
 				<source>Edit single properties</source>
 			</trans-unit>
 			<trans-unit id="objectBrowserEditTitleWithTemplate" resname="objectBrowserEditTitleWithTemplate">
-				<source>Edit single properties in template "%s"</source>
+				<source>Edit single properties in TypoScript template "%s"</source>
 			</trans-unit>
 			<trans-unit id="selectedTemplate" resname="selectedTemplate">
-				<source>Selected template</source>
+				<source>Selected TypoScript template</source>
 			</trans-unit>
 			<trans-unit id="options" resname="options">
 				<source>Options</source>
@@ -25,10 +25,10 @@
 				<source>You must enter a property with characters "a-z", "A-Z", "0-9", or ".". Dots will be quoted. No spaces or special chars.</source>
 			</trans-unit>
 			<trans-unit id="lineAdded" resname="lineAdded">
-				<source>Line added to current template</source>
+				<source>Line added to current TypoScript template</source>
 			</trans-unit>
 			<trans-unit id="lineNotAdded" resname="lineNotAdded">
-				<source>No line added to current template</source>
+				<source>No line added to current TypoScript template</source>
 			</trans-unit>
 			<trans-unit id="updateButton" resname="updateButton">
 				<source>Update</source>
@@ -49,10 +49,10 @@
 				<source>Clear object</source>
 			</trans-unit>
 			<trans-unit id="noCurrentTemplateTitle" resname="noCurrentTemplateTitle">
-				<source>No template on page</source>
+				<source>No TypoScript template on page</source>
 			</trans-unit>
 			<trans-unit id="noCurrentTemplate" resname="noCurrentTemplate">
-				<source>You cannot edit properties and values if there is no current template. Please create an extension template in "Info/Modify" first.</source>
+				<source>You cannot edit properties and values if there is no current TypoScript template. Please create an extension typoscript template in "Override TypoScript" first.</source>
 			</trans-unit>
 			<trans-unit id="search" resname="search">
 				<source>Search</source>
@@ -95,6 +95,9 @@
 			</trans-unit>
 			<trans-unit id="comment" resname="comment">
 				<source>Comment:</source>
+			</trans-unit>
+			<trans-unit id="moduleDescription" resname="moduleDescription">
+				<source>Overview of the current TypoScript configuration of the system, divided into constants and setup parts. Optionally, the constant values can be displayed directly in the setup. A targeted search for values and TypoScript names is possible. The list of results can also be filtered according to TypoScript conditions.</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -20,7 +20,11 @@
     <f:variable name="args" value="{0: 'web', 1: pageUid}" />
     <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
 
-    <h1><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:moduleTitle" /></h1>
+    <h1><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:infoModifyTitle" /></h1>
+    <div>
+        <p class="lead"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:moduleDescription" /></p>
+    </div>
+
     <h3>
         <a
             href="#"

@@ -24,6 +24,20 @@ return [
             ],
         ],
     ],
+    'web_typoscript_recordsoverview' => [
+        'parent' => 'web_ts',
+        'access' => 'admin',
+        'path' => '/module/web/typoscript/records-overview',
+        'iconIdentifier' => 'module-tstemplate',
+        'labels' => [
+            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:templateRecordsOverview',
+        ],
+        'routes' => [
+            '_default' => [
+                'target' => TemplateRecordsOverviewController::class . '::handleRequest',
+            ],
+        ],
+    ],
     'web_typoscript_constanteditor' => [
         'parent' => 'web_ts',
         'access' => 'admin',
@@ -102,20 +116,6 @@ return [
             'selectedTemplatePerPage' => [],
             'constantConditions' => [],
             'setupConditions' => [],
-        ],
-    ],
-    'web_typoscript_recordsoverview' => [
-        'parent' => 'web_ts',
-        'access' => 'admin',
-        'path' => '/module/web/typoscript/records-overview',
-        'iconIdentifier' => 'module-tstemplate',
-        'labels' => [
-            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:templateRecordsOverview',
-        ],
-        'routes' => [
-            '_default' => [
-                'target' => TemplateRecordsOverviewController::class . '::handleRequest',
-            ],
         ],
     ],
 ];

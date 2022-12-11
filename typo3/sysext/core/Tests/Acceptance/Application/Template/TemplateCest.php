@@ -45,38 +45,39 @@ class TemplateCest
 
         $I->switchToContentFrame();
         $I->waitForElementVisible('#ts-overview');
-        $I->see('This is a global overview of all pages in the database containing one or more template records.');
+        $I->see('Global overview of all pages in the database containing one or more TypoScript template records.');
 
         $I->wantTo('show templates overview on website root page (uid = 1 and pid = 0)');
         $I->switchToMainFrame();
         // click on website root page
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
-        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Info/Modify');
-        $I->waitForText('No template');
-        $I->see('There was no template on this page!');
-        $I->see('You need to create a template record below in order to edit your configuration.');
+        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Override TypoScript');
+        $I->waitForText('No TypoScript template');
+        $I->see('There was no TypoScript template on this page!');
+        $I->see('You need to create a TypoScript template record below in order to edit your configuration.');
     }
 
     public function addANewSiteTemplate(ApplicationTester $I): void
     {
-        $I->waitForText('Constant Editor');
+        $I->waitForText('TypoScript Records');
         $I->wantTo('create a new site template');
         $I->switchToMainFrame();
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
+        $I->selectOption('.t3-js-jumpMenuBox', 'Constant Editor');
         $I->waitForText('Create new website');
         $I->click("//input[@name='newWebsite']");
 
-        $I->wantTo('change to Info/Modify and see the template overview table');
-        $I->selectOption('.t3-js-jumpMenuBox', 'Info/Modify');
+        $I->wantTo('change to Override TypoScript and see the template overview table');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Override TypoScript');
         $I->waitForElement('.table-striped');
         $I->see('Title');
         $I->see('Description');
         $I->see('Constants');
         $I->see('Setup');
-        $I->see('Edit the whole template record');
-        $I->click('Edit the whole template record');
+        $I->see('Edit the whole TypoScript template record');
+        $I->click('Edit the whole TypoScript template record');
 
         $I->wantTo('change the title and save the template');
         $I->waitForElement('#EditDocumentController');
@@ -102,7 +103,7 @@ class TemplateCest
         $I->see('Acceptance Test Site');
 
         $I->wantTo('change the template within the TypoScript Object Browser');
-        $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Object Browser');
+        $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Tree');
         $I->waitForText('Setup Tree');
         $I->click('Setup Tree');
         // find and open [page] in tree
@@ -118,7 +119,7 @@ class TemplateCest
         $I->fillField('//input[@name="value"]', 'HELLO WORLD!');
         $I->click('//input[@name="updateValue"]');
         $I->wait(2);
-        $I->waitForText('Line added to current template');
+        $I->waitForText('Line added to current TypoScript template');
         $I->see('page.10.value = HELLO WORLD!');
         $I->see('[value] = HELLO WORLD!');
     }
@@ -131,21 +132,22 @@ class TemplateCest
         $I->clickWithLeftButton('(//*[contains(concat(" ", normalize-space(@class), " "), " node-toggle ")])[4]');
         $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
         $I->switchToContentFrame();
-        $I->waitForText('No template');
-        $I->see('There was no template on this page!');
-        $I->see('You need to create a template record below in order to edit your configuration.');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Constant Editor');
+        $I->waitForText('No TypoScript template');
+        $I->see('There was no TypoScript template on this page!');
+        $I->see('You need to create a TypoScript template record below in order to edit your configuration.');
         $I->seeLink('Click here to go.');
         $I->clickWithLeftButton('//a[text()[normalize-space(.) = "Click here to go."]]');
 
         $I->wantTo('see that the page has a template');
-        $I->selectOption('.t3-js-jumpMenuBox', 'Info/Modify');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Override TypoScript');
         $I->waitForElement('.table-striped');
         $I->see('Title');
         $I->see('Description');
         $I->see('Constants');
         $I->see('Setup');
-        $I->see('Edit the whole template record');
-        $I->click('Edit the whole template record');
+        $I->see('Edit the whole TypoScript template record');
+        $I->click('Edit the whole TypoScript template record');
     }
 
     public function createExtensionTemplate(ApplicationTester $I): void
@@ -156,19 +158,20 @@ class TemplateCest
         $I->clickWithLeftButton('(//*[contains(concat(" ", normalize-space(@class), " "), " node-toggle ")])[4]');
         $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
         $I->switchToContentFrame();
-        $I->waitForText('No template');
-        $I->see('There was no template on this page!');
-        $I->see('You need to create a template record below in order to edit your configuration.');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Constant Editor');
+        $I->waitForText('No TypoScript template');
+        $I->see('There was no TypoScript template on this page!');
+        $I->see('You need to create a TypoScript template record below in order to edit your configuration.');
         $I->clickWithLeftButton('//input[@name=\'createExtension\']');
         $I->wantTo('see that the page has a template');
-        $I->selectOption('.t3-js-jumpMenuBox', 'Info/Modify');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Override TypoScript');
         $I->waitForElement('.table-striped');
         $I->see('Title');
         $I->see('Description');
         $I->see('Constants');
         $I->see('Setup');
-        $I->see('Edit the whole template record');
-        $I->click('Edit the whole template record');
+        $I->see('Edit the whole TypoScript template record');
+        $I->click('Edit the whole TypoScript template record');
     }
 
     /**
@@ -180,7 +183,7 @@ class TemplateCest
         $I->switchToMainFrame();
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
-        $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Object Browser');
+        $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Tree');
         $I->waitForText('Options');
         $I->click('Options');
         $I->waitForText('Search');

@@ -4,13 +4,13 @@
 		<header/>
 		<body>
 			<trans-unit id="analyzerTitle" resname="analyzerTitle">
-				<source>Template Analyzer</source>
+				<source>Included TypoScript files</source>
 			</trans-unit>
 			<trans-unit id="analyzerTitleWithTemplate" resname="analyzerTitleWithTemplate">
-				<source>Template Analyzer for template "%s"</source>
+				<source>Included TypoScript files for template "%s"</source>
 			</trans-unit>
 			<trans-unit id="selectedTemplate" resname="selectedTemplate">
-				<source>Selected template</source>
+				<source>Selected TypoScript template</source>
 			</trans-unit>
 			<trans-unit id="title" resname="title">
 				<source>Title</source>
@@ -65,6 +65,9 @@
 			</trans-unit>
 			<trans-unit id="restrictIncludesToMatchingConditions" resname="restrictIncludesToMatchingConditions">
 				<source>Restrict includes to matching conditions</source>
+			</trans-unit>
+			<trans-unit id="moduleDescription" resname="moduleDescription">
+				<source>Overview about the included typoscript files and their include order.</source>
 			</trans-unit>
 		</body>
 	</file>

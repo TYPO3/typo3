@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_info.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
+			<trans-unit id="infoModifyTitle" resname="infoModifyTitle">
+				<source>Override TypoScript</source>
+			</trans-unit>
 			<trans-unit id="delete" resname="delete">
 				<source>Delete</source>
 			</trans-unit>
@@ -67,7 +70,10 @@
 				<source>%s lines</source>
 			</trans-unit>
 			<trans-unit id="editTemplateRecord" resname="editTemplateRecord">
-				<source>Edit the whole template record</source>
+				<source>Edit the whole TypoScript template record</source>
+			</trans-unit>
+			<trans-unit id="moduleDescription" resname="moduleDescription">
+				<source>Modify the content of the selected TypoScript template of the current page. Modifications can be made either for configurations like TypoScript constants and setup or basics like the name and description of the TypoScript template record itself.</source>
 			</trans-unit>
 		</body>
 	</file>

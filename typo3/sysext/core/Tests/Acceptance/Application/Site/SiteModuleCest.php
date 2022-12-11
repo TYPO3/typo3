@@ -153,25 +153,25 @@ class SiteModuleCest
         $I->clickWithLeftButton('#identifier-0_0 text.node-name');
         $I->switchToContentFrame();
         $I->waitForElementVisible('#ts-overview');
-        $I->see('Template tools');
+        $I->see('TypoScript Records');
 
         $I->amGoingTo('Select the root page and switch back to content frame');
         $I->switchToMainFrame();
         $I->click('TypoScript');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
-        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Info/Modify');
+        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Override TypoScript');
         $I->waitForText('Create new website');
 
         $I->amGoingTo('Create a new template for the root page');
         $I->click("//input[@name='newWebsite']");
-        $I->selectOption('.t3-js-jumpMenuBox', 'Info/Modify');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Override TypoScript');
         $I->see('NEW SITE', 'h3');
         $I->waitForElement('table.table.table-striped');
         $I->see('Title');
 
         $I->amGoingTo('Add the PAGE object');
-        $I->click('Edit the whole template record');
+        $I->click('Edit the whole TypoScript template record');
         $I->waitForElement('#EditDocumentController');
         $I->fillField('//input[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[title]")]', 'Default Title');
         $I->click("//button[@name='_savedok']");
@@ -205,9 +205,9 @@ page.10.value = This is a default text for default rendering without dynamic con
         $pageTree->openPath(['styleguide TCA demo']);
         $I->wait(0.2);
         $I->switchToContentFrame();
-        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Info/Modify');
-        $I->waitForText('Edit the whole template record');
-        $I->click('Edit the whole template record');
+        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Override TypoScript');
+        $I->waitForText('Edit the whole TypoScript template record');
+        $I->click('Edit the whole TypoScript template record');
         $I->waitForElement('#EditDocumentController');
         $I->click('Delete');
         $modalDialog->canSeeDialog();
