@@ -154,7 +154,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $expected['databaseRow']['aField'] = 0;
+        $expected['databaseRow']['aField'] = '00:00:00';
         self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
     }
 
@@ -279,7 +279,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataConvertsMidnightTimeStringOfNullableFieldToTimestamp(): void
+    public function addDataConvertsMidnightTimeStringOfNullableFieldToDefaultValue(): void
     {
         $oldTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');
@@ -301,7 +301,38 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $expected['databaseRow']['aField'] = 0;
+        $expected['databaseRow']['aField'] = '00:00:00';
+
+        self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        date_default_timezone_set($oldTimezone);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataConvertsMidnightTimeStringOfNullableFieldToNull(): void
+    {
+        $oldTimezone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
+        $input = [
+            'tableName' => 'aTable',
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'datetime',
+                            'dbType' => 'time',
+                            'nullable' => true,
+                        ],
+                    ],
+                ],
+            ],
+            'databaseRow' => [
+                'aField' => null,
+            ],
+        ];
+        $expected = $input;
+        $expected['databaseRow']['aField'] = null;
 
         self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
         date_default_timezone_set($oldTimezone);
