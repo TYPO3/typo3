@@ -2700,7 +2700,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if (!is_array($options)) {
                 continue;
             }
-            $header = trim($options['header'] ?? '');
+            $header = trim($this->cObj->stdWrapValue('header', $options));
             if ($header === '') {
                 continue;
             }
