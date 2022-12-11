@@ -85,6 +85,7 @@ final class ResourceViewHelper extends AbstractViewHelper
         $this->registerArgument('path', 'string', 'The path and filename of the resource (relative to Public resource directory of the extension).', true);
         $this->registerArgument('extensionName', 'string', 'Target extension name. If not set, the current extension name will be used');
         $this->registerArgument('absolute', 'bool', 'If set, an absolute URI is rendered', false, false);
+        $this->registerArgument('useCacheBusting', 'bool', 'If set, the URI is rendered with a cache buster', false, true);
     }
 
     /**
@@ -97,6 +98,9 @@ final class ResourceViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $uri = PathUtility::getPublicResourceWebPath(self::resolveExtensionPath($arguments, $renderingContext));
+        if ($arguments['useCacheBusting']) {
+            $uri = GeneralUtility::createVersionNumberedFilename($uri);
+        }
         if ($arguments['absolute']) {
             $uri = GeneralUtility::locationHeaderUrl($uri);
         }

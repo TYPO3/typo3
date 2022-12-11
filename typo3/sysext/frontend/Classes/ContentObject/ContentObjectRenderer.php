@@ -68,6 +68,7 @@ use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent;
@@ -3831,6 +3832,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         break;
                     case 'file':
                         $retVal = $this->getFileDataKey($key);
+                        break;
+                    case 'asset':
+                        $absoluteFilePath = GeneralUtility::getFileAbsFileName($key);
+                        if ($absoluteFilePath === '') {
+                            throw new \RuntimeException('Asset "' . $key . '" not found', 1670713983);
+                        }
+                        $retVal = GeneralUtility::createVersionNumberedFilename(PathUtility::getAbsoluteWebPath($absoluteFilePath));
                         break;
                     case 'parameters':
                         $retVal = $this->parameters[$key] ?? null;

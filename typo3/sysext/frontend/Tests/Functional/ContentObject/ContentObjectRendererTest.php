@@ -23,6 +23,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformHelper;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -57,6 +59,8 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
+    protected string $testAsset = '';
+
     protected array $pathsToProvideInTestInstance = ['typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload'];
 
     protected function setUp(): void
@@ -73,6 +77,14 @@ final class ContentObjectRendererTest extends FunctionalTestCase
             $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
         GeneralUtility::flushInternalRuntimeCaches();
+    }
+
+    protected function tearDown(): void
+    {
+        if ($this->testAsset !== '') {
+            unlink($this->testAsset);
+        }
+        parent::tearDown();
     }
 
     protected function getPreparedRequest(): ServerRequestInterface
@@ -1344,5 +1356,33 @@ And another one';
         self::assertEquals($content, $enhanceStdWrapEvent->getContent());
         self::assertEquals($wrap, $enhanceStdWrapEvent->getConfiguration()['wrap']);
         self::assertEquals($subject, $enhanceStdWrapEvent->getContentObjectRenderer());
+    }
+
+    public function getDataWithTypeAssetReturnsVersionedUri(): void
+    {
+        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getPublicPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        $request = new ServerRequest('https://www.example.com', 'GET');
+        $GLOBALS['TYPO3_REQUEST'] = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+
+        $testAssetName = 'HappyResourceUri.svg';
+        $this->testAsset = Environment::getPublicPath() . '/' . $testAssetName;
+        touch($this->testAsset);
+        $mtime = filemtime($this->testAsset);
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'] = false;
+        self::assertSame(
+            $testAssetName . '?' . $mtime,
+            $subject->getData('asset:' . $this->testAsset, [])
+        );
     }
 }
