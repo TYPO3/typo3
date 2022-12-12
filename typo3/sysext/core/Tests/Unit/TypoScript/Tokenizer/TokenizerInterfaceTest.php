@@ -220,7 +220,9 @@ class TokenizerInterfaceTest extends UnitTestCase
                 new LineStream(),
             ],
             'one identifier, multiline comment' => [
-                'foo /* a comment',
+                "foo /* a comment\n" .
+                "finish = comment */\n" .
+                'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new InvalidLine())
@@ -230,9 +232,43 @@ class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new Token(TokenType::T_BLANK, ' ', 0, 3))
                                     ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 4))
                                     ->append(new Token(TokenType::T_VALUE, ' a comment', 0, 6))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'finish = comment ', 1, 0))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 1, 17))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 19))
+                            )
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 14))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 2, 15))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
                             )
                     ),
-                new LineStream(),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue'))
+                            )
+                    ),
             ],
             'two identifiers' => [
                 'foo.bar',
@@ -1984,7 +2020,9 @@ class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, reference, identifiers, multiline comment' => [
-                'foo =< bar1.bar2 /* a comment */',
+                "foo =< bar1.bar2 /* a comment\n" .
+                "finish = comment */\n" .
+                'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new IdentifierReferenceLine())
@@ -1999,8 +2037,11 @@ class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'bar2', 0, 12))
                                     ->append(new Token(TokenType::T_BLANK, ' ', 0, 16))
                                     ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 17))
-                                    ->append(new Token(TokenType::T_VALUE, ' a comment ', 0, 19))
-                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 0, 30))
+                                    ->append(new Token(TokenType::T_VALUE, ' a comment', 0, 19))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 29))
+                                    ->append(new Token(TokenType::T_VALUE, 'finish = comment ', 1, 0))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 1, 17))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 19))
                             )
                             ->setIdentifierTokenStream(
                                 (new IdentifierTokenStream())
@@ -2010,6 +2051,25 @@ class TokenizerInterfaceTest extends UnitTestCase
                                 (new IdentifierTokenStream())
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'bar1', 0, 7))
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'bar2', 0, 12))
+                            )
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 14))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 2, 15))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
                             )
                     ),
                 (new LineStream())
@@ -2023,6 +2083,17 @@ class TokenizerInterfaceTest extends UnitTestCase
                                 (new IdentifierTokenStream())
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'bar1'))
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'bar2'))
+                            )
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue'))
                             )
                     ),
             ],
@@ -2423,6 +2494,80 @@ class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, copy, identifier, multiline comment' => [
+                "foo < bar /* a comment\n" .
+                "endOf = comment*/\n" .
+                'someIdentifier = someValue',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierCopyLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 3))
+                                    ->append(new Token(TokenType::T_OPERATOR_COPY, '<', 0, 4))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 5))
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'bar', 0, 6))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 9))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 10))
+                                    ->append(new Token(TokenType::T_VALUE, ' a comment', 0, 12))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 22))
+                                    ->append(new Token(TokenType::T_VALUE, 'endOf = comment', 1, 0))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 1, 15))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 17))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'bar', 0, 6))
+                            )
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 14))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 2, 15))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierCopyLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                            )
+                            ->setValueTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'bar'))
+                            )
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue'))
+                            )
+                    ),
+            ],
+            'identifier, copy, identifier, multiline comment one line' => [
                 'foo < bar /* a comment',
                 (new LineStream())
                     ->append(
@@ -2530,6 +2675,59 @@ class TokenizerInterfaceTest extends UnitTestCase
                 new LineStream(),
             ],
             'identifier, copy, multiline comment' => [
+                "foo < /* a comment\n" .
+                "endOf = comment */\n" .
+                'someIdentifier = someValue',
+                (new LineStream())
+                    ->append(
+                        (new InvalidLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 3))
+                                    ->append(new Token(TokenType::T_OPERATOR_COPY, '<', 0, 4))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 5))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 6))
+                                    ->append(new Token(TokenType::T_VALUE, ' a comment', 0, 8))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 18))
+                                    ->append(new Token(TokenType::T_VALUE, 'endOf = comment ', 1, 0))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 1, 16))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 18))
+                            )
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 14))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 2, 15))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue'))
+                            )
+                    ),
+            ],
+            'identifier, copy, multiline comment one line' => [
                 'foo < /* a comment',
                 (new LineStream())
                     ->append(
@@ -2702,7 +2900,7 @@ class TokenizerInterfaceTest extends UnitTestCase
                             )
                     ),
             ],
-            'identifier, unset, multiline comment' => [
+            'identifier, unset, multiline comment one line' => [
                 'foo > /* a comment',
                 (new LineStream())
                     ->append(
@@ -2727,6 +2925,70 @@ class TokenizerInterfaceTest extends UnitTestCase
                             ->setIdentifierTokenStream(
                                 (new IdentifierTokenStream())
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                            )
+                    ),
+            ],
+            'identifier, unset, multiline comment' => [
+                "foo > /* a comment\n" .
+                "endOf = comment */\n" .
+                'someIdentifier = someValue',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierUnsetLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 3))
+                                    ->append(new Token(TokenType::T_OPERATOR_UNSET, '>', 0, 4))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 5))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 6))
+                                    ->append(new Token(TokenType::T_VALUE, ' a comment', 0, 8))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 18))
+                                    ->append(new Token(TokenType::T_VALUE, 'endOf = comment ', 1, 0))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 1, 16))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 18))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                            )
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 14))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 2, 15))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierUnsetLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                            )
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue'))
                             )
                     ),
             ],
@@ -3163,9 +3425,9 @@ class TokenizerInterfaceTest extends UnitTestCase
             ],
             'identifier, function, function name with value, multiline comment, identifier' => [
                 "foo := addToList(1) /* a comment\n" .
-                "continued comment\n" .
+                "continued = comment\n" .
                 "finish comment */\n" .
-                'someIdentifier',
+                'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new IdentifierFunctionLine())
@@ -3183,8 +3445,8 @@ class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 20))
                                     ->append(new Token(TokenType::T_VALUE, ' a comment', 0, 22))
                                     ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 32))
-                                    ->append(new Token(TokenType::T_VALUE, 'continued comment', 1, 0))
-                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 17))
+                                    ->append(new Token(TokenType::T_VALUE, 'continued = comment', 1, 0))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 19))
                                     ->append(new Token(TokenType::T_VALUE, 'finish comment ', 2, 0))
                                     ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 2, 15))
                                     ->append(new Token(TokenType::T_NEWLINE, "\n", 2, 17))
@@ -3197,10 +3459,22 @@ class TokenizerInterfaceTest extends UnitTestCase
                             ->setFunctionValueToken(new Token(TokenType::T_VALUE, '1', 0, 17))
                     )
                     ->append(
-                        (new InvalidLine())
+                        (new IdentifierAssignmentLine())
                             ->setTokenStream(
                                 (new TokenStream())
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 3, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 3, 14))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 3, 15))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 3, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 3, 17))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 3, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 3, 17))
                             )
                     ),
                 (new LineStream())
@@ -3212,6 +3486,17 @@ class TokenizerInterfaceTest extends UnitTestCase
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
                             ->setFunctionValueToken(new Token(TokenType::T_VALUE, '1'))
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue'))
+                            )
                     ),
             ],
 
@@ -3496,8 +3781,8 @@ class TokenizerInterfaceTest extends UnitTestCase
                 new LineStream(),
             ],
             'multiline comment newline' => [
-                "/*\n"
-                . '*/',
+                "/*\n" .
+                '*/',
                 (new LineStream())
                     ->append(
                         (new CommentLine())->setTokenStream(
@@ -3653,6 +3938,105 @@ class TokenizerInterfaceTest extends UnitTestCase
                             )
                     ),
                 new LineStream(),
+            ],
+            'multiline comment, commenting valid code' => [
+                "page = PAGE\n" .
+                "/*\n" .
+                "[foo == \"foo\"]\n" .
+                "  page.10.value = foo\n" .
+                "[else]\n" .
+                "  page.10.value = bar\n" .
+                "[end]\n" .
+                "*/\n" .
+                "page.10 = TEXT\n",
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'page', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 4))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 0, 5))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 6))
+                                    ->append(new Token(TokenType::T_VALUE, 'PAGE', 0, 7))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 11))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'page', 0, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'PAGE', 0, 7))
+                            )
+                    )
+                    ->append(
+                        (new CommentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 1, 0))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 2))
+                                    ->append(new Token(TokenType::T_VALUE, '[foo == "foo"]', 2, 0))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 2, 14))
+                                    ->append(new Token(TokenType::T_VALUE, '  page.10.value = foo', 3, 0))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 3, 21))
+                                    ->append(new Token(TokenType::T_VALUE, '[else]', 4, 0))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 4, 6))
+                                    ->append(new Token(TokenType::T_VALUE, '  page.10.value = bar', 5, 0))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 5, 21))
+                                    ->append(new Token(TokenType::T_VALUE, '[end]', 6, 0))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 6, 5))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 7, 0))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 7, 2))
+                            )
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'page', 8, 0))
+                                    ->append(new Token(TokenType::T_DOT, '.', 8, 4))
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, '10', 8, 5))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 8, 7))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 8, 8))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 8, 9))
+                                    ->append(new Token(TokenType::T_VALUE, 'TEXT', 8, 10))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 8, 14))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'page', 8, 0))
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, '10', 8, 5))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'TEXT', 8, 10))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'page'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'PAGE'))
+                            )
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'page'))
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, '10'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'TEXT'))
+                            )
+                    ),
             ],
 
             'two lines with new line' => [
@@ -4785,7 +5169,7 @@ class TokenizerInterfaceTest extends UnitTestCase
                             ->setValueToken(new Token(TokenType::T_VALUE, 'foo = bar'))
                     ),
             ],
-            'tab, condition start, body, condition stop, multiline comment' => [
+            'tab, condition start, body, condition stop, multiline comment one line' => [
                 "\t[foo = bar] /* a comment",
                 (new LineStream())
                     ->append(
@@ -4806,6 +5190,65 @@ class TokenizerInterfaceTest extends UnitTestCase
                     ->append(
                         (new ConditionLine())
                             ->setValueToken(new Token(TokenType::T_VALUE, 'foo = bar'))
+                    ),
+            ],
+            'tab, condition start, body, condition stop, multiline comment' => [
+                "\t[foo = bar] /* a comment\n" .
+                "endOf = comment */\n" .
+                'someIdentifier = someValue',
+                (new LineStream())
+                    ->append(
+                        (new ConditionLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_BLANK, "\t", 0, 0))
+                                    ->append(new Token(TokenType::T_CONDITION_START, '[', 0, 1))
+                                    ->append(new Token(TokenType::T_VALUE, 'foo = bar', 0, 2))
+                                    ->append(new Token(TokenType::T_CONDITION_STOP, ']', 0, 11))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 12))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 13))
+                                    ->append(new Token(TokenType::T_VALUE, ' a comment', 0, 15))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 25))
+                                    ->append(new Token(TokenType::T_VALUE, 'endOf = comment ', 1, 0))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 1, 16))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 18))
+                            )
+                            ->setValueToken(new Token(TokenType::T_VALUE, 'foo = bar', 0, 2))
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 14))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 2, 15))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new ConditionLine())
+                            ->setValueToken(new Token(TokenType::T_VALUE, 'foo = bar'))
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue'))
+                            )
                     ),
             ],
             'condition start, body with brackets, condition stop' => [
@@ -4898,6 +5341,61 @@ class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'condition else, multiline comment' => [
+                "[ELSE] /* a comment\n" .
+                "endOf = comment */\n" .
+                'someIdentifier = someValue',
+                (new LineStream())
+                    ->append(
+                        (new ConditionElseLine())->setTokenStream(
+                            (new TokenStream())
+                                ->append(new Token(TokenType::T_CONDITION_START, '[', 0, 0))
+                                ->append(new Token(TokenType::T_CONDITION_ELSE, 'ELSE', 0, 1))
+                                ->append(new Token(TokenType::T_CONDITION_STOP, ']', 0, 5))
+                                ->append(new Token(TokenType::T_BLANK, ' ', 0, 6))
+                                ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 7))
+                                ->append(new Token(TokenType::T_VALUE, ' a comment', 0, 9))
+                                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 19))
+                                ->append(new Token(TokenType::T_VALUE, 'endOf = comment ', 1, 0))
+                                ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 1, 16))
+                                ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 18))
+                        )
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 14))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 2, 15))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        new ConditionElseLine()
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue'))
+                            )
+                    ),
+            ],
+            'condition else, multiline comment one line' => [
                 '[ELSE] /* a comment',
                 (new LineStream())
                     ->append(
@@ -5049,6 +5547,61 @@ class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'condition end, multiline comment' => [
+                "[END] /* a comment\n" .
+                "endOf = comment */\n" .
+                'someIdentifier = someValue',
+                (new LineStream())
+                    ->append(
+                        (new ConditionStopLine())->setTokenStream(
+                            (new TokenStream())
+                                ->append(new Token(TokenType::T_CONDITION_START, '[', 0, 0))
+                                ->append(new Token(TokenType::T_CONDITION_END, 'END', 0, 1))
+                                ->append(new Token(TokenType::T_CONDITION_STOP, ']', 0, 4))
+                                ->append(new Token(TokenType::T_BLANK, ' ', 0, 5))
+                                ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 6))
+                                ->append(new Token(TokenType::T_VALUE, ' a comment', 0, 8))
+                                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 18))
+                                ->append(new Token(TokenType::T_VALUE, 'endOf = comment ', 1, 0))
+                                ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 1, 16))
+                                ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 18))
+                        )
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 14))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 2, 15))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        new ConditionStopLine()
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue'))
+                            )
+                    ),
+            ],
+            'condition end, multiline comment one line' => [
                 '[END] /* a comment',
                 (new LineStream())
                     ->append(
@@ -5240,6 +5793,61 @@ class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'condition global, multiline comment' => [
+                "[GLOBAL] /* a comment\n" .
+                "endOf = comment */\n" .
+                'someIdentifier = someValue',
+                (new LineStream())
+                    ->append(
+                        (new ConditionStopLine())->setTokenStream(
+                            (new TokenStream())
+                                ->append(new Token(TokenType::T_CONDITION_START, '[', 0, 0))
+                                ->append(new Token(TokenType::T_CONDITION_GLOBAL, 'GLOBAL', 0, 1))
+                                ->append(new Token(TokenType::T_CONDITION_STOP, ']', 0, 7))
+                                ->append(new Token(TokenType::T_BLANK, ' ', 0, 8))
+                                ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 9))
+                                ->append(new Token(TokenType::T_VALUE, ' a comment', 0, 11))
+                                ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 21))
+                                ->append(new Token(TokenType::T_VALUE, 'endOf = comment ', 1, 0))
+                                ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 1, 16))
+                                ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 18))
+                        )
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 14))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 2, 15))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        new ConditionStopLine()
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue'))
+                            )
+                    ),
+            ],
+            'condition global, multiline comment one line' => [
                 '[GLOBAL] /* a comment',
                 (new LineStream())
                     ->append(
@@ -6347,8 +6955,8 @@ class TokenizerInterfaceTest extends UnitTestCase
                 "foo (\n" .
                 "    {\$bar}\n" .
                 ") /* a comment\n" .
-                "comment end */\n" .
-                'someIdentifier',
+                "comment = end */\n" .
+                'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new IdentifierAssignmentLine())
@@ -6366,9 +6974,9 @@ class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 2, 2))
                                     ->append(new Token(TokenType::T_VALUE, ' a comment', 2, 4))
                                     ->append(new Token(TokenType::T_NEWLINE, "\n", 2, 14))
-                                    ->append(new Token(TokenType::T_VALUE, 'comment end ', 3, 0))
-                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 3, 12))
-                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 3, 14))
+                                    ->append(new Token(TokenType::T_VALUE, 'comment = end ', 3, 0))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 3, 14))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 3, 16))
                             )
                             ->setIdentifierTokenStream(
                                 (new IdentifierTokenStream())
@@ -6381,10 +6989,22 @@ class TokenizerInterfaceTest extends UnitTestCase
                             )
                     )
                     ->append(
-                        (new InvalidLine())
+                        (new IdentifierAssignmentLine())
                             ->setTokenStream(
                                 (new TokenStream())
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 4, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 4, 14))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 4, 15))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 4, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 4, 17))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 4, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 4, 17))
                             )
                     ),
                 (new LineStream())
@@ -6398,6 +7018,17 @@ class TokenizerInterfaceTest extends UnitTestCase
                                 (new ConstantAwareTokenStream())
                                     ->append(new Token(TokenType::T_VALUE, '    '))
                                     ->append(new Token(TokenType::T_CONSTANT, '{$bar}'))
+                            )
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue'))
                             )
                     ),
             ],
@@ -6730,6 +7361,66 @@ class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'import keyword, whitespace, start tick, value, stop doubletick, multiline comment' => [
+                "@import 'EXT:foo/...\" /* a comment\n" .
+                "endOf = comment */\n" .
+                'someIdentifier = someValue',
+                (new LineStream())
+                    ->append(
+                        (new ImportLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_IMPORT_KEYWORD, '@import', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 7))
+                                    ->append(new Token(TokenType::T_IMPORT_START, "'", 0, 8))
+                                    ->append(new Token(TokenType::T_VALUE, 'EXT:foo/...', 0, 9))
+                                    ->append(new Token(TokenType::T_IMPORT_STOP, '"', 0, 20))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 21))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 22))
+                                    ->append(new Token(TokenType::T_VALUE, ' a comment', 0, 24))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 34))
+                                    ->append(new Token(TokenType::T_VALUE, 'endOf = comment ', 1, 0))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 1, 16))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 18))
+                            )
+                            ->setValueToken(new Token(TokenType::T_VALUE, 'EXT:foo/...', 0, 9))
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 14))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 2, 15))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new ImportLine())
+                            ->setValueToken(new Token(TokenType::T_VALUE, 'EXT:foo/...'))
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue'))
+                            )
+                    ),
+            ],
+            'import keyword, whitespace, start tick, value, stop doubletick, multiline comment one line' => [
                 "@import 'EXT:foo/...\" /* a comment",
                 (new LineStream())
                     ->append(
@@ -7122,6 +7813,64 @@ class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'old import keyword, value, stop, multiline comment' => [
+                "<INCLUDE_TYPOSCRIPT: source=\"...\"> /* a comment\n" .
+                "endOf = comment */\n" .
+                'someIdentifier = someValue',
+                (new LineStream())
+                    ->append(
+                        (new ImportOldLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_IMPORT_KEYWORD_OLD, '<INCLUDE_TYPOSCRIPT:', 0, 0))
+                                    ->append(new Token(TokenType::T_VALUE, ' source="..."', 0, 20))
+                                    ->append(new Token(TokenType::T_IMPORT_KEYWORD_OLD_STOP, '>', 0, 33))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 34))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 35))
+                                    ->append(new Token(TokenType::T_VALUE, ' a comment', 0, 37))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 47))
+                                    ->append(new Token(TokenType::T_VALUE, 'endOf = comment ', 1, 0))
+                                    ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 1, 16))
+                                    ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 18))
+                            )
+                            ->setValueToken(new Token(TokenType::T_VALUE, ' source="..."', 0, 20))
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 14))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 2, 15))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 2, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier', 2, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue', 2, 17))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new ImportOldLine())
+                            ->setValueToken(new Token(TokenType::T_VALUE, ' source="..."'))
+                    )
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'someIdentifier'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'someValue'))
+                            )
+                    ),
+            ],
+            'old import keyword, value, stop, multiline comment one line' => [
                 '<INCLUDE_TYPOSCRIPT: source="..."> /* a comment',
                 (new LineStream())
                     ->append(

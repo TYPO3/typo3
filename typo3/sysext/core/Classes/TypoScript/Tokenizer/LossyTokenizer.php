@@ -64,8 +64,6 @@ final class LossyTokenizer implements TokenizerInterface
     private int $currentLineNumber;
     private string $currentLineString;
 
-    private int $currentColumnInLine = 0;
-
     public function tokenize(string $source): LineStream
     {
         $this->lineStream = new LineStream();
@@ -78,14 +76,29 @@ final class LossyTokenizer implements TokenizerInterface
             if (!array_key_exists($this->currentLineNumber, $this->lines)) {
                 break;
             }
-            $this->currentColumnInLine = 0;
             $this->currentLineString = trim($this->lines[$this->currentLineNumber]['line']);
             $nextChar = substr($this->currentLineString, 0, 1);
             if ($nextChar === '') {
                 continue;
             }
             $nextTwoChars = substr($this->currentLineString, 0, 2);
-            if ($nextChar === '#' || $nextTwoChars === '//' || $nextChar === '/*') {
+            if ($nextChar === '#' || $nextTwoChars === '//') {
+                continue;
+            }
+            if ($nextTwoChars === '/*') {
+                // @todo: This is one of multiple places where multiline "/*" comments are parsed in this tokenizer. Other
+                //        places are cluttered in detail methods. It might be more straight to have an early scanning
+                //        phase through all lines to remove comments up front, to not wire especially the multiline comment
+                //        parsing to single places, and throw away commented lines early. This isn't trivial though, since
+                //        for instance "foo = bar /* not a comment */" then needs to be sorted out, too. Having an early
+                //        "kick comments" loop however might be quicker in the end and would make the main parsing
+                //        methods more concise and probably more bullet proof.
+                //        Also note there are currently not-unit-tested edge cases, that will currently not parse as
+                //        (maybe) expected. In the example below, "foo2 = bar2" is ignored. This is an issue with the
+                //        LosslessTokenizer as well, probably, and we may rather want to declare this as invalid syntax?!
+                //          foo = bar /* comment start
+                //          comment end */ foo2 = bar2
+                $this->ignoreUntilEndOfMultilineComment();
                 continue;
             }
             if ($nextChar === '[') {
@@ -116,15 +129,17 @@ final class LossyTokenizer implements TokenizerInterface
         );
     }
 
-    /**
-     * Add tabs and whitespaces until some different char appears.
-     */
-    private function parseTabsAndWhitespaces(): void
+    private function ignoreUntilEndOfMultilineComment(): void
     {
-        $matches = [];
-        if (preg_match('#^(\s+)(.*)$#', $this->currentLineString, $matches)) {
-            $this->currentLineString = $matches[2];
-            $this->currentColumnInLine = $this->currentColumnInLine + strlen($matches[1]);
+        while (true) {
+            if (str_contains($this->currentLineString, '*/')) {
+                return;
+            }
+            if (!array_key_exists($this->currentLineNumber + 1, $this->lines)) {
+                return;
+            }
+            $this->currentLineNumber++;
+            $this->currentLineString = trim($this->lines[$this->currentLineNumber]['line']);
         }
     }
 
@@ -136,14 +151,26 @@ final class LossyTokenizer implements TokenizerInterface
         $upperCaseLine = strtoupper($this->currentLineString);
         if (str_starts_with($upperCaseLine, '[ELSE]')) {
             $this->lineStream->append((new ConditionElseLine()));
+            $this->currentLineString = trim(substr($this->currentLineString, 6));
+            if (str_starts_with($this->currentLineString, '/*')) {
+                $this->ignoreUntilEndOfMultilineComment();
+            }
             return;
         }
         if (str_starts_with($upperCaseLine, '[END]')) {
             $this->lineStream->append((new ConditionStopLine()));
+            $this->currentLineString = trim(substr($this->currentLineString, 5));
+            if (str_starts_with($this->currentLineString, '/*')) {
+                $this->ignoreUntilEndOfMultilineComment();
+            }
             return;
         }
         if (str_starts_with($upperCaseLine, '[GLOBAL]')) {
             $this->lineStream->append((new ConditionStopLine()));
+            $this->currentLineString = trim(substr($this->currentLineString, 8));
+            if (str_starts_with($this->currentLineString, '/*')) {
+                $this->ignoreUntilEndOfMultilineComment();
+            }
             return;
         }
         $conditionBody = '';
@@ -168,9 +195,11 @@ final class LossyTokenizer implements TokenizerInterface
                     if ($conditionBodyCharCount) {
                         $conditionBodyToken = new Token(TokenType::T_VALUE, $conditionBody);
                         $this->lineStream->append((new ConditionLine())->setValueToken($conditionBodyToken));
-                        return;
+                        $conditionBodyCharCount++;
+                        break;
                     }
-                    return;
+                    $conditionBodyCharCount++;
+                    break;
                 }
                 $conditionBody .= $nextChar;
                 $conditionBodyCharCount++;
@@ -179,13 +208,15 @@ final class LossyTokenizer implements TokenizerInterface
             $conditionBody .= $nextChar;
             $conditionBodyCharCount++;
         }
+        $this->currentLineString = trim(mb_substr($this->currentLineString, $conditionBodyCharCount + 1));
+        if (str_starts_with($this->currentLineString, '/*')) {
+            $this->ignoreUntilEndOfMultilineComment();
+        }
     }
 
     private function parseBlockStart(): void
     {
-        $this->currentColumnInLine ++;
-        $this->currentLineString = substr($this->currentLineString, 1);
-        $this->parseTabsAndWhitespaces();
+        $this->currentLineString = trim(substr($this->currentLineString, 1));
         if (str_starts_with($this->currentLineString, '}')) {
             // Edge case: foo = { } in one line. Note content within {} is not parsed, everything behind { ends up as comment.
             $this->lineStream->append((new IdentifierBlockOpenLine())->setIdentifierTokenStream($this->identifierStream));
@@ -197,9 +228,7 @@ final class LossyTokenizer implements TokenizerInterface
 
     private function parseImportLine(): void
     {
-        $this->currentColumnInLine += 7;
-        $this->currentLineString = substr($this->currentLineString, 7);
-        $this->parseTabsAndWhitespaces();
+        $this->currentLineString = trim(substr($this->currentLineString, 7));
 
         // Next char should be the opening tick or doubletick, otherwise we create a comment until end of line
         $nextChar = substr($this->currentLineString, 0, 1);
@@ -225,12 +254,16 @@ final class LossyTokenizer implements TokenizerInterface
                 if ($importBodyCharCount) {
                     $importBodyToken = new Token(TokenType::T_VALUE, $importBody);
                     $this->lineStream->append((new ImportLine())->setValueToken($importBodyToken));
-                    return;
+                    break;
                 }
-                return;
+                break;
             }
             $importBody .= $nextChar;
             $importBodyCharCount++;
+        }
+        $this->currentLineString = trim(mb_substr($this->currentLineString, $importBodyCharCount + 2));
+        if (str_starts_with($this->currentLineString, '/*')) {
+            $this->ignoreUntilEndOfMultilineComment();
         }
     }
 
@@ -240,7 +273,6 @@ final class LossyTokenizer implements TokenizerInterface
      */
     private function parseImportOld(): void
     {
-        $this->currentColumnInLine += 20;
         $this->currentLineString = substr($this->currentLineString, 20);
         $importBody = '';
         $importBodyCharCount = 0;
@@ -260,12 +292,16 @@ final class LossyTokenizer implements TokenizerInterface
                 if ($importBodyCharCount) {
                     $importBodyToken = new Token(TokenType::T_VALUE, $importBody);
                     $this->lineStream->append((new ImportOldLine())->setValueToken($importBodyToken));
-                    return;
+                    break;
                 }
-                return;
+                break;
             }
             $importBody .= $nextChar;
             $importBodyCharCount++;
+        }
+        $this->currentLineString = trim(mb_substr($this->currentLineString, $importBodyCharCount + 2));
+        if (str_starts_with($this->currentLineString, '/*')) {
+            $this->ignoreUntilEndOfMultilineComment();
         }
     }
 
@@ -276,13 +312,9 @@ final class LossyTokenizer implements TokenizerInterface
         if (!$currentPosition) {
             return;
         }
-        $this->currentLineString = substr($this->currentLineString, $currentPosition);
-        $this->currentColumnInLine = $this->currentColumnInLine + $currentPosition;
-        $currentColumnInLineBefore = $this->currentColumnInLine;
-        $this->parseTabsAndWhitespaces();
-        $currentPosition = $currentPosition + $this->currentColumnInLine - $currentColumnInLineBefore;
-        $nextChar = $splitLine[$currentPosition] ?? null;
-        $nextTwoChars = $nextChar . ($splitLine[$currentPosition + 1] ?? '');
+        $this->currentLineString = trim(substr($this->currentLineString, $currentPosition));
+        $nextChar = substr($this->currentLineString, 0, 1);
+        $nextTwoChars = $nextChar . substr($this->currentLineString, 1, 1);
         if ($nextTwoChars === '=<') {
             $this->parseOperatorReference();
             return;
@@ -296,7 +328,7 @@ final class LossyTokenizer implements TokenizerInterface
             return;
         }
         if ($nextChar === '>') {
-            $this->lineStream->append((new IdentifierUnsetLine())->setIdentifierTokenStream($this->identifierStream));
+            $this->parseOperatorUnset();
             return;
         }
         if ($nextChar === '<') {
@@ -310,13 +342,23 @@ final class LossyTokenizer implements TokenizerInterface
         if ($nextTwoChars === ':=') {
             $this->parseOperatorFunction();
         }
+        if ($nextTwoChars === '/*') {
+            $this->ignoreUntilEndOfMultilineComment();
+        }
+    }
+
+    private function parseOperatorUnset(): void
+    {
+        $this->lineStream->append((new IdentifierUnsetLine())->setIdentifierTokenStream($this->identifierStream));
+        $this->currentLineString = trim(trim(trim($this->currentLineString), '>'));
+        if (str_starts_with($this->currentLineString, '/*')) {
+            $this->ignoreUntilEndOfMultilineComment();
+        }
     }
 
     private function parseOperatorAssignment(): void
     {
-        $this->currentColumnInLine ++;
-        $this->currentLineString = substr($this->currentLineString, 1);
-        $this->parseTabsAndWhitespaces();
+        $this->currentLineString = trim(substr($this->currentLineString, 1));
         $this->valueStream = new TokenStream();
         $this->parseValueForConstants();
         $this->lineStream->append((new IdentifierAssignmentLine())->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream));
@@ -325,7 +367,6 @@ final class LossyTokenizer implements TokenizerInterface
     private function parseOperatorMultilineAssignment(): void
     {
         $this->valueStream = new TokenStream();
-        $this->currentColumnInLine ++;
         $this->currentLineString = substr($this->currentLineString, 1);
         // True if we're currently in the line with the opening '('
         $isFirstLine = true;
@@ -335,11 +376,12 @@ final class LossyTokenizer implements TokenizerInterface
         $isSecondLine = false;
         while (true) {
             if (str_starts_with(ltrim($this->currentLineString), ')')) {
-                $this->currentLineString = substr($this->currentLineString, 1);
-                $this->currentColumnInLine++;
-                $this->parseTabsAndWhitespaces();
+                $this->currentLineString = trim(substr($this->currentLineString, 1));
                 if (!$this->valueStream->isEmpty()) {
                     $this->lineStream->append((new IdentifierAssignmentLine())->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream));
+                }
+                if (str_starts_with($this->currentLineString, '/*')) {
+                    $this->ignoreUntilEndOfMultilineComment();
                 }
                 return;
             }
@@ -375,18 +417,15 @@ final class LossyTokenizer implements TokenizerInterface
             $isFirstLine = false;
             $valueOnFirstLine = false;
             $this->currentLineNumber++;
-            $this->currentColumnInLine = 0;
             $this->currentLineString = $this->lines[$this->currentLineNumber]['line'];
         }
     }
 
     private function parseOperatorCopy(): void
     {
-        $this->currentColumnInLine ++;
-        $this->currentLineString = substr($this->currentLineString, 1);
-        $this->parseTabsAndWhitespaces();
+        $this->currentLineString = trim(substr($this->currentLineString, 1));
         $identifierStream = $this->identifierStream;
-        $this->parseIdentifierAtEndOfLine();
+        $charsHandled = $this->parseIdentifierAtEndOfLine();
         $referenceStream = $this->identifierStream;
         if ($referenceStream->isEmpty()) {
             return;
@@ -396,15 +435,17 @@ final class LossyTokenizer implements TokenizerInterface
                 ->setIdentifierTokenStream($identifierStream)
                 ->setValueTokenStream($referenceStream)
         );
+        $this->currentLineString = trim(mb_substr($this->currentLineString, $charsHandled));
+        if (str_starts_with($this->currentLineString, '/*')) {
+            $this->ignoreUntilEndOfMultilineComment();
+        }
     }
 
     private function parseOperatorReference(): void
     {
-        $this->currentColumnInLine += 2;
-        $this->currentLineString = substr($this->currentLineString, 2);
-        $this->parseTabsAndWhitespaces();
+        $this->currentLineString = trim(substr($this->currentLineString, 2));
         $identifierStream = $this->identifierStream;
-        $this->parseIdentifierAtEndOfLine();
+        $charsHandled = $this->parseIdentifierAtEndOfLine();
         $referenceStream = $this->identifierStream;
         if ($referenceStream->isEmpty()) {
             return;
@@ -414,16 +455,20 @@ final class LossyTokenizer implements TokenizerInterface
                 ->setIdentifierTokenStream($identifierStream)
                 ->setValueTokenStream($referenceStream)
         );
+        $this->currentLineString = trim(mb_substr($this->currentLineString, $charsHandled));
+        if (str_starts_with($this->currentLineString, '/*')) {
+            $this->ignoreUntilEndOfMultilineComment();
+        }
     }
 
-    private function parseIdentifierAtEndOfLine(): void
+    private function parseIdentifierAtEndOfLine(): int
     {
         $this->identifierStream = new IdentifierTokenStream();
         $isRelative = false;
         $splitLine = mb_str_split($this->currentLineString, 1, 'UTF-8');
         $char = $splitLine[0] ?? null;
         if ($char === null) {
-            return;
+            return 0;
         }
         $nextTwoChars = $char . ($splitLine[1] ?? '');
         if ($char === '.') {
@@ -431,16 +476,23 @@ final class LossyTokenizer implements TokenizerInterface
             // get rid of the dot for the rest of the processing.
             $isRelative = true;
             array_shift($splitLine);
-            $this->currentColumnInLine++;
             $this->currentLineString = substr($this->currentLineString, 1);
         }
-        if ($char === '#' || $nextTwoChars === '//' || $nextTwoChars === '/*') {
-            return;
+        if ($char === '#') {
+            return 1;
         }
-        $this->parseIdentifierUntilStopChar($splitLine, $isRelative);
+        if ($nextTwoChars === '//') {
+            return 2;
+        }
+        if ($nextTwoChars === '/*') {
+            $this->ignoreUntilEndOfMultilineComment();
+            return 0;
+        }
+        $charsHandled = $this->parseIdentifierUntilStopChar($splitLine, $isRelative);
+        return $charsHandled;
     }
 
-    private function parseIdentifierUntilStopChar(array $splitLine, bool $isRelative = false): ?int
+    private function parseIdentifierUntilStopChar(array $splitLine, bool $isRelative = false): int
     {
         $this->identifierStream = new IdentifierTokenStream();
         if ($isRelative) {
@@ -456,7 +508,7 @@ final class LossyTokenizer implements TokenizerInterface
                     $identifierToken = new IdentifierToken(TokenType::T_IDENTIFIER, $currentIdentifierBody);
                     $this->identifierStream->append($identifierToken);
                 }
-                return null;
+                return $currentPosition;
             }
             $nextTwoChars = $nextChar . ($splitLine[$currentPosition + 1] ?? null);
             if ($currentPosition > 0
@@ -492,9 +544,7 @@ final class LossyTokenizer implements TokenizerInterface
 
     private function parseOperatorFunction(): void
     {
-        $this->currentColumnInLine += 2;
-        $this->currentLineString = substr($this->currentLineString, 2);
-        $this->parseTabsAndWhitespaces();
+        $this->currentLineString = trim(substr($this->currentLineString, 2));
         if ($this->currentLineString === '') {
             return;
         }
@@ -530,6 +580,7 @@ final class LossyTokenizer implements TokenizerInterface
             if ($nextChar === ')') {
                 if ($functionBodyCharCount) {
                     $functionValueToken = new Token(TokenType::T_VALUE, $functionBody);
+                    $functionBodyCharCount++;
                 }
                 break;
             }
@@ -543,6 +594,11 @@ final class LossyTokenizer implements TokenizerInterface
             $line->setFunctionValueToken($functionValueToken);
         }
         $this->lineStream->append($line);
+        // Check for multiline comment
+        $this->currentLineString = implode('', array_slice($functionChars, $functionBodyStartPosition + $functionBodyCharCount + 1));
+        if (mb_strlen($this->currentLineString) >= 1 && str_starts_with($this->currentLineString, '/*')) {
+            $this->ignoreUntilEndOfMultilineComment();
+        }
     }
 
     private function parseValueForConstants(): void
