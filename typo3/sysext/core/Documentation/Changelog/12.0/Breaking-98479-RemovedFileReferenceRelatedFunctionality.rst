@@ -27,6 +27,11 @@ The following options are no longer evaluated for TCA type :php:`inline`:
 - :php:`[appearance][fileUploadAllowed]`
 - :php:`[appearance][fileByUrlAllowed]`
 
+The following options are no longer evaluated for TCA type :php:`group`:
+
+- :php:`[appearance][elementBrowserType]`
+- :php:`[appearance][elementBrowserAllowed]`
+
 A TCA migration is in place, removing those values from custom configurations.
 
 Impact
@@ -47,7 +52,10 @@ Affected installations
 All installations making use of the :php:`customControls` option for FAL
 fields, directly using the sql:`table_local` field of table
 :sql:`sys_file_reference` or using one of the mentioned :php:`[appearance]`
-TCA options for TCA type :php:`inline` fields.
+TCA options for TCA type :php:`inline` and :php:`group` fields. Latter is
+rather unlikley because the :php:`[appearance]` options of :php:`group`
+had only effect in FAL context and the options have only been set internally
+by the :php:`ExtensionManagementUtility->getFileFieldTCAConfig()` API method.
 
 Migration
 =========
