@@ -23,7 +23,7 @@ grunt clean:
   only:
     - schedules
   cache:
-    key: main-js
+    key: 12.1-js
     paths:
       - .cache
   script:
@@ -35,7 +35,7 @@ integration various:
   only:
     - schedules
   cache:
-    key: main-composer-phpmixed
+    key: 12.1-composer-phpmixed
     paths:
       - .cache
   script:
@@ -67,7 +67,7 @@ lint scss ts html:
   only:
     - schedules
   cache:
-    key: main-js
+    key: 12.1-js
     paths:
       - .cache
   script:
@@ -90,7 +90,7 @@ phpstan php 8.1 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 12.1-composer-max
     paths:
       - .cache
   script:

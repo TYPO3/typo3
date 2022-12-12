@@ -21,7 +21,7 @@ acceptance application mariadb php 8.1 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 12.1-composer-max
     paths:
       - .cache
   artifacts:
@@ -42,7 +42,7 @@ acceptance application mariadb php 8.1 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 12.1-composer-min
     paths:
       - .cache
   artifacts:
@@ -81,7 +81,7 @@ acceptance application mysql php 8.1 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 12.1-composer-max
     paths:
       - .cache
   artifacts:
@@ -102,7 +102,7 @@ acceptance application mysql php 8.1 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 12.1-composer-min
     paths:
       - .cache
   artifacts:
@@ -141,7 +141,7 @@ acceptance application sqlite php 8.1 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 12.1-composer-max
     paths:
       - .cache
   artifacts:
@@ -162,7 +162,7 @@ acceptance application sqlite php 8.1 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 12.1-composer-min
     paths:
       - .cache
   artifacts:
@@ -198,7 +198,7 @@ acceptance application postgres php 8.2 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 12.1-composer-max
     paths:
       - .cache
   artifacts:
@@ -216,7 +216,7 @@ acceptance application postgres php 8.2 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 12.1-composer-min
     paths:
       - .cache
   artifacts:

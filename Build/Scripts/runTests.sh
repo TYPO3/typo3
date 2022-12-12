@@ -13,6 +13,7 @@ setUpDockerComposeDotEnv() {
     # Set up a new .env file for docker-compose
     {
         echo "COMPOSE_PROJECT_NAME=local"
+        echo "COMPOSER_ROOT_VERSION=\"${COMPOSER_ROOT_VERSION}\""
         # To prevent access rights of files created by the testing, the docker image later
         # runs with the same user that is currently executing the script. docker-compose can't
         # use $UID directly itself since it is a shell variable and not an env variable, so
@@ -338,6 +339,8 @@ THISCHUNK=0
 DOCKER_SELENIUM_IMAGE="selenium/standalone-chrome:4.0.0-20211102"
 IS_CORE_CI=0
 PHPSTAN_CONFIG_FILE="phpstan.local.neon"
+# Enforcing a composer root version helps in states, where composer cannot determine it properly.
+COMPOSER_ROOT_VERSION="12.1.0"
 
 # ENV var "CI" is set by gitlab-ci. We use it here to distinct 'local' and 'CI' environment.
 if [ "$CI" == "true" ]; then

@@ -3,7 +3,7 @@ acceptance install mariadb php 8.1 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "12.1"
   artifacts:
     when: on_failure
     paths:
@@ -20,7 +20,7 @@ acceptance install mysql php 8.1 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "12.1"
   artifacts:
     when: on_failure
     paths:
@@ -37,7 +37,7 @@ acceptance install postgres php 8.1 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "12.1"
   artifacts:
     when: on_failure
     paths:
@@ -54,7 +54,7 @@ acceptance install sqlite php 8.1 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "12.1"
   artifacts:
     when: on_failure
     paths:

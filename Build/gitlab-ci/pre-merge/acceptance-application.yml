@@ -3,7 +3,7 @@ acceptance application mariadb php 8.1 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "12.1"
   artifacts:
     when: on_failure
     paths:

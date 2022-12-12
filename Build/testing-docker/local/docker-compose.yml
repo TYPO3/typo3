@@ -733,7 +733,7 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        composer install --no-progress --no-interaction;
+        COMPOSER_ROOT_VERSION="${COMPOSER_ROOT_VERSION}" composer install -vvv --no-progress --no-interaction;
       "
 
   composer_install_max:
@@ -752,9 +752,9 @@ services:
         composer config --unset platform.php;
         if [ ${PHP_VERSION} == \"8.2\" ]; then
           # @todo: Needed until prophecy (req by phpunit) allows PHP 8.2, https://github.com/phpspec/prophecy/issues/556
-          composer update --no-progress --no-interaction --ignore-platform-req=php+;
+          COMPOSER_ROOT_VERSION="${COMPOSER_ROOT_VERSION}" composer update -vvv --no-progress --no-interaction --ignore-platform-req=php+;
         else
-          composer update --no-progress --no-interaction;
+          COMPOSER_ROOT_VERSION="${COMPOSER_ROOT_VERSION}" composer update -vvv --no-progress --no-interaction;
         fi
         composer dumpautoload;
       "
@@ -773,12 +773,12 @@ services:
           set -x
         fi
         composer config platform.php ${PHP_VERSION}.0;
-        composer update --prefer-lowest --no-progress --no-interaction;
+        COMPOSER_ROOT_VERSION="${COMPOSER_ROOT_VERSION}" composer update --prefer-lowest --no-progress --no-interaction;
         if [ ${PHP_VERSION} == \"8.2\" ]; then
           # @todo: Needed until prophecy (req by phpunit) allows PHP 8.2, https://github.com/phpspec/prophecy/issues/556
-          composer update --prefer-lowest --no-progress --no-interaction --ignore-platform-req=php+;
+          COMPOSER_ROOT_VERSION="${COMPOSER_ROOT_VERSION}" composer update -vvv --prefer-lowest --no-progress --no-interaction --ignore-platform-req=php+;
         else
-          composer update --prefer-lowest --no-progress --no-interaction;
+          COMPOSER_ROOT_VERSION="${COMPOSER_ROOT_VERSION}" composer update -vvv --prefer-lowest --no-progress --no-interaction;
         fi
         composer dumpautoload;
       "
@@ -799,7 +799,7 @@ services:
         cd Build/composer
         rm -rf composer.json composer.lock public/index.php public/typo3 public/typo3conf/ext var/ vendor/;
         cp composer.dist.json composer.json;
-        composer update --no-progress --no-interaction;
+        COMPOSER_ROOT_VERSION="${COMPOSER_ROOT_VERSION}" composer update --no-progress --no-interaction;
       "
 
   composer_validate:
@@ -808,6 +808,8 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     working_dir: ${CORE_ROOT}
+    environment:
+      COMPOSER_CACHE_DIR: .cache/composer
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
