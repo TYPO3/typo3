@@ -3,7 +3,9 @@
         <f:then>
             <div class="t3-page-column-header-icons">
                 <f:if condition="{allowEditContent} && {column.editUrl}">
-                    <a href="{column.editUrl}" title="{column.editLinkTitle}"><core:icon identifier="actions-document-open" /></a>
+                    <a href="{column.editUrl}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editColumn')}">
+                        <core:icon identifier="actions-document-open" />
+                    </a>
                 </f:if>
             </div>
             {column.title}
