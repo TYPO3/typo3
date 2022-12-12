@@ -352,7 +352,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     protected function getCookieDomain()
     {
         $result = '';
-        $cookieDomain = $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'];
+        $cookieDomain = $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'] ?? '';
         // If a specific cookie domain is defined for a given application type, use that domain
         if (!empty($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['cookieDomain'])) {
             $cookieDomain = $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['cookieDomain'];
