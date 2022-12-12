@@ -521,13 +521,23 @@ final class InstallerController
         // Check password and return early if not good enough
         $password = $postValues['password'];
         $email = $postValues['email'] ?? '';
-        if (!$this->setupDatabaseService->isValidBackendUserPassword($password)) {
+        $passwordValidationErrors = $this->setupDatabaseService->getBackendUserPasswordValidationErrors($password);
+        if (!empty($passwordValidationErrors)) {
             $messages[] = new FlashMessage(
-                'You are setting an important password here! It gives an attacker full control over your instance if cracked.'
-                . ' It should be strong (include lower and upper case characters, special characters and numbers) and must be at least eight characters long.',
                 'Administrator password not secure enough!',
+                '',
                 ContextualFeedbackSeverity::ERROR
             );
+
+            // Add all password validation errors to the messages array
+            foreach ($passwordValidationErrors as $error) {
+                $messages[] = new FlashMessage(
+                    $error,
+                    '',
+                    ContextualFeedbackSeverity::ERROR
+                );
+            }
+
             return new JsonResponse([
                 'success' => false,
                 'status' => $messages,

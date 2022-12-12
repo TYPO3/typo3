@@ -50,7 +50,7 @@ class BlankPageCest
         // DatabaseData step
         $I->waitForText('Create Administrative User & Specify Site Name');
         $I->fillField('#username', 'admin');
-        $I->fillField('#password', 'password');
+        $I->fillField('#password', 'Policy-Compliant_Password.1');
         $I->click('Continue');
 
         // DefaultConfiguration step - load distributions
@@ -61,7 +61,7 @@ class BlankPageCest
         // Verify backend login successful
         $I->waitForElement('#t3-username');
         $I->fillField('#t3-username', 'admin');
-        $I->fillField('#t3-password', 'password');
+        $I->fillField('#t3-password', 'Policy-Compliant_Password.1');
         $I->click('#t3-login-submit-section > button');
         $I->waitForElement('.modulemenu', 30);
         $I->waitForElement('.scaffold-content iframe', 30);

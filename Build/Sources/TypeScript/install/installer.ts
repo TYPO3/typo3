@@ -447,9 +447,10 @@ class Installer {
           this.showDefaultConfiguration();
         } else {
           if (Array.isArray(data.status)) {
+            $outputContainer.empty();
             data.status.forEach((element: any): void => {
               let m: any = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.empty().append(m);
+              $outputContainer.append(m);
             });
           }
         }

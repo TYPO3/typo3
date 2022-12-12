@@ -499,9 +499,11 @@ EOT
     protected function getAdminUserPassword(): string
     {
         $passwordValidator = function ($password) {
-            if (!$this->setupDatabaseService->isValidBackendUserPassword((string)$password)) {
+            $passwordValidationErrors = $this->setupDatabaseService->getBackendUserPasswordValidationErrors((string)$password);
+            if (!empty($passwordValidationErrors)) {
                 throw new \RuntimeException(
-                    'Please use a password with at least 8 characters.',
+                    'Administrator password not secure enough!' . PHP_EOL
+                    . '* ' . implode(PHP_EOL . '* ', $passwordValidationErrors),
                     1669747614,
                 );
             }
