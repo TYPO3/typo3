@@ -16,10 +16,14 @@
 namespace TYPO3\CMS\Core\DataHandling;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -28,6 +32,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ItemProcessingService
 {
+    public function __construct(
+        protected readonly SiteFinder $siteFinder
+    ) {}
+
     /**
      * Executes an itemsProcFunc if defined in TCA and returns the combined result (predefined + processed items)
      *
@@ -52,6 +60,8 @@ class ItemProcessingService
         $params['table'] = $table;
         $params['row'] = $row;
         $params['field'] = $field;
+        $params['effectivePid'] = $realPid;
+        $params['site'] = $this->resolveSite($realPid);
 
         // The itemsProcFunc method may throw an exception.
         // If it does, display an error message and return items unchanged.
@@ -89,6 +99,15 @@ class ItemProcessingService
         }
 
         return $selectedItems;
+    }
+
+    protected function resolveSite(int $pageId): SiteInterface
+    {
+        try {
+            return $this->siteFinder->getSiteByPageId($pageId);
+        } catch (SiteNotFoundException $e) {
+            return new NullSite();
+        }
     }
 
     protected function getLanguageService(): LanguageService

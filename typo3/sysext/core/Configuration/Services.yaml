@@ -63,6 +63,9 @@ services:
   TYPO3\CMS\Core\Database\ReferenceIndex:
     public: true
 
+  TYPO3\CMS\Core\DataHandling\ItemProcessingService:
+    public: true
+
   TYPO3\CMS\Core\Database\Schema\SqlReader:
     public: true
 

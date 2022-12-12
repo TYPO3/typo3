@@ -73,6 +73,8 @@ abstract class AbstractItemProvider
             'table' => $table,
             'row' => $result['databaseRow'],
             'field' => $fieldName,
+            'effectivePid' => $result['effectivePid'],
+            'site' => $result['site'],
             // IMPORTANT: Below fields are only available in FormEngine context.
             // They are not used by the DataHandler when processing itemsProcFunc
             // for checking if a submitted value is valid. This means, in case
@@ -92,7 +94,6 @@ abstract class AbstractItemProvider
         if (!empty($result['flexParentDatabaseRow'])) {
             $processorParameters['flexParentDatabaseRow'] = $result['flexParentDatabaseRow'];
         }
-
         try {
             $items = array_map(
                 fn(array $item): SelectItem => SelectItem::fromTcaItemArray($item, $config['type']),

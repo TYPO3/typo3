@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -239,6 +240,8 @@ final class TcaRadioItemsTest extends UnitTestCase
             'inlineTopMostParentTableName' => 'topMostTable',
             'inlineTopMostParentFieldName' => 'topMostField',
             'databaseRow' => [],
+            'effectivePid' => 42,
+            'site' => new Site('aSite', 456, []),
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -284,6 +287,8 @@ final class TcaRadioItemsTest extends UnitTestCase
             'databaseRow' => [
                 'aField' => 'aValue',
             ],
+            'effectivePid' => 42,
+            'site' => new Site('aSite', 456, []),
             'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
@@ -365,6 +370,8 @@ final class TcaRadioItemsTest extends UnitTestCase
             'databaseRow' => [
                 'aField' => 'aValue',
             ],
+            'effectivePid' => 42,
+            'site' => new Site('aSite', 456, []),
             'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
