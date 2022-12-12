@@ -21,6 +21,7 @@ Impact
 
 If set to `true` - which is the default value - only approved translations are used.
 Any non-approved translation will be ignored.
+If the attribute approved is omitted, the translation is still taken into account.
 
 ..  code-block:: xml
 

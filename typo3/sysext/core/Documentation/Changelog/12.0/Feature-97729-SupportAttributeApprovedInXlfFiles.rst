@@ -25,8 +25,8 @@ indicates whether the translation is final or not.
 The setting :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['requireApprovedLocalizations']`
 can be used to control the behaviour.
 
-- If it is set to `true` (which is the default setting), only translations with the attribute
-  `approved` set to `yes` will be used.
+- If it is set to `true` (which is the default setting), only translations with no attribute `approved`
+  or with the attribute `approved` set to `yes` will be used.
 - If it is set to `false`, all translations are used.
 
 This attribute is particularly useful when working with third-party software and translation agencies.

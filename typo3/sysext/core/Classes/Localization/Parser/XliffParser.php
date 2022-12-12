@@ -44,7 +44,7 @@ class XliffParser extends AbstractXmlParser
                             'target' => (string)$translationElement->source,
                         ];
                     } else {
-                        $approved = (string)($translationElement['approved'] ?? '');
+                        $approved = (string)($translationElement['approved'] ?? 'yes');
                         if (!$requireApprovedLocalizations || $approved === 'yes') {
                             $parsedData[(string)$translationElement['id']][0] = [
                                 'source' => (string)$translationElement->source,
@@ -67,7 +67,7 @@ class XliffParser extends AbstractXmlParser
                                     'target' => (string)$translationPluralForm->source,
                                 ];
                             } else {
-                                $approved = (string)($translationPluralForm['approved'] ?? '');
+                                $approved = (string)($translationPluralForm['approved'] ?? 'yes');
                                 if (!$requireApprovedLocalizations || $approved === 'yes') {
                                     $parsedTranslationElement[(int)$formIndex] = [
                                         'source' => (string)$translationPluralForm->source,
