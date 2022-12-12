@@ -155,8 +155,8 @@ class BackendConfigurationManager implements SingletonInterface
     public function getConfiguration(?string $extensionName = null, ?string $pluginName = null): array
     {
         // @todo: This class obviously has a dependency to request ... it should get it hand over!
-        /** @var ServerRequestInterface $request */
-        $request = $GLOBALS['TYPO3_REQUEST'];
+        /** @var ServerRequestInterface|null $request */
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
 
         $frameworkConfiguration = $this->getExtbaseConfiguration();
         if (!isset($frameworkConfiguration['persistence']['storagePid'])) {
@@ -204,8 +204,8 @@ class BackendConfigurationManager implements SingletonInterface
     public function getTypoScriptSetup(): array
     {
         // @todo: This class obviously has a dependency to request ... it should get it hand over!
-        /** @var ServerRequestInterface $request */
-        $request = $GLOBALS['TYPO3_REQUEST'];
+        /** @var ServerRequestInterface|null $request */
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
 
         $pageId = $this->getCurrentPageId($request);
 
@@ -323,12 +323,15 @@ class BackendConfigurationManager implements SingletonInterface
      *
      * @return int current page id. If no page is selected current root page id is returned
      */
-    protected function getCurrentPageId(ServerRequestInterface $request): int
+    protected function getCurrentPageId(?ServerRequestInterface $request = null): int
     {
         if ($this->currentPageId !== null) {
             return $this->currentPageId;
         }
-        $this->currentPageId = $this->getCurrentPageIdFromRequest($request) ?: $this->getCurrentPageIdFromCurrentSiteRoot();
+        if ($request !== null) {
+            $this->currentPageId = $this->getCurrentPageIdFromRequest($request);
+        }
+        $this->currentPageId = $this->currentPageId ?: $this->getCurrentPageIdFromCurrentSiteRoot();
         $this->currentPageId = $this->currentPageId ?: $this->getCurrentPageIdFromRootTemplate();
         $this->currentPageId = $this->currentPageId ?: 0;
         return $this->currentPageId;
