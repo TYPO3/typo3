@@ -23,7 +23,9 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\DataHandling\ItemProcessingService;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\PageTsConfig;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -921,10 +923,13 @@ final class BackendUtilityTest extends UnitTestCase
             ['pageTsConfig-pid-to-hash-0', 'hash'],
             ['pageTsConfig-hash-to-object-hash', new PageTsConfig(new RootNode())],
         ]);
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        GeneralUtility::addInstance(ItemProcessingService::class, new ItemProcessingService($siteFinderMock));
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
 
         $label = BackendUtility::getLabelFromItemlist($table, $col, $key);
         self::assertEquals($label, $expectedLabel);
+        GeneralUtility::purgeInstances();
     }
 
     public static function getLabelFromItemListMergedReturnsCorrectFieldsDataProvider(): array
@@ -1082,11 +1087,14 @@ final class BackendUtilityTest extends UnitTestCase
              ['pageTsConfig-pid-to-hash-0', 'hash'],
              ['pageTsConfig-hash-to-object-hash', new PageTsConfig(new RootNode())],
         ]);
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        GeneralUtility::addInstance(ItemProcessingService::class, new ItemProcessingService($siteFinderMock));
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
 
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getLabelsFromItemsList($table, $col, $keyList, $pageTsConfig);
         self::assertEquals($expectedLabel, $label);
+        GeneralUtility::purgeInstances();
     }
 
     /**

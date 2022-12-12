@@ -1894,6 +1894,8 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             'databaseRow' => [
                 'aField' => 'aValue',
             ],
+            'effectivePid' => 42,
+            'site' => new Site('aSite', 456, []),
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -1962,6 +1964,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             'inlineTopMostParentTableName' => 'topMostTable',
             'inlineTopMostParentFieldName' => 'topMostField',
             'effectivePid' => 1,
+            'site' => new Site('aSite', 456, []),
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -2040,6 +2043,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             'inlineTopMostParentTableName' => 'topMostTable',
             'inlineTopMostParentFieldName' => 'topMostField',
             'effectivePid' => 1,
+            'site' => new Site('aSite', 456, []),
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -2127,6 +2131,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             'inlineTopMostParentTableName' => 'topMostTable',
             'inlineTopMostParentFieldName' => 'topMostField',
             'effectivePid' => 1,
+            'site' => new Site('aSite', 456, []),
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -2215,6 +2220,8 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             'databaseRow' => [
                 'aField' => 'aValue',
             ],
+            'effectivePid' => 42,
+            'site' => new Site('aSite', 456, []),
             'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
@@ -2288,6 +2295,8 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             'databaseRow' => [
                 'aField' => 'aValue',
             ],
+            'effectivePid' => 42,
+            'site' => new Site('aSite', 456, []),
             'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [

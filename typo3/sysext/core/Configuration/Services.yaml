@@ -76,6 +76,9 @@ services:
   TYPO3\CMS\Core\Database\Schema\SchemaMigrator:
     public: true
 
+  TYPO3\CMS\Core\DataHandling\ItemProcessingService:
+    public: true
+
   TYPO3\CMS\Core\Database\Schema\SqlReader:
     public: true
 
