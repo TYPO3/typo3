@@ -4,12 +4,6 @@ services:
     autoconfigure: true
     public: false
 
-  _instanceof:
-    TYPO3\CMS\Reactions\Reaction\ReactionInterface:
-      tags: ['reactions.reaction']
-      public: true
-      lazy: true
-
   TYPO3\CMS\Reactions\:
     resource: '../Classes/*'
 
