@@ -236,14 +236,8 @@ EOT
         $username = $this->getAdminUserName();
         $password = $this->getAdminUserPassword();
         $email = $this->getAdminEmailAddress();
-        try {
-            $this->setupService->createUser($username, $password, $email, true, true);
-            $this->setupService->setInstallToolPassword($password);
-        } catch (\RuntimeException $exception) {
-            $this->writeError($exception->getMessage());
-
-            return Command::FAILURE;
-        }
+        $this->setupService->createUser($username, $password, $email);
+        $this->setupService->setInstallToolPassword($password);
 
         $siteName = $this->getProjectName();
         $this->setupService->setSiteName($siteName);

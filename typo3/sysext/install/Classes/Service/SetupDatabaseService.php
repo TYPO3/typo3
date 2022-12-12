@@ -61,6 +61,7 @@ class SetupDatabaseService
     public function __construct(
         private readonly LateBootService $lateBootService,
         private readonly ConfigurationManager $configurationManager,
+        private readonly LanguageServiceFactory $languageServiceFactory,
         private readonly PermissionsCheck $databasePermissionsCheck,
         private readonly Registry $registry,
     ) {
@@ -255,7 +256,7 @@ class SetupDatabaseService
 
     public function getBackendUserPasswordValidationErrors(string $password): array
     {
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->languageServiceFactory->create('default');
         $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
         $passwordPolicyValidator = GeneralUtility::makeInstance(
             PasswordPolicyValidator::class,

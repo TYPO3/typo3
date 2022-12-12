@@ -514,7 +514,7 @@ final class InstallerController
         $postValues = $request->getParsedBody()['install']['values'];
         $username = (string)$postValues['username'] !== '' ? $postValues['username'] : 'admin';
         // Check password and return early if not good enough
-        $password = $postValues['password'];
+        $password = (string)($postValues['password'] ?? '');
         $email = $postValues['email'] ?? '';
         $passwordValidationErrors = $this->setupDatabaseService->getBackendUserPasswordValidationErrors($password);
         if (!empty($passwordValidationErrors)) {
@@ -562,7 +562,7 @@ final class InstallerController
             ]);
         }
 
-        $this->setupService->createUser($username, $password, $email, true, true);
+        $this->setupService->createUser($username, $password, $email);
         $this->setupService->setInstallToolPassword($password);
 
         return new JsonResponse([

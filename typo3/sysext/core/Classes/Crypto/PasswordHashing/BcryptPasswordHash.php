@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Core\Crypto\PasswordHashing;
  *
  * Hashes are identified by the prefix '$2y$'.
  *
- * To workaround the limitations of bcrypt (accepts not more than 72
+ * To work around the limitations of bcrypt (accepts not more than 72
  * chars and truncates on NUL bytes), the plain password is pre-hashed
  * before the actual password-hash is generated/verified.
  *

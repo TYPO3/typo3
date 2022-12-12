@@ -23,6 +23,10 @@ services:
     tags:
       - { name: 'console.command', command: 'backend:resetpassword', description: 'Trigger a password reset for a backend user', schedulable: false }
 
+  TYPO3\CMS\Backend\Command\CreateBackendUserCommand:
+    tags:
+      - { name: 'console.command', command: 'backend:user:create', description: 'Create a backend user', schedulable: false }
+
   TYPO3\CMS\Backend\Backend\Avatar\Avatar:
     public: true
     arguments:

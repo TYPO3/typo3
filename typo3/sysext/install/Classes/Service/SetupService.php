@@ -23,9 +23,8 @@ use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
@@ -69,16 +68,13 @@ class SetupService
      *
      * @param string $password Plain text password
      * @return string Hashed password
-     * @throws \LogicException If no hash method has been found, should never happen PhpassPasswordHash is always available
      */
-    public function getHashedPassword(string $password): string
+    private function getHashedPassword(string $password): string
     {
         $okHashMethods = [
             Argon2iPasswordHash::class,
             Argon2idPasswordHash::class,
             BcryptPasswordHash::class,
-            Pbkdf2PasswordHash::class,
-            PhpassPasswordHash::class,
         ];
         foreach ($okHashMethods as $className) {
             /** @var PasswordHashInterface $instance */
@@ -87,23 +83,22 @@ class SetupService
                 return $instance->getHashedPassword($password);
             }
         }
-        throw new \LogicException('No suitable hash method found', 1533988846);
+        // Should never happen since bcrypt is always available
+        throw new InvalidPasswordHashException('No suitable hash method found', 1533988846);
     }
 
     /**
-     * @param $username
-     * @param $password
-     * @param $email
-     * @param $admin
-     * @param $maintainer
+     * Create a backend user with maintainer and admin flag
+     * set by default, because the initial user always requires
+     * these flags to grant full permissions to the system.
      */
-    public function createUser($username, $password, $email = '', $admin = false, $maintainer = false): void
+    public function createUser(string $username, string $password, string $email = ''): void
     {
         $adminUserFields = [
             'username' => $username,
             'password' => $this->getHashedPassword($password),
             'email' => GeneralUtility::validEmail($email) ? $email : '',
-            'admin' => $admin ? 1 : 0,
+            'admin' => 1,
             'tstamp' => $GLOBALS['EXEC_TIME'],
             'crdate' => $GLOBALS['EXEC_TIME'],
         ];
@@ -112,17 +107,15 @@ class SetupService
         $databaseConnection->insert('be_users', $adminUserFields);
         $adminUserUid = (int)$databaseConnection->lastInsertId('be_users');
 
-        if ($maintainer) {
-            $maintainerIds = $this->configurationManager->getConfigurationValueByPath('SYS/systemMaintainers') ?? [];
-            sort($maintainerIds);
-            $maintainerIds[] = $adminUserUid;
-            $this->configurationManager->setLocalConfigurationValuesByPathValuePairs([
-                'SYS/systemMaintainers' => array_unique($maintainerIds),
-            ]);
-        }
+        $maintainerIds = $this->configurationManager->getConfigurationValueByPath('SYS/systemMaintainers') ?? [];
+        sort($maintainerIds);
+        $maintainerIds[] = $adminUserUid;
+        $this->configurationManager->setLocalConfigurationValuesByPathValuePairs([
+            'SYS/systemMaintainers' => array_unique($maintainerIds),
+        ]);
     }
 
-    public function setInstallToolPassword($password): bool
+    public function setInstallToolPassword(string $password): bool
     {
         return $this->configurationManager->setLocalConfigurationValuesByPathValuePairs([
             'BE/installToolPassword' => $this->getHashedPassword($password),
