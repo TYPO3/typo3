@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
@@ -206,7 +207,9 @@ class PasswordRecoveryController extends AbstractLoginFormController
             return $hashedPassword;
         }
 
+        $user = $this->userRepository->findOneByForgotPasswordHash(GeneralUtility::hmac($hash));
         $this->userRepository->updatePasswordAndInvalidateHash(GeneralUtility::hmac($hash), $hashedPassword);
+        $this->invalidateUserSessions($user['uid']);
 
         $this->addFlashMessage($this->getTranslation('change_password_done_message'));
 
@@ -314,5 +317,15 @@ class PasswordRecoveryController extends AbstractLoginFormController
             $acceptedValues,
             true
         );
+    }
+
+    /**
+     * Invalidate all frontend user sessions by given user id
+     */
+    protected function invalidateUserSessions(int $userId): void
+    {
+        $sessionManager = GeneralUtility::makeInstance(SessionManager::class);
+        $sessionBackend = $sessionManager->getSessionBackend('FE');
+        $sessionManager->invalidateAllSessionsByUserId($sessionBackend, $userId);
     }
 }
