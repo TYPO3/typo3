@@ -210,14 +210,8 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     public function getLoginFormData(ServerRequestInterface $request)
     {
         $loginData = parent::getLoginFormData($request);
-        // List of page IDs where to look for frontend user records during login
-        if ($loginData['status'] === LoginType::LOGIN) {
-            $pid = $request->getParsedBody()['pid'] ?? $request->getQueryParams()['pid'] ?? 0;
-            if ($pid) {
-                $this->checkPid_value = implode(',', GeneralUtility::intExplode(',', (string)$pid));
-            }
-        } else {
-            // Needed in order to fetch users which are already logged-in due to fetching from session
+        // Needed in order to fetch users which are already logged-in due to fetching from session
+        if ($loginData['status'] !== LoginType::LOGIN) {
             $this->checkPid_value = null;
         }
 
