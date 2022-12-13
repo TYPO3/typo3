@@ -29,11 +29,11 @@ use the provided nonce value during signing.
 Session cookie names involved for providing the nonce value:
 
 * `typo3nonce_[hash]` in case request served with plain HTTP
-* `__Secure-typo3_nonce` in case request served with secured HTTPS
+* `__Secure-typo3nonce_[hash]` in case request served with secured HTTPS
 
 Submitting request-token value to application:
 
-* HTTP body, e.g. in `<form>` via parameter `__request_token`
+* HTTP body, e.g. in `<form>` via parameter `__RequestToken`
 * HTTP header, e.g. in XHR via header `X-TYPO3-Request-Token`
 
 The sequence looks like the following:
@@ -43,7 +43,7 @@ The sequence looks like the following:
 
 This happens on the previous legitimate visit on a page that offers
 a corresponding form that shall be protected. The `RequestToken` and `Nonce`
-objects (later created implicitly in this example) are organized in new
+objects (later created implicitly in this example) are organized in the new
 :php:`\TYPO3\CMS\Core\Context\SecurityAspect`.
 
 ..  code-block:: php
@@ -95,7 +95,7 @@ The HTTP response on calling the shown controller-action above will be like this
 -------------------------------------------------------------------
 
 When submitting the form and invoking the corresponding action, same-site
-cookies `typo3nonce_[hash]` and request-token value `__request_token` are sent
+cookies `typo3nonce_[hash]` and request-token value `__RequestToken` are sent
 back to the server. Without using a separate nonce in a scope that is protected
 by the client, corresponding request-token could be easily extracted from markup
 and used without having the possibility to verify the procedural integrity.
