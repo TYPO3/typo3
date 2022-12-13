@@ -594,4 +594,99 @@ class FormFrontendControllerTest extends UnitTestCase
 
         self::assertSame($expected, $mockController->_call('overrideByTypoScriptSettings', $input));
     }
+
+    /**
+     * @test
+     */
+    public function overrideByTypoScriptSettingsDoesNotEvaluateTypoScriptLookalikeInstructionsFromYamlSettings(): void
+    {
+        $formDefinitionYaml = [
+            'identifier' => 'ext-form-identifier',
+            'prototypeName' => 'standard',
+            'label' => [
+                'value' => 'Label override',
+                '_typoScriptNodeValue' => 'TEXT',
+            ],
+            'renderables' => [
+                0 => [
+                    'identifier' => 'page-1',
+                    'type' => 'Page',
+                    'label' => 'Label',
+                    'renderables' => [
+                        0 => [
+                            'identifier' => 'text-1',
+                            'type' => 'Text',
+                            'label' => 'Label',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $formTypoScript = [
+            'formDefinitionOverrides' => [
+                'ext-form-identifier' => [
+                    'renderables' => [
+                        0 => [
+                            'renderables' => [
+                                0 => [
+                                    'label' => [
+                                        'value' => 'Label override',
+                                        '_typoScriptNodeValue' => 'TEXT',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $evaluatedFormTypoScript = [
+            'renderables' => [
+                0 => [
+                    'renderables' => [
+                        0 => [
+                            'label' => 'Label override',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'identifier' => 'ext-form-identifier',
+            'prototypeName' => 'standard',
+            'label' => [
+                'value' => 'Label override',
+                '_typoScriptNodeValue' => 'TEXT',
+            ],
+            'renderables' => [
+                0 => [
+                    'identifier' => 'page-1',
+                    'type' => 'Page',
+                    'label' => 'Label',
+                    'renderables' => [
+                        0 => [
+                            'identifier' => 'text-1',
+                            'type' => 'Text',
+                            'label' =>  'Label override',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $controllerMock = $this->getAccessibleMock(FormFrontendController::class, [
+            'dummy',
+        ], [], '', false);
+
+        $typoScriptServiceProphecy = $this->prophesize(TypoScriptService::class);
+        $typoScriptServiceProphecy->resolvePossibleTypoScriptConfiguration($formTypoScript['formDefinitionOverrides']['ext-form-identifier'])->willReturn($evaluatedFormTypoScript);
+        GeneralUtility::addInstance(TypoScriptService::class, $typoScriptServiceProphecy->reveal());
+
+        $controllerMock->_set('settings', $formTypoScript);
+
+        self::assertSame($expected, $controllerMock->_call('overrideByTypoScriptSettings', $formDefinitionYaml));
+    }
 }

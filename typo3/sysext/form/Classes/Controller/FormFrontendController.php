@@ -158,12 +158,13 @@ class FormFrontendController extends ActionController
             isset($this->settings['formDefinitionOverrides'][$formDefinition['identifier']])
             && !empty($this->settings['formDefinitionOverrides'][$formDefinition['identifier']])
         ) {
+            $formDefinitionOverrides = GeneralUtility::makeInstance(TypoScriptService::class)
+                ->resolvePossibleTypoScriptConfiguration($this->settings['formDefinitionOverrides'][$formDefinition['identifier']]);
+
             ArrayUtility::mergeRecursiveWithOverrule(
                 $formDefinition,
-                $this->settings['formDefinitionOverrides'][$formDefinition['identifier']]
+                $formDefinitionOverrides
             );
-            $formDefinition = GeneralUtility::makeInstance(TypoScriptService::class)
-                ->resolvePossibleTypoScriptConfiguration($formDefinition);
         }
         return $formDefinition;
     }
