@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Testing FluidEmail',
     'description' => 'Testing FluidEmail',
     'category' => 'example',
-    'version' => '11.5.20',
+    'version' => '11.5.21',
     'state' => 'beta',
     'author' => 'Oliver Bartsch',
     'author_email' => 'bo@cedev.de',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '11.5.20',
+            'typo3' => '11.5.21',
         ],
         'conflicts' => [],
         'suggests' => [],
