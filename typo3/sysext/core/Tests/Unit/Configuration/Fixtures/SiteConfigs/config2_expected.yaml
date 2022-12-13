@@ -3,6 +3,7 @@ baseVariants:
   -
     base: foo123
     condition: bar
+customProperty: 'Using %env("existing")% variable'
 errorHandling:
   -
     errorCode: '404'

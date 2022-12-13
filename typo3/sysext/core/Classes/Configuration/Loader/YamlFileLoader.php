@@ -47,6 +47,7 @@ class YamlFileLoader implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
+    public const PATTERN_PARTS = '%[^(%]+?\([\'"]?([^(]*?)[\'"]?\)%|%([^%()]*?)%';
     public const PROCESS_PLACEHOLDERS = 1;
     public const PROCESS_IMPORTS = 2;
 
@@ -252,7 +253,7 @@ class YamlFileLoader implements LoggerAwareInterface
         // find occurrences of placeholders like %some()% and %array.access%.
         // Only find the innermost ones, so we can nest them.
         preg_match_all(
-            '/%[^(%]+?\([\'"]?([^(]*?)[\'"]?\)%|%([^%()]*?)%/',
+            '/' . self::PATTERN_PARTS . '/',
             $placeholders,
             $parts,
             PREG_UNMATCHED_AS_NULL
