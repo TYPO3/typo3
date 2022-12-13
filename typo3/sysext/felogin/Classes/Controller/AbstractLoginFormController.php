@@ -19,6 +19,7 @@ namespace TYPO3\CMS\FrontendLogin\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 abstract class AbstractLoginFormController extends ActionController
 {
@@ -46,5 +47,15 @@ abstract class AbstractLoginFormController extends ActionController
         }
 
         return array_unique($storagePids);
+    }
+
+    protected function getSignedStorageFolders(): string
+    {
+        $pidList = implode(',', $this->getStorageFolders());
+        return sprintf(
+            '%s@%s',
+            $pidList,
+            GeneralUtility::hmac($pidList, FrontendUserAuthentication::class)
+        );
     }
 }

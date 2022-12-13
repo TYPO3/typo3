@@ -63,10 +63,15 @@ class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInter
     {
         $frontendUser = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
 
+        $pidValue = (string)($request->getParsedBody()['pid'] ?? $request->getQueryParams()['pid'] ?? '');
+        $pidParts = GeneralUtility::trimExplode('@', $pidValue, true, 2);
+        $pid = $pidParts[0] ?? '';
+        $givenHash = $pidParts[1] ?? '';
+        $expectedHash = GeneralUtility::hmac($pid, FrontendUserAuthentication::class);
+
         // List of page IDs where to look for frontend user records
-        $pid = $request->getParsedBody()['pid'] ?? $request->getQueryParams()['pid'] ?? 0;
-        if ($pid) {
-            $frontendUser->checkPid_value = implode(',', GeneralUtility::intExplode(',', (string)$pid));
+        if ($pid && hash_equals($expectedHash, $givenHash)) {
+            $frontendUser->checkPid_value = implode(',', GeneralUtility::intExplode(',', $pid));
         }
 
         // Rate Limiting
