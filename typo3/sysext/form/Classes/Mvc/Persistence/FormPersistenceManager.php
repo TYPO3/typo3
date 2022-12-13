@@ -626,12 +626,13 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     protected function overrideByTypoScriptSettings(array $formDefinition): array
     {
         if (!empty($this->typoScriptSettings['formDefinitionOverrides'][$formDefinition['identifier']] ?? null)) {
+            $formDefinitionOverrides = GeneralUtility::makeInstance(TypoScriptService::class)
+                ->resolvePossibleTypoScriptConfiguration($this->typoScriptSettings['formDefinitionOverrides'][$formDefinition['identifier']]);
+
             ArrayUtility::mergeRecursiveWithOverrule(
                 $formDefinition,
-                $this->typoScriptSettings['formDefinitionOverrides'][$formDefinition['identifier']]
+                $formDefinitionOverrides
             );
-            $formDefinition = GeneralUtility::makeInstance(TypoScriptService::class)
-                ->resolvePossibleTypoScriptConfiguration($formDefinition);
         }
 
         return $formDefinition;

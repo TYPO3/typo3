@@ -737,6 +737,104 @@ class FormPersistenceManagerTest extends UnitTestCase
     /**
      * @test
      */
+    public function overrideByTypoScriptSettingsDoesNotEvaluateTypoScriptLookalikeInstructionsFromYamlSettings(): void
+    {
+        $formDefinitionYaml = [
+            'identifier' => 'ext-form-identifier',
+            'prototypeName' => 'standard',
+            'label' => [
+                'value' => 'Label override',
+                '_typoScriptNodeValue' => 'TEXT',
+            ],
+            'renderables' => [
+                0 => [
+                    'identifier' => 'page-1',
+                    'type' => 'Page',
+                    'label' => 'Label',
+                    'renderables' => [
+                        0 => [
+                            'identifier' => 'text-1',
+                            'type' => 'Text',
+                            'label' => 'Label',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $formTypoScript = [
+            'formDefinitionOverrides' => [
+                'ext-form-identifier' => [
+                    'renderables' => [
+                        0 => [
+                            'renderables' => [
+                                0 => [
+                                    'label' => [
+                                        'value' => 'Label override',
+                                        '_typoScriptNodeValue' => 'TEXT',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $evaluatedFormTypoScript = [
+            'renderables' => [
+                0 => [
+                    'renderables' => [
+                        0 => [
+                            'label' => 'Label override',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'identifier' => 'ext-form-identifier',
+            'prototypeName' => 'standard',
+            'label' => [
+                'value' => 'Label override',
+                '_typoScriptNodeValue' => 'TEXT',
+            ],
+            'renderables' => [
+                0 => [
+                    'identifier' => 'page-1',
+                    'type' => 'Page',
+                    'label' => 'Label',
+                    'renderables' => [
+                        0 => [
+                            'identifier' => 'text-1',
+                            'type' => 'Text',
+                            'label' =>  'Label override',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $controllerMock = $this->getAccessibleMock(FormPersistenceManager::class, [
+            'dummy',
+        ], [], '', false);
+
+        $typoScriptServiceMock = $this->createMock(TypoScriptService::class);
+        $typoScriptServiceMock
+            ->method('resolvePossibleTypoScriptConfiguration')
+            ->with($formTypoScript['formDefinitionOverrides']['ext-form-identifier'])
+            ->willReturn($evaluatedFormTypoScript);
+        GeneralUtility::addInstance(TypoScriptService::class, $typoScriptServiceMock);
+
+        $controllerMock->_set('typoScriptSettings', $formTypoScript);
+
+        self::assertSame($expected, $controllerMock->_call('overrideByTypoScriptSettings', $formDefinitionYaml));
+    }
+
+    /**
+     * @test
+     */
     public function retrieveFileByPersistenceIdentifierThrowsExceptionIfReadFromStorageIsNotAllowed(): void
     {
         $this->expectException(PersistenceManagerException::class);
