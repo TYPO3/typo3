@@ -23,8 +23,8 @@
 		"psr/http-message": "^1.0",
 		"psr/log": "^2.0 || ^3.0",
 		"symfony/console": "^6.2",
-		"typo3/cms-backend": "12.1.*@dev",
-		"typo3/cms-core": "12.1.*@dev",
+		"typo3/cms-backend": "12.1.2",
+		"typo3/cms-core": "12.1.2",
 		"typo3fluid/fluid": "^2.7.2"
 	},
 	"conflict": {
