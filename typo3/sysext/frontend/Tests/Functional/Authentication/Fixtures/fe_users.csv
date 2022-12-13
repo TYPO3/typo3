@@ -1,0 +1,6 @@
+"fe_users"
+,"uid","pid","deleted","disable","username","password","usergroup"
+,1,0,0,0,"testuser","$argon2i$v=19$m=65536,t=16,p=1$cWRQNnpWZFJZTUM0MVRwbg$uv3ArBoLKo76rq/iaAq3PYa5/JUhRxNfCbneeSz+fz8",1
+"fe_groups"
+,"uid","pid","deleted","hidden"
+,1,0,0,0
