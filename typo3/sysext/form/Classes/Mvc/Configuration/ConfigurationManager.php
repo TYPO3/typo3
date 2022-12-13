@@ -122,17 +122,18 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
     {
         $typoScript = parent::getConfiguration(self::CONFIGURATION_TYPE_SETTINGS, $extensionName);
         if (is_array($typoScript['yamlSettingsOverrides'] ?? null) && !empty($typoScript['yamlSettingsOverrides'])) {
-            ArrayUtility::mergeRecursiveWithOverrule(
-                $yamlSettings,
-                $typoScript['yamlSettingsOverrides']
-            );
-
+            $yamlSettingsOverrides = $typoScript['yamlSettingsOverrides'];
             if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
                 && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
             ) {
-                $yamlSettings = GeneralUtility::makeInstance(TypoScriptService::class)
-                    ->resolvePossibleTypoScriptConfiguration($yamlSettings);
+                $yamlSettingsOverrides = GeneralUtility::makeInstance(TypoScriptService::class)
+                    ->resolvePossibleTypoScriptConfiguration($yamlSettingsOverrides);
             }
+
+            ArrayUtility::mergeRecursiveWithOverrule(
+                $yamlSettings,
+                $yamlSettingsOverrides
+            );
         }
         return $yamlSettings;
     }
