@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1750a123f2850ccea7cfffd52cae649c",
+    "content-hash": "5e4bd9de29b5572cb8e30e2793879d48",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4414,16 +4414,16 @@
         },
         {
             "name": "typo3/html-sanitizer",
-            "version": "v2.1.0",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/html-sanitizer.git",
-                "reference": "2f195f529dd6570d28f838e8340a08025c37fb5b"
+                "reference": "f8b9c466a08fe4b7bd32b4b8dbde5cf7fbfa9956"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/html-sanitizer/zipball/2f195f529dd6570d28f838e8340a08025c37fb5b",
-                "reference": "2f195f529dd6570d28f838e8340a08025c37fb5b",
+                "url": "https://api.github.com/repos/TYPO3/html-sanitizer/zipball/f8b9c466a08fe4b7bd32b4b8dbde5cf7fbfa9956",
+                "reference": "f8b9c466a08fe4b7bd32b4b8dbde5cf7fbfa9956",
                 "shasum": ""
             },
             "require": {
@@ -4459,9 +4459,9 @@
             "description": "HTML sanitizer aiming to provide XSS-safe markup based on explicitly allowed tags, attributes and values.",
             "support": {
                 "issues": "https://github.com/TYPO3/html-sanitizer/issues",
-                "source": "https://github.com/TYPO3/html-sanitizer/tree/v2.1.0"
+                "source": "https://github.com/TYPO3/html-sanitizer/tree/v2.1.1"
             },
-            "time": "2022-12-05T12:47:34+00:00"
+            "time": "2022-12-13T08:07:15+00:00"
         },
         {
             "name": "typo3fluid/fluid",
