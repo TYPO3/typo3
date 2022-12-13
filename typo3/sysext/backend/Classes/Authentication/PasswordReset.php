@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
@@ -348,6 +349,8 @@ class PasswordReset implements LoggerAwareInterface
             ->getConnectionForTable('be_users')
             ->update('be_users', ['password_reset_token' => '', 'password' => $this->getHasher()->getHashedPassword($newPassword)], ['uid' => $userId]);
 
+        $this->invalidateUserSessions($userId);
+
         $this->logger->info('Password reset successful for user {user_id)', ['user_id' => $userId]);
         $this->log(
             'Password reset successful for user %s',
@@ -497,5 +500,15 @@ class PasswordReset implements LoggerAwareInterface
             )
             ->executeQuery()
             ->fetchOne();
+    }
+
+    /**
+     * Invalidate all backend user sessions by given user id
+     */
+    protected function invalidateUserSessions(int $userId): void
+    {
+        $sessionManager = GeneralUtility::makeInstance(SessionManager::class);
+        $sessionBackend = $sessionManager->getSessionBackend('BE');
+        $sessionManager->invalidateAllSessionsByUserId($sessionBackend, $userId);
     }
 }
