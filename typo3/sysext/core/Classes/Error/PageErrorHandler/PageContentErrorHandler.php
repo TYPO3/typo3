@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Error\PageErrorHandler;
 
+use GuzzleHttp\Exception\ClientException;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
@@ -30,6 +32,10 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
+use TYPO3\CMS\Core\Locking\LockFactory;
+use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -92,7 +98,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
     {
         try {
             $urlParams = $this->link->resolve($this->errorHandlerConfiguration['errorContentSource']);
-            $urlParams['pageuid'] = (int)($urlParams['pageuid'] ?? 0);
+            $this->pageUid = $urlParams['pageuid'] = (int)($urlParams['pageuid'] ?? 0);
             $resolvedUrl = $this->resolveUrl($request, $urlParams);
 
             // avoid denial-of-service amplification scenario
@@ -105,12 +111,23 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             if ($this->useSubrequest) {
                 // Create a subrequest and do not take any special query parameters into account
                 $subRequest = $request->withQueryParams([])->withUri(new Uri($resolvedUrl))->withMethod('GET');
-                $subResponse = $this->stashEnvironment(fn (): ResponseInterface => $this->sendSubRequest($subRequest, $urlParams['pageuid']));
+                $subResponse = $this->stashEnvironment(fn (): ResponseInterface => $this->sendSubRequest($subRequest, $this->pageUid));
             } else {
+                $cacheIdentifier = 'errorPage_' . md5($resolvedUrl);
                 try {
-                    $subResponse = $this->cachePageRequest($resolvedUrl, $this->pageUid, fn () => $this->sendRawRequest($resolvedUrl));
+                    $subResponse = $this->cachePageRequest(
+                        $this->pageUid,
+                        fn () => $this->sendRawRequest($resolvedUrl),
+                        $cacheIdentifier
+                    );
                 } catch (\Exception $e) {
                     throw new \RuntimeException(sprintf('Error handler could not fetch error page "%s", reason: %s', $resolvedUrl, $e->getMessage()), 1544172838, $e);
+                }
+                // Ensure that 503 status code is kept, and not changed to 500.
+                if ($subResponse->getStatusCode() === 503) {
+                    return $this->responseFactory->createResponse($subResponse->getStatusCode())
+                        ->withHeader('content-type', $subResponse->getHeader('content-type'))
+                        ->withBody($subResponse->getBody());
                 }
             }
 
@@ -144,40 +161,92 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
     /**
      * Caches a subrequest fetch.
      */
-    protected function cachePageRequest(string $resolvedUrl, int $pageId, callable $fetcher): ResponseInterface
+    protected function cachePageRequest(int $pageId, callable $fetcher, string $cacheIdentifier): ResponseInterface
     {
-        $cacheIdentifier = 'errorPage_' . md5($resolvedUrl);
         $responseData = $this->cache->get($cacheIdentifier);
-
-        if (!is_array($responseData)) {
+        if (is_array($responseData) && $responseData !== []) {
+            return $this->createCachedPageRequestResponse($responseData);
+        }
+        $cacheTags = [];
+        $cacheTags[] = 'errorPage';
+        if ($pageId > 0) {
+            // Cache Tag "pageId_" ensures, cache is purged when content of 404 page changes
+            $cacheTags[] = 'pageId_' . $pageId;
+        }
+        $lockFactory = GeneralUtility::makeInstance(LockFactory::class);
+        $lock = $lockFactory->createLocker(
+            $cacheIdentifier,
+            LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK
+        );
+        try {
+            $locked = $lock->acquire(
+                LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK
+            );
+            if (!$locked) {
+                return $this->createGenericErrorResponse('Lock could not be acquired.');
+            }
             /** @var ResponseInterface $response */
             $response = $fetcher();
-            $cacheTags = [];
-            if ($response->getStatusCode() === 200) {
-                $cacheTags[] = 'errorPage';
-                if ($pageId > 0) {
-                    // Cache Tag "pageId_" ensures, cache is purged when content of 404 page changes
-                    $cacheTags[] = 'pageId_' . $pageId;
-                }
-                $responseData = [
-                    'headers' => $response->getHeaders(),
-                    'body' => $response->getBody()->getContents(),
-                    'reasonPhrase' => $response->getReasonPhrase(),
-                ];
-                $this->cache->set($cacheIdentifier, $responseData, $cacheTags);
+            if ($response->getStatusCode() !== 200) {
+                // External request lead to an error. Create a generic error response,
+                // cache and use that instead of the external error response.
+                $response = $this->createGenericErrorResponse('External error page could not be retrieved.');
             }
-        } else {
-            $body = new Stream('php://temp', 'wb+');
-            $body->write($responseData['body'] ?? '');
-            $body->rewind();
-            $response = new Response(
-                $body,
-                200,
-                $responseData['headers'] ?? [],
-                $responseData['reasonPhrase'] ?? ''
-            );
+            $responseData = [
+                'statuscode' => $response->getStatusCode(),
+                'headers' => $response->getHeaders(),
+                'body' => $response->getBody()->getContents(),
+                'reasonPhrase' => $response->getReasonPhrase(),
+            ];
+            $this->cache->set($cacheIdentifier, $responseData, $cacheTags);
+            $lock->release();
+        } catch (ClientException $e) {
+            $response = $this->createGenericErrorResponse('External error page could not be retrieved. ' . $e->getMessage());
+            $responseData = [
+                'statuscode' => $response->getStatusCode(),
+                'headers' => $response->getHeaders(),
+                'body' => $response->getBody()->getContents(),
+                'reasonPhrase' => $response->getReasonPhrase(),
+            ];
+            $this->cache->set($cacheIdentifier, $responseData, $cacheTags);
+        } catch (LockAcquireWouldBlockException $e) {
+            // Currently a lock is active, thus returning a generic error directly to avoid
+            // long wait times and thus consuming too much php worker processes. Caching is
+            // not done here, as we do not know if the error page can be retrieved or not.
+            $lock->release();
+            return $this->createGenericErrorResponse('Lock could not be acquired. ' . $e->getMessage());
+        } catch (\Throwable $e) {
+            // Any other error happened
+            $lock->release();
+            return $this->createGenericErrorResponse('Error page could not be retrieved' . $e->getMessage());
         }
+        $lock->release();
+        return $this->createCachedPageRequestResponse($responseData);
+    }
 
+    protected function createGenericErrorResponse(string $message = ''): ResponseInterface
+    {
+        $content = GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
+            'Page Not Found',
+            $message ?: 'Error page is being generated',
+            AbstractMessage::ERROR,
+            0,
+            503
+        );
+        return new HtmlResponse($content, 503);
+    }
+
+    protected function createCachedPageRequestResponse(array $responseData): ResponseInterface
+    {
+        $body = new Stream('php://temp', 'wb+');
+        $body->write($responseData['body'] ?? '');
+        $body->rewind();
+        $response = new Response(
+            $body,
+            $responseData['statuscode'] ?? 200,
+            $responseData['headers'] ?? [],
+            $responseData['reasonPhrase'] ?? ''
+        );
         return $response;
     }
 
@@ -215,7 +284,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         $options = [];
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['HTTP']['timeout'] === 0) {
             $options = [
-                'timeout' => 30,
+                'timeout' => 10,
             ];
         }
         return $options;
