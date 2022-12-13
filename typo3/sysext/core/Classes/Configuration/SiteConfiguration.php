@@ -23,7 +23,9 @@ use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
+use TYPO3\CMS\Core\Configuration\Loader\Exception\YamlPlaceholderException;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
+use TYPO3\CMS\Core\Configuration\Loader\YamlPlaceholderGuard;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -206,15 +208,19 @@ class SiteConfiguration implements SingletonInterface
      *
      * @param string $siteIdentifier
      * @param array $configuration
+     * @param bool $protectPlaceholders whether to disallow introducing new placeholders
      * @throws SiteConfigurationWriteException
      */
-    public function write(string $siteIdentifier, array $configuration): void
+    public function write(string $siteIdentifier, array $configuration, bool $protectPlaceholders = false): void
     {
         $folder = $this->configPath . '/' . $siteIdentifier;
         $fileName = $folder . '/' . $this->configFileName;
         $newConfiguration = $configuration;
         if (!file_exists($folder)) {
             GeneralUtility::mkdir_deep($folder);
+            if ($protectPlaceholders && $newConfiguration !== []) {
+                $newConfiguration = $this->protectPlaceholders([], $newConfiguration);
+            }
         } elseif (file_exists($fileName)) {
             $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
             // load without any processing to have the unprocessed base to modify
@@ -226,6 +232,9 @@ class SiteConfiguration implements SingletonInterface
                 self::findRemoved($processed, $configuration),
                 self::findModified($processed, $configuration)
             );
+            if ($protectPlaceholders && $newModified !== []) {
+                $newModified = $this->protectPlaceholders($newConfiguration, $newModified);
+            }
             // change _only_ the modified keys, leave the original non-changed areas alone
             ArrayUtility::mergeRecursiveWithOverrule($newConfiguration, $newModified);
         }
@@ -276,6 +285,25 @@ class SiteConfiguration implements SingletonInterface
         }
         $this->cache->remove($this->cacheIdentifier);
         $this->firstLevelCache = null;
+    }
+
+    /**
+     * Detects placeholders that have been introduced and handles* them.
+     * (*) currently throws an exception, but could be purged or escaped as well
+     *
+     * @param array<string, mixed> $existingConfiguration
+     * @param array<string, mixed> $modifiedConfiguration
+     * @return array<string, mixed> sanitized configuration (currently not used, exception thrown before)
+     * @throws SiteConfigurationWriteException
+     */
+    protected function protectPlaceholders(array $existingConfiguration, array $modifiedConfiguration): array
+    {
+        try {
+            return GeneralUtility::makeInstance(YamlPlaceholderGuard::class, $existingConfiguration)
+                ->process($modifiedConfiguration);
+        } catch (YamlPlaceholderException $exception) {
+            throw new SiteConfigurationWriteException($exception->getMessage(), 1670361271, $exception);
+        }
     }
 
     /**

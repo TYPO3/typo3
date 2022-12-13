@@ -424,7 +424,7 @@ class SiteConfigurationController
                     $siteConfigurationManager->rename($currentIdentifier, $siteIdentifier);
                     $this->getBackendUser()->writelog(Type::SITE, SiteAction::RENAME, SystemLogErrorClassification::MESSAGE, 0, 'Site configuration \'%s\' was renamed to \'%s\'.', [$currentIdentifier, $siteIdentifier], 'site');
                 }
-                $siteConfigurationManager->write($siteIdentifier, $newSiteConfiguration);
+                $siteConfigurationManager->write($siteIdentifier, $newSiteConfiguration, true);
                 if ($isNewConfiguration) {
                     $this->getBackendUser()->writelog(Type::SITE, SiteAction::CREATE, SystemLogErrorClassification::MESSAGE, 0, 'Site configuration \'%s\' was created.', [$siteIdentifier], 'site');
                 } else {
