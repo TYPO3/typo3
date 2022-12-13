@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Test TCA require in scoped environment (a)',
     'description' => 'Test TCA require in scoped environment (a)',
     'category' => 'example',
-    'version' => '12.1.2',
+    'version' => '12.1.3',
     'state' => 'beta',
     'author' => 'Stefan Bürk',
     'author_email' => 'stefan@buerk.tech',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '12.1.2',
+            'typo3' => '12.1.3',
         ],
         'conflicts' => [],
         'suggests' => [],
