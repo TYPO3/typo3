@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
 
@@ -91,13 +92,6 @@ class FrontendLoginController extends AbstractPlugin
     protected $logintype;
 
     /**
-     * A list of page UIDs, either an integer or a comma-separated list of integers
-     *
-     * @var string
-     */
-    public $spid;
-
-    /**
      * Referrer
      *
      * @var string
@@ -138,18 +132,6 @@ class FrontendLoginController extends AbstractPlugin
         // Init FlexForm configuration for plugin:
         $this->pi_initPIflexForm();
         $this->mergeflexFormValuesIntoConf();
-        // Get storage PIDs:
-        if ((bool)($GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] ?? false) === false) {
-            $this->spid = 0;
-        } elseif ($this->conf['storagePid']) {
-            if ((int)$this->conf['recursive']) {
-                $this->spid = $this->pi_getPidList($this->conf['storagePid'], (int)$this->conf['recursive']);
-            } else {
-                $this->spid = $this->conf['storagePid'];
-            }
-        } else {
-            throw new \RuntimeException('No storage folder (option storagePid) for frontend users given.', 1450904202);
-        }
         // GPvars:
         $this->logintype = GeneralUtility::_GP('logintype');
 
@@ -281,7 +263,7 @@ class FrontendLoginController extends AbstractPlugin
                         $queryBuilder->expr()->in(
                             'pid',
                             $queryBuilder->createNamedParameter(
-                                GeneralUtility::intExplode(',', $this->spid),
+                                GeneralUtility::intExplode(',', $this->getStorageFolders()),
                                 Connection::PARAM_INT_ARRAY
                             )
                         )
@@ -479,7 +461,7 @@ class FrontendLoginController extends AbstractPlugin
                     $markerArray['###NEWPASSWORD2_LABEL###'] = htmlspecialchars($this->pi_getLL('newpassword_label2'));
                     $markerArray['###NEWPASSWORD1###'] = $this->prefixId . '[password1]';
                     $markerArray['###NEWPASSWORD2###'] = $this->prefixId . '[password2]';
-                    $markerArray['###STORAGE_PID###'] = $this->spid;
+                    $markerArray['###STORAGE_PID###'] = $this->getSignedStorageFolders();
                     $markerArray['###SEND_PASSWORD###'] = htmlspecialchars($this->pi_getLL('change_password'));
                     $markerArray['###FORGOTHASH###'] = $piHash;
                 }
@@ -589,7 +571,7 @@ class FrontendLoginController extends AbstractPlugin
         $markerArray['###ACTION_URI###'] = $this->getPageLink('', [], true);
         $markerArray['###LOGOUT_LABEL###'] = htmlspecialchars($this->pi_getLL('logout'));
         $markerArray['###NAME###'] = htmlspecialchars($this->frontendController->fe_user->user['name']);
-        $markerArray['###STORAGE_PID###'] = $this->spid;
+        $markerArray['###STORAGE_PID###'] = $this->getSignedStorageFolders();
         $markerArray['###USERNAME###'] = htmlspecialchars($this->frontendController->fe_user->user['username']);
         $markerArray['###USERNAME_LABEL###'] = htmlspecialchars($this->pi_getLL('username'));
         $markerArray['###NOREDIRECT###'] = $this->noRedirect ? '1' : '0';
@@ -722,7 +704,7 @@ class FrontendLoginController extends AbstractPlugin
         // Used by kb_md5fepw extension...
         $markerArray['###ON_SUBMIT###'] = $onSubmit;
         $markerArray['###PASSWORD_LABEL###'] = htmlspecialchars($this->pi_getLL('password'));
-        $markerArray['###STORAGE_PID###'] = $this->spid;
+        $markerArray['###STORAGE_PID###'] = $this->getSignedStorageFolders();
         $markerArray['###USERNAME_LABEL###'] = htmlspecialchars($this->pi_getLL('username'));
         $markerArray['###REDIRECT_URL###'] = htmlspecialchars($gpRedirectUrl);
         $markerArray['###NOREDIRECT###'] = $this->noRedirect ? '1' : '0';
@@ -1177,5 +1159,32 @@ class FrontendLoginController extends AbstractPlugin
             $mail->send();
         }
         return true;
+    }
+
+    protected function getStorageFolders(): string
+    {
+        if ((bool)($GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] ?? false) === false) {
+            $storagePidList = '0';
+        } elseif ($this->conf['storagePid']) {
+            if ((int)$this->conf['recursive']) {
+                $storagePidList = $this->pi_getPidList($this->conf['storagePid'], (int)$this->conf['recursive']);
+            } else {
+                $storagePidList = $this->conf['storagePid'];
+            }
+        } else {
+            throw new \RuntimeException('No storage folder (option storagePid) for frontend users given.', 1450904202);
+        }
+
+        return $storagePidList;
+    }
+
+    protected function getSignedStorageFolders(): string
+    {
+        $pidList = $this->getStorageFolders();
+        return sprintf(
+            '%s@%s',
+            $pidList,
+            GeneralUtility::hmac($pidList, FrontendUserAuthentication::class)
+        );
     }
 }
