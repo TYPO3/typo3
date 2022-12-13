@@ -236,7 +236,7 @@ class IconRegistry implements SingletonInterface
             $this->registerTCAIcons();
         }
         if (!$this->flagsInitialized) {
-            $this->registerFlags();
+            $this->getCachedFlagIcons();
         }
         if ($this->backendIconsInitialized
             && $this->tcaInitialized
@@ -520,53 +520,48 @@ class IconRegistry implements SingletonInterface
         $this->tcaInitialized = true;
     }
 
+    protected function getCachedFlagIcons(): void
+    {
+        $cacheIdentifier = $this->getBackendIconsCacheIdentifier() . '_flags';
+        $cacheEntry = $this->cache->get($cacheIdentifier);
+
+        if ($cacheEntry === false) {
+            $cacheEntry = $this->registerFlags();
+            $this->cache->set($cacheIdentifier, $cacheEntry);
+        }
+        $this->icons = array_merge($this->icons, $cacheEntry);
+        // if there's now at least one icon registered, consider it successful
+        if (is_array($cacheEntry) && $cacheEntry !== []) {
+            $this->flagsInitialized = true;
+        }
+    }
+
     /**
      * Register flags
      */
-    protected function registerFlags()
+    protected function registerFlags(): array
     {
         $iconFolder = 'EXT:core/Resources/Public/Icons/Flags/';
-        $files = [
-            'AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AN', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ',
-            'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ', 'BR', 'BS', 'BT', 'BV', 'BW', 'BY', 'BZ',
-            'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CR', 'CS', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ',
-            'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ',
-            'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'EU',
-            'FI', 'FJ', 'FK', 'FM', 'FO', 'FR',
-            'GA', 'GB-ENG', 'GB-NIR', 'GB-SCT', 'GB-WLS', 'GB', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI', 'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY',
-            'HK', 'HM', 'HN', 'HR', 'HT', 'HU',
-            'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ', 'IR', 'IS', 'IT',
-            'JE', 'JM', 'JO', 'JP',
-            'KE', 'KG', 'KH', 'KI', 'KL', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ',
-            'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY',
-            'MA', 'MC', 'MD', 'ME', 'MF', 'MG', 'MH', 'MI', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ',
-            'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ',
-            'OM',
-            'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY',
-            'QA', 'QC',
-            'RE', 'RO', 'RS', 'RU', 'RW',
-            'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ',
-            'TC', 'TD', 'TF', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TW', 'TZ',
-            'UA', 'UG', 'UM', 'US', 'UY', 'UZ',
-            'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU',
-            'WF', 'WS',
-            'YE', 'YT',
-            'ZA', 'ZM', 'ZW',
-            // Special Flags
-            'catalonia',
-            'multiple',
-            'en-us-gb',
-        ];
-        foreach ($files as $file) {
-            $identifier = strtolower($file);
-            $this->icons['flags-' . $identifier] = [
-                'provider' => BitmapIconProvider::class,
-                'options' => [
-                    'source' => $iconFolder . $file . '.png',
-                ],
-            ];
+        $folderPath = GeneralUtility::getFileAbsFileName($iconFolder);
+        $flagIcons = [];
+
+        if ($handle = opendir($folderPath)) {
+            while (($file = readdir($handle)) !== false) {
+                $fileInfo = pathinfo($folderPath . $file);
+                if ($fileInfo['extension'] !== 'png') {
+                    continue;
+                }
+                $flagIcons['flags-' . strtolower($fileInfo['filename'])] = [
+                    'provider' => BitmapIconProvider::class,
+                    'options' => [
+                        'source' => $iconFolder . $file,
+                    ],
+                ];
+            }
+            closedir($handle);
         }
-        $this->flagsInitialized = true;
+
+        return $flagIcons;
     }
 
     /**
