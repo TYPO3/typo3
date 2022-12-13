@@ -21,10 +21,14 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
+use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
+use TYPO3\CMS\Core\Locking\LockFactory;
+use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -86,9 +90,25 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             $cacheContent = $cache->get($cacheIdentifier);
 
             if (!$cacheContent && $resolvedUrl !== (string)$request->getUri()) {
+                $lockFactory = GeneralUtility::makeInstance(LockFactory::class);
+                $lock = $lockFactory->createLocker(
+                    $cacheIdentifier,
+                    LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK
+                );
                 try {
+                    $locked = $lock->acquire(
+                        LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK
+                    );
+                    if (!$locked) {
+                        return $this->createGenericErrorResponse();
+                    }
+
                     $subResponse = GeneralUtility::makeInstance(RequestFactory::class)
                         ->request($resolvedUrl, 'GET', $this->getSubRequestOptions());
+                    $lock->release();
+                } catch (LockAcquireWouldBlockException $_) {
+                    $lock->release();
+                    return $this->createGenericErrorResponse();
                 } catch (\Exception $e) {
                     throw new \RuntimeException('Error handler could not fetch error page "' . $resolvedUrl . '", reason: ' . $e->getMessage(), 1544172838);
                 }
@@ -124,6 +144,15 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         return new HtmlResponse($content, $this->statusCode);
     }
 
+    protected function createGenericErrorResponse(string $message = ''): ResponseInterface
+    {
+        $content = GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
+            'Page Not Found',
+            $message ?: 'The page did not exist or was inaccessible. Error page is being generated'
+        );
+        return new HtmlResponse($content, 503);
+    }
+
     /**
      * Returns request options for the subrequest and ensures, that a reasoneable timeout is present
      *
@@ -134,7 +163,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         $options = [];
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['HTTP']['timeout'] === 0) {
             $options = [
-                'timeout' => 30
+                'timeout' => 10
             ];
         }
         return $options;
