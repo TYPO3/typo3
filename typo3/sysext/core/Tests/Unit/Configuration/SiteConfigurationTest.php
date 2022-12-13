@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
@@ -107,7 +108,7 @@ class SiteConfigurationTest extends UnitTestCase
         // delete values
         unset($configuration['someOtherValue'], $configuration['languages'][1]);
 
-        $this->siteConfiguration->write($identifier, $configuration);
+        $this->siteConfiguration->write($identifier, $configuration, true);
 
         // expect modified base but intact imports
         self::assertFileEquals($expected, $siteConfig);
@@ -146,9 +147,55 @@ class SiteConfigurationTest extends UnitTestCase
             'navigationTitle' => 'English',
         ];
         array_unshift($configuration['languages'], $languageConfig);
-        $this->siteConfiguration->write($identifier, $configuration);
+        $this->siteConfiguration->write($identifier, $configuration, true);
 
         // expect modified base but intact imports
         self::assertFileEquals($expected, $siteConfig);
+    }
+
+    public static function writingPlaceholdersIsHandledDataProvider(): \Generator
+    {
+        yield 'unchanged' => [
+            ['customProperty' => 'Using %env("existing")% variable'],
+            false,
+        ];
+        yield 'removed placeholder variable' => [
+            ['customProperty' => 'Not using any variable'],
+            false,
+        ];
+        yield 'changed raw text only' => [
+            ['customProperty' => 'Using %env("existing")% variable from system environment'],
+            false,
+        ];
+        yield 'added new placeholder variable' => [
+            ['customProperty' => 'Using %env("existing")% and %env("secret")% variable'],
+            true,
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider writingPlaceholdersIsHandledDataProvider
+     */
+    public function writingPlaceholdersIsHandled(array $changes, bool $expectedException): void
+    {
+        if ($expectedException) {
+            $this->expectException(SiteConfigurationWriteException::class);
+            $this->expectExceptionCode(1670361271);
+        }
+
+        $identifier = 'testsite';
+        GeneralUtility::mkdir_deep($this->fixturePath . '/' . $identifier);
+        $configFixture = __DIR__ . '/Fixtures/SiteConfigs/config2.yaml';
+        $siteConfig = $this->fixturePath . '/' . $identifier . '/config.yaml';
+        copy($configFixture, $siteConfig);
+        // load with resolved imports as the module does
+        $configuration = GeneralUtility::makeInstance(YamlFileLoader::class)
+            ->load(
+                GeneralUtility::fixWindowsFilePath($siteConfig),
+                YamlFileLoader::PROCESS_IMPORTS
+            );
+        $configuration = array_merge($configuration, $changes);
+        $this->siteConfiguration->write($identifier, $configuration, true);
     }
 }
