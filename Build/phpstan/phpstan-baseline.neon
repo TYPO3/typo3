@@ -1131,6 +1131,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
 
 		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
+
+		-
 			message: "#^Parameter \\#2 \\$folder of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceStorage\\:\\:checkFolderActionPermission\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\|null, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Imaging/IconFactory.php
@@ -4701,6 +4706,11 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/Controller/BackendModuleController.php
 
 		-
+			message: "#^Variable \\$localConfigurationPathValuePairs in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: ../../typo3/sysext/install/Classes/Controller/InstallerController.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\CodeStatistics\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/CodeStatistics.php
@@ -5122,11 +5132,6 @@ parameters:
 
 		-
 			message: "#^PHPDoc type string of property TYPO3\\\\CMS\\\\Recycler\\\\Tests\\\\Functional\\\\Recycle\\\\AbstractRecycleTestCase\\:\\:\\$backendUserFixture is not covariant with PHPDoc type non\\-empty\\-string of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$backendUserFixture\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
-
-		-
-			message: "#^Variable \\$previousValueOfEntityLoader might not be defined\\.$#"
 			count: 1
 			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
 
