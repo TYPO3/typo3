@@ -6,3 +6,8 @@ services:
 
   TYPO3\CMS\FrontendLogin\:
     resource: '../Classes/*'
+
+  TYPO3\CMS\FrontendLogin\Event\ProcessRequestTokenListener:
+    tags:
+      - name: event.listener
+        identifier: felogin-process-request-token

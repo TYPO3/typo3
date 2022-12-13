@@ -103,13 +103,13 @@ class LoginController extends AbstractLoginFormController
             [
                 'cookieWarning' => $this->showCookieWarning,
                 'messageKey' => $this->getStatusMessageKey(),
-                'storagePid' => implode(',', $this->getStorageFolders()),
                 'permaloginStatus' => $this->getPermaloginStatus(),
                 'redirectURL' => $this->redirectHandler->getLoginFormRedirectUrl($this->configuration, $this->isRedirectDisabled()),
                 'redirectReferrer' => $this->request->hasArgument('redirectReferrer') ? (string)$this->request->getArgument('redirectReferrer') : '',
                 'referer' => $this->requestHandler->getPropertyFromGetAndPost('referer'),
                 'noRedirect' => $this->isRedirectDisabled(),
-                'requestToken' => RequestToken::create('core/user-auth/fe'),
+                'requestToken' => RequestToken::create('core/user-auth/fe')
+                    ->withMergedParams(['pid' => implode(',', $this->getStorageFolders())]),
             ]
         );
 
@@ -154,7 +154,6 @@ class LoginController extends AbstractLoginFormController
             [
                 'cookieWarning' => $this->showCookieWarning,
                 'user' => $this->userService->getFeUserData(),
-                'storagePid' => implode(',', $this->getStorageFolders()),
                 'noRedirect' => $this->isRedirectDisabled(),
                 'actionUri' => $this->redirectHandler->getLogoutFormRedirectUrl($this->configuration, $redirectPageLogout, $this->isRedirectDisabled()),
             ]
