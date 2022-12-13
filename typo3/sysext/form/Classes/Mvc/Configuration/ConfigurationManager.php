@@ -132,15 +132,16 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
     {
         $typoScript = parent::getConfiguration(self::CONFIGURATION_TYPE_SETTINGS, $extensionName);
         if (is_array($typoScript['yamlSettingsOverrides'] ?? null) && !empty($typoScript['yamlSettingsOverrides'])) {
+            $yamlSettingsOverrides = $typoScript['yamlSettingsOverrides'];
+            if ($this->environmentService->isEnvironmentInFrontendMode()) {
+                $yamlSettingsOverrides = $this->objectManager->get(TypoScriptService::class)
+                    ->resolvePossibleTypoScriptConfiguration($yamlSettingsOverrides);
+            }
+
             ArrayUtility::mergeRecursiveWithOverrule(
                 $yamlSettings,
-                $typoScript['yamlSettingsOverrides']
+                $yamlSettingsOverrides
             );
-
-            if ($this->environmentService->isEnvironmentInFrontendMode()) {
-                $yamlSettings = $this->objectManager->get(TypoScriptService::class)
-                    ->resolvePossibleTypoScriptConfiguration($yamlSettings);
-            }
         }
         return $yamlSettings;
     }
