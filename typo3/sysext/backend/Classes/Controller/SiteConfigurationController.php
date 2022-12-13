@@ -347,7 +347,7 @@ class SiteConfigurationController
             if (!$isNewConfiguration && $currentIdentifier !== $siteIdentifier) {
                 $siteConfigurationManager->rename($currentIdentifier, $siteIdentifier);
             }
-            $siteConfigurationManager->write($siteIdentifier, $newSiteConfiguration);
+            $siteConfigurationManager->write($siteIdentifier, $newSiteConfiguration, true);
         } catch (SiteValidationErrorException $e) {
             // Do not store new config if a validation error is thrown, but redirect only to show a generated flash message
         }
