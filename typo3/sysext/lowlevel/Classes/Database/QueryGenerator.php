@@ -35,7 +35,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -524,21 +523,7 @@ class QueryGenerator
         foreach ($storeArray as $k => $v) {
             $opt[] = '<option value="' . htmlspecialchars($k) . '">' . htmlspecialchars($v) . '</option>';
         }
-        // Actions:
-        if (ExtensionManagementUtility::isLoaded('sys_action') && $this->getBackendUserAuthentication()->isAdmin()) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_action');
-            $queryBuilder->getRestrictions()->removeAll();
-            $statement = $queryBuilder->select('uid', 'title')
-                ->from('sys_action')
-                ->where($queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(2, Connection::PARAM_INT)))
-                ->orderBy('title')
-                ->executeQuery();
-            $opt[] = '<option value="0">__Save to Action:__</option>';
-            while ($row = $statement->fetchAssociative()) {
-                $opt[] = '<option value="-' . (int)$row['uid'] . '">' . htmlspecialchars($row['title']
-                        . ' [' . (int)$row['uid'] . ']') . '</option>';
-            }
-        }
+
         $markup = [];
         $markup[] = '<div class="load-queries">';
         $markup[] = '  <div class="row row-cols-auto">';
@@ -617,55 +602,6 @@ class QueryGenerator
     }
 
     /**
-     * Save query in action
-     *
-     * @param int $uid
-     * @return bool
-     */
-    protected function saveQueryInAction($uid)
-    {
-        if (ExtensionManagementUtility::isLoaded('sys_action')) {
-            $keyArr = explode(',', $this->storeList);
-            $saveArr = [];
-            foreach ($keyArr as $k) {
-                $saveArr[$k] = $this->settings[$k];
-            }
-            // Show query
-            if ($saveArr['queryTable']) {
-                $this->init('queryConfig', $saveArr['queryTable'], '', $this->settings);
-                $this->makeSelectorTable($saveArr);
-                $this->enablePrefix = true;
-                $queryString = $this->getQuery($this->queryConfig);
-
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable($this->table);
-                $queryBuilder->getRestrictions()->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                $rowCount = $queryBuilder->count('*')
-                    ->from($this->table)
-                    ->where(QueryHelper::stripLogicalOperatorPrefix($queryString))
-                    ->executeQuery()
-                    ->fetchOne();
-
-                $t2DataValue = [
-                    'qC' => $saveArr,
-                    'qCount' => $rowCount,
-                    'qSelect' => $this->getSelectQuery($queryString),
-                    'qString' => $queryString,
-                ];
-                GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_action')
-                    ->update(
-                        'sys_action',
-                        ['t2_data' => serialize($t2DataValue)],
-                        ['uid' => (int)$uid],
-                        ['t2_data' => Connection::PARAM_LOB]
-                    );
-            }
-            return true;
-        }
-        return false;
-    }
-    /**
      * Load store query configs
      *
      * @param array $storeQueryConfigs
@@ -709,54 +645,22 @@ class QueryGenerator
                         FlashMessage::class,
                         sprintf($languageService->getLL('query_loaded'), $storeArray[$storeIndex])
                     );
-                } elseif ($storeIndex < 0 && ExtensionManagementUtility::isLoaded('sys_action')) {
-                    $actionRecord = BackendUtility::getRecord('sys_action', abs($storeIndex));
-                    if (is_array($actionRecord)) {
-                        $dA = unserialize($actionRecord['t2_data'], ['allowed_classes' => false]);
-                        $dbSC = [];
-                        if (is_array($dA['qC'])) {
-                            $dbSC[0] = $dA['qC'];
-                        }
-                        $writeArray = $this->loadStoreQueryConfigs($dbSC, 0, $writeArray);
-                        $saveStoreArray = 1;
-                        $flashMessage = GeneralUtility::makeInstance(
-                            FlashMessage::class,
-                            sprintf($languageService->getLL('query_from_action_loaded'), $actionRecord['title'])
-                        );
-                    }
                 }
             } elseif ($storeControl['SAVE'] ?? false) {
-                if ($storeIndex < 0) {
-                    $qOK = $this->saveQueryInAction(abs($storeIndex));
-                    if ($qOK) {
-                        $flashMessage = GeneralUtility::makeInstance(
-                            FlashMessage::class,
-                            $languageService->getLL('query_saved')
-                        );
+                if (trim($storeControl['title'])) {
+                    if ($storeIndex > 0) {
+                        $storeArray[$storeIndex] = $storeControl['title'];
                     } else {
-                        $flashMessage = GeneralUtility::makeInstance(
-                            FlashMessage::class,
-                            $languageService->getLL('query_notsaved'),
-                            '',
-                            ContextualFeedbackSeverity::ERROR
-                        );
+                        $storeArray[] = $storeControl['title'];
+                        end($storeArray);
+                        $storeIndex = key($storeArray);
                     }
-                } else {
-                    if (trim($storeControl['title'])) {
-                        if ($storeIndex > 0) {
-                            $storeArray[$storeIndex] = $storeControl['title'];
-                        } else {
-                            $storeArray[] = $storeControl['title'];
-                            end($storeArray);
-                            $storeIndex = key($storeArray);
-                        }
-                        $storeQueryConfigs = $this->addToStoreQueryConfigs($storeQueryConfigs, (int)$storeIndex);
-                        $saveStoreArray = 1;
-                        $flashMessage = GeneralUtility::makeInstance(
-                            FlashMessage::class,
-                            $languageService->getLL('query_saved')
-                        );
-                    }
+                    $storeQueryConfigs = $this->addToStoreQueryConfigs($storeQueryConfigs, (int)$storeIndex);
+                    $saveStoreArray = 1;
+                    $flashMessage = GeneralUtility::makeInstance(
+                        FlashMessage::class,
+                        $languageService->getLL('query_saved')
+                    );
                 }
             } elseif ($storeControl['REMOVE'] ?? false) {
                 if ($storeIndex > 0) {

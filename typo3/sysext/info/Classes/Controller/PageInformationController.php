@@ -107,8 +107,6 @@ class PageInformationController extends InfoModuleController
         unset(
             $tableNames['pages'],
             $tableNames['sys_filemounts'],
-            $tableNames['sys_action'],
-            $tableNames['sys_workflows'],
             $tableNames['be_users'],
             $tableNames['be_groups']
         );
