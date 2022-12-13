@@ -8,14 +8,14 @@ $EM_CONF[$_EXTKEY] = [
     'clearCacheOnLoad' => 0,
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',
-    'version' => '10.4.33',
+    'version' => '10.4.34',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.33',
+            'typo3' => '10.4.34',
         ],
         'conflicts' => [],
         'suggests' => [
-            'setup' => '10.4.33',
+            'setup' => '10.4.34',
         ],
     ],
 ];

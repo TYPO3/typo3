@@ -10,11 +10,11 @@ $EM_CONF[$_EXTKEY] = [
     'state' => 'stable',
     'uploadfolder' => 0,
     'clearCacheOnLoad' => 1,
-    'version' => '10.4.33',
+    'version' => '10.4.34',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.33',
-            'a' => '10.4.33',
+            'typo3' => '10.4.34',
+            'a' => '10.4.34',
         ],
         'conflicts' => [],
         'suggests' => [],
