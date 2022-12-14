@@ -164,11 +164,12 @@ class Bootstrap
 
         // In case TSFE is available and this is a json response, we have to let TSFE know we have a specific Content-Type
         if (($typoScriptFrontendController = ($GLOBALS['TSFE'] ?? null)) instanceof TypoScriptFrontendController
-            && str_starts_with($response->getHeaderLine('Content-Type'), 'application/json')
+            && $response->hasHeader('Content-Type')
         ) {
+            [$contentType] = explode(';', $response->getHeaderLine('Content-Type'));
             // Do not send the header directly (see below)
             $response = $response->withoutHeader('Content-Type');
-            $typoScriptFrontendController->setContentType('application/json');
+            $typoScriptFrontendController->setContentType($contentType);
         }
 
         if (headers_sent() === false) {

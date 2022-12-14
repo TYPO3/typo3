@@ -556,7 +556,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * @param string $contentType
-     * @internal Should only be used by TYPO3 core for now
+     * @internal Must only be used by TYPO3 core
      */
     public function setContentType($contentType)
     {
@@ -1539,6 +1539,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->config = $cachedData['cache_data'];
         // Getting the content
         $this->content = $cachedData['content'];
+        // Getting the content type
+        $this->contentType = $cachedData['contentType'] ?? $this->contentType;
         // Setting flag, so we know, that some cached content has been loaded
         $this->pageContentWasLoadedFromCache = true;
         $this->cacheExpires = $cachedData['expires'];
@@ -1855,6 +1857,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $cacheData = [
             'page_id' => $this->id,
             'content' => $content,
+            'contentType' => $this->contentType,
             'cache_data' => $data,
             'expires' => $expirationTstamp,
             'tstamp' => $GLOBALS['EXEC_TIME'],
