@@ -1,4 +1,4 @@
-acceptance install mariadb php 7.4 pre-merge:
+acceptance install mariadb 10.3 php 7.4 pre-merge:
   stage: main
   except:
     refs:
@@ -14,6 +14,23 @@ acceptance install mariadb php 7.4 pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 7.4
+
+acceptance install mariadb 10.10 php 8.2 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "11.5"
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.10 -p 8.2
 
 acceptance install mysql php 8.2 pre-merge:
   stage: main

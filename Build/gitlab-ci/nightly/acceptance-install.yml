@@ -1,4 +1,4 @@
-acceptance install mariadb php 7.4 locked:
+acceptance install mariadb 10.3 php 7.4 locked:
   stage: acceptance
   needs: []
   only:
@@ -10,7 +10,7 @@ acceptance install mariadb php 7.4 locked:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 7.4
-acceptance install mariadb php 7.4 max:
+acceptance install mariadb 10.3 php 7.4 max:
   stage: acceptance
   needs: []
   only:
@@ -26,7 +26,7 @@ acceptance install mariadb php 7.4 max:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 7.4
-acceptance install mariadb php 7.4 min:
+acceptance install mariadb 10.3 php 7.4 min:
   stage: acceptance
   needs: []
   only:
@@ -43,7 +43,7 @@ acceptance install mariadb php 7.4 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 7.4
 
-acceptance install mariadb php 8.0 locked:
+acceptance install mariadb 10.3 php 8.0 locked:
   stage: acceptance
   needs: []
   only:
@@ -55,7 +55,7 @@ acceptance install mariadb php 8.0 locked:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.0
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.6 -p 8.0
-acceptance install mariadb php 8.0 max:
+acceptance install mariadb 10.3 php 8.0 max:
   stage: acceptance
   needs: []
   only:
@@ -71,7 +71,7 @@ acceptance install mariadb php 8.0 max:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.0
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.6 -p 8.0
-acceptance install mariadb php 8.0 min:
+acceptance install mariadb 10.3 php 8.0 min:
   stage: acceptance
   needs: []
   only:
@@ -88,7 +88,7 @@ acceptance install mariadb php 8.0 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.0
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.6 -p 8.0
 
-acceptance install mariadb php 8.1 locked:
+acceptance install mariadb 10.3 php 8.1 locked:
   stage: acceptance
   needs: []
   only:
@@ -103,7 +103,7 @@ acceptance install mariadb php 8.1 locked:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.1
-acceptance install mariadb php 8.1 max:
+acceptance install mariadb 10.3 php 8.1 max:
   stage: acceptance
   needs: []
   only:
@@ -119,7 +119,7 @@ acceptance install mariadb php 8.1 max:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.1
-acceptance install mariadb php 8.1 min:
+acceptance install mariadb 10.3 php 8.1 min:
   stage: acceptance
   needs: []
   only:
@@ -138,6 +138,57 @@ acceptance install mariadb php 8.1 min:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.1
+
+acceptance install mariadb 10.10 php 8.2 locked:
+  stage: acceptance
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.10 -p 8.2
+acceptance install mariadb 10.3 php 8.2 max:
+  stage: acceptance
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: 11.5-composer-max
+    paths:
+      - .cache
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.10 -p 8.2
+acceptance install mariadb 10.10 php 8.2 min:
+  stage: acceptance
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: 11.5-composer-min
+    paths:
+      - .cache
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.10 -p 8.2
 
 acceptance install mysql php 7.4:
   stage: acceptance
