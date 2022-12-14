@@ -19,12 +19,14 @@ namespace TYPO3\CMS\Install\SystemEnvironment\ServerResponse;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Exception\TransferException;
 
 use function GuzzleHttp\Promise\settle;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -223,13 +225,21 @@ class ServerResponseCheck implements CheckInterface
         );
         try {
             $client = new Client(['timeout' => 10]);
-            $response = $client->request('GET', (string)$url, ['headers' => ['Host' => $randomHost]]);
-        } catch (BadResponseException $exception) {
+            $response = $client->request('GET', (string)$url, [
+                'headers' => ['Host' => $randomHost],
+                'allow_redirects' => false,
+                'verify' => false,
+            ]);
+        } catch (TransferException $exception) {
             // it is expected that the previous request fails
             return;
         }
         // in case we end up here, the server processed an HTTP request with invalid HTTP host header
         $messageParts = [];
+        $locationHeader = $response->getHeaderLine('location');
+        if (!empty($locationHeader) && (new Uri($locationHeader))->getHost() === $randomHost) {
+            $messageParts[] = sprintf('HTTP Location header contained unexpected "%s"', $randomHost);
+        }
         $data = json_decode((string)$response->getBody(), true);
         $serverHttpHost = $data['server.HTTP_HOST'] ?? null;
         $serverServerName = $data['server.SERVER_NAME'] ?? null;
