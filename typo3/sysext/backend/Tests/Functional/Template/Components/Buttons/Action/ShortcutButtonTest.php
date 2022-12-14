@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Template\Components\Buttons\Action;
 
 use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ShortcutButtonTest extends FunctionalTestCase
@@ -31,6 +34,11 @@ class ShortcutButtonTest extends FunctionalTestCase
 
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
+        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'SCRIPT_NAME' => '/typo3/index.php']);
+        $request = new ServerRequest('http://example.com/typo3/index.php', 'GET', null, $serverParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', NormalizedParams::createFromServerParams($serverParams));
     }
 
     /**

@@ -23,6 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder as BackendUriBuilder;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -47,6 +48,11 @@ class UriBuilderTest extends UnitTestCase
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
+
+    /**
+     * @var bool Restore Environment after tests
+     */
+    protected $backupEnvironment = true;
 
     /**
      * @var ConfigurationManagerInterface
@@ -368,8 +374,35 @@ class UriBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function buildBackendUriCreatesAbsoluteUrisIfSpecified(): void
+    public function buildBackendUriCreatesAbsoluteUrisInFrontendContentIfSpecified(): void
     {
+        $GLOBALS['TYPO3_REQUEST'] = $this->getRequestWithRouteAttribute();
+        $_SERVER['HTTP_HOST'] = 'baseuri';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['ORIG_SCRIPT_NAME'] = '/index.php';
+        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+        $this->uriBuilder->setCreateAbsoluteUri(true);
+        $expectedResult = 'http://baseuri/' . TYPO3_mainDir . 'test/Path?token=dummyToken';
+        $actualResult = $this->uriBuilder->buildBackendUri();
+        self::assertSame($expectedResult, $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function buildBackendUriCreatesAbsoluteUrisInBackendContentIfSpecified(): void
+    {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $GLOBALS['TYPO3_REQUEST'] = $this->getRequestWithRouteAttribute();
         $_SERVER['HTTP_HOST'] = 'baseuri';
         $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
