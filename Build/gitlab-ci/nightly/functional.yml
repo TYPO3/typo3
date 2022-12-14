@@ -235,6 +235,42 @@ functional mariadb 10.5 php 8.1 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.5 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
+functional mariadb 10.10 php 8.2 locked:
+  stage: functional
+  needs: []
+  only:
+    - schedules
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+functional mariadb 10.10 php 8.2 max:
+  stage: functional
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-max
+    paths:
+      - .cache
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
+    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+functional mariadb 10.10 php 8.2 min:
+  stage: functional
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-min
+    paths:
+      - .cache
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
+    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+
 functional mysql 8.0 php 8.1 locked:
   stage: functional
   needs: []

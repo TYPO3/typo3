@@ -191,7 +191,7 @@ Options:
             - mysql: use MySQL server
             - postgres: use postgres
 
-    -i <10.3|10.4|10.5|10.6|10.7>
+    -i <10.3|10.4|10.5|10.6|10.7|10.8|10.9|10.10>
         Only with -d mariadb
         Specifies on which version of mariadb tests are performed
             - 10.3 (default)
@@ -199,13 +199,16 @@ Options:
             - 10.5
             - 10.6
             - 10.7
+            - 10.8
+            - 10.9
+            - 10.10
 
     -j <8.0>
         Only with -d mysql
         Specifies on which version of mysql tests are performed
             - 8.0 (default)
 
-    -k <10|11|12|13|14>
+    -k <10|11|12|13|14|15>
         Only with -d postgres
         Specifies on which version of postgres tests are performed
             - 10 (default)
@@ -213,6 +216,7 @@ Options:
             - 12
             - 13
             - 14
+            - 15
 
     -c <chunk/numberOfChunks>
         Only with -s functional|acceptance
@@ -382,7 +386,7 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
             ;;
         i)
             MARIADB_VERSION=${OPTARG}
-            if ! [[ ${MARIADB_VERSION} =~ ^(10.3|10.4|10.5|10.6|10.7)$ ]]; then
+            if ! [[ ${MARIADB_VERSION} =~ ^(10.3|10.4|10.5|10.6|10.7|10.8|10.9|10.10)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
@@ -394,7 +398,7 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
             ;;
         k)
             POSTGRES_VERSION=${OPTARG}
-            if ! [[ ${POSTGRES_VERSION} =~ ^(10|11|12|13|14)$ ]]; then
+            if ! [[ ${POSTGRES_VERSION} =~ ^(10|11|12|13|14|15)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;

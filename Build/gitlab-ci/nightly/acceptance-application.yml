@@ -1,4 +1,4 @@
-acceptance application mariadb php 8.1 locked:
+acceptance application mariadb 10.3 php 8.1 locked:
   stage: acceptance
   needs: []
   only:
@@ -15,7 +15,7 @@ acceptance application mariadb php 8.1 locked:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-acceptance application mariadb php 8.1 max:
+acceptance application mariadb 10.3 php 8.1 max:
   stage: acceptance
   needs: []
   only:
@@ -36,7 +36,7 @@ acceptance application mariadb php 8.1 max:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
     - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-acceptance application mariadb php 8.1 min:
+acceptance application mariadb 10.3 php 8.1 min:
   stage: acceptance
   needs: []
   only:
@@ -57,6 +57,66 @@ acceptance application mariadb php 8.1 min:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+
+acceptance application mariadb 10.10 php 8.2 locked:
+  stage: acceptance
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/acceptance/typo3temp/var/log
+      - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
+  parallel: 8
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+acceptance application mariadb 10.10 php 8.2 max:
+  stage: acceptance
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-max
+    paths:
+      - .cache
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/acceptance/typo3temp/var/log
+      - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
+  parallel: 8
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
+    - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+acceptance application mariadb 10.10 php 8.2 min:
+  stage: acceptance
+  needs: []
+  only:
+    - schedules
+  cache:
+    key: main-composer-min
+    paths:
+      - .cache
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/acceptance/typo3temp/var/log
+      - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
+  parallel: 8
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
+    - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
 acceptance application mysql php 8.1 locked:
   stage: acceptance
