@@ -531,7 +531,7 @@ class SetupModuleController
                     $html .=
                         '<button type="button" id="add_button_' . htmlspecialchars($fieldName) . '" class="btn btn-default btn-add-avatar"'
                             . ' aria-label="' . htmlspecialchars($this->getLanguageService()->getLL('avatar.openFileBrowser')) . '"'
-                            . ' data-setup-avatar-url="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||__IDENTIFIER__'])) . '"'
+                            . ' data-setup-avatar-url="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||-0-be_users-avatar-avatar'])) . '"'
                             . '>' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)
                             . '</button></div>';
                     break;

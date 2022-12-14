@@ -51,7 +51,7 @@ class SetupModule {
         const clearElement = document.getElementById('clear_button_' + fieldName);
         const addElement = document.getElementById('add_button_' + fieldName);
 
-        addElement.addEventListener('click', (): void => this.avatarOpenFileBrowser(fieldName, addElement.dataset.setupAvatarUrl));
+        addElement.addEventListener('click', (): void => this.avatarOpenFileBrowser(addElement.dataset.setupAvatarUrl));
         clearElement && clearElement.addEventListener('click', (): void => this.avatarClearExistingImage(fieldName));
       });
     if (document.querySelector('[data-setup-avatar-field]') !== null) {
@@ -78,8 +78,7 @@ class SetupModule {
     });
   }
 
-  private avatarOpenFileBrowser(fieldName: string, uri: string) {
-    uri = uri.replace('__IDENTIFIER__', 'avatar-' + fieldName);
+  private avatarOpenFileBrowser(uri: string) {
     this.avatarWindowRef = window.open(uri, 'Typo3WinBrowser', 'height=650,width=800,status=0,menubar=0,resizable=1,scrollbars=1');
     this.avatarWindowRef.focus();
   }

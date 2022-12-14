@@ -216,8 +216,10 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $noThumbs = $noThumbs ?: !$displayThumbs;
         if ($this->selectedFolder instanceof Folder) {
             $files = $this->renderFilesInFolder($this->selectedFolder, $allowedFileExtensions, $noThumbs);
+            $selectedFolderIcon = $this->iconFactory->getIconForResource($this->selectedFolder, Icon::SIZE_SMALL);
         } else {
             $files = '';
+            $selectedFolderIcon = '';
         }
         $contentOnly = (bool)($request->getQueryParams()['contentOnly'] ?? false);
 
@@ -225,7 +227,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $view = $this->view;
         $view->assignMultiple([
             'selectedFolder' => $this->selectedFolder,
-            'selectedFolderIcon' => $this->iconFactory->getIconForResource($this->selectedFolder, Icon::SIZE_SMALL),
+            'selectedFolderIcon' => $selectedFolderIcon,
             'treeEnabled' => true,
             'activeFolder' => $this->selectedFolder,
             'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250,
