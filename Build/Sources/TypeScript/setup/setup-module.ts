@@ -68,7 +68,7 @@ class SetupModule {
         if (typeof evt.data.objectGroup === 'undefined') {
           throw new Error('No object group defined for message');
         }
-        const avatarMatches = evt.data.objectGroup.match(/^avatar-(.+)$/);
+        const avatarMatches = evt.data.objectGroup.match(/avatar-(.+)$/);
         if (avatarMatches === null) {
           // Received message isn't provisioned for current InlineControlContainer instance
           return;
