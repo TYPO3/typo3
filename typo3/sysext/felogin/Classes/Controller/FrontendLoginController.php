@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Felogin\Controller;
 
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Authentication\LoginType;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
@@ -461,7 +462,7 @@ class FrontendLoginController extends AbstractPlugin
                     $markerArray['###NEWPASSWORD2_LABEL###'] = htmlspecialchars($this->pi_getLL('newpassword_label2'));
                     $markerArray['###NEWPASSWORD1###'] = $this->prefixId . '[password1]';
                     $markerArray['###NEWPASSWORD2###'] = $this->prefixId . '[password2]';
-                    $markerArray['###STORAGE_PID###'] = $this->getSignedStorageFolders();
+                    $markerArray['###STORAGE_PID###'] = $this->shallEnforceLoginSigning() ? $this->getSignedStorageFolders() : $this->getStorageFolders();
                     $markerArray['###SEND_PASSWORD###'] = htmlspecialchars($this->pi_getLL('change_password'));
                     $markerArray['###FORGOTHASH###'] = $piHash;
                 }
@@ -571,7 +572,7 @@ class FrontendLoginController extends AbstractPlugin
         $markerArray['###ACTION_URI###'] = $this->getPageLink('', [], true);
         $markerArray['###LOGOUT_LABEL###'] = htmlspecialchars($this->pi_getLL('logout'));
         $markerArray['###NAME###'] = htmlspecialchars($this->frontendController->fe_user->user['name']);
-        $markerArray['###STORAGE_PID###'] = $this->getSignedStorageFolders();
+        $markerArray['###STORAGE_PID###'] = $this->shallEnforceLoginSigning() ? $this->getSignedStorageFolders() : $this->getStorageFolders();
         $markerArray['###USERNAME###'] = htmlspecialchars($this->frontendController->fe_user->user['username']);
         $markerArray['###USERNAME_LABEL###'] = htmlspecialchars($this->pi_getLL('username'));
         $markerArray['###NOREDIRECT###'] = $this->noRedirect ? '1' : '0';
@@ -704,7 +705,7 @@ class FrontendLoginController extends AbstractPlugin
         // Used by kb_md5fepw extension...
         $markerArray['###ON_SUBMIT###'] = $onSubmit;
         $markerArray['###PASSWORD_LABEL###'] = htmlspecialchars($this->pi_getLL('password'));
-        $markerArray['###STORAGE_PID###'] = $this->getSignedStorageFolders();
+        $markerArray['###STORAGE_PID###'] = $this->shallEnforceLoginSigning() ? $this->getSignedStorageFolders() : $this->getStorageFolders();
         $markerArray['###USERNAME_LABEL###'] = htmlspecialchars($this->pi_getLL('username'));
         $markerArray['###REDIRECT_URL###'] = htmlspecialchars($gpRedirectUrl);
         $markerArray['###NOREDIRECT###'] = $this->noRedirect ? '1' : '0';
@@ -1186,5 +1187,11 @@ class FrontendLoginController extends AbstractPlugin
             $pidList,
             GeneralUtility::hmac($pidList, FrontendUserAuthentication::class)
         );
+    }
+
+    protected function shallEnforceLoginSigning(): bool
+    {
+        return GeneralUtility::makeInstance(Features::class)
+            ->isFeatureEnabled('security.frontend.enforceLoginSigning');
     }
 }

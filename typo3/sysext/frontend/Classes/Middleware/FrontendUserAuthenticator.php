@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -61,7 +62,7 @@ class FrontendUserAuthenticator implements MiddlewareInterface
         $expectedHash = GeneralUtility::hmac($pid, FrontendUserAuthentication::class);
 
         // List of page IDs where to look for frontend user records
-        if ($pid && hash_equals($expectedHash, $givenHash)) {
+        if ($pid && (!$this->shallEnforceLoginSigning() || hash_equals($expectedHash, $givenHash))) {
             $frontendUser->checkPid_value = implode(',', GeneralUtility::intExplode(',', $pid));
         }
 
@@ -134,5 +135,11 @@ class FrontendUserAuthenticator implements MiddlewareInterface
     protected function setFrontendUserAspect(AbstractUserAuthentication $user)
     {
         $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
+    }
+
+    protected function shallEnforceLoginSigning(): bool
+    {
+        return GeneralUtility::makeInstance(Features::class)
+            ->isFeatureEnabled('security.frontend.enforceLoginSigning');
     }
 }

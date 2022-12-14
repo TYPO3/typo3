@@ -220,6 +220,9 @@ SYS:
               security.frontend.htmlSanitizeParseFuncDefault:
                 type: bool
                 description: 'If on, HTML sanitizer is enabled in parseFunc during frontend rendering as fall-back, in case it has not define more specifically'
+              security.frontend.enforceLoginSigning:
+                type: bool
+                description: 'If on, the frontend login authentication process requires signed parameters (e.g. the pid value)'
               security.backend.htmlSanitizeRte:
                 type: bool
                 description: 'If on, rich-text content persisted in backend is processed with HTML Sanitizer to purge cross-site scripting from markup'

@@ -78,6 +78,7 @@ return [
             'unifiedPageTranslationHandling' => false,
             'security.frontend.keepSessionDataOnLogout' => false,
             'security.frontend.htmlSanitizeParseFuncDefault' => true,
+            'security.frontend.enforceLoginSigning' => true,
             'security.backend.htmlSanitizeRte' => false,
             'security.backend.enforceReferrer' => true,
             'rearrangedRedirectMiddlewares' => false,
