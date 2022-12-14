@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing;
 
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -44,6 +45,11 @@ class UriBuilderTest extends UnitTestCase
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
+
+    /**
+     * @var bool Restore Environment after tests
+     */
+    protected $backupEnvironment = true;
 
     /**
      * @var ConfigurationManagerInterface
@@ -366,8 +372,36 @@ class UriBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function buildBackendUriCreatesAbsoluteUrisIfSpecified()
+    public function buildBackendUriCreatesAbsoluteUrisInFrontendContextIfSpecified()
     {
+        $_GET['route'] = '/test/Path';
+        $_SERVER['HTTP_HOST'] = 'baseuri';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['ORIG_SCRIPT_NAME'] = '/index.php';
+        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+        $this->mockRequest->expects(self::any())->method('getBaseUri')->willReturn('http://baseuri');
+        $this->uriBuilder->setCreateAbsoluteUri(true);
+        $expectedResult = 'http://baseuri/' . TYPO3_mainDir . 'index.php?route=%2Ftest%2FPath&token=dummyToken';
+        $actualResult = $this->uriBuilder->buildBackendUri();
+        self::assertSame($expectedResult, $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function buildBackendUriCreatesAbsoluteUrisInBackendContextIfSpecified()
+    {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $_GET['route'] = '/test/Path';
         $_SERVER['HTTP_HOST'] = 'baseuri';
         $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';

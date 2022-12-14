@@ -145,9 +145,9 @@ class UriBuilder implements SingletonInterface
             if (isset($GLOBALS['TYPO3_REQUEST'])
                 && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
                 && $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams') instanceof NormalizedParams) {
-                $uri = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestDir() . $uri;
+                $uri = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl() . TYPO3_mainDir . $uri;
             } else {
-                $uri = GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $uri;
+                $uri = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . $uri;
             }
         }
         return GeneralUtility::makeInstance(Uri::class, $uri);
