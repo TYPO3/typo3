@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Controller;
 
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
@@ -57,5 +58,11 @@ abstract class AbstractLoginFormController extends ActionController
             $pidList,
             GeneralUtility::hmac($pidList, FrontendUserAuthentication::class)
         );
+    }
+
+    protected function shallEnforceLoginSigning(): bool
+    {
+        return GeneralUtility::makeInstance(Features::class)
+            ->isFeatureEnabled('security.frontend.enforceLoginSigning');
     }
 }

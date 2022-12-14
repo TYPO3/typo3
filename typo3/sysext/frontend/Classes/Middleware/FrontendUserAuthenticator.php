@@ -24,6 +24,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\RateLimiter\LimiterInterface;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\RateLimiter\RateLimiterFactory;
 use TYPO3\CMS\Core\RateLimiter\RequestRateLimitedException;
@@ -70,7 +71,7 @@ class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInter
         $expectedHash = GeneralUtility::hmac($pid, FrontendUserAuthentication::class);
 
         // List of page IDs where to look for frontend user records
-        if ($pid && hash_equals($expectedHash, $givenHash)) {
+        if ($pid && (!$this->shallEnforceLoginSigning() || hash_equals($expectedHash, $givenHash))) {
             $frontendUser->checkPid_value = implode(',', GeneralUtility::intExplode(',', $pid));
         }
 
@@ -136,5 +137,11 @@ class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInter
             );
         }
         return $loginRateLimiter;
+    }
+
+    protected function shallEnforceLoginSigning(): bool
+    {
+        return GeneralUtility::makeInstance(Features::class)
+            ->isFeatureEnabled('security.frontend.enforceLoginSigning');
     }
 }
