@@ -90,13 +90,10 @@ class QueueController extends ActionController
 
     public function finishAction(): ResponseInterface
     {
-        $typoScriptFrontendController = $GLOBALS['TSFE'];
-        $typoScriptFrontendController->setContentType('application/json');
-
         $value = $this->queueService->getValues();
         $this->view->assign('value', $value);
         $body = new Stream('php://temp', 'rw');
         $body->write($this->view->render());
-        return new Response($body);
+        return (new Response($body))->withHeader('Content-Type', 'application/json; charset=utf-8');
     }
 }

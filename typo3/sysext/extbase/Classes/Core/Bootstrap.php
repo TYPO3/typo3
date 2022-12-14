@@ -176,24 +176,14 @@ class Bootstrap
             $this->clearCacheOnError();
         }
 
-        // In case TSFE is available and this is a json response, we have
-        // to take the TypoScript settings regarding charset into account.
-        // @todo Since HTML5 only utf-8 is a valid charset, this settings should be deprecated
+        // In case TSFE is available and this is a json response, we have to let TSFE know we have a specific Content-Type
         if (($typoScriptFrontendController = ($GLOBALS['TSFE'] ?? null)) instanceof TypoScriptFrontendController
-            && strpos($response->getHeaderLine('Content-Type'), 'application/json') === 0
+            && $response->hasHeader('Content-Type')
         ) {
-            // Unset the already defined Content-Type
+            [$contentType] = explode(';', $response->getHeaderLine('Content-Type'));
+            // Do not send the header directly (see below)
             $response = $response->withoutHeader('Content-Type');
-            if (empty($typoScriptFrontendController->config['config']['disableCharsetHeader'])) {
-                // If the charset header is *not* disabled in configuration,
-                // TypoScriptFrontendController will send the header later with the Content-Type which we set here.
-                $typoScriptFrontendController->setContentType('application/json');
-            } else {
-                // Although the charset header is disabled in configuration, we *must* send a Content-Type header here.
-                // Content-Type headers optionally carry charset information at the same time.
-                // Since we have the information about the charset, there is no reason to not include the charset information although disabled in TypoScript.
-                $response = $response->withHeader('Content-Type', 'application/json; charset=' . trim($typoScriptFrontendController->metaCharset));
-            }
+            $typoScriptFrontendController->setContentType($contentType);
         }
 
         if (headers_sent() === false) {
