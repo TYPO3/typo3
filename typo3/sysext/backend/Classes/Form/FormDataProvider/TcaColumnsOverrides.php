@@ -44,6 +44,7 @@ class TcaColumnsOverrides implements FormDataProviderInterface
                     if ($overridenDefault !== ''
                         && !isset($result['userTsConfig']['TCAdefaults.'][$tableNameWithDot][$field])
                         && !isset($result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot][$field])
+                        && !isset($result['defaultValues'][$result['tableName']][$field])
                         && ($result['databaseRow'][$field] ?? '') !== $overridenDefault
                     ) {
                         $result['databaseRow'][$field] = $overridenDefault;
