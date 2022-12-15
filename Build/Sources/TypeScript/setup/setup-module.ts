@@ -14,6 +14,7 @@
 import {ModalResponseEvent} from '@typo3/backend/modal-interface';
 import {MessageUtility} from '@typo3/backend/utility/message-utility';
 import RegularEvent from '@typo3/core/event/regular-event';
+import Modal from '@typo3/backend/modal';
 
 /**
  * Module: @typo3/setup/setup-module
@@ -79,8 +80,11 @@ class SetupModule {
   }
 
   private avatarOpenFileBrowser(uri: string) {
-    this.avatarWindowRef = window.open(uri, 'Typo3WinBrowser', 'height=650,width=800,status=0,menubar=0,resizable=1,scrollbars=1');
-    this.avatarWindowRef.focus();
+    Modal.advanced({
+      type: Modal.types.iframe,
+      content: uri,
+      size: Modal.sizes.large
+    });
   }
 
   private avatarClearExistingImage(fieldName: string) {
