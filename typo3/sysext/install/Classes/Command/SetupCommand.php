@@ -299,14 +299,14 @@ EOT
                 return $dbname;
             };
 
-            $dbname = $this->input->getOption('dbname') ?? getenv('TYPO3_SETUP_DBNAME');
-            if (!empty($dbname)) {
-                $dbNameValidator($dbname);
-                $databaseConnection['database'] = $dbname;
-            } else {
+            $dbnameFromCli = $this->getFallbackValueEnvOrOption('dbname', 'TYPO3_SETUP_DBNAME');
+            if ($dbnameFromCli === false && $this->input->isInteractive()) {
                 $dbname = new ChoiceQuestion('Select which database to use: ', $dbChoices);
                 $dbname->setValidator($dbNameValidator);
                 $databaseConnection['database'] = $this->questionHelper->ask($this->input, $this->output, $dbname);
+            } else {
+                $dbNameValidator($dbnameFromCli);
+                $databaseConnection['database'] = $dbnameFromCli;
             }
 
             $checkDatabase = $this->setupDatabaseService->checkExistingDatabase($databaseConnection['database']);
