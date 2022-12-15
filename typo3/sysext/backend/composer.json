@@ -20,7 +20,7 @@
 	},
 	"require": {
 		"psr/event-dispatcher": "^1.0",
-		"typo3/cms-core": "12.1.*@dev"
+		"typo3/cms-core": "12.1.3"
 	},
 	"suggest": {
 		"typo3/cms-install": "To generate url to install tool in environment toolbar"
