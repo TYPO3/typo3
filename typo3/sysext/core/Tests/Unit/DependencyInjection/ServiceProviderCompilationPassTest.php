@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Container\ContainerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use TYPO3\CMS\Core\DependencyInjection\ServiceProviderCompilationPass;
 use TYPO3\CMS\Core\DependencyInjection\ServiceProviderRegistry;
+use TYPO3\CMS\Core\Package\Package;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\DependencyInjection\Fixtures\TestServiceProvider;
 use TYPO3\CMS\Core\Tests\Unit\DependencyInjection\Fixtures\TestServiceProviderFactoryOverride;
 use TYPO3\CMS\Core\Tests\Unit\DependencyInjection\Fixtures\TestServiceProviderOverride;
@@ -33,47 +32,22 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ServiceProviderCompilationPassTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    protected function getServiceProviderRegistry(array $serviceProviders): ServiceProviderRegistry
-    {
-        $serviceProviderRegistryProphecy = $this->prophesize(ServiceProviderRegistry::class);
-        $serviceProviderRegistryProphecy->getIterator()->will(static function () use ($serviceProviders): \Generator {
-            foreach ($serviceProviders as $id => $serviceProvider) {
-                yield (string)$id => new $serviceProvider();
-            }
-        });
-
-        foreach ($serviceProviders as $id => $serviceProvider) {
-            $packageKey = (string)$id;
-
-            $instance = new $serviceProvider();
-            $factories = $instance->getFactories();
-            $extensions = $instance->getExtensions();
-
-            $serviceProviderRegistryProphecy->getFactories($id)->willReturn($factories);
-            $serviceProviderRegistryProphecy->getExtensions($id)->willReturn($extensions);
-
-            foreach ($factories as $serviceName => $factory) {
-                $serviceProviderRegistryProphecy->createService($packageKey, $serviceName, Argument::type(ContainerInterface::class))->will(static function ($args) use ($factory) {
-                    return $factory($args[2]);
-                });
-            }
-            foreach ($extensions as $serviceName => $extension) {
-                $serviceProviderRegistryProphecy->extendService($packageKey, $serviceName, Argument::type(ContainerInterface::class), Argument::cetera())->will(static function ($args) use ($extension) {
-                    return $extension($args[2], $args[3] ?? null);
-                });
-            }
-        }
-
-        return $serviceProviderRegistryProphecy->reveal();
-    }
-
     protected function getContainer(array $serviceProviders, callable $configure = null): ContainerBuilder
     {
         static $id = 0;
 
-        $registry = $this->getServiceProviderRegistry($serviceProviders);
+        $packages = [];
+        foreach ($serviceProviders as $serviceProvider) {
+            $package = $this->createMock(Package::class);
+            $package->method('getPackageKey')->willReturn($serviceProvider);
+            $package->method('getServiceProvider')->willReturn($serviceProvider);
+            $packages[$serviceProvider] = $package;
+        }
+
+        $packageManager = $this->createMock(PackageManager::class);
+        $packageManager->method('getActivePackages')->willReturn($packages);
+
+        $registry = new ServiceProviderRegistry($packageManager);
         $registryServiceName = 'service_provider_registry_' . ++$id;
 
         $container = new ContainerBuilder();
