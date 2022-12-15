@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Tests\Unit\DependencyInjection;
 
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -30,23 +28,17 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DashboardWidgetPassTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     protected DashboardWidgetPass $subject;
-
-    /** @var ObjectProphecy<ContainerBuilder> */
-    protected ObjectProphecy $container;
-
-    /** @var ObjectProphecy<Definition> */
-    protected ObjectProphecy $widgetRegistryDefinition;
+    protected ContainerBuilder&MockObject $container;
+    protected Definition&MockObject $widgetRegistryDefinition;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->subject = new DashboardWidgetPass('dashboard.widget');
-        $this->container = $this->prophesize(ContainerBuilder::class);
-        $this->widgetRegistryDefinition = $this->prophesize(Definition::class);
+        $this->container = $this->createMock(ContainerBuilder::class);
+        $this->widgetRegistryDefinition = $this->createMock(Definition::class);
     }
 
     /**
@@ -54,10 +46,10 @@ class DashboardWidgetPassTest extends UnitTestCase
      */
     public function doesNothingIfWidgetRegistryIsUnknown(): void
     {
-        $this->container->hasDefinition(WidgetRegistry::class)->willReturn(false);
-        $this->container->findTaggedServiceIds('dashboard.widget')->shouldNotBeCalled();
+        $this->container->method('hasDefinition')->with(WidgetRegistry::class)->willReturn(false);
+        $this->container->expects(self::never())->method('findTaggedServiceIds')->with('dashboard.widget');
 
-        $this->subject->process($this->container->reveal());
+        $this->subject->process($this->container);
     }
 
     /**
@@ -65,12 +57,12 @@ class DashboardWidgetPassTest extends UnitTestCase
      */
     public function doesNothingIfNoWidgetsAreTagged(): void
     {
-        $this->container->hasDefinition(WidgetRegistry::class)->willReturn(true);
-        $this->container->findDefinition(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition->reveal());
-        $this->container->findTaggedServiceIds('dashboard.widget')->willReturn([])->shouldBeCalled();
-        $this->widgetRegistryDefinition->addMethodCall()->shouldNotBeCalled();
+        $this->container->method('hasDefinition')->with(WidgetRegistry::class)->willReturn(true);
+        $this->container->method('findDefinition')->with(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition);
+        $this->container->expects(self::once())->method('findTaggedServiceIds')->with('dashboard.widget')->willReturn([]);
+        $this->widgetRegistryDefinition->expects(self::never())->method('addMethodCall');
 
-        $this->subject->process($this->container->reveal());
+        $this->subject->process($this->container);
     }
 
     /**
@@ -78,14 +70,16 @@ class DashboardWidgetPassTest extends UnitTestCase
      */
     public function makesWidgetPublic(): void
     {
-        $this->container->hasDefinition(WidgetRegistry::class)->willReturn(true);
-        $this->container->findDefinition(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition->reveal());
-        $this->container->findTaggedServiceIds('dashboard.widget')->willReturn(['NewsWidget' => []]);
-        $definition = $this->prophesize(Definition::class);
-        $this->container->findDefinition('NewsWidget')->willReturn($definition->reveal());
-        $definition->setPublic(true)->shouldBeCalled()->willReturn($definition->reveal());
+        $this->container->method('hasDefinition')->with(WidgetRegistry::class)->willReturn(true);
+        $this->container->method('findTaggedServiceIds')->with('dashboard.widget')->willReturn(['NewsWidget' => []]);
+        $definition = $this->createMock(Definition::class);
+        $this->container->method('findDefinition')->willReturnMap([
+            [WidgetRegistry::class, $this->widgetRegistryDefinition],
+            ['NewsWidget', $definition],
+        ]);
+        $definition->expects(self::once())->method('setPublic')->with(true)->willReturn($definition);
 
-        $this->subject->process($this->container->reveal());
+        $this->subject->process($this->container);
     }
 
     /**
@@ -93,16 +87,18 @@ class DashboardWidgetPassTest extends UnitTestCase
      */
     public function registersTaggedWidgetWithMinimumConfigurationInRegistry(): void
     {
-        $this->container->hasDefinition(WidgetRegistry::class)->willReturn(true);
-        $this->container->findDefinition(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition->reveal());
-        $definition = $this->prophesize(Definition::class);
-        $this->container->findDefinition('dashboard.widget.t3news')->willReturn($definition->reveal());
-        $definition->setPublic(true)->willReturn($definition->reveal());
-        $definition->setArgument('$configuration', Argument::that(static function ($argument) {
+        $this->container->method('hasDefinition')->with(WidgetRegistry::class)->willReturn(true);
+        $definition = $this->createMock(Definition::class);
+        $this->container->method('findDefinition')->willReturnMap([
+            [WidgetRegistry::class, $this->widgetRegistryDefinition],
+            ['dashboard.widget.t3news', $definition],
+        ]);
+        $definition->method('setPublic')->with(true)->willReturn($definition);
+        $definition->method('setArgument')->with('$configuration', self::callback(static function ($argument) {
             return $argument instanceof Reference && (string)$argument === 't3newsWidgetConfiguration';
-        }))->willReturn($definition->reveal());
+        }))->willReturn($definition);
 
-        $this->container->findTaggedServiceIds('dashboard.widget')->willReturn([
+        $this->container->method('findTaggedServiceIds')->with('dashboard.widget')->willReturn([
             'dashboard.widget.t3news' => [
                 [
                     'identifier' => 't3news',
@@ -112,7 +108,7 @@ class DashboardWidgetPassTest extends UnitTestCase
                 ],
             ],
         ]);
-        $this->container->addDefinitions(Argument::that(static function (array $widgetConfigurationDefinitions) {
+        $this->container->expects(self::once())->method('addDefinitions')->with(self::callback(static function (array $widgetConfigurationDefinitions) {
             $definition = $widgetConfigurationDefinitions['t3newsWidgetConfiguration'];
             /* @var Definition $definition */
             return $definition instanceof Definition
@@ -125,15 +121,15 @@ class DashboardWidgetPassTest extends UnitTestCase
                 && $definition->getArgument('$height') === 'small'
                 && $definition->getArgument('$width') === 'small'
             ;
-        }))->shouldBeCalled()->willReturn($definition->reveal());
-        $this->widgetRegistryDefinition->addMethodCall(
+        }))->willReturn($definition);
+        $this->widgetRegistryDefinition->expects(self::once())->method('addMethodCall')->with(
             'registerWidget',
             [
                 't3newsWidgetConfiguration',
             ]
-        )->shouldBeCalled()->willReturn($this->widgetRegistryDefinition->reveal());
+        )->willReturn($this->widgetRegistryDefinition);
 
-        $this->subject->process($this->container->reveal());
+        $this->subject->process($this->container);
     }
 
     /**
@@ -141,16 +137,18 @@ class DashboardWidgetPassTest extends UnitTestCase
      */
     public function registersWidgetToMultipleGroupsByComma(): void
     {
-        $this->container->hasDefinition(WidgetRegistry::class)->willReturn(true);
-        $this->container->findDefinition(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition->reveal());
-        $definition = $this->prophesize(Definition::class);
-        $this->container->findDefinition('dashboard.widget.t3news')->willReturn($definition->reveal());
-        $definition->setPublic(true)->willReturn($definition->reveal());
-        $definition->setArgument('$configuration', Argument::that(static function ($argument) {
+        $this->container->method('hasDefinition')->with(WidgetRegistry::class)->willReturn(true);
+        $definition = $this->createMock(Definition::class);
+        $this->container->method('findDefinition')->willReturnMap([
+            [WidgetRegistry::class, $this->widgetRegistryDefinition],
+            ['dashboard.widget.t3news', $definition],
+        ]);
+        $definition->method('setPublic')->with(true)->willReturn($definition);
+        $definition->method('setArgument')->with('$configuration', self::callback(static function ($argument) {
             return $argument instanceof Reference && (string)$argument === 't3newsWidgetConfiguration';
-        }))->willReturn($definition->reveal());
+        }))->willReturn($definition);
 
-        $this->container->findTaggedServiceIds('dashboard.widget')->willReturn([
+        $this->container->method('findTaggedServiceIds')->with('dashboard.widget')->willReturn([
             'dashboard.widget.t3news' => [
                 [
                     'identifier' => 't3news',
@@ -160,22 +158,22 @@ class DashboardWidgetPassTest extends UnitTestCase
                 ],
             ],
         ]);
-        $this->container->addDefinitions(Argument::that(static function (array $widgetConfigurationDefinitions) {
+        $this->container->expects(self::once())->method('addDefinitions')->with(self::callback(static function (array $widgetConfigurationDefinitions) {
             $definition = $widgetConfigurationDefinitions['t3newsWidgetConfiguration'];
             /* @var Definition $definition */
             return $definition instanceof Definition
                 && $definition->getClass() === WidgetConfiguration::class
                 && $definition->getArgument('$groupNames') === ['typo3', 'general']
             ;
-        }))->shouldBeCalled();
-        $this->widgetRegistryDefinition->addMethodCall(
+        }));
+        $this->widgetRegistryDefinition->expects(self::once())->method('addMethodCall')->with(
             'registerWidget',
             [
                 't3newsWidgetConfiguration',
             ]
-        )->shouldBeCalled()->willReturn($definition->reveal());
+        )->willReturn($definition);
 
-        $this->subject->process($this->container->reveal());
+        $this->subject->process($this->container);
     }
 
     /**
@@ -183,16 +181,18 @@ class DashboardWidgetPassTest extends UnitTestCase
      */
     public function registersTaggedWidgetWithMaximumConfigurationInRegistry(): void
     {
-        $this->container->hasDefinition(WidgetRegistry::class)->willReturn(true);
-        $this->container->findDefinition(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition->reveal());
-        $definition = $this->prophesize(Definition::class);
-        $this->container->findDefinition('dashboard.widget.t3news')->willReturn($definition->reveal());
-        $definition->setPublic(true)->willReturn($definition->reveal());
-        $definition->setArgument('$configuration', Argument::that(static function ($argument) {
+        $this->container->method('hasDefinition')->with(WidgetRegistry::class)->willReturn(true);
+        $definition = $this->createMock(Definition::class);
+        $this->container->method('findDefinition')->willReturnMap([
+            [WidgetRegistry::class, $this->widgetRegistryDefinition],
+            ['dashboard.widget.t3news', $definition],
+        ]);
+        $definition->method('setPublic')->with(true)->willReturn($definition);
+        $definition->method('setArgument')->with('$configuration', self::callback(static function ($argument) {
             return $argument instanceof Reference && (string)$argument === 't3newsWidgetConfiguration';
-        }))->willReturn($definition->reveal());
+        }))->willReturn($definition);
 
-        $this->container->findTaggedServiceIds('dashboard.widget')->willReturn([
+        $this->container->method('findTaggedServiceIds')->with('dashboard.widget')->willReturn([
             'dashboard.widget.t3news' => [
                 [
                     'identifier' => 't3news',
@@ -205,7 +205,7 @@ class DashboardWidgetPassTest extends UnitTestCase
                 ],
             ],
         ]);
-        $this->container->addDefinitions(Argument::that(static function (array $widgetConfigurationDefinitions) {
+        $this->container->expects(self::once())->method('addDefinitions')->with(self::callback(static function (array $widgetConfigurationDefinitions) {
             $definition = $widgetConfigurationDefinitions['t3newsWidgetConfiguration'];
             /* @var Definition $definition */
             return $definition instanceof Definition
@@ -218,14 +218,14 @@ class DashboardWidgetPassTest extends UnitTestCase
                 && $definition->getArgument('$height') === 'large'
                 && $definition->getArgument('$width') === 'medium'
             ;
-        }))->shouldBeCalled();
-        $this->widgetRegistryDefinition->addMethodCall(
+        }));
+        $this->widgetRegistryDefinition->expects(self::once())->method('addMethodCall')->with(
             'registerWidget',
             [
                 't3newsWidgetConfiguration',
             ]
-        )->shouldBeCalled()->willReturn($definition->reveal());
+        )->willReturn($definition);
 
-        $this->subject->process($this->container->reveal());
+        $this->subject->process($this->container);
     }
 }
