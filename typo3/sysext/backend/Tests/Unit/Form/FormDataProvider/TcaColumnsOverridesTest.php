@@ -136,4 +136,80 @@ class TcaColumnsOverridesTest extends UnitTestCase
 
         self::assertEquals($expected, $this->subject->addData($input));
     }
+
+    public static function addDataRespectsTSconfigDefaultValuesForNewRecordsDataProvider(): array
+    {
+        return [
+            [
+                [
+                    'userTsConfig' => [
+                        'TCAdefaults.' => [
+                            'aTable.' => [
+                                'aField' => 'userTsConfigValue',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                [
+                    'pageTsConfig' => [
+                        'TCAdefaults.' => [
+                            'aTable.' => [
+                                'aField' => 'pageTsConfigValue',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+
+                [
+                    'defaultValues' => [
+                        'aTable' => [
+                            'aField' => 'defaultValuesValue',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider addDataRespectsTSconfigDefaultValuesForNewRecordsDataProvider
+     */
+    public function addDataRespectsTSconfigDefaultValuesForNewRecords(array $result): void
+    {
+        $input = array_replace_recursive([
+            'command' => 'new',
+            'tableName' => 'aTable',
+            'vanillaUid' => 12,
+            'databaseRow' => [
+                'uid' => 42,
+            ],
+            'recordTypeValue' => 'foo',
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'aConfig' => 'aValue',
+                    ],
+                ],
+                'types' => [
+                    'foo' => [
+                        'showitem' => [],
+                        'columnsOverrides' => [
+                            'aField' => [
+                                'config' => [
+                                    'default' => 'aDefault',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ], $result);
+
+        self::assertNotTrue(isset($this->subject->addData($input)['databaseRow']['aField']));
+    }
 }
