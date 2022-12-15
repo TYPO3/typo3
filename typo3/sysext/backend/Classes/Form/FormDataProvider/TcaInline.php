@@ -291,6 +291,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                     ],
                 ],
                 'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
+                'site' => $result['site'],
             ];
             $formDataGroup = GeneralUtility::makeInstance(OnTheFly::class);
             $formDataGroup->setProviderList([TcaSelectItems::class]);
