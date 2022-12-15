@@ -1,554 +1,939 @@
 .. include:: /Includes.rst.txt
 
-
-
 .. _typoscript:
 
+==========
 TypoScript
-^^^^^^^^^^
+==========
 
-[Still missing the major parts here. Just use the object browser for
-now since that includes all options]
+.. _typoscriptPlugin:
 
-Following options live under :typoscript:`plugin.tx_indexedsearch.settings`.
+Plugin settings
+===============
 
+Each of the following options is defined for the TypoScript setup path :typoscript:`plugin.tx_indexedsearch.settings`.
 
-.. _breadcrumbWrap:
-
-breadcrumbWrap
-""""""""""""""
-
-.. container:: table-row
-
-   Property
-         breadcrumbWrap
-
-   Data type
-         :ref:`wrap <t3tsref:data-type-wrap>` + :ref:`optionSplit <t3tsref:objects-optionsplit>`
-
-   Description
-         This configuration is used to wrap a single page title in a search result item breadcrumb.
-
-   Default
-         / || /
-
-
-.. _show-forbiddenrecords:
-
-displayForbiddenRecords
-"""""""""""""""""""""""
-
-.. container:: table-row
-
-   Property
-         displayForbiddenRecords
-
-   Data type
-         boolean
-
-   Description
-         Explicitly display search hits although the visitor has no access to
-         it.
-
-
-
-.. _show-resultnumber:
-
-displayResultNumber
-"""""""""""""""""""
-
-.. container:: table-row
-
-   Property
-         displayResultNumber
-
-   Data type
-         boolean
-
-   Description
-         Display the numbers of search results.
-
-   Default
-         0
-
-
-.. _show-advancedsearchlink:
-
-displayAdvancedSearchLink
-"""""""""""""""""""""""""
-
-.. container:: table-row
-
-   Property
-         displayAdvancedSearchLink
-
-   Data type
-         boolean
-
-   Description
-         Display the link to the advanced search page.
-
-   Default
-         1
-
-
-.. _blind-numberOfResults:
-
-blind.numberOfResults
-"""""""""""""""""""""
-
-.. container:: table-row
-
-   Property
-         blind.numberOfResults
-
-   Data type
-         string (list of integers, separated by comma)
-
-   Description
-         List of amount of results to be displayed per page.
-         Sending a different amount via GET or POST will result in the default value
-         being used to prevent DOS attacks.
-
-   Default
-         10,25,50,100
-
-
-
-.. _search-rootpidlist:
-
-rootPidList
-"""""""""""
-
-.. container:: table-row
-
-   Property
-         rootPidList
-
-   Data type
-         list of int
-
-   Description
-         A list of integer which should be root-pages to search from. Thus you
-         can search multiple branches of the page tree by setting this property
-         to a list of page id numbers.
-
-         If this value is set to less than zero (eg. -1) searching will happen
-         in ALL of the page tree with no regard to branches at all.
-
-         Notice that by "root-page" we mean a website root defined by
-
-         a TypoScript Template! If you just want to search in branches of your
-         site, use the possibility of searching in levels.
-
-   Default
-         Empty, which fall backs to the current root-page id
-
-
-
-.. _search-detect-sys-domain-records:
-
-detectDomainRecords
-"""""""""""""""""""
-
-.. container:: table-row
-
-   Property
-         detectDomainRecords
-
-   Data type
-         boolean
-
-   Description
-         If set, then the search results are linked to the proper domains where
-         they are found.
-
-
-
-.. _search-detect-sys-domain-records-target:
-
-detectDomainRecords.target
-""""""""""""""""""""""""""
-
-.. container:: table-row
-
-   Property
-         detectDomainRecords.target
-
-   Data type
-         string
-
-   Description
-         Target for external URLs.
-
-
-
-.. _search-medialist:
-
-mediaList
-"""""""""
-
-.. container:: table-row
-
-   Property
-         mediaList
-
-   Data type
-         string
-
-   Description
-         Restrict the file type list when searching for files.
-
-
-
-.. _search-defaultfreeindexuidlist:
-
-defaultFreeIndexUidList
-"""""""""""""""""""""""
-
-.. container:: table-row
-
-   Property
-         defaultFreeIndexUidList
-
-   Data type
-         string
-
-   Description
-         List of Indexing Configuration Uids to show as categories in search
-         form. The order determines the order displayed in the search result.
-
-
-
-.. _settings-exactcount:
-
-exactCount
-""""""""""
-
-.. container:: table-row
-
-   Property
-         exactCount
-
-   Data type
-         boolean
-
-   Description
-         Force permission check for every record while displaying search
-         results. Otherwise, records are only checked up to the current result
-         page, and this might cause that the result counter does not print the
-         exact number of search hits.
-
-         By enabling this setting, the loop is not stopped, which causes an
-         exact result count at the cost of an (obvious) slowdown caused by this
-         overhead.
-
-         See property "show.forbiddenRecords" for more information.
-
-
-.. _specialConfiguration-pid:
-
-specialConfiguration.[pid]
-""""""""""""""""""""""""""
-
-.. container:: table-row
-
-   Property
-         specialConfiguration.[pid]
-
-   Data type
-         -
-
-   Description
-         "specialConfiguration" is an array of objects with properties that can customize
-         certain behaviours of the display of a result row depending on it's
-         position in the rootline. For instance you can define that all results
-         which links to pages in a branch from page id 123 should have another
-         page icon displayed. Of you can add a suffix to the class names so you
-         can style that section differently.
-
-         **Examples:**
-
-         If a page "Contact" is found in a search for "address" and that
-         "Contact" page is in the rootline "Frontpage [ID=23] > About us
-         [ID=45] > Contact [ID=77]" then you should set the pid value to either
-         "77" or "45". If "45" then all subpages including the "About us" page
-         will have similar configuration.
-
-         If the pid value is set to 0 (zero) it will apply to all pages.
-
-         Please see the options below.
-
-
-
-.. _specialConfiguration-pid-pageicon:
-
-specialConfiguration.[pid].pageIcon
-"""""""""""""""""""""""""""""""""""
-
-.. container:: table-row
-
-   Property
-         specialConfiguration.[pid].pageIcon
-
-   Data type
-         :ref:`IMAGE cObject <t3tsref:cobj-image>`
-
-   Description
-         Alternative page icon.
-
-
-
-.. _specialConfiguration-pid-csssuffix:
-
-specialConfiguration.[pid].CSSsuffix
-""""""""""""""""""""""""""""""""""""
-
-.. container:: table-row
-
-   Property
-         specialConfiguration.[pid].CSSsuffix
-
-   Data type
-         string
-
-   Description
-         A string that will be appended to the class-names of all the class-
-         attributes used within the result row presentation. The prefix will be
-         like this:
-
-         **Example:**
-
-         If "...CSSsuffix = doc" then eg. the class name "tx-indexedsearch-
-         title" will be "tx-indexedsearch-title-doc"
-
-
+.. contents:: Table of Contents
+   :depth: 2
+   :local:
 
 .. _targetPid:
 
-targetPid
-"""""""""
+Target pid
+----------
 
-.. container:: table-row
+.. confval:: targetPid
 
-   Property
-         targetPid
+    :Type: boolean
+    :Default: empty
+    :Path: plugin.tx_indexedsearch.settings
 
-   Data type
-         int
+    Set the target page UID for the extbase variant of the plugin. An empty
+    value (default) falls back to the current page id.
 
-   Description
-         Set the target page UID for the extbase variant of the plugin.
+.. _displayRules:
 
+Display Rules
+-------------
 
+.. confval:: displayRules
+
+    :Type: boolean
+    :Default: 1
+    :Path: plugin.tx_indexedsearch.settings
+
+    Display the search rules.
+
+.. _show-advancedsearchlink:
+
+Display advanced search link
+----------------------------
+
+.. confval:: displayAdvancedSearchLink
+
+    :Type: boolean
+    :Default: 1
+    :Path: plugin.tx_indexedsearch.settings
+
+    Display the link to the advanced search page.
+
+.. _show-resultnumber:
+
+Display result number
+---------------------
+
+.. confval:: displayResultNumber
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+    Display the numbers of search results.
+
+.. _breadcrumbWrap:
+
+Breadcrumb wrap
+---------------
+
+.. confval:: breadcrumbWrap
+
+    :Type: :ref:`wrap <t3tsref:data-type-wrap>` + :ref:`optionSplit <t3tsref:optionsplit>`
+    :Default: / || /
+    :Path: plugin.tx_indexedsearch.settings
+
+    This configuration is used to wrap a single page title in a search
+    result item breadcrumb.
+
+.. _show-level1sections:
+
+Display level 1 sections
+------------------------
+
+.. confval:: displayLevel1Sections
+
+    :Type: boolean
+    :Default: 1
+    :Path: plugin.tx_indexedsearch.settings
+
+    This selects the first menu for the "sections" selector - so it can be
+    searched in sections.
+
+.. _show-level2sections:
+
+Display level 2 sections
+------------------------
+
+.. confval:: displayLevel2Sections
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+    This selects the secondary menu for the "sections" selector - so it can
+    be searched in sub sections. This setting only has an effect if
+    :typoscript:`displayLevel1Sections` is true.
+
+.. _show-Levelxalltypes:
+
+Display level X all types
+-------------------------
+
+.. confval:: displayLevelxAllTypes
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+    By default the subpages of the given page IDs of
+    :typoscript:`rootPidList`, if :typoscript:`displayLevel1Sections` is
+    true, and subpages of the second level, if
+    :typoscript:`displayLevel2Sections` is true, are loaded. If
+    :typoscript:`displayLevelxAllTypes` is set to true, then the page
+    records for all evaluated IDs are loaded directly.
+
+.. _show-forbiddenrecords:
+
+Display forbidden records
+-------------------------
+
+.. confval:: displayForbiddenRecords
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+    Explicitly display search hits although the visitor has no access to it.
+
+.. _search-medialist:
+
+Media list
+----------
+
+.. confval:: mediaList
+
+    :Type: string
+    :Default: empty
+    :Path: plugin.tx_indexedsearch.settings
+
+    Restrict the file type list when searching for files.
+
+.. _search-rootpidlist:
+
+Root pid list
+-------------
+
+.. confval:: rootPidList
+
+    :Type: string (list of integers, separated by comma)
+    :Default: empty
+    :Path: plugin.tx_indexedsearch.settings
+
+    A list of integer which should be root-pages to search from. Thus you
+    can search multiple branches of the page tree by setting this property
+    to a list of page id numbers.
+
+    If this value is set to less than zero (eg. -1) searching will happen
+    in ALL of the page tree with no regard to branches at all. An empty
+    value (default) falls back to the current root-page id.
+
+    Notice that by "root-page" we mean a website root defined by
+    a TypoScript Template! If you just want to search in branches of your
+    site, use the possibility of searching in levels.
+
+.. _search-page-links:
+
+Page links
+----------
+
+.. confval:: page_links
+
+    :Type: int
+    :Default: 10
+    :Path: plugin.tx_indexedsearch.settings
+
+    The maximum number of result pages is defined here.
+
+.. _search-detect-sys-domain-records:
+
+Detect domain records
+---------------------
+
+.. confval:: detectDomainRecords
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+    If set, then the search results are linked to the proper domains where
+    they are found.
+
+.. _search-detect-sys-domain-records-target:
+
+Target
+~~~~~~
+
+.. confval:: detectDomainRecords.target
+
+    :Type: string
+    :Default: empty
+    :Path: plugin.tx_indexedsearch.settings
+
+    Target for external URLs.
+
+.. _search-defaultfreeindexuidlist:
+
+Default free index UID list
+---------------------------
+
+.. confval:: defaultFreeIndexUidList
+
+    :Type: string (list of integers, separated by comma)
+    :Default: empty
+    :Path: plugin.tx_indexedsearch.settings
+
+    List of Indexing Configuration UIDs to show as categories in search
+    form. The order determines the order displayed in the search result.
+
+.. _settings-exactcount:
+
+Exact count
+-----------
+
+.. confval:: exactCount
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+    Force permission check for every record while displaying search
+    results. Otherwise, records are only checked up to the current result
+    page, and this might cause that the result counter does not print the
+    exact number of search hits.
+
+    By enabling this setting, the loop is not stopped, which causes an
+    exact result count at the cost of an (obvious) slowdown caused by this
+    overhead.
+
+    See property :typoscript:`show.forbiddenRecords` for more information.
+
+.. _results:
+
+Results
+-------
+
+.. confval:: results
+
+    :Type: Array
+    :Default: empty
+    :Path: plugin.tx_indexedsearch.settings
+
+    Various crop/offset settings for single result items
 
 .. _results-titleCropAfter:
 
-results.titleCropAfter
-""""""""""""""""""""""
+Length of the cropped results title
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. container:: table-row
+.. confval:: results.titleCropAfter
 
-   Property
-         results.titleCropAfter
+    :Type: int
+    :Default: 50
+    :Path: plugin.tx_indexedsearch.settings
 
-   Data type
-         int
-
-   Description
-         Determines the length of the cropped title
-         Defaults to 50
-
+    Determines the length of the cropped title
 
 .. _results-titleCropSignifier:
 
-results.titleCropSignifier
-""""""""""""""""""""""""""
+Crop signifier for results title
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. container:: table-row
+.. confval:: results.titleCropSignifier
 
-   Property
-         results.titleCropSignifier
+    :Type: string
+    :Default: ...
+    :Path: plugin.tx_indexedsearch.settings
 
-   Data type
-         string
-
-   Description
-         Determines the string being appended to a cropped title
-         Defaults to "..."
-
+    Determines the string being appended to a cropped title.
 
 .. _results-summaryCropAfter:
 
-results.summaryCropAfter
-""""""""""""""""""""""""
+Length of the cropped summary
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. container:: table-row
+.. confval:: results.summaryCropAfter
 
-   Property
-         results.summaryCropAfter
+    :Type: int
+    :Default: 180
+    :Path: plugin.tx_indexedsearch.settings
 
-   Data type
-         int
-
-   Description
-         Determines the length of the cropped summary
-         Defaults to 180
-
+    Determines the length of the cropped summary.
 
 .. _results-summaryCropSignifier:
 
-results.summaryCropSignifier
-""""""""""""""""""""""""""""
+Crop signifier for the summary
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. container:: table-row
+.. confval:: results.summaryCropSignifier
 
-   Property
-         results.summaryCropSignifier
+    :Type: string
+    :Default: ...
+    :Path: plugin.tx_indexedsearch.settings
 
-   Data type
-         string
-
-   Description
-         Determines the string being appended to a cropped summary
-         Defaults to "..."
-
+    Determines the string being appended to a cropped summary.
 
 .. _results-hrefInSummaryCropAfter:
 
-results.hrefInSummaryCropAfter
-""""""""""""""""""""""""""""""
+Length of cropped links in summary
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. container:: table-row
+.. confval:: results.hrefInSummaryCropAfter
 
-   Property
-         results.hrefInSummaryCropAfter
+    :Type: int
+    :Default: 60
+    :Path: plugin.tx_indexedsearch.settings
 
-   Data type
-         int
-
-   Description
-         Determines the length of cropped links in the summary
-         Defaults to 60
-
+    Determines the length of cropped links in the summary
 
 .. _results-hrefInSummaryCropSignifier:
 
-results.hrefInSummaryCropSignifier
-""""""""""""""""""""""""""""""""""
+Crop signifier for links in summary
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. container:: table-row
+.. confval:: results.hrefInSummaryCropSignifier
 
-   Property
-         results.hrefInSummaryCropSignifier
+    :Type: string
+    :Default: ...
+    :Path: plugin.tx_indexedsearch.settings
 
-   Data type
-         string
-
-   Description
-         Determines the string being appended to cropped links in the summary
-         Defaults to "..."
-
+    Determines the string being appended to cropped links in the summary
 
 .. _results-markupSW_summaryMax:
 
-results.markupSW_summaryMax
-"""""""""""""""""""""""""""
+Length of a summary to highlight searchwords
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. container:: table-row
+.. confval:: results.markupSW_summaryMax
 
-   Property
-         results.markupSW_summaryMax
+    :Type: int
+    :Default: 300
+    :Path: plugin.tx_indexedsearch.settings
 
-   Data type
-         int
-
-   Description
-         Maximum length of a summary to highlight searchwords in
-         Defaults to 300
-
+    Maximum length of a summary to highlight searchwords in
 
 .. _results-markupSW_postPreLgd:
 
-results.markupSW_postPreLgd
-"""""""""""""""""""""""""""
+Character count next to highlighted searchword
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. container:: table-row
+.. confval:: results.markupSW_postPreLgd
 
-   Property
-         results.markupSW_postPreLgd
+    :Type: int
+    :Default: 60
+    :Path: plugin.tx_indexedsearch.settings
 
-   Data type
-         int
-
-   Description
-         Determines the amount of characters to keep on both sides of the highlighted searchword
-         Defaults to 60
-
+    Determines the amount of characters to keep on both sides of the highlighted searchword
 
 .. _results-markupSW_postPreLgd_offset:
 
-results.markupSW_postPreLgd_offset
-""""""""""""""""""""""""""""""""""
+Characters offset from the right side of a highlighted searchword
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. container:: table-row
+.. confval:: results.markupSW_postPreLgd_offset
 
-   Property
-         results.markupSW_postPreLgd_offset
+    :Type: int
+    :Default: 5
+    :Path: plugin.tx_indexedsearch.settings
 
-   Data type
-         int
-
-   Description
-         Determines the offset of characters from the right side of a highlighted searchword. Higher values will "move"
-         the highlighted searchword further to the left.
-         Defaults to 5
-
+    Determines the offset of characters from the right side of a
+    highlighted searchword. Higher values will "move" the highlighted
+    searchword further to the left.
 
 .. _results-markupSW_divider:
 
-results.markupSW_divider
-""""""""""""""""""""""""
+Divider for highlighted searchwords
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. container:: table-row
+.. confval:: results.markupSW_divider
 
-   Property
-         results.markupSW_divider
+    :Type: string
+    :Default: ...
+    :Path: plugin.tx_indexedsearch.settings
 
-   Data type
-         string
-
-   Description
-         Divider for highlighted searchwords in the summary
-         Defaults to "..."
+    Divider for highlighted searchwords in the summary
 
 .. _results-pathExcludeDoktypes:
 
-results.pathExcludeDoktypes
-"""""""""""""""""""""""""""
+Excludes doktypes in path
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. container:: table-row
+.. confval:: results.pathExcludeDoktypes
 
-   Property
-         results.pathExcludeDoktypes
+    :Type: string
+    :Default: empty
+    :Path: plugin.tx_indexedsearch.settings
 
-   Data type
-         string
+    Excludes doktypes in path.
 
-   Description
-         Excludes doktypes in path.
-         Defaults to ""
+    **Example:**
 
-         **Example:**
-         pathExcludeDoktypes = 254
-         Exclude sys_folder (doktype: 254) in path for result.
+    ..  code-block:: typoscript
 
-         "/Footer(254)/Navi(254)/Imprint(1)" -> "/Imprint".
+        plugin.tx_indexedsearch.settings {
+            results {
+                pathExcludeDoktypes = 254
+            }
+        }
 
-         pathExcludeDoktypes = 254,4
-         Exclude sys_folder (doktype: 254) and shortcuts (doktype:4) in path for result.
-         "/About-Us(254)/Company(4)/Germany(1)" -> "/Germany".
+    Exclude sys_folder (doktype: 254) in path for result.
+
+    "/Footer(254)/Navi(254)/Imprint(1)" -> "/Imprint".
+
+    ..  code-block:: typoscript
+
+        plugin.tx_indexedsearch.settings {
+            results {
+                pathExcludeDoktypes = 254,4
+            }
+        }
+
+    Exclude sys_folder (doktype: 254) and shortcuts (doktype: 4) in path
+    for result.
+
+    "/About-Us(254)/Company(4)/Germany(1)" -> "/Germany".
+
+.. _defaultOptions:
+
+Default options
+---------------
+
+.. confval:: defaultOptions
+
+    :Type: Array
+    :Default: empty
+    :Path: plugin.tx_indexedsearch.settings
+
+    Setting of default values.
+
+    Please see the options below.
+
+.. _defaultOptions-defaultOperand:
+
+Default: Operand
+~~~~~~~~~~~~~~~~
+
+.. confval:: defaultOptions.defaultOperand
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+    0 = All words (AND)
+    1 = Any words (OR)
+
+.. _defaultOptions-sections:
+
+Default: Sections
+~~~~~~~~~~~~~~~~~
+
+.. confval:: defaultOptions.sections
+
+    :Type: string (list of integers, separated by comma)
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _defaultOptions-freeIndexUid:
+
+Default: Free index UID
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. confval:: defaultOptions.freeIndexUid
+
+    :Type: int
+    :Default: -1
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _defaultOptions-mediaType:
+
+Default: Media type
+~~~~~~~~~~~~~~~~~~~
+
+.. confval:: defaultOptions.mediaType
+
+    :Type: int
+    :Default: -1
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _defaultOptions-sortOrder:
+
+Default: Sort order
+~~~~~~~~~~~~~~~~~~~
+
+.. confval:: defaultOptions.sortOrder
+
+    :Type: string
+    :Default: rank_flag
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _defaultOptions-languageUid:
+
+Default: Language UID
+~~~~~~~~~~~~~~~~~~~~~
+
+.. confval:: defaultOptions.languageUid
+
+    :Type: string
+    :Default: current
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _defaultOptions-sortDesc:
+
+Default: Sort desc
+~~~~~~~~~~~~~~~~~~
+
+.. confval:: defaultOptions.sortDesc
+
+    :Type: boolean
+    :Default: 1
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _defaultOptions-searchType:
+
+Default: Search type
+~~~~~~~~~~~~~~~~~~~~
+
+.. confval:: defaultOptions.searchType
+
+    :Type: int
+    :Default: 1
+    :Path: plugin.tx_indexedsearch.settings
+
+    Possible values are 0, 1 (any part of the word), 2, 3, 10 and 20
+    (sentence)
+
+.. _defaultOptions-extResume:
+
+Default: Extended resume
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. confval:: defaultOptions.extResume
+
+    :Type: boolean
+    :Default: 1
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _blind:
+
+Blind
+-----
+
+.. confval:: blind
+
+    :Type: Array
+    :Default: empty
+    :Path: plugin.tx_indexedsearch.settings
+
+    Blinding of option-selectors / values in these (advanced search)
+
+    Please see the options below.
+
+.. _blind-searchType:
+
+Blind: Search type
+~~~~~~~~~~~~~~~~~~
+
+.. confval:: blind.searchType
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _blind-defaultOperand:
+
+Blind: Default operand
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. confval:: blind.defaultOperand
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _blind-sections:
+
+Blind: Sections
+~~~~~~~~~~~~~~~
+
+.. confval:: blind.sections
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _blind-freeIndexUid:
+
+Blind: Free index UID
+~~~~~~~~~~~~~~~~~~~~~
+
+.. confval:: blind.freeIndexUid
+
+    :Type: boolean
+    :Default: 1
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _blind-mediaType:
+
+Blind: Media type
+~~~~~~~~~~~~~~~~~
+
+.. confval:: blind.mediaType
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _blind-sortOrder:
+
+Blind: Sort order
+~~~~~~~~~~~~~~~~~
+
+.. confval:: blind.sortOrder
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _blind-group:
+
+Blind: Group
+~~~~~~~~~~~~
+
+.. confval:: blind.group
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _blind-languageUid:
+
+Blind: Language UID
+~~~~~~~~~~~~~~~~~~~
+
+.. confval:: blind.languageUid
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _blind-desc:
+
+Blind: Desc
+~~~~~~~~~~~
+
+.. confval:: blind.desc
+
+    :Type: boolean
+    :Default: 0
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _blind-numberOfResults:
+
+Blind: Number of results
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. confval:: blind.numberOfResults
+
+    :Type: string (list of integers, separated by comma)
+    :Default: 10,25,50,100
+    :Path: plugin.tx_indexedsearch.settings
+
+    List of amount of results to be displayed per page.
+    Sending a different amount via GET or POST will result in the default value
+    being used to prevent DOS attacks.
+
+.. _blind-extResume:
+
+Blind: Extended resume
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. confval:: blind.extResume
+
+    :Type: boolean
+    :Default: 1
+    :Path: plugin.tx_indexedsearch.settings
+
+.. _flagRendering-languageUid:
+
+Flag rendering
+--------------
+
+.. confval:: flagRendering.[languageUid]
+
+    :Type: Array
+    :Default: empty
+    :Path: plugin.tx_indexedsearch.settings
+
+    :typoscript:`FlagRendering` is rendered as a TypoScript object and is
+    used to output a flag icon according to the used language of a result
+    item. The ID of the used language (sys_language_uid) is passed as value
+    for "current". This makes it possible to use a :typoscript:`CASE`
+    TypoScript object to create a separate rendering for each language.
+
+    **Examples:**
+
+    ..  code-block:: typoscript
+
+        plugin.tx_indexedsearch.settings {
+            flagRendering = CASE
+            flagRendering {
+                key.current = 1
+
+                2 = TEXT
+                2.value = German
+
+                default = TEXT
+                default.value = English
+            }
+        }
+
+.. _iconRendering-imageType:
+
+Icon rendering
+--------------
+
+.. confval:: iconRendering.[imageType]
+
+    :Type: Array
+    :Default: empty
+    :Path: plugin.tx_indexedsearch.settings
+
+    :typoscript:`iconRendering` is rendered as a TypoScript object and is
+    used to output an icon according to the file extension of the result
+    items file type, wich is passed as a value for "current". This makes it
+    possible to use a :typoscript:`CASE` TypoScript object to create a
+    separate rendering for each file type.
+
+    **Examples:**
+
+    ..  code-block:: typoscript
+
+        plugin.tx_indexedsearch.settings {
+            iconRendering = CASE
+            iconRendering {
+                key.current = 1
+
+                default = IMAGE
+                default.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/pages.gif
+
+                csv = IMAGE
+                csv.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/csv.gif
+
+                doc = IMAGE
+                doc.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/doc.gif
+
+                docx = IMAGE
+                docx.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/docx.gif
+
+                dotx = IMAGE
+                dotx.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/dotx.gif
+
+                html = IMAGE
+                html.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/html.gif
+                htm < .html
+
+                jpg = IMAGE
+                jpg.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/jpg.gif
+                jpeg < .jpg
+
+                pdf = IMAGE
+                pdf.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/pdf.gif
+
+                potx = IMAGE
+                potx.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/potx.gif
+
+                pps = IMAGE
+                pps.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/pps.gif
+
+                ppsx = IMAGE
+                ppsx.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/ppsx.gif
+
+                ppt = IMAGE
+                ppt.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/ppt.gif
+
+                pptx = IMAGE
+                pptx.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/pptx.gif
+
+                rtf = IMAGE
+                rtf.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/rtf.gif
+
+                sxc = IMAGE
+                sxc.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/sxc.gif
+
+                sxi = IMAGE
+                sxi.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/sxi.gif
+
+                sxw = IMAGE
+                sxw.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/sxw.gif
+
+                tif = IMAGE
+                tif.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/tif.gif
+
+                txt = IMAGE
+                txt.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/txt.gif
+
+                xls = IMAGE
+                xls.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/xls.gif
+
+                xlsx = IMAGE
+                xlsx.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/xlsx.gif
+
+                xltx = IMAGE
+                xltx.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/xltx.gif
+
+                xml = IMAGE
+                xml.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/xml.gif
+
+                # The following file types are recognized by the file content parser,
+                # but currently there is no image file.
+
+                ods = TEXT
+                ods.value = ods
+
+                odp = TEXT
+                odp.value = odp
+
+                odt = TEXT
+                odt.value = odt
+            }
+        }
+
+.. _specialConfiguration-pid:
+
+Special configuration
+---------------------
+
+.. confval:: specialConfiguration.[pid]
+
+    :Type: Array
+    :Default: empty
+    :Path: plugin.tx_indexedsearch.settings
+
+    :typoscript:`specialConfiguration` is an array of objects with
+    properties that can customize certain behaviours of the display of a
+    result row depending on it's position in the rootline. For instance you
+    can define that all results which links to pages in a branch from page
+    id 123 should have another page icon displayed. Of you can add a suffix
+    to the class names so you can style that section differently.
+
+    **Examples:**
+
+    If a page "Contact" is found in a search for "address" and that
+    "Contact" page is in the rootline
+
+    "Frontpage [ID=23] > About us [ID=45] > Contact [ID=77]"
+
+    then you should set the pid value to either "77" or "45". If "45" then
+    all subpages including the "About us" page will have similar
+    configuration.
+
+    If the pid value is set to 0 (zero) it will apply to all pages.
+
+    Please see the options below.
+
+.. _specialConfiguration-pid-pageicon:
+
+Special configuration page icon
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. confval:: specialConfiguration.[pid].pageIcon
+
+    :Type: :ref:`IMAGE cObject <t3tsref:cobj-image>`
+    :Default: empty
+    :Path: plugin.tx_indexedsearch.settings
+
+    Alternative page icon.
+
+    **Example:**
+
+    ..  code-block:: typoscript
+
+        plugin.tx_indexedsearch.settings {
+            specialConfiguration {
+                0.pageIcon = IMAGE
+                0.pageIcon.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/pages.gif
+
+                1.pageIcon = IMAGE
+                1.pageIcon.file = EXT:indexed_search/Resources/Public/Icons/FileTypes/pdf.gif
+            }
+        }
+
+.. _specialConfiguration-pid-csssuffix:
+
+Special configuration CSS suffix
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. confval:: specialConfiguration.[pid].CSSsuffix
+
+    :Type: string
+    :Default: empty
+    :Path: plugin.tx_indexedsearch.settings
+
+    A string that will be appended to the class-names of all the class-
+    attributes used within the result row presentation. The prefix will be
+    like this:
+
+    **Example:**
+
+    ..  code-block:: typoscript
+
+        plugin.tx_indexedsearch.settings {
+            specialConfiguration {
+                1.CSSsuffix = doc
+            }
+        }
+
+    if e.g. the value of :typoscript:`CSSsuffix` is "doc" then the class
+    name :typoscript:`tx-indexedsearch-title` will be
+    :typoscript:`tx-indexedsearch-title-doc`
 
 
 [tsref:plugin.tx\_indexedsearch]
-
