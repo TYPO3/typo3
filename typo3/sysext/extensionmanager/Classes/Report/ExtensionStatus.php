@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extensionmanager\Report;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -80,7 +81,10 @@ class ExtensionStatus implements StatusProviderInterface
     public function getStatus()
     {
         $status = [];
-        $status['mainRepositoryStatus'] = $this->getMainRepositoryStatus();
+
+        if (!Environment::isComposerMode()) {
+            $status['mainRepositoryStatus'] = $this->getMainRepositoryStatus();
+        }
 
         $extensionStatus = $this->getSecurityStatusOfExtensions();
         $status['extensionsSecurityStatusInstalled'] = $extensionStatus->loaded ?? [];
