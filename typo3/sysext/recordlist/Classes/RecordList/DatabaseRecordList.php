@@ -1587,7 +1587,7 @@ class DatabaseRecordList
                 } else {
                     $hideTitle = htmlspecialchars($this->getLanguageService()->getLL('hide' . ($table === 'pages' ? 'Page' : '')));
                     $unhideTitle = htmlspecialchars($this->getLanguageService()->getLL('unHide' . ($table === 'pages' ? 'Page' : '')));
-                    if ($row[$hiddenField]) {
+                    if ($row[$hiddenField] ?? false) {
                         $params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=0';
                         $hideAction = '<button type="button"'
                                         . ' class="btn btn-default t3js-record-hide"'
