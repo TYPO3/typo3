@@ -1760,7 +1760,7 @@ class EditDocumentController
             ]);
             $historyButton = $buttonBar->makeLinkButton()
                 ->setHref($historyUrl)
-                ->setTitle('Open history of this record')
+                ->setTitle($this->getLanguageService()->getLL('recordHistory'))
                 ->setIcon($this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL));
 
             $buttonBar->addButton($historyButton, $position, $group);
