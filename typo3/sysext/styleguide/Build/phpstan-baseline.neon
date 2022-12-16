@@ -146,6 +146,16 @@ parameters:
 			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeEmail.php
 
 		-
+			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeFile\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeFile.php
+
+		-
+			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeFile\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeFile.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeFlex\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeFlex.php
@@ -264,16 +274,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInlineExpandsingle\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeInlineExpandsingle.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeFile\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeFile.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeFile\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeFile.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInlineFalSelectSingle12Foreign\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
@@ -666,12 +666,27 @@ parameters:
 			path: ../Classes/TcaDataGenerator/FieldGeneratorResolver.php
 
 		-
+			message: "#^Unable to resolve the template type T in call to method static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:makeInstance\\(\\)$#"
+			count: 1
+			path: ../Classes/TcaDataGenerator/FieldGeneratorResolver.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\Generator\\:\\:getListOfStyleguideMainTables\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../Classes/TcaDataGenerator/Generator.php
 
 		-
+			message: "#^Offset 0 does not exist on array\\{\\}\\.$#"
+			count: 1
+			path: ../Classes/TcaDataGenerator/Generator.php
+
+		-
 			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\Generator\\:\\:\\$tableHandler type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../Classes/TcaDataGenerator/Generator.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:makeInstance\\(\\)$#"
 			count: 1
 			path: ../Classes/TcaDataGenerator/Generator.php
 
