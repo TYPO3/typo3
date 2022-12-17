@@ -641,6 +641,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Core/ClassLoadingInformationGenerator.php
 
 		-
+			message: "#^Binary operation \"&\" between string and int\\<1, max\\> results in an error\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
+
+		-
 			message: "#^Binary operation \"\\*\\=\" between non\\-falsy\\-string and \\-1 results in an error\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
