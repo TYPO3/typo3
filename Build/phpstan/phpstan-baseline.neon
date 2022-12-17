@@ -1306,6 +1306,11 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Frontend/PhpFrontendTest.php
 
 		-
+			message: "#^Instantiating DateTimeImmutable with @ produces an error\\: Unexpected character$#"
+			count: 1
+			path: ../../typo3/sysext/core/Tests/Unit/Configuration/TypoScript/ConditionMatching/AbstractConditionMatcherTest.php
+
+		-
 			message: "#^Offset 0 does not exist on array\\{\\}\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
@@ -2026,6 +2031,11 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Classes/Remote/RemoteRegistry.php
 
 		-
+			message: "#^Instantiating DateTimeImmutable with @ produces an error\\: Unexpected character$#"
+			count: 1
+			path: ../../typo3/sysext/extensionmanager/Classes/Remote/TerExtensionRemote.php
+
+		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extensionmanager\\\\Remote\\\\ExtensionDownloaderRemoteInterface\\:\\:needsUpdate\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Classes/Report/ExtensionStatus.php
@@ -2109,6 +2119,11 @@ parameters:
 			message: "#^Call to function is_int\\(\\) with mixed will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Format/BytesViewHelper.php
+
+		-
+			message: "#^Instantiating DateTime with @ produces an error\\: Unexpected character$#"
+			count: 1
+			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Format/DateViewHelper.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Fluid\\\\ViewHelpers\\\\Format\\\\HtmlentitiesDecodeViewHelper\\:\\:renderStatic\\(\\) should return string but returns mixed\\.$#"
