@@ -31,16 +31,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/ElementInformationController.php
 
 		-
-			message: "#^Offset 'tt_content' does not exist on array\\<int, string\\>\\|string\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/NewContentElementController.php
-
-		-
-			message: "#^Offset 'tt_content' on array\\<int, string\\>\\|string on left side of \\?\\? does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/NewContentElementController.php
-
-		-
 			message: "#^Offset 2 on array\\{\\} in empty\\(\\) does not exist\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
@@ -1966,6 +1956,11 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Configuration/FlexForm/FlexFormToolsTest.php
 
 		-
+			message: "#^Instantiating DateTimeImmutable with @ produces an error\\: Unexpected character$#"
+			count: 1
+			path: ../../typo3/sysext/core/Tests/Unit/Configuration/TypoScript/ConditionMatching/AbstractConditionMatcherTest.php
+
+		-
 			message: "#^Parameter \\#2 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\ExpressionLanguage\\\\ProviderConfigurationLoader constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend, TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Configuration/TypoScript/ConditionMatching/AbstractConditionMatcherTest.php
@@ -3351,6 +3346,11 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Classes/Remote/RemoteRegistry.php
 
 		-
+			message: "#^Instantiating DateTimeImmutable with @ produces an error\\: Unexpected character$#"
+			count: 1
+			path: ../../typo3/sysext/extensionmanager/Classes/Remote/TerExtensionRemote.php
+
+		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extensionmanager\\\\Remote\\\\ExtensionDownloaderRemoteInterface\\:\\:needsUpdate\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Classes/Report/ExtensionStatus.php
@@ -3579,6 +3579,11 @@ parameters:
 			message: "#^Call to function is_int\\(\\) with mixed will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Format/BytesViewHelper.php
+
+		-
+			message: "#^Instantiating DateTime with @ produces an error\\: Unexpected character$#"
+			count: 1
+			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Format/DateViewHelper.php
 
 		-
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
