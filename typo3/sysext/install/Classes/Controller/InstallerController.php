@@ -298,14 +298,9 @@ final class InstallerController
         $postValues = $request->getParsedBody()['install']['values'];
         [$success, $messages] = $this->setupDatabaseService->setDefaultConnectionSettings($postValues);
 
-        $flashMessages = [];
-        foreach ($messages as $message) {
-            $flashMessages[] = new FlashMessage($message[0], $message[1], $message[2]);
-        }
-
         return new JsonResponse([
             'success' => $success,
-            'status' => $flashMessages,
+            'status' => $messages,
         ]);
     }
 
