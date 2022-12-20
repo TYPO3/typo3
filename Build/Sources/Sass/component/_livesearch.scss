@@ -5,6 +5,10 @@ typo3-backend-live-search {
     display: flex;
     flex-direction: column;
     height: 100%;
+
+    .sticky-form-actions {
+        z-index: 50;
+    }
 }
 
 typo3-backend-live-search-result-item-container,
