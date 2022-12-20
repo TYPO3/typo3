@@ -215,7 +215,7 @@ checks if the given value is a valid string and its length is in the specified
 range. The validator has 2 options:
 
 - Minimum [:yaml:`options.minimum`]: The minimum length for a valid string.
-- Maximum [:yaml:`options.minimum`]: The maximum length for a valid string.
+- Maximum [:yaml:`options.maximum`]: The maximum length for a valid string.
 
 
 .. _concepts-validators-text:
