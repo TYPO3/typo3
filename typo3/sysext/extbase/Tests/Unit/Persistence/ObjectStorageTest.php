@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Model\Entity;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ObjectStorageTest extends UnitTestCase
@@ -25,8 +26,9 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function currentForAnEmptyStorageReturnsNull(): void
+    public function currentForEmptyStorageReturnsNull(): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
 
         $result = $objectStorage->current();
@@ -37,8 +39,20 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInfoForAnEmptyStorageReturnsNull(): void
+    public function countForEmptyStorageIsZero(): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+
+        self::assertCount(0, $objectStorage);
+    }
+
+    /**
+     * @test
+     */
+    public function getInfoForEmptyStorageReturnsNull(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
 
         $result = $objectStorage->getInfo();
@@ -49,188 +63,300 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function anObjectCanBeAttached(): void
+    public function attachWithInformationMakesAttachedInformationAvailableUsingTheObjectAsKey(): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $objectStorage->attach($object1);
-        $objectStorage->attach($object2, 'foo');
-        self::assertNull($objectStorage[$object1]);
-        self::assertEquals('foo', $objectStorage[$object2]);
+        $object = new Entity();
+        $information = 'foo';
+
+        $objectStorage->attach($object, $information);
+
+        self::assertSame($information, $objectStorage[$object]);
     }
 
     /**
      * @test
      */
-    public function anObjectCanBeDetached(): void
+    public function attachForEmptyStorageIncreasesCountByOne(): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $objectStorage->attach($object1);
-        $objectStorage->attach($object2, 'foo');
-        self::assertCount(2, $objectStorage);
-        $objectStorage->detach($object1);
-        self::assertCount(1, $objectStorage);
-        $objectStorage->detach($object2);
         self::assertCount(0, $objectStorage);
-    }
 
-    /**
-     * @test
-     */
-    public function offsetSetAssociatesDataToAnObjectInTheStorage(): void
-    {
-        $objectStorage = new ObjectStorage();
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $objectStorage->offsetSet($object1, 'foo');
+        $objectStorage->attach(new Entity());
+
         self::assertCount(1, $objectStorage);
-        $objectStorage[$object2] = 'bar';
-        self::assertCount(2, $objectStorage);
     }
 
     /**
      * @test
      */
-    public function offsetUnsetRemovesAnObjectFromTheStorage(): void
+    public function attachForNonEmptyStorageIncreasesCountByOne(): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $objectStorage->attach($object1);
-        $objectStorage->attach($object2, 'foo');
-        self::assertCount(2, $objectStorage);
-        $objectStorage->offsetUnset($object2);
+        $objectStorage->attach(new Entity());
         self::assertCount(1, $objectStorage);
-        $objectStorage->offsetUnset($object1);
-        self::assertCount(0, $objectStorage);
+
+        $objectStorage->attach(new Entity());
+
+        self::assertCount(2, $objectStorage);
     }
 
     /**
      * @test
      */
-    public function offsetUnsetKeyRemovesAnObjectFromTheStorage(): void
+    public function attachingAnObjectUsingArrayAssignmentWithInformationIncreasesCountByOne(): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $objectStorage->attach($object1);
-        $objectStorage->attach($object2, 'foo');
+        $objectStorage->attach(new Entity());
+        self::assertCount(1, $objectStorage);
+
+        $objectStorage[new Entity()] = 'bar';
+
         self::assertCount(2, $objectStorage);
+    }
+
+    /**
+     * @test
+     */
+    public function detachForAttachedObjectReducesCountByOne(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $objectStorage->attach(new Entity());
+
+        $object = new Entity();
+        $objectStorage->attach($object);
+        self::assertCount(2, $objectStorage);
+
+        $objectStorage->detach($object);
+
+        self::assertCount(1, $objectStorage);
+    }
+
+    /**
+     * @test
+     */
+    public function offsetSetIncreasesCountByOne(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $objectStorage->attach(new Entity());
+        self::assertCount(1, $objectStorage);
+
+        $objectStorage->offsetSet(new Entity(), 'foo');
+
+        self::assertCount(2, $objectStorage);
+    }
+
+    /**
+     * @test
+     */
+    public function offsetUnsetWithObjectReducesCountByOne(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $objectStorage->attach(new Entity());
+        $object = new Entity();
+        $objectStorage->attach($object);
+        self::assertCount(2, $objectStorage);
+
+        $objectStorage->offsetUnset($object);
+
+        self::assertCount(1, $objectStorage);
+    }
+
+    /**
+     * @test
+     */
+    public function offsetUnsetWithIntegerKeyReducesCountByOne(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $objectStorage->attach(new Entity());
+        $object = new Entity();
+        $objectStorage->attach($object);
+        self::assertCount(2, $objectStorage);
+
         $objectStorage->offsetUnset(0);
+
         self::assertCount(1, $objectStorage);
-        $objectStorage->offsetUnset(0);
-        self::assertCount(0, $objectStorage);
     }
 
     /**
      * @test
      */
-    public function offsetGetReturnsTheDataAssociatedWithAnObject(): void
+    public function offsetGetForObjectAttachedWithoutWithoutInformationReturnsNull(): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $objectStorage[$object1] = 'foo';
-        $objectStorage->attach($object2);
-        self::assertEquals('foo', $objectStorage->offsetGet($object1));
-        self::assertNull($objectStorage->offsetGet($object2));
+        $object = new Entity();
+        $objectStorage->attach($object);
+
+        self::assertNull($objectStorage->offsetGet($object));
     }
 
     /**
      * @test
      */
-    public function offsetGetKeyReturnsTheObject(): void
+    public function offsetGetForObjectWithInformationAttachedUsingArrayAssignmentReturnsTheAssociatedInformation(): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $objectStorage->attach($object1);
-        $objectStorage->attach($object2);
-        self::assertSame($object1, $objectStorage->offsetGet(0));
-        self::assertSame($object2, $objectStorage->offsetGet(1));
+        $object1 = new Entity();
+        $information = 'foo';
+        $objectStorage[$object1] = $information;
+
+        self::assertSame($information, $objectStorage->offsetGet($object1));
     }
 
     /**
      * @test
      */
-    public function offsetExistsChecksWhetherAnObjectExistsInTheStorage(): void
+    public function offsetGetForObjectWithInformationAttachedUsingAttachReturnsTheAssociatedInformation(): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $objectStorage->attach($object1);
-        self::assertTrue($objectStorage->offsetExists($object1));
-        self::assertFalse($objectStorage->offsetExists($object2));
+        $object1 = new Entity();
+        $information = 'foo';
+        $objectStorage->attach($object1, $information);
+
+        self::assertSame($information, $objectStorage->offsetGet($object1));
     }
 
     /**
      * @test
      */
-    public function offsetExistsChecksWhetherKeyExistsInTheStorage(): void
+    public function offsetGetWithIntegerKeyReturnsTheAssociatedObject(): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
-        $objectStorage->attach(new \stdClass());
+        $object = new Entity();
+        $objectStorage->attach($object);
+
+        self::assertSame($object, $objectStorage->offsetGet(0));
+    }
+
+    /**
+     * @test
+     */
+    public function offsetExistsWithObjectAddedToStorageReturnsTrue(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $object = new Entity();
+        $objectStorage->attach($object);
+
+        self::assertTrue($objectStorage->offsetExists($object));
+    }
+
+    /**
+     * @test
+     */
+    public function offsetExistsWithObjectNotAddedToStorageReturnsFalse(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+
+        self::assertFalse($objectStorage->offsetExists(new Entity()));
+    }
+
+    /**
+     * @test
+     */
+    public function offsetExistsWithIntegerKeyInStorageReturnsTrue(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $object = new Entity();
+        $objectStorage->attach($object);
+
         self::assertTrue($objectStorage->offsetExists(0));
-        self::assertFalse($objectStorage->offsetExists(1));
     }
 
     /**
      * @test
      */
-    public function offsetExistsWorksWithEmptyStorageAndIntegerKey(): void
+    public function offsetExistsWithIntegerKeyNotInStorageReturnsFalse(): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
+
         self::assertFalse($objectStorage->offsetExists(0));
     }
 
     /**
      * @test
      */
-    public function offsetExistsWorksWithEmptyStorageAndStringKey(): void
+    public function offsetExistsWithNumericStringKeyNotInStorageReturnsFalse(): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
+
+        // @phpstan-ignore-next-line We're explicitly testing with a key that lies outside the contract.
         self::assertFalse($objectStorage->offsetExists('0'));
     }
 
     /**
-     * @test
+     * @return array<string, array{0: mixed}>
      */
-    public function getInfoReturnsTheDataAssociatedWithTheCurrentIteratorEntry(): void
+    public function informationDataProvider(): array
     {
-        $objectStorage = new ObjectStorage();
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $object3 = new \stdClass();
-        $objectStorage->attach($object1, 42);
-        $objectStorage->attach($object2, 'foo');
-        $objectStorage->attach($object3, ['bar', 'baz']);
-        $objectStorage->rewind();
-        self::assertEquals(42, $objectStorage->getInfo());
-        $objectStorage->next();
-        self::assertEquals('foo', $objectStorage->getInfo());
-        $objectStorage->next();
-        self::assertEquals(['bar', 'baz'], $objectStorage->getInfo());
+        return [
+            'integer' => [42],
+            'string' => ['foo'],
+            'array of strings' => [['bar', 'baz']],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider informationDataProvider
      */
-    public function setInfoSetsTheDataAssociatedWithTheCurrentIteratorEntry(): void
+    public function getInfoReturnsTheInformationAssociatedWithTheCurrentIteratorEntry(mixed $information): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $objectStorage->attach($object1);
-        $objectStorage->attach($object2, 'foo');
+        $object = new Entity();
+        $objectStorage->attach($object, $information);
         $objectStorage->rewind();
-        $objectStorage->setInfo(42);
-        $objectStorage->next();
-        $objectStorage->setInfo('bar');
-        self::assertEquals(42, $objectStorage[$object1]);
-        self::assertEquals('bar', $objectStorage[$object2]);
+
+        self::assertSame($information, $objectStorage->getInfo());
+    }
+
+    /**
+     * @test
+     * @dataProvider informationDataProvider
+     */
+    public function setInfoSetsTheInformationAssociatedWithTheCurrentIteratorEntry(mixed $information): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $object = new Entity();
+        $objectStorage->attach($object);
+
+        $objectStorage->setInfo($information);
+
+        self::assertSame($information, $objectStorage[$object]);
+    }
+
+    /**
+     * @test
+     * @dataProvider informationDataProvider
+     */
+    public function setInfoOverwritesTheInformationAssociatedWithTheCurrentIteratorEntry(mixed $information): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $object = new Entity();
+        $objectStorage->attach($object, 'bar');
+
+        $objectStorage->setInfo($information);
+
+        self::assertSame($information, $objectStorage[$object]);
     }
 
     /**
@@ -238,16 +364,77 @@ class ObjectStorageTest extends UnitTestCase
      */
     public function removeAllRemovesObjectsContainedInAnotherStorageFromTheCurrentStorage(): void
     {
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $objectStorageA = new ObjectStorage();
-        $objectStorageA->attach($object1, 'foo');
-        $objectStorageB = new ObjectStorage();
-        $objectStorageB->attach($object1, 'bar');
-        $objectStorageB->attach($object2, 'baz');
-        self::assertCount(2, $objectStorageB);
-        $objectStorageB->removeAll($objectStorageA);
-        self::assertCount(1, $objectStorageB);
+        $object1 = new Entity();
+        /** @var ObjectStorage<Entity> $otherObjectStorage */
+        $otherObjectStorage = new ObjectStorage();
+        $otherObjectStorage->attach($object1);
+        /** @var ObjectStorage<Entity> $objectStorageToRemoveFrom */
+        $objectStorageToRemoveFrom = new ObjectStorage();
+        $objectStorageToRemoveFrom->attach($object1);
+        self::assertCount(1, $objectStorageToRemoveFrom);
+
+        $objectStorageToRemoveFrom->removeAll($otherObjectStorage);
+
+        self::assertCount(0, $objectStorageToRemoveFrom);
+    }
+
+    /**
+     * @test
+     */
+    public function removeAllRemovesRemovesObjectWithDifferentInformationFromTheCurrentStorage(): void
+    {
+        $object1 = new Entity();
+        /** @var ObjectStorage<Entity> $otherObjectStorage */
+        $otherObjectStorage = new ObjectStorage();
+        $otherObjectStorage->attach($object1, 'foo');
+        /** @var ObjectStorage<Entity> $objectStorageToRemoveFrom */
+        $objectStorageToRemoveFrom = new ObjectStorage();
+        $objectStorageToRemoveFrom->attach($object1, 'bar');
+        self::assertCount(1, $objectStorageToRemoveFrom);
+
+        $objectStorageToRemoveFrom->removeAll($otherObjectStorage);
+
+        self::assertCount(0, $objectStorageToRemoveFrom);
+    }
+
+    /**
+     * @test
+     */
+    public function removeAllKeepsObjectsNotContainedInTheOtherStorage(): void
+    {
+        $object1 = new Entity();
+        /** @var ObjectStorage<Entity> $otherObjectStorage */
+        $otherObjectStorage = new ObjectStorage();
+        $otherObjectStorage->attach($object1);
+        /** @var ObjectStorage<Entity> $objectStorageToRemoveFrom */
+        $objectStorageToRemoveFrom = new ObjectStorage();
+        $objectStorageToRemoveFrom->attach($object1);
+        $objectStorageToRemoveFrom->attach(new Entity());
+        self::assertCount(2, $objectStorageToRemoveFrom);
+
+        $objectStorageToRemoveFrom->removeAll($otherObjectStorage);
+
+        self::assertCount(1, $objectStorageToRemoveFrom);
+    }
+
+    /**
+     * @test
+     */
+    public function removeAlIgnoresAdditionsObjectsContainedInOtherStorage(): void
+    {
+        $object1 = new Entity();
+        /** @var ObjectStorage<Entity> $otherObjectStorage */
+        $otherObjectStorage = new ObjectStorage();
+        $otherObjectStorage->attach($object1);
+        /** @var ObjectStorage<Entity> $objectStorageToRemoveFrom */
+        $objectStorageToRemoveFrom = new ObjectStorage();
+        $objectStorageToRemoveFrom->attach($object1);
+        $objectStorageToRemoveFrom->attach(new Entity());
+        self::assertCount(2, $objectStorageToRemoveFrom);
+
+        $objectStorageToRemoveFrom->removeAll($otherObjectStorage);
+
+        self::assertCount(1, $objectStorageToRemoveFrom);
     }
 
     /**
@@ -255,81 +442,114 @@ class ObjectStorageTest extends UnitTestCase
      */
     public function addAllAddsAllObjectsFromAnotherStorage(): void
     {
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $objectStorageA = new ObjectStorage();
-        // It might be better to mock this
-        $objectStorageA->attach($object1, 'foo');
-        $objectStorageB = new ObjectStorage();
-        $objectStorageB->attach($object2, 'baz');
-        self::assertFalse($objectStorageB->offsetExists($object1));
-        $objectStorageB->addAll($objectStorageA);
-        self::assertEquals('foo', $objectStorageB[$object1]);
-        self::assertEquals('baz', $objectStorageB[$object2]);
+        $object = new Entity();
+        /** @var ObjectStorage<Entity> $storageToAddFrom */
+        $storageToAddFrom = new ObjectStorage();
+        $storageToAddFrom->attach($object, 'foo');
+        /** @var ObjectStorage<Entity> $storageToAddTo */
+        $storageToAddTo = new ObjectStorage();
+        self::assertFalse($storageToAddTo->contains($object));
+
+        $storageToAddTo->addAll($storageToAddFrom);
+
+        self::assertTrue($storageToAddTo->contains($object));
     }
 
     /**
      * @test
      */
-    public function theStorageCanBeRetrievedAsArray(): void
+    public function addAllAlsoAddsInformationOfTheAddedObjects(): void
     {
+        $object = new Entity();
+        /** @var ObjectStorage<Entity> $storageToAddFrom */
+        $storageToAddFrom = new ObjectStorage();
+        $information = 'foo';
+        $storageToAddFrom->attach($object, $information);
+        /** @var ObjectStorage<Entity> $storageToAddTo */
+        $storageToAddTo = new ObjectStorage();
+        self::assertFalse($storageToAddTo->offsetExists($object));
+
+        $storageToAddTo->addAll($storageToAddFrom);
+
+        self::assertSame($information, $storageToAddTo[$object]);
+    }
+
+    /**
+     * @test
+     */
+    public function toArrayReturnsObjectsInStorageUsingIntegerKeys(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
+        $object1 = new Entity();
         $objectStorage->attach($object1, 'foo');
+        $object2 = new Entity();
         $objectStorage->attach($object2, 'bar');
-        self::assertEquals([$object1, $object2], $objectStorage->toArray());
-        self::assertEquals([$object1, $object2], $objectStorage->getArray());
+
+        self::assertSame([0 => $object1, 1 => $object2], $objectStorage->toArray());
     }
 
     /**
      * @test
      */
-    public function allRelationsAreNotDirtyOnAttaching(): void
+    public function getArrayReturnsObjectsInStorageUsingIntegerKeys(): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $object3 = new \stdClass();
+        $object1 = new Entity();
+        $objectStorage->attach($object1, 'foo');
+        $object2 = new Entity();
+        $objectStorage->attach($object2, 'bar');
+
+        self::assertSame([0 => $object1, 1 => $object2], $objectStorage->getArray());
+    }
+
+    /**
+     * @test
+     */
+    public function relationsAreNotDirtyOnAttaching(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $object = new Entity();
+
+        $objectStorage->attach($object);
+
+        self::assertFalse($objectStorage->isRelationDirty($object));
+    }
+
+    /**
+     * @test
+     */
+    public function relationsAreNotDirtyOnAttachingAndRemoving(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $object1 = new Entity();
+
         $objectStorage->attach($object1);
-        $objectStorage->attach($object2);
-        $objectStorage->attach($object3);
+        $objectStorage->detach($object1);
+
         self::assertFalse($objectStorage->isRelationDirty($object1));
-        self::assertFalse($objectStorage->isRelationDirty($object2));
-        self::assertFalse($objectStorage->isRelationDirty($object3));
     }
 
     /**
      * @test
      */
-    public function allRelationsAreNotDirtyOnAttachingAndRemoving(): void
+    public function relationsAreNotDirtyOnReAddingAtSamePosition(): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $object3 = new \stdClass();
+        $object1 = new Entity();
+        $object2 = new Entity();
         $objectStorage->attach($object1);
         $objectStorage->attach($object2);
-        $objectStorage->detach($object2);
-        $objectStorage->attach($object3);
-        self::assertFalse($objectStorage->isRelationDirty($object1));
-        self::assertFalse($objectStorage->isRelationDirty($object3));
-    }
 
-    /**
-     * @test
-     */
-    public function theRelationsAreNotDirtyOnReAddingAtSamePosition(): void
-    {
-        $objectStorage = new ObjectStorage();
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
-        $objectStorage->attach($object1);
-        $objectStorage->attach($object2);
         $clonedStorage = clone $objectStorage;
         $objectStorage->removeAll($clonedStorage);
         $objectStorage->attach($object1);
         $objectStorage->attach($object2);
+
         self::assertFalse($objectStorage->isRelationDirty($object1));
         self::assertFalse($objectStorage->isRelationDirty($object2));
     }
@@ -337,17 +557,20 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function theRelationsAreDirtyOnReAddingAtOtherPosition(): void
+    public function relationsAreDirtyOnReAddingAtOtherPosition(): void
     {
+        /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
+        $object1 = new Entity();
+        $object2 = new Entity();
         $objectStorage->attach($object1);
         $objectStorage->attach($object2);
+
         $clonedStorage = clone $objectStorage;
         $objectStorage->removeAll($clonedStorage);
         $objectStorage->attach($object2);
         $objectStorage->attach($object1);
+
         self::assertTrue($objectStorage->isRelationDirty($object1));
         self::assertTrue($objectStorage->isRelationDirty($object2));
     }
