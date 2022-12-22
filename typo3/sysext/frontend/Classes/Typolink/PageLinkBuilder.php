@@ -311,7 +311,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         } else {
             $target = (isset($page['target']) && trim($page['target'])) ? $page['target'] : $target;
             if (empty($target)) {
-                $target = $this->resolveTargetAttribute($conf, 'target', true);
+                $target = $this->resolveTargetAttribute($conf, 'target');
             }
         }
         return $target;

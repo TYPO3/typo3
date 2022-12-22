@@ -969,14 +969,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $url = $imageFile;
                 }
             }
-            // Create TARGET-attribute only if the right doctype is used
-            $target = '';
-            $xhtmlDocType = $this->getTypoScriptFrontendController()->xhtmlDoctype;
-            if ($xhtmlDocType !== 'xhtml_strict' && $xhtmlDocType !== 'xhtml_11') {
-                $target = (string)$this->stdWrapValue('target', $conf ?? []);
-                if ($target === '') {
-                    $target = 'thePicture';
-                }
+            $target = (string)$this->stdWrapValue('target', $conf ?? []);
+            if ($target === '') {
+                $target = 'thePicture';
             }
             $a1 = '';
             $a2 = '';

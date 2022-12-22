@@ -250,76 +250,24 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     /**
      * Data provider for resolveTargetAttribute
      *
-     * @return array [[$expected, $conf, $name, $respectFrameSetOption, $fallbackTarget],]
+     * @return array [[$expected, $conf, $name],]
      */
     public function resolveTargetAttributeDataProvider(): array
     {
         $targetName = StringUtility::getUniqueId('name_');
         $target = StringUtility::getUniqueId('target_');
-        $fallback = StringUtility::getUniqueId('fallback_');
         return [
             'Take target from $conf, if $conf[$targetName] is set.' =>
                 [
                     $target,
                     [$targetName => $target], // $targetName is set
                     $targetName,
-                    true,
-                    $fallback,
-                    'other doctype',
-                ],
-            'Else from fallback, if not $respectFrameSetOption ...' =>
-                [
-                    $fallback,
-                    ['directImageLink' => false],
-                    $targetName,
-                    false, // $respectFrameSetOption false
-                    $fallback,
-                    'other doctype',
-                ],
-            ' ... or no doctype ... ' =>
-                [
-                    $fallback,
-                    ['directImageLink' => false],
-                    $targetName,
-                    true,
-                    $fallback,
-                    null,                       // no $doctype
-                ],
-            ' ... or doctype xhtml_trans... ' =>
-                [
-                    $fallback,
-                    ['directImageLink' => false],
-                    $targetName,
-                    true,
-                    $fallback,
-                    'xhtml_trans',
-                ],
-            ' ... or doctype xhtml_basic... ' =>
-                [
-                    $fallback,
-                    ['directImageLink' => false],
-                    $targetName,
-                    true,
-                    $fallback,
-                    'xhtml_basic',
-                ],
-            ' ... or doctype html5... ' =>
-                [
-                    $fallback,
-                    ['directImageLink' => false],
-                    $targetName,
-                    true,
-                    $fallback,
-                    'html5',
                 ],
             ' If all hopes fail, an empty string is returned. ' =>
                 [
                     '',
                     [],
                     $targetName,
-                    true,
-                    $fallback,
-                    'other doctype',
                 ],
             'It finally applies stdWrap' =>
                 [
@@ -328,9 +276,6 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
                         [ 'ifEmpty' => 'wrap_target' ],
                     ],
                     $targetName,
-                    true,
-                    $fallback,
-                    'other doctype',
                 ],
         ];
     }
@@ -343,11 +288,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
         string $expected,
         array $conf,
         string $name,
-        bool $respectFrameSetOption,
-        string $fallbackTarget,
-        ?string $doctype
     ): void {
-        $this->frontendControllerMock->config = ['config' => ['doctype' => $doctype]];
         $cObj = new ContentObjectRenderer($this->frontendControllerMock, new Container());
         $serverRequest = new ServerRequest(
             'http://localhost/subfolder/index.php',
@@ -362,8 +303,6 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
             'resolveTargetAttribute',
             $conf,
             $name,
-            $respectFrameSetOption,
-            $fallbackTarget
         );
         self::assertEquals($expected, $actual);
     }

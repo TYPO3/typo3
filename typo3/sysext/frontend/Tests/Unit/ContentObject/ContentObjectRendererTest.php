@@ -3074,15 +3074,6 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $expectedResult = '<a href="https://example.com" target="FEopenLink" data-window-url="https://example.com" data-window-target="FEopenLink" data-window-features="width=13,height=84" rel="noreferrer">Nice Text with default window name</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
-        GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
-
-        $GLOBALS['TSFE']->xhtmlDoctype = 'xhtml_strict';
-        $linkText = 'Nice Text with default window name';
-        $configuration = [
-            'parameter' => 'https://example.com 13x84',
-        ];
-        $expectedResult = '<a href="https://example.com" data-window-url="https://example.com" data-window-target="FEopenLink" data-window-features="width=13,height=84" rel="noreferrer">Nice Text with default window name</a>';
-        self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
     }
 
     /**

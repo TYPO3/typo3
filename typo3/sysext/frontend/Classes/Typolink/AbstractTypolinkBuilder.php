@@ -172,31 +172,23 @@ abstract class AbstractTypolinkBuilder
      *
      * @param array $conf the typolink configuration
      * @param string $name the key, usually "target", "extTarget" or "fileTarget"
-     * @param bool $respectFrameSetOption if set, then the fallback is only used as target if the doctype allows it
-     * @param string $fallbackTarget the string to be used when no target is found in the configuration
      * @return string the value of the target attribute, if there is one
      */
-    protected function resolveTargetAttribute(array $conf, string $name, bool $respectFrameSetOption = false, string $fallbackTarget = ''): string
+    protected function resolveTargetAttribute(array $conf, string $name): string
     {
-        $tsfe = $this->getTypoScriptFrontendController();
-        $targetAttributeAllowed = !$respectFrameSetOption
-            || (!isset($tsfe->config['config']['doctype']) || !$tsfe->config['config']['doctype'])
-            || in_array((string)$tsfe->config['config']['doctype'], ['xhtml_trans', 'xhtml_basic', 'html5'], true);
-
         $target = '';
         if (isset($conf[$name]) && $conf[$name] !== '') {
             $target = $conf[$name];
-        } elseif ($targetAttributeAllowed && !($conf['directImageLink'] ?? false)) {
+        } elseif (!($conf['directImageLink'] ?? false)) {
+            $tsfe = $this->getTypoScriptFrontendController();
             switch ($name) {
                 case 'extTarget':
                 case 'fileTarget':
-                    $target = $fallbackTarget ?: (string)($tsfe->config['config'][$name] ?? '');
+                    $target = (string)($tsfe->config['config'][$name] ?? '');
                     break;
                 case 'target':
-                    $target = $fallbackTarget ?: (string)($tsfe->config['config']['intTarget'] ?? '');
+                    $target = (string)($tsfe->config['config']['intTarget'] ?? '');
                     break;
-                default:
-                    $target = $fallbackTarget;
             }
         }
         if (isset($conf[$name . '.']) && $conf[$name . '.']) {

@@ -250,17 +250,11 @@ class LinkFactory implements LoggerAwareInterface
             $JSwindow_paramsArr['width'] = 'width=' . $JSwindowParts[1];
             $JSwindow_paramsArr['height'] = 'height=' . $JSwindowParts[2];
 
-            // Target attribute
-            $tsfe = $contentObjectRenderer->getTypoScriptFrontendController();
             $JSwindowAttrs = [
                 'data-window-url' => $linkResult->getUrl(),
                 'data-window-target' => $target,
                 'data-window-features' => implode(',', $JSwindow_paramsArr),
             ];
-            // Create TARGET-attribute only if the right doctype is used
-            if ($tsfe instanceof TypoScriptFrontendController && in_array($tsfe->xhtmlDoctype, ['xhtml_strict', 'xhtml_11'], true)) {
-                $target = null;
-            }
             $linkResult = $linkResult->withAttributes($JSwindowAttrs);
             $linkResult = $linkResult->withAttribute('target', $target);
             $this->addDefaultFrontendJavaScript();
