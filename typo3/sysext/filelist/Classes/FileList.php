@@ -1046,7 +1046,7 @@ class FileList
         ];
 
         return '
-            <button ' . GeneralUtility::implodeAttributes($attributes, true) . '">
+            <button ' . GeneralUtility::implodeAttributes($attributes, true) . '>
                 ' . $referenceCount . '
             </button>';
     }
