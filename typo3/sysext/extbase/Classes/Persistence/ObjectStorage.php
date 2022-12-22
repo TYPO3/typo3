@@ -20,9 +20,9 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 
 /**
  * The storage for objects. It ensures the uniqueness of an object in the storage. It's a remake of the
- * SplObjectStorage introduced in PHP 5.3.
+ * `SplObjectStorage` introduced in PHP 5.3.
  *
- * Opposed to the SplObjectStorage the ObjectStorage does not implement the Serializable interface.
+ * Opposed to the `SplObjectStorage`, the `ObjectStorage` does not implement the `Serializable` interface.
  *
  * @template TEntity
  * @implements \ArrayAccess<string, TEntity>
@@ -32,8 +32,10 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 {
     /**
      * This field is only needed to make debugging easier:
-     * If you call current() on a class that implements Iterator, PHP will return the first field of the object
-     * instead of calling the current() method of the interface.
+     *
+     * If you call `current()` on a class that implements `Iterator`, PHP will return the first field of the object
+     * instead of calling the `current()` method of the interface.
+     *
      * We use this unusual behavior of PHP to return the warning below in this case.
      *
      * @var string
@@ -44,20 +46,21 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * An array holding the objects and the stored information. The key of the array items ist the
      * spl_object_hash of the given object.
      *
-     * array(
-     * spl_object_hash =>
-     * array(
-     * 'obj' => $object,
-     * 'inf' => $information
-     * )
-     * )
+     * ```php
+     * [
+     *   'spl_object_hash' => [
+     *     'obj' => $object,
+     *     'inf' => $information,
+     *   ],
+     * ]
+     * ```
      *
      * @var array
      */
     protected $storage = [];
 
     /**
-     * A flag indication if the object storage was modified after reconstitution (eg. by adding a new object)
+     * A flag indication if the object storage was modified after reconstitution (e.g., by adding a new object)
      *
      * @var bool
      */
@@ -65,7 +68,8 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 
     /**
      * An array holding the internal position the object was added.
-     * The object entry is unset when the object gets removed from the objectstorage
+     *
+     * The object entry is unset when the object gets removed from the object storage.
      *
      * @var array
      */
@@ -73,15 +77,16 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 
     /**
      * An array holding the internal position the object was added before, when it would
-     * be removed from the objectstorage
+     * be removed from the object storage.
      *
      * @var array
      */
     protected $removedObjectsPositions = [];
 
     /**
-     * An internal var holding the count of added objects to be stored as position.
-     * It would be reset, when all objects will be removed from the objectstorage
+     * An internal variable holding the count of added objects to be stored as position.
+     *
+     * It will be reset when all objects are be removed from the object storage.
      *
      * @var int
      */
@@ -106,7 +111,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Returns the index at which the iterator currently is.
      *
-     * This is different from the SplObjectStorage as the key in this implementation is the object hash (string).
+     * This is different from `SplObjectStorage` as the key in this implementation is the object hash (string).
      *
      * @return string The index corresponding to the position of the iterator.
      */
@@ -119,6 +124,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * Returns the current storage entry.
      *
      * @return TEntity|null The object at the current iterator position.
+     *
      * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
@@ -139,7 +145,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Returns the number of objects in the storage.
      *
-     * @return int The number of objects in the storage.
+     * @return 0|positive-int The number of objects in the storage.
      */
     public function count(): int
     {
@@ -147,10 +153,10 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     }
 
     /**
-     * Associates data to an object in the storage. offsetSet() is an alias of attach().
+     * Associates information to an object in the storage. `offsetSet()` is an alias of `attach()`.
      *
      * @param TEntity $object The object to add.
-     * @param mixed $information The data to associate with the object.
+     * @param mixed $information The information to associate with the object.
      */
     public function offsetSet($object, $information): void
     {
@@ -173,7 +179,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     }
 
     /**
-     * Removes an object from the storage. offsetUnset() is an alias of detach().
+     * Removes an object from the storage. `offsetUnset()` is an alias of `detach()`.
      *
      * @param TEntity|int $value The object to remove, or its key in the storage.
      */
@@ -198,11 +204,11 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     }
 
     /**
-     * Returns the data associated with an object, or the object itself if an
-     * integer is passed.
+     * Returns the information associated with an object, or the object itself if an integer is passed.
      *
      * @param TEntity|int $value The object to look for, or its key in the storage.
-     * @return mixed The data associated with an object in the storage, or the object itself if an integer is passed.
+     * @return mixed The information associated with an object in the storage, or the object itself if an integer is passed.
+     *
      * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
@@ -228,10 +234,10 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     }
 
     /**
-     * Adds an object in the storage, and optionally associate it to some data.
+     * Adds an object in the storage, and optionally associate it to some information.
      *
      * @param TEntity $object The object to add.
-     * @param mixed $information The data to associate with the object.
+     * @param mixed $information The information to associate with the object.
      */
     public function attach($object, $information = null)
     {
@@ -249,9 +255,9 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     }
 
     /**
-     * Returns the data, or info, associated with the object pointed by the current iterator position.
+     * Returns the information associated with the object pointed by the current iterator position.
      *
-     * @return mixed The data associated with the current iterator position.
+     * @return mixed The information associated with the current iterator position.
      */
     public function getInfo()
     {
@@ -261,19 +267,19 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     }
 
     /**
-     * Associates data, or info, with the object currently pointed to by the iterator.
+     * Associates information with the object currently pointed to by the iterator.
      *
-     * @param mixed $data
+     * @param mixed $information
      */
-    public function setInfo($data)
+    public function setInfo($information)
     {
         $this->isModified = true;
         $key = key($this->storage);
-        $this->storage[$key]['inf'] = $data;
+        $this->storage[$key]['inf'] = $information;
     }
 
     /**
-     * Adds all objects-data pairs from a different storage in the current storage.
+     * Adds all object-information pairs from a different storage in the current storage.
      *
      * @param ObjectStorage<TEntity> $objectStorage
      */
@@ -297,7 +303,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     }
 
     /**
-     * Returns this object storage as an array
+     * Returns this object storage as an array.
      *
      * @return array The object storage
      */
@@ -312,9 +318,9 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     }
 
     /**
-     * Alias of toArray which allows that method to be used from contexts which support
-     * for example dotted paths, e.g. ObjectAccess::getPropertyPath($object, 'children.array.123')
-     * to get exactly the 123rd item in the "children" property which is an ObjectStorage.
+     * Alias of `toArray` which allows that method to be used from contexts which support
+     * for example dotted paths, e.g., `ObjectAccess::getPropertyPath($object, 'children.array.123')`
+     * to get exactly the 123rd item in the `children` property which is an `ObjectStorage`.
      *
      * @return array
      */
@@ -324,7 +330,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     }
 
     /**
-     * Register the storage's clean state, e.g. after it has been reconstituted from the database.
+     * Register the storage's clean state, e.g., after it has been reconstituted from the database.
      */
     public function _memorizeCleanState()
     {
@@ -332,7 +338,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     }
 
     /**
-     * Returns TRUE if the storage was modified after reconstitution.
+     * Returns `true` if the storage was modified after reconstitution.
      *
      * @return bool
      */
@@ -342,7 +348,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     }
 
     /**
-     * Returns TRUE if an object is added, then removed and added at a different position
+     * Returns `true` if an object was added, then removed and added at a different position.
      *
      * @param mixed $object
      * @return bool

@@ -21,8 +21,9 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
- * A proxy that can replace any object and replaces itself in it's parent on
- * first access (call, get, set, isset, unset).
+ * A proxy that can replace any object and replaces itself in its parent on the first access
+ * (`call`, `get`, `set`, `isset`, `unset`).
+ *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  *
  * @template TEntity
@@ -32,8 +33,10 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
 {
     /**
      * This field is only needed to make debugging easier:
+     *
      * If you call current() on a class that implements Iterator, PHP will return the first field of the object
      * instead of calling the current() method of the interface.
+     *
      * We use this unusual behavior of PHP to return the warning below in this case.
      *
      * @var string
@@ -69,8 +72,6 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     protected $isInitialized = false;
 
     /**
-     * Returns the state of the initialization
-     *
      * @return bool
      */
     public function isInitialized()
@@ -79,10 +80,8 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * Constructs this proxy instance.
-     *
      * @param TEntity $parentObject The object instance this proxy is part of
-     * @param string $propertyName The name of the proxied property in it's parent
+     * @param string $propertyName The name of the proxied property in its parent
      * @param mixed $fieldValue The raw field value.
      */
     public function __construct($parentObject, $propertyName, $fieldValue, ?DataMapper $dataMapper = null)
@@ -98,7 +97,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * This is a function lazy load implementation.
+     * Lazily initializes the object storage.
      */
     protected function initialize()
     {
@@ -121,8 +120,9 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     // Delegation to the ObjectStorage methods below
+
     /**
-     * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::addAll
+     * @see `ObjectStorage::addAll`
      */
     public function addAll(ObjectStorage $storage): void
     {
@@ -132,20 +132,20 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
 
     /**
      * @param TEntity $object The object to add.
-     * @param mixed $data The data to associate with the object.
+     * @param mixed $information The information to associate with the object.
      *
-     * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::attach
+     * @see `ObjectStorage::attach`
      */
-    public function attach($object, $data = null): void
+    public function attach($object, $information = null): void
     {
         $this->initialize();
-        parent::attach($object, $data);
+        parent::attach($object, $information);
     }
 
     /**
      * @param TEntity $object The object to look for.
      *
-     * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::contains
+     * @see `ObjectStorage::contains`
      */
     public function contains($object): bool
     {
@@ -157,7 +157,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      * Counts the elements in the storage array
      *
      * @throws Exception
-     * @return int The number of elements in the ObjectStorage
+     * @return 0|positive-int The number of objects in the storage.
      */
     public function count(): int
     {
@@ -174,7 +174,8 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     /**
      * @return TEntity|null The object at the current iterator position.
      *
-     * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::current
+     * @see `ObjectStorage::current`
+     *
      * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
@@ -187,7 +188,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     /**
      * @param TEntity $object The object to remove.
      *
-     * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::detach
+     * @see `ObjectStorage::detach`
      */
     public function detach($object): void
     {
@@ -198,7 +199,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     /**
      * @return string The index corresponding to the position of the iterator.
      *
-     * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::key
+     * @see `ObjectStorage::key`
      */
     public function key(): string
     {
@@ -207,7 +208,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::next
+     * @see `ObjectStorage::next`
      */
     public function next(): void
     {
@@ -218,7 +219,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     /**
      * @param TEntity $value The object to look for, or the key in the storage.
      *
-     * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetExists
+     * @see `ObjectStorage::offsetExists`
      */
     public function offsetExists($value): bool
     {
@@ -228,7 +229,9 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
 
     /**
      * @param TEntity $value The object to look for, or its key in the storage.
-     * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetGet
+     *
+     * @see `ObjectStorage::offsetGet`
+     *
      * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
@@ -240,20 +243,20 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
 
     /**
      * @param TEntity $object The object to add.
-     * @param mixed $info The data to associate with the object.
+     * @param mixed $information The information to associate with the object.
      *
-     * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetSet
+     * @see `ObjectStorage::offsetSet`
      */
-    public function offsetSet($object, $info): void
+    public function offsetSet($object, $information): void
     {
         $this->initialize();
-        parent::offsetSet($object, $info);
+        parent::offsetSet($object, $information);
     }
 
     /**
      * @param TEntity $value The object to remove, or its key in the storage.
      *
-     * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetUnset
+     * @see `ObjectStorage::offsetUnset`
      */
     public function offsetUnset($value): void
     {
@@ -262,9 +265,9 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $storage The storage containing the elements to remove.
+     * @param ObjectStorage $storage The storage containing the elements to remove.
      *
-     * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::removeAll
+     * @see `ObjectStorage::removeAll`
      */
     public function removeAll(ObjectStorage $storage): void
     {
@@ -273,7 +276,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::rewind
+     * @see `ObjectStorage::rewind`
      */
     public function rewind(): void
     {
@@ -282,7 +285,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::valid
+     * @see `ObjectStorage::valid`
      */
     public function valid(): bool
     {
@@ -291,7 +294,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::toArray
+     * @see `ObjectStorage::toArray`
      */
     public function toArray(): array
     {
