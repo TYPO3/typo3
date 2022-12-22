@@ -1219,7 +1219,7 @@ class FileList
                 ->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references')
                 . ' (' . $references . ')'
         ];
-        $htmlCode = '<a href="#" ' . GeneralUtility::implodeAttributes($attributes, true) . '">';
+        $htmlCode = '<a href="#" ' . GeneralUtility::implodeAttributes($attributes, true) . '>';
         $htmlCode .= $references;
         $htmlCode .= '</a>';
         return $htmlCode;
