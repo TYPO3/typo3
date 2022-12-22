@@ -52,6 +52,14 @@ class ServerRequestHandler
     }
 
     /**
+     * Returns the HTTP_REFERER from server request parameters if set
+     */
+    public function getHttpReferer(): string
+    {
+        return $this->request->getServerParams()['HTTP_REFERER'] ?? '';
+    }
+
+    /**
      * Returns validated redirect url contained in request param return_url or redirect_url
      */
     public function getRedirectUrlRequestParam(): string
