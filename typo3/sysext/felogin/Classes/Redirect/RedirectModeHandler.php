@@ -141,7 +141,7 @@ class RedirectModeHandler
         $redirectUrl = '';
         if ($redirectReferrer !== 'off') {
             // Avoid forced logout, when trying to login immediately after a logout
-            $redirectUrl = preg_replace('/[&?]logintype=[a-z]+/', '', $this->getRefererRequestParam());
+            $redirectUrl = preg_replace('/[&?]logintype=[a-z]+/', '', $this->getReferer());
         }
 
         return $redirectUrl ?? '';
@@ -163,7 +163,7 @@ class RedirectModeHandler
         // Thanks to plan2.net / Martin Kutschker for implementing this feature.
         // also avoid redirect when logging in after changing password
         if ($domains) {
-            $url = $this->getRefererRequestParam();
+            $url = $this->getReferer();
             // Is referring url allowed to redirect?
             $match = [];
             if (preg_match('#^http://([[:alnum:]._-]+)/#', $url, $match)) {
@@ -222,10 +222,14 @@ class RedirectModeHandler
         return $this->uriBuilder->build();
     }
 
-    protected function getRefererRequestParam(): string
+    protected function getReferer(): string
     {
         $referer = '';
         $requestReferer = (string)$this->serverRequestHandler->getPropertyFromGetAndPost('referer');
+        if ($requestReferer === '') {
+            $requestReferer = $this->serverRequestHandler->getHttpReferer();
+        }
+
         if ($this->redirectUrlValidator->isValid($requestReferer)) {
             $referer = $requestReferer;
         }
