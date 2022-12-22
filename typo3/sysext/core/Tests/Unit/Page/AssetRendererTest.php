@@ -25,13 +25,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AssetRendererTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
     protected ?AssetRenderer $assetRenderer;
     protected ?EventDispatcherInterface $eventDispatcher;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->resetSingletonInstances = true;
         $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $this->assetRenderer = GeneralUtility::makeInstance(
             AssetRenderer::class,

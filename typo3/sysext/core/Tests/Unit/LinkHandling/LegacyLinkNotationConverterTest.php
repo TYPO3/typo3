@@ -29,11 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class LegacyLinkNotationConverterTest extends UnitTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->resetSingletonInstances = true;
-    }
+    protected bool $resetSingletonInstances = true;
 
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page

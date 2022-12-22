@@ -27,12 +27,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FlexFormProcessorTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
     protected MockObject&ContentObjectRenderer $contentObjectRendererMock;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->resetSingletonInstances = true;
         $this->contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
         $this->prepareFlexFormService();
     }

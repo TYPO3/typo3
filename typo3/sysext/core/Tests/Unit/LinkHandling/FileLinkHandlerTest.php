@@ -27,11 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FileLinkHandlerTest extends UnitTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->resetSingletonInstances = true;
-    }
+    protected bool $resetSingletonInstances = true;
 
     /**
      * Data provider for pointing to files

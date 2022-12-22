@@ -23,12 +23,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AssetCollectorTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
     protected ?AssetCollector $assetCollector;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->resetSingletonInstances = true;
         $this->assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
     }
 
