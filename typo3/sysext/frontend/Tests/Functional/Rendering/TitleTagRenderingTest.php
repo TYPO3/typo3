@@ -42,6 +42,17 @@ class TitleTagRenderingTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
     ];
 
+    /**
+     * @var array<string, mixed>
+     */
+    protected $configurationToUseInTestInstance = [
+        'FE' => [
+            'cacheHash' => [
+                'enforceValidation' => false,
+            ],
+        ],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();

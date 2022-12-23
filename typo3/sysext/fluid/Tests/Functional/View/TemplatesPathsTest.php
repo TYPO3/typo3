@@ -72,6 +72,11 @@ class TemplatesPathsTest extends FunctionalTestCase
                 ],
             ],
         ],
+        'FE' => [
+            'cacheHash' => [
+                'enforceValidation' => false,
+            ],
+        ],
     ];
 
     public function setUp(): void

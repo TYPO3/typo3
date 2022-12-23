@@ -37,8 +37,11 @@ class TypolinkViewHelperTest extends FunctionalTestCase
 
     protected $configurationToUseInTestInstance = [
         'FE' => [
-            'encryptionKey' => '12345'
-        ]
+            'encryptionKey' => '12345',
+            'cacheHash' => [
+                'enforceValidation' => false,
+            ],
+        ],
     ];
 
     /**

@@ -22,6 +22,16 @@ namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
  */
 class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTest
 {
+    /**
+     * @var array<string, mixed>
+     */
+    protected $configurationToUseInTestInstance = [
+        'FE' => [
+            'cacheHash' => [
+                'enforceValidation' => false,
+            ],
+        ],
+    ];
 
     /**
      * @param string $urlPattern

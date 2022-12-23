@@ -56,9 +56,16 @@ class SlugSiteRequestTest extends AbstractTestCase
     {
         parent::setUp();
 
+        $typo3ConfVars = array_merge_recursive(static::TYPO3_CONF_VARS, [
+            'FE' => [
+                'cacheHash' => [
+                    'enforceValidation' => true,
+                ],
+            ],
+        ]);
         // these settings are forwarded to the frontend sub-request as well
         $this->internalRequestContext = (new InternalRequestContext())
-            ->withGlobalSettings(['TYPO3_CONF_VARS' => static::TYPO3_CONF_VARS]);
+            ->withGlobalSettings(['TYPO3_CONF_VARS' => $typo3ConfVars]);
 
         $this->withDatabaseSnapshot(function () {
             $this->setUpDatabase();
