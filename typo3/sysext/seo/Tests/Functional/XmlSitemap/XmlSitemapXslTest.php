@@ -24,6 +24,23 @@ class XmlSitemapXslTest extends AbstractTestCase
 {
     protected $coreExtensionsToLoad = ['seo'];
 
+    /**
+     * @var array<string, mixed>
+     */
+    protected $configurationToUseInTestInstance = [
+        'SYS' => [
+            'encryptionKey' => '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6',
+        ],
+        'FE' => [
+            'cacheHash' => [
+                'requireCacheHashPresenceParameters' => ['value', 'testing[value]', 'tx_testing_link[value]'],
+                'excludedParameters' => ['tx_testing_link[excludedValue]'],
+                'enforceValidation' => false,
+            ],
+            'debug' => false,
+        ],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -34,7 +51,7 @@ class XmlSitemapXslTest extends AbstractTestCase
      * @test
      * @dataProvider getXslFilePathsDataProvider
      */
-    public function checkIfDefaultSitemapReturnsDefaultXsl($typoscriptSetupFiles, $sitemap, $xslFilePath): void
+    public function checkIfDefaultSitemapReturnsDefaultXsl(array $typoscriptSetupFiles, string $sitemap, string $xslFilePath): void
     {
         $this->setUpFrontendRootPage(
             1,

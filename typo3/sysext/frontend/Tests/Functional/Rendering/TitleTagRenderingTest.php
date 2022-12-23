@@ -37,6 +37,11 @@ class TitleTagRenderingTest extends FunctionalTestCase
                 ],
             ],
         ],
+        'FE' => [
+            'cacheHash' => [
+                'enforceValidation' => false,
+            ],
+        ],
     ];
 
     protected function setUp(): void

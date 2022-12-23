@@ -42,6 +42,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             'cacheHash' => [
                 'requireCacheHashPresenceParameters' => ['value', 'testing[value]', 'tx_testing_link[value]'],
                 'excludedParameters' => ['tx_testing_link[excludedValue]'],
+                'enforceValidation' => true,
             ],
             'debug' => false,
         ],

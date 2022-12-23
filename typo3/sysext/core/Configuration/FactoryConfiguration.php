@@ -19,6 +19,9 @@ return [
     ],
     'FE' => [
         'disableNoCacheParameter' => true,
+        'cacheHash' => [
+            'enforceValidation' => true,
+        ],
     ],
     'SYS' => [
         'sitename' => 'New TYPO3 site',

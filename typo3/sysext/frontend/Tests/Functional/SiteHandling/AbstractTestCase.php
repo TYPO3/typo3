@@ -45,7 +45,9 @@ abstract class AbstractTestCase extends FunctionalTestCase
         'FE' => [
             'cacheHash' => [
                 'requireCacheHashPresenceParameters' => ['value', 'testing[value]', 'tx_testing_link[value]'],
-                'excludedParameters' => ['tx_testing_link[excludedValue]'],
+                'excludedParameters' => ['L', 'tx_testing_link[excludedValue]'],
+                // @todo this should be tested explicitly - enabled and disabled
+                'enforceValidation' => false,
             ],
             'debug' => false,
         ],

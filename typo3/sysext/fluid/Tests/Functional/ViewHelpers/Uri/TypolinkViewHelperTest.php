@@ -33,6 +33,14 @@ class TypolinkViewHelperTest extends FunctionalTestCase
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
+    protected $configurationToUseInTestInstance = [
+        'FE' => [
+            'cacheHash' => [
+                'enforceValidation' => false,
+            ],
+        ],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();

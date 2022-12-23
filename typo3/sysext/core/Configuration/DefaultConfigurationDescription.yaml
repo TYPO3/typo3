@@ -541,6 +541,9 @@ FE:
               excludeAllEmptyParameters:
                   type: bool
                   description: 'If true, all parameters which are relevant for cHash are only considered if they are non-empty.'
+              enforceValidation:
+                  type: bool
+                  description: 'If true, a cHash parameter is always required if a query parameter is included in the query string of the incoming request, unless the query argument is included in the excludedParameters list.'
         additionalCanonicalizedUrlParameters:
             type: array
             description: The given parameters will be included when calculating canonicalized URL
