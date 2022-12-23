@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Utility;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -122,8 +123,12 @@ class FormEngineUtility
     public static function getIconHtml($icon, $alt = '', $title = '')
     {
         $icon = (string)$icon;
-        $absoluteFilePath = GeneralUtility::getFileAbsFileName($icon);
-        if (!empty($absoluteFilePath) && is_file($absoluteFilePath)) {
+        if (PathUtility::isAbsolutePath($icon)) {
+            $absoluteFilePath = $icon;
+        } else {
+            $absoluteFilePath = GeneralUtility::getFileAbsFileName($icon);
+        }
+        if (!empty($absoluteFilePath) && (is_file($absoluteFilePath)) || is_file(Environment::getPublicPath() . $absoluteFilePath)) {
             return '<img'
                 . ' loading="lazy" '
                 . ' src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($absoluteFilePath)) . '"'
