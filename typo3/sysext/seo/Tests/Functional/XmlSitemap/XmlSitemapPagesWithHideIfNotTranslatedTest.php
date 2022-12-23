@@ -31,6 +31,9 @@ class XmlSitemapPagesWithHideIfNotTranslatedTest extends AbstractXmlSitemapPages
     protected array $configurationToUseInTestInstance = [
         'FE' => [
             'hidePagesIfNotTranslatedByDefault' => true,
+            'cacheHash' => [
+                'enforceValidation' => false,
+            ],
         ],
     ];
 

@@ -27,6 +27,14 @@ class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
+    protected array $configurationToUseInTestInstance = [
+        'FE' => [
+            'cacheHash' => [
+                'excludedParameters' => ['useAbsoluteUrls', 'testCompressor'],
+            ],
+        ],
+    ];
+
     /**
      * @var string[]
      */

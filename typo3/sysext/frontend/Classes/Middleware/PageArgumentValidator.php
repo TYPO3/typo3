@@ -115,7 +115,7 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
                     );
                 }
             // No cHash given but was required
-            } elseif (!$this->evaluateQueryParametersWithoutCacheHash($queryParams, $pageNotFoundOnValidationError)) {
+            } elseif (!$this->evaluatePageArgumentsWithoutCacheHash($pageArguments, $pageNotFoundOnValidationError)) {
                 return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                     $request,
                     'Request parameters could not be validated (&cHash empty)',
@@ -185,6 +185,30 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
         // Caching is disabled now (but no 404)
         $this->disableCache = true;
         $this->timeTracker->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled', LogLevel::ERROR);
+        return true;
+    }
+
+    /**
+     * No cHash is set but there are query parameters, then calculate a possible cHash from the given
+     * query parameters and see if a cHash is returned (similar to comparing this).
+     *
+     * Is only called if NO cHash parameter is given.
+     */
+    protected function evaluatePageArgumentsWithoutCacheHash(PageArguments $pageArguments, bool $pageNotFoundOnCacheHashError): bool
+    {
+        // legacy behaviour
+        if (!($GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['enforceValidation'] ?? false)) {
+            return $this->evaluateQueryParametersWithoutCacheHash($pageArguments->getDynamicArguments(), $pageNotFoundOnCacheHashError);
+        }
+        $relevantParameters = $this->getRelevantParametersForCacheHashCalculation($pageArguments);
+        // There are parameters that would be needed for the current page, but no cHash is given.
+        // Thus, a "page not found" error is thrown - as configured via "pageNotFoundOnCHashError".
+        if (!empty($relevantParameters) && $pageNotFoundOnCacheHashError) {
+            return false;
+        }
+        // Caching is disabled now (but no 404)
+        $this->disableCache = true;
+        $this->timeTracker->setTSlogMessage('No &cHash parameter was sent for given query parameters, so caching is disabled', LogLevel::ERROR);
         return true;
     }
 }

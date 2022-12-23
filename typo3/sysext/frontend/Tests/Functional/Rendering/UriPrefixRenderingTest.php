@@ -27,6 +27,14 @@ class UriPrefixRenderingTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
+    protected array $configurationToUseInTestInstance = [
+        'FE' => [
+            'cacheHash' => [
+                'excludedParameters' => ['testAbsRefPrefix', 'testCompressor'],
+            ],
+        ],
+    ];
+
     /**
      * @var string[]
      */

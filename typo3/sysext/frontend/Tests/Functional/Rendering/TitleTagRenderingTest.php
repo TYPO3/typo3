@@ -26,6 +26,14 @@ class TitleTagRenderingTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['seo'];
 
+    protected array $configurationToUseInTestInstance = [
+        'FE' => [
+            'cacheHash' => [
+                'enforceValidation' => false,
+            ],
+        ],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();

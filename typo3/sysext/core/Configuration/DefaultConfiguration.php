@@ -1385,6 +1385,7 @@ return [
             'requireCacheHashPresenceParameters' => [],
             'excludeAllEmptyParameters' => false,
             'excludedParametersIfEmpty' => [],
+            'enforceValidation' => false,
         ],
         'additionalCanonicalizedUrlParameters' => [],
         'workspacePreviewLogoutTemplate' => '',

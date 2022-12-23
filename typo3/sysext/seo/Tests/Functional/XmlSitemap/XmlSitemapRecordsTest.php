@@ -27,6 +27,14 @@ class XmlSitemapRecordsTest extends AbstractTestCase
 {
     protected array $coreExtensionsToLoad = ['seo'];
 
+    protected array $configurationToUseInTestInstance = [
+        'FE' => [
+            'cacheHash' => [
+                'enforceValidation' => false,
+            ],
+        ],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
