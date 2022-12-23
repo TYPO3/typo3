@@ -24,10 +24,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class HtmlParser
 {
-    /**
-     * @var array
-     */
-    protected $caseShift_cache = [];
+    protected array $caseShift_cache = [];
 
     // Void elements that do not have closing tags, as defined by HTML5, except link element
     public const VOID_ELEMENTS = 'area|base|br|col|command|embed|hr|img|input|keygen|meta|param|source|track|wbr';
@@ -1032,12 +1029,8 @@ class HtmlParser
 
     /**
      * Strips the configured empty tags from the HMTL code.
-     *
-     * @param string $value
-     * @param array $configuration
-     * @return string
      */
-    protected function stripEmptyTagsIfConfigured($value, $configuration)
+    protected function stripEmptyTagsIfConfigured(string $value, array $configuration): string
     {
         if (empty($configuration['stripEmptyTags'])) {
             return $value;

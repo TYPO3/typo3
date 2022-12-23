@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -40,51 +42,39 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
 
     /**
      * List of elements that are not wrapped into a "p" tag while doing the transformation.
-     * @var string
      */
-    protected $blockElementList = 'DIV,TABLE,BLOCKQUOTE,PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD,HEADER,SECTION,FOOTER,NAV,ARTICLE,ASIDE,FIGURE';
+    protected string $blockElementList = 'DIV,TABLE,BLOCKQUOTE,PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD,HEADER,SECTION,FOOTER,NAV,ARTICLE,ASIDE,FIGURE';
 
     /**
      * List of all tags that are allowed by default
-     * @var string
      */
-    protected $defaultAllowedTagsList = 'b,i,u,a,img,br,div,center,pre,figure,figcaption,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,span,abbr,acronym,dfn';
+    protected string $defaultAllowedTagsList = 'b,i,u,a,img,br,div,center,pre,figure,figcaption,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,span,abbr,acronym,dfn';
 
     /**
      * Set to the TSconfig options coming from Page TSconfig
-     *
-     * @var array
      */
-    protected $procOptions = [];
+    protected array $procOptions = [];
 
     /**
      * Run-away brake for recursive calls.
-     *
-     * @var int
      */
-    protected $TS_transform_db_safecounter = 100;
+    protected int $TS_transform_db_safecounter = 100;
 
     /**
      * Data caching for processing function
-     *
-     * @var array
      */
-    protected $getKeepTags_cache = [];
+    protected array $getKeepTags_cache = [];
 
     /**
      * Storage of the allowed CSS class names in the RTE
-     *
-     * @var array
      */
-    protected $allowedClasses = [];
+    protected array $allowedClasses = [];
 
     /**
      * A list of HTML attributes for <p> tags. Because <p> tags are wrapped currently in a special handling,
      * they have a special place for configuration via 'proc.keepPDIVattribs'
-     *
-     * @var array
      */
-    protected $allowedAttributesForParagraphTags = [
+    protected array $allowedAttributesForParagraphTags = [
         'class',
         'align',
         'id',
@@ -101,10 +91,8 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * Any tags that are allowed outside of <p> sections - usually similar to the block elements
      * plus some special tags like <hr> and <img> (if images are allowed).
      * Completely overrideable via 'proc.allowTagsOutside'
-     *
-     * @var array
      */
-    protected $allowedTagsOutsideOfParagraphs = [
+    protected array $allowedTagsOutsideOfParagraphs = [
         'address',
         'article',
         'aside',
@@ -119,14 +107,9 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         'section',
     ];
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(
+        protected readonly EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
     /**
@@ -267,11 +250,10 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      *
      * This is only possible via TSconfig (procOptions) currently.
      *
-     * @param string $content
      * @param string $configurationDirective used to look up in the procOptions if enabled, and then fetch the
      * @return string the processed content
      */
-    protected function runHtmlParserIfConfigured($content, $configurationDirective)
+    protected function runHtmlParserIfConfigured(string $content, string $configurationDirective): string
     {
         if (!empty($this->procOptions[$configurationDirective])) {
             [$keepTags, $keepNonMatchedTags, $hscMode, $additionalConfiguration] = $this->HTMLparserConfig($this->procOptions[$configurationDirective . '.']);
@@ -296,7 +278,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @param string $value Content input
      * @return string Content output
      */
-    protected function TS_links_db($value)
+    protected function TS_links_db(string $value): string
     {
         $blockSplit = $this->splitIntoBlock('A', $value);
         foreach ($blockSplit as $k => $v) {
@@ -331,7 +313,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @return string Content output
      * @see TS_transform_rte()
      */
-    protected function TS_transform_db($value)
+    protected function TS_transform_db(string $value): string
     {
         // Safety... so forever loops are avoided (they should not occur, but an error would potentially do this...)
         $this->TS_transform_db_safecounter--;
@@ -409,7 +391,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @return string Content output
      * @see TS_transform_db()
      */
-    protected function TS_transform_rte($value)
+    protected function TS_transform_rte(string $value): string
     {
         // Split the content from database by the occurrence of the block elements
         $blockSplit = $this->splitIntoBlock($this->blockElementList, $value);
@@ -478,7 +460,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @return string Clean content
      * @see getKeepTags()
      */
-    protected function HTMLcleaner_db($content)
+    protected function HTMLcleaner_db(string $content): string
     {
         $keepTags = $this->getKeepTags('db');
         return $this->HTMLcleaner($content, $keepTags, false);
@@ -492,7 +474,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @return array Configuration array
      * @see HTMLcleaner_db()
      */
-    protected function getKeepTags($direction = 'rte')
+    protected function getKeepTags(string $direction): array
     {
         if (!isset($this->getKeepTags_cache[$direction]) || !is_array($this->getKeepTags_cache[$direction])) {
             // Setting up allowed tags:
@@ -563,7 +545,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @return string|array Processed input value.
      * @see setDivTags()
      */
-    protected function divideIntoLines($value, $count = 5, $returnArray = false)
+    protected function divideIntoLines(string $value, int $count = 5, bool $returnArray = false)
     {
         // Setting the third param will eliminate false end-tags. Maybe this is a good thing to do...?
         $paragraphBlocks = $this->splitIntoBlock('p', $value, true);
@@ -616,7 +598,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @return string Processed value.
      * @see divideIntoLines()
      */
-    protected function setDivTags($value)
+    protected function setDivTags(string $value): string
     {
         // First, setting configuration for the HTMLcleaner function. This will process each line between the <div>/<p> section on their way to the RTE
         $keepTags = $this->getKeepTags('rte');
@@ -662,7 +644,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      *
      * @return string the full <p> tag with cleaned content
      */
-    protected function processContentWithinParagraph(string $content, string $fullContentWithTag)
+    protected function processContentWithinParagraph(string $content, string $fullContentWithTag): string
     {
         // clean up the content
         $content = $this->HTMLcleaner_db($content);
@@ -699,7 +681,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      *
      * @return string the modified content
      */
-    protected function sanitizeLineBreaksForContentOnly(string $content)
+    protected function sanitizeLineBreaksForContentOnly(string $content): string
     {
         $content = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', LF . '<$1$2/>' . LF, $content) ?? $content;
         $content = str_replace(LF . LF, LF, $content);
@@ -717,7 +699,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @param string $content the content to process
      * @return string the modified content
      */
-    protected function streamlineLineBreaksForProcessing(string $content)
+    protected function streamlineLineBreaksForProcessing(string $content): string
     {
         return str_replace(CR, '', $content);
     }
@@ -732,7 +714,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @param string $content the content to process
      * @return string the modified content
      */
-    protected function streamlineLineBreaksAfterProcessing(string $content)
+    protected function streamlineLineBreaksAfterProcessing(string $content): string
     {
         // Make sure no \r\n sequences has entered in the meantime
         $content = $this->streamlineLineBreaksForProcessing($content);
