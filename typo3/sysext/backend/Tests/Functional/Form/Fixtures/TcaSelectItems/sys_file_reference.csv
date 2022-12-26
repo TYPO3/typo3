@@ -1,0 +1,8 @@
+"sys_file_reference"
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname"
+,1,1,1,1,"foreign_table","fal_field"
+,2,1,2,2,"foreign_table","fal_field"
+"sys_file"
+,"uid","pid","storage","identifier","name"
+,1,1,1,"/file1.png","file1.png"
+,2,1,1,"/file2.png","file1.png"

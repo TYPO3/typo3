@@ -1,0 +1,16 @@
+"pages"
+,"uid","pid","title","deleted","hidden","t3ver_wsid","t3ver_oid","t3ver_state"
+,1,0,"Home page",0,0,0,0,0
+"foreign_table"
+,"uid","pid","title","groupingfield1","groupingfield2"
+,1,1,"Item 1","group1","group2",
+,2,1,"Item 2","group3","group3",
+,3,1,"Item 3","group3","group3",
+,4,1,"Item 4","group2","group1",
+,5,1,"Item 5","group2","group2",
+,6,1,"Item 6","group1","group1",
+"select_ftable_mm"
+,"uid_local","uid_foreign","sorting"
+,42,5,1
+,42,6,2
+,43,2,1

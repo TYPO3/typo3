@@ -1,0 +1,16 @@
+{
+    "name": "typo3/fixture-tca-select-items-test",
+    "type": "typo3-cms-extension",
+    "description": "TcaSelectItems Test",
+    "license": "GPL-2.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "TYPO3Tests\\TestTcaSelectItems\\": "Classes"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "tca_select_items"
+        }
+    }
+}
