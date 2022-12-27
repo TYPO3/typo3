@@ -298,6 +298,7 @@
 			"TYPO3Tests\\TestDataMapper\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_data_mapper/Classes/",
 			"TYPO3Tests\\TestFluidTemplate\\": "typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_fluid_template/Classes/",
 			"TYPO3Tests\\TestLogger\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_logger/Classes/",
+			"TYPO3Tests\\TestTcaSelectTreeItems\\": "typo3/sysext/backend/Tests/Functional/Fixtures/Extensions/test_tca_select_tree_items/Classes/",
 			"TYPO3Tests\\TestTyposcriptAstFunctionEvent\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_ast_function_event/Classes/",
 			"TYPO3Tests\\TestTyposcriptPagetsconfigfactory\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_pagetsconfigfactory/Classes/"
 		},

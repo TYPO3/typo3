@@ -1,0 +1,16 @@
+{
+    "name": "typo3/fixture-tca-select-tree-items-test",
+    "type": "typo3-cms-extension",
+    "description": "TcaSelectTreeItems Test",
+    "license": "GPL-2.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "TYPO3Tests\\TestTcaSelectTreeItems\\": "Classes"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "tca_select_tree_items"
+        }
+    }
+}
