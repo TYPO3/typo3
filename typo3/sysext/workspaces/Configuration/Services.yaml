@@ -74,3 +74,7 @@ services:
       - name: 'console.command'
         command: 'workspace:autopublish'
         description: 'Publish a workspace with a publication date.'
+
+  TYPO3\CMS\Workspaces\MessageHandler\StageChangeNotificationHandler:
+    tags:
+      - name: 'messenger.message_handler'

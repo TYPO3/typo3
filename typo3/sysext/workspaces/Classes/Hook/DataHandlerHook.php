@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Workspaces\Hook;
 
 use Doctrine\DBAL\Exception as DBALException;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -36,6 +37,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\DataHandler\CommandMap;
 use TYPO3\CMS\Workspaces\Event\AfterRecordPublishedEvent;
+use TYPO3\CMS\Workspaces\Messages\StageChangeMessage;
 use TYPO3\CMS\Workspaces\Notification\StageChangeNotification;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
@@ -47,10 +49,6 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  */
 class DataHandlerHook
 {
-    public function __construct(private readonly EventDispatcherInterface $eventDispatcher)
-    {
-    }
-
     /**
      * For accumulating information about workspace stages raised
      * on elements so a single mail is sent as notification.
@@ -61,6 +59,12 @@ class DataHandlerHook
      * Contains remapped IDs.
      */
     protected array $remappedIds = [];
+
+    public function __construct(
+        private readonly MessageBusInterface $messageBus,
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {
+    }
 
     /****************************
      *****  Cmdmap  Hooks  ******
@@ -172,7 +176,7 @@ class DataHandlerHook
             if (!is_array($workspaceRec)) {
                 continue;
             }
-            $notificationService->notifyStageChange(
+            $message = new StageChangeMessage(
                 $workspaceRec,
                 (int)$groupedNotificationInformation['shared'][1],
                 $groupedNotificationInformation['elements'],
@@ -180,6 +184,7 @@ class DataHandlerHook
                 $emails,
                 $dataHandler->BE_USER->user
             );
+            $this->messageBus->dispatch($message);
 
             if ($dataHandler->enableLogging) {
                 [$elementTable, $elementUid] = reset($groupedNotificationInformation['elements']);

@@ -1254,6 +1254,11 @@ return [
                 ],
             ],
         ],
+        'messenger' => [
+            'routing' => [
+                '*' => 'default',
+            ],
+        ],
     ],
     'EXT' => [ // Options related to the Extension Management
         'excludeForPackaging' => '(?:\\.(?!htaccess$).*|.*~|.*\\.swp|.*\\.bak|node_modules|bower_components)',

@@ -392,3 +392,20 @@ CREATE TABLE sys_category (
 	KEY category_parent (parent),
 	KEY category_list (pid,deleted,sys_language_uid)
 );
+
+#
+# Table structure for table 'sys_messenger_messages'
+#
+CREATE TABLE `sys_messenger_messages` (
+  id bigint(20) NOT NULL AUTO_INCREMENT,
+  body longtext NOT NULL,
+  headers longtext NOT NULL,
+  queue_name varchar(190) NOT NULL,
+  created_at datetime NOT NULL,
+  available_at datetime NOT NULL,
+  delivered_at datetime DEFAULT NULL,
+  PRIMARY KEY (id),
+  KEY queue_name (queue_name),
+  KEY available_at (available_at),
+  KEY delivered_at (delivered_at)
+) ENGINE=InnoDB;

@@ -394,6 +394,84 @@ services:
     class: TYPO3\CMS\Core\Country\CountryProvider
     public: true
 
+  ## messenger
+
+  Symfony\Component\Messenger\Middleware\SendMessageMiddleware:
+    arguments:
+      $sendersLocator: '@Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface'
+      $eventDispatcher: '@Psr\EventDispatcher\EventDispatcherInterface'
+    tags:
+      - { name: 'messenger.middleware' }
+
+  Symfony\Component\Messenger\Middleware\HandleMessageMiddleware:
+    arguments:
+      $handlersLocator: '@Symfony\Component\Messenger\Handler\HandlersLocatorInterface'
+    tags:
+      - name: 'messenger.middleware'
+        after: 'Symfony\Component\Messenger\Middleware\SendMessageMiddleware'
+
+  messenger.bus.default:
+    class: Symfony\Component\Messenger\MessageBusInterface
+    factory: [ '@TYPO3\CMS\Core\Messenger\BusFactory', 'createBus' ]
+
+  Symfony\Component\Messenger\MessageBusInterface:
+    alias: messenger.bus.default
+
+  TYPO3\CMS\Core\Messenger\HandlersLocator:
+    factory: [ '@TYPO3\CMS\Core\Messenger\HandlersLocatorFactory', 'createHandlersLocator' ]
+
+  TYPO3\CMS\Core\Messenger\TransportLocator:
+    arguments:
+      $sendersLocator: !tagged_locator { tag: 'messenger.sender', index_by: 'identifier' }
+
+  Symfony\Component\Messenger\Handler\HandlersLocatorInterface:
+    alias: TYPO3\CMS\Core\Messenger\HandlersLocator
+
+  Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface:
+    alias: TYPO3\CMS\Core\Messenger\TransportLocator
+
+  Symfony\Component\Messenger\Transport\Serialization\PhpSerializer:
+
+  Symfony\Component\Messenger\Transport\Serialization\SerializerInterface:
+    alias: Symfony\Component\Messenger\Transport\Serialization\PhpSerializer
+
+  TYPO3\CMS\Core\Command\ConsumeMessagesCommand:
+    arguments:
+      $messageBus: '@messenger.bus.default'
+      $receiverLocator: !tagged_locator { tag: 'messenger.receiver', index_by: 'identifier' }
+    tags:
+      - name: 'console.command'
+        command: 'messenger:consume'
+        description: 'Consume messages'
+
+  TYPO3\CMS\Core\Messenger\EventListener\StopWorkerOnTimeLimitListener:
+    arguments:
+      # 1 hour
+      $timeLimitInSeconds: 3600
+    tags:
+      - name: event.listener
+        identifier: 'messenger-stopontime-on-worker-running'
+        method: 'onWorkerRunning'
+      - name: event.listener
+        identifier: 'messenger-stopontime-on-worker-started'
+        method: 'onWorkerStarted'
+
+  Symfony\Component\Messenger\Transport\Sync\SyncTransport:
+    tags:
+      - name: 'messenger.sender'
+        identifier: 'default'
+
+  Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport:
+    factory: [ '@TYPO3\CMS\Core\Messenger\DoctrineTransportFactory', 'createTransport' ]
+    arguments:
+      $options:
+        queue_name: 'default'
+    tags:
+      - name: 'messenger.sender'
+        identifier: 'doctrine'
+      - name: 'messenger.receiver'
+        identifier: 'doctrine'
+
   # Interface implementations
   Psr\Container\ContainerInterface:
     alias: service_container

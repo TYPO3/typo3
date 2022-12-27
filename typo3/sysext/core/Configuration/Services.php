@@ -27,5 +27,7 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     $containerBuilder->addCompilerPass(new DependencyInjection\PublicServicePass('typo3.middleware'));
     $containerBuilder->addCompilerPass(new DependencyInjection\PublicServicePass('typo3.request_handler'));
     $containerBuilder->addCompilerPass(new DependencyInjection\ConsoleCommandPass('console.command'));
+    $containerBuilder->addCompilerPass(new DependencyInjection\MessageHandlerPass('messenger.message_handler'));
+    $containerBuilder->addCompilerPass(new DependencyInjection\MessengerMiddlewarePass('messenger.middleware'));
     $containerBuilder->addCompilerPass(new DependencyInjection\AutowireInjectMethodsPass());
 };
