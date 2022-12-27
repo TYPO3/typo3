@@ -40,6 +40,9 @@ services:
   TYPO3\CMS\Workspaces\Controller\Remote\ActionHandler:
     public: true
 
+  TYPO3\CMS\Workspaces\Hook\DataHandlerHook:
+    public: true
+
   TYPO3\CMS\Workspaces\Hook\BackendUtilityHook:
     tags:
       - name: event.listener

@@ -17,11 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Tests\Functional\Hook;
 
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Workspaces\Event\AfterRecordPublishedEvent;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -83,5 +86,40 @@ class DataHandlerHookTest extends FunctionalTestCase
         $this->actionService->deleteRecord('sys_workspace', 1);
 
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deletingSysWorkspaceDeletesWorkspaceRecordsResult.csv');
+    }
+
+    /**
+     * @test
+     */
+    public function flushByTagEventIsTriggered(): void
+    {
+        $afterRecordPublishedEvent = null;
+
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            'after-record-published-event',
+            static function (AfterRecordPublishedEvent $event) use (&$afterRecordPublishedEvent) {
+                $afterRecordPublishedEvent = $event;
+            }
+        );
+
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(AfterRecordPublishedEvent::class, 'after-record-published-event');
+
+        $this->importCSVDataSet(__DIR__ . '/DataSet/deletingSysWorkspaceDeletesWorkspaceRecords.csv');
+
+        $workspaceId = 1;
+        $tableName = 'tt_content';
+        $recordId = 301;
+
+        $this->setWorkspaceId($workspaceId);
+        $this->actionService->modifyRecord($tableName, $recordId, ['header' => '[Translate to Dansk:] Regular Element #1 Changed']);
+        $this->actionService->publishRecord($tableName, $recordId);
+
+        self::assertInstanceOf(AfterRecordPublishedEvent::class, $afterRecordPublishedEvent);
+        self::assertEquals($tableName, $afterRecordPublishedEvent->getTable());
+        self::assertEquals($recordId, $afterRecordPublishedEvent->getRecordId());
+        self::assertEquals($workspaceId, $afterRecordPublishedEvent->getWorkspaceId());
     }
 }

@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Workspaces\Hook;
 
 use Doctrine\DBAL\Exception as DBALException;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -34,6 +35,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\DataHandler\CommandMap;
+use TYPO3\CMS\Workspaces\Event\AfterRecordPublishedEvent;
 use TYPO3\CMS\Workspaces\Notification\StageChangeNotification;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
@@ -45,6 +47,10 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  */
 class DataHandlerHook
 {
+    public function __construct(private readonly EventDispatcherInterface $eventDispatcher)
+    {
+    }
+
     /**
      * For accumulating information about workspace stages raised
      * on elements so a single mail is sent as notification.
@@ -709,6 +715,7 @@ class DataHandlerHook
                 $dataHandler->deleteEl($table, $id, true);
                 $dataHandler->BE_USER->workspace = $currentUserWorkspace;
             }
+            $this->eventDispatcher->dispatch(new AfterRecordPublishedEvent($table, $id, $workspaceId));
             $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "{table}" uid {liveId}=>{versionId}', -1, ['table' => $table, 'versionId' => $swapWith, 'liveId' => $id], $dataHandler->eventPid($table, $id, $swapVersion['pid']));
 
             // Set log entry for live record:
@@ -945,6 +952,7 @@ class DataHandlerHook
         if ($dataHandler->enableLogging) {
             $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "{table}" uid {uid} (new record)', -1, ['table' => $table, 'uid' => $id], $dataHandler->eventPid($table, $id, $newRecordInWorkspace['pid']));
         }
+        $this->eventDispatcher->dispatch(new AfterRecordPublishedEvent($table, $id, $workspaceId));
 
         // Set log entry for record
         $propArr = $dataHandler->getRecordPropertiesFromRow($table, $newRecordInWorkspace);
