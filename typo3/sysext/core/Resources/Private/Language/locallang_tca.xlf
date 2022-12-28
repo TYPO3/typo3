@@ -156,6 +156,9 @@
 			<trans-unit id="be_users.tabs.access" resname="be_users.tabs.access">
 				<source>Access</source>
 			</trans-unit>
+			<trans-unit id="be_users.tabs.personal_data" resname="be_users.tabs.personal_data">
+				<source>Personal Data</source>
+			</trans-unit>
 			<trans-unit id="be_groups.title" resname="be_groups.title">
 				<source>Grouptitle</source>
 			</trans-unit>

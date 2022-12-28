@@ -249,8 +249,8 @@ class UsersCest extends AbstractCest
         $I->waitForElement('#typo3-backend-user-list');
         $I->click('//table[@id="typo3-backend-user-list"]/tbody/tr[descendant::a[@data-contextmenu-uid="' . $userId . '"]]//a[@title="Edit"]');
         $I->waitForElement('#EditDocumentController');
-        $I->click('//form[@id="EditDocumentController"]//ul/li[4]/a');
-        $I->fillField('//div[@class="tab-content"]/div[4]/fieldset[1]//textarea', $userTsConfig);
+        $I->click('//form[@id="EditDocumentController"]//ul/li[5]/a');
+        $I->fillField('//div[@class="tab-content"]/div[5]/fieldset[1]//textarea', $userTsConfig);
         $I->click($this->inModuleHeader . ' .btn[title="Save"]');
         $I->wait(0.5);
         $I->click($this->inModuleHeader . ' .btn[title="Close"]');
