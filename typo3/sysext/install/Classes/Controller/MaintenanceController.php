@@ -30,9 +30,13 @@ use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
+use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -48,15 +52,26 @@ use TYPO3\CMS\Install\Service\Typo3tempFileService;
  */
 class MaintenanceController extends AbstractController
 {
+    protected PasswordPolicyValidator $passwordPolicyValidator;
+
     public function __construct(
         private readonly LateBootService $lateBootService,
         private readonly ClearCacheService $clearCacheService,
         private readonly ConfigurationManager $configurationManager,
         private readonly PasswordHashFactory $passwordHashFactory,
         private readonly Locales $locales,
+        private readonly LanguageServiceFactory $languageServiceFactory,
         private readonly FormProtectionFactory $formProtectionFactory
     ) {
+        $GLOBALS['LANG'] = $this->languageServiceFactory->create('default');
+        $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
+        $this->passwordPolicyValidator = GeneralUtility::makeInstance(
+            PasswordPolicyValidator::class,
+            PasswordPolicyAction::NEW_USER_PASSWORD,
+            is_string($passwordPolicy) ? $passwordPolicy : ''
+        );
     }
+
     /**
      * Main "show the cards" view
      */
@@ -450,6 +465,7 @@ class MaintenanceController extends AbstractController
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'createAdminToken' => $formProtection->generateToken('installTool', 'createAdmin'),
+            'passwordPolicyRequirements' => $this->passwordPolicyValidator->getRequirements(),
         ]);
         return new JsonResponse([
             'success' => true,
@@ -476,6 +492,7 @@ class MaintenanceController extends AbstractController
         $isSystemMaintainer = ((bool)$request->getParsedBody()['install']['userSystemMaintainer'] == '1') ? true : false;
 
         $messages = new FlashMessageQueue('install');
+        $contextData = new ContextData(newUsername: $username);
 
         if ($username === '') {
             $messages->enqueue(new FlashMessage(
@@ -489,9 +506,9 @@ class MaintenanceController extends AbstractController
                 'Administrator user not created',
                 ContextualFeedbackSeverity::ERROR
             ));
-        } elseif (strlen($password) < 8) {
+        } elseif (!$this->passwordPolicyValidator->isValidPassword($password, $contextData)) {
             $messages->enqueue(new FlashMessage(
-                'Password must be at least eight characters long.',
+                'The password does not meet the password policy requirements.',
                 'Administrator user not created',
                 ContextualFeedbackSeverity::ERROR
             ));

@@ -287,6 +287,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(ConfigurationManager::class),
             $container->get(PasswordHashFactory::class),
             $container->get(Locales::class),
+            $container->get(LanguageServiceFactory::class),
             $container->get(FormProtectionFactory::class)
         );
     }

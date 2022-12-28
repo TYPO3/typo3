@@ -1,7 +1,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p>
-    After you've created the user, log in and add the rest of the user information, like email and real name.
+    After you've created the user, log in and add the rest of the user information, like real name.
 </p>
 
 <div class="t3js-module-content" data-create-admin-token="{createAdminToken}">
@@ -24,10 +24,15 @@
                 type="password"
                 autocomplete="off"
                 required
-                minlength="8"
-                pattern=".{8,}"
-                title="Password must be at least eight characters long."
             />
+            <f:if condition="{passwordPolicyRequirements}">
+                <p class="mt-2 mb-1 text-muted">The password must match the following requirements:</p>
+                <ul>
+                    <f:for each="{passwordPolicyRequirements}" as="requirement">
+                        <li class="text-muted">{requirement}</li>
+                    </f:for>
+                </ul>
+            </f:if>
         </div>
         <div class="form-group">
             <label for="t3-install-admin-password-repeat" class="control-label">Repeat password:</label>
@@ -37,8 +42,6 @@
                 type="password"
                 autocomplete="off"
                 required
-                minlength="8"
-                pattern=".{8,}"
             />
         </div>
         <div class="form-group">
