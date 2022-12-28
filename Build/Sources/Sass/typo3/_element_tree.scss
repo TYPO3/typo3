@@ -142,13 +142,27 @@ $tree-control-icon-size: 12px;
         margin-left: ceil(-($tree-control-icon-size * .5));
         width: $tree-control-icon-size;
         height: $tree-control-icon-size;
+        background-color: $tree-bg;
     }
 
     &:active,
     &:focus,
     &:hover {
+        cursor: pointer;
         outline: none;
         text-decoration: none;
+    }
+
+    typo3-backend-icon {
+        display: block;
+    }
+
+    &[aria-expanded="true"] typo3-backend-icon[identifier="actions-caret-right"] {
+        display: none;
+    }
+
+    &[aria-expanded="false"] typo3-backend-icon[identifier="actions-caret-down"] {
+        display: none;
     }
 }
 

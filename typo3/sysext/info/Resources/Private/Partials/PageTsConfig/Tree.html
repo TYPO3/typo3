@@ -1,38 +1,92 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:info="http://typo3.org/ns/TYPO3/CMS/Info/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 
+
+<f:be.pageRenderer
+    includeJavaScriptModules="{
+        0: '@typo3/backend/element/icon-element.js'
+    }"
+/>
+
+
 <f:if condition="{pageTsConfig}">
     <f:then>
-        <ul class="list-tree text-monospace">
-            <f:for each="{pageTsConfig}" as="configItem" key="configLabel">
-                <li>
-                    <f:if condition="{info:isArray(value: configItem)}">
-                        <f:then>
-                            <f:comment><!-- Array --></f:comment>
-                            <span class="list-tree-group">
-                                <span class="list-tree-label" title="wizards">[{f:format.trim(characters:'.', side: 'end', value: '{configLabel}')}]</span>
-                            </span>
-                            <f:render partial="PageTsConfig/Tree" arguments="{pageTsConfig: configItem}" />
-                        </f:then>
-                        <f:else>
-                            <f:comment><!-- String --></f:comment>
-                            <span class="list-tree-group">
-                                <span class="list-tree-label" title="wizards">[{f:format.trim(characters:'.', side: 'end', value: '{configLabel}')}]</span>
-                                =
-                                <span class="list-tree-value">{configItem}</span>
-                            </span>
-                        </f:else>
-                    </f:if>
-                </li>
-            </f:for>
-        </ul>
+        <f:if condition="{listIdentifier}">
+            <f:then>
+                <ul class="list-tree text-monospace collapse" id="collapse-list-{listIdentifier}">
+                    <f:render
+                        section="listItem"
+                        arguments="{
+                            pageTsConfig: pageTsConfig,
+                            parentIdentifier: listIdentifier
+                        }"
+                    />
+                </ul>
+            </f:then>
+            <f:else>
+                <f:comment><!-- Root level --></f:comment>
+                <ul class="list-tree text-monospace">
+                    <f:render section="listItem" arguments="{_all}" />
+                </ul>
+            </f:else>
+        </f:if>
     </f:then>
     <f:else>
         <f:translate key="LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:tsconf_noPageTSconfigAvailable" />
     </f:else>
 </f:if>
+
+<f:section name="listItem">
+    <f:for each="{pageTsConfig}" as="configItem" key="configLabel" iteration="configIterator">
+        <li>
+            <f:if condition="{info:isArray(value: configItem)}">
+                <f:then>
+                    <f:comment><!-- Array --></f:comment>
+                    <f:if condition="{parentIdentifier}">
+                        <f:then>
+                            <f:variable name="listIdentifier" value="{parentIdentifier}-{configLabel}" />
+                        </f:then>
+                        <f:else>
+                            <f:variable name="listIdentifier" value="{configLabel}" />
+                        </f:else>
+                    </f:if>
+                    <f:variable name="listIdentifier" value="{info:hash(value: listIdentifier)}" />
+                    <span class="list-tree-group">
+                        <a
+                            class="list-tree-control collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapse-list-{listIdentifier}"
+                            aria-expanded="false"
+                        >
+                            <typo3-backend-icon identifier="actions-caret-right"></typo3-backend-icon>
+                            <typo3-backend-icon identifier="actions-caret-down"></typo3-backend-icon>
+                        </a>
+                        <span class="list-tree-label" title="wizards">[{f:format.trim(characters:'.', side: 'end', value: '{configLabel}')}]</span>
+                    </span>
+                    <f:comment><!-- Recursive child --></f:comment>
+                    <f:render
+                        partial="PageTsConfig/Tree"
+                        arguments="{
+                            pageTsConfig: configItem,
+                            listIdentifier: listIdentifier
+                        }"
+                    />
+                </f:then>
+                <f:else>
+                    <f:comment><!-- String --></f:comment>
+                    <span class="list-tree-group">
+                        <span class="list-tree-label" title="wizards">[{f:format.trim(characters:'.', side: 'end', value: '{configLabel}')}]</span>
+                        =
+                        <span class="list-tree-value">{configItem}</span>
+                    </span>
+                </f:else>
+            </f:if>
+        </li>
+    </f:for>
+</f:section>
 
 </html>
