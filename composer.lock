@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ba03490c7c4684ec8623cdbdd96581a",
+    "content-hash": "646e06c6cc2efaf5f4ff87047df8a201",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6072,71 +6072,6 @@
             "time": "2022-01-17T07:24:51+00:00"
         },
         {
-            "name": "jangregor/phpstan-prophecy",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Jan0707/phpstan-prophecy.git",
-                "reference": "2bc7ca9460395690c6bf7332bdfb2f25d5cae8e0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Jan0707/phpstan-prophecy/zipball/2bc7ca9460395690c6bf7332bdfb2f25d5cae8e0",
-                "reference": "2bc7ca9460395690c6bf7332bdfb2f25d5cae8e0",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1 || ^8.0",
-                "phpstan/phpstan": "^1.0.0"
-            },
-            "conflict": {
-                "phpspec/prophecy": "<1.7.0,>=2.0.0",
-                "phpunit/phpunit": "<6.0.0,>=10.0.0"
-            },
-            "require-dev": {
-                "ergebnis/composer-normalize": "^2.1.1",
-                "ergebnis/license": "^1.0.0",
-                "ergebnis/php-cs-fixer-config": "~2.2.0",
-                "phpspec/prophecy": "^1.7.0",
-                "phpunit/phpunit": "^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0"
-            },
-            "type": "phpstan-extension",
-            "extra": {
-                "phpstan": {
-                    "includes": [
-                        "extension.neon"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "JanGregor\\Prophecy\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jan Gregor Emge-Triebel",
-                    "email": "jan@jangregor.me"
-                }
-            ],
-            "description": "Provides a phpstan/phpstan extension for phpspec/prophecy",
-            "support": {
-                "issues": "https://github.com/Jan0707/phpstan-prophecy/issues",
-                "source": "https://github.com/Jan0707/phpstan-prophecy/tree/1.0.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/localheinz",
-                    "type": "github"
-                }
-            ],
-            "time": "2021-11-08T16:37:47+00:00"
-        },
-        {
             "name": "justinrainbow/json-schema",
             "version": "5.2.12",
             "source": {
@@ -6440,125 +6375,6 @@
                 "source": "https://github.com/php-webdriver/php-webdriver/tree/1.13.0"
             },
             "time": "2022-10-03T11:40:29+00:00"
-        },
-        {
-            "name": "phpspec/prophecy",
-            "version": "v1.15.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "bbcd7380b0ebf3961ee21409db7b38bc31d69a13"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/bbcd7380b0ebf3961ee21409db7b38bc31d69a13",
-                "reference": "bbcd7380b0ebf3961ee21409db7b38bc31d69a13",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/instantiator": "^1.2",
-                "php": "^7.2 || ~8.0, <8.2",
-                "phpdocumentor/reflection-docblock": "^5.2",
-                "sebastian/comparator": "^3.0 || ^4.0",
-                "sebastian/recursion-context": "^3.0 || ^4.0"
-            },
-            "require-dev": {
-                "phpspec/phpspec": "^6.0 || ^7.0",
-                "phpunit/phpunit": "^8.0 || ^9.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Prophecy\\": "src/Prophecy"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Konstantin Kudryashov",
-                    "email": "ever.zet@gmail.com",
-                    "homepage": "http://everzet.com"
-                },
-                {
-                    "name": "Marcello Duarte",
-                    "email": "marcello.duarte@gmail.com"
-                }
-            ],
-            "description": "Highly opinionated mocking framework for PHP 5.3+",
-            "homepage": "https://github.com/phpspec/prophecy",
-            "keywords": [
-                "Double",
-                "Dummy",
-                "fake",
-                "mock",
-                "spy",
-                "stub"
-            ],
-            "support": {
-                "issues": "https://github.com/phpspec/prophecy/issues",
-                "source": "https://github.com/phpspec/prophecy/tree/v1.15.0"
-            },
-            "time": "2021-12-08T12:19:24+00:00"
-        },
-        {
-            "name": "phpspec/prophecy-phpunit",
-            "version": "v2.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpspec/prophecy-phpunit.git",
-                "reference": "2d7a9df55f257d2cba9b1d0c0963a54960657177"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy-phpunit/zipball/2d7a9df55f257d2cba9b1d0c0963a54960657177",
-                "reference": "2d7a9df55f257d2cba9b1d0c0963a54960657177",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.3 || ^8",
-                "phpspec/prophecy": "^1.3",
-                "phpunit/phpunit": "^9.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Prophecy\\PhpUnit\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christophe Coevoet",
-                    "email": "stof@notk.org"
-                }
-            ],
-            "description": "Integrating the Prophecy mocking library in PHPUnit test cases",
-            "homepage": "http://phpspec.net",
-            "keywords": [
-                "phpunit",
-                "prophecy"
-            ],
-            "support": {
-                "issues": "https://github.com/phpspec/prophecy-phpunit/issues",
-                "source": "https://github.com/phpspec/prophecy-phpunit/tree/v2.0.1"
-            },
-            "time": "2020-07-09T08:33:42+00:00"
         },
         {
             "name": "phpstan/phpstan",

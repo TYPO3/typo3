@@ -39,8 +39,8 @@ class ClosureFinisherTest extends UnitTestCase
         ]);
 
         $finisherContextMock = $this->createMock(FinisherContext::class);
-        $formRuntimeProphecy = $this->createMock(FormRuntime::class);
-        $finisherContextMock->method('getFormRuntime')->willReturn($formRuntimeProphecy);
+        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $finisherContextMock->method('getFormRuntime')->willReturn($formRuntimeMock);
 
         $revealedFinisherContext = $finisherContextMock;
 
