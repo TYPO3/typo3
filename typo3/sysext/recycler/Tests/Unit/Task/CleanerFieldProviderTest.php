@@ -26,7 +26,7 @@ use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase
+ * @todo: Turn into functional tests to avoid mocking party and set SchedulerModuleController final when done.
  */
 class CleanerFieldProviderTest extends UnitTestCase
 {

@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Scheduler\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Attribute\Controller as BackendController;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -34,11 +33,11 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[BackendController]
-class SchedulerSetupCheckController implements RequestHandlerInterface
+final class SchedulerSetupCheckController
 {
     public function __construct(
-        protected readonly Registry $registry,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly Registry $registry,
+        private readonly ModuleTemplateFactory $moduleTemplateFactory,
     ) {
     }
 

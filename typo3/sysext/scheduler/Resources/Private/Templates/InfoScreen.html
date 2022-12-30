@@ -10,11 +10,13 @@
 <f:section name="Content">
 
     <h1><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.info" /></h1>
-    <f:if condition="{registeredClasses}">
+
+    <f:if condition="!{registeredClasses}">
         <f:then>
-            <p class="lead">
-                <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.infoScreenIntro" />
-            </p>
+            <p class="lead"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noTasksDefined" /></p>
+        </f:then>
+        <f:else>
+            <p class="lead"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.infoScreenIntro" /></p>
             <div class="table-fit">
                 <table class="table table-striped table-hover">
                     <thead>
@@ -54,13 +56,52 @@
                     </tbody>
                 </table>
             </div>
-        </f:then>
-
-        <f:else>
-            <p class="lead">
-                <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noTasksDefined" />
-            </p>
         </f:else>
+    </f:if>
+
+    <f:if condition="{commands}">
+        <p class="lead"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:availableCommands" /></p>
+        <div class="table-fit">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.name" /></th>
+                    <th colspan="2"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.description" /></th>
+                </tr>
+                </thead>
+                <tbody>
+                <f:for each="{commands}" key="command" as="commandInfo">
+                    <f:variable name="uri">{f:be.uri(route: 'scheduler_manage', parameters: '{\'action\': \'add\'}')}</f:variable>
+                    <tr>
+                        <td>
+                            <form action="{uri}" method="post">
+                                <input type="hidden" name="tx_scheduler[class]" value="TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask" />
+                                <input type="hidden" name="tx_scheduler[task_executeschedulablecommand][command]" value="{command}" />
+                                <a
+                                    href=""
+                                    title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:new')}"
+                                    data-global-event="click"
+                                    data-action-submit="$form"
+                                >
+                                    {commandInfo.name}
+                                </a>
+                            </form>
+                        </td>
+                        <td>{commandInfo.description}</td>
+                        <td class="text-end">
+                            <form action="{uri}" method="post">
+                                <input type="hidden" name="tx_scheduler[class]" value="TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask" />
+                                <input type="hidden" name="tx_scheduler[task_executeschedulablecommand][command]" value="{command}" />
+                                <button class="btn btn-default" type="submit" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:new')}">
+                                    <core:icon identifier="actions-add" />
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
     </f:if>
 
 </f:section>

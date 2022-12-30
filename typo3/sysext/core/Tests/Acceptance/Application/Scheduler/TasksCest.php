@@ -122,9 +122,9 @@ final class TasksCest
 
     public function canSwitchToInformation(ApplicationTester $I): void
     {
-        $I->selectOption('select[name=moduleMenu]', 'Available scheduler tasks');
+        $I->selectOption('select[name=moduleMenu]', 'Available scheduler commands & tasks');
         $I->waitForElementVisible('[data-module-name="scheduler_availabletasks"]');
-        $I->see('Available scheduler tasks');
+        $I->see('Available scheduler commands & tasks');
         $I->canSeeNumberOfElements('[data-module-name="scheduler_availabletasks"] table tbody tr', [1, 10000]);
     }
 

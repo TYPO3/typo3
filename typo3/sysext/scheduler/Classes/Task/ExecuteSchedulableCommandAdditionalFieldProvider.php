@@ -54,20 +54,19 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
         foreach ($commandRegistry->getSchedulableCommands() as $commandIdentifier => $command) {
             $this->schedulableCommands[$commandIdentifier] = $command;
         }
-
         ksort($this->schedulableCommands);
     }
 
     /**
      * Render additional information fields within the scheduler backend.
      *
-     * @param array $taskInfo Array information of task to return
+     * @param array $txSchedulerPostData Incoming tx_scheduler POST data
      * @param ExecuteSchedulableCommandTask|null $task When editing, reference to the current task. NULL when adding.
      * @param SchedulerModuleController $schedulerModule Reference to the calling object (BE module of the Scheduler)
      * @return array Additional fields
      * @see \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface::getAdditionalFields
      */
-    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule): array
+    public function getAdditionalFields(array &$txSchedulerPostData, $task, SchedulerModuleController $schedulerModule): array
     {
         $this->task = $task;
         if ($this->task !== null) {
@@ -75,7 +74,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
         }
 
         $fields = [
-            'schedulableCommands' => $this->getSchedulableCommandsField(),
+            'schedulableCommands' => $this->getSchedulableCommandsField($txSchedulerPostData),
         ];
 
         if ($this->task !== null && isset($this->schedulableCommands[$this->task->getCommandIdentifier()])) {
@@ -231,9 +230,14 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     /**
      * Gets a select field containing all possible schedulable commands
      */
-    protected function getSchedulableCommandsField(): array
+    protected function getSchedulableCommandsField(array $txSchedulerPostData): array
     {
-        $currentlySelectedCommand = $this->task !== null ? $this->task->getCommandIdentifier() : '';
+        $currentlySelectedCommand = $this->task !== null
+            ? $this->task->getCommandIdentifier()
+            // Use value from POST if given. Happens when 'add task' is re-rendered due to
+            // broken / incomplete input data, and if such a task is added from the
+            // "info" submodule.
+            : $txSchedulerPostData['task_executeschedulablecommand']['command'] ?? '';
         $options = [];
         foreach ($this->schedulableCommands as $commandIdentifier => $command) {
             $options[$commandIdentifier] = $commandIdentifier . ': ' . $command->getDescription();
@@ -401,7 +405,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
         return $html;
     }
 
-    public function getLanguageService(): LanguageService
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
