@@ -24,26 +24,11 @@ use TYPO3\CMS\Dashboard\Widgets\ButtonProviderInterface;
  */
 class ButtonProvider implements ButtonProviderInterface
 {
-    /**
-     * @var string
-     */
-    private $title;
-
-    /**
-     * @var string
-     */
-    private $target;
-
-    /**
-     * @var string
-     */
-    private $link;
-
-    public function __construct(string $title, string $link, string $target = '')
-    {
-        $this->title = $title;
-        $this->target = $target;
-        $this->link = $link;
+    public function __construct(
+        private readonly string $title,
+        private readonly string $link,
+        private readonly string $target = ''
+    ) {
     }
 
     public function getTitle(): string

@@ -30,14 +30,8 @@ use TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration;
  */
 final class DashboardWidgetPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
-    private $tagName;
-
-    public function __construct(string $tagName)
+    public function __construct(private readonly string $tagName)
     {
-        $this->tagName = $tagName;
     }
 
     public function process(ContainerBuilder $container): void

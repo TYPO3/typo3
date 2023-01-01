@@ -24,20 +24,8 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  */
 class WidgetGroup
 {
-    /**
-     * @var string
-     */
-    protected $identifier;
-
-    /**
-     * @var string
-     */
-    protected $title;
-
-    public function __construct(string $identifier, string $title)
+    public function __construct(protected readonly string $identifier, protected readonly string $title)
     {
-        $this->identifier = $identifier;
-        $this->title = $title;
     }
 
     public function getIdentifier(): string

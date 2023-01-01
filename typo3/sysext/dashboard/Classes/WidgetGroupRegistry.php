@@ -27,7 +27,7 @@ class WidgetGroupRegistry implements SingletonInterface
     /**
      * @var WidgetGroup[]
      */
-    private $widgetGroups = [];
+    private array $widgetGroups = [];
 
     public function getWidgetGroups(): array
     {

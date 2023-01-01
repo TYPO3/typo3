@@ -27,7 +27,7 @@ class DashboardPresetRegistry implements SingletonInterface
     /**
      * @var DashboardPreset[]
      */
-    private $dashboardPresets = [];
+    private array $dashboardPresets = [];
 
     public function getDashboardPresets(): array
     {

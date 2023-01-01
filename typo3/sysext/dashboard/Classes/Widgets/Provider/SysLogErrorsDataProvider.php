@@ -30,26 +30,14 @@ use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
  */
 class SysLogErrorsDataProvider implements ChartDataProviderInterface
 {
-    /**
-     * Number of days to gather information for.
-     *
-     * @var int
-     */
-    protected $days = 31;
+    protected array $labels = [];
+    protected array $data = [];
 
     /**
-     * @var array
+     * @param int $days Number of days to gather information for.
      */
-    protected $labels = [];
-
-    /**
-     * @var array
-     */
-    protected $data = [];
-
-    public function __construct(int $days = 31)
+    public function __construct(protected readonly int $days = 31)
     {
-        $this->days = $days;
     }
 
     public function getChartData(): array

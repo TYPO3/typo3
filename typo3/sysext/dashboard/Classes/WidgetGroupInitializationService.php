@@ -24,20 +24,10 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  */
 class WidgetGroupInitializationService
 {
-    /**
-     * @var WidgetGroupRegistry
-     */
-    private $widgetGroupRegistry;
-
-    /**
-     * @var WidgetRegistry
-     */
-    private $widgetRegistry;
-
-    public function __construct(WidgetGroupRegistry $widgetGroupRegistry, WidgetRegistry $widgetRegistry)
-    {
-        $this->widgetGroupRegistry = $widgetGroupRegistry;
-        $this->widgetRegistry = $widgetRegistry;
+    public function __construct(
+        private readonly WidgetGroupRegistry $widgetGroupRegistry,
+        private readonly WidgetRegistry $widgetRegistry
+    ) {
     }
 
     /**

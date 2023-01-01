@@ -26,11 +26,8 @@ use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 
 class TypeOfUsersChartDataProvider implements ChartDataProviderInterface
 {
-    private LanguageServiceFactory $languageServiceFactory;
-
-    public function __construct(LanguageServiceFactory $languageServiceFactory)
+    public function __construct(private readonly LanguageServiceFactory $languageServiceFactory)
     {
-        $this->languageServiceFactory = $languageServiceFactory;
     }
 
     public function getChartData(): array

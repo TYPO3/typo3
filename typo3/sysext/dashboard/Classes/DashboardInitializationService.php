@@ -35,25 +35,8 @@ class DashboardInitializationService
 {
     protected const MODULE_DATA_CURRENT_DASHBOARD_IDENTIFIER = 'dashboard/current_dashboard/';
 
-    /**
-     * @var DashboardRepository
-     */
-    private $dashboardRepository;
-
-    /**
-     * @var DashboardPresetRegistry
-     */
-    private $dashboardPresetRegistry;
-
-    /**
-     * @var Dashboard
-     */
-    private $currentDashboard;
-
-    /**
-     * @var BackendUserAuthentication
-     */
-    private $user;
+    private Dashboard $currentDashboard;
+    private BackendUserAuthentication $user;
 
     /**
      * @var list<JavaScriptModuleInstruction>
@@ -64,16 +47,14 @@ class DashboardInitializationService
      * @var list<string|array{0:string, 1:string}>
      * @deprecated will be removed in TYPO3 v13.0
      */
-    private $requireJsModules = [];
-    private $jsFiles = [];
-    private $cssFiles = [];
+    private array $requireJsModules = [];
+    private array $jsFiles = [];
+    private array $cssFiles = [];
 
     public function __construct(
-        DashboardRepository $dashboardRepository,
-        DashboardPresetRegistry $dashboardPresetRegistry
+        private readonly DashboardRepository $dashboardRepository,
+        private readonly DashboardPresetRegistry $dashboardPresetRegistry
     ) {
-        $this->dashboardRepository = $dashboardRepository;
-        $this->dashboardPresetRegistry = $dashboardPresetRegistry;
     }
 
     public function initializeDashboards(ServerRequestInterface $request, BackendUserAuthentication $user): void

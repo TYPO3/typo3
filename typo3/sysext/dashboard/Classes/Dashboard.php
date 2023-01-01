@@ -28,31 +28,6 @@ use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 class Dashboard
 {
     /**
-     * @var string
-     */
-    protected $identifier;
-
-    /**
-     * @var string
-     */
-    protected $title;
-
-    /**
-     * @var array<string,array<string,string>>
-     */
-    protected $widgetConfig;
-
-    /**
-     * @var WidgetRegistry
-     */
-    protected $widgetRegistry;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
      * @var array<string,WidgetConfigurationInterface>
      */
     protected $widgets = [];
@@ -62,18 +37,16 @@ class Dashboard
      */
     protected $widgetOptions = [];
 
+    /**
+     * @param array<string,array<string,string>> $widgetConfig
+     */
     public function __construct(
-        string $identifier,
-        string $title,
-        array $widgetConfig,
-        WidgetRegistry $widgetRegistry,
-        ContainerInterface $container
+        protected readonly string $identifier,
+        protected readonly string $title,
+        protected readonly array $widgetConfig,
+        protected readonly WidgetRegistry $widgetRegistry,
+        protected readonly ContainerInterface $container
     ) {
-        $this->identifier = $identifier;
-        $this->title = $title;
-        $this->widgetConfig = $widgetConfig;
-        $this->widgetRegistry = $widgetRegistry;
-        $this->container = $container;
     }
 
     public function getIdentifier(): string

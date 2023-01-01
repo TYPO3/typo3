@@ -33,36 +33,18 @@ class DashboardRepository
     /**
      * @var string[]
      */
-    protected $allowedFields = ['title'];
-
-    /**
-     * @var ConnectionPool
-     */
-    protected $connectionPool;
-
-    /**
-     * @var WidgetRegistry
-     */
-    protected $widgetRegistry;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    protected array $allowedFields = ['title'];
 
     /**
      * @var WidgetInterface[]
      */
-    protected $widgets = [];
+    protected array $widgets = [];
 
     public function __construct(
-        ConnectionPool $connectionPool,
-        WidgetRegistry $widgetRegistry,
-        ContainerInterface $container
+        protected readonly ConnectionPool $connectionPool,
+        protected readonly WidgetRegistry $widgetRegistry,
+        protected readonly ContainerInterface $container
     ) {
-        $this->connectionPool = $connectionPool;
-        $this->widgetRegistry = $widgetRegistry;
-        $this->container = $container;
     }
 
     public function getDashboardsForUser(int $userId): array
@@ -134,10 +116,7 @@ class DashboardRepository
         return $queryBuilder->executeStatement();
     }
 
-    /**
-     * @param array $values
-     */
-    protected function checkAllowedFields($values): array
+    protected function checkAllowedFields(array $values): array
     {
         $allowedFields = [];
         foreach ($values as $field => $value) {
@@ -149,9 +128,6 @@ class DashboardRepository
         return $allowedFields;
     }
 
-    /**
-     * @return Dashboard
-     */
     public function getDashboardByIdentifier(string $identifier): ?Dashboard
     {
         $queryBuilder = $this->getQueryBuilder();

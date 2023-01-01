@@ -25,49 +25,16 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 class DashboardPreset
 {
     /**
-     * @var string
+     * @param string[] $defaultWidgets
      */
-    protected $identifier;
-
-    /**
-     * @var string
-     */
-    protected $title;
-
-    /**
-     * @var string
-     */
-    protected $iconIdentifier;
-
-    /**
-     * @var string
-     */
-    protected $description = '';
-
-    /**
-     * @var string[]
-     */
-    protected $defaultWidgets = [];
-
-    /**
-     * @var bool
-     */
-    protected $showInWizard = true;
-
     public function __construct(
-        string $identifier,
-        string $title,
-        string $description,
-        string $iconIdentifier = 'content-dashboard',
-        array $defaultWidgets = [],
-        bool $showInWizard = true
+        protected readonly string $identifier,
+        protected readonly string $title,
+        protected readonly string $description,
+        protected readonly string $iconIdentifier = 'content-dashboard',
+        protected readonly array $defaultWidgets = [],
+        protected readonly bool $showInWizard = true
     ) {
-        $this->identifier = $identifier;
-        $this->title = $title;
-        $this->description = $description;
-        $this->iconIdentifier = $iconIdentifier ?: 'content-dashboard';
-        $this->defaultWidgets = $defaultWidgets;
-        $this->showInWizard = $showInWizard;
     }
 
     public function getIdentifier(): string

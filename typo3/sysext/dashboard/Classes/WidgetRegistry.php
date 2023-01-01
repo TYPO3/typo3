@@ -32,11 +32,6 @@ use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 class WidgetRegistry implements SingletonInterface
 {
     /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
      * @var array<string,WidgetConfigurationInterface>
      */
     private $widgets = [];
@@ -46,9 +41,8 @@ class WidgetRegistry implements SingletonInterface
      */
     private $widgetsPerWidgetGroup = [];
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(protected readonly ContainerInterface $container)
     {
-        $this->container = $container;
     }
 
     /**
