@@ -28,6 +28,36 @@ body{
     padding: 0;
 }
 
+body{
+    font-family: var(--bs-body-font-family);
+}
+
+body,
+body {
+    padding: 0;
+}
+
+body > :first-child {
+    margin-top: 0;
+}
+
+body[dir="ltr"] blockquote {
+    padding-left: 20px;
+    border-left-width: 5px;
+}
+
+body[dir="rtl"] ol,
+body[dir="rtl"] ul,
+body[dir="rtl"] dl {
+    padding: 0;
+}
+
+.some body[dir="rtl"] ol,
+.some body[dir="rtl"] ul,
+.some body[dir="rtl"] dl {
+    padding: 0;
+}
+
 /* minified version */
 body{margin:0}html,body{margin:0}body,html{margin:0}.someclass{padding:0} body,html{margin:0}body {margin:0}body     {margin:0}body{padding: 0;}body{padding: 0;}
 

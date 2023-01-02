@@ -47,13 +47,7 @@ class ScssProcessor
     {
         // replace body and html with the prefix
         foreach (['html', 'body'] as $cssSelector) {
-            $cssSource = preg_replace_callback(
-                '/(?:^|[\s\/},])(?<![#.])(' . $cssSelector . ')\s*[{,][^}]*(?=})/mi',
-                static function ($matches) {
-                    return str_replace($matches[1], '&', $matches[0]);
-                },
-                $cssSource
-            );
+            $cssSource = preg_replace('/(?<![-.#\w])\b' . preg_quote($cssSelector, '/') . '\b(?!-)/i', '&', $cssSource);
         }
 
         // Some CSS minifier remove the semicolon before the curly brace

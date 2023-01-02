@@ -43,6 +43,25 @@ foo {
   padding: 0;
 }
 foo {
+  font-family: var(--bs-body-font-family);
+}
+foo {
+  padding: 0;
+}
+foo > :first-child {
+  margin-top: 0;
+}
+foo[dir="ltr"] blockquote {
+  padding-left: 20px;
+  border-left-width: 5px;
+}
+foo[dir="rtl"] ol, foo[dir="rtl"] ul, foo[dir="rtl"] dl {
+  padding: 0;
+}
+.some foo[dir="rtl"] ol, .some foo[dir="rtl"] ul, .some foo[dir="rtl"] dl {
+  padding: 0;
+}
+foo {
   margin: 0;
 }
 foo {
