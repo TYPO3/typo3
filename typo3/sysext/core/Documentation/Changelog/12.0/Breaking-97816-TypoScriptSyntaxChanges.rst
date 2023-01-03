@@ -107,14 +107,14 @@ some details:
 File includes are always top level
 ----------------------------------
 
-File includes with :typoscript:`@include` and :typoscript:`<INCLUDE_TYPOSCRIPT:` within
+File includes with :typoscript:`@import` and :typoscript:`<INCLUDE_TYPOSCRIPT:` within
 curly braces are not relative anymore. A construct like this is invalid:
 
 ..  code-block:: typoscript
 
     page = PAGE
     page {
-        @include 'EXT:my_extension/Configuration/TypoScript/bar.typoscript'
+        @import 'EXT:my_extension/Configuration/TypoScript/bar.typoscript'
         20 = TEXT
         20.value = bar
     }
@@ -146,7 +146,7 @@ Instead, the following TypoScript will be calculated:
     20 = TEXT
     20.value = bar
 
-This means :typoscript:`@include` and :typoscript:`<INCLUDE_TYPOSCRIPT:` basically break
+This means :typoscript:`@import` and :typoscript:`<INCLUDE_TYPOSCRIPT:` basically break
 any curly braces level, resetting current scope to top level. While inclusion of files has
 never been documented to be valid within braces assignments, it still worked until TYPO3 v11.
 This is now disallowed and must not be used anymore.
