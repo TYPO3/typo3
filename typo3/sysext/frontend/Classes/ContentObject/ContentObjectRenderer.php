@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Html\SanitizerInitiator;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
@@ -4035,7 +4036,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         }
                         break;
                     case 'lll':
-                        $retVal = $tsfe->sL('LLL:' . $key);
+                        $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($this->getTypoScriptFrontendController()->getLanguage());
+                        $retVal = $languageService->sL('LLL:' . $key);
                         break;
                     case 'path':
                         try {

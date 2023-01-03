@@ -40,25 +40,28 @@ class LanguageServiceFactory
     /**
      * Factory method to create a language service object.
      *
-     * @param string $locale the locale (= the TYPO3-internal locale given)
+     * @param Locale|string $locale the locale
      */
-    public function create(string $locale): LanguageService
+    public function create(Locale|string $locale): LanguageService
     {
         $obj = new LanguageService($this->locales, $this->localizationFactory, $this->runtimeCache);
-        $obj->init($locale);
+        $obj->init($locale instanceof Locale ? $locale : $this->locales->createLocale($locale));
         return $obj;
     }
 
     public function createFromUserPreferences(?AbstractUserAuthentication $user): LanguageService
     {
         if ($user && ($user->user['lang'] ?? false)) {
-            return $this->create($user->user['lang']);
+            return $this->create($this->locales->createLocale($user->user['lang']));
         }
-        return $this->create('default');
+        return $this->create('en');
     }
 
     public function createFromSiteLanguage(SiteLanguage $language): LanguageService
     {
-        return $this->create($language->getTypo3Language());
+        $languageService = $this->create($language->getLocale() ?: $language->getTypo3Language());
+        // Always disable debugging for frontend
+        $languageService->debugKey = false;
+        return $languageService;
     }
 }

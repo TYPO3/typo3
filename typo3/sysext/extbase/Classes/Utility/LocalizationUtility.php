@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -120,10 +121,8 @@ class LocalizationUtility
         $languageKeyHash = sha1(json_encode(array_merge([$languageKey], $alternativeLanguageKeys, [$languageFilePath])));
         $cache = self::getRuntimeCache();
         if (!$cache->get($languageKeyHash)) {
-            $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create($languageKey);
-            if ($alternativeLanguageKeys !== []) {
-                $languageService->setDependencies($alternativeLanguageKeys);
-            }
+            $locale = new Locale($languageKey, $alternativeLanguageKeys);
+            $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create($locale);
             $languageService->includeLLFile($languageFilePath);
             $cache->set($languageKeyHash, $languageService);
         }

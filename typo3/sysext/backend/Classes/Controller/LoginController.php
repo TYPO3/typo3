@@ -202,7 +202,7 @@ class LoginController
         // If we found a $preferredBrowserLanguage, which is not the default language, while no user is logged in,
         // initialize $this->getLanguageService()
         if (empty($backendUser->user['uid'])) {
-            $languageService->init($preferredBrowserLanguage);
+            $languageService->init($this->locales->createLocale($preferredBrowserLanguage));
         }
 
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $languageService);

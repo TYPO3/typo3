@@ -40,6 +40,8 @@ use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -1468,7 +1470,11 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $key = StringUtility::getUniqueId('someKey');
         $value = StringUtility::getUniqueId('someValue');
-        $GLOBALS['TSFE']->expects(self::once())->method('sL')->with('LLL:' . $key)->willReturn($value);
+        $languageServiceFactory = $this->createMock(LanguageServiceFactory::class);
+        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceFactory->expects(self::once())->method('createFromSiteLanguage')->with(self::anything())->willReturn($languageServiceMock);
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactory);
+        $languageServiceMock->expects(self::once())->method('sL')->with('LLL:' . $key)->willReturn($value);
         self::assertEquals($value, $this->subject->getData('lll:' . $key));
     }
 

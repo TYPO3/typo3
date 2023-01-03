@@ -63,7 +63,7 @@ class MaintenanceController extends AbstractController
         private readonly LanguageServiceFactory $languageServiceFactory,
         private readonly FormProtectionFactory $formProtectionFactory
     ) {
-        $GLOBALS['LANG'] = $this->languageServiceFactory->create('default');
+        $GLOBALS['LANG'] = $this->languageServiceFactory->create('en');
         $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
         $this->passwordPolicyValidator = GeneralUtility::makeInstance(
             PasswordPolicyValidator::class,

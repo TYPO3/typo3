@@ -177,6 +177,19 @@ class Locales implements SingletonInterface
         }
     }
 
+    public function createLocale(string $localeKey): Locale
+    {
+        if (strpos($localeKey, '.')) {
+            [$sanitizedLocaleKey] = explode('.', $localeKey);
+        }
+        // Find the requested language in this list based on the $languageKey
+        // Language is found. Configure it:
+        if ($localeKey === 'en' || $this->isValidLanguageKey($sanitizedLocaleKey ?? $localeKey)) {
+            return new Locale($localeKey, $this->getLocaleDependencies($sanitizedLocaleKey ?? $localeKey));
+        }
+        return new Locale();
+    }
+
     /**
      * Returns the locales.
      * @return array<int, non-empty-string>

@@ -49,18 +49,11 @@ class LanguageService
      */
     public string $lang = 'default';
 
+    protected ?Locale $locale = null;
     /**
      * If true, will show the key/location of labels in the backend.
      */
     public bool $debugKey = false;
-
-    /**
-     * List of language dependencies for an actual language. This setting is used for local variants of a language
-     * that depend on their "main" language, like Brazilian Portuguese or Canadian French.
-     *
-     * @var array<int, string>
-     */
-    protected array $languageDependencies = [];
 
     /**
      * @var string[][]
@@ -96,19 +89,17 @@ class LanguageService
      * ```
      *
      * @throws \RuntimeException
-     * @param string $languageKey The language key (two character string from backend users profile)
+     * @param Locale|string $languageKey The language key (two character string from backend users profile)
      * @internal use one of the factory methods instead
      */
-    public function init(string $languageKey): void
+    public function init(Locale|string $languageKey): void
     {
-        // Find the requested language in this list based on the $languageKey
-        // Language is found. Configure it:
-        if ($this->locales->isValidLanguageKey($languageKey)) {
-            // The current language key
-            $this->lang = $languageKey;
-            $this->languageDependencies = array_merge([$languageKey], $this->locales->getLocaleDependencies($languageKey));
-            $this->languageDependencies = array_reverse($this->languageDependencies);
+        if ($languageKey instanceof Locale) {
+            $this->locale = $languageKey;
+        } else {
+            $this->locale = $this->locales->createLocale($languageKey);
         }
+        $this->lang = $this->getTypo3LanguageKey();
     }
 
     /**
@@ -181,7 +172,7 @@ class LanguageService
             return $input;
         }
 
-        $cacheIdentifier = 'labels_' . $this->lang . '_' . md5($input . '_' . (int)$this->debugKey);
+        $cacheIdentifier = 'labels_' . (string)$this->locale . '_' . md5($input . '_' . (int)$this->debugKey);
         $cacheEntry = $this->runtimeCache->get($cacheIdentifier);
         if ($cacheEntry !== false) {
             return $cacheEntry;
@@ -261,24 +252,36 @@ class LanguageService
      */
     protected function readLLfile(string $fileRef): array
     {
-        $cacheIdentifier = 'labels_file_' . md5($fileRef . $this->lang . json_encode($this->languageDependencies));
+        $cacheIdentifier = 'labels_file_' . md5($fileRef . (string)$this->locale);
         $cacheEntry = $this->runtimeCache->get($cacheIdentifier);
         if (is_array($cacheEntry)) {
             return $cacheEntry;
         }
 
-        $languages = $this->lang === 'default' ? ['default'] : $this->languageDependencies;
+        $mainLanguageKey = $this->getTypo3LanguageKey();
         $localLanguage = [];
-        foreach ($languages as $language) {
-            $tempLL = $this->localizationFactory->getParsedData($fileRef, $language);
+        $allLocales = array_merge([$mainLanguageKey], $this->locale->getDependencies());
+        $allLocales = array_reverse($allLocales);
+        foreach ($allLocales as $locale) {
+            $tempLL = $this->localizationFactory->getParsedData($fileRef, $locale);
             $localLanguage['default'] = $tempLL['default'];
-            if (!isset($localLanguage[$this->lang])) {
-                $localLanguage[$this->lang] = $localLanguage['default'];
+            if (!isset($localLanguage[$mainLanguageKey])) {
+                $localLanguage[$mainLanguageKey] = $localLanguage['default'];
             }
-            if ($this->lang !== 'default' && isset($tempLL[$language])) {
-                // Merge current language labels onto labels from previous language
-                // This way we have a labels with fall back applied
-                ArrayUtility::mergeRecursiveWithOverrule($localLanguage[$this->lang], $tempLL[$language], true, false);
+            if ($mainLanguageKey !== 'default') {
+                // Fallback as long as TYPO3 supports "da_DK" and "da-DK"
+                if ((!isset($tempLL[$locale]) || $tempLL[$locale] === []) && str_contains($locale, '-')) {
+                    $underscoredLocale = str_replace('-', '_', $locale);
+                    $tempLL = $this->localizationFactory->getParsedData($fileRef, $underscoredLocale);
+                    if (isset($tempLL[$underscoredLocale])) {
+                        $tempLL[$locale] = $tempLL[$underscoredLocale];
+                    }
+                }
+                if (isset($tempLL[$locale])) {
+                    // Merge current language labels onto labels from previous language
+                    // This way we have a labels with fall back applied
+                    ArrayUtility::mergeRecursiveWithOverrule($localLanguage[$mainLanguageKey], $tempLL[$locale], true, false);
+                }
             }
         }
 
@@ -295,27 +298,31 @@ class LanguageService
         $localLanguage = [
             'default' => $labels['default'] ?? [],
         ];
-        if ($this->lang !== 'default') {
-            foreach ($this->languageDependencies as $language) {
+        $mainLanguageKey = $this->getTypo3LanguageKey();
+        if ($mainLanguageKey !== 'default') {
+            $allLocales = array_merge([$mainLanguageKey], $this->locale->getDependencies());
+            $allLocales = array_reverse($allLocales);
+            foreach ($allLocales as $language) {
                 // Populate the initial values with default, if no labels for the current language are given
-                if (!isset($localLanguage[$this->lang])) {
-                    $localLanguage[$this->lang] = $localLanguage['default'];
+                if (!isset($localLanguage[$mainLanguageKey])) {
+                    $localLanguage[$mainLanguageKey] = $localLanguage['default'];
                 }
-                if ($this->lang !== 'default' && isset($labels[$language])) {
-                    $localLanguage[$this->lang] = array_replace_recursive($localLanguage[$this->lang], $labels[$language]);
+                if (isset($labels[$language])) {
+                    $localLanguage[$mainLanguageKey] = array_replace_recursive($localLanguage[$mainLanguageKey], $labels[$language]);
                 }
             }
         }
         $this->overrideLabels[$fileRef] = $localLanguage;
     }
 
-    /**
-     * This is needed as Extbase LocalizationUtility allows to set custom dependencies.
-     * @internal This is not public API and might be removed at any time.
-     */
-    public function setDependencies(array $dependencies): void
+    private function getTypo3LanguageKey(): string
     {
-        $this->languageDependencies = array_merge([$this->lang], $dependencies);
-        $this->languageDependencies = array_reverse($this->languageDependencies);
+        if ($this->locale === null) {
+            return 'default';
+        }
+        if ($this->locale->getName() === 'en') {
+            return 'default';
+        }
+        return $this->locale->getName();
     }
 }
