@@ -48,17 +48,13 @@ class DataHandlerHook
     /**
      * For accumulating information about workspace stages raised
      * on elements so a single mail is sent as notification.
-     *
-     * @var array
      */
-    protected $notificationEmailInfo = [];
+    protected array $notificationEmailInfo = [];
 
     /**
      * Contains remapped IDs.
-     *
-     * @var array
      */
-    protected $remappedIds = [];
+    protected array $remappedIds = [];
 
     /****************************
      *****  Cmdmap  Hooks  ******
@@ -141,7 +137,6 @@ class DataHandlerHook
      */
     public function processCmdmap_afterFinish(DataHandler $dataHandler)
     {
-        // Empty accumulation array
         $emailNotificationService = GeneralUtility::makeInstance(StageChangeNotification::class);
         $this->sendStageChangeNotification(
             $this->notificationEmailInfo,
@@ -177,7 +172,7 @@ class DataHandlerHook
                 $groupedNotificationInformation['elements'],
                 $groupedNotificationInformation['shared'][2],
                 $emails,
-                $dataHandler->BE_USER
+                $dataHandler->BE_USER->user
             );
 
             if ($dataHandler->enableLogging) {
