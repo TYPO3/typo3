@@ -1811,11 +1811,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Classes/Controller/ContentController.php
 
 		-
-			message: "#^Parameter \\#1 \\$iterator of method TYPO3\\\\TestIrreForeignfield\\\\Controller\\\\AbstractController\\:\\:getStructure\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractEntity\\>&Iterator, array\\|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryResultInterface given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Classes/Controller/ContentController.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Functional\\\\Fixtures\\\\Frontend\\\\PhpError\\:\\:\\$configuration is never read, only written\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Frontend/PhpError.php
@@ -1956,11 +1951,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Configuration/FlexForm/FlexFormToolsTest.php
 
 		-
-			message: "#^Instantiating DateTimeImmutable with @ produces an error\\: Unexpected character$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Configuration/TypoScript/ConditionMatching/AbstractConditionMatcherTest.php
-
-		-
 			message: "#^Parameter \\#2 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\ExpressionLanguage\\\\ProviderConfigurationLoader constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend, TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Configuration/TypoScript/ConditionMatching/AbstractConditionMatcherTest.php
@@ -2052,11 +2042,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$stream of class TYPO3\\\\CMS\\\\Core\\\\Http\\\\Stream constructor expects resource\\|string, array\\<int, string\\> given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Http/StreamTest.php
-
-		-
-			message: "#^Property TYPO3\\\\TestingFramework\\\\Core\\\\Unit\\\\UnitTestCase\\:\\:\\$testFilesToDelete \\(array\\<non\\-empty\\-string\\>\\) does not accept non\\-empty\\-array\\<string\\|false\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Http/StreamTest.php
 
@@ -2181,11 +2166,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Driver/LocalDriverTest.php
 
 		-
-			message: "#^Property TYPO3\\\\TestingFramework\\\\Core\\\\Unit\\\\UnitTestCase\\:\\:\\$testFilesToDelete \\(array\\<non\\-empty\\-string\\>\\) does not accept non\\-empty\\-array\\<string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/Driver/LocalDriverTest.php
-
-		-
 			message: "#^PHPDoc tag @param references unknown parameter\\: \\$expectedMergedProperties$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/FileReferenceTest.php
@@ -2274,11 +2254,6 @@ parameters:
 			message: "#^Parameter \\#5 \\$relativePosition of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\ExtensionManagementUtility\\:\\:addTcaSelectItem\\(\\) expects string, array given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^Property TYPO3\\\\TestingFramework\\\\Core\\\\Unit\\\\UnitTestCase\\:\\:\\$testFilesToDelete \\(array\\<non\\-empty\\-string\\>\\) does not accept non\\-empty\\-array\\<string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
 
 		-
 			message: "#^Static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:callUserFunction\\(\\) invoked with 4 parameters, 2\\-3 required\\.$#"
@@ -2449,21 +2424,6 @@ parameters:
 			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\Exception\\\\ResourceNotFoundException is never thrown in the try block\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Web/Routing/UriBuilder.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\Container\\\\Container\\:\\:getEmptyObject\\(\\) should return object&T but returns object\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Object/Container/Container.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\Container\\\\Container\\:\\:getInstanceInternal\\(\\) should return object&T but returns Psr\\\\Container\\\\ContainerInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Object/Container/Container.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\Container\\\\Container\\:\\:getInstanceInternal\\(\\) should return object&T but returns object\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Classes/Object/Container/Container.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\Container\\\\Container\\<T\\>\\:\\:\\$reflectionService \\(TYPO3\\\\CMS\\\\Extbase\\\\Reflection\\\\ReflectionService\\) on left side of \\?\\? is not nullable\\.$#"
@@ -2721,11 +2681,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Validation/ValidatorResolver.php
 
 		-
-			message: "#^Parameter \\#1 \\$iterator of method ExtbaseTeam\\\\BlogExample\\\\Controller\\\\BlogController\\:\\:getStructure\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractEntity\\>&Iterator, array\\|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryResultInterface given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/BlogController.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\View\\\\ViewInterface\\:\\:setConfiguration\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/ContentController.php
@@ -2737,11 +2692,6 @@ parameters:
 
 		-
 			message: "#^PHPDoc tag @return with type array is incompatible with native type Psr\\\\Http\\\\Message\\\\ResponseInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/ContentController.php
-
-		-
-			message: "#^Parameter \\#1 \\$iterator of method ExtbaseTeam\\\\BlogExample\\\\Controller\\\\ContentController\\:\\:getStructure\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractEntity\\>&Iterator, array\\|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryResultInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/ContentController.php
 
@@ -3281,11 +3231,6 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Classes/Domain/Model/DownloadQueue.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extensionmanager\\\\Domain\\\\Model\\\\Extension\\:\\:convertDependenciesToObjects\\(\\) should return iterable\\<TYPO3\\\\CMS\\\\Extensionmanager\\\\Domain\\\\Model\\\\Dependency\\>&SplObjectStorage but returns SplObjectStorage\\<object, mixed\\>\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extensionmanager/Classes/Domain/Model/Extension.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalAnd\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 11
 			path: ../../typo3/sysext/extensionmanager/Classes/Domain/Repository/ExtensionRepository.php
@@ -3346,11 +3291,6 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Classes/Remote/RemoteRegistry.php
 
 		-
-			message: "#^Instantiating DateTimeImmutable with @ produces an error\\: Unexpected character$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Classes/Remote/TerExtensionRemote.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extensionmanager\\\\Remote\\\\ExtensionDownloaderRemoteInterface\\:\\:needsUpdate\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Classes/Report/ExtensionStatus.php
@@ -3396,19 +3336,9 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Domain/Repository/ExtensionRepositoryTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$dependencies of method TYPO3\\\\CMS\\\\Extensionmanager\\\\Domain\\\\Model\\\\Extension\\:\\:setDependencies\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extensionmanager\\\\Domain\\\\Model\\\\Dependency\\>&SplObjectStorage, SplObjectStorage\\<object, mixed\\> given\\.$#"
-			count: 6
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Domain/Repository/ExtensionRepositoryTest.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Extensionmanager\\\\Tests\\\\Unit\\\\Fixtures\\\\LatestCompatibleExtensionObjectStorageFixture\\:\\:\\$position is never read, only written\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Fixtures/LatestCompatibleExtensionObjectStorageFixture.php
-
-		-
-			message: "#^Parameter \\#1 \\$dependencies of method TYPO3\\\\CMS\\\\Extensionmanager\\\\Domain\\\\Model\\\\Extension\\:\\:setDependencies\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extensionmanager\\\\Domain\\\\Model\\\\Dependency\\>&SplObjectStorage, SplObjectStorage\\<object, mixed\\> given\\.$#"
-			count: 12
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/DependencyUtilityTest.php
 
 		-
 			message: "#^Undefined variable\\: \\$EM_CONF$#"
@@ -3579,11 +3509,6 @@ parameters:
 			message: "#^Call to function is_int\\(\\) with mixed will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Format/BytesViewHelper.php
-
-		-
-			message: "#^Instantiating DateTime with @ produces an error\\: Unexpected character$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Format/DateViewHelper.php
 
 		-
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
@@ -4922,11 +4847,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#3 \\$searchFields of method TYPO3\\\\CMS\\\\Linkvalidator\\\\Repository\\\\BrokenLinkRepository\\:\\:getAllBrokenLinksForPages\\(\\) expects array\\<string\\>, array\\<string, array\\<int, string\\>\\> given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/linkvalidator/Tests/Functional/Repository/BrokenLinkRepositoryTest.php
-
-		-
-			message: "#^Property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$backendUserFixture \\(non\\-empty\\-string\\) does not accept string\\.$#"
 			count: 1
 			path: ../../typo3/sysext/linkvalidator/Tests/Functional/Repository/BrokenLinkRepositoryTest.php
 
