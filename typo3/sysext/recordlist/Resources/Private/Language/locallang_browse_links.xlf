@@ -138,6 +138,9 @@
 			<trans-unit id="no_files" resname="no_files">
 				<source>No files found in %s</source>
 			</trans-unit>
+			<trans-unit id="no_files_search" resname="no_files_search">
+				<source>No files found in %s for "%s"</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

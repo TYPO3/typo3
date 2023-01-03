@@ -4932,7 +4932,7 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface\\:\\:getReadablePath\\(\\)\\.$#"
-			count: 2
+			count: 3
 			path: ../../typo3/sysext/recordlist/Classes/Browser/FileBrowser.php
 
 		-
