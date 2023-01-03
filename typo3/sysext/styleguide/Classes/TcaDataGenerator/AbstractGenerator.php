@@ -214,7 +214,9 @@ abstract class AbstractGenerator
             $dataHandler->bypassAccessCheckForRecords = true;
             $dataHandler->bypassWorkspaceRestrictions = true;
             $dataHandler->start($data, $commands);
-            $dataHandler->clear_cacheCmd('all');
+            if (Environment::isCli()) {
+                $dataHandler->clear_cacheCmd('all');
+            }
 
             empty($data) ?: $dataHandler->process_datamap();
             empty($commands) ?:$dataHandler->process_cmdmap();
