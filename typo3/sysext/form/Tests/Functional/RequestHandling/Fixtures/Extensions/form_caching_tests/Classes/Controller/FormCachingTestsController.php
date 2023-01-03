@@ -24,14 +24,14 @@ class FormCachingTestsController extends ActionController
 {
     public function someRenderAction(): ResponseInterface
     {
-        $this->view->assign('formIdentifier', $this->request->getPluginName() . '-' . $this->configurationManager->getContentObject()->data['uid']);
+        $this->view->assign('formIdentifier', $this->request->getPluginName() . '-' . $this->request->getAttribute('currentContentObject')->data['uid']);
         $this->view->assign('pluginName', $this->request->getPluginName());
         return $this->htmlResponse();
     }
 
     public function somePerformAction(): ResponseInterface
     {
-        $this->view->assign('formIdentifier', $this->request->getPluginName() . '-' . $this->configurationManager->getContentObject()->data['uid']);
+        $this->view->assign('formIdentifier', $this->request->getPluginName() . '-' . $this->request->getAttribute('currentContentObject')->data['uid']);
         $this->view->assign('pluginName', $this->request->getPluginName());
         return $this->htmlResponse();
     }

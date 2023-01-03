@@ -57,20 +57,11 @@ class ConfirmationFinisher extends AbstractFinisher
         'typoscriptObjectPath' => 'lib.tx_form.contentElementRendering',
     ];
 
-    /**
-     * @var array
-     */
-    protected $typoScriptSetup = [];
+    protected array $typoScriptSetup = [];
 
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+    protected ConfigurationManagerInterface $configurationManager;
 
-    /**
-     * @var ContentObjectRenderer
-     */
-    protected $contentObjectRenderer;
+    protected ContentObjectRenderer $contentObjectRenderer;
 
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
@@ -109,7 +100,8 @@ class ConfirmationFinisher extends AbstractFinisher
                 }
                 $setup = $setup[$segment . '.'];
             }
-            $this->contentObjectRenderer->start([$contentElementUid], '');
+            $this->contentObjectRenderer->setRequest($this->finisherContext->getRequest());
+            $this->contentObjectRenderer->start([$contentElementUid]);
             $this->contentObjectRenderer->setCurrentVal((string)$contentElementUid);
             $message = $this->contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.'], $lastSegment);
         } else {

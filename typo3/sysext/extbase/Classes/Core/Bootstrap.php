@@ -79,14 +79,14 @@ class Bootstrap
     /**
      * Explicitly initializes all necessary Extbase objects by invoking the various initialize* methods.
      *
-     * Usually this method is only called from unit tests or other applications which need a more fine grained control over
+     * Usually this method is only called from unit tests or other applications which need a more fine-grained control over
      * the initialization and request handling process. Most other applications just call the run() method.
      *
      * @param array $configuration The TS configuration array
      * @throws \RuntimeException
      * @see run()
      */
-    public function initialize(array $configuration): void
+    public function initialize(array $configuration, ServerRequestInterface $request): ServerRequestInterface
     {
         if (!Environment::isCli()) {
             if (!isset($configuration['extensionName']) || $configuration['extensionName'] === '') {
@@ -96,7 +96,7 @@ class Bootstrap
                 throw new \RuntimeException('Invalid configuration: "pluginName" is not set', 1290623027);
             }
         }
-        $this->initializeConfiguration($configuration);
+        return $this->initializeConfiguration($configuration, $request);
     }
 
     /**
@@ -105,11 +105,16 @@ class Bootstrap
      * @see initialize()
      * @internal
      */
-    public function initializeConfiguration(array $configuration): void
+    public function initializeConfiguration(array $configuration, ServerRequestInterface $request): ServerRequestInterface
     {
-        $this->cObj ??= $this->container->get(ContentObjectRenderer::class);
+        if ($this->cObj === null) {
+            $this->cObj = $this->container->get(ContentObjectRenderer::class);
+            $request = $request->withAttribute('currentContentObject', $this->cObj);
+        }
+        $this->cObj->setRequest($request);
         $this->configurationManager->setContentObject($this->cObj);
         $this->configurationManager->setConfiguration($configuration);
+        return $request;
         // todo: Shouldn't the configuration manager object – which is a singleton – be stateless?
         // todo: At this point we give the configuration manager a state, while we could directly pass the
         // todo: configuration (i.e. controllerName, actionName and such), directly to the request
@@ -133,7 +138,7 @@ class Bootstrap
      */
     public function run(string $content, array $configuration, ServerRequestInterface $request): string
     {
-        $this->initialize($configuration);
+        $request = $this->initialize($configuration, $request);
         return $this->handleFrontendRequest($request);
     }
 
@@ -204,7 +209,6 @@ class Bootstrap
      *
      * Creates an Extbase Request, dispatches it and then returns the Response
      *
-     * @param ServerRequestInterface $request
      * @internal
      */
     public function handleBackendRequest(ServerRequestInterface $request): ResponseInterface
@@ -216,7 +220,7 @@ class Bootstrap
             'pluginName' => $module?->getIdentifier(),
         ];
 
-        $this->initialize($configuration);
+        $request = $this->initialize($configuration, $request);
         $extbaseRequest = $this->extbaseRequestBuilder->build($request);
         $response = $this->dispatcher->dispatch($extbaseRequest);
         $this->resetSingletons();

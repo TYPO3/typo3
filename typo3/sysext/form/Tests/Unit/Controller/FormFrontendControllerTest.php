@@ -21,9 +21,11 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Controller\FormFrontendController;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -65,7 +67,12 @@ final class FormFrontendControllerTest extends UnitTestCase
         );
 
         $flexFormTools = new FlexFormTools(new MockEventDispatcher());
+        $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = (new Request($request));
         $contentObject = new ContentObjectRenderer();
+        $request = $request->withAttribute('currentContentObject', $contentObject);
+        $contentObject->setRequest($request);
+        $mockController->_set('request', $request);
         $contentObject->data = [
             'pi_flexform' => $flexFormTools->flexArray2Xml([
                 'data' => [
@@ -98,13 +105,6 @@ final class FormFrontendControllerTest extends UnitTestCase
                 ],
             ]),
         ];
-
-        $frontendConfigurationManager = $this->createMock(FrontendConfigurationManager::class);
-        $frontendConfigurationManager
-            ->method('getContentObject')
-            ->willReturn($contentObject);
-
-        $mockController->_set('configurationManager', $frontendConfigurationManager);
 
         $configurationServiceMock->method('getPrototypeConfiguration')->with(self::anything())->willReturn([
             'finishersDefinition' => [
@@ -196,7 +196,12 @@ final class FormFrontendControllerTest extends UnitTestCase
         );
 
         $flexFormTools = new FlexFormTools(new MockEventDispatcher());
+        $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = (new Request($request));
         $contentObject = new ContentObjectRenderer();
+        $request = $request->withAttribute('currentContentObject', $contentObject);
+        $contentObject->setRequest($request);
+        $mockController->_set('request', $request);
         $contentObject->data = [
             'pi_flexform' => $flexFormTools->flexArray2Xml([
                 'data' => [
@@ -229,13 +234,6 @@ final class FormFrontendControllerTest extends UnitTestCase
                 ],
             ]),
         ];
-
-        $frontendConfigurationManager = $this->createMock(FrontendConfigurationManager::class);
-        $frontendConfigurationManager
-            ->method('getContentObject')
-            ->willReturn($contentObject);
-
-        $mockController->_set('configurationManager', $frontendConfigurationManager);
 
         $configurationServiceMock->method('getPrototypeConfiguration')->with(self::anything())->willReturn([
             'finishersDefinition' => [
@@ -354,7 +352,12 @@ final class FormFrontendControllerTest extends UnitTestCase
         GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools($eventDispatcher));
 
         $flexFormTools = new FlexFormTools(new MockEventDispatcher());
+        $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = (new Request($request));
         $contentObject = new ContentObjectRenderer();
+        $request = $request->withAttribute('currentContentObject', $contentObject);
+        $contentObject->setRequest($request);
+        $mockController->_set('request', $request);
         $contentObject->data = [
             'pi_flexform' => $flexFormTools->flexArray2Xml([
                 'data' => [
@@ -387,13 +390,6 @@ final class FormFrontendControllerTest extends UnitTestCase
                 ],
             ]),
         ];
-
-        $frontendConfigurationManager = $this->createMock(FrontendConfigurationManager::class);
-        $frontendConfigurationManager
-            ->method('getContentObject')
-            ->willReturn($contentObject);
-
-        $mockController->_set('configurationManager', $frontendConfigurationManager);
 
         $configurationServiceMock->method('getPrototypeConfiguration')->with(self::anything())->willReturn([
             'finishersDefinition' => [

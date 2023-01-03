@@ -67,6 +67,7 @@ class ConfigurationManager implements ConfigurationManagerInterface
      * Note that this is a low level method and only makes sense to be used by Extbase internally.
      *
      * @param array $configuration The new configuration
+     * @internal
      */
     public function setConfiguration(array $configuration = []): void
     {

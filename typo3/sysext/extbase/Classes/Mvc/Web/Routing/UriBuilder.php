@@ -40,22 +40,11 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class UriBuilder
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+    protected ConfigurationManagerInterface $configurationManager;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Service\ExtensionService
-     */
-    protected $extensionService;
+    protected ExtensionService $extensionService;
 
-    /**
-     * An instance of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-     *
-     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-     */
-    protected $contentObject;
+    protected ContentObjectRenderer $contentObject;
 
     protected ?RequestInterface $request = null;
 
@@ -148,16 +137,6 @@ class UriBuilder
     }
 
     /**
-     * Life-cycle method that is called by the DI container as soon as this object is completely built
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function initializeObject(): void
-    {
-        $this->contentObject = $this->configurationManager->getContentObject()
-            ?? GeneralUtility::makeInstance(ContentObjectRenderer::class);
-    }
-
-    /**
      * Sets the current request
      *
      * @return static the current UriBuilder to allow method chaining
@@ -165,6 +144,15 @@ class UriBuilder
     public function setRequest(RequestInterface $request): UriBuilder
     {
         $this->request = $request;
+        $contentObject = $request->getAttribute('currentContentObject');
+        if ($contentObject === null) {
+            // @todo: Review this. This should never be the case since extbase
+            //        bootstrap adds 'currentContentObject' to request. When this
+            //        if() kicks in, it most likely indicates an "out of scope" usage.
+            $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+            $contentObject->setRequest($request->withAttribute('currentContentObject', $contentObject));
+        }
+        $this->contentObject = $contentObject;
         return $this;
     }
 
@@ -478,7 +466,7 @@ class UriBuilder
         /*
          * $this->request MUST NOT be reset here because the request is actually a hard dependency and not part
          * of the internal state of this object.
-         * todo: consider making the request a constructor dependency or get rid of it's usage
+         * todo: make the request a constructor dependency
          */
         return $this;
     }

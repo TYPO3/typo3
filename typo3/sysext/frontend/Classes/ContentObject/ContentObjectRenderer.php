@@ -468,8 +468,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $this->container = GeneralUtility::getContainer();
 
         // We do not derive $this->request from globals here. The request is expected to be injected
-        // using setRequest() after deserialization or with start().
-        // (A fallback to $GLOBALS['TYPO3_REQUEST'] is available in getRequest() for BC)
+        // using setRequest(), a fallback to $GLOBALS['TYPO3_REQUEST'] is available in getRequest() for BC.
     }
 
     /**
@@ -5847,16 +5846,39 @@ class ContentObjectRenderer implements LoggerAwareInterface
         return !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']);
     }
 
+    /**
+     * @todo: This getRequest() handling is pretty messy. We created a loop from
+     *        request to 'currentContentObject' back to request with this.
+     *        v13 should be refactored, probably with this patch chain:
+     *        * Remove fallback to $GLOBALS['TYPO3_REQUEST'] to force consumers
+     *          actually setting the request using setRequest().
+     *        * Protect this method.
+     *        * Get rid of public TSFE->cObj (the "page" instance of cObj).
+     *        * Avoid TSFE as constructor argument and make ContentObjectRenderer
+     *          free for DI, for instance to get the container injected.
+     *        * When getRequest() is protected or private, setRequest() should
+     *          *remove* the currentContentObject attribute again, to prevent
+     *          the object loop. This will work, since local getRequest() could
+     *          use $this when needed.
+     *
+     * @internal This method will be set to protected with TYPO3 v13.
+     */
     public function getRequest(): ServerRequestInterface
     {
         if ($this->request instanceof ServerRequestInterface) {
+            // Note attribute 'currentContentObject' has been set by setRequest() already.
             return $this->request;
         }
 
-        if (isset($GLOBALS['TYPO3_REQUEST']) && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
-            return $GLOBALS['TYPO3_REQUEST'];
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
+            // @todo: We may want to deprecate this fallback and force consumers
+            //        to setRequest() after object instantiation / unserialization instead.
+            return $GLOBALS['TYPO3_REQUEST']->withAttribute('currentContentObject', $this);
         }
 
-        throw new ContentRenderingException('PSR-7 request is missing in ContentObjectRenderer. Inject with start(), setRequest() or provide via $GLOBALS[\'TYPO3_REQUEST\'].', 1607172972);
+        throw new ContentRenderingException(
+            'PSR-7 request is missing in ContentObjectRenderer. Inject with start(), setRequest() or provide via $GLOBALS[\'TYPO3_REQUEST\'].',
+            1607172972
+        );
     }
 }

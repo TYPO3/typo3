@@ -43,6 +43,7 @@ final class CaseContentObjectTest extends UnitTestCase
 
         $request = new ServerRequest();
         $contentObjectRenderer = new ContentObjectRenderer($tsfe);
+        $request = $request->withAttribute('currentContentObject', $contentObjectRenderer);
         $contentObjectRenderer->setRequest($request);
         $cObjectFactoryMock = $this->getMockBuilder(ContentObjectFactory::class)->disableOriginalConstructor()->getMock();
 
@@ -51,7 +52,7 @@ final class CaseContentObjectTest extends UnitTestCase
         $caseContentObject->setContentObjectRenderer($contentObjectRenderer);
 
         $textContentObject = new TextContentObject();
-        $textContentObject->setRequest(new ServerRequest());
+        $textContentObject->setRequest($request);
         $textContentObject->setContentObjectRenderer($contentObjectRenderer);
 
         $cObjectFactoryMock->method('getContentObject')->willReturnMap([

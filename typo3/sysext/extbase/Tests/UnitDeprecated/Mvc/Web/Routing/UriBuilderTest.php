@@ -41,7 +41,6 @@ final class UriBuilderTest extends UnitTestCase
         $this->subject->setRequest($this->createMock(Request::class));
         $this->subject->injectConfigurationManager($this->createMock(ConfigurationManagerInterface::class));
         $this->subject->injectExtensionService($this->mockExtensionService);
-        $this->subject->initializeObject();
         $this->subject->_set('contentObject', $this->createMock(ContentObjectRenderer::class));
     }
 

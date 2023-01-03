@@ -504,7 +504,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      */
     protected function isRenderedCached(): bool
     {
-        $contentObject = $this->configurationManager->getContentObject();
+        $contentObject = $this->request->getAttribute('currentContentObject');
         return $contentObject === null
             ? true
             // @todo this does not work when rendering a cached `FLUIDTEMPLATE` (not nested in `COA_INT`)
@@ -1079,8 +1079,8 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         }
 
         $contentObjectData = [];
-        if ($this->configurationManager->getContentObject() instanceof ContentObjectRenderer) {
-            $contentObjectData = $this->configurationManager->getContentObject()->data;
+        if ($this->request->getAttribute('currentContentObject') instanceof ContentObjectRenderer) {
+            $contentObjectData = $this->request->getAttribute('currentContentObject')->data;
         }
 
         return GeneralUtility::makeInstance(

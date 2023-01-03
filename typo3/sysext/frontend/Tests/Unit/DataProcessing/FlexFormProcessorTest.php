@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\DataProcessing;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
@@ -204,6 +205,9 @@ final class FlexFormProcessorTest extends UnitTestCase
             ],
         ];
         $this->contentObjectRendererMock->expects(self::once())->method('start')->with([$convertedFlexFormData]);
+        $request = new ServerRequest();
+        $request = $request->withAttribute('currentContentObject', $this->contentObjectRendererMock);
+        $this->contentObjectRendererMock->method('getRequest')->willReturn($request);
 
         $contentDataProcessorMock = $this->getMockBuilder(ContentDataProcessor::class)->disableOriginalConstructor()->getMock();
         $renderedDataFromProcessors = [

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\DataProcessing;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
@@ -79,7 +80,9 @@ class FlexFormProcessor implements DataProcessorInterface
         $targetVariableName = $cObj->stdWrapValue('as', $processorConfiguration, 'flexFormData');
 
         if (isset($processorConfiguration['dataProcessing.']) && is_array($processorConfiguration['dataProcessing.'])) {
-            $flexFormData = $this->processAdditionalDataProcessors($flexFormData, $processorConfiguration);
+            // @todo: It looks as if data processors should retrieve the current request from the outside,
+            //        this would avoid $cObj->getRequest() here.
+            $flexFormData = $this->processAdditionalDataProcessors($flexFormData, $processorConfiguration, $cObj->getRequest());
         }
 
         $processedData[$targetVariableName] = $flexFormData;
@@ -90,10 +93,11 @@ class FlexFormProcessor implements DataProcessorInterface
     /**
      * Recursively process sub processors of a data processor
      */
-    public function processAdditionalDataProcessors(array $data, array $processorConfiguration): array
+    protected function processAdditionalDataProcessors(array $data, array $processorConfiguration, ServerRequestInterface $request): array
     {
         $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $contentObjectRenderer->start([$data]);
+        $contentObjectRenderer->setRequest($request->withAttribute('currentContentObject', $contentObjectRenderer));
+        $contentObjectRenderer->start([$data], '');
         return GeneralUtility::makeInstance(ContentDataProcessor::class)->process(
             $contentObjectRenderer,
             $processorConfiguration,

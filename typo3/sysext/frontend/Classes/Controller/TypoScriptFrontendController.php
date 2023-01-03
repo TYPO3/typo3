@@ -2276,7 +2276,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $nonCacheableContent = '';
                     $contentObjectRendererForNonCacheable = unserialize($nonCacheableData[$nonCacheableKey]['cObj']);
                     /* @var ContentObjectRenderer $contentObjectRendererForNonCacheable */
-                    $contentObjectRendererForNonCacheable->setRequest($request);
+                    $contentObjectRendererForNonCacheable->setRequest($request->withAttribute('currentContentObject', $contentObjectRendererForNonCacheable));
                     switch ($nonCacheableData[$nonCacheableKey]['type']) {
                         case 'COA':
                             $nonCacheableContent = $contentObjectRendererForNonCacheable->cObjGetSingle('COA', $nonCacheableData[$nonCacheableKey]['conf']);

@@ -41,8 +41,8 @@ class ExtbasePluginContentObject extends AbstractContentObject
             // Come here only if we are not called from $TSFE->processNonCacheableContentPartsAndSubstituteContentMarkers()!
             $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER);
         }
-        $extbaseBootstrap->initialize($conf);
-        $content = $extbaseBootstrap->handleFrontendRequest($this->request);
+        $request = $extbaseBootstrap->initialize($conf, $this->request);
+        $content = $extbaseBootstrap->handleFrontendRequest($request);
         // Rendering is deferred, as the action should not be cached, we pump this now to TSFE to be executed later-on
         if ($this->cObj->doConvertToUserIntObject) {
             $this->cObj->doConvertToUserIntObject = false;
