@@ -265,20 +265,41 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $extensionList = !empty($extensionList) && $extensionList[0] === '*' ? [] : $extensionList;
             $files = $this->getFilesInFolder($folder, $extensionList);
         }
-        if (empty($files)) {
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
-                sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:no_files'), $folder->getStorage()->getName() . ':' . $folder->getReadablePath()),
-                '',
-                ContextualFeedbackSeverity::INFO
+
+        // Prepare search box, since the component should always be displayed, even if no files are available
+        $searchBox = GeneralUtility::makeInstance(RecordSearchBoxComponent::class)
+            ->setSearchWord($this->searchWord)
+            ->render(
+                $this->getRequest(),
+                $this->getScriptUrl() . HttpUtility::buildQueryString($this->getUrlParameters([]), '&')
             );
-            $flashMessageService->getMessageQueueByIdentifier()->addMessage($flashMessage);
+        $searchBox = '<div class="mt-4 mb-4">' . $searchBox . '</div>';
 
-            return '';
+        if (!count($files)) {
+            // No files found. Either due to an active search or simply because the folder is empty.
+            if ($this->searchWord !== '') {
+                $message = sprintf(
+                    $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:no_files_search'),
+                    $folder->getStorage()->getName() . ':' . $folder->getReadablePath(),
+                    $this->searchWord
+                );
+            } else {
+                $message = sprintf(
+                    $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:no_files'),
+                    $folder->getStorage()->getName() . ':' . $folder->getReadablePath()
+                );
+            }
+
+            GeneralUtility::makeInstance(FlashMessageService::class)
+                ->getMessageQueueByIdentifier()
+                ->addMessage(
+                    GeneralUtility::makeInstance(FlashMessage::class, $message, '', ContextualFeedbackSeverity::INFO)
+                );
+
+            return $searchBox;
         }
-        $lines = [];
 
+        $lines = [];
         $tableHeader = '
             <thead>
                 <tr>
@@ -372,13 +393,8 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 </tr>';
         }
 
-        $formUrl = $this->getScriptUrl() . HttpUtility::buildQueryString($this->getUrlParameters([]), '&');
-        $searchBox = GeneralUtility::makeInstance(RecordSearchBoxComponent::class)
-            ->setSearchWord($this->searchWord)
-            ->render($this->getRequest(), $formUrl);
-
         $markup = [];
-        $markup[] = '<div class="mt-4 mb-4">' . $searchBox . '</div>';
+        $markup[] = $searchBox;
         $markup[] = '<div id="filelist">';
         $markup[] = '  <div class="row row-cols-auto justify-content-between gx-0 list-header multi-record-selection-actions-wrapper">';
         $markup[] = '      <div class="col-auto">';
