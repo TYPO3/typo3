@@ -12,13 +12,13 @@
  */
 
 /**
- * Javascript functions regarding the Pagination module
+ * Javascript functions regarding the filter module
  */
 
 import DocumentService from '@typo3/core/document-service.js';
 import DateTimePicker from '@typo3/backend/date-time-picker.js';
 
-class Pagination {
+class Filter {
   constructor() {
     DocumentService.ready().then(() => {
       this.initializeDateTimePickers();
@@ -32,4 +32,4 @@ class Pagination {
   }
 }
 
-export default new Pagination();
+export default new Filter();

@@ -1,0 +1,118 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <div id="container-navigation">
+        <f:render partial="Backend/Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="container-content">
+
+        <h1>Filter</h1>
+
+        <p class="lead">This is not a working example! It shows only the basic HTML structure to use.</p>
+
+        <sg:code language="html">
+            <div class="row row-cols-auto align-items-end g-3">
+
+                <div class="col">
+                    <label for="belog-users" class="form-label">User</label>
+                    <select class="form-select" id="belog-users" name="">
+                        <f:for each="{userGroups}" as="userGroupName" key="userGroupKey">
+                            <option value="{userGroupKey}">{userGroupName}</option>
+                        </f:for>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <label for="belog-max" class="form-label">Max</label>
+                    <select class="form-select" id="belog-max" name="">
+                        <option value="0">50</option>
+                        <option value="1">100</option>
+                        <option value="2">200</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="belog-workspaces" class="form-label">Workspace</label>
+                    <select class="form-select" id="belog-workspaces" name="">
+                        <option value="-99">[Any]</option>
+                        <option value="0">LIVE</option>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <label for="belog-action" class="form-label">Action</label>
+                    <select class="form-select" id="belog-action" name="">
+                        <option value="0">[Any]</option>
+                        <option value="1">Database</option>
+                        <option value="2">File</option>
+                        <option value="3">Cache</option>
+                        <option value="4">Settings</option>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <label for="manualDateStart" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:from" /></label>
+
+                    <div class="input-group">
+                        <input
+                            autocomplete="off"
+                            data-date-type="datetime"
+                            class="form-control t3js-datetimepicker t3js-clearable"
+                            id="manualDateStart"
+                            type="text"
+                            name="manualDateStart"
+                            value="{f:format.date(date: 'now', format: dateTimeFormat)}"
+                        >
+                        <input
+                            type="hidden"
+                            property="manualDateStart"
+                            value="{f:format.date(date: 'now', format: dateTimeFormat)}"
+                        />
+                        <label class="mb-0 btn btn-default" for="manualDateStart">
+                            <core:icon identifier="actions-calendar" />
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <label for="manualDateStop" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:to" /></label>
+                    <div class="input-group">
+                        <input
+                            autocomplete="off"
+                            data-date-type="datetime"
+                            class="form-control t3js-datetimepicker t3js-clearable"
+                            id="manualDateStop"
+                            type="text"
+                            name="manualDateStop"
+                            value="{f:format.date(date: 'now', format: dateTimeFormat)}"
+                        >
+                        <input
+                            type="hidden"
+                            property="manualDateStop"
+                            value="{f:format.date(date: 'now', format: dateTimeFormat)}"
+                        />
+                        <label class="mb-0 btn btn-default" for="manualDateStop">
+                            <core:icon identifier="actions-calendar" />
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <button class="btn btn-light" type="submit" name="operation" value="filter">Filter</button>
+                    <button class="btn btn-link" type="submit" name="operation" value="reset-filters">Reset</button>
+                </div>
+            </div>
+        </sg:code>
+
+    </div>
+
+</f:section>
+
+</html>

@@ -17,10 +17,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -28,110 +31,163 @@ use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorFrontend;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
- * Backend module for Styleguide
+ * Styleguide main backend module in the help toolbar
  */
-class BackendController extends ActionController
+#[Controller]
+class BackendController
 {
-    protected ModuleTemplate $moduleTemplate;
-    protected string $languageFilePrefix = 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:';
+    /**
+     * @var non-empty-array<int, string>
+     */
+    private array $allowedActions = [
+        'index',
+        'tca',
+        'typography',
+        'trees',
+        'tab',
+        'tables',
+        'avatar',
+        'buttons',
+        'infobox',
+        'flashMessages',
+        'notifications',
+        'icons',
+        'modal',
+        'accordion',
+        'pagination',
+        'filter',
+    ];
+
+    /**
+     * @var non-empty-array<int, string>
+     */
+    private array $allowedAjaxActions = [
+        'tcaCreate',
+        'tcaDelete',
+        'frontendCreate',
+        'frontendDelete',
+    ];
 
     public function __construct(
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-        protected readonly PageRenderer $pageRenderer,
-        protected readonly FlashMessageService $flashMessageService,
+        private readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly PageRenderer $pageRenderer,
+        private readonly FlashMessageService $flashMessageService,
     ) {
     }
 
     /**
-     * Method is called before each action and sets up the doc header.
+     * Main entry point dispatcher
      */
-    protected function initializeView(): void
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
+    {
+        $currentAction = $request->getQueryParams()['action'] ?? 'index';
+        if (!in_array($currentAction, $this->allowedActions, true)
+            && !in_array($currentAction, $this->allowedAjaxActions, true)
+        ) {
+            throw new \RuntimeException('Not allowed action', 1672751508);
+        }
+        $actionMethodName = $currentAction . 'Action';
+        return $this->$actionMethodName($request);
+    }
+
+    private function indexAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
         $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
-
-        // Hand over flash message queue to module template
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-        $this->moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
-        $this->moduleTemplate->assign('actions', ['index', 'typography', 'tca', 'trees', 'tab', 'tables', 'avatar', 'buttons',
-            'infobox', 'flashMessages', 'icons', 'modal', 'accordion', 'pagination', ]);
-        $this->moduleTemplate->assign('currentAction', $this->request->getControllerActionName());
-
-        // Shortcut button
-        $arguments = $this->request->getArguments();
-        $shortcutArguments = [];
-        if (!empty($arguments['controller']) && !empty($arguments['action'])) {
-            $shortcutArguments = [
-                'controller' => $arguments['controller'],
-                'action' => $arguments['action'],
-            ];
-        }
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setDisplayName(sprintf(
-                '%s - %s',
-                LocalizationUtility::translate($this->languageFilePrefix . 'styleguide', 'styleguide'),
-                LocalizationUtility::translate($this->languageFilePrefix . ($arguments['action'] ?? 'index'), 'styleguide')
-            ))
-            ->setRouteIdentifier('help_StyleguideStyleguide')
-            ->setArguments($shortcutArguments);
-        $buttonBar->addButton($shortcutButton);
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'index');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'index',
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Index');
     }
 
-    protected function buttonsAction(): ResponseInterface
+    private function buttonsAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->moduleTemplate->renderResponse('Backend/Buttons');
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'buttons');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'buttons',
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Buttons');
     }
 
-    protected function indexAction(): ResponseInterface
+    private function typographyAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->moduleTemplate->renderResponse('Backend/Index');
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'typography');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'typography',
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Typography');
     }
 
-    protected function typographyAction(): ResponseInterface
+    private function treesAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->moduleTemplate->renderResponse('Backend/Typography');
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'trees');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'trees',
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Trees');
     }
 
-    protected function treesAction(): ResponseInterface
+    private function tablesAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->moduleTemplate->renderResponse('Backend/Trees');
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'tables');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'tables',
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Tables');
     }
 
-    protected function tablesAction(): ResponseInterface
+    private function tcaAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->moduleTemplate->renderResponse('Backend/Tables');
-    }
-
-    protected function tcaAction(): ResponseInterface
-    {
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'tca');
         $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/processing-indicator.js');
         $finder = GeneralUtility::makeInstance(RecordFinder::class);
         $demoExists = count($finder->findUidsOfStyleguideEntryPages());
         $demoFrontendExists = count($finder->findUidsOfFrontendPages());
-        $this->moduleTemplate->assignMultiple([
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'tca',
             'demoExists' => $demoExists,
             'demoFrontendExists' => $demoFrontendExists,
         ]);
-        return $this->moduleTemplate->renderResponse('Backend/Tca');
+        return $moduleTemplate->renderResponse('Backend/Tca');
     }
 
-    protected function tcaCreateAction(): ResponseInterface
+    private function tcaCreateAction(): ResponseInterface
     {
         $finder = GeneralUtility::makeInstance(RecordFinder::class);
         if (count($finder->findUidsOfStyleguideEntryPages())) {
             // Tell something was done here
             $json = [
-                'title' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionFailedTitle', 'styleguide'),
-                'body' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionFailedBody', 'styleguide'),
+                'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionFailedTitle'),
+                'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionFailedBody'),
                 'status' => ContextualFeedbackSeverity::ERROR,
             ];
         } else {
@@ -139,8 +195,8 @@ class BackendController extends ActionController
             $generator->create();
             // Tell something was done here
             $json = [
-                'title' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionOkTitle', 'styleguide'),
-                'body' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionOkBody', 'styleguide'),
+                'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionOkTitle'),
+                'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionOkBody'),
                 'status' => ContextualFeedbackSeverity::OK,
             ];
         }
@@ -148,22 +204,58 @@ class BackendController extends ActionController
         return new JsonResponse($json);
     }
 
-    protected function tcaDeleteAction(): ResponseInterface
+    private function tcaDeleteAction(): ResponseInterface
     {
         $generator = GeneralUtility::makeInstance(Generator::class);
         $generator->delete();
-        // Tell something was done here
         $json = [
-            'title' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaDeleteActionOkTitle', 'styleguide'),
-            'body' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaDeleteActionOkBody', 'styleguide'),
+            'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteActionOkTitle'),
+            'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteActionOkBody'),
             'status' => ContextualFeedbackSeverity::OK,
         ];
         return new JsonResponse($json);
     }
 
-    protected function iconsAction(): ResponseInterface
+    private function frontendCreateAction(): ResponseInterface
     {
+        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
+        if (count($recordFinder->findUidsOfFrontendPages())) {
+            $json = [
+                'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionFailedTitle'),
+                'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionFailedBody'),
+                'status' => ContextualFeedbackSeverity::ERROR,
+            ];
+        } else {
+            $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
+            $frontend->create();
+            $json = [
+                'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionOkTitle'),
+                'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionOkBody'),
+                'status' => ContextualFeedbackSeverity::OK,
+            ];
+        }
+        return new JsonResponse($json);
+    }
+
+    private function frontendDeleteAction(): ResponseInterface
+    {
+        $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
+        $frontend->delete();
+        $json = [
+            'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendDeleteActionOkTitle'),
+            'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendDeleteActionOkBody'),
+            'status' => ContextualFeedbackSeverity::OK,
+        ];
+        return new JsonResponse($json);
+    }
+
+    private function iconsAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/find-icons.js');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'icons');
         $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         $allIcons = $iconRegistry->getAllRegisteredIconIdentifiers();
         $overlays = array_filter(
@@ -172,22 +264,39 @@ class BackendController extends ActionController
                 return str_starts_with($key, 'overlay');
             }
         );
-        $this->moduleTemplate->assignMultiple([
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'icons',
             'allIcons' => $allIcons,
             'deprecatedIcons' => $iconRegistry->getDeprecatedIcons(),
             'overlays' => $overlays,
         ]);
-        return $this->moduleTemplate->renderResponse('Backend/Icons');
+        return $moduleTemplate->renderResponse('Backend/Icons');
     }
 
-    protected function infoboxAction(): ResponseInterface
+    private function infoboxAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->moduleTemplate->renderResponse('Backend/Infobox');
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'infobox');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'infobox',
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Infobox');
     }
 
-    protected function flashMessagesAction(): ResponseInterface
+    private function flashMessagesAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/render-notifications.js');
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'flashMessages');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'flashMessages',
+        ]);
         $loremIpsum = GeneralUtility::makeInstance(KauderwelschService::class)->getLoremIpsum();
         // We're writing to an own queue here to position the messages within the body.
         // Normal modules wouldn't usually do this and would let ModuleTemplate layout take care of rendering
@@ -198,35 +307,83 @@ class BackendController extends ActionController
         $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Error - Title for Error message', ContextualFeedbackSeverity::ERROR, true));
         $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Ok - Title for OK message', ContextualFeedbackSeverity::OK, true));
         $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Warning - Title for Warning message', ContextualFeedbackSeverity::WARNING, true));
-        return $this->moduleTemplate->renderResponse('Backend/FlashMessages');
+        return $moduleTemplate->renderResponse('Backend/FlashMessages');
     }
 
-    protected function avatarAction(): ResponseInterface
+    private function notificationsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate->assign(
-            'backendUser',
-            $GLOBALS['BE_USER']->user
-        );
-        return $this->moduleTemplate->renderResponse('Backend/Avatar');
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/render-notifications.js');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'notifications');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'notifications',
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Notifications');
     }
 
-    protected function tabAction(): ResponseInterface
+    private function avatarAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->moduleTemplate->renderResponse('Backend/Tab');
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'avatar');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'avatar',
+            'backendUser' => $GLOBALS['BE_USER']->user,
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Avatar');
     }
 
-    protected function modalAction(): ResponseInterface
+    private function tabAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->moduleTemplate->renderResponse('Backend/Modal');
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'tab');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'tab',
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Tab');
     }
 
-    protected function accordionAction(): ResponseInterface
+    private function modalAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->moduleTemplate->renderResponse('Backend/Accordion');
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'modal');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'modal',
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Modal');
     }
 
-    protected function paginationAction(int $page = 1): ResponseInterface
+    private function accordionAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'accordion');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'accordion',
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Accordion');
+    }
+
+    private function paginationAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'pagination');
+        $page = (int)($request->getQueryParams()['page'] ?? 1);
         // Prepare example data for pagination list
         $itemsToBePaginated = [
             'Warty Warthog',
@@ -264,11 +421,23 @@ class BackendController extends ActionController
             'Groovy Gorilla',
         ];
         $itemsPerPage = 10;
+        $paginator = new ArrayPaginator($itemsToBePaginated, $page, $itemsPerPage);
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'pagination',
+            'paginator' => $paginator,
+            'pagination' => new SimplePagination($paginator),
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Pagination');
+    }
 
-        if ($this->request->hasArgument('page')) {
-            $page = (int)$this->request->getArgument('page');
-        }
-
+    private function filterAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/filter.js');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'filter');
         // Prepare example data for dropdown
         $userGroupArray = [
             0 => '[All users]',
@@ -280,51 +449,31 @@ class BackendController extends ActionController
             'us-10' => 'User styleguide demo user 1',
             'us-11' => 'User styleguide demo user 2',
         ];
-
-        $paginator = new ArrayPaginator($itemsToBePaginated, $page, $itemsPerPage);
-        $this->moduleTemplate->assignMultiple([
-            'paginator' => $paginator,
-            'pagination' => new SimplePagination($paginator),
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'filter',
             'userGroups' => $userGroupArray,
             'dateTimeFormat' => 'h:m d-m-Y',
         ]);
-
-        $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/pagination.js');
-
-        return $this->moduleTemplate->renderResponse('Backend/Pagination');
+        return $moduleTemplate->renderResponse('Backend/Filter');
     }
 
-    protected function frontendCreateAction(): ResponseInterface
+    private function addShortcutButton(ModuleTemplate $moduleTemplate, string $action): void
     {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        if (count($recordFinder->findUidsOfFrontendPages())) {
-            $json = [
-              'title' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionFailedTitle', 'styleguide'),
-              'body' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionFailedBody', 'styleguide'),
-              'status' => ContextualFeedbackSeverity::ERROR,
-            ];
-        } else {
-            $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
-            $frontend->create();
-
-            $json = [
-                'title' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionOkTitle', 'styleguide'),
-                'body' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionOkBody', 'styleguide'),
-                'status' => ContextualFeedbackSeverity::OK,
-            ];
-        }
-        return new JsonResponse($json);
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setDisplayName(sprintf(
+                '%s - %s',
+                $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styleguide'),
+                $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:' . $action)
+            ))
+            ->setRouteIdentifier('help_styleguide')
+            ->setArguments(['action' => $action]);
+        $buttonBar->addButton($shortcutButton);
     }
 
-    protected function frontendDeleteAction(): ResponseInterface
+    private function getLanguageService(): LanguageService
     {
-        $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
-        $frontend->delete();
-        $json = [
-            'title' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendDeleteActionOkTitle', 'styleguide'),
-            'body' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendDeleteActionOkBody', 'styleguide'),
-            'status' => ContextualFeedbackSeverity::OK,
-        ];
-        return new JsonResponse($json);
+        return $GLOBALS['LANG'];
     }
 }

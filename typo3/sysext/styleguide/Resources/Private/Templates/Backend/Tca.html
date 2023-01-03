@@ -8,10 +8,10 @@
 <f:section name="Content">
 
     <div id="container-navigation">
-        <f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+        <f:render partial="Backend/Navigation" arguments="{currentAction: currentAction, actions: actions}" />
     </div>
     <div id="container-content">
-        <h1><f:translate key="tca" /></h1>
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tca" /></h1>
 
         <h2>TCA test records</h2>
 
@@ -22,14 +22,14 @@
         </p>
 
         <p>
-            <button data-href="{f:uri.action(action: 'tcaCreate')}" class="btn btn-primary{f:if(condition: '{demoExists} = true', then: ' disabled')} t3js-generator-action">
+            <button data-href="{f:be.uri(route: 'help_styleguide', parameters: '{action: \'tcaCreate\'}')}" class="btn btn-primary{f:if(condition: '{demoExists} = true', then: ' disabled')} t3js-generator-action">
                 <i class="fa fa-plus fa-fw"></i>
-                <f:translate key="tcaCreateButton" />
+                <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateButton" />
             </button>
 
-            <button data-href="{f:uri.action(action: 'tcaDelete')}" class="btn btn-danger{f:if(condition: '{demoExists} != true', then: ' disabled')}  t3js-generator-action">
+            <button data-href="{f:be.uri(route: 'help_styleguide', parameters: '{action: \'tcaDelete\'}')}" class="btn btn-danger{f:if(condition: '{demoExists} != true', then: ' disabled')}  t3js-generator-action">
                 <i class="fa fa-trash fa-fw"></i>
-                <f:translate key="tcaDeleteButton" />
+                <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteButton" />
             </button>
         </p>
 
@@ -40,14 +40,14 @@
         </p>
 
         <p>
-            <button data-href="{f:uri.action(action: 'frontendCreate')}" class="btn btn-primary{f:if(condition: '{demoFrontendExists} = true', then: ' disabled')}  t3js-generator-action">
+            <button data-href="{f:be.uri(route:'help_styleguide', parameters: '{action: \'frontendCreate\'}')}" class="btn btn-primary{f:if(condition: '{demoFrontendExists} = true', then: ' disabled')}  t3js-generator-action">
                 <i class="fa fa-plus fa-fw"></i>
-                <f:translate key="frontendCreateButton" />
+                <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateButton" />
             </button>
 
-            <button data-href="{f:uri.action(action: 'frontendDelete')}" class="btn btn-danger{f:if(condition: '{demoFrontendExists} != true', then: ' disabled')}  t3js-generator-action">
+            <button data-href="{f:be.uri(route:'help_styleguide', parameters: '{action: \'frontendDelete\'}')}" class="btn btn-danger{f:if(condition: '{demoFrontendExists} != true', then: ' disabled')}  t3js-generator-action">
                 <i class="fa fa-trash fa-fw"></i>
-                <f:translate key="frontendDeleteButton" />
+                <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendDeleteButton" />
             </button>
         </p>
     </div>

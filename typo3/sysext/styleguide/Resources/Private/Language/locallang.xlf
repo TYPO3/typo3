@@ -3,6 +3,15 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2013-05-01T00:00:000" product-name="styleguide">
 		<header/>
 		<body>
+			<trans-unit id="mlang_tabs_tab">
+				<source>Styleguide</source>
+			</trans-unit>
+			<trans-unit id="mlang_labels_tabdescr">
+				<source>Styleguide</source>
+			</trans-unit>
+			<trans-unit id="mlang_labels_tablabel">
+				<source>Styleguide</source>
+			</trans-unit>
 			<trans-unit id="styleguide" xml:space="preserve">
 				<source>Styleguide</source>
 			</trans-unit>
@@ -49,7 +58,10 @@
 				<source>Tables</source>
 			</trans-unit>
 			<trans-unit id="flashMessages" xml:space="preserve">
-				<source>Flash Messages and Notifications</source>
+				<source>Flash Messages</source>
+			</trans-unit>
+			<trans-unit id="notifications" xml:space="preserve">
+				<source>Notifications</source>
 			</trans-unit>
 			<trans-unit id="tcaCreateButton" xml:space="preserve">
 				<source>Create styleguide page tree with data</source>
@@ -91,7 +103,10 @@
 				<source>Accordion</source>
 			</trans-unit>
 			<trans-unit id="pagination" xml:space="preserve">
-				<source>Pagination / Filter</source>
+				<source>Pagination</source>
+			</trans-unit>
+			<trans-unit id="filter" xml:space="preserve">
+				<source>Filter</source>
 			</trans-unit>
 			<trans-unit id="frontendCreateButton" xml:space="preserve">
 				<source>Create styleguide frontend</source>

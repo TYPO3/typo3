@@ -36,7 +36,6 @@ class BackendStyleguideEnvironment extends BackendEnvironment
             'backend',
             'install',
             'frontend',
-            'recordlist',
         ],
         'testExtensionsToLoad' => [
             'typo3conf/ext/styleguide',
