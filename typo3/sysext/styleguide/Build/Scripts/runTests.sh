@@ -75,6 +75,7 @@ Options:
             - acceptance: backend acceptance tests
             - buildCss: compile CSS from SCSS
             - cgl: cgl test and fix all php files
+            - clean: clean up test related build files
             - composerUpdate: "composer update", handy if host has no PHP
             - composerValidate: "composer validate"
             - functional: functional tests
@@ -304,6 +305,14 @@ case ${TEST_SUITE} in
         docker-compose run cgl
         SUITE_EXIT_CODE=$?
         docker-compose down
+        ;;
+    clean)
+        echo -n "Clean builds ... " ; rm -rf \
+        ../../Build/testing-docker/.env \
+        ../../composer.lock \
+        ../../.Build \
+        ../../Tests/Acceptance/Support/_generated/;
+        echo "done"
         ;;
     composerUpdate)
         setUpDockerComposeDotEnv
