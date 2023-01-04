@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Core\Configuration;
 class CKEditor5Migrator
 {
     private const TOOLBAR_GROUPS_MAP = [
-        'basicstyles' => ['bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript'],
+        'basicstyles' => ['bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', 'softhyphen'],
         'format' => ['heading'],
         'styles' => ['style'],
         'list' => ['numberedList', 'bulletedList'],
@@ -58,6 +58,7 @@ class CKEditor5Migrator
         'Format' => ['heading'],
         'BasicStyle' => ['heading'],
         'Table' => ['insertTable'],
+        'SoftHyphen' => ['softhyphen'],
         'specialcharacters' => ['specialCharacters'],
         'specialchar' => ['specialCharacters'],
     ];

@@ -32,6 +32,7 @@ editor:
     toolbar:
       items:
         - clipboard
+        - removeFormat
         - undo
         - redo
         # grouping separator
@@ -40,7 +41,6 @@ editor:
         - selectAll
         - '|'
         - link
-        - SoftHyphen
         - insertTable
         - tableColumn
         - tableRow
@@ -56,14 +56,14 @@ editor:
         - strikethrough
         - subscript
         - superscript
-        - alignment
-        - removeFormat
+        - softhyphen
         - '|'
         - bulletedList
         - numberedList
         - blockQuote
         - indent
         - outdent
+        - alignment
         - '|'
         - specialCharacters
         - '-'

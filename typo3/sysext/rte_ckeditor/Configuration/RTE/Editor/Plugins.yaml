@@ -7,8 +7,8 @@ editor:
     # load modules for plugins when CKEditor is initialized
     # see CKEditor plugin API for details
     importModules:
-      # softhyphen plugin for adding ctrl+dash support to insert a conditional word break
-      - '@typo3/rte-ckeditor/plugin/soft-hyphen.js'
+      # Plugin for whitespace control like soft hypens and non breaking spaces
+      - '@typo3/rte-ckeditor/plugin/whitespace.js'
       - '@typo3/rte-ckeditor/plugin/typo3-link.js'
 
     # Configure global wordCount plugin defaults
