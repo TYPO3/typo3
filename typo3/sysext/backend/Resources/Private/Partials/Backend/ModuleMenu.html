@@ -52,9 +52,17 @@
 </f:section>
 
 <f:section name="Button">
+    <f:variable name="moduleTitle" value="" />
+    <f:if condition="{module.title}">
+        <f:variable name="moduleTitle" value="{f:translate(key: module.title, default: module.title)}" />
+    </f:if>
+    <f:variable name="buttonTitle" value="{moduleTitle}" />
+    <f:if condition="{module.shortDescription}">
+        <f:variable name="buttonTitle" value="{f:translate(key: module.shortDescription, default: module.shortDescription)}" />
+    </f:if>
     <{f:if(condition: module.shouldBeLinked, then: 'a', else: 'button')}
         role="menuitem"
-        title="{f:translate(key: module.shortDescription, default: module.shortDescription)}"
+        title="{buttonTitle}"
         class="modulemenu-action t3js-modulemenu-action {f:if(condition: showChildren, then: 't3js-modulemenu-collapsible')}"
         tabindex="{tabIndex}"
         id="{module.identifier}"
@@ -65,7 +73,7 @@
         {f:if(condition: showChildren, then: 'aria-haspopup="true" aria-expanded="{f:if(condition: module.collapsed, then: \'false\', else: \'true\')}"')}
     >
         <span class="modulemenu-icon" aria-hidden="true"><core:icon size="medium" identifier="{module.iconIdentifier}" alternativeMarkupIdentifier="inline" /></span>
-        <span class="modulemenu-name"><f:translate key="{module.title}">{module.title}</f:translate></span>
+        <span class="modulemenu-name">{moduleTitle}</span>
         <span class="modulemenu-indicator" aria-hidden="true"></span>
     </{f:if(condition: module.shouldBeLinked, then: 'a', else: 'button')}>
 </f:section>
