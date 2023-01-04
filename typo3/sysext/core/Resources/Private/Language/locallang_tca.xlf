@@ -78,6 +78,12 @@
 			<trans-unit id="be_users.admin">
 				<source>Admin (!)</source>
 			</trans-unit>
+			<trans-unit id="be_users.types.user">
+				<source>User</source>
+			</trans-unit>
+			<trans-unit id="be_users.types.admin">
+				<source>Admin</source>
+			</trans-unit>
 			<trans-unit id="be_users.options">
 				<source>Mount from groups</source>
 			</trans-unit>

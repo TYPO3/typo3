@@ -50,7 +50,10 @@ final class RecyclerModuleCest
         $I->switchToContentFrame();
         $I->waitForElement('[title="Create new record"]');
         $I->click('a[title="Create new record"]');
-        $I->click('//a[text()[normalize-space(.) = "Page (inside)"]]');
+        $I->waitForElementVisible('button[data-bs-target="#inside-types"]');
+        $I->click('button[data-bs-target="#inside-types"]');
+        $I->waitForElementVisible('#inside-types');
+        $I->click('//a[text()[normalize-space(.) = "Standard"]]');
         $I->fillField('//input[contains(@data-formengine-input-name, "data[pages]") and contains(@data-formengine-input-name, "[title]")]', self::$pageTitle);
         $I->click('button[name="_savedok"]');
 

@@ -2885,6 +2885,8 @@ td .table-fit{margin-bottom:0}
 .list-group-item.active{--typo3-list-group-color:var(--typo3-list-group-active-color);--typo3-list-group-bg:var(--typo3-list-group-active-bg);--typo3-list-group-border-color:var(--typo3-list-group-active-border-color);z-index:2}
 .list-group-item.disabled,.list-group-item:disabled{--typo3-list-group-color:var(--typo3-list-group-disabled-color);--typo3-list-group-bg:var(--typo3-list-group-disabled-bg);--typo3-list-group-border-color:var(--typo3-list-group-disabled-border-color);pointer-events:none}
 .list-group-item+.list-group-item{margin-top:calc(var(--typo3-list-group-border-width)*-1)}
+.list-group-button{align-items:center;background:transparent;border:none;display:flex;flex-grow:1;gap:.25rem;padding:var(--typo3-list-group-padding-y) var(--typo3-list-group-padding-x);position:relative;text-align:start;width:100%}
+.list-group-button[aria-expanded=false] .caret{--typo3-caret-rotation:calc(-90deg*var(--typo3-position-modifier))}
 .upload-file-picker{bottom:0;height:1px;inset-inline-end:0;position:fixed;visibility:hidden;width:1px}
 
 /*!

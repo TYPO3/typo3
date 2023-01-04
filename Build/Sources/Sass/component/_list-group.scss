@@ -89,3 +89,20 @@
         margin-top: calc(-1 * var(--typo3-list-group-border-width));
     }
 }
+
+.list-group-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    text-align: start;
+    gap: .25rem;
+    background: transparent;
+    border: none;
+    flex-grow: 1;
+    width: 100%;
+    padding: var(--typo3-list-group-padding-y) var(--typo3-list-group-padding-x);
+
+    &[aria-expanded="false"] .caret {
+        --typo3-caret-rotation: calc(-90deg * var(--typo3-position-modifier));
+    }
+}

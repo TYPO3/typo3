@@ -195,6 +195,9 @@ return [
                     description,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
             ',
+            'creationOptions' => [
+                'enableDirectRecordTypeCreation' => false,
+            ],
         ],
         '1' => [
             'showitem' => '

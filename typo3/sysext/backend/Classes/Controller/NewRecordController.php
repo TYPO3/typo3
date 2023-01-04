@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Controller\Event\ModifyNewRecordCreationLinksEvent;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -82,12 +84,15 @@ class NewRecordController
 
     protected ModuleTemplate $view;
 
+    protected ServerRequestInterface $request;
+
     public function __construct(
         protected readonly IconFactory $iconFactory,
         protected readonly PageRenderer $pageRenderer,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-        protected readonly TcaSchemaFactory $tcaSchemaFactory
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly EventDispatcherInterface $eventDispatcher,
     ) {}
 
     /**
@@ -109,8 +114,7 @@ class NewRecordController
             return $this->view->renderResponse('NewRecord/NewRecord');
         }
 
-        $allowedTables = $this->getAllowedTables();
-        $recordControls = $this->getNewRecordControls($allowedTables);
+        $recordControls = $this->getNewRecordControls();
 
         if (count($recordControls) === 1) {
             $items = current($recordControls)['items'] ?? [];
@@ -172,6 +176,7 @@ class NewRecordController
     protected function init(ServerRequestInterface $request): void
     {
         $this->view = $this->moduleTemplateFactory->create($request);
+        $this->request = $request;
         $beUser = $this->getBackendUserAuthentication();
         // Page-selection permission clause (reading)
         $this->perms_clause = $beUser->getPagePermsClause(Permission::PAGE_SHOW);
@@ -337,7 +342,7 @@ class NewRecordController
     /**
      * Render controls for creating a regular new element (pages or records)
      */
-    protected function getNewRecordControls(array $allowedTables): array
+    protected function getNewRecordControls(): array
     {
         $lang = $this->getLanguageService();
         // Get TSconfig for current page
@@ -349,10 +354,10 @@ class NewRecordController
         $displayNewPagesIntoLink = $this->newPagesInto && !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside']);
         $displayNewPagesAfterLink = $this->newPagesAfter && !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter']);
         $iconFile = [
-            'backendaccess' => $this->iconFactory->getIcon('status-user-group-backend', IconSize::SMALL)->render(),
+            'backendaccess' => $this->iconFactory->getIcon('status-user-group-backend', IconSize::SMALL),
             'content' => $this->iconFactory->getIcon('content-panel', IconSize::SMALL)->render(),
-            'frontendaccess' => $this->iconFactory->getIcon('status-user-group-frontend', IconSize::SMALL)->render(),
-            'system' => $this->iconFactory->getIcon('apps-pagetree-root', IconSize::SMALL)->render(),
+            'frontendaccess' => $this->iconFactory->getIcon('status-user-group-frontend', IconSize::SMALL),
+            'system' => $this->iconFactory->getIcon('apps-pagetree-root', IconSize::SMALL),
         ];
         $groupTitles = [
             'backendaccess' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:recordgroup.backendaccess'),
@@ -361,35 +366,44 @@ class NewRecordController
             'system' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:system_records'),
         ];
         $groupedLinksOnTop = [];
-        foreach ($allowedTables as $table) {
+        foreach ($this->getAllowedTables() as $table) {
             $schema = $this->tcaSchemaFactory->get($table);
             $ctrlTitle = $schema->getTitle();
 
             if ($table === 'pages') {
                 // New pages INSIDE this pages
                 $newPageLinks = [];
+                $hasPageTypesForDirectCreation = $this->hasRecordTypesForDirectCreation($schema);
                 if ($displayNewPagesIntoLink && $this->isTableAllowedOnPage($schema, $this->pageinfo)) {
                     // Create link to new page inside
-                    $newPageLinks[] = [
-                        'url' => $this->renderLink($table, $this->id),
-                        'icon' => $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL)->render(),
+                    $newPageLinks['inside'] = [
+                        'icon' => $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL),
                         'label' => $lang->sL($ctrlTitle) . ' (' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.inside') . ')',
                     ];
+                    if ($hasPageTypesForDirectCreation) {
+                        $newPageLinks['inside']['types'] = $this->getRecordTypesForDirectCreation($schema, $this->id);
+                    } else {
+                        $newPageLinks['inside']['url'] = $this->renderLink($table, $this->id);
+                    }
                 }
                 // New pages AFTER this pages
                 if ($displayNewPagesAfterLink && $this->isTableAllowedOnPage($schema, $this->pidInfo)) {
-                    $newPageLinks[] = [
-                        'url' => $this->renderLink($table, -$this->id),
-                        'icon' => $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL)->render(),
+                    $newPageLinks['after'] = [
+                        'icon' => $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL),
                         'label' => $lang->sL($ctrlTitle) . ' (' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.after') . ')',
                     ];
+                    if ($hasPageTypesForDirectCreation) {
+                        $newPageLinks['after']['types'] = $this->getRecordTypesForDirectCreation($schema, -$this->id);
+                    } else {
+                        $newPageLinks['after']['url'] = $this->renderLink($table, -$this->id);
+                    }
                 }
                 // New pages at selection position
                 if ($this->newPagesSelectPosition) {
                     // Link to page-wizard
-                    $newPageLinks[] = [
+                    $newPageLinks['select_position'] = [
                         'url' => $this->renderPageSelectPositionLink(),
-                        'icon' => $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL)->render(),
+                        'icon' => $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL),
                         'label' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:pageSelectPosition'),
                     ];
                 }
@@ -446,11 +460,20 @@ class NewRecordController
                 }
                 $this->tRows[$groupName]['title'] = $this->tRows[$groupName]['title'] ?? $groupTitles[$groupName] ?? $nameParts[1] ?? $ctrlTitle;
                 $this->tRows[$groupName]['icon'] = $this->tRows[$groupName]['icon'] ?? $iconFile[$groupName] ?? $iconFile['system'] ?? '';
-                $this->tRows[$groupName]['items'][$table] = [
-                    'url' => $this->renderLink($table, $this->id),
-                    'icon' => $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL)->render(),
-                    'label' => $lang->sL($ctrlTitle),
-                ];
+                if ($schema->supportsSubSchema()
+                    && !$schema->getSubSchemaTypeInformation()->isPointerToForeignFieldInForeignSchema()
+                    && $this->hasRecordTypesForDirectCreation($schema)
+                ) {
+                    $this->tRows[$groupName]['items'][$table]['label'] = $lang->sL($ctrlTitle);
+                    $this->tRows[$groupName]['items'][$table]['icon'] = $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL);
+                    $this->tRows[$groupName]['items'][$table]['types'] = $this->getRecordTypesForDirectCreation($schema, $this->id);
+                } else {
+                    $this->tRows[$groupName]['items'][$table] = [
+                        'url' => $this->renderLink($table, $this->id),
+                        'icon' => $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL)->render(),
+                        'label' => $lang->sL($ctrlTitle),
+                    ];
+                }
             }
         }
         // User sort
@@ -459,6 +482,10 @@ class NewRecordController
         }
         uksort($this->tRows, $this->sortTableRows(...));
         $this->tRows = array_merge($groupedLinksOnTop, $this->tRows);
+
+        $this->tRows = $this->eventDispatcher->dispatch(
+            new ModifyNewRecordCreationLinksEvent($this->tRows, $pageTS, $this->id, $this->request)
+        )->groupedCreationLinks;
 
         return $this->tRows;
     }
@@ -498,21 +525,25 @@ class NewRecordController
      *
      * @param string $table Table name (in which to create new record)
      * @param int $pid PID value for the "&edit['.$table.']['.$pid.']=new" command (positive/negative)
+     * @param array $additionalParams Additional params, such as "defVals" tp be added to the link
      * @return string The link.
      */
-    protected function renderLink(string $table, int $pid): string
+    protected function renderLink(string $table, int $pid, array $additionalParams = []): string
     {
-        return (string)$this->uriBuilder->buildUriFromRoute(
-            'record_edit',
-            [
-                'edit' => [
-                    $table => [
-                        $pid => 'new',
-                    ],
+        $params = [
+            'edit' => [
+                $table => [
+                    $pid => 'new',
                 ],
-                'returnUrl' => $this->returnUrl,
-            ]
-        );
+            ],
+            'returnUrl' => $this->returnUrl ?: $this->request->getAttribute('normalizedParams')->getRequestUri(),
+        ];
+
+        if ($additionalParams) {
+            $params = array_replace_recursive($params, $additionalParams);
+        }
+
+        return (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
     }
 
     /**
@@ -524,7 +555,7 @@ class NewRecordController
             'db_new_pages',
             [
                 'id' => $this->id,
-                'returnUrl' => $this->returnUrl,
+                'returnUrl' => $this->returnUrl ?: $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]
         );
     }
@@ -591,6 +622,48 @@ class NewRecordController
         }
 
         return !in_array($table, $deniedNewTables) && (empty($allowedNewTables) || in_array($table, $allowedNewTables));
+    }
+
+    protected function hasRecordTypesForDirectCreation(TcaSchema $schema): bool
+    {
+        if (count($schema->getSubSchemata()) <= 1) {
+            return false;
+        }
+        foreach ($schema->getSubSchemata() as $subSchema) {
+            if ((bool)($subSchema->getRawConfiguration()['creationOptions']['enableDirectRecordTypeCreation'] ?? true) === false) {
+                continue;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    protected function getRecordTypesForDirectCreation(TcaSchema $schema, int $positionId): array
+    {
+        $recordTypes = [];
+        $lang = $this->getLanguageService();
+        $recordTypeField = $schema->getSubSchemaTypeInformation()->getFieldName();
+        foreach ($schema->getSubSchemata() as $subSchema) {
+            $creationOptions = $subSchema->getRawConfiguration()['creationOptions'] ?? [];
+            if ((bool)($creationOptions['enableDirectRecordTypeCreation'] ?? true) === false) {
+                continue;
+            }
+            $recordTypeName = array_map(trim(...), explode('.', $subSchema->getName(), 2))[1] ?? '';
+            $recordTypes[$recordTypeName] = [
+                'url' => $this->renderLink($schema->getName(), $positionId, [
+                    'defVals' => [
+                        $schema->getName() => [
+                            $recordTypeField => $recordTypeName,
+                        ],
+                    ],
+                ]),
+                'icon' => $this->iconFactory->getIconForRecord($schema->getName(), [$recordTypeField => $recordTypeName], IconSize::SMALL),
+                'label' => $lang->sL($creationOptions['title'] ?? '')
+                    ?: $lang->sL(BackendUtility::getLabelFromItemListMerged($this->id, $schema->getName(), $recordTypeField, $recordTypeName))
+                    ?: $recordTypeName,
+            ];
+        }
+        return $recordTypes;
     }
 
     protected function getLanguageService(): LanguageService

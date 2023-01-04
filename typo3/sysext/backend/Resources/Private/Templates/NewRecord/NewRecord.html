@@ -14,10 +14,33 @@
                 <strong>{recordTypeGroup.icon -> f:format.raw()} <f:format.case mode="capital">{recordTypeGroup.title}</f:format.case></strong>
                 <div class="list-group mt-2">
                     <f:for each="{recordTypeGroup.items}" key="recordTypeTable" as="recordTypeItem">
-                        <a class="list-group-item list-group-item-action" href="{recordTypeItem.url}">
-                            {recordTypeItem.icon -> f:format.raw()}
-                            {recordTypeItem.label}
-                        </a>
+                        <f:if condition="{recordTypeItem.types}">
+                            <f:then>
+                                <div class="list-group-item p-0">
+                                    <button class="list-group-button" data-bs-toggle="collapse" data-bs-target="#{recordTypeTable}-types" aria-expanded="false" aria-controls="{recordTypeTable}-types">
+                                        {recordTypeItem.icon -> f:format.raw()}
+                                        {recordTypeItem.label}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <div class="collapse" id="{recordTypeTable}-types">
+                                        <div class="list-group m-2 mt-0">
+                                            <f:for each="{recordTypeItem.types}" key="name" as="type">
+                                                <a class="list-group-item list-group-item-action" href="{type.url}" title="">
+                                                    {type.icon -> f:format.raw()}
+                                                    {type.label}
+                                                </a>
+                                            </f:for>
+                                        </div>
+                                    </div>
+                                </div>
+                            </f:then>
+                            <f:else>
+                                <a class="list-group-item list-group-item-action" href="{recordTypeItem.url}">
+                                    {recordTypeItem.icon -> f:format.raw()}
+                                    {recordTypeItem.label}
+                                </a>
+                            </f:else>
+                        </f:if>
                     </f:for>
                 </div>
             </div>
