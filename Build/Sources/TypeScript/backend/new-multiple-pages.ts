@@ -17,7 +17,9 @@ import RegularEvent from '@typo3/core/event/regular-event';
 enum Identifiers {
   containerSelector = '.t3js-newmultiplepages-container',
   addMoreFieldsButtonSelector = '.t3js-newmultiplepages-createnewfields',
+  pageTitleSelector = '.t3js-newmultiplepages-page-title',
   doktypeSelector = '.t3js-newmultiplepages-select-doktype',
+  resetFieldsSelector = '.t3js-newmultiplepages-reset-fields',
   templateRow = '.t3js-newmultiplepages-newlinetemplate',
 }
 
@@ -40,8 +42,12 @@ class NewMultiplePages {
   private initializeEvents(): void {
     new RegularEvent('click', this.createNewFormFields.bind(this))
       .delegateTo(document, Identifiers.addMoreFieldsButtonSelector);
+    new RegularEvent('change', this.actOnPageTitleChange)
+      .delegateTo(document, Identifiers.pageTitleSelector);
     new RegularEvent('change', this.actOnTypeSelectChange)
       .delegateTo(document, Identifiers.doktypeSelector);
+    new RegularEvent('click', this.resetFieldAttributes)
+      .delegateTo(document, Identifiers.resetFieldsSelector);
   }
 
   /**
@@ -62,12 +68,40 @@ class NewMultiplePages {
     this.lineCounter += 5;
   }
 
+  private actOnPageTitleChange(this: HTMLInputElement): void {
+    this.setAttribute('value', this.value);
+  }
+
   private actOnTypeSelectChange(this: HTMLSelectElement): void {
+    for (let option of this.options) {
+      option.removeAttribute('selected');
+    }
     const optionElement: HTMLOptionElement = this.options[this.selectedIndex];
     const targetElement = document.querySelector(this.dataset.target);
     if (optionElement !== null && targetElement !== null) {
+      optionElement.setAttribute('selected', 'selected');
       targetElement.innerHTML = optionElement.dataset.icon;
     }
+  }
+
+  /**
+   * Manually reset the attributes on input and select fields
+   * @private
+   */
+  private resetFieldAttributes(this: HTMLInputElement): void {
+    document.querySelectorAll(Identifiers.containerSelector + ' ' + Identifiers.pageTitleSelector).forEach((inputElement: HTMLInputElement): void => {
+      inputElement.removeAttribute('value');
+    });
+    document.querySelectorAll(Identifiers.containerSelector + ' ' + Identifiers.doktypeSelector).forEach((selectElement: HTMLSelectElement): void => {
+      for (const option of selectElement) {
+        option.removeAttribute('selected');
+      }
+      const defaultIcon = selectElement.options[0]?.dataset.icon;
+      const targetElement = document.querySelector(selectElement.dataset.target);
+      if (defaultIcon && targetElement !== null) {
+        targetElement.innerHTML = defaultIcon;
+      }
+    });
   }
 }
 

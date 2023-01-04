@@ -111,7 +111,7 @@
                                 value="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:create')}"
                             />
                             <input
-                                class="btn btn-default"
+                                class="btn btn-default t3js-newmultiplepages-reset-fields"
                                 type="reset"
                                 value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:reset')}"
                             />
@@ -131,7 +131,7 @@
                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:newPage"/> {line.label}:
                 </label>
                 <div class="form-control-wrap">
-                    <input class="form-control" type="text" id="page_new_{line.index}" name="pages[NEW{line.index}][title]" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.title')}" />
+                    <input class="form-control t3js-newmultiplepages-page-title" type="text" id="page_new_{line.index}" name="pages[NEW{line.index}][title]" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.title')}" />
                 </div>
             </div>
             <div class="form-group col-4">
