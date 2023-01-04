@@ -76,9 +76,3 @@ editor:
         - { name: 'center', className: 'text-center' }
         - { name: 'right', className: 'text-right' }
         - { name: 'justify', className: 'text-justify' }
-
-# Allow s and u tag
-processing:
-  allowTags:
-    - s
-    - u
