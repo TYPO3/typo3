@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Model\Entity;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -126,6 +127,26 @@ class ObjectStorageTest extends UnitTestCase
         self::assertCount(1, $objectStorage);
         $objectStorage->offsetUnset(0);
         self::assertCount(0, $objectStorage);
+    }
+
+    public function offsetGetForNoneExistingIntegerEntryReturnsNull(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+
+        self::assertNull($objectStorage->offsetGet(1));
+    }
+
+    /**
+     * @test
+     */
+    public function offsetGetForNoneExistingObjectEntryReturnsNull(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $object = new Entity();
+
+        self::assertNull($objectStorage->offsetGet($object));
     }
 
     /**
