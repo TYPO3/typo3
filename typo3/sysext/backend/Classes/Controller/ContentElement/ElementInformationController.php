@@ -552,7 +552,7 @@ class ElementInformationController
         foreach ($rows as $row) {
             if ($row['tablename'] === 'sys_file_reference') {
                 $row = $this->transformFileReferenceToRecordReference($row);
-                if ($row['tablename'] === null || $row['recuid'] === null) {
+                if ($row === null) {
                     return [];
                 }
             }
@@ -677,7 +677,7 @@ class ElementInformationController
     /**
      * Convert FAL file reference (sys_file_reference) to reference index (sys_refindex) table format
      */
-    protected function transformFileReferenceToRecordReference(array $referenceRecord): array
+    protected function transformFileReferenceToRecordReference(array $referenceRecord): ?array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_file_reference');
@@ -694,14 +694,14 @@ class ElementInformationController
             ->executeQuery()
             ->fetchAssociative();
 
-        return [
+        return $fileReference ? [
             'recuid' => $fileReference['uid_foreign'],
             'tablename' => $fileReference['tablenames'],
             'field' => $fileReference['fieldname'],
             'flexpointer' => '',
             'softref_key' => '',
             'sorting' => $fileReference['sorting_foreign'],
-        ];
+        ] : null;
     }
 
     /**
