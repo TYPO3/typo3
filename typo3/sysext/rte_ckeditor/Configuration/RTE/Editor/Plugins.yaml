@@ -11,7 +11,7 @@ editor:
       - '@typo3/rte-ckeditor/plugin/soft-hyphen.js'
       - '@typo3/rte-ckeditor/plugin/typo3-link.js'
 
-    # Configure global wordcount plugin defaults
+    # Configure global wordCount plugin defaults
     # Overwrite them in your RTE presets as it is necessary
     wordCount:
       displayWords: true

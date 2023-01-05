@@ -53,13 +53,6 @@ export class CKEditor5Element extends LitElement {
 
   @query('textarea') target: HTMLElement;
 
-  private elements = {
-    wordCount: {
-      className: 'word-count',
-      selector: '.word-count',
-    }
-  };
-
   public constructor() {
     super();
   }
@@ -78,7 +71,6 @@ export class CKEditor5Element extends LitElement {
         rows="18"
         data-formengine-validation-rules="${this.formEngine.validationRules}"
         >${this.formEngine.value}</textarea>
-      <div class="${this.elements.wordCount.className}"></div>
     `;
   }
 
@@ -114,7 +106,6 @@ export class CKEditor5Element extends LitElement {
           // @todo use complete `config` later - currently step-by-step only
           toolbar,
           plugins,
-          wordCount: this.options.wordCount || null,
           typo3link: this.options.typo3link || null,
           // alternative, purge from `plugins` (classes) above already (probably better)
           removePlugins: this.options.removePlugins || [],
@@ -124,6 +115,9 @@ export class CKEditor5Element extends LitElement {
         }
         if (this.options.style) {
           config.style = this.options.style;
+        }
+        if (this.options.wordCount) {
+          config.wordCount = this.options.wordCount;
         }
         if (this.options.table) {
           config.table = this.options.table;
@@ -139,7 +133,7 @@ export class CKEditor5Element extends LitElement {
           .create(this.target, config)
           .then((editor: EditorWithUI) => {
             this.applyEditableElementStyles(editor);
-            this.applyWordCountWidget(editor);
+            this.handleWordCountPlugin(editor);
             this.applyReadOnly(editor);
           });
       });
@@ -168,9 +162,11 @@ export class CKEditor5Element extends LitElement {
   /**
    * see https://ckeditor.com/docs/ckeditor5/latest/features/word-count.html
    */
-  private applyWordCountWidget(editor: EditorWithUI): void {
-    const wordCountPlugin = editor.plugins.get('WordCount');
-    this.querySelector(this.elements.wordCount.selector).appendChild(wordCountPlugin.wordCountContainer);
+  private handleWordCountPlugin(editor: EditorWithUI): void {
+    if (editor.plugins.has('WordCount') && (this.options?.wordCount?.displayWords || this.options?.wordCount?.displayCharacters)) {
+      const wordCountPlugin = editor.plugins.get('WordCount');
+      this.renderRoot.appendChild(wordCountPlugin.wordCountContainer);
+    }
   }
 
   /**
