@@ -78,6 +78,8 @@ $link-hover-decoration: underline;
 // Typography
 $font-size-root: 16px;
 $font-family-sans-serif: Verdana, Arial, Helvetica, sans-serif;
+$font-family-serif: Georgia, Times, "Times New Roman", serif;
+$font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 $font-size-base: 12px;
 $font-size-large: ceil(($font-size-base * 1.25)); // ~15px
 $font-size-small: 11px; // ~11px

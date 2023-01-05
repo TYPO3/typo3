@@ -2,11 +2,16 @@
 // Global CSS Variables
 //
 :root {
+    // General
+    --typo3-font-family-sans-serif: #{$font-family-sans-serif};
+    --typo3-font-family-serif: #{$font-family-serif};
+    --typo3-font-family-monospace: #{$font-family-monospace};
+    --typo3-font-family: var(--typo3-font-family-sans-serif);
+    --typo3-font-family-code: var(--typo3-font-family-monospace);
+    --typo3-spacing: 1rem;
+
     // Header
     --typo3-header-font-family: "Source Sans 3", sans-serif;
-
-    // General
-    --typo3-spacing: 1rem;
 
     // Component
     --typo3-component-bg: #{$white};

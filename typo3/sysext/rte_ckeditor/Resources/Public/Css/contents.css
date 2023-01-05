@@ -1,255 +1,91 @@
-/****************************************************************************************
-# Default css file for content edited with CKEditor
-#
-# Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
-# For licensing, see LICENSE.md or http://ckeditor.com/license
-#
-# Defines a few class selectors that can be simply taken as examples by anyone who needs to configure the RTE.
-# This css file is referenced by property RTE.default.contentCSS in TSconfig.
-# ***************************************************************************************/
-
-/**
- hack to apply this to the SCSS processor
- */
-&.ck-content
-{
-	/* Font */
-	font-family: sans-serif, Arial, Verdana, "Trebuchet MS";
-	font-size: 12px;
-
-	/* Text color */
-	color: #333;
-
-	/* Remove the background color to make it transparent */
-	background-color: #fff;
-
-	padding: 0.5rem 1rem;
+body {
+    font-family: var(--typo3-font-family);
+    font-size: 12px;
+    color: #000;
+    background-color: #fff;
+    padding: 1.5em;
 }
 
-&.ck-editor__editable
-{
-	font-size: 13px;
-	line-height: 1.6;
-
-	/* Fix for missing scrollbars with RTL texts. (#10488) */
-	word-wrap: break-word;
+body > :first-child {
+    margin-top: 0;
 }
 
-blockquote
-{
-	font-style: italic;
-	font-family: Georgia, Times, "Times New Roman", serif;
-	padding: 2px 0;
-	border-style: solid;
-	border-color: #ccc;
-	border-width: 0;
+body > :last-child {
+    margin-bottom: 0;
 }
 
-.cke_contents_ltr blockquote
-{
-	padding-left: 20px;
-	padding-right: 8px;
-	border-left-width: 5px;
+blockquote {
+    font-style: italic;
+    font-family: var(--typo3-font-family-serif);
+    padding: 0;
+    border-style: solid;
+    border-color: #dedede;
+    border-width: 0;
 }
 
-.cke_contents_rtl blockquote
-{
-	padding-left: 8px;
-	padding-right: 20px;
-	border-right-width: 5px;
+blockquote > :last-child {
+    margin-bottom: 0;
 }
 
-a
-{
-	color: #0782C1;
+html[dir="ltr"] blockquote {
+    padding-left: 1.5em;
+    border-left-width: .25em;
+}
+
+html[dir="rtl"] blockquote {
+    padding-right: 1.5em;
+    border-right-width: .25em;
+}
+
+a {
+    color: #0782C1;
     text-decoration: underline;
 }
 
-ol,ul,dl
-{
-	/* IE7: reset rtl list margin. (#7334) */
-	*margin-right: 0px;
-	/* preserved spaces for list items with text direction other than the list. (#6249,#8049)*/
-	padding: 0 40px;
+strong {
+    font-weight: bold;
 }
 
-h1,h2,h3,h4,h5,h6
-{
-	font-weight: normal;
-	line-height: 1.2;
+ol,
+ul,
+dl {
+    padding: 0;
+    padding-left: 3em;
 }
 
-hr
-{
-	border: 0px;
-	border-top: 1px solid #ccc;
+html[dir="rtl"] ol,
+html[dir="rtl"] ul,
+html[dir="rtl"] dl {
+    padding-left: 0;
+    padding-right: 3em;
 }
 
-img.right
-{
-	border: 1px solid #ccc;
-	float: right;
-	margin-left: 15px;
-	padding: 5px;
+hr {
+    height: 1px;
 }
 
-img.left
-{
-	border: 1px solid #ccc;
-	float: left;
-	margin-right: 15px;
-	padding: 5px;
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    tab-size: 4;
 }
 
-pre
-{
-	white-space: pre-wrap; /* CSS 2.1 */
-	word-wrap: break-word; /* IE7 */
-	-moz-tab-size: 4;
-	tab-size: 4;
+span[lang] {
+    font-style: italic;
 }
 
-table {
-	border-collapse: collapse;
-	background-color: transparent;
-	width: 100%;
-	max-width: 100%;
-	margin-bottom: 1rem;
-	padding-left: 100px;
-}
-
-table th,
-table td {
-	padding: 0.25rem;
-	vertical-align: top;
-}
-
-table thead th {
-	vertical-align: bottom;
-	border-bottom: 2px solid #eceeef;
-}
-
-.marker
-{
-	background-color: Yellow;
-}
-
-span[lang]
-{
-	font-style: italic;
-}
-
-figure
-{
-	text-align: center;
-	border: solid 1px #ccc;
-	border-radius: 2px;
-	background: rgba(0,0,0,0.05);
-	padding: 10px;
-	margin: 10px 20px;
-	display: inline-block;
-}
-
-figure > figcaption
-{
-	text-align: center;
-	display: block; /* For IE8 */
-}
-
-a > img {
-	padding: 1px;
-	margin: 1px;
-	border: none;
-	outline: 1px solid #0782C1;
-}
-
-/* Widget Styles */
-.code-featured
-{
-	border: 5px solid red;
-}
-
-.math-featured
-{
-	padding: 20px;
-	box-shadow: 0 0 2px rgba(200, 0, 0, 1);
-	background-color: rgba(255, 0, 0, 0.05);
-	margin: 10px;
-}
-
-.image-clean
-{
-	border: 0;
-	background: none;
-	padding: 0;
-}
-
-.image-clean > figcaption
-{
-	font-size: .9em;
-	text-align: right;
-}
-
-.image-grayscale
-{
-	background-color: white;
-	color: #666;
-}
-
-.image-grayscale img, img.image-grayscale
-{
-	filter: grayscale(100%);
-}
-
-.embed-240p
-{
-	max-width: 426px;
-	max-height: 240px;
-	margin:0 auto;
-}
-
-.embed-360p
-{
-	max-width: 640px;
-	max-height: 360px;
-	margin:0 auto;
-}
-
-.embed-480p
-{
-	max-width: 854px;
-	max-height: 480px;
-	margin:0 auto;
-}
-
-.embed-720p
-{
-	max-width: 1280px;
-	max-height: 720px;
-	margin:0 auto;
-}
-
-.embed-1080p
-{
-	max-width: 1920px;
-	max-height: 1080px;
-	margin:0 auto;
-}
-
-/** alignment **/
 .text-left {
-	text-align: left;
-}
-.text-center {
-	text-align: center;
-}
-.text-right {
-	text-align: right;
-}
-.text-justify {
-	text-align: justify;
+    text-align: left;
 }
 
-.text-muted {
-    color: #888;
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-justify {
+    text-align: justify;
 }
