@@ -158,35 +158,32 @@ class CKEditor5Migrator
 
     protected function migrateRemoveButtonsFromToolbar(): void
     {
-        // new configuration is set, discard any legacy values
-        if (isset($this->configuration['toolbar']['removeItems'])) {
-            // discard legacy configuration if new configuration exists
-            unset($this->configuration['removeButtons']);
-            return;
-        }
         if (!isset($this->configuration['removeButtons'])) {
             return;
         }
 
         $removeItems = [];
-        foreach ($this->configuration['removeButtons'] as $legacyButtonName) {
-            if (isset(self::TOOLBAR_GROUPS_MAP[$legacyButtonName])) {
+        foreach ($this->configuration['removeButtons'] as $buttonName) {
+            if (isset(self::TOOLBAR_GROUPS_MAP[$buttonName])) {
                 // all buttons within a group
-                $removeItems = array_merge($removeItems, self::TOOLBAR_GROUPS_MAP[$legacyButtonName]);
-            } elseif (isset(self::TOOLBAR_GROUPS_MAP[lcfirst($legacyButtonName)])) {
+                $removeItems = array_merge($removeItems, self::TOOLBAR_GROUPS_MAP[$buttonName]);
+            } elseif (isset(self::TOOLBAR_GROUPS_MAP[lcfirst($buttonName)])) {
                 // all buttons within a group
-                $removeItems = array_merge($removeItems, self::TOOLBAR_GROUPS_MAP[lcfirst($legacyButtonName)]);
-            } elseif (isset(self::BUTTON_MAP[$legacyButtonName])) {
+                $removeItems = array_merge($removeItems, self::TOOLBAR_GROUPS_MAP[lcfirst($buttonName)]);
+            } elseif (isset(self::BUTTON_MAP[$buttonName])) {
                 // a single item
-                $removeItems = array_merge($removeItems, self::BUTTON_MAP[$legacyButtonName]);
+                $removeItems = array_merge($removeItems, self::BUTTON_MAP[$buttonName]);
             } else {
-                $removeItems[] = lcfirst($legacyButtonName);
+                $removeItems[] = lcfirst($buttonName);
             }
         }
 
-        // remove legacy configuration after migration
+        foreach ($removeItems as $name) {
+            $this->removeToolbarItem($name);
+        }
+
+        // Cleanup final configuration after migration
         unset($this->configuration['removeButtons']);
-        $this->configuration['toolbar']['removeItems'] = $removeItems;
     }
 
     protected function migrateFormatTagsToHeadings(): void
@@ -294,5 +291,20 @@ class CKEditor5Migrator
             $this->configuration['wordCount'] = $migratedConfig;
         }
         unset($this->configuration['wordcount']);
+    }
+
+    private function removeToolbarItem(string $name): void
+    {
+        $this->configuration['toolbar']['removeItems'][] = $name;
+        $this->configuration['toolbar']['removeItems'] = $this->getUniqueArrayValues($this->configuration['toolbar']['removeItems']);
+    }
+
+    /**
+     * Ensure to have clean array with incrementing identifiers
+     * to avoid JavaScript casting this to an object
+     */
+    private function getUniqueArrayValues(array $array)
+    {
+        return array_values(array_unique($array));
     }
 }
