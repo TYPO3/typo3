@@ -209,11 +209,11 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     public function offsetGet($value)
     {
         if (MathUtility::canBeInterpretedAsInteger($value)) {
-            return array_values($this->storage)[$value]['obj'];
+            return array_values($this->storage)[$value]['obj'] ?? null;
         }
 
         /** @var DomainObjectInterface $value */
-        return $this->storage[spl_object_hash($value)]['inf'];
+        return $this->storage[spl_object_hash($value)]['inf'] ?? null;
     }
 
     /**

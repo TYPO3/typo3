@@ -189,6 +189,29 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
+    public function offsetGetForNoneExistingIntegerEntryReturnsNull(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+
+        self::assertNull($objectStorage->offsetGet(1));
+    }
+
+    /**
+     * @test
+     */
+    public function offsetGetForNoneExistingObjectEntryReturnsNull(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $object = new Entity();
+
+        self::assertNull($objectStorage->offsetGet($object));
+    }
+
+    /**
+     * @test
+     */
     public function offsetGetForObjectAttachedWithoutWithoutInformationReturnsNull(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
