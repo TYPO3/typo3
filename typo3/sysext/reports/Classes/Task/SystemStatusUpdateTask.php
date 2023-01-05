@@ -128,7 +128,7 @@ class SystemStatusUpdateTask extends AbstractTask
             ->subject($subject)
             ->setTemplate('Report')
             ->assign('message', $message);
-        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
             $email->setRequest($GLOBALS['TYPO3_REQUEST']);
         }
 
