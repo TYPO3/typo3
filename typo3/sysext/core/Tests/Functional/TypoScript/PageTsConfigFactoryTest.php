@@ -51,18 +51,7 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function pageTsConfigLoadsFromTestExtensionConfigurationFile(): void
-    {
-        /** @var PageTsConfigFactory $subject */
-        $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create([], new NullSite(), new ConditionMatcher());
-        self::assertSame('loadedFromTestExtensionConfigurationPageTsConfig', $pageTsConfig->getPageTsConfigArray()['loadedFromTestExtensionConfigurationPageTsConfig']);
-    }
-
-    /**
-     * @test
-     */
-    public function pageTsConfigLoadsFromPagesTestExtensionConfigurationFile(): void
+    public function pageTsConfigLoadsFromPagesTsconfigTestExtensionConfigurationFile(): void
     {
         /** @var PageTsConfigFactory $subject */
         $subject = $this->get(PageTsConfigFactory::class);
@@ -85,6 +74,40 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
         self::assertSame('loadedFromTsConfigField', $pageTsConfig->getPageTsConfigArray()['loadedFromTsConfigField']);
+    }
+
+    /**
+     * @test
+     */
+    public function pageTsConfigLoadsFromWildcardAtImportWithTsconfigSuffix(): void
+    {
+        $rootLine = [
+            [
+                'uid' => 1,
+                'TSconfig' => '@import \'EXT:test_typoscript_pagetsconfigfactory/Configuration/TsConfig/*.tsconfig\'',
+            ],
+        ];
+        /** @var PageTsConfigFactory $subject */
+        $subject = $this->get(PageTsConfigFactory::class);
+        $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
+        self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
+    }
+
+    /**
+     * @test
+     */
+    public function pageTsConfigLoadsFromWildcardAtImportWithTypoScriptSuffix(): void
+    {
+        $rootLine = [
+            [
+                'uid' => 1,
+                'TSconfig' => '@import \'EXT:test_typoscript_pagetsconfigfactory/Configuration/TsConfig/*.typoscript\'',
+            ],
+        ];
+        /** @var PageTsConfigFactory $subject */
+        $subject = $this->get(PageTsConfigFactory::class);
+        $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
+        self::assertSame('loadedFromTsconfigIncludesWithTyposcriptSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTyposcriptSuffix']);
     }
 
     /**

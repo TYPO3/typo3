@@ -10,12 +10,18 @@ isHttps = off
   isHttps = on
 [end]
 "
-,6,0,"user5",1,,"
+,6,0,"user6",1,,"
 [request.getNormalizedParams().isHttps()]
   isHttps = on
 [else]
   isHttps = off
 [end]
+"
+,7,0,"user7",1,,"
+@import 'EXT:test_typoscript_usertsconfigfactory/Configuration/TsConfig/*.tsconfig'
+"
+,8,0,"user8",1,,"
+@import 'EXT:test_typoscript_usertsconfigfactory/Configuration/TsConfig/*.typoscript'
 "
 "be_groups"
 ,"uid","pid","title","TSconfig"

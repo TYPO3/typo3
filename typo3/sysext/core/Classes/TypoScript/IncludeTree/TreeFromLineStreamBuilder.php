@@ -60,6 +60,20 @@ final class TreeFromLineStreamBuilder
     private string $type;
     private TokenizerInterface $tokenizer;
 
+    /**
+     * Using "@import" with wildcards, the file ending depends on the given type:
+     * With Frontend TypoScript, .typoscript is allowed, with TsConfig, .tsconfig
+     * is allowed. This property maps types to their file suffixes.
+     *
+     * @var array<string, array<int, string>>
+     */
+    private array $atImportTypeToSuffixMap = [
+        'constants' => ['typoscript'],
+        'setup' => ['typoscript'],
+        'other' => ['typoscript'],
+        'tsconfig' => ['typoscript', 'tsconfig'],
+    ];
+
     public function __construct(
         private readonly FileNameValidator $fileNameValidator,
     ) {
@@ -67,9 +81,9 @@ final class TreeFromLineStreamBuilder
 
     public function buildTree(IncludeInterface $node, string $type, TokenizerInterface $tokenizer): void
     {
-        if (!in_array($type, ['constants', 'setup', 'other'], true)) {
+        if (!in_array($type, ['constants', 'setup', 'tsconfig', 'other'], true)) {
             // Type "constants" and "setup" trigger the weird addStaticMagicFromGlobals() resolving, while "other" ignores it.
-            throw new \RuntimeException('type must be either "constants", "setup" or "other"', 1652741356);
+            throw new \RuntimeException('type must be either "constants", "setup", "tsconfig" or "other"', 1652741356);
         }
         $this->type = $type;
         $this->tokenizer = $tokenizer;
@@ -179,7 +193,10 @@ final class TreeFromLineStreamBuilder
                 $childNode = new SegmentInclude();
                 $childNode->setIdentifier($node->getIdentifier() . '-segment');
                 $childNode->setName($node->getName() . ' Segment');
-                $this->processAtImport($node, $atImportValueToken, $line);
+                $allowedSuffixes = $this->atImportTypeToSuffixMap[$this->type];
+                foreach ($allowedSuffixes as $allowedSuffix) {
+                    $this->processAtImport($allowedSuffix, $node, $atImportValueToken, $line);
+                }
                 continue;
             }
 
@@ -212,7 +229,7 @@ final class TreeFromLineStreamBuilder
      * Warning: Calls buildTree() recursive for each included file.
      * Warning: Calls itself recursive for 'relative' lookups.
      */
-    private function processAtImport(IncludeInterface $node, Token $atImportValueToken, LineInterface $atImportLine, string $parentPath = ''): void
+    private function processAtImport(string $fileSuffix, IncludeInterface $node, Token $atImportValueToken, LineInterface $atImportLine, string $parentPath = ''): void
     {
         $atImportValue = $atImportValueToken->getValue();
         $triedRelative = false;
@@ -235,7 +252,7 @@ final class TreeFromLineStreamBuilder
             // Directories with and without ending /
             $filesAndDirs = scandir($absoluteFileName);
             foreach ($filesAndDirs as $potentialInclude) {
-                if (!str_ends_with($potentialInclude, '.typoscript')
+                if (!str_ends_with($potentialInclude, '.' . $fileSuffix)
                     || is_dir($absoluteFileName . '/' . $potentialInclude)
                     || !$this->fileNameValidator->isValid($absoluteFileName . '/' . $potentialInclude)
                 ) {
@@ -246,11 +263,11 @@ final class TreeFromLineStreamBuilder
                 $this->addSingleAtImportFile($node, $singleAbsoluteFileName, $identifier, $atImportLine);
                 $this->addStaticMagicFromGlobals($node, $identifier);
             }
-        } elseif (is_file($absoluteFileName . '.typoscript')) {
+        } elseif (is_file($absoluteFileName . '.' . $fileSuffix)) {
             // Simple file without .typoscript ending
-            if ($this->fileNameValidator->isValid($absoluteFileName . '.typoscript')) {
-                $singleAbsoluteFileName = $absoluteFileName . '.typoscript';
-                $identifier = $atImportValue . '.typoscript';
+            if ($this->fileNameValidator->isValid($absoluteFileName . '.' . $fileSuffix)) {
+                $singleAbsoluteFileName = $absoluteFileName . '.' . $fileSuffix;
+                $identifier = $atImportValue . '.' . $fileSuffix;
                 $this->addSingleAtImportFile($node, $singleAbsoluteFileName, $identifier, $atImportLine);
                 $this->addStaticMagicFromGlobals($node, $identifier);
             }
@@ -260,7 +277,7 @@ final class TreeFromLineStreamBuilder
             if (!is_dir($directory) && str_starts_with($atImportValue, './')) {
                 // See if we can import some relative wildcard like "./Setup/*" or "./Setup/*.typoscript"
                 $parentPath = rtrim(dirname($node->getIdentifier()), '/') . '/';
-                $this->processAtImport($node, $atImportValueToken, $atImportLine, $parentPath);
+                $this->processAtImport($fileSuffix, $node, $atImportValueToken, $atImportLine, $parentPath);
                 return;
             }
             $filePattern = basename($absoluteFileName);
@@ -269,15 +286,15 @@ final class TreeFromLineStreamBuilder
             }
             if (str_ends_with($absoluteFileName, '*')) {
                 $filePattern = basename($absoluteFileName, '*');
-            } elseif (str_ends_with($filePattern, '*typoscript')) {
-                $filePattern = mb_substr($filePattern, 0, -11);
-            } elseif (str_ends_with($filePattern, '*.typoscript')) {
-                $filePattern = mb_substr($filePattern, 0, -12);
+            } elseif (str_ends_with($filePattern, '*' . $fileSuffix)) {
+                $filePattern = mb_substr($filePattern, 0, -1 * (strlen($fileSuffix) + 1));
+            } elseif (str_ends_with($filePattern, '*.' . $fileSuffix)) {
+                $filePattern = mb_substr($filePattern, 0, -1 * (strlen($fileSuffix) + 2));
             }
             $filesAndDirs = scandir($directory);
             foreach ($filesAndDirs as $potentialInclude) {
                 if (!str_starts_with($potentialInclude, $filePattern)
-                    || !str_ends_with($potentialInclude, '.typoscript')
+                    || !str_ends_with($potentialInclude, '.' . $fileSuffix)
                     || is_dir($directory . $potentialInclude)
                     || !$this->fileNameValidator->isValid($directory . $potentialInclude)
                 ) {
@@ -291,7 +308,7 @@ final class TreeFromLineStreamBuilder
         } elseif (!$triedRelative) {
             // See if we can import relative "./foo.typoscript" or "foo.typoscript"
             $parentPath = rtrim(dirname($node->getIdentifier()), '/') . '/';
-            $this->processAtImport($node, $atImportValueToken, $atImportLine, $parentPath);
+            $this->processAtImport($fileSuffix, $node, $atImportValueToken, $atImportLine, $parentPath);
         }
     }
 

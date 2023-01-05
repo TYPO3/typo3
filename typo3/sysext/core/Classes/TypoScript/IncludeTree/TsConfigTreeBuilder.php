@@ -183,7 +183,7 @@ final class TsConfigTreeBuilder
         $includeNode->setName($name);
         $includeNode->setIdentifier($lowercaseName);
         $includeNode->setLineStream($this->tokenizer->tokenize($typoScriptString));
-        $this->treeFromTokenStreamBuilder->buildTree($includeNode, 'other', $this->tokenizer);
+        $this->treeFromTokenStreamBuilder->buildTree($includeNode, 'tsconfig', $this->tokenizer);
         $this->cache?->set($identifier, 'return unserialize(\'' . addcslashes(serialize($includeNode), '\'\\') . '\');');
         return $includeNode;
     }

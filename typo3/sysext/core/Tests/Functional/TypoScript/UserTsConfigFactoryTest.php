@@ -29,6 +29,10 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class UserTsConfigFactoryTest extends FunctionalTestCase
 {
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_usertsconfigfactory',
+    ];
+
     /**
      * @test
      */
@@ -120,5 +124,31 @@ class UserTsConfigFactoryTest extends FunctionalTestCase
         $subject = $this->get(UserTsConfigFactory::class);
         $userTsConfig = $subject->create($backendUser);
         self::assertSame('off', $userTsConfig->getUserTsConfigArray()['isHttps']);
+    }
+
+    /**
+     * @test
+     */
+    public function userTsConfigLoadsFromWildcardAtImportWithTsconfigSuffix(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
+        $backendUser = $this->setUpBackendUser(7);
+        /** @var UserTsConfigFactory $subject */
+        $subject = $this->get(UserTsConfigFactory::class);
+        $userTsConfig = $subject->create($backendUser);
+        self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $userTsConfig->getUserTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
+    }
+
+    /**
+     * @test
+     */
+    public function userTsConfigLoadsFromWildcardAtImportWithTypoScriptSuffix(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
+        $backendUser = $this->setUpBackendUser(8);
+        /** @var UserTsConfigFactory $subject */
+        $subject = $this->get(UserTsConfigFactory::class);
+        $userTsConfig = $subject->create($backendUser);
+        self::assertSame('loadedFromTsconfigIncludesWithTyposcriptSuffix', $userTsConfig->getUserTsConfigArray()['loadedFromTsconfigIncludesWithTyposcriptSuffix']);
     }
 }
