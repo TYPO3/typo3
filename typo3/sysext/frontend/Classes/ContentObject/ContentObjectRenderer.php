@@ -4117,7 +4117,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             try {
                                 $retVal = ArrayUtility::getValueByPath($site->getConfiguration(), $key, '.');
                             } catch (MissingArrayPathException $exception) {
-                                $this->logger->warning('getData() with "{key}" failed', ['key' => $key, 'exception' => $exception]);
+                                $this->logger->notice('Configuration "{key}" is not defined for site "{site}"', ['key' => $key, 'site' => $site->getIdentifier(), 'exception' => $exception]);
                             }
                         }
                         break;
