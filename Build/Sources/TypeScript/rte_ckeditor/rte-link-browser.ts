@@ -14,9 +14,9 @@
 import LinkBrowser from '@typo3/backend/link-browser';
 import Modal from '@typo3/backend/modal';
 import RegularEvent from '@typo3/core/event/regular-event';
-import {Engine} from '@typo3/ckeditor5-bundle';
-import {Typo3LinkCommand, Typo3LinkDict, LINK_ALLOWED_ATTRIBUTES, addLinkPrefix} from '@typo3/rte-ckeditor/plugin/typo3-link';
-import type {EditorWithUI} from '@ckeditor/ckeditor5-core/src/editor/editorwithui';
+import { Typo3LinkDict, LINK_ALLOWED_ATTRIBUTES, addLinkPrefix } from '@typo3/rte-ckeditor/plugin/typo3-link';
+import type { EditorWithUI } from '@ckeditor/ckeditor5-core/src/editor/editorwithui';
+import Position from '@ckeditor/ckeditor5-engine/src/model/position';
 
 /**
  * Module: @typo3/rte-ckeditor/rte-link-browser
@@ -24,28 +24,22 @@ import type {EditorWithUI} from '@ckeditor/ckeditor5-core/src/editor/editorwithu
  */
 class RteLinkBrowser {
   protected editor: EditorWithUI = null;
-  protected linkCommand: Typo3LinkCommand;
-  protected ranges: Iterable<Engine.Range> = null;
+  protected selectionStartPosition: Position = null;
+  protected selectionEndPosition: Position = null;
 
   /**
    * @param {String} editorId Id of CKEditor
    */
   public initialize(editorId: string): void {
-    this.editor = Modal.currentModal.userData.ckeditor;
-    this.linkCommand = this.editor.commands.get('link') as Typo3LinkCommand;
-
-    // Backup all ranges that are active when the Link Browser is requested
-    this.ranges = this.editor.model.document.selection.getRanges();
-    window.addEventListener('beforeunload', (): void => {
-      this.editor.model.change((writer) => {
-        writer.setSelection(this.ranges);
-      });
-    });
+    this.editor = Modal.currentModal.userData.editor;
+    this.selectionStartPosition = Modal.currentModal.userData.selectionStartPosition;
+    this.selectionEndPosition = Modal.currentModal.userData.selectionEndPosition;
 
     const removeLinkElement = document.querySelector('.t3js-removeCurrentLink');
     if (removeLinkElement !== null) {
       new RegularEvent('click', (e: Event): void => {
         e.preventDefault();
+        this.restoreSelection();
         this.editor.execute('unlink');
         Modal.dismiss();
       }).bindTo(removeLinkElement);
@@ -65,10 +59,17 @@ class RteLinkBrowser {
     const linkText = ''; // @todo future feature: e.g. add page title as link-text (if applicable)
     const linkAttrs = this.convertAttributes(attributes, linkText);
 
-    this.editor.model.change((writer) => writer.setSelection(this.ranges));
-    this.linkCommand.execute(this.sanitizeLink(link, queryParams), linkAttrs);
+    this.restoreSelection();
+    this.editor.execute('link', this.sanitizeLink(link, queryParams), linkAttrs);
 
     Modal.dismiss();
+  }
+
+  private restoreSelection(): void {
+    this.editor.model.change((writer) => {
+      const ranges = [writer.createRange(this.selectionStartPosition, this.selectionEndPosition)];
+      writer.setSelection(ranges);
+    });
   }
 
   private convertAttributes(attributes: Record<string, string>, text?: string): Typo3LinkDict {

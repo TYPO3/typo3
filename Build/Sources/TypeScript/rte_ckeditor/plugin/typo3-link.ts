@@ -31,7 +31,7 @@ export class Typo3TextView extends UI.View {
       tag: 'span',
       attributes: {
         class: ['ck', 'ck-linktext'],
-        title: bind.to( 'text' ),
+        title: bind.to('text'),
       },
       children: [{ text: bind.to('text') }]
     });
@@ -314,10 +314,9 @@ export class Typo3LinkUI extends Core.Plugin {
     actionsView.editButtonView.bind('isEnabled').to(linkCommand);
     actionsView.unlinkButtonView.bind('isEnabled').to(unlinkCommand);
 
-    // Execute unlink command after clicking on the "Edit" button.
+    // Open LinkBrowser after clicking on the "Edit" button.
     this.listenTo(actionsView, 'edit', () => {
-      const element = this.getSelectedLinkElement();
-      this.openLinkBrowser(this.editor as EditorWithUI, element);
+      this.openLinkBrowser(this.editor as EditorWithUI);
     });
 
     // Execute unlink command after clicking on the "Unlink" button.
@@ -410,8 +409,7 @@ export class Typo3LinkUI extends Core.Plugin {
   private showUI(): void {
     if (!this.getSelectedLinkElement()) {
       this.showFakeVisualSelection();
-      const element = this.getSelectedLinkElement();
-      this.openLinkBrowser(this.editor as EditorWithUI, element);
+      this.openLinkBrowser(this.editor as EditorWithUI);
     } else {
       this.addActionsView();
       this.balloon.showStack('main');
@@ -578,11 +576,8 @@ export class Typo3LinkUI extends Core.Plugin {
     return position.getAncestors().find((ancestor: any) => LinkUtils.isLinkElement(ancestor));
   }
 
-  private openLinkBrowser(editor: EditorWithUI, element: any): void {
-    // @todo copied from existing code... improve it
-    if (!element) {
-      // return;
-    }
+  private openLinkBrowser(editor: EditorWithUI): void {
+    const element = this.getSelectedLinkElement();
     let additionalParameters = '';
     if (element) {
       additionalParameters += '&P[curUrl][url]=' + encodeURIComponent(element.getAttribute('href'));
@@ -619,7 +614,9 @@ export class Typo3LinkUI extends Core.Plugin {
       size: modalObject.sizes.large,
       callback: (currentModal: ModalElement) => {
         // Add the instance to the iframe itself
-        currentModal.userData.ckeditor = editor;
+        currentModal.userData.editor = editor;
+        currentModal.userData.selectionStartPosition = editor.model.document.selection.getFirstPosition();
+        currentModal.userData.selectionEndPosition = editor.model.document.selection.getLastPosition();
 
         // @todo: is this used at all?
         // should maybe be a regular modal attribute then
