@@ -66,7 +66,6 @@ class Check implements CheckInterface
     protected $requiredPhpExtensions = [
         'filter',
         'gd',
-        'hash',
         'intl',
         'json',
         'libxml',

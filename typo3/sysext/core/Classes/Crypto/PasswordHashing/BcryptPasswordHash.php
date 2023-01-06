@@ -67,14 +67,11 @@ class BcryptPasswordHash implements PasswordHashInterface
     }
 
     /**
-     * Returns true if sha384 for pre-hashing and bcrypt itself is available.
+     * bcrypt is always available in PHP core hash functions.
      */
     public function isAvailable(): bool
     {
-        return defined('PASSWORD_BCRYPT')
-            && function_exists('hash')
-            && function_exists('hash_algos')
-            && in_array('sha384', hash_algos());
+        return true;
     }
 
     /**

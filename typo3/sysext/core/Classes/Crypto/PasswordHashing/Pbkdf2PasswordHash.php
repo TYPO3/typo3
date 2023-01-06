@@ -76,7 +76,7 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
      */
     public function isAvailable(): bool
     {
-        return function_exists('hash_pbkdf2');
+        return true;
     }
 
     public function getHashedPassword(string $password): ?string

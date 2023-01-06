@@ -570,25 +570,8 @@ class GeneralUtility
     public static function hmac($input, $additionalSecret = '')
     {
         $hashAlgorithm = 'sha1';
-        $hashBlocksize = 64;
         $secret = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . $additionalSecret;
-        if (extension_loaded('hash') && function_exists('hash_hmac') && function_exists('hash_algos') && in_array($hashAlgorithm, hash_algos())) {
-            $hmac = hash_hmac($hashAlgorithm, $input, $secret);
-        } else {
-            // Outer padding
-            $opad = str_repeat(chr(92), $hashBlocksize);
-            // Inner padding
-            $ipad = str_repeat(chr(54), $hashBlocksize);
-            if (strlen($secret) > $hashBlocksize) {
-                // Keys longer than block size are shorten
-                $key = str_pad(pack('H*', $hashAlgorithm($secret)), $hashBlocksize, "\0");
-            } else {
-                // Keys shorter than block size are zero-padded
-                $key = str_pad($secret, $hashBlocksize, "\0");
-            }
-            $hmac = $hashAlgorithm(($key ^ $opad) . pack('H*', $hashAlgorithm(($key ^ $ipad) . $input)));
-        }
-        return $hmac;
+        return hash_hmac($hashAlgorithm, $input, $secret);
     }
 
     /**

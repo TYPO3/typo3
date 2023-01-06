@@ -1797,7 +1797,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function stdWrap_hash($content = '', array $conf = [])
     {
         $algorithm = (string)$this->stdWrapValue('hash', $conf ?? []);
-        if (function_exists('hash') && in_array($algorithm, hash_algos())) {
+        if (in_array($algorithm, hash_algos())) {
             return hash($algorithm, $content);
         }
         // Non-existing hashing algorithm
