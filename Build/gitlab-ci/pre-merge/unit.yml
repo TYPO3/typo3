@@ -21,15 +21,6 @@ unit php 8.1 deprecated pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.1
-unit php 8.1 pre-merge:
-  stage: main
-  except:
-    refs:
-      - schedules
-      - main
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s unit -p 8.1
 unit php 8.1 random pre-merge:
   stage: main
   except:

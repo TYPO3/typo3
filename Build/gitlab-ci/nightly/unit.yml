@@ -11,31 +11,6 @@ unit javascript:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1 -d mariadb -i 10.3
     - Build/Scripts/runTests.sh -s unitJavascript
 
-unit php 8.1 locked:
-  stage: unit
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s unit -p 8.1
-unit php 8.1 locked deprecated:
-  stage: unit
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.1
-unit php 8.1 locked random:
-  stage: unit
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.1
-
 unit php 8.1 max:
   stage: unit
   needs: []
@@ -109,31 +84,6 @@ unit php 8.1 min random:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s unitRandom -p 8.1
-
-unit php 8.2 locked:
-  stage: unit
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s unit -p 8.2
-unit php 8.2 locked deprecated:
-  stage: unit
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.2
-unit php 8.2 locked random:
-  stage: unit
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.2
 
 unit php 8.2 max:
   stage: unit
