@@ -1911,6 +1911,11 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
 
 		-
+			message: "#^Offset 'pidInList\\.' on array\\{pidInList: string\\} in isset\\(\\) does not exist\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentContentObject.php
+
+		-
 			message: "#^If condition is always true\\.$#"
 			count: 8
 			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php

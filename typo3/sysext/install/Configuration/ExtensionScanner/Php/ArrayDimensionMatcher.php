@@ -1100,4 +1100,10 @@ return [
             'Feature-102806-BeforePageIsRetrievedEventInPageRepository.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content_content.php\'][\'modifyDBRow\']' => [
+        'restFiles' => [
+            'Breaking-99323-RemovedHookForModifyingRecordsAfterFetchingContent.rst',
+            'Feature-99323-AddModifyRecordsAfterFetchingContentEvent.rst',
+        ],
+    ],
 ];

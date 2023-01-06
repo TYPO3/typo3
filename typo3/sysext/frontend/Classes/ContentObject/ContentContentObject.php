@@ -15,8 +15,10 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\Event\ModifyRecordsAfterFetchingContentEvent;
 
 /**
  * Contains CONTENT class object.
@@ -69,9 +71,28 @@ class ContentContentObject extends AbstractContentObject
         $tmpValue = '';
 
         do {
-            $records = $this->cObj->getRecords($conf['table'], $conf['select.']);
             $cobjValue = '';
-            if (!empty($records)) {
+            $modifyRecordsEvent = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+                new ModifyRecordsAfterFetchingContentEvent(
+                    $this->cObj->getRecords($conf['table'], $conf['select.']),
+                    $theValue,
+                    $slide,
+                    $slideCollect,
+                    $slideCollectReverse,
+                    $slideCollectFuzzy,
+                    $conf
+                )
+            );
+
+            $records = $modifyRecordsEvent->getRecords();
+            $theValue = $modifyRecordsEvent->getFinalContent();
+            $slide = $modifyRecordsEvent->getSlide();
+            $slideCollect = $modifyRecordsEvent->getSlideCollect();
+            $slideCollectReverse = $modifyRecordsEvent->getSlideCollectReverse();
+            $slideCollectFuzzy = $modifyRecordsEvent->getSlideCollectFuzzy();
+            $conf = $modifyRecordsEvent->getConfiguration();
+
+            if ($records !== []) {
                 $this->getTimeTracker()->setTSlogMessage('NUMROWS: ' . count($records));
 
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $frontendController);
@@ -79,11 +100,6 @@ class ContentContentObject extends AbstractContentObject
                 $this->cObj->currentRecordNumber = 0;
 
                 foreach ($records as $row) {
-                    // Call hook for possible manipulation of database row for cObj->data
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'] ?? [] as $className) {
-                        $_procObj = GeneralUtility::makeInstance($className);
-                        $_procObj->modifyDBRow($row, $conf['table']);
-                    }
                     $registerField = $conf['table'] . ':' . ($row['uid'] ?? 0);
                     if (!($frontendController->recordRegister[$registerField] ?? false)) {
                         $this->cObj->currentRecordNumber++;
@@ -135,12 +151,7 @@ class ContentContentObject extends AbstractContentObject
         return $theValue;
     }
 
-    /**
-     * Returns Time Tracker
-     *
-     * @return TimeTracker
-     */
-    protected function getTimeTracker()
+    protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
     }
