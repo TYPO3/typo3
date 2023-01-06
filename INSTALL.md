@@ -2,7 +2,7 @@ INSTALLING TYPO3
 ================
 
 TYPO3 is an open source PHP based web content management system released
-under the GNU GPL. TYPO3 is copyright © 1999-2022 by Kasper Skaarhoj.
+under the GNU GPL. TYPO3 is copyright © 1999-2023 by Kasper Skaarhoj.
 
 Official Installation and Upgrade Guide
 ---------------------------------------
