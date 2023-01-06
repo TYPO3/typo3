@@ -769,7 +769,6 @@ services:
         fi
         composer config platform.php ${PHP_VERSION}.0;
         composer update --prefer-lowest --no-progress --no-interaction;
-        composer update --prefer-lowest --no-progress --no-interaction;
         composer dumpautoload;
       "
 
