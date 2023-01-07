@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Event\ModifyRedirectManagementControllerViewDataEvent;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
+use TYPO3\CMS\Redirects\Utility\RedirectConflict;
 
 /**
  * Lists all redirects in the TYPO3 Backend as a module.
@@ -74,6 +75,7 @@ class ManagementController
                 GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount'),
                 $view,
                 $request,
+                $this->redirectRepository->findIntegrityStatusCodes(),
             )
         );
         $requestUri = $request->getAttribute('normalizedParams')->getRequestUri();
@@ -84,6 +86,8 @@ class ManagementController
             'hosts' => $event->getHosts(),
             'statusCodes' => $event->getStatusCodes(),
             'creationTypes' => $event->getCreationTypes(),
+            'integrityStatusCodes' => $event->getIntegrityStatusCodes(),
+            'defaultIntegrityStatus' => RedirectConflict::NO_CONFLICT,
             'demand' => $event->getDemand(),
             'showHitCounter' => $event->getShowHitCounter(),
             'pagination' => $this->preparePagination($event->getDemand()),

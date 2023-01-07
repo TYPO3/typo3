@@ -140,6 +140,13 @@ class RedirectRepository
             );
         }
 
+        if ($demand->hasIntegrityStatus()) {
+            $constraints[] = $queryBuilder->expr()->eq(
+                'integrity_status',
+                $queryBuilder->createNamedParameter($demand->getIntegrityStatus())
+            );
+        }
+
         if (!empty($constraints)) {
             $queryBuilder->where(...$constraints);
         }
@@ -178,6 +185,24 @@ class RedirectRepository
         }
 
         return $types;
+    }
+
+    /**
+     * Get all used integrity status codes
+     */
+    public function findIntegrityStatusCodes(): array
+    {
+        $statusCodes = [];
+        $availableStatusCodes = $GLOBALS['TCA']['sys_redirect']['columns']['integrity_status']['config']['items'];
+        foreach ($this->getGroupedRows('integrity_status', 'status_code') as $row) {
+            foreach ($availableStatusCodes as $availableStatusCode) {
+                if ($availableStatusCode['value'] === $row['status_code']) {
+                    $statusCodes[$row['status_code']] = $availableStatusCode['label'];
+                }
+            }
+        }
+
+        return $statusCodes;
     }
 
     protected function getGroupedRows(string $field, string $as): array

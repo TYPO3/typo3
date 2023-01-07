@@ -1,5 +1,7 @@
 <?php
 
+use TYPO3\CMS\Redirects\Utility\RedirectConflict;
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect',
@@ -31,7 +33,7 @@ return [
     'types' => [
         '1' => [
             'showitem' => '
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general, --palette--;;source, --palette--;;targetdetails, protected, creation_type,
+                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general, --palette--;;source, --palette--;;targetdetails, protected, creation_type, integrity_status,
                 --div--;LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:tabs.redirectCount, disable_hitcount, hitcount, lasthiton, createdon,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, --palette--;;visibility,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes, description',
@@ -276,6 +278,26 @@ return [
                 'type' => 'text',
                 'rows' => 5,
                 'cols' => 40,
+            ],
+        ],
+        'integrity_status' => [
+            'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.integrity_status',
+            'description' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.integrity_status.description',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'dbFieldLength' => 180,
+                'default' => RedirectConflict::NO_CONFLICT,
+                'items' => [
+                    [
+                        'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.integrity_status.no_conflict',
+                        'value' => RedirectConflict::NO_CONFLICT,
+                    ],
+                    [
+                        'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.integrity_status.self_reference',
+                        'value' => RedirectConflict::SELF_REFERENCE,
+                    ],
+                ],
             ],
         ],
     ],

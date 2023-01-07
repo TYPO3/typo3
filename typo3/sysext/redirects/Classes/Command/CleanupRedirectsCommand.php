@@ -85,6 +85,13 @@ class CleanupRedirectsCommand extends Command
                 $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.creationType'),
                 null
             )
+            ->addOption(
+                'integrityStatus',
+                'i',
+                InputOption::VALUE_OPTIONAL,
+                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.integrityStatus'),
+                null
+            )
         ;
     }
 

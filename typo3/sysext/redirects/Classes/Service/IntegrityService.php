@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Redirects\Utility\RedirectConflict;
 
 /**
  * Checks for redirects that conflict with existing pages
@@ -69,13 +70,28 @@ class IntegrityService
                     yield [
                         'uri' => (string)$uri,
                         'redirect' => [
+                            'integrity_status' => RedirectConflict::SELF_REFERENCE,
                             'source_host' => $matchingRedirect['source_host'],
                             'source_path' => $matchingRedirect['source_path'],
+                            'uid' => $matchingRedirect['uid'],
                         ],
                     ];
                 }
             }
         }
+    }
+
+    public function setIntegrityStatus(array $redirect): void
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_redirect');
+        $queryBuilder
+            ->update('sys_redirect')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($redirect['uid'], Connection::PARAM_INT))
+            )
+            ->set('integrity_status', $redirect['integrity_status'])
+            ->executeStatement();
     }
 
     private function getMatchingRedirectByUri(Uri $uri): ?array

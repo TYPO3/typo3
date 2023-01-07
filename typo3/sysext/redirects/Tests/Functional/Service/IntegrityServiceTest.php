@@ -26,6 +26,7 @@ use TYPO3\CMS\Frontend\Page\PageInformationFactory;
 use TYPO3\CMS\Redirects\Service\IntegrityService;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\RedirectService;
+use TYPO3\CMS\Redirects\Utility\RedirectConflict;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class IntegrityServiceTest extends FunctionalTestCase
@@ -78,29 +79,37 @@ final class IntegrityServiceTest extends FunctionalTestCase
             [
                 'uri' => 'https://example.com/',
                 'redirect' => [
+                    'integrity_status' => RedirectConflict::SELF_REFERENCE,
                     'source_host' => 'example.com',
                     'source_path' => '/',
+                    'uid' => 7,
                 ],
             ],
             [
                 'uri' => 'https://example.com/about-us/we-are-here',
                 'redirect' => [
+                    'integrity_status' => RedirectConflict::SELF_REFERENCE,
                     'source_host' => '*',
                     'source_path' => '/about-us/we-are-here',
+                    'uid' => 1,
                 ],
             ],
             [
                 'uri' => 'https://example.com/contact',
                 'redirect' => [
+                    'integrity_status' => RedirectConflict::SELF_REFERENCE,
                     'source_host' => 'example.com',
                     'source_path' => '/contact',
+                    'uid' => 6,
                 ],
             ],
             [
                 'uri' => 'https://example.com/features',
                 'redirect' => [
+                    'integrity_status' => RedirectConflict::SELF_REFERENCE,
                     'source_host' => '*',
                     'source_path' => '/features',
+                    'uid' => 9,
                 ],
             ],
         ];
@@ -120,22 +129,28 @@ final class IntegrityServiceTest extends FunctionalTestCase
             [
                 'uri' => 'https://another.example.com/about-us/we-are-here',
                 'redirect' => [
+                    'integrity_status' => RedirectConflict::SELF_REFERENCE,
                     'source_host' => '*',
                     'source_path' => '/about-us/we-are-here',
+                    'uid' => 1,
                 ],
             ],
             [
                 'uri' => 'https://another.example.com/de/merkmale',
                 'redirect' => [
+                    'integrity_status' => RedirectConflict::SELF_REFERENCE,
                     'source_host' => 'another.example.com',
                     'source_path' => '/de/merkmale',
+                    'uid' => 4,
                 ],
             ],
             [
                 'uri' => 'https://another.example.com/features',
                 'redirect' => [
+                    'integrity_status' => RedirectConflict::SELF_REFERENCE,
                     'source_host' => 'another.example.com',
                     'source_path' => '/features',
+                    'uid' => 8,
                 ],
             ],
         ];
@@ -156,50 +171,64 @@ final class IntegrityServiceTest extends FunctionalTestCase
             [
                 'uri' => 'https://example.com/',
                 'redirect' => [
+                    'integrity_status' => RedirectConflict::SELF_REFERENCE,
                     'source_host' => 'example.com',
                     'source_path' => '/',
+                    'uid' => 7,
                 ],
             ],
             [
                 'uri' => 'https://example.com/about-us/we-are-here',
                 'redirect' => [
+                    'integrity_status' => RedirectConflict::SELF_REFERENCE,
                     'source_host' => '*',
                     'source_path' => '/about-us/we-are-here',
+                    'uid' => 1,
                 ],
             ],
             [
                 'uri' => 'https://another.example.com/about-us/we-are-here',
                 'redirect' => [
+                    'integrity_status' => RedirectConflict::SELF_REFERENCE,
                     'source_host' => '*',
                     'source_path' => '/about-us/we-are-here',
+                    'uid' => 1,
                 ],
             ],
             [
                 'uri' => 'https://another.example.com/de/merkmale',
                 'redirect' => [
+                    'integrity_status' => RedirectConflict::SELF_REFERENCE,
                     'source_host' => 'another.example.com',
                     'source_path' => '/de/merkmale',
+                    'uid' => 4,
                 ],
             ],
             [
                 'uri' => 'https://example.com/contact',
                 'redirect' => [
+                    'integrity_status' => RedirectConflict::SELF_REFERENCE,
                     'source_host' => 'example.com',
                     'source_path' => '/contact',
+                    'uid' => 6,
                 ],
             ],
             [
                 'uri' => 'https://example.com/features',
                 'redirect' => [
+                    'integrity_status' => RedirectConflict::SELF_REFERENCE,
                     'source_host' => '*',
                     'source_path' => '/features',
+                    'uid' => 9,
                 ],
             ],
             [
                 'uri' => 'https://another.example.com/features',
                 'redirect' => [
+                    'integrity_status' => RedirectConflict::SELF_REFERENCE,
                     'source_host' => 'another.example.com',
                     'source_path' => '/features',
+                    'uid' => 8,
                 ],
             ],
         ];

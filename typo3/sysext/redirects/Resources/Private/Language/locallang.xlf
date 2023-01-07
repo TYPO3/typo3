@@ -36,6 +36,9 @@
 			<trans-unit id="cleanupRedirectsCommand.label.statusCode" resname="cleanupRedirectsCommand.label.statusCode">
 				<source>Cleanup redirects matching provided status code(s)</source>
 			</trans-unit>
+			<trans-unit id="cleanupRedirectsCommand.label.integrityStatus" resname="cleanupRedirectsCommand.label.integrityStatus">
+				<source>Cleanup redirects matching provided integrity status</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

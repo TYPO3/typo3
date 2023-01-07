@@ -105,6 +105,21 @@
 			<trans-unit id="sys_redirect.webhook_type.typo3-redirect-was-hit" resname="sys_redirect.webhook_type.typo3-redirect-was-hit">
 				<source>... when a redirect has been hit</source>
 			</trans-unit>
+			<trans-unit id="sys_redirect.integrity_status" resname="sys_redirect.integrity_status">
+				<source>Integrity status</source>
+			</trans-unit>
+			<trans-unit id="sys_redirect.integrity_status.description" resname="sys_redirect.integrity_status.description">
+				<source>Redirects can be checked via the command redirects:checkintegrity.</source>
+			</trans-unit>
+			<trans-unit id="sys_redirect.integrity_status.no_conflict" resname="sys_redirect.integrity_status.no_conflict">
+				<source>No conflict</source>
+			</trans-unit>
+			<trans-unit id="sys_redirect.integrity_status.self_reference" resname="sys_redirect.integrity_status.self_reference">
+				<source>Self reference</source>
+			</trans-unit>
+			<trans-unit id="sys_redirect.uid" resname="sys_redirect.uid">
+				<source>UID</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

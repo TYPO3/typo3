@@ -43,6 +43,9 @@ final class ModifyRedirectManagementControllerViewDataEventTest extends UnitTest
         $creationTypes = [
             ['dummy' => 'value1'],
         ];
+        $integrityStatusCodes = [
+            ['dummy' => 'value1'],
+        ];
         $showHitCounter = true;
         $view = $this->createMock(ViewInterface::class);
         $event = new ModifyRedirectManagementControllerViewDataEvent(
@@ -54,6 +57,7 @@ final class ModifyRedirectManagementControllerViewDataEventTest extends UnitTest
             $showHitCounter,
             $view,
             new ServerRequest(),
+            $integrityStatusCodes,
         );
         self::assertSame($demand, $event->getDemand());
         self::assertSame($redirects, $event->getRedirects());
@@ -62,5 +66,6 @@ final class ModifyRedirectManagementControllerViewDataEventTest extends UnitTest
         self::assertSame($creationTypes, $event->getCreationTypes());
         self::assertSame($showHitCounter, $event->getShowHitCounter());
         self::assertSame($view, $event->getView());
+        self::assertSame($integrityStatusCodes, $event->getIntegrityStatusCodes());
     }
 }

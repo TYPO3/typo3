@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Redirects\Repository;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Console\Input\InputInterface;
+use TYPO3\CMS\Redirects\Utility\RedirectConflict;
 
 /**
  * Demand Object for filtering redirects in the backend module
@@ -53,6 +54,7 @@ class Demand
     private ?\DateTimeInterface $olderThan;
     protected ?int $creationType = -1;
     protected ?int $protected = -1;
+    protected ?string $integrityStatus = RedirectConflict::NO_CONFLICT;
 
     public function __construct(
         int $page = 1,
@@ -65,7 +67,8 @@ class Demand
         int $maxHits = 0,
         \DateTimeInterface $olderThan = null,
         ?int $creationType = -1,
-        ?int $protected = -1
+        ?int $protected = -1,
+        ?string $integrityStatus = RedirectConflict::NO_CONFLICT
     ) {
         $this->page = $page;
         if (!in_array($orderField, self::ORDER_FIELDS, true)) {
@@ -85,6 +88,7 @@ class Demand
         $this->olderThan = $olderThan;
         $this->creationType = $creationType;
         $this->protected = $protected;
+        $this->integrityStatus = $integrityStatus;
     }
 
     public static function fromRequest(ServerRequestInterface $request): self
@@ -105,7 +109,8 @@ class Demand
         $maxHits = (int)($demand['max_hits'] ?? 0);
         $creationType = isset($demand['creation_type']) ? ((int)$demand['creation_type']) : -1;
         $protected = isset($demand['protected']) ? ((int)$demand['protected']) : -1;
-        return new self($page, $orderField, $orderDirection, $sourceHosts, $sourcePath, $target, $statusCodes, $maxHits, null, $creationType, $protected);
+        $integrityStatus = isset($demand['integrity_status']) ? ((string)$demand['integrity_status']) : RedirectConflict::NO_CONFLICT;
+        return new self($page, $orderField, $orderDirection, $sourceHosts, $sourcePath, $target, $statusCodes, $maxHits, null, $creationType, $protected, $integrityStatus);
     }
 
     public static function fromCommandInput(InputInterface $input): self
@@ -124,7 +129,9 @@ class Demand
                 : new \DateTimeImmutable(
                     '90 days ago'
                 ),
-            $input->getOption('creationType') !== null ? (int)($input->getOption('creationType')) : null
+            $input->hasOption('creationType') ? (int)($input->getOption('creationType')) : null,
+            $input->hasOption('protected') ? (int)($input->getOption('protected')) : null,
+            $input->hasOption('integrityStatus') ? (string)($input->getOption('integrityStatus')) : RedirectConflict::NO_CONFLICT
         );
     }
 
@@ -213,6 +220,11 @@ class Demand
         return $this->protected;
     }
 
+    public function getIntegrityStatus(): ?string
+    {
+        return $this->integrityStatus;
+    }
+
     public function getFirstStatusCode(): int
     {
         return $this->statusCodes[0] ?? 0;
@@ -253,6 +265,11 @@ class Demand
         return $this->protected !== null && $this->protected !== -1;
     }
 
+    public function hasIntegrityStatus(): bool
+    {
+        return $this->integrityStatus !== null && $this->integrityStatus !== '';
+    }
+
     public function hasConstraints(): bool
     {
         return $this->hasSourcePath()
@@ -261,7 +278,8 @@ class Demand
             || $this->hasStatusCodes()
             || $this->hasMaxHits()
             || $this->hasCreationType()
-            || $this->hasProtected();
+            || $this->hasProtected()
+            || $this->hasIntegrityStatus();
     }
 
     /**
@@ -303,6 +321,9 @@ class Demand
         }
         if ($this->hasProtected()) {
             $parameters['protected'] = $this->getProtected();
+        }
+        if ($this->hasIntegrityStatus()) {
+            $parameters['integrity_status'] = $this->getIntegrityStatus();
         }
         return $parameters;
     }

@@ -132,7 +132,7 @@
                 <f:for each="{redirects}" key="domainName" as="redirect">
                     <f:variable name="pageId" value="{rd:targetPageId(target:redirect.target)}" />
                     <f:variable name="targetUri" value="{f:uri.typolink(parameter:redirect.target)}" />
-                    <tr data-uid="{redirect.uid}" data-multi-record-selection-element="true">
+                    <tr class="{f:if(condition: '{redirect.integrity_status} !== {defaultIntegrityStatus}', then: 'danger')}" data-uid="{redirect.uid}" data-multi-record-selection-element="true">
                         <td class="col-checkbox">
                             <span class="form-check form-check-type-toggle">
                                 <input class="form-check-input t3js-multi-record-selection-check" type="checkbox">
@@ -329,6 +329,15 @@
                     <option value="-1"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.creationType.showAll"/></option>
                     <f:for each="{creationTypes}" key="creationType" as="label">
                         <option value="{creationType}" {f:if(condition: '{demand.creationType} == {creationType}', then: 'selected')}>{f:translate(key: label, default: label)}</option>
+                    </f:for>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="demand-integrity-status" class="form-label"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.integrityStatus"/></label>
+                <select id="demand-integrity-status" class="form-select" name="demand[integrity_status]" data-on-change="submit">
+                    <option value=""><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.integrityStatus.showAll"/></option>
+                    <f:for each="{integrityStatusCodes}" key="integrityStatusCode" as="label">
+                        <option value="{integrityStatusCode}" {f:if(condition: '{demand.integrityStatus} == {integrityStatusCode}', then: 'selected')}>{f:translate(key: label, default: label)}</option>
                     </f:for>
                 </select>
             </div>

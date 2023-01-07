@@ -38,6 +38,7 @@ final class ModifyRedirectManagementControllerViewDataEvent
         private bool $showHitCounter,
         private ViewInterface $view,
         private readonly ServerRequestInterface $request,
+        private array $integrityStatusCodes,
     ) {}
 
     public function getDemand(): Demand
@@ -113,5 +114,15 @@ final class ModifyRedirectManagementControllerViewDataEvent
     public function setView(ViewInterface $view): void
     {
         $this->view = $view;
+    }
+
+    public function getIntegrityStatusCodes(): array
+    {
+        return $this->integrityStatusCodes;
+    }
+
+    public function setIntegrityStatusCodes(array $integrityStatusCodes): void
+    {
+        $this->integrityStatusCodes = $integrityStatusCodes;
     }
 }

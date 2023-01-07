@@ -46,6 +46,7 @@ use TYPO3\CMS\Redirects\Event\ModifyAutoCreateRedirectRecordBeforePersistingEven
 use TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory;
+use TYPO3\CMS\Redirects\Utility\RedirectConflict;
 
 /**
  * @internal Due to some possible refactorings in TYPO3 v10+
@@ -170,6 +171,8 @@ class SlugService implements LoggerAwareInterface
                 'pageuid' => $pageId,
                 'parameters' => HttpUtility::buildQueryString($targetLinkParameters),
             ]);
+            // @todo Default values should be first filled reading TCA defaults and only overridden with values
+            //       available here - and not defining a hardcoded default handling here.
             $record = [
                 'pid' => $storagePid,
                 'updatedon' => $date->get('timestamp'),
@@ -189,6 +192,7 @@ class SlugService implements LoggerAwareInterface
                 'lasthiton' => 0,
                 'disable_hitcount' => 0,
                 'creation_type' => 0,
+                'integrity_status' => RedirectConflict::NO_CONFLICT,
             ];
 
             $record = $this->eventDispatcher->dispatch(

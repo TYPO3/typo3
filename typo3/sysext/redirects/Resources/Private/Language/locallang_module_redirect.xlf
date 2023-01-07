@@ -66,6 +66,12 @@
 			<trans-unit id="filter.protected.protected" resname="filter.protected.protected">
 				<source>protected</source>
 			</trans-unit>
+			<trans-unit id="filter.integrityStatus" resname="filter.integrityStatus">
+				<source>Integrity status</source>
+			</trans-unit>
+			<trans-unit id="filter.integrityStatus.showAll" resname="filter.integrityStatus.showAll">
+				<source>Show All</source>
+			</trans-unit>
 			<trans-unit id="filter.neverHit" resname="filter.neverHit">
 				<source>Never hit</source>
 			</trans-unit>

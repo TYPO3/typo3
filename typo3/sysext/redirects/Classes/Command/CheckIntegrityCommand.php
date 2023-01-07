@@ -33,6 +33,7 @@ class CheckIntegrityCommand extends Command
     private const REGISTRY_NAMESPACE = 'tx_redirects';
     public const REGISTRY_KEY_CONFLICTING_REDIRECTS = 'conflicting_redirects';
     public const REGISTRY_KEY_LAST_TIMESTAMP_CHECK_INTEGRITY = 'redirects_check_integrity_last_check';
+    private const LANGUAGE_FILE_PATH = 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf';
 
     public function __construct(
         private readonly Registry $registry,
@@ -67,24 +68,36 @@ class CheckIntegrityCommand extends Command
         $table->setHeaders(
             [
                 LocalizationUtility::translate(
-                    'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.source_host'
+                    self::LANGUAGE_FILE_PATH . ':sys_redirect.uid'
                 ),
                 LocalizationUtility::translate(
-                    'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.source_path'
+                    self::LANGUAGE_FILE_PATH . ':sys_redirect.source_host'
                 ),
                 LocalizationUtility::translate(
-                    'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target'
+                    self::LANGUAGE_FILE_PATH . ':sys_redirect.source_path'
+                ),
+                LocalizationUtility::translate(
+                    self::LANGUAGE_FILE_PATH . ':sys_redirect.target'
+                ),
+                LocalizationUtility::translate(
+                    self::LANGUAGE_FILE_PATH . ':sys_redirect.integrity_status'
                 ),
             ]
         );
 
+        $integrityStatusLabel = ':sys_redirect.integrity_status.';
         foreach ($this->integrityService->findConflictingRedirects($site) as $conflict) {
             $conflictingRedirects[] = [
+                $conflict['redirect']['uid'],
                 $conflict['redirect']['source_host'],
                 $conflict['redirect']['source_path'],
                 $conflict['uri'],
+                LocalizationUtility::translate(
+                    self::LANGUAGE_FILE_PATH . $integrityStatusLabel . $conflict['redirect']['integrity_status']
+                ),
             ];
             $list[] = $conflict;
+            $this->integrityService->setIntegrityStatus($conflict['redirect']);
         }
 
         if ($conflictingRedirects !== []) {
