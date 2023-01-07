@@ -18,14 +18,15 @@ You can use it to simulate scenarios to test page content, for example, user
 groups, time-restricted content or showing hidden content. You can also use it
 for general debugging.
 
-The bar shows a summary of information about the page, including number of
-TypoScript messages, page load time, and a count of any errors and warnings.
+The bar shows a summary of information about the page, including the number of
+TypoScript messages, page load time, a count of any errors and warnings, and
+a link to the according page in the backend.
 
 .. figure:: ../Images/UIAdminPanelBar.png
    :alt: The admin panel bar
    :class: with-border
 
-   The admin panel bar displays at the bottom of the page on the frontend
+   The admin panel bar displayed at the bottom of the page on the frontend
 
 From the bar you can open a larger panel to access detailed information about
 the page.
