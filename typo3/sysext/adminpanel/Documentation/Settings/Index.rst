@@ -25,6 +25,9 @@ Show hidden content
 Use :guilabel:`Show hidden pages` and :guilabel:`Show hidden records` to
 reload the page and see any content that is set to 'disabled' in the backend.
 
+The :guilabel:`Ignore start and end time` to view all records on a page
+regardless of the start and end time.
+
 The :guilabel:`Show fluid debug output` reloads the page with an overlay
 indicating the Fluid sections and partials in use.
 
