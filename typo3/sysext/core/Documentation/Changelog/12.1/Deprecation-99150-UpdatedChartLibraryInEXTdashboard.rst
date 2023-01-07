@@ -23,7 +23,7 @@ The CSS file :file:`EXT:dashboard/Resources/Public/Css/Contrib/chart.css` became
 obsolete with the update of `chart.js` and was therefore removed without
 replacement.
 
-If a migration is executed, an entry will we written into the deprecation log.
+If a migration is executed, an entry will be written into the deprecation log.
 
 Affected installations
 ======================

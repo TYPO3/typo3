@@ -8,6 +8,11 @@
 Implement graph widget
 ======================
 
+..  versionchanged:: 12.1
+    The chart.js library, used to render charts in a dashboard widget, has been
+    upgraded in TYPO3 v12.1. The chart.js configuration has changed, for more
+    information have a look into the :ref:`migration` chapter.
+
 .. php:namespace:: TYPO3\CMS\Dashboard\Widgets
 
 First of all a new data provider is required, which will provide the data for the chart.
