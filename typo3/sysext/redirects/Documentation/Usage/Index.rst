@@ -248,6 +248,17 @@ Access tab
     If this is not empty, "now" (current time) must be before Stop time for the
     redirect to have effect.
 
+Notes
+~~~~~
+
+..  confval:: Description
+
+    :Field: description
+
+    Add context to the corresponding redirect. The added information is also
+    displayed in the "Record information" info box above the edit form.
+
+
 .. _regex-examples:
 
 Regex examples
