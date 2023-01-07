@@ -21,7 +21,7 @@ each site.
 
 .. hint::
 
-    In non Composer installations, the file is found in
+    In legacy installations, the file is found in
     :file:`typo3conf/sites/<site>/config.yaml`.
 
 The following settings apply to **automatically created redirects**.
@@ -77,16 +77,38 @@ redirects under given conditions.
 
 Use `-h` to see all options:
 
-.. code-block:: shell
+..  tabs::
 
-    vendor/bin/typo3 redirects:cleanup -h
+    ..  group-tab:: Composer-based installation
+
+        ..  code-block:: bash
+
+            vendor/bin/typo3 redirects:cleanup -h
+
+    ..  group-tab:: Legacy installation
+
+        ..  code-block:: bash
+
+            typo3/sysext/core/bin/typo3 redirects:cleanup -h
+
 
 **Example 1:** Remove all redirects with less than 50 hits **and** older than 30
 days.
 
-.. code-block:: shell
+..  tabs::
 
-    vendor/bin/typo3 redirects:cleanup -c 50 -a 30
+    ..  group-tab:: Composer-based installation
+
+        ..  code-block:: bash
+
+            vendor/bin/typo3 redirects:cleanup -c 50 -a 30
+
+    ..  group-tab:: Legacy installation
+
+        ..  code-block:: bash
+
+            typo3/sysext/core/bin/typo3 redirects:cleanup -c 50 -a 30
+
 
 .. hint::
 
@@ -100,10 +122,22 @@ days.
 and with hit counter less than 100 which start with the source path `/foo/bar`
 and have a status code of 302 or 303.
 
-.. code-block:: shell
+..  tabs::
 
-    vendor/bin/typo3 redirects:cleanup --domain foo.com --domain bar.com \
-    --age 90 --hitCount 100 --path "/foo/bar%" --statusCode 302 --statusCode 303
+    ..  group-tab:: Composer-based installation
+
+        ..  code-block:: bash
+
+            vendor/bin/typo3 redirects:cleanup --domain foo.com --domain bar.com \
+            --age 90 --hitCount 100 --path "/foo/bar%" --statusCode 302 --statusCode 303
+
+    ..  group-tab:: Legacy installation
+
+        ..  code-block:: bash
+
+            typo3/sysext/core/bin/typo3 redirects:cleanup redirects:cleanup --domain foo.com --domain bar.com \
+            --age 90 --hitCount 100 --path "/foo/bar%" --statusCode 302 --statusCode 303
+
 
 .. _redirects-checkintegrity:
 
@@ -124,15 +158,35 @@ redirects, each redirecting to the next and looping back to the first, e.g.
 
 Example usage to check all sites:
 
-.. code-block:: shell
+..  tabs::
 
-    vendor/bin/typo3 redirects:checkintegrity
+    ..  group-tab:: Composer-based installation
+
+        ..  code-block:: bash
+
+            vendor/bin/typo3 redirects:checkintegrity
+
+    ..  group-tab:: Legacy installation
+
+        ..  code-block:: bash
+
+            typo3/sysext/core/bin/typo3 redirects:checkintegrity
 
 Check only the site mysite:
 
-.. code-block:: shell
+..  tabs::
 
-    vendor/bin/typo3 redirects:checkintegrity mysite
+    ..  group-tab:: Composer-based installation
+
+        ..  code-block:: bash
+
+            vendor/bin/typo3 redirects:checkintegrity mysite
+
+    ..  group-tab:: Legacy installation
+
+        ..  code-block:: bash
+
+            typo3/sysext/core/bin/typo3 redirects:checkintegrity mysite
 
 This will output one line per redirect conflict. The output may look like
 this:
@@ -203,9 +257,9 @@ configuration file :file:`LocalConfiguration.php` or
 .. code-block:: php
 
     'SYS' => [
-            'features' => [
-                    'redirects.hitCount' => true
-            ],
+        'features' => [
+            'redirects.hitCount' => true
+        ],
     ],
 
 This feature toggle is disabled by default, because it comes with a small performance
