@@ -90,12 +90,12 @@ class VideoTagRendererTest extends UnitTestCase
             [
                 '//:path/myVideoFile',
                 ['autoplay' => 1],
-                '<video width="300" height="200" controls autoplay><source src="//:path/myVideoFile" type="video/mp4"></video>',
+                '<video width="300" height="200" controls autoplay muted><source src="//:path/myVideoFile" type="video/mp4"></video>',
             ],
             [
                 '//:path/myVideoFile',
                 ['controls' => 0, 'autoplay' => 1],
-                '<video width="300" height="200" autoplay><source src="//:path/myVideoFile" type="video/mp4"></video>',
+                '<video width="300" height="200" autoplay muted><source src="//:path/myVideoFile" type="video/mp4"></video>',
             ],
             [
                 '//:path/myVideoFile',

@@ -138,6 +138,8 @@ class VimeoRenderer implements FileRendererInterface
         $urlParams = [];
         if (!empty($options['autoplay'])) {
             $urlParams[] = 'autoplay=1';
+            // If autoplay is enabled, enforce muted=1, see https://developer.chrome.com/blog/autoplay/
+            $urlParams[] = 'muted=1';
         }
         if (!empty($options['loop'])) {
             $urlParams[] = 'loop=1';
