@@ -95,6 +95,8 @@ class VideoTagRenderer implements FileRendererInterface
         }
         if (!empty($options['autoplay'])) {
             $attributes[] = 'autoplay';
+            // If autoplay is enabled, enforce muted, see https://developer.chrome.com/blog/autoplay/
+            $attributes[] = 'muted';
         }
         if (!empty($options['muted'])) {
             $attributes[] = 'muted';

@@ -115,7 +115,7 @@ class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;muted=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
     }
@@ -132,7 +132,7 @@ class VimeoRendererTest extends UnitTestCase
         $fileReferenceMock->method('getOriginalFile')->willReturn($fileResourceMock);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;muted=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
             $this->subject->render($fileReferenceMock, '300m', '200')
         );
     }
@@ -145,7 +145,7 @@ class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;muted=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
     }
@@ -210,7 +210,7 @@ class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;muted=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['allow' => 'foo; bar', 'autoplay' => 1])
         );
     }
