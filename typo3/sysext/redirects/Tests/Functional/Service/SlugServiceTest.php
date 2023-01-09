@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\SlugService;
@@ -113,12 +114,15 @@ class SlugServiceTest extends FunctionalTestCase
      */
     public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirects(): void
     {
+        $newPageSlug = '/test-new';
         $this->buildBaseSite();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.csv');
+        /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
-        $this->setPageSlug(2, '/test-new');
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
         $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $this->setPageSlug(2, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
         $slugs = [
@@ -154,12 +158,15 @@ class SlugServiceTest extends FunctionalTestCase
      */
     public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirectsForRootChange(): void
     {
+        $newPageSlug = '/new-home';
         $this->buildBaseSite();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test2.csv');
+        /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(1);
-        $this->setPageSlug(1, '/new-home');
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
         $this->subject->rebuildSlugsForSlugChange(1, $changeItem, $this->correlationId);
+        $this->setPageSlug(1, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
         $slugs = [
@@ -201,12 +208,15 @@ class SlugServiceTest extends FunctionalTestCase
      */
     public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirectsWithSubFolderBase(): void
     {
+        $newPageSlug = '/test-new';
         $this->buildBaseSiteInSubfolder();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.csv');
+        /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
-        $this->setPageSlug(2, '/test-new');
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
         $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $this->setPageSlug(2, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
         $slugs = [
@@ -242,12 +252,15 @@ class SlugServiceTest extends FunctionalTestCase
      */
     public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirectsWithLanguages(): void
     {
+        $newPageSlug = '/test-new';
         $this->buildBaseSiteWithLanguages();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.csv');
+        /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(31);
-        $this->setPageSlug(31, '/test-new');
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
         $this->subject->rebuildSlugsForSlugChange(31, $changeItem, $this->correlationId);
+        $this->setPageSlug(31, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
         $slugs = [
@@ -283,12 +296,15 @@ class SlugServiceTest extends FunctionalTestCase
      */
     public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirectsWithLanguagesInSubFolder(): void
     {
+        $newPageSlug = '/test-new';
         $this->buildBaseSiteWithLanguagesInSubFolder();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.csv');
+        /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(31);
-        $this->setPageSlug(31, '/test-new');
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
         $this->subject->rebuildSlugsForSlugChange(31, $changeItem, $this->correlationId);
+        $this->setPageSlug(31, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
         $slugs = [
@@ -324,12 +340,15 @@ class SlugServiceTest extends FunctionalTestCase
      */
     public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirectsWithDefaultLanguageInSubFolder(): void
     {
+        $newPageSlug = '/test-new';
         $this->buildBaseSiteWithLanguagesInSubFolder();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.csv');
+        /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(3);
-        $this->setPageSlug(3, '/test-new');
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
         $this->subject->rebuildSlugsForSlugChange(3, $changeItem, $this->correlationId);
+        $this->setPageSlug(3, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
         $slugs = [
@@ -366,12 +385,15 @@ class SlugServiceTest extends FunctionalTestCase
      */
     public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirectsWithLanguagesForSiteroot(): void
     {
+        $newPageSlug = '/test-new';
         $this->buildBaseSiteWithLanguages();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test4.csv');
+        /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(5);
-        $this->setPageSlug(5, '/test-new');
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
         $this->subject->rebuildSlugsForSlugChange(5, $changeItem, $this->correlationId);
+        $this->setPageSlug(5, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
         $slugs = [

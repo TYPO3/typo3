@@ -82,7 +82,8 @@ class DataHandlerSlugUpdateHook
         ) {
             return;
         }
-
+        // We need to merge the current changed to the retrieved record, because they are not persisted yet.
+        $persistedChangedItem = $persistedChangedItem->withChanged(array_merge($persistedChangedItem->getOriginal(), $fieldArray));
         $this->slugService->rebuildSlugsForSlugChange($id, $persistedChangedItem, $dataHandler->getCorrelationId());
     }
 

@@ -45,7 +45,7 @@ use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory;
 
 /**
- * @internal Due to some possible refactorings in TYPO3 v10
+ * @internal Due to some possible refactorings in TYPO3 v10+
  */
 class SlugService implements LoggerAwareInterface
 {
@@ -103,20 +103,19 @@ class SlugService implements LoggerAwareInterface
 
     public function rebuildSlugsForSlugChange(int $pageId, SlugRedirectChangeItem $changeItem, CorrelationId $correlationId): void
     {
-        $currentPageRecord = BackendUtility::getRecord('pages', $pageId);
-        if ($currentPageRecord === null) {
-            return;
-        }
-        $changeItem = $changeItem->withChanged($currentPageRecord);
         $this->initializeSettings($changeItem->getSite());
         if ($this->autoUpdateSlugs || $this->autoCreateRedirects) {
             $sourceHosts = [];
             $this->createCorrelationIds($pageId, $correlationId);
             if ($this->autoCreateRedirects) {
-                $sourceHosts = $this->createRedirects($changeItem, $changeItem->getDefaultLanguagePageId(), (int)$currentPageRecord['sys_language_uid']);
+                $sourceHosts = $this->createRedirects(
+                    $changeItem,
+                    $changeItem->getDefaultLanguagePageId(),
+                    (int)$changeItem->getChanged()['sys_language_uid']
+                );
             }
             if ($this->autoUpdateSlugs) {
-                $sourceHosts += $this->checkSubPages($currentPageRecord, $changeItem);
+                $sourceHosts += $this->checkSubPages($changeItem->getChanged(), $changeItem);
             }
             $this->sendNotification();
             // rebuild caches only for matched source hosts
