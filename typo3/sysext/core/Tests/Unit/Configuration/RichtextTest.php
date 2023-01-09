@@ -204,6 +204,11 @@ class RichtextTest extends UnitTestCase
             'editor' => [
                 'config' => [
                     'contentsCss' => 'my.css',
+                    'removePlugins' => [],
+                    'wordCount' => [
+                        'displayCharacters' => true,
+                        'displayWords' => true,
+                    ],
                 ],
             ],
             'proc.' => [
@@ -269,6 +274,11 @@ class RichtextTest extends UnitTestCase
             'editor' => [
                 'config' => [
                     'contentsCss' => 'my.css',
+                    'removePlugins' => [],
+                    'wordCount' => [
+                        'displayCharacters' => true,
+                        'displayWords' => true,
+                    ],
                 ],
             ],
             'proc.' => [
@@ -346,6 +356,11 @@ class RichtextTest extends UnitTestCase
             'editor' => [
                 'config' => [
                     'contentsCss' => 'your.css',
+                    'removePlugins' => [],
+                    'wordCount' => [
+                        'displayCharacters' => true,
+                        'displayWords' => true,
+                    ],
                 ],
             ],
             'proc.' => [
@@ -401,6 +416,11 @@ class RichtextTest extends UnitTestCase
             'editor' => [
                 'config' => [
                     'width' => 200,
+                    'removePlugins' => [],
+                    'wordCount' => [
+                        'displayCharacters' => true,
+                        'displayWords' => true,
+                    ],
                 ],
             ],
             'editor.' => [

@@ -64,21 +64,47 @@ class CKEditor5Migrator
     ];
 
     /**
+     * Mapping of plugins
+     */
+    private const PLUGIN_MAP = [
+        'wordcount' => 'WordCount',
+    ];
+
+    /**
      * @param array $configuration `editor.config` configuration
      */
     public function __construct(protected array $configuration)
     {
+        $this->migrateRemovePlugins();
         $this->migrateToolbar();
         $this->migrateRemoveButtonsFromToolbar();
         $this->migrateFormatTagsToHeadings();
         $this->migrateStylesSetToStyleDefinitions();
-        // plugin specific
-        $this->migrateWordCountPlugin();
+        // configure plugins
+        $this->handleWordCountPlugin();
     }
 
     public function get(): array
     {
         return $this->configuration;
+    }
+
+    protected function migrateRemovePlugins(): void
+    {
+        if (!isset($this->configuration['removePlugins'])) {
+            $this->configuration['removePlugins'] = [];
+            return;
+        }
+
+        // Handle custom plugin names to ckeditor
+        $this->configuration['removePlugins'] = array_map(function ($entry) {
+            if (isset(self::PLUGIN_MAP[$entry])) {
+                return self::PLUGIN_MAP[$entry];
+            }
+            return $entry;
+        }, $this->configuration['removePlugins']);
+
+        $this->configuration['removePlugins'] = $this->getUniqueArrayValues($this->configuration['removePlugins']);
     }
 
     /**
@@ -269,35 +295,62 @@ class CKEditor5Migrator
         }
     }
 
-    /**
-     * CKEditor4 used `wordcount` (lowercase), which is `wordCount` in CKEditor5.
-     * The amount of properties has been reduced.
-     *
-     * see https://ckeditor.com/docs/ckeditor5/latest/features/word-count.html
-     */
-    protected function migrateWordCountPlugin(): void
+    protected function handleWordCountPlugin(): void
     {
-        if (!isset($this->configuration['wordcount'])) {
+        // Migrate legacy configuration
+        //
+        // CKEditor4 used `wordcount` (lowercase), which is `wordCount` in CKEditor5.
+        // The amount of properties has been reduced.
+        //
+        // see https://ckeditor.com/docs/ckeditor5/latest/features/word-count.html
+        if (isset($this->configuration['wordcount'])) {
+            if (!isset($this->configuration['wordCount'])) {
+                $legacyConfig = $this->configuration['wordcount'];
+                if (isset($legacyConfig['showCharCount'])) {
+                    $this->configuration['wordCount']['displayCharacters'] = !empty($legacyConfig['showCharCount']);
+                }
+                if (isset($legacyConfig['showWordCount'])) {
+                    $this->configuration['wordCount']['displayWords'] = !empty($legacyConfig['showWordCount']);
+                }
+            }
+            unset($this->configuration['wordcount']);
+        }
+
+        // Remove related configuration if plugin should not be loaded
+        if (array_search('WordCount', $this->configuration['removePlugins']) !== false) {
+            // Remove all related plugins
+            $this->removePlugin('WordCount');
+
+            // Remove config
+            if (isset($this->configuration['wordCount'])) {
+                unset($this->configuration['wordCount']);
+            }
+
             return;
         }
-        $legacyConfig = $this->configuration['wordcount'];
-        $migratedConfig = [];
-        if (isset($legacyConfig['showCharCount'])) {
-            $migratedConfig['displayCharacters'] = !empty($legacyConfig['showCharCount']);
+
+        // Keep configuration if a dedicated config is provided
+        if (isset($this->configuration['wordCount'])) {
+            return;
         }
-        if (isset($legacyConfig['showWordCount'])) {
-            $migratedConfig['displayWords'] = !empty($legacyConfig['showWordCount']);
-        }
-        if ($migratedConfig !== []) {
-            $this->configuration['wordCount'] = $migratedConfig;
-        }
-        unset($this->configuration['wordcount']);
+
+        // Default config
+        $this->configuration['wordCount'] = [
+            'displayCharacters' => true,
+            'displayWords' => true,
+        ];
     }
 
     private function removeToolbarItem(string $name): void
     {
         $this->configuration['toolbar']['removeItems'][] = $name;
         $this->configuration['toolbar']['removeItems'] = $this->getUniqueArrayValues($this->configuration['toolbar']['removeItems']);
+    }
+
+    private function removePlugin(string $name): void
+    {
+        $this->configuration['removePlugins'][] = $name;
+        $this->configuration['removePlugins'] = $this->getUniqueArrayValues($this->configuration['removePlugins']);
     }
 
     /**

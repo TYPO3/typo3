@@ -1,8 +1,8 @@
 # Register custom plugins for ckeditor
 editor:
   config:
-    # explicitly remove (bundled or external) plugins
-    removePlugins: []
+    # Explicitly remove (bundled or external) plugins
+    # removePlugins: []
 
     # load modules for plugins when CKEditor is initialized
     # see CKEditor plugin API for details
@@ -13,9 +13,9 @@ editor:
 
     # Configure global wordCount plugin defaults
     # Overwrite them in your RTE presets as it is necessary
-    wordCount:
-      displayWords: true
-      displayCharacters: true
+    # wordCount:
+    #   displayWords: true
+    #   displayCharacters: true
 
   # configuration for external plugins
   externalPlugins:
