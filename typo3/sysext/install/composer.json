@@ -24,9 +24,9 @@
 		"nikic/php-parser": "^4.13.2",
 		"symfony/finder": "^5.4",
 		"symfony/http-foundation": "^5.4",
-		"typo3/cms-core": "11.5.*@dev",
-		"typo3/cms-extbase": "11.5.*@dev",
-		"typo3/cms-fluid": "11.5.*@dev"
+		"typo3/cms-core": "11.5.22",
+		"typo3/cms-extbase": "11.5.22",
+		"typo3/cms-fluid": "11.5.22"
 	},
 	"conflict": {
 		"typo3/cms": "*"
