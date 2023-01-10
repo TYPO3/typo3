@@ -568,19 +568,30 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function cObjGet($setup, $addKey = '')
     {
+        return implode('', $this->cObjGetSeparated($setup, $addKey));
+    }
+
+    /**
+     * Rendering of a "numerical array" of cObjects from TypoScript
+     * Will call ->cObjGetSingle() for each cObject found.
+     *
+     * @return list<string>
+     */
+    public function cObjGetSeparated(?array $setup, string $addKey = ''): array
+    {
         if (!is_array($setup) || $setup === []) {
-            return '';
+            return [];
         }
         $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($setup);
-        $content = '';
+        $contentObjects = [];
         foreach ($sKeyArray as $theKey) {
             $theValue = $setup[$theKey];
             if ((int)$theKey && !str_contains($theKey, '.')) {
                 $conf = $setup[$theKey . '.'] ?? [];
-                $content .= $this->cObjGetSingle($theValue, $conf, $addKey . $theKey);
+                $contentObjects[] = $this->cObjGetSingle($theValue, $conf, $addKey . $theKey);
             }
         }
-        return $content;
+        return $contentObjects;
     }
 
     /**
