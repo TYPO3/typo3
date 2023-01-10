@@ -792,6 +792,7 @@ class EditDocumentController
         $this->R_URL_getvars['returnUrl'] = $this->retUrl;
         $this->R_URI = $this->R_URL_parts['path'] . HttpUtility::buildQueryString($this->R_URL_getvars, '?');
 
+        $this->pageRenderer->getJavaScriptRenderer()->includeTaggedImports('backend.form');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
 
         $event = new AfterFormEnginePageInitializedEvent($this, $request);

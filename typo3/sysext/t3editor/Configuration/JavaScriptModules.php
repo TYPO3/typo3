@@ -4,6 +4,9 @@ return [
     'dependencies' => [
         'backend',
     ],
+    'tags' => [
+        'backend.form',
+    ],
     'imports' => [
         '@typo3/t3editor/' => [
             'path' => 'EXT:t3editor/Resources/Public/JavaScript/',

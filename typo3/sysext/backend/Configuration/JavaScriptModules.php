@@ -6,6 +6,7 @@ return [
     ],
     'tags' => [
         'backend.module',
+        'backend.form',
         'backend.navigation-component',
     ],
     'imports' => [
