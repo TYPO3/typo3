@@ -315,15 +315,13 @@ class DataMapper
     public function fetchRelated(DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = true)
     {
         $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-        if ($enableLazyLoading === true && $property->isLazy()) {
+        if ($enableLazyLoading && $property->isLazy()) {
             if ($property->getType() === ObjectStorage::class) {
                 $result = GeneralUtility::makeInstance(LazyObjectStorage::class, $parentObject, $propertyName, $fieldValue, $this);
+            } elseif (empty($fieldValue)) {
+                $result = null;
             } else {
-                if (empty($fieldValue)) {
-                    $result = null;
-                } else {
-                    $result = GeneralUtility::makeInstance(LazyLoadingProxy::class, $parentObject, $propertyName, $fieldValue, $this);
-                }
+                $result = GeneralUtility::makeInstance(LazyLoadingProxy::class, $parentObject, $propertyName, $fieldValue, $this);
             }
         } else {
             $result = $this->fetchRelatedEager($parentObject, $propertyName, $fieldValue);
@@ -576,17 +574,15 @@ class DataMapper
         if ($this->propertyMapsByForeignKey($parentObject, $propertyName)) {
             $result = $this->fetchRelated($parentObject, $propertyName, $fieldValue);
             $propertyValue = $this->mapResultToPropertyValue($parentObject, $propertyName, $result);
+        } elseif (empty($fieldValue)) {
+            $propertyValue = $this->getEmptyRelationValue($parentObject, $propertyName);
         } else {
-            if ($fieldValue === '') {
-                $propertyValue = $this->getEmptyRelationValue($parentObject, $propertyName);
+            $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
+            if ($this->persistenceSession->hasIdentifier($fieldValue, $property->getType())) {
+                $propertyValue = $this->persistenceSession->getObjectByIdentifier($fieldValue, $property->getType());
             } else {
-                $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-                if ($this->persistenceSession->hasIdentifier($fieldValue, $property->getType())) {
-                    $propertyValue = $this->persistenceSession->getObjectByIdentifier($fieldValue, $property->getType());
-                } else {
-                    $result = $this->fetchRelated($parentObject, $propertyName, $fieldValue);
-                    $propertyValue = $this->mapResultToPropertyValue($parentObject, $propertyName, $result);
-                }
+                $result = $this->fetchRelated($parentObject, $propertyName, $fieldValue);
+                $propertyValue = $this->mapResultToPropertyValue($parentObject, $propertyName, $result);
             }
         }
 
