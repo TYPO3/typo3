@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Query\Expression;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Facade of the Doctrine DBAL CompositeExpression to have
  * all Query related classes with in TYPO3\CMS namespace.
@@ -48,7 +50,8 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
         $this->type = (string)$type;
         $this->addMultiple($parts);
         $backTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        if (($backTrace[0]['file'] ?? '') !== __FILE__) {
+        $callingFile = GeneralUtility::fixWindowsFilePath($backTrace[0]['file'] ?? '');
+        if ($callingFile !== GeneralUtility::fixWindowsFilePath(__FILE__)) {
             trigger_error(
                 'Do not use CompositeExpression constructor directly, use static and() and or() factory methods.',
                 E_USER_DEPRECATED
@@ -65,8 +68,9 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
     public function add($part): self
     {
         $backTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        if (($backTrace[0]['file'] ?? '') !== __FILE__
-            && !str_contains(($backTrace[0]['file'] ?? ''), 'doctrine/dbal/src/Query/Expression/CompositeExpression.php')
+        $callingFile = GeneralUtility::fixWindowsFilePath($backTrace[0]['file'] ?? '');
+        if ($callingFile !== GeneralUtility::fixWindowsFilePath(__FILE__)
+            && !str_contains($callingFile, 'doctrine/dbal/src/Query/Expression/CompositeExpression.php')
         ) {
             trigger_error(
                 'CompositeExpression::add() will be removed in TYPO3 v13.0. Use CompositeExpression::with() instead.',
@@ -94,8 +98,9 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
     public function addMultiple(array $parts = []): self
     {
         $backTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        if (($backTrace[0]['file'] ?? '') !== __FILE__
-            && !str_contains(($backTrace[0]['file'] ?? ''), 'doctrine/dbal/src/Query/Expression/CompositeExpression.php')
+        $callingFile = GeneralUtility::fixWindowsFilePath($backTrace[0]['file'] ?? '');
+        if ($callingFile !== GeneralUtility::fixWindowsFilePath(__FILE__)
+            && !str_contains($callingFile, 'doctrine/dbal/src/Query/Expression/CompositeExpression.php')
         ) {
             trigger_error(
                 'CompositeExpression::addMultiple() will be removed in TYPO3 v13.0. Use CompositeExpression::with() instead.',
