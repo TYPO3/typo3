@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -51,6 +52,10 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\DocType;
+use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -8155,5 +8160,37 @@ class ContentObjectRendererTest extends UnitTestCase
                 };
             }
         };
+    }
+
+    /**
+     * @test
+     */
+    public function mergeTSRefResolvesRecursive(): void
+    {
+        $typoScriptString =
+            "lib.foo = TEXT\n" .
+            "lib.foo.value = foo\n" .
+            "lib.bar =< lib.foo\n" .
+            "lib.bar.value = bar\n";
+        $lineStream = (new LossyTokenizer())->tokenize($typoScriptString);
+        $typoScriptAst = (new AstBuilder(new NoopEventDispatcher()))->build($lineStream, new RootNode());
+        $typoScriptAttribute = new FrontendTypoScript(new RootNode(), []);
+        $typoScriptAttribute->setSetupTree($typoScriptAst);
+        $typoScriptAttribute->setSetupArray($typoScriptAst->toArray());
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScriptAttribute);
+        $contentObjectRenderer = new ContentObjectRenderer();
+        $contentObjectRenderer->setRequest($request);
+        $inputArray = [
+            'tempKey' => '< lib.bar',
+            'tempKey.' => [],
+        ];
+        $expected = [
+            'tempKey' => 'TEXT', // From lib.foo
+            'tempKey.' => [
+                'value' => 'bar', // From lib.bar
+            ],
+        ];
+        $result = $contentObjectRenderer->mergeTSRef($inputArray, 'tempKey');
+        self::assertSame($expected, $result);
     }
 }

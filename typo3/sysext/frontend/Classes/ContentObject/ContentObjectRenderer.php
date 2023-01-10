@@ -4802,7 +4802,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $resolvedConfig = array_replace_recursive($resolvedConfig, $overrideConfig);
         $typoScriptArray[$propertyName] = $resolvedValue;
         $typoScriptArray[$propertyName . '.'] = $resolvedConfig;
-        return $typoScriptArray;
+        if (!isset($typoScriptArray[$propertyName]) || !str_starts_with($typoScriptArray[$propertyName], '<')) {
+            return $typoScriptArray;
+        }
+        // Call recursive to resolve a nested =< operator
+        return $this->mergeTSRef($typoScriptArray, $propertyName);
     }
 
     /***********************************************
