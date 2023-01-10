@@ -209,7 +209,7 @@ final class PageViewHelper extends AbstractViewHelper
             $linkResult = $linkFactory->create((string)$renderChildrenClosure(), $typolinkConfiguration, $cObj);
             return $linkResult->getUrl();
         } catch (UnableToLinkException $e) {
-            return $renderChildrenClosure();
+            return (string)$renderChildrenClosure();
         }
     }
 
