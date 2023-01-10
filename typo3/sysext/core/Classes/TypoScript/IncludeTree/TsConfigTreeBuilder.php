@@ -63,11 +63,6 @@ final class TsConfigTreeBuilder
             // @todo: Could we maybe solve this differently somehow? Maybe in ext:adminpanel in FE directly?
             $includeTree->addChild($this->getTreeFromString('userTsConfig-admpanel', 'admPanel.enable.all = 1'));
         }
-        // @todo: Get rid of this, maybe by using a hook in DataHandler?
-        $includeTree->addChild($this->getTreeFromString(
-            'userTsConfig-sysnote',
-            'TCAdefaults.sys_note.author = ' . ($backendUser->user['realName'] ?? '') . chr(10) . 'TCAdefaults.sys_note.email = ' . ($backendUser->user['email'] ?? '')
-        ));
         foreach ($backendUser->userGroupsUID as $groupId) {
             // Loop through all groups and add their 'TSconfig' fields
             if (!empty($backendUser->userGroups[$groupId]['TSconfig'] ?? '')) {
