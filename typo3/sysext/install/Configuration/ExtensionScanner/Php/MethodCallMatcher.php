@@ -5463,4 +5463,11 @@ return [
             'Deprecation-99531-Backwards-compatibleLanguageKeyMapping.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Domain\Repository\PageRepository->getExtURL' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-99558-DeprecatePageRepository-getExtURL.rst',
+        ],
+    ],
 ];

@@ -139,7 +139,7 @@ class PageLayoutController
         $view->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         $view->assignMultiple([
             'pageId' => $this->id,
-            'infoBoxes' => $this->generateMessagesForCurrentPage(),
+            'infoBoxes' => $this->generateMessagesForCurrentPage($request),
             'isPageEditable' => $this->isPageEditable($this->currentSelectedLanguage),
             'localizedPageTitle' => $this->getLocalizedPageTitle($this->currentSelectedLanguage, $this->pageinfo),
             'eventContentHtmlTop' => $event->getHeaderContent(),
@@ -341,7 +341,7 @@ class PageLayoutController
      * Return an array of various messages for the current page record,
      * such as if the page has a special doktype, that can be rendered as info boxes.
      */
-    protected function generateMessagesForCurrentPage(): array
+    protected function generateMessagesForCurrentPage(ServerRequestInterface $request): array
     {
         $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
@@ -420,8 +420,8 @@ class PageLayoutController
                     'state' => InfoboxViewHelper::STATE_ERROR,
                 ];
             } else {
-                $externalUrl = $this->pageRepository->getExtURL($this->pageinfo);
-                if (is_string($externalUrl)) {
+                $externalUrl = $this->resolveExternalUrl($this->pageinfo, $request);
+                if ($externalUrl !== '') {
                     $externalUrl = htmlspecialchars($externalUrl);
                     $externalUrlHtml = '<a href="' . $externalUrl . '" target="_blank" rel="noreferrer">' . $externalUrl . '</a>';
                     $infoBoxes[] = [
@@ -820,6 +820,28 @@ class PageLayoutController
             BackendUtility::getRecordTitle('pages', (array)$this->pageinfo),
             $this->id
         );
+    }
+
+    /**
+     * Returns the redirect URL for the input page row IF the doktype is set to 3.
+     */
+    protected function resolveExternalUrl(array $pagerow, ServerRequestInterface $request): string
+    {
+        $redirectTo = (string)($pagerow['url'] ?? '');
+        if ($redirectTo === '') {
+            return '';
+        }
+        $urlInformation = parse_url($redirectTo);
+        // If relative path, prefix Site URL
+        // If it's a valid email without protocol, add "mailto:"
+        if (!($urlInformation['scheme'] ?? false)) {
+            if (GeneralUtility::validEmail($redirectTo)) {
+                $redirectTo = 'mailto:' . $redirectTo;
+            } elseif ($redirectTo[0] !== '/') {
+                $redirectTo = $request->getAttribute('normalizedParams')->getSiteUrl() . $redirectTo;
+            }
+        }
+        return $redirectTo;
     }
 
     protected function getLanguageService(): LanguageService
