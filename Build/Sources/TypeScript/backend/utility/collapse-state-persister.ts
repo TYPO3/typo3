@@ -22,7 +22,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
  *
  * @internal
  */
-export class CollapeStatePersister {
+export class CollapseStatePersister {
   private readonly localStorageKey: string = 'collapse-states';
 
   public constructor() {
@@ -81,4 +81,4 @@ export class CollapeStatePersister {
   }
 }
 
-export default new CollapeStatePersister();
+export default new CollapseStatePersister();
