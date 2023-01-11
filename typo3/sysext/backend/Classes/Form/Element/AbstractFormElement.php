@@ -296,7 +296,8 @@ abstract class AbstractFormElement extends AbstractNode
             default:
                 // Do nothing e.g. when $format === ''
         }
-        return $itemValue;
+        // Make sure we have a string in the end. $itemValue could be null, for instance.
+        return (string)$itemValue;
     }
 
     /**
