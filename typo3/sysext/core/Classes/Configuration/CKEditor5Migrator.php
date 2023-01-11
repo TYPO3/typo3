@@ -177,6 +177,8 @@ class CKEditor5Migrator
      */
     private const PLUGIN_MAP = [
         'image' => 'Image',
+        'alignment' => 'Alignment',
+        'justify' => 'Alignment',
         'wordcount' => 'WordCount',
     ];
 
@@ -191,6 +193,7 @@ class CKEditor5Migrator
         $this->migrateFormatTagsToHeadings();
         $this->migrateStylesSetToStyleDefinitions();
         // configure plugins
+        $this->handleAlignmentPlugin();
         $this->handleWordCountPlugin();
         // sort by key
         ksort($this->configuration);
@@ -534,6 +537,74 @@ class CKEditor5Migrator
         }
     }
 
+    protected function handleAlignmentPlugin(): void
+    {
+        // Migrate legacy configuration
+        // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-justifyClasses
+        if (isset($this->configuration['justifyClasses'])) {
+            if (!isset($this->configuration['alignment'])) {
+                $legacyConfig = $this->configuration['justifyClasses'];
+                $indexMap = [
+                    0 => 'left',
+                    1 => 'center',
+                    2 => 'right',
+                    3 => 'justify',
+                ];
+                foreach ($legacyConfig as $index => $class) {
+                    $itemConfig = [];
+                    if (isset($indexMap[$index])) {
+                        $itemConfig['name'] = $indexMap[$index];
+                    }
+                    $itemConfig['className'] = $class;
+                    $this->configuration['alignment']['options'][] = $itemConfig;
+                }
+            }
+            unset($this->configuration['justifyClasses']);
+        }
+        $this->removeExtraPlugin('justify');
+
+        // Remove related configuration if plugin should not be loaded
+        if (array_search('Alignment', $this->configuration['removePlugins']) !== false) {
+            // Remove all related plugins
+            $this->removePlugin('Alignment');
+
+            // Remove toolbar items
+            $this->removeToolbarItem('alignment');
+            $this->removeToolbarItem('alignment:left');
+            $this->removeToolbarItem('alignment:right');
+            $this->removeToolbarItem('alignment:center');
+            $this->removeToolbarItem('alignment:justify');
+
+            // Remove config
+            if (isset($this->configuration['alignment'])) {
+                unset($this->configuration['alignment']);
+            }
+
+            return;
+        }
+
+        if (is_array($this->configuration['alignment']['options'] ?? null)) {
+            $classMap = [];
+            foreach ($this->configuration['alignment']['options'] as $option) {
+                if (is_string($option['name'] ?? null)
+                    && is_string($option['className'] ?? null)
+                    && in_array($option['name'], ['left', 'center', 'right', 'justify'])) {
+                    $classMap[$option['name']] = $option['className'];
+                }
+            }
+        }
+
+        // Default config
+        $this->configuration['alignment'] = [
+            'options' => [
+                ['name' => 'left', 'className' => $classMap['left'] ?? 'text-left'],
+                ['name' => 'center', 'className' => $classMap['center'] ?? 'text-center'],
+                ['name' => 'right', 'className' => $classMap['right'] ?? 'text-right'],
+                ['name' => 'justify', 'className' => $classMap['justify'] ?? 'text-justify'],
+            ],
+        ];
+    }
+
     protected function handleWordCountPlugin(): void
     {
         // Migrate legacy configuration
@@ -585,6 +656,24 @@ class CKEditor5Migrator
     {
         $this->configuration['removePlugins'][] = $name;
         $this->configuration['removePlugins'] = $this->getUniqueArrayValues($this->configuration['removePlugins']);
+    }
+
+    private function removeExtraPlugin(string $name): void
+    {
+        if (!isset($this->configuration['extraPlugins'])) {
+            return;
+        }
+
+        $this->configuration['extraPlugins'] = array_filter($this->configuration['extraPlugins'], function ($value) use ($name) {
+            return $value !== $name;
+        });
+
+        if (empty($this->configuration['extraPlugins'])) {
+            unset($this->configuration['extraPlugins']);
+            return;
+        }
+
+        $this->configuration['extraPlugins'] = $this->getUniqueArrayValues($this->configuration['extraPlugins']);
     }
 
     /**

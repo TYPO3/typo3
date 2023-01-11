@@ -35,6 +35,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
                     'wordCount' => [
                         'displayCharacters' => true,
                         'displayWords' => true,
@@ -53,6 +61,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         'items' => [],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
                     ],
                     'wordCount' => [
                         'displayCharacters' => true,
@@ -85,6 +101,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                             'style',
                         ],
                         'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
                     ],
                     'wordCount' => [
                         'displayCharacters' => true,
@@ -122,6 +146,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
                     ],
                     'wordCount' => [
                         'displayCharacters' => true,
@@ -175,6 +207,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
                     'wordCount' => [
                         'displayCharacters' => true,
                         'displayWords' => true,
@@ -223,6 +263,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
                     'wordCount' => [
                         'displayCharacters' => true,
                         'displayWords' => true,
@@ -258,6 +306,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
                     ],
                     'wordCount' => [
                         'displayCharacters' => true,
@@ -301,6 +357,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
                     ],
                     'wordCount' => [
                         'displayCharacters' => true,
@@ -347,6 +411,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
                     'wordCount' => [
                         'displayCharacters' => true,
                         'displayWords' => true,
@@ -381,6 +453,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
                     ],
                     'wordCount' => [
                         'displayCharacters' => true,
@@ -451,6 +531,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
                     ],
                     'wordCount' => [
                         'displayCharacters' => true,
@@ -532,6 +620,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
                     'wordCount' => [
                         'displayCharacters' => true,
                         'displayWords' => true,
@@ -563,6 +659,159 @@ class CKEditor5MigratorTest extends UnitTestCase
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
+                    'wordCount' => [
+                        'displayCharacters' => true,
+                        'displayWords' => true,
+                    ],
+                ],
+            ],
+
+            // Plugin Alignment Handling
+            'Remove Alignment Plugin' => [
+                [
+                    'removePlugins' => ['Alignment'],
+                ],
+                [
+                    'removePlugins' => ['Alignment'],
+                    'toolbar' => [
+                        'items' => [],
+                        'removeItems' => [
+                            'alignment',
+                            'alignment:left',
+                            'alignment:right',
+                            'alignment:center',
+                            'alignment:justify',
+                        ],
+                        'shouldNotGroupWhenFull' => true,
+                    ],
+                    'wordCount' => [
+                        'displayCharacters' => true,
+                        'displayWords' => true,
+                    ],
+                ],
+            ],
+            'Configure Alignment like CKEditor4' => [
+                [
+                    'justifyClasses' => [
+                        'left',
+                        'center',
+                        'right',
+                        'justify',
+                    ],
+                ],
+                [
+                    'removePlugins' => [],
+                    'toolbar' => [
+                        'items' => [],
+                        'removeItems' => [],
+                        'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'left'],
+                            ['name' => 'center', 'className' => 'center'],
+                            ['name' => 'right', 'className' => 'right'],
+                            ['name' => 'justify', 'className' => 'justify'],
+                        ],
+                    ],
+                    'wordCount' => [
+                        'displayCharacters' => true,
+                        'displayWords' => true,
+                    ],
+                ],
+            ],
+            'Configure Alignment like CKEditor4 Partially' => [
+                [
+                    'justifyClasses' => [
+                        'left',
+                        'center',
+                    ],
+                ],
+                [
+                    'removePlugins' => [],
+                    'toolbar' => [
+                        'items' => [],
+                        'removeItems' => [],
+                        'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'left'],
+                            ['name' => 'center', 'className' => 'center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
+                    'wordCount' => [
+                        'displayCharacters' => true,
+                        'displayWords' => true,
+                    ],
+                ],
+            ],
+            'Configure Alignment like CKEditor5' => [
+                [
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'left'],
+                            ['name' => 'center', 'className' => 'center'],
+                            ['name' => 'right', 'className' => 'right'],
+                            ['name' => 'justify', 'className' => 'justify'],
+                        ],
+                    ],
+                ],
+                [
+                    'removePlugins' => [],
+                    'toolbar' => [
+                        'items' => [],
+                        'removeItems' => [],
+                        'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'left'],
+                            ['name' => 'center', 'className' => 'center'],
+                            ['name' => 'right', 'className' => 'right'],
+                            ['name' => 'justify', 'className' => 'justify'],
+                        ],
+                    ],
+                    'wordCount' => [
+                        'displayCharacters' => true,
+                        'displayWords' => true,
+                    ],
+                ],
+            ],
+            'Configure Alignment like CKEditor5 Partially' => [
+                [
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'center', 'className' => 'center'],
+                            ['name' => 'justify', 'className' => 'justify'],
+                        ],
+                    ],
+                ],
+                [
+                    'removePlugins' => [],
+                    'toolbar' => [
+                        'items' => [],
+                        'removeItems' => [],
+                        'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'justify'],
+                        ],
+                    ],
                     'wordCount' => [
                         'displayCharacters' => true,
                         'displayWords' => true,
@@ -582,6 +831,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
                 ],
             ],
             'Configure WordCount like CKEditor4' => [
@@ -597,6 +854,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         'items' => [],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
                     ],
                     'wordCount' => [
                         'displayCharacters' => false,
@@ -616,6 +881,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         'items' => [],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
                     ],
                     'wordCount' => [
                         'displayCharacters' => false,
@@ -637,6 +910,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
                     'wordCount' => [
                         'displayCharacters' => false,
                         'displayWords' => false,
@@ -655,6 +936,14 @@ class CKEditor5MigratorTest extends UnitTestCase
                         'items' => [],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
                     ],
                     'wordCount' => [
                         'displayCharacters' => false,

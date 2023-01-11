@@ -203,6 +203,14 @@ class RichtextTest extends UnitTestCase
             ],
             'editor' => [
                 'config' => [
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
                     'contentsCss' => 'my.css',
                     'removePlugins' => [],
                     'toolbar' => [
@@ -278,6 +286,14 @@ class RichtextTest extends UnitTestCase
             ],
             'editor' => [
                 'config' => [
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
                     'contentsCss' => 'my.css',
                     'removePlugins' => [],
                     'toolbar' => [
@@ -365,6 +381,14 @@ class RichtextTest extends UnitTestCase
             ],
             'editor' => [
                 'config' => [
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
                     'contentsCss' => 'your.css',
                     'removePlugins' => [],
                     'toolbar' => [
@@ -430,6 +454,14 @@ class RichtextTest extends UnitTestCase
         $expected = [
             'editor' => [
                 'config' => [
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
                     'removePlugins' => [],
                     'toolbar' => [
                         'items' => [],
