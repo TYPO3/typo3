@@ -1058,7 +1058,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $tstamp = (int)$tstamp;
         $tsfe = $this->getTypoScriptFrontendController();
-        if ($tstamp > (int)$tsfe->register['SYS_LASTCHANGED']) {
+        if ($tstamp > (int)($tsfe->register['SYS_LASTCHANGED'] ?? 0)) {
             $tsfe->register['SYS_LASTCHANGED'] = $tstamp;
         }
     }
