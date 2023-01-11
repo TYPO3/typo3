@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Mvc\View;
 
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\View\AbstractView;
@@ -281,6 +282,10 @@ class JsonView extends AbstractView
      */
     protected function transformValue($value, array $configuration, $firstLevel = false)
     {
+        // ObjectStorage returns $key as string, which causes the resulting JSON to be an object instead of the expected array
+        if ($value instanceof ObjectStorage) {
+            $value = $value->toArray();
+        }
         if (is_array($value) || $value instanceof \ArrayAccess) {
             $array = [];
             foreach ($value as $key => $element) {
