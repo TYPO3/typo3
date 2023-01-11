@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Lowlevel\Controller;
 
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -22,6 +23,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -235,6 +237,13 @@ class DatabaseIntegrityController
             ],
             'sword' => '',
         ];
+
+        // EXPLAIN is no ANSI SQL, for now this is only executed on mysql
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        if (!$connection->getDatabasePlatform() instanceof MySQLPlatform) {
+            unset($this->MOD_MENU['search_query_makeQuery']['explain']);
+        }
+
         // CLEAN SETTINGS
         $OLD_MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, [], $this->moduleName, 'ses');
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName, 'ses');
