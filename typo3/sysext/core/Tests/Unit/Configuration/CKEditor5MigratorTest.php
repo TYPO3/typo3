@@ -31,7 +31,9 @@ class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'removePlugins' => [],
                     'toolbar' => [
-                        'items' => [],
+                        'items' => [
+                            'softhyphen',
+                        ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
@@ -58,7 +60,9 @@ class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'removePlugins' => ['Image'],
                     'toolbar' => [
-                        'items' => [],
+                        'items' => [
+                            'softhyphen',
+                        ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
@@ -92,7 +96,9 @@ class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'removePlugins' => [],
                     'toolbar' => [
-                        'items' => [],
+                        'items' => [
+                            'softhyphen',
+                        ],
                         'removeItems' => [
                             'superscript',
                             'subscript',
@@ -450,6 +456,7 @@ class CKEditor5MigratorTest extends UnitTestCase
                                 'icon' => 'threeVerticalDots',
                                 'items' => ['strikethrough', 'superscript', 'subscript'],
                             ],
+                            'softhyphen',
                         ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
@@ -682,7 +689,9 @@ class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'removePlugins' => ['Alignment'],
                     'toolbar' => [
-                        'items' => [],
+                        'items' => [
+                            'softhyphen',
+                        ],
                         'removeItems' => [
                             'alignment',
                             'alignment:left',
@@ -710,7 +719,9 @@ class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'removePlugins' => [],
                     'toolbar' => [
-                        'items' => [],
+                        'items' => [
+                            'softhyphen',
+                        ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
@@ -738,7 +749,9 @@ class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'removePlugins' => [],
                     'toolbar' => [
-                        'items' => [],
+                        'items' => [
+                            'softhyphen',
+                        ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
@@ -770,7 +783,9 @@ class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'removePlugins' => [],
                     'toolbar' => [
-                        'items' => [],
+                        'items' => [
+                            'softhyphen',
+                        ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
@@ -800,7 +815,9 @@ class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'removePlugins' => [],
                     'toolbar' => [
-                        'items' => [],
+                        'items' => [
+                            'softhyphen',
+                        ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
@@ -819,6 +836,99 @@ class CKEditor5MigratorTest extends UnitTestCase
                 ],
             ],
 
+            // Plugin Whitespace Handling
+            'Remove Whitespace Plugin' => [
+                [
+                    'removePlugins' => [
+                        'whitespace',
+                    ],
+                ],
+                [
+                    'removePlugins' => ['Whitespace'],
+                    'toolbar' => [
+                        'items' => [],
+                        'removeItems' => [
+                            'softhyphen',
+                        ],
+                        'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
+                    'wordCount' => [
+                        'displayCharacters' => true,
+                        'displayWords' => true,
+                    ],
+                ],
+            ],
+            'Remove Whitespace Plugin (Legacy Name)' => [
+                [
+                    'removePlugins' => [
+                        'softhyphen',
+                    ],
+                ],
+                [
+                    'removePlugins' => ['Whitespace'],
+                    'toolbar' => [
+                        'items' => [],
+                        'removeItems' => [
+                            'softhyphen',
+                        ],
+                        'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
+                    'wordCount' => [
+                        'displayCharacters' => true,
+                        'displayWords' => true,
+                    ],
+                ],
+            ],
+            'Toolbaritem softhyphen not added when exists in toolbar' => [
+                [
+                    'toolbar' => [
+                        'items' => [
+                            'softhyphen',
+                            'bold',
+                        ],
+                    ],
+                ],
+                [
+                    'removePlugins' => [],
+                    'toolbar' => [
+                        'items' => [
+                            'softhyphen',
+                            'bold',
+                        ],
+                        'removeItems' => [],
+                        'shouldNotGroupWhenFull' => true,
+                    ],
+                    'alignment' => [
+                        'options' => [
+                            ['name' => 'left', 'className' => 'text-left'],
+                            ['name' => 'center', 'className' => 'text-center'],
+                            ['name' => 'right', 'className' => 'text-right'],
+                            ['name' => 'justify', 'className' => 'text-justify'],
+                        ],
+                    ],
+                    'wordCount' => [
+                        'displayCharacters' => true,
+                        'displayWords' => true,
+                    ],
+                ],
+            ],
+
             // Plugin WordCount Handling
             'Remove WordCount Plugin' => [
                 [
@@ -827,7 +937,9 @@ class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'removePlugins' => ['WordCount'],
                     'toolbar' => [
-                        'items' => [],
+                        'items' => [
+                            'softhyphen',
+                        ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
@@ -851,7 +963,9 @@ class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'removePlugins' => [],
                     'toolbar' => [
-                        'items' => [],
+                        'items' => [
+                            'softhyphen',
+                        ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
@@ -878,7 +992,9 @@ class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'removePlugins' => [],
                     'toolbar' => [
-                        'items' => [],
+                        'items' => [
+                            'softhyphen',
+                        ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
@@ -906,7 +1022,9 @@ class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'removePlugins' => [],
                     'toolbar' => [
-                        'items' => [],
+                        'items' => [
+                            'softhyphen',
+                        ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
@@ -933,7 +1051,9 @@ class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'removePlugins' => [],
                     'toolbar' => [
-                        'items' => [],
+                        'items' => [
+                            'softhyphen',
+                        ],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],

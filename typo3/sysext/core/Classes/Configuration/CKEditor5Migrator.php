@@ -179,6 +179,8 @@ class CKEditor5Migrator
         'image' => 'Image',
         'alignment' => 'Alignment',
         'justify' => 'Alignment',
+        'softhyphen' => 'Whitespace',
+        'whitespace' => 'Whitespace',
         'wordcount' => 'WordCount',
     ];
 
@@ -194,6 +196,7 @@ class CKEditor5Migrator
         $this->migrateStylesSetToStyleDefinitions();
         // configure plugins
         $this->handleAlignmentPlugin();
+        $this->handleWhitespacePlugin();
         $this->handleWordCountPlugin();
         // sort by key
         ksort($this->configuration);
@@ -603,6 +606,25 @@ class CKEditor5Migrator
                 ['name' => 'justify', 'className' => $classMap['justify'] ?? 'text-justify'],
             ],
         ];
+    }
+
+    protected function handleWhitespacePlugin(): void
+    {
+        // Remove related configuration if plugin should not be loaded
+        if (in_array('Whitespace', $this->configuration['removePlugins'], true)) {
+            // Remove all related plugins
+            $this->removePlugin('Whitespace');
+
+            // Remove toolbar items
+            $this->removeToolbarItem('softhyphen');
+
+            return;
+        }
+
+        // Add button if missing
+        if (!in_array('softhyphen', $this->configuration['toolbar']['items'], true)) {
+            $this->configuration['toolbar']['items'][] = 'softhyphen';
+        }
     }
 
     protected function handleWordCountPlugin(): void
