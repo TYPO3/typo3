@@ -51,6 +51,11 @@ The `httpStatusCode` does not affect the default status code for manually create
 redirects. This can be adjusted via TCA
 :php:`$GLOBALS['TCA']['sys_redirect']['columns']['target_statuscode']['config']['default']`.
 
+..  versionchanged:: 12.1
+    Since TYPO3 v12.1, automatically created redirect records are stored on the
+    configured root page ID of the site. Previously, they were initially stored
+    on the top root page or later on the changed page.
+
 .. seealso::
 
     The `settings` in the site configuration are generally explained in
