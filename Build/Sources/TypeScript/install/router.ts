@@ -85,6 +85,7 @@ class Router {
           size: modalSize,
           content: html`<div class="modal-loading"><typo3-backend-spinner size="default"></typo3-backend-spinner></div>`,
           additionalCssClasses: ['install-tool-modal'],
+          staticBackdrop: true,
           callback: (currentModal: ModalElement): void => {
             import(importModule).then(({default: aModule}: {default: AbstractInteractableModule}): void => {
               const isInIframe = window.location !== window.parent.location;
