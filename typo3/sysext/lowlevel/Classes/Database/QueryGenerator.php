@@ -600,12 +600,8 @@ class QueryGenerator
 
     /**
      * Add to store query configs
-     *
-     * @param array $storeQueryConfigs
-     * @param int $index
-     * @return array
      */
-    protected function addToStoreQueryConfigs($storeQueryConfigs, $index)
+    protected function addToStoreQueryConfigs(array $storeQueryConfigs, int $index): array
     {
         $keyArr = explode(',', $this->storeList);
         $storeQueryConfigs[$index] = [];
@@ -693,7 +689,7 @@ class QueryGenerator
         $languageService = $this->getLanguageService();
         $flashMessage = null;
         $storeArray = $this->initStoreArray();
-        $storeQueryConfigs = unserialize($this->settings['storeQueryConfigs'] ?? '', ['allowed_classes' => false]);
+        $storeQueryConfigs = (array)(unserialize($this->settings['storeQueryConfigs'] ?? '', ['allowed_classes' => false]));
         $storeControl = GeneralUtility::_GP('storeControl');
         $storeIndex = (int)($storeControl['STORE'] ?? 0);
         $saveStoreArray = 0;
@@ -1024,7 +1020,7 @@ class QueryGenerator
                         }
                         break;
                     case 'check':
-                        if (!$fields['items']) {
+                        if (!($fields['items'] ?? false)) {
                             $fields['type'] = 'boolean';
                         } else {
                             $fields['type'] = 'binary';
@@ -1036,10 +1032,10 @@ class QueryGenerator
                     case 'select':
                     case 'category':
                         $fields['type'] = 'multiple';
-                        if ($fields['foreign_table']) {
+                        if ($fields['foreign_table'] ?? false) {
                             $fields['type'] = 'relation';
                         }
-                        if ($fields['special']) {
+                        if ($fields['special'] ?? false) {
                             $fields['type'] = 'text';
                         }
                         break;
@@ -1178,7 +1174,7 @@ class QueryGenerator
         $fieldSetup = $conf;
         $out = '';
         if ($fieldSetup['type'] === 'multiple') {
-            foreach ($fieldSetup['items'] as $key => $val) {
+            foreach (($fieldSetup['items'] ?? []) as $key => $val) {
                 if (strpos($val[0], 'LLL:') === 0) {
                     $value = $languageService->sL($val[0]);
                 } else {
@@ -1221,7 +1217,7 @@ class QueryGenerator
                     $out .= htmlspecialchars($value);
                 }
             }
-            if (str_contains($fieldSetup['allowed'], ',')) {
+            if (str_contains($fieldSetup['allowed'] ?? '', ',')) {
                 $from_table_Arr = explode(',', $fieldSetup['allowed']);
                 $useTablePrefix = 1;
                 if (!$fieldSetup['prepend_tname']) {
@@ -1245,7 +1241,7 @@ class QueryGenerator
                     }
                 }
             } else {
-                $from_table_Arr[0] = $fieldSetup['allowed'];
+                $from_table_Arr[0] = $fieldSetup['allowed'] ?? null;
             }
             if (!empty($fieldSetup['prepend_tname'])) {
                 $useTablePrefix = 1;
@@ -1854,7 +1850,7 @@ class QueryGenerator
                         if (is_array($conf['inputValue'])) {
                             $conf['inputValue'] = implode(',', $conf['inputValue']);
                         }
-                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]">';
+                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
                     } elseif ($conf['comparison'] === 64) {
                         if (is_array($conf['inputValue'])) {
                             $conf['inputValue'] = $conf['inputValue'][0];
@@ -1882,10 +1878,10 @@ class QueryGenerator
                     $lineHTML[] = '<div class="col mb-sm-2">';
                     if ($conf['comparison'] === 37 || $conf['comparison'] === 36) {
                         // between:
-                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]">';
-                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $fieldPrefix . '[inputValue1]">';
+                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
+                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue1'] ?? '') . '" name="' . $fieldPrefix . '[inputValue1]">';
                     } else {
-                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]">';
+                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
                     }
                     $lineHTML[] = '</div>';
                     $lineHTML[] = '</div>';
