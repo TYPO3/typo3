@@ -20,17 +20,17 @@ namespace TYPO3\CMS\Core\Attribute;
 use Attribute;
 
 /**
- * Service tag to mark an event as remote event (Webhook)
+ * Service tag to mark a message as a webhook-compatible message
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class RemoteEvent
+class WebhookMessage
 {
-    public function __construct(private string $description)
-    {
-    }
+    public const TAG_NAME = 'core.webhook_message';
 
-    public function getDescription(): string
-    {
-        return $this->description;
+    public function __construct(
+        public string $identifier,
+        public string $description,
+        public ?string $method = null,
+    ) {
     }
 }

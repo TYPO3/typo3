@@ -118,13 +118,13 @@
             <f:for each="{reactionRecords}" key="reactionId" as="reaction">
                 <f:variable name="reactionRecord" value="{reaction as array}"/>
                 <tr data-uid="{reaction.uid}" data-multi-record-selection-element="true">
+                    <td class="col-selector nowrap">
+                        <span class="form-check form-toggle">
+                            <input class="form-check-input t3js-multi-record-selection-check" type="checkbox">
+                        </span>
+                    </td>
                     <f:if condition="{reactionTypes.{reaction.type}}">
                         <f:then>
-                            <td class="col-selector nowrap">
-                                <span class="form-check form-toggle">
-                                    <input class="form-check-input t3js-multi-record-selection-check" type="checkbox">
-                                </span>
-                            </td>
                             <td class="col-icon">
                                 <a
                                     href="#"
@@ -246,24 +246,15 @@
 
 <f:section name="controls">
     <div class="btn-group">
-        <f:if condition="{reactionTypes.{reaction.type}}">
-            <f:then>
-                <be:link.editRecord
-                    returnUrl="{returnUrl}"
-                    class="btn btn-default"
-                    table="sys_reaction"
-                    uid="{reaction.uid}"
-                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}"
-                >
-                    <core:icon identifier="actions-open" />
-                </be:link.editRecord>
-            </f:then>
-            <f:else>
-                <span class="btn btn-default disabled">
-                    <core:icon identifier="empty-empty" />
-                </span>
-            </f:else>
-        </f:if>
+        <be:link.editRecord
+            returnUrl="{returnUrl}"
+            class="btn btn-default"
+            table="sys_reaction"
+            uid="{reaction.uid}"
+            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}"
+        >
+            <core:icon identifier="actions-open" />
+        </be:link.editRecord>
         <f:if condition="{reactionRecord.disabled} == 1">
             <f:then>
                 <a

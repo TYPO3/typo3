@@ -1,0 +1,44 @@
+{
+	"name": "typo3/cms-webhooks",
+	"type": "typo3-cms-framework",
+	"description": "TYPO3 CMS Webhooks - Handle outgoing Webhooks for TYPO3",
+	"homepage": "https://typo3.org",
+	"license": ["GPL-2.0-or-later"],
+	"authors": [{
+		"name": "TYPO3 Core Team",
+		"email": "typo3cms@typo3.org",
+		"role": "Developer"
+	}],
+	"support": {
+		"chat": "https://typo3.org/help",
+		"docs": "https://docs.typo3.org/c/typo3/cms-webhooks/main/en-us/",
+		"issues": "https://forge.typo3.org",
+		"source": "https://github.com/typo3/typo3"
+	},
+	"config": {
+		"sort-packages": true
+	},
+	"require": {
+		"symfony/uid": "^6.2",
+		"typo3/cms-core": "12.3.*@dev"
+	},
+	"suggest": {
+		"typo3/cms-lowlevel": "To display registered webhooks in the configuration module"
+	},
+	"conflict": {
+		"typo3/cms": "*"
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-main": "12.3.x-dev"
+		},
+		"typo3/cms": {
+			"extension-key": "webhooks"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Webhooks\\": "Classes/"
+		}
+	}
+}

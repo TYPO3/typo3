@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf" date="2022-08-17T12:12:34Z" product-name="webhooks">
+        <header/>
+        <body>
+            <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+                <source>Webhook Administration</source>
+            </trans-unit>
+            <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+                <source>This is the administration area for Webhooks.</source>
+            </trans-unit>
+            <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+                <source>Webhooks</source>
+            </trans-unit>
+
+            <trans-unit id="heading_text" resname="heading_text">
+                <source>Webhooks — Manage Outgoing HTTP Webhooks</source>
+            </trans-unit>
+            <trans-unit id="webhook_not_found.title" resname="webhook_not_found.title">
+                <source>No webhooks found!</source>
+            </trans-unit>
+            <trans-unit id="webhook_not_found.message" resname="webhook_not_found.message">
+                <source>There are currently no webhooks records found in the database.</source>
+            </trans-unit>
+            <trans-unit id="webhook_create" resname="webhook_create">
+                <source>Create new webhook</source>
+            </trans-unit>
+            <trans-unit id="webhook_not_found_with_filter.title" resname="webhook_not_found_with_filter.title">
+                <source>No webhooks found!</source>
+            </trans-unit>
+            <trans-unit id="webhook_not_found_with_filter.message" resname="webhook_not_found_with_filter.message">
+                <source>With the current set of filters applied, no webhooks could be found.</source>
+            </trans-unit>
+            <trans-unit id="webhook_no_filter" resname="webhook_no_filter">
+                <source>Remove all filter</source>
+            </trans-unit>
+            <trans-unit id="webhook_no_implementation_class" resname="webhook_no_implementation_class">
+                <source>Implementation class for webhook type "%s" is missing.</source>
+            </trans-unit>
+            <trans-unit id="webhook_example" resname="webhook_example">
+                <source>Example</source>
+            </trans-unit>
+
+            <trans-unit id="filter.sendButton" resname="filter.sendButton">
+                <source>Filter</source>
+            </trans-unit>
+            <trans-unit id="filter.resetButton" resname="filter.resetButton">
+                <source>Reset</source>
+            </trans-unit>
+            <trans-unit id="filter.name" resname="filter.name">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="filter.webhook_type" resname="filter.webhook_type">
+                <source>Webhook Trigger</source>
+            </trans-unit>
+            <trans-unit id="filter.webhook_type.showAll" resname="filter.webhook_type.showAll">
+                <source>Show all</source>
+            </trans-unit>
+
+            <trans-unit id="pagination.previous" resname="pagination.previous">
+                <source>previous</source>
+            </trans-unit>
+            <trans-unit id="pagination.next" resname="pagination.next">
+                <source>next</source>
+            </trans-unit>
+            <trans-unit id="pagination.first" resname="pagination.first">
+                <source>first</source>
+            </trans-unit>
+            <trans-unit id="pagination.last" resname="pagination.last">
+                <source>last</source>
+            </trans-unit>
+            <trans-unit id="pagination.records" resname="pagination.records">
+                <source>Records</source>
+            </trans-unit>
+            <trans-unit id="pagination.page" resname="pagination.page">
+                <source>Page</source>
+            </trans-unit>
+            <trans-unit id="pagination.refresh" resname="pagination.refresh">
+                <source>Refresh</source>
+            </trans-unit>
+
+			<trans-unit id="labels.delete.title" resname="labels.delete.title">
+				<source>Delete webhooks</source>
+			</trans-unit>
+			<trans-unit id="labels.delete.message" resname="labels.delete.message">
+				<source>Are you sure you want to delete all marked webhooks?</source>
+			</trans-unit>
+        </body>
+    </file>
+</xliff>

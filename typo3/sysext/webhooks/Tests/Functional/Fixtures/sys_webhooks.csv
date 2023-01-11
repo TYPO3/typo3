@@ -1,0 +1,5 @@
+"sys_webhook"
+,"uid","pid","updatedon","createdon","deleted","disabled","starttime","endtime","description","name","url","method","secret","webhook_type","identifier","verify_ssl","additional_headers"
+,1,0,1674072816,1674066297,0,0,0,0,"Test","Test with valid SSL","https://t3main.devbox.example.com/","POST","9699783a11b233aa07beb5c5a33fc7056d639d62","typo3/login-error","06f39184-6a7c-4756-81e1-c170f114d689",1,"[]"
+,2,0,1674072864,1674072838,0,0,0,0,"Test with invalid SSL","Test with invalid SSL","https://localhost","POST","f73e4475886379ce1926f20da4acffb13e7b6268","typo3/login-error","ee828ed4-5e81-49af-8139-5678a22e7715",0,"[]"
+,3,0,1674072864,1674072838,0,0,0,0,"Test with other settings","Test with other settings","https://localhost","POST","f73e4475886379ce1926f20da4acffb13e7b6268","typo3/content/page-modification","73cbf4cf-ed1b-497e-ae4e-345abe936783",0,"[]"

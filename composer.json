@@ -216,6 +216,7 @@
 		"typo3/cms-t3editor": "self.version",
 		"typo3/cms-tstemplate": "self.version",
 		"typo3/cms-viewpage": "self.version",
+		"typo3/cms-webhooks": "self.version",
 		"typo3/cms-workspaces": "self.version"
 	},
 	"autoload": {
@@ -253,6 +254,7 @@
 			"TYPO3\\CMS\\T3editor\\": "typo3/sysext/t3editor/Classes/",
 			"TYPO3\\CMS\\Tstemplate\\": "typo3/sysext/tstemplate/Classes/",
 			"TYPO3\\CMS\\Viewpage\\": "typo3/sysext/viewpage/Classes/",
+			"TYPO3\\CMS\\Webhooks\\": "typo3/sysext/webhooks/Classes/",
 			"TYPO3\\CMS\\Workspaces\\": "typo3/sysext/workspaces/Classes/"
 		},
 		"classmap": [
@@ -294,6 +296,7 @@
 			"TYPO3\\CMS\\Seo\\Tests\\": "typo3/sysext/seo/Tests/",
 			"TYPO3\\CMS\\Setup\\Tests\\": "typo3/sysext/setup/Tests/",
 			"TYPO3\\CMS\\SysNote\\Tests\\": "typo3/sysext/sys_note/Tests/",
+			"TYPO3\\CMS\\Webhooks\\Tests\\": "typo3/sysext/webhooks/Tests/",
 			"TYPO3\\CMS\\Workspaces\\Tests\\": "typo3/sysext/workspaces/Tests/",
 			"TYPO3\\CMS\\Recycler\\Tests\\": "typo3/sysext/recycler/Tests/",
 			"TYPO3\\CMS\\T3editor\\Tests\\": "typo3/sysext/t3editor/Tests/",

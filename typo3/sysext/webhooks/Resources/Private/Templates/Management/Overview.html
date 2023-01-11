@@ -1,0 +1,305 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/backend/context-menu.js',
+            1: '@typo3/backend/modal.js',
+            2: '@typo3/backend/multi-record-selection.js',
+            3: '@typo3/backend/multi-record-selection-edit-action.js',
+            4: '@typo3/backend/multi-record-selection-delete-action.js'
+        }"
+    />
+    <h1><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:heading_text"/></h1>
+    <f:variable
+        name="returnUrl"
+        value="{f:be.uri(route:'webhooks_management')}"
+    />
+    <f:if condition="{webhookRecords -> f:count()}">
+        <f:then>
+            <f:render section="filter" arguments="{_all}" />
+            <f:render section="table" arguments="{_all}" />
+        </f:then>
+        <f:else>
+            <f:if condition="{demand.constraints}">
+                <f:then>
+                    <f:render section="filter" arguments="{_all}" />
+                    <f:be.infobox state="-2" title="{f:translate(key: 'LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_not_found_with_filter.title')}">
+                        <p><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_not_found_with_filter.message"/></p>
+                        <a class="btn btn-default" href="{f:be.uri(route:'webhooks_management')}">
+                            <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_no_filter"/>
+                        </a>
+                        <be:link.newRecord returnUrl="{returnUrl}" class="btn btn-primary" table="sys_webhook">
+                            <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_create"/>
+                        </be:link.newRecord>
+                    </f:be.infobox>
+
+                    <f:variable name="gotToPageUrl"><f:be.uri route="webhooks_management" parameters="{demand: demand.parameters, page: 987654322}" /></f:variable>
+                    <form data-on-submit="processNavigate">
+                        <input type="hidden" value="1" name="paginator-target-page" data-number-of-pages="1" data-url="{gotToPageUrl}"/>
+                    </form>
+                </f:then>
+                <f:else>
+                    <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_not_found.title')}">
+                        <p><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_not_found.message"/></p>
+                        <be:link.newRecord returnUrl="{returnUrl}" class="btn btn-primary" table="sys_webhook">
+                            <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_create"/>
+                        </be:link.newRecord>
+                    </f:be.infobox>
+                </f:else>
+            </f:if>
+        </f:else>
+    </f:if>
+</f:section>
+
+<f:section name="table">
+    <f:render section="multiRecordSelectionActions" arguments="{_all}" />
+    <div class="table-fit mb-0">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th><f:render section="multiRecordSelectionCheckboxActions" /></th>
+                <th colspan="2"><f:render section="listHeaderSorting" arguments="{field: 'name', label: 'sys_webhook.name', demand: demand}"/></th>
+                <th><f:render section="listHeaderSorting" arguments="{field: 'webhook_type', label: 'sys_webhook.webhook_type', demand: demand}"/></th>
+                <th>URL</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody data-multi-record-selection-row-selection="true">
+            <f:for each="{webhookRecords}" key="webhookId" as="webhook">
+                <f:variable name="webhookRecord" value="{webhook as array}"/>
+                <tr data-uid="{webhook.uid}" data-multi-record-selection-element="true">
+                    <td class="col-selector nowrap">
+                        <span class="form-check form-toggle">
+                            <input class="form-check-input t3js-multi-record-selection-check" type="checkbox"/>
+                        </span>
+                    </td>
+                    <f:if condition="{webhookTypes.{webhook.webhookType.identifier}}">
+                        <f:then>
+                            <td class="col-icon">
+                                <a
+                                    href="#"
+                                    data-contextmenu-trigger="click"
+                                    data-contextmenu-table="sys_webhook"
+                                    data-contextmenu-uid="{webhook.uid}"
+                                    title="{webhook.name}"
+                                >
+                                    <core:iconForRecord table="sys_webhook" row="{webhookRecord}" />
+                                </a>
+                            </td>
+                            <td>
+                                <be:link.editRecord
+                                    returnUrl="{returnUrl}"
+                                    table="sys_webhook"
+                                    uid="{webhook.uid}"
+                                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}: {webhook.name}"
+                                >
+                                    {webhook.name}
+                                </be:link.editRecord>
+                            </td>
+                            <td>
+                                <f:translate key="{webhookTypes.{webhook.webhookType.identifier}.description}" default="{webhookTypes.{webhook.webhookType.identifier}.description}"/>
+                            </td>
+                            <td>
+                                <f:render section="codesnippet" arguments="{webhook: webhook}" />
+                            </td>
+                            <td class="col-control">
+                                <f:render section="controls" arguments="{_all}" />
+                            </td>
+                        </f:then>
+                        <f:else>
+                            <td class="col-icon">
+                                <core:iconForRecord table="sys_webhook" row="{webhookRecord}" />
+                            </td>
+                            <td>
+                                {webhook.name}
+                            </td>
+                            <td colspan="2">
+                                <span class="badge badge-danger">
+                                    <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_no_implementation_class" arguments="{0: webhook.webhookType.identifier}" />
+                                </span>
+                            </td>
+                            <td class="col-control">
+                                <f:render section="controls" arguments="{_all}" />
+                            </td>
+                        </f:else>
+                    </f:if>
+                </tr>
+            </f:for>
+            </tbody>
+        </table>
+    </div>
+    <f:render section="multiRecordSelectionActions" arguments="{_all}" />
+    <f:render partial="Pagination" arguments="{_all}" />
+</f:section>
+
+<f:section name="listHeaderSorting">
+    <f:if condition="{demand.orderField} === {field}">
+        <f:then>
+            <a href="{f:be.uri(route:'webhooks_management', parameters: '{demand: demand.parameters, orderField: field, orderDirection: demand.reverseOrderDirection}')}">
+                <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_db.xlf:{label}"/>
+            </a>
+            <core:icon identifier="status-status-sorting-{demand.orderDirection}"/>
+        </f:then>
+        <f:else>
+            <a href="{f:be.uri(route:'webhooks_management', parameters: '{demand: demand.parameters, orderField: field, orderDirection: demand.defaultOrderDirection}')}">
+                <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_db.xlf:{label}"/>
+            </a>
+        </f:else>
+    </f:if>
+</f:section>
+
+<f:section name="filter">
+    <form action="{f:be.uri(route:'webhooks_management')}" method="post" enctype="multipart/form-data" name="demand">
+        <input type="hidden" name="orderField" value="{demand.orderField}">
+        <input type="hidden" name="orderDirection" value="{demand.orderDirection}">
+        <div class="row row-cols-auto align-items-end g-3 mb-4">
+            <div class="col">
+                <label for="demand-name" class="form-label"><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:filter.name"/></label>
+                <input type="text" id="demand-name" class="form-control" name="demand[name]" value="{demand.name}"/>
+            </div>
+            <div class="col">
+                <label for="demand-webhook-type" class="form-label"><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:filter.webhook_type"/></label>
+                <select id="demand-webhook-type" class="form-select" name="demand[webhook_type]" data-on-change="submit">
+                    <option value=""><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:filter.webhook_type.showAll"/></option>
+                    <f:for each="{webhookTypes}" key="identifier" as="webhookType">
+                        <option value="{identifier}" {f:if(condition: '{identifier} == {demand.webhookType}', then: 'selected')}>
+                            <f:translate key="{webhookType.description}" default="{webhookType.description}"/>
+                        </option>
+                    </f:for>
+                </select>
+            </div>
+            <div class="col">
+                <input type="submit" value="{f:translate(key: 'LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:filter.sendButton')}" class="btn btn-default" />
+                <a href="{f:be.uri(route:'webhooks_management')}" class="btn btn-link"><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:filter.resetButton"/></a>
+            </div>
+        </div>
+    </form>
+</f:section>
+
+<f:section name="codesnippet">
+    <f:if condition="{webhook.targetUrl}">
+        <code class="my-1 p-2 me-2 bg-dark text-bg-primary">
+            {webhook.targetUrl}
+        </code>
+    </f:if>
+</f:section>
+
+<f:section name="controls">
+    <div class="btn-group">
+        <be:link.editRecord
+            returnUrl="{returnUrl}"
+            class="btn btn-default"
+            table="sys_webhook"
+            uid="{webhook.uid}"
+            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}"
+        >
+            <core:icon identifier="actions-open" />
+        </be:link.editRecord>
+        <f:if condition="{webhookRecord.disabled} == 1">
+            <f:then>
+                <a
+                    class="btn btn-default"
+                    href="{be:moduleLink(route:'tce_db', query:'data[sys_webhook][{webhook.uid}][disabled]=0', arguments:'{redirect: returnUrl}')}"
+                    title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide')}"
+                >
+                    <core:icon identifier="actions-edit-unhide" />
+                </a>
+            </f:then>
+            <f:else>
+                <a
+                    class="btn btn-default"
+                    href="{be:moduleLink(route:'tce_db', query:'data[sys_webhook][{webhook.uid}][disabled]=1', arguments:'{redirect: returnUrl}')}"
+                    title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide')}"
+                >
+                    <core:icon identifier="actions-edit-hide" />
+                </a>
+            </f:else>
+        </f:if>
+        <a class="btn btn-default t3js-modal-trigger"
+            href="{be:moduleLink(route:'tce_db', query:'cmd[sys_webhook][{webhook.uid}][delete]=1', arguments:'{redirect: returnUrl}')}"
+            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete')}"
+            data-severity="warning"
+            data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
+            data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}"
+            data-button-close-text="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.no')}">
+            <core:icon identifier="actions-delete" />
+        </a>
+    </div>
+</f:section>
+
+<f:section name="multiRecordSelectionCheckboxActions">
+    <div class="btn-group dropdown">
+        <a href="javascript:;" class="dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+            <core:icon identifier="actions-selection" size="small" />
+        </a>
+        <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
+            <li>
+                <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')}">
+                    <span class="dropdown-item-columns">
+                        <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                            <core:icon identifier="actions-selection-elements-all" size="small" />
+                        </span>
+                        <span class="dropdown-item-column dropdown-item-column-title">
+                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll" />
+                        </span>
+                    </span>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-none" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')}">
+                    <span class="dropdown-item-columns">
+                        <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                            <core:icon identifier="actions-selection-elements-none" size="small" />
+                        </span>
+                        <span class="dropdown-item-column dropdown-item-column-title">
+                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll" />
+                        </span>
+                    </span>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="dropdown-item" data-multi-record-selection-check-action="toggle" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')}">
+                    <span class="dropdown-item-columns">
+                        <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                            <core:icon identifier="actions-selection-elements-invert" size="small" />
+                        </span>
+                        <span class="dropdown-item-column dropdown-item-column-title">
+                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection" />
+                        </span>
+                    </span>
+                </button>
+            </li>
+        </ul>
+    </div>
+</f:section>
+
+<f:section name="multiRecordSelectionActions">
+    <div class="multi-record-selection-actions-wrapper">
+        <div class="row row-cols-auto align-items-center g-2 t3js-multi-record-selection-actions hidden">
+            <div class="col">
+                <strong><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection"/></strong>
+            </div>
+            <div class="col">
+                <button class="btn btn-default btn-sm" data-multi-record-selection-action="edit" data-multi-record-selection-action-config='{editActionConfiguration -> f:format.raw()}'>
+                    <core:icon identifier="actions-open" size="small" />
+                    <span class="text">
+                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit" />
+                    </span>
+                </button>
+                <button class="btn btn-default btn-sm" data-multi-record-selection-action="delete" data-multi-record-selection-action-config='{deleteActionConfiguration -> f:format.raw()}'>
+                    <core:icon identifier="actions-edit-delete" size="small" />
+                    <span class="text">
+                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete" />
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</f:section>
+</html>

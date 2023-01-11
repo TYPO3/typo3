@@ -1,0 +1,38 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3\CMS\Webhooks\:
+    resource: '../Classes/*'
+
+  TYPO3\CMS\Webhooks\WebhookTypesRegistry:
+    public: true
+
+  TYPO3\CMS\Webhooks\Listener\PageModificationListener:
+    public: true
+
+  # public true is required in ajax backend calls (e.g. when adding a file)
+  TYPO3\CMS\Webhooks\Listener\MessageListener:
+    public: true
+
+  TYPO3\CMS\Webhooks\MessageHandler\WebhookMessageHandler:
+    tags:
+      - name: 'messenger.message_handler'
+
+  TYPO3\CMS\Webhooks\Repository\WebhookRepository:
+    public: true # Required in test context
+    arguments:
+      $runtimeCache: '@cache.runtime'
+
+  TYPO3\CMS\Webhooks\Tca\ItemsProcFunc\WebhookTypesItemsProcFunc:
+    public: true
+
+  lowlevel.configuration.module.provider.webhooks:
+    class: 'TYPO3\CMS\Webhooks\ConfigurationModuleProvider\WebhookTypesProvider'
+    tags:
+      - name: 'lowlevel.configuration.module.provider'
+        identifier: 'webhooks'
+        label: 'LLL:EXT:webhooks/Resources/Private/Language/locallang_db.xlf:webhooks'
+        after: 'reactions'
