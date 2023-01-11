@@ -187,7 +187,7 @@ abstract class AbstractFormElement extends AbstractNode
      * @param array $formatOptions Format options
      * @return string Formatted field value
      */
-    protected function formatValue($format, $itemValue, $formatOptions = [])
+    protected function formatValue($format, $itemValue, $formatOptions = []): string
     {
         switch ($format) {
             case 'date':
@@ -287,7 +287,8 @@ abstract class AbstractFormElement extends AbstractNode
             default:
                 // Do nothing e.g. when $format === ''
         }
-        return $itemValue;
+        // Make sure we have a string in the end. $itemValue could be null, for instance.
+        return (string)$itemValue;
     }
 
     /**
