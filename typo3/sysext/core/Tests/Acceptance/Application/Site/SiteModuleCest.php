@@ -166,7 +166,7 @@ class SiteModuleCest
         $I->amGoingTo('Create a new template for the root page');
         $I->click("//input[@name='newWebsite']");
         $I->selectOption('.t3-js-jumpMenuBox', 'Override TypoScript');
-        $I->see('NEW SITE', 'h3');
+        $I->see('Override TypoScript of template "NEW SITE"', 'h1');
         $I->waitForElement('table.table.table-striped');
         $I->see('Title');
 

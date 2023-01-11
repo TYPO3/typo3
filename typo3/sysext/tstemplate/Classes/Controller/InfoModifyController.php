@@ -19,11 +19,9 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Imaging\Icon;
 
 /**
  * This class displays the Info/Modify screen of the Web > Template module
@@ -88,6 +86,8 @@ class InfoModifyController extends AbstractTemplateModuleController
 
     private function mainAction(ServerRequestInterface $request, int $pageUid, array $allTemplatesOnPage): ResponseInterface
     {
+        $parsedBody = $request->getParsedBody();
+
         $backendUser = $this->getBackendUser();
         $languageService = $this->getLanguageService();
 
@@ -96,16 +96,23 @@ class InfoModifyController extends AbstractTemplateModuleController
         $currentModule = $request->getAttribute('module');
         $currentModuleIdentifier = $currentModule->getIdentifier();
         $moduleData = $request->getAttribute('moduleData');
-        if ($moduleData->cleanUp([])) {
-            $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
-        }
 
-        if ($moduleData->clean('templatesOnPage', array_column($allTemplatesOnPage, 'uid') ?: [0])) {
+        $selectedTemplateFromModuleData = (array)$moduleData->get('selectedTemplatePerPage');
+        $selectedTemplateUid = (int)($parsedBody['selectedTemplate'] ?? $selectedTemplateFromModuleData[$pageUid] ?? 0);
+        if (!in_array($selectedTemplateUid, array_column($allTemplatesOnPage, 'uid'))) {
+            $selectedTemplateUid = (int)($allTemplatesOnPage[0]['uid'] ?? 0);
+        }
+        if (($moduleData->get('selectedTemplatePerPage')[$pageUid] ?? 0) !== $selectedTemplateUid) {
+            $selectedTemplateFromModuleData[$pageUid] = $selectedTemplateUid;
+            $moduleData->set('selectedTemplatePerPage', $selectedTemplateFromModuleData);
             $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
         }
-
-        $selectedTemplateRecord = (int)$moduleData->get('templatesOnPage');
-        $templateRow = $this->getFirstTemplateRecordOnPage($pageUid, $selectedTemplateRecord);
+        $currentTemplateRecord = [];
+        foreach ($allTemplatesOnPage as $templateRow) {
+            if ((int)$templateRow['uid'] === $selectedTemplateUid) {
+                $currentTemplateRecord = $templateRow;
+            }
+        }
 
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
@@ -116,30 +123,11 @@ class InfoModifyController extends AbstractTemplateModuleController
         $view->assignMultiple([
             'pageUid' => $pageUid,
             'previousPage' => $this->getClosestAncestorPageWithTemplateRecord($pageUid),
-            'templateRecord' => $templateRow,
-            'manyTemplatesMenu' => BackendUtility::getFuncMenu($pageUid, 'templatesOnPage', $moduleData->get('templatesOnPage'), array_column($allTemplatesOnPage, 'title', 'uid')),
-            'numberOfConstantsLines' => trim((string)($templateRow['constants'] ?? '')) ? count(explode(LF, (string)$templateRow['constants'])) : 0,
-            'numberOfSetupLines' => trim((string)($templateRow['config'] ?? '')) ? count(explode(LF, (string)$templateRow['config'])) : 0,
+            'templateRecord' => $currentTemplateRecord,
+            'allTemplatesOnPage' => $allTemplatesOnPage,
+            'numberOfConstantsLines' => trim((string)($currentTemplateRecord['constants'] ?? '')) ? count(explode(LF, (string)$currentTemplateRecord['constants'])) : 0,
+            'numberOfSetupLines' => trim((string)($currentTemplateRecord['config'] ?? '')) ? count(explode(LF, (string)$currentTemplateRecord['config'])) : 0,
         ]);
         return $view->renderResponse('InfoModifyMain');
-    }
-
-    protected function addNewButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, int $pageId): void
-    {
-        $languageService = $this->getLanguageService();
-        if ($pageId) {
-            $urlParameters = [
-                'id' => $pageId,
-                'template' => 'all',
-                'createExtension' => 'new',
-            ];
-            $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-            $newButton = $buttonBar->makeLinkButton()
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute($moduleIdentifier, $urlParameters))
-                ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle'))
-                ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
-            $buttonBar->addButton($newButton);
-        }
     }
 }

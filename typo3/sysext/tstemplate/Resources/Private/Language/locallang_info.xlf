@@ -6,6 +6,12 @@
 			<trans-unit id="infoModifyTitle" resname="infoModifyTitle">
 				<source>Override TypoScript</source>
 			</trans-unit>
+			<trans-unit id="infoModifyTitleWithTemplate" resname="infoModifyTitleWithTemplate">
+				<source>Override TypoScript of template "%s"</source>
+			</trans-unit>
+			<trans-unit id="selectedTemplate" resname="selectedTemplate">
+				<source>Selected TypoScript template</source>
+			</trans-unit>
 			<trans-unit id="delete" resname="delete">
 				<source>Delete</source>
 			</trans-unit>

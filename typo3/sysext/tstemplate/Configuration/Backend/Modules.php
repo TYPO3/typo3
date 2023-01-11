@@ -70,7 +70,7 @@ return [
             ],
         ],
         'moduleData' => [
-            'templatesOnPage' => 0,
+            'selectedTemplatePerPage' => [],
         ],
     ],
     'web_typoscript_objectbrowser' => [

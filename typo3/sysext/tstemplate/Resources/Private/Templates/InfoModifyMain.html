@@ -20,25 +20,55 @@
     <f:variable name="args" value="{0: 'web', 1: pageUid}" />
     <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
 
-    <h1><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:infoModifyTitle" /></h1>
+    <h1>
+        <f:if condition="{templateRecord.title}">
+            <f:then>
+                <f:translate
+                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:infoModifyTitleWithTemplate"
+                    arguments="{
+                        0: '{templateRecord.title}'
+                    }"
+                />
+            </f:then>
+            <f:else>
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:infoModifyTitle" />
+            </f:else>
+        </f:if>
+    </h1>
     <div>
         <p class="lead"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:moduleDescription" /></p>
     </div>
 
-    <h3>
-        <a
-            href="#"
-            data-contextmenu-trigger="click"
-            data-contextmenu-table="sys_template"
-            data-contextmenu-uid="{templateRecord.uid}"
-        >
-            <core:iconForRecord table="sys_template" row="{templateRecord}"/>
-        </a> {templateRecord.title}
-    </h3>
-
-    <f:if condition="{manyTemplatesMenu}">
-        <div>
-            <f:format.raw>{manyTemplatesMenu}</f:format.raw>
+    <f:if condition="{f:count(subject: allTemplatesOnPage)} > 1">
+        <div class="row">
+            <div class="col-auto">
+                <div class="row row-cols-auto">
+                    <form action="{f:be.uri(route: 'web_typoscript_infomodify', parameters: '{id: pageUid}')}" method="post">
+                        <div class="col">
+                            <label class="form-select-label" for="selectedTemplate">
+                                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:selectedTemplate" />
+                            </label>
+                            <select
+                                name="selectedTemplate"
+                                id="selectedTemplate"
+                                class="form-select mb-3"
+                                data-global-event="change"
+                                data-action-navigate="$data=~s/$value/"
+                                data-action-submit="$form"
+                            >
+                                <f:for each="{allTemplatesOnPage}" as="template">
+                                    <option
+                                        value="{template.uid}"
+                                        {f:if(condition:'{templateRecord.uid} == {template.uid}', then:'selected="selected"')}
+                                    >
+                                    {template.title}
+                                    </option>
+                                </f:for>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </f:if>
 

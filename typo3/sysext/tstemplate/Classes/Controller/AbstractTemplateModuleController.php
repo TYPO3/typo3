@@ -166,7 +166,7 @@ abstract class AbstractTemplateModuleController
     }
 
     /**
-     * Get closest page row that has a template up in rootline
+     * Get the closest page row that has a template up in rootline
      */
     protected function getClosestAncestorPageWithTemplateRecord(int $pageId): array
     {

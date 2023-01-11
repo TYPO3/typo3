@@ -2102,6 +2102,7 @@ class BackendUtility
      * @param string $script The script to send the &id to, if empty it's automatically found
      * @param string $addParams Additional parameters to pass to the script.
      * @return string HTML code for selector box
+     * @deprecated since TYPO3 v12.2. will be removed in TYPO3 v13.0.
      */
     public static function getFuncMenu(
         $mainParams,
@@ -2111,6 +2112,11 @@ class BackendUtility
         $script = '',
         $addParams = ''
     ): string {
+        trigger_error(
+            'BackendUtility::getFuncMenu will be removed in TYPO3 v13.0, use Fluid based templating instead.',
+            E_USER_DEPRECATED
+        );
+
         if (!is_array($menuItems) || count($menuItems) <= 1) {
             return '';
         }

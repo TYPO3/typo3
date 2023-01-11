@@ -1422,4 +1422,11 @@ return [
             'Deprecation-99098-StaticUsageOfFormProtectionFactory.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu' => [
+        'numberOfMandatoryArguments' => 4,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Deprecation-99519-DeprecatedBackendUtilitygetFuncMenu.rst',
+        ],
+    ],
 ];
