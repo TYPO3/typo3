@@ -1683,7 +1683,6 @@ class TcaMigrationTest extends UnitTestCase
                         'aColumn' => [
                             'config' => [
                                 'type' => 'none',
-                                'pass_content' => true,
                                 'cols' => 20,
                                 'size' => 30,
                             ],
@@ -1697,7 +1696,6 @@ class TcaMigrationTest extends UnitTestCase
                         'aColumn' => [
                             'config' => [
                                 'type' => 'none',
-                                'pass_content' => true,
                                 'size' => 20,
                             ],
                         ],
@@ -3477,5 +3475,48 @@ class TcaMigrationTest extends UnitTestCase
         ];
         $subject = new TcaMigration();
         self::assertSame($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function passContentIsRemovedFromTypeNone(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'none',
+                            'pass_content' => false,
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'input',
+                            'pass_content' => false,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'none',
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'input',
+                            'pass_content' => false,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        self::assertSame($expected, (new TcaMigration())->migrate($input));
     }
 }

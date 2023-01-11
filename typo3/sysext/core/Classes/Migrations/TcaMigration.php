@@ -85,6 +85,7 @@ class TcaMigration
         $tca = $this->removeCtrlCruserId($tca);
         $tca = $this->removeFalRelatedElementBrowserOptions($tca);
         $tca = $this->removeFalRelatedOptionsFromTypeInline($tca);
+        $tca = $this->removePassContentFromTypeNone($tca);
 
         return $tca;
     }
@@ -1341,6 +1342,29 @@ class TcaMigration
             }
         }
 
+        return $tca;
+    }
+
+    /**
+     * Removes ['config']['pass_content'] from TCA type "none" fields
+     */
+    protected function removePassContentFromTypeNone(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') === 'none'
+                    && array_key_exists('pass_content', $fieldConfig['config'] ?? [])
+                ) {
+                    unset($tca[$table]['columns'][$fieldName]['config']['pass_content']);
+                    $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' uses '
+                        . '\'pass_content\'. This config key is obsolete and has been removed. '
+                        . 'Please adjust your TCA accordingly.';
+                }
+            }
+        }
         return $tca;
     }
 }
