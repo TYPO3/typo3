@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnforcerVi
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeNodeFinderVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSourceAggregatorVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSyntaxScannerVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -123,6 +124,8 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($constantConditions, static fn ($condition) => $condition['active']), 'value'));
         $this->treeTraverser->resetVisitors();
         $this->treeTraverser->addVisitor($conditionEnforcerVisitor);
+        $constantSyntaxScannerVisitor = new IncludeTreeSyntaxScannerVisitor();
+        $this->treeTraverser->addVisitor($constantSyntaxScannerVisitor);
         $this->treeTraverser->traverse($constantIncludeTree);
         // Build the constant AST and flatten it. Needed for setup include tree to substitute constants in setup conditions.
         $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
@@ -141,6 +144,8 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($setupConditions, static fn ($condition) => $condition['active']), 'value'));
         $this->treeTraverser->resetVisitors();
         $this->treeTraverser->addVisitor($conditionEnforcerVisitor);
+        $setupSyntaxScannerVisitor = new IncludeTreeSyntaxScannerVisitor();
+        $this->treeTraverser->addVisitor($setupSyntaxScannerVisitor);
         $this->treeTraverser->traverse($setupIncludeTree);
 
         $view = $this->moduleTemplateFactory->create($request);
@@ -157,9 +162,13 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
             'constantConditions' => $constantConditions,
             'constantConditionsActiveCount' => count(array_filter($constantConditions, static fn ($condition) => $condition['active'])),
             'constantIncludeTree' => $constantIncludeTree,
+            'constantErrors' => $constantSyntaxScannerVisitor->getErrors(),
+            'constantErrorCount' => count($constantSyntaxScannerVisitor->getErrors()),
             'setupConditions' => $setupConditions,
             'setupConditionsActiveCount' => count(array_filter($setupConditions, static fn ($condition) => $condition['active'])),
             'setupIncludeTree' => $setupIncludeTree,
+            'setupErrors' => $setupSyntaxScannerVisitor->getErrors(),
+            'setupErrorCount' => count($setupSyntaxScannerVisitor->getErrors()),
         ]);
 
         return $view->renderResponse('Analyzer');

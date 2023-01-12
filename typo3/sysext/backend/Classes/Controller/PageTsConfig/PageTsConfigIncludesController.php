@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnforcerVi
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeNodeFinderVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSourceAggregatorVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSyntaxScannerVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\TypoScript\UserTsConfig;
@@ -143,10 +144,12 @@ final class PageTsConfigIncludesController
         $pageTsConfigTree->setIdentifier('pageTsConfig-pageTsConfigTree');
 
         // Set enabled conditions in pageTsConfig include tree and let it handle constant substitutions in pageTsConfig conditions.
+        $treeTraverser = new IncludeTreeTraverser();
+        $syntaxScannerVisitor = new IncludeTreeSyntaxScannerVisitor();
+        $treeTraverser->addVisitor($syntaxScannerVisitor);
         $pageTsConfigConditions = $this->handleToggledPageTsConfigConditions($pageTsConfigTree, $moduleData, $parsedBody, $siteSettingsFlat);
         $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
         $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($pageTsConfigConditions, static fn ($condition) => $condition['active']), 'value'));
-        $treeTraverser = new IncludeTreeTraverser();
         $treeTraverser->addVisitor($conditionEnforcerVisitor);
         $treeTraverser->traverse($pageTsConfigTree);
 
@@ -161,6 +164,8 @@ final class PageTsConfigIncludesController
             'pageTsConfigTree' => $pageTsConfigTree,
             'pageTsConfigConditions' => $pageTsConfigConditions,
             'pageTsConfigConditionsActiveCount' => count(array_filter($pageTsConfigConditions, static fn ($condition) => $condition['active'])),
+            'syntaxErrors' => $syntaxScannerVisitor->getErrors(),
+            'syntaxErrorCount' => count($syntaxScannerVisitor->getErrors()),
         ]);
         return $view->renderResponse('PageTsConfig/Includes');
     }

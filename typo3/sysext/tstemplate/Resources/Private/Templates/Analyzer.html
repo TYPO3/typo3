@@ -48,10 +48,19 @@
         }"
     />
 
-    <f:comment><!-- Constants: Conditions, source and tree --></f:comment>
+    <f:comment><!-- Constants: Syntax errors, conditions, source and tree --></f:comment>
     <f:if condition="{constantIncludeTree.children}">
         <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:sectionHeadline.constants" /></h2>
         <div class="panel-group">
+            <f:render
+                partial="AnalyzerSyntaxErrors"
+                arguments="{
+                    type: 'constants',
+                    pageUid: pageUid,
+                    errors: constantErrors,
+                    errorCount: constantErrorCount
+                }"
+            />
             <f:render
                 partial="AnalyzerConditions"
                 arguments="{
@@ -72,10 +81,19 @@
         </div>
     </f:if>
 
-    <f:comment><!-- Setup: Conditions, source and tree --></f:comment>
+    <f:comment><!-- Setup: Syntax errors, conditions, source and tree --></f:comment>
     <f:if condition="{setupIncludeTree.children}">
         <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:sectionHeadline.setup" /></h2>
         <div class="panel-group">
+            <f:render
+                partial="AnalyzerSyntaxErrors"
+                arguments="{
+                    type: 'setup',
+                    pageUid: pageUid,
+                    errors: setupErrors,
+                    errorCount: setupErrorCount
+                }"
+            />
             <f:render
                 partial="AnalyzerConditions"
                 arguments="{

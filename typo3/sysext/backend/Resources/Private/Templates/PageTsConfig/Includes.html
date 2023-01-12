@@ -46,6 +46,15 @@
         <h2><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.pagetsconfig" /></h2>
         <div class="panel-group">
             <f:render
+                section="SyntaxErrors"
+                arguments="{
+                    type: 'constants',
+                    pageUid: pageUid,
+                    errors: syntaxErrors,
+                    errorCount: syntaxErrorCount
+                }"
+            />
+            <f:render
                 section="Conditions"
                 arguments="{
                     pageUid: pageUid,
@@ -196,6 +205,67 @@
                 </f:if>
             </li>
         </f:for>
+    </f:if>
+</f:section>
+
+<f:section name="SyntaxErrors">
+    <f:if condition="{errors}">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row align-items-center justify-content-between">
+                    <div class="col align-middle">
+                        <h3 class="panel-title" id="pagetsconfig-includes-errors-heading">
+                            <a
+                                href="#"
+                                class="collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#pagetsconfig-includes-errors-body"
+                                aria-expanded="false"
+                                aria-controls="pagetsconfig-includes-errors-body"
+                            >
+                                <span class="caret"></span>
+                                <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.header.syntaxErrors"/></strong>
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="col text-right">
+                        <span class="badge badge-info">
+                            <f:translate
+                                key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.info.syntaxErrorCount.{f:if(condition: '{errorCount} > 1', then:'multiple', else: 'single')}"
+                                arguments="{0: errorCount}"
+                            />
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div id="pagetsconfig-includes-errors-body" class="panel-collapse collapse" data-persist-collapse-state="true" aria-labelledby="pagetsconfig-includes-errors-heading">
+                <div class="panel-body">
+                    <f:for each="{errors}" as="error">
+                        <div class="row justify-content-between">
+                            <div class="col">
+                                <f:translate
+                                    key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.syntaxError.type.{error.type}"
+                                    arguments="{0: error.include.name, 1: '{error.lineNumber + 1}'}"
+                                />
+                            </div>
+                            <div class="col col-auto text-right">
+                                <div class="btn-group">
+                                    <f:be.link
+                                        route="pagetsconfig_includes.source"
+                                        parameters="{id: pageUid, includeType: 'setup', identifier: error.include.identifier}"
+                                        additionalAttributes="{'data-modal-title': error.include.name}"
+                                        class="btn btn-default btn-sm t3js-pagetsconfig-includes-modal"
+                                        title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.syntaxError.sourceCode')}"
+                                    >
+                                        <core:icon identifier="actions-variable" />
+                                    </f:be.link>
+                                </div>
+                            </div>
+                        </div>
+                    </f:for>
+                </div>
+            </div>
+        </div>
     </f:if>
 </f:section>
 

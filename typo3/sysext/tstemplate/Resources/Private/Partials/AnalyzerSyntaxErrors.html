@@ -1,0 +1,66 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:if condition="{errors}">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row align-items-center justify-content-between">
+                <div class="col align-middle">
+                    <h3 class="panel-title" id="template-analyzer-{type}-errors-heading">
+                        <a
+                            href="#"
+                            class="collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#template-analyzer-{type}-errors-body"
+                            aria-expanded="false"
+                            aria-controls="template-analyzer-{type}-errors-body"
+                        >
+                            <span class="caret"></span>
+                            <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:panel.header.syntaxErrors"/></strong>
+                        </a>
+                    </h3>
+                </div>
+                <div class="col text-right">
+                    <span class="badge badge-info">
+                        <f:translate
+                            key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:panel.info.syntaxErrorCount.{f:if(condition: '{errorCount} > 1', then:'multiple', else: 'single')}"
+                            arguments="{0: errorCount}"
+                        />
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div id="template-analyzer-{type}-errors-body" class="panel-collapse collapse" data-persist-collapse-state="true" aria-labelledby="template-analyzer-{type}-errors-heading">
+            <div class="panel-body">
+                <f:for each="{errors}" as="error">
+                    <div class="row justify-content-between">
+                        <div class="col">
+                            <f:translate
+                                key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:syntaxError.type.{error.type}"
+                                arguments="{0: error.include.name, 1: '{error.lineNumber + 1}'}"
+                            />
+                        </div>
+                        <div class="col col-auto text-right">
+                            <div class="btn-group">
+                                <f:be.link
+                                    route="web_typoscript_analyzer.source"
+                                    parameters="{id: pageUid, includeType: type, identifier: error.include.identifier}"
+                                    additionalAttributes="{'data-modal-title': error.include.name}"
+                                    class="btn btn-default btn-sm t3js-typoscript-analyzer-modal"
+                                    title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:syntaxError.sourceCode')}"
+                                >
+                                    <core:icon identifier="actions-variable" />
+                                </f:be.link>
+                            </div>
+                        </div>
+                    </div>
+                </f:for>
+            </div>
+        </div>
+    </div>
+</f:if>
+
+</html>

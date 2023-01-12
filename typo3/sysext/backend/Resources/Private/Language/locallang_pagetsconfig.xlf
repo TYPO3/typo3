@@ -103,8 +103,17 @@
 			<trans-unit id="module.pagetsconfig_includes.panel.header.configuration" resname="module.pagetsconfig_includes.panel.header.configuration">
 				<source>Configuration</source>
 			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.panel.header.syntaxErrors" resname="module.pagetsconfig_includes.panel.header.syntaxErrors">
+				<source>Syntax scanner warnings</source>
+			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.panel.header.conditions" resname="module.pagetsconfig_includes.panel.header.conditions">
 				<source>Conditions</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.panel.info.syntaxErrorCount.single" resname="module.pagetsconfig_includes.panel.info.syntaxErrorCount.single">
+				<source>%s syntax warning</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.panel.info.syntaxErrorCount.multiple" resname="module.pagetsconfig_includes.panel.info.syntaxErrorCount.multiple">
+				<source>%s syntax warnings</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.panel.info.conditionActiveCount.multiple" resname="module.pagetsconfig_includes.panel.info.conditionActiveCount.multiple">
 				<source>%s active conditions</source>
@@ -114,6 +123,18 @@
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.panel.info.conditionWithConstant" resname="module.pagetsconfig_includes.panel.info.conditionWithConstant">
 				<source>Constant usage: [%s]</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.syntaxError.sourceCode" resname="module.pagetsconfig_includes.syntaxError.sourceCode">
+				<source>Show affected code snippet</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.syntaxError.type.line.invalid" resname="module.pagetsconfig_includes.syntaxError.type.line.invalid">
+				<source>Invalid line in "%1$s", line number "%2$s"</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.syntaxError.type.brace.excess" resname="module.pagetsconfig_includes.syntaxError.type.brace.excess">
+				<source>Brace in excess in "%1$s", line number "%2$s"</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.syntaxError.type.brace.missing" resname="module.pagetsconfig_includes.syntaxError.type.brace.missing">
+				<source>Brace missing in "%1$s", line number "%2$s"</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.tree.child.type.Segment" resname="module.pagetsconfig_includes.tree.child.type.Segment">
 				<source>Code segment</source>

@@ -24,11 +24,20 @@
 			<trans-unit id="sectionHeadline.setup" resname="sectionHeadline.setup">
 				<source>Setup</source>
 			</trans-unit>
+			<trans-unit id="panel.header.syntaxErrors" resname="panel.header.syntaxErrors">
+				<source>Syntax scanner warnings</source>
+			</trans-unit>
 			<trans-unit id="panel.header.conditions" resname="panel.header.conditions">
 				<source>Conditions</source>
 			</trans-unit>
 			<trans-unit id="panel.header.configuration" resname="panel.header.configuration">
 				<source>Configuration</source>
+			</trans-unit>
+			<trans-unit id="panel.info.syntaxErrorCount.single" resname="panel.info.syntaxErrorCount.single">
+				<source>%s syntax warning</source>
+			</trans-unit>
+			<trans-unit id="panel.info.syntaxErrorCount.multiple" resname="panel.info.syntaxErrorCount.multiple">
+				<source>%s syntax warnings</source>
 			</trans-unit>
 			<trans-unit id="panel.info.conditionActiveCount.multiple" resname="panel.info.conditionActiveCount.multiple">
 				<source>%s active conditions</source>
@@ -38,6 +47,18 @@
 			</trans-unit>
 			<trans-unit id="panel.info.conditionWithConstant" resname="panel.info.conditionWithConstant">
 				<source>Constant usage: [%s]</source>
+			</trans-unit>
+			<trans-unit id="syntaxError.sourceCode" resname="syntaxError.sourceCode">
+				<source>Show affected code snippet</source>
+			</trans-unit>
+			<trans-unit id="syntaxError.type.line.invalid" resname="syntaxError.type.line.invalid">
+				<source>Invalid line in "%1$s", line number "%2$s"</source>
+			</trans-unit>
+			<trans-unit id="syntaxError.type.brace.excess" resname="syntaxError.type.brace.excess">
+				<source>Brace in excess in "%1$s", line number "%2$s"</source>
+			</trans-unit>
+			<trans-unit id="syntaxError.type.brace.missing" resname="syntaxError.type.brace.missing">
+				<source>Brace missing in "%1$s", line number "%2$s"</source>
 			</trans-unit>
 			<trans-unit id="tree.child.btn.sourceCode" resname="tree.child.btn.sourceCode">
 				<source>Show code</source>
