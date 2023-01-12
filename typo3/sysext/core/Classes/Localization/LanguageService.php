@@ -23,12 +23,12 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * Main API to fetch labels from XLF (label files) based on the current system
  * language of TYPO3. It is able to resolve references to files + their pointers to the
  * proper language. If you see something about "LLL", this class does the trick for you. It
- * is not related for language handling of content, but rather of labels for plugins.
+ * is not related to language handling of content, but rather of labels for plugins.
  *
  * Usually this is injected into $GLOBALS['LANG'] when in backend or CLI context, and
  * populated by the current backend user. Do not rely on $GLOBAL['LANG'] in frontend, as it is only
- * available in certain circumstances!
- * In Frontend, this is also used to translate "labels", see TypoScriptFrontendController->sL()
+ * available under certain circumstances!
+ * In frontend, this is also used to translate "labels", see TypoScriptFrontendController->sL()
  * for that.
  *
  * As TYPO3 internally does not match the proper ISO locale standard, the "locale" here
@@ -36,8 +36,11 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * has the language key "default".
  *
  * Further usages on setting up your own LanguageService in BE:
+ *
+ * ```
  * $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)
- *   ->createFromUserPreferences($GLOBALS['BE_USER']);
+ *     ->createFromUserPreferences($GLOBALS['BE_USER']);
+ * ```
  */
 class LanguageService
 {
@@ -47,7 +50,7 @@ class LanguageService
     public string $lang = 'default';
 
     /**
-     * If TRUE, will show the key/location of labels in the backend.
+     * If true, will show the key/location of labels in the backend.
      */
     public bool $debugKey = false;
 
@@ -156,7 +159,7 @@ class LanguageService
      * Resolve strings like these:
      *
      * ```
-     *      'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'
+     * 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'
      * ```
      *
      * This looks up the given .xlf file path in the 'core' extension for label labels.depth_0
@@ -197,8 +200,8 @@ class LanguageService
     }
 
     /**
-     * Includes locallang file (and possibly additional localized version if configured for)
-     * Read language labels will be merged with $LOCAL_LANG (if $setGlobal === true).
+     * Includes locallang file (and possibly additional localized version, if configured for)
+     * Read language labels will be merged with $LOCAL_LANG.
      *
      * @param string $fileRef $fileRef is a file-reference
      * @return array returns the loaded label file
