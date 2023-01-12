@@ -36,8 +36,7 @@ class FileCollectionVisibleFieldsTest extends FunctionalTestCase
         '0' => ['files'],
         'category' => ['category'],
         'folder' => [
-            'storage',
-            'folder',
+            'folder_identifier',
             'recursive',
         ],
         'static' => ['files'],

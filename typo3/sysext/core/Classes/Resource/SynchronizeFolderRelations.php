@@ -53,29 +53,27 @@ class SynchronizeFolderRelations
      */
     public function synchronizeFileCollectionsAfterRename(AfterFolderRenamedEvent $event): void
     {
-        $storageId = $event->getSourceFolder()->getStorage()->getUid();
-        $sourceIdentifier = $event->getSourceFolder()->getIdentifier();
-        $targetIdentifier = $event->getFolder()->getIdentifier();
+        $sourceIdentifier = $event->getSourceFolder()->getCombinedIdentifier();
+        $targetIdentifier = $event->getFolder()->getCombinedIdentifier();
 
         $synchronized = 0;
         $queryBuilder = $this->getPreparedQueryBuilder('sys_file_collection');
         $statement = $queryBuilder
-            ->select('uid', 'folder')
+            ->select('uid', 'folder_identifier')
             ->from('sys_file_collection')
             ->where(
-                $queryBuilder->expr()->like('folder', $queryBuilder->quote($sourceIdentifier . '%')),
-                $queryBuilder->expr()->eq('storage', $queryBuilder->createNamedParameter($storageId, Connection::PARAM_INT)),
+                $queryBuilder->expr()->like('folder_identifier', $queryBuilder->quote($sourceIdentifier . '%')),
                 $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter('folder'))
             )
             ->executeQuery();
 
         while ($row = $statement->fetchAssociative()) {
-            $folder = preg_replace(sprintf('/^%s/', preg_quote($sourceIdentifier, '/')), $targetIdentifier, $row['folder']) ?? '';
+            $folder = preg_replace(sprintf('/^%s/', preg_quote($sourceIdentifier, '/')), $targetIdentifier, $row['folder_identifier']) ?? '';
             if ($folder !== '') {
                 $queryBuilder = $this->getPreparedQueryBuilder('sys_file_collection');
                 $synchronized += (int)$queryBuilder
                     ->update('sys_file_collection')
-                    ->set('folder', $folder)
+                    ->set('folder_identifier', $folder)
                     ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$row['uid'], Connection::PARAM_INT)))
                     ->executeStatement();
             }

@@ -285,8 +285,7 @@ CREATE TABLE sys_file_collection (
 	files int(11) DEFAULT '0' NOT NULL,
 
 	# for type=folder:
-	storage int(11) DEFAULT '0' NOT NULL,
-	folder text,
+	folder_identifier varchar(255) DEFAULT '' NOT NULL,
 	recursive tinyint(4) DEFAULT '0' NOT NULL,
 );
 

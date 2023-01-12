@@ -94,8 +94,7 @@ class FolderBasedFileCollection extends AbstractFileCollection
             'title' => $this->getTitle(),
             'type' => self::$type,
             'description' => $this->getDescription(),
-            'folder' => $this->folder->getIdentifier(),
-            'storage' => $this->folder->getStorage()->getUid(),
+            'folder_identifier' => $this->folder->getCombinedIdentifier(),
         ];
     }
 
@@ -110,11 +109,12 @@ class FolderBasedFileCollection extends AbstractFileCollection
         $this->title = $array['title'];
         $this->description = $array['description'];
         $this->recursive = (bool)$array['recursive'];
-        if (!empty($array['folder']) && !empty($array['storage'])) {
+        if (str_contains($array['folder_identifier'] ?? '', ':')) {
+            $parts = GeneralUtility::trimExplode(':', $array['folder_identifier']);
             $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-            $storage = $storageRepository->findByUid($array['storage']);
+            $storage = $storageRepository->findByUid((int)$parts[0]);
             if ($storage) {
-                $this->folder = $storage->getFolder($array['folder']);
+                $this->folder = $storage->getFolder($parts[1]);
             }
         }
     }

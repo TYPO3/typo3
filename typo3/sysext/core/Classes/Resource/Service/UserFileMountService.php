@@ -30,10 +30,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * used for BE_USER (\TYPO3\CMS\Core\Authentication\BackendUserAuthentication)
  * and TCEforms hooks
  *
- * Note: This is now also used by sys_file_category table (fieldname "folder")!
+ * Note: This is now also used by sys_file_collection table (fieldname "folder")!
+ *
+ * @deprecated since TYPO3 v12, will be removed in TYPO3 v13
  */
 class UserFileMountService
 {
+    public function __construct()
+    {
+        trigger_error('Class ' . __CLASS__ . ' will be removed with TYPO3 v13.0.', E_USER_DEPRECATED);
+    }
+
     /**
      * User function for sys_filemounts (the userfilemounts)
      * to render a dropdown for selecting a folder

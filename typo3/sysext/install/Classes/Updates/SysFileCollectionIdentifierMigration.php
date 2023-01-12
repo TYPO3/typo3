@@ -26,19 +26,19 @@ use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 /**
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-#[UpgradeWizard('sysFileMountIdentifierMigration')]
-class SysFileMountIdentifierMigration implements UpgradeWizardInterface
+#[UpgradeWizard('sysFileCollectionIdentifierMigration')]
+class SysFileCollectionIdentifierMigration implements UpgradeWizardInterface
 {
-    protected const TABLE_NAME = 'sys_filemounts';
+    protected const TABLE_NAME = 'sys_file_collection';
 
     public function getTitle(): string
     {
-        return 'Migrate base and path to the new identifier property of the "sys_filemounts" table.';
+        return 'Migrate storage and folder to the new folder_identifier property of the "sys_file_collection" table.';
     }
 
     public function getDescription(): string
     {
-        return 'The "sys_filemounts" table has a new identifier property which is used to identify the mount point. This update migrates the properties "base" and "path" to the new "identifier" property.';
+        return 'The "sys_file_collection" table has a new identifier property which is used to identify the mount point. This update migrates the properties "storage" and "folder" to the new "folder_identifier" property.';
     }
 
     public function getPrerequisites(): array
@@ -60,7 +60,7 @@ class SysFileMountIdentifierMigration implements UpgradeWizardInterface
         foreach ($this->getRecordsToUpdate() as $record) {
             $connection->update(
                 self::TABLE_NAME,
-                ['identifier' => $record['base'] . ':' . $record['path']],
+                ['folder_identifier' => $record['storage'] . ':' . $record['folder']],
                 ['uid' => (int)$record['uid']]
             );
         }
@@ -74,7 +74,7 @@ class SysFileMountIdentifierMigration implements UpgradeWizardInterface
 
         $tableColumns = $schemaManager->listTableColumns(self::TABLE_NAME);
 
-        foreach (['path', 'base', 'identifier'] as $column) {
+        foreach (['storage', 'folder', 'folder_identifier'] as $column) {
             if (!isset($tableColumns[$column])) {
                 return false;
             }
@@ -90,7 +90,7 @@ class SysFileMountIdentifierMigration implements UpgradeWizardInterface
 
     protected function getRecordsToUpdate(): array
     {
-        return $this->getPreparedQueryBuilder()->select(...['uid', 'path', 'base'])->executeQuery()->fetchAllAssociative();
+        return $this->getPreparedQueryBuilder()->select('uid', 'storage', 'folder', 'folder_identifier')->executeQuery()->fetchAllAssociative();
     }
 
     protected function getPreparedQueryBuilder(): QueryBuilder
@@ -100,9 +100,10 @@ class SysFileMountIdentifierMigration implements UpgradeWizardInterface
         $queryBuilder
             ->from(self::TABLE_NAME)
             ->where(
-                $queryBuilder->expr()->gt('base', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
-                $queryBuilder->expr()->neq('path', $queryBuilder->createNamedParameter('')),
-                $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter(''))
+                $queryBuilder->expr()->gt('storage', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                $queryBuilder->expr()->neq('folder', $queryBuilder->createNamedParameter('')),
+                $queryBuilder->expr()->eq('folder_identifier', $queryBuilder->createNamedParameter('')),
+                $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter('folder'))
             );
 
         return $queryBuilder;

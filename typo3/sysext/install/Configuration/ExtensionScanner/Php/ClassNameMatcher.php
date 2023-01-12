@@ -2233,4 +2233,9 @@ return [
             'Deprecation-99120-DeprecateOldTypoScriptParser.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\Service\UserFileMountService' => [
+        'restFiles' => [
+            'Deprecation-97923-DeprecateUserFileMountService.rst',
+        ],
+    ],
 ];

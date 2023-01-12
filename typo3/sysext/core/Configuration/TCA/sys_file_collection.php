@@ -112,28 +112,13 @@ return [
                 'required' => true,
             ],
         ],
-        'storage' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_collection.storage',
-            'onChange' => 'reload',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['', 0],
-                ],
-                'foreign_table' => 'sys_file_storage',
-                'maxitems' => 1,
-                'default' => 0,
-            ],
-        ],
-        'folder' => [
+        'folder_identifier' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_collection.folder',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [],
-                'itemsProcFunc' => \TYPO3\CMS\Core\Resource\Service\UserFileMountService::class . '->renderTceformsSelectDropdown',
-                'default' => '',
+                'type' => 'folder',
+                'required' => true,
+                'maxitems' => 1,
+                'size' => 1,
             ],
         ],
         'recursive' => [
@@ -191,7 +176,7 @@ return [
         'folder' => [
             'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                    type,title,storage, folder, recursive,
+                    type,title,folder_identifier, recursive,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
                     --palette--;;language,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
