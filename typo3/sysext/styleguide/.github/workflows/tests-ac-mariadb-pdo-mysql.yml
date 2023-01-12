@@ -1,0 +1,27 @@
+name: tests-ac-mariadb-pdo-mysql
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron:  '42 5 * * *'
+
+jobs:
+  testsuite:
+    name: Acceptance tests mariadb with pdo_mysql
+    runs-on: ubuntu-20.04
+    strategy:
+      # This prevents cancellation of matrix job runs, if one or more already failed
+      # and let the remaining matrix jobs be executed anyway.
+      fail-fast: false
+      matrix:
+        php: [ '8.1', '8.2' ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s composerUpdate
+
+      - name: Acceptance Tests mariadb and pdo_mysql
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance -d mariadb -a pdo_mysql
