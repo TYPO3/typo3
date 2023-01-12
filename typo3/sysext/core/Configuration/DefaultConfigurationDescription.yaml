@@ -210,9 +210,10 @@ SYS:
         lang:
           type: container
           description: 'Settings related to XLF labels'
-          requireApprovedLocalizations:
-            type: bool
-            description: 'If set, translations are only taken into account if the according "approved" attribute is set to "yes" within the XLF file. Otherwise, all available translations are used.'
+          items:
+            requireApprovedLocalizations:
+              type: bool
+              description: 'If set, translations are only taken into account if the according "approved" attribute is set to "yes" within the XLF file. Otherwise, all available translations are used.'
 EXT:
     type: container
     description: 'Extension Installation'
