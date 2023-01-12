@@ -11,109 +11,97 @@
         includeJavaScriptModules="{
             0: '@typo3/backend/context-menu.js',
             1: '@typo3/backend/element/immediate-action-element.js',
-            2: '@typo3/backend/utility/collapse-state-persister.js'
+            2: '@typo3/tstemplate/template-analyzer.js'
         }"
     />
 
     <f:variable name="args" value="{0: 'web', 1: pageUid}" />
     <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
 
-    <f:comment>
-        Heading
-    </f:comment>
+    <f:comment><!-- Heading --></f:comment>
     <h1>
         <f:if condition="{templateTitle}">
             <f:then>
                 <f:translate
-                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:analyzerTitleWithTemplate"
+                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:submodule.titleWithTypoScriptRecord"
                     arguments="{
                         0: '{templateTitle}'
                     }"
                 />
             </f:then>
             <f:else>
-                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:analyzerTitle" />
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:submodule.title" />
             </f:else>
         </f:if>
     </h1>
     <div>
-        <p class="lead"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:moduleDescription" /></p>
+        <p class="lead"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:submodule.description" /></p>
     </div>
 
-    <f:comment>
-        General options
-    </f:comment>
+    <f:comment><!-- General options --></f:comment>
     <f:render
         partial="AnalyzerOptions"
         arguments="{
             allTemplatesOnPage: allTemplatesOnPage,
             pageUid: pageUid,
-            selectedTemplateUid: selectedTemplateUid,
-            restrictIncludesToMatchingConditionsEnabled: restrictIncludesToMatchingConditionsEnabled
+            selectedTemplateUid: selectedTemplateUid
         }"
     />
 
-    <f:comment>
-        Constant conditions, source and tree
-    </f:comment>
-    <div class="panel-group">
-        <f:render
-            partial="AnalyzerConditions"
-            arguments="{
-                pageUid: pageUid,
-                type: 'constant',
-                conditions: constantConditions,
-                conditionActiveCount: constantConditionsActiveCount
-            }"
-        />
-        <f:render
-            partial="AnalyzerSource"
-            arguments="{
-                type: 'constant',
-                source: constantSource
-            }"
-        />
-        <f:render
-            partial="AnalyzerTreePanel"
-            arguments="{
-                type: 'constant',
-                tree: constantIncludeTree,
-                pageUid: pageUid,
-                restrictIncludesToMatchingConditionsEnabled: restrictIncludesToMatchingConditionsEnabled
-            }"
-        />
-    </div>
+    <f:comment><!-- Constants: Conditions, source and tree --></f:comment>
+    <f:if condition="{constantIncludeTree.children}">
+        <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:headline.constants" /></h2>
+        <div class="panel-group">
+            <f:render
+                partial="AnalyzerConditions"
+                arguments="{
+                    pageUid: pageUid,
+                    type: 'constants',
+                    conditions: constantConditions,
+                    conditionActiveCount: constantConditionsActiveCount
+                }"
+            />
+            <f:render
+                partial="AnalyzerTreePanel"
+                arguments="{
+                    type: 'constants',
+                    tree: constantIncludeTree,
+                    pageUid: pageUid
+                }"
+            />
+        </div>
+    </f:if>
 
-    <f:comment>
-        Setup conditions, source and tree
-    </f:comment>
-    <div class="panel-group">
-        <f:render
-            partial="AnalyzerConditions"
-            arguments="{
-                pageUid: pageUid,
-                type: 'setup',
-                conditions: setupConditions,
-                conditionActiveCount: setupConditionsActiveCount
-            }"
+    <f:comment><!-- Setup: Conditions, source and tree --></f:comment>
+    <f:if condition="{setupIncludeTree.children}">
+        <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:headline.setup" /></h2>
+        <div class="panel-group">
+            <f:render
+                partial="AnalyzerConditions"
+                arguments="{
+                    pageUid: pageUid,
+                    type: 'setup',
+                    conditions: setupConditions,
+                    conditionActiveCount: setupConditionsActiveCount
+                }"
+            />
+            <f:render
+                partial="AnalyzerTreePanel"
+                arguments="{
+                    type: 'setup',
+                    tree: setupIncludeTree,
+                    pageUid: pageUid
+                }"
+            />
+        </div>
+    </f:if>
+
+    <f:if condition="!{constantIncludeTree.children} && !{setupIncludeTree.children}">
+        <f:be.infobox
+            message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:noTypoScriptFound')}"
+            state="-1"
         />
-        <f:render
-            partial="AnalyzerSource"
-            arguments="{
-                type: 'setup',
-                source: setupSource
-            }"
-        />
-        <f:render
-            partial="AnalyzerTreePanel"
-            arguments="{
-                type: 'setup',
-                tree: setupIncludeTree,
-                pageUid: pageUid,
-                restrictIncludesToMatchingConditionsEnabled: restrictIncludesToMatchingConditionsEnabled
-            }"
-        />
-    </div>
+    </f:if>
 </f:section>
 
 </html>

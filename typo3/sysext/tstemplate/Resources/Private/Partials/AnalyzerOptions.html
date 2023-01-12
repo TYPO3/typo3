@@ -10,7 +10,7 @@
             <div class="col col-md-2 col-4">
                 <form action="{f:be.uri(route: 'web_typoscript_analyzer', parameters: '{id: pageUid}')}" method="post">
                     <label class="form-select-label" for="selectedTemplate">
-                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:selectedTemplate" />
+                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:options.selectedRecord" />
                     </label>
                     <select
                         name="selectedTemplate"
@@ -32,27 +32,6 @@
                 </form>
             </div>
         </f:if>
-        <div class="col">
-            <form action="{f:be.uri(route: 'web_typoscript_analyzer', parameters: '{id: pageUid}')}" method="post">
-                <div class="form-check form-switch">
-                    <label class="form-check-label" for="restrictIncludesToMatchingConditions">
-                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:restrictIncludesToMatchingConditions" />
-                    </label>
-                    <input type="hidden" name="restrictIncludesToMatchingConditions" value="0" />
-                    <input
-                        type="checkbox"
-                        class="form-check-input"
-                        name="restrictIncludesToMatchingConditions"
-                        id="restrictIncludesToMatchingConditions"
-                        value="1"
-                        {f:if(condition: restrictIncludesToMatchingConditionsEnabled, then:'checked="checked"')}
-                        data-global-event="change"
-                        data-action-submit="$form"
-                        data-value-selector="input[name='restrictIncludesToMatchingConditions']"
-                    />
-                </div>
-            </form>
-        </div>
     </div>
 </div>
 

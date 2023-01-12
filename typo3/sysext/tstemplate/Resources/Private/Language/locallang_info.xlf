@@ -79,7 +79,7 @@
 				<source>Edit the whole TypoScript record</source>
 			</trans-unit>
 			<trans-unit id="moduleDescription" resname="moduleDescription">
-				<source>Modify the content of the selected TypoScript record of the current page. Modifications can be made either for configurations like TypoScript constants and setup or basics like the name and description of the TypoScript record itself.</source>
+				<source>Modify the content of the selected TypoScript record of the current page. Modifications can be made either for configurations like TypoScript constants and setup or basics like the title and description of the TypoScript record itself.</source>
 			</trans-unit>
 		</body>
 	</file>

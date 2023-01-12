@@ -102,11 +102,16 @@ return [
         ],
         'routes' => [
             '_default' => [
-                'target' => TemplateAnalyzerController::class . '::handleRequest',
+                'target' => TemplateAnalyzerController::class . '::indexAction',
+            ],
+            'source' => [
+                'target' => TemplateAnalyzerController::class . '::sourceAction',
+            ],
+            'sourceWithIncludes' => [
+                'target' => TemplateAnalyzerController::class . '::sourceWithIncludesAction',
             ],
         ],
         'moduleData' => [
-            'restrictIncludesToMatchingConditions' => false,
             'selectedTemplatePerPage' => [],
             'constantConditions' => [],
             'setupConditions' => [],

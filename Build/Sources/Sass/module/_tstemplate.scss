@@ -14,3 +14,15 @@
 .tstemplate-tsobjectbrowser-content {
     overflow-x: auto;
 }
+
+.tstemplate-tree-wrapper {
+    padding: 15px 12px;
+}
+
+.tstemplate-tree-wrapper li {
+    margin-top: 8px;
+}
+
+.tstemplate-tree-wrapper > ul > li:first-child {
+    margin-top: 0;
+}

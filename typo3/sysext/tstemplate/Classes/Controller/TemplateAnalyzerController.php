@@ -17,15 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Tstemplate\Controller;
 
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
@@ -33,12 +34,13 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareInclude
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeConditionAggregatorVisitor;
 use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnforcerVisitor;
+use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeNodeFinderVisitor;
 use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeSourceAggregatorVisitor;
 
 /**
@@ -50,17 +52,18 @@ use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeSourceAggrega
 final class TemplateAnalyzerController extends AbstractTemplateModuleController
 {
     public function __construct(
-        private readonly PageRenderer $pageRenderer,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly SysTemplateRepository $sysTemplateRepository,
         private readonly IncludeTreeTraverser $treeTraverser,
         private readonly ConditionVerdictAwareIncludeTreeTraverser $treeTraverserConditionVerdictAware,
         private readonly SysTemplateTreeBuilder $treeBuilder,
         private readonly LosslessTokenizer $losslessTokenizer,
+        private readonly ResponseFactoryInterface $responseFactory,
+        private readonly StreamFactoryInterface $streamFactory,
     ) {
     }
 
-    public function handleRequest(ServerRequestInterface $request): ResponseInterface
+    public function indexAction(ServerRequestInterface $request): ResponseInterface
     {
         $backendUser = $this->getBackendUser();
         $languageService = $this->getLanguageService();
@@ -78,11 +81,6 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
             return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
         }
         $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
-
-        // Force restrictIncludesToMatchingConditions to bool
-        if ($moduleData->clean('restrictIncludesToMatchingConditions', [true, false])) {
-            $this->getBackendUser()->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
-        }
 
         // Template selection handling for this page
         $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageUid);
@@ -104,10 +102,6 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         }
 
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
-
-        if (ExtensionManagementUtility::isLoaded('t3editor')) {
-            $this->pageRenderer->loadJavaScriptModule('@typo3/t3editor/element/code-mirror-element.js');
-        }
 
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
 
@@ -151,18 +145,91 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
             'allTemplatesOnPage' => $allTemplatesOnPage,
             'selectedTemplateUid' => $selectedTemplateUid,
             'templateTitle' => $templateTitle,
-            'restrictIncludesToMatchingConditionsEnabled' => $moduleData->get('restrictIncludesToMatchingConditions'),
             'constantConditions' => $constantConditions,
             'constantConditionsActiveCount' => count(array_filter($constantConditions, static fn ($condition) => $condition['active'])),
             'constantIncludeTree' => $constantIncludeTree,
-            'constantSource' => $this->getSourceString('constant', $constantIncludeTree, $queryParams),
             'setupConditions' => $setupConditions,
             'setupConditionsActiveCount' => count(array_filter($setupConditions, static fn ($condition) => $condition['active'])),
             'setupIncludeTree' => $setupIncludeTree,
-            'setupSource' => $this->getSourceString('setup', $setupIncludeTree, $queryParams),
         ]);
 
         return $view->renderResponse('Analyzer');
+    }
+
+    public function sourceAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $queryParams = $request->getQueryParams();
+        $pageUid = (int)($queryParams['id'] ?? 0);
+        $type = $queryParams['includeType'] ?? null;
+        $includeIdentifier = $queryParams['identifier'] ?? null;
+        $moduleData = $request->getAttribute('moduleData');
+        $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageUid);
+        $selectedTemplateUid = (int)($moduleData->get('selectedTemplatePerPage')[$pageUid] ?? 0);
+        if (!in_array($selectedTemplateUid, array_column($allTemplatesOnPage, 'uid'))) {
+            $selectedTemplateUid = (int)($allTemplatesOnPage[0]['uid'] ?? 0);
+        }
+        if ($pageUid === 0 || $includeIdentifier === null || !in_array($type, ['constants', 'setup'], true)) {
+            return $this->responseFactory->createResponse(400);
+        }
+        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
+        /** @var SiteInterface|null $site */
+        $site = $request->getAttribute('site');
+        $includeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite($type, $sysTemplateRows, $this->losslessTokenizer, $site);
+
+        $nodeFinderVisitor = GeneralUtility::makeInstance(IncludeTreeNodeFinderVisitor::class);
+        $nodeFinderVisitor->setNodeIdentifier($includeIdentifier);
+        $this->treeTraverser->resetVisitors();
+        $this->treeTraverser->addVisitor($nodeFinderVisitor);
+        $this->treeTraverser->traverse($includeTree);
+        $foundNode = $nodeFinderVisitor->getFoundNode();
+
+        if (!$foundNode instanceof IncludeInterface) {
+            return $this->responseFactory->createResponse(400);
+        }
+        $lineStream = $foundNode->getLineStream();
+        if (!$lineStream instanceof LineStream) {
+            return $this->responseFactory->createResponse(400);
+        }
+
+        return $this->responseFactory
+            ->createResponse()
+            ->withHeader('Content-Type', 'text/plain')
+            ->withBody($this->streamFactory->createStream((string)$foundNode->getLineStream()));
+    }
+
+    public function sourceWithIncludesAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $queryParams = $request->getQueryParams();
+        $pageUid = (int)($queryParams['id'] ?? 0);
+        $type = $queryParams['includeType'] ?? null;
+        $includeIdentifier = $queryParams['identifier'] ?? null;
+        $moduleData = $request->getAttribute('moduleData');
+        $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageUid);
+        $selectedTemplateUid = (int)($moduleData->get('selectedTemplatePerPage')[$pageUid] ?? 0);
+        if (!in_array($selectedTemplateUid, array_column($allTemplatesOnPage, 'uid'))) {
+            $selectedTemplateUid = (int)($allTemplatesOnPage[0]['uid'] ?? 0);
+        }
+        if ($pageUid === 0 || $includeIdentifier === null || !in_array($type, ['constants', 'setup'], true)) {
+            return $this->responseFactory->createResponse(400);
+        }
+        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
+        /** @var SiteInterface|null $site */
+        $site = $request->getAttribute('site');
+        $includeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite($type, $sysTemplateRows, $this->losslessTokenizer, $site);
+
+        $sourceAggregatorVisitor = GeneralUtility::makeInstance(IncludeTreeSourceAggregatorVisitor::class);
+        $sourceAggregatorVisitor->setStartNodeIdentifier($includeIdentifier);
+        $this->treeTraverser->resetVisitors();
+        $this->treeTraverser->addVisitor($sourceAggregatorVisitor);
+        $this->treeTraverser->traverse($includeTree);
+        $source =  $sourceAggregatorVisitor->getSource();
+
+        return $this->responseFactory
+            ->createResponse()
+            ->withHeader('Content-Type', 'text/plain')
+            ->withBody($this->streamFactory->createStream($source));
     }
 
     /**
@@ -170,7 +237,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
      * write updated active conditions to user's module data if needed and
      * prepare a list of active conditions for view.
      */
-    protected function handleToggledConstantConditions(RootInclude $constantTree, ModuleData $moduleData, ?array $parsedBody): array
+    private function handleToggledConstantConditions(RootInclude $constantTree, ModuleData $moduleData, ?array $parsedBody): array
     {
         $conditionAggregatorVisitor = GeneralUtility::makeInstance(IncludeTreeConditionAggregatorVisitor::class);
         $this->treeTraverser->resetVisitors();
@@ -211,7 +278,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
      * write updated active conditions to user's module data if needed and
      * prepare a list of active conditions for view.
      */
-    protected function handleToggledSetupConditions(RootInclude $constantTree, ModuleData $moduleData, ?array $parsedBody, array $flattenedConstants): array
+    private function handleToggledSetupConditions(RootInclude $constantTree, ModuleData $moduleData, ?array $parsedBody, array $flattenedConstants): array
     {
         $this->treeTraverser->resetVisitors();
         $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
@@ -249,51 +316,5 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
             $this->getBackendUser()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
         }
         return $typoscriptConditions;
-    }
-
-    /**
-     * Render constants or setup source using t3editor or plain textarea
-     */
-    protected function renderSource(string $source): string
-    {
-        $numberOfLines = count(explode(LF, $source));
-        if (ExtensionManagementUtility::isLoaded('t3editor')) {
-            // @todo: Fire event and let EXT:t3editor fill the markup
-            $codeMirrorConfig = [
-                'panel' => 'top',
-                'mode' => GeneralUtility::jsonEncodeForHtmlAttribute(JavaScriptModuleInstruction::create('@typo3/t3editor/language/typoscript.js', 'typoscript')->invoke(), false),
-                'autoheight' => 'true',
-                'nolazyload' => 'true',
-                'readonly' => 'true',
-                'linedigits' => (string)strlen((string)$numberOfLines),
-            ];
-            $textareaAttributes = [
-                'rows' => (string)$numberOfLines,
-                'class' => 'form-control',
-                'readonly' => 'readonly',
-            ];
-            return '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>'
-                . '<textarea ' . GeneralUtility::implodeAttributes($textareaAttributes, true) . '>' . htmlspecialchars($source) . '</textarea>'
-                . '</typo3-t3editor-codemirror>';
-        }
-        return '<textarea class="form-control" rows="' . ($numberOfLines + 1) . '" disabled>'
-                . htmlspecialchars($source)
-                . '</textarea>';
-    }
-
-    /**
-     * Get source string if requested for either 'constant' or 'setup' and a specific include.
-     */
-    protected function getSourceString(string $type, RootInclude $includeTree, array $queryParams): string
-    {
-        if (($queryParams['includeType'] ?? null) === $type && !empty($queryParams['includeIdentifier'])) {
-            $sourceAggregatorVisitor = GeneralUtility::makeInstance(IncludeTreeSourceAggregatorVisitor::class);
-            $sourceAggregatorVisitor->setStartNodeIdentifier($queryParams['includeIdentifier']);
-            $this->treeTraverser->resetVisitors();
-            $this->treeTraverser->addVisitor($sourceAggregatorVisitor);
-            $this->treeTraverser->traverse($includeTree);
-            return $this->renderSource($sourceAggregatorVisitor->getSource());
-        }
-        return '';
     }
 }

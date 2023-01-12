@@ -133,7 +133,7 @@ final class TreeFromLineStreamBuilder
         $lineStream = new LineStream();
         $childNode = new SegmentInclude();
         $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
-        $childNode->setName($node->getName() . ' Segment');
+        $childNode->setName($node->getName());
         $childNode->setPath($node->getPath());
 
         foreach ($givenTokenLineStream->getNextLine() as $line) {
@@ -160,7 +160,7 @@ final class TreeFromLineStreamBuilder
                 $childNode = new ConditionInclude();
                 $childNode->setSplit();
                 $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
-                $childNode->setName($node->getName() . ' Condition');
+                $childNode->setName($node->getName());
                 $childNode->setPath($node->getPath());
                 $childNode->setConditionToken($conditionValueToken);
                 $lineStream->append($line);
@@ -170,7 +170,7 @@ final class TreeFromLineStreamBuilder
                 $node = $childNode;
                 $childNode = new SegmentInclude();
                 $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
-                $childNode->setName($node->getName() . ' Segment');
+                $childNode->setName($node->getName());
                 $childNode->setPath($node->getPath());
                 $lineStream = new LineStream();
                 continue;
@@ -187,7 +187,7 @@ final class TreeFromLineStreamBuilder
                 $node = $parentNode;
                 $childNode = new SegmentInclude();
                 $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
-                $childNode->setName($node->getName() . ' Segment');
+                $childNode->setName($node->getName());
                 $childNode->setPath($node->getPath());
                 $lineStream = new LineStream();
                 continue;
@@ -205,7 +205,7 @@ final class TreeFromLineStreamBuilder
                 $childNode = new ConditionElseInclude();
                 $childNode->setSplit();
                 $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
-                $childNode->setName($node->getName() . ' Condition Else');
+                $childNode->setName($node->getName());
                 $childNode->setPath($node->getPath());
                 $childNode->setConditionToken($conditionToken);
                 $lineStream = new LineStream();
@@ -216,7 +216,7 @@ final class TreeFromLineStreamBuilder
                 $node = $childNode;
                 $childNode = new SegmentInclude();
                 $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
-                $childNode->setName($node->getName() . ' Segment');
+                $childNode->setName($node->getName());
                 $childNode->setPath($node->getPath());
                 $lineStream = new LineStream();
                 continue;
@@ -232,7 +232,7 @@ final class TreeFromLineStreamBuilder
                 }
                 $childNode = new SegmentInclude();
                 $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
-                $childNode->setName($node->getName() . ' Segment');
+                $childNode->setName($node->getName());
                 $childNode->setPath($node->getPath());
                 $allowedSuffixes = $this->atImportTypeToSuffixMap[$this->type];
                 foreach ($allowedSuffixes as $allowedSuffix) {
@@ -251,7 +251,7 @@ final class TreeFromLineStreamBuilder
                 }
                 $childNode = new SegmentInclude();
                 $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
-                $childNode->setName($node->getName() . ' Segment');
+                $childNode->setName($node->getName());
                 $childNode->setPath($node->getPath());
                 $this->processIncludeTyposcript($node, $includeTypoScriptValueToken, $line);
                 continue;
@@ -503,7 +503,7 @@ final class TreeFromLineStreamBuilder
         if ($condition) {
             $conditionNode = new ConditionIncludeTyposcriptInclude();
             $conditionNode->setIdentifier($parentNode->getIdentifier() . $this->getNextNodeNumber());
-            $conditionNode->setName($fileName . ' Condition');
+            $conditionNode->setName($fileName);
             $conditionNode->setConditionToken(new Token(TokenType::T_VALUE, $condition, 0, 0));
             $conditionNode->setSplit();
             $nodeToAddTo->addChild($conditionNode);

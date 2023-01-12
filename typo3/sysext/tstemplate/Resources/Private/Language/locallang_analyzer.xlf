@@ -3,68 +3,119 @@
 	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="analyzerTitle" resname="analyzerTitle">
-				<source>Included TypoScript files</source>
+			<trans-unit id="submodule.title" resname="submodule.title">
+				<source>Included TypoScript</source>
 			</trans-unit>
-			<trans-unit id="analyzerTitleWithTemplate" resname="analyzerTitleWithTemplate">
-				<source>Included TypoScript files for template "%s"</source>
+			<trans-unit id="submodule.titleWithTypoScriptRecord" resname="submodule.titleWithTypoScriptRecord">
+				<source>Included TypoScript for record "%s"</source>
 			</trans-unit>
-			<trans-unit id="selectedTemplate" resname="selectedTemplate">
+			<trans-unit id="submodule.description" resname="submodule.description">
+				<source>Overview about the included TypoScript and include order for the current page.</source>
+			</trans-unit>
+			<trans-unit id="noTypoScriptFound" resname="noTypoScriptFound">
+				<source>No TypoScript found.</source>
+			</trans-unit>
+			<trans-unit id="options.selectedRecord" resname="options.selectedRecord">
 				<source>Selected record</source>
 			</trans-unit>
-			<trans-unit id="title" resname="title">
-				<source>Title</source>
-			</trans-unit>
-			<trans-unit id="type" resname="type">
-				<source>Type</source>
-			</trans-unit>
-			<trans-unit id="root" resname="root">
-				<source>Root</source>
-			</trans-unit>
-			<trans-unit id="rootlevel" resname="rootlevel">
-				<source>Rootlevel</source>
-			</trans-unit>
-			<trans-unit id="clear" resname="clear">
-				<source>Clear</source>
-			</trans-unit>
-			<trans-unit id="pid" resname="pid">
-				<source>PID</source>
-			</trans-unit>
-			<trans-unit id="constants" resname="constants">
+			<trans-unit id="headline.constants" resname="headline.constants">
 				<source>Constants</source>
 			</trans-unit>
-			<trans-unit id="setup" resname="setup">
+			<trans-unit id="headline.setup" resname="headline.setup">
 				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="constantConditions" resname="constantConditions">
-				<source>Constants conditions</source>
+			<trans-unit id="panel.header.conditions" resname="panel.header.conditions">
+				<source>Conditions</source>
 			</trans-unit>
-			<trans-unit id="setupConditions" resname="setupConditions">
-				<source>Setup conditions</source>
+			<trans-unit id="panel.header.configuration" resname="panel.header.configuration">
+				<source>Configuration</source>
 			</trans-unit>
-			<trans-unit id="conditionWithConstant" resname="conditionWithConstant">
-				<source>Constant usage: [%s]</source>
-			</trans-unit>
-			<trans-unit id="constantTree" resname="constantTree">
-				<source>Constants include</source>
-			</trans-unit>
-			<trans-unit id="constantSource" resname="constantSource">
-				<source>Selected constants source</source>
-			</trans-unit>
-			<trans-unit id="setupTree" resname="setupTree">
-				<source>Setup include</source>
-			</trans-unit>
-			<trans-unit id="setupSource" resname="setupSource">
-				<source>Selected setup source</source>
-			</trans-unit>
-			<trans-unit id="conditionActiveCount" resname="conditionActiveCount">
+			<trans-unit id="panel.info.conditionActiveCount" resname="panel.info.conditionActiveCount">
 				<source>%s active condition(s)</source>
 			</trans-unit>
-			<trans-unit id="restrictIncludesToMatchingConditions" resname="restrictIncludesToMatchingConditions">
-				<source>Restrict includes to matching conditions</source>
+			<trans-unit id="panel.info.conditionWithConstant" resname="panel.info.conditionWithConstant">
+				<source>Constant usage: [%s]</source>
 			</trans-unit>
-			<trans-unit id="moduleDescription" resname="moduleDescription">
-				<source>Overview about the included typoscript files and their include order.</source>
+			<trans-unit id="tree.child.btn.sourceCode" resname="tree.child.btn.sourceCode">
+				<source>Show code</source>
+			</trans-unit>
+			<trans-unit id="tree.child.btn.sourceCodeWithResolvedIncludes" resname="tree.child.btn.sourceCodeWithResolvedIncludes">
+				<source>Show code including possible includes/imports</source>
+			</trans-unit>
+			<trans-unit id="tree.child.conditionVerdict.matched" resname="tree.child.conditionVerdict.matched">
+				<source>Matched</source>
+			</trans-unit>
+			<trans-unit id="tree.child.conditionVerdict.notMatched" resname="tree.child.conditionVerdict.notMatched">
+				<source>Not matched</source>
+			</trans-unit>
+			<trans-unit id="tree.child.setting.clear" resname="tree.child.setting.clear">
+				<source>Clear</source>
+			</trans-unit>
+			<trans-unit id="tree.child.setting.root" resname="tree.child.setting.root">
+				<source>Root</source>
+			</trans-unit>
+			<trans-unit id="tree.child.sysTemplateRecord" resname="tree.child.sysTemplateRecord">
+				<source>TypoScript record (page UID %s)</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.Abstract" resname="tree.child.type.Abstract">
+				<source>Abstract</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.AbstractCondition" resname="tree.child.type.AbstractCondition">
+				<source>Abstract Condition</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.AtImport" resname="tree.child.type.AtImport">
+				<source>Included via "@import"</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.Condition" resname="tree.child.type.Condition">
+				<source>Condition (then)</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.ConditionElse" resname="tree.child.type.ConditionElse">
+				<source>Condition (else)</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.ConditionIncludeTyposcript" resname="tree.child.type.ConditionIncludeTyposcript">
+				<source>Included via "INCLUDE_TYPOSCRIPT" (with condition)</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.DefaultTypoScript" resname="tree.child.type.DefaultTypoScript">
+				<source>Included via "$GLOBALS"</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.DefaultTypoScriptMagicKey" resname="tree.child.type.DefaultTypoScriptMagicKey">
+				<source>Included via "$GLOBALS"</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.DefaultTypoScriptMagicKey_formlabel" resname="tree.child.type.DefaultTypoScriptMagicKey_formlabel">
+				<source>Default content rendering</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.ExtensionStatic" resname="tree.child.type.ExtensionStatic">
+				<source>TypoScript set (loaded automatically)</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.File" resname="tree.child.type.File">
+				<source>Part of a TypoScript set</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.IncludeStaticFileDatabase" resname="tree.child.type.IncludeStaticFileDatabase">
+				<source>TypoScript set</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.IncludeStaticFileFile" resname="tree.child.type.IncludeStaticFileFile">
+				<source>TypoScript set (included via file)</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.IncludeTyposcript" resname="tree.child.type.IncludeTyposcript">
+				<source>Included via "INCLUDE_TYPOSCRIPT"</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.Root" resname="tree.child.type.Root">
+				<source>Root</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.Segment" resname="tree.child.type.Segment">
+				<source>Source segment</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.Site" resname="tree.child.type.Site">
+				<source>Site</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.String" resname="tree.child.type.String">
+				<source>String</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.SysTemplate" resname="tree.child.type.SysTemplate">
+				<source>TypoScript record</source>
+			</trans-unit>
+			<trans-unit id="tree.child.type.TsConfig" resname="tree.child.type.TsConfig">
+				<source>TSconfig</source>
 			</trans-unit>
 		</body>
 	</file>

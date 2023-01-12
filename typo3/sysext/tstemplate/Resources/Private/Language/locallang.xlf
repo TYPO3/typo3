@@ -7,7 +7,7 @@
 				<source>Template tools</source>
 			</trans-unit>
 			<trans-unit id="templateAnalyzer" resname="templateAnalyzer">
-				<source>Included TypoScript files</source>
+				<source>Included TypoScript</source>
 			</trans-unit>
 			<trans-unit id="constantEditor" resname="constantEditor">
 				<source>Constant Editor</source>
