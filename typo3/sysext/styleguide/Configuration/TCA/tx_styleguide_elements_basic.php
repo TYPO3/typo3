@@ -1362,30 +1362,21 @@ backend_layout {
 
         'none_1' => [
             'label' => 'none_1',
-            'description' => 'pass_content=true',
+            'description' => 'default',
             'config' => [
                 'type' => 'none',
-                'pass_content' => true,
             ],
         ],
         'none_2' => [
             'label' => 'none_2',
-            'description' => 'pass_content=false',
-            'config' => [
-                'type' => 'none',
-                'pass_content' => false,
-            ],
-        ],
-        'none_4' => [
-            'label' => 'none_4',
             'description' => 'size=6',
             'config' => [
                 'type' => 'none',
                 'size' => 6,
             ],
         ],
-        'none_5' => [
-            'label' => 'none_5',
+        'none_3' => [
+            'label' => 'none_3',
             'description' => 'format=datetime',
             'config' => [
                 'type' => 'none',
@@ -1703,7 +1694,7 @@ backend_layout {
                 --div--;radio,
                     radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
                 --div--;none,
-                    none_1, none_2, none_4, none_5,
+                    none_1, none_2, none_3,
                 --div--;passthrough,
                     passthrough_1, passthrough_2,
                 --div--;user,
