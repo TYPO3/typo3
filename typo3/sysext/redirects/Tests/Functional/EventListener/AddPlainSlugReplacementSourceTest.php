@@ -18,10 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Redirects\Tests\Functional\EventListener;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent;
+use TYPO3\CMS\Redirects\EventListener\AddPageTypeZeroSource;
 use TYPO3\CMS\Redirects\RedirectUpdate\PlainSlugReplacementRedirectSource;
 use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceCollection;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
@@ -41,16 +43,24 @@ class AddPlainSlugReplacementSourceTest extends FunctionalTestCase
         $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId(1);
         $siteLanguage = $site->getDefaultLanguage();
 
+        // Removing AddPageTypeZeroSource event is needed to avoid cross dependency here for this test.
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            AddPageTypeZeroSource::class,
+            static function (SlugRedirectChangeItemCreatedEvent $event) {}
+        );
+
         $changeItem = $this->get(EventDispatcherInterface::class)->dispatch(
             new SlugRedirectChangeItemCreatedEvent(
                 new SlugRedirectChangeItem(
-                    defaultLanguagePageId: 1,
-                    pageId: 1,
-                    site: $site,
-                    siteLanguage: $siteLanguage,
-                    original: ['slug' => '/original'],
-                    sourcesCollection: new RedirectSourceCollection(),
-                    changed: ['slug' => '/changed'],
+                    1,
+                    1,
+                    $site,
+                    $siteLanguage,
+                    ['slug' => '/'],
+                    new RedirectSourceCollection(),
+                    ['slug' => '/changed'],
                 )
             )
         )->getSlugRedirectChangeItem();
@@ -60,7 +70,7 @@ class AddPlainSlugReplacementSourceTest extends FunctionalTestCase
         $source = $changeItem->getSourcesCollection()->all()[0] ?? null;
         self::assertInstanceOf(PlainSlugReplacementRedirectSource::class, $source);
         self::assertSame('*', $source->getHost());
-        self::assertSame('/original', $source->getPath());
+        self::assertSame('/', $source->getPath());
         self::assertSame([], $source->getTargetLinkParameters());
     }
 

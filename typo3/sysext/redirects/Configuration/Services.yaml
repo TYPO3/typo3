@@ -54,3 +54,9 @@ services:
     tags:
       - name: event.listener
         identifier: 'redirects-add-plain-slug-replacement-source'
+
+  TYPO3\CMS\Redirects\EventListener\AddPageTypeZeroSource:
+    tags:
+      - name: event.listener
+        identifier: 'redirects-add-page-type-zero-source'
+        after: 'redirects-add-plain-slug-replacement-source'
