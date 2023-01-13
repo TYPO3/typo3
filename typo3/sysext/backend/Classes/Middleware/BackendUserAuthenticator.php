@@ -203,9 +203,6 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         ServerRequestInterface $request,
         array $parameters = []
     ): ResponseInterface {
-        // GLOBALS[LANG] needs to be set up, because the UriBuilder is generating a token, which in turn
-        // needs the FormProtectionFactory, which then builds a Message Closure with GLOBALS[LANG] (hacky, yes!)
-        $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($user);
         $response = new RedirectResponse(
             GeneralUtility::makeInstance(UriBuilder::class)->buildUriWithRedirect($endpoint, $parameters, RouteRedirect::createFromRequest($request))
         );
