@@ -53,13 +53,17 @@ class LocalesTest extends UnitTestCase
                 'en-US;q=0.8,en;q=0.6;de-DE,de;q=0.4',
                 'default',
             ],
+            'french canadian' => [
+                'fr-CA;q=0.8,en;q=0.6;de-DE,de;q=0.4',
+                'fr_CA',
+            ],
             'chinese simplified' => [
                 'zh-CN,en-US;q=0.5,en;q=0.3',
-                'ch',
+                'zh_CN',
             ],
             'chinese simplified han' => [
                 'zh-Hans-CN,zh-Hans;q=0.8,en-US;q=0.5,en;q=0.3',
-                'ch',
+                'zh_Hans_CN',
             ],
         ];
     }

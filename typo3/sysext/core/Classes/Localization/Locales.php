@@ -97,7 +97,10 @@ class Locales implements SingletonInterface
         'tr' => 'Turkish',
         'uk' => 'Ukrainian',
         'vi' => 'Vietnamese',
-        'zh' => 'Chinese (Trad)',
+        'zh' => 'Chinese (Traditional)',
+        'zh_CN' => 'Chinese (Simplified)',
+        'zh_HK' => 'Chinese (Simplified Hong Kong)',
+        'zh_Hans_CN' => 'Chinese (Simplified Han)',
     ];
 
     /**
@@ -111,6 +114,7 @@ class Locales implements SingletonInterface
      * "dk" (wrong)" => the shortcut that TYPO3 uses for danish within the system for labels.
      *
      * @var array<non-empty-string, non-empty-string>
+     * @deprecated will be removed in TYPO3 v13.0. backwards-compatibility is not needed anymore.
      */
     protected array $isoReverseMapping = [
         'bs' => 'ba', // Bosnian
@@ -199,9 +203,11 @@ class Locales implements SingletonInterface
      * Returns the mapping between TYPO3 (old) language codes and ISO codes.
      *
      * @return array<non-empty-string, non-empty-string>
+     * @deprecated will be removed in TYPO3 v13.0.
      */
     public function getIsoMapping(): array
     {
+        trigger_error('Locales->getIsoMapping() will be removed in TYPO3 v13.0. Migrate to real locales instead.', E_USER_DEPRECATED);
         return array_flip($this->isoReverseMapping);
     }
 
@@ -236,10 +242,6 @@ class Locales implements SingletonInterface
     public function getPreferredClientLanguage(string $languageCodesList): string
     {
         $allLanguageCodesFromLocales = ['en' => 'default'];
-        foreach ($this->isoReverseMapping as $isoLang => $typo3Lang) {
-            $isoLang = str_replace('_', '-', $isoLang);
-            $allLanguageCodesFromLocales[$isoLang] = $typo3Lang;
-        }
         foreach ($this->getLocales() as $locale) {
             $locale = str_replace('_', '-', $locale);
             $allLanguageCodesFromLocales[$locale] = $locale;
@@ -272,7 +274,7 @@ class Locales implements SingletonInterface
         if (!$selectedLanguage || $selectedLanguage === 'en') {
             $selectedLanguage = 'default';
         }
-        return $selectedLanguage;
+        return str_replace('-', '_', $selectedLanguage);
     }
 
     /**

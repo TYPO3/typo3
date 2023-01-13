@@ -5456,4 +5456,11 @@ return [
             'Deprecation-99416-VariousDoctypeRelatedPropertiesAndMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Localization\Locales->getIsoMapping' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-99531-Backwards-compatibleLanguageKeyMapping.rst',
+        ],
+    ],
 ];
