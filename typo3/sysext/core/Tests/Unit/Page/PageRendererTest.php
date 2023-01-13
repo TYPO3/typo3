@@ -159,7 +159,7 @@ class PageRendererTest extends UnitTestCase
         $subject->_set('lang', 'default');
         $subject->_set('charSet', 'utf-8');
         $subject->_set('inlineLanguageLabels', []);
-        $subject->method('readLLfile')->willReturn(false);
+        $subject->method('readLLfile')->willReturn([]);
         $subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
         self::assertEquals([], $subject->_get('inlineLanguageLabels'));
     }
@@ -215,7 +215,7 @@ class PageRendererTest extends UnitTestCase
      * @dataProvider includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabelsProvider
      * @test
      */
-    public function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabels($llFileContent, $selectionPrefix, $stripFromSelectionName, $expectation): void
+    public function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabels(array $llFileContent, string $selectionPrefix, string $stripFromSelectionName, array $expectation): void
     {
         $subject = $this->getAccessibleMock(PageRenderer::class, ['readLLfile'], [], '', false);
         $subject->_set('lang', 'default');

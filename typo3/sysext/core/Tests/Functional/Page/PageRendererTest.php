@@ -25,8 +25,6 @@ use TYPO3\CMS\Core\Authentication\IpLocker;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\AssetRenderer;
@@ -48,14 +46,13 @@ class PageRendererTest extends FunctionalTestCase
         $container = $this->getContainer();
         return new PageRenderer(
             $container->get('cache.assets'),
-            $container->get(Locales::class),
             $container->get(MarkerBasedTemplateService::class),
             $container->get(MetaTagManagerRegistry::class),
             $container->get(PackageManager::class),
             $container->get(AssetRenderer::class),
             new ResourceCompressor(),
             new RelativeCssPathFixer(),
-            $container->get(LocalizationFactory::class),
+            $container->get(LanguageServiceFactory::class),
             $container->get(ResponseFactoryInterface::class),
             $container->get(StreamFactoryInterface::class),
         );

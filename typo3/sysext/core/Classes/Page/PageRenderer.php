@@ -24,8 +24,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\PackageInterface;
@@ -90,14 +89,6 @@ class PageRenderer implements SingletonInterface
      * @var string
      */
     protected $lang;
-
-    /**
-     * List of language dependencies for actual language. This is used for local variants of a language
-     * that depend on their "main" language, like Brazilian Portuguese or Canadian French.
-     *
-     * @var array
-     */
-    protected $languageDependencies = [];
 
     // Arrays containing associative array for the included files
     /**
@@ -333,14 +324,13 @@ class PageRenderer implements SingletonInterface
 
     public function __construct(
         protected readonly FrontendInterface $assetsCache,
-        protected readonly Locales $locales,
         protected readonly MarkerBasedTemplateService $templateService,
         protected readonly MetaTagManagerRegistry $metaTagRegistry,
         protected readonly PackageManager $packageManager,
         protected readonly AssetRenderer $assetRenderer,
         protected readonly ResourceCompressor $resourceCompressor,
         protected readonly RelativeCssPathFixer $relativeCssPathFixer,
-        protected readonly LocalizationFactory $localizationFactory,
+        protected readonly LanguageServiceFactory $languageServiceFactory,
         protected readonly ResponseFactoryInterface $responseFactory,
         protected readonly StreamFactoryInterface $streamFactory,
     ) {
@@ -357,13 +347,12 @@ class PageRenderer implements SingletonInterface
         foreach ($state as $var => $value) {
             switch ($var) {
                 case 'assetsCache':
-                case 'locales':
                 case 'packageManager':
                 case 'assetRenderer':
                 case 'templateService':
                 case 'resourceCompressor':
                 case 'relativeCssPathFixer':
-                case 'localizationFactory':
+                case 'languageServiceFactory':
                 case 'responseFactory':
                 case 'streamFactory':
                     break;
@@ -389,13 +378,12 @@ class PageRenderer implements SingletonInterface
         foreach (get_object_vars($this) as $var => $value) {
             switch ($var) {
                 case 'assetsCache':
-                case 'locales':
                 case 'packageManager':
                 case 'assetRenderer':
                 case 'templateService':
                 case 'resourceCompressor':
                 case 'relativeCssPathFixer':
-                case 'localizationFactory':
+                case 'languageServiceFactory':
                 case 'responseFactory':
                 case 'streamFactory':
                     break;
@@ -506,13 +494,6 @@ class PageRenderer implements SingletonInterface
     public function setLanguage($lang)
     {
         $this->lang = $lang;
-        $this->languageDependencies = [];
-
-        // Language is found. Configure the dependencies
-        if ($this->locales->isValidLanguageKey($this->lang)) {
-            $this->languageDependencies = array_merge([$this->lang], $this->locales->getLocaleDependencies($this->lang));
-            $this->languageDependencies = array_reverse($this->languageDependencies);
-        }
         if ($this->docType === DocType::html5) {
             $languageCode = $lang === 'default' ? 'en' : $lang;
             $this->setHtmlTag('<html lang="' . htmlspecialchars($languageCode) . '">');
@@ -2144,10 +2125,8 @@ class PageRenderer implements SingletonInterface
      */
     protected function loadJavaScriptLanguageStrings()
     {
-        if (!empty($this->inlineLanguageLabelFiles)) {
-            foreach ($this->inlineLanguageLabelFiles as $languageLabelFile) {
-                $this->includeLanguageFileForInline($languageLabelFile['fileRef'], $languageLabelFile['selectionPrefix'], $languageLabelFile['stripFromSelectionName']);
-            }
+        foreach ($this->inlineLanguageLabelFiles as $languageLabelFile) {
+            $this->includeLanguageFileForInline($languageLabelFile['fileRef'], $languageLabelFile['selectionPrefix'], $languageLabelFile['stripFromSelectionName']);
         }
         $this->inlineLanguageLabelFiles = [];
         // Convert settings back to UTF-8 since json_encode() only works with UTF-8:
@@ -2463,24 +2442,21 @@ class PageRenderer implements SingletonInterface
         }
         $labelsFromFile = [];
         $allLabels = $this->readLLfile($fileRef);
-        if (is_array($allLabels)) {
-            // Merge language specific translations:
-            if ($this->lang !== 'default' && isset($allLabels[$this->lang])) {
-                $labels = array_merge($allLabels['default'], $allLabels[$this->lang]);
-            } else {
-                $labels = $allLabels['default'];
-            }
-            // Iterate through all locallang labels:
-            foreach ($labels as $label => $value) {
-                // If $selectionPrefix is set, only respect labels that start with $selectionPrefix
-                if ($selectionPrefix === '' || str_starts_with($label, $selectionPrefix)) {
-                    // Remove substring $stripFromSelectionName from label
-                    $label = str_replace($stripFromSelectionName, '', $label);
-                    $labelsFromFile[$label] = $value;
+
+        // Iterate through all locallang labels
+        foreach ($allLabels[$this->lang] ?? [] as $label => $value) {
+            // If $selectionPrefix is set, only respect labels that start with $selectionPrefix
+            if ($selectionPrefix === '' || str_starts_with($label, $selectionPrefix)) {
+                // Remove substring $stripFromSelectionName from label
+                $label = str_replace($stripFromSelectionName, '', $label);
+                if (is_array($value)) {
+                    $value = current($value);
+                    $value = $value['target'] ?? $value['source'];
                 }
+                $labelsFromFile[$label] = $value;
             }
-            $this->inlineLanguageLabels = array_merge($this->inlineLanguageLabels, $labelsFromFile);
         }
+        $this->inlineLanguageLabels = array_merge($this->inlineLanguageLabels, $labelsFromFile);
     }
 
     /**
@@ -2489,22 +2465,10 @@ class PageRenderer implements SingletonInterface
      * @param string $fileRef Reference to a relative filename to include.
      * @return array Returns the $LOCAL_LANG array found in the file. If no array found, returns empty array.
      */
-    protected function readLLfile($fileRef)
+    protected function readLLfile(string $fileRef): array
     {
-        $labels = [];
-        foreach ($this->languageDependencies as $language) {
-            $tempLL = $this->localizationFactory->getParsedData($fileRef, $language);
-            $labels['default'] = $tempLL['default'];
-            if (!isset($labels[$this->lang])) {
-                $labels[$this->lang] = $labels['default'];
-            }
-            if ($this->lang !== 'default' && isset($tempLL[$language])) {
-                // Merge current language labels onto labels from previous language
-                // This way we have a labels with fall back applied
-                ArrayUtility::mergeRecursiveWithOverrule($labels[$this->lang], $tempLL[$language], true, false);
-            }
-        }
-        return $labels;
+        $languageService = $this->languageServiceFactory->create($this->lang);
+        return $languageService->includeLLFile($fileRef);
     }
 
     /*****************************************************/

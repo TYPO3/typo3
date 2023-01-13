@@ -209,7 +209,7 @@ class RichTextElement extends AbstractFormElement
         // Find the configured language in the list of localization locales
         $locales = GeneralUtility::makeInstance(Locales::class);
         // If not found, default to 'en'
-        if (!in_array($contentLanguage, $locales->getLocales(), true)) {
+        if (!$locales->isValidLanguageKey($contentLanguage)) {
             $contentLanguage = 'en';
         }
         return $contentLanguage;

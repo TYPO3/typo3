@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Http\StreamFactory;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -64,7 +65,6 @@ trait PageRendererFactoryTrait
 
         return [
             new NullFrontend('assets'),
-            new Locales(),
             new MarkerBasedTemplateService(
                 new NullFrontend('hash'),
                 new NullFrontend('runtime'),
@@ -74,7 +74,11 @@ trait PageRendererFactoryTrait
             $assetRenderer,
             new ResourceCompressor(),
             new RelativeCssPathFixer(),
-            new LocalizationFactory(new LanguageStore($packageManager), $cacheManager),
+            new LanguageServiceFactory(
+                new Locales(),
+                new LocalizationFactory(new LanguageStore($packageManager), $cacheManager),
+                new NullFrontend('null')
+            ),
             new ResponseFactory(),
             new StreamFactory(),
         ];
