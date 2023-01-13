@@ -126,7 +126,7 @@ class FrontendConfigurationManager extends AbstractConfigurationManager
         $pages = $this->contentObject->data['pages'] ?? '';
         if (is_string($pages) && $pages !== '') {
             $list = [];
-            if ($this->contentObject->data['recursive'] > 0) {
+            if ((int)($this->contentObject->data['recursive'] ?? 0) > 0) {
                 $explodedPages = GeneralUtility::trimExplode(',', $pages);
                 foreach ($explodedPages as $pid) {
                     $pids = $this->contentObject->getTreeList($pid, $this->contentObject->data['recursive']);
