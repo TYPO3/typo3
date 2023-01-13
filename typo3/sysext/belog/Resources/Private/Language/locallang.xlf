@@ -90,9 +90,6 @@
 			<trans-unit id="overview" resname="overview">
 				<source>Overview</source>
 			</trans-unit>
-			<trans-unit id="logForNonPageRelatedActionsOrRootLevelOrPage" resname="logForNonPageRelatedActionsOrRootLevelOrPage">
-				<source>Log %s from %s to %s</source>
-			</trans-unit>
 			<trans-unit id="type_1" resname="type_1">
 				<source>DB</source>
 			</trans-unit>

@@ -7,16 +7,6 @@
 
 <f:for each="{groupedLogEntries}" as="pidEntry" key="pid">
     <div>
-        <h2>
-            <f:translate
-                key="logForNonPageRelatedActionsOrRootLevelOrPage"
-                arguments="{
-                    0: '',
-                    1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-                    2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
-                }"
-            />
-        </h2>
         <f:for each="{pidEntry}" as="day" key="dayTimestamp">
             <h3>
                 <f:format.date format="{settings.dateFormat}">@{dayTimestamp}</f:format.date>
