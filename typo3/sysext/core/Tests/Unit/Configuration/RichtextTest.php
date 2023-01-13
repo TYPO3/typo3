@@ -205,6 +205,11 @@ class RichtextTest extends UnitTestCase
                 'config' => [
                     'contentsCss' => 'my.css',
                     'removePlugins' => [],
+                    'toolbar' => [
+                        'items' => [],
+                        'removeItems' => [],
+                        'shouldNotGroupWhenFull' => true,
+                    ],
                     'wordCount' => [
                         'displayCharacters' => true,
                         'displayWords' => true,
@@ -275,6 +280,11 @@ class RichtextTest extends UnitTestCase
                 'config' => [
                     'contentsCss' => 'my.css',
                     'removePlugins' => [],
+                    'toolbar' => [
+                        'items' => [],
+                        'removeItems' => [],
+                        'shouldNotGroupWhenFull' => true,
+                    ],
                     'wordCount' => [
                         'displayCharacters' => true,
                         'displayWords' => true,
@@ -357,6 +367,11 @@ class RichtextTest extends UnitTestCase
                 'config' => [
                     'contentsCss' => 'your.css',
                     'removePlugins' => [],
+                    'toolbar' => [
+                        'items' => [],
+                        'removeItems' => [],
+                        'shouldNotGroupWhenFull' => true,
+                    ],
                     'wordCount' => [
                         'displayCharacters' => true,
                         'displayWords' => true,
@@ -415,8 +430,13 @@ class RichtextTest extends UnitTestCase
         $expected = [
             'editor' => [
                 'config' => [
-                    'width' => 200,
                     'removePlugins' => [],
+                    'toolbar' => [
+                        'items' => [],
+                        'removeItems' => [],
+                        'shouldNotGroupWhenFull' => true,
+                    ],
+                    'width' => 200,
                     'wordCount' => [
                         'displayCharacters' => true,
                         'displayWords' => true,

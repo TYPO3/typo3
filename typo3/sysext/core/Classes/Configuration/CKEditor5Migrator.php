@@ -22,51 +22,161 @@ namespace TYPO3\CMS\Core\Configuration;
  */
 class CKEditor5Migrator
 {
+    /**
+     * Main groups in CKEditor4 contain subgroups.
+     * These groups are expanded during migration.
+     */
+    private const TOOLBAR_MAIN_GROUPS_MAP = [
+        'document' => ['mode', 'document', 'doctools'],
+        'clipboard' => ['clipboard', 'undo'],
+        'editing' => ['find', 'selection', 'spellchecker', 'editing'],
+        'forms' => ['forms'],
+        'basicstyles' => ['basicstyles', 'cleanup'],
+        'paragraph' => ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'],
+        'links' => ['links'],
+        'insert' => ['insert'],
+        'styles' => ['styles'],
+        'colors' => ['colors'],
+        'tools' => ['tools'],
+        'others' => ['others'],
+        'about' => ['about'],
+        'blocks' => ['blocks'],
+        'table' => ['table'],
+        'tabletools' => [],
+    ];
+
+    /**
+     * Groups in CKEditor4 contain buttons.
+     */
     private const TOOLBAR_GROUPS_MAP = [
-        'basicstyles' => ['bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', 'softhyphen'],
-        'format' => ['heading'],
-        'styles' => ['style'],
-        'list' => ['numberedList', 'bulletedList'],
-        'indent' => ['indent', 'outdent'],
-        'blocks' => ['blockQuote'], // `CreateDiv` missing
-        'align' => ['alignment'], // + separate `alignment: { options: ['left', 'right', 'center', 'justify'] }`
-        'links' => ['link'],
-        'unlink' => [],
-        'clipboard' => [], // @todo no sure yet how/whether this is visualized https://ckeditor.com/docs/ckeditor5/latest/api/clipboard.html
-        'cleanup' => ['removeFormat'], // CopyFormat dropped: https://github.com/ckeditor/ckeditor5/issues/1901
-        'undo' => ['undo', 'redo'],
-        'spellchecker' => [], // dropped: https://github.com/ckeditor/ckeditor5/issues/1458
-        'insert' => ['horizontalLine'],
-        'table' => ['insertTable'],
-        'specialchar' => ['specialCharacters'],
-        'mode' => ['sourceEditing'],
-        'tools' => [], // Maximize dropped: https://github.com/ckeditor/ckeditor5/issues/1235
+        'mode' => ['Source'],
+        'document' => ['Save', 'NewPage', 'Preview', 'Print'],
+        'doctools' => ['Templates'],
+        'clipboard' => ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord'],
+        'undo' => ['Undo', 'Redo'],
+        'find' => ['Find', 'Replace'],
+        'selection' => ['SelectAll'],
+        'spellchecker' => ['Scayt'],
+        'forms' => ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
+        'basicstyles' => ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', 'SoftHyphen'],
+        'cleanup' => ['CopyFormatting', 'RemoveFormat'],
+        'list' => ['NumberedList', 'BulletedList'],
+        'indent' => ['Indent', 'Outdent'],
+        'blocks' => ['Blockquote', 'CreateDiv'],
+        'align' => ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+        'bidi' => ['BidiLtr', 'BidiRtl', 'Language'],
+        'links' => ['Link', 'Unlink', 'Anchor'],
+        'insert' => ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe'],
+        'styles' => ['Styles', 'Format', 'Font', 'FontSize'],
+        'format' => ['Format'],
+        'table' => ['Table'],
+        'specialchar' => ['SpecialChar'],
+        'colors' => ['TextColor', 'BGColor'],
+        'tools' => ['Maximize', 'ShowBlocks'],
+        'about' => ['About'],
+        'others' => [],
     ];
 
     // List of "old" button names vs the replacement(s)
     private const BUTTON_MAP = [
-        'Bold' => ['bold'],
-        'Italic' => ['italic'],
-        'Strike' => ['strikethrough'],
-        'Underline' => ['underline'],
-        'Subscript' => ['subscript'],
-        'Superscript' => ['superscript'],
-        'Link' => ['link'],
-        'Anchor' => [],
-        'list' => ['numberedList', 'bulletedList'],
-        'Indent' => ['indent', 'outdent'],
-        'Format' => ['heading'],
-        'BasicStyle' => ['heading'],
-        'Table' => ['insertTable'],
-        'SoftHyphen' => ['softhyphen'],
-        'specialcharacters' => ['specialCharacters'],
-        'specialchar' => ['specialCharacters'],
+        // mode
+        'Source' => 'sourceEditing',
+        // document
+        'Save' => null,
+        'NewPage' => null,
+        'Preview' => null,
+        'Print' => null,
+        // doctools
+        'Templates' => null,
+        // clipboard
+        'Cut' => null,
+        'Copy' => null,
+        'Paste' => null,
+        'PasteText' => null,
+        'PasteFromWord' => null,
+        // undo
+        'Undo' => 'undo',
+        'Redo' => 'redo',
+        // find
+        'Find' => null,
+        'Replace' => 'findAndReplace',
+        // selection
+        'SelectAll' => 'selectAll',
+        // spellchecker
+        'Scayt' => null,
+        // forms
+        'Form' => null,
+        'Checkbox' => null,
+        'Radio' => null,
+        'TextField' => null,
+        'Textarea' => null,
+        'Select' => null,
+        'Button' => null,
+        'ImageButton' => null,
+        'HiddenField' => null,
+        // basicstyles
+        'Bold' => 'bold',
+        'Italic' => 'italic',
+        'Underline' => 'underline',
+        'Strike' => 'strikethrough',
+        'Subscript' => 'subscript',
+        'Superscript' => 'superscript',
+        // cleanup
+        'CopyFormatting' => null,
+        'RemoveFormat' => 'removeFormat',
+        // list
+        'NumberedList' => 'numberedList',
+        'BulletedList' => 'bulletedList',
+        // indent
+        'Outdent' => 'outdent',
+        'Indent' => 'indent',
+        // blocks
+        'Blockquote' => 'blockQuote',
+        'CreateDiv' => null,
+        // align
+        'JustifyLeft' => 'alignment:left',
+        'JustifyCenter' => 'alignment:center',
+        'JustifyRight' => 'alignment:right',
+        'JustifyBlock' => 'alignment:justify',
+        // bidi
+        'BidiLtr' => null,
+        'BidiRtl' => null,
+        'Language' => 'textPartLanguage',
+        // links
+        'Link' => 'link',
+        'Unlink' => null,
+        'Anchor' => null,
+        // insert
+        'Image' => 'insertImage',
+        'Flash' => null,
+        'Table' => 'insertTable',
+        'HorizontalRule' => 'horizontalLine',
+        'Smiley' => null,
+        'SpecialChar' => 'specialCharacters',
+        'PageBreak' => 'pageBreak',
+        'Iframe' => null,
+        // styles
+        'Styles' => 'style',
+        'Format' => 'heading',
+        'Font' => null,
+        'FontSize' => null,
+        // colors
+        'TextColor' => null,
+        'BGColor' => null,
+        // tools
+        'Maximize' => null,
+        'ShowBlocks' => null,
+        // about
+        'About' => null,
+        // typo3
+        'SoftHyphen' => 'softhyphen',
     ];
 
     /**
      * Mapping of plugins
      */
     private const PLUGIN_MAP = [
+        'image' => 'Image',
         'wordcount' => 'WordCount',
     ];
 
@@ -82,6 +192,8 @@ class CKEditor5Migrator
         $this->migrateStylesSetToStyleDefinitions();
         // configure plugins
         $this->handleWordCountPlugin();
+        // sort by key
+        ksort($this->configuration);
     }
 
     public function get(): array
@@ -113,74 +225,206 @@ class CKEditor5Migrator
      */
     protected function migrateToolbar(): void
     {
-        if (!isset($this->configuration['toolbar']) && !isset($this->configuration['toolbarGroups'])) {
-            return;
-        }
+        /**
+         * Collection of the final toolbar configuration
+         * @var array{items: string[], removeItems: string[], shouldNotGroupWhenFull: bool} $toolbar
+         */
         $toolbar = [
             'items' => [],
             'removeItems' => [],
             'shouldNotGroupWhenFull' => true,
         ];
 
-        if (is_array($this->configuration['toolbar'] ?? null)) {
-            $toolbarItems = array_filter(
-                $this->configuration['toolbar']['items'] ?? $this->configuration['toolbar'],
-                static fn ($item) => is_string($item)
-            );
-            if (is_array($this->configuration['toolbar']['items'] ?? null)) {
-                $toolbar['items'] = array_merge($toolbar['items'], $toolbarItems);
-            } else {
-                $toolbar['items'] = array_merge($toolbar['items'], $toolbarItems);
+        // Migrate CKEditor4 toolbarGroups
+        // There can only be one configuration at a time, if 'toolbarGroups' is set
+        // we prefer this definition above the toolbar definition.
+        // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-toolbarGroups
+        if (is_array($this->configuration['toolbarGroups'] ?? null)) {
+            $toolbar['items'] = $this->configuration['toolbarGroups'];
+            unset($this->configuration['toolbar'], $this->configuration['toolbarGroups']);
+        }
+
+        // Migrate CKEditor4 toolbar templates
+        // Resolve toolbar template and override current toolbar
+        // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-toolbar
+        if (is_string($this->configuration['toolbar'] ?? null)) {
+            $toolbarName = 'toolbar_' . trim($this->configuration['toolbar']);
+            if (is_array($this->configuration[$toolbarName] ?? null)) {
+                $toolbar['items'] = $this->configuration[$toolbarName];
+                unset($this->configuration['toolbar'], $this->configuration[$toolbarName]);
             }
         }
 
-        // @todo https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-toolbar
+        // Collect toolbar items
+        if (is_array($this->configuration['toolbar'] ?? null)) {
+            $toolbar['items'] = $this->configuration['toolbar']['items'] ?? $this->configuration['toolbar'];
+        }
 
-        // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-toolbarGroups
-        // CE4: `[ { name: 'document',    groups: [ 'mode', 'document', 'doctools' ] }, '/', { name: 'other',  ... } ]`
-        // CE5: `[ [ 'mode', 'document', 'doctools' ], '|', [ ... ] ]`
-        if (is_array($this->configuration['toolbarGroups'] ?? null)) {
-            $i = 0;
-            $toolbarItems = [];
-            $toolbarSize = count($this->configuration['toolbarGroups']);
+        $toolbar['items'] = $this->migrateToolbarItems($toolbar['items']);
+        $this->configuration['toolbar'] = $toolbar;
+    }
 
-            foreach ($this->configuration['toolbarGroups'] as $item) {
-                $previousToolbarItem = array_slice($toolbarItems, -1, 1);
-                if ($item === '/') {
-                    // @todo check `toolbarview-line-break-ignored-when-grouping-items`
-                    if ($previousToolbarItem === ['|']) {
-                        array_splice($toolbarItems, -1, 1, '-');
-                    } elseif ($previousToolbarItem !== ['-']) {
-                        $toolbarItems[] = '-'; // new line
-                    }
-                } elseif (is_array($item['groups'] ?? null)) {
-                    $groupedToolbarItems = [];
-                    foreach ($item['groups'] as $itemGroup) {
-                        if (!is_string($itemGroup)) {
+    protected function migrateToolbarItems(array $items): array
+    {
+        $toolbarItems = [];
+        foreach ($items as $item) {
+            if (is_string($item)) {
+                $toolbarItems[] = $this->migrateToolbarButton($item);
+                continue;
+            }
+            if (is_array($item)) {
+                // Expand CKEditor4 preset toolbar groups
+                if (is_string($item['name'] ?? null) && count($item) === 1 && isset(self::TOOLBAR_MAIN_GROUPS_MAP[$item['name']])) {
+                    $item['groups'] = self::TOOLBAR_MAIN_GROUPS_MAP[$item['name']];
+                }
+                // Flatten CKEditor4 arrays that only have strings assigned
+                if (count($item) === count(array_filter($item, static fn ($value) => is_string($value)))) {
+                    $migratedToolbarItems = $item;
+                    $migratedToolbarItems = $this->migrateToolbarButtons($migratedToolbarItems);
+                    $migratedToolbarItems = $this->migrateToolbarSpacers($migratedToolbarItems);
+                    array_push($toolbarItems, ...$migratedToolbarItems);
+                    $toolbarItems[] = '|';
+                    continue;
+                }
+                // Flatten CKEditor4 named groups
+                if (is_string($item['name'] ?? null) && is_array($item['items'] ?? null)) {
+                    $migratedToolbarItems = $item['items'];
+                    $migratedToolbarItems = $this->migrateToolbarButtons($migratedToolbarItems);
+                    $migratedToolbarItems = $this->migrateToolbarSpacers($migratedToolbarItems);
+                    array_push($toolbarItems, ...$migratedToolbarItems);
+                    $toolbarItems[] = '|';
+                    continue;
+                }
+                // Expand CKEditor4 toolbar groups
+                if (is_string($item['name'] ?? null) && is_array($item['groups'] ?? null)) {
+                    $itemGroups = array_filter($item['groups'], static fn ($itemGroup) => is_string($itemGroup));
+
+                    // Process Main CKEditor4 Groups
+                    $unGroupedToolbarItems = [];
+                    foreach ($itemGroups as $itemGroup) {
+                        if (isset(self::TOOLBAR_MAIN_GROUPS_MAP[$itemGroup])) {
+                            array_push($unGroupedToolbarItems, ...self::TOOLBAR_MAIN_GROUPS_MAP[$itemGroup]);
+                            $unGroupedToolbarItems[] = '|';
                             continue;
                         }
+                        $unGroupedToolbarItems[] = $itemGroup;
+                    }
+
+                    // Process CKEditor4 Groups
+                    $groupedToolbarItems = [];
+                    foreach ($itemGroups as $itemGroup) {
                         if (isset(self::TOOLBAR_GROUPS_MAP[$itemGroup])) {
                             array_push($groupedToolbarItems, ...self::TOOLBAR_GROUPS_MAP[$itemGroup]);
+                            $groupedToolbarItems[] = '|';
+                            continue;
                         }
-                        // @todo warning/deprecation
+                        $groupedToolbarItems[] = $itemGroup;
                     }
-                    array_push($toolbarItems, ...$groupedToolbarItems);
-                    if ($i < $toolbarSize && $groupedToolbarItems !== []) {
-                        $toolbarItems[] = '|'; // separator
-                    }
-                }
-            }
-            $previousToolbarItem = array_slice($toolbarItems, -1, 1);
-            if ($previousToolbarItem === ['-'] || $previousToolbarItem === ['|']) {
-                array_pop($toolbarItems);
-            }
 
-            unset($this->configuration['toolbarGroups']);
-            if (!empty($toolbarItems)) {
-                $toolbar['items'] = array_merge($toolbar['items'], $toolbarItems);
+                    $migratedToolbarItems = $groupedToolbarItems;
+                    $migratedToolbarItems = $this->migrateToolbarButtons($migratedToolbarItems);
+                    $migratedToolbarItems = $this->migrateToolbarSpacers($migratedToolbarItems);
+                    array_push($toolbarItems, ...$migratedToolbarItems);
+                    $toolbarItems[] = '|';
+                    continue;
+                }
+
+                $toolbarItems[] = $item;
             }
         }
-        $this->configuration['toolbar'] = $toolbar;
+
+        $toolbarItems = $this->migrateToolbarLinebreaks($toolbarItems);
+        $toolbarItems = $this->migrateToolbarCleanup($toolbarItems);
+
+        return array_values($toolbarItems);
+    }
+
+    protected function migrateToolbarButton(string $buttonName): ?string
+    {
+        if (array_key_exists($buttonName, self::BUTTON_MAP)) {
+            return self::BUTTON_MAP[$buttonName];
+        }
+        return $buttonName;
+    }
+
+    protected function migrateToolbarButtons(array $toolbarItems): array
+    {
+        $processedItems = [];
+        foreach ($toolbarItems as $toolbarItem) {
+            if (is_string($toolbarItem)) {
+                if (($toolbarItem = $this->migrateToolbarButton($toolbarItem)) !== null) {
+                    $processedItems[] = $this->migrateToolbarButton($toolbarItem);
+                }
+            } else {
+                $processedItems[] = $toolbarItem;
+            }
+        }
+
+        return $processedItems;
+    }
+
+    protected function migrateToolbarSpacers(array $toolbarItems): array
+    {
+        $processedItems = [];
+        foreach ($toolbarItems as $toolbarItem) {
+            if (is_string($toolbarItem)) {
+                $toolbarItem = str_replace('-', '|', $toolbarItem);
+            }
+            $processedItems[] = $toolbarItem;
+        }
+
+        return $processedItems;
+    }
+
+    protected function migrateToolbarLinebreaks(array $toolbarItems): array
+    {
+        $processedItems = [];
+        foreach ($toolbarItems as $toolbarItem) {
+            if (is_string($toolbarItem)) {
+                $toolbarItem = str_replace('/', '-', $toolbarItem);
+            }
+            $processedItems[] = $toolbarItem;
+        }
+
+        return $processedItems;
+    }
+
+    protected function migrateToolbarCleanup(array $toolbarItems): array
+    {
+        // Ensure buttons are only added once to the toolbar.
+        $searchValues = [];
+        foreach ($toolbarItems as $toolbarKey => $toolbarItem) {
+            if (is_string($toolbarItem) && !in_array($toolbarItem, ['|', '-'])) {
+                if (array_key_exists($toolbarItem, $searchValues)) {
+                    unset($toolbarItems[$toolbarKey]);
+                } else {
+                    $searchValues[$toolbarItem] = true;
+                }
+            }
+        }
+
+        $previousItem = null;
+        $previousKey = null;
+        foreach ($toolbarItems as $toolbarKey => $toolbarItem) {
+            if ($previousItem === null && ($toolbarItem === '|' || $toolbarItem === '-')) {
+                unset($toolbarItems[$toolbarKey]);
+                continue;
+            }
+
+            if ($previousItem === '|' && ($toolbarItem === '|' || $toolbarItem === '-')) {
+                unset($toolbarItems[$previousKey]);
+            }
+
+            $previousKey = $toolbarKey;
+            $previousItem = $toolbarItem;
+        }
+
+        $lastToolbarItem = array_slice($toolbarItems, -1, 1);
+        if ($lastToolbarItem === ['-'] || $lastToolbarItem === ['|']) {
+            array_pop($toolbarItems);
+        }
+
+        return array_values($toolbarItems);
     }
 
     protected function migrateRemoveButtonsFromToolbar(): void
@@ -191,17 +435,12 @@ class CKEditor5Migrator
 
         $removeItems = [];
         foreach ($this->configuration['removeButtons'] as $buttonName) {
-            if (isset(self::TOOLBAR_GROUPS_MAP[$buttonName])) {
-                // all buttons within a group
-                $removeItems = array_merge($removeItems, self::TOOLBAR_GROUPS_MAP[$buttonName]);
-            } elseif (isset(self::TOOLBAR_GROUPS_MAP[lcfirst($buttonName)])) {
-                // all buttons within a group
-                $removeItems = array_merge($removeItems, self::TOOLBAR_GROUPS_MAP[lcfirst($buttonName)]);
-            } elseif (isset(self::BUTTON_MAP[$buttonName])) {
-                // a single item
-                $removeItems = array_merge($removeItems, self::BUTTON_MAP[$buttonName]);
+            if (array_key_exists($buttonName, self::BUTTON_MAP)) {
+                if (self::BUTTON_MAP[$buttonName] !== null) {
+                    $removeItems[] = self::BUTTON_MAP[$buttonName];
+                }
             } else {
-                $removeItems[] = lcfirst($buttonName);
+                $removeItems[] = $buttonName;
             }
         }
 
@@ -273,7 +512,7 @@ class CKEditor5Migrator
         if (isset($this->configuration['stylesSet'])) {
             $styleDefinitions = [];
             foreach ($this->configuration['stylesSet'] as $styleSet) {
-                if (!isset($styleSet['name']) || !isset($styleSet['element'])) {
+                if (!isset($styleSet['name'], $styleSet['element'])) {
                     // @todo: log
                     continue;
                 }
@@ -317,7 +556,7 @@ class CKEditor5Migrator
         }
 
         // Remove related configuration if plugin should not be loaded
-        if (array_search('WordCount', $this->configuration['removePlugins']) !== false) {
+        if (in_array('WordCount', $this->configuration['removePlugins'], true)) {
             // Remove all related plugins
             $this->removePlugin('WordCount');
 
@@ -329,15 +568,10 @@ class CKEditor5Migrator
             return;
         }
 
-        // Keep configuration if a dedicated config is provided
-        if (isset($this->configuration['wordCount'])) {
-            return;
-        }
-
         // Default config
         $this->configuration['wordCount'] = [
-            'displayCharacters' => true,
-            'displayWords' => true,
+            'displayCharacters' => $this->configuration['wordCount']['displayCharacters'] ?? true,
+            'displayWords' => $this->configuration['wordCount']['displayWords'] ?? true,
         ];
     }
 
