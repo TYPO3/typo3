@@ -25,13 +25,7 @@ namespace TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode;
  */
 final class RootInclude extends AbstractInclude
 {
-    protected string $identifier = 'sys_0';
     protected string $name = 'ROOT';
-
-    public function setIdentifier(string $identifier): void
-    {
-        throw new \LogicException('Can not set identifier on RootNode', 1656668000);
-    }
 
     public function setName(string $name): void
     {

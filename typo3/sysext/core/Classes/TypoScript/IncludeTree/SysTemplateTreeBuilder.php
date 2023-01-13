@@ -110,9 +110,10 @@ final class SysTemplateTreeBuilder
         $this->type = $type;
         $this->includedSysTemplateUids = [];
 
-        $includeTree = new RootInclude();
+        $rootNode = new RootInclude();
+        $rootNode->setIdentifier('Root ' . $type);
         if (empty($sysTemplateRows)) {
-            return $includeTree;
+            return $rootNode;
         }
 
         // Convenience code: Usually, at least one sys_template records needs to have 'clear' set. This resets
@@ -135,19 +136,19 @@ final class SysTemplateTreeBuilder
         }
 
         foreach ($sysTemplateRows as $sysTemplateRow) {
-            $identifier = $this->getSysTemplateRowCacheIdentifier($sysTemplateRow);
+            $cacheIdentifier = 'sys-template-' . $this->type . '-' . $this->getSysTemplateRowIdentifier($sysTemplateRow);
             if ($this->cache) {
                 // Get from cache if possible
-                $includeNode = $this->cache->require($identifier);
+                $includeNode = $this->cache->require($cacheIdentifier);
                 if ($includeNode) {
-                    $includeTree->addChild($includeNode);
+                    $rootNode->addChild($includeNode);
                     continue;
                 }
             }
             $includeNode = new SysTemplateInclude();
             $name = '[sys_template:' . $sysTemplateRow['uid'] . '] ' . $sysTemplateRow['title'];
             $includeNode->setName($name);
-            $includeNode->setIdentifier($identifier);
+            $includeNode->setIdentifier($rootNode->getIdentifier() . $cacheIdentifier);
             $includeNode->setPid((int)$sysTemplateRow['pid']);
             if ($this->type === 'constants') {
                 $includeNode->setLineStream($this->tokenizer->tokenize($sysTemplateRow['constants'] ?? ''));
@@ -163,11 +164,11 @@ final class SysTemplateTreeBuilder
             }
             $this->handleSysTemplateRecordInclude($includeNode, $sysTemplateRow, $site);
             $this->treeFromTokenStreamBuilder->buildTree($includeNode, $this->type, $this->tokenizer);
-            $this->cache?->set($identifier, $this->prepareNodeForCache($includeNode));
-            $includeTree->addChild($includeNode);
+            $this->cache?->set($cacheIdentifier, $this->prepareNodeForCache($includeNode));
+            $rootNode->addChild($includeNode);
         }
 
-        return $includeTree;
+        return $rootNode;
     }
 
     /**
@@ -218,13 +219,13 @@ final class SysTemplateTreeBuilder
      * Instances in development context should thus set the typoscript-cache to NullFrontend.
      * Note this cache-usage is the main-cache that kicks in whenever different sys_template
      * records include the same file. For instance, when multiple sites include ext:seo XmlSitemap,
-     * the cache implementation here takes care the ext:seo sub-tree is calculated only once.
+     * the cache implementation here takes care the ext:seo subtree is calculated only once.
      */
     private function handleIncludeStaticFileArray(IncludeInterface $parentNode, string $includeStaticFileString): void
     {
         $includeStaticFileIncludeArray = GeneralUtility::trimExplode(',', $includeStaticFileString, true);
         foreach ($includeStaticFileIncludeArray as $includeStaticFile) {
-            $cacheIdentifier = str_replace(['/', '\'', ':', '.'], '-', $includeStaticFile) . '-' . $this->type;
+            $cacheIdentifier = preg_replace('/[^[:alnum:]]/u', '-', mb_strtolower($includeStaticFile)) . '-' . $this->type;
             if ($this->cache) {
                 $node = $this->cache->require($cacheIdentifier);
                 if ($node) {
@@ -233,7 +234,7 @@ final class SysTemplateTreeBuilder
                 }
             }
             $node = new IncludeStaticFileDatabaseInclude();
-            $node->setIdentifier($includeStaticFile);
+            $node->setIdentifier($parentNode->getIdentifier() . $cacheIdentifier);
             $node->setName($includeStaticFile);
             $this->handleSingleIncludeStaticFile($node, $includeStaticFile);
             $this->cache?->set($cacheIdentifier, $this->prepareNodeForCache($node));
@@ -262,9 +263,8 @@ final class SysTemplateTreeBuilder
                 $sysTemplateRow = $basedOnTemplateRows[$basedOnTemplateUid];
                 $this->includedSysTemplateUids[] = (int)$sysTemplateRow['uid'];
                 $includeNode = new SysTemplateInclude();
-                $identifier = 'sys_template:' . $sysTemplateRow['uid'];
-                $includeNode->setIdentifier($identifier);
                 $name = '[sys_template:' . $sysTemplateRow['uid'] . '] ' . $sysTemplateRow['title'];
+                $includeNode->setIdentifier($parentNode->getIdentifier() . $name);
                 $includeNode->setName($name);
                 $includeNode->setPid((int)$sysTemplateRow['pid']);
                 if ($this->type === 'constants') {
@@ -293,7 +293,7 @@ final class SysTemplateTreeBuilder
      * Looks up file "EXT:/My/Path/include_static_file.txt' in an extension and includes this.
      * Also loads "EXT:/My/Path/[constants|setup].[typoscript|ts|txt].
      * Warning: Recursive since an include_static_file.txt file can include other extension's include_static_file.txt again.
-     * This method has no cache-layer usage on it's own: handleSingleIncludeStaticFile() which calls this
+     * This method has no cache-layer usage on its own: handleSingleIncludeStaticFile() which calls this
      * method is the cache layer here.
      */
     private function handleSingleIncludeStaticFile(IncludeInterface $parentNode, $includeStaticFileString): void
@@ -327,9 +327,10 @@ final class SysTemplateTreeBuilder
         $includeStaticFileFileIncludePath = $path . 'include_static_file.txt';
         if (file_exists($path . 'include_static_file.txt')) {
             $includeStaticFileFileInclude = new IncludeStaticFileFileInclude();
-            $identifier = 'EXT:' . $extensionKey . '/' . $pathSegmentWithAppendedSlash . 'include_static_file.txt';
-            $includeStaticFileFileInclude->setIdentifier($identifier);
-            $includeStaticFileFileInclude->setName($identifier);
+            $name = 'EXT:' . $extensionKey . '/' . $pathSegmentWithAppendedSlash . 'include_static_file.txt';
+            $includeStaticFileFileInclude->setIdentifier($parentNode->getIdentifier() . $name);
+            $includeStaticFileFileInclude->setName($name);
+            $includeStaticFileFileInclude->setPath($includeStaticFileString);
             $parentNode->addChild($includeStaticFileFileInclude);
             $includeStaticFileFileIncludeContent = (string)file_get_contents($includeStaticFileFileIncludePath);
             // @todo: There is no array_unique() for DB based include_static_file content?!
@@ -346,8 +347,10 @@ final class SysTemplateTreeBuilder
             if (file_exists($fileName)) {
                 $fileContent = file_get_contents($fileName);
                 $fileNode = new FileInclude();
-                $fileNode->setIdentifier('EXT:' . $extensionKey . '/' . $pathSegmentWithAppendedSlash . $this->type . $extension);
-                $fileNode->setName('EXT:' . $extensionKey . '/' . $pathSegmentWithAppendedSlash . $this->type . $extension);
+                $name = 'EXT:' . $extensionKey . '/' . $pathSegmentWithAppendedSlash . $this->type . $extension;
+                $fileNode->setIdentifier($parentNode->getIdentifier() . $name);
+                $fileNode->setName($name);
+                $fileNode->setPath($name);
                 $fileNode->setLineStream($this->tokenizer->tokenize($fileContent));
                 $this->treeFromTokenStreamBuilder->buildTree($fileNode, $this->type, $this->tokenizer);
                 $parentNode->addChild($fileNode);
@@ -369,7 +372,7 @@ final class SysTemplateTreeBuilder
             $extensionKeyWithoutUnderscores = str_replace('_', '', $extensionKey);
             $file = $package->getPackagePath() . 'ext_typoscript_' . $this->type . '.typoscript';
             if (file_exists($file)) {
-                $identifier = 'EXT-' . $extensionKey . '-ext_typoscript_' . $this->type . '-typoscript';
+                $identifier = preg_replace('/[^[:alnum:]]/u', '-', 'ext-' . $extensionKey . '-ext-typoscript-' . $this->type . '-typoscript');
                 if ($this->cache) {
                     $node = $this->cache->require($identifier);
                     if ($node) {
@@ -380,8 +383,9 @@ final class SysTemplateTreeBuilder
                 $fileContent = file_get_contents($file);
                 $this->addStaticMagicFromGlobals($parentNode, $extensionKeyWithoutUnderscores);
                 $node = new ExtensionStaticInclude();
-                $node->setIdentifier($identifier);
+                $node->setIdentifier($parentNode->getIdentifier() . $identifier);
                 $node->setName('EXT:' . $extensionKey . '/ext_typoscript_' . $this->type . '.typoscript');
+                $node->setPath('EXT:' . $extensionKey . '/ext_typoscript_' . $this->type . '.typoscript');
                 $node->setLineStream($this->tokenizer->tokenize($fileContent));
                 $this->treeFromTokenStreamBuilder->buildTree($node, $this->type, $this->tokenizer);
                 $this->cache?->set($identifier, $this->prepareNodeForCache($node));
@@ -398,20 +402,20 @@ final class SysTemplateTreeBuilder
     {
         $defaultTypoScriptConstants = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $this->type] ?? '';
         if (!empty($defaultTypoScriptConstants)) {
-            $identifier = 'globals-defaultTypoScript-' . $this->type . '-' . sha1($defaultTypoScriptConstants);
+            $cacheIdentifier = 'globals-defaulttyposcript-' . $this->type . '-' . hash('xxh3', $defaultTypoScriptConstants);
             if ($this->cache) {
-                $node = $this->cache->require($identifier);
+                $node = $this->cache->require($cacheIdentifier);
                 if ($node) {
                     $parentConstantNode->addChild($node);
                     return;
                 }
             }
             $node = new DefaultTypoScriptInclude();
-            $node->setIdentifier($identifier);
+            $node->setIdentifier($parentConstantNode->getIdentifier() . $cacheIdentifier);
             $node->setName('TYPO3_CONF_VARS[\'FE\'][\'defaultTypoScript_' . $this->type . '\']');
             $node->setLineStream($this->tokenizer->tokenize($defaultTypoScriptConstants));
             $this->treeFromTokenStreamBuilder->buildTree($node, $this->type, $this->tokenizer);
-            $this->cache?->set($identifier, $this->prepareNodeForCache($node));
+            $this->cache?->set($cacheIdentifier, $this->prepareNodeForCache($node));
             $parentConstantNode->addChild($node);
         }
     }
@@ -429,9 +433,9 @@ final class SysTemplateTreeBuilder
         if ($siteSettings->isEmpty()) {
             return;
         }
-        $identifier = 'site-constants-' . sha1(json_encode($siteSettings, JSON_THROW_ON_ERROR));
+        $cacheIdentifier = 'site-constants-' . hash('xxh3', json_encode($siteSettings, JSON_THROW_ON_ERROR));
         if ($this->cache) {
-            $node = $this->cache->require($identifier);
+            $node = $this->cache->require($cacheIdentifier);
             if ($node) {
                 $parentConstantNode->addChild($node);
                 return;
@@ -442,10 +446,10 @@ final class SysTemplateTreeBuilder
             $siteConstants .= $nodeIdentifier . ' = ' . $value . LF;
         }
         $node = new SiteInclude();
-        $node->setIdentifier($identifier);
+        $node->setIdentifier($parentConstantNode->getIdentifier() . $cacheIdentifier);
         $node->setName('Site constants settings of site ' . $site->getIdentifier());
         $node->setLineStream($this->tokenizer->tokenize($siteConstants));
-        $this->cache?->set($identifier, $this->prepareNodeForCache($node));
+        $this->cache?->set($cacheIdentifier, $this->prepareNodeForCache($node));
         $parentConstantNode->addChild($node);
     }
 
@@ -459,7 +463,7 @@ final class SysTemplateTreeBuilder
         $source = $GLOBALS['TYPO3_CONF_VARS ']['FE']['defaultTypoScript_' . $this->type . '.'][$identifier] ?? null;
         if (!empty($source)) {
             $node = new DefaultTypoScriptMagicKeyInclude();
-            $node->setIdentifier('globals-defaultTypoScript-' . $this->type . '-' . $identifier);
+            $node->setIdentifier($parentNode->getIdentifier() . 'globals-defaultTypoScript-' . $this->type . '-' . $identifier);
             $node->setName('TYPO3_CONF_VARS globals_defaultTypoScript_' . $this->type . '.' . $identifier);
             $node->setLineStream($this->tokenizer->tokenize($source));
             $this->treeFromTokenStreamBuilder->buildTree($node, $this->type, $this->tokenizer);
@@ -470,7 +474,7 @@ final class SysTemplateTreeBuilder
             $source = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $this->type . '.']['defaultContentRendering'] ?? null;
             if (!empty($source)) {
                 $node = new DefaultTypoScriptMagicKeyInclude();
-                $node->setIdentifier('globals-defaultTypoScript-' . $this->type . '-defaultContentRendering-' . $identifier);
+                $node->setIdentifier($parentNode->getIdentifier() . 'globals-defaultTypoScript-' . $this->type . '-defaultContentRendering-' . $identifier);
                 $node->setName('TYPO3_CONF_VARS defaultContentRendering ' . $this->type . ' for ' . $identifier);
                 $node->setLineStream($this->tokenizer->tokenize($source));
                 $this->treeFromTokenStreamBuilder->buildTree($node, $this->type, $this->tokenizer);
@@ -510,9 +514,9 @@ final class SysTemplateTreeBuilder
      * Those content-identical template rows create only one cache entry: We create a hash
      * from the relevant row fields like 'constants' and 'config', but we do NOT include
      * the sys_template row 'uid' and 'pid'. So different sys_template rows with the same content
-     * lead to the same identifier and we cache that just once.
+     * lead to the same identifier, and we cache that just once.
      */
-    private function getSysTemplateRowCacheIdentifier(array $sysTemplateRow): string
+    private function getSysTemplateRowIdentifier(array $sysTemplateRow): string
     {
         $cacheRelevantSysTemplateRowValues = [
             'root' => (int)$sysTemplateRow['root'],
@@ -524,7 +528,7 @@ final class SysTemplateTreeBuilder
             'includeStaticAfterBasedOn' => (int)$sysTemplateRow['includeStaticAfterBasedOn'],
             'static_file_mode' => (int)$sysTemplateRow['static_file_mode'],
         ];
-        return 'sys_template-' . $this->type . '-' . sha1(serialize($cacheRelevantSysTemplateRowValues));
+        return hash('xxh3', json_encode($cacheRelevantSysTemplateRowValues, JSON_THROW_ON_ERROR));
     }
 
     private function prepareNodeForCache(IncludeInterface $node): string

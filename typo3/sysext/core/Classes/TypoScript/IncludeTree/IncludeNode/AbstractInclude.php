@@ -27,8 +27,9 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
  */
 abstract class AbstractInclude implements IncludeInterface
 {
-    protected string $identifier = '';
+    protected ?string $identifier = null;
     protected string $name = '';
+    protected string $path = '';
 
     /**
      * @var array<int, IncludeInterface>
@@ -78,11 +79,18 @@ abstract class AbstractInclude implements IncludeInterface
 
     public function setIdentifier(string $identifier): void
     {
-        $this->identifier = $identifier;
+        $this->identifier = hash('xxh3', $identifier);
     }
 
     public function getIdentifier(): string
     {
+        if ($this->identifier === null) {
+            throw new \RuntimeException(
+                'Identifier has not been initialized. This happens when getIdentifier() is called on'
+                . ' trees retrieved from cache. The identifier is not supposed to be used in this context.',
+                1673634853
+            );
+        }
         return $this->identifier;
     }
 
@@ -94,6 +102,16 @@ abstract class AbstractInclude implements IncludeInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setPath(string $path): void
+    {
+        $this->path = $path;
+    }
+
+    public function getPath(): string
+    {
+        return $this->path;
     }
 
     public function addChild(IncludeInterface $node): void

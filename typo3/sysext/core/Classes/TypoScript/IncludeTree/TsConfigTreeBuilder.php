@@ -56,6 +56,7 @@ final class TsConfigTreeBuilder
         $this->tokenizer = $tokenizer;
         $this->cache = $cache;
         $includeTree = new RootInclude();
+        $includeTree->setIdentifier('UserTsConfig Root Include');
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] ?? '')) {
             $includeTree->addChild($this->getTreeFromString('userTsConfig-globals', $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig']));
         }
@@ -156,6 +157,7 @@ final class TsConfigTreeBuilder
         $collectedPagesTsConfigArray = $event->getTsConfig();
 
         $includeTree = new RootInclude();
+        $includeTree->setIdentifier('PageTsConfig Root Include');
         foreach ($collectedPagesTsConfigArray as $key => $typoScriptString) {
             $includeTree->addChild($this->getTreeFromString((string)$key, $typoScriptString));
         }
@@ -167,7 +169,7 @@ final class TsConfigTreeBuilder
         string $typoScriptString,
     ): TsConfigInclude {
         $lowercaseName = mb_strtolower($name);
-        $identifier = $lowercaseName . '-' . sha1($typoScriptString);
+        $identifier = $lowercaseName . '-' . hash('xxh3', $typoScriptString);
         if ($this->cache) {
             $includeNode = $this->cache->require($identifier);
             if ($includeNode instanceof TsConfigInclude) {
@@ -176,7 +178,7 @@ final class TsConfigTreeBuilder
         }
         $includeNode = new TsConfigInclude();
         $includeNode->setName($name);
-        $includeNode->setIdentifier($lowercaseName);
+        $includeNode->setIdentifier($identifier);
         $includeNode->setLineStream($this->tokenizer->tokenize($typoScriptString));
         $this->treeFromTokenStreamBuilder->buildTree($includeNode, 'tsconfig', $this->tokenizer);
         $this->cache?->set($identifier, 'return unserialize(\'' . addcslashes(serialize($includeNode), '\'\\') . '\');');

@@ -82,7 +82,7 @@ final class PageTsConfigFactory
         if ($site instanceof Site) {
             $siteSettings = $site->getSettings();
             if (!$siteSettings->isEmpty()) {
-                $siteSettingsCacheIdentifier = 'site-settings-flat-' . sha1(json_encode($siteSettings, JSON_THROW_ON_ERROR));
+                $siteSettingsCacheIdentifier = 'site-settings-flat-' . hash('xxh3', json_encode($siteSettings, JSON_THROW_ON_ERROR));
                 $gotSiteSettingsFromCache = false;
                 $siteSettingsNode = $this->cache->require($siteSettingsCacheIdentifier);
                 if ($siteSettingsNode) {
@@ -99,6 +99,7 @@ final class PageTsConfigFactory
                     $siteSettingsNode->setName('Site constants settings of site ' . $site->getIdentifier());
                     $siteSettingsNode->setLineStream($this->tokenizer->tokenize($siteConstants));
                     $siteSettingsTreeRoot = new RootInclude();
+                    $siteSettingsTreeRoot->setIdentifier('Root of site settings cache identifier ' . $siteSettingsCacheIdentifier);
                     $siteSettingsTreeRoot->addChild($siteSettingsNode);
                     /** @var IncludeTreeAstBuilderVisitor $astBuilderVisitor */
                     $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);

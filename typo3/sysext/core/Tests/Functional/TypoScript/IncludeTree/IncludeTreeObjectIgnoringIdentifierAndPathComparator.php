@@ -21,14 +21,12 @@ use SebastianBergmann\Comparator\ObjectComparator;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
 
 /**
- * Custom comparator to compare default IncludeTree with its unserialized variant.
- * When serializing IncludeTree, some properties are ignored, this comparator is
- * designed to ignore these properties when comparing before/after unserialize(serialize()).
+ * Custom comparator to compare default IncludeTree without looking at the identifier.
  */
-final class UnserializedIncludeTreeObjectComparator extends ObjectComparator
+final class IncludeTreeObjectIgnoringIdentifierAndPathComparator extends ObjectComparator
 {
     /**
-     * Ignore some IncludeTree properties that are not serialized.
+     * Ignore some IncludeTree properties.
      *
      * @param object $object
      */
@@ -36,7 +34,7 @@ final class UnserializedIncludeTreeObjectComparator extends ObjectComparator
     {
         $arrayRepresentation = parent::toArray($object);
         if ($object instanceof IncludeInterface) {
-            unset($arrayRepresentation['identifier'], $arrayRepresentation['path'], $arrayRepresentation['name'], $arrayRepresentation['pid']);
+            unset($arrayRepresentation['identifier'], $arrayRepresentation['path']);
         }
         return $arrayRepresentation;
     }

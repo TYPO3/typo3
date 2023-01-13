@@ -43,8 +43,13 @@ interface IncludeInterface
     public function getType(): string;
 
     /**
-     * An identifier that represents this include. For instance with @import, this identifier
-     * contains the file import string.
+     * An identifier for this include. Typically, a hash of some kind. This identifier
+     * is unique within the tree, by being created from the parent identifier plus
+     * something unique for this level like a counter. This identifier is used
+     * for instance in the backend, when referencing single includes to be rendered.
+     * Note this value is skipped when persisting to caches since it's a Backend
+     * related thing that does not use cached context: When retrieving includes from
+     * cache (e.g. in Frontend), the identifier is null and the getter will except.
      */
     public function setIdentifier(string $identifier): void;
     public function getIdentifier(): string;
@@ -54,6 +59,19 @@ interface IncludeInterface
      */
     public function setName(string $name): void;
     public function getName(): string;
+
+    /**
+     * This is set to non-empty string for includes that represent files. The file location
+     * is stored here, typically something like "EXT:my_extension/path/to/foo.typoscript".
+     * This is used when resolving file includes relative to a parent include, so a
+     * potential child node knows where to look relative to its parent path.
+     * Note this value is skipped when persisting to caches: The parent path
+     * information is no longer needed when a tree is fetched from cache since
+     * all children were attached already and don't need to be recalculated
+     * depending on their parent path value.
+     */
+    public function setPath(string $path): void;
+    public function getPath(): string;
 
     /**
      * Child maintenance methods.

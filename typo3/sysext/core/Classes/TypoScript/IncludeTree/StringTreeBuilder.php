@@ -51,7 +51,7 @@ final class StringTreeBuilder
         ?PhpFrontend $cache = null,
     ): RootInclude {
         $lowerCaseName = mb_strtolower($name);
-        $identifier = 'string-' . $lowerCaseName . '-' . sha1($typoScriptString);
+        $identifier = 'string-' . $lowerCaseName . '-' . hash('xxh3', $typoScriptString);
         if ($cache) {
             $includeTree = $cache->require($identifier);
             if ($includeTree instanceof RootInclude) {
@@ -59,6 +59,7 @@ final class StringTreeBuilder
             }
         }
         $includeTree = new RootInclude();
+        $includeTree->setIdentifier($identifier);
         $includeNode = new StringInclude();
         $includeNode->setName('[string] ' . $name);
         $includeNode->setIdentifier($lowerCaseName);

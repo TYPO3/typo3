@@ -61,6 +61,19 @@ final class TreeFromLineStreamBuilder
     private TokenizerInterface $tokenizer;
 
     /**
+     * Helper property to create unique identifiers: This is incremented each
+     * time we setIdentifier() on an include via getNextNodeNumber(). The
+     * current int is then used as part of the calculated identifier to make
+     * it unique. This is the easiest solution here: We do not need a string 0-n
+     * count per level, just some seed that is reproducible when the same tree
+     * is calculated again. We can't rely on the node lines "content" alone since
+     * maybe some nodes have the same content on the same level. The identifiers
+     * created here typically use something like this:
+     * setIdentifier($parentNode->getIdentifier() . $this->getNextNodeNumber());
+     */
+    private int $nodeCounter = 0;
+
+    /**
      * Using "@import" with wildcards, the file ending depends on the given type:
      * With Frontend TypoScript, .typoscript is allowed, with TsConfig, .tsconfig
      * is allowed. This property maps types to their file suffixes.
@@ -87,17 +100,41 @@ final class TreeFromLineStreamBuilder
         }
         $this->type = $type;
         $this->tokenizer = $tokenizer;
+        $this->nodeCounter = 0;
         $this->buildTreeInternal($node);
     }
 
+    /**
+     * This method is a bit tricky and not too easy to follow: It loops over
+     * a given source stream of lines exactly once, but creates a two-level
+     * include node structure from it:
+     *
+     * For instance, when a condition is encountered, it created a node for the
+     * condition, and the "body" lines of the condition are child nodes of the
+     * condition node. The $previousNode <-> $node juggling handles this: When
+     * the condition body ends (new condition, or [end] or similar), the
+     * next include needs to be attached to the former parent node again.
+     *
+     * Essentially, a single source stream is split into multiple child nodes
+     * when there are conditions or imports. A node that is "split" into
+     * child nodes gets the "split" toggle set, indicating that the entire
+     * source stream is represented by its child nodes.
+     *
+     * A condition body may have more than one child: When there are multiple
+     * file includes, each one creates an own node, which may have children
+     * again. This also means the method is called recursive, since the source
+     * stream of an included file may need to be split into segments again, so
+     * it calls this method again with itself as entry node.
+     */
     private function buildTreeInternal(IncludeInterface $node): void
     {
-        $previousNode = $node;
+        $parentNode = $node;
         $givenTokenLineStream = $node->getLineStream();
         $lineStream = new LineStream();
         $childNode = new SegmentInclude();
-        $childNode->setIdentifier($node->getIdentifier() . '-segment');
+        $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
         $childNode->setName($node->getName() . ' Segment');
+        $childNode->setPath($node->getPath());
 
         foreach ($givenTokenLineStream->getNextLine() as $line) {
             if ($line instanceof ConditionLine && $node instanceof ConditionInclude) {
@@ -108,7 +145,7 @@ final class TreeFromLineStreamBuilder
                     $node->addChild($childNode);
                     $lineStream = new LineStream();
                 }
-                $node = $previousNode;
+                $node = $parentNode;
             }
 
             if ($line instanceof ConditionLine) {
@@ -122,17 +159,19 @@ final class TreeFromLineStreamBuilder
                 }
                 $childNode = new ConditionInclude();
                 $childNode->setSplit();
-                $childNode->setIdentifier($node->getIdentifier() . '-condition');
+                $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
                 $childNode->setName($node->getName() . ' Condition');
+                $childNode->setPath($node->getPath());
                 $childNode->setConditionToken($conditionValueToken);
                 $lineStream->append($line);
                 $childNode->setLineStream($lineStream);
                 $node->addChild($childNode);
-                $previousNode = $node;
+                $parentNode = $node;
                 $node = $childNode;
                 $childNode = new SegmentInclude();
-                $childNode->setIdentifier($node->getIdentifier() . '-segment');
+                $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
                 $childNode->setName($node->getName() . ' Segment');
+                $childNode->setPath($node->getPath());
                 $lineStream = new LineStream();
                 continue;
             }
@@ -142,16 +181,15 @@ final class TreeFromLineStreamBuilder
             ) {
                 // Finish condition segment due to [end] or [global] line
                 $node->setSplit();
-                if (!$lineStream->isEmpty()) {
-                    $childNode->setLineStream($lineStream);
-                    $node->addChild($childNode);
-                }
-                $node = $previousNode;
-                $childNode = new SegmentInclude();
-                $childNode->setIdentifier($node->getIdentifier() . '-segment');
-                $childNode->setName($node->getName() . ' Segment');
-                $lineStream = new LineStream();
                 $lineStream->append($line);
+                $childNode->setLineStream($lineStream);
+                $node->addChild($childNode);
+                $node = $parentNode;
+                $childNode = new SegmentInclude();
+                $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
+                $childNode->setName($node->getName() . ' Segment');
+                $childNode->setPath($node->getPath());
+                $lineStream = new LineStream();
                 continue;
             }
 
@@ -163,21 +201,23 @@ final class TreeFromLineStreamBuilder
                     $node->addChild($childNode);
                 }
                 $conditionToken = $node->getConditionToken();
-                $node = $previousNode;
+                $node = $parentNode;
                 $childNode = new ConditionElseInclude();
                 $childNode->setSplit();
-                $childNode->setIdentifier($node->getIdentifier() . '-condition-else');
+                $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
                 $childNode->setName($node->getName() . ' Condition Else');
+                $childNode->setPath($node->getPath());
                 $childNode->setConditionToken($conditionToken);
                 $lineStream = new LineStream();
                 $lineStream->append($line);
                 $childNode->setLineStream($lineStream);
                 $node->addChild($childNode);
-                $previousNode = $node;
+                $parentNode = $node;
                 $node = $childNode;
                 $childNode = new SegmentInclude();
-                $childNode->setIdentifier($node->getIdentifier() . '-segment');
+                $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
                 $childNode->setName($node->getName() . ' Segment');
+                $childNode->setPath($node->getPath());
                 $lineStream = new LineStream();
                 continue;
             }
@@ -191,8 +231,9 @@ final class TreeFromLineStreamBuilder
                     $lineStream = new LineStream();
                 }
                 $childNode = new SegmentInclude();
-                $childNode->setIdentifier($node->getIdentifier() . '-segment');
+                $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
                 $childNode->setName($node->getName() . ' Segment');
+                $childNode->setPath($node->getPath());
                 $allowedSuffixes = $this->atImportTypeToSuffixMap[$this->type];
                 foreach ($allowedSuffixes as $allowedSuffix) {
                     $this->processAtImport($allowedSuffix, $node, $atImportValueToken, $line);
@@ -209,8 +250,9 @@ final class TreeFromLineStreamBuilder
                     $lineStream = new LineStream();
                 }
                 $childNode = new SegmentInclude();
-                $childNode->setIdentifier($node->getIdentifier() . '-segment');
+                $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
                 $childNode->setName($node->getName() . ' Segment');
+                $childNode->setPath($node->getPath());
                 $this->processIncludeTyposcript($node, $includeTypoScriptValueToken, $line);
                 continue;
             }
@@ -229,14 +271,16 @@ final class TreeFromLineStreamBuilder
      * Warning: Calls buildTree() recursive for each included file.
      * Warning: Calls itself recursive for 'relative' lookups.
      */
-    private function processAtImport(string $fileSuffix, IncludeInterface $node, Token $atImportValueToken, LineInterface $atImportLine, string $parentPath = ''): void
+    private function processAtImport(string $fileSuffix, IncludeInterface $node, Token $atImportValueToken, LineInterface $atImportLine, bool $tryRelative = false): void
     {
         $atImportValue = $atImportValueToken->getValue();
-        $triedRelative = false;
-        if ($parentPath) {
+        if ($tryRelative) {
+            if (empty($node->getPath())) {
+                return;
+            }
+            $parentPath = rtrim(dirname($node->getPath()), '/') . '/';
             $atImportValue = ltrim($atImportValue, './');
             $atImportValue = $parentPath . $atImportValue;
-            $triedRelative = true;
         }
         $absoluteFileName = rtrim(GeneralUtility::getFileAbsFileName($atImportValue), '/');
         if ($absoluteFileName === '') {
@@ -274,10 +318,9 @@ final class TreeFromLineStreamBuilder
         } elseif (str_contains($absoluteFileName, '*')) {
             // Something with * in file part
             $directory = rtrim(dirname($absoluteFileName) . '/');
-            if (!is_dir($directory) && str_starts_with($atImportValue, './')) {
+            if (!is_dir($directory) && str_starts_with($atImportValue, './') && !$tryRelative) {
                 // See if we can import some relative wildcard like "./Setup/*" or "./Setup/*.typoscript"
-                $parentPath = rtrim(dirname($node->getIdentifier()), '/') . '/';
-                $this->processAtImport($fileSuffix, $node, $atImportValueToken, $atImportLine, $parentPath);
+                $this->processAtImport($fileSuffix, $node, $atImportValueToken, $atImportLine, true);
                 return;
             }
             $filePattern = basename($absoluteFileName);
@@ -305,10 +348,9 @@ final class TreeFromLineStreamBuilder
                 $this->addSingleAtImportFile($node, $singleAbsoluteFileName, $identifier, $atImportLine);
                 $this->addStaticMagicFromGlobals($node, $identifier);
             }
-        } elseif (!$triedRelative) {
+        } elseif (!$tryRelative) {
             // See if we can import relative "./foo.typoscript" or "foo.typoscript"
-            $parentPath = rtrim(dirname($node->getIdentifier()), '/') . '/';
-            $this->processAtImport($fileSuffix, $node, $atImportValueToken, $atImportLine, $parentPath);
+            $this->processAtImport($fileSuffix, $node, $atImportValueToken, $atImportLine, true);
         }
     }
 
@@ -317,16 +359,17 @@ final class TreeFromLineStreamBuilder
      *
      * Warning: Recursively calls buildTree() to process includes of included content.
      */
-    private function addSingleAtImportFile(IncludeInterface $node, string $absoluteFileName, string $identifier, LineInterface $atImportLine): void
+    private function addSingleAtImportFile(IncludeInterface $parentNode, string $absoluteFileName, string $path, LineInterface $atImportLine): void
     {
         $content = file_get_contents($absoluteFileName);
         $newNode = new AtImportInclude();
-        $newNode->setIdentifier($identifier);
-        $newNode->setName($identifier);
+        $newNode->setIdentifier($parentNode->getIdentifier() . $this->getNextNodeNumber());
+        $newNode->setName($path);
+        $newNode->setPath($path);
         $newNode->setLineStream($this->tokenizer->tokenize($content));
         $newNode->setOriginalLine($atImportLine);
         $this->buildTreeInternal($newNode);
-        $node->addChild($newNode);
+        $parentNode->addChild($newNode);
     }
 
     private function processIncludeTyposcript(IncludeInterface $node, Token $includeTyposcriptValueToken, LineInterface $importKeywordOldLine): void
@@ -372,7 +415,7 @@ final class TreeFromLineStreamBuilder
 
         if (str_starts_with($source, 'FILE:./')) {
             // Single relative file include
-            $fileName = dirname($node->getIdentifier()) . '/' . substr($source, 7);
+            $fileName = dirname($node->getPath()) . '/' . substr($source, 7);
             $absoluteFileName = rtrim(GeneralUtility::getFileAbsFileName($fileName), '/');
             if ($absoluteFileName === '') {
                 return;
@@ -454,12 +497,12 @@ final class TreeFromLineStreamBuilder
      * The method either returns current parent node if there is no condition, or the new
      * conditional sub node, if there is one.
      */
-    private function processConditionalIncludeTyposcript(IncludeInterface $node, ?string $condition, string $fileName): IncludeInterface
+    private function processConditionalIncludeTyposcript(IncludeInterface $parentNode, ?string $condition, string $fileName): IncludeInterface
     {
-        $nodeToAddTo = $node;
+        $nodeToAddTo = $parentNode;
         if ($condition) {
             $conditionNode = new ConditionIncludeTyposcriptInclude();
-            $conditionNode->setIdentifier($fileName . '-condition');
+            $conditionNode->setIdentifier($parentNode->getIdentifier() . $this->getNextNodeNumber());
             $conditionNode->setName($fileName . ' Condition');
             $conditionNode->setConditionToken(new Token(TokenType::T_VALUE, $condition, 0, 0));
             $conditionNode->setSplit();
@@ -474,16 +517,17 @@ final class TreeFromLineStreamBuilder
      *
      * Warning: Recursively calls buildTree() to process includes of included content.
      */
-    private function addSingleIncludeTyposcriptFile(IncludeInterface $node, string $absoluteFileName, string $identifier, LineInterface $importKeywordOldLine): void
+    private function addSingleIncludeTyposcriptFile(IncludeInterface $parentNode, string $absoluteFileName, string $path, LineInterface $importKeywordOldLine): void
     {
         $content = file_get_contents($absoluteFileName);
         $newNode = new IncludeTyposcriptInclude();
-        $newNode->setIdentifier($identifier);
-        $newNode->setName($identifier);
+        $newNode->setIdentifier($parentNode->getIdentifier() . $this->getNextNodeNumber());
+        $newNode->setName($path);
+        $newNode->setPath($path);
         $newNode->setLineStream($this->tokenizer->tokenize($content));
         $newNode->setOriginalLine($importKeywordOldLine);
         $this->buildTreeInternal($newNode);
-        $node->addChild($newNode);
+        $parentNode->addChild($newNode);
     }
 
     /**
@@ -491,14 +535,14 @@ final class TreeFromLineStreamBuilder
      * See ExtensionManagementUtility::addTypoScript() for more details on this.
      * Warning: Yes, this is recursive again.
      */
-    private function addStaticMagicFromGlobals(IncludeInterface $parentNode, string $identifier): void
+    private function addStaticMagicFromGlobals(IncludeInterface $parentNode, string $path): void
     {
-        if (!in_array($this->type, ['constants', 'setup'], true) || !str_starts_with($identifier, 'EXT:')) {
+        if (!in_array($this->type, ['constants', 'setup'], true) || !str_starts_with($path, 'EXT:')) {
             // This magic method is relevant for Frontend TypoScript only, indicated by
             // $this->type being either "constants" or "setup".
             return;
         }
-        $includeStaticFileWithoutExt = substr($identifier, 4);
+        $includeStaticFileWithoutExt = substr($path, 4);
         $includeStaticFileExtKeyAndPath = GeneralUtility::trimExplode('/', $includeStaticFileWithoutExt, true, 2);
         $extensionKey = $includeStaticFileExtKeyAndPath[0];
         $extensionKeyWithoutUnderscores = str_replace('_', '', $extensionKey);
@@ -507,7 +551,7 @@ final class TreeFromLineStreamBuilder
         }
         // example: 'Configuration/TypoScript/MyStaticInclude/'
         $pathSegmentWithAppendedSlash = rtrim(dirname($includeStaticFileExtKeyAndPath[1])) . '/';
-        $file = basename($identifier);
+        $file = basename($path);
         $type = GeneralUtility::trimExplode('.', $file, false, 2)[0] ?? '';
         if ($type !== $this->type) {
             return;
@@ -518,12 +562,21 @@ final class TreeFromLineStreamBuilder
             $source = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['defaultContentRendering'] ?? null;
             if (!empty($source)) {
                 $node = new DefaultTypoScriptMagicKeyInclude();
-                $node->setIdentifier('globals-defaultTypoScript-' . $type . '-defaultContentRendering-' . $identifier);
-                $node->setName('TYPO3_CONF_VARS defaultContentRendering for ' . $identifier);
+                $node->setIdentifier($parentNode->getIdentifier() . $this->getNextNodeNumber());
+                $node->setName('TYPO3_CONF_VARS defaultContentRendering for ' . $path);
                 $node->setLineStream($this->tokenizer->tokenize($source));
                 $this->buildTreeInternal($node);
                 $parentNode->addChild($node);
             }
         }
+    }
+
+    /**
+     * See $this->nodeCounter property description.
+     */
+    private function getNextNodeNumber(): int
+    {
+        $this->nodeCounter++;
+        return $this->nodeCounter;
     }
 }
