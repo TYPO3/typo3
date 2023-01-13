@@ -42,6 +42,59 @@ class LocalesTest extends UnitTestCase
         parent::tearDown();
     }
 
+    /**
+     * @test
+     */
+    public function isValidLanguageKeyAlsoDetectsRegionSpecificKeys(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'] = [
+            'fr-CG' => 'French (Congo)',
+        ];
+        $locales = new Locales();
+        // Fixed defined language keys
+        self::assertTrue($locales->isValidLanguageKey('fr_CA'));
+        self::assertTrue($locales->isValidLanguageKey('fr-CA'));
+        // User-defined language keys
+        self::assertTrue($locales->isValidLanguageKey('fr-CG'));
+        self::assertTrue($locales->isValidLanguageKey('de'));
+        // Transient language key
+        self::assertTrue($locales->isValidLanguageKey('de-AT'));
+        // Deal with "en" and "en_US"
+        self::assertTrue($locales->isValidLanguageKey('en-US'));
+        self::assertTrue($locales->isValidLanguageKey('en'));
+        // valid language key "en" is automatically applied with "default"
+        self::assertTrue($locales->isValidLanguageKey('default'));
+    }
+
+    /**
+     * @test
+     */
+    public function getLocaleDependenciesResolvesAutomaticAndDefinedDependencies(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'] = [
+            'fr-CG' => 'French (Congo)',
+        ];
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies'] = [
+            'de-CH' => ['fr', 'es'],
+        ];
+        $locales = new Locales();
+        // Automatic dependency
+        $dependencies = $locales->getLocaleDependencies('de_AT');
+        self::assertEquals(['de'], $dependencies);
+        // Explicitly defined language with 5 keys
+        $dependencies = $locales->getLocaleDependencies('pt_BR');
+        self::assertEquals(['pt'], $dependencies);
+        // Explicitly defined 2-letter custom dependency
+        $dependencies = $locales->getLocaleDependencies('lb');
+        self::assertEquals(['de'], $dependencies);
+        // Dependency with custom dependencies
+        $dependencies = $locales->getLocaleDependencies('de-CH');
+        self::assertEquals(['fr', 'es'], $dependencies);
+        // Custom registered language
+        $dependencies = $locales->getLocaleDependencies('fr_CG');
+        self::assertEquals(['fr'], $dependencies);
+    }
+
     public function browserLanguageDetectionWorksDataProvider(): array
     {
         return [
