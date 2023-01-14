@@ -22,8 +22,10 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -568,9 +570,8 @@ abstract class AbstractMenuContentObject
         $tsfe = $this->getTypoScriptFrontendController();
         $currentPageWithNoOverlay = $this->sys_page->getRawRecord('pages', $tsfe->id);
 
+        $languages = $this->getCurrentSite()->getLanguages();
         if ($specialValue === 'auto') {
-            $site = $this->getCurrentSite();
-            $languages = $site->getLanguages();
             $languageItems = array_keys($languages);
         } else {
             $languageItems = GeneralUtility::intExplode(',', $specialValue);
@@ -580,10 +581,13 @@ abstract class AbstractMenuContentObject
 
         $currentLanguageId = $this->getCurrentLanguageAspect()->getId();
 
+        // @todo Fetch all language overlays in a single query
         foreach ($languageItems as $sUid) {
             // Find overlay record:
             if ($sUid) {
-                $lRecs = $this->sys_page->getPageOverlay($currentPageWithNoOverlay, $sUid);
+                $languageAspect = LanguageAspectFactory::createFromSiteLanguage($languages[$sUid]);
+                $pageRepository = $this->buildPageRepository($languageAspect);
+                $lRecs = $pageRepository->getPageOverlay($currentPageWithNoOverlay, $languageAspect);
                 // getPageOverlay() might return the original record again, if so this is emptied
                 // this should be fixed in PageRepository in the future.
                 if (!empty($lRecs) && !isset($lRecs['_PAGES_OVERLAY'])) {
@@ -615,6 +619,24 @@ abstract class AbstractMenuContentObject
             );
         }
         return $menuItems;
+    }
+
+    /**
+     * Builds PageRepository instance without depending on global context, e.g.
+     * not automatically overlaying records based on current request language.
+     */
+    protected function buildPageRepository(LanguageAspect $languageAspect = null): PageRepository
+    {
+        // clone global context object (singleton)
+        $context = clone GeneralUtility::makeInstance(Context::class);
+        $context->setAspect(
+            'language',
+            $languageAspect ?? GeneralUtility::makeInstance(LanguageAspect::class)
+        );
+        return GeneralUtility::makeInstance(
+            PageRepository::class,
+            $context
+        );
     }
 
     /**
@@ -1627,6 +1649,7 @@ abstract class AbstractMenuContentObject
         if ($page['sectionIndex_uid'] ?? false) {
             $conf['section'] = $page['sectionIndex_uid'];
         }
+        $conf['page'] = new Page($page);
         return $this->parent_cObj->createLink('|', $conf);
     }
 

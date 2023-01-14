@@ -35,6 +35,7 @@ class Page implements \ArrayAccess
         '_PAGES_OVERLAY_UID',
         '_PAGES_OVERLAY_LANGUAGE',
         '_PAGES_OVERLAY_REQUESTEDLANGUAGE',
+        '_TRANSLATION_SOURCE',
     ];
 
     protected array $specialProperties = [];
@@ -42,8 +43,12 @@ class Page implements \ArrayAccess
     public function __construct(array $properties)
     {
         foreach ($properties as $propertyName => $propertyValue) {
-            if (isset($this->specialPropertyNames[$propertyName])) {
-                $this->specialProperties[$propertyName] = $propertyValue;
+            if (in_array($propertyName, $this->specialPropertyNames)) {
+                if ($propertyName === '_TRANSLATION_SOURCE' && !$propertyValue instanceof Page) {
+                    $this->specialProperties[$propertyName] = new Page($propertyValue);
+                } else {
+                    $this->specialProperties[$propertyName] = $propertyValue;
+                }
             } else {
                 $this->properties[$propertyName] = $propertyValue;
             }
@@ -61,8 +66,21 @@ class Page implements \ArrayAccess
         return (int)$pageId;
     }
 
-    public function toArray(): array
+    public function getTranslationSource(): ?Page
     {
+        return $this->specialProperties['_TRANSLATION_SOURCE'] ?? null;
+    }
+
+    public function getRequestedLanguage(): ?int
+    {
+        return $this->specialProperties['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] ?? null;
+    }
+
+    public function toArray(bool $includeSpecialProperties = false): array
+    {
+        if ($includeSpecialProperties) {
+            return $this->properties + $this->specialProperties;
+        }
         return $this->properties;
     }
 }

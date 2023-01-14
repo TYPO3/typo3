@@ -117,7 +117,21 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         // Now overlay the page in the target language, in order to have valid title attributes etc.
         if ($siteLanguageOfTargetPage->getLanguageId() > 0) {
-            $page = $pageRepository->getLanguageOverlay('pages', $page);
+            $pageObject = $conf['page'] ?? null;
+            if ($pageObject instanceof Page
+                && $pageObject->getPageId() == $page['uid'] // No MP/Shortcut changes
+                && !$event->pageWasModified()
+                && (
+                    $pageObject->getLanguageId() === $languageAspect->getId()
+                    || $pageObject->getRequestedLanguage() === $languageAspect->getId() // Page is suitable for that language
+                    || $pageObject->getLanguageId() == 0 // No translation found
+                )
+            ) {
+                $page = $pageObject->toArray(true);
+            } else {
+                $page = $pageRepository->getLanguageOverlay('pages', $page);
+            }
+
             // Check if the translated page is a shortcut, but the default page wasn't a shortcut, so this is
             // resolved as well, see ScenarioDTest in functional tests.
             // Currently not supported: When this is the case (only a translated page is a shortcut),
@@ -362,7 +376,12 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         $pageRepository = $this->buildPageRepository();
         // Looking up the page record to verify its existence
         // This is used when a page to a translated page is executed directly.
-        $page = $pageRepository->getPage($linkDetails['pageuid'], $disableGroupAccessCheck);
+
+        if (isset($configuration['page']) && $configuration['page'] instanceof Page) {
+            $page = $configuration['page']->getTranslationSource()?->toArray() ?? $configuration['page']->toArray();
+        } else {
+            $page = $pageRepository->getPage($linkDetails['pageuid'], $disableGroupAccessCheck);
+        }
 
         if (empty($page) || !is_array($page)) {
             return [];

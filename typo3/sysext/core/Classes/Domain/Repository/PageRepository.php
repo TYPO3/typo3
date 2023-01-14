@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\Event\AfterRecordLanguageOverlayEvent;
 use TYPO3\CMS\Core\Domain\Event\BeforePageLanguageOverlayEvent;
 use TYPO3\CMS\Core\Domain\Event\BeforeRecordLanguageOverlayEvent;
+use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -535,6 +536,7 @@ class PageRepository implements LoggerAwareInterface
                             $pagesOutput[$key][$fieldName] = $fieldValue;
                         }
                     }
+                    $pagesOutput[$key]['_TRANSLATION_SOURCE'] = new Page($origPage);
                 }
             } elseif (isset($overlays[$origPage])) {
                 $pagesOutput[$key] = $overlays[$origPage];

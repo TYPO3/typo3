@@ -25,6 +25,8 @@ namespace TYPO3\CMS\Frontend\Event;
  */
 final class ModifyPageLinkConfigurationEvent
 {
+    protected bool $pageWasModified = false;
+
     public function __construct(
         private array $configuration,
         private readonly array $linkDetails,
@@ -57,6 +59,7 @@ final class ModifyPageLinkConfigurationEvent
     public function setPage(array $page): void
     {
         $this->page = $page;
+        $this->pageWasModified = true;
     }
 
     public function getQueryParameters(): array
@@ -77,5 +80,10 @@ final class ModifyPageLinkConfigurationEvent
     public function setFragment(string $fragment): void
     {
         $this->fragment = $fragment;
+    }
+
+    public function pageWasModified(): bool
+    {
+        return $this->pageWasModified;
     }
 }

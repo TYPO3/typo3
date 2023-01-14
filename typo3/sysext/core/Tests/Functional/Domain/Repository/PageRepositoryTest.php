@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageHookInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -266,6 +267,7 @@ class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals('Wurzel 1', $row['title']);
         self::assertEquals('901', $row['_PAGES_OVERLAY_UID']);
         self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals(new Page($origRow), $row['_TRANSLATION_SOURCE']);
     }
 
     /**
@@ -314,12 +316,14 @@ class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals('Wurzel 1', $row['title']);
         self::assertEquals('901', $row['_PAGES_OVERLAY_UID']);
         self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals(new Page($orig1), $row['_TRANSLATION_SOURCE']);
 
         $row = $rows[5];
         $this->assertOverlayRow($row);
         self::assertEquals('Attrappe 1-2-5', $row['title']);
         self::assertEquals('904', $row['_PAGES_OVERLAY_UID']);
         self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals(new Page($orig2), $row['_TRANSLATION_SOURCE']);
     }
 
     /**
@@ -345,14 +349,17 @@ class PageRepositoryTest extends FunctionalTestCase
         $row = $rows[0];
         $this->assertOverlayRow($row);
         self::assertEquals('Wurzel 1', $row['title']);
+        self::assertEquals(new Page($orig1), $row['_TRANSLATION_SOURCE']);
 
         $row = $rows[1];
         $this->assertNotOverlayRow($row);
         self::assertEquals('Dummy 1-2-7', $row['title']);
+        self::assertFalse(isset($row['_TRANSLATION_SOURCE']));
 
         $row = $rows[2];
         $this->assertOverlayRow($row);
         self::assertEquals('Attrappe 1-3-9', $row['title']);
+        self::assertEquals(new Page($orig3), $row['_TRANSLATION_SOURCE']);
     }
 
     /**
