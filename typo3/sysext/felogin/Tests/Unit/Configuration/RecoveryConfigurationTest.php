@@ -35,10 +35,7 @@ class RecoveryConfigurationTest extends UnitTestCase
 {
     protected MockObject&ConfigurationManager $configurationManager;
 
-    /**
-     * @var array
-     */
-    protected $settings = [
+    protected array $settings = [
         'email_from' => 'example@example.com',
         'email_fromName' => 'TYPO3 Installation',
         'email' => [
@@ -51,11 +48,7 @@ class RecoveryConfigurationTest extends UnitTestCase
         'replyTo' => '',
     ];
 
-    /**
-     * @var RecoveryConfiguration
-     */
-    protected $subject;
-
+    protected RecoveryConfiguration $subject;
     protected LoggerInterface $logger;
 
     protected function setUp(): void

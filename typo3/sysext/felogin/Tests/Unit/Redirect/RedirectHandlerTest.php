@@ -33,17 +33,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class RedirectHandlerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-
-    /**
-     * @var RedirectHandler
-     */
-    protected $subject;
-
-    /**
-     * @var ServerRequestInterface
-     */
-    protected $typo3Request;
-
+    protected RedirectHandler $subject;
+    protected ServerRequestInterface $typo3Request;
     protected MockObject&ServerRequestHandler $serverRequestHandler;
     protected MockObject&RedirectModeHandler $redirectModeHandler;
 

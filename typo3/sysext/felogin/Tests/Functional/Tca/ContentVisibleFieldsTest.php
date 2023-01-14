@@ -26,10 +26,7 @@ class ContentVisibleFieldsTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['felogin'];
 
-    /**
-     * @var array
-     */
-    protected static $contentFields = [
+    protected static array $contentFields = [
         'CType',
         'colPos',
         'sys_language_uid',

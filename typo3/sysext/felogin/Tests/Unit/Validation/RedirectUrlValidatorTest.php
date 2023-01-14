@@ -26,26 +26,16 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RedirectUrlValidatorTest extends UnitTestCase
 {
     protected bool $backupEnvironment = true;
 
-    /**
-     * @var RedirectUrlValidator|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
-     */
-    protected $accessibleFixture;
-
-    /**
-     * @var string
-     */
-    protected $testHostName;
-
-    /**
-     * @var string
-     */
-    protected $testSitePath;
+    protected RedirectUrlValidator&AccessibleObjectInterface $accessibleFixture;
+    protected string $testHostName;
+    protected string $testSitePath;
 
     protected bool $resetSingletonInstances = true;
 
