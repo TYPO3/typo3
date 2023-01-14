@@ -52,7 +52,7 @@ class AuthenticationService extends AbstractAuthenticationService implements Mim
     /**
      * Find a user (eg. look up the user record in database when a login is sent)
      *
-     * @return mixed User array or FALSE
+     * @return array<string, mixed>|false User array or FALSE
      */
     public function getUser()
     {
@@ -97,7 +97,7 @@ class AuthenticationService extends AbstractAuthenticationService implements Mim
      *  > 0:    User authenticated successfully. Other auth services will still be asked.
      *  <= 0:   Authentication failed, no more checking needed by other auth services.
      *
-     * @param array $user User data
+     * @param array<string, mixed> $user User data
      * @return int Authentication status code, one of 0, 100, 200
      */
     public function authUser(array $user): int

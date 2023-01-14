@@ -122,7 +122,7 @@ class AbstractAuthenticationService implements LoggerAwareInterface
      * @param string $username User name
      * @param string $extraWhere Additional WHERE clause: " AND ...
      * @param array|string $dbUserSetup User db table definition, or empty string for $this->db_user
-     * @return mixed User array or FALSE
+     * @return array<string, mixed>|false User array or FALSE
      */
     public function fetchUserRecord($username, $extraWhere = '', $dbUserSetup = '')
     {
