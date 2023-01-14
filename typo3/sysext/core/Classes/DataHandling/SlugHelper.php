@@ -456,18 +456,34 @@ class SlugHelper
         }
     }
 
+    /**
+     * Apply constraint to fetch records with same language (Slug / language should be unique).
+     * If language is -1 (all languages), there should not be any other records with the
+     * same slug of any language (or -1).
+     */
     protected function applyLanguageConstraint(QueryBuilder $queryBuilder, int $languageId)
     {
         $languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
         if (!is_string($languageFieldName)) {
             return;
         }
+        if ($languageId === -1) {
+            // if language is -1 "all languages" we need to check against all languages, thus not adding
+            // any kind of language constraints.
+            return;
+        }
 
-        // Only check records of the given language
+        // Only check records of the given language or -1 (all languages)
         $queryBuilder->andWhere(
-            $queryBuilder->expr()->eq(
-                $languageFieldName,
-                $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
+            $queryBuilder->expr()->or(
+                $queryBuilder->expr()->eq(
+                    $languageFieldName,
+                    $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    $languageFieldName,
+                    $queryBuilder->createNamedParameter(-1, Connection::PARAM_INT)
+                )
             )
         );
     }
