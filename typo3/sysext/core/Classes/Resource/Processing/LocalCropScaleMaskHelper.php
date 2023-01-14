@@ -117,7 +117,9 @@ class LocalCropScaleMaskHelper
                 $configuration['height'] ?? '',
                 $configuration['additionalParameters'],
                 $configuration['frame'] ?? '',
-                $options
+                $options,
+                // in case file is in `/typo3temp/`, it must create a result
+                $this->isTemporaryFile($originalFileName)
             );
         } else {
             $targetFileName = $this->getFilenameForImageCropScaleMask($task);
@@ -273,5 +275,10 @@ class LocalCropScaleMaskHelper
             }
         }
         return $parameters;
+    }
+
+    protected function isTemporaryFile(string $filePath): bool
+    {
+        return str_starts_with($filePath, Environment::getPublicPath() . '/typo3temp/');
     }
 }
