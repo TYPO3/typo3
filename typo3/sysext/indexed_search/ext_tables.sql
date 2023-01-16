@@ -61,7 +61,7 @@ CREATE TABLE index_rel (
 CREATE TABLE index_words (
   wid int(11) DEFAULT '0' NOT NULL,
   baseword varchar(60) DEFAULT '' NOT NULL,
-  metaphone int(11) DEFAULT '0' NOT NULL,
+  metaphone varchar(60) DEFAULT '' NOT NULL,
   is_stopword tinyint(3) DEFAULT '0' NOT NULL,
   PRIMARY KEY (wid),
   KEY baseword (baseword),
