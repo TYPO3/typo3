@@ -16,37 +16,38 @@
 
     <f:if condition="{accessContent}">
         <f:then>
-            <form
-                action="{formAction}"
-                method="post"
-                id="InfoModuleController"
-                name="webinfoForm"
-            >
-                <f:variable name="args" value="{0: 'web', 1: id}" />
-                <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
-                <h1><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title" /></h1>
-                <f:if condition="{content}">
+
+            <f:variable name="args" value="{0: 'web', 1: id}"/>
+            <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update"
+                                    args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
+            <h1>
+                <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title"/>
+            </h1>
+            <f:if condition="{content}">
+
+                <form action="{f:be.uri(route: 'web_info_overview', parameters: '{id: pageUid}')}" method="post">
                     <div class="row row-cols-auto mb-3 g-3 align-items-center">
                         <div class="col">
                             <label class="form-label" for="depth">
-                                <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.depth" />
+                                <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.depth"/>
                             </label>
-                            {depthSelector -> f:format.raw()}
+                            <f:render partial="DropdownMenu" arguments="{name: 'depth', id: 'depth', options: depthDropdownOptions, currentValue: depthDropdownCurrentValue}"/>
                         </div>
                         <div class="col">
                             <label class="form-label" for="pages">
-                                <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.type" />
+                                <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.type"/>
                             </label>
-                            {pagesSelector -> f:format.raw()}
+                            <f:render partial="DropdownMenu" arguments="{name: 'pages', id: 'pages', options: pagesDropdownOptions, currentValue: pagesDropdownCurrentValue}"/>
                         </div>
                     </div>
-                    <f:format.raw>{content}</f:format.raw>
-                </f:if>
-            </form>
+                </form>
+
+                <f:format.raw>{content}</f:format.raw>
+            </f:if>
         </f:then>
         <f:else>
             <f:be.infobox title="{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf:title')}" state="2">
-                <p><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf:message" /></p>
+                <p><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf:message"/></p>
             </f:be.infobox>
         </f:else>
     </f:if>

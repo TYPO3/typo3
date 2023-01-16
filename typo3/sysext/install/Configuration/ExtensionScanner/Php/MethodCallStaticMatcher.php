@@ -1429,4 +1429,11 @@ return [
             'Deprecation-99519-DeprecatedBackendUtilitygetFuncMenu.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getDropdownMenu' => [
+        'numberOfMandatoryArguments' => 4,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Deprecation-99564-DeprecatedBackendUtilityGetDropdownMenu.rst',
+        ],
+    ],
 ];

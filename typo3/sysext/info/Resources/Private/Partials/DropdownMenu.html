@@ -1,0 +1,24 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<div class="input-group">
+        <select
+            name="{name}"
+            id="{id}"
+            data-global-event="change"
+            data-action-navigate="$data=~s/$value/"
+            data-action-submit="$form"
+            class="form-select"
+            data-menu-identifier="{id}"
+        >
+            <f:for each="{options}" as="label" key="value">
+                <option value="{value}"
+                        {f:if(condition: '{value} == {currentValue}', then:'selected="selected"')}
+                >{label}</option>
+            </f:for>
+        </select>
+    </div>
+
+</html>

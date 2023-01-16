@@ -50,26 +50,29 @@ class PageInformationController extends InfoModuleController
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $this->init($request);
-
         $backendUser = $this->getBackendUser();
         $moduleData = $request->getAttribute('moduleData');
         $allowedModuleOptions = $this->getAllowedModuleOptions();
         if ($moduleData->cleanUp($allowedModuleOptions)) {
             $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
         }
-        $depth = (int)$moduleData->get('depth');
-        $pages = (string)$moduleData->get('pages');
+        $depth = (int)($moduleData->get('depth') ?? 0);
+        $pages = (string)($moduleData->get('pages') ?? '0');
 
         if (isset($this->fieldConfiguration[$pages])) {
             $this->fieldArray = $this->fieldConfiguration[$pages]['fields'];
         }
 
         if ($this->id) {
-            $this->view->assign('depthSelector', BackendUtility::getDropdownMenu($this->id, 'depth', $depth, $allowedModuleOptions['depth'], '', '', ['id' => 'depth']));
-            $this->view->assign('pagesSelector', BackendUtility::getDropdownMenu($this->id, 'pages', $pages, $allowedModuleOptions['pages'], '', '', ['id' => 'pages']));
-            $this->view->assign('content', $this->getTable_pages($this->id, $depth, $request));
+            $this->view->assignMultiple([
+                'pageUid' => $this->id,
+                'depthDropdownOptions' => $allowedModuleOptions['depth'],
+                'depthDropdownCurrentValue' => $depth,
+                'pagesDropdownOptions' => $allowedModuleOptions['pages'],
+                'pagesDropdownCurrentValue' => $pages,
+                'content' => $this->getTable_pages($this->id, $depth, $request),
+            ]);
         }
-
         return $this->view->renderResponse('PageInformation');
     }
 

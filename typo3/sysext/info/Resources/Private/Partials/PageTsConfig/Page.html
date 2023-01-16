@@ -5,22 +5,26 @@
 
 <h1>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:tsconf_title')}</h1>
 
-<div class="row row-cols-auto align-items-end g-3 mb-3">
-    <div class="col">
-        <label class="form-label" for="tsconf_parts">
-            {f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:display_mode')}
-        </label>
-        <f:format.raw>{dropdownMenu}</f:format.raw>
-    </div>
-    <div class="col">
-        <div class="form-check form-switch">
-            <label class="form-check-label" for="checkTsconf_alphaSort">
-                {f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:sort_alphabetic')}
+<form action="{f:be.uri(route: 'web_info_pagets', parameters: '{id: pageUid}')}" method="post" id="InfoModuleController" name="webinfoForm">
+    <div class="row row-cols-auto align-items-end g-3 mb-3">
+        <div class="col">
+            <label class="form-label" for="tsconf_parts">
+                {f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:display_mode')}
             </label>
-            <f:format.raw>{alphaSort}</f:format.raw>
+            <f:render partial="DropdownMenu" arguments="{name: 'tsconf_parts', id: 'tsconf_parts', options: dropdownMenuOptions, currentValue: dropdownMenuCurrentValue}"/>
         </div>
+        <f:if condition="{alphaSort}">
+            <div class="col">
+                <div class="form-check form-switch">
+                    <label class="form-check-label" for="checkTsconf_alphaSort">
+                        {f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:sort_alphabetic')}
+                    </label>
+                    <f:format.raw>{alphaSort}</f:format.raw>
+                </div>
+            </div>
+        </f:if>
     </div>
-</div>
+</form>
 
 <f:if condition="{tsconfParts99}">
     <f:then>

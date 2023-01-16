@@ -60,7 +60,8 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
             return $this->view->renderResponse('PageTsConfig');
         }
 
-        if ((int)$moduleData->get('tsconf_parts') === 99) {
+        $viewOption = (int)$moduleData->get('tsconf_parts');
+        if ($viewOption === 99) {
             $rootLine = BackendUtility::BEgetRootLine($this->id, '', true);
 
             $tsConfigTreeBuilder = GeneralUtility::makeInstance(TsConfigTreeBuilder::class);
@@ -149,8 +150,14 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
                 'pageTsConfig' => $pageTsConfig,
             ]);
         }
-        $this->view->assign('alphaSort', BackendUtility::getFuncCheck($this->id, 'tsconf_alphaSort', (bool)$moduleData->get('tsconf_alphaSort'), '', '', 'id="checkTsconf_alphaSort"'));
-        $this->view->assign('dropdownMenu', BackendUtility::getDropdownMenu($this->id, 'tsconf_parts', $moduleData->get('tsconf_parts'), $allowedModuleOptions['tsconf_parts'], '', '', ['id' => 'tsconf_parts']));
+        if ($viewOption !== 99) {
+            $this->view->assign('alphaSort', BackendUtility::getFuncCheck($this->id, 'tsconf_alphaSort', (bool)$moduleData->get('tsconf_alphaSort'), '', '', 'id="checkTsconf_alphaSort"'));
+        }
+        $this->view->assignMultiple([
+            'dropdownMenuOptions' => $allowedModuleOptions['tsconf_parts'],
+            'dropdownMenuCurrentValue' => $viewOption,
+        ]);
+        $this->view->assign('pageUid', $this->id);
         return $this->view->renderResponse('PageTsConfig');
     }
 

@@ -58,14 +58,19 @@ class TranslationStatusController extends InfoModuleController
         }
         $this->currentDepth = (int)$moduleData->get('depth');
         $this->currentLanguageId = (int)$moduleData->get('lang');
+
         if ($this->id) {
-            $this->view->assign('depthSelector', BackendUtility::getDropdownMenu($this->id, 'depth', $this->currentDepth, $allowedModuleOptions['depth'], '', '', ['id' => 'depth']));
-            if (!empty($allowedModuleOptions['lang'])) {
-                $this->view->assign('languageSelector', BackendUtility::getDropdownMenu($this->id, 'lang', $this->currentLanguageId, $allowedModuleOptions['lang'], '', '', ['id' => 'lang']));
-            }
             $tree = $this->getTree();
             $content = $this->renderL10nTable($tree, $request);
-            $this->view->assign('content', $content);
+            $this->view->assignMultiple([
+                'pageUid' => $this->id,
+                'depthDropdownOptions' => $allowedModuleOptions['depth'],
+                'depthDropdownCurrentValue' => $this->currentDepth,
+                'displayLangDropdown' => !empty($allowedModuleOptions['lang']),
+                'langDropdownOptions' => $allowedModuleOptions['lang'],
+                'langDropdownCurrentValue' => $this->currentLanguageId,
+                'content' => $content,
+            ]);
         }
         return $this->view->renderResponse('TranslationStatus');
     }

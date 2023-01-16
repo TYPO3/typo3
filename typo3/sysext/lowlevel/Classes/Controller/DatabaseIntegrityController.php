@@ -20,11 +20,13 @@ namespace TYPO3\CMS\Lowlevel\Controller;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -32,6 +34,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Lowlevel\Database\QueryGenerator;
 use TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck;
@@ -80,7 +83,7 @@ class DatabaseIntegrityController
         switch ($this->MOD_SETTINGS['function']) {
             case 'search':
                 $moduleTemplate->setTitle($title, $languageService->getLL('fullSearch'));
-                return $this->searchAction($moduleTemplate);
+                return $this->searchAction($moduleTemplate, $request);
             case 'records':
                 $moduleTemplate->setTitle($title, $languageService->getLL('recordStatistics'));
                 return $this->recordStatisticsAction($moduleTemplate, $request);
@@ -257,16 +260,16 @@ class DatabaseIntegrityController
     /**
      * Search (Full / Advanced)
      */
-    protected function searchAction(ModuleTemplate $view): ResponseInterface
+    protected function searchAction(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
     {
         $lang = $this->getLanguageService();
         $searchMode = $this->MOD_SETTINGS['search'];
         $fullSearch = GeneralUtility::makeInstance(QueryGenerator::class, $this->MOD_SETTINGS, $this->MOD_MENU, 'system_dbint');
         $fullSearch->setFormName('queryform');
         $submenu = '<div class="row row-cols-auto align-items-end g-3 mb-3">';
-        $submenu .= '<div class="col">' . BackendUtility::getDropdownMenu(0, 'SET[search]', $searchMode, $this->MOD_MENU['search']) . '</div>';
+        $submenu .= '<div class="col">' . self::getDropdownMenu(0, 'SET[search]', $searchMode, $this->MOD_MENU['search'], $request) . '</div>';
         if ($this->MOD_SETTINGS['search'] === 'query') {
-            $submenu .= '<div class="col">' . BackendUtility::getDropdownMenu(0, 'SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery']) . '</div>';
+            $submenu .= '<div class="col">' . self::getDropdownMenu(0, 'SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery'], $request) . '</div>';
         }
         $submenu .= '</div>';
         if ($this->MOD_SETTINGS['search'] === 'query') {
@@ -424,5 +427,95 @@ class DatabaseIntegrityController
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    //################################
+    // copied over from BackendUtility to enable deprecation of the original method
+    // @todo finish fluidification of template and remove HTML generation from controller
+    //################################
+
+    /**
+     * Returns a selector box to switch the view
+     * Based on BackendUtility::getFuncMenu() but done as new function because it has another purpose.
+     * Mingling with getFuncMenu would harm the docHeader Menu.
+     *
+     * @param mixed $mainParams The "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+     * @param string $elementName The form elements name, probably something like "SET[...]
+     * @param string|int $currentValue The value to be selected currently.
+     * @param array $menuItems An array with the menu items for the selector box
+     * @param string $script The script to send the &id to, if empty it's automatically found
+     * @param string $addParams Additional parameters to pass to the script.
+     * @param array $additionalAttributes Additional attributes for the select element
+     * @return string HTML code for selector box
+     */
+    protected static function getDropdownMenu(
+        $mainParams,
+        $elementName,
+        $currentValue,
+        $menuItems,
+        ServerRequestInterface $request,
+        $script = '',
+        $addParams = '',
+        array $additionalAttributes = []
+    ) {
+        if (!is_array($menuItems) || count($menuItems) <= 1) {
+            return '';
+        }
+        $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $request, $script);
+        $options = [];
+        foreach ($menuItems as $value => $label) {
+            $options[] = '<option value="'
+                . htmlspecialchars($value) . '"'
+                . ((string)$currentValue === (string)$value ? ' selected="selected"' : '') . '>'
+                . htmlspecialchars($label, ENT_COMPAT, 'UTF-8', false) . '</option>';
+        }
+        $dataMenuIdentifier = str_replace(['SET[', ']'], '', $elementName);
+        $dataMenuIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($dataMenuIdentifier);
+        $dataMenuIdentifier = str_replace('_', '-', $dataMenuIdentifier);
+        // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
+        $attributes = GeneralUtility::implodeAttributes(array_merge([
+            'name' => $elementName,
+            'data-menu-identifier' => $dataMenuIdentifier,
+            'data-global-event' => 'change',
+            'data-action-navigate' => '$data=~s/$value/',
+            'data-navigate-value' => $scriptUrl . '&' . $elementName . '=${value}',
+        ], $additionalAttributes), true);
+        return '
+        <div class="input-group">
+            <!-- Function Menu of module -->
+            <select class="form-select" ' . $attributes . '>
+                ' . implode(LF, $options) . '
+            </select>
+        </div>';
+    }
+
+    /**
+     * Builds the URL to the current script with given arguments
+     *
+     * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+     * @param string $addParams Additional parameters to pass to the script.
+     * @param string $script The script to send the &id to, if empty it's automatically found
+     * @return string The complete script URL
+     * @todo Check if this can be removed or replaced by routing
+     */
+    protected static function buildScriptUrl($mainParams, string $addParams, ServerRequestInterface $request, string $script = '')
+    {
+        if (!is_array($mainParams)) {
+            $mainParams = ['id' => $mainParams];
+        }
+
+        $route = $request->getAttribute('route');
+        if ($route instanceof Route) {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $scriptUrl = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $mainParams);
+            $scriptUrl .= $addParams;
+        } else {
+            if (!$script) {
+                $script = PathUtility::basename(Environment::getCurrentScript());
+            }
+            $scriptUrl = $script . HttpUtility::buildQueryString($mainParams, '?') . $addParams;
+        }
+
+        return $scriptUrl;
     }
 }

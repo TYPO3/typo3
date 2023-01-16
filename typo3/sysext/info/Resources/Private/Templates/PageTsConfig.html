@@ -16,23 +16,16 @@
 
     <f:if condition="{accessContent}">
         <f:then>
-            <form
-                action="{formAction}"
-                method="post"
-                id="InfoModuleController"
-                name="webinfoForm"
-            >
-                <f:variable name="args" value="{0: 'web', 1: id}" />
-                <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
-                <f:if condition="{pageZero}">
-                    <f:then>
-                        <f:render partial="PageTsConfig/PageZero" arguments="{_all}" />
-                    </f:then>
-                    <f:else>
-                        <f:render partial="PageTsConfig/Page" arguments="{_all}" />
-                    </f:else>
-                </f:if>
-            </form>
+            <f:variable name="args" value="{0: 'web', 1: id}" />
+            <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
+            <f:if condition="{pageZero}">
+                <f:then>
+                    <f:render partial="PageTsConfig/PageZero" arguments="{_all}" />
+                </f:then>
+                <f:else>
+                    <f:render partial="PageTsConfig/Page" arguments="{_all}" />
+                </f:else>
+            </f:if>
         </f:then>
         <f:else>
             <f:be.infobox title="{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf:title')}" state="2">
