@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'general' => [
         'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget_group.general',

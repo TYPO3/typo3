@@ -26,6 +26,9 @@
 	"conflict": {
 		"typo3/cms": "*"
 	},
+	"suggest": {
+		"typo3/cms-dashboard": "TYPO3 users can add widgets that can help to optimise their website for search engines"
+	},
 	"extra": {
 		"branch-alias": {
 			"dev-main": "12.2.x-dev"

@@ -1,0 +1,41 @@
+<html
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Widget/Widget"/>
+
+<f:section name="main">
+    <f:if condition="!{pages}">
+        <f:then>
+            <f:translate key="LLL:EXT:seo/Resources/Private/Language/locallang_dashboard.xlf:widget.pagesWithoutMetaDescription.noMissingDescriptions" />
+        </f:then>
+        <f:else>
+            <div class="widget-table-wrapper">
+                <table class="widget-table">
+                    <f:for each="{pages}" as="page">
+                        <tr>
+                            <td>
+                                <strong>{page.title}</strong>
+                                <br/>
+                                {page.frontendUrl}
+                            </td>
+                            <td class="text-right">
+                                <div class="btn-group">
+                                    <a href="{page.frontendUrl}" target="_blank" class="btn">
+                                        <core:icon identifier="actions-eye" alternativeMarkupIdentifier="inline"/>
+                                    </a>
+                                    <be:link.editRecord uid="{page.uid}" table="pages" fields="description" returnUrl="{be:moduleLink(route: 'dashboard')}" class="btn">
+                                        <core:icon identifier="actions-open" alternativeMarkupIdentifier="inline"/>
+                                    </be:link.editRecord>
+                                </div>
+                            </td>
+                        </tr>
+                    </f:for>
+                </table>
+            </div>
+        </f:else>
+    </f:if>
+</f:section>

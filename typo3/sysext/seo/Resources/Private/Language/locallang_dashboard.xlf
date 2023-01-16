@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/locallang_dashboard.xlf"
+		  date="2023-01-16T14:00:42Z" product-name="seo">
+		<header/>
+		<body>
+			<trans-unit id="widget.group.seo" resname="widget.group.seo">
+				<source>SEO</source>
+			</trans-unit>
+			<trans-unit id="widget.pagesWithoutMetaDescription.title" resname="widget.pagesWithoutMetaDescription.title">
+				<source>Pages missing Meta Description</source>
+			</trans-unit>
+			<trans-unit id="widget.pagesWithoutMetaDescription.description" resname="widget.pagesWithoutMetaDescription.description">
+				<source>Find and display pages with missing meta description</source>
+			</trans-unit>
+			<trans-unit id="widget.pagesWithoutMetaDescription.noMissingDescriptions" resname="widget.pagesWithoutMetaDescription.noMissingDescriptions">
+				<source>There are no pages with missing description. Good job!</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

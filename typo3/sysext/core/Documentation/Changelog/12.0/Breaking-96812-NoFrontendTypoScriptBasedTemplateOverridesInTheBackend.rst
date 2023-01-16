@@ -34,7 +34,7 @@ for the "root" page zero, since that page can not be rendered in the frontend. I
 however, we have many modules that are not within page context: In general all modules that
 do not have a page tree. This gives the "Use frontend TypoScript to configure backend modules"
 approach some hard headaches: It forces the ConfigurationManager to still select "some" page as
-frontend TypoScript entry point. It practice, the first non-hidden tree-level-one page
+frontend TypoScript entry point. In practice, the first non-hidden tree-level-one page
 that has a sys_template record is selected. This strategy is both ugly and troublesome,
 and leads to the situation that backend module configuration had to be bound to this first page,
 which could easily explode when for instance pages are resorted - apart from the fact that
@@ -242,7 +242,7 @@ immediately after widget instantiation. The new code thus looks like this:
             // The second argument is the Composer 'name' of the extension that adds the widget.
             // It is needed to instruct BackendViewFactory to look up templates in this package
             // next to the default location 'typo3/cms-dashboard', too.
-            $view = $this->backendViewFactory->create($this->request, ['myVendor/myPackage']);
+            $view = $this->backendViewFactory->create($this->request, ['typo3/cms-dashboard', 'myVendor/myPackage']);
             $this->view->assignMultiple([...]);
             return $this->view->render('Widget/ChartWidget');
         }
