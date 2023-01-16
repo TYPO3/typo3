@@ -18,10 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Utility;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -35,23 +36,6 @@ class LocalizationUtility
      * @var string
      */
     protected static $locallangPath = 'Resources/Private/Language/';
-
-    /**
-     * Local Language content
-     *
-     * @var array
-     */
-    protected static $LOCAL_LANG = [];
-
-    /**
-     * Contains those LL keys, which have been set to (empty) in TypoScript.
-     * This is necessary, as we cannot distinguish between a nonexisting
-     * translation and a label that has been cleared by TS.
-     * In both cases ['key'][0]['target'] is "".
-     *
-     * @var array
-     */
-    protected static $LOCAL_LANG_UNSET = [];
 
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -75,7 +59,6 @@ class LocalizationUtility
             // (from for example Fluid). Returning null allows null coalescing to a default value when that happens.
             return null;
         }
-        $value = null;
         if (str_starts_with($key, 'LLL:')) {
             $keyParts = explode(':', $key);
             unset($keyParts[0]);
@@ -90,38 +73,19 @@ class LocalizationUtility
             }
             $languageFilePath = static::getLanguageFilePath($extensionName);
         }
-        $languageKeys = static::getLanguageKeys();
         if ($languageKey === null) {
-            $languageKey = $languageKeys['languageKey'];
+            $languageKey = static::getLanguageKey();
         }
-        if (empty($alternativeLanguageKeys)) {
-            $alternativeLanguageKeys = $languageKeys['alternativeLanguageKeys'];
-        }
-        static::initializeLocalization($languageFilePath, $languageKey, $alternativeLanguageKeys, $extensionName);
+        $languageService = static::initializeLocalization($languageFilePath, $languageKey, $alternativeLanguageKeys ?? [], $extensionName);
+        $resolvedLabel = $languageService->sL('LLL:' . $languageFilePath . ':' . $key);
+        $value = $resolvedLabel !== '' ? $resolvedLabel : null;
 
-        // The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
-        if (!empty(self::$LOCAL_LANG[$languageFilePath][$languageKey][$key][0]['target'])
-            || isset(self::$LOCAL_LANG_UNSET[$languageFilePath][$languageKey][$key])
-        ) {
-            // Local language translation for key exists
-            $value = self::$LOCAL_LANG[$languageFilePath][$languageKey][$key][0]['target'];
-        } elseif (!empty($alternativeLanguageKeys)) {
-            foreach ($alternativeLanguageKeys as $language) {
-                if (!empty(self::$LOCAL_LANG[$languageFilePath][$language][$key][0]['target'])
-                    || isset(self::$LOCAL_LANG_UNSET[$languageFilePath][$language][$key])
-                ) {
-                    // Alternative language translation for key exists
-                    $value = self::$LOCAL_LANG[$languageFilePath][$language][$key][0]['target'];
-                    break;
-                }
+        // Check if a value was explicitly set to "" via TypoScript, if so, we need to ensure that this is "" and not null
+        if ($extensionName) {
+            $overrideLabels = static::loadTypoScriptLabels($extensionName);
+            if ($value === null && isset($overrideLabels[$languageKey])) {
+                $value = '';
             }
-        }
-        if ($value === null && (!empty(self::$LOCAL_LANG[$languageFilePath]['default'][$key][0]['target'])
-            || isset(self::$LOCAL_LANG_UNSET[$languageFilePath]['default'][$key]))
-        ) {
-            // Default language translation for key exists
-            // No charset conversion because default is English and thereby ASCII
-            $value = self::$LOCAL_LANG[$languageFilePath]['default'][$key][0]['target'];
         }
 
         if (is_array($arguments) && $arguments !== [] && $value !== null) {
@@ -139,31 +103,32 @@ class LocalizationUtility
      *
      * @param string[] $alternativeLanguageKeys
      */
-    protected static function initializeLocalization(string $languageFilePath, string $languageKey, array $alternativeLanguageKeys, string $extensionName = null): void
+    protected static function initializeLocalization(string $languageFilePath, string $languageKey, array $alternativeLanguageKeys, ?string $extensionName): LanguageService
     {
-        $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
-
-        if (empty(self::$LOCAL_LANG[$languageFilePath][$languageKey])) {
-            $parsedData = $languageFactory->getParsedData($languageFilePath, $languageKey);
-            foreach ($parsedData as $tempLanguageKey => $data) {
-                if (!empty($data)) {
-                    self::$LOCAL_LANG[$languageFilePath][$tempLanguageKey] = $data;
-                }
-            }
-        }
-        if ($languageKey !== 'default') {
-            foreach ($alternativeLanguageKeys as $alternativeLanguageKey) {
-                if (empty(self::$LOCAL_LANG[$languageFilePath][$alternativeLanguageKey])) {
-                    $tempLL = $languageFactory->getParsedData($languageFilePath, $alternativeLanguageKey);
-                    if (isset($tempLL[$alternativeLanguageKey])) {
-                        self::$LOCAL_LANG[$languageFilePath][$alternativeLanguageKey] = $tempLL[$alternativeLanguageKey];
-                    }
-                }
-            }
-        }
+        $languageService = self::buildLanguageService($languageKey, $alternativeLanguageKeys, $languageFilePath);
         if (!empty($extensionName)) {
-            static::loadTypoScriptLabels($extensionName, $languageFilePath);
+            $overrideLabels = static::loadTypoScriptLabels($extensionName);
+            if ($overrideLabels !== []) {
+                $languageService->overrideLabels($languageFilePath, $overrideLabels);
+            }
         }
+        return $languageService;
+    }
+
+    protected static function buildLanguageService(string $languageKey, array $alternativeLanguageKeys, $languageFilePath): LanguageService
+    {
+        $languageKeyHash = sha1(json_encode(array_merge([$languageKey], $alternativeLanguageKeys, [$languageFilePath])));
+        $cache = self::getRuntimeCache();
+        if (!$cache->get($languageKeyHash)) {
+            $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create($languageKey);
+            $languageService->init($languageKey);
+            if ($alternativeLanguageKeys !== []) {
+                $languageService->setDependencies($alternativeLanguageKeys);
+            }
+            $languageService->includeLLFile($languageFilePath);
+            $cache->set($languageKeyHash, $languageService);
+        }
+        return $cache->get($languageKeyHash);
     }
 
     /**
@@ -175,14 +140,10 @@ class LocalizationUtility
     }
 
     /**
-     * Sets the currently active language keys.
+     * Resolves the currently active language key.
      */
-    protected static function getLanguageKeys(): array
+    protected static function getLanguageKey(): string
     {
-        $languageKeys = [
-            'languageKey' => 'default',
-            'alternativeLanguageKeys' => [],
-        ];
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
         ) {
@@ -191,56 +152,45 @@ class LocalizationUtility
 
             // Get values from site language
             if ($siteLanguage !== null) {
-                $languageKeys['languageKey'] = $siteLanguage->getTypo3Language();
-            }
-
-            $locales = GeneralUtility::makeInstance(Locales::class);
-            if ($locales->isValidLanguageKey($languageKeys['languageKey'])) {
-                $languageKeys['alternativeLanguageKeys'] = $locales->getLocaleDependencies($languageKeys['languageKey']);
-                $languageKeys['alternativeLanguageKeys'] = array_reverse($languageKeys['alternativeLanguageKeys']);
+                return $siteLanguage->getTypo3Language();
             }
         } elseif (!empty($GLOBALS['BE_USER']->user['lang'])) {
-            $languageKeys['languageKey'] = $GLOBALS['BE_USER']->user['lang'];
+            return $GLOBALS['BE_USER']->user['lang'];
         } elseif (!empty(static::getLanguageService()->lang)) {
-            $languageKeys['languageKey'] = static::getLanguageService()->lang;
+            return static::getLanguageService()->lang;
         }
-        return $languageKeys;
+        return 'default';
     }
 
     /**
      * Overwrites labels that are set via TypoScript.
-     * TS locallang labels have to be configured like:
-     * plugin.tx_myextension._LOCAL_LANG.languageKey.key = value
+     * TS labels have to be configured like:
+     *     plugin.tx_myextension._LOCAL_LANG.languageKey.key = value
      */
-    protected static function loadTypoScriptLabels(string $extensionName, string $languageFilePath): void
+    protected static function loadTypoScriptLabels(string $extensionName): array
     {
         $configurationManager = static::getConfigurationManager();
         $frameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName);
         if (!is_array($frameworkConfiguration['_LOCAL_LANG'] ?? false)) {
-            return;
+            return [];
         }
-        self::$LOCAL_LANG_UNSET[$languageFilePath] = [];
+        $finalLabels = [];
         foreach ($frameworkConfiguration['_LOCAL_LANG'] as $languageKey => $labels) {
             if (!is_array($labels)) {
                 continue;
             }
             foreach ($labels as $labelKey => $labelValue) {
                 if (is_string($labelValue)) {
-                    self::$LOCAL_LANG[$languageFilePath][$languageKey][$labelKey][0]['target'] = $labelValue;
-                    if ($labelValue === '') {
-                        self::$LOCAL_LANG_UNSET[$languageFilePath][$languageKey][$labelKey] = '';
-                    }
+                    $finalLabels[$languageKey][$labelKey] = $labelValue;
                 } elseif (is_array($labelValue)) {
                     $labelValue = self::flattenTypoScriptLabelArray($labelValue, $labelKey);
                     foreach ($labelValue as $key => $value) {
-                        self::$LOCAL_LANG[$languageFilePath][$languageKey][$key][0]['target'] = $value;
-                        if ($value === '') {
-                            self::$LOCAL_LANG_UNSET[$languageFilePath][$languageKey][$key] = '';
-                        }
+                        $finalLabels[$languageKey][$key] = $value;
                     }
                 }
             }
         }
+        return $finalLabels;
     }
 
     /**
@@ -302,5 +252,10 @@ class LocalizationUtility
     protected static function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    protected static function getRuntimeCache(): FrontendInterface
+    {
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
     }
 }

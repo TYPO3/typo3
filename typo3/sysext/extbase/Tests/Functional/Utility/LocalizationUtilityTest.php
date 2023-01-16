@@ -29,150 +29,12 @@ class LocalizationUtilityTest extends FunctionalTestCase
 {
     protected ConfigurationManagerInterface&MockObject $configurationManagerInterfaceMock;
 
-    /**
-     * LOCAL_LANG array fixture
-     */
-    protected array $LOCAL_LANG = [];
+    protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/label_test'];
 
-    /**
-     * File path of locallang for extension "core"
-     */
-    protected string $languageFilePath = '';
-
-    /**
-     * Prepare class mocking some dependencies
-     */
     protected function setUp(): void
     {
         parent::setUp();
-        $this->languageFilePath = $this->getLanguageFilePath('core');
-        $this->LOCAL_LANG = [
-            $this->languageFilePath => [
-                'default' => [
-                    'key1' => [
-                        [
-                            'source' => 'English label for key1',
-                            'target' => 'English label for key1',
-                        ],
-                    ],
-                    'key2' => [
-                        [
-                            'source' => 'English label for key2',
-                            'target' => 'English label for key2',
-                        ],
-                    ],
-                    'key3' => [
-                        [
-                            'source' => 'English label for key3',
-                            'target' => 'English label for key3',
-                        ],
-                    ],
-                    'key4' => [
-                        [
-                            'source' => 'English label for key4',
-                            'target' => 'English label for key4',
-                        ],
-                    ],
-                    'keyWithPlaceholder' => [
-                        [
-                            'source' => 'English label with number %d',
-                            'target' => 'English label with number %d',
-                        ],
-                    ],
-                    'keyWithPlaceholderAndNoArguments' => [
-                        [
-                            'source' => '%d/%m/%Y',
-                            'target' => '%d/%m/%Y',
-                        ],
-                    ],
-                ],
-                'dk' => [
-                    'key1' => [
-                        [
-                            'source' => 'English label for key1',
-                            'target' => 'Dansk label for key1',
-                        ],
-                    ],
-                    // not translated in dk => no target (llxml)
-                    'key2' => [
-                        [
-                            'source' => 'English label for key2',
-                        ],
-                    ],
-                    'key3' => [
-                        [
-                            'source' => 'English label for key3',
-                        ],
-                    ],
-                    // not translated in dk => empty target (xliff)
-                    'key4' => [
-                        [
-                            'source' => 'English label for key4',
-                            'target' => '',
-                        ],
-                    ],
-                    // not translated in dk => empty target (xliff)
-                    'key5' => [
-                        [
-                            'source' => 'English label for key5',
-                            'target' => '',
-                        ],
-                    ],
-                    'keyWithPlaceholder' => [
-                        [
-                            'source' => 'English label with number %d',
-                        ],
-                    ],
-                    'keyWithPlaceholderAndNoArguments' => [
-                        [
-                            'source' => '%d/%m/%Y',
-                            'target' => '%d-%m-%Y',
-                        ],
-                    ],
-                ],
-                // fallback language for labels which are not translated in dk
-                'dk_alt' => [
-                    'key1' => [
-                        [
-                            'source' => 'English label for key1',
-                        ],
-                    ],
-                    'key2' => [
-                        [
-                            'source' => 'English label for key2',
-                            'target' => 'Dansk alternative label for key2',
-                        ],
-                    ],
-                    'key3' => [
-                        [
-                            'source' => 'English label for key3',
-                        ],
-                    ],
-                    // not translated in dk_alt => empty target (xliff)
-                    'key4' => [
-                        [
-                            'source' => 'English label for key4',
-                            'target' => '',
-                        ],
-                    ],
-                    'key5' => [
-                        [
-                            'source' => 'English label for key5',
-                            'target' => 'Dansk alternative label for key5',
-                        ],
-                    ],
-                    'keyWithPlaceholder' => [
-                        [
-                            'source' => 'English label with number %d',
-                        ],
-                    ],
-                ],
-
-            ],
-        ];
-
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
-
         $this->configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
         $property = $reflectionClass->getProperty('configurationManager');
         $property->setAccessible(true);
@@ -185,23 +47,10 @@ class LocalizationUtilityTest extends FunctionalTestCase
     protected function tearDown(): void
     {
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
-
         $property = $reflectionClass->getProperty('configurationManager');
         $property->setAccessible(true);
         $property->setValue(null);
-
-        $property = $reflectionClass->getProperty('LOCAL_LANG');
-        $property->setAccessible(true);
-        $property->setValue([]);
-
-        GeneralUtility::purgeInstances();
-
         parent::tearDown();
-    }
-
-    protected function getLanguageFilePath(string $extensionName): string
-    {
-        return  'EXT:' . $extensionName . '/Resources/Private/Language/locallang.xlf';
     }
 
     /**
@@ -232,7 +81,7 @@ class LocalizationUtilityTest extends FunctionalTestCase
             ],
         ];
         $result = $method->invoke(null, $input);
-        self::assertEquals($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     /**
@@ -255,10 +104,10 @@ class LocalizationUtilityTest extends FunctionalTestCase
     {
         return [
             'get translated key' =>
-            ['key1', 'dk', 'Dansk label for key1'],
+            ['key1', 'da', 'Dansk label for key1'],
 
             'fallback to English when translation is missing for key' =>
-            ['key2', 'dk', 'English label for key2'],
+            ['key2', 'da', 'English label for key2'],
 
             'fallback to English for non existing language' =>
             ['key2', 'xx', 'English label for key2'],
@@ -270,22 +119,16 @@ class LocalizationUtilityTest extends FunctionalTestCase
             ['keyWithPlaceholderAndNoArguments', 'default', '%d/%m/%Y', [], []],
 
             'placeholder and empty arguments in translation' =>
-            ['keyWithPlaceholderAndNoArguments', 'dk', '%d-%m-%Y', [], []],
+            ['keyWithPlaceholderAndNoArguments', 'da', '%d-%m-%Y', [], []],
 
             'get translated key from primary language' =>
-            ['key1', 'dk', 'Dansk label for key1', ['dk_alt']],
+            ['key1', 'da', 'Dansk label for key1', ['da_alt']],
 
-            'fallback to alternative language if translation is missing(llxml)' =>
-            ['key2', 'dk', 'Dansk alternative label for key2', ['dk_alt']],
+            'fallback to alternative language if translation is missing' =>
+            ['key2', 'da', 'Dansk alternative label for key2', ['da_alt']],
 
-            'fallback to alternative language if translation is missing(xlif)' =>
-            ['key5', 'dk', 'Dansk alternative label for key5', ['dk_alt']],
-
-            'fallback to English for label not translated in dk and dk_alt(llxml)' =>
-            ['key3', 'dk', 'English label for key3', ['dk_alt']],
-
-            'fallback to English for label not translated in dk and dk_alt(xlif)' =>
-            ['key4', 'dk', 'English label for key4', ['dk_alt']],
+            'fallback to English for label not translated in da and da_alt' =>
+            ['key3', 'da', 'English label for key3', ['da_alt']],
         ];
     }
 
@@ -300,25 +143,16 @@ class LocalizationUtilityTest extends FunctionalTestCase
         array $altLanguageKeys = [],
         array $arguments = null
     ): void {
+        // No TypoScript overrides
         $this->configurationManagerInterfaceMock
             ->method('getConfiguration')
-            ->with('Framework', 'core', null)
+            ->with('Framework', 'label_test', null)
             ->willReturn([]);
 
-        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
-
-        $property = $reflectionClass->getProperty('LOCAL_LANG');
-        $property->setAccessible(true);
-        $property->setValue($this->LOCAL_LANG);
-
-        $backendUserAuthentication = $this->createMock(BackendUserAuthentication::class);
-        $backendUserAuthentication->user = [
-            'lang' => $languageKey,
-        ];
-        $GLOBALS['BE_USER'] = $backendUserAuthentication;
-        $GLOBALS['LANG'] = $this->LOCAL_LANG;
-
-        self::assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, null, $altLanguageKeys));
+        $backendUserAuthentication = new BackendUserAuthentication();
+        $backendUserAuthentication->user = ['lang' => $languageKey];
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($backendUserAuthentication);
+        self::assertSame($expected, LocalizationUtility::translate($key, 'label_test', $arguments, alternativeLanguageKeys: $altLanguageKeys));
     }
 
     /**
@@ -332,139 +166,52 @@ class LocalizationUtilityTest extends FunctionalTestCase
         array $altLanguageKeys = [],
         array $arguments = null
     ): void {
+        // No TypoScript overrides
         $this->configurationManagerInterfaceMock
             ->method('getConfiguration')
-            ->with('Framework', 'core', null)
+            ->with('Framework', 'label_test', null)
             ->willReturn([]);
 
-        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
-
-        $property = $reflectionClass->getProperty('LOCAL_LANG');
-        $property->setAccessible(true);
-        $property->setValue($this->LOCAL_LANG);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
-        self::assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, $languageKey, $altLanguageKeys));
-    }
-
-    public function loadTypoScriptLabelsProvider(): array
-    {
-        return [
-            'override labels with typoscript' => [
-                'LOCAL_LANG' => [
-                    $this->getLanguageFilePath('core') => [
-                        'dk' => [
-                            'key1' => [
-                                [
-                                    'source' => 'English label for key1',
-                                    'target' => 'Dansk label for key1 core',
-                                ],
-                            ],
-                            'key2' => [
-                                [
-                                    'source' => 'English label for key2',
-                                ],
-                            ],
-                            'key3.subkey1' => [
-                                [
-                                    'source' => 'English label for key3',
-                                ],
-                            ],
-                        ],
-                    ],
-                    $this->getLanguageFilePath('backend') => [
-                        'dk' => [
-                            'key1' => [
-                                [
-                                    'source' => 'English label for key1',
-                                    'target' => 'Dansk label for key1 backend',
-                                ],
-                            ],
-                            'key2' => [
-                                [
-                                    'source' => 'English label for key2',
-                                ],
-                            ],
-                            'key3.subkey1' => [
-                                [
-                                    'source' => 'English label for key3',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                'typoscript LOCAL_LANG' => [
-                    '_LOCAL_LANG' => [
-                        'dk' => [
-                            'key1' => 'key1 value from TS core',
-                            'key3' => [
-                                'subkey1' => 'key3.subkey1 value from TS core',
-                                // this key doesn't exist in xml files
-                                'subkey2' => [
-                                    'subsubkey' => 'key3.subkey2.subsubkey value from TS core',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                'language key' => 'dk',
-                'expected' => [
-                    'key1' => [
-                        [
-                            'source' => 'English label for key1',
-                            'target' => 'key1 value from TS core',
-                        ],
-                    ],
-                    'key2' => [
-                        [
-                            'source' => 'English label for key2',
-                        ],
-                    ],
-                    'key3.subkey1' => [
-                        [
-                            'source' => 'English label for key3',
-                            'target' => 'key3.subkey1 value from TS core',
-                        ],
-                    ],
-                    'key3.subkey2.subsubkey' => [
-                        [
-                            'target' => 'key3.subkey2.subsubkey value from TS core',
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        self::assertSame($expected, LocalizationUtility::translate($key, 'label_test', $arguments, $languageKey, $altLanguageKeys));
     }
 
     /**
-     * Tests whether labels from xml are overwritten by TypoScript labels
+     * Tests whether labels from XLF are overwritten by TypoScript labels
      *
-     * @dataProvider loadTypoScriptLabelsProvider
      * @test
      */
-    public function loadTypoScriptLabels(array $LOCAL_LANG, array $typoScriptLocalLang, string $languageKey, array $expected): void
+    public function loadTypoScriptLabels(): void
     {
-        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
-
-        $property = $reflectionClass->getProperty('LOCAL_LANG');
-        $property->setAccessible(true);
-        $property->setValue($LOCAL_LANG);
-
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
         $this->configurationManagerInterfaceMock
             ->expects(self::atLeastOnce())
             ->method('getConfiguration')
-            ->with($configurationType, 'core', null)
-            ->willReturn($typoScriptLocalLang);
+            ->with($configurationType, 'label_test', null)
+            ->willReturn(['_LOCAL_LANG' => [
+                    'default' => [
+                        'key3' => 'English label for key3 from TypoScript',
+                    ],
+                    'da' => [
+                        'key1' => 'key1 value from TS core',
+                        'key3' => [
+                            'subkey1' => 'key3.subkey1 value from TypoScript',
+                            // this key doesn't exist in XLF files
+                            'subkey2' => [
+                                'subsubkey' => 'key3.subkey2.subsubkey value from TypoScript',
+                            ],
+                        ],
+                    ],
+                ],
+            ]);
 
-        $method = $reflectionClass->getMethod('loadTypoScriptLabels');
-        $method->setAccessible(true);
-        $method->invoke(null, 'core', $this->languageFilePath);
-
-        $property = $reflectionClass->getProperty('LOCAL_LANG');
-        $property->setAccessible(true);
-        $result = $property->getValue();
-
-        self::assertEquals($expected, $result[$this->languageFilePath][$languageKey]);
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        self::assertSame('key1 value from TS core', LocalizationUtility::translate('key1', 'label_test', languageKey: 'da'));
+        // Label from XLF file, no override
+        self::assertSame('English label for key2', LocalizationUtility::translate('key2', 'label_test', languageKey: 'da'));
+        self::assertSame('English label for key3 from TypoScript', LocalizationUtility::translate('key3', 'label_test', languageKey: 'da'));
+        self::assertSame('key3.subkey1 value from TypoScript', LocalizationUtility::translate('key3.subkey1', 'label_test', languageKey: 'da'));
+        self::assertSame('key3.subkey2.subsubkey value from TypoScript', LocalizationUtility::translate('key3.subkey2.subsubkey', 'label_test', languageKey: 'da'));
     }
 
     /**
@@ -472,36 +219,24 @@ class LocalizationUtilityTest extends FunctionalTestCase
      */
     public function clearLabelWithTypoScript(): void
     {
-        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
-
-        $property = $reflectionClass->getProperty('LOCAL_LANG');
-        $property->setAccessible(true);
-        $property->setValue($this->LOCAL_LANG);
-
-        $typoScriptLocalLang = [
-            '_LOCAL_LANG' => [
-                'dk' => [
-                    'key1' => '',
-                ],
-            ],
-        ];
-
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
         $this->configurationManagerInterfaceMock
             ->expects(self::atLeastOnce())
             ->method('getConfiguration')
-            ->with($configurationType, 'core', null)
-            ->willReturn($typoScriptLocalLang);
-
-        $method = $reflectionClass->getMethod('loadTypoScriptLabels');
-        $method->setAccessible(true);
-        $method->invoke(null, 'core', $this->languageFilePath);
+            ->with($configurationType, 'label_test', null)
+            ->willReturn([
+                '_LOCAL_LANG' => [
+                    'da' => [
+                        'key1' => '',
+                    ],
+                ],
+            ]);
 
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
-        $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
-        self::assertNotNull($result);
-        self::assertEquals('', $result);
+        $result = LocalizationUtility::translate('key1', 'label_test', languageKey: 'da');
+
+        self::assertSame('', $result);
     }
 
     /**
@@ -519,11 +254,9 @@ class LocalizationUtilityTest extends FunctionalTestCase
      */
     public function translateWillReturnLabelsFromTsEvenIfNoXlfFileExists(): void
     {
-        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
-
         $typoScriptLocalLang = [
             '_LOCAL_LANG' => [
-                'dk' => [
+                'da' => [
                     'key1' => 'I am a new key and there is no xlf file',
                 ],
             ],
@@ -536,14 +269,10 @@ class LocalizationUtilityTest extends FunctionalTestCase
             ->with($configurationType, 'core', null)
             ->willReturn($typoScriptLocalLang);
 
-        $method = $reflectionClass->getMethod('loadTypoScriptLabels');
-        $method->setAccessible(true);
-        $method->invoke(null, 'core', ''); // setting the language file path to an empty string here
-
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
-        $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
-        self::assertNotNull($result);
-        self::assertEquals('I am a new key and there is no xlf file', $result);
+        $result = LocalizationUtility::translate('key1', 'core', languageKey: 'da');
+
+        self::assertSame('I am a new key and there is no xlf file', $result);
     }
 }

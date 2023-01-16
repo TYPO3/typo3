@@ -67,6 +67,11 @@ class LanguageService
      */
     protected array $labels = [];
 
+    /**
+     * @var string[][]
+     */
+    protected array $overrideLabels = [];
+
     protected Locales $locales;
     protected LocalizationFactory $localizationFactory;
     protected FrontendInterface $runtimeCache;
@@ -137,8 +142,6 @@ class LanguageService
      */
     protected function getLLL(string $index, array $localLanguage): string
     {
-        // Get Local Language. Special handling for all extensions that
-        // read PHP LL files and pass arrays here directly.
         if (isset($localLanguage[$this->lang][$index])) {
             $value = is_string($localLanguage[$this->lang][$index])
                 ? $localLanguage[$this->lang][$index]
@@ -193,7 +196,11 @@ class LanguageService
         }
         $parts = explode(':', trim($restStr));
         $parts[0] = $extensionPrefix . $parts[0];
-        $output = $this->getLLL($parts[1] ?? '', $this->readLLfile($parts[0]));
+        $labelsFromFile = $this->readLLfile($parts[0]);
+        if (is_array($this->overrideLabels[$parts[0]] ?? null)) {
+            $labelsFromFile = array_replace_recursive($labelsFromFile, $this->overrideLabels[$parts[0]]);
+        }
+        $output = $this->getLLL($parts[1] ?? '', $labelsFromFile);
         $output .= $this->debugLL($input);
         $this->runtimeCache->set($cacheIdentifier, $output);
         return $output;
@@ -223,7 +230,7 @@ class LanguageService
      */
     protected function readLLfile(string $fileRef): array
     {
-        $cacheIdentifier = 'labels_file_' . md5($fileRef . $this->lang);
+        $cacheIdentifier = 'labels_file_' . md5($fileRef . $this->lang . json_encode($this->languageDependencies));
         $cacheEntry = $this->runtimeCache->get($cacheIdentifier);
         if (is_array($cacheEntry)) {
             return $cacheEntry;
@@ -246,5 +253,38 @@ class LanguageService
 
         $this->runtimeCache->set($cacheIdentifier, $localLanguage);
         return $localLanguage;
+    }
+
+    /**
+     * Define custom labels which can be overridden for a given file. This is typically
+     * the case for TypoScript plugins.
+     */
+    public function overrideLabels(string $fileRef, array $labels): void
+    {
+        $localLanguage = [
+            'default' => $labels['default'] ?? [],
+        ];
+        if ($this->lang !== 'default') {
+            foreach ($this->languageDependencies as $language) {
+                // Populate the initial values with default, if no labels for the current language are given
+                if (!isset($localLanguage[$this->lang])) {
+                    $localLanguage[$this->lang] = $localLanguage['default'];
+                }
+                if ($this->lang !== 'default' && isset($labels[$language])) {
+                    $localLanguage[$this->lang] = array_replace_recursive($localLanguage[$this->lang], $labels[$language]);
+                }
+            }
+        }
+        $this->overrideLabels[$fileRef] = $localLanguage;
+    }
+
+    /**
+     * This is needed as Extbase LocalizationUtility allows to set custom dependencies.
+     * @internal This is not public API and might be removed at any time.
+     */
+    public function setDependencies(array $dependencies): void
+    {
+        $this->languageDependencies = array_merge([$this->lang], $dependencies);
+        $this->languageDependencies = array_reverse($this->languageDependencies);
     }
 }
