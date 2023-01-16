@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\TsConfigTreeBuilder;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -176,7 +177,14 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
                 default:
                     // Entire array
             }
-            $this->view->assign('tree', $this->renderTree($pageTsConfig, '', '', (bool)$moduleData->get('tsconf_alphaSort')));
+
+            if ($moduleData->get('tsconf_alphaSort')) {
+                $pageTsConfig = ArrayUtility::sortByKeyRecursive($pageTsConfig);
+            }
+
+            $this->view->assignMultiple([
+                'pageTsConfig' => $pageTsConfig,
+            ]);
         }
         $this->view->assign('alphaSort', BackendUtility::getFuncCheck($this->id, 'tsconf_alphaSort', (bool)$moduleData->get('tsconf_alphaSort'), '', '', 'id="checkTsconf_alphaSort"'));
         $this->view->assign('dropdownMenu', BackendUtility::getDropdownMenu($this->id, 'tsconf_parts', $moduleData->get('tsconf_parts'), $allowedModuleOptions['tsconf_parts'], '', '', ['id' => 'tsconf_parts']));
@@ -358,59 +366,5 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
         return '<textarea class="form-control" rows="' . count(explode(LF, $content)) . '" disabled>'
             . htmlspecialchars($content)
             . '</textarea>';
-    }
-
-    /**
-     * Render object tree
-     */
-    private function renderTree($arr, $depth_in, $depthData, bool $alphaSort = false): string
-    {
-        $HTML = '';
-        if ($alphaSort) {
-            ksort($arr);
-        }
-        $keyArr_num = [];
-        $keyArr_alpha = [];
-        foreach ($arr as $key => $value) {
-            // Don't do anything with comments / linenumber registrations...
-            if (substr((string)$key, -2) !== '..') {
-                $key = preg_replace('/\\.$/', '', (string)$key) ?? '';
-                if (substr($key, -1) !== '.') {
-                    if (MathUtility::canBeInterpretedAsInteger($key)) {
-                        $keyArr_num[$key] = $arr[$key] ?? '';
-                    } else {
-                        $keyArr_alpha[$key] = $arr[$key] ?? '';
-                    }
-                }
-            }
-        }
-        ksort($keyArr_num);
-        $keyArr = $keyArr_num + $keyArr_alpha;
-        if ($depth_in) {
-            $depth_in = $depth_in . '.';
-        }
-        foreach ($keyArr as $key => $value) {
-            $depth = $depth_in . $key;
-            // This excludes all constants starting with '_' from being shown.
-            if ($depth[0] !== '_') {
-                $deeper = is_array($arr[$key . '.'] ?? null);
-                $HTML .= $depthData . '<li><span class="list-tree-group">';
-                $label = $key;
-                $HTML .= '<span class="list-tree-label" title="' . htmlspecialchars($depth_in . $key) . '">[' . $label . ']</span>';
-                if (isset($arr[$key])) {
-                    $theValue = $arr[$key];
-                    $HTML .= ' = <span class="list-tree-value">' . htmlspecialchars($theValue) . '</span>';
-                }
-                $HTML .= '</span>';
-                if ($deeper) {
-                    $HTML .= $this->renderTree($arr[$key . '.'] ?? [], $depth, $depthData, $alphaSort);
-                }
-            }
-        }
-        if ($HTML !== '') {
-            $HTML = '<ul class="list-tree text-monospace">' . $HTML . '</ul>';
-        }
-
-        return $HTML;
     }
 }

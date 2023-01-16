@@ -57,6 +57,9 @@
 			<trans-unit id="tsconf_noPageTSconfig" resname="tsconf_noPageTSconfig">
 				<source>There are no pages containing custom Page TSconfig settings in the page configuration.</source>
 			</trans-unit>
+			<trans-unit id="tsconf_noPageTSconfigAvailable" resname="tsconf_noPageTSconfig">
+				<source>No suitable Page TSconfig available.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

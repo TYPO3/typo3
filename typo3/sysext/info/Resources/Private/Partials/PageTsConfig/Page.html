@@ -40,7 +40,7 @@
         <f:render partial="PageTsConfig/EditIcon" arguments="{editIcon: editIcon, editTitle: editTitle, editAll: 1}" />
     </f:then>
     <f:else>
-        <f:format.raw>{tree}</f:format.raw>
+        <f:render partial="PageTsConfig/Tree" arguments="{pageTsConfig: pageTsConfig}" />
     </f:else>
 </f:if>
 
