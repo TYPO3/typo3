@@ -29,12 +29,13 @@ class PageDoktypeProvider extends AbstractProvider
     public function getConfiguration(): array
     {
         $configuration = [];
+        $languageService = $this->getLanguageService();
         $allLabels = $this->prepareLabelsForAllTypes();
         $providerConfiguration = $this->doktypeRegistry->exportConfiguration();
         ksort($providerConfiguration);
         foreach ($providerConfiguration as $pageType => $typeConfiguration) {
             if (isset($allLabels[$pageType])) {
-                $configuration[$pageType] = array_merge_recursive(['name' => $this->getLanguageService()->sL($allLabels[$pageType])], $typeConfiguration);
+                $configuration[$pageType] = array_merge_recursive(['name' => $languageService->sL($allLabels[$pageType])], $typeConfiguration);
             } else {
                 $configuration[$pageType] = $typeConfiguration;
             }
@@ -45,9 +46,9 @@ class PageDoktypeProvider extends AbstractProvider
     protected function prepareLabelsForAllTypes(): array
     {
         $types = [];
-        foreach ($GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'] as $itm) {
-            if (MathUtility::canBeInterpretedAsInteger($itm[1])) {
-                $types[(int)$itm[1]] = $itm[0];
+        foreach ($GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'] as $item) {
+            if (MathUtility::canBeInterpretedAsInteger($item[1])) {
+                $types[(int)$item[1]] = $item[0];
             }
         }
         return $types;
