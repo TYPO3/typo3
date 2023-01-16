@@ -21,6 +21,7 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -61,9 +62,15 @@ class PageRepository implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
     use PublicMethodDeprecationTrait;
+    use PublicPropertyDeprecationTrait;
 
     private array $deprecatedPublicMethods = [
         'getRecordOverlay' => 'Using PageRepository::getRecordOverlay() is deprecated and will not be possible anymore in TYPO3 v13.0. Use PageRepository:getLanguageOverlay() instead.',
+    ];
+
+    private array $deprecatedPublicProperties = [
+        'where_hid_del' => 'Using PageRepository->where_hid_del is deprecated and will not be possible anymore in TYPO3 v13.0. Use a custom Context API and QueryRestrictions to modify a database query.',
+        'where_groupAccess' => 'Using PageRepository->where_groupAccess is deprecated and will not be possible anymore in TYPO3 v13.0. Use a custom Context API and QueryRestrictions to modify a database query.',
     ];
 
     /**
@@ -73,14 +80,14 @@ class PageRepository implements LoggerAwareInterface
      *
      * @var string
      */
-    public $where_hid_del = ' AND pages.deleted=0';
+    protected $where_hid_del = ' AND pages.deleted=0';
 
     /**
      * Clause for fe_group access
      *
      * @var string
      */
-    public $where_groupAccess = '';
+    protected $where_groupAccess = '';
 
     /**
      * Can be migrated away later to use context API directly.
@@ -812,14 +819,14 @@ class PageRepository implements LoggerAwareInterface
      * @see getPageShortcut()
      * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
      */
-    public function getMenu($pageId, $fields = '*', $sortField = 'sorting', $additionalWhereClause = '', $checkShortcuts = true)
+    public function getMenu($pageId, $fields = '*', $sortField = 'sorting', $additionalWhereClause = '', $checkShortcuts = true, bool $disableGroupAccessCheck = false)
     {
         // @todo: Restricting $fields to a list like 'uid, title' here, leads to issues from methods like
         //        getSubpagesForPages() which access keys like 'doktype'. This is odd, select field list
         //        should be handled better here, probably at least containing fields that are used in the
         //        sub methods. In the end, it might be easier to drop argument $fields altogether and
         //        always select * ?
-        return $this->getSubpagesForPages((array)$pageId, $fields, $sortField, $additionalWhereClause, $checkShortcuts);
+        return $this->getSubpagesForPages((array)$pageId, $fields, $sortField, $additionalWhereClause, $checkShortcuts, true, $disableGroupAccessCheck);
     }
 
     /**
@@ -836,9 +843,9 @@ class PageRepository implements LoggerAwareInterface
      * @param bool $checkShortcuts Check if shortcuts exist, checks by default
      * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlaid localized fields, if any)
      */
-    public function getMenuForPages(array $pageIds, $fields = '*', $sortField = 'sorting', $additionalWhereClause = '', $checkShortcuts = true)
+    public function getMenuForPages(array $pageIds, $fields = '*', $sortField = 'sorting', $additionalWhereClause = '', $checkShortcuts = true, bool $disableGroupAccessCheck = false)
     {
-        return $this->getSubpagesForPages($pageIds, $fields, $sortField, $additionalWhereClause, $checkShortcuts, false);
+        return $this->getSubpagesForPages($pageIds, $fields, $sortField, $additionalWhereClause, $checkShortcuts, false, $disableGroupAccessCheck);
     }
 
     /**
@@ -883,9 +890,16 @@ class PageRepository implements LoggerAwareInterface
         string $sortField = 'sorting',
         string $additionalWhereClause = '',
         bool $checkShortcuts = true,
-        bool $parentPages = true
+        bool $parentPages = true,
+        bool $disableGroupAccessCheck = false
     ): array {
         $relationField = $parentPages ? 'pid' : 'uid';
+
+        if ($disableGroupAccessCheck) {
+            $whereGroupAccessCheck = $this->where_groupAccess;
+            $this->where_groupAccess = '';
+        }
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
@@ -938,6 +952,10 @@ class PageRepository implements LoggerAwareInterface
             if (!empty($page)) {
                 $pages[$originalUid] = $page;
             }
+        }
+
+        if ($disableGroupAccessCheck) {
+            $this->where_groupAccess = $whereGroupAccessCheck;
         }
 
         // Finally load language overlays

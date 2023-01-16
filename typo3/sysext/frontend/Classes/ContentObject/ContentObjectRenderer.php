@@ -5329,15 +5329,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         // Enablefields
+        $constraints[] = QueryHelper::stripLogicalOperatorPrefix($tsfe->sys_page->enableFields($table, -1, $enableFieldsIgnore));
+        // For pages, recyclers are also always excluded, as this is the default for fetching records in PageRepository
         if ($table === 'pages') {
-            $constraints[] = QueryHelper::stripLogicalOperatorPrefix($tsfe->sys_page->where_hid_del);
-            $constraints[] = QueryHelper::stripLogicalOperatorPrefix($tsfe->sys_page->where_groupAccess);
-        } else {
-            $constraints[] = QueryHelper::stripLogicalOperatorPrefix($tsfe->sys_page->enableFields($table, -1, $enableFieldsIgnore));
+            $constraints[] = GeneralUtility::makeInstance(DocumentTypeExclusionRestriction::class, [PageRepository::DOKTYPE_RECYCLER])->buildExpression([$table => $table], $expressionBuilder);
         }
 
         // MAKE WHERE:
-        if (count($constraints) !== 0) {
+        if ($constraints !== []) {
             $queryParts['where'] = $expressionBuilder->and(...$constraints);
         }
         // GROUP BY

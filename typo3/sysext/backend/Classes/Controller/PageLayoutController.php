@@ -364,28 +364,22 @@ class PageLayoutController
             $message = '';
             $state = InfoboxViewHelper::STATE_ERROR;
             if ($shortcutMode || $this->pageinfo['shortcut']) {
-                // Store the current group access clause and unset it afterwards since it should
-                // not be used while searching for configured shortcut pages. Actually ->getPage()
-                // would allow to disable it via an argument. However, getMenu() currently does not.
-                // @todo Refactor as soon as ->getMenu() allows to dynamically disable group access check
-                $tempGroupAccess = $this->pageRepository->where_groupAccess;
-                $this->pageRepository->where_groupAccess = '';
                 switch ($shortcutMode) {
                     case PageRepository::SHORTCUT_MODE_NONE:
-                        $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage($this->pageinfo['shortcut']));
+                        $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage($this->pageinfo['shortcut'], true));
                         $message = $targetPage === [] ? $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredOrNotAccessibleInternalLinkMessage') : '';
                         break;
                     case PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE:
-                        $menuOfPages = $this->pageRepository->getMenu($this->pageinfo['uid'], '*', 'sorting', 'AND hidden = 0');
+                        $menuOfPages = $this->pageRepository->getMenu($this->pageinfo['uid'], '*', 'sorting', 'AND hidden = 0', true, true);
                         $targetPage = reset($menuOfPages) ?: [];
                         $message = $targetPage === [] ? $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredFirstSubpageMessage') : '';
                         break;
                     case PageRepository::SHORTCUT_MODE_PARENT_PAGE:
-                        $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage($this->pageinfo['pid']));
+                        $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage($this->pageinfo['pid'], true));
                         $message = $targetPage === [] ? $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredParentPageMessage') : '';
                         break;
                     case PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:
-                        $possibleTargetPages = $this->pageRepository->getMenu($this->pageinfo['uid'], '*', 'sorting', 'AND hidden = 0');
+                        $possibleTargetPages = $this->pageRepository->getMenu($this->pageinfo['uid'], '*', 'sorting', 'AND hidden = 0', true, true);
                         if ($possibleTargetPages === []) {
                             $message = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredOrNotAccessibleRandomInternalLinkMessage');
                         } else {
@@ -394,7 +388,6 @@ class PageLayoutController
                         }
                         break;
                 }
-                $this->pageRepository->where_groupAccess = $tempGroupAccess;
                 $message = htmlspecialchars($message);
                 if ($targetPage !== [] && $shortcutMode !== PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
                     $linkToPid = $this->uriBuilder->buildUriFromRoute('web_layout', ['id' => $targetPage['uid']]);

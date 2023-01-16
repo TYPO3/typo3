@@ -176,6 +176,8 @@ abstract class AbstractMenuContentObject
      */
     protected $parentMenuArr;
 
+    protected bool $disableGroupAccessCheck = false;
+
     protected const customItemStates = [
         // IFSUB is TRUE if there exist submenu items to the current item
         'IFSUB',
@@ -352,10 +354,7 @@ abstract class AbstractMenuContentObject
         // Initializing showAccessRestrictedPages
         $SAVED_where_groupAccess = '';
         if ($this->mconf['showAccessRestrictedPages'] ?? false) {
-            // SAVING where_groupAccess
-            $SAVED_where_groupAccess = $this->sys_page->where_groupAccess;
-            // Temporarily removing fe_group checking!
-            $this->sys_page->where_groupAccess = '';
+            $this->disableGroupAccessCheck = true;
         }
 
         $menuItems = $this->prepareMenuItems();
@@ -408,8 +407,7 @@ abstract class AbstractMenuContentObject
         $this->generate();
         // End showAccessRestrictedPages
         if ($this->mconf['showAccessRestrictedPages'] ?? false) {
-            // RESTORING where_groupAccess
-            $this->sys_page->where_groupAccess = $SAVED_where_groupAccess;
+            $this->disableGroupAccessCheck = false;
         }
     }
 
@@ -532,7 +530,7 @@ abstract class AbstractMenuContentObject
             $menuItems = $this->sectionIndex($alternativeSortingField);
         } else {
             // Default: Gets a hierarchical menu based on subpages of $this->id
-            $menuItems = $this->sys_page->getMenu($this->id, '*', $alternativeSortingField, $additionalWhere);
+            $menuItems = $this->sys_page->getMenu($this->id, '*', $alternativeSortingField, $additionalWhere, true, $this->disableGroupAccessCheck);
         }
         return $menuItems;
     }
@@ -646,7 +644,7 @@ abstract class AbstractMenuContentObject
                 }
                 $id = $mount_info['mount_pid'];
             }
-            $subPages = $this->sys_page->getMenu($id, '*', $sortingField);
+            $subPages = $this->sys_page->getMenu($id, '*', $sortingField, '', true, $this->disableGroupAccessCheck);
             foreach ($subPages as $row) {
                 // Add external MP params
                 if ($MP) {
@@ -673,7 +671,7 @@ abstract class AbstractMenuContentObject
         }
         $pageIds = GeneralUtility::intExplode(',', (string)$specialValue);
         $disableGroupAccessCheck = !empty($this->mconf['showAccessRestrictedPages']);
-        $pageRecords = $this->sys_page->getMenuForPages($pageIds);
+        $pageRecords = $this->sys_page->getMenuForPages($pageIds, '*', 'sorting', '', true, $disableGroupAccessCheck);
         // After fetching the page records, restore the initial order by using the page id list as arrays keys and
         // replace them with the resolved page records. The id list is cleaned up first, since ids might be invalid.
         $pageRecords = array_replace(
@@ -767,7 +765,7 @@ abstract class AbstractMenuContentObject
         $extraWhere = sprintf('%s>=%s', $connection->quoteIdentifier($sortField), $connection->quote(0, Connection::PARAM_INT)) . $extraWhere;
 
         $i = 0;
-        $pageRecords = $this->sys_page->getMenuForPages($pageIds, '*', $sortingField ?: $sortField . ' DESC', $extraWhere);
+        $pageRecords = $this->sys_page->getMenuForPages($pageIds, '*', $sortingField ?: $sortField . ' DESC', $extraWhere, true, $this->disableGroupAccessCheck);
         foreach ($pageRecords as $row) {
             // Build a custom LIMIT clause as "getMenuForPages()" does not support this
             if (++$i > $limit) {
@@ -970,11 +968,11 @@ abstract class AbstractMenuContentObject
         if ($specialValue != ($tsfe->config['rootLine'][0]['uid'] ?? null)) {
             $recArr = [];
             // The page record of the 'value'.
-            $value_rec = $this->sys_page->getPage($specialValue);
+            $value_rec = $this->sys_page->getPage($specialValue, $this->disableGroupAccessCheck);
             // 'up' page cannot be outside rootline
             if ($value_rec['pid']) {
                 // The page record of 'up'.
-                $recArr['up'] = $this->sys_page->getPage($value_rec['pid']);
+                $recArr['up'] = $this->sys_page->getPage($value_rec['pid'], $this->disableGroupAccessCheck);
             }
             // If the 'up' item was NOT level 0 in rootline...
             if (($recArr['up']['pid'] ?? 0) && $value_rec['pid'] != ($tsfe->config['rootLine'][0]['uid'] ?? null)) {
@@ -987,7 +985,7 @@ abstract class AbstractMenuContentObject
                 $additionalWhere .= ' AND pages.no_search=0';
             }
             // prev / next is found
-            $prevnext_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($value_rec['pid'], '*', $sortingField, $additionalWhere));
+            $prevnext_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($value_rec['pid'], '*', $sortingField, $additionalWhere, true, $this->disableGroupAccessCheck));
             $lastKey = 0;
             $nextActive = 0;
             foreach ($prevnext_menu as $k_b => $v_b) {
@@ -1009,12 +1007,12 @@ abstract class AbstractMenuContentObject
             // prevsection / nextsection is found
             // You can only do this, if there is a valid page two levels up!
             if (!empty($recArr['index']['uid'])) {
-                $prevnextsection_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($recArr['index']['uid'], '*', $sortingField, $additionalWhere));
+                $prevnextsection_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($recArr['index']['uid'], '*', $sortingField, $additionalWhere, true, $this->disableGroupAccessCheck));
                 $lastKey = 0;
                 $nextActive = 0;
                 foreach ($prevnextsection_menu as $k_b => $v_b) {
                     if ($nextActive) {
-                        $sectionRec_temp = $this->removeInaccessiblePages($this->sys_page->getMenu($v_b['uid'], '*', $sortingField, $additionalWhere));
+                        $sectionRec_temp = $this->removeInaccessiblePages($this->sys_page->getMenu($v_b['uid'], '*', $sortingField, $additionalWhere, true, $this->disableGroupAccessCheck));
                         if (!empty($sectionRec_temp)) {
                             $recArr['nextsection'] = reset($sectionRec_temp);
                             $recArr['nextsection_last'] = end($sectionRec_temp);
@@ -1023,7 +1021,7 @@ abstract class AbstractMenuContentObject
                     }
                     if ($v_b['uid'] == $value_rec['pid']) {
                         if ($lastKey) {
-                            $sectionRec_temp = $this->removeInaccessiblePages($this->sys_page->getMenu($prevnextsection_menu[$lastKey]['uid'], '*', $sortingField, $additionalWhere));
+                            $sectionRec_temp = $this->removeInaccessiblePages($this->sys_page->getMenu($prevnextsection_menu[$lastKey]['uid'], '*', $sortingField, $additionalWhere, true, $this->disableGroupAccessCheck));
                             if (!empty($sectionRec_temp)) {
                                 $recArr['prevsection'] = reset($sectionRec_temp);
                                 $recArr['prevsection_last'] = end($sectionRec_temp);
@@ -1047,7 +1045,7 @@ abstract class AbstractMenuContentObject
             foreach ($items as $k_b => $v_b) {
                 $v_b = strtolower(trim($v_b));
                 if ((int)($this->conf['special.'][$v_b . '.']['uid'] ?? false)) {
-                    $recArr[$v_b] = $this->sys_page->getPage((int)$this->conf['special.'][$v_b . '.']['uid']);
+                    $recArr[$v_b] = $this->sys_page->getPage((int)$this->conf['special.'][$v_b . '.']['uid'], $this->disableGroupAccessCheck);
                 }
                 if (is_array($recArr[$v_b] ?? false)) {
                     $menuItems[$c] = $recArr[$v_b];
@@ -1328,7 +1326,7 @@ abstract class AbstractMenuContentObject
             return true;
         }
         try {
-            $page = $this->sys_page->resolveShortcutPage($page);
+            $page = $this->sys_page->resolveShortcutPage($page, $this->disableGroupAccessCheck);
             $shortcutPage = (int)($page['_SHORTCUT_ORIGINAL_PAGE_UID'] ?? 0);
             if ($shortcutPage) {
                 if (in_array($shortcutPage, $this->alwaysActivePIDlist, true)) {

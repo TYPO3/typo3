@@ -2306,6 +2306,11 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectArrayContentObject.php
 
 		-
+			message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\:\\:\\$where_hid_del\\.$#"
+			count: 3
+			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
+
+		-
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
@@ -3155,3 +3160,7 @@ parameters:
 			count: 2
 			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php
 
+		-
+			message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\:\\:\\$where_hid_del\\.$#"
+			count: 2
+			path: ../../typo3/sysext/core/Tests/FunctionalDeprecated/Domain/Repository/PageRepositoryTest.php

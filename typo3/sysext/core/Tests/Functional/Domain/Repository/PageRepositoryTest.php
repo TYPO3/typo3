@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Domain\Repository;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -374,56 +373,6 @@ class PageRepositoryTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'][] = $className;
         $subject = new PageRepository();
         $subject->getPage(42, false);
-    }
-
-    /**
-     * @test
-     */
-    public function initSetsPublicPropertyCorrectlyForWorkspacePreview(): void
-    {
-        $workspaceId = 2;
-        $subject = new PageRepository(new Context([
-            'workspace' => new WorkspaceAspect($workspaceId),
-        ]));
-
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
-
-        $expectedSQL = sprintf(
-            ' AND ((%s = 0) AND (((%s = 0) OR (%s = 2))) AND (%s <> 255))',
-            $connection->quoteIdentifier('pages.deleted'),
-            $connection->quoteIdentifier('pages.t3ver_wsid'),
-            $connection->quoteIdentifier('pages.t3ver_wsid'),
-            $connection->quoteIdentifier('pages.doktype')
-        );
-
-        self::assertSame($expectedSQL, $subject->where_hid_del);
-    }
-
-    /**
-     * @test
-     */
-    public function initSetsEnableFieldsCorrectlyForLive(): void
-    {
-        $subject = new PageRepository(new Context([
-            'date' => new DateTimeAspect(new \DateTimeImmutable('@1451779200')),
-        ]));
-
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
-        $expectedSQL = sprintf(
-            ' AND ((((%s = 0) AND (%s <= 0) AND (%s = 0) AND (((%s = 0) OR (%s = 4))) AND (%s = 0) AND (%s <= 1451779200) AND (((%s = 0) OR (%s > 1451779200))))) AND (%s <> 255))',
-            $connection->quoteIdentifier('pages.deleted'),
-            $connection->quoteIdentifier('pages.t3ver_state'),
-            $connection->quoteIdentifier('pages.t3ver_wsid'),
-            $connection->quoteIdentifier('pages.t3ver_oid'),
-            $connection->quoteIdentifier('pages.t3ver_state'),
-            $connection->quoteIdentifier('pages.hidden'),
-            $connection->quoteIdentifier('pages.starttime'),
-            $connection->quoteIdentifier('pages.endtime'),
-            $connection->quoteIdentifier('pages.endtime'),
-            $connection->quoteIdentifier('pages.doktype')
-        );
-
-        self::assertSame($expectedSQL, $subject->where_hid_del);
     }
 
     ////////////////////////////////

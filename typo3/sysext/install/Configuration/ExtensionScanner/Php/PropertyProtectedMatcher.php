@@ -1336,4 +1336,14 @@ return [
             'Breaking-93080-RelationHandlerInternalsProtected.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Domain\Repository\PageRepository->where_hid_del' => [
+        'restFiles' => [
+            'Deprecation-99588-PublicPropertiesInPageRepository.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Domain\Repository\PageRepository->where_groupAccess' => [
+        'restFiles' => [
+            'Deprecation-99588-PublicPropertiesInPageRepository.rst',
+        ],
+    ],
 ];
