@@ -140,43 +140,6 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
         } else {
             $this->view->assign('tsconfParts99', false);
             $pageTsConfig = BackendUtility::getPagesTSconfig($this->id);
-            switch ((string)$moduleData->get('tsconf_parts')) {
-                case '1':
-                    $pageTsConfig = $pageTsConfig['mod.'] ?? [];
-                    break;
-                case '1a':
-                    $pageTsConfig = $pageTsConfig['mod.']['web_layout.'] ?? [];
-                    break;
-                case '1b':
-                    $pageTsConfig = $pageTsConfig['mod.']['web_view.'] ?? [];
-                    break;
-                case '1d':
-                    $pageTsConfig = $pageTsConfig['mod.']['web_list.'] ?? [];
-                    break;
-                case '1e':
-                    $pageTsConfig = $pageTsConfig['mod.']['web_info.'] ?? [];
-                    break;
-                case '1g':
-                    $pageTsConfig = $pageTsConfig['mod.']['web_ts.'] ?? [];
-                    break;
-                case '2':
-                    $pageTsConfig = $pageTsConfig['RTE.'] ?? [];
-                    break;
-                case '5':
-                    $pageTsConfig = $pageTsConfig['TCEFORM.'] ?? [];
-                    break;
-                case '6':
-                    $pageTsConfig = $pageTsConfig['TCEMAIN.'] ?? [];
-                    break;
-                case '7':
-                    $pageTsConfig = $pageTsConfig['TCAdefaults.'] ?? [];
-                    break;
-                case '4':
-                    $pageTsConfig = $pageTsConfig['user.'] ?? [];
-                    break;
-                default:
-                    // Entire array
-            }
 
             if ($moduleData->get('tsconf_alphaSort')) {
                 $pageTsConfig = ArrayUtility::sortByKeyRecursive($pageTsConfig);
@@ -197,17 +160,6 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
         $allowedModuleOptions = [
             'tsconf_parts' => [
                 0 => $lang->getLL('tsconf_parts_0'),
-                1 => $lang->getLL('tsconf_parts_1') . ' [mod.]',
-                '1a' => $lang->getLL('tsconf_parts_1a') . ' [mod.web_layout.]',
-                '1b' => $lang->getLL('tsconf_parts_1b') . ' [mod.web_view.]',
-                '1d' => $lang->getLL('tsconf_parts_1d') . ' [mod.web_list.]',
-                '1e' => $lang->getLL('tsconf_parts_1e') . ' [mod.web_info.]',
-                '1g' => $lang->getLL('tsconf_parts_1g') . ' [mod.web_ts.]',
-                2 => '[RTE.]',
-                7 => '[TCAdefaults.]',
-                5 => '[TCEFORM.]',
-                6 => '[TCEMAIN.]',
-                4 => '[user.]',
                 99 => $lang->getLL('tsconf_configFields'),
             ],
         ];

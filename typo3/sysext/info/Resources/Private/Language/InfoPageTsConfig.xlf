@@ -9,24 +9,6 @@
 			<trans-unit id="tsconf_parts_0" resname="tsconf_parts_0">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1" resname="tsconf_parts_1">
-				<source>Module</source>
-			</trans-unit>
-			<trans-unit id="tsconf_parts_1a" resname="tsconf_parts_1a">
-				<source>Module: Web&gt;Page</source>
-			</trans-unit>
-			<trans-unit id="tsconf_parts_1b" resname="tsconf_parts_1b">
-				<source>Module: Web&gt;View</source>
-			</trans-unit>
-			<trans-unit id="tsconf_parts_1d" resname="tsconf_parts_1d">
-				<source>Module: Web&gt;List</source>
-			</trans-unit>
-			<trans-unit id="tsconf_parts_1e" resname="tsconf_parts_1e">
-				<source>Module: Web&gt;Info</source>
-			</trans-unit>
-			<trans-unit id="tsconf_parts_1g" resname="tsconf_parts_1g">
-				<source>Module: Web&gt;Template</source>
-			</trans-unit>
 			<trans-unit id="tsconf_configFields" resname="tsconf_configFields">
 				<source>View TSconfig fields content</source>
 			</trans-unit>
