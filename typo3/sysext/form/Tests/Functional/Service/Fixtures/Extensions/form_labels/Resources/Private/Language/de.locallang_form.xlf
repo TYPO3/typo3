@@ -3,7 +3,7 @@
     <file source-language="en" target-language="de" datatype="plaintext" original="EXT:form/Tests/Unit/Service/Fixtures/de.locallang_form.xlf" date="2017-01-30T03:38:32Z" product-name="tests">
         <header/>
         <body>
-            <trans-unit id="element.Page.renderingOptions.nextButtonLabel" resname="element.Page.renderingOptions.nextButtonLabel" xml:space="preserve">
+            <trans-unit id="element.Page.renderingOptions.nextButtonLabel" resname="element.Page.renderingOptions.nextButtonLabel" xml:space="preserve" approved="yes">
                 <source>FORM EN</source>
                 <target>FORM DE</target>
             </trans-unit>

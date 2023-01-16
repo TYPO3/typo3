@@ -74,18 +74,16 @@ class TranslationService implements SingletonInterface
      */
     protected $alternativeLanguageKeys = [];
 
-    protected ConfigurationManagerInterface $configurationManager;
-
-    public function __construct(ConfigurationManagerInterface $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
+    public function __construct(
+        protected ConfigurationManagerInterface $configurationManager
+    ) {
     }
 
     /**
      * Returns the localized label of the LOCAL_LANG key, $key.
      *
      * @param mixed $key The key from the LOCAL_LANG array for which to return the value.
-     * @param array $arguments the arguments of the extension, being passed over to vsprintf
+     * @param array|null $arguments the arguments of the extension, being passed over to vsprintf
      * @param mixed $defaultValue
      * @return mixed The value from LOCAL_LANG or $defaultValue if no translation was found.
      * @internal
@@ -124,7 +122,6 @@ class TranslationService implements SingletonInterface
 
         $this->initializeLocalization($locallangPathAndFilename ?? '');
 
-        // The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
         if (isset($this->LOCAL_LANG[$this->languageKey][$key][0]['target'])
             || isset($this->LOCAL_LANG_UNSET[$this->languageKey][$key])
         ) {

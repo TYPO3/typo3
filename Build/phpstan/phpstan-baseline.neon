@@ -2291,11 +2291,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/ViewHelpers/GridColumnClassAutoConfigurationViewHelper.php
 
 		-
-			message: "#^Parameter \\#1 \\$fileReference of method TYPO3\\\\CMS\\\\Core\\\\Localization\\\\LanguageStore\\:\\:flushData\\(\\) expects string, array\\<int, string\\> given\\.$#"
-			count: 37
-			path: ../../typo3/sysext/form/Tests/Unit/Service/TranslationServiceTest.php
-
-		-
 			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/CaseContentObject.php
