@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
@@ -546,51 +547,57 @@ class PageRepository implements LoggerAwareInterface
      */
     protected function getPageOverlaysForLanguage(array $pageUids, LanguageAspect $languageAspect): array
     {
+        if ($pageUids === []) {
+            return [];
+        }
+
         $languageUids = array_merge([$languageAspect->getId()], $this->getLanguageFallbackChain($languageAspect));
         // Remove default language ("0")
         $languageUids = array_filter($languageUids);
         $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
-        $overlays = [];
+        $transOrigPointerField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
 
-        foreach ($pageUids as $pageId) {
-            // Create a map based on the order of values in $languageUids. Those entries reflect the order of the language + fallback chain.
-            // We can't work with database ordering since there is no common SQL clause to order by e.g. [7, 1, 2].
-            $orderedListByLanguages = array_flip($languageUids);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
+        // Because "fe_group" is an exclude field, so it is synced between overlays, the group restriction is removed for language overlays of pages
+        $queryBuilder->getRestrictions()->removeByType(FrontendGroupRestriction::class);
 
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
-            // Because "fe_group" is an exclude field, so it is synced between overlays, the group restriction is removed for language overlays of pages
-            $queryBuilder->getRestrictions()->removeByType(FrontendGroupRestriction::class);
-            $result = $queryBuilder->select('*')
+        $candidates = [];
+        $maxChunk = PlatformInformation::getMaxBindParameters($queryBuilder->getConnection()->getDatabasePlatform());
+        foreach (array_chunk($pageUids, (int)floor($maxChunk / 3)) as $pageUidsChunk) {
+            $result = $queryBuilder
+                ->select('*')
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq(
-                        $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
+                    $queryBuilder->expr()->in(
+                        $languageField,
+                        $queryBuilder->createNamedParameter($languageUids, Connection::PARAM_INT_ARRAY)
                     ),
                     $queryBuilder->expr()->in(
-                        $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                        $queryBuilder->createNamedParameter($languageUids, Connection::PARAM_INT_ARRAY)
+                        $transOrigPointerField,
+                        $queryBuilder->createNamedParameter($pageUidsChunk, Connection::PARAM_INT_ARRAY)
                     )
-                )
-                ->executeQuery();
+                )->executeQuery();
 
-            // Create a list of rows ordered by values in $languageUids
+            // Fetch and bring in priority order
             while ($row = $result->fetchAssociative()) {
-                $orderedListByLanguages[$row[$languageField]] = $row;
+                $pageId = $row[$transOrigPointerField];
+                $priority = array_search($row[$languageField], $languageUids);
+                $candidates[$pageId][$priority] = $row;
             }
+        }
 
-            foreach ($orderedListByLanguages as $languageUid => $row) {
-                if (!is_array($row)) {
-                    continue;
-                }
-
+        $overlays = [];
+        foreach ($pageUids as $pageId) {
+            $languageRows = $candidates[$pageId] ?? [];
+            ksort($languageRows, SORT_NATURAL);
+            foreach ($languageRows as $row) {
                 // Found a result for the current language id
                 $this->versionOL('pages', $row);
                 if (is_array($row)) {
                     $row['_PAGES_OVERLAY'] = true;
                     $row['_PAGES_OVERLAY_UID'] = $row['uid'];
-                    $row['_PAGES_OVERLAY_LANGUAGE'] = $languageUid;
+                    $row['_PAGES_OVERLAY_LANGUAGE'] = $row[$languageField];
                     $row['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] = $languageUids[0];
                     // Unset vital fields that are NOT allowed to be overlaid:
                     unset($row['uid'], $row['pid']);

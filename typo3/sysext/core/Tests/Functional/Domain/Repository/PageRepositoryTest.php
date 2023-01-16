@@ -204,7 +204,7 @@ class PageRepositoryTest extends FunctionalTestCase
         $subject = new PageRepository(new Context([
             'language' => new LanguageAspect(1),
         ]));
-        $rows = $subject->getPagesOverlay([1, 5]);
+        $rows = $subject->getPagesOverlay([1, 5, 15]);
         self::assertIsArray($rows);
         self::assertCount(2, $rows);
         self::assertArrayHasKey(0, $rows);
