@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import {DateTime} from 'luxon';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
@@ -490,12 +491,12 @@ class DragUploaderPlugin {
 
       if (value !== '') {
         // mass action was selected, apply action to every file
-        $modal.find('.t3js-actions').each((i: number, select: HTMLSelectElement) => {
-          const $select = $(select),
-            index = parseInt($select.data('override'), 10);
-          $select.val(value).prop('disabled', 'disabled');
-          uploader.askForOverride[index].action = <Action>$select.val();
-        });
+        for (let select of modal.querySelectorAll('.t3js-actions') as NodeListOf<HTMLSelectElement>) {
+          const index = parseInt(select.dataset.override, 10);
+          select.value = value;
+          select.disabled = true;
+          uploader.askForOverride[index].action = <Action>select.value;
+        }
       } else {
         $modal.find('.t3js-actions').removeProp('disabled');
       }
@@ -513,7 +514,7 @@ class DragUploaderPlugin {
         uploader.askForOverride = [];
         Modal.dismiss();
       } else if (button.name === 'continue') {
-        $.each(uploader.askForOverride, (key: number, fileInfo: FileConflict) => {
+        for (let fileInfo of uploader.askForOverride) {
           if (fileInfo.action === Action.USE_EXISTING) {
             DragUploader.addFileToIrre(
               uploader.irreObjectUid,
@@ -522,7 +523,7 @@ class DragUploaderPlugin {
           } else if (fileInfo.action !== Action.SKIP) {
             new FileQueueItem(uploader, fileInfo.uploaded, fileInfo.action);
           }
-        });
+        }
         uploader.askForOverride = [];
         modal.hideModal();
       }
@@ -853,7 +854,7 @@ class DragUploader {
       },
     });
 
-    $(() => {
+    DocumentService.ready().then((): void => {
       $('.t3js-drag-uploader').dragUploader(opts);
     });
 
@@ -888,11 +889,9 @@ export const initialize = function (): void {
     && 'undefined' !== typeof TYPO3.settings.RequireJS.PostInitializationModules
     && 'undefined' !== typeof TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader']
   ) {
-    $.each(
-      TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader'], (pos: number, moduleName: string) => {
-        window.require([moduleName]);
-      },
-    );
+    for (let moduleName of TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader']) {
+      window.require([moduleName]);
+    }
   }
 };
 

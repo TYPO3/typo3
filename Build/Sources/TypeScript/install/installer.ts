@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
@@ -34,7 +35,7 @@ class Installer {
 
   constructor() {
     this.initializeEvents();
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.initialize();
     });
   }
@@ -300,9 +301,9 @@ class Installer {
       'install[action]': 'executeDatabaseConnect',
       'install[token]': $(this.selectorModuleContent).data('installer-database-connect-execute-token'),
     };
-    $($(this.selectorBody + ' form').serializeArray()).each((index: number, element: any): void => {
+    for (let element of $(this.selectorBody + ' form').serializeArray()) {
       postData[element.name] = element.value;
-    });
+    }
     (new AjaxRequest(this.getUrl()))
       .post(postData)
       .then(async (response: AjaxResponse): Promise<any> => {
@@ -353,9 +354,9 @@ class Installer {
       'install[action]': 'executeDatabaseSelect',
       'install[token]': $(this.selectorModuleContent).data('installer-database-select-execute-token'),
     };
-    $($(this.selectorBody + ' form').serializeArray()).each((index: number, element: any): void => {
+    for (let element of $(this.selectorBody + ' form').serializeArray()) {
       postData[element.name] = element.value;
-    });
+    }
     (new AjaxRequest(this.getUrl()))
       .post(postData)
       .then(async (response: AjaxResponse): Promise<any> => {
@@ -379,11 +380,9 @@ class Installer {
       'install[action]': 'checkDatabaseRequirements',
       'install[token]': $(this.selectorModuleContent).data('installer-database-check-requirements-execute-token'),
     };
-
-    $($(this.selectorBody + ' form').serializeArray()).each((index: number, element: any): void => {
+    for (let element of $(this.selectorBody + ' form').serializeArray()) {
       postData[element.name] = element.value;
-    });
-
+    }
     (new AjaxRequest(this.getUrl()))
       .post(postData)
       .then(async (response: AjaxResponse): Promise<any> => {
@@ -434,9 +433,9 @@ class Installer {
       'install[action]': 'executeDatabaseData',
       'install[token]': $(this.selectorModuleContent).data('installer-database-data-execute-token'),
     };
-    $($(this.selectorBody + ' form').serializeArray()).each((index: number, element: any): void => {
+    for (let element of $(this.selectorBody + ' form').serializeArray()) {
       postData[element.name] = element.value;
-    });
+    }
     let message: any = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.empty().html(message);
     (new AjaxRequest(this.getUrl()))
@@ -475,9 +474,9 @@ class Installer {
       'install[action]': 'executeDefaultConfiguration',
       'install[token]': $(this.selectorModuleContent).data('installer-default-configuration-execute-token'),
     };
-    $($(this.selectorBody + ' form').serializeArray()).each((index: number, element: any): void => {
+    for (let element of $(this.selectorBody + ' form').serializeArray()) {
       postData[element.name] = element.value;
-    });
+    }
     (new AjaxRequest(this.getUrl()))
       .post(postData)
       .then(async (response: AjaxResponse): Promise<any> => {

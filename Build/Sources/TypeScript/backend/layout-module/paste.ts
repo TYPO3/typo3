@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 /**
  * Module: @typo3/backend/layout-module/paste
  * Dynamically adds "Paste" Icons in the Page Layout module (Web => Page)
@@ -26,9 +27,9 @@ import '@typo3/backend/element/icon-element';
 import {SeverityEnum} from '../enum/severity';
 
 class Paste {
-  public itemOnClipboardUid: number = 0;
-  public itemOnClipboardTitle: string = '';
-  public copyMode: string = '';
+  private readonly itemOnClipboardUid: number = 0;
+  private readonly itemOnClipboardTitle: string = '';
+  private readonly copyMode: string = '';
   private elementIdentifier: string = '.t3js-page-ce';
   private pasteAfterLinkTemplate: string = '';
   private pasteIntoLinkTemplate: string = '';
@@ -49,8 +50,12 @@ class Paste {
   /**
    * initializes paste icons for all content elements on the page
    */
-  constructor() {
-    $((): void => {
+  constructor(itemOnClipboardUid: number, itemOnClipboardTitle: string, copyMode: string) {
+    this.itemOnClipboardUid = itemOnClipboardUid;
+    this.itemOnClipboardTitle = itemOnClipboardTitle;
+    this.copyMode = copyMode;
+
+    DocumentService.ready().then((): void => {
       if ($('.t3js-page-columns').length) {
         this.generateButtonTemplates();
         this.activatePasteIcons();
@@ -90,17 +95,12 @@ class Paste {
    * activates the paste into / paste after icons outside of the context menus
    */
   private activatePasteIcons(): void {
-    $('.t3js-page-new-ce').each((index: number, el: HTMLElement): void => {
-      if (this.pasteAfterLinkTemplate && this.pasteIntoLinkTemplate) {
-        const parent = $(el).parent();
-        // append the buttons
-        if (parent.data('page')) {
-          $(el).append(this.pasteIntoLinkTemplate);
-        } else {
-          $(el).append(this.pasteAfterLinkTemplate);
-        }
-      }
-    });
+    if (this.pasteAfterLinkTemplate && this.pasteIntoLinkTemplate) {
+      document.querySelectorAll('.t3js-page-new-ce').forEach((el: HTMLElement): void => {
+        let template = el.parentElement.dataset.page ? this.pasteIntoLinkTemplate : this.pasteAfterLinkTemplate;
+        el.append(document.createRange().createContextualFragment(template));
+      });
+    }
   }
 
   /**
@@ -166,4 +166,4 @@ class Paste {
   }
 }
 
-export default new Paste();
+export default Paste;

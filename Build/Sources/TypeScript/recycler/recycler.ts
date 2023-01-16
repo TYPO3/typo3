@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import NProgress from 'nprogress';
 import '@typo3/backend/input/clearable';
@@ -60,7 +61,7 @@ class Recycler {
   }
 
   constructor() {
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.initialize();
     });
   }
@@ -118,7 +119,7 @@ class Recycler {
 
     // changing "depth"
     this.elements.$depthSelector.on('change', (): void => {
-      $.when(this.loadAvailableTables()).done((): void => {
+      this.loadAvailableTables().then((): void => {
         this.loadDeletedElements();
       });
     });
@@ -137,7 +138,7 @@ class Recycler {
 
     this.elements.$reloadAction.on('click', (e: JQueryEventObject): void => {
       e.preventDefault();
-      $.when(this.loadAvailableTables()).done((): void => {
+      this.loadAvailableTables().then((): void => {
         this.loadDeletedElements();
       });
     });
@@ -198,7 +199,7 @@ class Recycler {
     if (TYPO3.settings.Recycler.depthSelection > 0) {
       this.elements.$depthSelector.val(TYPO3.settings.Recycler.depthSelection).trigger('change');
     } else {
-      $.when(this.loadAvailableTables()).done((): void => {
+      this.loadAvailableTables().then((): void => {
         this.loadDeletedElements();
       });
     }

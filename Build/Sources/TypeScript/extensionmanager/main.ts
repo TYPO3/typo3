@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import BrowserSession from '@typo3/backend/storage/browser-session';
 import NProgress from 'nprogress';
@@ -36,6 +37,11 @@ enum ExtensionManagerIdentifier {
   searchField = '#Tx_Extensionmanager_extensionkey',
 }
 
+interface UpdateInformation {
+  updateComments: { [key: string]: string },
+  url: string
+}
+
 /**
  * Module: @typo3/extensionmanager/main
  * main logic holding everything together, consists of multiple parts
@@ -52,7 +58,7 @@ class ExtensionManager {
 
   constructor() {
     const me = this;
-    $(() => {
+    DocumentService.ready().then((): void => {
       this.Update = new ExtensionManagerUpdate();
       this.UploadForm = new ExtensionManagerUploadForm();
       this.Repository = new ExtensionManagerRepository();
@@ -166,9 +172,9 @@ class ExtensionManager {
 
   private async updateExtension(response: AjaxResponse): Promise<void> {
     let i = 0;
-    const data = await response.resolve();
+    const data: UpdateInformation = await response.resolve();
     const $form = $('<form>');
-    $.each(data.updateComments, (version: string, comment: string): void => {
+    for (let [version, comment] of Object.entries(data.updateComments)) {
       const $input = $('<input>').attr({type: 'radio', name: 'version'}).val(version);
       if (i === 0) {
         $input.attr('checked', 'checked');
@@ -189,7 +195,7 @@ class ExtensionManager {
           ),
       ]);
       i++;
-    });
+    }
     const $container = $('<div>').append([
       $('<h1>').text(TYPO3.lang['extensionList.updateConfirmation.title']),
       $('<h2>').text(TYPO3.lang['extensionList.updateConfirmation.message']),

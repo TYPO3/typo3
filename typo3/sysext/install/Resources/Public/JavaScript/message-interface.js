@@ -10,17 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-import DocumentService from '@typo3/core/document-service';
-import $ from 'jquery';
-import Router from './router';
-
-class Install {
-  constructor() {
-    DocumentService.ready().then((): void => {
-      Router.initialize();
-    });
-  }
-}
-
-export default new Install();
+export{};

@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import Icons from './icons';
 
@@ -27,7 +28,7 @@ class DocumentSaveActions {
   }
 
   private constructor() {
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.initializeSaveHandling();
     });
   }

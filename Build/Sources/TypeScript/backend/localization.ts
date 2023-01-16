@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import {SeverityEnum} from './enum/severity';
@@ -48,7 +49,7 @@ class Localization {
   private records: Array<any> = [];
 
   constructor() {
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.initialize();
     });
   }

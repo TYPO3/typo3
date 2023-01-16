@@ -17,6 +17,7 @@ import {AbstractInteractableModule} from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import MessageInterface from '../../message-interface';
 import FlashMessage from '../../renderable/flash-message';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
@@ -216,19 +217,10 @@ class CoreUpdate extends AbstractInteractableModule {
    *
    * @param messages
    */
-  private showStatusMessages(messages: any): void {
-    $.each(messages, (index: number, element: any): void => {
-      let title: string = '';
-      let message: string = '';
-      const severity: number = element.severity;
-      if (element.title) {
-        title = element.title;
-      }
-      if (element.message) {
-        message = element.message;
-      }
-      this.addMessage(severity, title, message);
-    });
+  private showStatusMessages(messages: MessageInterface[]): void {
+    for (let element of messages) {
+      this.addMessage(element.severity, element.title ?? '', element.message ?? '');
+    }
   }
 
   /**

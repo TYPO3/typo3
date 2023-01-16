@@ -376,9 +376,9 @@ class LoginRefresh {
     const postData: any = {
       login_status: 'login',
     };
-    $.each($form.serializeArray(), function (i: number, field: any): void {
+    for (let field of $form.serializeArray()) {
       postData[field.name] = field.value;
-    });
+    }
     new AjaxRequest($form.attr('action')).post(postData).then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
       if (data.login.success) {

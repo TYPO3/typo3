@@ -385,9 +385,9 @@ class UpgradeWizards extends AbstractInteractableModule {
       'install[token]': executeToken,
       'install[identifier]': identifier,
     };
-    $(this.findInModal(this.selectorOutputWizardsContainer + ' form').serializeArray()).each((index: number, element: any): void => {
+    for (let element of this.findInModal(this.selectorOutputWizardsContainer + ' form').serializeArray()) {
       postData[element.name] = element.value;
-    });
+    }
     const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
     // modalContent.find(this.selectorOutputWizardsContainer).empty();
     $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Executing "' + title + '"...'));

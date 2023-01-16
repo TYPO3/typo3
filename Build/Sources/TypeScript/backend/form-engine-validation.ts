@@ -266,14 +266,14 @@ export default (function() {
     let minItems: number;
     let maxItems: number;
 
-    if (!$.isArray(value)) {
+    if (!Array.isArray(value)) {
       value = value.trimStart();
     }
 
-    $.each(rules, function(k: number, rule: any): void|boolean {
+    for (let rule of rules) {
       if (markParent) {
         // abort any further validation as validating the field already failed
-        return false;
+        break;
       }
       switch (rule.type) {
         case 'required':
@@ -394,7 +394,7 @@ export default (function() {
         default:
           break;
       }
-    });
+    }
 
     const isValid = !markParent;
     const validationMarker = field.closest(FormEngineValidation.markerSelector);
@@ -550,14 +550,14 @@ export default (function() {
     }
 
     const sectionElement = section || document;
-    $(sectionElement).find(FormEngineValidation.rulesSelector).each((index: number, field: HTMLElement) => {
+    for (let field of sectionElement.querySelectorAll(FormEngineValidation.rulesSelector)) {
       const $field = $(field);
 
       if (!$field.closest('.t3js-flex-section-deleted, .t3js-inline-record-deleted, .t3js-file-reference-deleted').length) {
         let modified = false;
         const currentValue = $field.val();
         const newValue = FormEngineValidation.validateField($field, currentValue);
-        if ($.isArray(newValue) && $.isArray(currentValue)) {
+        if (Array.isArray(newValue) && Array.isArray(currentValue)) {
           // handling for multi-selects
           if (newValue.length !== currentValue.length) {
             modified = true;
@@ -576,7 +576,7 @@ export default (function() {
           $field.val(newValue);
         }
       }
-    });
+    }
   };
 
   /**

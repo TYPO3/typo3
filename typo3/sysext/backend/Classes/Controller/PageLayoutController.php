@@ -516,7 +516,7 @@ class PageLayoutController
             $pasteTitle = BackendUtility::getRecordTitle('tt_content', $pasteRecord);
             $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
                 JavaScriptModuleInstruction::create('@typo3/backend/layout-module/paste.js')
-                    ->assign([
+                    ->instance([
                         'itemOnClipboardUid' => $pasteItem,
                         'itemOnClipboardTitle' => $pasteTitle,
                         'copyMode' => $clipboard->clipData['normal']['mode'] ?? '',

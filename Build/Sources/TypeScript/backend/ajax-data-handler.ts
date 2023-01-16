@@ -14,15 +14,14 @@
 import {BroadcastMessage} from '@typo3/backend/broadcast-message';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import DocumentService from '@typo3/core/document-service';
 import {SeverityEnum} from './enum/severity';
-import MessageInterface from './ajax-data-handler/message-interface';
 import ResponseInterface from './ajax-data-handler/response-interface';
 import $ from 'jquery';
 import BroadcastService from '@typo3/backend/broadcast-service';
 import Icons from './icons';
 import Modal from './modal';
 import Notification from './notification';
-import Viewport from './viewport';
 
 enum Identifiers {
   hide = '.t3js-record-hide',
@@ -64,7 +63,7 @@ class AjaxDataHandler {
   }
 
   constructor() {
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.initialize();
     });
   }
@@ -270,9 +269,9 @@ class AjaxDataHandler {
    * @param {Object} result
    */
   private handleErrors(result: ResponseInterface): void {
-    $.each(result.messages, (position: number, message: MessageInterface): void => {
+    for (let message of result.messages) {
       Notification.error(message.title, message.message);
-    });
+    }
   }
 
   /**

@@ -12,6 +12,7 @@
  */
 
 import 'bootstrap';
+import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import FormEngine from '@typo3/backend/form-engine';
 import '@typo3/backend/element/icon-element';
@@ -80,7 +81,7 @@ class FormEngineReview {
     const me: any = this;
     const $document: any = $(document);
 
-    $((): void => {
+    DocumentService.ready().then((): void => {
       FormEngineReview.attachButtonToModuleHeader(me);
     });
     $document.on('t3-formengine-postfieldvalidation', this.checkForReviewableField);

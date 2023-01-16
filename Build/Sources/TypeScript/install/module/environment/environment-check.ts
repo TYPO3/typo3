@@ -18,10 +18,24 @@ import {AbstractInteractableModule} from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import MessageInterface from '../../message-interface';
 import InfoBox from '../../renderable/info-box';
 import ProgressBar from '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
+
+interface EnvironmentCheckResponse {
+  success: boolean,
+  status: {
+    error: MessageInterface[],
+    warning: MessageInterface[],
+    ok: MessageInterface[],
+    information: MessageInterface[],
+    notice: MessageInterface[]
+  },
+  html: string,
+  buttons: { btnClass: string, text: string }[]
+}
 
 /**
  * Module: @typo3/install/environment-check
@@ -56,26 +70,24 @@ class EnvironmentCheck extends AbstractInteractableModule {
       .get({cache: 'no-cache'})
       .then(
         async (response: AjaxResponse): Promise<any> => {
-          const data = await response.resolve();
+          const data: EnvironmentCheckResponse = await response.resolve();
           modalContent.empty().append(data.html);
           Modal.setButtons(data.buttons);
           let warningCount = 0;
           let errorCount = 0;
           if (data.success === true && typeof (data.status) === 'object') {
-            $.each(data.status, (i: number, element: any): void => {
-              if (Array.isArray(element) && element.length > 0) {
-                element.forEach((aStatus: any): void => {
-                  if (aStatus.severity === 1) {
-                    warningCount++;
-                  }
-                  if (aStatus.severity === 2) {
-                    errorCount++;
-                  }
-                  const aMessage = InfoBox.render(aStatus.severity, aStatus.title, aStatus.message);
-                  modalContent.find(this.selectorOutputContainer).append(aMessage);
-                });
+            for (let messages of Object.values(data.status)) {
+              for (let status of messages) {
+                if (status.severity === 1) {
+                  warningCount++;
+                }
+                if (status.severity === 2) {
+                  errorCount++;
+                }
+                const aMessage = InfoBox.render(status.severity, status.title, status.message);
+                modalContent.find(this.selectorOutputContainer).append(aMessage);
               }
-            });
+            }
             if (errorCount > 0) {
               $errorBadge.removeClass('badge-warning').addClass('badge-danger').text(errorCount).show();
             } else if (warningCount > 0) {

@@ -16,6 +16,7 @@ import NProgress from 'nprogress';
 import Notification from '@typo3/backend/notification';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 enum ExtensionManagerUpdateIdentifier {
   extensionTable = '#terTable',
@@ -30,25 +31,16 @@ class ExtensionManagerUpdate {
    * Register "update from ter" action
    */
   public initializeEvents(): void {
-    $(ExtensionManagerUpdateIdentifier.terUpdateAction).each((index: number, element: any): void => {
-      // "this" is the form which updates the extension list from
-      // TER on submit
-      const $me = $(element);
-      const updateURL = $me.attr('action');
+    const terUpdateActionForm = document.querySelector(ExtensionManagerUpdateIdentifier.terUpdateAction) as HTMLFormElement|null;
+    if (terUpdateActionForm !== null) {
+      new RegularEvent('submit', (e: SubmitEvent) => {
+        e.preventDefault();
 
-      $me.attr('action', '#');
-      $me.on('submit', (): boolean => {
-        // Force update on click.
-        this.updateFromTer(updateURL, true);
+        this.updateFromTer((e.target as HTMLFormElement).action, true);
+      }).bindTo(terUpdateActionForm);
 
-        // Prevent normal submit action.
-        return false;
-      });
-
-      // This might give problems when there are more "update"-buttons,
-      // each one would trigger a TER-this.
-      this.updateFromTer(updateURL, false);
-    });
+      this.updateFromTer(terUpdateActionForm.action, false);
+    }
   }
 
   private updateFromTer(url: string, forceUpdate: boolean): void {

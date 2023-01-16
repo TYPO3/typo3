@@ -13,6 +13,7 @@
 
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
+import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import Modal from '@typo3/backend/modal';
 import Utility from '@typo3/backend/utility';
@@ -56,7 +57,7 @@ class Preview extends Workspaces {
   constructor() {
     super();
 
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.getElements();
       this.resizeViews();
       this.registerEvents();

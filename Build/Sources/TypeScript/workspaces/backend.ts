@@ -12,6 +12,7 @@
  */
 
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import '@typo3/backend/element/icon-element';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
@@ -239,7 +240,7 @@ class Backend extends Workspaces {
   constructor() {
     super();
 
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.getElements();
       this.registerEvents();
       this.notifyWorkspaceSwitchAction();
@@ -1264,17 +1265,17 @@ class Backend extends Workspaces {
         this.settings.id,
       ]),
     ).then(async (response: AjaxResponse): Promise<void> => {
-      const result = (await response.resolve())[0].result;
+      const result: { [key: string]: string } = (await response.resolve())[0].result;
       const $list = $('<dl />');
 
-      $.each(result, (language: string, url: string): void => {
+      for (let [language, url] of Object.entries(result)) {
         $list.append(
           $('<dt />').text(language),
           $('<dd />').append(
             $('<a />', {href: url, target: '_blank'}).text(url),
           ),
         );
-      });
+      }
 
       Modal.show(
         TYPO3.lang.previewLink,

@@ -106,9 +106,9 @@ class Presets extends AbstractInteractableModule {
     const modalContent: JQuery = this.getModalBody();
     const executeToken: string = this.getModuleContent().data('presets-activate-token');
     const postData: any = {};
-    $(this.findInModal('form').serializeArray()).each((index: number, element: any): void => {
+    for (let element of this.findInModal('form').serializeArray()) {
       postData[element.name] = element.value;
-    });
+    }
     postData['install[action]'] = 'presetsActivate';
     postData['install[token]'] = executeToken;
     (new AjaxRequest(Router.getUrl())).post(postData).then(

@@ -12,7 +12,6 @@
  */
 
 import {Collapse} from 'bootstrap';
-import $ from 'jquery';
 import Sortable from 'sortablejs';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
@@ -160,19 +159,19 @@ class FlexFormSectionContainer {
 
       // @todo deprecate or remove with TYPO3 v12.0
       if (data.scriptCall && data.scriptCall.length > 0) {
-        $.each(data.scriptCall, function (index: number, value: string): void {
+        for (let value of data.scriptCall) {
           // eslint-disable-next-line no-eval
           eval(value);
-        });
+        }
       }
       if (data.stylesheetFiles && data.stylesheetFiles.length > 0) {
-        $.each(data.stylesheetFiles, function (index: number, stylesheetFile: string): void {
+        for (let stylesheetFile of data.stylesheetFiles) {
           let element = document.createElement('link');
           element.rel = 'stylesheet';
           element.type = 'text/css';
           element.href = stylesheetFile;
           document.head.appendChild(element);
-        });
+        }
       }
 
       this.updateToggleAllState();

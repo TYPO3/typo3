@@ -214,6 +214,8 @@ class ModuleMenu {
   }
 
   constructor() {
+    // @todo: DocumentService.ready() doesn't work here as it apparently is too fast or whatever.
+    //        It keeps breaking acceptance tests. Bonkers.
     $((): void => this.initialize());
   }
 

@@ -243,7 +243,7 @@ class ExtensionScanner extends AbstractInteractableModule {
                 doneFiles++;
                 this.setStatusMessageForScan(extension, doneFiles, numberOfFiles);
                 this.setProgressForScan(extension, doneFiles, numberOfFiles);
-                if (fileData.success && $.isArray(fileData.matches)) {
+                if (fileData.success && Array.isArray(fileData.matches)) {
                   fileData.matches.forEach((match: Match): void => {
                     hitFound = true;
                     const aMatch: any = modalContent.find(hitTemplate).find('.panel').clone();
@@ -265,7 +265,7 @@ class ExtensionScanner extends AbstractInteractableModule {
                     }
                     aMatch.find('.t3js-extensionScanner-hit-file-lineContent').empty().text(match.lineContent);
                     aMatch.find('.t3js-extensionScanner-hit-file-line').empty().text(match.line + ': ');
-                    if ($.isArray(match.restFiles)) {
+                    if (Array.isArray(match.restFiles)) {
                       match.restFiles.forEach((restFile: RestFile): void => {
                         const aRest = modalContent.find(restTemplate).find('.panel').clone();
                         aRest.find('.t3js-extensionScanner-hit-rest-panel-head').attr('href', '#collapse' + restFile.uniqueId);

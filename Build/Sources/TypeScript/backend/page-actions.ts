@@ -28,6 +28,8 @@ class PageActions {
   private $showHiddenElementsCheckbox: JQuery = null;
 
   constructor() {
+    // @todo: Cannot use DocumentService.ready() for now. This module has dependency issues between the constructor and
+    //        setter methods and should be converted to independent web components.
     $((): void => {
       this.initializeElements();
       this.initializeEvents();

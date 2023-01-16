@@ -115,9 +115,9 @@ class ExtensionConfiguration extends AbstractInteractableModule {
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().data('extension-configuration-write-token');
     const extensionConfiguration: any = {};
-    $.each($form.serializeArray(), (index: number, element: any): void => {
+    for (let element of $form.serializeArray()) {
       extensionConfiguration[element.name] = element.value;
-    });
+    }
 
     (new AjaxRequest(Router.getUrl()))
       .post({

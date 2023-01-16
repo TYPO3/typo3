@@ -22,6 +22,20 @@ import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
 
+interface ResultItems {
+  [key: string]: string
+}
+
+interface ExtensionInstallResult {
+  errorCount: number,
+  errorMessage: string,
+  errorTitle: string,
+  extension: string,
+  installationTypeLanguageKey: string,
+  result: false | {dependencies?: ResultItems, installed?: ResultItems, updated?: ResultItems },
+  skipDependencyUri: string
+}
+
 class Repository {
   public downloadPath: string = '';
 
@@ -94,7 +108,7 @@ class Repository {
     new AjaxRequest(url).get().then(async (response: AjaxResponse): Promise<void> => {
       // FIXME: As of now, the endpoint doesn't set proper headers, thus we have to parse the response text
       // https://review.typo3.org/c/Packages/TYPO3.CMS/+/63438
-      const data = await response.raw().json();
+      const data: ExtensionInstallResult = await response.raw().json();
       if (data.errorCount > 0) {
         const modal = Modal.confirm(data.errorTitle, $(data.errorMessage), Severity.error, [
           {
@@ -130,12 +144,12 @@ class Repository {
         + data.installationTypeLanguageKey].replace(/\{0\}/g, data.extension);
 
         successMessage += '\n' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.header'] + ': ';
-        $.each(data.result, (index: number, value: any): void => {
+        for (let [index, value] of Object.entries(data.result)) {
           successMessage += '\n\n' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.item'] + ' ' + index + ': ';
-          $.each(value, (extkey: string): void => {
+          for (let extkey of value) {
             successMessage += '\n* ' + extkey;
-          });
-        });
+          }
+        }
         Notification.info(
           TYPO3.lang['extensionList.dependenciesResolveFlashMessage.title' + data.installationTypeLanguageKey]
             .replace(/\{0\}/g, data.extension),

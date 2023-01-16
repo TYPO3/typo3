@@ -20,9 +20,7 @@
  *   - select fields: move selected items up and down via buttons, remove items etc
  */
 
-/**
- * Module: @typo3/backend/form-engine
- */
+import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import Icons from '@typo3/backend/icons';
@@ -40,6 +38,9 @@ interface OnFieldChangeItem {
   data: {[key: string]: string|number|boolean|null}
 }
 
+/**
+ * Module: @typo3/backend/form-engine
+ */
 export default (function() {
 
   function handleConsumeResponse(interactionRequest: InteractionRequest, response: boolean): void {
@@ -160,12 +161,15 @@ export default (function() {
   ): void {
     exclusiveValues = String(exclusiveValues);
 
-    let $fieldEl,
+    let
+      fieldEl,
+      $fieldEl,
       originalFieldEl,
       isMultiple = false,
       isList = false;
 
     $fieldEl = FormEngine.getFieldElement(fieldName);
+    fieldEl = $fieldEl.get(0);
     originalFieldEl = $fieldEl.get(0);
 
     if (originalFieldEl === null || value === '--div--' || originalFieldEl instanceof HTMLOptGroupElement) {
@@ -177,6 +181,8 @@ export default (function() {
     const $listFieldEl = FormEngine.getFieldElement(fieldName, '_list', true);
     if ($listFieldEl.length > 0) {
       $fieldEl = $listFieldEl;
+      fieldEl = $fieldEl.get(0);
+
       isMultiple = ($fieldEl.prop('multiple') && $fieldEl.prop('size') != '1');
       isList = true;
     }
@@ -186,13 +192,13 @@ export default (function() {
 
       // If multiple values are not allowed, clear anything that is in the control already
       if (!isMultiple) {
-        $fieldEl.find('option').each((index: number, el: HTMLElement) => {
+        for (let el of fieldEl.querySelectorAll('option') as NodeListOf<HTMLOptionElement>) {
           const $option = $availableFieldEl.find('option[value="' + $.escapeSelector($(el).attr('value')) + '"]');
           if ($option.length) {
             $option.removeClass('hidden').prop('disabled', false);
             FormEngine.enableOptGroup($option.get(0));
           }
-        });
+        }
         $fieldEl.empty();
       }
 
@@ -229,12 +235,12 @@ export default (function() {
       // check if there is a "_mul" field (a field on the right) and if the field was already added
       const $multipleFieldEl = FormEngine.getFieldElement(fieldName, '_mul', true);
       if ($multipleFieldEl.length == 0 || $multipleFieldEl.val() == 0) {
-        $fieldEl.find('option').each(function(k: number, optionEl: HTMLOptionElement): void|boolean {
-          if ($(optionEl).prop('value') == value) {
+        for (let optionEl of fieldEl.querySelectorAll('option') as NodeListOf<HTMLOptionElement>) {
+          if (optionEl.value == value) {
             addNewValue = false;
-            return false;
+            break;
           }
-        });
+        }
 
         if (addNewValue && typeof optionEl !== 'undefined') {
           optionEl.classList.add('hidden');
@@ -258,7 +264,7 @@ export default (function() {
         $option.appendTo($fieldEl);
 
         // set the hidden field
-        FormEngine.updateHiddenFieldValueFromSelect($fieldEl, originalFieldEl);
+        FormEngine.updateHiddenFieldValueFromSelect(fieldEl, originalFieldEl);
 
         // execute the phpcode from $FormEngine->TBE_EDITOR_fieldChanged_func
         FormEngine.legacyFieldChangedCb();
@@ -293,10 +299,7 @@ export default (function() {
    * @param {HTMLElement} originalFieldEl the hidden form field
    */
   FormEngine.updateHiddenFieldValueFromSelect = function(selectFieldEl: HTMLSelectElement, originalFieldEl: HTMLSelectElement): void {
-    const selectedValues = <Array<string>>[];
-    $(selectFieldEl).find('option').each((index: number, el: HTMLElement) => {
-      selectedValues.push($(el).prop('value'));
-    });
+    const selectedValues: string[] = Array.from(selectFieldEl.options).map((el: HTMLOptionElement) => el.value);
 
     // make a comma separated list, if it is a multi-select
     // set the values to the final hidden field
@@ -672,14 +675,13 @@ export default (function() {
    * Initialize input / text field "null" checkbox CSS overlay if no placeholder is set.
    */
   FormEngine.initializeNullNoPlaceholderCheckboxes = function(): void {
-    $('.t3-form-field-eval-null-checkbox').each(function(index: number, el: HTMLElement) {
-      const $el = $(el);
+    document.querySelectorAll('.t3-form-field-eval-null-checkbox').forEach((el: HTMLElement) => {
       // Add disabled class to "t3js-formengine-field-item" if the null checkbox is NOT set,
       // This activates a CSS overlay "disabling" the input field and everything around.
-      const $checkbox = $el.find('input[type="checkbox"]');
-      const $fieldItem = $el.closest('.t3js-formengine-field-item');
-      if (!$checkbox.attr('checked')) {
-        $fieldItem.addClass('disabled');
+      const checkbox = el.querySelector('input[type="checkbox"]') as HTMLInputElement;
+      const fieldItem = el.closest('.t3js-formengine-field-item');
+      if (!checkbox.checked) {
+        fieldItem.classList.add('disabled');
       }
     });
   };
@@ -688,7 +690,7 @@ export default (function() {
    * Initialize input / text field "null" checkbox placeholder / real field if placeholder is set.
    */
   FormEngine.initializeNullWithPlaceholderCheckboxes = function(): void {
-    $('.t3js-form-field-eval-null-placeholder-checkbox').each((index: number, el: HTMLElement) => {
+    document.querySelectorAll('.t3-form-field-eval-null-checkbox').forEach((el: HTMLElement) => {
       FormEngine.toggleCheckboxField($(el).find('input[type="checkbox"]'), false);
     });
   };
@@ -737,12 +739,14 @@ export default (function() {
    * Disable the input field on load if localization state selector is set to "parent" or "source"
    */
   FormEngine.initializeLocalizationStateSelector = function(): void {
-    $('.t3js-l10n-state-container').each((index: number, el: HTMLElement) => {
-      const $el = $(el);
-      const $input = $el.closest('.t3js-formengine-field-item').find('[data-formengine-input-name]');
-      const currentState = $el.find('input[type="radio"]:checked').val();
+    document.querySelectorAll('.t3js-l10n-state-container').forEach((el: HTMLElement) => {
+      const input = el.closest('.t3js-formengine-field-item')?.querySelector('[data-formengine-input-name]') as HTMLInputElement|null;
+      if (input === undefined) {
+        return;
+      }
+      const currentState = (el.querySelector('input[type="radio"]:checked') as HTMLInputElement).value;
       if (currentState === 'parent' || currentState === 'source') {
-        $input.attr('disabled', 'disabled');
+        input.disabled = true;
       }
     });
   };
@@ -1329,7 +1333,7 @@ export default (function() {
   FormEngine.initialize = function(browserUrl: string): void {
     FormEngine.browserUrl = browserUrl;
 
-    $(function() {
+    DocumentService.ready().then((): void => {
       FormEngine.initializeEvents();
       FormEngine.Validation.initialize();
       FormEngine.reinitialize();
@@ -1343,9 +1347,9 @@ export default (function() {
 
   // load required modules to hook in the post initialize function
   if (undefined !== TYPO3.settings.RequireJS && undefined !== TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/FormEngine']) {
-    $.each(TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/FormEngine'], function(pos: number, moduleName: string) {
+    for (let moduleName of TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/FormEngine']) {
       window.require([moduleName]);
-    });
+    }
   }
 
   // make the form engine object publicly visible for other objects in the TYPO3 namespace

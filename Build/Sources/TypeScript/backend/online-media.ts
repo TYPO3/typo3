@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import {MessageUtility} from '@typo3/backend/utility/message-utility';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
@@ -34,7 +35,7 @@ class OnlineMedia {
   private readonly securityUtility: SecurityUtility;
   constructor() {
     this.securityUtility = new SecurityUtility();
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.registerEvents();
     });
   }
