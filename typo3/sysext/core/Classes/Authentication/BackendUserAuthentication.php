@@ -1265,6 +1265,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Regular users only have storages that are defined in their filemounts
             // Permissions and file mounts for the storage are added in StoragePermissionAspect
             foreach ($this->getFileMountRecords() as $row) {
+                if (!str_contains($row['identifier'], ':')) {
+                    // Skip record since the file mount identifier is invalid
+                    continue;
+                }
                 [$base] = GeneralUtility::trimExplode(':', $row['identifier'], true);
                 $base = (int)$base;
                 if (!array_key_exists($base, $this->fileStorages)) {
