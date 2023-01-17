@@ -319,7 +319,7 @@ class TextElement extends AbstractFormElement
                 <div class="formengine-field-item t3js-formengine-field-item">
                     ' . $fieldInformationHtml . $fullElement . '
                 </div>
-            </typo3-formengine-element-color>';
+            </typo3-formengine-element-text>';
 
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/text-element.js');
 

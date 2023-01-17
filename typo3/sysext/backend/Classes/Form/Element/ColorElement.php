@@ -239,7 +239,7 @@ class ColorElement extends AbstractFormElement
                 <div class="formengine-field-item t3js-formengine-field-item">
                     ' . $fieldInformationHtml . $fullElement . '
                 </div>
-            </typo3-formengine-element-datetime>';
+            </typo3-formengine-element-color>';
 
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/color-element.js');
 
