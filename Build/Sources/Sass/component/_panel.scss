@@ -61,7 +61,7 @@ $panel-heading-bg-scale: -85%;
     --panel-border-width: var(--typo3-component-border-width);
     --panel-padding: 1rem;
     --panel-header-padding-x: 1rem;
-    --panel-header-padding-y: .75rem;
+    --panel-header-padding-y: .9375rem;
     --panel-spacing: var(--typo3-spacing);
     --panel-box-shadow: var(--typo3-component-box-shadow);
 
@@ -185,6 +185,12 @@ $panel-heading-bg-scale: -85%;
         }
     }
     /* stylelint-enable */
+
+    a {
+        display: block;
+        padding: var(--panel-header-padding-y) var(--panel-header-padding-x);
+        margin: calc(-1 * var(--panel-header-padding-y)) calc(-1 * var(--panel-header-padding-x));
+    }
 
     a,
     a:hover,
