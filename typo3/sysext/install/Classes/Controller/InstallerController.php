@@ -636,7 +636,7 @@ final class InstallerController
         }
 
         // Mark upgrade wizards as done
-        $this->setupDatabaseService->markWizardsDone();
+        $this->setupDatabaseService->markWizardsDone($container);
 
         $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationValues);
 

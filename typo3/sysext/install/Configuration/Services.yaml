@@ -12,6 +12,9 @@ services:
     autoconfigure: true
     public: false
 
+  TYPO3\CMS\Install\Updates\:
+    resource: '../Classes/Updates/*'
+
   TYPO3\CMS\Install\Controller\BackendModuleController:
     tags: ['backend.controller']
 
@@ -35,3 +38,7 @@ services:
 
   TYPO3\CMS\Install\Service\UpgradeWizardsService:
     public: true
+
+  TYPO3\CMS\Install\Updates\UpgradeWizardRegistry:
+    arguments:
+      $upgradeWizards: !tagged_locator { tag: 'install.upgradewizard', index_by: 'identifier' }

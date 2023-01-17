@@ -21,10 +21,12 @@ use TYPO3\CMS\Backend\Module\ModuleRegistry;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 
 /**
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
+#[UpgradeWizard('backendModulePermission')]
 class BackendModulePermissionMigration implements UpgradeWizardInterface
 {
     protected array $aliases = [];
@@ -32,11 +34,6 @@ class BackendModulePermissionMigration implements UpgradeWizardInterface
     public function __construct()
     {
         $this->aliases = GeneralUtility::makeInstance(ModuleRegistry::class)->getModuleAliases();
-    }
-
-    public function getIdentifier(): string
-    {
-        return 'backendModulePermission';
     }
 
     public function getTitle(): string

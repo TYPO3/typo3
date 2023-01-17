@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
+use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\SetupDatabaseService;
 use TYPO3\CMS\Install\Service\SetupService;
 
@@ -52,6 +53,7 @@ class SetupCommand extends Command
     protected SetupDatabaseService $setupDatabaseService;
     protected SetupService $setupService;
     protected ConfigurationManager $configurationManager;
+    protected LateBootService $lateBootService;
     protected OutputInterface $output;
     protected InputInterface $input;
     protected QuestionHelper $questionHelper;
@@ -61,10 +63,12 @@ class SetupCommand extends Command
         SetupDatabaseService $setupDatabaseService,
         SetupService $setupService,
         ConfigurationManager $configurationManager,
+        LateBootService $lateBootService
     ) {
         $this->setupDatabaseService = $setupDatabaseService;
         $this->setupService = $setupService;
         $this->configurationManager = $configurationManager;
+        $this->lateBootService = $lateBootService;
         parent::__construct($name);
     }
 
@@ -250,7 +254,8 @@ EOT
             $this->setupService->createSiteConfiguration('main', (int)$pageUid, $siteUrl);
         }
 
-        $this->setupDatabaseService->markWizardsDone();
+        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
+        $this->setupDatabaseService->markWizardsDone($container);
         $this->writeSuccess('Congratulations - TYPO3 Setup is done.');
 
         return Command::SUCCESS;

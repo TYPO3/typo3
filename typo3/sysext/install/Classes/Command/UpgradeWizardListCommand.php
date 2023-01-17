@@ -24,7 +24,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\UpgradeWizardsService;
 use TYPO3\CMS\Install\Updates\ChattyInterface;
@@ -43,11 +42,6 @@ class UpgradeWizardListCommand extends Command
      * @var OutputInterface|\Symfony\Component\Console\Style\StyleInterface
      */
     private $output;
-
-    /**
-     * @var InputInterface
-     */
-    private $input;
 
     public function __construct(string $name, private readonly LateBootService $lateBootService)
     {
@@ -86,16 +80,15 @@ class UpgradeWizardListCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->output = new SymfonyStyle($input, $output);
-        $this->input = $input;
         $this->bootstrap();
 
         $wizards = [];
         $all = $input->getOption('all');
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $wizardToExecute) {
-            $upgradeWizard = $this->getWizard($wizardToExecute, $identifier, (bool)$all);
+        foreach ($this->upgradeWizardsService->getUpgradeWizardIdentifiers() as $identifier) {
+            $upgradeWizard = $this->getWizard($identifier, (bool)$all);
             if ($upgradeWizard !== null) {
                 $wizardInfo = [
-                    'identifier' => $upgradeWizard->getIdentifier(),
+                    'identifier' => $identifier,
                     'title' => $upgradeWizard->getTitle(),
                     'description' => wordwrap($upgradeWizard->getDescription()),
                 ];
@@ -107,38 +100,34 @@ class UpgradeWizardListCommand extends Command
         }
         if (empty($wizards)) {
             $this->output->success('No wizards available.');
+        } elseif ($all === true) {
+            $this->output->table(['Identifier', 'Title', 'Description', 'Status'], $wizards);
         } else {
-            if ($all === true) {
-                $this->output->table(['Identifier', 'Title', 'Description', 'Status'], $wizards);
-            } else {
-                $this->output->table(['Identifier', 'Title', 'Description'], $wizards);
-            }
+            $this->output->table(['Identifier', 'Title', 'Description'], $wizards);
         }
         return Command::SUCCESS;
     }
 
     /**
-     * Get Wizard instance by class name and identifier
+     * Get Wizard instance by identifier
      * Returns null if wizard is already done
-     *
-     * @param bool $all
      */
-    protected function getWizard(string $className, string $identifier, $all = false): ?UpgradeWizardInterface
+    protected function getWizard(string $identifier, bool $all = false): ?UpgradeWizardInterface
     {
         // already done
         if (!$all && $this->upgradeWizardsService->isWizardDone($identifier)) {
             return null;
         }
 
-        $wizardInstance = GeneralUtility::makeInstance($className);
-        if ($wizardInstance instanceof ChattyInterface) {
-            $wizardInstance->setOutput($this->output);
-        }
-
-        if (!($wizardInstance instanceof UpgradeWizardInterface)) {
+        $wizard = $this->upgradeWizardsService->getUpgradeWizard($identifier);
+        if ($wizard === null) {
             return null;
         }
 
-        return !$all ? $wizardInstance->updateNecessary() ? $wizardInstance : null : $wizardInstance;
+        if ($wizard instanceof ChattyInterface) {
+            $wizard->setOutput($this->output);
+        }
+
+        return !$all ? $wizard->updateNecessary() ? $wizard : null : $wizard;
     }
 }

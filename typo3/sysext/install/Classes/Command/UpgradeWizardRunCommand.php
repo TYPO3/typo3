@@ -103,20 +103,15 @@ class UpgradeWizardRunCommand extends Command
         $this->input = $input;
         $this->bootstrap();
 
-        $result = Command::SUCCESS;
         if ($input->getArgument('wizardName')) {
             $wizardToExecute = $input->getArgument('wizardName');
             $wizardToExecute = is_string($wizardToExecute) ? $wizardToExecute : '';
-            if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$wizardToExecute])) {
-                $className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$wizardToExecute];
-                $upgradeWizard = $this->getWizard($className, $wizardToExecute);
-                if ($upgradeWizard !== null) {
-                    $prerequisitesFulfilled = $this->handlePrerequisites([$upgradeWizard]);
-                    if ($prerequisitesFulfilled === true) {
-                        $result = $this->runSingleWizard($upgradeWizard);
-                    } else {
-                        $result = Command::FAILURE;
-                    }
+            if (($upgradeWizard = $this->getWizard($wizardToExecute)) !== null) {
+                $prerequisitesFulfilled = $this->handlePrerequisites([$upgradeWizard]);
+                if ($prerequisitesFulfilled === true) {
+                    $result = $this->runSingleWizard($upgradeWizard);
+                } else {
+                    $result = Command::FAILURE;
                 }
             } else {
                 $this->output->error('No such wizard: ' . $wizardToExecute);
@@ -132,36 +127,30 @@ class UpgradeWizardRunCommand extends Command
      * Get Wizard instance by class name and identifier
      * Returns null if wizard is already done
      */
-    protected function getWizard(string $className, string $identifier): ?UpgradeWizardInterface
+    protected function getWizard(string $identifier): ?UpgradeWizardInterface
     {
         // already done
         if ($this->upgradeWizardsService->isWizardDone($identifier)) {
             return null;
         }
 
-        $wizardInstance = GeneralUtility::makeInstance($className);
-        if ($wizardInstance instanceof ChattyInterface) {
-            $wizardInstance->setOutput($this->output);
-        }
-
-        if (!($wizardInstance instanceof UpgradeWizardInterface)) {
-            $this->output->writeln(
-                'Wizard ' .
-                $identifier .
-                ' needs to be manually run from the install tool, as it does not implement ' .
-                UpgradeWizardInterface::class
-            );
+        $wizard = $this->upgradeWizardsService->getUpgradeWizard($identifier);
+        if ($wizard === null) {
             return null;
         }
 
-        if ($wizardInstance->updateNecessary()) {
-            return $wizardInstance;
+        if ($wizard instanceof ChattyInterface) {
+            $wizard->setOutput($this->output);
         }
-        if ($wizardInstance instanceof RepeatableInterface) {
+
+        if ($wizard->updateNecessary()) {
+            return $wizard;
+        }
+        if ($wizard instanceof RepeatableInterface) {
             $this->output->note('Wizard ' . $identifier . ' does not need to make changes.');
         } else {
             $this->output->note('Wizard ' . $identifier . ' does not need to make changes. Marking wizard as done.');
-            $this->upgradeWizardsService->markWizardAsDone($identifier);
+            $this->upgradeWizardsService->markWizardAsDone($wizard);
         }
         return null;
     }
@@ -234,7 +223,7 @@ class UpgradeWizardRunCommand extends Command
                 if ($instance instanceof RepeatableInterface) {
                     $this->output->note('No changes applied.');
                 } else {
-                    $this->upgradeWizardsService->markWizardAsDone($instance->getIdentifier());
+                    $this->upgradeWizardsService->markWizardAsDone($instance);
                     $this->output->note('No changes applied, marking wizard as done.');
                 }
                 return Command::SUCCESS;
@@ -243,7 +232,7 @@ class UpgradeWizardRunCommand extends Command
         if ($instance->executeUpdate()) {
             $this->output->success('Successfully ran wizard ' . $instance->getTitle());
             if (!$instance instanceof RepeatableInterface) {
-                $this->upgradeWizardsService->markWizardAsDone($instance->getIdentifier());
+                $this->upgradeWizardsService->markWizardAsDone($instance);
             }
             return Command::SUCCESS;
         }
@@ -260,8 +249,8 @@ class UpgradeWizardRunCommand extends Command
     {
         $returnCode = Command::SUCCESS;
         $wizardInstances = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $class) {
-            $wizardInstances[] = $this->getWizard($class, $identifier);
+        foreach ($this->upgradeWizardsService->getUpgradeWizardIdentifiers() as $identifier) {
+            $wizardInstances[] = $this->getWizard($identifier);
         }
         $wizardInstances = array_filter($wizardInstances);
         if (count($wizardInstances) > 0) {

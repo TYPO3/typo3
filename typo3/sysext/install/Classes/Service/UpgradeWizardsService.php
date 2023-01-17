@@ -29,6 +29,7 @@ use TYPO3\CMS\Install\Updates\ConfirmableInterface;
 use TYPO3\CMS\Install\Updates\RepeatableInterface;
 use TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
+use TYPO3\CMS\Install\Updates\UpgradeWizardRegistry;
 
 /**
  * Service class helping managing upgrade wizards
@@ -41,7 +42,7 @@ class UpgradeWizardsService
      */
     private $output;
 
-    public function __construct()
+    public function __construct(private readonly UpgradeWizardRegistry $upgradeWizardRegistry)
     {
         $fileName = 'php://temp';
         if (($stream = fopen($fileName, 'wb')) === false) {
@@ -57,13 +58,13 @@ class UpgradeWizardsService
     {
         $wizardsDoneInRegistry = [];
         $registry = GeneralUtility::makeInstance(Registry::class);
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $className) {
-            if ($registry->get('installUpdate', $className, false)) {
-                $wizardInstance = GeneralUtility::makeInstance($className);
+        foreach ($this->upgradeWizardRegistry->getUpgradeWizards() as $identifier => $serviceName) {
+            if ($registry->get('installUpdate', $serviceName, false)) {
                 $wizardsDoneInRegistry[] = [
-                    'class' => $className,
+                    'class' => $serviceName,
                     'identifier' => $identifier,
-                    'title' => $wizardInstance->getTitle(),
+                    // @todo fetching the service to get the title should be improved
+                    'title' => $this->upgradeWizardRegistry->getUpgradeWizard($identifier)->getTitle(),
                 ];
             }
         }
@@ -148,8 +149,7 @@ class UpgradeWizardsService
     public function getUpgradeWizardsList(): array
     {
         $wizards = [];
-        foreach (array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']) as $identifier) {
-            $identifier = (string)$identifier;
+        foreach (array_keys($this->upgradeWizardRegistry->getUpgradeWizards()) as $identifier) {
             if ($this->isWizardDone($identifier)) {
                 continue;
             }
@@ -161,31 +161,18 @@ class UpgradeWizardsService
 
     public function getWizardInformationByIdentifier(string $identifier): array
     {
-        if (class_exists($identifier)) {
-            $class = $identifier;
-        } else {
-            $class = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
-        }
-        /** @var UpgradeWizardInterface $wizardInstance */
-        $wizardInstance = GeneralUtility::makeInstance($class);
-        $explanation = '';
+        $wizard = $this->upgradeWizardRegistry->getUpgradeWizard($identifier);
 
-        // $explanation is changed by reference in Update objects!
-        $shouldRenderWizard = false;
-        if ($wizardInstance instanceof UpgradeWizardInterface) {
-            if ($wizardInstance instanceof ChattyInterface) {
-                $wizardInstance->setOutput($this->output);
-            }
-            $shouldRenderWizard = $wizardInstance->updateNecessary();
-            $explanation = $wizardInstance->getDescription();
+        if ($wizard instanceof ChattyInterface) {
+            $wizard->setOutput($this->output);
         }
 
         return [
-            'class' => $class,
+            'class' => $wizard::class,
             'identifier' => $identifier,
-            'title' => $wizardInstance->getTitle(),
-            'shouldRenderWizard' => $shouldRenderWizard,
-            'explanation' => $explanation,
+            'title' => $wizard->getTitle(),
+            'shouldRenderWizard' => $wizard->updateNecessary(),
+            'explanation' => $wizard->getDescription(),
         ];
     }
 
@@ -198,31 +185,30 @@ class UpgradeWizardsService
     {
         $this->assertIdentifierIsValid($identifier);
 
-        $class = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
-        $updateObject = GeneralUtility::makeInstance($class);
+        $wizard = $this->upgradeWizardRegistry->getUpgradeWizard($identifier);
         $wizardHtml = '';
-        if ($updateObject instanceof UpgradeWizardInterface && $updateObject instanceof ConfirmableInterface) {
+        if ($wizard instanceof ConfirmableInterface) {
             $markup = [];
             $radioAttributes = [
                 'type' => 'radio',
                 'class' => 'btn-check',
-                'name' => 'install[values][' . $updateObject->getIdentifier() . '][install]',
+                'name' => 'install[values][' . $identifier . '][install]',
                 'value' => '0',
             ];
             $markup[] = '<div class="panel panel-danger">';
             $markup[] = '   <div class="panel-heading">';
-            $markup[] = htmlspecialchars($updateObject->getConfirmation()->getTitle());
+            $markup[] = htmlspecialchars($wizard->getConfirmation()->getTitle());
             $markup[] = '    </div>';
             $markup[] = '    <div class="panel-body">';
-            $markup[] = '        <p>' . nl2br(htmlspecialchars($updateObject->getConfirmation()->getMessage())) . '</p>';
+            $markup[] = '        <p>' . nl2br(htmlspecialchars($wizard->getConfirmation()->getMessage())) . '</p>';
             $markup[] = '        <div class="btn-group">';
-            if (!$updateObject->getConfirmation()->isRequired()) {
+            if (!$wizard->getConfirmation()->isRequired()) {
                 $markup[] = '        <input ' . GeneralUtility::implodeAttributes($radioAttributes, true) . ' checked id="upgrade-wizard-deny">';
-                $markup[] = '        <label class="btn btn-default" for="upgrade-wizard-deny">' . $updateObject->getConfirmation()->getDeny() . '</label>';
+                $markup[] = '        <label class="btn btn-default" for="upgrade-wizard-deny">' . $wizard->getConfirmation()->getDeny() . '</label>';
             }
             $radioAttributes['value'] = '1';
             $markup[] = '            <input ' . GeneralUtility::implodeAttributes($radioAttributes, true) . ' id="upgrade-wizard-confirm">';
-            $markup[] = '            <label class="btn btn-default" for="upgrade-wizard-confirm">' . $updateObject->getConfirmation()->getConfirm() . '</label>';
+            $markup[] = '            <label class="btn btn-default" for="upgrade-wizard-confirm">' . $wizard->getConfirmation()->getConfirm() . '</label>';
             $markup[] = '        </div>';
             $markup[] = '    </div>';
             $markup[] = '</div>';
@@ -231,8 +217,8 @@ class UpgradeWizardsService
 
         $result = [
             'identifier' => $identifier,
-            'title' => $updateObject->getTitle(),
-            'description' => $updateObject->getDescription(),
+            'title' => $wizard->getTitle(),
+            'description' => $wizard->getDescription(),
             'wizardHtml' => $wizardHtml,
         ];
 
@@ -249,47 +235,44 @@ class UpgradeWizardsService
         $performResult = false;
         $this->assertIdentifierIsValid($identifier);
 
-        $class = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
-        $updateObject = GeneralUtility::makeInstance($class);
+        $wizard = $this->upgradeWizardRegistry->getUpgradeWizard($identifier);
 
-        if ($updateObject instanceof ChattyInterface) {
-            $updateObject->setOutput($this->output);
+        if ($wizard instanceof ChattyInterface) {
+            $wizard->setOutput($this->output);
         }
         $messages = new FlashMessageQueue('install');
 
-        if ($updateObject instanceof UpgradeWizardInterface) {
-            $requestParams = GeneralUtility::_GP('install');
-            if ($updateObject instanceof ConfirmableInterface) {
-                // value is set in request but is empty
-                $isSetButEmpty = isset($requestParams['values'][$updateObject->getIdentifier()]['install'])
-                    && empty($requestParams['values'][$updateObject->getIdentifier()]['install']);
+        $requestParams = GeneralUtility::_GP('install');
+        if ($wizard instanceof ConfirmableInterface) {
+            // value is set in request but is empty
+            $isSetButEmpty = isset($requestParams['values'][$identifier]['install'])
+                && empty($requestParams['values'][$identifier]['install']);
 
-                $checkValue = (int)$requestParams['values'][$updateObject->getIdentifier()]['install'];
+            $checkValue = (int)$requestParams['values'][$identifier]['install'];
 
-                if ($checkValue === 1) {
-                    // confirmation = yes, we do the update
-                    $performResult = $updateObject->executeUpdate();
-                } elseif ($updateObject->getConfirmation()->isRequired()) {
-                    // confirmation = no, but is required, we do *not* the update and fail
-                    $performResult = false;
-                } elseif ($isSetButEmpty) {
-                    // confirmation = no, but it is *not* required, we do *not* the update, but mark the wizard as done
-                    $this->output->writeln('No changes applied, marking wizard as done.');
-                    // confirmation was set to "no"
-                    $performResult = true;
-                }
-            } else {
-                // confirmation yes or non-confirmable
-                $performResult = $updateObject->executeUpdate();
+            if ($checkValue === 1) {
+                // confirmation = yes, we do the update
+                $performResult = $wizard->executeUpdate();
+            } elseif ($wizard->getConfirmation()->isRequired()) {
+                // confirmation = no, but is required, we do *not* the update and fail
+                $performResult = false;
+            } elseif ($isSetButEmpty) {
+                // confirmation = no, but it is *not* required, we do *not* the update, but mark the wizard as done
+                $this->output->writeln('No changes applied, marking wizard as done.');
+                // confirmation was set to "no"
+                $performResult = true;
             }
+        } else {
+            // confirmation yes or non-confirmable
+            $performResult = $wizard->executeUpdate();
         }
 
         $stream = $this->output->getStream();
         rewind($stream);
         if ($performResult) {
-            if ($updateObject instanceof UpgradeWizardInterface && !($updateObject instanceof RepeatableInterface)) {
+            if (!$wizard instanceof RepeatableInterface) {
                 // mark wizard as done if it's not repeatable and was successful
-                $this->markWizardAsDone($updateObject->getIdentifier());
+                $this->markWizardAsDone($wizard);
             }
             $messages->enqueue(
                 new FlashMessage(
@@ -315,12 +298,9 @@ class UpgradeWizardsService
      *
      * @throws \RuntimeException
      */
-    public function markWizardAsDone(string $identifier): void
+    public function markWizardAsDone(UpgradeWizardInterface $upgradeWizard): void
     {
-        $this->assertIdentifierIsValid($identifier);
-
-        $class = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
-        GeneralUtility::makeInstance(Registry::class)->set('installUpdate', $class, 1);
+        GeneralUtility::makeInstance(Registry::class)->set('installUpdate', $upgradeWizard::class, 1);
     }
 
     /**
@@ -333,8 +313,39 @@ class UpgradeWizardsService
     {
         $this->assertIdentifierIsValid($identifier);
 
-        $class = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
-        return (bool)GeneralUtility::makeInstance(Registry::class)->get('installUpdate', $class, false);
+        return (bool)GeneralUtility::makeInstance(Registry::class)->get(
+            'installUpdate',
+            $this->upgradeWizardRegistry->getUpgradeWizard($identifier)::class,
+            false
+        );
+    }
+
+    /**
+     * Wrapper to catch \UnexpectedValueException for backwards compatibility reasons
+     */
+    public function getUpgradeWizard(string $identifier): ?UpgradeWizardInterface
+    {
+        try {
+            return $this->upgradeWizardRegistry->getUpgradeWizard($identifier);
+        } catch (\UnexpectedValueException) {
+            return null;
+        }
+    }
+
+    public function getUpgradeWizardIdentifiers(): array
+    {
+        return array_keys($this->upgradeWizardRegistry->getUpgradeWizards());
+    }
+
+    public function getNonRepeatableUpgradeWizards(): array
+    {
+        $nonRepeatableUpgradeWizards = [];
+        foreach ($this->upgradeWizardRegistry->getUpgradeWizards() as $identifier => $updateClassName) {
+            if (!in_array(RepeatableInterface::class, class_implements($updateClassName) ?: [], true)) {
+                $nonRepeatableUpgradeWizards[$identifier] = $updateClassName;
+            }
+        }
+        return $nonRepeatableUpgradeWizards;
     }
 
     /**
@@ -347,12 +358,11 @@ class UpgradeWizardsService
         if ($identifier === '') {
             throw new \RuntimeException('Empty upgrade wizard identifier given', 1650579934);
         }
-        if (
-            !isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier])
-            && !is_subclass_of($identifier, RowUpdaterInterface::class)
+        if (!is_subclass_of($identifier, RowUpdaterInterface::class)
+            && !$this->upgradeWizardRegistry->hasUpgradeWizard($identifier)
         ) {
             throw new \RuntimeException(
-                'The upgrade wizard identifier "' . $identifier . '" must either be found in $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/install\'][\'update\'] or it must implement TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface',
+                'The upgrade wizard identifier "' . $identifier . '" must either be registered as upgrade wizard or it must implement TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface',
                 1650546252
             );
         }

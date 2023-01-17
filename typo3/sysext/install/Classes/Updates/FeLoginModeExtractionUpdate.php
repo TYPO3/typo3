@@ -20,11 +20,13 @@ namespace TYPO3\CMS\Install\Updates;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 
 /**
  * Installs and downloads EXT:fe_login_mode
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
+#[UpgradeWizard('feLoginModeExtension')]
 class FeLoginModeExtractionUpdate extends AbstractDownloadExtensionUpdate
 {
     private const TABLE_NAME = 'pages';
@@ -55,15 +57,6 @@ class FeLoginModeExtractionUpdate extends AbstractDownloadExtensionUpdate
     public function getConfirmation(): Confirmation
     {
         return $this->confirmation;
-    }
-
-    /**
-     * Return the identifier for this wizard
-     * This should be the same string as used in the ext_localconf class registration
-     */
-    public function getIdentifier(): string
-    {
-        return 'feLoginModeExtension';
     }
 
     /**

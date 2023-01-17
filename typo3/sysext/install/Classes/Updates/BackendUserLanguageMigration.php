@@ -20,18 +20,15 @@ namespace TYPO3\CMS\Install\Updates;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 
 /**
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
+#[UpgradeWizard('backendUserLanguage')]
 class BackendUserLanguageMigration implements UpgradeWizardInterface
 {
     private const TABLE_NAME = 'be_users';
-
-    public function getIdentifier(): string
-    {
-        return 'backendUserLanguage';
-    }
 
     public function getTitle(): string
     {

@@ -22,20 +22,17 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 
 /**
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
+#[UpgradeWizard('backendGroupsExplicitAllowDenyMigration')]
 final class BackendGroupsExplicitAllowDenyMigration implements UpgradeWizardInterface, ChattyInterface
 {
     private const TABLE_NAME = 'be_groups';
 
     private OutputInterface $output;
-
-    public function getIdentifier(): string
-    {
-        return 'backendGroupsExplicitAllowDenyMigration';
-    }
 
     public function getTitle(): string
     {

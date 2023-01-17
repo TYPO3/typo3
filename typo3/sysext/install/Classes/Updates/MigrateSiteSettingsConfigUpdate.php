@@ -20,12 +20,14 @@ namespace TYPO3\CMS\Install\Updates;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 
 /**
  * @internal
  *
  * The upgrade wizard cuts the settings part of the config.yaml and moves it into settings.yaml.
  */
+#[UpgradeWizard('migrateSiteSettings')]
 class MigrateSiteSettingsConfigUpdate implements UpgradeWizardInterface
 {
     protected const SETTINGS_FILENAME = 'settings.yaml';
@@ -37,11 +39,6 @@ class MigrateSiteSettingsConfigUpdate implements UpgradeWizardInterface
     {
         $this->siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
         $this->sitePathsToMigrate = $this->getSitePathsToMigrate();
-    }
-
-    public function getIdentifier(): string
-    {
-        return 'migrateSiteSettings';
     }
 
     public function getTitle(): string

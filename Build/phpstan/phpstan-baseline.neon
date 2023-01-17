@@ -2881,11 +2881,6 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Utility/DoubleMetaPhoneUtility.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Install\\\\Command\\\\UpgradeWizardListCommand\\:\\:\\$input is never read, only written\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Command/UpgradeWizardListCommand.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractAuthenticationService\\:\\:authUser\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/Controller/BackendModuleController.php

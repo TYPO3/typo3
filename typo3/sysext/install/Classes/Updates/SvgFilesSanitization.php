@@ -24,7 +24,12 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Security\SvgSanitizer;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 
+/**
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
+ */
+#[UpgradeWizard('svgFilesSanitization')]
 class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterface
 {
     /**
@@ -48,15 +53,6 @@ class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterfa
             'cancel',
             false
         );
-    }
-
-    /**
-     * Return the identifier for this wizard
-     * This should be the same string as used in the ext_localconf class registration
-     */
-    public function getIdentifier(): string
-    {
-        return 'svgFilesSanitization';
     }
 
     /**

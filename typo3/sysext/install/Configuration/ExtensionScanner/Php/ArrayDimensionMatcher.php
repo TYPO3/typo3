@@ -951,4 +951,9 @@ return [
             'Deprecation-99075-Fe_usersAndFe_groupsTSconfig.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/install\'][\'update\']' => [
+        'restFiles' => [
+            'Deprecation-99586-RegistrationOfUpgradeWizardsViaGLOBALS.rst',
+        ],
+    ],
 ];

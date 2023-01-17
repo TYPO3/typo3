@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 use TYPO3\CMS\Install\Updates\RowUpdater\L18nDiffsourceToJsonMigration;
 use TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface;
 use TYPO3\CMS\Install\Updates\RowUpdater\SysRedirectRootPageMoveMigration;
@@ -45,6 +46,7 @@ use TYPO3\CMS\Install\Updates\RowUpdater\WorkspaceNewPlaceholderRemovalMigration
  * the job can restart at the position it stopped.
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
+#[UpgradeWizard('databaseRowsUpdateWizard')]
 class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInterface
 {
     /**
@@ -64,14 +66,6 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
     public function getAvailableRowUpdater(): array
     {
         return $this->rowUpdater;
-    }
-
-    /**
-     * @return string Unique identifier of this updater
-     */
-    public function getIdentifier(): string
-    {
-        return 'databaseRowsUpdateWizard';
     }
 
     /**

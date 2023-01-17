@@ -23,12 +23,6 @@ namespace TYPO3\CMS\Install\Updates;
 interface UpgradeWizardInterface
 {
     /**
-     * Return the identifier for this wizard
-     * This should be the same string as used in the ext_localconf class registration
-     */
-    public function getIdentifier(): string;
-
-    /**
      * Return the speaking name of this wizard
      */
     public function getTitle(): string;

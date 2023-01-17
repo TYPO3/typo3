@@ -21,19 +21,16 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 
 /**
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
+#[UpgradeWizard('sysLogSerialization')]
 class SysLogSerializationUpdate implements UpgradeWizardInterface
 {
     use LogDataTrait;
     private const TABLE_NAME = 'sys_log';
-
-    public function getIdentifier(): string
-    {
-        return 'sysLogSerialization';
-    }
 
     public function getTitle(): string
     {

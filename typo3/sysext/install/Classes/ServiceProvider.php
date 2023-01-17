@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
+use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\SetupDatabaseService;
 use TYPO3\CMS\Install\Service\SetupService;
 use TYPO3\CMS\Install\Service\WebServerConfigurationFileService;
@@ -346,7 +347,8 @@ class ServiceProvider extends AbstractServiceProvider
             'setup',
             $container->get(Service\SetupDatabaseService::class),
             $container->get(Service\SetupService::class),
-            $container->get(ConfigurationManager::class)
+            $container->get(ConfigurationManager::class),
+            $container->get(LateBootService::class)
         );
     }
 

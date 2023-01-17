@@ -21,15 +21,15 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 
+/**
+ * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
+ */
+#[UpgradeWizard('sysFileMountIdentifierMigration')]
 class SysFileMountIdentifierMigration implements UpgradeWizardInterface
 {
     protected const TABLE_NAME = 'sys_filemounts';
-
-    public function getIdentifier(): string
-    {
-        return 'sysFileMountIdentifierMigration';
-    }
 
     public function getTitle(): string
     {

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Service;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Exception\ConnectionException;
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
@@ -41,7 +42,6 @@ use TYPO3\CMS\Install\Configuration\Exception;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck;
 use TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard;
-use TYPO3\CMS\Install\Updates\RepeatableInterface;
 
 /**
  * Service class helping to manage database related settings and operations required to set up TYPO3
@@ -699,15 +699,10 @@ class SetupDatabaseService
         ]);
     }
 
-    public function markWizardsDone(): void
+    public function markWizardsDone(ContainerInterface $container): void
     {
-        // Mark upgrade wizards as done
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $updateClassName) {
-                if (!in_array(RepeatableInterface::class, class_implements($updateClassName) ?: [], true)) {
-                    $this->registry->set('installUpdate', $updateClassName, 1);
-                }
-            }
+        foreach ($container->get(UpgradeWizardsService::class)->getNonRepeatableUpgradeWizards() as $className) {
+            $this->registry->set('installUpdate', $className, 1);
         }
         $this->registry->set('installUpdateRows', 'rowUpdatersDone', GeneralUtility::makeInstance(DatabaseRowsUpdateWizard::class)->getAvailableRowUpdater());
     }
