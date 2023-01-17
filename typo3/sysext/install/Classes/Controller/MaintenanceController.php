@@ -489,6 +489,7 @@ class MaintenanceController extends AbstractController
         $password = $request->getParsedBody()['install']['userPassword'];
         $passwordCheck = $request->getParsedBody()['install']['userPasswordCheck'];
         $email = $request->getParsedBody()['install']['userEmail'] ?? '';
+        $realName = $request->getParsedBody()['install']['realName'] ?? '';
         $isSystemMaintainer = ((bool)$request->getParsedBody()['install']['userSystemMaintainer'] == '1') ? true : false;
 
         $messages = new FlashMessageQueue('install');
@@ -533,6 +534,7 @@ class MaintenanceController extends AbstractController
                     'username' => $username,
                     'password' => $hashedPassword,
                     'admin' => 1,
+                    'realName' => $realName,
                     'tstamp' => $GLOBALS['EXEC_TIME'],
                     'crdate' => $GLOBALS['EXEC_TIME'],
                 ];

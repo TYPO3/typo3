@@ -1,9 +1,5 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
-<p>
-    After you've created the user, log in and add the rest of the user information, like real name.
-</p>
-
 <div class="t3js-module-content" data-create-admin-token="{createAdminToken}">
     <form action="" id="t3js-createAdmin-form" method="post" spellcheck="false">
         <div class="form-group">
@@ -42,6 +38,15 @@
                 type="password"
                 autocomplete="off"
                 required
+            />
+        </div>
+        <div class="form-group">
+            <label for="t3-install-admin-realname" class="control-label">Name</label>
+            <input
+                type="text"
+                class="t3-install-form-input-text t3js-createAdmin-realname form-control"
+                name="realName"
+                id="t3-install-admin-realname"
             />
         </div>
         <div class="form-group">
