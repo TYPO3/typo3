@@ -419,7 +419,7 @@ class SearchController extends ActionController
             $this->resultSections = [];
             foreach ($sections as $id => $resultRows) {
                 $rlParts = explode('-', $id);
-                if ($rlParts[2]) {
+                if ($rlParts[2] ?? false) {
                     $theId = $rlParts[2];
                     $theRLid = 'rl2_' . $rlParts[2];
                 } elseif ($rlParts[1]) {
