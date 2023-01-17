@@ -1340,7 +1340,7 @@ class QueryGenerator
 
                     foreach ($this->tableArray[$from_table] as $key => $val) {
                         $this->settings['labels_noprefix'] =
-                            $this->settings['labels_noprefix'] == 1
+                            ($this->settings['labels_noprefix'] ?? '') == 1
                                 ? 'on'
                                 : $this->settings['labels_noprefix'];
                         $prefixString =
