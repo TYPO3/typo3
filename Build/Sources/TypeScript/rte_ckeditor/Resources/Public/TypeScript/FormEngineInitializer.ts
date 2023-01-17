@@ -65,11 +65,9 @@ export class FormEngineInitializer {
           }
         });
         document.addEventListener('inline:sorting-changed', () => {
-          instance.destroy();
           CKEDITOR.replace(fieldId, options.configuration);
         });
         document.addEventListener('formengine:flexform:sorting-changed', () => {
-          instance.destroy();
           CKEDITOR.replace(fieldId, options.configuration);
         });
       });
