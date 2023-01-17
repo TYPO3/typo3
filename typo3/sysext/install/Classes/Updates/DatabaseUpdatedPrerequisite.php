@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Updates;
 
 use Symfony\Component\Console\Output\OutputInterface;
-use TYPO3\CMS\Install\Service\UpgradeWizardsService;
+use TYPO3\CMS\Install\Service\DatabaseUpgradeWizardsService;
 
 /**
  * Prerequisite for upgrade wizards to ensure the database is up-to-date
@@ -27,10 +27,8 @@ use TYPO3\CMS\Install\Service\UpgradeWizardsService;
  */
 class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterface
 {
-    /**
-     * @var UpgradeWizardsService
-     */
-    protected $upgradeWizardsService;
+    protected DatabaseUpgradeWizardsService $databaseUpgradeWizardsService;
+
     /**
      * @var OutputInterface
      */
@@ -38,7 +36,7 @@ class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterf
 
     public function __construct()
     {
-        $this->upgradeWizardsService = new UpgradeWizardsService();
+        $this->databaseUpgradeWizardsService = new DatabaseUpgradeWizardsService();
     }
 
     public function getTitle(): string
@@ -48,18 +46,18 @@ class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterf
 
     public function ensure(): bool
     {
-        $adds = $this->upgradeWizardsService->getBlockingDatabaseAdds();
+        $adds = $this->databaseUpgradeWizardsService->getBlockingDatabaseAdds();
         $result = null;
         if (count($adds) > 0) {
             $this->output->writeln('Performing ' . count($adds) . ' database operations.');
-            $result = $this->upgradeWizardsService->addMissingTablesAndFields();
+            $result = $this->databaseUpgradeWizardsService->addMissingTablesAndFields();
         }
         return $result === null;
     }
 
     public function isFulfilled(): bool
     {
-        $adds = $this->upgradeWizardsService->getBlockingDatabaseAdds();
+        $adds = $this->databaseUpgradeWizardsService->getBlockingDatabaseAdds();
         return count($adds) === 0;
     }
 

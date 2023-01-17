@@ -77,7 +77,7 @@ class ServiceProvider extends AbstractServiceProvider
             Service\SilentConfigurationUpgradeService::class => [ static::class, 'getSilentConfigurationUpgradeService' ],
             Service\SilentTemplateFileUpgradeService::class => [ static::class, 'getSilentTemplateFileUpgradeService' ],
             Service\WebServerConfigurationFileService::class => [ static::class, 'getWebServerConfigurationFileService' ],
-            Service\UpgradeWizardsService::class => [ static::class, 'getUpgradeWizardsService' ],
+            Service\DatabaseUpgradeWizardsService::class => [ static::class, 'getDatabaseUpgradeWizardsService' ],
             Service\SetupService::class => [ static::class, 'getSetupService' ],
             Service\SetupDatabaseService::class => [ static::class, 'getSetupDatabaseService' ],
             Middleware\Installer::class => [ static::class, 'getInstallerMiddleware' ],
@@ -190,9 +190,9 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Service\WebServerConfigurationFileService::class);
     }
 
-    public static function getUpgradeWizardsService(ContainerInterface $container): Service\UpgradeWizardsService
+    public static function getDatabaseUpgradeWizardsService(ContainerInterface $container): Service\DatabaseUpgradeWizardsService
     {
-        return new Service\UpgradeWizardsService();
+        return new Service\DatabaseUpgradeWizardsService();
     }
 
     public static function getSetupService(ContainerInterface $container): Service\SetupService
@@ -309,7 +309,7 @@ class ServiceProvider extends AbstractServiceProvider
         return new Controller\UpgradeController(
             $container->get(PackageManager::class),
             $container->get(Service\LateBootService::class),
-            $container->get(Service\UpgradeWizardsService::class),
+            $container->get(Service\DatabaseUpgradeWizardsService::class),
             $container->get(FormProtectionFactory::class)
         );
     }
@@ -327,7 +327,7 @@ class ServiceProvider extends AbstractServiceProvider
         return new Command\UpgradeWizardRunCommand(
             'upgrade:run',
             $container->get(Service\LateBootService::class),
-            $container->get(Service\UpgradeWizardsService::class)
+            $container->get(Service\DatabaseUpgradeWizardsService::class)
         );
     }
 
@@ -336,7 +336,6 @@ class ServiceProvider extends AbstractServiceProvider
         return new Command\UpgradeWizardListCommand(
             'upgrade:list',
             $container->get(Service\LateBootService::class),
-            $container->get(Service\UpgradeWizardsService::class)
         );
     }
 

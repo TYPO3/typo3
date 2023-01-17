@@ -32,3 +32,6 @@ services:
 
   TYPO3\CMS\Install\Updates\RowUpdater\SysRedirectRootPageMoveMigration:
     public: true
+
+  TYPO3\CMS\Install\Service\UpgradeWizardsService:
+    public: true

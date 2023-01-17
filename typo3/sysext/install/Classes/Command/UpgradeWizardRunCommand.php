@@ -27,6 +27,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\DatabaseUpgradeWizardsService;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\UpgradeWizardsService;
 use TYPO3\CMS\Install\Updates\ChattyInterface;
@@ -42,15 +43,7 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
  */
 class UpgradeWizardRunCommand extends Command
 {
-    /**
-     * @var LateBootService
-     */
-    private $lateBootService;
-
-    /**
-     * @var UpgradeWizardsService
-     */
-    private $upgradeWizardsService;
+    private UpgradeWizardsService $upgradeWizardsService;
 
     /**
      * @var OutputInterface|\Symfony\Component\Console\Style\StyleInterface
@@ -64,11 +57,9 @@ class UpgradeWizardRunCommand extends Command
 
     public function __construct(
         string $name,
-        LateBootService $lateBootService,
-        UpgradeWizardsService $upgradeWizardsService
+        private readonly LateBootService $lateBootService,
+        private readonly DatabaseUpgradeWizardsService $databaseUpgradeWizardsService
     ) {
-        $this->lateBootService = $lateBootService;
-        $this->upgradeWizardsService = $upgradeWizardsService;
         parent::__construct($name);
     }
 
@@ -78,10 +69,13 @@ class UpgradeWizardRunCommand extends Command
      */
     protected function bootstrap(): void
     {
-        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
+        $this->upgradeWizardsService = $this->lateBootService
+            ->loadExtLocalconfDatabaseAndExtTables(false)
+            ->get(UpgradeWizardsService::class);
         Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
         Bootstrap::initializeBackendAuthentication();
-        $this->upgradeWizardsService->isDatabaseCharsetUtf8() ?: $this->upgradeWizardsService->setDatabaseCharsetUtf8();
+        $this->databaseUpgradeWizardsService->isDatabaseCharsetUtf8()
+            ?: $this->databaseUpgradeWizardsService->setDatabaseCharsetUtf8();
     }
 
     /**
