@@ -18,7 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
@@ -39,9 +42,12 @@ class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
             ],
             'recordTypeValue' => 'aType',
         ];
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->expects(self::atLeastOnce())->method('sL')->with('foo')->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceMock;
+
+        $GLOBALS['LANG'] = new LanguageService(
+            new Locales(),
+            $this->createMock(LocalizationFactory::class),
+            $this->createMock(FrontendInterface::class)
+        );
 
         $expected = $input;
         self::assertSame($expected, (new TcaColumnsProcessFieldLabels())->addData($input));
@@ -68,9 +74,11 @@ class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
             ],
             'recordTypeValue' => 'aType',
         ];
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->expects(self::atLeastOnce())->method('sL')->with('aLabelOverride')->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceMock;
+        $GLOBALS['LANG'] = new LanguageService(
+            new Locales(),
+            $this->createMock(LocalizationFactory::class),
+            $this->createMock(FrontendInterface::class)
+        );
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['label'] = 'aLabelOverride';
@@ -103,9 +111,12 @@ class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
             ],
             'recordTypeValue' => 'aType',
         ];
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->expects(self::atLeastOnce())->method('sL')->with('aLabelOverride')->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceMock;
+
+        $GLOBALS['LANG'] = new LanguageService(
+            new Locales(),
+            $this->createMock(LocalizationFactory::class),
+            $this->createMock(FrontendInterface::class)
+        );
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['label'] = 'aLabelOverride';
@@ -137,9 +148,11 @@ class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
             ],
             'recordTypeValue' => 'aType',
         ];
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->expects(self::atLeastOnce())->method('sL')->with('aLabelOverride')->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceMock;
+        $GLOBALS['LANG'] = new LanguageService(
+            new Locales(),
+            $this->createMock(LocalizationFactory::class),
+            $this->createMock(FrontendInterface::class)
+        );
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['label'] = 'aLabelOverride';
@@ -173,11 +186,12 @@ class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
             ],
             'recordTypeValue' => 'aType',
         ];
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->expects(self::atLeastOnce())->method('sL')->with('aLabelOverride')->willReturnArgument(0);
-        $languageService = $languageServiceMock;
-        $languageService->lang = 'fr';
-        $GLOBALS['LANG'] = $languageService;
+        $GLOBALS['LANG'] = new LanguageService(
+            new Locales(),
+            $this->createMock(LocalizationFactory::class),
+            $this->createMock(FrontendInterface::class)
+        );
+        $GLOBALS['LANG']->lang = 'fr';
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['label'] = 'aLabelOverride';

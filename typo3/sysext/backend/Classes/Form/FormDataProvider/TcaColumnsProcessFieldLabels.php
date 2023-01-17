@@ -126,11 +126,12 @@ class TcaColumnsProcessFieldLabels implements FormDataProviderInterface
             ) {
                 $fieldTSConfig = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'];
             }
-            if (!empty($fieldTSConfig['label'])) {
-                $result['processedTca']['columns'][$fieldName]['label'] = $fieldTSConfig['label'];
-            }
-            if (!empty($fieldTSConfig['label.'][$languageService->lang])) {
-                $result['processedTca']['columns'][$fieldName]['label'] = $fieldTSConfig['label.'][$languageService->lang];
+            $label = $languageService->translateLabel(
+                $fieldTSConfig['label.'] ?? [],
+                $fieldTSConfig['label'] ?? ''
+            );
+            if ($label) {
+                $result['processedTca']['columns'][$fieldName]['label'] = $label;
             }
         }
         return $result;

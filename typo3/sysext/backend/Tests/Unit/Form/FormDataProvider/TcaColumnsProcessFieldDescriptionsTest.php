@@ -18,7 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldDescriptions;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
@@ -46,9 +49,12 @@ class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
                 ],
             ],
         ];
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->expects(self::atLeastOnce())->method('sL')->with('foo')->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceMock;
+
+        $GLOBALS['LANG'] = new LanguageService(
+            new Locales(),
+            $this->createMock(LocalizationFactory::class),
+            $this->createMock(FrontendInterface::class)
+        );
 
         $expected = $input;
         self::assertSame($expected, $this->subject->addData($input));
@@ -76,9 +82,11 @@ class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
                 ],
             ],
         ];
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->expects(self::atLeastOnce())->method('sL')->with('aNewDescription')->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceMock;
+        $GLOBALS['LANG'] = new LanguageService(
+            new Locales(),
+            $this->createMock(LocalizationFactory::class),
+            $this->createMock(FrontendInterface::class)
+        );
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['description'] = 'aNewDescription';
@@ -109,9 +117,11 @@ class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
                 ],
             ],
         ];
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->expects(self::atLeastOnce())->method('sL')->with('aDescriptionOverride')->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceMock;
+        $GLOBALS['LANG'] = new LanguageService(
+            new Locales(),
+            $this->createMock(LocalizationFactory::class),
+            $this->createMock(FrontendInterface::class)
+        );
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['description'] = 'aDescriptionOverride';
@@ -144,11 +154,12 @@ class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
                 ],
             ],
         ];
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->expects(self::atLeastOnce())->method('sL')->with('aDescriptionOverride')->willReturnArgument(0);
-        $languageService = $languageServiceMock;
-        $languageService->lang = 'fr';
-        $GLOBALS['LANG'] = $languageService;
+        $GLOBALS['LANG'] = new LanguageService(
+            new Locales(),
+            $this->createMock(LocalizationFactory::class),
+            $this->createMock(FrontendInterface::class)
+        );
+        $GLOBALS['LANG']->lang = 'fr';
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['description'] = 'aDescriptionOverride';

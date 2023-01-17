@@ -681,16 +681,13 @@ class FileList
         if ($label === '') {
             $lang = $this->getLanguageService();
             $concreteTableName = $this->getConcreteTableName($fieldName);
-            $label = $lang->sL(BackendUtility::getItemLabel($concreteTableName, $fieldName) ?? '');
-            if ($label !== '') {
-                // In case global TSconfig exists we have to check if the label is overridden there
-                $tsConfig = BackendUtility::getPagesTSconfig(0);
-                if (!empty($tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label.'][$lang->lang])) {
-                    $label = $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label.'][$lang->lang];
-                } elseif (!empty($tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label'])) {
-                    $label = $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label'];
-                }
-            }
+            $label = BackendUtility::getItemLabel($concreteTableName, $fieldName);
+            // In case global TSconfig exists we have to check if the label is overridden there
+            $tsConfig = BackendUtility::getPagesTSconfig(0);
+            $label = $lang->translateLabel(
+                $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label.'] ?? [],
+                $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label'] ?? $label
+            );
         }
 
         $params = ['sort' => $fieldName, 'currentPage' => 0];

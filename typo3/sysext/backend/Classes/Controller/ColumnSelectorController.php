@@ -139,17 +139,12 @@ class ColumnSelectorController
 
             // Determine field label
             $label = BackendUtility::getItemLabel($concreteTableName, $fieldName);
-            if ($label) {
-                if (!empty($tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label.'][$this->getLanguageService()->lang])) {
-                    $label = $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label.'][$this->getLanguageService()->lang];
-                } elseif (!empty($tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label'])) {
-                    $label = $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label'];
-                }
-            } elseif ($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $fieldName)) {
-                $label = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $fieldName;
-            } else {
-                $label = '';
-            }
+            $label = $this->getLanguageService()->translateLabel(
+                $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label.'] ?? [],
+                $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label']
+                    ?? $label
+                    ?? 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $fieldName
+            );
 
             // Add configuration for this column
             $columnConfiguration = [
@@ -157,7 +152,7 @@ class ColumnSelectorController
                 'selected' => $isDisabled || in_array($fieldName, $displayFields, true),
                 'disabled' => $isDisabled,
                 'pseudo' => in_array($fieldName, self::PSEUDO_FIELDS, true),
-                'label' => $this->getLanguageService()->sL($label),
+                'label' => $label,
             ];
 
             // Add column configuration to the correct group

@@ -18,10 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Controller;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\JavaScriptItems;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -79,30 +78,10 @@ abstract class AbstractFormEngineAjaxController
      * @param string $file EXT:path/to/file
      * @return array Label/value array
      */
-    protected function getLabelsFromLocalizationFile($file)
+    protected function getLabelsFromLocalizationFile(string $file): array
     {
-        $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
-        $language = $this->getLanguageService()->lang;
-        $localizationArray = $languageFactory->getParsedData($file, $language);
-        if (is_array($localizationArray) && !empty($localizationArray)) {
-            if (!empty($localizationArray[$language])) {
-                $xlfLabelArray = $localizationArray['default'];
-                ArrayUtility::mergeRecursiveWithOverrule($xlfLabelArray, $localizationArray[$language], true, false);
-            } else {
-                $xlfLabelArray = $localizationArray['default'];
-            }
-        } else {
-            $xlfLabelArray = [];
-        }
-        $labelArray = [];
-        foreach ($xlfLabelArray as $key => $value) {
-            if (isset($value[0]['target'])) {
-                $labelArray[$key] = $value[0]['target'];
-            } else {
-                $labelArray[$key] = '';
-            }
-        }
-        return $labelArray;
+        $languageService = $this->getLanguageService() ?? GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        return $languageService->getLabelsFromResource($file);
     }
 
     protected function getLanguageService(): ?LanguageService

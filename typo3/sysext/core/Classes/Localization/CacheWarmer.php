@@ -26,9 +26,9 @@ use TYPO3\CMS\Core\Package\PackageManager;
 class CacheWarmer
 {
     public function __construct(
-        protected PackageManager $packageManager,
-        protected Locales $locales,
-        protected LocalizationFactory $localizationFactory
+        protected readonly PackageManager $packageManager,
+        protected readonly Locales $locales,
+        protected readonly LocalizationFactory $localizationFactory
     ) {
     }
 

@@ -223,6 +223,37 @@ class LanguageService
     }
 
     /**
+     * Translates prepared labels which are handed in, and also uses the fallback if no language is given.
+     * This is common in situations such as PageTsConfig where labels or references to labels are used.
+     * @internal not part of TYPO3 Core API for the time being.
+     */
+    public function translateLabel(array|string $input, string $fallback): string
+    {
+        if (is_array($input) && isset($input[$this->lang])) {
+            return $this->sL((string)$input[$this->lang]);
+        }
+        if (is_string($input)) {
+            return $this->sL($input);
+        }
+        return $this->sL($fallback);
+    }
+
+    /**
+     * Load all labels from a resource/file and returns them in a translated fashion.
+     * @return array<string, string>
+     * @internal not part of TYPO3 Core API for the time being.
+     */
+    public function getLabelsFromResource(string $fileRef): array
+    {
+        $labelArray = [];
+        $labelsFromFile = $this->readLLfile($fileRef);
+        foreach ($labelsFromFile['default'] as $key => $value) {
+            $labelArray[$key] = $this->getLLL($key, $labelsFromFile);
+        }
+        return $labelArray;
+    }
+
+    /**
      * Includes a locallang file and returns the $LOCAL_LANG array found inside.
      *
      * @param string $fileRef Input is a file-reference to be a 'local_lang' file containing a $LOCAL_LANG array

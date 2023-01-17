@@ -141,18 +141,6 @@ class PageRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function includeLanguageFileForInlineThrowsExceptionIfLangIsNotSet(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1284906026);
-
-        $subject = $this->getAccessibleMock(PageRenderer::class, null, [], '', false);
-        $subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
-    }
-
-    /**
-     * @test
-     */
     public function includeLanguageFileForInlineDoesNotAddToInlineLanguageLabelsIfFileCouldNotBeRead(): void
     {
         $subject = $this->getAccessibleMock(PageRenderer::class, ['readLLfile'], [], '', false);
@@ -167,18 +155,16 @@ class PageRendererTest extends UnitTestCase
     public function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabelsProvider(): array
     {
         $llFileContent = [
-            'default' => [
-                'inline_label_first_Key' => 'first',
-                'inline_label_second_Key' => 'second',
-                'thirdKey' => 'third',
-            ],
+            'inline_label_first_Key' => 'first',
+            'inline_label_second_Key' => 'second',
+            'thirdKey' => 'third',
         ];
         return [
             'No processing' => [
                 $llFileContent,
                 '',
                 '',
-                $llFileContent['default'],
+                $llFileContent,
             ],
             'Respect $selectionPrefix' => [
                 $llFileContent,

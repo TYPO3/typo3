@@ -1197,14 +1197,12 @@ class DatabaseRecordList
                     }
                     break;
                 default:
-                    // Regular fields header:
+                    // Regular fields header
                     $theData[$fCol] = '';
 
                     // Check if $fCol is really a field and get the label and remove the colons at the end
                     $sortLabel = BackendUtility::getItemLabel($table, $fCol);
                     if ($sortLabel !== null) {
-                        $sortLabel = rtrim(trim($lang->sL($sortLabel)), ':');
-
                         // Field label
                         $fieldTSConfig = [];
                         if (isset($tsConfigOfTable[$fCol . '.'])
@@ -1212,13 +1210,11 @@ class DatabaseRecordList
                         ) {
                             $fieldTSConfig = $tsConfigOfTable[$fCol . '.'];
                         }
-                        if (!empty($fieldTSConfig['label'])) {
-                            $sortLabel = $lang->sL($fieldTSConfig['label']);
-                        }
-                        if (!empty($fieldTSConfig['label.'][$lang->lang])) {
-                            $sortLabel = $lang->sL($fieldTSConfig['label.'][$lang->lang]);
-                        }
-                        $sortLabel = htmlspecialchars($sortLabel);
+                        $sortLabel = $lang->translateLabel(
+                            $fieldTSConfig['label.'] ?? [],
+                            $fieldTSConfig['label'] ?? $sortLabel
+                        );
+                        $sortLabel = htmlspecialchars(rtrim(trim($sortLabel), ':'));
                     } elseif ($specialLabel = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $fCol)) {
                         // Special label exists for this field (Probably a management field, e.g. sorting)
                         $sortLabel = htmlspecialchars($specialLabel);

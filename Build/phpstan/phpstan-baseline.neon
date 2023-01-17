@@ -861,11 +861,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Page/PageRenderer.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Page\\\\PageRenderer\\:\\:\\$lang \\(string\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Page/PageRenderer.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractFile\\:\\:copyTo\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/AbstractFile.php

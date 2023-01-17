@@ -2433,26 +2433,18 @@ class PageRenderer implements SingletonInterface
      * @param string $fileRef
      * @param string $selectionPrefix
      * @param string $stripFromSelectionName
-     * @throws \RuntimeException
      */
     protected function includeLanguageFileForInline($fileRef, $selectionPrefix = '', $stripFromSelectionName = '')
     {
-        if (!isset($this->lang)) {
-            throw new \RuntimeException('Language is are not set.', 1284906026);
-        }
         $labelsFromFile = [];
         $allLabels = $this->readLLfile($fileRef);
 
-        // Iterate through all locallang labels
-        foreach ($allLabels[$this->lang] ?? [] as $label => $value) {
+        // Iterate through all labels from the language file
+        foreach ($allLabels as $label => $value) {
             // If $selectionPrefix is set, only respect labels that start with $selectionPrefix
             if ($selectionPrefix === '' || str_starts_with($label, $selectionPrefix)) {
                 // Remove substring $stripFromSelectionName from label
                 $label = str_replace($stripFromSelectionName, '', $label);
-                if (is_array($value)) {
-                    $value = current($value);
-                    $value = $value['target'] ?? $value['source'];
-                }
                 $labelsFromFile[$label] = $value;
             }
         }
@@ -2468,7 +2460,7 @@ class PageRenderer implements SingletonInterface
     protected function readLLfile(string $fileRef): array
     {
         $languageService = $this->languageServiceFactory->create($this->lang);
-        return $languageService->includeLLFile($fileRef);
+        return $languageService->getLabelsFromResource($fileRef);
     }
 
     /*****************************************************/
