@@ -47,12 +47,12 @@ class LocalizationUtility
      *
      * @param string $key The key from the LOCAL_LANG array for which to return the value.
      * @param string|null $extensionName The name of the extension
-     * @param array $arguments The arguments of the extension, being passed over to sprintf
-     * @param string $languageKey The language key or null for using the current language from the system
+     * @param array|null $arguments The arguments of the extension, being passed over to sprintf
+     * @param string|null $languageKey The language key or null for using the current language from the system
      * @param string[] $alternativeLanguageKeys The alternative language keys if no translation was found.
      * @return string|null The value from LOCAL_LANG or null if no translation was found.
      */
-    public static function translate(string $key, ?string $extensionName = null, array $arguments = null, string $languageKey = null, array $alternativeLanguageKeys = null): ?string
+    public static function translate(string $key, ?string $extensionName = null, array $arguments = null, string $languageKey = null, array $alternativeLanguageKeys = []): ?string
     {
         if ($key === '') {
             // Early return guard: returns null if the key was empty, because the key may be a dynamic value
@@ -76,7 +76,7 @@ class LocalizationUtility
         if ($languageKey === null) {
             $languageKey = static::getLanguageKey();
         }
-        $languageService = static::initializeLocalization($languageFilePath, $languageKey, $alternativeLanguageKeys ?? [], $extensionName);
+        $languageService = static::initializeLocalization($languageFilePath, $languageKey, $alternativeLanguageKeys, $extensionName);
         $resolvedLabel = $languageService->sL('LLL:' . $languageFilePath . ':' . $key);
         $value = $resolvedLabel !== '' ? $resolvedLabel : null;
 
@@ -99,7 +99,7 @@ class LocalizationUtility
 
     /**
      * Loads local-language values by looking for a "locallang.xlf" file in the plugin resources directory and if found includes it.
-     * Also locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.xlf" file.
+     * Locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.xlf" file.
      *
      * @param string[] $alternativeLanguageKeys
      */
@@ -156,8 +156,6 @@ class LocalizationUtility
             }
         } elseif (!empty($GLOBALS['BE_USER']->user['lang'])) {
             return $GLOBALS['BE_USER']->user['lang'];
-        } elseif (!empty(static::getLanguageService()->lang)) {
-            return static::getLanguageService()->lang;
         }
         return 'default';
     }
@@ -244,14 +242,9 @@ class LocalizationUtility
     protected static function getCurrentSiteLanguage(): ?SiteLanguage
     {
         if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
-            return $GLOBALS['TYPO3_REQUEST']->getAttribute('language', null);
+            return $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
         }
         return null;
-    }
-
-    protected static function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 
     protected static function getRuntimeCache(): FrontendInterface

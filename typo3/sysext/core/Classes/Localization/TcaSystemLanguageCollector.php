@@ -44,7 +44,7 @@ class TcaSystemLanguageCollector
         $languageItems = $this->locales->getLanguages();
         unset($languageItems['default']);
         asort($languageItems);
-        $installedLanguages = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] ?? [];
+        $installedLanguages = $this->locales->getActiveLanguages();
         $availableLanguages = [];
         $unavailableLanguages = [];
         foreach ($languageItems as $typo3Language => $name) {

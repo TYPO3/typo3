@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Functional\Service;
 
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
@@ -40,10 +40,9 @@ class TranslationServiceTest extends FunctionalTestCase
         $this->subject = new TranslationService(
             $configurationManager,
             $this->get(LanguageServiceFactory::class),
-            $this->get('cache.runtime')
+            $this->get('cache.runtime'),
+            new Locales()
         );
-
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
     }
 
     /**

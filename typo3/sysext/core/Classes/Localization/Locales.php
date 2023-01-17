@@ -200,6 +200,18 @@ class Locales implements SingletonInterface
     }
 
     /**
+     * Returns a list of all ISO codes / TYPO3 languages that have active language packs, but also includes "default".
+     * @return array<int, non-empty-string>
+     */
+    public function getActiveLanguages(): array
+    {
+        return array_merge(
+            ['default'],
+            array_filter(array_values($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] ?? []))
+        );
+    }
+
+    /**
      * Returns the mapping between TYPO3 (old) language codes and ISO codes.
      *
      * @return array<non-empty-string, non-empty-string>

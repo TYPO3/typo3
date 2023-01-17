@@ -122,7 +122,7 @@ final class TranslateViewHelper extends AbstractViewHelper
         $this->registerArgument('default', 'string', 'If the given locallang key could not be found, this value is used. If this argument is not set, child nodes will be used to render the default');
         $this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string');
         $this->registerArgument('extensionName', 'string', 'UpperCamelCased extension key (for example BlogExample)');
-        $this->registerArgument('languageKey', 'string', 'Language key ("dk" for example) or "default" to use. If empty, use current language. Ignored in non-extbase context.');
+        $this->registerArgument('languageKey', 'string', 'Language key ("da" for example) or "default" to use. If empty, use current language. Ignored in non-extbase context.');
         $this->registerArgument('alternativeLanguageKeys', 'array', 'Alternative language keys if no translation does exist. Ignored in non-extbase context.');
     }
 
@@ -191,7 +191,7 @@ final class TranslateViewHelper extends AbstractViewHelper
             // overloads from _LOCAL_LANG extbase TypoScript settings if specified.
             // Not this triggers TypoScript parsing via extbase ConfigurationManager
             // and should be avoided in backend context!
-            $value = LocalizationUtility::translate($id, $extensionName, $translateArguments, $arguments['languageKey'], $arguments['alternativeLanguageKeys']);
+            $value = LocalizationUtility::translate($id, $extensionName, $translateArguments, $arguments['languageKey'], $arguments['alternativeLanguageKeys'] ?? []);
         } catch (\InvalidArgumentException $e) {
             // @todo: Switch to more specific Exceptions here - for instance those thrown when a package was not found, see #95957
             $value = null;

@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Utility;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -149,9 +147,8 @@ class LocalizationUtilityTest extends FunctionalTestCase
             ->with('Framework', 'label_test', null)
             ->willReturn([]);
 
-        $backendUserAuthentication = new BackendUserAuthentication();
-        $backendUserAuthentication->user = ['lang' => $languageKey];
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($backendUserAuthentication);
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+        $GLOBALS['BE_USER']->user = ['lang' => $languageKey];
         self::assertSame($expected, LocalizationUtility::translate($key, 'label_test', $arguments, alternativeLanguageKeys: $altLanguageKeys));
     }
 
@@ -172,7 +169,6 @@ class LocalizationUtilityTest extends FunctionalTestCase
             ->with('Framework', 'label_test', null)
             ->willReturn([]);
 
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
         self::assertSame($expected, LocalizationUtility::translate($key, 'label_test', $arguments, $languageKey, $altLanguageKeys));
     }
 
@@ -205,7 +201,6 @@ class LocalizationUtilityTest extends FunctionalTestCase
                 ],
             ]);
 
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
         self::assertSame('key1 value from TS core', LocalizationUtility::translate('key1', 'label_test', languageKey: 'da'));
         // Label from XLF file, no override
         self::assertSame('English label for key2', LocalizationUtility::translate('key2', 'label_test', languageKey: 'da'));
@@ -231,8 +226,6 @@ class LocalizationUtilityTest extends FunctionalTestCase
                     ],
                 ],
             ]);
-
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
         $result = LocalizationUtility::translate('key1', 'label_test', languageKey: 'da');
 
@@ -268,8 +261,6 @@ class LocalizationUtilityTest extends FunctionalTestCase
             ->method('getConfiguration')
             ->with($configurationType, 'core', null)
             ->willReturn($typoScriptLocalLang);
-
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
         $result = LocalizationUtility::translate('key1', 'core', languageKey: 'da');
 

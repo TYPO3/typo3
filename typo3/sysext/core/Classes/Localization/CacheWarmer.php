@@ -25,21 +25,17 @@ use TYPO3\CMS\Core\Package\PackageManager;
  */
 class CacheWarmer
 {
-    protected PackageManager $packageManager;
-    protected LocalizationFactory $localizationFactory;
-
     public function __construct(
-        PackageManager $packageManager,
-        LocalizationFactory $localizationFactory
+        protected PackageManager $packageManager,
+        protected Locales $locales,
+        protected LocalizationFactory $localizationFactory
     ) {
-        $this->packageManager = $packageManager;
-        $this->localizationFactory = $localizationFactory;
     }
 
     public function warmupCaches(CacheWarmupEvent $event): void
     {
         if ($event->hasGroup('system')) {
-            $languages = array_merge(['default'], $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] ?? []);
+            $languages = $this->locales->getActiveLanguages();
             $packages = $this->packageManager->getActivePackages();
             foreach ($packages as $package) {
                 $dir = $package->getPackagePath() . 'Resources/Private/Language';

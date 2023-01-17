@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -50,9 +51,10 @@ class TranslationService implements SingletonInterface
     protected string $languageKey = '';
 
     public function __construct(
-        protected ConfigurationManagerInterface $configurationManager,
-        protected LanguageServiceFactory $languageServiceFactory,
-        protected FrontendInterface $runtimeCache,
+        protected readonly ConfigurationManagerInterface $configurationManager,
+        protected readonly LanguageServiceFactory $languageServiceFactory,
+        protected readonly FrontendInterface $runtimeCache,
+        protected readonly Locales $locales
     ) {
     }
 
@@ -159,7 +161,7 @@ class TranslationService implements SingletonInterface
         $result = [];
         $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFiles);
 
-        foreach ($this->getAllTypo3BackendLanguages() as $language) {
+        foreach ($this->locales->getActiveLanguages() as $language) {
             $result[$language] = $key;
             foreach ($translationFiles as $translationFile) {
                 $translatedValue = $this->translate($key, $arguments, $translationFile, $language, $key);
@@ -519,8 +521,6 @@ class TranslationService implements SingletonInterface
                 $this->languageKey = $this->getCurrentSiteLanguage()->getTypo3Language();
             } elseif (!empty($GLOBALS['BE_USER']->user['lang'])) {
                 $this->languageKey = $GLOBALS['BE_USER']->user['lang'];
-            } elseif (!empty($this->getLanguageService()->lang)) {
-                $this->languageKey = $this->getLanguageService()->lang;
             }
         }
     }
@@ -634,20 +634,5 @@ class TranslationService implements SingletonInterface
             return $GLOBALS['TYPO3_REQUEST']->getAttribute('language', null);
         }
         return null;
-    }
-
-    protected function getAllTypo3BackendLanguages(): array
-    {
-        $languages = array_merge(
-            ['default'],
-            array_values($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] ?? [])
-        );
-
-        return $languages;
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }
