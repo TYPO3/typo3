@@ -53,6 +53,7 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.password',
             'config' => [
                 'type' => 'password',
+                'passwordPolicy' => $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? '',
                 'size' => 20,
                 'required' => true,
             ],

@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -56,6 +57,9 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
+use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
@@ -1498,7 +1502,7 @@ class DataHandler implements LoggerAwareInterface
             'language' => $this->checkValueForLanguage((int)$value, $table, $field),
             'link' => $this->checkValueForLink((string)$value, $tcaFieldConf, $table, $id, $checkField),
             'number' => $this->checkValueForNumber($value, $tcaFieldConf),
-            'password' => $this->checkValueForPassword((string)$value, $tcaFieldConf, $table),
+            'password' => $this->checkValueForPassword((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $additionalData['incomingFieldArray'] ?? []),
             'radio' => $this->checkValueForRadio($res, $value, $tcaFieldConf, $table, $id, $realPid, $field),
             'slug' => $this->checkValueForSlug((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field, $additionalData['incomingFieldArray'] ?? []),
             'text' => $this->checkValueForText($value, $tcaFieldConf, $table, $realPid, $field),
@@ -1812,12 +1816,18 @@ class DataHandler implements LoggerAwareInterface
      * @param string $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
      * @param string $table Table name
+     * @param int|string $id UID of record - might be a NEW.. string for new records
+     * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
+     * @param array $incomingFieldArray the fields being explicitly set by the outside (unlike $fieldArray) for the record
      * @return array $res The result array. The processed value (if any!) is set in the "value" key.
      */
     protected function checkValueForPassword(
         string $value,
         array $tcaFieldConf,
         string $table,
+        int|string $id,
+        int $realPid,
+        array $incomingFieldArray = []
     ): array {
         // Always trim the value
         $value = trim($value);
@@ -1843,12 +1853,58 @@ class DataHandler implements LoggerAwareInterface
         // incoming value must be a new plain text value that needs to be hashed.
         $hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
         $mode = $table === 'fe_users' ? 'FE' : 'BE';
+        $isNewUser = str_contains((string)$id, 'NEW');
+        $newHashInstance = $hashFactory->getDefaultHashInstance($mode);
+
         try {
             $hashFactory->get($value, $mode);
         } catch (InvalidPasswordHashException $e) {
             // We got no salted password instance, incoming value must be a new plaintext password
+            // Validate new password against password policy for field
+            $passwordPolicy = $tcaFieldConf['passwordPolicy'] ?? '';
+            $passwordPolicyValidator = GeneralUtility::makeInstance(
+                PasswordPolicyValidator::class,
+                PasswordPolicyAction::NEW_USER_PASSWORD,
+                is_string($passwordPolicy) ? $passwordPolicy : ''
+            );
+
+            $contextData = new ContextData(
+                loginMode: $mode,
+                newUsername: $incomingFieldArray['username'] ?? '',
+                newUserFirstName: $incomingFieldArray['first_name'] ?? '',
+                newUserLastName: $incomingFieldArray['last_name'] ?? '',
+                newUserFullName: $incomingFieldArray['realName'] ?? '',
+            );
+            $isValidPassword = $passwordPolicyValidator->isValidPassword($value, $contextData);
+            if (!$isValidPassword) {
+                $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_password_policy.xlf:dataHandler.passwordNotSaved');
+                $this->log(
+                    $table,
+                    (int)$id,
+                    SystemLogDatabaseAction::UPDATE,
+                    0,
+                    SystemLogErrorClassification::WARNING,
+                    $message . implode('. ', $passwordPolicyValidator->getValidationErrors()),
+                    -1,
+                    [
+                        'table' => $table,
+                        'uid' => (string)$id,
+                    ],
+                    $realPid
+                );
+            }
+
+            // Password not valid for existing user
+            if (!$isValidPassword && !$isNewUser) {
+                return [];
+            }
+
+            // Password not valid for new user. To prevent empty passwords in the database, we set a random password.
+            if ($isNewUser) {
+                $value = GeneralUtility::makeInstance(Random::class)->generateRandomHexString(96);
+            }
+
             // Get an instance of the current configured salted password strategy and hash the value
-            $newHashInstance = $hashFactory->getDefaultHashInstance($mode);
             $value = $newHashInstance->getHashedPassword($value);
         }
 

@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -49,11 +52,23 @@ class PasswordElement extends AbstractFormElement
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
         $config = $parameterArray['fieldConf']['config'];
+        $passwordPolicyValidator = null;
 
         $itemValue = $parameterArray['itemFormElValue'];
         $width = $this->formMaxWidth(
             MathUtility::forceIntegerInRange($config['size'] ?? $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth)
         );
+
+        $passwordPolicy = $config['passwordPolicy'] ?? null;
+        if ($passwordPolicy) {
+            // We always use PasswordPolicyAction::NEW_USER_PASSWORD here, since the password is not set by the user,
+            // but either by an admin or an editor
+            $passwordPolicyValidator = GeneralUtility::makeInstance(
+                PasswordPolicyValidator::class,
+                PasswordPolicyAction::NEW_USER_PASSWORD,
+                is_string($passwordPolicy) ? $passwordPolicy : ''
+            );
+        }
 
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
@@ -195,11 +210,56 @@ class PasswordElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
+        $passwordPolicyInfo = '';
+        if ($passwordPolicy) {
+            $passwordPolicyInfo = $this->renderPasswordPolicyRequirements($passwordPolicyValidator, $fieldId);
+        }
+
+        $passwordElementAttributes['recordFieldId'] = $fieldId;
+        $passwordElementAttributes['passwordPolicy'] = $passwordPolicy;
+
         $resultArray['html'] = '
-            <div class="formengine-field-item t3js-formengine-field-item">
-                ' . $fieldInformationHtml . $fullElement . '
-            </div>';
+            <typo3-formengine-element-password ' . GeneralUtility::implodeAttributes($passwordElementAttributes, true) . '>
+                <div class="formengine-field-item t3js-formengine-field-item">
+                    ' . $fieldInformationHtml . $fullElement . $passwordPolicyInfo . '
+                </div>
+            </typo3-formengine-element-password>';
+
+        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
+            '@typo3/backend/form-engine/element/password-element.js'
+        );
 
         return $resultArray;
+    }
+
+    private function renderPasswordPolicyRequirements(
+        PasswordPolicyValidator $passwordPolicyValidator,
+        string $fieldId
+    ): string {
+        if (empty($passwordPolicyValidator->getRequirements())) {
+            return '';
+        }
+
+        $passwordPolicyElement = [];
+        $requirements = [];
+
+        foreach ($passwordPolicyValidator->getRequirements() as $id => $requirement) {
+            $requirements[] = '<li data-id="' . htmlspecialchars($fieldId . '-' . $id) . '">' . $requirement . '</li>';
+        }
+
+        $calloutTitle = $this->getLanguageService()->sL(
+            'LLL:EXT:core/Resources/Private/Language/locallang_password_policy.xlf:passwordRequirements.description'
+        );
+
+        $passwordPolicyElement[] = '<div id="password-policy-info-' . htmlspecialchars($fieldId) . '" class="mt-2 callout callout-secondary hidden">';
+        $passwordPolicyElement[] = '  <h5 class="callout-title">' . htmlspecialchars($calloutTitle) . '</h5>';
+        $passwordPolicyElement[] = '  <div class="callout-body">';
+        $passwordPolicyElement[] = '    <ul>';
+        $passwordPolicyElement[] =        implode(LF, $requirements);
+        $passwordPolicyElement[] = '    </ul>';
+        $passwordPolicyElement[] = '  </div>';
+        $passwordPolicyElement[] = '</div>';
+
+        return implode(LF, $passwordPolicyElement);
     }
 }

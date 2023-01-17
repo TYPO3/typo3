@@ -96,7 +96,8 @@ abstract class AbstractPasswordValidator
 
     private function getClassId(): string
     {
-        return lcfirst(str_replace(__NAMESPACE__ . '\\', '', static::class)) . '.';
+        $classParts = explode('\\', static::class);
+        return lcfirst(end($classParts)) . '.';
     }
 
     protected function getLanguageService(): LanguageService

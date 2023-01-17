@@ -196,7 +196,7 @@ class DataHandlerTest extends UnitTestCase
     {
         // Note the involved salted passwords are NOT mocked since the factory is static
         $inputValue = '$1$GNu9HdMt$RwkPb28pce4nXZfnplVZY/';
-        $result = $this->subject->_call('checkValueForPassword', $inputValue, [], 'be_users');
+        $result = $this->subject->_call('checkValueForPassword', $inputValue, [], 'be_users', 0, 0);
         self::assertSame($inputValue, $result['value']);
     }
 
@@ -207,7 +207,7 @@ class DataHandlerTest extends UnitTestCase
     {
         // Note the involved salted passwords are NOT mocked since the factory is static
         $inputValue = 'myPassword';
-        $result = $this->subject->_call('checkValueForPassword', $inputValue, [], 'be_users');
+        $result = $this->subject->_call('checkValueForPassword', $inputValue, [], 'be_users', 0, 0);
         self::assertNotSame($inputValue, $result['value']);
     }
 

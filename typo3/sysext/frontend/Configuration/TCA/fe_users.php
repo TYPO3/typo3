@@ -37,6 +37,7 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.password',
             'config' => [
                 'type' => 'password',
+                'passwordPolicy' => $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordPolicy'] ?? '',
                 'size' => 20,
                 'required' => true,
             ],
