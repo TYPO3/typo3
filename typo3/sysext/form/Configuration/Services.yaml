@@ -19,6 +19,11 @@ services:
     alias: TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager
     public: true
 
+  TYPO3\CMS\Form\Service\TranslationService:
+    public: true
+    arguments:
+      $runtimeCache: '@cache.runtime'
+
   TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory:
     public: true
     shared: false

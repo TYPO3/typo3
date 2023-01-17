@@ -18,15 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Service;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
@@ -44,38 +43,16 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 class TranslationService implements SingletonInterface
 {
     /**
-     * Local Language content
-     *
-     * @var array
-     */
-    protected $LOCAL_LANG = [];
-
-    /**
-     * Contains those LL keys, which have been set to (empty) in TypoScript.
-     * This is necessary, as we cannot distinguish between a nonexisting
-     * translation and a label that has been cleared by TS.
-     * In both cases ['key'][0]['target'] is "".
-     *
-     * @var array
-     */
-    protected $LOCAL_LANG_UNSET = [];
-
-    /**
      * Key of the language to use
      *
      * @var string
      */
-    protected $languageKey;
-
-    /**
-     * Pointer to alternative fall-back language to use
-     *
-     * @var array
-     */
-    protected $alternativeLanguageKeys = [];
+    protected string $languageKey = '';
 
     public function __construct(
-        protected ConfigurationManagerInterface $configurationManager
+        protected ConfigurationManagerInterface $configurationManager,
+        protected LanguageServiceFactory $languageServiceFactory,
+        protected FrontendInterface $runtimeCache,
     ) {
     }
 
@@ -95,7 +72,6 @@ class TranslationService implements SingletonInterface
         string $language = null,
         $defaultValue = ''
     ) {
-        $value = null;
         $key = (string)$key;
 
         if ($locallangPathAndFilename) {
@@ -109,50 +85,32 @@ class TranslationService implements SingletonInterface
         } elseif (PathUtility::isExtensionPath($key)) {
             $locallangPathAndFilename = $keyParts[0] . ':' . $keyParts[1];
             $key = $keyParts[2];
-        } else {
-            if (count($keyParts) === 2) {
-                $locallangPathAndFilename = $keyParts[0];
-                $key = $keyParts[1];
-            }
+        } elseif (count($keyParts) === 2) {
+            $locallangPathAndFilename = $keyParts[0];
+            $key = $keyParts[1];
         }
 
         if ($language) {
             $this->languageKey = $language;
         }
 
-        $this->initializeLocalization($locallangPathAndFilename ?? '');
-
-        if (isset($this->LOCAL_LANG[$this->languageKey][$key][0]['target'])
-            || isset($this->LOCAL_LANG_UNSET[$this->languageKey][$key])
-        ) {
-            // Local language translation for key exists
-            $value = $this->LOCAL_LANG[$this->languageKey][$key][0]['target'];
-        } elseif (!empty($this->alternativeLanguageKeys)) {
-            foreach ($this->alternativeLanguageKeys as $language) {
-                if (isset($this->LOCAL_LANG[$language][$key][0]['target'])
-                    || isset($this->LOCAL_LANG_UNSET[$language][$key])
-                ) {
-                    // Alternative language translation for key exists
-                    $value = $this->LOCAL_LANG[$language][$key][0]['target'];
-                    break;
-                }
-            }
+        if ($this->languageKey === '' || $language !== null) {
+            $this->setLanguageKeys($language);
         }
+        $languageService = $this->initializeLocalization($locallangPathAndFilename ?? '');
+        $resolvedLabel = $languageService->sL('LLL:' . $locallangPathAndFilename . ':' . $key);
+        $value = $resolvedLabel !== '' ? $resolvedLabel : null;
 
-        if ($value === null && (isset($this->LOCAL_LANG['default'][$key][0]['target'])
-            || isset($this->LOCAL_LANG_UNSET['default'][$key]))
-        ) {
-            // Default language translation for key exists
-            // No charset conversion because default is English and thereby ASCII
-            $value = $this->LOCAL_LANG['default'][$key][0]['target'];
+        // Check if a value was explicitly set to ""
+        $overrideLabels = static::loadTypoScriptLabels();
+        if ($value === null && isset($overrideLabels[$this->languageKey])) {
+            $value = '';
         }
 
         if (is_array($arguments) && !empty($arguments) && $value !== null) {
             $value = vsprintf($value, $arguments);
-        } else {
-            if ($value === null) {
-                $value = $defaultValue;
-            }
+        } elseif ($value === null) {
+            $value = $defaultValue;
         }
 
         return $value;
@@ -519,86 +477,82 @@ class TranslationService implements SingletonInterface
         return $translatedValue;
     }
 
-    protected function initializeLocalization(string $locallangPathAndFilename)
+    protected function initializeLocalization(string $locallangPathAndFilename): LanguageService
     {
-        if (empty($this->languageKey)) {
-            $this->setLanguageKeys();
-        }
+        $languageService = $this->buildLanguageService($this->languageKey, $locallangPathAndFilename);
 
         if (!empty($locallangPathAndFilename)) {
-            $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
-            $this->LOCAL_LANG = $languageFactory->getParsedData($locallangPathAndFilename, $this->languageKey);
-
-            foreach ($this->alternativeLanguageKeys as $language) {
-                $tempLL = $languageFactory->getParsedData($locallangPathAndFilename, $language);
-                if ($this->languageKey !== 'default' && isset($tempLL[$language])) {
-                    $this->LOCAL_LANG[$language] = $tempLL[$language];
-                }
+            $overrideLabels = $this->loadTypoScriptLabels();
+            if ($overrideLabels !== []) {
+                $languageService->overrideLabels($locallangPathAndFilename, $overrideLabels);
             }
         }
-        $this->loadTypoScriptLabels();
+        return $languageService;
+    }
+
+    protected function buildLanguageService(string $languageKey, $languageFilePath): LanguageService
+    {
+        $languageKeyHash = sha1($languageKey . '_' . $languageFilePath);
+        if (!$this->runtimeCache->get($languageKeyHash)) {
+            $languageService = $this->languageServiceFactory->create($languageKey);
+            $languageService->init($languageKey);
+            if ($languageFilePath) {
+                $languageService->includeLLFile($languageFilePath);
+            }
+            $this->runtimeCache->set($languageKeyHash, $languageService);
+        }
+        return $this->runtimeCache->get($languageKeyHash);
     }
 
     /**
      * Sets the currently active language keys.
      */
-    protected function setLanguageKeys()
+    protected function setLanguageKeys(?string $language): void
     {
-        $this->languageKey = 'default';
-        $this->alternativeLanguageKeys = [];
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
-        ) {
-            $this->languageKey = $this->getCurrentSiteLanguage()->getTypo3Language();
-            if ($this->languageKey !== 'default') {
-                $locales = GeneralUtility::makeInstance(Locales::class);
-                if ($locales->isValidLanguageKey($this->languageKey)) {
-                    $this->alternativeLanguageKeys = $locales->getLocaleDependencies($this->languageKey);
-                    $this->alternativeLanguageKeys = array_reverse($this->alternativeLanguageKeys);
-                }
+        if ($language) {
+            $this->languageKey = $language;
+        } else {
+            $this->languageKey = 'default';
+            if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+                && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+            ) {
+                $this->languageKey = $this->getCurrentSiteLanguage()->getTypo3Language();
+            } elseif (!empty($GLOBALS['BE_USER']->user['lang'])) {
+                $this->languageKey = $GLOBALS['BE_USER']->user['lang'];
+            } elseif (!empty($this->getLanguageService()->lang)) {
+                $this->languageKey = $this->getLanguageService()->lang;
             }
-        } elseif (!empty($GLOBALS['BE_USER']->user['lang'])) {
-            $this->languageKey = $GLOBALS['BE_USER']->user['lang'];
-        } elseif (!empty($this->getLanguageService()->lang)) {
-            $this->languageKey = $this->getLanguageService()->lang;
         }
     }
 
     /**
      * Overwrites labels that are set via TypoScript.
-     * TS locallang labels have to be configured like:
-     * plugin.tx_form._LOCAL_LANG.languageKey.key = value
+     * TS labels have to be configured like:
+     * plugin.tx_myextension._LOCAL_LANG.languageKey.key = value
      */
-    protected function loadTypoScriptLabels()
+    protected function loadTypoScriptLabels(): array
     {
-        $frameworkConfiguration = $this->configurationManager
-            ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'form');
-
-        if (!is_array($frameworkConfiguration['_LOCAL_LANG'] ?? null)) {
-            return;
+        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'form');
+        if (!is_array($frameworkConfiguration['_LOCAL_LANG'] ?? false)) {
+            return [];
         }
-        $this->LOCAL_LANG_UNSET = [];
+        $finalLabels = [];
         foreach ($frameworkConfiguration['_LOCAL_LANG'] as $languageKey => $labels) {
-            if (!(is_array($labels) && isset($this->LOCAL_LANG[$languageKey]))) {
+            if (!is_array($labels)) {
                 continue;
             }
             foreach ($labels as $labelKey => $labelValue) {
                 if (is_string($labelValue)) {
-                    $this->LOCAL_LANG[$languageKey][$labelKey][0]['target'] = $labelValue;
-                    if ($labelValue === '') {
-                        $this->LOCAL_LANG_UNSET[$languageKey][$labelKey] = '';
-                    }
+                    $finalLabels[$languageKey][$labelKey] = $labelValue;
                 } elseif (is_array($labelValue)) {
                     $labelValue = $this->flattenTypoScriptLabelArray($labelValue, $labelKey);
                     foreach ($labelValue as $key => $value) {
-                        $this->LOCAL_LANG[$languageKey][$key][0]['target'] = $value;
-                        if ($value === '') {
-                            $this->LOCAL_LANG_UNSET[$languageKey][$key] = '';
-                        }
+                        $finalLabels[$languageKey][$key] = $value;
                     }
                 }
             }
         }
+        return $finalLabels;
     }
 
     /**
@@ -631,10 +585,8 @@ class TranslationService implements SingletonInterface
 
     /**
      * If the array contains numerical keys only, sort it in descending order
-     *
-     * @return array
      */
-    protected function sortArrayWithIntegerKeysDescending(array $array)
+    protected function sortArrayWithIntegerKeysDescending(array $array): array
     {
         if (count(array_filter(array_keys($array), 'is_string')) === 0) {
             krsort($array);

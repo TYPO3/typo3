@@ -37,7 +37,11 @@ class TranslationServiceTest extends FunctionalTestCase
         parent::setUp();
 
         $configurationManager = $this->getAccessibleMock(ConfigurationManager::class, ['getConfiguration'], [], '', false);
-        $this->subject = new TranslationService($configurationManager);
+        $this->subject = new TranslationService(
+            $configurationManager,
+            $this->get(LanguageServiceFactory::class),
+            $this->get('cache.runtime')
+        );
 
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
     }
