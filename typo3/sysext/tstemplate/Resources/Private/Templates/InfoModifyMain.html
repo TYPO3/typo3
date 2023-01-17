@@ -40,34 +40,30 @@
     </div>
 
     <f:if condition="{f:count(subject: allTemplatesOnPage)} > 1">
-        <div class="row">
-            <div class="col-auto">
-                <div class="row row-cols-auto">
-                    <form action="{f:be.uri(route: 'web_typoscript_infomodify', parameters: '{id: pageUid}')}" method="post">
-                        <div class="col">
-                            <label class="form-select-label" for="selectedTemplate">
-                                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:selectedTemplate" />
-                            </label>
-                            <select
-                                name="selectedTemplate"
-                                id="selectedTemplate"
-                                class="form-select mb-3"
-                                data-global-event="change"
-                                data-action-navigate="$data=~s/$value/"
-                                data-action-submit="$form"
+        <div class="row row-cols-auto align-items-end g-3 mb-4">
+            <div class="col col-md-2 col-4">
+                <form action="{f:be.uri(route: 'web_typoscript_infomodify', parameters: '{id: pageUid}')}" method="post">
+                    <label class="form-select-label" for="selectedTemplate">
+                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:selectedTemplate" />
+                    </label>
+                    <select
+                        name="selectedTemplate"
+                        id="selectedTemplate"
+                        class="form-select"
+                        data-global-event="change"
+                        data-action-navigate="$data=~s/$value/"
+                        data-action-submit="$form"
+                    >
+                        <f:for each="{allTemplatesOnPage}" as="template">
+                            <option
+                                value="{template.uid}"
+                                {f:if(condition:'{templateRecord.uid} == {template.uid}', then:'selected="selected"')}
                             >
-                                <f:for each="{allTemplatesOnPage}" as="template">
-                                    <option
-                                        value="{template.uid}"
-                                        {f:if(condition:'{templateRecord.uid} == {template.uid}', then:'selected="selected"')}
-                                    >
-                                    {template.title}
-                                    </option>
-                                </f:for>
-                            </select>
-                        </div>
-                    </form>
-                </div>
+                            {template.title}
+                            </option>
+                        </f:for>
+                    </select>
+                </form>
             </div>
         </div>
     </f:if>

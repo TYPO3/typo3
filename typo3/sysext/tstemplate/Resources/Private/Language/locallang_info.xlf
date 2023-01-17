@@ -10,7 +10,7 @@
 				<source>Override TypoScript of template "%s"</source>
 			</trans-unit>
 			<trans-unit id="selectedTemplate" resname="selectedTemplate">
-				<source>Selected TypoScript template</source>
+				<source>Selected record</source>
 			</trans-unit>
 			<trans-unit id="delete" resname="delete">
 				<source>Delete</source>

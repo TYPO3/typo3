@@ -6,11 +6,8 @@
 			<trans-unit id="objectBrowserTitleWithTemplate" resname="objectBrowserTitleWithTemplate">
 				<source>Constant Editor for TypoScript template "%s"</source>
 			</trans-unit>
-			<trans-unit id="options" resname="options">
-				<source>Options</source>
-			</trans-unit>
 			<trans-unit id="selectedTemplate" resname="selectedTemplate">
-				<source>Selected TypoScript template</source>
+				<source>Selected record</source>
 			</trans-unit>
 			<trans-unit id="category" resname="category">
 				<source>Selected category</source>

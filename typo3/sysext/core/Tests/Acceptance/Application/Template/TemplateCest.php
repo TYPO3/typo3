@@ -184,13 +184,11 @@ class TemplateCest
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
         $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Tree');
-        $I->waitForText('Options');
-        $I->click('Options');
-        $I->waitForText('Search');
+        $I->waitForText('Tree for TypoScript template');
         $I->amGoingTo('type "styles" into the search field and submit.');
         $I->fillField('#searchValue', 'styles');
-        $I->click("//input[@name='search']");
-        $I->waitForText('Constants Tree');
+        $I->click('button[type="submit"]');
+        $I->waitForText('Setup Tree');
         $I->seeInSource('<strong class="text-danger">styles</strong>');
     }
 }

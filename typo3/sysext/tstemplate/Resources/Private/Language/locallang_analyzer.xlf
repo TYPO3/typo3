@@ -10,7 +10,7 @@
 				<source>Included TypoScript files for template "%s"</source>
 			</trans-unit>
 			<trans-unit id="selectedTemplate" resname="selectedTemplate">
-				<source>Selected TypoScript template</source>
+				<source>Selected record</source>
 			</trans-unit>
 			<trans-unit id="title" resname="title">
 				<source>Title</source>
@@ -30,9 +30,6 @@
 			<trans-unit id="pid" resname="pid">
 				<source>PID</source>
 			</trans-unit>
-			<trans-unit id="options" resname="options">
-				<source>Options</source>
-			</trans-unit>
 			<trans-unit id="constants" resname="constants">
 				<source>Constants</source>
 			</trans-unit>
@@ -49,13 +46,13 @@
 				<source>Constant usage: [%s]</source>
 			</trans-unit>
 			<trans-unit id="constantTree" resname="constantTree">
-				<source>Constants include tree</source>
+				<source>Constants include</source>
 			</trans-unit>
 			<trans-unit id="constantSource" resname="constantSource">
 				<source>Selected constants source</source>
 			</trans-unit>
 			<trans-unit id="setupTree" resname="setupTree">
-				<source>Setup include tree</source>
+				<source>Setup include</source>
 			</trans-unit>
 			<trans-unit id="setupSource" resname="setupSource">
 				<source>Selected setup source</source>

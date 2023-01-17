@@ -16,10 +16,7 @@
 				<source>Edit single properties in TypoScript template "%s"</source>
 			</trans-unit>
 			<trans-unit id="selectedTemplate" resname="selectedTemplate">
-				<source>Selected TypoScript template</source>
-			</trans-unit>
-			<trans-unit id="options" resname="options">
-				<source>Options</source>
+				<source>Selected record</source>
 			</trans-unit>
 			<trans-unit id="noSpaces" resname="noSpaces">
 				<source>You must enter a property with characters "a-z", "A-Z", "0-9", or ".". Dots will be quoted. No spaces or special chars.</source>
@@ -54,9 +51,6 @@
 			<trans-unit id="noCurrentTemplate" resname="noCurrentTemplate">
 				<source>You cannot edit properties and values if there is no current TypoScript template. Please create an extension typoscript template in "Override TypoScript" first.</source>
 			</trans-unit>
-			<trans-unit id="search" resname="search">
-				<source>Search</source>
-			</trans-unit>
 			<trans-unit id="setupRoot" resname="setupRoot">
 				<source>Setup Tree</source>
 			</trans-unit>
@@ -85,7 +79,7 @@
 				<source>Sort keys alphabetically</source>
 			</trans-unit>
 			<trans-unit id="displayConstantsSubstitutions" resname="displayConstantsSubstitutions">
-				<source>Display constants substitutions</source>
+				<source>Substitute constants in setup</source>
 			</trans-unit>
 			<trans-unit id="displayOptions" resname="displayOptions">
 				<source>Display options</source>
