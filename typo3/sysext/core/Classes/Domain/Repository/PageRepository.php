@@ -618,7 +618,7 @@ class PageRepository implements LoggerAwareInterface
         $candidates = [];
         $maxChunk = PlatformInformation::getMaxBindParameters($queryBuilder->getConnection()->getDatabasePlatform());
         foreach (array_chunk($pageUids, (int)floor($maxChunk / 3)) as $pageUidsChunk) {
-            $result = $queryBuilder
+            $query = $queryBuilder
                 ->select('*')
                 ->from('pages')
                 ->where(
@@ -630,10 +630,18 @@ class PageRepository implements LoggerAwareInterface
                         $transOrigPointerField,
                         $queryBuilder->createNamedParameter($pageUidsChunk, Connection::PARAM_INT_ARRAY)
                     )
-                )->executeQuery();
+                );
 
-            // Fetch and bring in priority order
-            while ($row = $result->fetchAssociative()) {
+            // This has cache hits for the current page and for menus (little performance gain).
+            $cacheIdentifier = 'PageRepository_getPageOverlaysForLanguage_'
+                . hash('xxh3', $query->getSQL() . json_encode($query->getParameters()));
+            $rows = $this->getRuntimeCache()->get($cacheIdentifier);
+            if (!is_array($rows)) {
+                $rows = $query->executeQuery()->fetchAllAssociative();
+                $this->getRuntimeCache()->set($cacheIdentifier, $rows);
+            }
+
+            foreach ($rows as $row) {
                 $pageId = $row[$transOrigPointerField];
                 $priority = array_search($row[$languageField], $languageUids);
                 $candidates[$pageId][$priority] = $row;
