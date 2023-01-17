@@ -298,10 +298,25 @@ class Locales implements SingletonInterface
     public static function setSystemLocaleFromSiteLanguage(SiteLanguage $siteLanguage): bool
     {
         $locale = $siteLanguage->getLocale();
-        // No locale was given, so return false;
+        // No locale was given, so return false
         if (!$locale) {
             return false;
         }
+        return self::setLocale($locale, $locale);
+    }
+
+    /**
+     * Internal method, which calls itself again, in order to avoid multiple logging issues.
+     * The main reason for this method is that it calls itself again by trying again to set
+     * the locale. Due to sensible defaults, people used the locale "de_AT.utf-8" with the POSIX platform
+     * (see https://en.wikipedia.org/wiki/Locale_(computer_software)#POSIX_platforms) in their site configuration,
+     * even though the target system has "de_AT" and not "de_AT.UTF-8" defined.
+     * "setLocale()" is now called again without the POSIX platform suffix and is checked again if the locale
+     * is then available, and then logs the failed information.
+     */
+    protected static function setLocale(string $locale, string $localeStringForTrigger): bool
+    {
+        $incomingLocale = $locale;
         $availableLocales = GeneralUtility::trimExplode(',', $locale, true);
         // If LC_NUMERIC is set e.g. to 'de_DE' PHP parses float values locale-aware resulting in strings with comma
         // as decimal point which causes problems with value conversions - so we set all locale types except LC_NUMERIC
@@ -317,9 +332,20 @@ class Locales implements SingletonInterface
             setlocale(LC_MONETARY, ...$availableLocales);
             setlocale(LC_TIME, ...$availableLocales);
         } else {
-            GeneralUtility::makeInstance(LogManager::class)
-                ->getLogger(__CLASS__)
-                ->error('Locale "' . htmlspecialchars($siteLanguage->getLocale()) . '" not found.');
+            // Retry again without the "utf-8" POSIX platform suffix if this is given.
+            if (str_contains($incomingLocale, '.')) {
+                [$localeWithoutModifier] = explode('.', $incomingLocale);
+                return self::setLocale($localeWithoutModifier, $incomingLocale);
+            }
+            if ($localeStringForTrigger === $locale) {
+                GeneralUtility::makeInstance(LogManager::class)
+                    ->getLogger(__CLASS__)
+                    ->error('Locale "' . htmlspecialchars($localeStringForTrigger) . '" not found.');
+            } else {
+                GeneralUtility::makeInstance(LogManager::class)
+                    ->getLogger(__CLASS__)
+                    ->error('Locale "' . htmlspecialchars($localeStringForTrigger) . '" and  "' . htmlspecialchars($incomingLocale) . '" not found.');
+            }
             return false;
         }
         return true;
