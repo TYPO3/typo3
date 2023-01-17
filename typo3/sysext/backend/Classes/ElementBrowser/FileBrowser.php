@@ -16,7 +16,9 @@
 namespace TYPO3\CMS\Backend\ElementBrowser;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -24,6 +26,7 @@ use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -42,6 +45,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Browser for files. This is used when adding a FAL inline image with the 'add image' button in FormEngine.
@@ -463,7 +467,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         return '
             <div class="col-auto">
                 <div class="form-check form-switch">
-                    ' . BackendUtility::getFuncCheck('', 'SET[displayThumbs]', $currentValue, $this->thisScript, $addParams, 'id="checkDisplayThumbs"') . '
+                    ' . self::getFuncCheck('', 'SET[displayThumbs]', $currentValue, $request, $this->thisScript, $addParams, 'id="checkDisplayThumbs"') . '
                     <label for="checkDisplayThumbs" class="form-check-label">
                         ' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:displayThumbs')) . '
                     </label>
@@ -515,5 +519,81 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     public function getScriptUrl()
     {
         return $this->thisScript;
+    }
+
+    //################################
+    // copied over from BackendUtility to enable deprecation of the original method
+    // @todo finish fluidification of template and remove HTML generation from controller
+    //################################
+
+    /**
+     * Checkbox function menu.
+     * Works like ->getFuncMenu() but takes no $menuItem array since this is a simple checkbox.
+     *
+     * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+     * @param string $elementName The form elements name, probably something like "SET[...]
+     * @param string|bool $currentValue The value to be selected currently.
+     * @param string $script The script to send the &id to, if empty it's automatically found
+     * @param string $addParams Additional parameters to pass to the script.
+     * @param string $tagParams Additional attributes for the checkbox input tag
+     * @return string HTML code for checkbox
+     * @see getFuncMenu()
+     */
+    protected static function getFuncCheck(
+        $mainParams,
+        $elementName,
+        $currentValue,
+        ServerRequestInterface $request,
+        $script = '',
+        $addParams = '',
+        $tagParams = ''
+    ) {
+        // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
+        $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $request, $script);
+        $attributes = GeneralUtility::implodeAttributes([
+            'type' => 'checkbox',
+            'class' => 'form-check-input',
+            'name' => $elementName,
+            'value' => '1',
+            'data-global-event' => 'change',
+            'data-action-navigate' => '$data=~s/$value/',
+            'data-navigate-value' => sprintf('%s&%s=${value}', $scriptUrl, $elementName),
+            'data-empty-value' => '0',
+        ], true);
+        return
+            '<input ' . $attributes .
+            ($currentValue ? ' checked="checked"' : '') .
+            ($tagParams ? ' ' . $tagParams : '') .
+            ' />';
+    }
+
+    /**
+     * Builds the URL to the current script with given arguments
+     *
+     * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+     * @param string $addParams Additional parameters to pass to the script.
+     * @param string $script The script to send the &id to, if empty it's automatically found
+     * @return string The complete script URL
+     * @todo Check if this can be removed or replaced by routing
+     */
+    protected static function buildScriptUrl($mainParams, $addParams, ServerRequestInterface $request, $script = '')
+    {
+        if (!is_array($mainParams)) {
+            $mainParams = ['id' => $mainParams];
+        }
+
+        $route = $request->getAttribute('route');
+        if ($route instanceof Route) {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $scriptUrl = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $mainParams);
+            $scriptUrl .= $addParams;
+        } else {
+            if (!$script) {
+                $script = PathUtility::basename(Environment::getCurrentScript());
+            }
+            $scriptUrl = $script . HttpUtility::buildQueryString($mainParams, '?') . $addParams;
+        }
+
+        return $scriptUrl;
     }
 }

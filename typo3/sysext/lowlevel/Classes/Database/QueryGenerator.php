@@ -18,9 +18,12 @@ namespace TYPO3\CMS\Lowlevel\Database;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Types;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -38,6 +41,7 @@ use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -322,7 +326,7 @@ class QueryGenerator
      *
      * @return string
      */
-    public function queryMaker()
+    public function queryMaker(ServerRequestInterface $request)
     {
         $output = '';
         $this->hookArray = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3lib_fullsearch'] ?? [];
@@ -338,7 +342,7 @@ class QueryGenerator
         if ($this->formName) {
             $this->setFormName($this->formName);
         }
-        $tmpCode = $this->makeSelectorTable($this->settings);
+        $tmpCode = $this->makeSelectorTable($this->settings, $request);
         $output .= '<div id="query"></div><h2>Make query</h2><div>' . $tmpCode . '</div>';
         $mQ = $this->settings['search_query_makeQuery'];
         // Make form elements:
@@ -2447,7 +2451,7 @@ class QueryGenerator
      * @param string $enableList
      * @return string
      */
-    protected function makeSelectorTable($modSettings, $enableList = 'table,fields,query,group,order,limit')
+    protected function makeSelectorTable($modSettings, ServerRequestInterface $request, $enableList = 'table,fields,query,group,order,limit')
     {
         $out = [];
         $enableArr = explode(',', $enableList);
@@ -2529,7 +2533,7 @@ class QueryGenerator
                 $orderBy[] =     '</div>';
                 $orderBy[] =     '<div class="col mt-2">';
                 $orderBy[] =         '<div class="form-check">';
-                $orderBy[] =              BackendUtility::getFuncCheck(0, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'] ?? '', '', '', 'id="checkQueryOrderDesc"');
+                $orderBy[] =              self::getFuncCheck(0, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'] ?? '', $request, '', '', 'id="checkQueryOrderDesc"');
                 $orderBy[] =              '<label class="form-check-label" for="checkQueryOrderDesc">Descending</label>';
                 $orderBy[] =         '</div>';
                 $orderBy[] =     '</div>';
@@ -2544,7 +2548,7 @@ class QueryGenerator
                     $orderBy[] =     '</div>';
                     $orderBy[] =     '<div class="col mt-2">';
                     $orderBy[] =         '<div class="form-check">';
-                    $orderBy[] =             BackendUtility::getFuncCheck(0, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'] ?? false, '', '', 'id="checkQueryOrder2Desc"');
+                    $orderBy[] =             self::getFuncCheck(0, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'] ?? false, $request, '', '', 'id="checkQueryOrder2Desc"');
                     $orderBy[] =             '<label class="form-check-label" for="checkQueryOrder2Desc">Descending</label>';
                     $orderBy[] =         '</div>';
                     $orderBy[] =     '</div>';
@@ -2728,5 +2732,81 @@ class QueryGenerator
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    //################################
+    // copied over from BackendUtility to enable deprecation of the original method
+    // @todo finish fluidification of template and remove HTML generation from controller
+    //################################
+
+    /**
+     * Checkbox function menu.
+     * Works like ->getFuncMenu() but takes no $menuItem array since this is a simple checkbox.
+     *
+     * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+     * @param string $elementName The form elements name, probably something like "SET[...]
+     * @param string|bool $currentValue The value to be selected currently.
+     * @param string $script The script to send the &id to, if empty it's automatically found
+     * @param string $addParams Additional parameters to pass to the script.
+     * @param string $tagParams Additional attributes for the checkbox input tag
+     * @return string HTML code for checkbox
+     * @see getFuncMenu()
+     */
+    protected static function getFuncCheck(
+        $mainParams,
+        $elementName,
+        $currentValue,
+        ServerRequestInterface $request,
+        $script = '',
+        $addParams = '',
+        $tagParams = ''
+    ) {
+        // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
+        $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $request, $script);
+        $attributes = GeneralUtility::implodeAttributes([
+            'type' => 'checkbox',
+            'class' => 'form-check-input',
+            'name' => $elementName,
+            'value' => '1',
+            'data-global-event' => 'change',
+            'data-action-navigate' => '$data=~s/$value/',
+            'data-navigate-value' => sprintf('%s&%s=${value}', $scriptUrl, $elementName),
+            'data-empty-value' => '0',
+        ], true);
+        return
+            '<input ' . $attributes .
+            ($currentValue ? ' checked="checked"' : '') .
+            ($tagParams ? ' ' . $tagParams : '') .
+            ' />';
+    }
+
+    /**
+     * Builds the URL to the current script with given arguments
+     *
+     * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+     * @param string $addParams Additional parameters to pass to the script.
+     * @param string $script The script to send the &id to, if empty it's automatically found
+     * @return string The complete script URL
+     * @todo Check if this can be removed or replaced by routing
+     */
+    protected static function buildScriptUrl($mainParams, $addParams, ServerRequestInterface $request, $script = '')
+    {
+        if (!is_array($mainParams)) {
+            $mainParams = ['id' => $mainParams];
+        }
+
+        $route = $request->getAttribute('route');
+        if ($route instanceof Route) {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $scriptUrl = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $mainParams);
+            $scriptUrl .= $addParams;
+        } else {
+            if (!$script) {
+                $script = PathUtility::basename(Environment::getCurrentScript());
+            }
+            $scriptUrl = $script . HttpUtility::buildQueryString($mainParams, '?') . $addParams;
+        }
+
+        return $scriptUrl;
     }
 }

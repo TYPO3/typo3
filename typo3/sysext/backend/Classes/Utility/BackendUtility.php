@@ -2218,6 +2218,7 @@ class BackendUtility
      * @param string $tagParams Additional attributes for the checkbox input tag
      * @return string HTML code for checkbox
      * @see getFuncMenu()
+     * @deprecated since TYPO3 v12.2. will be removed in TYPO3 v13.0.
      */
     public static function getFuncCheck(
         $mainParams,
@@ -2227,6 +2228,11 @@ class BackendUtility
         $addParams = '',
         $tagParams = ''
     ) {
+        trigger_error(
+            'BackendUtility::getFuncCheck will be removed in TYPO3 v13.0, use Fluid based templating instead.',
+            E_USER_DEPRECATED
+        );
+
         // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
         $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $script);
         $attributes = GeneralUtility::implodeAttributes([

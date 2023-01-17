@@ -129,6 +129,7 @@ class InfoPageTyposcriptConfigController
         }
 
         $viewOption = (int)$moduleData->get('tsconf_parts');
+        $alphaSortStatus = $moduleData->get('tsconf_alphaSort');
         if ($viewOption === 99) {
             $rootLine = BackendUtility::BEgetRootLine($this->id, '', true);
 
@@ -210,7 +211,7 @@ class InfoPageTyposcriptConfigController
             $this->view->assign('tsconfParts99', false);
             $pageTsConfig = BackendUtility::getPagesTSconfig($this->id);
 
-            if ($moduleData->get('tsconf_alphaSort')) {
+            if ($alphaSortStatus) {
                 $pageTsConfig = ArrayUtility::sortByKeyRecursive($pageTsConfig);
             }
 
@@ -219,7 +220,13 @@ class InfoPageTyposcriptConfigController
             ]);
         }
         if ($viewOption !== 99) {
-            $this->view->assign('alphaSort', BackendUtility::getFuncCheck($this->id, 'tsconf_alphaSort', (bool)$moduleData->get('tsconf_alphaSort'), '', '', 'id="checkTsconf_alphaSort"'));
+            $route = $request->getAttribute('route');
+            $params = ['id' => $this->id];
+            $this->view->assignMultiple([
+                'displayAlphaSort' => true,
+                'alphaSortChecked' => (bool)$alphaSortStatus === true ? 'checked="checked"' : '',
+                'alphaSortUrl' =>  $this->uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $params) . '&tsconf_alphaSort=${value}',
+            ]);
         }
         $this->view->assignMultiple([
             'dropdownMenuOptions' => $allowedModuleOptions['tsconf_parts'],

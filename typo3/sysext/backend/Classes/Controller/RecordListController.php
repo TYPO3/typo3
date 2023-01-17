@@ -180,9 +180,9 @@ class RecordListController
         if (!($this->modTSconfig['disableSearchBox'] ?? false) && ($tableListHtml || !empty($search_field))) {
             $searchBoxHtml = $this->renderSearchBox($request, $view, $dbList, $search_field, $search_levels);
         }
-        $toggleClipboardHtml = '';
+        $renderToggleClipBoard = false;
         if ($tableListHtml && ($this->modTSconfig['enableClipBoard'] ?? '') === 'selectable') {
-            $toggleClipboardHtml = $this->renderToggleClipboardHtml($this->id, $singleTable, $clipboardEnabled);
+            $renderToggleClipBoard = true;
         }
         $clipboardHtml = '';
         if ($clipboardEnabled && ($tableListHtml || $clipboard->hasElements())) {
@@ -197,6 +197,12 @@ class RecordListController
             $view->getDocHeaderComponent()->setMetaInformation($pageinfo);
         }
         $this->getDocHeaderButtons($view, $clipboard, $queryParams, $singleTable, $dbList->listURL(), []);
+        $route = $request->getAttribute('route');
+        $params = ['id' => $this->id];
+        if ($singleTable) {
+            $params['table'] = $singleTable;
+        }
+        $url = $this->uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $params) . '&clipBoard=${value}';
         $view->assignMultiple([
             'pageId' => $this->id,
             'pageTitle' => $title,
@@ -207,7 +213,11 @@ class RecordListController
             'pageTranslationsHtml' => $pageTranslationsHtml,
             'searchBoxHtml' => $searchBoxHtml,
             'tableListHtml' => $tableListHtml,
-            'toggleClipboardHtml' => $toggleClipboardHtml,
+            'displayToggleClipboard' => $renderToggleClipBoard,
+            'toggleClipboardName' => 'clipBoard',
+            'toggleClipboardId' => 'checkShowClipBoard',
+            'toggleClipboardChecked' => $clipboardEnabled ? ' checked="checked"' : '',
+            'toggleClipboardFormUrl' => $url,
             'clipboardHtml' => $clipboardHtml,
             'additionalContentBottom' => $additionalRecordListEvent->getAdditionalContentBelow(),
         ]);
@@ -586,21 +596,6 @@ class RecordListController
         $pageTranslationsDatabaseRecordList->setLanguagesAllowedForUser($siteLanguages);
         $pageTranslationsDatabaseRecordList->showOnlyTranslatedRecords(true);
         return $pageTranslationsDatabaseRecordList->getTable('pages');
-    }
-
-    public function renderToggleClipboardHtml(int $pageId, string $singleTable, bool $checked): string
-    {
-        $languageService = $this->getLanguageService();
-        $html = [];
-        $html[] = '<div class="mb-3">';
-        $html[] =   '<div class="form-check form-switch">';
-        $html[] =       BackendUtility::getFuncCheck($pageId, 'clipBoard', $checked, '', $singleTable ? '&table=' . $singleTable : '', 'id="checkShowClipBoard"');
-        $html[] =       '<label class="form-check-label" for="checkShowClipBoard">';
-        $html[] =           htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showClipBoard'));
-        $html[] =       '</label>';
-        $html[] =   '</div>';
-        $html[] = '</div>';
-        return implode(LF, $html);
     }
 
     /**

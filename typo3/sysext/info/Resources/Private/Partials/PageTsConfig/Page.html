@@ -13,13 +13,17 @@
             </label>
             <f:render partial="DropdownMenu" arguments="{name: 'tsconf_parts', id: 'tsconf_parts', options: dropdownMenuOptions, currentValue: dropdownMenuCurrentValue}"/>
         </div>
-        <f:if condition="{alphaSort}">
+        <f:if condition="{displayAlphaSort}">
             <div class="col">
                 <div class="form-check form-switch">
                     <label class="form-check-label" for="checkTsconf_alphaSort">
                         {f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:sort_alphabetic')}
                     </label>
-                    <f:format.raw>{alphaSort}</f:format.raw>
+                    <input type="checkbox" class="form-check-input" name="tsconf_alphaSort" value="1" data-global-event="change"
+                            data-action-navigate="$data=~s/$value/"
+                            data-navigate-value="{alphaSortUrl}"
+                            data-empty-value="0" id="checkTsconf_alphaSort" {alphaSortChecked}
+                    >
                 </div>
             </div>
         </f:if>

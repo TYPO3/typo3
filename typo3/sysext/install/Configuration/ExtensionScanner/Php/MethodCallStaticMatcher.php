@@ -1436,4 +1436,11 @@ return [
             'Deprecation-99564-DeprecatedBackendUtilityGetDropdownMenu.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Deprecation-99579-BackendUtilityGetFuncCheck.rst',
+        ],
+    ],
 ];

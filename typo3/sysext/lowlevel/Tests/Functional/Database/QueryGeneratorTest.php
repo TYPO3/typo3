@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Tests\Functional\Database;
 
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -366,10 +368,14 @@ class QueryGeneratorTest extends FunctionalTestCase
         $iconFactoryMock = $this->getMockBuilder(IconFactory::class)->disableOriginalConstructor()->getMock();
         $iconFactoryMock->method('getIcon')->willReturn($iconMock);
 
+        // the route is not important for the test, it only satisfies the dependencies
+        $route = new \stdClass();
+        $request = (new ServerRequest())->withAttribute('route', $route);
+
         $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
         $subject->_set('iconFactory', $iconFactoryMock);
         $subject->_call('init', 'queryConfig', $settings['queryTable']);
-        $subject->_call('makeSelectorTable', $settings);
+        $subject->_call('makeSelectorTable', $settings, $request);
         $subject->_set('enablePrefix', true);
 
         $queryString = $subject->_call('getQuery', $subject->_get('queryConfig'));

@@ -854,14 +854,6 @@ class BackendUtilityTest extends UnitTestCase
         self::assertEquals($expectedLabel, LabelFromItemListMergedReturnsCorrectFieldsFixture::getLabelFromItemListMerged($pageId, $table, $column, $key));
     }
 
-    /**
-     * @test
-     */
-    public function getFuncCheckReturnsInputTagWithValueAttribute(): void
-    {
-        self::assertStringMatchesFormat('<input %Svalue="1"%S/>', BackendUtility::getFuncCheck('params', 'test', true));
-    }
-
     public function getLabelsFromItemsListDataProvider(): array
     {
         return [

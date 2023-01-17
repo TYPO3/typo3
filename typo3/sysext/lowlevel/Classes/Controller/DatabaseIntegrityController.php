@@ -273,17 +273,17 @@ class DatabaseIntegrityController
         }
         $submenu .= '</div>';
         if ($this->MOD_SETTINGS['search'] === 'query') {
-            $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'] ?? '', '', '', 'id="checkSearch_query_smallparts"') . '<label class="form-check-label" for="checkSearch_query_smallparts">' . $lang->getLL('showSQL') . '</label></div>';
-            $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'] ?? '', '', '', 'id="checkSearch_result_labels"') . '<label class="form-check-label" for="checkSearch_result_labels">' . $lang->getLL('useFormattedStrings') . '</label></div>';
-            $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'] ?? '', '', '', 'id="checkLabels_noprefix"') . '<label class="form-check-label" for="checkLabels_noprefix">' . $lang->getLL('dontUseOrigValues') . '</label></div>';
-            $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'] ?? '', '', '', 'id="checkOptions_sortlabel"') . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->getLL('sortOptions') . '</label></div>';
-            $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'] ?? 0, '', '', 'id="checkShow_deleted"') . '<label class="form-check-label" for="checkShow_deleted">' . $lang->getLL('showDeleted') . '</label></div>';
+            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'] ?? '', $request, '', '', 'id="checkSearch_query_smallparts"') . '<label class="form-check-label" for="checkSearch_query_smallparts">' . $lang->getLL('showSQL') . '</label></div>';
+            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'] ?? '', $request, '', '', 'id="checkSearch_result_labels"') . '<label class="form-check-label" for="checkSearch_result_labels">' . $lang->getLL('useFormattedStrings') . '</label></div>';
+            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'] ?? '', $request, '', '', 'id="checkLabels_noprefix"') . '<label class="form-check-label" for="checkLabels_noprefix">' . $lang->getLL('dontUseOrigValues') . '</label></div>';
+            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'] ?? '', $request, '', '', 'id="checkOptions_sortlabel"') . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->getLL('sortOptions') . '</label></div>';
+            $submenu .= '<div class="form-check">' . self::getFuncCheck(0, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'] ?? 0, $request, '', '', 'id="checkShow_deleted"') . '<label class="form-check-label" for="checkShow_deleted">' . $lang->getLL('showDeleted') . '</label></div>';
         }
         $view->assign('submenu', $submenu);
         $view->assign('searchMode', $searchMode);
         switch ($searchMode) {
             case 'query':
-                $view->assign('queryMaker', $fullSearch->queryMaker());
+                $view->assign('queryMaker', $fullSearch->queryMaker($request));
                 break;
             case 'raw':
             default:
@@ -487,6 +487,47 @@ class DatabaseIntegrityController
                 ' . implode(LF, $options) . '
             </select>
         </div>';
+    }
+
+    /**
+     * Checkbox function menu.
+     * Works like ->getFuncMenu() but takes no $menuItem array since this is a simple checkbox.
+     *
+     * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+     * @param string $elementName The form elements name, probably something like "SET[...]
+     * @param string|bool $currentValue The value to be selected currently.
+     * @param string $script The script to send the &id to, if empty it's automatically found
+     * @param string $addParams Additional parameters to pass to the script.
+     * @param string $tagParams Additional attributes for the checkbox input tag
+     * @return string HTML code for checkbox
+     * @see getFuncMenu()
+     */
+    protected static function getFuncCheck(
+        $mainParams,
+        $elementName,
+        $currentValue,
+        ServerRequestInterface $request,
+        $script = '',
+        $addParams = '',
+        $tagParams = ''
+    ) {
+        // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
+        $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $request, $script);
+        $attributes = GeneralUtility::implodeAttributes([
+            'type' => 'checkbox',
+            'class' => 'form-check-input',
+            'name' => $elementName,
+            'value' => '1',
+            'data-global-event' => 'change',
+            'data-action-navigate' => '$data=~s/$value/',
+            'data-navigate-value' => sprintf('%s&%s=${value}', $scriptUrl, $elementName),
+            'data-empty-value' => '0',
+        ], true);
+        return
+            '<input ' . $attributes .
+            ($currentValue ? ' checked="checked"' : '') .
+            ($tagParams ? ' ' . $tagParams : '') .
+            ' />';
     }
 
     /**
