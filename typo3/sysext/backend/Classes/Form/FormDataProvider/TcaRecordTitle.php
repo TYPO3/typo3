@@ -159,7 +159,7 @@ class TcaRecordTitle implements FormDataProviderInterface
             case 'file':
                 $recordTitle = $this->getRecordTitleForInlineType(
                     $rawValue,
-                    $result['processedTca']['columns'][$fieldName]['children']
+                    $result['processedTca']['columns'][$fieldName]['children'] ?? []
                 );
                 break;
             case 'select':
