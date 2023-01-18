@@ -48,6 +48,7 @@ class LanguagePacks extends AbstractInteractableModule {
     updated: 0,
     new: 0,
     failed: 0,
+    skipped: 0,
   };
 
   private notifications: Array<any> = [];
@@ -203,6 +204,7 @@ class LanguagePacks extends AbstractInteractableModule {
       updated: 0,
       new: 0,
       failed: 0,
+      skipped: 0,
     };
 
     $outputContainer.empty().append(
@@ -246,6 +248,8 @@ class LanguagePacks extends AbstractInteractableModule {
                   this.packsUpdateDetails.new++;
                 } else if (data.packResult === 'update') {
                   this.packsUpdateDetails.updated++;
+                } else if (data.packResult === 'skipped') {
+                  this.packsUpdateDetails.skipped++;
                 } else {
                   this.packsUpdateDetails.failed++;
                 }
@@ -276,6 +280,7 @@ class LanguagePacks extends AbstractInteractableModule {
         'Language packs updated',
         this.packsUpdateDetails.new + ' new language ' + LanguagePacks.pluralize(this.packsUpdateDetails.new) + ' downloaded, ' +
         this.packsUpdateDetails.updated + ' language ' + LanguagePacks.pluralize(this.packsUpdateDetails.updated) + ' updated, ' +
+        this.packsUpdateDetails.skipped + ' language ' + LanguagePacks.pluralize(this.packsUpdateDetails.skipped) + ' skipped, ' +
         this.packsUpdateDetails.failed + ' language ' + LanguagePacks.pluralize(this.packsUpdateDetails.failed) + ' not available',
       );
       this.addNotification(message);
@@ -458,33 +463,47 @@ class LanguagePacks extends AbstractInteractableModule {
         $('<td>').html(extensionTitle.html()),
         $('<td>').text(extension.key),
       );
-      extension.packs.forEach((pack: any): void => {
-        const $column = $('<td>');
-        $tr.append($column);
-        if (pack.exists !== true) {
-          if (pack.lastUpdate !== null) {
-            tooltip = 'No language pack available for ' + pack.iso + ' when tried at ' + pack.lastUpdate + '. Click to re-try.';
-          } else {
-            tooltip = 'Language pack not downloaded. Click to download';
+
+      data.activeLanguages.forEach((language: string): void => {
+        let packFoundForLanguage: boolean = false;
+        extension.packs.forEach((pack: any): void => {
+          if (pack.iso !== language) {
+            return;
           }
-        } else {
-          if (pack.lastUpdate === null) {
-            tooltip = 'Downloaded. Click to renew';
+          packFoundForLanguage = true;
+          const $column = $('<td>');
+          $tr.append($column);
+          if (pack.exists !== true) {
+            if (pack.lastUpdate !== null) {
+              tooltip = 'No language pack available for ' + pack.iso + ' when tried at ' + pack.lastUpdate + '. Click to re-try.';
+            } else {
+              tooltip = 'Language pack not downloaded. Click to download';
+            }
           } else {
-            tooltip = 'Language pack downloaded at ' + pack.lastUpdate + '. Click to renew';
+            if (pack.lastUpdate === null) {
+              tooltip = 'Downloaded. Click to renew';
+            } else {
+              tooltip = 'Language pack downloaded at ' + pack.lastUpdate + '. Click to renew';
+            }
           }
+          $column.append(
+            $('<a>', {
+              'class': 'btn btn-default t3js-languagePacks-update',
+              'data-extension': extension.key,
+              'data-iso': pack.iso,
+              'data-bs-toggle': 'tooltip',
+              'title': securityUtility.encodeHtml(tooltip),
+            }).append(updateIcon),
+          );
+        });
+        // Render empty colum to avoid disturbed table build up if pack was not found for language.
+        if (!packFoundForLanguage) {
+          const $column = $('<td>');
+          $tr.append($column).append('&nbsp;');
         }
-        $column.append(
-          $('<a>', {
-            'class': 'btn btn-default t3js-languagePacks-update',
-            'data-extension': extension.key,
-            'data-iso': pack.iso,
-            'data-bs-toggle': 'tooltip',
-            'title': securityUtility.encodeHtml(tooltip),
-          }).append(updateIcon),
-        );
       });
       $tbody.append($tr);
+
     });
 
     $markupContainer.append(

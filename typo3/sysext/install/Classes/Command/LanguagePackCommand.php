@@ -103,10 +103,7 @@ class LanguagePackCommand extends Command
             $isos = $languagePackService->getActiveLanguages();
         }
 
-        $output->writeln(sprintf(
-            '<info>Updating language packs of all activated extensions for locale(s) "%s"</info>',
-            implode('", "', $isos)
-        ));
+        $output->writeln('<info>Updating language packs</info>');
 
         $extensions = $languagePackService->getExtensionLanguagePackDetails();
 
@@ -115,26 +112,46 @@ class LanguagePackCommand extends Command
         } else {
             $progressBarOutput = $output;
         }
-        $progressBar = new ProgressBar($progressBarOutput, count($isos) * count($extensions));
-        foreach ($isos as $iso) {
-            foreach ($extensions as $extension) {
-                if (in_array($extension['key'], $skipExtensions, true)) {
+
+        $downloads = [];
+        $packageCount = 0;
+        foreach ($extensions as $extensionKey => $extension) {
+            if (in_array($extensionKey, $skipExtensions, true)) {
+                continue;
+            }
+            $downloads[$extensionKey] = [];
+            foreach ($extension['packs'] as $iso => $pack) {
+                if (!in_array($iso, $isos, true)) {
                     continue;
                 }
+                $downloads[$extensionKey][] = $iso;
+                $packageCount++;
+            }
+
+            if (empty($downloads[$extensionKey])) {
+                unset($downloads[$extensionKey]);
+            }
+        }
+        $progressBar = new ProgressBar($progressBarOutput, $packageCount);
+        foreach ($downloads as $extension => $extensionLanguages) {
+            foreach ($isos as $iso) {
                 if ($noProgress) {
-                    $output->writeln(sprintf('<info>Fetching pack for language "%s" for extension "%s"</info>', $iso, $extension['key']), $output::VERBOSITY_VERY_VERBOSE);
+                    $output->writeln(sprintf('<info>Fetching pack for language "%s" for extension "%s"</info>', $iso, $extension), $output::VERBOSITY_VERY_VERBOSE);
                 }
-                $result = $languagePackService->languagePackDownload($extension['key'], $iso);
+                $result = $languagePackService->languagePackDownload($extension, $iso);
                 if ($noProgress) {
                     switch ($result) {
                         case 'failed':
-                            $output->writeln(sprintf('<comment>Fetching pack for language "%s" for extension "%s" failed</comment>', $iso, $extension['key']));
+                            $output->writeln(sprintf('<comment>Fetching pack for language "%s" for extension "%s" failed</comment>', $iso, $extension));
                             break;
                         case 'update':
-                            $output->writeln(sprintf('<info>Updated pack for language "%s" for extension "%s"</info>', $iso, $extension['key']));
+                            $output->writeln(sprintf('<info>Updated pack for language "%s" for extension "%s"</info>', $iso, $extension));
                             break;
                         case 'new':
-                            $output->writeln(sprintf('<info>Fetching new pack for language "%s" for extension "%s"</info>', $iso, $extension['key']));
+                            $output->writeln(sprintf('<info>Fetching new pack for language "%s" for extension "%s"</info>', $iso, $extension));
+                            break;
+                        case 'skipped':
+                            $output->writeln(sprintf('<info>Skipped pack for language "%s" for extension "%s"</info>', $iso, $extension));
                             break;
                     }
                 }

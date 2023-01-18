@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent;
+use TYPO3\CMS\Install\Service\Event\ModifyLanguagePacksEvent;
 
 /**
  * Service class handling language pack details
@@ -168,6 +169,7 @@ class LanguagePackService
             $extension = [
                 'key' => $key,
                 'title' => $title,
+                'type' => $package->getPackageMetaData()->getPackageType(),
             ];
             if (!empty(ExtensionManagementUtility::getExtensionIcon($path, false))) {
                 $extension['icon'] = PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::getExtensionIcon($path, true));
@@ -176,22 +178,17 @@ class LanguagePackService
             foreach ($activeLanguages as $iso) {
                 $isLanguagePackDownloaded = is_dir(Environment::getLabelsPath() . '/' . $iso . '/' . $key . '/');
                 $lastUpdate = $this->registry->get('languagePacks', $iso . '-' . $key);
-                $extension['packs'][] = [
+                $extension['packs'][$iso] = [
                     'iso' => $iso,
                     'exists' => $isLanguagePackDownloaded,
                     'lastUpdate' => $this->getFormattedDate($lastUpdate),
                 ];
             }
-            $extensions[] = $extension;
+            $extensions[$key] = $extension;
         }
-        usort($extensions, static function ($a, $b) {
-            // Sort extensions by key
-            if ($a['key'] === $b['key']) {
-                return 0;
-            }
-            return $a['key'] < $b['key'] ? -1 : 1;
-        });
-        return $extensions;
+        ksort($extensions);
+        $event = $this->eventDispatcher->dispatch(new ModifyLanguagePacksEvent($extensions));
+        return $event->getExtensions();
     }
 
     /**
@@ -199,7 +196,7 @@ class LanguagePackService
      *
      * @param string $key Extension key
      * @param string $iso Language iso code
-     * @return string One of 'update', 'new' or 'failed'
+     * @return string One of 'update', 'new', 'skipped' or 'failed'
      * @throws \RuntimeException
      */
     public function languagePackDownload(string $key, string $iso): string
@@ -214,6 +211,12 @@ class LanguagePackService
         $package = $packageManager->getActivePackages()[$key] ?? null;
         if (!$package) {
             throw new \RuntimeException('Extension ' . (string)$key . ' not loaded', 1520117245);
+        }
+
+        // Kinda hacky, but we need this as the install tool requests every language for every extension
+        $extensions = $this->getExtensionLanguagePackDetails();
+        if (!isset($extensions[$key]['packs'][$iso])) {
+            return 'skipped';
         }
 
         $languagePackBaseUrl = self::LANGUAGE_PACK_URL;

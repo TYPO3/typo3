@@ -593,10 +593,14 @@ class MaintenanceController extends AbstractController
         $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false, true);
         $languagePackService = $container->get(LanguagePackService::class);
         $extensions = $languagePackService->getExtensionLanguagePackDetails();
+        $extensionList = array_map(function (array $extension) {
+            $extension['packs'] = array_values($extension['packs']);
+            return $extension;
+        }, array_values($extensions));
         return new JsonResponse([
             'success' => true,
             'languages' => $languagePackService->getLanguageDetails(),
-            'extensions' => $extensions,
+            'extensions' => $extensionList,
             'activeLanguages' => $languagePackService->getActiveLanguages(),
             'activeExtensions' => array_column($extensions, 'key'),
             'html' => $view->render('Maintenance/LanguagePacks'),
