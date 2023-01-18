@@ -31,6 +31,11 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/ElementInformationController.php
 
 		-
+			message: "#^If condition is always false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
+
+		-
 			message: "#^Offset 2 on array\\{\\} in empty\\(\\) does not exist\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
@@ -39,6 +44,16 @@ parameters:
 			message: "#^Result of \\|\\| is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
+
+		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
+
+		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Controller/Page/TreeController.php
 
 		-
 			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
@@ -91,6 +106,11 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Container/InlineRecordContainer.php
 
 		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Form/Element/BackendLayoutWizardElement.php
+
+		-
 			message: "#^Offset 'arguments' on array\\{arguments\\: non\\-empty\\-string\\|false\\} on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/ImageManipulationElement.php
@@ -101,9 +121,19 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/InputLinkElement.php
 
 		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectCheckBoxElement.php
+
+		-
 			message: "#^Strict comparison using \\=\\=\\= between non\\-empty\\-array\\<int, array\\{label\\: string, attributes\\: non\\-empty\\-array\\<'class'\\|'disabled'\\|'title'\\|'value', mixed\\>\\}\\> and array\\{\\} will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectSingleElement.php
 
 		-
 			message: "#^Offset 'title' on array\\{title\\: string, value\\: mixed, icon\\: string, selected\\: bool\\} on left side of \\?\\? always exists and is not nullable\\.$#"
@@ -496,6 +526,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Authentication/AbstractUserAuthentication.php
 
 		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Authentication/AbstractUserAuthentication.php
+
+		-
 			message: "#^Left side of && is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Authentication/AbstractUserAuthentication.php
@@ -656,6 +691,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
+
+		-
 			message: "#^Left side of \\|\\| is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
@@ -683,6 +723,11 @@ parameters:
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:workspaceCannotEditRecord\\(\\) should return string but returns false\\.$#"
 			count: 2
+			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
@@ -1171,6 +1216,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
 
 		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
+
+		-
 			message: "#^Result of \\|\\| is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
@@ -1184,6 +1234,11 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Localization\\\\LanguageService\\:\\:create\\(\\) should return static\\(TYPO3\\\\CMS\\\\Core\\\\Localization\\\\LanguageService\\) but returns TYPO3\\\\CMS\\\\Core\\\\Localization\\\\LanguageService\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Localization/LanguageService.php
+
+		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Localization/LanguageStore.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Locking\\\\SemaphoreLockStrategy\\:\\:\\$resource has unknown class SysvSemaphore as its type\\.$#"
@@ -1456,6 +1511,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/Search/QueryRestrictions/SearchTermRestriction.php
 
 		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 2
+			path: ../../typo3/sysext/core/Classes/Resource/Security/FileMetadataPermissionsAspect.php
+
+		-
 			message: "#^Function array_merge invoked with 0 parameters, at least 1 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/Security/SvgTypeCheck.php
@@ -1604,6 +1664,11 @@ parameters:
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/TypoScript/ExtendedTemplateService.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/TypoScript/TemplateService.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TemplateService\\:\\:getRootlineLevel\\(\\) should return int but returns false\\.$#"
@@ -2393,6 +2458,11 @@ parameters:
 		-
 			message: "#^Parameter \\#2 \\$optionKey of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfiguration\\:\\:setTypeConverterOption\\(\\) expects string, int given\\.$#"
 			count: 2
+			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfigurationService.php
+
+		-
+			message: "#^Right side of && is always false\\.$#"
+			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfigurationService.php
 
 		-
@@ -3236,6 +3306,11 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Classes/Domain/Model/DownloadQueue.php
 
 		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extensionmanager/Classes/Domain/Model/DownloadQueue.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalAnd\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 11
 			path: ../../typo3/sysext/extensionmanager/Classes/Domain/Repository/ExtensionRepository.php
@@ -3299,6 +3374,11 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extensionmanager\\\\Remote\\\\ExtensionDownloaderRemoteInterface\\:\\:needsUpdate\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Classes/Report/ExtensionStatus.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extensionmanager/Classes/Service/ExtensionManagementService.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extensionmanager\\\\Domain\\\\Repository\\\\ExtensionRepository\\:\\:countByExtensionKey\\(\\)\\.$#"
@@ -3706,6 +3786,11 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Domain/Model/FormDefinition.php
 
 		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/form/Classes/Domain/Model/FormDefinition.php
+
+		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Model\\\\FormElements\\\\FormElementInterface\\:\\:setOptions\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/AbstractSection.php
@@ -3727,6 +3812,11 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\:\\:setOptions\\(\\)\\.$#"
+			count: 1
+			path: ../../typo3/sysext/form/Classes/Domain/Model/Renderable/AbstractRenderable.php
+
+		-
+			message: "#^Right side of && is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Domain/Model/Renderable/AbstractRenderable.php
 
@@ -3876,6 +3966,11 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
+			message: "#^Comparison operation \"\\>\" between 0 and 1 is always false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
+
+		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
@@ -3992,7 +4087,7 @@ parameters:
 
 		-
 			message: "#^Result of && is always false\\.$#"
-			count: 2
+			count: 4
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
@@ -4576,11 +4671,6 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Controller/AdministrationController.php
 
 		-
-			message: "#^Elseif condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/Classes/Domain/Repository/AdministrationRepository.php
-
-		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
@@ -4701,6 +4791,11 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/InterfaceMethodChangedMatcher.php
 
 		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 2
+			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/InterfaceMethodChangedMatcher.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\MethodAnnotationMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodAnnotationMatcher.php
@@ -4789,6 +4884,11 @@ parameters:
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/SystemEnvironment/ServerResponse/FileDeclaration.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/install/Classes/Updates/DatabaseRowsUpdateWizard.php
 
 		-
 			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:set\\(\\)\\.$#"
@@ -5076,6 +5176,11 @@ parameters:
 			path: ../../typo3/sysext/redirects/Classes/Service/RedirectService.php
 
 		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 2
+			path: ../../typo3/sysext/rte_ckeditor/Classes/Controller/BrowseLinksController.php
+
+		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\RteCKEditor\\\\Form\\\\Resolver\\\\RichTextNodeResolver has an unused parameter \\$nodeFactory\\.$#"
 			count: 1
 			path: ../../typo3/sysext/rte_ckeditor/Classes/Form/Resolver/RichTextNodeResolver.php
@@ -5109,11 +5214,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between int and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/scheduler/Classes/Scheduler.php
-
-		-
-			message: "#^Elseif condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/setup/Classes/Controller/SetupModuleController.php
 
 		-
 			message: "#^Parameter \\#1 \\$pids of method TYPO3\\\\CMS\\\\SysNote\\\\Controller\\\\NoteController\\:\\:listAction\\(\\) expects string, int given\\.$#"
