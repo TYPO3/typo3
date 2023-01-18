@@ -103,6 +103,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/browse-files.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tree/file-storage-browser.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/multi-record-selection.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
 
         $thumbnailConfig = $this->getBackendUser()->getTSConfig()['options.']['file_list.']['thumbnail.'] ?? [];
         if (isset($thumbnailConfig['width']) && MathUtility::canBeInterpretedAsInteger($thumbnailConfig['width'])) {
