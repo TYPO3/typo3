@@ -19,21 +19,19 @@
             7: '@typo3/backend/clipboard-panel.js',
             8: '@typo3/backend/new-content-element-wizard-button.js',
             9: '@typo3/backend/element/immediate-action-element.js',
-            10: '@typo3/backend/context-menu.js'
+            10: '@typo3/backend/context-menu.js',
+            11: '@typo3/backend/element/editable-page-title.js'
         }"
     />
 
     <f:variable name="immediateActionArgs" value="{0: 'web', 1: pageId}" />
     <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{immediateActionArgs -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
 
-    <f:if condition="{isPageEditable}">
-        <f:then>
-            <h1 class="t3js-title-inlineedit">{pageTitle}</h1>
-        </f:then>
-        <f:else>
-            <h1>{pageTitle}</h1>
-        </f:else>
-    </f:if>
+    <typo3-backend-editable-page-title
+        pageTitle="{pageTitle}"
+        pageId="{pageId}"
+        {isPageEditable ? 'editable' : ''}
+    ></typo3-backend-editable-page-title>
 
     <f:format.raw>{additionalContentTop}</f:format.raw>
 

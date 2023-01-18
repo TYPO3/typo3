@@ -54,9 +54,9 @@ class WorkspaceModuleCest
 
         $I->comment('Rename page');
         $I->switchToContentFrame();
-        $I->click('button[data-action="edit"]');
-        $I->fillField('input[class*="t3js-title-edit-input"]', self::$newPageTitle);
-        $I->click('button[data-action="submit"]');
+        $I->click('typo3-backend-editable-page-title button');
+        $I->fillField('typo3-backend-editable-page-title input[name="newPageTitle"]', self::$newPageTitle);
+        $I->click('typo3-backend-editable-page-title button[type="submit"]');
 
         $I->switchToMainFrame();
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);

@@ -135,10 +135,13 @@ class PageLayoutController
         $mainLayoutHtml = $this->backendLayoutRenderer->drawContent($request, $pageLayoutContext);
         $numberOfHiddenElements = $this->getNumberOfHiddenElements($pageLayoutContext->getDrawingConfiguration()->getLanguageColumns());
 
+        $pageLocalizationRecord = $this->getLocalizedPageRecord($this->currentSelectedLanguage);
+
         $view->setTitle($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'), $this->pageinfo['title']);
         $view->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         $view->assignMultiple([
             'pageId' => $this->id,
+            'localizedPageId' => $pageLocalizationRecord['uid'] ?? 0,
             'infoBoxes' => $this->generateMessagesForCurrentPage($request),
             'isPageEditable' => $this->isPageEditable($this->currentSelectedLanguage),
             'localizedPageTitle' => $this->getLocalizedPageTitle($this->currentSelectedLanguage, $this->pageinfo),
@@ -455,18 +458,9 @@ class PageLayoutController
 
     protected function addJavaScriptModuleInstructions(): void
     {
-        $pageActionsInstruction = JavaScriptModuleInstruction::create('@typo3/backend/page-actions.js');
-        if ($this->isPageEditable($this->currentSelectedLanguage)) {
-            $languageOverlayId = 0;
-            $pageLocalizationRecord = $this->getLocalizedPageRecord($this->currentSelectedLanguage);
-            if (!empty($pageLocalizationRecord['uid'])) {
-                $languageOverlayId = $pageLocalizationRecord['uid'];
-            }
-            $pageActionsInstruction
-                ->invoke('setPageId', $this->id)
-                ->invoke('setLanguageOverlayId', $languageOverlayId);
-        }
-        $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($pageActionsInstruction);
+        $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::create('@typo3/backend/page-actions.js')
+        );
     }
 
     /**

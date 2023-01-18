@@ -15,7 +15,8 @@
             3: '@typo3/backend/tooltip.js',
             4: '@typo3/backend/localization.js',
             5: '@typo3/backend/layout-module/drag-drop.js',
-            6: '@typo3/backend/modal.js'
+            6: '@typo3/backend/modal.js',
+            7: '@typo3/backend/element/editable-page-title.js'
         }"
     />
 
@@ -28,14 +29,12 @@
         </f:be.infobox>
     </f:for>
 
-    <f:if condition="{isPageEditable}">
-        <f:then>
-            <h1 class="t3js-title-inlineedit">{localizedPageTitle}</h1>
-        </f:then>
-        <f:else>
-            <h1>{localizedPageTitle}</h1>
-        </f:else>
-    </f:if>
+    <typo3-backend-editable-page-title
+        pageTitle="{localizedPageTitle}"
+        pageId="{pageId}"
+        localizedPageId="{localizedPageId}"
+        {isPageEditable ? 'editable' : ''}
+    ></typo3-backend-editable-page-title>
 
     <f:format.raw>{eventContentHtmlTop}</f:format.raw>
 

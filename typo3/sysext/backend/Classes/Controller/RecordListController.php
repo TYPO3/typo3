@@ -42,7 +42,6 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -105,12 +104,6 @@ class RecordListController
         $access = is_array($pageinfo);
         $this->pageInfo = is_array($pageinfo) ? $pageinfo : [];
         $this->pagePermissions = new Permission($backendUser->calcPerms($pageinfo));
-        $userCanEditPage = $this->pagePermissions->editPagePermissionIsGranted() && !empty($this->id) && ($backendUser->isAdmin() || (int)$pageinfo['editlock'] === 0);
-        $pageActionsInstruction = JavaScriptModuleInstruction::create('@typo3/backend/page-actions.js');
-        if ($userCanEditPage) {
-            $pageActionsInstruction->invoke('setPageId', $this->id);
-        }
-        $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($pageActionsInstruction);
 
         $clipboardEnabled = (bool)$moduleData->get('clipBoard');
         if (isset($this->modTSconfig['enableClipBoard'])) {

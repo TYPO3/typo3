@@ -63,11 +63,10 @@ class PageModuleCest
 
     private function renamePage(ApplicationTester $I, string $oldTitle, string $newTitle): void
     {
-        $editLinkSelector = 'button[data-action="edit"]';
-        $inputFieldSelector = 'input[class*="t3js-title-edit-input"]';
+        $editLinkSelector = 'typo3-backend-editable-page-title button';
+        $inputFieldSelector = 'typo3-backend-editable-page-title input[name="newPageTitle"]';
 
         $I->waitForText($oldTitle, 10, 'h1');
-        $I->moveMouseOver('.t3js-title-inlineedit');
 
         $I->comment('Activate inline edit of page title');
         $I->waitForElement($editLinkSelector);
@@ -76,7 +75,7 @@ class PageModuleCest
 
         $I->comment('Set new value and save');
         $I->fillField($inputFieldSelector, $newTitle);
-        $I->click('button[data-action="submit"]');
+        $I->click('typo3-backend-editable-page-title button[type="submit"]');
 
         $I->comment('See the new page title');
         $I->waitForElementNotVisible($inputFieldSelector);
