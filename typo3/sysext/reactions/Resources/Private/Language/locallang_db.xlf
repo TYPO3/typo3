@@ -32,7 +32,7 @@
 				<source>Secret</source>
 			</trans-unit>
 			<trans-unit id="sys_reaction.secret.description" resname="sys_reaction.secret.description">
-				<source>The secret is required to call the reaction from the outside. The secret can be re-created anytime, but will only be visible once (unitl the record got saved).</source>
+				<source>The secret is required to call the reaction from the outside. The secret can be re-created anytime, but will only be visible once (until the record got saved).</source>
 			</trans-unit>
 			<trans-unit id="sys_reaction.secret.passwordGenerator" resname="sys_reaction.secret.passwordGenerator">
 				<source>Generate secret token</source>
