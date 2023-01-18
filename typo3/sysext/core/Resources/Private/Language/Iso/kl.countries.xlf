@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="kl" datatype="plaintext" original="EXT:core/Resources/Private/Language/countries.xlf" product-name="typo3/cms-core">
+    <body>
+      <trans-unit id="AD.name" resname="AD.name" approved="yes">
+        <source>Andorra</source>
+        <target>Andorra</target>
+      </trans-unit>
+      <trans-unit id="AE.name" resname="AE.name" approved="yes">
+        <source>United Arab Emirates</source>
+        <target>United Arab Emirates</target>
+      </trans-unit>
+      <trans-unit id="AF.name" resname="AF.name" approved="yes">
+        <source>Afghanistan</source>
+        <target>Afghanistan</target>
+      </trans-unit>
+      <trans-unit id="AL.name" resname="AL.name" approved="yes">
+        <source>Albania</source>
+        <target>Albania</target>
+      </trans-unit>
+      <trans-unit id="AR.name" resname="AR.name" approved="yes">
+        <source>Argentina</source>
+        <target>Argentina</target>
+      </trans-unit>
+      <trans-unit id="AT.name" resname="AT.name" approved="yes">
+        <source>Austria</source>
+        <target>Austria</target>
+      </trans-unit>
+      <trans-unit id="AU.name" resname="AU.name" approved="yes">
+        <source>Australia</source>
+        <target>Australia</target>
+      </trans-unit>
+      <trans-unit id="AZ.name" resname="AZ.name" approved="yes">
+        <source>Azerbaijan</source>
+        <target>Azerbaijan</target>
+      </trans-unit>
+      <trans-unit id="BA.name" resname="BA.name" approved="yes">
+        <source>Bosnia and Herzegovina</source>
+        <target>Bosnia and Herzegovina</target>
+      </trans-unit>
+      <trans-unit id="BD.name" resname="BD.name" approved="yes">
+        <source>Bangladesh</source>
+        <target>Bangladesh</target>
+      </trans-unit>
+      <trans-unit id="BE.name" resname="BE.name" approved="yes">
+        <source>Belgium</source>
+        <target>Belgium</target>
+      </trans-unit>
+      <trans-unit id="BG.name" resname="BG.name" approved="yes">
+        <source>Bulgaria</source>
+        <target>Bulgaria</target>
+      </trans-unit>
+      <trans-unit id="BH.name" resname="BH.name" approved="yes">
+        <source>Bahrain</source>
+        <target>Bahrain</target>
+      </trans-unit>
+      <trans-unit id="BR.name" resname="BR.name" approved="yes">
+        <source>Brazil</source>
+        <target>Brazil</target>
+      </trans-unit>
+      <trans-unit id="BY.name" resname="BY.name" approved="yes">
+        <source>Belarus</source>
+        <target>Belarus</target>
+      </trans-unit>
+      <trans-unit id="CA.name" resname="CA.name" approved="yes">
+        <source>Canada</source>
+        <target>Canada</target>
+      </trans-unit>
+      <trans-unit id="CH.name" resname="CH.name" approved="yes">
+        <source>Switzerland</source>
+        <target>Switzerland</target>
+      </trans-unit>
+      <trans-unit id="CL.name" resname="CL.name" approved="yes">
+        <source>Chile</source>
+        <target>Chile</target>
+      </trans-unit>
+      <trans-unit id="CN.official_name" resname="CN.official_name" approved="yes">
+        <source>People's Republic of China</source>
+        <target>People's Republic of China</target>
+      </trans-unit>
+      <trans-unit id="CO.name" resname="CO.name" approved="yes">
+        <source>Colombia</source>
+        <target>Colombia</target>
+      </trans-unit>
+      <trans-unit id="CY.name" resname="CY.name" approved="yes">
+        <source>Cyprus</source>
+        <target>Cyprus</target>
+      </trans-unit>
+      <trans-unit id="CZ.official_name" resname="CZ.official_name" approved="yes">
+        <source>Czech Republic</source>
+        <target>Czech Republic</target>
+      </trans-unit>
+      <trans-unit id="DE.name" resname="DE.name" approved="yes">
+        <source>Germany</source>
+        <target>Germany</target>
+      </trans-unit>
+      <trans-unit id="DK.name" resname="DK.name" approved="yes">
+        <source>Denmark</source>
+        <target>Denmark</target>
+      </trans-unit>
+      <trans-unit id="EC.name" resname="EC.name" approved="yes">
+        <source>Ecuador</source>
+        <target>Ecuador</target>
+      </trans-unit>
+      <trans-unit id="EG.name" resname="EG.name" approved="yes">
+        <source>Egypt</source>
+        <target>Egypt</target>
+      </trans-unit>
+      <trans-unit id="ES.name" resname="ES.name" approved="yes">
+        <source>Spain</source>
+        <target>Spain</target>
+      </trans-unit>
+      <trans-unit id="FI.name" resname="FI.name" approved="yes">
+        <source>Finland</source>
+        <target>Finland</target>
+      </trans-unit>
+      <trans-unit id="FO.name" resname="FO.name" approved="yes">
+        <source>Faroe Islands</source>
+        <target>Faroe Islands</target>
+      </trans-unit>
+      <trans-unit id="FR.name" resname="FR.name" approved="yes">
+        <source>France</source>
+        <target>France</target>
+      </trans-unit>
+      <trans-unit id="GB.name" resname="GB.name" approved="yes">
+        <source>United Kingdom</source>
+        <target>United Kingdom</target>
+      </trans-unit>
+      <trans-unit id="GE.name" resname="GE.name" approved="yes">
+        <source>Georgia</source>
+        <target>Georgia</target>
+      </trans-unit>
+      <trans-unit id="GL.name" resname="GL.name" approved="yes">
+        <source>Greenland</source>
+        <target>Greenland</target>
+      </trans-unit>
+      <trans-unit id="GM.official_name" resname="GM.official_name" approved="yes">
+        <source>Republic of the Gambia</source>
+        <target>Republic of the Gambia</target>
+      </trans-unit>
+      <trans-unit id="GR.name" resname="GR.name" approved="yes">
+        <source>Greece</source>
+        <target>Greece</target>
+      </trans-unit>
+      <trans-unit id="GY.name" resname="GY.name" approved="yes">
+        <source>Guyana</source>
+        <target>Guyana</target>
+      </trans-unit>
+      <trans-unit id="HK.name" resname="HK.name" approved="yes">
+        <source>Hong Kong</source>
+        <target>Hong Kong</target>
+      </trans-unit>
+      <trans-unit id="HR.name" resname="HR.name" approved="yes">
+        <source>Croatia</source>
+        <target>Croatia</target>
+      </trans-unit>
+      <trans-unit id="HU.name" resname="HU.name" approved="yes">
+        <source>Hungary</source>
+        <target>Hungary</target>
+      </trans-unit>
+      <trans-unit id="HU.official_name" resname="HU.official_name" approved="yes">
+        <source>Hungary</source>
+        <target>Hungary</target>
+      </trans-unit>
+      <trans-unit id="ID.name" resname="ID.name" approved="yes">
+        <source>Indonesia</source>
+        <target>Indonesia</target>
+      </trans-unit>
+      <trans-unit id="IE.name" resname="IE.name" approved="yes">
+        <source>Ireland</source>
+        <target>Ireland</target>
+      </trans-unit>
+      <trans-unit id="IL.name" resname="IL.name" approved="yes">
+        <source>Israel</source>
+        <target>Israel</target>
+      </trans-unit>
+      <trans-unit id="IN.name" resname="IN.name" approved="yes">
+        <source>India</source>
+        <target>India</target>
+      </trans-unit>
+      <trans-unit id="IQ.name" resname="IQ.name" approved="yes">
+        <source>Iraq</source>
+        <target>Iraq</target>
+      </trans-unit>
+      <trans-unit id="IS.name" resname="IS.name" approved="yes">
+        <source>Iceland</source>
+        <target>Iceland</target>
+      </trans-unit>
+      <trans-unit id="IT.name" resname="IT.name" approved="yes">
+        <source>Italy</source>
+        <target>Italy</target>
+      </trans-unit>
+      <trans-unit id="JO.name" resname="JO.name" approved="yes">
+        <source>Jordan</source>
+        <target>Jordan</target>
+      </trans-unit>
+      <trans-unit id="JP.name" resname="JP.name" approved="yes">
+        <source>Japan</source>
+        <target>Japan</target>
+      </trans-unit>
+      <trans-unit id="KE.name" resname="KE.name" approved="yes">
+        <source>Kenya</source>
+        <target>Kenya</target>
+      </trans-unit>
+      <trans-unit id="KW.name" resname="KW.name" approved="yes">
+        <source>Kuwait</source>
+        <target>Kuwait</target>
+      </trans-unit>
+      <trans-unit id="KZ.name" resname="KZ.name" approved="yes">
+        <source>Kazakhstan</source>
+        <target>Kazakhstan</target>
+      </trans-unit>
+      <trans-unit id="LB.name" resname="LB.name" approved="yes">
+        <source>Lebanon</source>
+        <target>Lebanon</target>
+      </trans-unit>
+      <trans-unit id="LI.name" resname="LI.name" approved="yes">
+        <source>Liechtenstein</source>
+        <target>Liechtenstein</target>
+      </trans-unit>
+      <trans-unit id="LT.name" resname="LT.name" approved="yes">
+        <source>Lithuania</source>
+        <target>Lithuania</target>
+      </trans-unit>
+      <trans-unit id="LU.name" resname="LU.name" approved="yes">
+        <source>Luxembourg</source>
+        <target>Luxembourg</target>
+      </trans-unit>
+      <trans-unit id="LV.name" resname="LV.name" approved="yes">
+        <source>Latvia</source>
+        <target>Latvia</target>
+      </trans-unit>
+      <trans-unit id="LY.name" resname="LY.name" approved="yes">
+        <source>Libya</source>
+        <target>Libya</target>
+      </trans-unit>
+      <trans-unit id="LY.official_name" resname="LY.official_name" approved="yes">
+        <source>Libya</source>
+        <target>Libya</target>
+      </trans-unit>
+      <trans-unit id="MC.name" resname="MC.name" approved="yes">
+        <source>Monaco</source>
+        <target>Monaco</target>
+      </trans-unit>
+      <trans-unit id="ME.name" resname="ME.name" approved="yes">
+        <source>Montenegro</source>
+        <target>Montenegro</target>
+      </trans-unit>
+      <trans-unit id="ME.official_name" resname="ME.official_name" approved="yes">
+        <source>Montenegro</source>
+        <target>Montenegro</target>
+      </trans-unit>
+      <trans-unit id="MG.name" resname="MG.name" approved="yes">
+        <source>Madagascar</source>
+        <target>Madagascar</target>
+      </trans-unit>
+      <trans-unit id="MK.official_name" resname="MK.official_name" approved="yes">
+        <source>Republic of North Macedonia</source>
+        <target>Republic of North Macedonia</target>
+      </trans-unit>
+      <trans-unit id="MN.name" resname="MN.name" approved="yes">
+        <source>Mongolia</source>
+        <target>Mongolia</target>
+      </trans-unit>
+      <trans-unit id="MT.name" resname="MT.name" approved="yes">
+        <source>Malta</source>
+        <target>Malta</target>
+      </trans-unit>
+      <trans-unit id="MX.name" resname="MX.name" approved="yes">
+        <source>Mexico</source>
+        <target>Mexico</target>
+      </trans-unit>
+      <trans-unit id="NL.name" resname="NL.name" approved="yes">
+        <source>Netherlands</source>
+        <target>Netherlands</target>
+      </trans-unit>
+      <trans-unit id="NO.name" resname="NO.name" approved="yes">
+        <source>Norway</source>
+        <target>Norway</target>
+      </trans-unit>
+      <trans-unit id="NP.name" resname="NP.name" approved="yes">
+        <source>Nepal</source>
+        <target>Nepal</target>
+      </trans-unit>
+      <trans-unit id="NZ.name" resname="NZ.name" approved="yes">
+        <source>New Zealand</source>
+        <target>New Zealand</target>
+      </trans-unit>
+      <trans-unit id="OM.name" resname="OM.name" approved="yes">
+        <source>Oman</source>
+        <target>Oman</target>
+      </trans-unit>
+      <trans-unit id="PE.name" resname="PE.name" approved="yes">
+        <source>Peru</source>
+        <target>Peru</target>
+      </trans-unit>
+      <trans-unit id="PG.name" resname="PG.name" approved="yes">
+        <source>Papua New Guinea</source>
+        <target>Papua New Guinea</target>
+      </trans-unit>
+      <trans-unit id="PH.name" resname="PH.name" approved="yes">
+        <source>Philippines</source>
+        <target>Philippines</target>
+      </trans-unit>
+      <trans-unit id="PK.name" resname="PK.name" approved="yes">
+        <source>Pakistan</source>
+        <target>Pakistan</target>
+      </trans-unit>
+      <trans-unit id="PL.name" resname="PL.name" approved="yes">
+        <source>Poland</source>
+        <target>Poland</target>
+      </trans-unit>
+      <trans-unit id="PT.name" resname="PT.name" approved="yes">
+        <source>Portugal</source>
+        <target>Portugal</target>
+      </trans-unit>
+      <trans-unit id="PY.name" resname="PY.name" approved="yes">
+        <source>Paraguay</source>
+        <target>Paraguay</target>
+      </trans-unit>
+      <trans-unit id="QA.name" resname="QA.name" approved="yes">
+        <source>Qatar</source>
+        <target>Qatar</target>
+      </trans-unit>
+      <trans-unit id="RO.name" resname="RO.name" approved="yes">
+        <source>Romania</source>
+        <target>Romania</target>
+      </trans-unit>
+      <trans-unit id="RS.name" resname="RS.name" approved="yes">
+        <source>Serbia</source>
+        <target>Serbia</target>
+      </trans-unit>
+      <trans-unit id="SA.name" resname="SA.name" approved="yes">
+        <source>Saudi Arabia</source>
+        <target>Saudi Arabia</target>
+      </trans-unit>
+      <trans-unit id="SE.name" resname="SE.name" approved="yes">
+        <source>Sweden</source>
+        <target>Sweden</target>
+      </trans-unit>
+      <trans-unit id="SG.name" resname="SG.name" approved="yes">
+        <source>Singapore</source>
+        <target>Singapore</target>
+      </trans-unit>
+      <trans-unit id="SI.name" resname="SI.name" approved="yes">
+        <source>Slovenia</source>
+        <target>Slovenia</target>
+      </trans-unit>
+      <trans-unit id="SK.name" resname="SK.name" approved="yes">
+        <source>Slovakia</source>
+        <target>Slovakia</target>
+      </trans-unit>
+      <trans-unit id="SM.name" resname="SM.name" approved="yes">
+        <source>San Marino</source>
+        <target>San Marino</target>
+      </trans-unit>
+      <trans-unit id="SR.name" resname="SR.name" approved="yes">
+        <source>Suriname</source>
+        <target>Suriname</target>
+      </trans-unit>
+      <trans-unit id="TH.name" resname="TH.name" approved="yes">
+        <source>Thailand</source>
+        <target>Thailand</target>
+      </trans-unit>
+      <trans-unit id="TR.official_name" resname="TR.official_name" approved="yes">
+        <source>Republic of Türkiye</source>
+        <target>Republic of Türkiye</target>
+      </trans-unit>
+      <trans-unit id="UA.name" resname="UA.name" approved="yes">
+        <source>Ukraine</source>
+        <target>Ukraine</target>
+      </trans-unit>
+      <trans-unit id="UG.name" resname="UG.name" approved="yes">
+        <source>Uganda</source>
+        <target>Uganda</target>
+      </trans-unit>
+      <trans-unit id="US.official_name" resname="US.official_name" approved="yes">
+        <source>United States of America</source>
+        <target>United States of America</target>
+      </trans-unit>
+      <trans-unit id="UY.name" resname="UY.name" approved="yes">
+        <source>Uruguay</source>
+        <target>Uruguay</target>
+      </trans-unit>
+      <trans-unit id="YE.name" resname="YE.name" approved="yes">
+        <source>Yemen</source>
+        <target>Yemen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

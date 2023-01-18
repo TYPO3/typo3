@@ -1,0 +1,1683 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="vi" datatype="plaintext" original="EXT:core/Resources/Private/Language/countries.xlf" product-name="typo3/cms-core">
+    <body>
+      <trans-unit id="AD.name" resname="AD.name" approved="yes">
+        <source>Andorra</source>
+        <target>Ăn-đoa-râ</target>
+      </trans-unit>
+      <trans-unit id="AD.official_name" resname="AD.official_name" approved="yes">
+        <source>Principality of Andorra</source>
+        <target>Chức vương Ăn-đoa-râ</target>
+      </trans-unit>
+      <trans-unit id="AE.name" resname="AE.name" approved="yes">
+        <source>United Arab Emirates</source>
+        <target>Các Tiểu Vương Quốc A-rập Thống Nhất</target>
+      </trans-unit>
+      <trans-unit id="AF.name" resname="AF.name" approved="yes">
+        <source>Afghanistan</source>
+        <target>A Phú Hãn</target>
+      </trans-unit>
+      <trans-unit id="AF.official_name" resname="AF.official_name" approved="yes">
+        <source>Islamic Republic of Afghanistan</source>
+        <target>Cộng Hoà Hồi Giáo A Phú Hãn</target>
+      </trans-unit>
+      <trans-unit id="AG.name" resname="AG.name" approved="yes">
+        <source>Antigua and Barbuda</source>
+        <target>Ănh-thí-gua và Ba-bu-đa</target>
+      </trans-unit>
+      <trans-unit id="AI.name" resname="AI.name" approved="yes">
+        <source>Anguilla</source>
+        <target>Ăng-ouí-la</target>
+      </trans-unit>
+      <trans-unit id="AL.name" resname="AL.name" approved="yes">
+        <source>Albania</source>
+        <target>An-ba-ni</target>
+      </trans-unit>
+      <trans-unit id="AL.official_name" resname="AL.official_name" approved="yes">
+        <source>Republic of Albania</source>
+        <target>Cộng Hoà An-ba-ni</target>
+      </trans-unit>
+      <trans-unit id="AM.name" resname="AM.name" approved="yes">
+        <source>Armenia</source>
+        <target>Ac-mê-ni</target>
+      </trans-unit>
+      <trans-unit id="AM.official_name" resname="AM.official_name" approved="yes">
+        <source>Republic of Armenia</source>
+        <target>Nước Cộng Hoà Ac-mê-ni</target>
+      </trans-unit>
+      <trans-unit id="AO.name" resname="AO.name" approved="yes">
+        <source>Angola</source>
+        <target>Ăng-gô-la</target>
+      </trans-unit>
+      <trans-unit id="AO.official_name" resname="AO.official_name" approved="yes">
+        <source>Republic of Angola</source>
+        <target>Cộng hoà Ăng-gô-la</target>
+      </trans-unit>
+      <trans-unit id="AQ.name" resname="AQ.name" approved="yes">
+        <source>Antarctica</source>
+        <target>Nam Cực</target>
+      </trans-unit>
+      <trans-unit id="AR.name" resname="AR.name" approved="yes">
+        <source>Argentina</source>
+        <target>Á-căn-đình</target>
+      </trans-unit>
+      <trans-unit id="AR.official_name" resname="AR.official_name" approved="yes">
+        <source>Argentine Republic</source>
+        <target>Cộng hoà Á-căn-đình</target>
+      </trans-unit>
+      <trans-unit id="AS.name" resname="AS.name" approved="yes">
+        <source>American Samoa</source>
+        <target>Xa-mô-a Mỹ</target>
+      </trans-unit>
+      <trans-unit id="AT.name" resname="AT.name" approved="yes">
+        <source>Austria</source>
+        <target>Ao</target>
+      </trans-unit>
+      <trans-unit id="AT.official_name" resname="AT.official_name" approved="yes">
+        <source>Republic of Austria</source>
+        <target>Cộng hoà Ao</target>
+      </trans-unit>
+      <trans-unit id="AU.name" resname="AU.name" approved="yes">
+        <source>Australia</source>
+        <target>Úc</target>
+      </trans-unit>
+      <trans-unit id="AW.name" resname="AW.name" approved="yes">
+        <source>Aruba</source>
+        <target>Ă-ru-ba</target>
+      </trans-unit>
+      <trans-unit id="AX.name" resname="AX.name" approved="yes">
+        <source>Åland Islands</source>
+        <target>Quần đảo A-lanh</target>
+      </trans-unit>
+      <trans-unit id="AZ.name" resname="AZ.name" approved="yes">
+        <source>Azerbaijan</source>
+        <target>Ai-xợ-bai-gianh</target>
+      </trans-unit>
+      <trans-unit id="AZ.official_name" resname="AZ.official_name" approved="yes">
+        <source>Republic of Azerbaijan</source>
+        <target>Nước Cộng Hoà Ai-xợ-bai-gianh</target>
+      </trans-unit>
+      <trans-unit id="BA.name" resname="BA.name" approved="yes">
+        <source>Bosnia and Herzegovina</source>
+        <target>Bô-xni-a và Hẻ-xê-gô-vi-na</target>
+      </trans-unit>
+      <trans-unit id="BA.official_name" resname="BA.official_name" approved="yes">
+        <source>Republic of Bosnia and Herzegovina</source>
+        <target>Nước Cộng Hoà Bô-xni-a và Hẻ-xê-gô-vi-na</target>
+      </trans-unit>
+      <trans-unit id="BB.name" resname="BB.name" approved="yes">
+        <source>Barbados</source>
+        <target>Bă-ba-đôxợ</target>
+      </trans-unit>
+      <trans-unit id="BD.name" resname="BD.name" approved="yes">
+        <source>Bangladesh</source>
+        <target>Bang-la-đesợ</target>
+      </trans-unit>
+      <trans-unit id="BD.official_name" resname="BD.official_name" approved="yes">
+        <source>People's Republic of Bangladesh</source>
+        <target>Nước Cộng Hoà Nhân Dân Bang-la-đesợ</target>
+      </trans-unit>
+      <trans-unit id="BE.name" resname="BE.name" approved="yes">
+        <source>Belgium</source>
+        <target>Bỉ</target>
+      </trans-unit>
+      <trans-unit id="BE.official_name" resname="BE.official_name" approved="yes">
+        <source>Kingdom of Belgium</source>
+        <target>Vương quốc Bỉ</target>
+      </trans-unit>
+      <trans-unit id="BF.name" resname="BF.name" approved="yes">
+        <source>Burkina Faso</source>
+        <target>Buốc-khi-na Pha-xô</target>
+      </trans-unit>
+      <trans-unit id="BG.name" resname="BG.name" approved="yes">
+        <source>Bulgaria</source>
+        <target>Bua-ga-ri</target>
+      </trans-unit>
+      <trans-unit id="BG.official_name" resname="BG.official_name" approved="yes">
+        <source>Republic of Bulgaria</source>
+        <target>Nước Cộng Hoà Bua-ga-ri</target>
+      </trans-unit>
+      <trans-unit id="BH.name" resname="BH.name" approved="yes">
+        <source>Bahrain</source>
+        <target>Ba-rainh</target>
+      </trans-unit>
+      <trans-unit id="BH.official_name" resname="BH.official_name" approved="yes">
+        <source>Kingdom of Bahrain</source>
+        <target>Vương Quốc Ba-rainh</target>
+      </trans-unit>
+      <trans-unit id="BI.name" resname="BI.name" approved="yes">
+        <source>Burundi</source>
+        <target>Bu-run-đi</target>
+      </trans-unit>
+      <trans-unit id="BI.official_name" resname="BI.official_name" approved="yes">
+        <source>Republic of Burundi</source>
+        <target>Cộng hoà Bu-run-đi</target>
+      </trans-unit>
+      <trans-unit id="BJ.name" resname="BJ.name" approved="yes">
+        <source>Benin</source>
+        <target>Bê-ninh</target>
+      </trans-unit>
+      <trans-unit id="BJ.official_name" resname="BJ.official_name" approved="yes">
+        <source>Republic of Benin</source>
+        <target>Cộng hoà Bê-ninh</target>
+      </trans-unit>
+      <trans-unit id="BL.name" resname="BL.name" approved="yes">
+        <source>Saint Barthélemy</source>
+        <target>Saint Barthélemy</target>
+      </trans-unit>
+      <trans-unit id="BM.name" resname="BM.name" approved="yes">
+        <source>Bermuda</source>
+        <target>Be-mu-đa</target>
+      </trans-unit>
+      <trans-unit id="BN.name" resname="BN.name" approved="yes">
+        <source>Brunei Darussalam</source>
+        <target>Bợru-này Đa-ru-xa-làm</target>
+      </trans-unit>
+      <trans-unit id="BO.name" resname="BO.name" approved="yes">
+        <source>Bolivia, Plurinational State of</source>
+        <target>Bô-li-vi-a, Quốc gia Đa Dân tộc</target>
+      </trans-unit>
+      <trans-unit id="BO.official_name" resname="BO.official_name" approved="yes">
+        <source>Plurinational State of Bolivia</source>
+        <target>Quốc gia Đa Dân tộc Bô-li-vi-a</target>
+      </trans-unit>
+      <trans-unit id="BQ.name" resname="BQ.name" approved="yes">
+        <source>Bonaire, Sint Eustatius and Saba</source>
+        <target>Bông-Ne, Xin E-u-xờ-ta-ti-tút và Xa-ba</target>
+      </trans-unit>
+      <trans-unit id="BQ.official_name" resname="BQ.official_name" approved="yes">
+        <source>Bonaire, Sint Eustatius and Saba</source>
+        <target>Bông-Ne, Xin E-u-xờ-ta-ti-tút và Xa-ba</target>
+      </trans-unit>
+      <trans-unit id="BR.name" resname="BR.name" approved="yes">
+        <source>Brazil</source>
+        <target>Bra-xin</target>
+      </trans-unit>
+      <trans-unit id="BR.official_name" resname="BR.official_name" approved="yes">
+        <source>Federative Republic of Brazil</source>
+        <target>Cộng hoà Liên bang Bra-xin</target>
+      </trans-unit>
+      <trans-unit id="BS.name" resname="BS.name" approved="yes">
+        <source>Bahamas</source>
+        <target>Ba-ha-ma</target>
+      </trans-unit>
+      <trans-unit id="BS.official_name" resname="BS.official_name" approved="yes">
+        <source>Commonwealth of the Bahamas</source>
+        <target>Liên bang Ba-ha-ma</target>
+      </trans-unit>
+      <trans-unit id="BT.name" resname="BT.name" approved="yes">
+        <source>Bhutan</source>
+        <target>Bu-thănh</target>
+      </trans-unit>
+      <trans-unit id="BT.official_name" resname="BT.official_name" approved="yes">
+        <source>Kingdom of Bhutan</source>
+        <target>Vương Quốc Bu-thănh</target>
+      </trans-unit>
+      <trans-unit id="BV.name" resname="BV.name" approved="yes">
+        <source>Bouvet Island</source>
+        <target>Quần đảo Bu-vê</target>
+      </trans-unit>
+      <trans-unit id="BW.name" resname="BW.name" approved="yes">
+        <source>Botswana</source>
+        <target>Bốt-xoă-na</target>
+      </trans-unit>
+      <trans-unit id="BW.official_name" resname="BW.official_name" approved="yes">
+        <source>Republic of Botswana</source>
+        <target>Nước Cộng Hoà Bốt-xoă-na</target>
+      </trans-unit>
+      <trans-unit id="BY.name" resname="BY.name" approved="yes">
+        <source>Belarus</source>
+        <target>Be-la-ruxợ</target>
+      </trans-unit>
+      <trans-unit id="BY.official_name" resname="BY.official_name" approved="yes">
+        <source>Republic of Belarus</source>
+        <target>Nước Cộng Hoà Be-la-ruxợ</target>
+      </trans-unit>
+      <trans-unit id="BZ.name" resname="BZ.name" approved="yes">
+        <source>Belize</source>
+        <target>Bê-li-xê</target>
+      </trans-unit>
+      <trans-unit id="CA.name" resname="CA.name" approved="yes">
+        <source>Canada</source>
+        <target>Ca-na-đa</target>
+      </trans-unit>
+      <trans-unit id="CC.name" resname="CC.name" approved="yes">
+        <source>Cocos (Keeling) Islands</source>
+        <target>Quần đảo Co-co-xợ (Khi-lịng)</target>
+      </trans-unit>
+      <trans-unit id="CD.name" resname="CD.name" approved="yes">
+        <source>Congo, The Democratic Republic of the</source>
+        <target>Cộng hoà Dân chủ Công-gô</target>
+      </trans-unit>
+      <trans-unit id="CF.name" resname="CF.name" approved="yes">
+        <source>Central African Republic</source>
+        <target>Nước Cộng Hoà Trung Phi</target>
+      </trans-unit>
+      <trans-unit id="CG.name" resname="CG.name" approved="yes">
+        <source>Congo</source>
+        <target>Công-gô</target>
+      </trans-unit>
+      <trans-unit id="CG.official_name" resname="CG.official_name" approved="yes">
+        <source>Republic of the Congo</source>
+        <target>Cộng hoà Công-gô</target>
+      </trans-unit>
+      <trans-unit id="CH.name" resname="CH.name" approved="yes">
+        <source>Switzerland</source>
+        <target>Thụy Sĩ</target>
+      </trans-unit>
+      <trans-unit id="CH.official_name" resname="CH.official_name" approved="yes">
+        <source>Swiss Confederation</source>
+        <target>Liên Bang Thụy Sĩ</target>
+      </trans-unit>
+      <trans-unit id="CI.name" resname="CI.name" approved="yes">
+        <source>Côte d'Ivoire</source>
+        <target>Cốt đi-vouă</target>
+      </trans-unit>
+      <trans-unit id="CI.official_name" resname="CI.official_name" approved="yes">
+        <source>Republic of Côte d'Ivoire</source>
+        <target>Cộng Hoà Cốt đi-vouă</target>
+      </trans-unit>
+      <trans-unit id="CK.name" resname="CK.name" approved="yes">
+        <source>Cook Islands</source>
+        <target>Quần đảo Khu-khợ</target>
+      </trans-unit>
+      <trans-unit id="CL.name" resname="CL.name" approved="yes">
+        <source>Chile</source>
+        <target>Chi-lê</target>
+      </trans-unit>
+      <trans-unit id="CL.official_name" resname="CL.official_name" approved="yes">
+        <source>Republic of Chile</source>
+        <target>Cộng hoà Chi-lê</target>
+      </trans-unit>
+      <trans-unit id="CM.name" resname="CM.name" approved="yes">
+        <source>Cameroon</source>
+        <target>Ca-mơ-runh</target>
+      </trans-unit>
+      <trans-unit id="CM.official_name" resname="CM.official_name" approved="yes">
+        <source>Republic of Cameroon</source>
+        <target>Nước Cộng Hoà Ca-mơ-runh</target>
+      </trans-unit>
+      <trans-unit id="CN.name" resname="CN.name" approved="yes">
+        <source>China</source>
+        <target>Trung Quốc</target>
+      </trans-unit>
+      <trans-unit id="CN.official_name" resname="CN.official_name" approved="yes">
+        <source>People's Republic of China</source>
+        <target>Nước Cộng Hoà Nhân Dân Trung Quốc</target>
+      </trans-unit>
+      <trans-unit id="CO.name" resname="CO.name" approved="yes">
+        <source>Colombia</source>
+        <target>Cô-lôm-bi-a</target>
+      </trans-unit>
+      <trans-unit id="CO.official_name" resname="CO.official_name" approved="yes">
+        <source>Republic of Colombia</source>
+        <target>Cộng hoà Cô-lôm-bi-a</target>
+      </trans-unit>
+      <trans-unit id="CR.name" resname="CR.name" approved="yes">
+        <source>Costa Rica</source>
+        <target>Cốt-x-tha Ri-ca</target>
+      </trans-unit>
+      <trans-unit id="CR.official_name" resname="CR.official_name" approved="yes">
+        <source>Republic of Costa Rica</source>
+        <target>Cộng hoà Cốt-x-tha Ri-ca</target>
+      </trans-unit>
+      <trans-unit id="CU.name" resname="CU.name" approved="yes">
+        <source>Cuba</source>
+        <target>Cu-ba</target>
+      </trans-unit>
+      <trans-unit id="CU.official_name" resname="CU.official_name" approved="yes">
+        <source>Republic of Cuba</source>
+        <target>Cộng hoà Cu-ba</target>
+      </trans-unit>
+      <trans-unit id="CV.name" resname="CV.name" approved="yes">
+        <source>Cabo Verde</source>
+        <target>Cabo Verde</target>
+      </trans-unit>
+      <trans-unit id="CV.official_name" resname="CV.official_name" approved="yes">
+        <source>Republic of Cabo Verde</source>
+        <target>Republic of Cabo Verde</target>
+      </trans-unit>
+      <trans-unit id="CW.name" resname="CW.name" approved="yes">
+        <source>Curaçao</source>
+        <target>Cu-ra-cao</target>
+      </trans-unit>
+      <trans-unit id="CW.official_name" resname="CW.official_name" approved="yes">
+        <source>Curaçao</source>
+        <target>Cu-ra-cao</target>
+      </trans-unit>
+      <trans-unit id="CX.name" resname="CX.name" approved="yes">
+        <source>Christmas Island</source>
+        <target>Đảo Kh-ri-xợ-mà-xợ</target>
+      </trans-unit>
+      <trans-unit id="CY.name" resname="CY.name" approved="yes">
+        <source>Cyprus</source>
+        <target>Síp</target>
+      </trans-unit>
+      <trans-unit id="CY.official_name" resname="CY.official_name" approved="yes">
+        <source>Republic of Cyprus</source>
+        <target>Cộng hoà Síp</target>
+      </trans-unit>
+      <trans-unit id="CZ.official_name" resname="CZ.official_name" approved="yes">
+        <source>Czech Republic</source>
+        <target>Cộng hoà Séc</target>
+      </trans-unit>
+      <trans-unit id="DE.name" resname="DE.name" approved="yes">
+        <source>Germany</source>
+        <target>Đức</target>
+      </trans-unit>
+      <trans-unit id="DE.official_name" resname="DE.official_name" approved="yes">
+        <source>Federal Republic of Germany</source>
+        <target>Cộng hoà Liên bang Đức</target>
+      </trans-unit>
+      <trans-unit id="DJ.name" resname="DJ.name" approved="yes">
+        <source>Djibouti</source>
+        <target>Gi-bu-ti</target>
+      </trans-unit>
+      <trans-unit id="DJ.official_name" resname="DJ.official_name" approved="yes">
+        <source>Republic of Djibouti</source>
+        <target>Cộng hoà Gi-bu-ti</target>
+      </trans-unit>
+      <trans-unit id="DK.name" resname="DK.name" approved="yes">
+        <source>Denmark</source>
+        <target>Đan Mạch</target>
+      </trans-unit>
+      <trans-unit id="DK.official_name" resname="DK.official_name" approved="yes">
+        <source>Kingdom of Denmark</source>
+        <target>Vương Quốc Đan Mạch</target>
+      </trans-unit>
+      <trans-unit id="DM.name" resname="DM.name" approved="yes">
+        <source>Dominica</source>
+        <target>Đô-mi-ni-cạ</target>
+      </trans-unit>
+      <trans-unit id="DM.official_name" resname="DM.official_name" approved="yes">
+        <source>Commonwealth of Dominica</source>
+        <target>Liên bang Đô-mi-ni-cạ</target>
+      </trans-unit>
+      <trans-unit id="DO.name" resname="DO.name" approved="yes">
+        <source>Dominican Republic</source>
+        <target>Cộng hoà Đô-mi-ni-cạ</target>
+      </trans-unit>
+      <trans-unit id="DZ.name" resname="DZ.name" approved="yes">
+        <source>Algeria</source>
+        <target>An-giê-ri</target>
+      </trans-unit>
+      <trans-unit id="DZ.official_name" resname="DZ.official_name" approved="yes">
+        <source>People's Democratic Republic of Algeria</source>
+        <target>Cộng Hoà Dân Chủ Nhân Dân An-giê-ri</target>
+      </trans-unit>
+      <trans-unit id="EC.name" resname="EC.name" approved="yes">
+        <source>Ecuador</source>
+        <target>Ê-cu-a-đoa</target>
+      </trans-unit>
+      <trans-unit id="EC.official_name" resname="EC.official_name" approved="yes">
+        <source>Republic of Ecuador</source>
+        <target>Cộng hoà Ê-cu-a-đoa</target>
+      </trans-unit>
+      <trans-unit id="EE.name" resname="EE.name" approved="yes">
+        <source>Estonia</source>
+        <target>E-xợ-tô-ni-a</target>
+      </trans-unit>
+      <trans-unit id="EE.official_name" resname="EE.official_name" approved="yes">
+        <source>Republic of Estonia</source>
+        <target>Nước Cộng Hoà E-xợ-tô-ni-a</target>
+      </trans-unit>
+      <trans-unit id="EG.name" resname="EG.name" approved="yes">
+        <source>Egypt</source>
+        <target>Ai Cập</target>
+      </trans-unit>
+      <trans-unit id="EG.official_name" resname="EG.official_name" approved="yes">
+        <source>Arab Republic of Egypt</source>
+        <target>Cộng hoà A-rập Ai-cập</target>
+      </trans-unit>
+      <trans-unit id="EH.name" resname="EH.name" approved="yes">
+        <source>Western Sahara</source>
+        <target>Tây Sa-ha-ra</target>
+      </trans-unit>
+      <trans-unit id="ER.name" resname="ER.name" approved="yes">
+        <source>Eritrea</source>
+        <target>Ê-ri-tơ-rê-a</target>
+      </trans-unit>
+      <trans-unit id="ER.official_name" resname="ER.official_name" approved="yes">
+        <source>the State of Eritrea</source>
+        <target>Quốc gia Eritrea</target>
+      </trans-unit>
+      <trans-unit id="ES.name" resname="ES.name" approved="yes">
+        <source>Spain</source>
+        <target>Tây Ban Nha</target>
+      </trans-unit>
+      <trans-unit id="ES.official_name" resname="ES.official_name" approved="yes">
+        <source>Kingdom of Spain</source>
+        <target>Vương Quốc Tay Ban Nha</target>
+      </trans-unit>
+      <trans-unit id="ET.name" resname="ET.name" approved="yes">
+        <source>Ethiopia</source>
+        <target>Ê-ti-ô-pi-a</target>
+      </trans-unit>
+      <trans-unit id="ET.official_name" resname="ET.official_name" approved="yes">
+        <source>Federal Democratic Republic of Ethiopia</source>
+        <target>Cộng hoà Nhân dân Liên bang Ê-ti-ô-pi-a</target>
+      </trans-unit>
+      <trans-unit id="FI.name" resname="FI.name" approved="yes">
+        <source>Finland</source>
+        <target>Phần Lan</target>
+      </trans-unit>
+      <trans-unit id="FI.official_name" resname="FI.official_name" approved="yes">
+        <source>Republic of Finland</source>
+        <target>Nước Cộng Hoà Phần Lan</target>
+      </trans-unit>
+      <trans-unit id="FJ.name" resname="FJ.name" approved="yes">
+        <source>Fiji</source>
+        <target>Phi-gi</target>
+      </trans-unit>
+      <trans-unit id="FJ.official_name" resname="FJ.official_name" approved="yes">
+        <source>Republic of Fiji</source>
+        <target>Cộng hoà Phi gi</target>
+      </trans-unit>
+      <trans-unit id="FK.name" resname="FK.name" approved="yes">
+        <source>Falkland Islands (Malvinas)</source>
+        <target>Quần Đảo Phoa-kh-lận-đợ (Man-vi-na)</target>
+      </trans-unit>
+      <trans-unit id="FM.name" resname="FM.name" approved="yes">
+        <source>Micronesia, Federated States of</source>
+        <target>Mi-khợ-rô-nê-xi-a, Liên Bang</target>
+      </trans-unit>
+      <trans-unit id="FM.official_name" resname="FM.official_name" approved="yes">
+        <source>Federated States of Micronesia</source>
+        <target>Liên Bang Mi-khợ-rô-nê-xi-a</target>
+      </trans-unit>
+      <trans-unit id="FO.name" resname="FO.name" approved="yes">
+        <source>Faroe Islands</source>
+        <target>Quần đảo Pha-rô</target>
+      </trans-unit>
+      <trans-unit id="FR.name" resname="FR.name" approved="yes">
+        <source>France</source>
+        <target>Pháp</target>
+      </trans-unit>
+      <trans-unit id="FR.official_name" resname="FR.official_name" approved="yes">
+        <source>French Republic</source>
+        <target>Cộng hoà Pháp</target>
+      </trans-unit>
+      <trans-unit id="GA.name" resname="GA.name" approved="yes">
+        <source>Gabon</source>
+        <target>Ga-bon</target>
+      </trans-unit>
+      <trans-unit id="GA.official_name" resname="GA.official_name" approved="yes">
+        <source>Gabonese Republic</source>
+        <target>Nước Cộng Hoà Ga-bon</target>
+      </trans-unit>
+      <trans-unit id="GB.name" resname="GB.name" approved="yes">
+        <source>United Kingdom</source>
+        <target>Vương Quốc Anh Thống Nhất</target>
+      </trans-unit>
+      <trans-unit id="GB.official_name" resname="GB.official_name" approved="yes">
+        <source>United Kingdom of Great Britain and Northern Ireland</source>
+        <target>Vương Quốc Thống Nhất Anh va Bắc Ái Nhĩ Lan</target>
+      </trans-unit>
+      <trans-unit id="GD.name" resname="GD.name" approved="yes">
+        <source>Grenada</source>
+        <target>Gợ-rê-na-đa</target>
+      </trans-unit>
+      <trans-unit id="GE.name" resname="GE.name" approved="yes">
+        <source>Georgia</source>
+        <target>Gi-oa-gi-a</target>
+      </trans-unit>
+      <trans-unit id="GF.name" resname="GF.name" approved="yes">
+        <source>French Guiana</source>
+        <target>Ghi-a-na Pháp</target>
+      </trans-unit>
+      <trans-unit id="GG.name" resname="GG.name" approved="yes">
+        <source>Guernsey</source>
+        <target>Gơnh-xị</target>
+      </trans-unit>
+      <trans-unit id="GH.name" resname="GH.name" approved="yes">
+        <source>Ghana</source>
+        <target>Ga-na</target>
+      </trans-unit>
+      <trans-unit id="GH.official_name" resname="GH.official_name" approved="yes">
+        <source>Republic of Ghana</source>
+        <target>Cộng hoà Ga-na</target>
+      </trans-unit>
+      <trans-unit id="GI.name" resname="GI.name" approved="yes">
+        <source>Gibraltar</source>
+        <target>Gi-boa-tha</target>
+      </trans-unit>
+      <trans-unit id="GL.name" resname="GL.name" approved="yes">
+        <source>Greenland</source>
+        <target>Đảo Băng</target>
+      </trans-unit>
+      <trans-unit id="GM.name" resname="GM.name" approved="yes">
+        <source>Gambia</source>
+        <target>Găm-bi-a</target>
+      </trans-unit>
+      <trans-unit id="GM.official_name" resname="GM.official_name" approved="yes">
+        <source>Republic of the Gambia</source>
+        <target>Republic of the Gambia</target>
+      </trans-unit>
+      <trans-unit id="GN.name" resname="GN.name" approved="yes">
+        <source>Guinea</source>
+        <target>Ghi-nê</target>
+      </trans-unit>
+      <trans-unit id="GN.official_name" resname="GN.official_name" approved="yes">
+        <source>Republic of Guinea</source>
+        <target>Cộng hoà Ghi-nê</target>
+      </trans-unit>
+      <trans-unit id="GP.name" resname="GP.name" approved="yes">
+        <source>Guadeloupe</source>
+        <target>Gu-a-đe-lup</target>
+      </trans-unit>
+      <trans-unit id="GQ.name" resname="GQ.name" approved="yes">
+        <source>Equatorial Guinea</source>
+        <target>Ghi-nê Xích Đạo</target>
+      </trans-unit>
+      <trans-unit id="GQ.official_name" resname="GQ.official_name" approved="yes">
+        <source>Republic of Equatorial Guinea</source>
+        <target>Nước Cộng Hoà Ghi-nê Xích Đạo</target>
+      </trans-unit>
+      <trans-unit id="GR.name" resname="GR.name" approved="yes">
+        <source>Greece</source>
+        <target>Hy Lạp</target>
+      </trans-unit>
+      <trans-unit id="GR.official_name" resname="GR.official_name" approved="yes">
+        <source>Hellenic Republic</source>
+        <target>Nước Cộng Hoà Hy Lạp</target>
+      </trans-unit>
+      <trans-unit id="GS.name" resname="GS.name" approved="yes">
+        <source>South Georgia and the South Sandwich Islands</source>
+        <target>Nam Gi-oa-gi-a va Nam Quần Đảo Xan-oui-chợ</target>
+      </trans-unit>
+      <trans-unit id="GT.name" resname="GT.name" approved="yes">
+        <source>Guatemala</source>
+        <target>Gua-tê-ma-la</target>
+      </trans-unit>
+      <trans-unit id="GT.official_name" resname="GT.official_name" approved="yes">
+        <source>Republic of Guatemala</source>
+        <target>Cộng hoà Gua-tê-ma-la</target>
+      </trans-unit>
+      <trans-unit id="GU.name" resname="GU.name" approved="yes">
+        <source>Guam</source>
+        <target>Gu-ăm</target>
+      </trans-unit>
+      <trans-unit id="GW.name" resname="GW.name" approved="yes">
+        <source>Guinea-Bissau</source>
+        <target>Ghi-nê Bi-xau</target>
+      </trans-unit>
+      <trans-unit id="GW.official_name" resname="GW.official_name" approved="yes">
+        <source>Republic of Guinea-Bissau</source>
+        <target>Nước Cộng Hoà Ghi-nê Bi-xau</target>
+      </trans-unit>
+      <trans-unit id="GY.name" resname="GY.name" approved="yes">
+        <source>Guyana</source>
+        <target>Guy-a-na</target>
+      </trans-unit>
+      <trans-unit id="GY.official_name" resname="GY.official_name" approved="yes">
+        <source>Republic of Guyana</source>
+        <target>Cộng hoà Guy-a-na</target>
+      </trans-unit>
+      <trans-unit id="HK.name" resname="HK.name" approved="yes">
+        <source>Hong Kong</source>
+        <target>Hông Kông</target>
+      </trans-unit>
+      <trans-unit id="HK.official_name" resname="HK.official_name" approved="yes">
+        <source>Hong Kong Special Administrative Region of China</source>
+        <target>Miền Quản Lý Đặc Biệt Hông Kông của Trung Quốc</target>
+      </trans-unit>
+      <trans-unit id="HM.name" resname="HM.name" approved="yes">
+        <source>Heard Island and McDonald Islands</source>
+        <target>Đảo He-ợ-đợ và Quần Đảo Mợc-đo-nậ-đợ</target>
+      </trans-unit>
+      <trans-unit id="HN.name" resname="HN.name" approved="yes">
+        <source>Honduras</source>
+        <target>Hôn-đu-ra-xợ</target>
+      </trans-unit>
+      <trans-unit id="HN.official_name" resname="HN.official_name" approved="yes">
+        <source>Republic of Honduras</source>
+        <target>Nước Cộng Hoà Hôn-đu-ra-xợ</target>
+      </trans-unit>
+      <trans-unit id="HR.name" resname="HR.name" approved="yes">
+        <source>Croatia</source>
+        <target>Cợ-rô-a-ti-a</target>
+      </trans-unit>
+      <trans-unit id="HR.official_name" resname="HR.official_name" approved="yes">
+        <source>Republic of Croatia</source>
+        <target>Nước Cộng Hoà Cợ-rô-a-ti-a</target>
+      </trans-unit>
+      <trans-unit id="HT.name" resname="HT.name" approved="yes">
+        <source>Haiti</source>
+        <target>Ha-i-ti</target>
+      </trans-unit>
+      <trans-unit id="HT.official_name" resname="HT.official_name" approved="yes">
+        <source>Republic of Haiti</source>
+        <target>Cộng hoà Ha-i-ti</target>
+      </trans-unit>
+      <trans-unit id="HU.name" resname="HU.name" approved="yes">
+        <source>Hungary</source>
+        <target>Hun-ga-ri</target>
+      </trans-unit>
+      <trans-unit id="HU.official_name" resname="HU.official_name" approved="yes">
+        <source>Hungary</source>
+        <target>Hun-ga-ri</target>
+      </trans-unit>
+      <trans-unit id="ID.name" resname="ID.name" approved="yes">
+        <source>Indonesia</source>
+        <target>Nam Dương</target>
+      </trans-unit>
+      <trans-unit id="ID.official_name" resname="ID.official_name" approved="yes">
+        <source>Republic of Indonesia</source>
+        <target>Cộng hoà Nam Dương</target>
+      </trans-unit>
+      <trans-unit id="IE.name" resname="IE.name" approved="yes">
+        <source>Ireland</source>
+        <target>Ái Nhĩ Lan</target>
+      </trans-unit>
+      <trans-unit id="IL.name" resname="IL.name" approved="yes">
+        <source>Israel</source>
+        <target>Do Thái</target>
+      </trans-unit>
+      <trans-unit id="IL.official_name" resname="IL.official_name" approved="yes">
+        <source>State of Israel</source>
+        <target>Quốc Gia Do Thái</target>
+      </trans-unit>
+      <trans-unit id="IM.name" resname="IM.name" approved="yes">
+        <source>Isle of Man</source>
+        <target>Đảo Man</target>
+      </trans-unit>
+      <trans-unit id="IN.name" resname="IN.name" approved="yes">
+        <source>India</source>
+        <target>Ấn-độ</target>
+      </trans-unit>
+      <trans-unit id="IN.official_name" resname="IN.official_name" approved="yes">
+        <source>Republic of India</source>
+        <target>Cộng hoà Ấn-độ</target>
+      </trans-unit>
+      <trans-unit id="IO.name" resname="IO.name" approved="yes">
+        <source>British Indian Ocean Territory</source>
+        <target>Miền Đại Dương Ấn-độ Anh</target>
+      </trans-unit>
+      <trans-unit id="IQ.name" resname="IQ.name" approved="yes">
+        <source>Iraq</source>
+        <target>I-rắc</target>
+      </trans-unit>
+      <trans-unit id="IQ.official_name" resname="IQ.official_name" approved="yes">
+        <source>Republic of Iraq</source>
+        <target>Cộng hoà I-rắc</target>
+      </trans-unit>
+      <trans-unit id="IR.name" resname="IR.name" approved="yes">
+        <source>Iran, Islamic Republic of</source>
+        <target>Ba Tư, Cộng hoà Hồi giáo</target>
+      </trans-unit>
+      <trans-unit id="IR.official_name" resname="IR.official_name" approved="yes">
+        <source>Islamic Republic of Iran</source>
+        <target>Cộng hoà Hồi giáo Ba Tư</target>
+      </trans-unit>
+      <trans-unit id="IS.name" resname="IS.name" approved="yes">
+        <source>Iceland</source>
+        <target>Băng Đảo</target>
+      </trans-unit>
+      <trans-unit id="IS.official_name" resname="IS.official_name" approved="yes">
+        <source>Republic of Iceland</source>
+        <target>Nước Cộng Hoà Băng Đảo</target>
+      </trans-unit>
+      <trans-unit id="IT.name" resname="IT.name" approved="yes">
+        <source>Italy</source>
+        <target>Ý</target>
+      </trans-unit>
+      <trans-unit id="IT.official_name" resname="IT.official_name" approved="yes">
+        <source>Italian Republic</source>
+        <target>Nước Cộng Hoà Ý</target>
+      </trans-unit>
+      <trans-unit id="JE.name" resname="JE.name" approved="yes">
+        <source>Jersey</source>
+        <target>Giơ-xị</target>
+      </trans-unit>
+      <trans-unit id="JM.name" resname="JM.name" approved="yes">
+        <source>Jamaica</source>
+        <target>Gia-mê-ca</target>
+      </trans-unit>
+      <trans-unit id="JO.name" resname="JO.name" approved="yes">
+        <source>Jordan</source>
+        <target>Gi-oa-đanh</target>
+      </trans-unit>
+      <trans-unit id="JO.official_name" resname="JO.official_name" approved="yes">
+        <source>Hashemite Kingdom of Jordan</source>
+        <target>Vương Quốc Ha-se-mai-th Gi-oa-đanh</target>
+      </trans-unit>
+      <trans-unit id="JP.name" resname="JP.name" approved="yes">
+        <source>Japan</source>
+        <target>Nhật</target>
+      </trans-unit>
+      <trans-unit id="KE.name" resname="KE.name" approved="yes">
+        <source>Kenya</source>
+        <target>Khi-ni-a</target>
+      </trans-unit>
+      <trans-unit id="KE.official_name" resname="KE.official_name" approved="yes">
+        <source>Republic of Kenya</source>
+        <target>Cộng hoà Khi-nia</target>
+      </trans-unit>
+      <trans-unit id="KG.name" resname="KG.name" approved="yes">
+        <source>Kyrgyzstan</source>
+        <target>Khư-rơ-gư-xtanh</target>
+      </trans-unit>
+      <trans-unit id="KG.official_name" resname="KG.official_name" approved="yes">
+        <source>Kyrgyz Republic</source>
+        <target>Nước Cộng Hoà Khư-rơ-gư-xtanh</target>
+      </trans-unit>
+      <trans-unit id="KH.name" resname="KH.name" approved="yes">
+        <source>Cambodia</source>
+        <target>Căm Bốt</target>
+      </trans-unit>
+      <trans-unit id="KH.official_name" resname="KH.official_name" approved="yes">
+        <source>Kingdom of Cambodia</source>
+        <target>Vương Quốc Căm Bốt</target>
+      </trans-unit>
+      <trans-unit id="KI.name" resname="KI.name" approved="yes">
+        <source>Kiribati</source>
+        <target>Ki-ri-ba-ti</target>
+      </trans-unit>
+      <trans-unit id="KI.official_name" resname="KI.official_name" approved="yes">
+        <source>Republic of Kiribati</source>
+        <target>Cộng hoà Ki-ri-ba-ti</target>
+      </trans-unit>
+      <trans-unit id="KM.name" resname="KM.name" approved="yes">
+        <source>Comoros</source>
+        <target>Cô-mô-rô-xợ</target>
+      </trans-unit>
+      <trans-unit id="KM.official_name" resname="KM.official_name" approved="yes">
+        <source>Union of the Comoros</source>
+        <target>Liên Bang Cô-mô-rô-xợ</target>
+      </trans-unit>
+      <trans-unit id="KN.name" resname="KN.name" approved="yes">
+        <source>Saint Kitts and Nevis</source>
+        <target>Xan-kít và Nê-vi</target>
+      </trans-unit>
+      <trans-unit id="KP.name" resname="KP.name" approved="yes">
+        <source>Korea, Democratic People's Republic of</source>
+        <target>Bắc Hàn, Cộng hoà Nhân dân Dân chủ</target>
+      </trans-unit>
+      <trans-unit id="KP.official_name" resname="KP.official_name" approved="yes">
+        <source>Democratic People's Republic of Korea</source>
+        <target>Cộng hoà Nhân dân Dân chủ Bắc Hàn</target>
+      </trans-unit>
+      <trans-unit id="KR.name" resname="KR.name" approved="yes">
+        <source>Korea, Republic of</source>
+        <target>Cộng hoà Nam Hàn</target>
+      </trans-unit>
+      <trans-unit id="KW.name" resname="KW.name" approved="yes">
+        <source>Kuwait</source>
+        <target>Cu-ouai-thợ</target>
+      </trans-unit>
+      <trans-unit id="KW.official_name" resname="KW.official_name" approved="yes">
+        <source>State of Kuwait</source>
+        <target>Quốc Gia Cu-ouai-thợ</target>
+      </trans-unit>
+      <trans-unit id="KY.name" resname="KY.name" approved="yes">
+        <source>Cayman Islands</source>
+        <target>Quần đảo Cay-man</target>
+      </trans-unit>
+      <trans-unit id="KZ.name" resname="KZ.name" approved="yes">
+        <source>Kazakhstan</source>
+        <target>Kha-xa-kh-x-thanh</target>
+      </trans-unit>
+      <trans-unit id="KZ.official_name" resname="KZ.official_name" approved="yes">
+        <source>Republic of Kazakhstan</source>
+        <target>Nước Cộng Hoà Kha-xa-kh-x-thanh</target>
+      </trans-unit>
+      <trans-unit id="LA.name" resname="LA.name" approved="yes">
+        <source>Lao People's Democratic Republic</source>
+        <target>Cộng hoà Nhân dân Dân chủ Lào</target>
+      </trans-unit>
+      <trans-unit id="LB.name" resname="LB.name" approved="yes">
+        <source>Lebanon</source>
+        <target>Le-ba-non</target>
+      </trans-unit>
+      <trans-unit id="LB.official_name" resname="LB.official_name" approved="yes">
+        <source>Lebanese Republic</source>
+        <target>Nước Cộng Hoà Le-ba-non</target>
+      </trans-unit>
+      <trans-unit id="LC.name" resname="LC.name" approved="yes">
+        <source>Saint Lucia</source>
+        <target>Xan Lu-xi</target>
+      </trans-unit>
+      <trans-unit id="LI.name" resname="LI.name" approved="yes">
+        <source>Liechtenstein</source>
+        <target>Likh-ten-xtainh</target>
+      </trans-unit>
+      <trans-unit id="LI.official_name" resname="LI.official_name" approved="yes">
+        <source>Principality of Liechtenstein</source>
+        <target>Chức Vương Likh-ten-xtainh</target>
+      </trans-unit>
+      <trans-unit id="LK.name" resname="LK.name" approved="yes">
+        <source>Sri Lanka</source>
+        <target>Tích Lan</target>
+      </trans-unit>
+      <trans-unit id="LK.official_name" resname="LK.official_name" approved="yes">
+        <source>Democratic Socialist Republic of Sri Lanka</source>
+        <target>Cộng Hoà Xã hội Nhân Dân Tích Lan</target>
+      </trans-unit>
+      <trans-unit id="LR.name" resname="LR.name" approved="yes">
+        <source>Liberia</source>
+        <target>Li-bê-ri-a</target>
+      </trans-unit>
+      <trans-unit id="LR.official_name" resname="LR.official_name" approved="yes">
+        <source>Republic of Liberia</source>
+        <target>Cộng hoà Li-bê-ri-a</target>
+      </trans-unit>
+      <trans-unit id="LS.name" resname="LS.name" approved="yes">
+        <source>Lesotho</source>
+        <target>Lê-xô-thô</target>
+      </trans-unit>
+      <trans-unit id="LS.official_name" resname="LS.official_name" approved="yes">
+        <source>Kingdom of Lesotho</source>
+        <target>Vương quốc Lê-xô-thô</target>
+      </trans-unit>
+      <trans-unit id="LT.name" resname="LT.name" approved="yes">
+        <source>Lithuania</source>
+        <target>Li-tu-a-ni-a</target>
+      </trans-unit>
+      <trans-unit id="LT.official_name" resname="LT.official_name" approved="yes">
+        <source>Republic of Lithuania</source>
+        <target>Cộng hoà Li-tu-a-ni-a</target>
+      </trans-unit>
+      <trans-unit id="LU.name" resname="LU.name" approved="yes">
+        <source>Luxembourg</source>
+        <target>Lục Xâm Bảo</target>
+      </trans-unit>
+      <trans-unit id="LU.official_name" resname="LU.official_name" approved="yes">
+        <source>Grand Duchy of Luxembourg</source>
+        <target>Đất công tước trên Lục Xâm Bảo</target>
+      </trans-unit>
+      <trans-unit id="LV.name" resname="LV.name" approved="yes">
+        <source>Latvia</source>
+        <target>Lát-vi-a</target>
+      </trans-unit>
+      <trans-unit id="LV.official_name" resname="LV.official_name" approved="yes">
+        <source>Republic of Latvia</source>
+        <target>Cộng hoà Lát-vi-a</target>
+      </trans-unit>
+      <trans-unit id="LY.name" resname="LY.name" approved="yes">
+        <source>Libya</source>
+        <target>Li-bi</target>
+      </trans-unit>
+      <trans-unit id="LY.official_name" resname="LY.official_name" approved="yes">
+        <source>Libya</source>
+        <target>Li-bi</target>
+      </trans-unit>
+      <trans-unit id="MA.name" resname="MA.name" approved="yes">
+        <source>Morocco</source>
+        <target>Mo-ro-cô</target>
+      </trans-unit>
+      <trans-unit id="MA.official_name" resname="MA.official_name" approved="yes">
+        <source>Kingdom of Morocco</source>
+        <target>Vương Quốc Mo-ro-cô</target>
+      </trans-unit>
+      <trans-unit id="MC.name" resname="MC.name" approved="yes">
+        <source>Monaco</source>
+        <target>Mo-na-cô</target>
+      </trans-unit>
+      <trans-unit id="MC.official_name" resname="MC.official_name" approved="yes">
+        <source>Principality of Monaco</source>
+        <target>Chức Vương Mo-na-cô</target>
+      </trans-unit>
+      <trans-unit id="MD.name" resname="MD.name" approved="yes">
+        <source>Moldova, Republic of</source>
+        <target>Nước Cộng Hoà Mổ-đô-vạ</target>
+      </trans-unit>
+      <trans-unit id="MD.official_name" resname="MD.official_name" approved="yes">
+        <source>Republic of Moldova</source>
+        <target>Cộng hoà Moa-đô-va</target>
+      </trans-unit>
+      <trans-unit id="ME.name" resname="ME.name" approved="yes">
+        <source>Montenegro</source>
+        <target>Mon-te-nê-gợ-rô</target>
+      </trans-unit>
+      <trans-unit id="ME.official_name" resname="ME.official_name" approved="yes">
+        <source>Montenegro</source>
+        <target>Mon-te-nê-gợ-rô</target>
+      </trans-unit>
+      <trans-unit id="MF.name" resname="MF.name" approved="yes">
+        <source>Saint Martin (French part)</source>
+        <target>Saint Martin (vùng Pháp)</target>
+      </trans-unit>
+      <trans-unit id="MG.name" resname="MG.name" approved="yes">
+        <source>Madagascar</source>
+        <target>Ma-đa-ga-xợ-ca</target>
+      </trans-unit>
+      <trans-unit id="MG.official_name" resname="MG.official_name" approved="yes">
+        <source>Republic of Madagascar</source>
+        <target>Nước Cộng Hoà Ma-đa-ga-xợ-ca</target>
+      </trans-unit>
+      <trans-unit id="MH.name" resname="MH.name" approved="yes">
+        <source>Marshall Islands</source>
+        <target>Quần Đảo Ma-san</target>
+      </trans-unit>
+      <trans-unit id="MH.official_name" resname="MH.official_name" approved="yes">
+        <source>Republic of the Marshall Islands</source>
+        <target>Nước Cộng Hoà Quần Đảo Ma-san</target>
+      </trans-unit>
+      <trans-unit id="MK.name" resname="MK.name" approved="yes">
+        <source>North Macedonia</source>
+        <target>North Macedonia</target>
+      </trans-unit>
+      <trans-unit id="MK.official_name" resname="MK.official_name" approved="yes">
+        <source>Republic of North Macedonia</source>
+        <target>Republic of North Macedonia</target>
+      </trans-unit>
+      <trans-unit id="ML.name" resname="ML.name" approved="yes">
+        <source>Mali</source>
+        <target>Ma-li</target>
+      </trans-unit>
+      <trans-unit id="ML.official_name" resname="ML.official_name" approved="yes">
+        <source>Republic of Mali</source>
+        <target>Cộng hoà Ma-li</target>
+      </trans-unit>
+      <trans-unit id="MM.name" resname="MM.name" approved="yes">
+        <source>Myanmar</source>
+        <target>Miến Điện</target>
+      </trans-unit>
+      <trans-unit id="MM.official_name" resname="MM.official_name" approved="yes">
+        <source>Republic of Myanmar</source>
+        <target>Cộng hoà Miến Điện</target>
+      </trans-unit>
+      <trans-unit id="MN.name" resname="MN.name" approved="yes">
+        <source>Mongolia</source>
+        <target>Mông Cổ</target>
+      </trans-unit>
+      <trans-unit id="MO.name" resname="MO.name" approved="yes">
+        <source>Macao</source>
+        <target>Ma-cao</target>
+      </trans-unit>
+      <trans-unit id="MO.official_name" resname="MO.official_name" approved="yes">
+        <source>Macao Special Administrative Region of China</source>
+        <target>Miền Quản Lý Đặc Biệt Ma-cao của Trung Quốc</target>
+      </trans-unit>
+      <trans-unit id="MP.name" resname="MP.name" approved="yes">
+        <source>Northern Mariana Islands</source>
+        <target>Bắc Quần Đảo Ma-ri-a-na</target>
+      </trans-unit>
+      <trans-unit id="MP.official_name" resname="MP.official_name" approved="yes">
+        <source>Commonwealth of the Northern Mariana Islands</source>
+        <target>Liên Bang Bắc Quần Đảo Ma-ri-a-na</target>
+      </trans-unit>
+      <trans-unit id="MQ.name" resname="MQ.name" approved="yes">
+        <source>Martinique</source>
+        <target>Ma-thi-ni-khợ</target>
+      </trans-unit>
+      <trans-unit id="MR.name" resname="MR.name" approved="yes">
+        <source>Mauritania</source>
+        <target>Mô-ri-ta-ni-a</target>
+      </trans-unit>
+      <trans-unit id="MR.official_name" resname="MR.official_name" approved="yes">
+        <source>Islamic Republic of Mauritania</source>
+        <target>Cộng hoà Hồi giáo Mô-ri-ta-ni-a</target>
+      </trans-unit>
+      <trans-unit id="MS.name" resname="MS.name" approved="yes">
+        <source>Montserrat</source>
+        <target>Mon-xe-rạc</target>
+      </trans-unit>
+      <trans-unit id="MT.name" resname="MT.name" approved="yes">
+        <source>Malta</source>
+        <target>Moa-ta</target>
+      </trans-unit>
+      <trans-unit id="MT.official_name" resname="MT.official_name" approved="yes">
+        <source>Republic of Malta</source>
+        <target>Cộng hoà Moa-ta</target>
+      </trans-unit>
+      <trans-unit id="MU.name" resname="MU.name" approved="yes">
+        <source>Mauritius</source>
+        <target>Mô-ri-sơ-xợ</target>
+      </trans-unit>
+      <trans-unit id="MU.official_name" resname="MU.official_name" approved="yes">
+        <source>Republic of Mauritius</source>
+        <target>Nước Cộng Hoà Mô-ri-sơ-xợ</target>
+      </trans-unit>
+      <trans-unit id="MV.name" resname="MV.name" approved="yes">
+        <source>Maldives</source>
+        <target>Mal-đi-vợx</target>
+      </trans-unit>
+      <trans-unit id="MV.official_name" resname="MV.official_name" approved="yes">
+        <source>Republic of Maldives</source>
+        <target>Cộng hoà Mal-đi-vợx</target>
+      </trans-unit>
+      <trans-unit id="MW.name" resname="MW.name" approved="yes">
+        <source>Malawi</source>
+        <target>Ma-la-uy</target>
+      </trans-unit>
+      <trans-unit id="MW.official_name" resname="MW.official_name" approved="yes">
+        <source>Republic of Malawi</source>
+        <target>Cộng hoà Ma-la-uy</target>
+      </trans-unit>
+      <trans-unit id="MX.name" resname="MX.name" approved="yes">
+        <source>Mexico</source>
+        <target>Mê-hi-cô</target>
+      </trans-unit>
+      <trans-unit id="MX.official_name" resname="MX.official_name" approved="yes">
+        <source>United Mexican States</source>
+        <target>Liên Bang Mê-hi-cô</target>
+      </trans-unit>
+      <trans-unit id="MY.name" resname="MY.name" approved="yes">
+        <source>Malaysia</source>
+        <target>Ma-lai-xi-a</target>
+      </trans-unit>
+      <trans-unit id="MZ.name" resname="MZ.name" approved="yes">
+        <source>Mozambique</source>
+        <target>Mô-xam-bí-khợ</target>
+      </trans-unit>
+      <trans-unit id="MZ.official_name" resname="MZ.official_name" approved="yes">
+        <source>Republic of Mozambique</source>
+        <target>Nước Cộng Hoà Mô-xam-bí-khợ</target>
+      </trans-unit>
+      <trans-unit id="NA.name" resname="NA.name" approved="yes">
+        <source>Namibia</source>
+        <target>Na-mi-bi-a</target>
+      </trans-unit>
+      <trans-unit id="NA.official_name" resname="NA.official_name" approved="yes">
+        <source>Republic of Namibia</source>
+        <target>Cộng hoà Na-mi-bi-a</target>
+      </trans-unit>
+      <trans-unit id="NC.name" resname="NC.name" approved="yes">
+        <source>New Caledonia</source>
+        <target>Niu Ca-lê-đô-ni-a</target>
+      </trans-unit>
+      <trans-unit id="NE.name" resname="NE.name" approved="yes">
+        <source>Niger</source>
+        <target>Ni-gie</target>
+      </trans-unit>
+      <trans-unit id="NE.official_name" resname="NE.official_name" approved="yes">
+        <source>Republic of the Niger</source>
+        <target>Nước Cộng Hoà Ni-gie</target>
+      </trans-unit>
+      <trans-unit id="NF.name" resname="NF.name" approved="yes">
+        <source>Norfolk Island</source>
+        <target>Đảo Noa-phọ-khợ</target>
+      </trans-unit>
+      <trans-unit id="NG.name" resname="NG.name" approved="yes">
+        <source>Nigeria</source>
+        <target>Ni-giê-ri-a</target>
+      </trans-unit>
+      <trans-unit id="NG.official_name" resname="NG.official_name" approved="yes">
+        <source>Federal Republic of Nigeria</source>
+        <target>Cộng hoà Liên bang Ni-giê-ri-a</target>
+      </trans-unit>
+      <trans-unit id="NI.name" resname="NI.name" approved="yes">
+        <source>Nicaragua</source>
+        <target>Ni-ca-ra-gua</target>
+      </trans-unit>
+      <trans-unit id="NI.official_name" resname="NI.official_name" approved="yes">
+        <source>Republic of Nicaragua</source>
+        <target>Cộng hoà Ni-ca-ra-gua</target>
+      </trans-unit>
+      <trans-unit id="NL.name" resname="NL.name" approved="yes">
+        <source>Netherlands</source>
+        <target>Hoà Lan</target>
+      </trans-unit>
+      <trans-unit id="NL.official_name" resname="NL.official_name" approved="yes">
+        <source>Kingdom of the Netherlands</source>
+        <target>Vương Quốc Hoà Lan</target>
+      </trans-unit>
+      <trans-unit id="NO.name" resname="NO.name" approved="yes">
+        <source>Norway</source>
+        <target>Na Uy</target>
+      </trans-unit>
+      <trans-unit id="NO.official_name" resname="NO.official_name" approved="yes">
+        <source>Kingdom of Norway</source>
+        <target>Vương Quốc Na Uy</target>
+      </trans-unit>
+      <trans-unit id="NP.name" resname="NP.name" approved="yes">
+        <source>Nepal</source>
+        <target>Nê-pan</target>
+      </trans-unit>
+      <trans-unit id="NP.official_name" resname="NP.official_name" approved="yes">
+        <source>Federal Democratic Republic of Nepal</source>
+        <target>Cộng hoà Nhân dân Liên bang Ne-pan</target>
+      </trans-unit>
+      <trans-unit id="NR.name" resname="NR.name" approved="yes">
+        <source>Nauru</source>
+        <target>Nau-ru</target>
+      </trans-unit>
+      <trans-unit id="NR.official_name" resname="NR.official_name" approved="yes">
+        <source>Republic of Nauru</source>
+        <target>Cộng hoà Nau-ru</target>
+      </trans-unit>
+      <trans-unit id="NU.name" resname="NU.name" approved="yes">
+        <source>Niue</source>
+        <target>Ni-u-e</target>
+      </trans-unit>
+      <trans-unit id="NU.official_name" resname="NU.official_name" approved="yes">
+        <source>Niue</source>
+        <target>Ni-u-e</target>
+      </trans-unit>
+      <trans-unit id="NZ.name" resname="NZ.name" approved="yes">
+        <source>New Zealand</source>
+        <target>Niu Xi-lân</target>
+      </trans-unit>
+      <trans-unit id="OM.name" resname="OM.name" approved="yes">
+        <source>Oman</source>
+        <target>Ô-man</target>
+      </trans-unit>
+      <trans-unit id="OM.official_name" resname="OM.official_name" approved="yes">
+        <source>Sultanate of Oman</source>
+        <target>Ngôi vua Ô-man</target>
+      </trans-unit>
+      <trans-unit id="PA.name" resname="PA.name" approved="yes">
+        <source>Panama</source>
+        <target>Pa-na-ma</target>
+      </trans-unit>
+      <trans-unit id="PA.official_name" resname="PA.official_name" approved="yes">
+        <source>Republic of Panama</source>
+        <target>Nước Cộng Hoà Pa-na-ma</target>
+      </trans-unit>
+      <trans-unit id="PE.name" resname="PE.name" approved="yes">
+        <source>Peru</source>
+        <target>Pê-ru</target>
+      </trans-unit>
+      <trans-unit id="PE.official_name" resname="PE.official_name" approved="yes">
+        <source>Republic of Peru</source>
+        <target>Cộng hoà Pê-ru</target>
+      </trans-unit>
+      <trans-unit id="PF.name" resname="PF.name" approved="yes">
+        <source>French Polynesia</source>
+        <target>Pô-li-nê-xi Pháp</target>
+      </trans-unit>
+      <trans-unit id="PG.name" resname="PG.name" approved="yes">
+        <source>Papua New Guinea</source>
+        <target>Pa-pu-a Niu Ghi-nê</target>
+      </trans-unit>
+      <trans-unit id="PG.official_name" resname="PG.official_name" approved="yes">
+        <source>Independent State of Papua New Guinea</source>
+        <target>Quốc Gia Độc Lập Papua New Guinea</target>
+      </trans-unit>
+      <trans-unit id="PH.name" resname="PH.name" approved="yes">
+        <source>Philippines</source>
+        <target>Phi-li-pi-nợ</target>
+      </trans-unit>
+      <trans-unit id="PH.official_name" resname="PH.official_name" approved="yes">
+        <source>Republic of the Philippines</source>
+        <target>Công hóa Phi-li-pi-nợ</target>
+      </trans-unit>
+      <trans-unit id="PK.name" resname="PK.name" approved="yes">
+        <source>Pakistan</source>
+        <target>Pa-ki-xợ-thănh</target>
+      </trans-unit>
+      <trans-unit id="PK.official_name" resname="PK.official_name" approved="yes">
+        <source>Islamic Republic of Pakistan</source>
+        <target>Nước Cộng Hoà Hồi Giáo Pa-ki-xợ-thănh</target>
+      </trans-unit>
+      <trans-unit id="PL.name" resname="PL.name" approved="yes">
+        <source>Poland</source>
+        <target>Ba Lan</target>
+      </trans-unit>
+      <trans-unit id="PL.official_name" resname="PL.official_name" approved="yes">
+        <source>Republic of Poland</source>
+        <target>Nước Cộng Hoà Ba Lan</target>
+      </trans-unit>
+      <trans-unit id="PM.name" resname="PM.name" approved="yes">
+        <source>Saint Pierre and Miquelon</source>
+        <target>Xan Pi-e và Mi-quê-lon</target>
+      </trans-unit>
+      <trans-unit id="PN.name" resname="PN.name" approved="yes">
+        <source>Pitcairn</source>
+        <target>Pi-thợ-khenh</target>
+      </trans-unit>
+      <trans-unit id="PR.name" resname="PR.name" approved="yes">
+        <source>Puerto Rico</source>
+        <target>Pu-éc-thô Ri-cô</target>
+      </trans-unit>
+      <trans-unit id="PS.name" resname="PS.name" approved="yes">
+        <source>Palestine, State of</source>
+        <target>Palestine, quốc gia</target>
+      </trans-unit>
+      <trans-unit id="PS.official_name" resname="PS.official_name" approved="yes">
+        <source>the State of Palestine</source>
+        <target>Quốc gia Palestine</target>
+      </trans-unit>
+      <trans-unit id="PT.name" resname="PT.name" approved="yes">
+        <source>Portugal</source>
+        <target>Bồ Đào Nha</target>
+      </trans-unit>
+      <trans-unit id="PT.official_name" resname="PT.official_name" approved="yes">
+        <source>Portuguese Republic</source>
+        <target>Nước Cộng Hoà Bồ Đào Nha</target>
+      </trans-unit>
+      <trans-unit id="PW.name" resname="PW.name" approved="yes">
+        <source>Palau</source>
+        <target>Pa-lau</target>
+      </trans-unit>
+      <trans-unit id="PW.official_name" resname="PW.official_name" approved="yes">
+        <source>Republic of Palau</source>
+        <target>Nước Cộng Hoà Pa-lau</target>
+      </trans-unit>
+      <trans-unit id="PY.name" resname="PY.name" approved="yes">
+        <source>Paraguay</source>
+        <target>Pa-ra-guay</target>
+      </trans-unit>
+      <trans-unit id="PY.official_name" resname="PY.official_name" approved="yes">
+        <source>Republic of Paraguay</source>
+        <target>Nước Cộng Hoà Pa-ra-guay</target>
+      </trans-unit>
+      <trans-unit id="QA.name" resname="QA.name" approved="yes">
+        <source>Qatar</source>
+        <target>Ca-tă</target>
+      </trans-unit>
+      <trans-unit id="QA.official_name" resname="QA.official_name" approved="yes">
+        <source>State of Qatar</source>
+        <target>Quốc gia Ca-tă</target>
+      </trans-unit>
+      <trans-unit id="RE.name" resname="RE.name" approved="yes">
+        <source>Réunion</source>
+        <target>Rê-u-ni-ợnh</target>
+      </trans-unit>
+      <trans-unit id="RO.name" resname="RO.name" approved="yes">
+        <source>Romania</source>
+        <target>Rô-ma-ni</target>
+      </trans-unit>
+      <trans-unit id="RS.name" resname="RS.name" approved="yes">
+        <source>Serbia</source>
+        <target>Xéc-bi</target>
+      </trans-unit>
+      <trans-unit id="RS.official_name" resname="RS.official_name" approved="yes">
+        <source>Republic of Serbia</source>
+        <target>Cộng hoà Xéc-bi</target>
+      </trans-unit>
+      <trans-unit id="RU.name" resname="RU.name" approved="yes">
+        <source>Russian Federation</source>
+        <target>Liên Bang Nga</target>
+      </trans-unit>
+      <trans-unit id="RW.name" resname="RW.name" approved="yes">
+        <source>Rwanda</source>
+        <target>Ru-oanh-đa</target>
+      </trans-unit>
+      <trans-unit id="RW.official_name" resname="RW.official_name" approved="yes">
+        <source>Rwandese Republic</source>
+        <target>Cộng hoà Ru-oanh-đa</target>
+      </trans-unit>
+      <trans-unit id="SA.name" resname="SA.name" approved="yes">
+        <source>Saudi Arabia</source>
+        <target>A-rập Xau-đi</target>
+      </trans-unit>
+      <trans-unit id="SA.official_name" resname="SA.official_name" approved="yes">
+        <source>Kingdom of Saudi Arabia</source>
+        <target>Vương quốc A-rập Xau-đi</target>
+      </trans-unit>
+      <trans-unit id="SB.name" resname="SB.name" approved="yes">
+        <source>Solomon Islands</source>
+        <target>Quần đảo Xô-lô-mông</target>
+      </trans-unit>
+      <trans-unit id="SC.name" resname="SC.name" approved="yes">
+        <source>Seychelles</source>
+        <target>Xây-sen</target>
+      </trans-unit>
+      <trans-unit id="SC.official_name" resname="SC.official_name" approved="yes">
+        <source>Republic of Seychelles</source>
+        <target>Cộng hoà Xây-sen</target>
+      </trans-unit>
+      <trans-unit id="SD.name" resname="SD.name" approved="yes">
+        <source>Sudan</source>
+        <target>Xu-đanh</target>
+      </trans-unit>
+      <trans-unit id="SD.official_name" resname="SD.official_name" approved="yes">
+        <source>Republic of the Sudan</source>
+        <target>Nước Cộng Hoà Xu-đanh</target>
+      </trans-unit>
+      <trans-unit id="SE.name" resname="SE.name" approved="yes">
+        <source>Sweden</source>
+        <target>Thuỵ Điển</target>
+      </trans-unit>
+      <trans-unit id="SE.official_name" resname="SE.official_name" approved="yes">
+        <source>Kingdom of Sweden</source>
+        <target>Vương quốc Thuỵ Điển</target>
+      </trans-unit>
+      <trans-unit id="SG.name" resname="SG.name" approved="yes">
+        <source>Singapore</source>
+        <target>Xin-ga-po</target>
+      </trans-unit>
+      <trans-unit id="SG.official_name" resname="SG.official_name" approved="yes">
+        <source>Republic of Singapore</source>
+        <target>Cộng hoà Xin-ga-po</target>
+      </trans-unit>
+      <trans-unit id="SH.name" resname="SH.name" approved="yes">
+        <source>Saint Helena, Ascension and Tristan da Cunha</source>
+        <target>Xan He-lê-na, A-xen-siónh và Tợ-rí-x-tan đa Cun-ha</target>
+      </trans-unit>
+      <trans-unit id="SI.name" resname="SI.name" approved="yes">
+        <source>Slovenia</source>
+        <target>Xlô-ven</target>
+      </trans-unit>
+      <trans-unit id="SI.official_name" resname="SI.official_name" approved="yes">
+        <source>Republic of Slovenia</source>
+        <target>Cộng hoà Xlô-ven</target>
+      </trans-unit>
+      <trans-unit id="SJ.name" resname="SJ.name" approved="yes">
+        <source>Svalbard and Jan Mayen</source>
+        <target>Xợ-van-bat và Ian-may-en</target>
+      </trans-unit>
+      <trans-unit id="SK.name" resname="SK.name" approved="yes">
+        <source>Slovakia</source>
+        <target>Xlô-vác</target>
+      </trans-unit>
+      <trans-unit id="SK.official_name" resname="SK.official_name" approved="yes">
+        <source>Slovak Republic</source>
+        <target>Cộng hoà Xlô-vác</target>
+      </trans-unit>
+      <trans-unit id="SL.name" resname="SL.name" approved="yes">
+        <source>Sierra Leone</source>
+        <target>Xi-ê-ra Lê-ô-nê</target>
+      </trans-unit>
+      <trans-unit id="SL.official_name" resname="SL.official_name" approved="yes">
+        <source>Republic of Sierra Leone</source>
+        <target>Nước Cộng Hoà Xi-ê-ra Lê-ô-nê</target>
+      </trans-unit>
+      <trans-unit id="SM.name" resname="SM.name" approved="yes">
+        <source>San Marino</source>
+        <target>Xan Ma-ri-nô</target>
+      </trans-unit>
+      <trans-unit id="SM.official_name" resname="SM.official_name" approved="yes">
+        <source>Republic of San Marino</source>
+        <target>Cộng hoà Xan Ma-ri-nô</target>
+      </trans-unit>
+      <trans-unit id="SN.name" resname="SN.name" approved="yes">
+        <source>Senegal</source>
+        <target>Xê-nê-gan</target>
+      </trans-unit>
+      <trans-unit id="SN.official_name" resname="SN.official_name" approved="yes">
+        <source>Republic of Senegal</source>
+        <target>Cộng hoà Xê-nê-gan</target>
+      </trans-unit>
+      <trans-unit id="SO.name" resname="SO.name" approved="yes">
+        <source>Somalia</source>
+        <target>Xo-ma-li</target>
+      </trans-unit>
+      <trans-unit id="SO.official_name" resname="SO.official_name" approved="yes">
+        <source>Federal Republic of Somalia</source>
+        <target>Cộng hoà Liên bang Xo-ma-li</target>
+      </trans-unit>
+      <trans-unit id="SR.name" resname="SR.name" approved="yes">
+        <source>Suriname</source>
+        <target>Xu-ri-na-me</target>
+      </trans-unit>
+      <trans-unit id="SR.official_name" resname="SR.official_name" approved="yes">
+        <source>Republic of Suriname</source>
+        <target>Nước Cộng Hoà Xu-ri-na-me</target>
+      </trans-unit>
+      <trans-unit id="SS.name" resname="SS.name" approved="yes">
+        <source>South Sudan</source>
+        <target>Nam Xu-đăng</target>
+      </trans-unit>
+      <trans-unit id="SS.official_name" resname="SS.official_name" approved="yes">
+        <source>Republic of South Sudan</source>
+        <target>Nước Cộng Hoà Nam Xu-đăng</target>
+      </trans-unit>
+      <trans-unit id="ST.name" resname="ST.name" approved="yes">
+        <source>Sao Tome and Principe</source>
+        <target>Xao Tô-mê và Pợ-rin-xi-pê</target>
+      </trans-unit>
+      <trans-unit id="ST.official_name" resname="ST.official_name" approved="yes">
+        <source>Democratic Republic of Sao Tome and Principe</source>
+        <target>Nước Cộng Hoà Nhân Dân Xao Tô-mê và Pợ-rin-xi-pê</target>
+      </trans-unit>
+      <trans-unit id="SV.name" resname="SV.name" approved="yes">
+        <source>El Salvador</source>
+        <target>En-xan-va-đoa</target>
+      </trans-unit>
+      <trans-unit id="SV.official_name" resname="SV.official_name" approved="yes">
+        <source>Republic of El Salvador</source>
+        <target>Nước Cộng Hoà En-xan-va-đoa</target>
+      </trans-unit>
+      <trans-unit id="SX.name" resname="SX.name" approved="yes">
+        <source>Sint Maarten (Dutch part)</source>
+        <target>Xin Mác-Ten (vùng Hà Lan)</target>
+      </trans-unit>
+      <trans-unit id="SX.official_name" resname="SX.official_name" approved="yes">
+        <source>Sint Maarten (Dutch part)</source>
+        <target>Xin Mác-Ten (vùng Hà Lan)</target>
+      </trans-unit>
+      <trans-unit id="SY.name" resname="SY.name" approved="yes">
+        <source>Syrian Arab Republic</source>
+        <target>Cộng hoà A-rập Xi-ri-a</target>
+      </trans-unit>
+      <trans-unit id="SZ.official_name" resname="SZ.official_name" approved="yes">
+        <source>Kingdom of Eswatini</source>
+        <target>Kingdom of Eswatini</target>
+      </trans-unit>
+      <trans-unit id="TC.name" resname="TC.name" approved="yes">
+        <source>Turks and Caicos Islands</source>
+        <target>Quần Đảo Tuốc và Cai-cox</target>
+      </trans-unit>
+      <trans-unit id="TD.name" resname="TD.name" approved="yes">
+        <source>Chad</source>
+        <target>Chê-đ</target>
+      </trans-unit>
+      <trans-unit id="TD.official_name" resname="TD.official_name" approved="yes">
+        <source>Republic of Chad</source>
+        <target>Nước Cộng Hoà Chê-đ</target>
+      </trans-unit>
+      <trans-unit id="TF.name" resname="TF.name" approved="yes">
+        <source>French Southern Territories</source>
+        <target>Miền Nam Pháp</target>
+      </trans-unit>
+      <trans-unit id="TG.name" resname="TG.name" approved="yes">
+        <source>Togo</source>
+        <target>Tô-gô</target>
+      </trans-unit>
+      <trans-unit id="TG.official_name" resname="TG.official_name" approved="yes">
+        <source>Togolese Republic</source>
+        <target>Cộng hoà Tô-gô</target>
+      </trans-unit>
+      <trans-unit id="TH.name" resname="TH.name" approved="yes">
+        <source>Thailand</source>
+        <target>Thái Lan</target>
+      </trans-unit>
+      <trans-unit id="TH.official_name" resname="TH.official_name" approved="yes">
+        <source>Kingdom of Thailand</source>
+        <target>Vương Quốc Thái Lan</target>
+      </trans-unit>
+      <trans-unit id="TJ.name" resname="TJ.name" approved="yes">
+        <source>Tajikistan</source>
+        <target>Tha-gi-ki-xthanh</target>
+      </trans-unit>
+      <trans-unit id="TJ.official_name" resname="TJ.official_name" approved="yes">
+        <source>Republic of Tajikistan</source>
+        <target>Nước Cộng Hoà Tha-gi-ki-xthanh</target>
+      </trans-unit>
+      <trans-unit id="TK.name" resname="TK.name" approved="yes">
+        <source>Tokelau</source>
+        <target>To-ke-lau</target>
+      </trans-unit>
+      <trans-unit id="TL.name" resname="TL.name" approved="yes">
+        <source>Timor-Leste</source>
+        <target>Thi-moa Le-xợ-te</target>
+      </trans-unit>
+      <trans-unit id="TL.official_name" resname="TL.official_name" approved="yes">
+        <source>Democratic Republic of Timor-Leste</source>
+        <target>Nước Cộng Hoà Dân Chủ Thi-moa Le-xợ-te</target>
+      </trans-unit>
+      <trans-unit id="TM.name" resname="TM.name" approved="yes">
+        <source>Turkmenistan</source>
+        <target>Tuốc-mê-ni-xtanh</target>
+      </trans-unit>
+      <trans-unit id="TN.name" resname="TN.name" approved="yes">
+        <source>Tunisia</source>
+        <target>Tu-ni-xi-a</target>
+      </trans-unit>
+      <trans-unit id="TN.official_name" resname="TN.official_name" approved="yes">
+        <source>Republic of Tunisia</source>
+        <target>Cộng hoà Tu-ni-xi-a</target>
+      </trans-unit>
+      <trans-unit id="TO.name" resname="TO.name" approved="yes">
+        <source>Tonga</source>
+        <target>Tông-ga</target>
+      </trans-unit>
+      <trans-unit id="TO.official_name" resname="TO.official_name" approved="yes">
+        <source>Kingdom of Tonga</source>
+        <target>Vương quốc Tông-ga</target>
+      </trans-unit>
+      <trans-unit id="TR.official_name" resname="TR.official_name" approved="yes">
+        <source>Republic of Türkiye</source>
+        <target>Republic of Türkiye</target>
+      </trans-unit>
+      <trans-unit id="TT.name" resname="TT.name" approved="yes">
+        <source>Trinidad and Tobago</source>
+        <target>Trinh-i-đat và To-ba-gô</target>
+      </trans-unit>
+      <trans-unit id="TT.official_name" resname="TT.official_name" approved="yes">
+        <source>Republic of Trinidad and Tobago</source>
+        <target>Cộng hoà Trinh-i-đat và To-ba-gô</target>
+      </trans-unit>
+      <trans-unit id="TV.name" resname="TV.name" approved="yes">
+        <source>Tuvalu</source>
+        <target>Tu-va-lu</target>
+      </trans-unit>
+      <trans-unit id="TW.name" resname="TW.name" approved="yes">
+        <source>Taiwan, Province of China</source>
+        <target>Đài Loan, Tỉnh Trung Quốc</target>
+      </trans-unit>
+      <trans-unit id="TW.official_name" resname="TW.official_name" approved="yes">
+        <source>Taiwan, Province of China</source>
+        <target>Đài Loan, Tỉnh Trung Quốc</target>
+      </trans-unit>
+      <trans-unit id="TZ.name" resname="TZ.name" approved="yes">
+        <source>Tanzania, United Republic of</source>
+        <target>Nước Cộng Hoà Thống Nhất Than-xa-ni-a</target>
+      </trans-unit>
+      <trans-unit id="TZ.official_name" resname="TZ.official_name" approved="yes">
+        <source>United Republic of Tanzania</source>
+        <target>Nước Cộng Hoà Thống Nhất Than-xa-ni-a</target>
+      </trans-unit>
+      <trans-unit id="UA.name" resname="UA.name" approved="yes">
+        <source>Ukraine</source>
+        <target>U-cờ-rai-na</target>
+      </trans-unit>
+      <trans-unit id="UG.name" resname="UG.name" approved="yes">
+        <source>Uganda</source>
+        <target>U-gan-đa</target>
+      </trans-unit>
+      <trans-unit id="UG.official_name" resname="UG.official_name" approved="yes">
+        <source>Republic of Uganda</source>
+        <target>Cộng hoà U-gan-đa</target>
+      </trans-unit>
+      <trans-unit id="UM.name" resname="UM.name" approved="yes">
+        <source>United States Minor Outlying Islands</source>
+        <target>Quần Đảo ở xa nhỏ Mỹ</target>
+      </trans-unit>
+      <trans-unit id="US.name" resname="US.name" approved="yes">
+        <source>United States</source>
+        <target>Mỹ</target>
+      </trans-unit>
+      <trans-unit id="US.official_name" resname="US.official_name" approved="yes">
+        <source>United States of America</source>
+        <target>Mỹ</target>
+      </trans-unit>
+      <trans-unit id="UY.name" resname="UY.name" approved="yes">
+        <source>Uruguay</source>
+        <target>U-ru-guay</target>
+      </trans-unit>
+      <trans-unit id="UY.official_name" resname="UY.official_name" approved="yes">
+        <source>Eastern Republic of Uruguay</source>
+        <target>Cộng hoà Đông U-ru-guay</target>
+      </trans-unit>
+      <trans-unit id="UZ.name" resname="UZ.name" approved="yes">
+        <source>Uzbekistan</source>
+        <target>U-xợ-bê-khi-xtanh</target>
+      </trans-unit>
+      <trans-unit id="UZ.official_name" resname="UZ.official_name" approved="yes">
+        <source>Republic of Uzbekistan</source>
+        <target>Nước Cộng Hoà U-xợ-bê-khi-xtanh</target>
+      </trans-unit>
+      <trans-unit id="VA.name" resname="VA.name" approved="yes">
+        <source>Holy See (Vatican City State)</source>
+        <target>Toà Thánh (Bang Thành Phố Va-ti-canh)</target>
+      </trans-unit>
+      <trans-unit id="VC.name" resname="VC.name" approved="yes">
+        <source>Saint Vincent and the Grenadines</source>
+        <target>Xan Vinh-xen và Gou-en-a-đinh</target>
+      </trans-unit>
+      <trans-unit id="VE.name" resname="VE.name" approved="yes">
+        <source>Venezuela, Bolivarian Republic of</source>
+        <target>Nước Cộng Hoà Bo-li-va-ri Vê-nê-xu-ê-la</target>
+      </trans-unit>
+      <trans-unit id="VE.official_name" resname="VE.official_name" approved="yes">
+        <source>Bolivarian Republic of Venezuela</source>
+        <target>Nước Cộng Hoà Bo-li-va-ri Vê-nê-xu-ê-la</target>
+      </trans-unit>
+      <trans-unit id="VG.name" resname="VG.name" approved="yes">
+        <source>Virgin Islands, British</source>
+        <target>Quần Đảo Vơ-chin Anh</target>
+      </trans-unit>
+      <trans-unit id="VG.official_name" resname="VG.official_name" approved="yes">
+        <source>British Virgin Islands</source>
+        <target>Quần Đảo Vơ-chin Anh</target>
+      </trans-unit>
+      <trans-unit id="VI.name" resname="VI.name" approved="yes">
+        <source>Virgin Islands, U.S.</source>
+        <target>Quần Đảo Vơ-chin Mỹ</target>
+      </trans-unit>
+      <trans-unit id="VI.official_name" resname="VI.official_name" approved="yes">
+        <source>Virgin Islands of the United States</source>
+        <target>Quần Đảo Vơ-chin Mỹ</target>
+      </trans-unit>
+      <trans-unit id="VN.name" resname="VN.name" approved="yes">
+        <source>Viet Nam</source>
+        <target>Việt Nam</target>
+      </trans-unit>
+      <trans-unit id="VN.official_name" resname="VN.official_name" approved="yes">
+        <source>Socialist Republic of Viet Nam</source>
+        <target>Nước Cộng Hoà Xã Hội Việt Nam</target>
+      </trans-unit>
+      <trans-unit id="VU.name" resname="VU.name" approved="yes">
+        <source>Vanuatu</source>
+        <target>Va-nu-a-tu</target>
+      </trans-unit>
+      <trans-unit id="VU.official_name" resname="VU.official_name" approved="yes">
+        <source>Republic of Vanuatu</source>
+        <target>Cộng hoà Va-nu-a-tu</target>
+      </trans-unit>
+      <trans-unit id="WF.name" resname="WF.name" approved="yes">
+        <source>Wallis and Futuna</source>
+        <target>Oua-li-xợ va Phu-tu-na</target>
+      </trans-unit>
+      <trans-unit id="WS.name" resname="WS.name" approved="yes">
+        <source>Samoa</source>
+        <target>Xa-mô-a</target>
+      </trans-unit>
+      <trans-unit id="WS.official_name" resname="WS.official_name" approved="yes">
+        <source>Independent State of Samoa</source>
+        <target>Quốc Gia Độc Lập Xa-mô-a</target>
+      </trans-unit>
+      <trans-unit id="YE.name" resname="YE.name" approved="yes">
+        <source>Yemen</source>
+        <target>Y-ê-men</target>
+      </trans-unit>
+      <trans-unit id="YE.official_name" resname="YE.official_name" approved="yes">
+        <source>Republic of Yemen</source>
+        <target>Cộng hoà Y-ê-men</target>
+      </trans-unit>
+      <trans-unit id="YT.name" resname="YT.name" approved="yes">
+        <source>Mayotte</source>
+        <target>May-o-thợ</target>
+      </trans-unit>
+      <trans-unit id="ZA.name" resname="ZA.name" approved="yes">
+        <source>South Africa</source>
+        <target>Nam Phi</target>
+      </trans-unit>
+      <trans-unit id="ZA.official_name" resname="ZA.official_name" approved="yes">
+        <source>Republic of South Africa</source>
+        <target>Cộng hoà Nam Phi</target>
+      </trans-unit>
+      <trans-unit id="ZM.name" resname="ZM.name" approved="yes">
+        <source>Zambia</source>
+        <target>Xam-bi-a</target>
+      </trans-unit>
+      <trans-unit id="ZM.official_name" resname="ZM.official_name" approved="yes">
+        <source>Republic of Zambia</source>
+        <target>Nước Cộng Hoà Xam-bi-a</target>
+      </trans-unit>
+      <trans-unit id="ZW.name" resname="ZW.name" approved="yes">
+        <source>Zimbabwe</source>
+        <target>Xim-ba-bu-ê</target>
+      </trans-unit>
+      <trans-unit id="ZW.official_name" resname="ZW.official_name" approved="yes">
+        <source>Republic of Zimbabwe</source>
+        <target>Nước Cộng Hoà Xim-ba-bu-ê</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

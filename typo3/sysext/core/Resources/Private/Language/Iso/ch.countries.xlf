@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="ch" datatype="plaintext" original="EXT:core/Resources/Private/Language/countries.xlf" product-name="typo3/cms-core">
+    <body>
+      <trans-unit id="AM.name" resname="AM.name" approved="yes">
+        <source>Armenia</source>
+        <target>Armenia</target>
+      </trans-unit>
+      <trans-unit id="AR.name" resname="AR.name" approved="yes">
+        <source>Argentina</source>
+        <target>Argentina</target>
+      </trans-unit>
+      <trans-unit id="AT.name" resname="AT.name" approved="yes">
+        <source>Austria</source>
+        <target>Austria</target>
+      </trans-unit>
+      <trans-unit id="BG.name" resname="BG.name" approved="yes">
+        <source>Bulgaria</source>
+        <target>Bulgaria</target>
+      </trans-unit>
+      <trans-unit id="BR.name" resname="BR.name" approved="yes">
+        <source>Brazil</source>
+        <target>Brazil</target>
+      </trans-unit>
+      <trans-unit id="CL.name" resname="CL.name" approved="yes">
+        <source>Chile</source>
+        <target>Chile</target>
+      </trans-unit>
+      <trans-unit id="DE.name" resname="DE.name" approved="yes">
+        <source>Germany</source>
+        <target>Alemaña</target>
+      </trans-unit>
+      <trans-unit id="ES.name" resname="ES.name" approved="yes">
+        <source>Spain</source>
+        <target>España</target>
+      </trans-unit>
+      <trans-unit id="FI.name" resname="FI.name" approved="yes">
+        <source>Finland</source>
+        <target>Finlandia</target>
+      </trans-unit>
+      <trans-unit id="FM.official_name" resname="FM.official_name" approved="yes">
+        <source>Federated States of Micronesia</source>
+        <target>Micronesia</target>
+      </trans-unit>
+      <trans-unit id="FR.name" resname="FR.name" approved="yes">
+        <source>France</source>
+        <target>Francia</target>
+      </trans-unit>
+      <trans-unit id="GU.name" resname="GU.name" approved="yes">
+        <source>Guam</source>
+        <target>Guåhån</target>
+      </trans-unit>
+      <trans-unit id="ID.name" resname="ID.name" approved="yes">
+        <source>Indonesia</source>
+        <target>Indonesia</target>
+      </trans-unit>
+      <trans-unit id="IT.name" resname="IT.name" approved="yes">
+        <source>Italy</source>
+        <target>Italia</target>
+      </trans-unit>
+      <trans-unit id="JP.name" resname="JP.name" approved="yes">
+        <source>Japan</source>
+        <target>Chapan</target>
+      </trans-unit>
+      <trans-unit id="LT.name" resname="LT.name" approved="yes">
+        <source>Lithuania</source>
+        <target>Lituania</target>
+      </trans-unit>
+      <trans-unit id="MP.name" resname="MP.name" approved="yes">
+        <source>Northern Mariana Islands</source>
+        <target>Notte Mariånas</target>
+      </trans-unit>
+      <trans-unit id="PE.name" resname="PE.name" approved="yes">
+        <source>Peru</source>
+        <target>Perú</target>
+      </trans-unit>
+      <trans-unit id="PH.name" resname="PH.name" approved="yes">
+        <source>Philippines</source>
+        <target>Filipinas</target>
+      </trans-unit>
+      <trans-unit id="PL.name" resname="PL.name" approved="yes">
+        <source>Poland</source>
+        <target>Polaki</target>
+      </trans-unit>
+      <trans-unit id="US.official_name" resname="US.official_name" approved="yes">
+        <source>United States of America</source>
+        <target>Estados Unidus</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

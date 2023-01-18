@@ -390,6 +390,10 @@ services:
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['typoscript']
 
+  country.provider:
+    class: TYPO3\CMS\Core\Country\CountryProvider
+    public: true
+
   # Interface implementations
   Psr\Container\ContainerInterface:
     alias: service_container
