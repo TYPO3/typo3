@@ -449,7 +449,7 @@ class DatabaseIntegrityController
             case 'raw':
             default:
                 $view->assign('searchOptions', $this->form());
-                $view->assign('results', $this->search());
+                $view->assign('results', $this->search($request));
         }
         return $view->renderResponse('CustomSearch');
     }
@@ -463,7 +463,7 @@ class DatabaseIntegrityController
     {
         $output = '';
         $this->hookArray = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3lib_fullsearch'] ?? [];
-        $msg = $this->procesStoreControl();
+        $msg = $this->procesStoreControl($request);
         $userTsConfig = $this->getBackendUserAuthentication()->getTSConfig();
         if (!($userTsConfig['mod.']['dbint.']['disableStoreControl'] ?? false)) {
             $output .= '<h2>Load/Save Query</h2>';
@@ -513,7 +513,7 @@ class DatabaseIntegrityController
                     if (!($userTsConfig['mod.']['dbint.']['disableShowSQLQuery'] ?? false)) {
                         $output .= '<h2>SQL query</h2><div><code>' . htmlspecialchars($fullQueryString) . '</code></div>';
                     }
-                    $cPR = $this->getQueryResultCode($mQ, $dataRows, $this->table);
+                    $cPR = $this->getQueryResultCode($mQ, $dataRows, $this->table, $request);
                     $output .= '<h2>' . ($cPR['header'] ?? '') . '</h2><div>' . $cPR['content'] . '</div>';
                 } catch (DBALException $e) {
                     if (!($userTsConfig['mod.']['dbint.']['disableShowSQLQuery'] ?? false)) {
@@ -659,7 +659,7 @@ class DatabaseIntegrityController
      * @return array HTML-code for "header" and "content"
      * @throws \TYPO3\CMS\Core\Exception
      */
-    protected function getQueryResultCode(string $type, array $dataRows, string $table): array
+    protected function getQueryResultCode(string $type, array $dataRows, string $table, ServerRequestInterface $request): array
     {
         $out = '';
         $cPR = [];
@@ -672,7 +672,7 @@ class DatabaseIntegrityController
                 $rowArr = [];
                 $dataRow = null;
                 foreach ($dataRows as $dataRow) {
-                    $rowArr[] = $this->resultRowDisplay($dataRow, $GLOBALS['TCA'][$table], $table);
+                    $rowArr[] = $this->resultRowDisplay($dataRow, $GLOBALS['TCA'][$table], $table, $request);
                 }
                 if (is_array($this->hookArray['beforeResultTable'] ?? false)) {
                     foreach ($this->hookArray['beforeResultTable'] as $_funcRef) {
@@ -711,7 +711,7 @@ class DatabaseIntegrityController
                     }
                     // Downloads file:
                     // @todo: args. routing anyone?
-                    if (GeneralUtility::_GP('download_file')) {
+                    if ($request->getParsedBody()['download_file'] ?? false) {
                         $filename = 'TYPO3_' . $table . '_export_' . date('dmy-Hi') . '.csv';
                         $mimeType = 'application/octet-stream';
                         header('Content-Type: ' . $mimeType);
@@ -740,7 +740,7 @@ class DatabaseIntegrityController
         $valueArray = $row;
         if (($this->MOD_SETTINGS['search_result_labels'] ?? false) && $table) {
             foreach ($valueArray as $key => $val) {
-                $valueArray[$key] = $this->getProcessedValueExtra($table, $key, $val, $conf, ';');
+                $valueArray[$key] = $this->getProcessedValueExtra($table, $key, (string)$val, $conf, ';');
             }
         }
         return CsvUtility::csvValues($valueArray, $delim, $quote);
@@ -777,7 +777,7 @@ class DatabaseIntegrityController
         return implode(LF, $tableHeader);
     }
 
-    protected function resultRowDisplay(array $row, array $conf, string $table): string
+    protected function resultRowDisplay(array $row, array $conf, string $table, ServerRequestInterface $request): string
     {
         $languageService = $this->getLanguageService();
         $out = '<tr>';
@@ -806,8 +806,8 @@ class DatabaseIntegrityController
                         $row['uid'] => 'edit',
                     ],
                 ],
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
-                    . HttpUtility::buildQueryString(['SET' => (array)GeneralUtility::_POST('SET')], '&'),
+                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+                    . HttpUtility::buildQueryString(['SET' => $request->getParsedBody()['SET'] ?? []], '&'),
             ]);
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">'
                 . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1356,7 +1356,7 @@ class DatabaseIntegrityController
                 $this->extFieldLists['queryOrder_SQL'] = implode(',', $reList);
             }
             // Query Generator:
-            $this->procesData(($modSettings['queryConfig'] ?? '') ? unserialize((string)$modSettings['queryConfig'], ['allowed_classes' => false]) : []);
+            $this->procesData($request, ($modSettings['queryConfig'] ?? '') ? unserialize((string)$modSettings['queryConfig'], ['allowed_classes' => false]) : []);
             $this->queryConfig = $this->cleanUpQueryConfig($this->queryConfig);
             $this->enableQueryParts = (bool)($modSettings['search_query_smallparts'] ?? false);
             $codeArr = $this->getFormElements();
@@ -2008,10 +2008,10 @@ class DatabaseIntegrityController
         return implode(LF, $out);
     }
 
-    protected function procesData(array $qC = []): void
+    protected function procesData(ServerRequestInterface $request, array $qC = []): void
     {
         $this->queryConfig = $qC;
-        $POST = GeneralUtility::_POST();
+        $POST = $request->getParsedBody();
         // If delete...
         if ($POST['qG_del'] ?? false) {
             // Initialize array to work on, save special parameters
@@ -2379,13 +2379,13 @@ class DatabaseIntegrityController
         return implode(LF, $markup);
     }
 
-    protected function procesStoreControl(): string
+    protected function procesStoreControl(ServerRequestInterface $request): string
     {
         $languageService = $this->getLanguageService();
         $flashMessage = null;
         $storeArray = $this->initStoreArray();
         $storeQueryConfigs = (array)(unserialize($this->MOD_SETTINGS['storeQueryConfigs'] ?? '', ['allowed_classes' => false]));
-        $storeControl = GeneralUtility::_GP('storeControl');
+        $storeControl = $request->getParsedBody()['storeControl'] ?? [];
         $storeIndex = (int)($storeControl['STORE'] ?? 0);
         $saveStoreArray = 0;
         $writeArray = [];
@@ -2507,7 +2507,7 @@ class DatabaseIntegrityController
         return implode(LF, $markup);
     }
 
-    protected function search(): string
+    protected function search(ServerRequestInterface $request): string
     {
         $swords = $this->MOD_SETTINGS['sword'] ?? '';
         $out = '';
@@ -2588,7 +2588,7 @@ class DatabaseIntegrityController
                     $lastRow = null;
                     $rowArr = [];
                     while ($row = $statement->fetchAssociative()) {
-                        $rowArr[] = $this->resultRowDisplay($row, $conf, $table);
+                        $rowArr[] = $this->resultRowDisplay($row, $conf, $table, $request);
                         $lastRow = $row;
                     }
                     $markup = [];
