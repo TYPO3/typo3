@@ -318,16 +318,9 @@ class InfoPageTyposcriptConfigController
     protected function extractLinesFromTSConfig(array $row): array
     {
         $out = [];
-        $includeLines = 0;
         $out['uid'] = $row['uid'];
         $lines = GeneralUtility::trimExplode("\r\n", $row['TSconfig']);
-        foreach ($lines as $line) {
-            if (str_contains($line, '<INCLUDE_TYPOSCRIPT:')) {
-                $includeLines++;
-            }
-        }
-        $out['includeLines'] = $includeLines;
-        $out['writtenLines'] = (count($lines) - $includeLines);
+        $out['writtenLines'] = count($lines);
         return $out;
     }
 
@@ -356,14 +349,12 @@ class InfoPageTyposcriptConfigController
                 $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render();
                 $line['title'] = 'ID: ' . $identifier;
                 $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($title, 30);
-                $line['includedFiles'] = ($pageArray[$identifier . '_']['includeLines'] === 0 ? '' : $pageArray[$identifier . '_']['includeLines']);
                 $line['lines'] = ($pageArray[$identifier . '_']['writtenLines'] === 0 ? '' : $pageArray[$identifier . '_']['writtenLines']);
             } else {
                 $line['link'] = '';
                 $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render();
                 $line['title'] = '';
                 $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($title, 30);
-                $line['includedFiles'] = '';
                 $line['lines'] = '';
             }
             $lines[] = $line;

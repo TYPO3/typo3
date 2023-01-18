@@ -39,9 +39,6 @@
 			<trans-unit id="pageTsconfig.overview.headline" resname="pageTsconfig.overview.headline">
 				<source>Page TSconfig Overview</source>
 			</trans-unit>
-			<trans-unit id="pageTsconfig.overview.table.th.included_tsconfig_files" resname="included_tsconfig_files">
-				<source>Included Files</source>
-			</trans-unit>
 			<trans-unit id="pageTsconfig.overview.table.th.lines" resname="written_tsconfig_lines">
 				<source>Lines</source>
 			</trans-unit>

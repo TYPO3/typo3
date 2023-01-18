@@ -18,7 +18,6 @@
                 <thead>
                     <tr>
                         <th>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:pageTsconfig.overview.table.th.pagename')}</th>
-                        <th>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:pageTsconfig.overview.table.th.included_tsconfig_files')}</th>
                         <th>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:pageTsconfig.overview.table.th.lines')}</th>
                     </tr>
                 </thead>
@@ -39,7 +38,6 @@
                                     </f:else>
                                 </f:if>
                             </td>
-                            <td>{line.includedFiles}</td>
                             <td>{line.lines}</td>
                         </tr>
                     </f:for>
