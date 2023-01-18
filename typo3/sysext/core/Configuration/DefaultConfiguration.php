@@ -1270,6 +1270,7 @@ return [
                         'options' => [],
                         'excludeActions' => [
                             \TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction::NEW_USER_PASSWORD,
+                            \TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction::UPDATE_USER_PASSWORD_SWITCH_USER_MODE,
                         ],
                     ],
                 ],

@@ -23,5 +23,6 @@ namespace TYPO3\CMS\Core\PasswordPolicy;
 enum PasswordPolicyAction: string
 {
     case UPDATE_USER_PASSWORD = 'updateUserPassword';
+    case UPDATE_USER_PASSWORD_SWITCH_USER_MODE = 'updateUserPasswordSwitchUserMode';
     case NEW_USER_PASSWORD = 'newUserPassword';
 }

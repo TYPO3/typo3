@@ -88,9 +88,15 @@ class SetupModuleController
         protected readonly FormProtectionFactory $formProtectionFactory
     ) {
         $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
+
+        $action = PasswordPolicyAction::UPDATE_USER_PASSWORD;
+        if ($this->getBackendUser()->getOriginalUserIdWhenInSwitchUserMode()) {
+            $action = PasswordPolicyAction::UPDATE_USER_PASSWORD_SWITCH_USER_MODE;
+        }
+
         $this->passwordPolicyValidator = GeneralUtility::makeInstance(
             PasswordPolicyValidator::class,
-            PasswordPolicyAction::UPDATE_USER_PASSWORD,
+            $action,
             is_string($passwordPolicy) ? $passwordPolicy : ''
         );
     }
