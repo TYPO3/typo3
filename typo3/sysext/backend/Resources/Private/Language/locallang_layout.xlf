@@ -246,11 +246,8 @@
 			<trans-unit id="m_default" resname="m_default">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="clickAPage_header" resname="clickAPage_header">
-				<source>Web&gt;Page module</source>
-			</trans-unit>
 			<trans-unit id="clickAPage_content" resname="clickAPage_content">
-				<source>Please click the page title in the page tree to the left to edit page content.</source>
+				<source>Please select a page in the page tree to edit page content.</source>
 			</trans-unit>
 			<trans-unit id="pI_crUser" resname="pI_crUser">
 				<source>Created by</source>

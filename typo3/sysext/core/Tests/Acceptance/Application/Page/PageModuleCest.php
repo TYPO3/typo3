@@ -40,7 +40,7 @@ class PageModuleCest
         // click on PID=0
         $I->clickWithLeftButton('#identifier-0_0 text.node-name');
         $I->switchToContentFrame();
-        $I->canSee('Web>Page module', 'h4');
+        $I->canSee('Please select a page in the page tree to edit page content.');
     }
 
     public function editPageTitle(ApplicationTester $I, PageTree $pageTree): void

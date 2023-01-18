@@ -43,7 +43,7 @@
 				<source>Unidentified</source>
 			</trans-unit>
 			<trans-unit id="noValidPageSelected" resname="noValidPageSelected">
-				<source>Please select a page with a valid page type in the page tree on the left to preview the selected page in different screen resolutions.</source>
+				<source>Please select a page with a valid page type in the page tree to get a preview of it in different screen resolutions.</source>
 			</trans-unit>
 			<trans-unit id="noSiteConfiguration" resname="noSiteConfiguration">
 				<source>The requested page is missing a valid site configuration.</source>
