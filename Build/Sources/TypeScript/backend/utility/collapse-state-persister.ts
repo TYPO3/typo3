@@ -13,6 +13,7 @@
 
 import {Collapse as BootstrapCollapse} from 'bootstrap';
 import Client from '@typo3/backend/storage/client';
+import BrowserSession from '@typo3/backend/storage/browser-session';
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 
@@ -48,8 +49,8 @@ export class CollapseStatePersister {
     const currentStates = this.fromStorage();
 
     for (const [identifier, isExpanded] of Object.entries(currentStates)) {
-      const element = document.getElementById(identifier);
-      if (element === null) {
+      const element = document.getElementById(identifier) as HTMLElement;
+      if (element === null || !this.shallRecoverState(element)) {
         continue;
       }
       const collapsible = BootstrapCollapse.getOrCreateInstance(element, {
@@ -62,6 +63,17 @@ export class CollapseStatePersister {
         collapsible.hide();
       }
     }
+  }
+
+  private shallRecoverState(element: HTMLElement): boolean {
+    if (element.dataset.persistCollapseStateNotIf === undefined) {
+      return true;
+    }
+
+    const storageKey = element.dataset.persistCollapseStateNotIf;
+    const storageValue = Client.get(storageKey) ?? BrowserSession.get(storageKey);
+
+    return storageValue === null || storageValue === '';
   }
 
   private fromStorage(): { [key: string]: boolean } {

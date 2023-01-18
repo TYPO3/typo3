@@ -10,11 +10,12 @@
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/context-menu.js',
-            1: '@typo3/backend/element/immediate-action-element.js'
+            1: '@typo3/backend/element/immediate-action-element.js',
+            2: '@typo3/backend/page-tsconfig.js'
         }"
     />
 
-    <f:variable name="args" value="{0: 'web', 1: id}" />
+    <f:variable name="args" value="{0: 'web', 1: pageUid}" />
     <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
 
     <h1>
@@ -24,38 +25,48 @@
         <p class="lead"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.description" /></p>
     </div>
 
-    <f:if condition="!{accessContent}">
-        <f:then>
-            <f:be.infobox state="-1" message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig.noAccess')}" />
-        </f:then>
-        <f:else>
-            <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
-                <div class="row row-cols-auto align-items-end g-3 mb-3">
-                    <f:if condition="{displayAlphaSort}">
-                        <div class="col">
-                            <div class="form-check form-switch">
-                                <label class="form-check-label" for="checkTsconf_alphaSort">
-                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.sortAlphabetically" />
-                                </label>
-                                <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    name="tsconf_alphaSort"
-                                    value="1"
-                                    data-global-event="change"
-                                    data-action-navigate="$data=~s/$value/"
-                                    data-navigate-value="{alphaSortUrl}"
-                                    data-empty-value="0" id="checkTsconf_alphaSort" {alphaSortChecked}
-                                >
-                            </div>
-                        </div>
-                    </f:if>
+    <div class="row row-cols-auto align-items-end g-3 mb-3">
+        <div class="col">
+            <form action="#">
+                <div class="input-group">
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="searchValue"
+                        id="searchValue"
+                        value="{searchValue}"
+                        minlength="3"
+                        placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}"
+                    />
                 </div>
             </form>
+        </div>
+        <div class="col">
+            <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
+                <div class="form-check form-switch">
+                    <label class="form-check-label" for="alphaSort">
+                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.sortAlphabetically" />
+                    </label>
+                    <input type="hidden" name="alphaSort" value="0" />
+                    <input
+                        type="checkbox"
+                        class="form-check-input"
+                        name="alphaSort"
+                        id="alphaSort"
+                        value="1"
+                        {f:if(condition: alphaSort, then:'checked="checked"')}
+                        data-global-event="change"
+                        data-action-submit="$form"
+                        data-value-selector="input[name='alphaSort']"
+                    >
+                </div>
+            </form>
+        </div>
+    </div>
 
-            <f:render partial="PageTsConfig/Tree" arguments="{pageTsConfig: pageTsConfig}" />
-        </f:else>
-    </f:if>
+    <div class="t3js-pagets-tree">
+        <f:render partial="PageTsConfig/Tree" arguments="{pageTsConfig: pageTsConfig}" />
+    </div>
 
 </f:section>
 

@@ -86,7 +86,7 @@ return [
     ],
     'pagetsconfig' => [
         'parent' => 'site',
-        'access' => 'user',
+        'access' => 'admin',
         'path' => '/module/pagetsconfig',
         'iconIdentifier' => 'module-tstemplate',
         'labels' => [
@@ -98,8 +98,9 @@ return [
     ],
     'pagetsconfig_records' => [
         'parent' => 'pagetsconfig',
-        'access' => 'user',
+        'access' => 'admin',
         'path' => '/module/pagetsconfig/records',
+        'iconIdentifier' => 'module-tstemplate',
         'labels' => [
             'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_records',
         ],
@@ -111,8 +112,9 @@ return [
     ],
     'pagetsconfig_active' => [
         'parent' => 'pagetsconfig',
-        'access' => 'user',
+        'access' => 'admin',
         'path' => '/module/pagetsconfig/active',
+        'iconIdentifier' => 'module-tstemplate',
         'labels' => [
             'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active',
         ],
@@ -122,13 +124,14 @@ return [
             ],
         ],
         'moduleData' => [
-            'tsconf_alphaSort' => false,
+            'alphaSort' => false,
         ],
     ],
     'pagetsconfig_includes' => [
         'parent' => 'pagetsconfig',
-        'access' => 'user',
+        'access' => 'admin',
         'path' => '/module/pagetsconfig/includes',
+        'iconIdentifier' => 'module-tstemplate',
         'labels' => [
             'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes',
         ],

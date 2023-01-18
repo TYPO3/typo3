@@ -573,6 +573,23 @@ module.exports = function (grunt) {
         report: false,
         srcPrefix: "node_modules/"
       },
+      backend: {
+        options: {
+          destPrefix: "<%= paths.backend %>Public",
+          copyOptions: {
+            process: (source, srcpath) => {
+              if (srcpath.match(/.*\.js$/)) {
+                return require('./util/cjs-to-esm.js').cjsToEsm(source);
+              }
+
+              return source;
+            }
+          }
+        },
+        files: {
+          'JavaScript/Contrib/mark.js': 'mark.js/dist/mark.es6.min.js'
+        }
+      },
       dashboardToEs6: {
         options: {
           destPrefix: "<%= paths.dashboard %>Public",
@@ -790,7 +807,7 @@ module.exports = function (grunt) {
       }
     },
     concurrent: {
-      npmcopy: ['npmcopy:dashboard', 'npmcopy:umdToEs6', 'npmcopy:jqueryUi', 'npmcopy:install', 'npmcopy:all'],
+      npmcopy: ['npmcopy:dashboard', 'npmcopy:backend', 'npmcopy:umdToEs6', 'npmcopy:jqueryUi', 'npmcopy:install', 'npmcopy:all'],
       lint: ['eslint', 'stylelint', 'exec:lintspaces'],
       compile_assets: ['scripts', 'css'],
       compile_flags: ['flags-build'],

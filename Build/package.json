@@ -178,6 +178,7 @@
     "lit-element": "^3.0.0",
     "lit-html": "^2.0.0",
     "luxon": "^3.1.0",
+    "mark.js": "^8.11.1",
     "muuri": "^0.9.3",
     "nprogress": "^0.2.0",
     "requirejs": "^2.3.6",

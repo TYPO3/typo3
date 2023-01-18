@@ -15,7 +15,8 @@
     <f:then>
         <f:if condition="{listIdentifier}">
             <f:then>
-                <ul class="list-tree text-monospace collapse" data-persist-collapse-state="true" id="collapse-list-{listIdentifier}">
+                <f:variable name="hashedListIdentifier" value="{backend:hash(value: listIdentifier)}" />
+                <ul class="list-tree text-monospace collapse" data-persist-collapse-state="true" data-persist-collapse-state-not-if="pagets-search-term" id="collapse-list-{hashedListIdentifier}">
                     <f:render
                         section="listItem"
                         arguments="{
@@ -40,30 +41,32 @@
 
 <f:section name="listItem">
     <f:for each="{pageTsConfig}" as="configItem" key="configLabel" iteration="configIterator">
+        <f:variable name="normalizedConfigLabel" value="{f:format.trim(characters: '.', side: 'both', value: '{configLabel}')}" />
+        <f:variable name="pageTsIdentifier" value="{f:format.trim(characters: '.', side: 'both', value: '{parentIdentifier}.{normalizedConfigLabel}') -> f:format.case(mode: 'lower')}" />
         <li>
             <f:if condition="{backend:isArray(value: configItem)}">
                 <f:then>
                     <f:comment><!-- Array --></f:comment>
                     <f:if condition="{parentIdentifier}">
                         <f:then>
-                            <f:variable name="listIdentifier" value="{parentIdentifier}-{configLabel}" />
+                            <f:variable name="listIdentifier" value="{parentIdentifier}.{normalizedConfigLabel}" />
                         </f:then>
                         <f:else>
-                            <f:variable name="listIdentifier" value="{configLabel}" />
+                            <f:variable name="listIdentifier" value="{normalizedConfigLabel}" />
                         </f:else>
                     </f:if>
-                    <f:variable name="listIdentifier" value="{backend:hash(value: listIdentifier)}" />
+                    <f:variable name="hashedListIdentifier" value="{backend:hash(value: listIdentifier)}" />
                     <span class="list-tree-group">
                         <a
                             class="list-tree-control collapsed"
                             data-bs-toggle="collapse"
-                            data-bs-target="#collapse-list-{listIdentifier}"
+                            data-bs-target="#collapse-list-{hashedListIdentifier}"
                             aria-expanded="false"
                         >
                             <typo3-backend-icon identifier="actions-caret-right"></typo3-backend-icon>
                             <typo3-backend-icon identifier="actions-caret-down"></typo3-backend-icon>
                         </a>
-                        <span class="list-tree-label" title="wizards">[{f:format.trim(characters:'.', side: 'end', value: '{configLabel}')}]</span>
+                        <span class="list-tree-label" title="{normalizedConfigLabel}" data-pagets-identifier="{pageTsIdentifier}">[{normalizedConfigLabel}]</span>
                     </span>
                     <f:comment><!-- Recursive child --></f:comment>
                     <f:render
@@ -77,7 +80,7 @@
                 <f:else>
                     <f:comment><!-- String --></f:comment>
                     <span class="list-tree-group">
-                        <span class="list-tree-label" title="wizards">[{f:format.trim(characters:'.', side: 'end', value: '{configLabel}')}]</span>
+                        <span class="list-tree-label" title="{normalizedConfigLabel}" data-pagets-identifier="{pageTsIdentifier}">[{normalizedConfigLabel}]</span>
                         =
                         <span class="list-tree-value">{configItem}</span>
                     </span>

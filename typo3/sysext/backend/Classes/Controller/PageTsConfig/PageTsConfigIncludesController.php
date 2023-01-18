@@ -97,7 +97,6 @@ class PageTsConfigIncludesController
                 $this->pageinfo = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
             }
             $this->view->assign('id', $this->id);
-            $this->view->assign('formAction', (string)$this->uriBuilder->buildUriFromRoute($this->currentModule->getIdentifier()));
             // Setting up the buttons and the module menu for the doc header
             $this->getButtons();
             $this->view->makeDocHeaderModuleMenu(['id' => $this->id]);

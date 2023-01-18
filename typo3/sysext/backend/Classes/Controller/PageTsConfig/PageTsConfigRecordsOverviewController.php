@@ -86,7 +86,6 @@ class PageTsConfigRecordsOverviewController
                 $pageRecord = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
             }
             $view->assign('id', $pageId);
-            $view->assign('formAction', (string)$this->uriBuilder->buildUriFromRoute($currentModule->getIdentifier()));
             // Setting up the buttons and the module menu for the doc header
             $this->getButtons($view, $currentModule, $pageId, $pageRecord);
         }
