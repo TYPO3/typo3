@@ -3,15 +3,23 @@
     data-namespace-typo3-fluid="true"
 >
 
+<f:comment><!-- Heading --></f:comment>
+<h1>
+    <f:translate key="LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:pageTsconfig.overview.headline" />
+</h1>
+<div>
+    <p class="lead"><f:translate key="LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:pageTsconfig.overview.description" /></p>
+</div>
+
 <f:if condition="{overviewOfPagesUsingTSConfig}">
     <f:then>
         <div class="table-fit">
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:pagetitle')}</th>
-                        <th>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:included_tsconfig_files')}</th>
-                        <th>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:written_tsconfig_lines')}</th>
+                        <th>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:pageTsconfig.overview.table.th.pagename')}</th>
+                        <th>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:pageTsconfig.overview.table.th.included_tsconfig_files')}</th>
+                        <th>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:pageTsconfig.overview.table.th.lines')}</th>
                     </tr>
                 </thead>
                 <tbody>

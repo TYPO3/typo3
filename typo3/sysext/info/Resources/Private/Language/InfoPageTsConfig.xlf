@@ -27,20 +27,26 @@
 			<trans-unit id="sort_alphabetic" resname="sort_alphabetic">
 				<source>Sort alphabetically</source>
 			</trans-unit>
-			<trans-unit id="pagetitle" resname="pagetitle">
-				<source>Pagetitle:</source>
-			</trans-unit>
-			<trans-unit id="included_tsconfig_files" resname="included_tsconfig_files">
-				<source>Included Files:</source>
-			</trans-unit>
-			<trans-unit id="written_tsconfig_lines" resname="written_tsconfig_lines">
-				<source>Lines:</source>
-			</trans-unit>
 			<trans-unit id="tsconf_noPageTSconfig" resname="tsconf_noPageTSconfig">
 				<source>There are no pages containing custom Page TSconfig settings in the page configuration.</source>
 			</trans-unit>
-			<trans-unit id="tsconf_noPageTSconfigAvailable" resname="tsconf_noPageTSconfig">
+			<trans-unit id="tsconf_noPageTSconfigAvailable" resname="tsconf_noPageTSconfigAvailable">
 				<source>No suitable Page TSconfig available.</source>
+			</trans-unit>
+			<trans-unit id="pageTsconfig.overview.description" resname="pageTsconfig.overview.description">
+				<source>Global overview of all pages in the database containing custom Page TSconfig.</source>
+			</trans-unit>
+			<trans-unit id="pageTsconfig.overview.headline" resname="pageTsconfig.overview.headline">
+				<source>Page TSconfig Overview</source>
+			</trans-unit>
+			<trans-unit id="pageTsconfig.overview.table.th.included_tsconfig_files" resname="included_tsconfig_files">
+				<source>Included Files</source>
+			</trans-unit>
+			<trans-unit id="pageTsconfig.overview.table.th.lines" resname="written_tsconfig_lines">
+				<source>Lines</source>
+			</trans-unit>
+			<trans-unit id="pageTsconfig.overview.table.th.pagename" resname="pageTsconfig.overview.table.th.pagename">
+				<source>Page name</source>
 			</trans-unit>
 		</body>
 	</file>
