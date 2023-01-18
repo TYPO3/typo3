@@ -141,6 +141,15 @@ abstract class AbstractFrontend implements FrontendInterface
             throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233057359);
         }
 
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']['flushByTag'])
+            && count($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']['flushByTag']) > 0
+        ) {
+            trigger_error(
+                'The hook "t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php" "flushByTag" has been marked as deprecated and will be removed with TYPO3 v13. Use a custom frontend instead.',
+                E_USER_DEPRECATED
+            );
+        }
+
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']['flushByTag'] ?? [] as $_funcRef) {
             $params = ['tag' => $tag];
             GeneralUtility::callUserFunction($_funcRef, $params, $this);

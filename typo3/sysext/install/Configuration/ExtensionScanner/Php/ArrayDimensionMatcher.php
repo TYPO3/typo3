@@ -956,4 +956,9 @@ return [
             'Deprecation-99586-RegistrationOfUpgradeWizardsViaGLOBALS.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php\'][\'flushByTag\']' => [
+        'restFiles' => [
+            'Deprecation-99592-DeprecatedFlushByTagHook.rst',
+        ],
+    ],
 ];
