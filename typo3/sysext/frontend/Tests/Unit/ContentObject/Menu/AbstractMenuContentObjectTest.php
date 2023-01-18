@@ -21,7 +21,6 @@ use Doctrine\DBAL\Result;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -345,29 +344,78 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $this->subject->_call('sectionIndex', 'field', 12);
     }
 
-    ////////////////////////////////////
-    // Tests concerning menu item states
-    ////////////////////////////////////
-    public function ifsubHasToCheckExcludeUidListDataProvider(): array
+    public function isItemStateChecksExcludeUidListDataProvider(): array
     {
         return [
             'none excluded' => [
-                [12, 34, 56],
+                [
+                    [
+                        'uid' => 12,
+                        'pid' => 42,
+                    ],
+                    [
+                        'uid' => 34,
+                        'pid' => 42,
+                    ],
+                    [
+                        'uid' => 56,
+                        'pid' => 42,
+                    ],
+                ],
                 '1, 23, 456',
                 true,
             ],
             'one excluded' => [
-                [1, 234, 567],
+                [
+                    [
+                        'uid' => 1,
+                        'pid' => 42,
+                    ],
+                    [
+                        'uid' => 234,
+                        'pid' => 42,
+                    ],
+                    [
+                        'uid' => 567,
+                        'pid' => 42,
+                    ],
+                ],
                 '1, 23, 456',
                 true,
             ],
             'three excluded' => [
-                [1, 23, 456],
+                [
+                    [
+                        'uid' => 1,
+                        'pid' => 42,
+                    ],
+                    [
+                        'uid' => 23,
+                        'pid' => 42,
+                    ],
+                    [
+                        'uid' => 456,
+                        'pid' => 42,
+                    ],
+                ],
                 '1, 23, 456',
                 false,
             ],
             'empty excludeList' => [
-                [1, 123, 45],
+                [
+                    [
+                        'uid' => 1,
+                        'pid' => 42,
+                    ],
+                    [
+                        'uid' => 123,
+                        'pid' => 42,
+                    ],
+                    [
+                        'uid' => 45,
+                        'pid' => 42,
+                    ],
+                ],
                 '',
                 true,
             ],
@@ -381,19 +429,17 @@ class AbstractMenuContentObjectTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider ifsubHasToCheckExcludeUidListDataProvider
+     * @dataProvider isItemStateChecksExcludeUidListDataProvider
      */
-    public function ifsubHasToCheckExcludeUidList(array $menuItems, string $excludeUidList, bool $expectedResult): void
+    public function isItemStateChecksExcludeUidList(array $menuItems, string $excludeUidList, bool $expectedResult): void
     {
-        $menu = [];
-        foreach ($menuItems as $page) {
-            $menu[] = ['uid' => $page];
-        }
-        $runtimeCacheMock = $this->getMockBuilder(VariableFrontend::class)->onlyMethods(['get', 'set'])->disableOriginalConstructor()->getMock();
-        $runtimeCacheMock->expects(self::once())->method('get')->with(self::anything())->willReturn(false);
-        $runtimeCacheMock->expects(self::once())->method('set')->with(self::anything(), ['result' => $expectedResult]);
+        $subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class, [], '', true, true, true, ['getRuntimeCache']);
 
-        $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class, [], '', true, true, true, ['getRuntimeCache']);
+        $runtimeCacheMock = $this->getMockBuilder(FrontendInterface::class)->getMock();
+        $runtimeCacheMock->method('get')->with(self::anything())->willReturn(false);
+        $runtimeCacheMock->method('set')->with(self::anything());
+        $subject->method('getRuntimeCache')->willReturn($runtimeCacheMock);
+
         $cObjectMock = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
         $cObjectMock
             ->expects(self::once())
@@ -404,19 +450,19 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $typoScriptFrontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
         $cObjectMock->method('getTypoScriptFrontendController')->willReturn($typoScriptFrontendControllerMock);
 
-        $this->subject->parent_cObj = $cObjectMock;
-        $this->subject->expects(self::once())->method('getRuntimeCache')->willReturn($runtimeCacheMock);
+        $subject->parent_cObj = $cObjectMock;
+
         $this->prepareSectionIndexTest();
 
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
-        $pageRepository->expects(self::once())->method('getMenu')->willReturn($menu);
-        $this->subject->_set('sys_page', $pageRepository);
-        $this->subject->_set('menuArr', [
-            0 => ['uid' => 1],
+        $pageRepository->expects(self::once())->method('getMenu')->willReturn($menuItems);
+        $subject->_set('sys_page', $pageRepository);
+        $subject->_set('menuArr', [
+            0 => ['uid' => 42],
         ]);
-        $this->subject->_set('conf', ['excludeUidList' => $excludeUidList]);
+        $subject->_set('conf', ['excludeUidList' => $excludeUidList]);
 
-        self::assertEquals($expectedResult, $this->subject->_call('isItemState', 'IFSUB', 0));
+        self::assertEquals($expectedResult, $subject->_call('isItemState', 'IFSUB', 0));
     }
 
     public function menuTypoLinkCreatesExpectedTypoLinkConfigurationDataProvider(): array

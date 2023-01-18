@@ -1394,7 +1394,18 @@ abstract class AbstractMenuContentObject
         if (is_array($mount_info)) {
             $uid = $mount_info['mount_pid'];
         }
-        $recs = $this->sys_page->getMenu($uid, 'uid,pid,doktype,mount_pid,mount_pid_ol,nav_hide,shortcut,shortcut_mode,l18n_cfg');
+
+        // Collect subpages for all pages on current level
+        $pageIdsOnSameLevel = array_column($this->menuArr, 'uid');
+        $cacheIdentifierPagesNextLevel = 'menucontentobject-is-submenu-pages-next-level-' . $this->menuNumber . '-' . sha1(json_encode($pageIdsOnSameLevel));
+        $cachePagesNextLevel = $runtimeCache->get($cacheIdentifierPagesNextLevel);
+        if (!is_array($cachePagesNextLevel)) {
+            $cachePagesNextLevel = $this->sys_page->getMenu($pageIdsOnSameLevel, 'uid,pid,doktype,mount_pid,mount_pid_ol,nav_hide,shortcut,shortcut_mode,l18n_cfg');
+            $runtimeCache->set($cacheIdentifierPagesNextLevel, $cachePagesNextLevel);
+        }
+
+        $recs = array_filter($cachePagesNextLevel, static fn (array $item) => (int)$item['pid'] === (int)$uid);
+
         $hasSubPages = false;
         $bannedUids = $this->getBannedUids();
         $languageId = $this->getCurrentLanguageAspect()->getId();
