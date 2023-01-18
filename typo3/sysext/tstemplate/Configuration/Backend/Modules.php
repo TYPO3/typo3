@@ -1,7 +1,6 @@
 <?php
 
 use TYPO3\CMS\Tstemplate\Controller\ConstantEditorController;
-use TYPO3\CMS\Tstemplate\Controller\DummyController;
 use TYPO3\CMS\Tstemplate\Controller\InfoModifyController;
 use TYPO3\CMS\Tstemplate\Controller\ObjectBrowserController;
 use TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerController;
@@ -18,11 +17,6 @@ return [
         'iconIdentifier' => 'module-tstemplate',
         'labels' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_mod.xlf',
         'navigationComponent' => '@typo3/backend/page-tree/page-tree-element',
-        'routes' => [
-            '_default' => [
-                'target' => DummyController::class . '::handleRequest',
-            ],
-        ],
     ],
     'web_typoscript_recordsoverview' => [
         'parent' => 'web_ts',

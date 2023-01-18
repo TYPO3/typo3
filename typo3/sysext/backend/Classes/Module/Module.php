@@ -31,18 +31,33 @@ class Module extends BaseModule implements ModuleInterface
 
     public function getDefaultRouteOptions(): array
     {
+        $defaultTarget = '';
+
         if (!isset($this->routes['_default']['target'])) {
+            if ($this->hasSubModules()) {
+                $submodules = $this->getSubModules();
+                $firstSubModule = reset($submodules);
+                if ($firstSubModule->getDefaultRouteOptions()['target'] ?? false) {
+                    $defaultTarget = $firstSubModule->getDefaultRouteOptions()['target'];
+                }
+            }
+        } else {
+            $defaultTarget = $this->routes['_default']['target'];
+        }
+
+        if ($defaultTarget === '') {
             throw new \InvalidArgumentException(
-                'No target defined for the _default route of module ' . $this->identifier,
-                1642375890
+                'No default target could be resolved for module ' . $this->identifier,
+                1674063354
             );
         }
+
         return [
             'module' => $this,
             'packageName' => $this->packageName,
             'absolutePackagePath' => $this->absolutePackagePath,
             'access' => $this->access,
-            'target' => $this->routes['_default']['target'],
+            'target' => $defaultTarget,
         ];
     }
 
