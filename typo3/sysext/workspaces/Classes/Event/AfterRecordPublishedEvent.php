@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Workspaces\Event;
 
 /**
- * Event that is fired after a record has been published ina workspace.
+ * Event that is fired after a record has been published in a workspace.
  */
 final class AfterRecordPublishedEvent
 {
@@ -29,16 +29,25 @@ final class AfterRecordPublishedEvent
     ) {
     }
 
+    /**
+     * The table name of the record.
+     */
     public function getTable(): string
     {
         return $this->table;
     }
 
+    /**
+     * The uid of the record
+     */
     public function getRecordId(): int
     {
         return $this->recordId;
     }
 
+    /**
+     * The workspace the record has been published in.
+     */
     public function getWorkspaceId(): int
     {
         return $this->workspaceId;
