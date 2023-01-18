@@ -15,12 +15,12 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Lowlevel\Tests\Unit\Database;
+namespace TYPO3\CMS\Lowlevel\Tests\Unit\Controller;
 
-use TYPO3\CMS\Lowlevel\Database\QueryGenerator;
+use TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class QueryGeneratorTest extends UnitTestCase
+class DatabaseIntegrityControllerTest extends UnitTestCase
 {
     public function getSubscriptReturnsExpectedValuesDataProvider(): array
     {
@@ -110,7 +110,7 @@ class QueryGeneratorTest extends UnitTestCase
      */
     public function getSubscriptReturnsExpectedValues($input, array $expectedArray): void
     {
-        $subject = $this->getAccessibleMock(QueryGenerator::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
         self::assertSame($expectedArray, $subject->_call('getSubscript', $input));
     }
 }

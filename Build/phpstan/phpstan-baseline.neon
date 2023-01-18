@@ -3073,52 +3073,32 @@ parameters:
 		-
 			message: "#^Binary operation \"\\>\\>\" between string and 1 results in an error\\.$#"
 			count: 2
-			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
+			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
 
 		-
 			message: "#^Binary operation \"\\>\\>\" between string and 5 results in an error\\.$#"
 			count: 2
-			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
-
-		-
-			message: "#^Call to function is_array\\(\\) with float\\|int\\|string\\|null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
+			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
 
 		-
 			message: "#^Call to function is_array\\(\\) with string will always evaluate to false\\.$#"
 			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
+			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
 
 		-
 			message: "#^Cannot assign offset 'type' to string\\.$#"
 			count: 2
-			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
-
-		-
-			message: "#^Offset 'queryConfig' on array on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
-
-		-
-			message: "#^Offset 'queryLimit' on non\\-empty\\-array on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
+			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
 
 		-
 			message: "#^Offset 'userFunc' on 'user' in isset\\(\\) does not exist\\.$#"
 			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
+			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
 
 		-
-			message: "#^Offset 0 on array\\{\\} in isset\\(\\) does not exist\\.$#"
+			message: "#^Offset 0 on array\\{\\} in empty\\(\\) does not exist\\.$#"
 			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
-
-		-
-			message: "#^Result of \\|\\| is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
+			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
 
 		-
 			message: "#^Negated boolean expression is always false\\.$#"
