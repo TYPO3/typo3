@@ -57,15 +57,14 @@ $modal-sidebar-md: 300px;
 }
 
 .modal-body {
-    flex: 1 1 auto;
     overflow-y: auto;
-    display: flex;
-    flex-direction: column;
 
-    &:after {
-        content: "";
-        display: block;
-        height: $modal-inner-padding;
+    > *:first-child {
+        margin-top: 0;
+    }
+
+    > *:last-child {
+        margin-bottom: 0;
     }
 }
 
@@ -105,6 +104,7 @@ $modal-sidebar-md: 300px;
     border: none;
 
     .modal-loading {
+        height: 100%;
         display: flex;
         flex: 1 0 auto;
         justify-content: center;
