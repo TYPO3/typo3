@@ -35,10 +35,14 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * Base class for frontend plugins
- * Most legacy frontend plugins are extension classes of this one.
- * This class contains functions which assists these plugins in creating lists, searching, displaying menus, page-browsing (next/previous/1/2/3) and handling links.
- * Functions are all prefixed "pi_" which is reserved for this class. Those functions can of course be overridden in the extension classes (that is the point...)
+ * Old school base class of frontend plugins.
+ *
+ * Various legacy frontend plugins extend this "abstract".
+ *
+ * The class comes with a series of helper methods which assist plugins in creating lists,
+ * searching, displaying menus, page-browsing (next/previous/1/2/3) and handling links.
+ * Functions are all prefixed "pi_" which is reserved for this class. Those functions
+ * can of course be overridden in the extension classes (that is the point...)
  *
  * @internal This class is not maintained anymore and may be removed in future versions.
  */
@@ -225,7 +229,7 @@ class AbstractPlugin
         $this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
         // Setting piVars:
         if ($this->prefixId) {
-            $this->piVars = GeneralUtility::_GPmerged($this->prefixId);
+            $this->piVars = self::getRequestPostOverGetParameterWithPrefix($this->prefixId);
         }
         $this->LLkey = $this->frontendController->getLanguage()->getTypo3Language();
 
@@ -1353,5 +1357,20 @@ class AbstractPlugin
             }
         }
         return $tempArr[$value] ?? '';
+    }
+
+    /**
+     * Returns the global arrays $_GET and $_POST merged with $_POST taking precedence.
+     *
+     * @param string $parameter Key (variable name) from GET or POST vars
+     * @return array Returns the GET vars merged recursively onto the POST vars.
+     */
+    private static function getRequestPostOverGetParameterWithPrefix($parameter)
+    {
+        $postParameter = isset($_POST[$parameter]) && is_array($_POST[$parameter]) ? $_POST[$parameter] : [];
+        $getParameter = isset($_GET[$parameter]) && is_array($_GET[$parameter]) ? $_GET[$parameter] : [];
+        $mergedParameters = $getParameter;
+        ArrayUtility::mergeRecursiveWithOverrule($mergedParameters, $postParameter);
+        return $mergedParameters;
     }
 }

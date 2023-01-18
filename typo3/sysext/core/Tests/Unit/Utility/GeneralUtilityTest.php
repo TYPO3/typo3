@@ -132,38 +132,6 @@ class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    ///////////////////////////
-    // Tests concerning _GPmerged
-    ///////////////////////////
-    /**
-     * @test
-     * @dataProvider gpMergedDataProvider
-     */
-    public function gpMergedWillMergeArraysFromGetAndPost($get, $post, $expected): void
-    {
-        $_POST = $post;
-        $_GET = $get;
-        self::assertEquals($expected, GeneralUtility::_GPmerged('cake'));
-    }
-
-    /**
-     * Data provider for gpMergedWillMergeArraysFromGetAndPost
-     */
-    public function gpMergedDataProvider(): array
-    {
-        $fullDataArray = ['cake' => ['a' => 'is a', 'b' => 'lie']];
-        $postPartData = ['cake' => ['b' => 'lie']];
-        $getPartData = ['cake' => ['a' => 'is a']];
-        $getPartDataModified = ['cake' => ['a' => 'is not a']];
-        return [
-            'Key doesn\' exist' => [['foo'], ['bar'], []],
-            'No POST data' => [$fullDataArray, [], $fullDataArray['cake']],
-            'No GET data' => [[], $fullDataArray, $fullDataArray['cake']],
-            'POST and GET are merged' => [$getPartData, $postPartData, $fullDataArray['cake']],
-            'POST is preferred over GET' => [$getPartDataModified, $fullDataArray, $fullDataArray['cake']],
-        ];
-    }
-
     ///////////////////////////////
     // Tests concerning _GET / _POST
     ///////////////////////////////

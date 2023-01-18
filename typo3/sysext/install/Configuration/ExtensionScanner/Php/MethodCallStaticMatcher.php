@@ -1443,4 +1443,11 @@ return [
             'Deprecation-99579-BackendUtilityGetFuncCheck.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\GeneralUtility::_GPmerged' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-99615-GeneralUtilityGPMerged.rst',
+        ],
+    ],
 ];

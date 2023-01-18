@@ -123,9 +123,15 @@ class GeneralUtility
      *
      * @param string $parameter Key (variable name) from GET or POST vars
      * @return array Returns the GET vars merged recursively onto the POST vars.
+     * @deprecated since TYPO3 v12.2. will be removed in TYPO3 v13.0.
      */
     public static function _GPmerged($parameter)
     {
+        trigger_error(
+            'GeneralUtility::_GPmerged() will be removed in TYPO3 v13.0, retrieve request related' .
+            ' details from PSR-7 ServerRequestInterface instead.',
+            E_USER_DEPRECATED
+        );
         $postParameter = isset($_POST[$parameter]) && is_array($_POST[$parameter]) ? $_POST[$parameter] : [];
         $getParameter = isset($_GET[$parameter]) && is_array($_GET[$parameter]) ? $_GET[$parameter] : [];
         $mergedParameters = $getParameter;
