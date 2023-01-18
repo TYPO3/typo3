@@ -8,7 +8,8 @@
 
 <f:be.pageRenderer
     includeJavaScriptModules="{
-        0: '@typo3/backend/element/icon-element.js'
+        0: '@typo3/backend/element/icon-element.js',
+        1: '@typo3/backend/utility/collapse-state-persister.js'
     }"
 />
 
@@ -17,7 +18,7 @@
     <f:then>
         <f:if condition="{listIdentifier}">
             <f:then>
-                <ul class="list-tree text-monospace collapse" id="collapse-list-{listIdentifier}">
+                <ul class="list-tree text-monospace collapse" data-persist-collapse-state="true" id="collapse-list-{listIdentifier}">
                     <f:render
                         section="listItem"
                         arguments="{
