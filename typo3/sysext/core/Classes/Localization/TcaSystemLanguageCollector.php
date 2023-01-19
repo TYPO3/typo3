@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Localization;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -27,13 +26,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Provides ItemProcFunc fields for special population of available TYPO3 system languages
  * @internal
  */
-class TcaSystemLanguageCollector
+final class TcaSystemLanguageCollector
 {
-    private Locales $locales;
-
-    public function __construct(Locales $locales)
-    {
-        $this->locales = $locales;
+    public function __construct(
+        private readonly Locales $locales
+    ) {
     }
 
     /**
@@ -42,23 +39,18 @@ class TcaSystemLanguageCollector
     public function populateAvailableSystemLanguagesForBackend(array &$fieldInformation): void
     {
         $languageItems = $this->locales->getLanguages();
-        unset($languageItems['default']);
-        asort($languageItems);
-        $installedLanguages = $this->locales->getActiveLanguages();
         $availableLanguages = [];
         $unavailableLanguages = [];
-        foreach ($languageItems as $typo3Language => $name) {
-            $available = in_array($typo3Language, $installedLanguages, true) || is_dir(Environment::getLabelsPath() . '/' . $typo3Language);
-            if ($available) {
-                $availableLanguages[] = ['label' => $name, 'value' => $typo3Language, 'group' => 'installed'];
+        foreach ($languageItems as $languageKey => $name) {
+            if ($this->locales->isLanguageKeyAvailable($languageKey)) {
+                $availableLanguages[] = ['label' => $name, 'value' => $languageKey, 'group' => 'installed'];
             } else {
-                $unavailableLanguages[] = ['label' => $name, 'value' => $typo3Language, 'group' => 'unavailable'];
+                $unavailableLanguages[] = ['label' => $name, 'value' => $languageKey, 'group' => 'unavailable'];
             }
         }
 
         // Ensure ordering of the items
-        $fieldInformation['items'] = array_merge($fieldInformation['items'], $availableLanguages);
-        $fieldInformation['items'] = array_merge($fieldInformation['items'], $unavailableLanguages);
+        $fieldInformation['items'] = array_merge($availableLanguages, $unavailableLanguages);
     }
 
     /**

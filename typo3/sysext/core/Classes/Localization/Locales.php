@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Localization;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -27,10 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * User-defined system languages can be added to $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user']
  *
  * These system languages are used for determining the proper language labels of XLF files.
- *
- * When adding new keys, remember to:
- * - Update 'setup' extension labels (sysext/setup/Resources/Private/Language/locallang.xlf)
- * That's it!
  */
 class Locales implements SingletonInterface
 {
@@ -240,6 +237,11 @@ class Locales implements SingletonInterface
             ['default'],
             array_filter(array_values($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] ?? []))
         );
+    }
+
+    public function isLanguageKeyAvailable(string $languageKey): bool
+    {
+        return in_array($languageKey, $this->getActiveLanguages()) || is_dir(Environment::getLabelsPath() . '/' . $languageKey);
     }
 
     /**

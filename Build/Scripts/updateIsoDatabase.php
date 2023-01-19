@@ -111,7 +111,7 @@ function updatePhpFile(string $fileLocation, array $contents): void
     $fileContents = file_get_contents($fileLocation);
     $newFormattedData = ArrayUtility::arrayExport($contents);
     $newFormattedData = str_replace("\n", "\n    ", $newFormattedData);
-    $newFileContents = preg_replace('/private array \$rawData = [^;]*;/u', 'private array $rawData = ' . $newFormattedData . ';', $fileContents);
+    $newFileContents = preg_replace('/private array \$rawData = (?:(?!];).)++];/us', 'private array $rawData = ' . $newFormattedData . ';', $fileContents);
     file_put_contents($fileLocation, $newFileContents);
 }
 
@@ -171,6 +171,61 @@ function importCountries(array $countries, array $supportedLanguagesInTypo3, str
 // Load all available countries in english
 $countries = json_decode(file_get_contents($baseDirectory . '/databases/iso_3166-1.json'), true);
 importCountries($countries['3166-1'], $supportedLanguagesInTypo3, $baseDirectory, $targetXliffDirectory);
+
+function importLanguages(array $languages, array $supportedLanguagesInTypo3, string $baseDirectory, string $targetXliffDirectory): void
+{
+    sort($languages);
+    $providerFileLocation = __DIR__ . '/../../typo3/sysext/core/Classes/Localization/OfficialLanguages.php';
+    $defaultCatalogue = new MessageCatalogue('en');
+    $xliffDumper = new XliffDumper();
+
+    $cleanedLanguages = [];
+    foreach ($languages as $languageDetails) {
+        $alias = null;
+        if (isset($languageDetails['alpha_2'])) {
+            $primaryLanguageKey = $languageDetails['alpha_2'];
+            $alias = $languageDetails['alpha_3'] ?? null;
+        } else {
+            $primaryLanguageKey = $languageDetails['alpha_3'];
+        }
+        $data = ['name' => $languageDetails['name']];
+        if ($alias) {
+            $data['alias'] = $alias;
+        }
+        $cleanedLanguages[$primaryLanguageKey] = $data;
+    }
+    ksort($cleanedLanguages);
+    // Add XLIFF labels
+    foreach ($cleanedLanguages as $primaryLanguageKey => $languageData) {
+        $defaultCatalogue->add([$primaryLanguageKey => $languageData['name']], 'languages');
+    }
+    updatePhpFile($providerFileLocation, $cleanedLanguages);
+    // Dump original translations in XLIFF file
+    $xliffDumper->dump($defaultCatalogue, ['path' => $targetXliffDirectory]);
+
+    // 2. Load labels
+    $loader = new PoFileLoader();
+    foreach ($supportedLanguagesInTypo3 as $languageKey) {
+        $translationFile = $baseDirectory . '/messages/' . $languageKey . '/LC_MESSAGES/639-2.po';
+        if (!file_exists($translationFile)) {
+            continue;
+        }
+        $catalogue = $loader->load($translationFile, $languageKey);
+        $cleanedCatalogue = new MessageCatalogue(str_replace('_', '-', $languageKey));
+        $cleanedCatalogue->addFallbackCatalogue($defaultCatalogue);
+        foreach ($cleanedLanguages as $primaryLanguageKey => $countryDetails) {
+            $languageName = $countryDetails['name'];
+            $translatedName = $catalogue->get($languageName);
+            if ($translatedName) {
+                $cleanedCatalogue->add([$primaryLanguageKey => $translatedName], 'languages');
+            }
+        }
+        $xliffDumper->dump($cleanedCatalogue, ['path' => $targetXliffDirectory]);
+    }
+}
+// Load all available languages in english
+$languageSource = json_decode(file_get_contents($baseDirectory . '/databases/iso_639-2.json'), true);
+importLanguages($languageSource['639-2'], $supportedLanguagesInTypo3, $baseDirectory, $targetXliffDirectory);
 
 return;
 

@@ -39,6 +39,8 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Localization\OfficialLanguages;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
@@ -86,7 +88,8 @@ class SetupModuleController
         protected readonly LanguageServiceFactory $languageServiceFactory,
         protected readonly ModuleProvider $moduleProvider,
         protected readonly UriBuilder $uriBuilder,
-        protected readonly FormProtectionFactory $formProtectionFactory
+        protected readonly FormProtectionFactory $formProtectionFactory,
+        protected readonly Locales $locales,
     ) {
         $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
 
@@ -598,35 +601,29 @@ class SetupModuleController
      */
     protected function renderLanguageSelect()
     {
-        $tcaConfig = $GLOBALS['TCA']['be_users']['columns']['lang']['config'];
-        $items = $tcaConfig['items'];
-        $itemsProcFunc = [
-            'items' => &$items,
-        ];
-        GeneralUtility::callUserFunction($tcaConfig['itemsProcFunc'], $itemsProcFunc);
+        $items = $this->locales->getLanguages();
+        $officialLanguages = new OfficialLanguages();
         $backendUser = $this->getBackendUser();
         $currentSelectedLanguage = (string)($backendUser->user['lang'] ?? 'default');
         $languageService = $this->getLanguageService();
         $content = '';
         // get all labels in default language as well
         $defaultLanguageLabelService = $this->languageServiceFactory->create('default');
-        $defaultLanguageLabelService->includeLLFile('EXT:setup/Resources/Private/Language/locallang.xlf');
-        foreach ($items as $item) {
-            $languageCode = $item['value'];
-            $name = $item['label'];
-            $available = in_array($languageCode, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] ?? [], true) || is_dir(Environment::getLabelsPath() . '/' . $languageCode);
-            if ($available || $languageCode === 'default') {
-                $localizedName = htmlspecialchars($languageService->getLL('lang_' . $languageCode) ?: $name);
-                $defaultName = $defaultLanguageLabelService->getLL('lang_' . $languageCode);
-                if ($defaultName === $localizedName || $defaultName === '') {
-                    $defaultName = $languageCode;
-                }
-                if ($defaultName !== $languageCode) {
-                    $defaultName .= ' - ' . $languageCode;
-                }
-                $localLabel = ' [' . htmlspecialchars($defaultName) . ']';
-                $content .= '<option value="' . $languageCode . '"' . ($currentSelectedLanguage === $languageCode ? ' selected="selected"' : '') . '>' . $localizedName . $localLabel . '</option>';
+        foreach ($items as $languageCode => $name) {
+            if (!$this->locales->isLanguageKeyAvailable($languageCode)) {
+                continue;
             }
+            $labelIdentifier = $officialLanguages->getLabelIdentifier($languageCode);
+            $localizedName = htmlspecialchars($languageService->sL($labelIdentifier) ?: $name);
+            $defaultName = $defaultLanguageLabelService->sL($labelIdentifier);
+            if ($defaultName === $localizedName || $defaultName === '') {
+                $defaultName = $languageCode;
+            }
+            if ($defaultName !== $languageCode) {
+                $defaultName .= ' - ' . $languageCode;
+            }
+            $localLabel = ' [' . htmlspecialchars($defaultName) . ']';
+            $content .= '<option value="' . $languageCode . '"' . ($currentSelectedLanguage === $languageCode ? ' selected="selected"' : '') . '>' . $localizedName . $localLabel . '</option>';
         }
         $content = '<select id="field_lang" name="data[be_users][lang]" class="form-select">' . $content . '</select>';
         if ($currentSelectedLanguage !== 'default' && !@is_dir(Environment::getLabelsPath() . '/' . $currentSelectedLanguage)) {

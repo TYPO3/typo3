@@ -269,7 +269,6 @@ return [
                 'itemsProcFunc' => \TYPO3\CMS\Core\Localization\TcaSystemLanguageCollector::class . '->populateAvailableSystemLanguagesForBackend',
                 'default' => 'default',
                 'items' => [
-                    ['label' => 'English', 'value' => 'default'],
                 ],
                 'itemGroups' => [
                     'installed' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.languageItemGroups.installed',
