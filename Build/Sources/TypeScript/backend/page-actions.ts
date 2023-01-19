@@ -11,12 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
+import DocumentService from '@typo3/core/document-service';
+import RegularEvent from '@typo3/core/event/regular-event';
 import PersistentStorage from './storage/persistent';
 import '@typo3/backend/element/icon-element';
 
 enum IdentifierEnum {
-  pageTitle = '.t3js-title-inlineedit',
   hiddenElements = '.t3js-hidden-record',
 }
 
@@ -25,51 +25,52 @@ enum IdentifierEnum {
  * JavaScript implementations for page actions
  */
 class PageActions {
-  private $showHiddenElementsCheckbox: JQuery = null;
-
   constructor() {
-    // @todo: Cannot use DocumentService.ready() for now. This module has dependency issues between the constructor and
-    //        setter methods and should be converted to independent web components.
-    $((): void => {
-      this.initializeElements();
-      this.initializeEvents();
+    DocumentService.ready().then((): void => {
+      const showHiddenElementsCheckbox = document.getElementById('checkShowHidden') as HTMLInputElement;
+      if (showHiddenElementsCheckbox !== null) {
+        new RegularEvent('change', this.toggleContentElementVisibility).bindTo(showHiddenElementsCheckbox);
+      }
     });
-  }
-
-  /**
-   * Initialize elements
-   */
-  private initializeElements(): void {
-    this.$showHiddenElementsCheckbox = $('#checkShowHidden');
-  }
-
-  /**
-   * Initialize events
-   */
-  private initializeEvents(): void {
-    this.$showHiddenElementsCheckbox.on('change', this.toggleContentElementVisibility);
   }
 
   /**
    * Toggles the "Show hidden content elements" checkbox
    */
-  private toggleContentElementVisibility(e: JQueryEventObject): void {
-    const $me = $(e.currentTarget);
-    const $hiddenElements = $(IdentifierEnum.hiddenElements);
+  private toggleContentElementVisibility(e: Event): void {
+    const me = e.target as HTMLInputElement;
+    const hiddenElements = document.querySelectorAll(IdentifierEnum.hiddenElements) as NodeListOf<HTMLElement>;
 
     // show a spinner to show activity
-    const $spinner = $('<span class="form-check-spinner"><typo3-backend-icon identifier="spinner-circle" size="small"></typo3-backend-icon></span>');
-    $me.hide().after($spinner);
+    const spinner = document.createElement('span');
+    spinner.classList.add('form-check-spinner');
+    spinner.append(document.createRange().createContextualFragment('<typo3-backend-icon identifier="spinner-circle" size="small"></typo3-backend-icon>'));
 
-    if ($me.prop('checked')) {
-      $hiddenElements.slideDown();
-    } else {
-      $hiddenElements.slideUp();
+    me.hidden = true;
+    me.insertAdjacentElement('afterend', spinner);
+
+    for (let hiddenElement of hiddenElements) {
+      hiddenElement.style.display = 'block';
+      const scrollHeight = hiddenElement.scrollHeight;
+      hiddenElement.style.display = '';
+
+      if (!me.checked) {
+        // We use requestAnimationFrame() as we have to set the container's height at first before resizing to 0px
+        // results in a smooth animation.
+        requestAnimationFrame(function() {
+          hiddenElement.style.height = scrollHeight + 'px';
+          requestAnimationFrame(function() {
+            hiddenElement.style.height = 0 + 'px';
+          });
+        });
+      } else {
+        hiddenElement.style.height = scrollHeight + 'px';
+      }
     }
 
-    PersistentStorage.set('moduleData.web_layout.showHidden', $me.prop('checked') ? '1' : '0').then((): void => {
-      $spinner.remove();
-      $me.show();
+    PersistentStorage.set('moduleData.web_layout.showHidden', me.checked ? '1' : '0').then((): void => {
+      me.hidden = false;
+      spinner.remove();
     });
   }
 }

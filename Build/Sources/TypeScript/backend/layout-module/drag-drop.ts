@@ -97,7 +97,9 @@ class DragDrop {
     (e.target.querySelector(DragDrop.dropZoneIdentifier) as HTMLElement).hidden = true;
 
     document.querySelectorAll(DragDrop.dropZoneIdentifier).forEach((element: HTMLElement): void => {
-      if (element.parentElement.querySelector(DragDrop.addContentIdentifier)) {
+      const addContentButton = element.parentElement.querySelector(DragDrop.addContentIdentifier) as HTMLElement;
+      if (addContentButton !== null) {
+        addContentButton.hidden = true;
         element.classList.add(DragDrop.validDropZoneClass);
       }
     });
@@ -145,6 +147,10 @@ class DragDrop {
     e.target.querySelector('.draggable-copy-message').remove();
 
     document.querySelectorAll(DragDrop.dropZoneIdentifier + '.' + DragDrop.validDropZoneClass).forEach((element: HTMLElement): void => {
+      const addContentButton = element.parentElement.querySelector(DragDrop.addContentIdentifier) as HTMLElement;
+      if (addContentButton !== null) {
+        addContentButton.hidden = false;
+      }
       element.classList.remove(DragDrop.validDropZoneClass);
     });
   }

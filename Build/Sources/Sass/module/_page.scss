@@ -126,8 +126,11 @@ html {
 // Content elements
 //
 .t3-page-ce {
+    display: block;
     position: relative;
     margin: var(--pagemodule-grid-spacing) var(--pagemodule-grid-inner-spacing);
+    transition: height .4s ease-out;
+    overflow: hidden;
 
     &.active-drag {
         z-index: 4500;
@@ -205,9 +208,10 @@ html {
 }
 
 .t3-page-ce-actions {
-    position: relative;
     text-align: center;
     z-index: 2;
+    // Apply same height as dropzones to avoid jumping elements
+    height: 40px;
 }
 
 //
@@ -215,14 +219,12 @@ html {
 //
 .t3-page-ce-dropzone {
     position: relative;
-    bottom: -8px;
+    top: 0;
     z-index: 297;
     border-radius: var(--pagemodule-element-border-radius);
     background-color: var(--pagemodule-dropzone-bg);
-    transition: height .3s ease-in-out, background-color .3s ease-in-out, left .3s ease-in-out, right .3s ease-in-out, bottom .3s ease-in-out;
 
     &.active {
-        position: absolute;
         border: 1px dashed rgba(0, 0, 0, .15);
         height: 40px;
         width: 100%;
