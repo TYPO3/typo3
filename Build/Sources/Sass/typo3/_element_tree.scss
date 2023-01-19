@@ -133,7 +133,8 @@ $tree-control-icon-size: 12px;
     height: $tree-control-size;
     user-select: none;
 
-    &:before {
+    &:before,
+    &:target:before {
         content: '';
         position: absolute;
         top: 50%;
