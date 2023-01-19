@@ -2,7 +2,7 @@
 TYPO3 extension ``tstemplate``
 ==============================
 
-This TYPO3 backend module allows the administration of TypoScript templates
+This TYPO3 backend module allows the administration of TypoScript records
 that configure the frontend rendering.
 
 :Repository:  https://github.com/typo3/typo3

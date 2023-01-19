@@ -230,9 +230,9 @@ class SearchController extends ActionController
         // This value may be a commalist of integer (prepared for this)
         $this->searchRootPageIdList = (int)$GLOBALS['TSFE']->config['rootLine'][0]['uid'];
         // Setting the list of root PIDs for the search. Notice, these page IDs MUST
-        // have a TypoScript template with root flag on them! Basically this list is used
+        // have a TypoScript with root flag on them! Basically this list is used
         // to select on the "rl0" field and page ids are registered as "rl0" only if
-        // a TypoScript template record with root flag is there.
+        // a TypoScript record with root flag is there.
         // This happens AFTER the use of $this->searchRootPageIdList above because
         // the above will then fetch the menu for the CURRENT site - regardless
         // of this kind of searching here. Thus a general search will lookup in

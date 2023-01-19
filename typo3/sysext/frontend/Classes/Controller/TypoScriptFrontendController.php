@@ -1157,7 +1157,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         // Early exception if there is no sys_template at all.
         if (empty($sysTemplateRows)) {
-            $message = 'No TypoScript template found!';
+            $message = 'No TypoScript record found!';
             $this->logger->alert($message);
             try {
                 $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(

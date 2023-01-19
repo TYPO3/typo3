@@ -518,7 +518,7 @@ class ConditionMatcherTest extends FunctionalTestCase
                 'backend_layout_next_level' => 'pagets__article',
             ],
             [
-                'uid' => 2, // Could be TypoScript template with 'root' flag set
+                'uid' => 2, // Could be TypoScript record with 'root' flag set
                 'backend_layout_next_level' => 'pagets__default',
             ],
             [
@@ -552,7 +552,7 @@ class ConditionMatcherTest extends FunctionalTestCase
                 'backend_layout_next_level' => 'pagets__article',
             ],
             [
-                'uid' => 2, // Could be TypoScript template with 'root' flag set
+                'uid' => 2, // Could be TypoScript record with 'root' flag set
                 'backend_layout_next_level' => 'pagets__default',
             ],
             [

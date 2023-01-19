@@ -6,4 +6,4 @@
 .. figure:: /Images/AutomaticScreenshots/TypoScript/ConstantEditor.png
    :class: with-shadow
 
-   Include the Fluid Content Elements TypoScript template
+   Include the Fluid Content Elements TypoScript file

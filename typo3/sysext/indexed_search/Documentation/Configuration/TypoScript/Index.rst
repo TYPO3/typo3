@@ -181,7 +181,7 @@ Root pid list
     An empty value (default) falls back to the current root page ID.
 
     ..  note::
-        By "root page" we mean a website root defined by a TypoScript template!
+        By "root page" we mean a website root defined by a TypoScript record!
         If you just want to search in branches of your site, use the possibility
         of searching in levels.
 

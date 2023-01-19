@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-tstemplate",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 CMS TypoScript Template - TYPO3 backend module for the management of TypoScript template records for the CMS frontend.",
+	"description": "TYPO3 CMS TypoScript - TYPO3 backend module for the management of TypoScript records for the CMS frontend.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

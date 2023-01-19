@@ -21,14 +21,11 @@
 			<trans-unit id="templateRecordsOverview" resname="templateRecordsOverview">
 				<source>TypoScript Records</source>
 			</trans-unit>
-			<trans-unit id="viewTemplates" resname="viewTemplates">
-				<source>Viewing TypoScript templates of</source>
-			</trans-unit>
 			<trans-unit id="pageName" resname="pageName">
 				<source>Page name</source>
 			</trans-unit>
 			<trans-unit id="templates" resname="templates">
-				<source>Typoscript Templates</source>
+				<source>Typoscript records</source>
 			</trans-unit>
 			<trans-unit id="isRoot" resname="isRoot">
 				<source>Is Root?</source>
@@ -37,52 +34,46 @@
 				<source>Is Ext?</source>
 			</trans-unit>
 			<trans-unit id="overview" resname="overview">
-				<source>Global overview of all pages in the database containing one or more TypoScript template records.</source>
+				<source>Global overview of all pages in the database containing one or more TypoScript records.</source>
 			</trans-unit>
 			<trans-unit id="areYouSure" resname="areYouSure">
 				<source>Are you sure you want to do this?</source>
 			</trans-unit>
 			<trans-unit id="noTemplate" resname="noTemplate">
-				<source>No TypoScript template</source>
+				<source>No TypoScript record</source>
 			</trans-unit>
 			<trans-unit id="noTemplateDescription" resname="noTemplateDescription">
-				<source>There was no TypoScript template on this page!</source>
-			</trans-unit>
-			<trans-unit id="createTemplate" resname="createTemplate">
-				<source>Create a TypoScript template record first in order to edit constants!</source>
+				<source>There is no TypoScript record on this page!</source>
 			</trans-unit>
 			<trans-unit id="createTemplateToEditConfiguration" resname="createTemplateToEditConfiguration">
-				<source>You need to create a TypoScript template record below in order to edit your configuration.</source>
+				<source>You need to create a TypoScript record in order to edit your configuration.</source>
 			</trans-unit>
 			<trans-unit id="newWebsite" resname="newWebsite">
-				<source>Create new website</source>
+				<source>Root TypoScript record</source>
 			</trans-unit>
 			<trans-unit id="newWebsiteDescription" resname="newWebsiteDescription">
-				<source>If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below.</source>
+				<source>Choose this option if you want this page to be the root of a new site.</source>
 			</trans-unit>
 			<trans-unit id="newWebsiteAction" resname="newWebsiteAction">
-				<source>Create TypoScript template for a new site</source>
+				<source>Create a root TypoScript record</source>
 			</trans-unit>
 			<trans-unit id="extTemplate" resname="extTemplate">
-				<source>Create extension TypoScript template</source>
+				<source>Additional TypoScript record</source>
 			</trans-unit>
 			<trans-unit id="extTemplateDescription" resname="extTemplateDescription">
-				<source>An extension TypoScript template allows you to enter TypoScript values that will affect only this page and subpages.</source>
+				<source>An additonal TypoScript record allows you to enter TypoScript values that will affect only this page and subpages.</source>
 			</trans-unit>
 			<trans-unit id="extTemplateAction" resname="extTemplateAction">
-				<source>Click here to create an extension TypoScript template.</source>
+				<source>Create an additonal TypoScript record</source>
 			</trans-unit>
 			<trans-unit id="goToClosest" resname="goToClosest">
-				<source>Go to closest page with TypoScript template</source>
+				<source>Go to closest page with TypoScript records</source>
 			</trans-unit>
 			<trans-unit id="goToClosestDescription" resname="goToClosestDescription">
-				<source>Closest TypoScript template is on page '%s' (uid %s).</source>
+				<source>Closest TypoScript record is on page '%s' (uid %s).</source>
 			</trans-unit>
 			<trans-unit id="goToClosestAction" resname="goToClosestAction">
 				<source>Click here to go.</source>
-			</trans-unit>
-			<trans-unit id="titleNewSiteStandard" resname="titleNewSiteStandard">
-				<source>NEW SITE, based on standard</source>
 			</trans-unit>
 			<trans-unit id="titleNewSite" resname="titleNewSite">
 				<source>NEW SITE</source>

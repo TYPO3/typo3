@@ -6,8 +6,8 @@
 TypoScript
 ==========
 
-At the section :ref:`using-the-rendering-definitions` you've already added the static
-templates. Static templates are a collection of TypoScript files. These files are located
+At the section :ref:`using-the-rendering-definitions` you've already added the TypoScript
+sets. TypoScript sets are a collection of TypoScript files. These files are located
 in the directory :file:`EXT:fluid_styled_content/Configuration/TypoScript/`.
 
 .. figure:: /Images/ExternalScreenshots/TypoScriptFileStructure.png

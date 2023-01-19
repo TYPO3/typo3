@@ -17,27 +17,27 @@
 					{"action": "click", "link": "Save"},
 					{"action": "waitForText", "text": "Edit Page"},
 					{"action": "reloadBackend"},
-					{"action": "see", "text": "Template"},
-					{"action": "click", "link": "Template"},
+					{"action": "see", "text": "TypoScript"},
+					{"action": "click", "link": "TypoScript"},
 					{"action": "drawBadge", "selector": "#web_ts", "label": "1", "position": "right"},
 					{"action": "openPageTreePath", "path": ["example.com"]},
 					{"action": "drawBadge", "selector": "#typo3-pagetree-treeContainer", "label": "2", "position": "top"},
 					{"action": "switchToContentFrame"},
 					{"action": "waitForText", "text": "Create new"},
-					{"action": "click", "link": "Create template for a new site"},
+					{"action": "click", "link": "Create TypoScript record for a new site"},
 					{"action": "see", "text": "Template tools"},
-					{"action": "selectOption", "select": "select.t3-js-jumpMenuBox", "option": "Info/Modify"},
+					{"action": "selectOption", "select": "select.t3-js-jumpMenuBox", "option": "Override TypoScript"},
 					{"action": "drawBadge", "selector": "select.t3-js-jumpMenuBox", "label": "3", "position": "right"},
-					{"action": "drawBox", "selector": "//a[contains(., 'Edit the whole template record')]"},
-					{"action": "drawBadge", "selector": "//a[contains(., 'Edit the whole template record')]", "label": "4", "position": "right"},
+					{"action": "drawBox", "selector": "//a[contains(., 'Edit the whole TypoScript record')]"},
+					{"action": "drawBadge", "selector": "//a[contains(., 'Edit the whole TypoScript record')]", "label": "4", "position": "right"},
 					{
 						"action": "makeScreenshotOfElement",
 						"fileName": "EditTemplateRecord",
-						"captionText": "Edit the whole template record"
+						"captionText": "Edit the whole TypoScript record"
 					},
 					{"action": "resizeWindow", "width": 1024, "height": 500},
 					{"action": "clearDrawings"},
-					{"action": "click", "link": "//a[contains(., 'Edit the whole template record')]"},
+					{"action": "click", "link": "//a[contains(., 'Edit the whole TypoScript record')]"},
 					{"action": "waitForText", "text": "Edit Template"},
 					{"action": "switchToMainFrame"},
 					{"action": "click", "link": "button.scaffold-content-navigation-switcher-close"},
@@ -55,7 +55,7 @@
 					{
 						"action": "makeScreenshotOfElement",
 						"fileName": "IncludeTypoScriptTemplate",
-						"captionText": "Include the Fluid Content Elements TypoScript template"
+						"captionText": "Include the Fluid Content Elements TypoScript file"
 					},
 					{"action": "click", "link": "Save"},
 					{"action": "waitForText", "text": "Edit Template"},
@@ -76,7 +76,7 @@
 					{
 						"action": "makeScreenshotOfElement",
 						"fileName": "ConstantEditor",
-						"captionText": "Include the Fluid Content Elements TypoScript template"
+						"captionText": "Include the Fluid Content Elements TypoScript file"
 					},
 					{"action": "clearDrawings"},
 

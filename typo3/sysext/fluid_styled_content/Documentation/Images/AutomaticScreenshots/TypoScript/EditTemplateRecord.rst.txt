@@ -6,4 +6,4 @@
 .. figure:: /Images/AutomaticScreenshots/TypoScript/EditTemplateRecord.png
    :class: with-shadow
 
-   Edit the whole template record
+   Edit the whole TypoScript record

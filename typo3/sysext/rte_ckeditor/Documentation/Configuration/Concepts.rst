@@ -314,7 +314,7 @@ functionality. The shipped TypoScript code looks like this:
 
 If you already use Fluid Styled Content and CSS Styled Content and
 you haven’t touched that area of TypoScript yet, you’re good to go
-by including the TypoScript template.
+by including the TypoScript file.
 
 Fluid
 -----
@@ -326,7 +326,7 @@ thus applying the same logic. Just ensure that the :typoscript:`lib.parseFunc_RT
 functionality is available.
 
 You can check if this TypoScript snippet is loaded by using
-:guilabel:`Web > Template` and use the TypoScript Object Browser (Setup)
+:guilabel:`Web > TypoScript` and use the TypoScript Tree (Setup)
 to see if :typoscript:`lib.parseFunc_RTE` is filled.
 
 .. todo: [SCREENSHOT of TSOB having lib.parseFunc_RTE open]

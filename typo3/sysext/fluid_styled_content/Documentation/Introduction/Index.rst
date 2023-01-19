@@ -95,7 +95,7 @@ could look like the following in the browser:
 A little bit of history
 =======================
 
-In early years, TYPO3's content elements were rendered by the static template called
+In early years, TYPO3's content elements were rendered by the Typoscript set called
 *content (default)*. This was mainly based on font-tags for styling and tables for
 positioning which was needed to achieve the visual constructions in old versions of web
 browsers.

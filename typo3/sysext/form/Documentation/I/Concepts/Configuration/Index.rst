@@ -147,7 +147,7 @@ There are different ways to include the TypoScript configuration for the
 backend:
 
 - a) use the API function ``\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup()``,
-- b) add the configuration to your existing TypoScript template.
+- b) add the configuration to your existing TypoScript record.
 
 In both cases, the ``form editor`` will work as expected regardless the
 chosen page from the page tree. If using the aforementioned method b, the

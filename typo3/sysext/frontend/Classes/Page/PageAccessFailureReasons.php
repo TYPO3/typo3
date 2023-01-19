@@ -64,7 +64,7 @@ final class PageAccessFailureReasons
         self::PAGE_NOT_FOUND => 'The requested page does not exist',
         self::INVALID_EXTERNAL_URL => 'Page of type "External URL" could not be resolved properly',
 
-        self::RENDERING_INSTRUCTIONS_NOT_FOUND => 'No TypoScript template found',
+        self::RENDERING_INSTRUCTIONS_NOT_FOUND => 'No TypoScript record found',
         self::RENDERING_INSTRUCTIONS_NOT_CONFIGURED => 'The page is not configured',
 
         self::INVALID_PAGE_ARGUMENTS => 'Page Arguments could not be resolved',

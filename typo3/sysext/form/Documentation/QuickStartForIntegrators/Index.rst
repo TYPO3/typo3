@@ -12,12 +12,12 @@ and you want to get started quickly? Just follow these steps!
 
 .. rst-class:: bignums-xxl
 
-1. Include static TypoScript templates
+1. Include TypoScript sets
 
-   First, open the ``Template`` module in the backend and edit your root
-   TypoScript template. Under the tab "Includes", ensure that Fluid Content
+   First, open the ``TypoScript`` module in the backend and edit your root
+   TypoScript record. Under the tab "Includes", ensure that Fluid Content
    Elements (fluid_styled_content) and Form (form) are among the selected
-   items. Save the template.
+   items. Save the record.
 
 2. Create a new form
 

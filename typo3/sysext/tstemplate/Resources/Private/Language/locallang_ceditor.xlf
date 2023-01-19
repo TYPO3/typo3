@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="objectBrowserTitleWithTemplate" resname="objectBrowserTitleWithTemplate">
-				<source>Constant Editor for TypoScript template "%s"</source>
+				<source>Constant Editor for TypoScript record "%s"</source>
 			</trans-unit>
 			<trans-unit id="selectedTemplate" resname="selectedTemplate">
 				<source>Selected record</source>
@@ -19,7 +19,7 @@
 				<source>There are no editable constants available for the Constant Editor.</source>
 			</trans-unit>
 			<trans-unit id="moduleDescription" resname="moduleDescription">
-				<source>Overwrite constants and save them to the selected TypoScript template on the current page. Only options that have been made available for editing in the constant editor are shown below. In addition, more constants can exist in the system.</source>
+				<source>Overwrite constants and save them to the selected TypoScript record on the current page. Only options that have been made available for editing in the constant editor are shown below. In addition, more constants can exist in the system.</source>
 			</trans-unit>
 		</body>
 	</file>

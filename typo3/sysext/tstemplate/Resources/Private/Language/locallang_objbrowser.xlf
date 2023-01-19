@@ -7,13 +7,13 @@
 				<source>TypoScript Tree</source>
 			</trans-unit>
 			<trans-unit id="objectBrowserTitleWithTemplate" resname="objectBrowserTitleWithTemplate">
-				<source>Tree for TypoScript template "%s"</source>
+				<source>Tree for TypoScript record "%s"</source>
 			</trans-unit>
 			<trans-unit id="objectBrowserEditTitle" resname="objectBrowserEditTitle">
 				<source>Edit single properties</source>
 			</trans-unit>
 			<trans-unit id="objectBrowserEditTitleWithTemplate" resname="objectBrowserEditTitleWithTemplate">
-				<source>Edit single properties in TypoScript template "%s"</source>
+				<source>Edit single properties in TypoScript record "%s"</source>
 			</trans-unit>
 			<trans-unit id="selectedTemplate" resname="selectedTemplate">
 				<source>Selected record</source>
@@ -22,10 +22,10 @@
 				<source>You must enter a property with characters "a-z", "A-Z", "0-9", or ".". Dots will be quoted. No spaces or special chars.</source>
 			</trans-unit>
 			<trans-unit id="lineAdded" resname="lineAdded">
-				<source>Line added to current TypoScript template</source>
+				<source>Line added to current TypoScript record</source>
 			</trans-unit>
 			<trans-unit id="lineNotAdded" resname="lineNotAdded">
-				<source>No line added to current TypoScript template</source>
+				<source>No line added to current TypoScript record</source>
 			</trans-unit>
 			<trans-unit id="updateButton" resname="updateButton">
 				<source>Update</source>
@@ -46,10 +46,10 @@
 				<source>Clear object</source>
 			</trans-unit>
 			<trans-unit id="noCurrentTemplateTitle" resname="noCurrentTemplateTitle">
-				<source>No TypoScript template on page</source>
+				<source>No TypoScript record on the current page</source>
 			</trans-unit>
 			<trans-unit id="noCurrentTemplate" resname="noCurrentTemplate">
-				<source>You cannot edit properties and values if there is no current TypoScript template. Please create an extension typoscript template in "Override TypoScript" first.</source>
+				<source>You cannot edit properties and values if there is no current TypoScript record in which the configuration can be stored. Please create an extension TypoScript record in "Override TypoScript" first.</source>
 			</trans-unit>
 			<trans-unit id="setupRoot" resname="setupRoot">
 				<source>Setup Tree</source>

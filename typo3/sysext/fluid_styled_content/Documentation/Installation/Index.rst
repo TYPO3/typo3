@@ -80,4 +80,4 @@ suggested steps.
 Next step
 =========
 
-Include the :ref:`default TypoScript template <include-default-typoscript>`.
+Include the :ref:`default TypoScript file <include-default-typoscript>`.

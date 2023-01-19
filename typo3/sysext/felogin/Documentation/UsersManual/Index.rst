@@ -37,7 +37,7 @@ for setting this storage folder:
   Page` to your storage page.
 
 - Or set the UID of you storage folder through TypoScript in the setup
-  field of your TypoScript Template:
+  field of your TypoScript record:
 
 .. code-block:: typoscript
 

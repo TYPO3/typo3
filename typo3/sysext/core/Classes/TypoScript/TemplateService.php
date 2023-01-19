@@ -745,7 +745,7 @@ class TemplateService
             }
         }
         // If "Default (include before if root flag is set)" is set OR
-        // "Always include before this template record" AND root-flag are set
+        // "Always include before this typoscript record" AND root-flag are set
         if ($staticFileMode === 1 || ($staticFileMode === 0 && str_starts_with($templateID, 'sys_') && $row['root'])) {
             $this->addExtensionStatics($idList, $templateID, $pid);
         }
