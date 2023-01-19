@@ -145,7 +145,8 @@ final class TranslateViewHelper extends AbstractViewHelper
             $id = $key;
         }
 
-        if ((string)$id === '') {
+        $id = (string)$id;
+        if ($id === '') {
             throw new Exception('An argument "key" or "id" has to be provided', 1351584844);
         }
 
