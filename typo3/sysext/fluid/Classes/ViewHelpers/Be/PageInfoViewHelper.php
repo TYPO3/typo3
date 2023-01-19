@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
@@ -57,7 +59,12 @@ final class PageInfoViewHelper extends AbstractBackendViewHelper
 
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $id = GeneralUtility::_GP('id');
+        /** @var RenderingContext $renderingContext */
+        $request = $renderingContext->getRequest();
+        $id = 0;
+        if ($request instanceof ServerRequestInterface) {
+            $id = $request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0;
+        }
         $pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
         // Add icon with context menu, etc:
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);

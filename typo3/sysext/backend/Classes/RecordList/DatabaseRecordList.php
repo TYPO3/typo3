@@ -2139,7 +2139,7 @@ class DatabaseRecordList
         $this->showLimit = MathUtility::forceIntegerInRange((int)$showLimit, 0, 10000);
         $this->searchString = trim($search);
         $this->searchLevels = (int)$levels;
-        // Setting GPvars:
+        // Setting GPvars
         $this->sortField = GeneralUtility::_GP('sortField');
         $this->sortRev = GeneralUtility::_GP('sortRev');
         $this->duplicateField = GeneralUtility::_GP('duplicateField');
@@ -2648,9 +2648,9 @@ class DatabaseRecordList
      *
      * @param string[] $urlParameters
      */
-    public function setOverrideUrlParameters(array $urlParameters)
+    public function setOverrideUrlParameters(array $urlParameters, ServerRequestInterface $request)
     {
-        $currentUrlParameter = GeneralUtility::_GP('curUrl');
+        $currentUrlParameter = $request->getParsedBody()['curUrl'] ?? $request->getQueryParams()['curUrl'] ?? '';
         if (isset($currentUrlParameter['url'])) {
             $urlParameters['P']['currentValue'] = $currentUrlParameter['url'];
         }

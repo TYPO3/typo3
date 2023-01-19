@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
@@ -56,7 +58,12 @@ final class PagePathViewHelper extends AbstractBackendViewHelper
 
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $id = GeneralUtility::_GP('id');
+        /** @var RenderingContext $renderingContext */
+        $request = $renderingContext->getRequest();
+        $id = 0;
+        if ($request instanceof ServerRequestInterface) {
+            $id = $request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0;
+        }
         $pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
         // Is this a real page
         if ($pageRecord['_thePathFull'] ?? false) {

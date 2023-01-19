@@ -262,7 +262,7 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
 
         $dbList = $this->elementBrowserRecordList;
         $dbList->setRequest($request);
-        $dbList->setOverrideUrlParameters(array_merge($this->getUrlParameters([]), ['mode' => 'db', 'expandPage' => $selectedPage]));
+        $dbList->setOverrideUrlParameters(array_merge($this->getUrlParameters([]), ['mode' => 'db', 'expandPage' => $selectedPage]), $request);
         $dbList->setIsEditable(false);
         $dbList->calcPerms = new Permission($backendUser->calcPerms($pageInfo));
         $dbList->noControlPanels = true;

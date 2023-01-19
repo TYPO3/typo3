@@ -110,7 +110,7 @@ class AuthenticationService
         if (!$warningEmailAddress) {
             return;
         }
-        $formValues = GeneralUtility::_GP('install');
+        $formValues = $request->getParsedBody()['install'] ?? $request->getQueryParams()['install'] ?? null;
         $email = GeneralUtility::makeInstance(FluidEmail::class, $this->templatePaths);
         $email
             ->to($warningEmailAddress)
