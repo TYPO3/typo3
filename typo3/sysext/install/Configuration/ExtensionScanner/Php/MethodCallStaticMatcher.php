@@ -1457,4 +1457,11 @@ return [
             'Deprecation-99638-EnvironmentgetBackendPath.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::_POST' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-99633-GeneralUtilityPOST.rst',
+        ],
+    ],
 ];

@@ -167,9 +167,15 @@ class GeneralUtility
      * @return mixed If $var is set it returns the value of $_POST[$var]. If $var is NULL (default), returns $_POST itself.
      * @see _GET()
      * @see _GP()
+     * @deprecated since TYPO3 v12.2. will be removed in TYPO3 v13.0.
      */
     public static function _POST($var = null)
     {
+        trigger_error(
+            'GeneralUtility::_POST() will be removed in TYPO3 v13.0, retrieve request related' .
+            ' details from PSR-7 ServerRequestInterface instead.',
+            E_USER_DEPRECATED
+        );
         $value = $var === null ? $_POST : (empty($var) || !isset($_POST[$var]) ? null : $_POST[$var]);
         // This is there for backwards-compatibility, in order to avoid NULL
         if (isset($value) && !is_array($value)) {

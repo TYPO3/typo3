@@ -50,4 +50,29 @@ class GeneralUtilityTest extends UnitTestCase
             'POST is preferred over GET' => [$getPartDataModified, $fullDataArray, $fullDataArray['cake']],
         ];
     }
+
+    /**
+     * Data provider for canRetrieveGlobalInputsThroughGet
+     * and canRetrieveGlobalInputsThroughPost
+     * @todo once _GET() becomes deprecated too, only move the test, the provider was copied
+     */
+    public function getAndPostDataProvider(): array
+    {
+        return [
+            'canRetrieveGlobalInputsThroughPosted input data doesn\'t exist' => ['cake', [], null],
+            'No key will return entire input data' => [null, ['cake' => 'l\\ie'], ['cake' => 'l\\ie']],
+            'Can retrieve specific input' => ['cake', ['cake' => 'l\\ie', 'foo'], 'l\\ie'],
+            'Can retrieve nested input data' => ['cake', ['cake' => ['is a' => 'l\\ie']], ['is a' => 'l\\ie']],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getAndPostDataProvider
+     */
+    public function canRetrieveGlobalInputsThroughPost($key, $post, $expected): void
+    {
+        $_POST = $post;
+        self::assertSame($expected, GeneralUtility::_POST($key));
+    }
 }

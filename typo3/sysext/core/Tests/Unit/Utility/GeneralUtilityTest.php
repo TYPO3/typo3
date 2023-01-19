@@ -132,9 +132,9 @@ class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    ///////////////////////////////
-    // Tests concerning _GET / _POST
-    ///////////////////////////////
+    ////////////////////////
+    // Tests concerning _GET
+    ////////////////////////
     /**
      * Data provider for canRetrieveGlobalInputsThroughGet
      * and canRetrieveGlobalInputsThroughPost
@@ -142,7 +142,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function getAndPostDataProvider(): array
     {
         return [
-            'Requested input data doesn\'t exist' => ['cake', [], null],
+            'canRetrieveGlobalInputsThroughPosted input data doesn\'t exist' => ['cake', [], null],
             'No key will return entire input data' => [null, ['cake' => 'l\\ie'], ['cake' => 'l\\ie']],
             'Can retrieve specific input' => ['cake', ['cake' => 'l\\ie', 'foo'], 'l\\ie'],
             'Can retrieve nested input data' => ['cake', ['cake' => ['is a' => 'l\\ie']], ['is a' => 'l\\ie']],
@@ -157,16 +157,6 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $_GET = $get;
         self::assertSame($expected, GeneralUtility::_GET($key));
-    }
-
-    /**
-     * @test
-     * @dataProvider getAndPostDataProvider
-     */
-    public function canRetrieveGlobalInputsThroughPost($key, $post, $expected): void
-    {
-        $_POST = $post;
-        self::assertSame($expected, GeneralUtility::_POST($key));
     }
 
     ///////////////////////////
