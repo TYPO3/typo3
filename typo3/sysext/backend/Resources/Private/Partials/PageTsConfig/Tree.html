@@ -1,10 +1,8 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
-    xmlns:info="http://typo3.org/ns/TYPO3/CMS/Info/ViewHelpers"
+    xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-
 
 <f:be.pageRenderer
     includeJavaScriptModules="{
@@ -12,7 +10,6 @@
         1: '@typo3/backend/utility/collapse-state-persister.js'
     }"
 />
-
 
 <f:if condition="{pageTsConfig}">
     <f:then>
@@ -37,14 +34,14 @@
         </f:if>
     </f:then>
     <f:else>
-        <f:translate key="LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:tsconf_noPageTSconfigAvailable" />
+        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.noPageTSconfigAvailable" />
     </f:else>
 </f:if>
 
 <f:section name="listItem">
     <f:for each="{pageTsConfig}" as="configItem" key="configLabel" iteration="configIterator">
         <li>
-            <f:if condition="{info:isArray(value: configItem)}">
+            <f:if condition="{backend:isArray(value: configItem)}">
                 <f:then>
                     <f:comment><!-- Array --></f:comment>
                     <f:if condition="{parentIdentifier}">
@@ -55,7 +52,7 @@
                             <f:variable name="listIdentifier" value="{configLabel}" />
                         </f:else>
                     </f:if>
-                    <f:variable name="listIdentifier" value="{info:hash(value: listIdentifier)}" />
+                    <f:variable name="listIdentifier" value="{backend:hash(value: listIdentifier)}" />
                     <span class="list-tree-group">
                         <a
                             class="list-tree-control collapsed"

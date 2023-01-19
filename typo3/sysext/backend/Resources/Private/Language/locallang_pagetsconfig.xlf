@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf" date="2023-01-19T14:41:00Z" product-name="cms">
+		<header/>
+		<body>
+			<trans-unit id="module.pagetsconfig.title" resname="module.pagetsconfig.title">
+				<source>Page TsConfig</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig.description" resname="module.pagetsconfig.description">
+				<source>The Page TsConfig module lets you manage configuration overrides for editors and option display throughout the Backend.</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig.shortDescription" resname="module.pagetsconfig.shortDescription">
+				<source>Page TsConfig tools</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig.noAccess" resname="module.pagetsconfig.noAccess">
+				<source>Access to this module denied.</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_records" resname="module.pagetsconfig_records">
+				<source>PageTsConfig Records</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_records.headline" resname="module.pagetsconfig_records.headline">
+				<source>PageTsConfig Records</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_records.description" resname="module.pagetsconfig_records.description">
+				<source>Global overview of all pages in the database containing custom Page TSconfig.</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_records.noRecords" resname="module.pagetsconfig_records.noRecords">
+				<source>There are no pages containing custom Page TSconfig settings in the page configuration.</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_records.pagename" resname="module.pagetsconfig_records.pagename">
+				<source>Page name</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_records.written_tsconfig_lines" resname="module.pagetsconfig_records.written_tsconfig_lines">
+				<source>Lines</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active" resname="module.pagetsconfig_active">
+				<source>Active PageTsConfig</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.headline" resname="module.pagetsconfig_active.headline">
+				<source>Active PageTsConfig</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.description" resname="module.pagetsconfig_active.description">
+				<source>Overview of the current PageTsConfig of the system. A targeted search for values and names is possible. The list of results can also be filtered according to conditions.</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.sortAlphabetically" resname="module.pagetsconfig_active.sortAlphabetically">
+				<source>Sort alphabetically</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.noPageTSconfigAvailable" resname="module.pagetsconfig_active.noPageTSconfigAvailable">
+				<source>No suitable Page TSconfig available.</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes" resname="module.pagetsconfig_includes">
+				<source>Included PageTsConfig</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.headline" resname="module.pagetsconfig_includes.headline">
+				<source>Included PageTsConfig</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.description" resname="module.pagetsconfig_includes.description">
+				<source>Overview of the included TypoScript and include order for the current page.</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.editTsConfig" resname="module.pagetsconfig_includes.editTsConfig">
+				<source>Edit TSconfig for this page</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.editTsConfigAll" resname="module.pagetsconfig_includes.editTsConfigAll">
+				<source>Edit TSconfig for all shown pages</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

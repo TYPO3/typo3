@@ -1,0 +1,64 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module"/>
+
+<f:section name="Content">
+
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/backend/context-menu.js',
+            1: '@typo3/backend/element/immediate-action-element.js'
+        }"
+    />
+
+    <f:variable name="args" value="{0: 'web', 1: id}" />
+    <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
+
+    <h1>
+        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.headline" />
+    </h1>
+    <div>
+        <p class="lead"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.description" /></p>
+    </div>
+
+    <f:if condition="!{accessContent}">
+        <f:then>
+            <f:be.infobox state="-1" message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig.noAccess')}" />
+        </f:then>
+        <f:else>
+            <f:for each="{lines}" as="line">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <f:format.raw>{line.title}</f:format.raw>
+                    </div>
+                    <div class="panel-body">
+                        <f:if condition="{line.content -> f:format.stripTags() -> f:spaceless()}">
+                            <f:format.raw>{line.content}</f:format.raw>
+                        </f:if>
+                        <f:render section="EditIcon" arguments="{editIcon: line.editIcon, editTitle: 'editTsConfig'}" />
+                    </div>
+                </div>
+            </f:for>
+            <f:render section="EditIcon" arguments="{editIcon: editIcon, editTitle: 'editTsConfigAll', editAll: 1}" />
+
+        </f:else>
+    </f:if>
+
+</f:section>
+
+<f:section name="EditIcon">
+    <f:if condition="{editIcon}">
+        <a href="{editIcon -> f:format.raw()}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.{editTitle}')}" class="btn btn-default">
+            <core:icon identifier="actions-document-open" />
+            <f:if condition="{editAll}">
+                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.editTsConfigAll" />
+            </f:if>
+        </a>
+    </f:if>
+</f:section>
+
+</html>

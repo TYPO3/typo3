@@ -1,7 +1,6 @@
 <?php
 
 use TYPO3\CMS\Info\Controller\InfoModuleController;
-use TYPO3\CMS\Info\Controller\InfoPageTyposcriptConfigController;
 use TYPO3\CMS\Info\Controller\PageInformationController;
 use TYPO3\CMS\Info\Controller\TranslationStatusController;
 
@@ -56,24 +55,6 @@ return [
         'moduleData' => [
             'depth' => 0,
             'lang' => 0,
-        ],
-    ],
-    'web_info_pagets' => [
-        'parent' => 'web_info',
-        'access' => 'user',
-        'path' => '/module/web/info/pagets',
-        'iconIdentifier' => 'module-info',
-        'labels' => [
-            'title' => 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:mod_pagetsconfig',
-        ],
-        'routes' => [
-            '_default' => [
-                'target' => InfoPageTyposcriptConfigController::class . '::handleRequest',
-            ],
-        ],
-        'moduleData' => [
-            'tsconf_parts' => '0',
-            'tsconf_alphaSort' => false,
         ],
     ],
 ];

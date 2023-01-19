@@ -15,28 +15,28 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Info\ViewHelpers;
+namespace TYPO3\CMS\Backend\ViewHelpers;
 
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Checks whether the given value is an array
+ * Temporary VH for PageTsConfig module. Will vanish soon.
  *
  * @internal
  */
-final class IsArrayViewHelper extends AbstractViewHelper
+final class HashViewHelper extends AbstractViewHelper
 {
     public function initializeArguments(): void
     {
-        $this->registerArgument('value', 'mixed', 'The variable being checked', true);
+        $this->registerArgument('value', 'string', 'The string to be hashed', true);
     }
 
     /**
-     * @param array{value: mixed} $arguments
+     * @param array{value: string} $arguments
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): bool
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        return is_array($arguments['value']);
+        return hash('xxh3', $arguments['value']);
     }
 }

@@ -1,0 +1,62 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module"/>
+
+<f:section name="Content">
+
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/backend/context-menu.js',
+            1: '@typo3/backend/element/immediate-action-element.js'
+        }"
+    />
+
+    <f:variable name="args" value="{0: 'web', 1: id}" />
+    <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
+
+    <h1>
+        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.headline" />
+    </h1>
+    <div>
+        <p class="lead"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.description" /></p>
+    </div>
+
+    <f:if condition="!{accessContent}">
+        <f:then>
+            <f:be.infobox state="-1" message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig.noAccess')}" />
+        </f:then>
+        <f:else>
+            <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
+                <div class="row row-cols-auto align-items-end g-3 mb-3">
+                    <f:if condition="{displayAlphaSort}">
+                        <div class="col">
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" for="checkTsconf_alphaSort">
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.sortAlphabetically" />
+                                </label>
+                                <input
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    name="tsconf_alphaSort"
+                                    value="1"
+                                    data-global-event="change"
+                                    data-action-navigate="$data=~s/$value/"
+                                    data-navigate-value="{alphaSortUrl}"
+                                    data-empty-value="0" id="checkTsconf_alphaSort" {alphaSortChecked}
+                                >
+                            </div>
+                        </div>
+                    </f:if>
+                </div>
+            </form>
+
+            <f:render partial="PageTsConfig/Tree" arguments="{pageTsConfig: pageTsConfig}" />
+        </f:else>
+    </f:if>
+
+</f:section>
+
+</html>
