@@ -482,7 +482,7 @@ class TypoScriptParser
                 $newValue = implode(',', $elements);
                 break;
             case 'getEnv':
-                $environmentValue = getenv(trim($modifierArgumentAsString));
+                $environmentValue = $_ENV[trim($modifierArgumentAsString)] ?? false;
                 if ($environmentValue !== false) {
                     $newValue = $environmentValue;
                 }
