@@ -170,6 +170,11 @@ services:
     shared: false
     public: true
 
+  TYPO3\CMS\Backend\EventListener\SilentSiteLanguageFlagMigration:
+    tags:
+      - name: event.listener
+        event: TYPO3\CMS\Core\Configuration\Event\SiteConfigurationLoadedEvent
+
   # Toolbar registry
   TYPO3\CMS\Backend\Toolbar\ToolbarItemsRegistry:
     arguments:

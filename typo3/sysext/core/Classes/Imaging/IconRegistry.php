@@ -69,6 +69,7 @@ class IconRegistry implements SingletonInterface
      */
     protected $backendIconAllowedExtensionsWithProvider = [
         'png' => BitmapIconProvider::class,
+        'webp' => BitmapIconProvider::class,
         'svg' => SvgIconProvider::class,
     ];
 
@@ -548,7 +549,7 @@ class IconRegistry implements SingletonInterface
         if ($handle = opendir($folderPath)) {
             while (($file = readdir($handle)) !== false) {
                 $fileInfo = pathinfo($folderPath . $file);
-                if ($fileInfo['extension'] !== 'png') {
+                if ($fileInfo['extension'] !== 'webp') {
                     continue;
                 }
                 $flagIcons['flags-' . strtolower($fileInfo['filename'])] = [

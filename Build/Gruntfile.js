@@ -46,6 +46,52 @@ module.exports = function (grunt) {
     });
   });
 
+  /**
+   * Grunt flag tasks
+   */
+  grunt.registerMultiTask('flags', 'Grunt task rendering the flags', function () {
+    var options = this.options(),
+      done = this.async(),
+      path = require('path'),
+      sharp = require('sharp'),
+      filesize = require('filesize'),
+      files = this.filesSrc.filter(function (file) {
+        return grunt.file.isFile(file);
+      }),
+      counter = 0;
+    this.files.forEach(function (file) {
+      file.src.filter(function (filepath) {
+        const targetFilename = path.join(file.orig.dest, file.dest.substring(file.orig.dest.length, file.dest.length - 4) + '.webp');
+        const overlay = Buffer.from('<svg width="32" height="32">	<path opacity="0.15" d="M30,6v20H2V6H30 M32,4H0v24h32V4L32,4z"/></svg>');
+        sharp(filepath)
+          .webp()
+          .flatten({ background: '#ffffff' })
+          .resize(32, 32, {
+            fit: 'contain',
+            position: 'center',
+            background: 'transparent',
+          })
+          .composite([{ input: overlay }])
+          .toFile(targetFilename)
+          .then(data => {
+            grunt.log.ok(`File ${targetFilename} created. ${filesize.filesize(data.size)}`)
+            counter++;
+            if (counter >= files.length) done(true);
+          }).catch(function (err) {
+            grunt.log.error('File "' + targetFilename + '" was not processed.');
+            console.log(err)
+          });
+      });
+    });
+  });
+  grunt.registerTask('flags-clear', function () {
+    const path = '../typo3/sysext/core/Resources/Public/Icons/Flags';
+    grunt.file.delete(path, { force: true });
+    grunt.file.mkdir(path);
+    grunt.log.ok(`Cleared ${path}.`)
+  });
+  grunt.registerTask('flags-build', ['flags-clear', 'flags']);
+
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -68,6 +114,32 @@ module.exports = function (grunt) {
       core: '<%= paths.sysext %>core/Resources/',
       node_modules: 'node_modules/',
       t3icons: '<%= paths.node_modules %>@typo3/icons/dist/'
+    },
+    flags: {
+      flagIcons: {
+        files: [{
+          expand: true,
+          cwd: '<%= paths.node_modules %>flag-icons/flags/4x3',
+          // Excludes
+          // - cp: Clipperton
+          // - dg: Diego Garcia
+          // - cefta: Central European Free Trade Agreement
+          // - ta: Tristan da Cunha
+          // - un: United Nations
+          // - um: United States Minor Outlying Islands
+          // - xx: Placeholder
+          src: ['**/*.svg', '!cp.svg', '!dg.svg', '!cefta.svg', '!ta.svg', '!um.svg', '!un.svg', '!xx.svg'],
+          dest: '<%= paths.core %>/Public/Icons/Flags'
+        }]
+      },
+      overrides: {
+        files: [{
+          expand: true,
+          cwd: '<%= paths.sources %>Icons/Flags',
+          src: ['**/*.svg'],
+          dest: '<%= paths.core %>/Public/Icons/Flags'
+        }]
+      },
     },
     stylelint: {
       options: {
@@ -142,15 +214,15 @@ module.exports = function (grunt) {
           }),
           require('postcss-banner')({
             banner: 'This file is part of the TYPO3 CMS project.\n' +
-            '\n' +
-            'It is free software; you can redistribute it and/or modify it under\n' +
-            'the terms of the GNU General Public License, either version 2\n' +
-            'of the License, or any later version.\n' +
-            '\n' +
-            'For the full copyright and license information, please read the\n' +
-            'LICENSE.txt file that was distributed with this source code.\n' +
-            '\n' +
-            'The TYPO3 project - inspiring people to share!',
+              '\n' +
+              'It is free software; you can redistribute it and/or modify it under\n' +
+              'the terms of the GNU General Public License, either version 2\n' +
+              'of the License, or any later version.\n' +
+              '\n' +
+              'For the full copyright and license information, please read the\n' +
+              'LICENSE.txt file that was distributed with this source code.\n' +
+              '\n' +
+              'The TYPO3 project - inspiring people to share!',
             important: true,
             inline: false
           })
@@ -188,7 +260,6 @@ module.exports = function (grunt) {
       ts: ((process.platform === 'win32') ? 'node_modules\\.bin\\tsc.cmd' : './node_modules/.bin/tsc') + ' --project tsconfig.json',
       ckeditor: ((process.platform === 'win32') ? 'node_modules\\.bin\\rollup.cmd' : './node_modules/.bin/rollup') + ' -c ckeditor5.rollup.config.js',
       lintspaces: ((process.platform === 'win32') ? 'node_modules\\.bin\\lintspaces.cmd' : './node_modules/.bin/lintspaces') + ' --editorconfig ../.editorconfig "../typo3/sysext/*/Resources/Private/**/*.html"',
-      squoosh: ((process.platform === 'win32') ? 'node_modules\\.bin\\squoosh-cli.cmd' : './node_modules/.bin/squoosh-cli') + ' --oxipng auto --output-dir ../typo3/sysext/core/Resources/Public/Icons/Flags/ ../typo3/sysext/core/Resources/Public/Icons/Flags/*.png' + ((process.platform === 'win32') ? '' : ' 2>&1'),
       'npm-install': 'npm install'
     },
     eslint: {
@@ -448,10 +519,10 @@ module.exports = function (grunt) {
               name: 'externals',
               resolveId: (source) => {
                 if (source === 'd3-selection') {
-                  return {id: 'd3-selection', external: true}
+                  return { id: 'd3-selection', external: true }
                 }
                 if (source === 'd3-dispatch') {
-                  return {id: 'd3-dispatch', external: true}
+                  return { id: 'd3-dispatch', external: true }
                 }
                 return null
               }
@@ -476,13 +547,13 @@ module.exports = function (grunt) {
               name: 'externals',
               resolveId: (source) => {
                 if (source === 'jquery') {
-                  return {id: 'jquery', external: true}
+                  return { id: 'jquery', external: true }
                 }
                 if (source === 'bootstrap') {
-                  return {id: 'node_modules/bootstrap/dist/js/bootstrap.esm.js'}
+                  return { id: 'node_modules/bootstrap/dist/js/bootstrap.esm.js' }
                 }
                 if (source === '@popperjs/core') {
-                  return {id: 'node_modules/@popperjs/core/dist/esm/index.js'}
+                  return { id: 'node_modules/@popperjs/core/dist/esm/index.js' }
                 }
                 return null
               }
@@ -722,6 +793,7 @@ module.exports = function (grunt) {
       npmcopy: ['npmcopy:dashboard', 'npmcopy:umdToEs6', 'npmcopy:jqueryUi', 'npmcopy:install', 'npmcopy:all'],
       lint: ['eslint', 'stylelint', 'exec:lintspaces'],
       compile_assets: ['scripts', 'css'],
+      compile_flags: ['flags-build'],
       minify_assets: ['terser:thirdparty', 'terser:t3editor'],
       copy_static: ['copy:core_icons', 'copy:install_icons', 'copy:module_icons', 'copy:extension_icons', 'copy:fonts', 'copy:t3editor'],
       build: ['copy:core_icons', 'copy:install_icons', 'copy:module_icons', 'copy:extension_icons', 'copy:fonts', 'copy:t3editor'],
@@ -851,7 +923,7 @@ module.exports = function (grunt) {
    * - minifies svg files
    * - compiles TypeScript files
    */
-  grunt.registerTask('default', ['clear-build', 'update', 'concurrent:copy_static', 'concurrent:compile_assets', 'concurrent:minify_assets', 'exec:squoosh']);
+  grunt.registerTask('default', ['clear-build', 'update', 'concurrent:copy_static', 'concurrent:compile_flags', 'concurrent:compile_assets', 'concurrent:minify_assets']);
 
   /**
    * grunt build task (legacy, for those used to it). Use `grunt default` instead.
