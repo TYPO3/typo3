@@ -87,6 +87,7 @@ class InfoModifyController extends AbstractTemplateModuleController
 
     private function mainAction(ServerRequestInterface $request, int $pageUid, array $allTemplatesOnPage): ResponseInterface
     {
+        $queryParams = $request->getQueryParams();
         $parsedBody = $request->getParsedBody();
 
         $backendUser = $this->getBackendUser();
@@ -99,7 +100,7 @@ class InfoModifyController extends AbstractTemplateModuleController
         $moduleData = $request->getAttribute('moduleData');
 
         $selectedTemplateFromModuleData = (array)$moduleData->get('selectedTemplatePerPage');
-        $selectedTemplateUid = (int)($parsedBody['selectedTemplate'] ?? $selectedTemplateFromModuleData[$pageUid] ?? 0);
+        $selectedTemplateUid = (int)($parsedBody['selectedTemplate'] ?? $queryParams['selectedTemplate'] ?? $selectedTemplateFromModuleData[$pageUid] ?? 0);
         if (!in_array($selectedTemplateUid, array_column($allTemplatesOnPage, 'uid'))) {
             $selectedTemplateUid = (int)($allTemplatesOnPage[0]['uid'] ?? 0);
         }

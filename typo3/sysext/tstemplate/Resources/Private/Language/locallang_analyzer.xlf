@@ -10,7 +10,7 @@
 				<source>Included TypoScript for record "%s"</source>
 			</trans-unit>
 			<trans-unit id="submodule.description" resname="submodule.description">
-				<source>Overview about the included TypoScript and include order for the current page.</source>
+				<source>Overview of the included TypoScript and include order for the current page.</source>
 			</trans-unit>
 			<trans-unit id="noTypoScriptFound" resname="noTypoScriptFound">
 				<source>No TypoScript found.</source>

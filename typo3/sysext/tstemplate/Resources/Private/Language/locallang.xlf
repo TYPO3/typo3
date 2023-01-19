@@ -21,24 +21,6 @@
 			<trans-unit id="templateRecordsOverview" resname="templateRecordsOverview">
 				<source>TypoScript Records</source>
 			</trans-unit>
-			<trans-unit id="pageName" resname="pageName">
-				<source>Page name</source>
-			</trans-unit>
-			<trans-unit id="templates" resname="templates">
-				<source>Typoscript records</source>
-			</trans-unit>
-			<trans-unit id="isRoot" resname="isRoot">
-				<source>Is Root?</source>
-			</trans-unit>
-			<trans-unit id="isExt" resname="isExt">
-				<source>Is Ext?</source>
-			</trans-unit>
-			<trans-unit id="overview" resname="overview">
-				<source>Global overview of all pages in the database containing one or more TypoScript records.</source>
-			</trans-unit>
-			<trans-unit id="areYouSure" resname="areYouSure">
-				<source>Are you sure you want to do this?</source>
-			</trans-unit>
 			<trans-unit id="noTemplate" resname="noTemplate">
 				<source>No TypoScript record</source>
 			</trans-unit>
@@ -78,8 +60,23 @@
 			<trans-unit id="titleNewSite" resname="titleNewSite">
 				<source>NEW SITE</source>
 			</trans-unit>
-			<trans-unit id="templateRecordsOverviewTitle" resname="templateRecordsOverviewTitle">
+			<trans-unit id="typoscriptRecords.title" resname="typoscriptRecords.title">
 				<source>TypoScript Records</source>
+			</trans-unit>
+			<trans-unit id="typoscriptRecords.description" resname="typoscriptRecords.description">
+				<source>Global overview of all pages in the database containing one or more TypoScript records.</source>
+			</trans-unit>
+			<trans-unit id="typoscriptRecords.noRecordsFound" resname="typoscriptRecords.noRecordsFound">
+				<source>No TypoScript Records found.</source>
+			</trans-unit>
+			<trans-unit id="typoscriptRecords.table.column.pageTitle" resname="typoscriptRecords.table.column.pageTitle">
+				<source>Page title</source>
+			</trans-unit>
+			<trans-unit id="typoscriptRecords.table.column.typoscriptRecords" resname="typoscriptRecords.table.column.typoscriptRecords">
+				<source>TypoScript records</source>
+			</trans-unit>
+			<trans-unit id="typoscriptRecords.table.column.root" resname="typoscriptRecords.table.column.root">
+				<source>Marked as root</source>
 			</trans-unit>
 		</body>
 	</file>
