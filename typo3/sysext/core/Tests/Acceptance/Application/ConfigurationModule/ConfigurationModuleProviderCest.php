@@ -93,7 +93,8 @@ class ConfigurationModuleProviderCest
             'Backend Routes',
             'Backend Modules',
             'HTTP Middlewares (PSR-15)',
-            'Site Configuration',
+            'Sites: TCA configuration',
+            'Sites: YAML configuration',
             'Event Listeners (PSR-14)',
             'MFA providers',
         ];

@@ -44,7 +44,8 @@ The Configuration module displays various configuration settings:
 - :ref:`Backend Routes <t3coreapi:backend-routing>`
 - :ref:`Backend Modules <t3coreapi:backend-modules>`
 - :ref:`HTTP Middlewares (PSR-15) <t3coreapi:request-handling>`
-- :ref:`Site configuration <t3coreapi:sitehandling>`
+- :ref:`Sites: TCA configuration <t3coreapi:sitehandling>`
+- :ref:`Sites: YAML configuration <t3coreapi:sitehandling>`
 - :ref:`Event listeners (PSR-14) <t3coreapi:EventDispatcher>`
 - :ref:`MFA providers <t3coreapi:multi-factor-authentication>`
 - :ref:`Soft Reference Parsers <t3coreapi:soft-references>`

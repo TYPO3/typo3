@@ -30,8 +30,11 @@
 			<trans-unit id="httpMiddlewareStacks" resname="httpMiddlewareStacks">
 				<source>HTTP Middlewares (PSR-15)</source>
 			</trans-unit>
-			<trans-unit id="siteConfiguration" resname="siteConfiguration">
-				<source>Site Configuration</source>
+			<trans-unit id="sitesTcaConfiguration" resname="sitesTcaConfiguration">
+				<source>Sites: TCA configuration</source>
+			</trans-unit>
+			<trans-unit id="sitesYamlConfiguration" resname="sitesYamlConfiguration">
+				<source>Sites: YAML configuration</source>
 			</trans-unit>
 			<trans-unit id="eventListeners" resname="eventListeners">
 				<source>Event Listeners (PSR-14)</source>

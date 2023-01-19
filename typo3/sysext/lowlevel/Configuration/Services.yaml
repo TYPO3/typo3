@@ -145,17 +145,26 @@ services:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'httpMiddlewareStacks'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:httpMiddlewareStacks'
-        before: 'siteConfiguration'
+        before: 'sitesTcaConfiguration'
         after: 'backendModules'
 
-  lowlevel.configuration.module.provider.siteconfiguration:
-    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\SiteConfigurationProvider'
+  lowlevel.configuration.module.provider.sitestcaconfiguration:
+    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\SitesTcaConfiguration'
     tags:
       - name: 'lowlevel.configuration.module.provider'
-        identifier: 'siteConfiguration'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:siteConfiguration'
-        before: 'eventListeners'
+        identifier: 'sitesTcaConfiguration'
+        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:sitesTcaConfiguration'
+        before: 'sitesYamlConfiguration'
         after: 'httpMiddlewareStacks'
+
+  lowlevel.configuration.module.provider.sitesyamlconfiguration:
+    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\SitesYamlConfiguration'
+    tags:
+      - name: 'lowlevel.configuration.module.provider'
+        identifier: 'sitesYamlConfiguration'
+        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:sitesYamlConfiguration'
+        before: 'eventListeners'
+        after: 'sitesTcaConfiguration'
 
   lowlevel.configuration.module.provider.eventlisteners:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\EventListenersProvider'
@@ -164,7 +173,7 @@ services:
         identifier: 'eventListeners'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:eventListeners'
         before: 'mfaProviders'
-        after: 'siteConfiguration'
+        after: 'sitesYamlConfiguration'
 
   lowlevel.configuration.module.provider.mfaproviders:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\MfaProvidersProvider'
