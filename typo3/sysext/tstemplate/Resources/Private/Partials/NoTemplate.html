@@ -42,7 +42,7 @@
                 <div class="card-text">
                     <p><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:newWebsiteDescription" /></p>
                     <div>
-                        <form action="{f:be.uri(route: 'web_ts', parameters: '{id: pageUid}')}" method="post">
+                        <form action="{f:be.uri(route: moduleIdentifier, parameters: '{id: pageUid}')}" method="post">
                             <input type="hidden" name="action" value="createNewWebsiteTemplate" />
                             <input
                                 class="btn btn-primary"

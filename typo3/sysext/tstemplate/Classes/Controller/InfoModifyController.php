@@ -79,6 +79,7 @@ class InfoModifyController extends AbstractTemplateModuleController
         $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         $view->assignMultiple([
             'pageUid' => $pageUid,
+            'moduleIdentifier' => $currentModuleIdentifier,
             'previousPage' => $this->getClosestAncestorPageWithTemplateRecord($pageUid),
         ]);
         return $view->renderResponse('InfoModifyNoTemplate');
