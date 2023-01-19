@@ -613,6 +613,21 @@ class UriBuilder
         $this->lastArguments = $arguments;
         $routeIdentifier = $arguments['route'] ?? null;
         unset($arguments['route'], $arguments['token']);
+
+        $useArgumentsWithoutNamespace = !$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend');
+        if ($useArgumentsWithoutNamespace) {
+            // In case the current route identifier is an identifier of a sub route, remove the sub route
+            // part to be able to add the actually requested sub route based on the current arguments.
+            if ($routeIdentifier && str_contains($routeIdentifier, '.')) {
+                [$routeIdentifier] = explode('.', $routeIdentifier);
+            }
+            // Build route identifier to the actually requested sub route (controller / action pair) - if any -
+            // and unset corresponding arguments, because "enableNamespacedArgumentsForBackend" is turned off.
+            if ($routeIdentifier && isset($arguments['controller'], $arguments['action'])) {
+                $routeIdentifier .= '.' . $arguments['controller'] . '_' . $arguments['action'];
+                unset($arguments['controller'], $arguments['action']);
+            }
+        }
         $uri = '';
         if ($routeIdentifier) {
             $backendUriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);

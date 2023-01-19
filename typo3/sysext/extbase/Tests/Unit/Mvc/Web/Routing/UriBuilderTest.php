@@ -99,6 +99,8 @@ class UriBuilderTest extends UnitTestCase
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
         $router = new Router($requestContextFactory);
         $router->addRoute('module_key', new Route('/test/Path', []));
+        $router->addRoute('module_key.controller_action', new Route('/test/Path/Controller/action', []));
+        $router->addRoute('module_key.controller2_action2', new Route('/test/Path/Controller2/action2', []));
         $router->addRoute('module_key2', new Route('/test/Path2', []));
         $router->addRoute('', new Route('', []));
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
@@ -413,6 +415,38 @@ class UriBuilderTest extends UnitTestCase
         $backendUriBuilder = GeneralUtility::makeInstance(BackendUriBuilder::class);
         $backendUriBuilder->setRequestContext(new RequestContext(host: 'baseuri/typo3'));
         $expectedResult = 'http://baseuri/typo3/test/Path?token=dummyToken';
+        $actualResult = $this->uriBuilder->buildBackendUri();
+        self::assertSame($expectedResult, $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function buildBackendRespectsGivenControllerActionArguments(): void
+    {
+        $serverRequest = $this
+            ->getRequestWithRouteAttribute()
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
+        $this->uriBuilder->setRequest($request);
+        $this->uriBuilder->setArguments(['controller' => 'controller', 'action' => 'action']);
+        $expectedResult = '/typo3/test/Path/Controller/action?token=dummyToken';
+        $actualResult = $this->uriBuilder->buildBackendUri();
+        self::assertSame($expectedResult, $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function buildBackendOverwritesSubRouteIdentifierControllerActionArguments(): void
+    {
+        $serverRequest = $this
+            ->getRequestWithRouteAttribute('module_key.controller_action')
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
+        $this->uriBuilder->setRequest($request);
+        $this->uriBuilder->setArguments(['controller' => 'controller2', 'action' => 'action2']);
+        $expectedResult = '/typo3/test/Path/Controller2/action2?token=dummyToken';
         $actualResult = $this->uriBuilder->buildBackendUri();
         self::assertSame($expectedResult, $actualResult);
     }

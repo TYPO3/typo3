@@ -53,15 +53,33 @@ class ExtbaseModule extends BaseModule implements ModuleInterface
 
     public function getDefaultRouteOptions(): array
     {
-        return [
-            '_default' => [
-                'module' => $this,
-                'packageName' => $this->packageName,
-                'absolutePackagePath' => $this->absolutePackagePath,
-                'access' => $this->access,
-                'target' => Bootstrap::class . '::handleBackendRequest',
-            ],
-        ];
+        $allRoutes = [];
+        foreach ($this->controllerActions as $controllerConfiguration) {
+            foreach ($controllerConfiguration['actions'] as $actionName) {
+                if ($allRoutes === []) {
+                    $allRoutes['_default'] = [
+                        'module' => $this,
+                        'packageName' => $this->packageName,
+                        'absolutePackagePath' => $this->absolutePackagePath,
+                        'access' => $this->access,
+                        'target' => Bootstrap::class . '::handleBackendRequest',
+                        'controller' => $controllerConfiguration['alias'],
+                        'action' => $actionName,
+                    ];
+                }
+                $allRoutes[$controllerConfiguration['alias'] . '_' . $actionName] = [
+                    'module' => $this,
+                    'path' => $controllerConfiguration['alias'] . '/' . $actionName,
+                    'packageName' => $this->packageName,
+                    'absolutePackagePath' => $this->absolutePackagePath,
+                    'access' => $this->access,
+                    'target' => Bootstrap::class . '::handleBackendRequest',
+                    'controller' => $controllerConfiguration['alias'],
+                    'action' => $actionName,
+                ];
+            }
+        }
+        return $allRoutes;
     }
 
     protected static function sanitizeExtensionName(string $extensionName): string

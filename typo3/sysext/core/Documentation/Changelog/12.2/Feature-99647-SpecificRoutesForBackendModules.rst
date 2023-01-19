@@ -62,10 +62,60 @@ sub route could therefore look like this:
 
     UriBuilder->buildUriFromRoute('my_module.edit')
 
+Extbase modules
+^^^^^^^^^^^^^^^
+
+Also Extbase Backend Modules are enhanced and do now automatically
+define explicit routes for each controller / action combination,
+as long as the :typoscript:`enableNamespacedArgumentsForBackend`
+feature toggle is turned off, which is the default. This means,
+the following module configuration
+
+..  code-block:: php
+
+    return [
+        'web_ExtkeyExample' => [
+            'parent' => 'web',
+            'position' => ['after' => 'web_info'],
+            'access' => 'admin',
+            'workspaces' => 'live',
+            'iconIdentifier' => 'module-example',
+            'path' => '/module/web/ExtkeyExample',
+            'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod.xlf',
+            'extensionName' => 'Extkey',
+            'controllerActions' => [
+                MyModuleController::class => [
+                    'list',
+                    'detail'
+                ],
+            ],
+        ],
+    ];
+
+now leads to following URLs:
+
+- `https://example.com/typo3/module/web/ExtkeyExample`
+- `https://example.com/typo3/module/web/ExtkeyExample/MyModuleController/list`
+- `https://example.com/typo3/module/web/ExtkeyExample/MyModuleController/detail`
+
+The route identifier of corresponding routes is registered with similar syntax
+as standard backend modules: :php:`<module_identifier>.<controller>_<action>`.
+Above configuration will therefore register the following routes:
+
+- `web_ExtkeyExample`
+- `web_ExtkeyExample.MyModuleController_list`
+- `web_ExtkeyExample.MyModuleController_detail`
+
 Impact
 ======
 
 It's now possible to configure specific routes for a module, which all can
 target any controller / action combination.
+
+As long as :typoscript:`enableNamespacedArgumentsForBackend` is turned off
+for Extbase Backend Modules, all controller / action combinations are explicitly
+registered as individual routes. This effectively means human-readable URLs,
+since the controller / action combinations are no longer defined via query
+parameters but are now part of the path.
 
 .. index:: Backend, PHP-API, ext:backend

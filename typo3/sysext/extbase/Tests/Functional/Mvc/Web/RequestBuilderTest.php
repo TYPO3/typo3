@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Web;
 use ExtbaseTeam\BlogExample\Controller\BlogController;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ExtbaseModule;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -831,6 +832,55 @@ class RequestBuilderTest extends FunctionalTestCase
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('list', $request->getControllerActionName());
+    }
+
+    /**
+     * @test
+     */
+    public function controllerActionParametersAreAddedToRequest(): void
+    {
+        $mainRequest = $this->prepareServerRequest('https://example.com/typo3/module/blog-example/Blog/show');
+
+        $pluginName = 'blog';
+        $extensionName = 'blog_example';
+
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list', 'show'],
+            ],
+        ]);
+
+        $mainRequest = $mainRequest
+            ->withAttribute('module', $module)
+            ->withAttribute('route', new Route(
+                '/module/blog-example/Blog/show',
+                [
+                    'module' => $module,
+                    'controller' => 'Blog',
+                    'action' => 'show',
+                ]
+            ));
+
+        $configuration = [];
+        $configuration['extensionName'] = $extensionName;
+        $configuration['pluginName'] = $pluginName;
+
+        // Feature is turned off by default. We set it here explicitly to make the tests' intention clear
+        $configuration['features']['enableNamespacedArgumentsForBackend'] = '0';
+
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->setConfiguration($configuration);
+
+        $requestBuilder = $this->get(RequestBuilder::class);
+        $request = $requestBuilder->build($mainRequest);
+
+        self::assertInstanceOf(RequestInterface::class, $request);
+        self::assertSame('show', $request->getControllerActionName());
+        self::assertSame('Blog', $request->getArgument('controller'));
+        self::assertSame('show', $request->getArgument('action'));
     }
 
     protected function prepareServerRequest(string $url, $method = 'GET'): ServerRequestInterface

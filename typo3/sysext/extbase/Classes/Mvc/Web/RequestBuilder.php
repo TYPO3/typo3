@@ -147,15 +147,24 @@ class RequestBuilder implements SingletonInterface
     public function build(ServerRequestInterface $mainRequest)
     {
         $configuration = [];
+        // Parameters, which are not part of the request URL (e.g. due to "useArgumentsWithoutNamespace"), which however
+        // need to be taken into account on building the extbase request. Usually those are "controller" and "action".
+        $fallbackParameters = [];
         // To be used in TYPO3 Backend for Extbase modules that do not need the "namespaces" GET and POST parameters anymore.
         $useArgumentsWithoutNamespace = false;
-        // Load values from the route object, this is used for TYPO3 Backend Modules
+        // Fetch requested module from the main request. This is only used for TYPO3 Backend Modules.
         $module = $mainRequest->getAttribute('module');
         if ($module instanceof ExtbaseModule) {
             $configuration = [
                 'controllerConfiguration' => $module->getControllerActions(),
             ];
             $useArgumentsWithoutNamespace = !$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend');
+            // Ensure the "controller" and "action" information are added as fallback
+            // parameters in case "enableNamespacedArgumentsForBackend" is turned off.
+            if ($useArgumentsWithoutNamespace && ($routeOptions = $mainRequest->getAttribute('route')?->getOptions())) {
+                $fallbackParameters['controller'] = $routeOptions['controller'] ?? null;
+                $fallbackParameters['action'] = $routeOptions['action'];
+            }
         }
         $this->loadDefaultValues($configuration);
         $pluginNamespace = $this->extensionService->getPluginNamespace($this->extensionName, $this->pluginName);
@@ -168,6 +177,10 @@ class RequestBuilder implements SingletonInterface
             $parameters = $mainRequest->getQueryParams()[$pluginNamespace] ?? [];
         }
         $parameters = is_array($parameters) ? $parameters : [];
+        if ($fallbackParameters !== []) {
+            // Enhance with fallback parameters, such as "controller" and "action"
+            $parameters = array_replace_recursive($fallbackParameters, $parameters);
+        }
         if ($mainRequest->getMethod() === 'POST') {
             if ($useArgumentsWithoutNamespace) {
                 $postParameters = $mainRequest->getParsedBody();
