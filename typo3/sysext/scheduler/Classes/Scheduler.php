@@ -126,8 +126,15 @@ class Scheduler implements SingletonInterface
                     if ($tstamp - $task < $maxDuration) {
                         $executions[] = $task;
                     } else {
-                        $task = unserialize($row['serialized_task_object']);
-                        $this->log('Removing logged execution, assuming that the process is dead. Execution of \'' . get_class($task) . '\' (UID: ' . $row['uid'] . ') was started at ' . date('Y-m-d H:i:s', $task->getExecutionTime()));
+                        try {
+                            $schedulerTask = $this->taskSerializer->deserialize($row['serialized_task_object']);
+                            $taskClass = get_class($schedulerTask);
+                            $executionTime = date('Y-m-d H:i:s', $schedulerTask->getExecutionTime());
+                        } catch (InvalidTaskException $e) {
+                            $taskClass = 'unknown class';
+                            $executionTime = 'unknown time';
+                        }
+                        $this->log('Removing logged execution, assuming that the process is dead. Execution of \'' . $taskClass . '\' (UID: ' . $row['uid'] . ') was started at ' . $executionTime);
                     }
                 }
             }
