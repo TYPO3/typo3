@@ -15,6 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Translation\Loader\PoFileLoader;
 use Symfony\Component\Translation\MessageCatalogue;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -30,6 +31,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 // * ISO 639-2 -> languages in two/three letter code
 // * ISO 3166-1 -> countries
 // * ISO 3166-2 -> regions in countries (= states)
+// * ISO 15924 - 4-letter language script system
 
 /**
  * This is a specific Xliff Dumper subclass, as TYPO3 has some specialities
@@ -93,12 +95,8 @@ class XliffDumper extends \Symfony\Component\Translation\Dumper\XliffFileDumper
 }
 
 // 0. Preparations
-$devFlag = false;
 $baseDirectory = __DIR__ . '/../../vendor/sokil/php-isocodes-db-i18n';
-$targetDirectory = __DIR__ . '/../../typo3/sysext/core/Resources/Private/Database';
 $targetXliffDirectory = __DIR__ . '/../../typo3/sysext/core/Resources/Private/Language/Iso';
-$countryProviderFileLocation = __DIR__ . '/../../typo3/sysext/core/Classes/Country/CountryProvider.php';
-@mkdir($targetDirectory, 0777, true);
 @mkdir($targetXliffDirectory, 0777, true);
 
 // 1. Get all supported TYPO3 languages
@@ -107,93 +105,118 @@ $languages = $typo3Locales->getLanguages();
 unset($languages['default']);
 $supportedLanguagesInTypo3 = array_keys($languages);
 
-// 2. Countries
-// Load all available countries in english
-$countries = json_decode(file_get_contents($baseDirectory . '/databases/iso_3166-1.json'), true);
-
-$countries = reset($countries);
-$defaultCatalogue = new MessageCatalogue('en');
-$xliffDumper = new XliffDumper();
-
-$countriesByCountryCode = [];
-foreach ($countries as $countryDetails) {
-    $countryCode = $countryDetails['alpha_2'];
-    unset($countryDetails['alpha_2']);
-    $countriesByCountryCode[$countryCode] = $countryDetails;
-    $defaultCatalogue->add([$countryCode . '.name' => $countryDetails['name']], 'countries');
-    if (isset($countryDetails['official_name'])) {
-        $defaultCatalogue->add([$countryCode . '.official_name' => $countryDetails['official_name']], 'countries');
-    }
+function updatePhpFile(string $fileLocation, array $contents): void
+{
+    ksort($contents, SORT_NATURAL);
+    $fileContents = file_get_contents($fileLocation);
+    $newFormattedData = ArrayUtility::arrayExport($contents);
+    $newFormattedData = str_replace("\n", "\n    ", $newFormattedData);
+    $newFileContents = preg_replace('/private array \$rawData = [^;]*;/u', 'private array $rawData = ' . $newFormattedData . ';', $fileContents);
+    file_put_contents($fileLocation, $newFileContents);
 }
-ksort($countriesByCountryCode, SORT_NATURAL);
-$xliffDumper->dump($defaultCatalogue, ['path' => $targetXliffDirectory]);
-$countryProviderFileContents = file_get_contents($countryProviderFileLocation);
-$newCountryContents = ArrayUtility::arrayExport($countriesByCountryCode);
-$newCountryContents = str_replace("\n", "\n    ", $newCountryContents);
-$countryProviderFileContents = preg_replace('/private array \$rawData = [^;]*;/u', 'private array $rawData = ' . $newCountryContents . ';', $countryProviderFileContents);
-file_put_contents($countryProviderFileLocation, $countryProviderFileContents);
 
-// 2. Load labels that are translated for countries ("name" and "official name")
-$loader = new \Symfony\Component\Translation\Loader\PoFileLoader();
-foreach ($supportedLanguagesInTypo3 as $languageKey) {
-    $translationFile = $baseDirectory . '/messages/' . $languageKey . '/LC_MESSAGES/3166-1.po';
-    if (!file_exists($translationFile)) {
-        continue;
+function importCountries(array $countries, array $supportedLanguagesInTypo3, string $baseDirectory, string $targetXliffDirectory): void
+{
+    sort($countries);
+    $countryProviderFileLocation = __DIR__ . '/../../typo3/sysext/core/Classes/Country/CountryProvider.php';
+    $defaultCatalogue = new MessageCatalogue('en');
+    $xliffDumper = new XliffDumper();
+
+    $countriesByCountryCode = [];
+    foreach ($countries as $countryDetails) {
+        $countryCode = $countryDetails['alpha_2'];
+        unset($countryDetails['alpha_2']);
+        $countriesByCountryCode[$countryCode] = $countryDetails;
     }
-    $catalogue = $loader->load($translationFile, $languageKey);
-    $cleanedCatalogue = new MessageCatalogue(str_replace('_', '-', $languageKey));
-    $cleanedCatalogue->addFallbackCatalogue($defaultCatalogue);
+    ksort($countriesByCountryCode);
+    // Add XLIFF labels
     foreach ($countriesByCountryCode as $countryCode => $countryDetails) {
-        $countryName = $countryDetails['name'];
-        $translatedCountryName = $catalogue->get($countryName);
-        if ($translatedCountryName) {
-            $cleanedCatalogue->add([$countryCode . '.name' => $translatedCountryName], 'countries');
-        }
+        $defaultCatalogue->add([$countryCode . '.name' => $countryDetails['name']], 'countries');
         if (isset($countryDetails['official_name'])) {
-            $countryName = $countryDetails['official_name'];
+            $defaultCatalogue->add([$countryCode . '.official_name' => $countryDetails['official_name']], 'countries');
+        }
+    }
+    updatePhpFile($countryProviderFileLocation, $countriesByCountryCode);
+    // Dump original translations in XLIFF file
+    $xliffDumper->dump($defaultCatalogue, ['path' => $targetXliffDirectory]);
+
+    // 2. Load labels that are translated for countries ("name" and "official name")
+    $loader = new PoFileLoader();
+    foreach ($supportedLanguagesInTypo3 as $languageKey) {
+        $translationFile = $baseDirectory . '/messages/' . $languageKey . '/LC_MESSAGES/3166-1.po';
+        if (!file_exists($translationFile)) {
+            continue;
+        }
+        $catalogue = $loader->load($translationFile, $languageKey);
+        $cleanedCatalogue = new MessageCatalogue(str_replace('_', '-', $languageKey));
+        $cleanedCatalogue->addFallbackCatalogue($defaultCatalogue);
+        foreach ($countriesByCountryCode as $countryCode => $countryDetails) {
+            $countryName = $countryDetails['name'];
             $translatedCountryName = $catalogue->get($countryName);
             if ($translatedCountryName) {
-                $cleanedCatalogue->add([$countryCode . '.official_name' => $translatedCountryName], 'countries');
+                $cleanedCatalogue->add([$countryCode . '.name' => $translatedCountryName], 'countries');
+            }
+            if (isset($countryDetails['official_name'])) {
+                $countryName = $countryDetails['official_name'];
+                $translatedCountryName = $catalogue->get($countryName);
+                if ($translatedCountryName) {
+                    $cleanedCatalogue->add([$countryCode . '.official_name' => $translatedCountryName], 'countries');
+                }
             }
         }
-    }
-    $xliffDumper->dump($cleanedCatalogue, ['path' => $targetXliffDirectory]);
-}
-
-return;
-// This part will be added later-on
-// 3. Language Scripts
-$scripts = json_decode(file_get_contents($baseDirectory . '/databases/iso_15924.json'), true);
-
-$defaultCatalogue = new MessageCatalogue('en');
-$scriptsByScriptCode = [];
-$scripts = reset($scripts);
-foreach ($scripts as $scriptDetails) {
-    $scriptCode = $scriptDetails['alpha_4'];
-    unset($scriptDetails['alpha_4']);
-    $scriptsByScriptCode[$scriptCode] = $scriptDetails;
-    $defaultCatalogue->add([$scriptCode . '.name' => $scriptDetails['name']], 'scripts');
-}
-ksort($scriptsByScriptCode, SORT_NATURAL);
-$xliffDumper->dump($defaultCatalogue, ['path' => $targetXliffDirectory]);
-file_put_contents($targetDirectory . '/iso_15924_scripts.json', json_encode($scriptsByScriptCode, $devFlag ? JSON_PRETTY_PRINT : 0));
-
-// Translated scripts
-foreach ($supportedLanguagesInTypo3 as $languageKey) {
-    $translationFile = $baseDirectory . '/messages/' . $languageKey . '/LC_MESSAGES/15924.po';
-    if (!file_exists($translationFile)) {
-        continue;
-    }
-    $catalogue = $loader->load($translationFile, $languageKey);
-    $cleanedCatalogue = new MessageCatalogue(str_replace('_', '-', $languageKey));
-    $cleanedCatalogue->addFallbackCatalogue($defaultCatalogue);
-    foreach ($scriptsByScriptCode as $scriptCode => $scriptDetails) {
-        $translatedName = $catalogue->get($scriptDetails['name']);
-        if ($translatedName) {
-            $cleanedCatalogue->add([$scriptCode . '.name' => $translatedName], 'scripts');
-        }
-    }
-    if ($cleanedCatalogue->all() !== []) {
         $xliffDumper->dump($cleanedCatalogue, ['path' => $targetXliffDirectory]);
     }
 }
+
+// Load all available countries in english
+$countries = json_decode(file_get_contents($baseDirectory . '/databases/iso_3166-1.json'), true);
+importCountries($countries['3166-1'], $supportedLanguagesInTypo3, $baseDirectory, $targetXliffDirectory);
+
+return;
+
+// Language Script Systems (ISO 15924)
+// Currently XLIFF is disabled
+function importLanguageScriptSystems(array $scripts, array $supportedLanguagesInTypo3, string $baseDirectory, string $targetXliffDirectory): void
+{
+    ksort($scripts);
+    $scriptsTargetFile = __DIR__ . '/../../typo3/sysext/core/Classes/Localization/LanguageScriptSystems.php';
+    $defaultCatalogue = new MessageCatalogue('en');
+    $loader = new PoFileLoader();
+    $xliffDumper = new XliffDumper();
+    $scriptsByScriptCode = [];
+    foreach ($scripts as $scriptDetails) {
+        $scriptCode = $scriptDetails['alpha_4'];
+        unset($scriptDetails['alpha_4']);
+        $scriptsByScriptCode[$scriptCode] = $scriptDetails;
+    }
+    ksort($scriptsByScriptCode);
+    foreach ($scriptsByScriptCode as $scriptCode => $scriptDetails) {
+        $defaultCatalogue->add([$scriptCode => $scriptDetails['name']], 'language-script-systems');
+    }
+
+    updatePhpFile($scriptsTargetFile, $scriptsByScriptCode);
+    //$xliffDumper->dump($defaultCatalogue, ['path' => $targetXliffDirectory]);
+
+    // Translated scripts
+    foreach ($supportedLanguagesInTypo3 as $languageKey) {
+        $translationFile = $baseDirectory . '/messages/' . $languageKey . '/LC_MESSAGES/15924.po';
+        if (!file_exists($translationFile)) {
+            continue;
+        }
+        $catalogue = $loader->load($translationFile, $languageKey);
+        $cleanedCatalogue = new MessageCatalogue(str_replace('_', '-', $languageKey));
+        $cleanedCatalogue->addFallbackCatalogue($defaultCatalogue);
+        foreach ($scriptsByScriptCode as $scriptCode => $scriptDetails) {
+            $translatedName = $catalogue->get($scriptDetails['name']);
+            if ($translatedName) {
+                $cleanedCatalogue->add([$scriptCode => $translatedName], 'language-script-systems');
+            }
+        }
+        if ($cleanedCatalogue->all() !== []) {
+            //$xliffDumper->dump($cleanedCatalogue, ['path' => $targetXliffDirectory]);
+        }
+    }
+}
+
+$scripts = json_decode(file_get_contents($baseDirectory . '/databases/iso_15924.json'), true);
+importLanguageScriptSystems($scripts['15924'], $supportedLanguagesInTypo3, $baseDirectory, $targetXliffDirectory);
