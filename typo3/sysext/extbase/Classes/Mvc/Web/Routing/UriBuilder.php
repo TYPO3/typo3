@@ -173,6 +173,14 @@ class UriBuilder
      */
     public function getRequest(): ?RequestInterface
     {
+        if (!$this->request instanceof RequestInterface) {
+            trigger_error(
+                __CLASS__ . ' will rely on a PSR-7 Request object to properly calculate URLs in the future. ' .
+                    'Make sure to provide such object by calling $uriBuilder->setRequest() before calculating URLs.',
+                E_USER_DEPRECATED
+            );
+            $this->request = $GLOBALS['TYPO3_REQUEST'];
+        }
         return $this->request;
     }
 
@@ -563,8 +571,9 @@ class UriBuilder
      */
     public function build(): string
     {
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+        $request = $this->getRequest();
+        if ($request instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($request)->isBackend()
         ) {
             return $this->buildBackendUri();
         }
@@ -584,6 +593,7 @@ class UriBuilder
     public function buildBackendUri(): string
     {
         $arguments = [];
+        $request = $this->getRequest();
         if ($this->addQueryString === true) {
             $arguments = GeneralUtility::_GET();
             foreach ($this->argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
@@ -592,15 +602,12 @@ class UriBuilder
                 $arguments = ArrayUtility::arrayDiffKeyRecursive($arguments, $argumentArrayToBeExcluded);
             }
         } else {
-            $id = GeneralUtility::_GP('id');
+            $id = $request?->getParsedBody()['id'] ?? $request?->getQueryParams()['id'] ?? null;
             if ($id !== null) {
                 $arguments['id'] = $id;
             }
         }
-        // @todo Should be replaced as soon as we have a PSR-7 object here
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ($route = $GLOBALS['TYPO3_REQUEST']->getAttribute('route')) instanceof Route
-        ) {
+        if (($route = $request?->getAttribute('route')) instanceof Route) {
             /** @var Route $route */
             $arguments['route'] = $route->getPath();
         }

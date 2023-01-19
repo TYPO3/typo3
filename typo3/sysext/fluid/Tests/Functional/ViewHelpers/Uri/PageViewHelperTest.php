@@ -146,9 +146,8 @@ class PageViewHelperTest extends FunctionalTestCase
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('module/web/layout', ['_identifier' => 'web_layout']));
         $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = $request->withQueryParams(['id' => 42]);
         $request = new Request($request);
-        $GLOBALS['_GET']['id'] = '42';
-        $GLOBALS['TYPO3_REQUEST'] = $request;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource('<f:uri.page>foo</f:uri.page>');
@@ -165,9 +164,8 @@ class PageViewHelperTest extends FunctionalTestCase
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('module/web/layout', ['_identifier' => 'web_layout']));
         $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = $request->withQueryParams(['id' => 42]);
         $request = new Request($request);
-        $GLOBALS['_GET']['id'] = '42';
-        $GLOBALS['TYPO3_REQUEST'] = $request;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource('<f:uri.page absolute="1">foo</f:uri.page>');

@@ -145,10 +145,9 @@ class PageViewHelperTest extends FunctionalTestCase
         $request = new ServerRequest('http://localhost/typo3/');
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('module/web/layout', ['_identifier' => 'web_layout']));
+        $request = $request->withQueryParams(['id' => 42]);
         $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($request);
-        $GLOBALS['_GET']['id'] = '42';
-        $GLOBALS['TYPO3_REQUEST'] = $request;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource('<f:link.page>foo</f:link.page>');
@@ -164,10 +163,9 @@ class PageViewHelperTest extends FunctionalTestCase
         $request = new ServerRequest('http://localhost/typo3/', null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => 'typo3/index.php']);
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('module/web/layout', ['_identifier' => 'web_layout']));
+        $request = $request->withQueryParams(['id' => 42]);
         $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($request);
-        $GLOBALS['_GET']['id'] = '42';
-        $GLOBALS['TYPO3_REQUEST'] = $request;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource('<f:link.page absolute="1">foo</f:link.page>');

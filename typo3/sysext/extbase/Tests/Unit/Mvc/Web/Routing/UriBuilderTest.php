@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder as BackendUriBuilder;
@@ -36,6 +37,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -223,8 +225,12 @@ class UriBuilderTest extends UnitTestCase
     {
         $_GET['id'] = 'pageId';
         $_GET['foo'] = 'bar';
-        $GLOBALS['TYPO3_REQUEST'] = $this->getRequestWithRouteAttribute()->withQueryParams($_GET);
-        $_POST = [];
+        $extbaseParameters = new ExtbaseRequestParameters();
+        $serverRequest = $this->getRequestWithRouteAttribute()->withQueryParams($_GET)
+            ->withAttribute('extbase', $extbaseParameters)
+        ;
+        $request =  new Request($serverRequest);
+        $this->uriBuilder->setRequest($request);
         $this->uriBuilder->setAddQueryString(true);
         $expectedResult = '/typo3/test/Path?token=dummyToken&id=pageId&foo=bar';
         $actualResult = $this->uriBuilder->buildBackendUri();
@@ -238,7 +244,12 @@ class UriBuilderTest extends UnitTestCase
     {
         $_GET = ['route' => 'test/Path', 'id' => 'pageId', 'foo' => 'bar'];
         $_POST = [];
-        $GLOBALS['TYPO3_REQUEST'] = $this->getRequestWithRouteAttribute('test/Path2')->withQueryParams($_GET);
+        $extbaseParameters = new ExtbaseRequestParameters();
+        $serverRequest = $this->getRequestWithRouteAttribute('test/Path2')->withQueryParams($_GET)
+            ->withAttribute('extbase', $extbaseParameters)
+        ;
+        $request =  new Request($serverRequest);
+        $this->uriBuilder->setRequest($request);
         $this->uriBuilder->setAddQueryString(true);
         $expectedResult = '/typo3/test/Path2?token=dummyToken&id=pageId&foo=bar';
         $actualResult = $this->uriBuilder->buildBackendUri();
@@ -330,7 +341,12 @@ class UriBuilderTest extends UnitTestCase
     public function buildBackendUriKeepsModuleQueryParametersIfAddQueryStringIsNotSet(): void
     {
         $_GET = (['id' => 'pageId', 'foo' => 'bar']);
-        $GLOBALS['TYPO3_REQUEST'] = $this->getRequestWithRouteAttribute()->withQueryParams($_GET);
+        $extbaseParameters = new ExtbaseRequestParameters();
+        $serverRequest = $this->getRequestWithRouteAttribute()->withQueryParams($_GET)
+            ->withAttribute('extbase', $extbaseParameters)
+        ;
+        $request =  new Request($serverRequest);
+        $this->uriBuilder->setRequest($request);
         $expectedResult = '/typo3/test/Path?token=dummyToken&id=pageId';
         $actualResult = $this->uriBuilder->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
@@ -342,7 +358,12 @@ class UriBuilderTest extends UnitTestCase
     public function buildBackendUriMergesAndOverrulesQueryParametersWithArguments(): void
     {
         $_GET = ['id' => 'pageId', 'foo' => 'bar'];
-        $GLOBALS['TYPO3_REQUEST'] = $this->getRequestWithRouteAttribute()->withQueryParams($_GET);
+        $extbaseParameters = new ExtbaseRequestParameters();
+        $serverRequest = $this->getRequestWithRouteAttribute()->withQueryParams($_GET)
+            ->withAttribute('extbase', $extbaseParameters)
+        ;
+        $request =  new Request($serverRequest);
+        $this->uriBuilder->setRequest($request);
         $this->uriBuilder->setArguments(['route' => '/test/Path2', 'somePrefix' => ['bar' => 'baz']]);
         $expectedResult = '/typo3/test/Path2?token=dummyToken&id=pageId&somePrefix%5Bbar%5D=baz';
         $actualResult = $this->uriBuilder->buildBackendUri();
@@ -354,7 +375,12 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriConvertsDomainObjectsAfterArgumentsHaveBeenMerged(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = $this->getRequestWithRouteAttribute();
+        $extbaseParameters = new ExtbaseRequestParameters();
+        $serverRequest = $this->getRequestWithRouteAttribute()
+            ->withAttribute('extbase', $extbaseParameters)
+        ;
+        $request =  new Request($serverRequest);
+        $this->uriBuilder->setRequest($request);
         $mockDomainObject = $this->getAccessibleMock(AbstractEntity::class, null);
         $mockDomainObject->_set('uid', '123');
         $this->uriBuilder->setArguments(['somePrefix' => ['someDomainObject' => $mockDomainObject]]);
@@ -368,7 +394,12 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriRespectsSection(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = $this->getRequestWithRouteAttribute();
+        $extbaseParameters = new ExtbaseRequestParameters();
+        $serverRequest = $this->getRequestWithRouteAttribute()
+            ->withAttribute('extbase', $extbaseParameters)
+        ;
+        $request =  new Request($serverRequest);
+        $this->uriBuilder->setRequest($request);
         $this->uriBuilder->setSection('someSection');
         $expectedResult = '/typo3/test/Path?token=dummyToken#someSection';
         $actualResult = $this->uriBuilder->buildBackendUri();
@@ -380,14 +411,16 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriCreatesAbsoluteUrisIfSpecified(): void
     {
-        $_SERVER['HTTP_HOST'] = 'baseuri';
-        $_SERVER['SCRIPT_NAME'] = '/index.php';
-        $_SERVER['ORIG_SCRIPT_NAME'] = '/index.php';
-        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-        $GLOBALS['TYPO3_REQUEST'] = $this->getRequestWithRouteAttribute(baseUri: 'http://baseuri/typo3/')
+        $request = $this->getRequestWithRouteAttribute(baseUri: 'http://baseuri/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withAttribute('normalizedParams', NormalizedParams::createFromServerParams($_SERVER));
+            ->withAttribute('normalizedParams', NormalizedParams::createFromServerParams($_SERVER))
+            ->withAttribute('extbase', new ExtbaseRequestParameters(''));
+        $mvcRequest = new Request($request);
+        $this->uriBuilder->setRequest($mvcRequest);
         $this->uriBuilder->setCreateAbsoluteUri(true);
+        $this->uriBuilder->setArguments(['route' => '/test/Path']);
+        $backendUriBuilder = GeneralUtility::makeInstance(BackendUriBuilder::class);
+        $backendUriBuilder->setRequestContext(new RequestContext(host: 'baseuri/typo3'));
         $expectedResult = 'http://baseuri/typo3/test/Path?token=dummyToken';
         $actualResult = $this->uriBuilder->buildBackendUri();
         self::assertSame($expectedResult, $actualResult);
