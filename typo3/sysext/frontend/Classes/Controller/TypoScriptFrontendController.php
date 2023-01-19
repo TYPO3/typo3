@@ -803,6 +803,22 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 if (!empty($hiddenField) && !$includeHiddenPages) {
                     // Page is "hidden" => 404 (deliberately done in default language, as this cascades to language overlays)
                     $rawPageRecord = $this->sys_page->getPage_noCheck($this->id);
+
+                    // If page record could not be resolved throw exception
+                    if ($rawPageRecord === []) {
+                        $message = 'The requested page does not exist!';
+                        try {
+                            $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                                $request,
+                                $message,
+                                $this->getPageAccessFailureReasons(PageAccessFailureReasons::PAGE_NOT_FOUND)
+                            );
+                            throw new PropagateResponseException($response, 1674144383);
+                        } catch (PageNotFoundException $e) {
+                            throw new PageNotFoundException($message, 1674539331);
+                        }
+                    }
+
                     $requestedPageIsHidden = (bool)$rawPageRecord[$hiddenField];
                 }
 
