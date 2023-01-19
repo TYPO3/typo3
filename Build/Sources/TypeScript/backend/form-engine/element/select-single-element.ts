@@ -46,14 +46,14 @@ class SelectSingleElement {
 
       const selectIcons: HTMLElement = target.closest('.t3js-formengine-field-item').querySelector('.t3js-forms-select-single-icons');
       if (selectIcons !== null) {
-        const activeItem = selectIcons.querySelector('.item.active');
+        const activeItem = selectIcons.querySelector('.form-wizard-icon-list-item a.active');
         if (activeItem !== null) {
           activeItem.classList.remove('active');
         }
 
         const selectionIcon = selectIcons.querySelector('[data-select-index="' + target.selectedIndex + '"]');
         if (selectionIcon !== null)  {
-          selectionIcon.closest('.item').classList.add('active');
+          selectionIcon.closest('.form-wizard-icon-list-item a').classList.add('active');
         }
       }
     }).bindTo(selectElement);
@@ -64,15 +64,15 @@ class SelectSingleElement {
     }
 
     new RegularEvent('click', (e: Event, target: HTMLAnchorElement): void => {
-      const currentActive = target.closest('.t3js-forms-select-single-icons').querySelector('.item.active');
+      const currentActive = target.closest('.t3js-forms-select-single-icons').querySelector('.form-wizard-icon-list-item a.active');
       if (currentActive !== null) {
         currentActive.classList.remove('active');
       }
 
       selectElement.selectedIndex = parseInt(target.dataset.selectIndex, 10);
       selectElement.dispatchEvent(new Event('change'));
-      target.closest('.item').classList.add('active');
-    }).delegateTo(selectElement.closest('.form-control-wrap'), '.t3js-forms-select-single-icons .item:not(.active) a');
+      target.closest('.form-wizard-icon-list-item a').classList.add('active');
+    }).delegateTo(selectElement.closest('.form-control-wrap'), '.t3js-forms-select-single-icons .form-wizard-icon-list-item a:not(.active)');
   }
 }
 

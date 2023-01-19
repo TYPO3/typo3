@@ -110,36 +110,3 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
     z-index: 150;
     position: relative;
 }
-
-.icon-list {
-    background: #fff;
-    margin-top: 9px;
-    border: 1px solid $table-border-color;
-
-    .row {
-        margin: 0;
-    }
-
-    .item {
-        float: left;
-        padding: 6px;
-        max-width: 140px;
-        border-left: 1px solid transparent;
-        border-right: 1px solid transparent;
-
-        img {
-            max-width: 128px;
-            max-height: 128px;
-        }
-    }
-
-    .active {
-        background-color: mix(#fff, $primary, 85%);
-        border-left: 1px solid $table-border-color;
-        border-right: 1px solid $table-border-color;
-    }
-
-    :first-child.active {
-        border-left: 1px solid transparent;
-    }
-}
