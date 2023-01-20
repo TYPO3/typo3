@@ -416,17 +416,7 @@ class NewRecordController
                     }
                     break;
                 case 'tt_content':
-                    if (!$this->newContentInto || !$this->isRecordCreationAllowedForTable($table) || !$this->isTableAllowedOnPage($table, $this->pageinfo)) {
-                        break;
-                    }
-                    $groupedLinksOnTop['tt_content'] = [
-                        'title' => $lang->getLL('createNewContent'),
-                        'icon' => 'actions-document-new',
-                        'items' => [
-                            $this->renderLink(htmlspecialchars($lang->sL($v['ctrl']['title'])), $table, $this->id),
-                            $this->renderNewContentElementWizardLink(),
-                        ],
-                    ];
+                    // Skip, as inserting content elements is part of the page module
                     break;
                 default:
                     if (!$this->newContentInto || !$this->isRecordCreationAllowedForTable($table) || !$this->isTableAllowedOnPage($table, $this->pageinfo)) {
@@ -568,22 +558,6 @@ class NewRecordController
                 ' . $this->iconFactory->getIconForRecord('pages', [], Icon::SIZE_SMALL)->render() . '
                 ' . htmlspecialchars($this->getLanguageService()->getLL('pageSelectPosition')) . '
             </a>';
-    }
-
-    /**
-     * Generate link to the new content element wizard
-     */
-    protected function renderNewContentElementWizardLink(): string
-    {
-        $url = (string)$this->uriBuilder->buildUriFromRoute('new_content_element_wizard', ['id' => $this->id, 'returnUrl' => $this->returnUrl]);
-        $title = $this->getLanguageService()->getLL('newContentElement');
-        return '
-            <typo3-backend-new-content-element-wizard-button url="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($title) . '">
-                <button type="button" class="list-group-item list-group-item-action border-top-0">
-                    ' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . '
-                    ' . htmlspecialchars($this->getLanguageService()->getLL('clickForWizard')) . '
-                </button>
-            </typo3-backend-new-content-element-wizard-button>';
     }
 
     /**

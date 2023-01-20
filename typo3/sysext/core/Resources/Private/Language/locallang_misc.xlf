@@ -195,12 +195,6 @@
 			<trans-unit id="createNewPage" resname="createNewPage">
 				<source>Create a new page</source>
 			</trans-unit>
-			<trans-unit id="createNewContent" resname="createNewContent">
-				<source>Create a new content element</source>
-			</trans-unit>
-			<trans-unit id="clickForWizard" resname="clickForWizard">
-				<source>Click here for wizard!</source>
-			</trans-unit>
 			<trans-unit id="insertNewPageHere" resname="insertNewPageHere">
 				<source>Insert the new page here</source>
 			</trans-unit>

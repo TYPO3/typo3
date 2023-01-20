@@ -30,7 +30,7 @@ class RecyclerModuleCest
     protected static string $treeNode = '#typo3-pagetree-tree .nodes .node';
     protected static string $dragNode = '#typo3-pagetree-toolbar .svg-toolbar__drag-node';
     protected static string $nodeEditInput = '.node-edit';
-    protected static string $contentTitle = 'Dummy Recycler Content';
+    protected static string $sysNoteSubject = 'Dummy Recycler Content';
     protected static string $pageTitle = 'Dummy 1-styleguide TCA demo-new';
 
     public function _before(ApplicationTester $I, PageTree $pageTree, ModalDialog $modalDialog): void
@@ -53,8 +53,8 @@ class RecyclerModuleCest
         $I->switchToContentFrame();
         $I->waitForElement('[title="Create new record"]');
         $I->click('a[title="Create new record"]');
-        $I->click('//a[text()[normalize-space(.) = "Page Content"]]');
-        $I->fillField('//input[contains(@data-formengine-input-name, "data[tt_content]") and contains(@data-formengine-input-name, "[header]")]', static::$contentTitle);
+        $I->click('//a[text()[normalize-space(.) = "Internal note"]]');
+        $I->fillField('//input[contains(@data-formengine-input-name, "data[sys_note]") and contains(@data-formengine-input-name, "[subject]")]', static::$sysNoteSubject);
         $I->click('button[name="_savedok"]');
         $I->click('a[title="Close"]');
     }
@@ -70,9 +70,9 @@ class RecyclerModuleCest
         // Select depth infinite
         $I->selectOption('select[name="depth"]', 999);
 
-        $I->amGoingTo('See if the deleted page its content appear in the recycler');
+        $I->amGoingTo('See if the deleted page and its content appear in the recycler');
         $I->waitForText(static::$pageTitle);
-        $I->waitForText(static::$contentTitle);
+        $I->waitForText(static::$sysNoteSubject);
 
         $I->amGoingTo('Recover the page and its contents');
         $I->click('tr[data-recordtitle="' . static::$pageTitle . '"] .t3js-multi-record-selection-check');
@@ -87,7 +87,7 @@ class RecyclerModuleCest
         $newPage = $this->pageTree->getPageXPathByPageName(static::$pageTitle);
         $I->click($newPage);
         $I->switchToContentFrame();
-        $I->waitForText(static::$contentTitle, 10, 'a[aria-label="Edit record"]');
+        $I->waitForText(static::$sysNoteSubject, 10, 'a[aria-label="Edit record"]');
     }
 
     /**
@@ -124,7 +124,7 @@ class RecyclerModuleCest
         $I->switchToContentFrame();
         $I->click('[data-action="reload"]');
 
-        $I->cantSee(static::$contentTitle);
+        $I->cantSee(static::$sysNoteSubject);
         $I->cantSee(static::$pageTitle);
     }
 
