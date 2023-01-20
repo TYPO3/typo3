@@ -3924,36 +3924,41 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $textstr = $textpieces[0];
             for ($i = 1; $i < $pieces; $i++) {
                 $len = strcspn($textpieces[$i], chr(32) . "\t" . CRLF);
-                if (trim(substr($textstr, -1)) === '' && $len) {
-                    $lastChar = substr($textpieces[$i], $len - 1, 1);
-                    if (!preg_match('/[A-Za-z0-9\\/#_-]/', $lastChar)) {
-                        $len--;
-                    }
-                    // Included '\/' 3/12
-                    $parts[0] = substr($textpieces[$i], 0, $len);
-                    $parts[1] = substr($textpieces[$i], $len);
-                    $keep = $conf['keep'] ?? '';
-                    $linkParts = parse_url($scheme . $parts[0]);
-                    $linktxt = '';
-                    if (str_contains($keep, 'scheme')) {
-                        $linktxt = $scheme;
-                    }
-                    $linktxt .= $linkParts['host'];
-                    if (str_contains($keep, 'path')) {
-                        $linktxt .= ($linkParts['path'] ?? '');
-                        // Added $linkParts['query'] 3/12
-                        if (str_contains($keep, 'query') && $linkParts['query']) {
-                            $linktxt .= '?' . $linkParts['query'];
-                        } elseif (($linkParts['path'] ?? '') === '/') {
-                            $linktxt = substr($linktxt, 0, -1);
-                        }
-                    }
-                    $typolinkConfiguration = $conf;
-                    $typolinkConfiguration['parameter'] = $scheme . $parts[0];
-                    $textstr .= $this->typoLink($linktxt, $typolinkConfiguration) . $parts[1];
-                } else {
+                if (!(trim(substr($textstr, -1)) === '' && $len)) {
                     $textstr .= $scheme . $textpieces[$i];
+                    continue;
                 }
+                $lastChar = substr($textpieces[$i], $len - 1, 1);
+                if (!preg_match('/[A-Za-z0-9\\/#_-]/', $lastChar)) {
+                    $len--;
+                }
+                // Included '\/' 3/12
+                $parts[0] = substr($textpieces[$i], 0, $len);
+                $parts[1] = substr($textpieces[$i], $len);
+                $keep = $conf['keep'] ?? '';
+                $linkParts = parse_url($scheme . $parts[0]);
+                // Check if link couldn't be parsed properly
+                if (!is_array($linkParts)) {
+                    $textstr .= $scheme . $textpieces[$i];
+                    continue;
+                }
+                $linktxt = '';
+                if (str_contains($keep, 'scheme')) {
+                    $linktxt = $scheme;
+                }
+                $linktxt .= $linkParts['host'] ?? '';
+                if (str_contains($keep, 'path')) {
+                    $linktxt .= ($linkParts['path'] ?? '');
+                    // Added $linkParts['query'] 3/12
+                    if (str_contains($keep, 'query') && $linkParts['query']) {
+                        $linktxt .= '?' . $linkParts['query'];
+                    } elseif (($linkParts['path'] ?? '') === '/') {
+                        $linktxt = substr($linktxt, 0, -1);
+                    }
+                }
+                $typolinkConfiguration = $conf;
+                $typolinkConfiguration['parameter'] = $scheme . $parts[0];
+                $textstr .= $this->typoLink($linktxt, $typolinkConfiguration) . $parts[1];
             }
             $data = $textstr;
         }
