@@ -2293,6 +2293,11 @@ class BackendUtility
      */
     public static function setUpdateSignal($set = '', $params = '')
     {
+        // A CLI use does not need to update the pagetree or anything else
+        // Otherwise DataHandler hook in EXT:redirects in SlugService will throw an error
+        if (Environment::isCli()) {
+            return;
+        }
         $beUser = static::getBackendUserAuthentication();
         $modData = $beUser->getModuleData(
             BackendUtility::class . '::getUpdateSignal',
