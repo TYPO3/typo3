@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import LinkBrowser from"@typo3/backend/link-browser.js";import RegularEvent from"@typo3/core/event/regular-event.js";class MailLinkHandler{constructor(){new RegularEvent("submit",((e,r)=>{e.preventDefault();let t=r.querySelector('[name="lemail"]').value;if("mailto:"!==t){for(;"mailto:"===t.substr(0,7);)t=t.substr(7);LinkBrowser.finalizeFunction("mailto:"+t)}})).delegateTo(document,"#lmailform")}}export default new MailLinkHandler;
+import LinkBrowser from"@typo3/backend/link-browser.js";import RegularEvent from"@typo3/core/event/regular-event.js";class MailLinkHandler{constructor(){new RegularEvent("submit",((e,t)=>{e.preventDefault();const r=t.querySelector('[name="lemail"]').value,n=new URLSearchParams;for(const e of["subject","cc","bcc","body"]){const r=t.querySelector('[data-mailto-part="'+e+'"]');r?.value.length&&n.set(e,encodeURIComponent(r.value))}let o="mailto:"+r;[...n].length>0&&(o+="?"+n.toString()),LinkBrowser.finalizeFunction(o)})).delegateTo(document,"#lmailform")}}export default new MailLinkHandler;

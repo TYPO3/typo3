@@ -103,7 +103,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://email?email=user@example.org?subject=Hello%20World#other',
-                '<a href="mailto:user@example.org?subject=Hello World">user@example.org?subject=Hello World</a>',
+                '<a href="mailto:user@example.org?subject=Hello%20World">user@example.org</a>',
             ],
             [
                 't3://file?uid=1&type=1&other=other#other',

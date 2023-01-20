@@ -58,6 +58,21 @@ class EmailViewHelperTest extends FunctionalTestCase
                 ['config.spamProtectEmailAddresses = 0'],
                 '<a href="mailto:some@email.tld">some@email.tld</a>',
             ],
+            'Plain email with prefilled subject' => [
+                '<f:link.email email="some@email.tld" subject="This is a test email" />',
+                ['config.spamProtectEmailAddresses = 0'],
+                '<a href="mailto:some@email.tld?subject=This%20is%20a%20test%20email">some@email.tld</a>',
+            ],
+            'Plain email with prefilled subject and body' => [
+                '<f:link.email email="some@email.tld" subject="This is a test email" body="Hey Andrew,\nyou should check out these simple email links." />',
+                ['config.spamProtectEmailAddresses = 0'],
+                '<a href="mailto:some@email.tld?subject=This%20is%20a%20test%20email&amp;body=Hey%20Andrew%2C%5Cnyou%20should%20check%20out%20these%20simple%20email%20links.">some@email.tld</a>',
+            ],
+            'Plain email with subject, cc and bcc' => [
+                '<f:link.email email="some@email.tld" subject="This is a test email" cc="benni@example.com,mack@example.com" bcc="all-team-members@example.com" />',
+                ['config.spamProtectEmailAddresses = 0'],
+                '<a href="mailto:some@email.tld?subject=This%20is%20a%20test%20email&amp;cc=benni%40example.com%2Cmack%40example.com&amp;bcc=all-team-members%40example.com">some@email.tld</a>',
+            ],
             'Plain email with spam protection' => [
                 '<f:link.email email="some@email.tld" />',
                 ['config.spamProtectEmailAddresses = 1'],

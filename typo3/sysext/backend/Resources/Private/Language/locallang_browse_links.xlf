@@ -30,6 +30,18 @@
 			<trans-unit id="email" resname="email">
 				<source>Email</source>
 			</trans-unit>
+			<trans-unit id="email.subject" resname="email.subject">
+				<source>Subject</source>
+			</trans-unit>
+			<trans-unit id="email.cc" resname="email.cc">
+				<source>CC</source>
+			</trans-unit>
+			<trans-unit id="email.bcc" resname="email.bcc">
+				<source>BCC</source>
+			</trans-unit>
+			<trans-unit id="email.body" resname="email.body">
+				<source>Body</source>
+			</trans-unit>
 			<trans-unit id="telephone" resname="telephone">
 				<source>Telephone</source>
 			</trans-unit>

@@ -446,6 +446,7 @@ abstract class AbstractLinkBrowserController
         foreach ($this->linkAttributeFields as $attribute) {
             $content .= $fieldRenderingDefinitions[$attribute] ?? '';
         }
+        $view->assign('allowedLinkAttributes', array_combine($this->linkAttributeFields, $this->linkAttributeFields));
 
         // add update button if appropriate
         if (!empty($this->currentLinkParts) && $this->displayedLinkHandler === $this->currentLinkHandler && $this->currentLinkHandler->isUpdateSupported()) {

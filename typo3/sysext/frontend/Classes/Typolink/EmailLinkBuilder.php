@@ -21,6 +21,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -34,7 +35,7 @@ class EmailLinkBuilder extends AbstractTypolinkBuilder implements LoggerAwareInt
 
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
-        [$url, $linkText, $attributes] = $this->processEmailLink($linkDetails['email'], $linkText);
+        [$url, $linkText, $attributes] = $this->processEmailLink($linkDetails['email'], $linkText, $linkDetails);
         return (new LinkResult(LinkService::TYPE_EMAIL, $url))
             ->withTarget($target)
             ->withLinkConfiguration($conf)
@@ -57,11 +58,16 @@ class EmailLinkBuilder extends AbstractTypolinkBuilder implements LoggerAwareInt
      * @return array{0: string, 1: string, 2: array<string, string>} A numerical array with three items
      * @internal this method is not part of TYPO3's public API
      */
-    public function processEmailLink(string $mailAddress, string $linkText): array
+    public function processEmailLink(string $mailAddress, string $linkText, array $linkDetails = []): array
     {
         $linkText = $linkText ?: htmlspecialchars($mailAddress);
-        $mailToUrl = 'mailto:' . $mailAddress;
         $attributes = [];
+        if ($linkDetails !== []) {
+            // Ensure to add also additional query parameters to the string
+            $mailToUrl = GeneralUtility::makeInstance(LinkService::class)->asString($linkDetails);
+        } else {
+            $mailToUrl = 'mailto:' . $mailAddress;
+        }
 
         // no processing happened, therefore, the default processing kicks in
         $tsfe = $this->getTypoScriptFrontendController();

@@ -24,16 +24,20 @@ class MailLinkHandler {
     new RegularEvent('submit', (evt: MouseEvent, targetEl: HTMLElement): void => {
       evt.preventDefault();
       const inputField = targetEl.querySelector('[name="lemail"]') as HTMLInputElement;
-      let value = inputField.value;
-      if (value === 'mailto:') {
-        return;
+      const value = inputField.value;
+      const params = new URLSearchParams();
+      for (const elementName of ['subject', 'cc', 'bcc', 'body']) {
+        const element = targetEl.querySelector('[data-mailto-part="' + elementName + '"]') as HTMLInputElement|null;
+        if (element?.value.length) {
+          params.set(elementName, encodeURIComponent(element.value));
+        }
+      }
+      let mailtoLink = 'mailto:' + value;
+      if ([...params].length > 0) {
+        mailtoLink += '?' + params.toString();
       }
 
-      while (value.substr(0, 7) === 'mailto:') {
-        value = value.substr(7);
-      }
-
-      LinkBrowser.finalizeFunction('mailto:' + value);
+      LinkBrowser.finalizeFunction(mailtoLink);
     }).delegateTo(document, '#lmailform');
   }
 }

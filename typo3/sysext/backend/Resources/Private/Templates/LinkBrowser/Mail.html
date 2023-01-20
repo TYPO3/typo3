@@ -11,19 +11,70 @@
             <label for="lemail" class="form-label">
                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:emailAddress" />
             </label>
-            <div class="input-group">
+            <input
+                id="lemail"
+                type="email"
+                name="lemail"
+                class="form-control"
+                value="{email}"
+                required />
+        </div>
+        <f:if condition="{allowedLinkAttributes.subject}">
+            <div class="element-browser-form-group">
+                <label for="emailSubject" class="form-label">
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:email.subject" />
+                </label>
                 <input
-                    id="lemail"
-                    type="email"
-                    name="lemail"
+                    id="emailSubject"
+                    name="emailSubject"
+                    class="form-control"
+                    value="{subject}"
+                    data-mailto-part="subject"/>
+            </div>
+        </f:if>
+        <f:if condition="{allowedLinkAttributes.cc}">
+            <div class="element-browser-form-group">
+                <label for="emailCc" class="form-label">
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:email.cc" />
+                </label>
+                <input
+                    id="emailCc"
+                    name="emailCc"
+                    class="form-control"
+                    value="{cc}"
+                    data-mailto-part="cc"/>
+            </div>
+        </f:if>
+        <f:if condition="{allowedLinkAttributes.bcc}">
+            <div class="element-browser-form-group">
+                <label for="emailBcc" class="form-label">
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:email.bcc" />
+                </label>
+                <input
+                    id="emailBcc"
+                    name="emailBcc"
+                    class="form-control"
+                    value="{bcc}"
+                    data-mailto-part="bcc"/>
+            </div>
+        </f:if>
+        <f:if condition="{allowedLinkAttributes.body}">
+            <div class="element-browser-form-group">
+                <label for="emailBody" class="form-label">
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:email.body" />
+                </label>
+                <textarea
+                    id="emailBody"
+                    name="emailBody"
+                    rows="10"
+                    cols="50"
                     size="20"
                     class="form-control"
-                    value="{email}"
-                    required />
-                <div class="input-group-btn">
-                    <input class="btn btn-primary" type="submit" value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:setLink')}" />
-                </div>
+                    data-mailto-part="body">{body}</textarea>
             </div>
+        </f:if>
+        <div class="element-browser-form-group">
+            <input class="btn btn-primary" type="submit" value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:setLink')}" />
         </div>
     </form>
 </f:section>

@@ -32,26 +32,18 @@ class MailLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     protected $linkParts = [];
 
     /**
+     * "target" and "rel" are not allowed
+     *
+     * @var string[]
+     */
+    protected $linkAttributes = ['title', 'class', 'subject', 'body', 'cc', 'bcc'];
+
+    /**
      * We don't support updates since there is no difference to simply set the link again.
      *
      * @var bool
      */
     protected $updateSupported = false;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        // remove unsupported link attributes
-        foreach (['target', 'rel'] as $attribute) {
-            $position = array_search($attribute, $this->linkAttributes, true);
-            if ($position !== false) {
-                unset($this->linkAttributes[$position]);
-            }
-        }
-    }
 
     /**
      * Checks if this is the handler for the given link
@@ -87,7 +79,11 @@ class MailLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     public function render(ServerRequestInterface $request): string
     {
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/mail-link-handler.js');
-        $this->view->assign('email', !empty($this->linkParts) ? $this->linkParts['url']['email'] : '');
+        if (is_array($this->linkParts['url'] ?? null)) {
+            foreach ($this->linkParts['url'] as $name => $value) {
+                $this->view->assign($name, rawurldecode($value));
+            }
+        }
         return $this->view->render('LinkBrowser/Mail');
     }
 

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\LinkHandling\EmailLinkHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -57,7 +58,17 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="#" data-mailto-token="ocknvq,hqqBdct0vnf" data-mailto-vector="1">some custom content</a>
+ *
+ * Email link with custom subject and prefilled cc
+ * -----------------------------------------------
+ *
+ * ::
+ *
+ *    <f:link.email email="foo@bar.tld" subject="Check out this website" cc="foo@example.com"">some custom content</f:link.email>
+ *
+ * Output::
+ *
+ *    <a href="mailto:foo@bar.tld?subject=Check%20out%20this%20website&amp;cc=foo%40example.com">some custom content</a>
  *
  * Depending on `spamProtectEmailAddresses`_ setting.
  */
@@ -72,6 +83,10 @@ final class EmailViewHelper extends AbstractTagBasedViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('email', 'string', 'The email address to be turned into a link', true);
+        $this->registerArgument('cc', 'string', 'The email address(es) for CC of the email link');
+        $this->registerArgument('bcc', 'string', 'The email address(es) for BCC of the email link');
+        $this->registerArgument('subject', 'string', 'A prefilled subject for the email link');
+        $this->registerArgument('body', 'string', 'A prefilled body for the email link');
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
         $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
@@ -82,7 +97,7 @@ final class EmailViewHelper extends AbstractTagBasedViewHelper
     public function render(): string
     {
         $email = $this->arguments['email'];
-        $linkHref = 'mailto:' . $email;
+        $linkHref = GeneralUtility::makeInstance(EmailLinkHandler::class)->asString($this->arguments);
         $attributes = [];
         $linkText = htmlspecialchars($email);
         /** @var RenderingContext $renderingContext */

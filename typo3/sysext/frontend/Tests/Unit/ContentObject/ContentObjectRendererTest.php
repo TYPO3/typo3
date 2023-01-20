@@ -2557,6 +2557,13 @@ class ContentObjectRendererTest extends UnitTestCase
                 ],
                 '<a href="mailto:foo@bar.org">Email address</a>',
             ],
+            'Link to email address with subject + cc' => [
+                'Email address',
+                [
+                    'parameter' => 'foo@bar.org?subject=This%20is%20a%20test',
+                ],
+                '<a href="mailto:foo@bar.org?subject=This%20is%20a%20test">Email address</a>',
+            ],
             'Link to email address without link text' => [
                 '',
                 [
@@ -2780,8 +2787,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org?subject=foo%20bar',
-                // @todo no substitution, due to `?subject=` extension (which cannot be found in the link-text)
-                '<a href="#" data-mailto-token="ocknvq,uqog0dqfaBvguv0varq50qti?uwdlgev=hqq%42dct" data-mailto-vector="2">some.body@test.typo3.org</a>',
+                '<a href="#" data-mailto-token="ocknvq,uqog0dqfaBvguv0varq50qti?uwdlgev=hqq%42dct" data-mailto-vector="2">some.body(at)test.typo3(dot)org</a>',
             ],
         ];
     }
