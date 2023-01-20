@@ -137,7 +137,8 @@ class PageLayoutController
             $pageLayoutContext->getDrawingConfiguration()->getLanguageMode()
         );
 
-        $pageLocalizationRecord = $this->getLocalizedPageRecord($this->currentSelectedLanguage);
+        $pageLocalizationRecord = $this->pageRepository->getPageOverlay($this->id, $this->currentSelectedLanguage);
+        $pageTitle = $this->currentSelectedLanguage <= 0 ? $this->pageinfo['title'] : ($pageLocalizationRecord['title'] ?? '');
 
         $view->setTitle($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'), $this->pageinfo['title']);
         $view->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
@@ -146,7 +147,7 @@ class PageLayoutController
             'localizedPageId' => $pageLocalizationRecord['uid'] ?? 0,
             'infoBoxes' => $this->generateMessagesForCurrentPage($request),
             'isPageEditable' => $this->isPageEditable($this->currentSelectedLanguage),
-            'localizedPageTitle' => $this->getLocalizedPageTitle($this->currentSelectedLanguage, $this->pageinfo),
+            'localizedPageTitle' => $pageTitle,
             'eventContentHtmlTop' => $event->getHeaderContent(),
             'mainContentHtml' => $mainLayoutHtml,
             'hiddenElementsShowToggle' => ($this->getBackendUser()->check('tables_select', 'tt_content') && ($numberOfHiddenElements > 0)),
@@ -259,38 +260,6 @@ class PageLayoutController
             )
             ->executeQuery()
             ->fetchAllAssociative();
-    }
-
-    protected function getLocalizedPageRecord(int $languageId): ?array
-    {
-        if ($languageId === 0) {
-            return null;
-        }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-        $overlayRecord = $queryBuilder
-            ->select('*')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA']['pages']['ctrl']['languageField'],
-                    $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
-                )
-            )
-            ->setMaxResults(1)
-            ->executeQuery()
-            ->fetchAssociative();
-        if ($overlayRecord) {
-            BackendUtility::workspaceOL('pages', $overlayRecord, $this->getBackendUser()->workspace);
-        }
-        return is_array($overlayRecord) ? $overlayRecord : null;
     }
 
     /**
@@ -489,18 +458,6 @@ class PageLayoutController
         return implode(', ', $links);
     }
 
-    protected function getLocalizedPageTitle(int $currentSelectedLanguage, array $pageInfo): string
-    {
-        if ($currentSelectedLanguage <= 0) {
-            return $pageInfo['title'];
-        }
-        $pageLocalizationRecord = $this->getLocalizedPageRecord($currentSelectedLanguage);
-        if (!is_array($pageLocalizationRecord)) {
-            return $pageInfo['title'];
-        }
-        return $pageLocalizationRecord['title'] ?? '';
-    }
-
     /**
      * Initializes the clipboard for generating paste links dynamically via JavaScript after each "+ Content" symbol
      */
@@ -630,13 +587,13 @@ class PageLayoutController
             && $this->currentSelectedLanguage > 0
             && $this->isPageEditable($this->currentSelectedLanguage)
         ) {
-            $overlayRecord = $this->getLocalizedPageRecord($this->currentSelectedLanguage);
+            $overlayRecord = $this->pageRepository->getPageOverlay($this->id, $this->currentSelectedLanguage);
             $url = (string)$this->uriBuilder->buildUriFromRoute(
                 'record_edit',
                 [
                     'edit' => [
                         'pages' => [
-                            $overlayRecord['uid'] => 'edit',
+                            $overlayRecord['_PAGES_OVERLAY_UID'] => 'edit',
                         ],
                     ],
                     'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
