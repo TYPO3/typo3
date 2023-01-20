@@ -42,6 +42,21 @@
 			<trans-unit id="move_folder" resname="move_folder">
 				<source>Move folder</source>
 			</trans-unit>
+			<trans-unit id="move_file" resname="move_file">
+				<source>Move file</source>
+			</trans-unit>
+			<trans-unit id="transfer_multiple" resname="transfer_multiple">
+				<source>Transfer multiple items</source>
+			</trans-unit>
+			<trans-unit id="mess.transfer_multiple" resname="mess.transfer_multiple">
+				<source>Transfer %d items into "%s"?</source>
+			</trans-unit>
+			<trans-unit id="drop.conflict" resname="drop.conflict">
+				<source>Conflict with dropped node</source>
+			</trans-unit>
+			<trans-unit id="mess.drop.conflict" resname="mess.drop.conflict">
+				<source>The node %s is a parent of %s and therefore cannot be moved. Operation cancelled.</source>
+			</trans-unit>
 			<trans-unit id="deleteItem" resname="deleteItem">
 				<source>Delete</source>
 			</trans-unit>

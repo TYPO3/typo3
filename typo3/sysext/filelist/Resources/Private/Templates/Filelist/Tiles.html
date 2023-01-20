@@ -22,7 +22,6 @@
     <div class="resource-tile" aria-labelledby="resource-tile-label-{uid}">
         <a
             href="{link.uri}"
-            draggable="false"
         >
             <span class="resource-tile-label" id="resource-tile-label-{uid}">{link.label}</span>
             <span class="resource-tile-preview" role="presentation">
@@ -44,13 +43,18 @@
         class="resource-tile"
         aria-labelledby="resource-tile-label-{resource.uid}"
         data-type="{resource.type}"
-        data-file-uid="{resource.uid}"
+        data-identifier="{resource.resource.combinedIdentifier}"
+        data-name="{resource.resource.name}"
+        data-file-uid="{resource.resource.uid}"
         data-multi-record-selection-element="true"
+        data-state-identifier="{resource.stateIdentifier}"
+        draggable="{resource.userPermissions.moveResource ? 'true' : 'false'}"
+        data-filelist-draggable-container
+        data-filelist-draggable
         {f:if(condition: resource.metaDataUid, then: 'data-metadata-uid="{resource.metaDataUid}"')}
     >
         <a
             href="{f:if(condition: resource.moduleUri, then: resource.moduleUri, else: 'javascript:;')}"
-            draggable="false"
             data-contextmenu-trigger="contextmenu"
             data-contextmenu-table="{resource.contextMenuConfig.table}"
             data-contextmenu-uid="{resource.contextMenuConfig.uid}"

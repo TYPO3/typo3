@@ -29,8 +29,19 @@ import {default as Modal, ModalElement} from '@typo3/backend/modal';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
+import {DragDropDataTransferItem} from '@typo3/backend/drag-drop/drag-drop';
 
 type QueryParameters = {[key: string]: string};
+type DragImageCanvasOperation = {
+  offsetX: number,
+  offsetY: number,
+  reference: HTMLImageElement,
+};
+interface DragImageCanvasConfiguration {
+  width: number,
+  height: number,
+  operations: DragImageCanvasOperation[],
+}
 
 interface EditFileMetadataConfiguration extends ActionConfiguration{
   table: string;
@@ -156,6 +167,8 @@ export default class Filelist {
     }).bindTo(document);
 
     DocumentService.ready().then((): void => {
+      const fileListContainer = document.querySelector('.t3-filelist-container');
+
       new RegularEvent('click', (e: Event, trigger: HTMLAnchorElement): void => {
         e.preventDefault();
 
@@ -197,6 +210,41 @@ export default class Filelist {
           : encodeURIComponent(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
         top.list_frame.location.href = url + '&redirect=' + redirectUrl;
       }).delegateTo(document, 'a.filelist-file-copy');
+
+      new RegularEvent('dragstart', (event: DragEvent, target: HTMLElement): void => {
+        const dragCollection = [];
+        const allCheckedItems = document.querySelectorAll(MultiRecordSelectionSelectors.checkboxSelector + ':checked') as NodeListOf<HTMLInputElement>;
+        if (allCheckedItems.length > 0) {
+          // Build a drag collection for all checked items
+          for (let checkedItem of allCheckedItems) {
+            const draggableElement = checkedItem.closest('[data-filelist-draggable-container]') as HTMLElement;
+            dragCollection.push({
+              type: draggableElement.dataset.type,
+              identifier: draggableElement.dataset.identifier,
+              name: draggableElement.dataset.name,
+              extra: {
+                referencedElement: (draggableElement.querySelector('img') as HTMLImageElement|null),
+                stateIdentifier: draggableElement.dataset.stateIdentifier,
+              }
+            });
+          }
+        } else {
+          // Only drag current item
+          const containerElement = target.closest('[data-filelist-draggable-container]') as HTMLElement;
+          dragCollection.push({
+            type: containerElement.dataset.type,
+            identifier: containerElement.dataset.identifier,
+            name: containerElement.dataset.name,
+            extra: {
+              referencedElement: (containerElement.querySelector('img') as HTMLImageElement|null),
+              stateIdentifier: containerElement.dataset.stateIdentifier,
+            }
+          });
+        }
+
+        this.drawDataTransferPreview(event.dataTransfer, dragCollection);
+        event.dataTransfer.setData('application/json', JSON.stringify(dragCollection));
+      }).delegateTo(document, '.t3-filelist-container [draggable="true"]');
     });
 
     // Respond to multi record selection action events
@@ -211,6 +259,37 @@ export default class Filelist {
       Filelist.submitClipboardFormWithCommand('removeMarked', event.target as HTMLButtonElement)
     }).bindTo(document);
 
+    new RegularEvent('multiRecordSelection:checkbox:state:changed', (event: CustomEvent): void => {
+      const checkbox = event.target as HTMLInputElement;
+      const checkboxContainer: HTMLElement = checkbox.closest(MultiRecordSelectionSelectors.elementSelector);
+      if (checkboxContainer !== null) {
+        checkboxContainer.draggable = checkbox.checked;
+      }
+
+      if (checkbox.checked) {
+        // Disable dragging for all unchecked items
+        const allUncheckedItems = document.querySelectorAll(MultiRecordSelectionSelectors.checkboxSelector + ':not(:checked)') as NodeListOf<HTMLInputElement>;
+        allUncheckedItems.forEach((checkboxElement: HTMLElement): void => {
+          const draggableElement = checkboxElement.closest('[data-filelist-draggable]') as HTMLElement;
+          draggableElement.draggable = false;
+          draggableElement.querySelectorAll('[data-filelist-draggable]').forEach((nestedDraggableElement: HTMLElement) => {
+            nestedDraggableElement.draggable = false;
+          })
+        });
+      } else {
+        // Check if all checkboxes are unchecked => set draggable to true again
+        const allCheckedItems = document.querySelectorAll(MultiRecordSelectionSelectors.checkboxSelector + ':checked') as NodeListOf<HTMLInputElement>;
+        if (allCheckedItems.length === 0) {
+          document.querySelectorAll('.t3-filelist-container [data-filelist-draggable]').forEach((draggableElement: HTMLElement): void => {
+            draggableElement.draggable = true;
+            draggableElement.querySelectorAll('[data-filelist-draggable]').forEach((nestedDraggableElement: HTMLElement) => {
+              nestedDraggableElement.draggable = true;
+            })
+          });
+        }
+      }
+    }).bindTo(document);
+
     // Respond to browser related clearable event
     const activeSearch: boolean = (document.querySelector([Selectors.fileListFormSelector, Selectors.searchFieldSelector].join(' ')) as HTMLInputElement)?.value !== '';
     new RegularEvent('search', (event: Event): void => {
@@ -219,6 +298,113 @@ export default class Filelist {
         (searchField.closest(Selectors.fileListFormSelector) as HTMLFormElement)?.submit();
       }
     }).delegateTo(document, Selectors.searchFieldSelector);
+  }
+
+  /**
+   * Draws a new ghost image for the dataTransfer drag.
+   */
+  private drawDataTransferPreview(dataTransfer: DataTransfer|null, dragCollection: DragDropDataTransferItem[]): void {
+    if (dataTransfer === null || dragCollection.length === 0) {
+      return;
+    }
+
+    const canvasId = 'dragstart-canvas';
+    document.getElementById(canvasId)?.remove();
+
+    const canvas = document.createElement('canvas') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+
+    // Check if the collection contains references to non-HTMLImageElement elements.
+    // If so, do not draw a fancy ghost image, the Canvas API cannot consume plain SVG objects.
+    const collectionContainsNonImageReference = dragCollection.some((item: DragDropDataTransferItem): boolean => {
+      return !(item.extra.referencedElement instanceof HTMLImageElement);
+    });
+    if (!collectionContainsNonImageReference && dragCollection.length <= 5) {
+      const canvasOperations = this.calculateDrawImageCanvasConfiguration(dragCollection);
+      canvas.width = canvasOperations.width;
+      canvas.height = canvasOperations.height;
+
+      for (let op of canvasOperations.operations) {
+        ctx.drawImage(op.reference, op.offsetX, op.offsetY);
+      }
+    } else {
+      const strokeWidth = 1;
+      const ghostText = dragCollection.length.toString(10);
+
+      // Draw counter
+      ctx.font = '16px verdana, arial, sans-serif';
+      const textMeasurement = ctx.measureText(ghostText);
+
+      const width = Math.max(Math.ceil(textMeasurement.width)) + 32;
+      const height = 32;
+      canvas.width = width;
+      canvas.height = height;
+
+      // Draw rect
+      ctx.beginPath();
+      ctx.rect(0, 0, width, height)
+      ctx.fillStyle = '#f2f8fe';
+      ctx.fill();
+      ctx.lineWidth = strokeWidth;
+      ctx.strokeStyle = '#3393eb';
+      ctx.stroke();
+
+      // Draw counter;
+      ctx.fillStyle = '#313131'
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = '16px verdana, arial, sans-serif';
+      ctx.fillText(ghostText, width / 2, height / 2);
+    }
+
+    const img = document.createElement('img') as HTMLImageElement
+    img.id = canvasId;
+    img.src = canvas.toDataURL('data/png');
+    document.body.appendChild(img);
+
+    // @todo This is ugly right now, browsers draw this semi-transparent, being non-configurable - we probably need
+    //       something like https://stackoverflow.com/a/31177307/4828813 instead
+    dataTransfer.setDragImage(img, 0, 0);
+  }
+
+  private calculateDrawImageCanvasConfiguration(dragCollection: DragDropDataTransferItem[]): DragImageCanvasConfiguration {
+    let width = 0;
+    let height = 0;
+    let offsetX = 0;
+    let offsetY = 0;
+    let operations = [];
+
+    // Remove items with any non-image reference
+    dragCollection = dragCollection.filter((item: DragDropDataTransferItem): boolean => {
+      return item.extra.referencedElement instanceof HTMLImageElement;
+    });
+
+    for (let i = 0; i < dragCollection.length; ++i) {
+      const referencedElement = dragCollection[i].extra.referencedElement;
+      if (i > 0) {
+        offsetX += Math.max(20, Math.floor(referencedElement.width / 100 * 20));
+        offsetY += Math.max(20, Math.floor(referencedElement.height / 100 * 20));
+      }
+
+      if (referencedElement.width + offsetX > width) {
+        width = referencedElement.width + offsetX;
+      }
+      if (referencedElement.height + offsetY > height) {
+        height = referencedElement.height + offsetY;
+      }
+
+      operations.push({
+        offsetX,
+        offsetY,
+        reference: referencedElement
+      });
+    }
+
+    return {
+      width,
+      height,
+      operations
+    };
   }
 
   private deleteMultiple(e: CustomEvent): void {

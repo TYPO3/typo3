@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @internal
@@ -155,5 +156,17 @@ class ResourceView
             'uid' => $this->getIdentifier(),
             'table' => 'sys_file',
         ];
+    }
+
+    /**
+     * Calculates a state identifier used for drag&drop into the file tree
+     */
+    public function getStateIdentifier(): string
+    {
+        if ($this->resource instanceof Folder) {
+            return $this->resource->getStorage()->getUid() . '_' . GeneralUtility::md5int($this->resource->getIdentifier());
+        }
+
+        return '';
     }
 }

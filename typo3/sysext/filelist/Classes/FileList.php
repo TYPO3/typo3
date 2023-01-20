@@ -207,11 +207,10 @@ class FileList
     {
         // Prepare Resources for View
         $resourceViews = [];
-        $userPermissions = $this->getUserPermissions();
         foreach ($paginator->getPaginatedItems() as $resource) {
             $resourceView = new ResourceView(
                 $resource,
-                $userPermissions,
+                $this->getUserPermissions($resource),
                 $this->iconFactory->getIconForResource($resource, Icon::SIZE_SMALL)
             );
             $resourceView->moduleUri = $this->createModuleUriForResource($resource);
@@ -422,9 +421,14 @@ class FileList
             // Preparing table row attributes
             $attributes = [
                 'data-type' => 'folder',
+                'data-identifier' => $folderObject->getCombinedIdentifier(),
+                'data-name' => $folderObject->getName(),
                 'data-folder-identifier' => $folderObject->getIdentifier(),
-                'data-combined-identifier' => $folderObject->getCombinedIdentifier(),
                 'data-multi-record-selection-element' => 'true',
+                'data-filelist-draggable' => 'true',
+                'data-filelist-draggable-container' => 'true',
+                'data-state-identifier' => $folderObject->getStorage()->getUid() . '_' . GeneralUtility::md5int($folderObject->getIdentifier()),
+                'draggable' => $folderObject->checkActionPermission('move') ? 'true' : 'false',
             ];
             if ($isLocked) {
                 foreach ($this->fieldArray as $field) {
@@ -488,9 +492,9 @@ class FileList
         $href = $this->createModuleUriForResource($folderObject);
         // Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
         if ($title === strip_tags($title)) {
-            return '<a href="' . htmlspecialchars($href) . '" title="' . htmlspecialchars($title) . '">' . $title . '</a>';
+            return '<a href="' . htmlspecialchars($href) . '" title="' . htmlspecialchars($title) . '" data-filelist-draggable>' . $title . '</a>';
         }
-        return '<a href="' . htmlspecialchars($href) . '">' . $title . '</a>';
+        return '<a href="' . htmlspecialchars($href) . '" data-filelist-draggable>' . $title . '</a>';
     }
 
     /**
@@ -515,7 +519,7 @@ class FileList
                 ];
                 $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
-                $code = '<a class="responsive-title" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $code . '</a>';
+                $code = '<a class="responsive-title" href="' . htmlspecialchars($url) . '" title="' . $title . '" data-filelist-draggable>' . $code . '</a>';
             }
         } catch (\Exception $e) {
             // intentional fall-through
@@ -540,8 +544,13 @@ class FileList
             // Preparing table row attributes
             $attributes = [
                 'data-type' => 'file',
+                'data-identifier' => $fileObject->getCombinedIdentifier(),
+                'data-name' => $fileObject->getName(),
                 'data-file-uid' => $fileUid,
+                'data-filelist-draggable' => 'true',
+                'data-filelist-draggable-container' => 'true',
                 'data-multi-record-selection-element' => 'true',
+                'draggable' => $fileObject->checkActionPermission('move') ? 'true' : 'false',
             ];
             if ($this->isEditMetadataAllowed($fileObject)
                 && ($metaDataUid = $fileObject->getMetaData()->offsetGet('uid'))
@@ -594,7 +603,8 @@ class FileList
                             $theData[$field] .= '<br /><img src="' . htmlspecialchars($processedFile->getPublicUrl() ?? '') . '" ' .
                                 'width="' . htmlspecialchars($processedFile->getProperty('width')) . '" ' .
                                 'height="' . htmlspecialchars($processedFile->getProperty('height')) . '" ' .
-                                'title="' . htmlspecialchars($fileName) . '" alt="" />';
+                                'title="' . htmlspecialchars($fileName) . '" alt="" ' .
+                                'data-filelist-draggable />';
                         }
                         break;
                     case 'crdate':
@@ -1168,7 +1178,7 @@ class FileList
     {
         return $file->isIndexed()
             && $file->checkActionPermission('editMeta')
-            && $this->getUserPermissions()->editMetaData;
+            && $this->getUserPermissions($file)->editMetaData;
     }
 
     /**
@@ -1513,9 +1523,12 @@ class FileList
             ->fetchOne();
     }
 
-    protected function getUserPermissions(): UserPermissions
+    protected function getUserPermissions(Folder|File $resource): UserPermissions
     {
-        return new UserPermissions($this->getBackendUser()->check('tables_modify', 'sys_file_metadata'));
+        return new UserPermissions(
+            moveResource: $resource->checkActionPermission('move'),
+            editMetaData: $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')
+        );
     }
 
     protected function getLanguageService(): LanguageService

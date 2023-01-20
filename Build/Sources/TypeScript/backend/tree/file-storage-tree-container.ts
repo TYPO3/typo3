@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {DragDropOperation, DragDropOperationCollection} from '@typo3/backend/drag-drop/drag-drop';
 import {html, LitElement, TemplateResult} from 'lit';
 import {customElement, query} from 'lit/decorators';
 import {FileStorageTree} from './file-storage-tree';
@@ -42,6 +43,18 @@ class EditableFileStorageTree extends FileStorageTree {
     this.actionHandler = new FileStorageTreeActions(this);
   }
 
+  public connectedCallback() {
+    super.connectedCallback();
+    document.addEventListener('dragover', this.handleDragOver);
+    document.addEventListener('drop', this.handleDrop);
+  }
+
+  public disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('dragover', this.handleDragOver);
+    document.removeEventListener('drop', this.handleDrop);
+  }
+
   public updateNodeBgClass(nodesBg: TreeNodeSelection): TreeNodeSelection {
     return super.updateNodeBgClass.call(this, nodesBg).call(this.initializeDragForNode());
   }
@@ -50,11 +63,63 @@ class EditableFileStorageTree extends FileStorageTree {
     return super.nodesUpdate.call(this, nodes).call(this.initializeDragForNode());
   }
 
+  private handleDragOver = (e: DragEvent): void => {
+    const target = e.target as SVGElement;
+    const node = this.getNodeFromElement(target);
+    if (node) {
+      if (this.hoveredNode && node.stateIdentifier !== this.hoveredNode.stateIdentifier) {
+        this.onMouseOutOfNode(this.hoveredNode);
+      }
+      if (!node.isOver) {
+        this.onMouseOverNode(node);
+      }
+    }
+
+    e.preventDefault();
+  }
+
+  private handleDrop = (e: DragEvent): void => {
+    const target = e.target as Element;
+    const element = target.closest('[data-state-id]') as SVGElement;
+    const node = this.getNodeFromElement(element);
+    if (node) {
+      const dragDropOperationCollection = FileDragDropOperationCollection.fromDataTransfer(e.dataTransfer, { identifier: node.identifier, name: node.name });
+      // Check if drag-drop-operation can be fulfilled
+      for (let operation of dragDropOperationCollection.operations) {
+        if (this.dragDropCollectionConflictsWithNode(operation, node)) {
+          // User attempts to drag the parent node into one of its child nodes
+          // @todo: decision needed: filter out invalid operations or invalidate as whole
+          Notification.error(
+            TYPO3.lang['drop.conflict'],
+            TYPO3.lang['mess.drop.conflict']
+              .replace('%s', operation.source.name)
+              .replace('%s', decodeURIComponent(node.identifier))
+          );
+          return;
+        }
+      }
+
+      this.actionHandler.initiateDropAction(dragDropOperationCollection, () => {
+        this.refreshTree();
+        this.selectNode(node);
+      });
+    }
+    e.preventDefault();
+  }
+
+  private dragDropCollectionConflictsWithNode(dragDropOperation: DragDropOperation, node: TreeNode): boolean {
+    return dragDropOperation.type === 'folder' && (
+      node.stateIdentifier === dragDropOperation.extra.stateIdentifier
+      || node.parentsStateIdentifier[0] == dragDropOperation.extra.stateIdentifier
+      || node.parentsStateIdentifier.includes(dragDropOperation.extra.stateIdentifier)
+    );
+  }
+
   /**
    * Initializes a drag&drop when called on the tree.
    */
   private initializeDragForNode() {
-    return this.actionHandler.connectDragHandler(new FileStorageTreeNodeDragHandler(this, this.actionHandler))
+    return this.actionHandler.connectDragHandler(new FileStorageTreeNodeDragHandler(this, this.actionHandler));
   }
 }
 
@@ -324,8 +389,113 @@ class FileStorageTreeActions extends DragDrop {
     }
     return true;
   }
-}
 
+  public initiateDropAction(dragDropOperationCollection: DragDropOperationCollection, callbackFn: Function|null = null): void {
+    let modalTitle;
+    let modalText;
+    if (dragDropOperationCollection.operations.length === 1) {
+      const firstDragDropOperation = dragDropOperationCollection.operations.find(Boolean);
+      modalTitle = firstDragDropOperation.type === 'folder' ? TYPO3.lang.move_folder : TYPO3.lang.move_file;
+      modalText = TYPO3.lang['mess.move_into'].replace('%s', firstDragDropOperation.source.name).replace('%s', dragDropOperationCollection.target.name);
+    } else {
+      modalTitle = TYPO3.lang.transfer_multiple;
+      modalText = TYPO3.lang['mess.transfer_multiple']
+        .replace('%d', dragDropOperationCollection.operations.length.toString(10))
+        .replace('%s', dragDropOperationCollection.target.name);
+    }
+
+    const modal = Modal.confirm(
+      modalTitle,
+      modalText,
+      Severity.warning, [
+        {
+          text: TYPO3.lang['labels.cancel'] || 'Cancel',
+          active: true,
+          btnClass: 'btn-default',
+          name: 'cancel'
+        },
+        {
+          text: TYPO3.lang['cm.copy'] || 'Copy',
+          btnClass: 'btn-warning',
+          name: 'copy'
+        },
+        {
+          text: TYPO3.lang['labels.move'] || 'Move',
+          btnClass: 'btn-warning',
+          name: 'move'
+        }
+      ]
+    );
+    modal.addEventListener('button.clicked', (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      if (target.name === 'move') {
+        this.sendChangeCommand('move', dragDropOperationCollection, callbackFn);
+      } else if (target.name === 'copy') {
+        this.sendChangeCommand('copy', dragDropOperationCollection, callbackFn);
+      }
+      modal.hideModal();
+    });
+  }
+
+  /**
+   * Used when something a folder was drag+dropped.
+   */
+  private sendChangeCommand(command: 'copy' | 'move', dragDropOperationCollection: DragDropOperationCollection, callbackFn: Function|null = null): void {
+    const payload = dragDropOperationCollection.operations.map((dragDropOperation: DragDropOperation) => {
+      return {
+        data: decodeURIComponent(dragDropOperation.source.identifier),
+        target: decodeURIComponent(dragDropOperationCollection.target.identifier)
+      };
+    });
+
+    const params = {
+      data: {
+        [command]: payload
+      }
+    } as any;
+
+    this.tree.nodesAddPlaceholder();
+
+    (new AjaxRequest(top.TYPO3.settings.ajaxUrls.file_process))
+      .post(params)
+      .then((response) => {
+        return response.resolve();
+      })
+      .then((response) => {
+        if (response && response.hasErrors) {
+          this.tree.errorNotification(response.messages, false);
+          this.tree.nodesContainer.selectAll('.node').remove();
+          this.tree.updateVisibleNodes();
+          this.tree.nodesRemovePlaceholder();
+        } else {
+          if (response.messages) {
+            response.messages.forEach((message: any) => {
+              Notification.showMessage(
+                message.title || '',
+                message.message || '',
+                message.severity
+              );
+            });
+          }
+          this.tree.refreshOrFilterTree();
+          if (callbackFn !== null) {
+            callbackFn();
+          }
+        }
+      })
+      .catch(async (error) => {
+        const response = await error.resolve();
+        if (response && response.hasErrors) {
+          this.tree.errorNotification(response.messages, true);
+        } else{
+          this.tree.errorNotification(null, true);
+        }
+        if (callbackFn !== null) {
+          callbackFn();
+        }
+      });
+  }
+}
 
 /**
  * Drag and drop for nodes (copy/move)
@@ -384,90 +554,38 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
     this.actionHandler.cleanupDrop();
     if (this.actionHandler.isDropAllowed(this.tree.hoveredNode, draggingNode)) {
       let options = this.actionHandler.getDropCommandDetails(this.tree.hoveredNode, draggingNode);
-      let modalText = options.position === DraggablePositionEnum.INSIDE ? TYPO3.lang['mess.move_into'] : TYPO3.lang['mess.move_after'];
-      modalText = modalText.replace('%s', options.node.name).replace('%s', options.target.name);
-
-      const modal = Modal.confirm(
-        TYPO3.lang.move_folder,
-        modalText,
-        Severity.warning, [
-          {
-            text: TYPO3.lang['labels.cancel'] || 'Cancel',
-            active: true,
-            btnClass: 'btn-default',
-            name: 'cancel'
-          },
-          {
-            text: TYPO3.lang['cm.copy'] || 'Copy',
-            btnClass: 'btn-warning',
-            name: 'copy'
-          },
-          {
-            text: TYPO3.lang['labels.move'] || 'Move',
-            btnClass: 'btn-warning',
-            name: 'move'
-          }
-        ]
-      );
-      modal.addEventListener('button.clicked', (e: Event) => {
-        const target = e.target as HTMLInputElement;
-        if (target.name === 'move') {
-          this.sendChangeCommand('move', options);
-        } else if (target.name === 'copy') {
-          this.sendChangeCommand('copy', options);
-        }
-        modal.hideModal();
+      if (options === null) {
+        return false;
+      }
+      const dragDropOperationCollection = FileDragDropOperationCollection.fromD3Node(options);
+      this.actionHandler.initiateDropAction(dragDropOperationCollection, () => {
+        this.tree.selectNode(options.target);
       });
     }
     return true;
   }
+}
 
+/**
+ * Internal helper class for drag&drop handling
+ */
+class FileDragDropOperationCollection extends DragDropOperationCollection {
   /**
    * When something a folder was drag+dropped, this will send an AJAX request to the server.
+   * Builds a FileDragDropOperationCollection based on a d3 node
    */
-  private sendChangeCommand(command: string, data: any): void {
-    let params = {
-      data: {}
-    } as any;
+  public static fromD3Node(options: NodePositionOptions): DragDropOperationCollection {
+    const operations: DragDropOperation[] = [
+      new DragDropOperation(
+        { identifier: options.node.identifier, name: options.node.name },
+        'folder',
+        options.position
+      )
+    ];
 
-    if (command === 'copy') {
-      params.data.copy = [];
-      params.data.copy.push({data: decodeURIComponent(data.identifier), target: decodeURIComponent(data.target.identifier)});
-    } else if (command === 'move') {
-      params.data.move = [];
-      params.data.move.push({data: decodeURIComponent(data.identifier), target: decodeURIComponent(data.target.identifier)});
-    } else {
-      return;
-    }
-
-    this.tree.nodesAddPlaceholder();
-
-    (new AjaxRequest(top.TYPO3.settings.ajaxUrls.file_process))
-      .post(params)
-      .then((response) => {
-        return response.resolve();
-      })
-      .then((response) => {
-        if (response && response.hasErrors) {
-          this.tree.errorNotification(response.messages, false);
-          this.tree.nodesContainer.selectAll('.node').remove();
-          this.tree.updateVisibleNodes();
-          this.tree.nodesRemovePlaceholder();
-        } else {
-          if (response.messages) {
-            response.messages.forEach((message: any) => {
-              Notification.showMessage(
-                message.title || '',
-                message.message || '',
-                message.severity
-              );
-            });
-          }
-          this.tree.refreshOrFilterTree();
-        }
-      })
-      .catch((error) => {
-        this.tree.errorNotification(error, true);
-      });
+    return new DragDropOperationCollection(operations, {
+      identifier: options.target.identifier,
+      name: options.target.name
+    });
   }
 }

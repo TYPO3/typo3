@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Filelist\Dto;
 class UserPermissions
 {
     public function __construct(
+        public readonly bool $moveResource = false,
         public readonly bool $editMetaData = false
     ) {
     }
