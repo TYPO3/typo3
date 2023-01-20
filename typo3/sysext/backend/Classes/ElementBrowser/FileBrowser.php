@@ -16,12 +16,10 @@
 namespace TYPO3\CMS\Backend\ElementBrowser;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
@@ -209,18 +207,21 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         }
 
         // Getting flag for showing/not showing thumbnails:
-        $noThumbs = $backendUser->getTSConfig()['options.']['noThumbsInEB'] ?? false;
-        $_MOD_SETTINGS = [];
-        if (!$noThumbs) {
-            // MENU-ITEMS, fetching the setting for thumbnails from File>List module:
-            $_MOD_MENU = ['displayThumbs' => ''];
-            $changedSettings = (array)($request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? []);
-            $_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, $changedSettings, 'file_list');
+        $displayThumbnailsSelector = true;
+        if ($backendUser->getTSConfig()['options.']['noThumbsInEB'] ?? false) {
+            $displayThumbnailsSelector = false;
+            $displayThumbnails = false;
+        } else {
+            $displayThumbnails = $backendUser->getModuleData('file_list')['displayThumbs'] ?? true;
+            $newValue = $request->getParsedBody()['displayThumbs'] ?? $request->getQueryParams()['displayThumbs'] ?? null;
+            if ($newValue !== null) {
+                $displayThumbnails = $newValue;
+                $backendUser->pushModuleData('file_list', ['displayThumbs' => $displayThumbnails]);
+                $backendUser->writeUC();
+            }
         }
-        $displayThumbs = $_MOD_SETTINGS['displayThumbs'] ?? true;
-        $noThumbs = $noThumbs ?: !$displayThumbs;
         if ($this->selectedFolder instanceof Folder) {
-            $files = $this->renderFilesInFolder($this->selectedFolder, $allowedFileExtensions, $noThumbs);
+            $files = $this->renderFilesInFolder($this->selectedFolder, $allowedFileExtensions, (bool)$displayThumbnails, $displayThumbnailsSelector);
             $selectedFolderIcon = $this->iconFactory->getIconForResource($this->selectedFolder, Icon::SIZE_SMALL);
         } else {
             $files = '';
@@ -252,11 +253,16 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
      *
      * @param Folder $folder The folder path to expand
      * @param array $extensionList List of fileextensions to show
-     * @param bool $noThumbs Whether to show thumbnails or not. If set, no thumbnails are shown.
+     * @param bool $displayThumbnails Whether to show thumbnails or not.
+     * @param bool $displayThumbnailsSelector Whether to show thumbnails selector or not.
      * @return string HTML output
      */
-    public function renderFilesInFolder(Folder $folder, array $extensionList = [], $noThumbs = false)
-    {
+    public function renderFilesInFolder(
+        Folder $folder,
+        array $extensionList = [],
+        bool $displayThumbnails = true,
+        bool $displayThumbnailsSelector = true,
+    ) {
         if (!$folder->checkActionPermission('read')) {
             return '';
         }
@@ -339,7 +345,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         foreach ($files as $fileObject) {
             // Thumbnail/size generation:
             $imgInfo = [];
-            if (!$noThumbs && ($fileObject->isMediaFile() || $fileObject->isImage())) {
+            if ($displayThumbnails && ($fileObject->isMediaFile() || $fileObject->isImage())) {
                 $processedFile = $fileObject->process(
                     ProcessedFile::CONTEXT_IMAGEPREVIEW,
                     $this->thumbnailConfiguration
@@ -414,7 +420,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $markup[] = '              </div>';
         $markup[] = '          </div>';
         $markup[] = '      </div>';
-        $markup[] = '      ' . $this->getThumbnailSelector();
+        $markup[] = '      ' . ($displayThumbnailsSelector ? $this->getThumbnailSelector($folder->getCombinedIdentifier(), $displayThumbnails) : '');
         $markup[] = '   </div>';
         $markup[] = '   <div class="table-fit">';
         $markup[] = '       <table class="table table-sm table-striped table-hover" id="typo3-filelist" data-list-container="files">';
@@ -443,33 +449,37 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         return $folder->getFiles();
     }
 
-    /**
-     * Get the HTML for the thumbnail selector, if enabled
-     *
-     * @return string HTML data required for the thumbnail selector
-     */
-    protected function getThumbnailSelector(): string
+    protected function getThumbnailSelector(string $identifier, bool $displayThumbnails): string
     {
-        // Getting flag for showing/not showing thumbnails:
-        if (!$this->selectedFolder instanceof Folder || ($this->getBackendUser()->getTSConfig()['options.']['noThumbsInEB'] ?? false)) {
-            return '';
+        $parameters = $this->getUrlParameters(['identifier' => $identifier]);
+        if (($route = $this->getRequest()->getAttribute('route')) instanceof Route) {
+            $scriptUrl = (string)$this->uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $parameters);
+        } else {
+            $scriptUrl = ($this->thisScript ?: PathUtility::basename(Environment::getCurrentScript())) . HttpUtility::buildQueryString($parameters, '&');
         }
 
-        $request = $this->getRequest();
-        $lang = $this->getLanguageService();
+        $attributes = [
+            'type' => 'checkbox',
+            'class' => 'form-check-input',
+            'name' => 'displayThumbs',
+            'value' => '1',
+            'id' => 'checkDisplayThumbs',
+            'data-global-event' => 'change',
+            'data-action-navigate' => '$data=~s/$value/',
+            'data-navigate-value' => sprintf('%s&%s=${value}', $scriptUrl, 'displayThumbs'),
+            'data-empty-value' => '0',
+        ];
 
-        // MENU-ITEMS, fetching the setting for thumbnails from File>List module:
-        $_MOD_MENU = ['displayThumbs' => ''];
-        $changedSettings = (array)($request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? []);
-        $currentValue = BackendUtility::getModuleData($_MOD_MENU, $changedSettings, 'file_list')['displayThumbs'] ?? true;
-        $addParams = HttpUtility::buildQueryString($this->getUrlParameters(['identifier' => $this->selectedFolder->getCombinedIdentifier()]), '&');
+        if ($displayThumbnails) {
+            $attributes['checked'] = 'checked';
+        }
 
         return '
             <div class="col-auto">
                 <div class="form-check form-switch">
-                    ' . self::getFuncCheck('', 'SET[displayThumbs]', $currentValue, $request, $this->thisScript, $addParams, 'id="checkDisplayThumbs"') . '
+                    <input ' . GeneralUtility::implodeAttributes($attributes, true) . ' />
                     <label for="checkDisplayThumbs" class="form-check-label">
-                        ' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:displayThumbs')) . '
+                        ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:displayThumbs')) . '
                     </label>
                 </div>
             </div>';
@@ -519,81 +529,5 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     public function getScriptUrl()
     {
         return $this->thisScript;
-    }
-
-    //################################
-    // copied over from BackendUtility to enable deprecation of the original method
-    // @todo finish fluidification of template and remove HTML generation from controller
-    //################################
-
-    /**
-     * Checkbox function menu.
-     * Works like ->getFuncMenu() but takes no $menuItem array since this is a simple checkbox.
-     *
-     * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
-     * @param string $elementName The form elements name, probably something like "SET[...]
-     * @param string|bool $currentValue The value to be selected currently.
-     * @param string $script The script to send the &id to, if empty it's automatically found
-     * @param string $addParams Additional parameters to pass to the script.
-     * @param string $tagParams Additional attributes for the checkbox input tag
-     * @return string HTML code for checkbox
-     * @see getFuncMenu()
-     */
-    protected static function getFuncCheck(
-        $mainParams,
-        $elementName,
-        $currentValue,
-        ServerRequestInterface $request,
-        $script = '',
-        $addParams = '',
-        $tagParams = ''
-    ) {
-        // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
-        $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $request, $script);
-        $attributes = GeneralUtility::implodeAttributes([
-            'type' => 'checkbox',
-            'class' => 'form-check-input',
-            'name' => $elementName,
-            'value' => '1',
-            'data-global-event' => 'change',
-            'data-action-navigate' => '$data=~s/$value/',
-            'data-navigate-value' => sprintf('%s&%s=${value}', $scriptUrl, $elementName),
-            'data-empty-value' => '0',
-        ], true);
-        return
-            '<input ' . $attributes .
-            ($currentValue ? ' checked="checked"' : '') .
-            ($tagParams ? ' ' . $tagParams : '') .
-            ' />';
-    }
-
-    /**
-     * Builds the URL to the current script with given arguments
-     *
-     * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
-     * @param string $addParams Additional parameters to pass to the script.
-     * @param string $script The script to send the &id to, if empty it's automatically found
-     * @return string The complete script URL
-     * @todo Check if this can be removed or replaced by routing
-     */
-    protected static function buildScriptUrl($mainParams, $addParams, ServerRequestInterface $request, $script = '')
-    {
-        if (!is_array($mainParams)) {
-            $mainParams = ['id' => $mainParams];
-        }
-
-        $route = $request->getAttribute('route');
-        if ($route instanceof Route) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $scriptUrl = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $mainParams);
-            $scriptUrl .= $addParams;
-        } else {
-            if (!$script) {
-                $script = PathUtility::basename(Environment::getCurrentScript());
-            }
-            $scriptUrl = $script . HttpUtility::buildQueryString($mainParams, '?') . $addParams;
-        }
-
-        return $scriptUrl;
     }
 }
