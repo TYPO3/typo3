@@ -530,7 +530,10 @@ abstract class AbstractMenuContentObject
             $menuItems = $this->sectionIndex($alternativeSortingField);
         } else {
             // Default: Gets a hierarchical menu based on subpages of $this->id
-            $menuItems = $this->sys_page->getMenu($this->id, '*', $alternativeSortingField, $additionalWhere, true, $this->disableGroupAccessCheck);
+            $subMenuDecision = $this->getRuntimeCache()->get($this->getCacheIdentifierForSubMenuDecision($this->id));
+            if (!isset($subMenuDecision['result']) || $subMenuDecision['result'] === true) {
+                $menuItems = $this->sys_page->getMenu($this->id, '*', $alternativeSortingField, $additionalWhere, true, $this->disableGroupAccessCheck);
+            }
         }
         return $menuItems;
     }
@@ -1382,7 +1385,7 @@ abstract class AbstractMenuContentObject
      */
     protected function isSubMenu($uid)
     {
-        $cacheId = 'menucontentobject-is-submenu-decision-' . $uid . '-' . (int)($this->conf['includeNotInMenu'] ?? 0);
+        $cacheId = $this->getCacheIdentifierForSubMenuDecision($uid);
         $runtimeCache = $this->getRuntimeCache();
         $cachedDecision = $runtimeCache->get($cacheId);
         if (isset($cachedDecision['result'])) {
@@ -1444,6 +1447,11 @@ abstract class AbstractMenuContentObject
         }
         $runtimeCache->set($cacheId, ['result' => $hasSubPages]);
         return $hasSubPages;
+    }
+
+    protected function getCacheIdentifierForSubMenuDecision($uid): string
+    {
+        return 'menucontentobject-is-submenu-decision-' . $uid . '-' . (int)($this->conf['includeNotInMenu'] ?? 0);
     }
 
     /**
