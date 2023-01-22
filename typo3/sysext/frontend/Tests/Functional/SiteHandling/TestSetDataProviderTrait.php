@@ -26,16 +26,12 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariablesContext;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
 
-/**
- * TestSet declarations shared by several tests
- */
 trait TestSetDataProviderTrait
 {
     /**
-     * @param TestSet|string|null $parentSet
      * @return TestSet[]
      */
-    public function nestedRouteArgumentsAreConsideredDataProvider($parentSet = null): array
+    public function nestedRouteArgumentsAreConsideredDataProvider(TestSet|string|null $parentSet = null): array
     {
         $routePath = VariableValue::create(
             '/enhance/[[routeParameter]]',

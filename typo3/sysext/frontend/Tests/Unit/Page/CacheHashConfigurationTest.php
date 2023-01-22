@@ -37,12 +37,10 @@ class CacheHashConfigurationTest extends TestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @test
      * @dataProvider nonArrayValueThrowsExceptionDataProvider
      */
-    public function nonArrayValueThrowsException(string $aspect, $value): void
+    public function nonArrayValueThrowsException(string $aspect, mixed $value): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1580225311);
@@ -63,12 +61,10 @@ class CacheHashConfigurationTest extends TestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @test
      * @dataProvider nonScalarValueThrowsExceptionDataProvider
      */
-    public function nonScalarValueThrowsException(string $aspect, $value): void
+    public function nonScalarValueThrowsException(string $aspect, mixed $value): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1580225312);

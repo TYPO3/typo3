@@ -38,7 +38,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
 {
     use TestSetDataProviderTrait;
 
-    public function routeDefaultsAreConsideredDataProvider($parentSet = null): array
+    public function routeDefaultsAreConsideredDataProvider(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)

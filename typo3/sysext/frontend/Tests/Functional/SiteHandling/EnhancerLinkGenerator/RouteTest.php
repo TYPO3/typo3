@@ -34,7 +34,7 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
 {
     use TestSetDataProviderTrait;
 
-    public function routeDefaultsForSingleParameterAreConsideredDataProvider($parentSet = null): array
+    public function routeDefaultsForSingleParameterAreConsideredDataProvider(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         $enhancerDeclarations = $builder->declareEnhancers();

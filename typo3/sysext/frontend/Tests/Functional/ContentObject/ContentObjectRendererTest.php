@@ -38,17 +38,11 @@ class ContentObjectRendererTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    /**
-     * @var array[]
-     */
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
-    /**
-     * @var ContentObjectRenderer
-     */
-    protected $subject;
+    protected ContentObjectRenderer $subject;
 
     protected array $pathsToProvideInTestInstance = ['typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload'];
 

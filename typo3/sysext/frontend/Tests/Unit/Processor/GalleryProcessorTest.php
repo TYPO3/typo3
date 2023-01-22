@@ -24,15 +24,9 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Tests for  GalleryProcessor
- */
 class GalleryProcessorTest extends UnitTestCase
 {
-    /**
-     * @var ContentObjectRenderer|MockObject
-     */
-    protected MockObject $contentObjectRenderer;
+    protected ContentObjectRenderer&MockObject $contentObjectRenderer;
 
     protected function setUp(): void
     {
@@ -152,7 +146,7 @@ class GalleryProcessorTest extends UnitTestCase
      * @test
      * @dataProvider galleryPositionDataProvider
      */
-    public function galleryPositionTest($processorConfiguration, $expected): void
+    public function galleryPositionTest(array $processorConfiguration, array $expected): void
     {
         $processor = new GalleryProcessor();
         $processedData = $processor->process(
@@ -252,7 +246,7 @@ class GalleryProcessorTest extends UnitTestCase
      * @test
      * @dataProvider countDataProvider
      */
-    public function countResultTest($numberOfFiles, $data, $processorConfiguration, $expected): void
+    public function countResultTest(int $numberOfFiles, array $data, array $processorConfiguration, array $expected): void
     {
         $files = [];
         for ($i = 0; $i < $numberOfFiles; $i++) {
@@ -437,7 +431,7 @@ class GalleryProcessorTest extends UnitTestCase
      * @test
      * @dataProvider calculateMediaWidthsAndHeightsDataProvider
      */
-    public function calculateMediaWidthsAndHeightsTest($testFiles, $processorConfiguration, $expected): void
+    public function calculateMediaWidthsAndHeightsTest(array $testFiles, array $processorConfiguration, array $expected): void
     {
         $files = [];
         foreach ($testFiles as $fileConfig) {

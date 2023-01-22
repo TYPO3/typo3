@@ -19,9 +19,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use TYPO3\CMS\Core\Site\Entity\Site;
 
-/**
- * Test case
- */
 trait ContentObjectRendererTestTrait
 {
     private function getLibParseFunc_RTE(): array

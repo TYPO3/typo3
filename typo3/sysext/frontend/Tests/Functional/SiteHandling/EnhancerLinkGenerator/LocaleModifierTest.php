@@ -29,10 +29,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 class LocaleModifierTest extends AbstractEnhancerLinkGeneratorTestCase
 {
-    /**
-     * @param string|TestSet|null $parentSet
-     */
-    public function localeModifierDataProvider($parentSet = null): array
+    public function localeModifierDataProvider(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)

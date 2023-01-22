@@ -37,10 +37,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
 
     protected bool $backupEnvironment = true;
 
-    /**
-     * @var MockObject|TypoScriptFrontendController|AccessibleObjectInterface
-     */
-    protected MockObject $frontendControllerMock;
+    protected MockObject|TypoScriptFrontendController|AccessibleObjectInterface $frontendControllerMock;
 
     protected function setUp(): void
     {

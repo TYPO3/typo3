@@ -27,9 +27,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Testcase for TYPO3\CMS\Frontend\Imaging\GifBuilder
- */
 class GifBuilderTest extends FunctionalTestCase
 {
     private function setupFullTestEnvironment(): void

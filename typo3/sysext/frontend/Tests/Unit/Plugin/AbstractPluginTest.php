@@ -267,10 +267,8 @@ class AbstractPluginTest extends UnitTestCase
     /**
      * @test
      * @dataProvider registeredResultBrowserProvider
-     *
-     * @param mixed $returnValue
      */
-    public function registeredResultBrowsersAreUsed(string $className, $returnValue, string $expected): void
+    public function registeredResultBrowsersAreUsed(string $className, mixed $returnValue, string $expected): void
     {
         $resultBrowserHook = $this->getMockBuilder(ResultBrowserPluginHook::class)
             ->setMockClassName($className)

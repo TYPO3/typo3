@@ -21,9 +21,6 @@ use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\CacheHashConfiguration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase
- */
 class CacheHashCalculatorTest extends UnitTestCase
 {
     protected CacheHashCalculator $subject;
@@ -183,7 +180,7 @@ class CacheHashCalculatorTest extends UnitTestCase
      * @dataProvider canWhitelistParametersDataProvider
      * @test
      */
-    public function canWhitelistParameters($params, $expected): void
+    public function canWhitelistParameters(string $params, string $expected): void
     {
         $this->subject->setConfiguration([
             'cachedParametersWhiteList' => ['whitep1', 'whitep2'],

@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 
-/**
- * Fixture for TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor
- */
 class DataProcessorFixture implements DataProcessorInterface
 {
     public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData): array

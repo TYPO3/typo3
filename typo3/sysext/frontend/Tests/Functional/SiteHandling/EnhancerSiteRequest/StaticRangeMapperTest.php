@@ -29,10 +29,7 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableV
 
 class StaticRangeMapperTest extends AbstractEnhancerSiteRequestTest
 {
-    /**
-     * @param string|TestSet|null $parentSet
-     */
-    public function staticRangeMapperDataProvider($parentSet = null): array
+    public function staticRangeMapperDataProvider(string|TestSet|null $parentSet = null): array
     {
         $variableContexts = array_map(
             static function ($value) {

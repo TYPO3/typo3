@@ -40,11 +40,7 @@ class PageArgumentValidatorTest extends UnitTestCase
     protected CacheHashCalculator $cacheHashCalculator;
     protected TimeTracker $timeTrackerStub;
     protected RequestHandlerInterface $responseOutputHandler;
-
-    /**
-     * @var PageResolver|AccessibleObjectInterface
-     */
-    protected AccessibleObjectInterface $subject;
+    protected PageResolver&AccessibleObjectInterface $subject;
 
     protected function setUp(): void
     {

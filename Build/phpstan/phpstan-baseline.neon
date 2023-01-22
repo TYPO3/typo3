@@ -2756,11 +2756,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
 
 		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\Middleware\\\\PageArgumentValidatorTest\\:\\:\\$subject with type TYPO3\\\\CMS\\\\Frontend\\\\Middleware\\\\PageResolver\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface is not subtype of native type TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/PageArgumentValidatorTest.php
-
-		-
 			message: "#^Left side of && is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteBaseRedirectResolverTest.php
@@ -2777,11 +2772,6 @@ parameters:
 
 		-
 			message: "#^Left side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteResolverTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\Middleware\\\\SiteResolverTest\\:\\:\\$siteFinder with type TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteFinder\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface is not subtype of native type TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteResolverTest.php
 
@@ -2799,11 +2789,6 @@ parameters:
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with string will always evaluate to false\\.$#"
 			count: 2
 			path: ../../typo3/sysext/frontend/Tests/Unit/Resource/FilePathSanitizerTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\Typolink\\\\AbstractTypolinkBuilderTest\\:\\:\\$frontendControllerMock \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Typolink/AbstractTypolinkBuilderTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\:\\:getUid\\(\\)\\.$#"

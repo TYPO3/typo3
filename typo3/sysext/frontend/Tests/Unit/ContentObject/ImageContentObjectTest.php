@@ -36,10 +36,7 @@ class ImageContentObjectTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var ImageContentObject|MockObject|AccessibleObjectInterface
-     */
-    protected $subject;
+    protected ImageContentObject|MockObject|AccessibleObjectInterface $subject;
 
     protected function setUp(): void
     {
@@ -73,10 +70,8 @@ class ImageContentObjectTest extends UnitTestCase
      *
      * @test
      * @dataProvider getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFoundDataProvider
-     * @param string $key
-     * @param array $configuration
      */
-    public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFound($key, $configuration): void
+    public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFound(?string $key, ?array $configuration): void
     {
         $defaultImgTagTemplate = '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###SELFCLOSINGTAGSLASH###>';
         $result = $this->subject->_call('getImageTagTemplate', $key, $configuration);

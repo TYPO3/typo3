@@ -24,9 +24,6 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for \TYPO3\CMS\Frontend\Resource\FilePathSanitizer
- */
 class FilePathSanitizerTest extends UnitTestCase
 {
     protected bool $backupEnvironment = true;

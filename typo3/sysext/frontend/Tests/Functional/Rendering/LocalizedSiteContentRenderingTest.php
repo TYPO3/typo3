@@ -110,9 +110,6 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload',
     ];
 
-    /**
-     * @var array
-     */
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
         'DK' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'dk_DA.UTF8'],

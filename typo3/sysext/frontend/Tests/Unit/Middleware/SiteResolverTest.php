@@ -39,11 +39,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class SiteResolverTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-
-    /**
-     * @var SiteFinder|AccessibleObjectInterface
-     */
-    protected AccessibleObjectInterface $siteFinder;
+    protected SiteFinder&AccessibleObjectInterface $siteFinder;
 
     protected RequestHandlerInterface $siteFoundRequestHandler;
     protected string $originalLocale;

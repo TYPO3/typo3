@@ -30,7 +30,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
     /**
      * @var string[]
      */
-    private $definedResources = [
+    private array $definedResources = [
         'absoluteCSS' => '/typo3/sysext/backend/Resources/Public/Css/backend.css',
         'relativeCSS' => 'typo3/sysext/backend/Resources/Public/Css/backend.css',
         'extensionCSS' => 'EXT:rte_ckeditor/Resources/Public/Css/contents.css',
@@ -45,7 +45,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
     /**
      * @var string[]
      */
-    private $resolvedResources = [
+    private array $resolvedResources = [
         'relativeCSS' => 'typo3/sysext/backend/Resources/Public/Css/backend.css',
         'extensionCSS' => 'typo3/sysext/rte_ckeditor/Resources/Public/Css/contents.css',
         'externalCSS' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',

@@ -28,10 +28,7 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableV
 
 class StaticValueMapperTest extends AbstractEnhancerSiteRequestTest
 {
-    /**
-     * @param string|TestSet|null $parentSet
-     */
-    public function staticValueMapperDataProvider($parentSet = null): array
+    public function staticValueMapperDataProvider(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)

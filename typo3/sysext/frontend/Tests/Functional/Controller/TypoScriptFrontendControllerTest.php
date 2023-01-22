@@ -26,9 +26,6 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    /**
-     * @var array
-     */
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];

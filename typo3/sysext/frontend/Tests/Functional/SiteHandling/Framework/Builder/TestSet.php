@@ -38,9 +38,6 @@ class TestSet
         return clone $parentSet;
     }
 
-    /**
-     * @return VariableValue
-     */
     public function getUrl(): ?VariableValue
     {
         return $this->url;
@@ -74,9 +71,6 @@ class TestSet
         return array_values($applicables)[0] ?? null;
     }
 
-    /**
-     * @return Variables
-     */
     public function getVariables(): ?Variables
     {
         return $this->variables;

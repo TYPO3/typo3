@@ -29,10 +29,7 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableV
 
 class LocaleModifierTest extends AbstractEnhancerSiteRequestTest
 {
-    /**
-     * @param string|TestSet|null $parentSet
-     */
-    public function localeModifierDataProvider($parentSet = null): array
+    public function localeModifierDataProvider(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)

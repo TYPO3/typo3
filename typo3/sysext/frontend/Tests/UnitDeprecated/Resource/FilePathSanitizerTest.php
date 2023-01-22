@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Frontend\Tests\UnitDeprecated\Resource;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for \TYPO3\CMS\Frontend\Resource\FilePathSanitizer
- */
 class FilePathSanitizerTest extends UnitTestCase
 {
     /**
