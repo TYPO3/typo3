@@ -276,9 +276,6 @@
 			<trans-unit id="CM_editPageProperties" resname="CM_editPageProperties">
 				<source>Edit page properties</source>
 			</trans-unit>
-			<trans-unit id="CM_db_list" resname="CM_db_list">
-				<source>Web&gt;List module</source>
-			</trans-unit>
 			<trans-unit id="noEditPage" resname="noEditPage">
 				<source>You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</source>
 			</trans-unit>

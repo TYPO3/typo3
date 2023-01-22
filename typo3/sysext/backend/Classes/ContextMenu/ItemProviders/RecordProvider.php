@@ -118,11 +118,6 @@ class RecordProvider extends AbstractProvider
                     'iconIdentifier' => 'actions-add',
                     'callbackAction' => 'newContentWizard',
                 ],
-                'openListModule' => [
-                    'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:CM_db_list',
-                    'iconIdentifier' => 'actions-system-list-open',
-                    'callbackAction' => 'openListModule',
-                ],
             ],
         ],
         'divider3' => [
@@ -231,9 +226,6 @@ class RecordProvider extends AbstractProvider
             case 'history':
                 $canRender = $this->canShowHistory();
                 break;
-            case 'openListModule':
-                $canRender = $this->canOpenListModule();
-                break;
             case 'copy':
                 $canRender = $this->canBeCopied();
                 break;
@@ -300,11 +292,6 @@ class RecordProvider extends AbstractProvider
         }
         if ($itemName === 'delete') {
             $attributes += $this->getDeleteAdditionalAttributes();
-        }
-        if ($itemName === 'openListModule') {
-            $attributes += [
-                'data-page-uid' => $this->record['pid'],
-            ];
         }
         if ($itemName === 'pasteAfter') {
             $attributes += $this->getPasteAdditionalAttributes('after');
@@ -534,11 +521,6 @@ class RecordProvider extends AbstractProvider
     protected function canOpenNewCEWizard(): bool
     {
         return $this->table === 'tt_content' && $this->canBeEdited() && !$this->isRecordATranslation();
-    }
-
-    protected function canOpenListModule(): bool
-    {
-        return $this->backendUser->check('modules', 'web_list');
     }
 
     protected function canBeCopied(): bool

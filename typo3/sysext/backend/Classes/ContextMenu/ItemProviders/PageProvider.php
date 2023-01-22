@@ -114,11 +114,6 @@ class PageProvider extends RecordProvider
                     'iconIdentifier' => 'apps-pagetree-drag-move-between',
                     'callbackAction' => 'pagesNewMultiple',
                 ],
-                'openListModule' => [
-                    'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:CM_db_list',
-                    'iconIdentifier' => 'actions-system-list-open',
-                    'callbackAction' => 'openListModule',
-                ],
                 'mountAsTreeRoot' => [
                     'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.tempMountPoint',
                     'iconIdentifier' => 'actions-pagetree-mountroot',
@@ -225,9 +220,6 @@ class PageProvider extends RecordProvider
                 break;
             case 'history':
                 $canRender = $this->canShowHistory();
-                break;
-            case 'openListModule':
-                $canRender = $this->canOpenListModule();
                 break;
             case 'pagesSort':
                 $canRender = $this->canBeSorted();
