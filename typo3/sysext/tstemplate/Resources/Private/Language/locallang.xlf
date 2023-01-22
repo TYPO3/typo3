@@ -3,9 +3,6 @@
 	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="moduleTitle" resname="moduleTitle">
-				<source>Template tools</source>
-			</trans-unit>
 			<trans-unit id="templateAnalyzer" resname="templateAnalyzer">
 				<source>Included TypoScript</source>
 			</trans-unit>
