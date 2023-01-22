@@ -244,7 +244,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         $this->treeTraverser->addVisitor($conditionAggregatorVisitor);
         $this->treeTraverser->traverse($constantTree);
         $constantConditions = $conditionAggregatorVisitor->getConditions();
-        $conditionsFromPost = $parsedBody['constantConditions'] ?? [];
+        $conditionsFromPost = $parsedBody['constantsConditions'] ?? [];
         $conditionsFromModuleData = array_flip((array)$moduleData->get('constantConditions'));
         $typoscriptConditions = [];
         foreach ($constantConditions as $condition) {
