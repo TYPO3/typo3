@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf" date="2023-01-22T19:53:00Z" product-name="tstemplate">
+		<header/>
+		<body>
+			<trans-unit id="typoscriptRecords.title" resname="typoscriptRecords.title">
+				<source>TypoScript records overview</source>
+			</trans-unit>
+			<trans-unit id="typoscriptRecords.description" resname="typoscriptRecords.description">
+				<source>Global overview of all pages in the database containing one or more TypoScript records.</source>
+			</trans-unit>
+			<trans-unit id="typoscriptRecords.noRecordsFound" resname="typoscriptRecords.noRecordsFound">
+				<source>No TypoScript Records found.</source>
+			</trans-unit>
+			<trans-unit id="typoscriptRecords.table.column.pageTitle" resname="typoscriptRecords.table.column.pageTitle">
+				<source>Page title</source>
+			</trans-unit>
+			<trans-unit id="typoscriptRecords.table.column.typoscriptRecords" resname="typoscriptRecords.table.column.typoscriptRecords">
+				<source>TypoScript records</source>
+			</trans-unit>
+			<trans-unit id="typoscriptRecords.table.column.root" resname="typoscriptRecords.table.column.root">
+				<source>Marked as root</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

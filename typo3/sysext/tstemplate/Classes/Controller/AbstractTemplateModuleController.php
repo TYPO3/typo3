@@ -99,7 +99,7 @@ abstract class AbstractTemplateModuleController
         }
         $recordData['sys_template']['NEW'] = [
             'pid' => $pageUid,
-            'title' => $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:titleNewSite'),
+            'title' => $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noRecordFound.createRootTypoScriptRecord.title.placeholder'),
             'sorting' => 0,
             'root' => 1,
             'clear' => 3,

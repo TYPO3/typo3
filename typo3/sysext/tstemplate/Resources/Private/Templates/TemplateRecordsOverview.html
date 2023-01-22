@@ -16,10 +16,10 @@
     />
 
     <h1>
-        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:typoscriptRecords.title" />
+        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.title" />
     </h1>
     <div>
-        <p class="lead"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:typoscriptRecords.description" /></p>
+        <p class="lead"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.description" /></p>
 
         <f:if condition="{pageTree}">
             <f:then>
@@ -27,9 +27,9 @@
                     <table class="table table-striped table-hover mb-0" id="ts-overview">
                         <thead>
                             <tr>
-                                <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:typoscriptRecords.table.column.pageTitle" /></th>
-                                <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:typoscriptRecords.table.column.typoscriptRecords" /></th>
-                                <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:typoscriptRecords.table.column.root" /></th>
+                                <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.table.column.pageTitle" /></th>
+                                <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.table.column.typoscriptRecords" /></th>
+                                <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.table.column.root" /></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,7 +48,7 @@
             </f:then>
             <f:else>
                 <f:be.infobox
-                    message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:typoscriptRecords.noRecordsFound')}"
+                    message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.noRecordsFound')}"
                     state="-1"
                 />
             </f:else>

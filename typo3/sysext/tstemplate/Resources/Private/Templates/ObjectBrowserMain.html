@@ -20,31 +20,27 @@
     <f:variable name="args" value="{0: 'web', 1: pageUid}" />
     <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
 
-    <f:comment>
-        Heading
-    </f:comment>
+    <f:comment><!-- Heading --></f:comment>
     <h1>
         <f:if condition="{templateTitle}">
             <f:then>
                 <f:translate
-                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:objectBrowserTitleWithTemplate"
+                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:submodule.titleWithRecord"
                     arguments="{
                         0: '{templateTitle}'
                     }"
                 />
             </f:then>
             <f:else>
-                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:objectBrowserTitle" />
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:submodule.title" />
             </f:else>
         </f:if>
     </h1>
     <div>
-        <p class="lead"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:moduleDescription" /></p>
+        <p class="lead"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:submodule.description" /></p>
     </div>
 
-    <f:comment>
-        General options
-    </f:comment>
+    <f:comment><!-- General options --></f:comment>
     <f:render
         partial="ObjectBrowserOptions"
         arguments="{
@@ -58,58 +54,66 @@
         }"
     />
 
-    <f:comment>
-        Constant conditions and tree
-    </f:comment>
-    <div class="panel-group">
-        <f:render
-            partial="ObjectBrowserConditions"
-            arguments="{
-                pageUid: pageUid,
-                type: 'constant',
-                conditions: constantConditions,
-                conditionActiveCount: constantConditionsActiveCount
-            }"
-        />
-        <f:render
-            partial="ObjectBrowserTreePanel"
-            arguments="{
-                type: 'constant',
-                tree: constantAst,
-                pageUid: pageUid,
-                currentObjectPath: constantCurrentObjectPath,
-                displayComments: displayComments
-            }"
-        />
-    </div>
+    <f:comment><!-- Constants: Conditions and tree --></f:comment>
+    <f:if condition="{constantAst.children}">
+        <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:sectionHeadline.constants" /></h2>
+        <div class="panel-group">
+            <f:render
+                partial="ObjectBrowserConditions"
+                arguments="{
+                    pageUid: pageUid,
+                    type: 'constant',
+                    conditions: constantConditions,
+                    conditionActiveCount: constantConditionsActiveCount
+                }"
+            />
+            <f:render
+                partial="ObjectBrowserTreePanel"
+                arguments="{
+                    type: 'constant',
+                    tree: constantAst,
+                    pageUid: pageUid,
+                    currentObjectPath: constantCurrentObjectPath,
+                    displayComments: displayComments
+                }"
+            />
+        </div>
+    </f:if>
 
-    <f:comment>
-        Setup conditions and tree
-    </f:comment>
-    <div class="panel-group">
-        <f:render
-            partial="ObjectBrowserConditions"
-            arguments="{
-                pageUid: pageUid,
-                type: 'setup',
-                conditions: setupConditions,
-                conditionActiveCount: setupConditionsActiveCount,
-                displayConstantSubstitutions: displayConstantSubstitutions
-            }"
-        />
-        <f:render
-            partial="ObjectBrowserTreePanel"
-            arguments="{
-                type: 'setup',
-                tree: setupAst,
-                pageUid: pageUid,
-                currentObjectPath: setupCurrentObjectPath,
-                displayConstantSubstitutions: displayConstantSubstitutions,
-                displayComments: displayComments
-            }"
-        />
-    </div>
+    <f:comment><!-- Setup: Conditions and tree --></f:comment>
+    <f:if condition="{setupAst.children}">
+        <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:sectionHeadline.setup" /></h2>
+        <div class="panel-group">
+            <f:render
+                partial="ObjectBrowserConditions"
+                arguments="{
+                    pageUid: pageUid,
+                    type: 'setup',
+                    conditions: setupConditions,
+                    conditionActiveCount: setupConditionsActiveCount,
+                    displayConstantSubstitutions: displayConstantSubstitutions
+                }"
+            />
+            <f:render
+                partial="ObjectBrowserTreePanel"
+                arguments="{
+                    type: 'setup',
+                    tree: setupAst,
+                    pageUid: pageUid,
+                    currentObjectPath: setupCurrentObjectPath,
+                    displayConstantSubstitutions: displayConstantSubstitutions,
+                    displayComments: displayComments
+                }"
+            />
+        </div>
+    </f:if>
 
+    <f:if condition="!{constantAst.children} && !{setupAst.children}">
+        <f:be.infobox
+            message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:infobox.message.noTypoScriptFound')}"
+            state="-1"
+        />
+    </f:if>
 </f:section>
 
 </html>

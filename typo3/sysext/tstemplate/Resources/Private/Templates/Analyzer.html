@@ -23,7 +23,7 @@
         <f:if condition="{templateTitle}">
             <f:then>
                 <f:translate
-                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:submodule.titleWithTypoScriptRecord"
+                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:submodule.titleWithRecord"
                     arguments="{
                         0: '{templateTitle}'
                     }"
@@ -50,7 +50,7 @@
 
     <f:comment><!-- Constants: Conditions, source and tree --></f:comment>
     <f:if condition="{constantIncludeTree.children}">
-        <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:headline.constants" /></h2>
+        <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:sectionHeadline.constants" /></h2>
         <div class="panel-group">
             <f:render
                 partial="AnalyzerConditions"
@@ -74,7 +74,7 @@
 
     <f:comment><!-- Setup: Conditions, source and tree --></f:comment>
     <f:if condition="{setupIncludeTree.children}">
-        <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:headline.setup" /></h2>
+        <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:sectionHeadline.setup" /></h2>
         <div class="panel-group">
             <f:render
                 partial="AnalyzerConditions"
@@ -98,7 +98,7 @@
 
     <f:if condition="!{constantIncludeTree.children} && !{setupIncludeTree.children}">
         <f:be.infobox
-            message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:noTypoScriptFound')}"
+            message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:infobox.message.noTypoScriptFound')}"
             state="-1"
         />
     </f:if>

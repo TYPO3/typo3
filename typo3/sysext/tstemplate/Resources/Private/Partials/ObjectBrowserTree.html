@@ -55,7 +55,7 @@
                         <f:format.raw>
                             <f:variable name="trimmedStream"><f:format.trim>{child.originalValueTokenStream}</f:format.trim></f:variable>
                             <f:translate
-                                key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:valueWithConstant"
+                                key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:tree.valueWithConstant"
                                 arguments="{
                                     0: '{ts:fineDiff(from: trimmedStream, to: child.value)}'
                                 }"
@@ -76,7 +76,7 @@
                         <f:if condition="!{iterator.isFirst}">
                             <br />
                         </f:if>
-                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:comment" /> <f:format.trim>{comment}</f:format.trim>
+                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:tree.comment" /> <f:format.trim>{comment}</f:format.trim>
                     </f:for>
                 </span>
             </f:if>

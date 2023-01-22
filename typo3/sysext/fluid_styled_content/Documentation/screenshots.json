@@ -26,7 +26,7 @@
 					{"action": "waitForText", "text": "Create new"},
 					{"action": "click", "link": "Create TypoScript record for a new site"},
 					{"action": "see", "text": "Template tools"},
-					{"action": "selectOption", "select": "select.t3-js-jumpMenuBox", "option": "Override TypoScript"},
+					{"action": "selectOption", "select": "select.t3-js-jumpMenuBox", "option": "Edit TypoScript Record"},
 					{"action": "drawBadge", "selector": "select.t3-js-jumpMenuBox", "label": "3", "position": "right"},
 					{"action": "drawBox", "selector": "//a[contains(., 'Edit the whole TypoScript record')]"},
 					{"action": "drawBadge", "selector": "//a[contains(., 'Edit the whole TypoScript record')]", "label": "4", "position": "right"},

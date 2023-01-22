@@ -15,7 +15,12 @@ return [
         'access' => 'admin',
         'path' => '/module/web/ts',
         'iconIdentifier' => 'module-tstemplate',
-        'labels' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_mod.xlf',
+        'labels' => [
+            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:module.typoscript.title',
+            'shortDescription' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:module.typoscript.shortDescription',
+            'description' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:module.typoscript.description',
+        ],
+
         'navigationComponent' => '@typo3/backend/page-tree/page-tree-element',
     ],
     'web_typoscript_recordsoverview' => [
@@ -24,7 +29,7 @@ return [
         'path' => '/module/web/typoscript/records-overview',
         'iconIdentifier' => 'module-tstemplate',
         'labels' => [
-            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:templateRecordsOverview',
+            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.templateRecordsOverview',
         ],
         'routes' => [
             '_default' => [
@@ -38,7 +43,7 @@ return [
         'path' => '/module/web/typoscript/constant-editor',
         'iconIdentifier' => 'module-tstemplate',
         'labels' => [
-            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:constantEditor',
+            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.constantEditor',
         ],
         'routes' => [
             '_default' => [
@@ -56,7 +61,7 @@ return [
         'path' => '/module/web/typoscript/overview',
         'iconIdentifier' => 'module-tstemplate',
         'labels' => [
-            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:infoModify',
+            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.infoModify',
         ],
         'routes' => [
             '_default' => [
@@ -73,7 +78,7 @@ return [
         'path' => '/module/web/typoscript/object-browser',
         'iconIdentifier' => 'module-tstemplate',
         'labels' => [
-            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:objectBrowser',
+            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.objectBrowser',
         ],
         'routes' => [
             '_default' => [
@@ -98,7 +103,7 @@ return [
         'path' => '/module/web/typoscript/analyzer',
         'iconIdentifier' => 'module-tstemplate',
         'labels' => [
-            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:templateAnalyzer',
+            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.templateAnalyzer',
         ],
         'routes' => [
             '_default' => [

@@ -24,19 +24,19 @@
         <f:if condition="{templateRecord.title}">
             <f:then>
                 <f:translate
-                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:infoModifyTitleWithTemplate"
+                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:submodule.titleWithRecord"
                     arguments="{
                         0: '{templateRecord.title}'
                     }"
                 />
             </f:then>
             <f:else>
-                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:infoModifyTitle" />
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:submodule.title" />
             </f:else>
         </f:if>
     </h1>
     <div>
-        <p class="lead"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:moduleDescription" /></p>
+        <p class="lead"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:submodule.description" /></p>
     </div>
 
     <f:if condition="{f:count(subject: allTemplatesOnPage)} > 1">
@@ -44,7 +44,7 @@
             <div class="col col-md-2 col-4">
                 <form action="{f:be.uri(route: 'web_typoscript_infomodify', parameters: '{id: pageUid}')}" method="post">
                     <label class="form-select-label" for="selectedTemplate">
-                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:selectedTemplate" />
+                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:options.selectedRecord" />
                     </label>
                     <select
                         name="selectedTemplate"
@@ -78,7 +78,7 @@
                     fields="title"
                     class="btn d-block text-start btn-default"
                 >
-                    <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:title" />
+                    <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.title" />
                 </be:link.editRecord>
             </td>
             <td width="90%">{templateRecord.title}</td>
@@ -91,7 +91,7 @@
                     fields="description"
                     class="btn d-block text-start btn-default"
                 >
-                    <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:description" />
+                    <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.description" />
                 </be:link.editRecord>
             </td>
             <td width="90%">{templateRecord.description}</td>
@@ -104,10 +104,10 @@
                     fields="constants"
                     class="btn d-block text-start btn-default"
                 >
-                    <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:constants" />
+                    <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.constants" />
                 </be:link.editRecord>
             </td>
-            <td width="90%"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:editToView" arguments="{0: numberOfConstantsLines}" /></td>
+            <td width="90%"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.lines" arguments="{0: numberOfConstantsLines}" /></td>
         </tr>
         <tr>
             <td class="text-nowrap">
@@ -117,10 +117,10 @@
                     fields="config"
                     class="btn d-block text-start btn-default"
                 >
-                    <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:setup" />
+                    <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.setup" />
                 </be:link.editRecord>
             </td>
-            <td width="90%"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:editToView" arguments="{0: numberOfSetupLines}" /></td>
+            <td width="90%"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.lines" arguments="{0: numberOfSetupLines}" /></td>
         </tr>
         </tbody>
     </table>
@@ -130,7 +130,7 @@
         uid="{templateRecord.uid}"
     >
         <core:icon identifier="actions-document-open" />
-        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:editTemplateRecord"/>
+        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:btn.editTypoScriptRecord"/>
     </be:link.editRecord>
 
 </f:section>

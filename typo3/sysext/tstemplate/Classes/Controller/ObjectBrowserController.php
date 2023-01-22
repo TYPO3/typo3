@@ -435,8 +435,8 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
                 if (empty($childName) || preg_replace('/[^a-zA-Z0-9_\.]*/', '', $childName) != $childName) {
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:noSpaces'),
-                        $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:lineNotAdded'),
+                        $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:updateAction.noSpaces'),
+                        $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:updateAction.lineNotAdded'),
                         ContextualFeedbackSeverity::WARNING,
                         true
                     );
@@ -467,7 +467,7 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 $newLine,
-                $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:lineAdded'),
+                $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:updateAction.lineAdded'),
                 ContextualFeedbackSeverity::OK,
                 true
             );

@@ -3,83 +3,35 @@
 	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_info.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="infoModifyTitle" resname="infoModifyTitle">
-				<source>Override TypoScript</source>
+			<trans-unit id="submodule.title" resname="submodule.title">
+				<source>Edit TypoScript record</source>
 			</trans-unit>
-			<trans-unit id="infoModifyTitleWithTemplate" resname="infoModifyTitleWithTemplate">
-				<source>Override TypoScript of record "%s"</source>
+			<trans-unit id="submodule.titleWithRecord" resname="submodule.titleWithRecord">
+				<source>Edit TypoScript record "%s"</source>
 			</trans-unit>
-			<trans-unit id="selectedTemplate" resname="selectedTemplate">
+			<trans-unit id="submodule.description" resname="submodule.description">
+				<source>Modify the content of the selected TypoScript record of the current page. Modifications can be made either for configurations like TypoScript constants and setup or basics like the title and description of the TypoScript record itself.</source>
+			</trans-unit>
+			<trans-unit id="options.selectedRecord" resname="options.selectedRecord">
 				<source>Selected record</source>
 			</trans-unit>
-			<trans-unit id="delete" resname="delete">
-				<source>Delete</source>
-			</trans-unit>
-			<trans-unit id="toTop" resname="toTop">
-				<source>To top</source>
-			</trans-unit>
-			<trans-unit id="fileChanged" resname="fileChanged">
-				<source>File changed</source>
-			</trans-unit>
-			<trans-unit id="resourceUpdated" resname="resourceUpdated">
-				<source>Resource '%s' has been updated.</source>
-			</trans-unit>
-			<trans-unit id="templateInformation" resname="templateInformation">
-				<source>Template information</source>
-			</trans-unit>
-			<trans-unit id="title" resname="title">
-				<source>Title</source>
-			</trans-unit>
-			<trans-unit id="description" resname="description">
-				<source>Description</source>
-			</trans-unit>
-			<trans-unit id="allowedExtensions" resname="allowedExtensions">
-				<source>Allowed extensions</source>
-			</trans-unit>
-			<trans-unit id="maxFilesize" resname="maxFilesize">
-				<source>Max filesize</source>
-			</trans-unit>
-			<trans-unit id="uploadResource" resname="uploadResource">
-				<source>Upload resource</source>
-			</trans-unit>
-			<trans-unit id="newTextResource" resname="newTextResource">
-				<source>New text resource (enter name)</source>
-			</trans-unit>
-			<trans-unit id="copyResource" resname="copyResource">
-				<source>Make a copy of resource</source>
-			</trans-unit>
-			<trans-unit id="updateResourceList" resname="updateResourceList">
-				<source>Update resource list</source>
-			</trans-unit>
-			<trans-unit id="constants" resname="constants">
+			<trans-unit id="table.column.constants" resname="table.column.constants">
 				<source>Constants</source>
 			</trans-unit>
-			<trans-unit id="file" resname="file">
-				<source>File</source>
+			<trans-unit id="table.column.description" resname="table.column.description">
+				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="editResource" resname="editResource">
-				<source>Edit Resource</source>
-			</trans-unit>
-			<trans-unit id="filesizeExceeded" resname="filesizeExceeded">
-				<source>Filesize exceeded %s KBytes</source>
-			</trans-unit>
-			<trans-unit id="notAllowed" resname="notAllowed">
-				<source>Files larger than %s KBytes are not allowed to be edited.</source>
-			</trans-unit>
-			<trans-unit id="setup" resname="setup">
-				<source>Setup</source>
-			</trans-unit>
-			<trans-unit id="resources" resname="resources">
-				<source>Resources</source>
-			</trans-unit>
-			<trans-unit id="editToView" resname="editToView">
+			<trans-unit id="table.column.lines" resname="table.column.lines">
 				<source>%s lines</source>
 			</trans-unit>
-			<trans-unit id="editTemplateRecord" resname="editTemplateRecord">
-				<source>Edit the whole TypoScript record</source>
+			<trans-unit id="table.column.setup" resname="table.column.setup">
+				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="moduleDescription" resname="moduleDescription">
-				<source>Modify the content of the selected TypoScript record of the current page. Modifications can be made either for configurations like TypoScript constants and setup or basics like the title and description of the TypoScript record itself.</source>
+			<trans-unit id="table.column.title" resname="table.column.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="btn.editTypoScriptRecord" resname="btn.editTypoScriptRecord">
+				<source>Edit the whole TypoScript record</source>
 			</trans-unit>
 		</body>
 	</file>

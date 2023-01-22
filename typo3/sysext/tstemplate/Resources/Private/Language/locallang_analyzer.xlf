@@ -6,22 +6,22 @@
 			<trans-unit id="submodule.title" resname="submodule.title">
 				<source>Included TypoScript</source>
 			</trans-unit>
-			<trans-unit id="submodule.titleWithTypoScriptRecord" resname="submodule.titleWithTypoScriptRecord">
+			<trans-unit id="submodule.titleWithRecord" resname="submodule.titleWithRecord">
 				<source>Included TypoScript for record "%s"</source>
 			</trans-unit>
 			<trans-unit id="submodule.description" resname="submodule.description">
 				<source>Overview of the included TypoScript and include order for the current page.</source>
 			</trans-unit>
-			<trans-unit id="noTypoScriptFound" resname="noTypoScriptFound">
+			<trans-unit id="infobox.message.noTypoScriptFound" resname="infobox.message.noTypoScriptFound">
 				<source>No TypoScript found.</source>
 			</trans-unit>
 			<trans-unit id="options.selectedRecord" resname="options.selectedRecord">
 				<source>Selected record</source>
 			</trans-unit>
-			<trans-unit id="headline.constants" resname="headline.constants">
+			<trans-unit id="sectionHeadline.constants" resname="sectionHeadline.constants">
 				<source>Constants</source>
 			</trans-unit>
-			<trans-unit id="headline.setup" resname="headline.setup">
+			<trans-unit id="sectionHeadline.setup" resname="sectionHeadline.setup">
 				<source>Setup</source>
 			</trans-unit>
 			<trans-unit id="panel.header.conditions" resname="panel.header.conditions">
@@ -103,7 +103,7 @@
 				<source>Root</source>
 			</trans-unit>
 			<trans-unit id="tree.child.type.Segment" resname="tree.child.type.Segment">
-				<source>Source segment</source>
+				<source>Code segment</source>
 			</trans-unit>
 			<trans-unit id="tree.child.type.Site" resname="tree.child.type.Site">
 				<source>Site</source>

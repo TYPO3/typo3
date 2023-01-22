@@ -14,90 +14,99 @@
         }"
     />
 
-    <f:comment>
-        Heading
-    </f:comment>
+    <f:comment><!-- Heading --></f:comment>
     <h1>
         <f:if condition="{templateTitle}">
             <f:then>
                 <f:translate
-                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:objectBrowserEditTitleWithTemplate"
+                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.submodule.titleWithTemplate"
                     arguments="{
                         0: '{templateTitle}'
                     }"
                 />
             </f:then>
             <f:else>
-                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:objectBrowserEditTitle" />
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.submodule.title" />
             </f:else>
         </f:if>
     </h1>
 
-    <f:comment>
-        Show "no template on this page" infobox, or render edit options
-    </f:comment>
+    <f:comment><!--  Show "no template on this page" infobox, or render edit options --></f:comment>
     <f:if condition="!{hasTemplate}">
         <f:then>
             <f:be.infobox
-                title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:noCurrentTemplateTitle')}"
-                message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:noCurrentTemplate')}"
-                state="1"
+                title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.infobox.title.noTypoScriptTemplateOnCurrentPage')}"
+                message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.infobox.message.noTypoScriptTemplateOnCurrentPage')}"
+                state="-1"
             />
         </f:then>
         <f:else>
-
+            <f:comment><!-- Edit property --></f:comment>
             <form action="{f:be.uri(route: 'web_typoscript_objectbrowser', parameters: '{id: pageUid}')}" method="post">
-
                 <input type="hidden" name="action" value="update" />
                 <input type="hidden" name="currentObjectPath" value="{currentObjectPath}" />
                 <input type="hidden" name="pageUid" value="{pageUid}" />
                 <input type="hidden" name="type" value="{type}" />
 
-                <h3><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editProperty"/></h3>
+                <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.editProperty.headline" /></h2>
                 <div class="row row-cols-auto align-items-end g-1">
-                    <div class="col">
+                    <div class="col mb-4">
                         <label class="visually-hidden">{currentObjectPath} =</label>
                         <div class="input-group">
                             <div class="input-group-addon">{currentObjectPath} =</div>
                             <input class="form-control" type="text" name="value" value="{currentValue}" />
                         </div>
                     </div>
-                    <div class="col">
-                        <input type="submit" name="updateValue" value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:updateButton')}" class="btn btn-default" />
+                    <div class="col mb-4">
+                        <input
+                            type="submit"
+                            name="updateValue"
+                            value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.editProperty.btn')}"
+                            class="btn btn-primary"
+                        />
                     </div>
                 </div>
 
-                <h3><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:addProperty"/></h3>
-                <div class="row row-cols-auto align-items-end g-1">
-                    <div class="col">
+                <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.addProperty.headline" /></h2>
+                <div class="row row-cols-auto align-items-end g-1 mb-8">
+                    <div class="col mb-4">
                         <label class="visually-hidden">{currentObjectPath}.</label>
                         <div class="input-group">
                             <div class="input-group-addon">{currentObjectPath}.</div>
                             <input name="childName" type="text" class="form-control" />
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col mb-4">
                         <div class="input-group">
                             <div class="input-group-addon">=</div>
                             <input type="text" name="childValue" class="form-control" />
                         </div>
                     </div>
-                    <div class="col">
-                        <input type="submit" name="addChild" value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:addButton')}" class="btn btn-default" />
+                    <div class="col mb-4">
+                        <input
+                            type="submit"
+                            name="addChild"
+                            value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.addProperty.btn')}"
+                            class="btn btn-primary"
+                        />
                     </div>
                 </div>
 
-                <h3><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:clearObject"/></h3>
-                <div class="row row-cols-auto align-items-end g-1">
-                    <div class="col">
-                        <div class="input-group">
-                            <div class="input-group-addon">{currentObjectPath} ></div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <input type="submit" name="clear" value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:clearButton')}" class="btn btn-default" />
-                    </div>
-                </div>
+                <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.clearObject.headline" /></h2>
+                <p>
+                    <f:translate
+                        key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.clearObject.infotextWithProperty"
+                        arguments="{
+                            0: '{currentObjectPath}'
+                        }"
+                    />
+                </p>
+                <input
+                    type="submit"
+                    name="clear"
+                    value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.clearObject.btn')}"
+                    class="btn btn-primary"
+                />
             </form>
         </f:else>
     </f:if>

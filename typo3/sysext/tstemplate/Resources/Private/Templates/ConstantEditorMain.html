@@ -19,31 +19,27 @@
     <f:variable name="args" value="{0: 'web', 1: pageUid}" />
     <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
 
-    <f:comment>
-        Heading
-    </f:comment>
+    <f:comment><!-- Heading --></f:comment>
     <h1>
         <f:if condition="{templateTitle}">
             <f:then>
                 <f:translate
-                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:objectBrowserTitleWithTemplate"
+                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:submodule.titleWithRecord"
                     arguments="{
                         0: '{templateTitle}'
                     }"
                 />
             </f:then>
             <f:else>
-                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:constantEditor" />
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:submodule.title" />
             </f:else>
         </f:if>
     </h1>
     <div>
-        <p class="lead"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:moduleDescription" /></p>
+        <p class="lead"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:submodule.description" /></p>
     </div>
 
-    <f:comment>
-        Options
-    </f:comment>
+    <f:comment><!-- Options --></f:comment>
     <f:render
         partial="ConstantEditorOptions"
         arguments="{
@@ -55,14 +51,10 @@
         }"
     />
 
-    <f:comment>
-        Main form
-    </f:comment>
+    <f:comment><!-- Main form --></f:comment>
     <f:if condition="!{relevantCategories}">
         <f:then>
-            <f:be.infobox title="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:noConstants')}" state="-1">
-                {f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:noConstantsDescription')}
-            </f:be.infobox>
+            <f:be.infobox message="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:infobox.message.noConstants')}" state="-1" />
         </f:then>
         <f:else>
             <f:render partial="ConstantEditorFields" arguments="{_all}" />

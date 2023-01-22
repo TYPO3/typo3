@@ -52,9 +52,9 @@ final class TemplateCest
         // click on website root page
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
-        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Override TypoScript');
+        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Edit TypoScript Record');
         $I->waitForText('No TypoScript record');
-        $I->see('There is no TypoScript record on this page!');
+        $I->see('No TypoScript record on the current page');
         $I->see('You need to create a TypoScript record in order to edit your configuration.');
     }
 
@@ -70,7 +70,7 @@ final class TemplateCest
         $I->click("//input[@name='newWebsite']");
 
         $I->wantTo('change to Override TypoScript and see the TypoScript record overview table');
-        $I->selectOption('.t3-js-jumpMenuBox', 'Override TypoScript');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Edit TypoScript Record');
         $I->waitForElement('.table-striped');
         $I->see('Title');
         $I->see('Description');
@@ -103,9 +103,9 @@ final class TemplateCest
         $I->see('Acceptance Test Site');
 
         $I->wantTo('change the TypoScript record within the TypoScript Object Browser');
-        $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Tree');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Active TypoScript');
         $I->waitForText('Setup');
-        $I->click('Setup');
+        $I->click('#panel-tree-heading-setup');
         // find and open [page] in tree
         $I->waitForText('[page] = PAGE');
         $I->click('//span[@class="list-tree-label"]/a[text()=\'page\']/../../a');
@@ -134,13 +134,13 @@ final class TemplateCest
         $I->switchToContentFrame();
         $I->selectOption('.t3-js-jumpMenuBox', 'Constant Editor');
         $I->waitForText('No TypoScript record');
-        $I->see('There is no TypoScript record on this page!');
+        $I->see('No TypoScript record on the current page');
         $I->see('You need to create a TypoScript record in order to edit your configuration.');
-        $I->seeLink('Click here to go.');
-        $I->clickWithLeftButton('//a[text()[normalize-space(.) = "Click here to go."]]');
+        $I->seeLink('Select this TypoScript record');
+        $I->clickWithLeftButton('//a[text()[normalize-space(.) = "Select this TypoScript record"]]');
 
         $I->wantTo('see that the page has a TypoScript record');
-        $I->selectOption('.t3-js-jumpMenuBox', 'Override TypoScript');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Edit TypoScript Record');
         $I->waitForElement('.table-striped');
         $I->see('Title');
         $I->see('Description');
@@ -160,11 +160,11 @@ final class TemplateCest
         $I->switchToContentFrame();
         $I->selectOption('.t3-js-jumpMenuBox', 'Constant Editor');
         $I->waitForText('No TypoScript record');
-        $I->see('There is no TypoScript record on this page!');
+        $I->see('No TypoScript record on the current page');
         $I->see('You need to create a TypoScript record in order to edit your configuration.');
         $I->clickWithLeftButton('//input[@name=\'createExtension\']');
         $I->wantTo('see that the page has a TypoScript record');
-        $I->selectOption('.t3-js-jumpMenuBox', 'Override TypoScript');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Edit TypoScript Record');
         $I->waitForElement('.table-striped');
         $I->see('Title');
         $I->see('Description');
@@ -183,12 +183,12 @@ final class TemplateCest
         $I->switchToMainFrame();
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
-        $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Tree');
-        $I->waitForText('Tree for TypoScript record');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Active TypoScript');
+        $I->waitForText('Active TypoScript for record');
         $I->amGoingTo('type "styles" into the search field and submit.');
         $I->fillField('#searchValue', 'styles');
         $I->click('button[type="submit"]');
-        $I->waitForText('Setup Tree');
+        $I->waitForText('Setup');
         $I->seeInSource('<strong class="text-danger">styles</strong>');
     }
 }

@@ -10,17 +10,14 @@
     }"
 />
 
-<f:be.infobox title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noTemplate')}" state="-1">
+<f:be.infobox title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noRecordFound.infobox.title')}" state="-1">
     <p>
-        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noTemplateDescription" />
-        <br />
-        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:createTemplateToEditConfiguration" />
+        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noRecordFound.infobox.message" />
     </p>
     <f:if condition="{previousPage}">
-        <p>
-            <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:goToClosest" /></strong><br>
+        <p class="mt-4">
             <f:translate
-                key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:goToClosestDescription"
+                key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noRecordFound.goToClosestRecord.description"
                 arguments="{0: previousPage.title, 1: previousPage.uid}"
             />
         </p>
@@ -29,7 +26,7 @@
             parameters="{id: previousPage.uid}"
             class="btn btn-default"
         >
-            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:goToClosestAction" />
+            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noRecordFound.goToClosestRecord.link.title" />
         </f:be.link>
     </f:if>
 </f:be.infobox>
@@ -38,9 +35,13 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
-                <h2 class="card-title"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:newWebsite" /></h2>
+                <h2 class="card-title">
+                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noRecordFound.createRootTypoScriptRecord.headline" />
+                </h2>
                 <div class="card-text">
-                    <p><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:newWebsiteDescription" /></p>
+                    <p>
+                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noRecordFound.createRootTypoScriptRecord.description" />
+                    </p>
                     <div>
                         <form action="{f:be.uri(route: moduleIdentifier, parameters: '{id: pageUid}')}" method="post">
                             <input type="hidden" name="action" value="createNewWebsiteTemplate" />
@@ -48,7 +49,7 @@
                                 class="btn btn-primary"
                                 type="submit"
                                 name="newWebsite"
-                                value="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:newWebsiteAction')}"
+                                value="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noRecordFound.createRootTypoScriptRecord.link.title')}"
                             />
                         </form>
                     </div>
@@ -60,11 +61,11 @@
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title">
-                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:extTemplate" />
+                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noRecordFound.createAdditionalTypoScriptRecord.headline" />
                 </h2>
                 <div class="card-text">
                     <p>
-                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:extTemplateDescription" />
+                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noRecordFound.createAdditionalTypoScriptRecord.description" />
                     </p>
                     <div>
                         <form action="{f:be.uri(route: moduleIdentifier, parameters: '{id: pageUid}')}" method="post">
@@ -73,7 +74,7 @@
                                 class="btn btn-default"
                                 type="submit"
                                 name="createExtension"
-                                value="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:extTemplateAction')}"
+                                value="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noRecordFound.createAdditionalTypoScriptRecord.link.title')}"
                             />
                         </form>
                     </div>

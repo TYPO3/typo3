@@ -48,7 +48,7 @@ kept under version control.
 2.  In the page tree, select the page which contains the root TypoScript
     record of your website.
 
-3.  Select :guilabel:`Override TypoScript` in the dropdown at the top of the
+3.  Select :guilabel:`Edit TypoScript Record` in the dropdown at the top of the
     :guilabel:`Web > TypoScript` module.
 
 4.  Click the :guilabel:`Edit the whole TypoScript record`. This will

@@ -160,13 +160,13 @@ final class SiteModuleCest
         $I->click('TypoScript');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
-        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Override TypoScript');
+        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Edit TypoScript Record');
         $I->waitForText('Root TypoScript record');
 
         $I->amGoingTo('Create a new TypoScript record for the root page');
         $I->click("//input[@name='newWebsite']");
-        $I->selectOption('.t3-js-jumpMenuBox', 'Override TypoScript');
-        $I->see('Override TypoScript of record "NEW SITE"', 'h1');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Edit TypoScript Record');
+        $I->see('Edit TypoScript record "NEW SITE"', 'h1');
         $I->waitForElement('table.table.table-striped');
         $I->see('Title');
 
@@ -205,7 +205,7 @@ page.10.value = This is a default text for default rendering without dynamic con
         $pageTree->openPath(['styleguide TCA demo']);
         $I->wait(0.2);
         $I->switchToContentFrame();
-        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Override TypoScript');
+        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Edit TypoScript Record');
         $I->waitForText('Edit the whole TypoScript record');
         $I->click('Edit the whole TypoScript record');
         $I->waitForElement('#EditDocumentController');
