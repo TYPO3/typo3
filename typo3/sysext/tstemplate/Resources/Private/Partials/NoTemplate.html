@@ -10,17 +10,17 @@
     }"
 />
 
-<f:be.infobox title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:noTemplate')}" state="-1">
+<f:be.infobox title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noTemplate')}" state="-1">
     <p>
-        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:noTemplateDescription" />
+        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noTemplateDescription" />
         <br />
-        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:createTemplateToEditConfiguration" />
+        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:createTemplateToEditConfiguration" />
     </p>
     <f:if condition="{previousPage}">
         <p>
-            <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:goToClosest" /></strong><br>
+            <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:goToClosest" /></strong><br>
             <f:translate
-                key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:goToClosestDescription"
+                key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:goToClosestDescription"
                 arguments="{0: previousPage.title, 1: previousPage.uid}"
             />
         </p>
@@ -29,7 +29,7 @@
             parameters="{id: previousPage.uid}"
             class="btn btn-default"
         >
-            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:goToClosestAction" />
+            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:goToClosestAction" />
         </f:be.link>
     </f:if>
 </f:be.infobox>
@@ -38,9 +38,9 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
-                <h2 class="card-title"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:newWebsite" /></h2>
+                <h2 class="card-title"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:newWebsite" /></h2>
                 <div class="card-text">
-                    <p><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:newWebsiteDescription" /></p>
+                    <p><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:newWebsiteDescription" /></p>
                     <div>
                         <form action="{f:be.uri(route: moduleIdentifier, parameters: '{id: pageUid}')}" method="post">
                             <input type="hidden" name="action" value="createNewWebsiteTemplate" />
@@ -48,7 +48,7 @@
                                 class="btn btn-primary"
                                 type="submit"
                                 name="newWebsite"
-                                value="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:newWebsiteAction')}"
+                                value="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:newWebsiteAction')}"
                             />
                         </form>
                     </div>
@@ -60,11 +60,11 @@
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title">
-                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:extTemplate" />
+                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:extTemplate" />
                 </h2>
                 <div class="card-text">
                     <p>
-                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:extTemplateDescription" />
+                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:extTemplateDescription" />
                     </p>
                     <div>
                         <form action="{f:be.uri(route: moduleIdentifier, parameters: '{id: pageUid}')}" method="post">
@@ -73,7 +73,7 @@
                                 class="btn btn-default"
                                 type="submit"
                                 name="createExtension"
-                                value="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:extTemplateAction')}"
+                                value="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:extTemplateAction')}"
                             />
                         </form>
                     </div>
