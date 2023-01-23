@@ -77,7 +77,20 @@ class BackendModuleValidator implements MiddlewareInterface
             }
             // Overwrite the requested module and the route target
             $module = $selectedSubModule;
-            $route->setOptions(array_replace_recursive($route->getOptions(), $module->getDefaultRouteOptions()));
+            $route->setOptions(array_replace_recursive($route->getOptions(), $module->getDefaultRouteOptions()['_default']));
+        } elseif (($routeIdentifier = $route->getOption('_identifier')) !== null
+            && $routeIdentifier === $module->getParentModule()?->getIdentifier()
+        ) {
+            // In case the actually requested module is the parent of the actually resolved module,
+            // the parent module does not define a route itself and uses the current third-level module
+            // as fallback. Therefore, we have to check the special "action" key on the "inaccessible"
+            // parent module to still allow rerouting to another (last used) third-level module.
+            $inaccessibleParentModule = $module->getParentModule();
+            $subModuleIdentifier = (string)($backendUser->getModuleData($inaccessibleParentModule->getIdentifier())['action'] ?? '');
+            if ($inaccessibleParentModule->hasSubModule($subModuleIdentifier)) {
+                $module = $inaccessibleParentModule->getSubModule($subModuleIdentifier);
+                $route->setOptions(array_replace_recursive($route->getOptions(), $module->getDefaultRouteOptions()['_default']));
+            }
         }
 
         // Validate the requested module

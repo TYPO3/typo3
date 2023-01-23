@@ -95,7 +95,7 @@ final class ModuleRegistry
     {
         foreach ($this->modules as $module) {
             if (!$module->hasParentModule() && !$module->isStandalone()) {
-                // Skip modules first level modules, which are not standalone
+                // Skip first level modules, which are not standalone
                 continue;
             }
             $routeCollection = new RouteCollection();

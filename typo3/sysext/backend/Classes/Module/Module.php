@@ -52,9 +52,9 @@ class Module extends BaseModule implements ModuleInterface
             $defaultRouteOptions = $firstSubModule->getDefaultRouteOptions();
         }
 
-        if ($defaultRouteOptions === []) {
+        if (!isset($defaultRouteOptions['_default'])) {
             throw new NonRoutableModuleException(
-                'No routes could be resolved for module ' . $this->identifier,
+                'No default route could be resolved for module ' . $this->identifier,
                 1674063354
             );
         }
