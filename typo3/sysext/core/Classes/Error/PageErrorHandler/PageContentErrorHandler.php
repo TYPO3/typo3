@@ -321,6 +321,18 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             $language = $site->getDefaultLanguage();
         }
 
+        // Requested language or default language is disabled in current site => Fetch first "enabled" language
+        if (!$language->isEnabled()) {
+            $enabledLanguages = $site->getLanguages();
+            if ($enabledLanguages === []) {
+                throw new \RuntimeException(
+                    'Site ' . $site->getIdentifier() . ' does not define any enabled language.',
+                    1674487171
+                );
+            }
+            $language = reset($enabledLanguages);
+        }
+
         // Build Url
         $uri = $site->getRouter()->generateUri(
             (int)$urlParams['pageuid'],
