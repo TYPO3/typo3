@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Tests concerning the listing of BeUser groups
  */
-class ListGroupCest
+final class ListGroupCest
 {
     public function _before(ApplicationTester $I): void
     {

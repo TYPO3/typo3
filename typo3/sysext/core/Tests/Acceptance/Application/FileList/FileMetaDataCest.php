@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Cases concerning sys_file_metadata records
  */
-class FileMetaDataCest
+final class FileMetaDataCest
 {
     public function _before(ApplicationTester $I): void
     {

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests concerning Reports Module
  */
-class InfoModuleCest
+final class InfoModuleCest
 {
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -35,6 +35,14 @@ class InfoModuleCest
         $I->switchToContentFrame();
     }
 
+    private function infoMenuDataProvider(): array
+    {
+        return [
+            ['option' => 'Pagetree Overview', 'expect' => 'Pagetree Overview'],
+            ['option' => 'Localization Overview', 'expect' => 'Localization Overview'],
+        ];
+    }
+
     /**
      * @dataProvider infoMenuDataProvider
      */
@@ -43,16 +51,5 @@ class InfoModuleCest
         $I->amGoingTo('select ' . $exampleData['option'] . ' in dropdown');
         $I->selectOption('.t3-js-jumpMenuBox', $exampleData['option']);
         $I->see($exampleData['expect'], 'h1');
-    }
-
-    /**
-     * @return array[]
-     */
-    protected function infoMenuDataProvider(): array
-    {
-        return [
-            ['option' => 'Pagetree Overview', 'expect' => 'Pagetree Overview'],
-            ['option' => 'Localization Overview', 'expect' => 'Localization Overview'],
-        ];
     }
 }

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Cases concerning the record download functionality
  */
-class RecordDownloadCest
+final class RecordDownloadCest
 {
     public function _before(ApplicationTester $I): void
     {

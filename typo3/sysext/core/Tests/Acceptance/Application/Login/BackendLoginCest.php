@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 /**
  * Various backend login related tests
  */
-class BackendLoginCest
+final class BackendLoginCest
 {
     /**
      * Call backend login page and verify login button changes color on mouse over,
@@ -119,7 +119,7 @@ class BackendLoginCest
     /**
      * Helper method for user login on backend login screen
      */
-    protected function login(ApplicationTester $I, string $username, string $password): void
+    private function login(ApplicationTester $I, string $username, string $password): void
     {
         $I->amGoingTo('Step\Application\Login username: ' . $username);
         $I->amOnPage('/typo3/index.php');
@@ -139,7 +139,7 @@ class BackendLoginCest
     /**
      * Logout user by clicking logout button in toolbar
      */
-    protected function logout(ApplicationTester $I): void
+    private function logout(ApplicationTester $I): void
     {
         $I->amGoingTo('step backend login');
         $I->amGoingTo('logout');

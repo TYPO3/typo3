@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Tests for the Indexed Search module
  */
-class IndexedSearchModuleCest
+final class IndexedSearchModuleCest
 {
     public function _before(ApplicationTester $I): void
     {

@@ -21,7 +21,7 @@ use Codeception\Example;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 
-class EnvironmentCest extends AbstractCest
+final class EnvironmentCest extends AbstractCest
 {
     public function _before(ApplicationTester $I): void
     {
@@ -29,6 +29,20 @@ class EnvironmentCest extends AbstractCest
         $this->logIntoInstallTool($I);
         $I->click('Environment');
         $I->see('Environment', 'h1');
+    }
+
+    /**
+     * @return string[][]
+     */
+    private function cardsDataProvider(): array
+    {
+        return [
+            ['title' => 'Environment Overview', 'button' => 'Show System Information', 'seeInModal' => 'Operating system'],
+            ['title' => 'Environment Status', 'button' => 'Check Environment', 'seeInModal' => 'File uploads allowed in PHP'],
+            ['title' => 'Directory Status', 'button' => 'Check Environment', 'seeInModal' => 'PHP version is fine'],
+            ['title' => 'PHP Info', 'button' => 'View PHP Info', 'seeInModal' => 'PHP Version'],
+            ['title' => 'Test Mail Setup', 'button' => 'Test Mail Setup', 'seeInModal' => 'Check the basic mail functionality by entering your email address here and clicking the button.'],
+        ];
     }
 
     /**
@@ -45,23 +59,6 @@ class EnvironmentCest extends AbstractCest
         $I->waitForElementNotVisible('.modal-dialog');
     }
 
-    /**
-     * @return \string[][]
-     */
-    protected function cardsDataProvider(): array
-    {
-        return [
-            ['title' => 'Environment Overview', 'button' => 'Show System Information', 'seeInModal' => 'Operating system'],
-            ['title' => 'Environment Status', 'button' => 'Check Environment', 'seeInModal' => 'File uploads allowed in PHP'],
-            ['title' => 'Directory Status', 'button' => 'Check Environment', 'seeInModal' => 'PHP version is fine'],
-            ['title' => 'PHP Info', 'button' => 'View PHP Info', 'seeInModal' => 'PHP Version'],
-            ['title' => 'Test Mail Setup', 'button' => 'Test Mail Setup', 'seeInModal' => 'Check the basic mail functionality by entering your email address here and clicking the button.'],
-        ];
-    }
-
-    /**
-     * @throws \Exception
-     */
     public function imageProcessingWorks(ApplicationTester $I): void
     {
         $I->click('Test Images');

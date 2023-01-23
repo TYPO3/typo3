@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Application\InstallTool;
 
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
-class MaintenanceCest extends AbstractCest
+final class MaintenanceCest extends AbstractCest
 {
     public function _before(ApplicationTester $I): void
     {
@@ -29,9 +29,6 @@ class MaintenanceCest extends AbstractCest
         $I->see('Maintenance', 'h1');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function flushCacheWorks(ApplicationTester $I): void
     {
         $I->click('Flush cache');
@@ -39,9 +36,6 @@ class MaintenanceCest extends AbstractCest
         $I->see('Caches cleared', '.alert-success h4');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function analyzeDatabaseStructureWorks(ApplicationTester $I): void
     {
         $I->click('Analyze database');
@@ -53,9 +47,6 @@ class MaintenanceCest extends AbstractCest
         $I->waitForElementNotVisible('.modal-dialog');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function removeTemporaryAssetsWorks(ApplicationTester $I): void
     {
         $I->click('Scan temporary files');
@@ -65,9 +56,6 @@ class MaintenanceCest extends AbstractCest
         $I->waitForElementNotVisible('.modal-dialog');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function dumpAutoloadWorks(ApplicationTester $I): void
     {
         $I->click('Dump autoload');
@@ -75,9 +63,6 @@ class MaintenanceCest extends AbstractCest
         $I->see('Successfully dumped class loading information for extensions.', '.alert-success h4');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function clearPersistentTablesWorks(ApplicationTester $I): void
     {
         $I->click('Scan tables');
@@ -87,9 +72,6 @@ class MaintenanceCest extends AbstractCest
         $I->waitForElementNotVisible('.modal-dialog');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function createAdminUserWorks(ApplicationTester $I): void
     {
         $I->click('Create Administrator');
@@ -99,9 +81,6 @@ class MaintenanceCest extends AbstractCest
         $I->waitForElementNotVisible('.modal-dialog');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function resetBackendUserPreferencesWorks(ApplicationTester $I): void
     {
         $I->click('Reset backend user preferences');
@@ -110,9 +89,6 @@ class MaintenanceCest extends AbstractCest
         $I->see('Preferences of all backend users have been reset', '.alert-success p');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function manageLanguagePacksWorks(ApplicationTester $I): void
     {
         $I->click('Manage languages');

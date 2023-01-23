@@ -17,13 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Support;
 
+use Codeception\Actor;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\_generated\InstallTesterActions;
 use TYPO3\TestingFramework\Core\Acceptance\Step\FrameSteps;
 
 /**
  * Default installer actor
  */
-class InstallTester extends \Codeception\Actor
+final class InstallTester extends Actor
 {
     use InstallTesterActions;
     use FrameSteps;

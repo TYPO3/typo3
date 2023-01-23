@@ -31,7 +31,7 @@ use TYPO3\TestingFramework\Core\Acceptance\Extension\BackendEnvironment;
 /**
  * Load various core extensions and styleguide and call styleguide generator
  */
-class ApplicationEnvironment extends BackendEnvironment
+final class ApplicationEnvironment extends BackendEnvironment
 {
     /**
      * Load a list of core extensions and styleguide

@@ -21,15 +21,15 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
-class FormFrameworkCest
+final class FormFrameworkCest
 {
-    protected string $sidebarSelector = '.sidebar.list-group';
-    protected string $nameSelector = '[id^=simpleform] input[placeholder="Name"]';
-    protected string $subjectSelector = '[id^=simpleform] input[placeholder="Subject"]';
-    protected string $emailSelector = '[id^=simpleform] input[placeholder="Email address"]';
-    protected string $textareaSelector = '[id^=simpleform] textarea';
-    protected string $submitSelector = '[id^=simpleform] button[type=submit]';
-    protected string $summaryValueSelector = '[id^=simpleform] table td:not(.summary-table-first-col)';
+    private string $sidebarSelector = '.sidebar.list-group';
+    private string $nameSelector = '[id^=simpleform] input[placeholder="Name"]';
+    private string $subjectSelector = '[id^=simpleform] input[placeholder="Subject"]';
+    private string $emailSelector = '[id^=simpleform] input[placeholder="Email address"]';
+    private string $textareaSelector = '[id^=simpleform] textarea';
+    private string $submitSelector = '[id^=simpleform] button[type=submit]';
+    private string $summaryValueSelector = '[id^=simpleform] table td:not(.summary-table-first-col)';
 
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {

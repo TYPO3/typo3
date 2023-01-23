@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests for "elements_basic" simple input fields of ext:styleguide
  */
-class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
+final class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
 {
     /**
      * Open list module of styleguide elements basic page
@@ -50,7 +50,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
     /**
      * Data provider to check various type=input variants
      */
-    protected function simpleInputFieldsDataProvider(): array
+    private function simpleInputFieldsDataProvider(): array
     {
         return [
             [

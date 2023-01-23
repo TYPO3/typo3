@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Tests for the "Install list view" of the extension manager
  */
-class InstalledExtensionsCest
+final class InstalledExtensionsCest
 {
     public function _before(ApplicationTester $I): void
     {

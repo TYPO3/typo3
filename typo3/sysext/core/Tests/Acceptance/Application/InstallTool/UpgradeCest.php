@@ -20,9 +20,9 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Application\InstallTool;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 
-class UpgradeCest extends AbstractCest
+final class UpgradeCest extends AbstractCest
 {
-    public static string $alertContainerSelector = '#alert-container';
+    private static string $alertContainerSelector = '#alert-container';
 
     public function _before(ApplicationTester $I): void
     {
@@ -32,9 +32,6 @@ class UpgradeCest extends AbstractCest
         $I->see('Upgrade', 'h1');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function seeUpgradeCore(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->click('Update Core');
@@ -45,9 +42,6 @@ class UpgradeCest extends AbstractCest
         $I->click('.t3js-modal-close');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function seeViewUpgradeDocumentation(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $versionPanel = '#version-1 .t3js-changelog-list > div:first-child';

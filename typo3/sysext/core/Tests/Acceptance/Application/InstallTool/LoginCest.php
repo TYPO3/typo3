@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Application\InstallTool;
 
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
-class LoginCest extends AbstractCest
+final class LoginCest extends AbstractCest
 {
     public function installToolLogin(ApplicationTester $I): void
     {

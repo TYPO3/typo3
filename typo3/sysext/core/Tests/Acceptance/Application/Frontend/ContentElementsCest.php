@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests concerning Reports Module
  */
-class ContentElementsCest
+final class ContentElementsCest
 {
-    protected string $sidebar = '.sidebar.list-group';
+    private string $sidebar = '.sidebar.list-group';
 
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -44,25 +44,7 @@ class ContentElementsCest
         $I->see('TYPO3 Styleguide Frontend', '.content');
     }
 
-    public function seeAllContentElements(ApplicationTester $I): void
-    {
-        $I->see('styleguide frontend demo');
-
-        foreach ($this->contentElementsDataProvider() as $contentElement) {
-            $I->scrollTo('//a[contains(., "' . $contentElement['link'] . '")]');
-            $I->click($contentElement['link'], $this->sidebar);
-
-            foreach ($contentElement['seeElement'] ?? [] as $element) {
-                $I->seeElement($element);
-            }
-
-            foreach ($contentElement['see'] ?? [] as $text) {
-                $I->see($text, '.content.col');
-            }
-        }
-    }
-
-    protected function contentElementsDataProvider(): array
+    private function contentElementsDataProvider(): array
     {
         return [
             [
@@ -282,5 +264,23 @@ class ContentElementsCest
                 ],
             ],
         ];
+    }
+
+    public function seeAllContentElements(ApplicationTester $I): void
+    {
+        $I->see('styleguide frontend demo');
+
+        foreach ($this->contentElementsDataProvider() as $contentElement) {
+            $I->scrollTo('//a[contains(., "' . $contentElement['link'] . '")]');
+            $I->click($contentElement['link'], $this->sidebar);
+
+            foreach ($contentElement['seeElement'] ?? [] as $element) {
+                $I->seeElement($element);
+            }
+
+            foreach ($contentElement['see'] ?? [] as $text) {
+                $I->see($text, '.content.col');
+            }
+        }
     }
 }

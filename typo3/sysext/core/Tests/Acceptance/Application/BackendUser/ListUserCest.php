@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * List User tests
  */
-class ListUserCest
+final class ListUserCest
 {
     public function _before(ApplicationTester $I): void
     {

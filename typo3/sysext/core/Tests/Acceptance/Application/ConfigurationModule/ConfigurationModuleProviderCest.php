@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Configuration module provider tests
  */
-class ConfigurationModuleProviderCest
+final class ConfigurationModuleProviderCest
 {
     public function _before(ApplicationTester $I): void
     {
@@ -79,7 +79,7 @@ class ConfigurationModuleProviderCest
         }
     }
 
-    protected function dropDownPagesDataProvider(): array
+    private function dropDownPagesDataProvider(): array
     {
         return [
             '$GLOBALS[\'TYPO3_CONF_VARS\'] (Global Configuration)',

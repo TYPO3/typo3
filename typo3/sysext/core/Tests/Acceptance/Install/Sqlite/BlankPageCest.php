@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\InstallTester;
 /**
  * Click through installer, go to backend, check blank site in FE works
  */
-class BlankPageCest
+final class BlankPageCest
 {
     /**
      * @env sqlite

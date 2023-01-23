@@ -18,13 +18,21 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FileList;
 
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\FileTree;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 
 /**
  * Cases concerning sys_file_metadata records
  */
-class FileOperationsCest extends AbstractFileCest
+final class FileOperationsCest
 {
+    public function _before(ApplicationTester $I, FileTree $tree): void
+    {
+        $I->useExistingSession('admin');
+        $I->amOnPage('/typo3/module/file/list');
+        $I->switchToContentFrame();
+    }
+
     public function fileCrud(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $fileTextareaSelector = 'textarea[name="data[editfile][0][data]"]';
@@ -66,9 +74,6 @@ class FileOperationsCest extends AbstractFileCest
         $I->dontSee($fileName, '[data-multi-record-selection-element="true"]');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function seeUploadFile(ApplicationTester $I): void
     {
         $alertContainer = '#alert-container';
@@ -84,5 +89,11 @@ class FileOperationsCest extends AbstractFileCest
         $I->see($fileName, '.upload-queue-item');
         $I->click('a[title="Reload"]');
         $I->see($fileName, '[data-multi-record-selection-element="true"]');
+    }
+
+    private function uploadFile(ApplicationTester $I, string $name): void
+    {
+        $I->attachFile('input.upload-file-picker', 'Acceptance/Fixtures/Images/' . $name);
+        $I->waitForElementNotVisible('.upload-queue-item .upload-queue-progress');
     }
 }

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests for fal metadata checks
  */
-class FalMetadataCest
+final class FalMetadataCest
 {
     /**
      * Call backend and open page module of styleguide page
@@ -42,8 +42,6 @@ class FalMetadataCest
      * - attaches an image with empty metadata
      * - modifies image metadata
      * - checks if metadata is propagated to tt_content
-     *
-     * @throws \Exception
      */
     public function checkIfUpdatedFileMetadataIsUpdatedInContent(ApplicationTester $I, PageTree $pageTree, FileTree $fileTree): void
     {
@@ -133,8 +131,6 @@ class FalMetadataCest
      *
      * test for https://forge.typo3.org/issues/81235
      *
-     * @param ApplicationTester $I
-     * @throws \Exception
      * @depends checkIfUpdatedFileMetadataIsUpdatedInContent
      */
     public function checkIfFileMetadataIsInheritedInContent(ApplicationTester $I): void
@@ -193,7 +189,6 @@ class FalMetadataCest
      * This scenario tests whether activating a null placeholder checkbox focuses its assigned text field
      *
      * @depends checkIfUpdatedFileMetadataIsUpdatedInContent
-     * @throws \Exception
      */
     public function checkIfDeactivatingNullCheckboxesFocusesTextFields(ApplicationTester $I, PageTree $pageTree): void
     {

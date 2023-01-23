@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Module Menu tests
  */
-class ModuleMenuCest
+final class ModuleMenuCest
 {
     public function _before(ApplicationTester $I): void
     {

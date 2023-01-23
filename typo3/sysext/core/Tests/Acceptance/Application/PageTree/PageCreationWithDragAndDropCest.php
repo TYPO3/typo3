@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Acceptance\Application\PageTree\DragAndDrop;
+namespace TYPO3\CMS\Core\Tests\Acceptance\Application\PageTree;
 
 use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
@@ -25,18 +25,16 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Page tree related tests for page creation using drag and drop.
  */
-class PageCreationWithDragAndDropCest
+final class PageCreationWithDragAndDropCest
 {
-    protected static string $treeNode = '#typo3-pagetree-tree .nodes .node';
-    protected static string $dragNode = '#typo3-pagetree-toolbar .svg-toolbar__drag-node';
-    protected static string $nodeEditInput = '.node-edit';
+    private static string $treeNode = '#typo3-pagetree-tree .nodes .node';
+    private static string $dragNode = '#typo3-pagetree-toolbar .svg-toolbar__drag-node';
+    private static string $nodeEditInput = '.node-edit';
 
-    protected PageTree $pageTree;
+    private PageTree $pageTree;
 
     /**
      * Open list module of styleguide elements basic page
-     *
-     * @throws \Exception
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -61,8 +59,6 @@ class PageCreationWithDragAndDropCest
 
     /**
      * Check drag and drop for new pages into nodes with children.
-     *
-     * @param PageTree $pageTree
      */
     public function dragAndDropNewPageInNodeWithChildren(ApplicationTester $I): void
     {
@@ -72,8 +68,6 @@ class PageCreationWithDragAndDropCest
 
     /**
      * Check drag and drop for new pages and quit page creation using Escape key.
-     *
-     * @throws \Exception
      */
     public function dragAndDropNewPageAndQuitPageCreation(ApplicationTester $I, Mouse $mouse): void
     {
@@ -86,8 +80,6 @@ class PageCreationWithDragAndDropCest
 
     /**
      * Check drag and drop for new pages and quit page creation using empty page title.
-     *
-     * @throws \Exception
      */
     public function dragAndDropNewPageAndLeavePageTitleEmpty(ApplicationTester $I, Mouse $mouse): void
     {

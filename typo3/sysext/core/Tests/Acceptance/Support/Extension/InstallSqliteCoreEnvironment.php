@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Testbase;
  *
  * @internal Used by core, do not use in extensions, may vanish later.
  */
-class InstallSqliteCoreEnvironment extends Extension
+final class InstallSqliteCoreEnvironment extends Extension
 {
     /**
      * Events to listen to

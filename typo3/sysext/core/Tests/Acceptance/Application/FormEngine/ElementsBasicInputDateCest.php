@@ -24,12 +24,10 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests for "elements_basic" date and time related input fields of ext:styleguide
  */
-class ElementsBasicInputDateCest extends AbstractElementsBasicCest
+final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
 {
     /**
      * Open list module of styleguide elements basic page
-     *
-     * @throws \Exception
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -52,10 +50,7 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
         $I->click('inputDateTime');
     }
 
-    /**
-     * dbTypeDateEvalDate data provider
-     */
-    protected function dbTypeDateEvalDateDataProvider(): array
+    private function dbTypeDateEvalDateDataProvider(): array
     {
         return [
             [
@@ -79,17 +74,13 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
 
     /**
      * @dataProvider dbTypeDateEvalDateDataProvider
-     * @throws \Exception
      */
     public function dbTypeDateEvalDate(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);
     }
 
-    /**
-     * dbType date eval datetime data provider
-     */
-    protected function dbTypeDateEvalDatetimeDataProvider(): array
+    private function dbTypeDateEvalDatetimeDataProvider(): array
     {
         return [
             [
@@ -121,17 +112,13 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
 
     /**
      * @dataProvider dbTypeDateEvalDatetimeDataProvider
-     * @throws \Exception
      */
     public function dbTypeDateEvalDatetime(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);
     }
 
-    /**
-     * db type date eval time data provider
-     */
-    protected function dbTypeDateEvalTimeDataProvider(): array
+    private function dbTypeDateEvalTimeDataProvider(): array
     {
         return [
             [
@@ -147,17 +134,13 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
 
     /**
      * @dataProvider dbTypeDateEvalTimeDataProvider
-     * @throws \Exception
      */
     public function dbTypeDateEvalTime(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);
     }
 
-    /**
-     * db type date eval time data provider
-     */
-    protected function dbTypeDateEvalTimeDataProvider_DbTypeDateTime(): array
+    private function dbTypeDateEvalTimeDataProvider_DbTypeDateTime(): array
     {
         return [
             [
@@ -189,7 +172,6 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
 
     /**
      * @dataProvider dbTypeDateEvalTimeDataProvider_DbTypeDateTime
-     * @throws \Exception
      */
     public function checkThatValidationWorks_EvalDateTime_DbTypeDateTime(ApplicationTester $I, Example $testData): void
     {

@@ -20,9 +20,9 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Application\InstallTool;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 
-class SettingsCest extends AbstractCest
+final class SettingsCest extends AbstractCest
 {
-    public static string $alertContainerSelector = '#alert-container';
+    private static string $alertContainerSelector = '#alert-container';
 
     public function _before(ApplicationTester $I): void
     {
@@ -32,9 +32,6 @@ class SettingsCest extends AbstractCest
         $I->see('Settings', 'h1');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function seeExtensionConfiguration(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $logoAltText = 'TYPO3 logo alt text';
@@ -68,9 +65,6 @@ class SettingsCest extends AbstractCest
         $this->closeModalAndHideFlashMessage($I);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function seeChangeInstallToolPassword(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $expectedInitialPasswordValue = '';
@@ -93,9 +87,6 @@ class SettingsCest extends AbstractCest
         $this->closeModalAndHideFlashMessage($I);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function seeManageSystemMaintainers(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $button = 'Manage System Maintainers';
@@ -125,9 +116,6 @@ class SettingsCest extends AbstractCest
         $this->closeModalAndHideFlashMessage($I);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function seeConfigurationPresets(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $button = 'Choose Preset';
@@ -163,9 +151,6 @@ class SettingsCest extends AbstractCest
         $this->closeModalAndHideFlashMessage($I);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function seeFeatureToggles(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $button = 'Configure Features';
@@ -191,9 +176,6 @@ class SettingsCest extends AbstractCest
         $this->closeModalAndHideFlashMessage($I);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function seeConfigureInstallationWideOptions(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $button = 'Configure options';

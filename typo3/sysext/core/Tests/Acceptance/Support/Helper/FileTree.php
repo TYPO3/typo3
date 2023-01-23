@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractPageTree;
 
-class FileTree extends AbstractPageTree
+final class FileTree extends AbstractPageTree
 {
     // Selectors
     public static $pageTreeFrameSelector = '#typo3-filestoragetree';

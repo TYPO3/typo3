@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Cases concerning sys_note records
  */
-class SysNoteCest
+final class SysNoteCest
 {
     public function _before(ApplicationTester $I): void
     {

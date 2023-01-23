@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Testbase;
  *
  * @internal Used by core, do not use in extensions, may vanish later.
  */
-class InstallPostgresqlCoreEnvironment extends Extension
+final class InstallPostgresqlCoreEnvironment extends Extension
 {
     /**
      * @var array Default configuration values

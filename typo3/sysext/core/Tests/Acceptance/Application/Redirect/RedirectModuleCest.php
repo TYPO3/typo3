@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Tests concerning Redirects Module
  */
-class RedirectModuleCest
+final class RedirectModuleCest
 {
     public function _before(ApplicationTester $I): void
     {
@@ -71,6 +71,17 @@ class RedirectModuleCest
         $this->openAndCloseTheEditForm($I, $sourceHost . ', ' . $sourcePath);
     }
 
+    protected function possibleRedirectStatusCodes(): array
+    {
+        return [
+            ['code' => 301],
+            ['code' => 302],
+            ['code' => 303],
+            ['code' => 307],
+            ['code' => 308],
+        ];
+    }
+
     /**
      * @dataProvider possibleRedirectStatusCodes
      */
@@ -92,16 +103,5 @@ class RedirectModuleCest
         $I->click('div.module-docheader .btn.t3js-editform-close');
         $I->waitForElementVisible('table.table-striped');
         $I->canSee('Redirect Management', 'h1');
-    }
-
-    protected function possibleRedirectStatusCodes(): array
-    {
-        return [
-            ['code' => 301],
-            ['code' => 302],
-            ['code' => 303],
-            ['code' => 307],
-            ['code' => 308],
-        ];
     }
 }

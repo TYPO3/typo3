@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Topbar username and avatar module tests.
  */
-class UsernameOnAvatarCest
+final class UsernameOnAvatarCest
 {
     public function _before(ApplicationTester $I): void
     {

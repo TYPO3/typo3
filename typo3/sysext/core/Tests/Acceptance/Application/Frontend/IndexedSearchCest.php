@@ -21,14 +21,14 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
-class IndexedSearchCest
+final class IndexedSearchCest
 {
-    protected string $sidebarSelector = '.sidebar.list-group';
-    protected string $searchSelector = '#tx-indexedsearch-searchbox-sword';
-    protected string $advancedSelector = '//a[contains(., "Advanced search")]';
-    protected string $regularSelector = '//a[contains(., "Regular search")]';
-    protected string $noResultsSelector = '.tx-indexedsearch-info-noresult';
-    protected string $submitSelector = '.tx-indexedsearch-search-submit input[type=submit]';
+    private string $sidebarSelector = '.sidebar.list-group';
+    private string $searchSelector = '#tx-indexedsearch-searchbox-sword';
+    private string $advancedSelector = '//a[contains(., "Advanced search")]';
+    private string $regularSelector = '//a[contains(., "Regular search")]';
+    private string $noResultsSelector = '.tx-indexedsearch-info-noresult';
+    private string $submitSelector = '.tx-indexedsearch-search-submit input[type=submit]';
 
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {

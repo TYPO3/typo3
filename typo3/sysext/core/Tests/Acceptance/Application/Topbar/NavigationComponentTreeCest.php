@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Acceptance test for the Navigation Component Tree
  */
-class NavigationComponentTreeCest
+final class NavigationComponentTreeCest
 {
     public function _before(ApplicationTester $I): void
     {

@@ -31,9 +31,9 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Several mouse actions for Backend usage.
  */
-class Mouse
+final class Mouse
 {
-    protected ApplicationTester $tester;
+    private ApplicationTester $tester;
 
     public function __construct(ApplicationTester $I)
     {
@@ -97,7 +97,7 @@ class Mouse
         $action->perform();
     }
 
-    protected function findElement(string $selector): RemoteWebElement
+    private function findElement(string $selector): RemoteWebElement
     {
         $I = $this->tester;
         try {
@@ -111,7 +111,7 @@ class Mouse
         }
     }
 
-    protected function getMouse(): WebDriverMouse
+    private function getMouse(): WebDriverMouse
     {
         $I = $this->tester;
         return $I->executeInSelenium(static function (RemoteWebDriver $webDriver) {

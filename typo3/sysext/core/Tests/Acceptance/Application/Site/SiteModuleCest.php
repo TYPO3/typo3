@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests concerning Sites Module
  */
-class SiteModuleCest
+final class SiteModuleCest
 {
     public function _before(ApplicationTester $I): void
     {
@@ -219,7 +219,6 @@ page.10.value = This is a default text for default rendering without dynamic con
 
     /**
      * @depends defaultFrontendRendering
-     * @throws \Exception
      */
     public function createSiteConfigIfNoneExists(ApplicationTester $I, ModalDialog $modalDialog): void
     {

@@ -24,10 +24,10 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests for type=file (FAL)
  */
-class FileCest
+final class FileCest
 {
-    protected static string $filenameSelector = '.form-irre-header-body > span > dl.row:first-child > dd.col';
-    protected static string $saveButtonLink = '//*/button[@name="_savedok"][1]';
+    private static string $filenameSelector = '.form-irre-header-body > span > dl.row:first-child > dd.col';
+    private static string $saveButtonLink = '//*/button[@name="_savedok"][1]';
 
     /**
      * Open styleguide file page in list module

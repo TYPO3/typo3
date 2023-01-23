@@ -23,12 +23,12 @@ use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 /**
  * Tests for the user settings/setup module in the topbar
  */
-class SetupCest
+final class SetupCest
 {
     /**
      * Selector for the user module container in the topbar
      */
-    public static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem';
+    private static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem';
 
     public function _before(ApplicationTester $I): void
     {

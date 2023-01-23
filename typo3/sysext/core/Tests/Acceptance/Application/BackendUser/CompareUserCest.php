@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Tests concerning the compare view of BE user module
  */
-class CompareUserCest
+final class CompareUserCest
 {
     public function _before(ApplicationTester $I): void
     {

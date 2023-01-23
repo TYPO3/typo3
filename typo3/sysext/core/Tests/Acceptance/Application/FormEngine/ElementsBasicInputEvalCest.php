@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests for "elements_basic" eval input fields of ext:styleguide
  */
-class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
+final class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
 {
     /**
      * Open list module of styleguide elements basic page
@@ -51,7 +51,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
     /**
      * Test various type=input fields having eval
      */
-    protected function simpleEvalInputFieldsDataProvider(): array
+    private function simpleEvalInputFieldsDataProvider(): array
     {
         return [
             [

@@ -22,12 +22,12 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
-class PageTreeFilterCest
+final class PageTreeFilterCest
 {
-    protected string $filterInputField = '#typo3-pagetree #typo3-pagetree-toolbar .search-input';
-    protected string $pageTreeSecondaryOptions = '#typo3-pagetree #typo3-pagetree-toolbar .dropdown-toggle';
-    protected string $pageTreeReloadButton = '#typo3-pagetree #typo3-pagetree-toolbar typo3-backend-icon[identifier=actions-refresh]';
-    protected string $inPageTree = '#typo3-pagetree-tree .nodes';
+    private string $filterInputField = '#typo3-pagetree #typo3-pagetree-toolbar .search-input';
+    private string $pageTreeSecondaryOptions = '#typo3-pagetree #typo3-pagetree-toolbar .dropdown-toggle';
+    private string $pageTreeReloadButton = '#typo3-pagetree #typo3-pagetree-toolbar typo3-backend-icon[identifier=actions-refresh]';
+    private string $inPageTree = '#typo3-pagetree-tree .nodes';
 
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -39,9 +39,6 @@ class PageTreeFilterCest
         $I->waitForElement('#typo3-pagetree-tree .nodes .node');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function filterTreeForPage(ApplicationTester $I): void
     {
         $I->fillField($this->filterInputField, 'Group');
@@ -84,9 +81,6 @@ class PageTreeFilterCest
         $I->canSee('inline mngroup', $this->inPageTree);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function deletingPageWithFilterAppliedRespectsFilterUponPageTreeReload(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->fillField($this->filterInputField, 'Group');
@@ -114,14 +108,7 @@ class PageTreeFilterCest
         $I->waitForElementNotVisible('//*[text()=\'inline expandsingle\']');
     }
 
-    protected function clearPageTreeFilters(ApplicationTester $I): void
-    {
-        $I->pressKey($this->filterInputField, WebDriverKeys::ESCAPE);
-        $I->click($this->pageTreeSecondaryOptions);
-        $I->click($this->pageTreeReloadButton);
-    }
-
-    protected function waitForPageTreeLoad(ApplicationTester $I): void
+    private function waitForPageTreeLoad(ApplicationTester $I): void
     {
         $I->waitForElement('#typo3-pagetree-tree .nodes .node', 10);
         $I->waitForElementNotVisible('#typo3-pagetree .svg-tree-loader', 10);

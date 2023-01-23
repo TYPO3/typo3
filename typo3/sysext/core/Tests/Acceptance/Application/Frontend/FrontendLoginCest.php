@@ -21,13 +21,13 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
-class FrontendLoginCest
+final class FrontendLoginCest
 {
-    protected string $sidebarSelector = '.sidebar.list-group';
-    protected string $usernameSelector = '.frame-type-felogin_login input[name="user"]';
-    protected string $passwordSelector = '.frame-type-felogin_login input[type="password"]';
-    protected string $submitSelector = '.frame-type-felogin_login input[type=submit]';
-    protected string $frameSelector = '.frame-type-felogin_login';
+    private string $sidebarSelector = '.sidebar.list-group';
+    private string $usernameSelector = '.frame-type-felogin_login input[name="user"]';
+    private string $passwordSelector = '.frame-type-felogin_login input[type="password"]';
+    private string $submitSelector = '.frame-type-felogin_login input[type=submit]';
+    private string $frameSelector = '.frame-type-felogin_login';
 
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {

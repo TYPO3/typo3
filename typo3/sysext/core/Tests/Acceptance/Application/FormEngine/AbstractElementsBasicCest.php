@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FormEngine;
 use Codeception\Example;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\RemoteWebElement;
+use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
@@ -30,8 +31,6 @@ abstract class AbstractElementsBasicCest
 {
     /**
      * Method to run basic elements input field test details
-     *
-     * @throws \Exception
      */
     protected function runInputFieldTest(ApplicationTester $I, Example $testData): void
     {
@@ -85,7 +84,7 @@ abstract class AbstractElementsBasicCest
      */
     protected function getInputField(RemoteWebElement $formSection): RemoteWebElement
     {
-        return $formSection->findElement(\Facebook\WebDriver\WebDriverBy::xpath('.//*/input[@data-formengine-input-name]'));
+        return $formSection->findElement(WebDriverBy::xpath('.//*/input[@data-formengine-input-name]'));
     }
 
     /**
@@ -94,7 +93,7 @@ abstract class AbstractElementsBasicCest
     protected function getHiddenField(RemoteWebElement $formSection, RemoteWebElement $inputField): RemoteWebElement
     {
         $hiddenFieldXPath = './/*/input[@name="' . $inputField->getAttribute('data-formengine-input-name') . '"]';
-        return $formSection->findElement(\Facebook\WebDriver\WebDriverBy::xpath($hiddenFieldXPath));
+        return $formSection->findElement(WebDriverBy::xpath($hiddenFieldXPath));
     }
 
     /**
@@ -106,7 +105,7 @@ abstract class AbstractElementsBasicCest
         return $I->executeInSelenium(
             static function (RemoteWebDriver $webDriver) use ($fieldLabel) {
                 return $webDriver->findElement(
-                    \Facebook\WebDriver\WebDriverBy::xpath(
+                    WebDriverBy::xpath(
                         '(//label/code[contains(text(),"[' . $fieldLabel . ']")]/..)[1]/ancestor::fieldset[@class="form-section"][1]'
                     )
                 );

@@ -23,25 +23,19 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Various context menu related tests
  */
-class UsersCest extends AbstractCest
+final class UsersCest extends AbstractCest
 {
-    protected string $inPageTree = '#typo3-pagetree-treeContainer .nodes';
-    protected string $inModuleHeader = '.module-docheader';
-    protected string $inModuleTabs = '#ImportExportController .nav-tabs';
-    protected string $inModuleTabsBody = '#ImportExportController .tab-content';
+    private string $inPageTree = '#typo3-pagetree-treeContainer .nodes';
+    private string $inModuleHeader = '.module-docheader';
+    private string $inModuleTabs = '#ImportExportController .nav-tabs';
+    private string $inModuleTabsBody = '#ImportExportController .tab-content';
+    private string $contextMenuMore = '#contentMenu0 li.context-menu-item-submenu';
+    private string $contextMenuExport = '#contentMenu1 li.context-menu-item[data-callback-action=exportT3d]';
+    private string $contextMenuImport = '#contentMenu1 li.context-menu-item[data-callback-action=importT3d]';
+    private string $buttonViewPage = 'span[data-identifier="actions-view-page"]';
+    private string $tabUpload = 'a[href="#import-upload"]';
+    private string $checkboxForceAllUids = 'input#checkForce_all_UIDS';
 
-    protected string $buttonUser = '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem';
-    protected string $buttonLogout = '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem button.btn.btn-danger';
-    protected string $contextMenuMore = '#contentMenu0 li.context-menu-item-submenu';
-    protected string $contextMenuExport = '#contentMenu1 li.context-menu-item[data-callback-action=exportT3d]';
-    protected string $contextMenuImport = '#contentMenu1 li.context-menu-item[data-callback-action=importT3d]';
-    protected string $buttonViewPage = 'span[data-identifier="actions-view-page"]';
-    protected string $tabUpload = 'a[href="#import-upload"]';
-    protected string $checkboxForceAllUids = 'input#checkForce_all_UIDS';
-
-    /**
-     * @throws \Exception
-     */
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
@@ -49,9 +43,6 @@ class UsersCest extends AbstractCest
         $I->waitForElement('svg .nodes .node');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function doNotShowImportAndExportInContextMenuForNonAdminUser(ApplicationTester $I, PageTree $pageTree): void
     {
         $selectedPageTitle = 'Root';
@@ -71,9 +62,6 @@ class UsersCest extends AbstractCest
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function showImportExportInContextMenuForNonAdminUserIfFlagSet(ApplicationTester $I): void
     {
         $selectedPageTitle = 'Root';
@@ -91,9 +79,6 @@ class UsersCest extends AbstractCest
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function hideImportCheckboxForceAllUidsForNonAdmin(ApplicationTester $I): void
     {
         $selectedPageTitle = 'Root';
@@ -116,9 +101,6 @@ class UsersCest extends AbstractCest
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function hideUploadTabAndImportPathIfNoImportFolderAvailable(ApplicationTester $I, PageTree $pageTree): void
     {
         $selectedPageTitle = 'Root';
@@ -147,9 +129,6 @@ class UsersCest extends AbstractCest
         $this->setUserTsConfig($I, 2, '');
     }
 
-    /**
-     * @throws \Exception
-     */
     public function checkVisualElements(ApplicationTester $I, PageTree $pageTree): void
     {
         $selectedPageTitle = 'Root';
@@ -187,7 +166,7 @@ class UsersCest extends AbstractCest
         $this->setUserTsConfig($I, 2, '');
     }
 
-    protected function setPageAccess(ApplicationTester $I, PageTree $pageTree, array $pagePath, int $userGroupId, int $recursionLevel = 1): void
+    private function setPageAccess(ApplicationTester $I, PageTree $pageTree, array $pagePath, int $userGroupId, int $recursionLevel = 1): void
     {
         $I->switchToMainFrame();
         $I->click('Access');
@@ -203,7 +182,7 @@ class UsersCest extends AbstractCest
         $I->click($this->inModuleHeader . ' .btn[title="Save and close"]');
     }
 
-    protected function setModAccess(ApplicationTester $I, int $userGroupId, array $modAccessByName): void
+    private function setModAccess(ApplicationTester $I, int $userGroupId, array $modAccessByName): void
     {
         try {
             $I->seeElement($this->inModuleHeader . ' [name=BackendUserModuleMenu]');
@@ -234,7 +213,7 @@ class UsersCest extends AbstractCest
         $I->waitForText('Backend User Group Listing');
     }
 
-    protected function setUserTsConfig(ApplicationTester $I, int $userId, string $userTsConfig): void
+    private function setUserTsConfig(ApplicationTester $I, int $userId, string $userTsConfig): void
     {
         try {
             $I->seeElement($this->inModuleHeader . ' [name=BackendUserModuleMenu]');

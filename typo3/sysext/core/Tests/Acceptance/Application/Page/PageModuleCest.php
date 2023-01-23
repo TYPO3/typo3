@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
  * This testcase is used to check if the expected information is found when
  * the page module was opened.
  */
-class PageModuleCest
+final class PageModuleCest
 {
     public function _before(ApplicationTester $I): void
     {

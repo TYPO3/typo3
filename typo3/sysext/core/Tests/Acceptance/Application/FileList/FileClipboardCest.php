@@ -17,15 +17,25 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FileList;
 
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\Remote\RemoteWebElement;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\FileTree;
 
 /**
  * Cases concerning sys_file_metadata records
  */
-class FileClipboardCest extends AbstractFileCest
+final class FileClipboardCest
 {
-    protected string $copyModeCopy = '#clipboard-copymode-copy';
-    protected string $copyModeMove = '#clipboard-copymode-move';
+    private string $copyModeCopy = '#clipboard-copymode-copy';
+    private string $copyModeMove = '#clipboard-copymode-move';
+
+    public function _before(ApplicationTester $I, FileTree $tree): void
+    {
+        $I->useExistingSession('admin');
+        $I->amOnPage('/typo3/module/file/list');
+        $I->switchToContentFrame();
+    }
 
     public function seeSwitchModes(ApplicationTester $I): void
     {
@@ -81,5 +91,19 @@ class FileClipboardCest extends AbstractFileCest
         foreach ($expectedFiles as $file) {
             $I->dontSee($file, '.clipboard-panel');
         }
+    }
+
+    private function openActionDropdown(ApplicationTester $I, string $title): RemoteWebElement
+    {
+        $I->comment('Get open action dropdown "' . $title . '"');
+        return $I->executeInSelenium(
+            static function (RemoteWebDriver $webDriver) use ($title) {
+                return $webDriver->findElement(
+                    \Facebook\WebDriver\WebDriverBy::xpath(
+                        '//a[contains(text(),"' . $title . '")]/parent::node()/parent::node()//a[contains(@href, "#actions_") and contains(@data-bs-toggle, "dropdown")]'
+                    )
+                );
+            }
+        );
     }
 }

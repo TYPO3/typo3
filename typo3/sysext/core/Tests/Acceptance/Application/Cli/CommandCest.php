@@ -23,19 +23,8 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Tests the styleguide backend module can be loaded
  */
-class CommandCest
+final class CommandCest
 {
-    protected string $typo3Cli = '../../../../bin/typo3 ';
-
-    /**
-     * @dataProvider commandTestDataProvider
-     */
-    public function runCommand(ApplicationTester $I, Example $testData): void
-    {
-        $I->runShellCommand($this->typo3Cli . $testData['command'], false);
-        $I->seeResultCodeIs($testData['code']);
-    }
-
     /**
      * Test cli commands for their exit status
      *
@@ -43,7 +32,7 @@ class CommandCest
      * due to missing configuration or unpredictable
      * params.
      */
-    protected function commandTestDataProvider(): array
+    private function commandTestDataProvider(): array
     {
         return [
             ['command' => 'cache:flush', 'code' => 0],
@@ -69,5 +58,14 @@ class CommandCest
             ['command' => 'syslog:list', 'code' => 0],
             ['command' => 'upgrade:list', 'code' => 0],
         ];
+    }
+
+    /**
+     * @dataProvider commandTestDataProvider
+     */
+    public function runCommand(ApplicationTester $I, Example $testData): void
+    {
+        $I->runShellCommand('../../../../bin/typo3 ' . $testData['command'], false);
+        $I->seeResultCodeIs($testData['code']);
     }
 }

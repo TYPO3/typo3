@@ -25,12 +25,10 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests for inline 1n
  */
-class Inline1nCest
+final class Inline1nCest
 {
     /**
      * Open styleguide inline 1n page in list module
-     *
-     * @throws \Exception
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -150,7 +148,32 @@ class Inline1nCest
         $I->waitForElementNotVisible($inlineElementToDelete);
     }
 
-    protected function fillFieldByLabel(ApplicationTester $I, $fieldLabel, $testValue): void
+    public function disableInline1nInlineElementWithoutRenderedDisableField(ApplicationTester $I): void
+    {
+        $I->wantTo('Disable an Inline Element which has no checkbox for disabled state');
+
+        // Switch to "inline_2" tab.
+        $I->click('inline_2');
+
+        // Open the inline element.
+        $I->click('div[data-bs-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["]');
+        $I->waitForElement('input[data-formengine-input-name="data[tx_styleguide_inline_1n_inline_2_child][1][input_1]"]');
+
+        // Hide the inline element.
+        $I->click('button span[data-identifier="actions-edit-hide"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["]');
+        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["].t3-form-field-container-inline-hidden');
+        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["] button span[data-identifier="actions-edit-unhide"]');
+
+        // Save the inline element.
+        $I->click('button[name="_savedok"]');
+        $I->wait(3);
+
+        // Unhide the previously hidden inline element.
+        $I->click('button span[data-identifier="actions-edit-unhide"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["]');
+        $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["].t3-form-field-container-inline-hidden', 2);
+    }
+
+    private function fillFieldByLabel(ApplicationTester $I, $fieldLabel, $testValue): void
     {
         $fieldContext = $I->executeInSelenium(static function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use (
             $fieldLabel
@@ -175,30 +198,5 @@ class Inline1nCest
         $fieldContext->click();
         $I->comment('Test value of "visible" field');
         $I->canSeeInField($inputField, $testValue);
-    }
-
-    public function disableInline1nInlineElementWithoutRenderedDisableField(ApplicationTester $I): void
-    {
-        $I->wantTo('Disable an Inline Element which has no checkbox for disabled state');
-
-        // Switch to "inline_2" tab.
-        $I->click('inline_2');
-
-        // Open the inline element.
-        $I->click('div[data-bs-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["]');
-        $I->waitForElement('input[data-formengine-input-name="data[tx_styleguide_inline_1n_inline_2_child][1][input_1]"]');
-
-        // Hide the inline element.
-        $I->click('button span[data-identifier="actions-edit-hide"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["]');
-        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["].t3-form-field-container-inline-hidden');
-        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["] button span[data-identifier="actions-edit-unhide"]');
-
-        // Save the inline element.
-        $I->click('button[name="_savedok"]');
-        $I->wait(3);
-
-        // Unhide the previously hidden inline element.
-        $I->click('button span[data-identifier="actions-edit-unhide"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["]');
-        $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["].t3-form-field-container-inline-hidden', 2);
     }
 }

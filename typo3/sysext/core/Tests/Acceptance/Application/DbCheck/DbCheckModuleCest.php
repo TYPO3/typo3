@@ -26,15 +26,49 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 /**
  * Tests concerning Reports Module
  */
-class DbCheckModuleCest
+final class DbCheckModuleCest
 {
-    protected static string $defaultDashboardTitle = 'My Dashboard';
+    private static string $defaultDashboardTitle = 'My Dashboard';
 
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
         $I->click('#system_dbint');
         $I->switchToContentFrame();
+    }
+
+    private function recordStatisticsDataProvider(): array
+    {
+        return [
+            [
+                'name' => 'Total number of default language pages',
+                'count' => 84,
+            ],
+            [
+                'name' => 'Total number of translated pages',
+                'count' => 132,
+            ],
+            [
+                'name' => 'Marked-deleted pages',
+                'count' => 0,
+            ],
+            [
+                'name' => 'Hidden pages',
+                'count' => 1,
+            ],
+            [
+                'name' => 'Standard',
+                'count' => 1,
+            ],
+            [
+                'name' => 'Backend User Section',
+                'count' => 0,
+            ],
+            [
+                'name' => 'Link to External URL',
+                'count' => 0,
+            ],
+        ];
     }
 
     /**
@@ -94,44 +128,7 @@ class DbCheckModuleCest
         $I->see('Index integrity was perfect!', '.callout-success');
     }
 
-    /**
-     * @return array[]
-     */
-    protected function recordStatisticsDataProvider(): array
-    {
-        return [
-            [
-                'name' => 'Total number of default language pages',
-                'count' => 84,
-            ],
-            [
-                'name' => 'Total number of translated pages',
-                'count' => 132,
-            ],
-            [
-                'name' => 'Marked-deleted pages',
-                'count' => 0,
-            ],
-            [
-                'name' => 'Hidden pages',
-                'count' => 1,
-            ],
-            [
-                'name' => 'Standard',
-                'count' => 1,
-            ],
-            [
-                'name' => 'Backend User Section',
-                'count' => 0,
-            ],
-            [
-                'name' => 'Link to External URL',
-                'count' => 0,
-            ],
-        ];
-    }
-
-    protected function goToPageAndSeeHeadline(ApplicationTester $I, string $select, string $headline): void
+    private function goToPageAndSeeHeadline(ApplicationTester $I, string $select, string $headline): void
     {
         $I->selectOption('select[name=DatabaseJumpMenu]', $select);
         $I->see($headline, 'h1');
@@ -139,10 +136,8 @@ class DbCheckModuleCest
 
     /**
      * Find count of table row by name
-     *
-     * @param string $fieldLabel
      */
-    protected function getCountByRowName(ApplicationTester $I, string $rowName, int $sibling = 1): RemoteWebElement
+    private function getCountByRowName(ApplicationTester $I, string $rowName, int $sibling = 1): RemoteWebElement
     {
         $I->comment('Get context for table row "' . $rowName . '"');
         return $I->executeInSelenium(

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Impexp;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
@@ -25,34 +24,23 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Various export related tests
  */
-class ExportCest extends AbstractCest
+final class ExportCest extends AbstractCest
 {
-    protected array $testFilesToDelete = [];
-
-    protected string $inPageTree = '#typo3-pagetree-treeContainer .nodes';
-    protected string $inModuleHeader = '.module-docheader';
-    protected string $inModuleTabs = '#ImportExportController .nav-tabs';
-    protected string $inModuleTabsBody = '#ImportExportController .tab-content';
-    protected string $inModulePreview = '#ImportExportController > div:last-child';
-    protected string $inTabConfiguration = '#export-configuration';
-    protected string $inFlashMessages = '.typo3-messages';
+    private string $contextMenuExport = '[data-callback-action=exportT3d]';
+    private string $contextMenuMore = 'li.context-menu-item-submenu';
+    private string $inPageTree = '#typo3-pagetree-treeContainer .nodes';
+    private string $inModuleHeader = '.module-docheader';
+    private string $inModuleTabs = '#ImportExportController .nav-tabs';
+    private string $inModuleTabsBody = '#ImportExportController .tab-content';
+    private string $inModulePreview = '#ImportExportController > div:last-child';
+    private string $inTabConfiguration = '#export-configuration';
+    private string $inFlashMessages = '.typo3-messages';
 
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
         $I->click('List');
         $I->waitForElement('#typo3-pagetree-tree .nodes .node');
-    }
-
-    public function _after(ApplicationTester $I): void
-    {
-        $I->amGoingTo('clean up created files');
-
-        foreach ($this->testFilesToDelete as $filePath) {
-            unlink($filePath);
-            $I->dontSeeFileFound($filePath);
-        }
-        $this->testFilesToDelete = [];
     }
 
     public function exportPageAndRecordsDisplaysTitleOfSelectedPageInModuleHeader(ApplicationTester $I, PageTree $pageTree): void
@@ -218,10 +206,6 @@ class ExportCest extends AbstractCest
         $I->canSee('SAVED FILE', $this->inFlashMessages . ' .alert.alert-success .alert-title');
         $flashMessage = $I->grabTextFrom($this->inFlashMessages . ' .alert.alert-success .alert-message');
         $I->assertMatchesRegularExpression('/Saved in ["][^"]+["], bytes/', $flashMessage);
-        // TODO: find out how to clean this up, as it is impossible to determine the absolute file path from an url
-//        preg_match('/[^"]+"([^"]+)"[^"]+/', $flashMessage, $flashMessageParts);
-//        $saveFilePath = Environment::getProjectPath() . '/' . $flashMessageParts[1];
-//        $this->testFilesToDelete[] = $saveFilePath;
     }
 
     public function exportTable(ApplicationTester $I): void
@@ -258,10 +242,6 @@ class ExportCest extends AbstractCest
         $I->canSee('SAVED FILE', $this->inFlashMessages . ' .alert.alert-success .alert-title');
         $flashMessage = $I->grabTextFrom($this->inFlashMessages . ' .alert.alert-success .alert-message');
         $I->assertMatchesRegularExpression('/Saved in ["][^"]+["], bytes/', $flashMessage);
-        // TODO: find out how to clean this up, as it is impossible to determine the absolute file path from an url
-//        preg_match('/[^"]+"([^"]+)"[^"]+/', $flashMessage, $flashMessageParts);
-//        $saveFilePath = Environment::getProjectPath() . '/' . $flashMessageParts[1];
-//        $this->testFilesToDelete[] = $saveFilePath;
     }
 
     public function exportRecord(ApplicationTester $I): void
@@ -296,9 +276,5 @@ class ExportCest extends AbstractCest
         $I->canSee('SAVED FILE', $this->inFlashMessages . ' .alert.alert-success .alert-title');
         $flashMessage = $I->grabTextFrom($this->inFlashMessages . ' .alert.alert-success .alert-message');
         $I->assertMatchesRegularExpression('/Saved in ["][^"]+["], bytes/', $flashMessage);
-        // TODO: find out how to clean this up, as it is impossible to determine the absolute file path from an url
-//        preg_match('/[^"]+"([^"]+)"[^"]+/', $flashMessage, $flashMessageParts);
-//        $saveFilePath = Environment::getProjectPath() . '/' . $flashMessageParts[1];
-//        $this->testFilesToDelete[] = $saveFilePath;
     }
 }

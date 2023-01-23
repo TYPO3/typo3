@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Acceptance test for the menu button in the topbar
  */
-class ModuleMenuButtonCest
+final class ModuleMenuButtonCest
 {
     public function _before(ApplicationTester $I): void
     {

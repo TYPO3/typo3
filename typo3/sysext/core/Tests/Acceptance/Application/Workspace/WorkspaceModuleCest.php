@@ -22,11 +22,11 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 
-class WorkspaceModuleCest
+final class WorkspaceModuleCest
 {
-    public static string $topBarModuleSelector = '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem';
-    public static string $currentPageTitle = 'styleguide TCA demo';
-    public static string $newPageTitle = 'styleguide TCA demo workspace';
+    private static string $topBarModuleSelector = '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem';
+    private static string $currentPageTitle = 'styleguide TCA demo';
+    private static string $newPageTitle = 'styleguide TCA demo workspace';
 
     public function _before(ApplicationTester $I): void
     {

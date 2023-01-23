@@ -15,9 +15,8 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Acceptance\Application\PageTree\KeyboardAccess;
+namespace TYPO3\CMS\Core\Tests\Acceptance\Application\PageTree;
 
-use Exception;
 use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
@@ -25,12 +24,10 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Page and page tree related tests.
  */
-class SelectPagetreeWithKeyboardCest
+final class SelectPagetreeWithKeyboardCest
 {
     /**
      * Open list module of styleguide elements basic page
-     *
-     * @throws Exception
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {

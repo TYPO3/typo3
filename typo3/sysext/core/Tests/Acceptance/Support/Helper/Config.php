@@ -50,7 +50,7 @@ use Codeception\Module;
  * --------------
  * $myCustomName = $I->grabConfig('myCustomParam');
  */
-class Config extends Module
+final class Config extends Module
 {
     /**
      * Retrieves configuration of this module.
@@ -84,7 +84,7 @@ class Config extends Module
      * @return array|string|null
      * @throws \Codeception\Exception\ModuleException
      */
-    protected function grab(string $parameter = null, string $moduleName = null)
+    private function grab(string $parameter = null, string $moduleName = null)
     {
         $module = is_string($moduleName) ? $this->getModule($moduleName) : $this;
         return $module->_getConfig($parameter);

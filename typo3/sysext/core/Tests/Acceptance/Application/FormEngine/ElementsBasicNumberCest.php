@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests for "elements_basic" type number fields of ext:styleguide
  */
-class ElementsBasicNumberCest extends AbstractElementsBasicCest
+final class ElementsBasicNumberCest extends AbstractElementsBasicCest
 {
     /**
      * Open list module of styleguide elements basic page
@@ -51,7 +51,7 @@ class ElementsBasicNumberCest extends AbstractElementsBasicCest
     /**
      * Test various type=input fields having eval
      */
-    protected function simpleNumberFieldsDataProvider(): array
+    private function simpleNumberFieldsDataProvider(): array
     {
         return [
             [
@@ -62,18 +62,19 @@ class ElementsBasicNumberCest extends AbstractElementsBasicCest
                 'expectedValueAfterSave' => '12.34',
                 'comment' => '',
             ],
-// @todo Because of reasons, the sent value is not 12,335 but 12335 (without the comma)
-// @todo Probably the comma is removed (by the webdriver?) and this test fails then.
-// @todo This is also true for words like "TYPO3". Only the "3" is typed in.
-//
-//            [
-//                'label' => 'number_1',
-//                'inputValue' => '12,335', // comma as delimiter
-//                'expectedValue' => '12.34',
-//                'expectedInternalValue' => '12.34',
-//                'expectedValueAfterSave' => '12.34',
-//                'comment' => '',
-//            ],
+            // @todo Because of reasons, the sent value is not 12,335 but 12335 (without the comma)
+            //       Probably the comma is removed (by the webdriver?) and this test fails then.
+            //       This is also true for words like "TYPO3". Only the "3" is typed in.
+            /*
+            [
+                'label' => 'number_1',
+                'inputValue' => '12,335', // comma as delimiter
+                'expectedValue' => '12.34',
+                'expectedInternalValue' => '12.34',
+                'expectedValueAfterSave' => '12.34',
+                'comment' => '',
+            ],
+            */
             [
                 'label' => 'number_1',
                 'inputValue' => '1.1', // dot as delimiter
@@ -82,24 +83,28 @@ class ElementsBasicNumberCest extends AbstractElementsBasicCest
                 'expectedValueAfterSave' => '1.10',
                 'comment' => '',
             ],
-// @todo see the todo above.
-//            [
-//                'label' => 'number_1',
-//                'inputValue' => 'TYPO3', // word having a number at end
-//                'expectedValue' => '3.00',
-//                'expectedInternalValue' => '3.00',
-//                'expectedValueAfterSave' => '3.00',
-//                'comment' => '',
-//            ],
-// @todo see the todo above.
-//            [
-//                'label' => 'number_1',
-//                'inputValue' => '3TYPO', // word having a number in front
-//                'expectedValue' => '3.00',
-//                'expectedInternalValue' => '3.00',
-//                'expectedValueAfterSave' => '3.00',
-//                'comment' => '',
-//            ],
+            // @todo see the todo above.
+            /*
+            [
+                'label' => 'number_1',
+                'inputValue' => 'TYPO3', // word having a number at end
+                'expectedValue' => '3.00',
+                'expectedInternalValue' => '3.00',
+                'expectedValueAfterSave' => '3.00',
+                'comment' => '',
+            ],
+            */
+            // @todo see the todo above.
+            /*
+            [
+                'label' => 'number_1',
+                'inputValue' => '3TYPO', // word having a number in front
+                'expectedValue' => '3.00',
+                'expectedInternalValue' => '3.00',
+                'expectedValueAfterSave' => '3.00',
+                'comment' => '',
+            ],
+            */
             [
                 'label' => 'number_2',
                 'inputValue' => '12.335',
@@ -108,34 +113,40 @@ class ElementsBasicNumberCest extends AbstractElementsBasicCest
                 'expectedValueAfterSave' => '12',
                 'comment' => '',
             ],
-// @todo this is nonsense. The comma should be replaced by a dot.
-// @todo see the todo above.
-//            [
-//                'label' => 'number_2',
-//                'inputValue' => '12,9',
-//                'expectedValue' => '129',
-//                'expectedInternalValue' => '129',
-//                'expectedValueAfterSave' => '129',
-//                'comment' => '',
-//            ],
-// @todo see the todo above.
-//            [
-//                'label' => 'number_2',
-//                'inputValue' => 'TYPO3',
-//                'expectedValue' => '0',
-//                'expectedInternalValue' => '0',
-//                'expectedValueAfterSave' => '0',
-//                'comment' => '',
-//            ],
-// @todo see the todo above.
-//            [
-//                'label' => 'number_2',
-//                'inputValue' => '3TYPO',
-//                'expectedValue' => '3',
-//                'expectedInternalValue' => '3',
-//                'expectedValueAfterSave' => '3',
-//                'comment' => '',
-//            ],
+            // @todo This is nonsense. The comma should be replaced by a dot.
+            //       See the todo above.
+            /*
+            [
+                'label' => 'number_2',
+                'inputValue' => '12,9',
+                'expectedValue' => '129',
+                'expectedInternalValue' => '129',
+                'expectedValueAfterSave' => '129',
+                'comment' => '',
+            ],
+            */
+            // @todo see the todo above.
+            /*
+            [
+                'label' => 'number_2',
+                'inputValue' => 'TYPO3',
+                'expectedValue' => '0',
+                'expectedInternalValue' => '0',
+                'expectedValueAfterSave' => '0',
+                'comment' => '',
+            ],
+            */
+            // @todo see the todo above.
+            /*
+            [
+                'label' => 'number_2',
+                'inputValue' => '3TYPO',
+                'expectedValue' => '3',
+                'expectedInternalValue' => '3',
+                'expectedValueAfterSave' => '3',
+                'comment' => '',
+            ],
+            */
         ];
     }
 

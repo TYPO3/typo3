@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Template tests
  */
-class TemplateCest
+final class TemplateCest
 {
     public function _before(ApplicationTester $I): void
     {

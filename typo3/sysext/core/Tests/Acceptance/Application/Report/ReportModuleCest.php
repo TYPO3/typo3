@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Tests concerning Reports Module
  */
-class ReportModuleCest
+final class ReportModuleCest
 {
     public function seeStatusReport(ApplicationTester $I): void
     {

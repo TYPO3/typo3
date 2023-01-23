@@ -23,12 +23,12 @@ use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 /**
  * Tests for the flush module in the topbar
  */
-class FlushCest
+final class FlushCest
 {
     /**
      * Selector for the module container in the topbar
      */
-    protected static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem';
+    private static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem';
 
     public function _before(ApplicationTester $I): void
     {

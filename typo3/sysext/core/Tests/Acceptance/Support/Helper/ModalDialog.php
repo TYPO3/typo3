@@ -20,10 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractModalDialog;
 
-/**
- * @see AbstractModalDialog
- */
-class ModalDialog extends AbstractModalDialog
+final class ModalDialog extends AbstractModalDialog
 {
     /**
      * Selector for a visible modal window
@@ -42,7 +39,7 @@ class ModalDialog extends AbstractModalDialog
     public static $openedModalButtonContainerSelector = '.modal.show .modal-footer';
 
     /**
-     * @var AcceptanceTester
+     * @var ApplicationTester
      */
     protected $tester;
 

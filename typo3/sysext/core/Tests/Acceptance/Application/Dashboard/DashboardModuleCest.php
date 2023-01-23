@@ -23,13 +23,13 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 /**
  * Tests concerning Reports Module
  */
-class DashboardModuleCest
+final class DashboardModuleCest
 {
-    protected static string $defaultDashboardTitle = 'My Dashboard';
-    protected static string $customDashboardTitle = 'My Custom Dashboard';
-    protected static string $dashboardActiveSelector = '.dashboard-tab--active';
-    protected static string $widgetTitle = 'Type of backend users';
-    protected static string $widgetTitleSelector = '.widget-content-title';
+    private static string $defaultDashboardTitle = 'My Dashboard';
+    private static string $customDashboardTitle = 'My Custom Dashboard';
+    private static string $dashboardActiveSelector = '.dashboard-tab--active';
+    private static string $widgetTitle = 'Type of backend users';
+    private static string $widgetTitleSelector = '.widget-content-title';
 
     public function _before(ApplicationTester $I): void
     {

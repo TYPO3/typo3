@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests for styleguide group element fields
  */
-class ElementsGroupCest
+final class ElementsGroupCest
 {
     /**
      * Open list module of styleguide elements group page

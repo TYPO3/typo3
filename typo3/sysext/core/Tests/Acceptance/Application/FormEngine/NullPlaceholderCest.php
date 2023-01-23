@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests for IRRE null placeholder fields
  */
-class NullPlaceholderCest
+final class NullPlaceholderCest
 {
     /**
      * Call backend and open list module
@@ -36,8 +36,6 @@ class NullPlaceholderCest
 
     /**
      * This scenario tests whether activating a null placeholder checkbox marks its state as "changed"
-     *
-     * @throws \Exception
      */
     public function checkIfDeactivatingNullCheckboxesMarksAsChanged(ApplicationTester $I): void
     {
@@ -65,8 +63,6 @@ class NullPlaceholderCest
 
     /**
      * Open list module
-     *
-     * @throws \Exception
      */
     private function goToListModule(ApplicationTester $I, PageTree $pageTree): void
     {

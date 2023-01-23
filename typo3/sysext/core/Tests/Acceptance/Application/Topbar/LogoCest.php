@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Acceptance test for the TYPO3 logo in the topbar
  */
-class LogoCest
+final class LogoCest
 {
     public function _before(ApplicationTester $I): void
     {

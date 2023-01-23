@@ -23,12 +23,12 @@ use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 /**
  * Tests for the help module in the topbar
  */
-class HelpCest
+final class HelpCest
 {
     /**
      * Selector for the module container in the topbar
      */
-    public static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-helptoolbaritem';
+    private static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-helptoolbaritem';
 
     public function _before(ApplicationTester $I): void
     {

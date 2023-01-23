@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 /**
  * Scheduler task tests
  */
-class TasksCest
+final class TasksCest
 {
     public function _before(ApplicationTester $I): void
     {

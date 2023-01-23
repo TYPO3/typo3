@@ -25,14 +25,12 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests for table wizard
  */
-class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
+final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
 {
-    protected static string $saveButtonLink = '//*/button[@name="_savedok"][1]';
+    private static string $saveButtonLink = '//*/button[@name="_savedok"][1]';
 
     /**
      * Open styleguide elements basic page in list module
-     *
-     * @throws \Exception
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -55,6 +53,18 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         $I->click('text');
     }
 
+    /**
+     * Provide sample data for table cols/rows to compare with
+     */
+    private function tableDataProvider(): array
+    {
+        return [
+            ['row1 col1', 'row1 col2'],
+            ['row2 col1', 'row2 col2'],
+            ['row3 col1', 'row3 col2'],
+        ];
+    }
+
     public function seeTableWizardWithContent(ApplicationTester $I): void
     {
         $I->amGoingTo('check for correct data in each column');
@@ -65,6 +75,32 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
                 $I->assertEquals($col, $value);
             }
         }
+    }
+
+    private function addRemoveTableDataProvider(): array
+    {
+        return [
+            [
+                'description' => 'add a column',
+                'click' => 'typo3-backend-table-wizard tr > th:nth-child(2) button[title="Add column to the right"]',
+                'expected' => 9,
+            ],
+            [
+                'description' => 'remove a column',
+                'click' => 'typo3-backend-table-wizard tr > th:nth-child(2) button[title="Remove column"]',
+                'expected' => 6,
+            ],
+            [
+                'description' => 'add a row',
+                'click' => 'typo3-backend-table-wizard tbody tr:first-child > th button[title="Add row below"]',
+                'expected' => 8,
+            ],
+            [
+                'description' => 'remove a row',
+                'click' => 'typo3-backend-table-wizard tbody tr:first-child > th button[title="Remove row"]',
+                'expected' => 6,
+            ],
+        ];
     }
 
     public function addAndRemoveTableColumnsAndRows(ApplicationTester $I): void
@@ -119,10 +155,7 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
     }
 
     /**
-     * Click field resize button to see if
-     * input fields change to textarea
-     *
-     * @throws \Exception
+     * Click field resize button to see if input fields change to textarea
      */
     public function clickSmallFieldsButton(ApplicationTester $I): void
     {
@@ -152,44 +185,6 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         // Styleguide creates 3 rows and 2 columns for this field (3*2=6 input fields).
         // Removing 1 row and 1 column means 2 rows and 1 column should be left (2*1=2 input fields).
         $I->assertEquals(2, $fieldCount);
-    }
-
-    protected function addRemoveTableDataProvider(): array
-    {
-        return [
-            [
-                'description' => 'add a column',
-                'click' => 'typo3-backend-table-wizard tr > th:nth-child(2) button[title="Add column to the right"]',
-                'expected' => 9,
-            ],
-            [
-                'description' => 'remove a column',
-                'click' => 'typo3-backend-table-wizard tr > th:nth-child(2) button[title="Remove column"]',
-                'expected' => 6,
-            ],
-            [
-                'description' => 'add a row',
-                'click' => 'typo3-backend-table-wizard tbody tr:first-child > th button[title="Add row below"]',
-                'expected' => 8,
-            ],
-            [
-                'description' => 'remove a row',
-                'click' => 'typo3-backend-table-wizard tbody tr:first-child > th button[title="Remove row"]',
-                'expected' => 6,
-            ],
-        ];
-    }
-
-    /**
-     * Provide sample data for table cols/rows to compare with
-     */
-    protected function tableDataProvider(): array
-    {
-        return [
-            ['row1 col1', 'row1 col2'],
-            ['row2 col1', 'row2 col2'],
-            ['row3 col1', 'row3 col2'],
-        ];
     }
 
     private function getTable(ApplicationTester $I): RemoteWebElement

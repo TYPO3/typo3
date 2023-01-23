@@ -26,10 +26,8 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests concerning Reports Module
  */
-class SitemapXmlCest
+final class SitemapXmlCest
 {
-    protected string $sidebar = '.sidebar.list-group';
-
     public function _before(ApplicationTester $I, PageTree $pageTree)
     {
         $I->useExistingSession('admin');
@@ -51,42 +49,7 @@ class SitemapXmlCest
         $I->amOnUrl($url . '?type=1533906435');
     }
 
-    private function getCurrentURL(ApplicationTester $I, int $attempt = 1): string
-    {
-        $url = $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
-            return $webdriver->getCurrentURL();
-        });
-
-        if ($attempt > 4) {
-            return $url ?? '';
-        }
-
-        if (!$url || str_contains($url, 'about:blank')) {
-            $I->wait(0.5);
-            $url = $this->getCurrentURL($I, $attempt + 1);
-        }
-
-        return $url;
-    }
-
-    /**
-     * @dataProvider sitemapDataProvider
-     */
-    public function seeSitemapXml(ApplicationTester $I, Example $testData): void
-    {
-        $I->see('TYPO3 XML Sitemap');
-        $I->see('sitemap=pages');
-        $I->see('type=1533906435');
-
-        $I->amGoingTo('See sitemap pages details');
-        $I->click('a');
-
-        $I->see($testData['slug']);
-        $priority = $this->getTableColumn($I, $testData['slug'])->getText();
-        $I->assertIsNumeric($priority);
-    }
-
-    protected function sitemapDataProvider(): array
+    private function sitemapDataProvider(): array
     {
         return [
             ['slug' => '/bullets'],
@@ -118,9 +81,44 @@ class SitemapXmlCest
     }
 
     /**
+     * @dataProvider sitemapDataProvider
+     */
+    public function seeSitemapXml(ApplicationTester $I, Example $testData): void
+    {
+        $I->see('TYPO3 XML Sitemap');
+        $I->see('sitemap=pages');
+        $I->see('type=1533906435');
+
+        $I->amGoingTo('See sitemap pages details');
+        $I->click('a');
+
+        $I->see($testData['slug']);
+        $priority = $this->getTableColumn($I, $testData['slug'])->getText();
+        $I->assertIsNumeric($priority);
+    }
+
+    private function getCurrentURL(ApplicationTester $I, int $attempt = 1): string
+    {
+        $url = $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
+            return $webdriver->getCurrentURL();
+        });
+
+        if ($attempt > 4) {
+            return $url ?? '';
+        }
+
+        if (!$url || str_contains($url, 'about:blank')) {
+            $I->wait(0.5);
+            $url = $this->getCurrentURL($I, $attempt + 1);
+        }
+
+        return $url;
+    }
+
+    /**
      * Find text by given slug part
      */
-    protected function getTableColumn(ApplicationTester $I, string $slug, int $sibling = 3): RemoteWebElement
+    private function getTableColumn(ApplicationTester $I, string $slug, int $sibling = 3): RemoteWebElement
     {
         $I->comment('Get context for table row "' . $slug . '"');
         return $I->executeInSelenium(

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests for "elements_basic" password input fields of ext:styleguide
  */
-class ElementsBasicPasswordCest extends AbstractElementsBasicCest
+final class ElementsBasicPasswordCest extends AbstractElementsBasicCest
 {
     /**
      * Open list module of styleguide elements basic page
@@ -51,7 +51,7 @@ class ElementsBasicPasswordCest extends AbstractElementsBasicCest
     /**
      * Data provider to check various type=password variants
      */
-    protected function passwordInputFieldsDataProvider(): array
+    private function passwordInputFieldsDataProvider(): array
     {
         return [
             // @todo add other password field variants

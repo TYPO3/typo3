@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 /**
  * Category tree tests
  */
-class CategoryTreeCest
+final class CategoryTreeCest
 {
     public function _before(ApplicationTester $I): void
     {

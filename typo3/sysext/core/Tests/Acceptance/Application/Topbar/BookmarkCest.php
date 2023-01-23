@@ -25,17 +25,17 @@ use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 /**
  * Test for the "Bookmark" functionality
  */
-class BookmarkCest
+final class BookmarkCest
 {
     /**
      * Selector for the module container in the topbar
      */
-    public static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem';
+    private static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem';
 
     /**
      * Selector for the "Add to bookmark" button
      */
-    protected static string $docHeaderBookmarkButtonSelector = '#dropdownShortcutMenu';
+    private static string $docHeaderBookmarkButtonSelector = '#dropdownShortcutMenu';
 
     public function _before(ApplicationTester $I): void
     {
@@ -115,7 +115,7 @@ class BookmarkCest
         $I->cantSee('Scheduled tasks renamed', self::$topBarModuleSelector);
     }
 
-    protected function clickBookmarkDropdownToggleInTopbar(ApplicationTester $I): void
+    private function clickBookmarkDropdownToggleInTopbar(ApplicationTester $I): void
     {
         $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownToggleSelector);
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Tests for "elements_basic" range input fields of ext:styleguide
  */
-class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
+final class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
 {
     /**
      * Open list module of styleguide elements basic page
@@ -48,7 +48,7 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
     /**
      * type=input range and md5 field tests
      */
-    protected function simpleRangeAndMd5FieldsDataProvider(): array
+    private function simpleRangeAndMd5FieldsDataProvider(): array
     {
         return [
             /**

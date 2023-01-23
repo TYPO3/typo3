@@ -22,7 +22,7 @@ use Facebook\WebDriver\WebDriverBy;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
-class InlineContentElementLocalizeSynchronizeCest
+final class InlineContentElementLocalizeSynchronizeCest
 {
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
