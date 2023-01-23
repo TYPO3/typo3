@@ -223,12 +223,9 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriKeepsQueryParametersIfAddQueryStringIsSet(): void
     {
-        $_GET['id'] = 'pageId';
-        $_GET['foo'] = 'bar';
         $extbaseParameters = new ExtbaseRequestParameters();
-        $serverRequest = $this->getRequestWithRouteAttribute()->withQueryParams($_GET)
-            ->withAttribute('extbase', $extbaseParameters)
-        ;
+        $serverRequest = $this->getRequestWithRouteAttribute()->withQueryParams(['id' => 'pageId', 'foo' => 'bar'])
+            ->withAttribute('extbase', $extbaseParameters);
         $request =  new Request($serverRequest);
         $this->uriBuilder->setRequest($request);
         $this->uriBuilder->setAddQueryString(true);
@@ -242,12 +239,10 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriRouteAttributeOverrulesGetParameterIfAddQueryStringIsSet(): void
     {
-        $_GET = ['route' => 'test/Path', 'id' => 'pageId', 'foo' => 'bar'];
-        $_POST = [];
         $extbaseParameters = new ExtbaseRequestParameters();
-        $serverRequest = $this->getRequestWithRouteAttribute('test/Path2')->withQueryParams($_GET)
-            ->withAttribute('extbase', $extbaseParameters)
-        ;
+        $serverRequest = $this->getRequestWithRouteAttribute('module_key2')
+            ->withQueryParams(['route' => 'module_key', 'id' => 'pageId', 'foo' => 'bar'])
+            ->withAttribute('extbase', $extbaseParameters);
         $request =  new Request($serverRequest);
         $this->uriBuilder->setRequest($request);
         $this->uriBuilder->setAddQueryString(true);
@@ -266,7 +261,7 @@ class UriBuilderTest extends UnitTestCase
                 [
                     'id' => 'pageId',
                     'myparam' => 'pageId',
-                    'route' => '/test/Path',
+                    'route' => 'module_key',
                     'foo' => 'bar',
                 ],
                 [
@@ -278,7 +273,7 @@ class UriBuilderTest extends UnitTestCase
             'Arguments to be excluded in the end' => [
                 [
                     'foo' => 'bar',
-                    'route' => '/test/Path',
+                    'route' => 'module_key',
                     'id' => 'pageId',
                     'myparam' => 'anyway',
                 ],
@@ -294,7 +289,7 @@ class UriBuilderTest extends UnitTestCase
                         'bar' => 'baz',
                     ],
                     'id' => 'pageId',
-                    'route' => '/test/Path',
+                    'route' => 'module_key',
                 ],
                 [
                     'id',
@@ -310,7 +305,7 @@ class UriBuilderTest extends UnitTestCase
                         ],
                     ],
                     'id' => 'pageId',
-                    'route' => '/test/Path',
+                    'route' => 'module_key',
                 ],
                 [
                     'id',
@@ -324,11 +319,14 @@ class UriBuilderTest extends UnitTestCase
     /**
      * @test
      * @dataProvider buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSetDataProvider
-     * @param string $expected
      */
-    public function buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSet(array $parameters, array $excluded, $expected): void
+    public function buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSet(array $parameters, array $excluded, string $expected): void
     {
-        $_GET = array_replace_recursive($_GET, $parameters);
+        $serverRequest = $this->getRequestWithRouteAttribute()
+            ->withQueryParams($parameters)
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request =  new Request($serverRequest);
+        $this->uriBuilder->setRequest($request);
         $this->uriBuilder->setAddQueryString(true);
         $this->uriBuilder->setArgumentsToBeExcludedFromQueryString($excluded);
         $actualResult = $this->uriBuilder->buildBackendUri();
@@ -340,10 +338,9 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriKeepsModuleQueryParametersIfAddQueryStringIsNotSet(): void
     {
-        $_GET = (['id' => 'pageId', 'foo' => 'bar']);
-        $extbaseParameters = new ExtbaseRequestParameters();
-        $serverRequest = $this->getRequestWithRouteAttribute()->withQueryParams($_GET)
-            ->withAttribute('extbase', $extbaseParameters)
+        $serverRequest = $this->getRequestWithRouteAttribute()
+            ->withQueryParams(['id' => 'pageId', 'foo' => 'bar'])
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
         ;
         $request =  new Request($serverRequest);
         $this->uriBuilder->setRequest($request);
@@ -357,14 +354,12 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriMergesAndOverrulesQueryParametersWithArguments(): void
     {
-        $_GET = ['id' => 'pageId', 'foo' => 'bar'];
-        $extbaseParameters = new ExtbaseRequestParameters();
-        $serverRequest = $this->getRequestWithRouteAttribute()->withQueryParams($_GET)
-            ->withAttribute('extbase', $extbaseParameters)
-        ;
+        $serverRequest = $this->getRequestWithRouteAttribute()
+            ->withQueryParams(['id' => 'pageId', 'foo' => 'bar'])
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request =  new Request($serverRequest);
         $this->uriBuilder->setRequest($request);
-        $this->uriBuilder->setArguments(['route' => '/test/Path2', 'somePrefix' => ['bar' => 'baz']]);
+        $this->uriBuilder->setArguments(['route' => 'module_key2', 'somePrefix' => ['bar' => 'baz']]);
         $expectedResult = '/typo3/test/Path2?token=dummyToken&id=pageId&somePrefix%5Bbar%5D=baz';
         $actualResult = $this->uriBuilder->buildBackendUri();
         self::assertEquals($expectedResult, $actualResult);
@@ -375,10 +370,8 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriConvertsDomainObjectsAfterArgumentsHaveBeenMerged(): void
     {
-        $extbaseParameters = new ExtbaseRequestParameters();
         $serverRequest = $this->getRequestWithRouteAttribute()
-            ->withAttribute('extbase', $extbaseParameters)
-        ;
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request =  new Request($serverRequest);
         $this->uriBuilder->setRequest($request);
         $mockDomainObject = $this->getAccessibleMock(AbstractEntity::class, null);
@@ -394,10 +387,8 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildBackendUriRespectsSection(): void
     {
-        $extbaseParameters = new ExtbaseRequestParameters();
         $serverRequest = $this->getRequestWithRouteAttribute()
-            ->withAttribute('extbase', $extbaseParameters)
-        ;
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request =  new Request($serverRequest);
         $this->uriBuilder->setRequest($request);
         $this->uriBuilder->setSection('someSection');
@@ -414,11 +405,11 @@ class UriBuilderTest extends UnitTestCase
         $request = $this->getRequestWithRouteAttribute(baseUri: 'http://baseuri/typo3/')
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', NormalizedParams::createFromServerParams($_SERVER))
-            ->withAttribute('extbase', new ExtbaseRequestParameters(''));
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
         $mvcRequest = new Request($request);
         $this->uriBuilder->setRequest($mvcRequest);
         $this->uriBuilder->setCreateAbsoluteUri(true);
-        $this->uriBuilder->setArguments(['route' => '/test/Path']);
+        $this->uriBuilder->setArguments(['route' => 'module_key']);
         $backendUriBuilder = GeneralUtility::makeInstance(BackendUriBuilder::class);
         $backendUriBuilder->setRequestContext(new RequestContext(host: 'baseuri/typo3'));
         $expectedResult = 'http://baseuri/typo3/test/Path?token=dummyToken';
@@ -915,8 +906,8 @@ class UriBuilderTest extends UnitTestCase
         self::assertIsArray($result);
     }
 
-    protected function getRequestWithRouteAttribute(string $path = '/test/Path', string $baseUri = ''): ServerRequestInterface
+    protected function getRequestWithRouteAttribute(string $routeIdentifier = 'module_key', string $baseUri = ''): ServerRequestInterface
     {
-        return (new ServerRequest(new Uri($baseUri)))->withAttribute('route', new Route($path, []));
+        return (new ServerRequest(new Uri($baseUri)))->withAttribute('route', new Route('/test/Path', ['_identifier' => $routeIdentifier]));
     }
 }

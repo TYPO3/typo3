@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Mvc\Web\Routing;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Http\ApplicationType;
@@ -582,20 +581,18 @@ class UriBuilder
 
     /**
      * Builds the URI, backend flavour
-     * The resulting URI is relative and starts with "index.php".
      * The settings pageUid, pageType, noCache & linkAccessRestrictedPages
      * will be ignored in the backend.
      *
      * @return string The URI
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getQueryArguments
      */
     public function buildBackendUri(): string
     {
         $arguments = [];
         $request = $this->getRequest();
         if ($this->addQueryString === true) {
-            $arguments = GeneralUtility::_GET();
+            $arguments = $request?->getQueryParams() ?? [];
             foreach ($this->argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
                 $argumentArrayToBeExcluded = [];
                 parse_str($argumentToBeExcluded, $argumentArrayToBeExcluded);
@@ -609,28 +606,24 @@ class UriBuilder
         }
         if (($route = $request?->getAttribute('route')) instanceof Route) {
             /** @var Route $route */
-            $arguments['route'] = $route->getPath();
+            $arguments['route'] = $route->getOption('_identifier');
         }
-        ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->arguments);
+        $arguments = array_replace_recursive($arguments, $this->arguments);
         $arguments = $this->convertDomainObjectsToIdentityArrays($arguments);
         $this->lastArguments = $arguments;
-        $routeName = $arguments['route'] ?? null;
+        $routeIdentifier = $arguments['route'] ?? null;
         unset($arguments['route'], $arguments['token']);
-        $backendUriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-        try {
-            if ($this->createAbsoluteUri) {
-                $uri = (string)$backendUriBuilder->buildUriFromRoutePath($routeName, $arguments, \TYPO3\CMS\Backend\Routing\UriBuilder::ABSOLUTE_URL);
-            } else {
-                $uri = (string)$backendUriBuilder->buildUriFromRoutePath($routeName, $arguments, \TYPO3\CMS\Backend\Routing\UriBuilder::ABSOLUTE_PATH);
-            }
-        } catch (ResourceNotFoundException $e) {
+        $uri = '';
+        if ($routeIdentifier) {
+            $backendUriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
             try {
                 if ($this->createAbsoluteUri) {
-                    $uri = (string)$backendUriBuilder->buildUriFromRoute($routeName, $arguments, \TYPO3\CMS\Backend\Routing\UriBuilder::ABSOLUTE_URL);
+                    $uri = (string)$backendUriBuilder->buildUriFromRoute($routeIdentifier, $arguments, \TYPO3\CMS\Backend\Routing\UriBuilder::ABSOLUTE_URL);
                 } else {
-                    $uri = (string)$backendUriBuilder->buildUriFromRoute($routeName, $arguments, \TYPO3\CMS\Backend\Routing\UriBuilder::ABSOLUTE_PATH);
+                    $uri = (string)$backendUriBuilder->buildUriFromRoute($routeIdentifier, $arguments);
                 }
             } catch (RouteNotFoundException $e) {
+                // return empty URL
                 $uri = '';
             }
         }
