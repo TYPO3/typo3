@@ -55,10 +55,10 @@
 				<source>Additional TypoScript record</source>
 			</trans-unit>
 			<trans-unit id="noRecordFound.createAdditionalTypoScriptRecord.description" resname="noRecordFound.createAdditionalTypoScriptRecord.description">
-				<source>An additonal TypoScript record allows you to enter TypoScript values that will affect only this page and subpages.</source>
+				<source>An additional TypoScript record allows you to enter TypoScript values that will affect only this page and subpages.</source>
 			</trans-unit>
 			<trans-unit id="noRecordFound.createAdditionalTypoScriptRecord.link.title" resname="noRecordFound.createAdditionalTypoScriptRecord.link.title">
-				<source>Create an additonal TypoScript record</source>
+				<source>Create an additional TypoScript record</source>
 			</trans-unit>
 		</body>
 	</file>
