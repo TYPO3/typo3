@@ -161,7 +161,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
             $typolinkConfiguration['language'] = $language;
         }
         if ($section) {
-            $typolinkConfiguration['fragment'] = $section;
+            $typolinkConfiguration['section'] = $section;
         }
         if ($linkAccessRestrictedPages) {
             $typolinkConfiguration['linkAccessRestrictedPages'] = 1;
