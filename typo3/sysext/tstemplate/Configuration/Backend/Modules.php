@@ -11,7 +11,7 @@ use TYPO3\CMS\Tstemplate\Controller\TemplateRecordsOverviewController;
  */
 return [
     'web_ts' => [
-        'parent' => 'web',
+        'parent' => 'site',
         'access' => 'admin',
         'path' => '/module/web/ts',
         'iconIdentifier' => 'module-tstemplate',
