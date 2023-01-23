@@ -5470,4 +5470,25 @@ return [
             'Deprecation-99558-DeprecatePageRepository-getExtURL.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Page\PageRenderer->enableRemoveLineBreaksFromTemplate' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-99685-RemoveLineBreaksFromTemplate.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->disableRemoveLineBreaksFromTemplate' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-99685-RemoveLineBreaksFromTemplate.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->getRemoveLineBreaksFromTemplate' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-99685-RemoveLineBreaksFromTemplate.rst',
+        ],
+    ],
 ];

@@ -64,6 +64,7 @@ class PageRenderer implements SingletonInterface
 
     /**
      * @var bool
+     * @deprecated since TYPO3 v12.2. will be removed in TYPO3 v13.0 along with enable, disable and getter method.
      */
     protected $removeLineBreaksFromTemplate = false;
 
@@ -709,17 +710,29 @@ class PageRenderer implements SingletonInterface
 
     /**
      * Sets removal of all line breaks in template
+     * @deprecated since TYPO3 v12.2. will be removed in TYPO3 v13.0.
      */
     public function enableRemoveLineBreaksFromTemplate()
     {
+        trigger_error(
+            'PageRenderer::enableRemoveLineBreaksFromTemplate() will be removed in TYPO3 v13.0.' .
+            'Use a proper output optimization tool instead.',
+            E_USER_DEPRECATED
+        );
         $this->removeLineBreaksFromTemplate = true;
     }
 
     /**
      * Unsets removal of all line breaks in template
+     * @deprecated since TYPO3 v12.2. will be removed in TYPO3 v13.0.
      */
     public function disableRemoveLineBreaksFromTemplate()
     {
+        trigger_error(
+            'PageRenderer::disableRemoveLineBreaksFromTemplate() will be removed in TYPO3 v13.0.' .
+            'Use a proper output optimization tool instead.',
+            E_USER_DEPRECATED
+        );
         $this->removeLineBreaksFromTemplate = false;
     }
 
@@ -733,6 +746,7 @@ class PageRenderer implements SingletonInterface
         $this->compressCss = false;
         $this->concatenateCss = false;
         $this->concatenateJavascript = false;
+        // @deprecated since TYPO3 v12.2. will be removed in TYPO3 v13.0 along with enable, disable and getter method, and property.
         $this->removeLineBreaksFromTemplate = false;
     }
 
@@ -938,9 +952,15 @@ class PageRenderer implements SingletonInterface
      * Gets remove of empty lines from template
      *
      * @return bool
+     * @deprecated since TYPO3 v12.2. will be removed in TYPO3 v13.0.
      */
     public function getRemoveLineBreaksFromTemplate()
     {
+        trigger_error(
+            'PageRenderer::getRemoveLineBreaksFromTemplate() will be removed in TYPO3 v13.0.' .
+            'Use a proper output optimization tool instead.',
+            E_USER_DEPRECATED
+        );
         return $this->removeLineBreaksFromTemplate;
     }
 
@@ -2032,6 +2052,8 @@ class PageRenderer implements SingletonInterface
         $templateFile = GeneralUtility::getFileAbsFileName($this->templateFile);
         if (is_file($templateFile)) {
             $template = (string)file_get_contents($templateFile);
+            // @todo remove the condition and the body with TYPO3 v13.
+            // @todo Belongs to Deprecation-99685-RemoveLineBreaksFromTemplate.rst
             if ($this->removeLineBreaksFromTemplate) {
                 $template = strtr($template, [LF => '', CR => '']);
             }
