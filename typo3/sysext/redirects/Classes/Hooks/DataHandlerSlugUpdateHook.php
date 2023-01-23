@@ -59,7 +59,10 @@ class DataHandlerSlugUpdateHook
             return;
         }
 
-        $this->persistedChangedItems[(int)$id] = $this->slugRedirectChangeItemFactory->create((int)$id);
+        $changeItem = $this->slugRedirectChangeItemFactory->create((int)$id);
+        if ($changeItem instanceof SlugRedirectChangeItem) {
+            $this->persistedChangedItems[(int)$id] = $changeItem;
+        }
     }
 
     /**

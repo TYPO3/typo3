@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Redirects\RedirectUpdate;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
@@ -39,8 +41,22 @@ class SlugRedirectChangeItemFactory
         }
         $languageId = (int)$original['sys_language_uid'];
         $defaultLanguagePageId = (int)$original['sys_language_uid'] > 0 ? (int)$original['l10n_parent'] : $pageId;
-        $site = $this->siteFinder->getSiteByPageId($defaultLanguagePageId);
+        try {
+            $site = $this->siteFinder->getSiteByPageId($defaultLanguagePageId);
+        } catch(SiteNotFoundException) {
+            // Auto redirecs/slug updating is a site configuration. Not finding one means that we should not handle
+            // the creation of them, thus no need to create a change item.
+            return null;
+        }
         $siteLanguage = $site->getLanguageById($languageId);
+        // Verify we should process auto redirect creation or slug updating. If not return early avoiding to create
+        // a change item which is superflous at all.
+        $settings = $site->getSettings();
+        $autoUpdateSlugs = (bool)$settings->get('redirects.autoUpdateSlugs', true);
+        $autoCreateRedirects = (bool)$settings->get('redirects.autoCreateRedirects', true);
+        if (!($autoUpdateSlugs || $autoCreateRedirects)) {
+            return null;
+        }
         // We create a plain slug replacement source, which mirrors the behaviour since redirects implementation. This
         // may vanish anytime. Introducing an event here opens up the possibility to add custom source definitions, for
         // example doing a real URI building to cover route decorators and enhancers, or creating redirects for more

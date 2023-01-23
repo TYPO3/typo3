@@ -34,6 +34,11 @@ use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\SlugService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
+/**
+ * @todo Tests in this TestCase simulates what happens in the corresponding `DataHandlerSlugUpdateHook`, mainly which
+ *       is executed in which order. This is somehow clumsy. Either cover proper DataHandler hook execution with
+ *       additional tests avoiding the simulation and testing SlugService in indirect way - or refactor them here.
+ */
 class SlugServiceTest extends FunctionalTestCase
 {
     /**
