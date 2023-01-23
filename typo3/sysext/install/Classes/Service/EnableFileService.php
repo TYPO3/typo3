@@ -65,11 +65,15 @@ class EnableFileService
     }
 
     /**
-     * Removes the INSTALL_TOOL_ENABLE file
+     * Removes the INSTALL_TOOL_ENABLE file from all locations
      */
     public static function removeInstallToolEnableFile(): bool
     {
-        return unlink(self::getInstallToolEnableFilePath());
+        $result = false;
+        while (is_file(self::getInstallToolEnableFilePath())) {
+            $result = unlink(self::getInstallToolEnableFilePath());
+        }
+        return $result;
     }
 
     /**

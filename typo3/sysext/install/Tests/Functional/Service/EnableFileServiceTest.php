@@ -113,4 +113,26 @@ class EnableFileServiceTest extends FunctionalTestCase
         $subject->_call('removeFirstInstallFile');
         self::assertEquals(array_values($expected), array_values(scandir($publicPath)));
     }
+
+    /**
+     * @test
+     */
+    public function removeInstallToolEnableFileRemovesAllAvailableFiles(): void
+    {
+        $defaultLocation = Environment::getVarPath() . '/transient/' . EnableFileService::INSTALL_TOOL_ENABLE_FILE_PATH;
+        $permanentLocation = Environment::getConfigPath() . '/' . EnableFileService::INSTALL_TOOL_ENABLE_FILE_PATH;
+        $legacyLocation = Environment::getLegacyConfigPath() . EnableFileService::INSTALL_TOOL_ENABLE_FILE_PATH;
+        @mkdir(dirname($defaultLocation));
+        @mkdir(dirname($permanentLocation));
+        @mkdir(dirname($legacyLocation));
+        file_put_contents($defaultLocation, 'abc');
+        file_put_contents($permanentLocation, 'abc');
+        file_put_contents($legacyLocation, 'abc');
+        $subject = new EnableFileService();
+        $result = $subject::removeInstallToolEnableFile();
+        self::assertTrue($result);
+        self::assertFileDoesNotExist($defaultLocation);
+        self::assertFileDoesNotExist($permanentLocation);
+        self::assertFileDoesNotExist($legacyLocation);
+    }
 }
