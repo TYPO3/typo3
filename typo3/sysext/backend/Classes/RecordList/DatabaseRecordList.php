@@ -911,7 +911,7 @@ class DatabaseRecordList
                     close="' . htmlspecialchars($downloadCancelTitle) . '"
                 >
                     <button type="button" class="btn btn-default btn-sm me-2" title="' . htmlspecialchars($downloadButtonTitle) . '">' .
-                        $this->iconFactory->getIcon('actions-database-export', Icon::SIZE_SMALL) . ' ' .
+                        $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL) . ' ' .
                         htmlspecialchars($downloadButtonLabel) .
                     '</button>
                 </typo3-recordlist-record-download-button>
