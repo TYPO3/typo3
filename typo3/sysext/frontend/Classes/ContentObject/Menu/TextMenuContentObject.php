@@ -129,7 +129,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             // Make before, middle and after parts
             $this->I['parts'] = [];
             $this->I['parts']['before'] = $this->getBeforeAfter('before');
-            $this->I['parts']['stdWrap2_begin'] = $wrapPartsStdWrap[0];
+            $this->I['parts']['stdWrap2_begin'] = $wrapPartsStdWrap[0] ?? '';
             // stdWrap for doNotShowLink
             $this->I['val']['doNotShowLink'] = $this->WMcObj->stdWrapValue('doNotShowLink', $this->I['val']);
             if (!$this->I['val']['doNotShowLink']) {
@@ -141,7 +141,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
                 $this->I['parts']['ATag_end'] = $this->I['A2'];
                 $this->I['parts']['notATagBeforeWrap_end'] = $wrapPartsAfter[1] ?? '';
             }
-            $this->I['parts']['stdWrap2_end'] = $wrapPartsStdWrap[1];
+            $this->I['parts']['stdWrap2_end'] = $wrapPartsStdWrap[1] ?? '';
             $this->I['parts']['after'] = $this->getBeforeAfter('after');
             // Passing I to a user function
             if ($this->mconf['IProcFunc'] ?? false) {
