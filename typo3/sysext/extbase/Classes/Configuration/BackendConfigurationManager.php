@@ -215,7 +215,7 @@ class BackendConfigurationManager implements SingletonInterface
             return $setupArray;
         }
 
-        $site = $request->getAttribute('site');
+        $site = $request?->getAttribute('site');
 
         $rootLine = [];
         if ($pageId > 0) {
