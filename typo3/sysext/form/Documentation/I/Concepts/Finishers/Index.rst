@@ -556,20 +556,25 @@ following to the backend yaml setup:
                         25:
                            identifier: 'CustomFinisher'
                            editors:
-                              __inheritances:
-                                 10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
                               100:
+                                # add expandable header area
+                                identifier: header
                                 label: "Custom Finisher"
-                              # custom field (input, required)
+                                templateName: Inspector-CollectionElementHeaderEditor
+                              105:
+                                # add remove button
+                                identifier: removeButton
+                                templateName: Inspector-RemoveElementEditor
                               110:
+                                # add a field defined as a TextEditor
                                 identifier: 'customField'
                                 templateName: 'Inspector-TextEditor'
                                 label: 'Custom Field'
                                 propertyPath: 'options.customField'
                                 propertyValidators:
                                   10: 'NotEmpty'
-                              # email field
                               120:
+                                # add another TextEditor
                                 identifier: 'email'
                                 templateName: 'Inspector-TextEditor'
                                 label: 'Subscribers email'
@@ -578,7 +583,6 @@ following to the backend yaml setup:
                                 propertyValidators:
                                   10: 'NotEmpty'
                                   20: 'FormElementIdentifierWithinCurlyBracesInclusive'
-
                 finishersDefinition:
                   CustomFinisher:
                     formEditor:
@@ -600,8 +604,13 @@ following to the backend yaml setup:
                           label: 'Subscribers email'
                           config:
                             type: 'text'
+                            
+Keep in mind that ``mixins`` **have been removed in TYPO3 v11** (see `#89742 <https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/10.2/Deprecation-89742-FormMixins.html>`__).
+Therefore, the header area as well as the remove button of the finisher have to be added manually
+(as shown in the example above).
 
-Make sure the setup file is registered in the backend:
+Make sure the setup file is registered in the backend and that you have cleared all caches in order
+to get all of your changes applied.
 
 .. code-block:: typoscript
 
