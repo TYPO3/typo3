@@ -4277,7 +4277,7 @@ parameters:
 
 		-
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/frontend/Classes/Plugin/AbstractPlugin.php
 
 		-
