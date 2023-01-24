@@ -1271,6 +1271,11 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Classes/Controller/ContentController.php
 
 		-
+			message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\:\\:\\$where_hid_del\\.$#"
+			count: 2
+			path: ../../typo3/sysext/core/Tests/FunctionalDeprecated/Domain/Repository/PageRepositoryTest.php
+
+		-
 			message: "#^Parameter \\#2 \\$data of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\Typo3DatabaseBackend\\:\\:set\\(\\) expects string, array\\<int, string\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Backend/Typo3DatabaseBackendTest.php
@@ -2577,7 +2582,7 @@ parameters:
 
 		-
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/frontend/Classes/Plugin/AbstractPlugin.php
 
 		-
@@ -3139,8 +3144,3 @@ parameters:
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php
-
-		-
-			message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\:\\:\\$where_hid_del\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/FunctionalDeprecated/Domain/Repository/PageRepositoryTest.php
