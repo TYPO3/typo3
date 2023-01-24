@@ -397,7 +397,7 @@ CREATE TABLE sys_category (
 # Table structure for table 'sys_messenger_messages'
 #
 CREATE TABLE `sys_messenger_messages` (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
+  id int(11) unsigned NOT NULL auto_increment,
   body longtext NOT NULL,
   headers longtext NOT NULL,
   queue_name varchar(190) NOT NULL,
