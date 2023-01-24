@@ -3424,14 +3424,16 @@ class BackendUtility
         $fieldList[] = 'uid';
         $fieldList[] = 'pid';
 
-        // Add more special fields (e.g. date fields) if user should not be checked or is admin
+        // Add date fields - if defined for the table
+        if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? false) {
+            $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['tstamp'];
+        }
+        if ($GLOBALS['TCA'][$table]['ctrl']['crdate'] ?? false) {
+            $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['crdate'];
+        }
+
+        // Add more special fields in case user should not be checked or is admin
         if (!$checkUserAccess || $backendUser->isAdmin()) {
-            if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? false) {
-                $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['tstamp'];
-            }
-            if ($GLOBALS['TCA'][$table]['ctrl']['crdate'] ?? false) {
-                $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['crdate'];
-            }
             if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? false) {
                 $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
             }
