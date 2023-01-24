@@ -166,7 +166,7 @@ class RecyclerAjaxController
         foreach ($deletedRowsArray as $table => $rows) {
             $groupedRecords[$table]['information'] = [
                 'table' => $table,
-                'title' => $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']),
+                'title' => isset($GLOBALS['TCA'][$table]['ctrl']['title']) ? $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']) : BackendUtility::getNoRecordTitle(),
             ];
             foreach ($rows as $row) {
                 $pageTitle = $this->getPageTitle((int)$row['pid']);
@@ -180,8 +180,8 @@ class RecyclerAjaxController
                     'pid' => $row['pid'],
                     'icon' => $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
                     'pageTitle' => $pageTitle,
-                    'crdate' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
-                    'tstamp' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
+                    'crdate' => isset($GLOBALS['TCA'][$table]['ctrl']['crdate']) ? BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]) : '',
+                    'tstamp' => isset($GLOBALS['TCA'][$table]['ctrl']['tstamp']) ? BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]) : '',
                     'owner' => $backendUserName,
                     'owner_uid' => $ownerUid,
                     'title' => BackendUtility::getRecordTitle($table, $row),
