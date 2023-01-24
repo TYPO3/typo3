@@ -135,6 +135,12 @@
 			<trans-unit id="backendUsers" resname="backendUsers">
 				<source>Backend users</source>
 			</trans-unit>
+			<trans-unit id="backendUser.create" resname="backendUser.create">
+				<source>Create new backend user</source>
+			</trans-unit>
+			<trans-unit id="backendUserGroup.create" resname="backendUserGroup.create">
+				<source>Create new backend user group</source>
+			</trans-unit>
 			<trans-unit id="compareUsers" resname="compareUsers">
 				<source>Compare backend users</source>
 			</trans-unit>
@@ -294,28 +300,28 @@
 			<trans-unit id="pagination.refresh" resname="pagination.refresh">
 				<source>Refresh</source>
 			</trans-unit>
-			<trans-unit id="filemounts">
+			<trans-unit id="filemounts" resname="filemounts">
 			    <source>Filemounts</source>
 			</trans-unit>
-			<trans-unit id="filemount.listing">
+			<trans-unit id="filemount.listing" resname="filemount.listing">
 				<source>Available filemounts</source>
 			</trans-unit>
-			<trans-unit id="filemount.confirm.deletion">
+			<trans-unit id="filemount.confirm.deletion" resname="filemount.confirm.deletion">
 			    <source>Are you sure, that you want to delete the filemount "%s"?</source>
 			</trans-unit>
-			<trans-unit id="filemount.create">
+			<trans-unit id="filemount.create" resname="filemount.create">
 			    <source>Create new filemount</source>
 			</trans-unit>
-			<trans-unit id="filemount.none">
+			<trans-unit id="filemount.none" resname="filemount.none">
 				<source>There are no filemounts available.</source>
 			</trans-unit>
-			<trans-unit id="filemount.storage">
+			<trans-unit id="filemount.storage" resname="filemount.storage">
 				<source>Storage</source>
 			</trans-unit>
-			<trans-unit id="filemount.amount.multiple">
+			<trans-unit id="filemount.amount.multiple" resname="filemount.amount.multiple">
 				<source>Total: %s filemounts</source>
 			</trans-unit>
-			<trans-unit id="filemount.amount.singular">
+			<trans-unit id="filemount.amount.singular" resname="filemount.amount.singular">
 				<source>Total: 1 filemount</source>
 			</trans-unit>
 		</body>
