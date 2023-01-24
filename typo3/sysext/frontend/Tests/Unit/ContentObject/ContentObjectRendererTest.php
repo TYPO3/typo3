@@ -1576,6 +1576,8 @@ class ContentObjectRendererTest extends UnitTestCase
         $language = $site->getLanguageById(1);
         $this->frontendControllerMock->_set('language', $language);
         self::assertEquals('German', $this->subject->getData('siteLanguage:navigationTitle'));
+        self::assertEquals('de', $this->subject->getData('siteLanguage:twoLetterIsoCode'));
+        self::assertEquals('de', $this->subject->getData('siteLanguage:locale:languageCode'));
     }
 
     /**

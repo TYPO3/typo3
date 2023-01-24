@@ -291,7 +291,6 @@ class FormEditorController extends AbstractBackendController
                     'navigationTitle' => '',
                     'flag' => '',
                     'locale' => '',
-                    'iso-639-1' => '',
                     'hreflang' => '',
                     'direction' => '',
                 ],

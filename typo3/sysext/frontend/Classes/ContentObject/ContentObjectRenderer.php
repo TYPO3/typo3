@@ -4139,9 +4139,33 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         break;
                     case 'sitelanguage':
                         $siteLanguage = $this->getTypoScriptFrontendController()->getLanguage();
-                        $config = $siteLanguage->toArray();
-                        if (isset($config[$key])) {
-                            $retVal = $config[$key] ?? '';
+                        if ($key === 'twoLetterIsoCode') {
+                            $key = 'locale:languageCode';
+                        }
+                        // Special handling for the locale object
+                        if (str_starts_with($key, 'locale')) {
+                            $localeObject = $siteLanguage->getLocale();
+                            if ($key === 'locale') {
+                                // backwards-compatibility
+                                $retVal = $localeObject->posixFormatted();
+                            } else {
+                                $keyParts = explode(':', $key, 2);
+                                switch ($keyParts[1] ?? '') {
+                                    case 'languageCode':
+                                        $retVal = $localeObject->getLanguageCode();
+                                        break;
+                                    case 'countryCode':
+                                        $retVal = $localeObject->getCountryCode();
+                                        break;
+                                    default:
+                                        $retVal = $localeObject->getName();
+                                }
+                            }
+                        } else {
+                            $config = $siteLanguage->toArray();
+                            if (isset($config[$key])) {
+                                $retVal = $config[$key] ?? '';
+                            }
                         }
                         break;
                     case 'sitesettings':

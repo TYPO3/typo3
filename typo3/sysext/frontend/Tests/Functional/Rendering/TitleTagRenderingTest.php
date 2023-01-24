@@ -62,7 +62,6 @@ class TitleTagRenderingTest extends FunctionalTestCase
                     'languageId' => '0',
                     'base' => '/',
                     'locale' => 'en_US.UTF-8',
-                    'iso-639-1' => 'en',
                     'websiteTitle' => 'Site EN',
                     'navigationTitle' => '',
                     'hreflang' => '',

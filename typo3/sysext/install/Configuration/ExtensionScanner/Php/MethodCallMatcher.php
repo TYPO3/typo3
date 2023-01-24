@@ -5491,4 +5491,11 @@ return [
             'Deprecation-99685-RemoveLineBreaksFromTemplate.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Site\Entity\SiteLanguage->getTwoLetterIsoCode' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-99905-SiteLanguageIso-639-1Setting.rst',
+        ],
+    ],
 ];

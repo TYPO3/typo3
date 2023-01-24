@@ -1754,19 +1754,16 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'languageId' => 0,
                             'title' => 'Default',
                             'locale' => 'en_US.UTF-8',
-                            'iso-639-1' => 'en',
                         ],
                         [
                             'languageId' => 1,
                             'title' => 'German',
                             'locale' => 'de_DE.UTF-8',
-                            'iso-639-1' => 'de',
                         ],
                         [
                             'languageId' => 2,
                             'title' => 'Danish',
                             'locale' => 'da_DK.UTF-8',
-                            'iso-639-1' => 'da',
                         ],
                     ],
                 ]

@@ -85,7 +85,7 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
                         ],
                         'localeMap' => [
                             [
-                                'locale' => 'fr_FR',
+                                'locale' => 'fr-FR',
                                 'map' => [
                                     'cent' => 100,
                                 ],
@@ -180,7 +180,7 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
                         ],
                         'localeMap' => [
                             [
-                                'locale' => 'fr_FR',
+                                'locale' => 'fr-FR',
                                 'map' => [
                                     'cent' => 100,
                                 ],

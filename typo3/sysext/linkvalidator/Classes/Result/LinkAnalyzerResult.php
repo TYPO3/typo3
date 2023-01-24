@@ -204,7 +204,7 @@ class LinkAnalyzerResult
 
             try {
                 $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$brokenLink['real_pid']);
-                $languageCode = $site->getLanguageById((int)$brokenLink['language'])->getTwoLetterIsoCode() ?: 'default';
+                $languageCode = $site->getLanguageById((int)$brokenLink['language'])->getLocale()->getLanguageCode();
             } catch (SiteNotFoundException | \InvalidArgumentException $e) {
                 $languageCode = 'default';
             }
@@ -214,7 +214,7 @@ class LinkAnalyzerResult
 
             $brokenLink['record_type'] = $this->getLanguageService()->sL($GLOBALS['TCA'][$brokenLink['table_name']]['ctrl']['title'] ?? '');
             $brokenLink['target'] = (((string)($brokenLink['link_type'] ?? '') === 'db') ? 'id:' : '') . $brokenLink['url'];
-            $brokenLink['language_code'] = $languageCode;
+            $brokenLink['language_code'] = (string)$languageCode;
         }
 
         return $this;

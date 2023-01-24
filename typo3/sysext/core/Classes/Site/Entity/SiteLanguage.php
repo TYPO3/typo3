@@ -70,9 +70,10 @@ class SiteLanguage
 
     /**
      * The iso code for this language (two letter) ISO-639-1
+     * @deprecated in favor of $this->locale
      * @var string
      */
-    protected $twoLetterIsoCode = 'en';
+    protected $twoLetterIsoCode = '';
 
     /**
      * Language tag for this language defined by RFC 1766 / 3066 for "lang"
@@ -188,7 +189,8 @@ class SiteLanguage
             'title' => $this->getTitle(),
             'websiteTitle' => $this->getWebsiteTitle(),
             'navigationTitle' => $this->getNavigationTitle(),
-            'twoLetterIsoCode' => $this->getTwoLetterIsoCode(),
+            // @deprecated will be removed in TYPO3 v13.0
+            'twoLetterIsoCode' => $this->twoLetterIsoCode ?: $this->locale->getLanguageCode(),
             'hreflang' => $this->getHreflang(),
             'direction' => $this->getDirection(),
             'typo3Language' => $this->getTypo3Language(),
@@ -258,10 +260,12 @@ class SiteLanguage
 
     /**
      * Returns the ISO-639-1 language ISO code
+     * @deprecated not needed anymore, use $this->getLocale()->getLanguageCode() instead.
      */
     public function getTwoLetterIsoCode(): string
     {
-        return $this->twoLetterIsoCode;
+        trigger_error('SiteLanguage->getTwoLetterIsoCode() will be removed in TYPO3 v13.0. User SiteLanguage->getLocale()->getLanguageCode() instead.', E_USER_DEPRECATED);
+        return $this->twoLetterIsoCode ?: $this->locale->getLanguageCode();
     }
 
     /**

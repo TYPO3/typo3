@@ -55,15 +55,15 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
         );
         $siteLanguageZero = new SiteLanguage(
             0,
-            '',
+            'en',
             new Uri('/en/'),
             ['title' => 'English', 'flag' => 'empty-empty', 'direction' => 'ltr']
         );
         $siteLanguageOne = new SiteLanguage(
             1,
-            '',
+            'nl_NL',
             new Uri('/nl/'),
-            ['title' => 'Dutch', 'flag' => 'flag-nl', 'direction' => 'rtl', 'iso-639-1' => 'NL']
+            ['title' => 'Dutch', 'flag' => 'flag-nl', 'direction' => 'rtl']
         );
         $siteLanguages = [
             $siteLanguageMinusOne,
@@ -95,7 +95,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
                 1 => [
                     'uid' => 1,
                     'title' => 'Dutch',
-                    'iso' => 'NL',
+                    'iso' => 'nl',
                     'flagIconIdentifier' => 'flag-nl',
                     'direction' => 'rtl',
                 ],

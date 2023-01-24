@@ -92,11 +92,8 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
                     if ($language->getTitle() !== '') {
                         $defaultDatabaseRow['title'] = $language->getTitle();
                     }
-                    if ($language->getTwoLetterIsoCode() !== '') {
-                        $defaultDatabaseRow['iso-639-1'] = $language->getTwoLetterIsoCode();
-                        if ($language->getBase()->getPath() !== '/') {
-                            $defaultDatabaseRow['base'] = '/' . $language->getTwoLetterIsoCode() . '/';
-                        }
+                    if ($language->getBase()->getPath() !== '/') {
+                        $defaultDatabaseRow['base'] = '/' . strtolower($language->getLocale()->getName()) . '/';
                     }
                     if ($language->getNavigationTitle() !== '') {
                         $defaultDatabaseRow['navigationTitle'] = $language->getNavigationTitle();

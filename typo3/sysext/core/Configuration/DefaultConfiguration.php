@@ -1172,11 +1172,6 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\SiteTcaSelectItems::class => [
-                        'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFolder::class,
-                        ],
-                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageRootline::class,
@@ -1185,7 +1180,6 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\SiteTcaSelectItems::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => [

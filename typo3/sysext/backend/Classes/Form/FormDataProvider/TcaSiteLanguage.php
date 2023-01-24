@@ -303,9 +303,6 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
                     if ($language->getTitle() !== '') {
                         $defaultDatabaseRow['title'] = $language->getTitle();
                     }
-                    if ($language->getTwoLetterIsoCode() !== '') {
-                        $defaultDatabaseRow['iso-639-1'] = $language->getTwoLetterIsoCode();
-                    }
                     if ($language->getNavigationTitle() !== '') {
                         $defaultDatabaseRow['navigationTitle'] = $language->getNavigationTitle();
                     }

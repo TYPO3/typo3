@@ -16,7 +16,6 @@ languages:
     languageId: '1'
     base: /da
     locale: da_DK.utf8
-    iso-639-1: da
     hreflang: ''
     direction: ''
     flag: da

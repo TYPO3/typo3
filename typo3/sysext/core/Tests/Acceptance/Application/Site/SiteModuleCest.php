@@ -84,8 +84,7 @@ final class SiteModuleCest
         $I->canSee('[New language]');
         $I->fillField('//input[contains(@data-formengine-input-name, "data[site_language]") and contains(@data-formengine-input-name, "[title]")]', 'New Language');
         $I->fillField('//input[contains(@data-formengine-input-name, "data[site_language]") and contains(@data-formengine-input-name, "[base]")]', '/new-language/');
-        $I->fillField('//input[contains(@data-formengine-input-name, "data[site_language]") and contains(@data-formengine-input-name, "[locale]")]', 'C');
-        $I->selectOption('//select[contains(@name, "[site_language]") and contains(@name, "[iso-639-1]")]', 'hr');
+        $I->fillField('//input[contains(@data-formengine-input-name, "data[site_language]") and contains(@data-formengine-input-name, "[locale]")]', 'hr_HR');
 
         $I->amGoingTo('Save the site configuration');
         $I->waitForElement($saveButtonLink, 30);
@@ -93,7 +92,7 @@ final class SiteModuleCest
         $I->waitForElementNotVisible('#t3js-ui-block');
 
         $I->amGoingTo('Verify new site configuration has been added with the next available language ID)');
-        $I->canSee('New Language [9] (C)');
+        $I->canSee('New Language [9] (hr_HR)');
 
         $I->amGoingTo('Close the site configuration form');
         $I->click('Close');
@@ -116,9 +115,9 @@ final class SiteModuleCest
         $I->selectOption('.t3js-create-new-selector', '9');
         $I->waitForElementVisible('div.inlineIsNewRecord:nth-child(2)');
         $I->scrollTo('div.inlineIsNewRecord:nth-child(2)');
-        $I->canSee('New Language [9] (C)');
+        $I->canSee('New Language [9] (hr_HR)');
         $I->click('div.inlineIsNewRecord:nth-child(2) > div:nth-child(1) > div:nth-child(1)');
-        $I->canSee('/hr/');
+        $I->canSee('/hr-hr/');
         $I->click('div.inlineIsNewRecord:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) button');
         $modalDialog->canSeeDialog();
         $I->click('button[name="yes"]', ModalDialog::$openedModalButtonContainerSelector);

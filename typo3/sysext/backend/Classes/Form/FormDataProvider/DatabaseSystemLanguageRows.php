@@ -51,7 +51,7 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
         foreach ($languages as $language) {
             $languageId = $language->getLanguageId();
             if ($languageId > 0) {
-                $iso = $language->getTwoLetterIsoCode();
+                $iso = $language->getLocale()->getLanguageCode();
             } else {
                 $iso = 'DEF';
             }
@@ -74,7 +74,7 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
                 // @todo: since the rest of the FormEngine code does not rely on iso code?
                 $message = sprintf(
                     $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.missingLanguageIsocode'),
-                    $language->getTwoLetterIsoCode(),
+                    $language->getLocale()->getLanguageCode(),
                     $languageId
                 );
                 $flashMessage = GeneralUtility::makeInstance(

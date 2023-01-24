@@ -128,7 +128,6 @@ class SiteConfiguration implements SingletonInterface
                     'languageId' => 0,
                     'base' => '/',
                     'locale' => 'en_US.UTF-8',
-                    'iso-639-1' => 'en',
                     'navigationTitle' => 'English',
                     'hreflang' => 'en-us',
                     'direction' => 'ltr',

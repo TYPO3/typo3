@@ -118,7 +118,6 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
                     'languageId' => 0,
                     'base' => '/',
                     'locale' => 'en_US.UTF-8',
-                    'iso-639-1' => 'en',
                     'navigationTitle' => '',
                     'hreflang' => '',
                     'direction' => '',

@@ -825,6 +825,9 @@ class SiteConfigurationController
             if (isset($languageConfiguration['typo3Language'])) {
                 $existingLanguagesWithLegacyProperties[$languageConfiguration['languageId']]['typo3Language'] = $languageConfiguration['typo3Language'];
             }
+            if (isset($languageConfiguration['iso-639-1'])) {
+                $existingLanguagesWithLegacyProperties[$languageConfiguration['languageId']]['iso-639-1'] = $languageConfiguration['iso-639-1'];
+            }
         }
         foreach ($newSysSiteData['languages'] ?? [] as $key => $languageConfiguration) {
             $languageId = $languageConfiguration['languageId'];

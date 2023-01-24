@@ -66,21 +66,11 @@ return [
                 'required' => true,
                 'eval' => 'trim',
                 'size' => 20,
-                'placeholder' => 'en_US.UTF-8',
+                'placeholder' => 'en-US',
                 'valuePicker' => [
                     'mode' => '',
                     'items' =>\TYPO3\CMS\Backend\Configuration\TCA\UserFunctions::getAllSystemLocales(),
                 ],
-            ],
-        ],
-        'iso-639-1' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.iso-639-1',
-            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_language.iso-639-1',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                // Fed by data provider
-                'items' => [],
             ],
         ],
         'hreflang' => [
@@ -427,7 +417,7 @@ return [
     ],
     'types' => [
         '1' => [
-            'showitem' => '--palette--;;default, --palette--;;locale-related, --palette--;;rendering-related, flag, --palette--;;languageIdPalette',
+            'showitem' => '--palette--;;default, locale, --palette--;;rendering-related, flag, --palette--;;languageIdPalette',
         ],
     ],
     'palettes' => [
@@ -437,10 +427,6 @@ return [
         'languageIdPalette' => [
             'showitem' => 'languageId',
             'isHiddenPalette' => true,
-        ],
-        'locale-related' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.palette.locales',
-            'showitem' => 'locale, iso-639-1',
         ],
         'rendering-related' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.palette.frontend',

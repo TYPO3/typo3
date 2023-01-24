@@ -24,9 +24,6 @@
 			<trans-unit id="site_language.locale" resname="site_language.locale">
 				<source>Used for localized date and currency formats. E.g. "de_DE" or "en_US.UTF-8".</source>
 			</trans-unit>
-			<trans-unit id="site_language.iso-639-1" resname="site_language.iso-639-1">
-				<source>ISO 639-1 code of the Language</source>
-			</trans-unit>
 			<trans-unit id="site_language.hreflang" resname="site_language.hreflang">
 				<source>Used within for "lang" and "hreflang" attributes</source>
 			</trans-unit>
