@@ -191,7 +191,7 @@ class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
             $this->createMock(LocalizationFactory::class),
             $this->createMock(FrontendInterface::class)
         );
-        $GLOBALS['LANG']->lang = 'fr';
+        $GLOBALS['LANG']->init('fr');
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['label'] = 'aLabelOverride';

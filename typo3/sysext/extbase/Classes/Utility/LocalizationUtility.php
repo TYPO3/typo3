@@ -121,7 +121,6 @@ class LocalizationUtility
         $cache = self::getRuntimeCache();
         if (!$cache->get($languageKeyHash)) {
             $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create($languageKey);
-            $languageService->init($languageKey);
             if ($alternativeLanguageKeys !== []) {
                 $languageService->setDependencies($alternativeLanguageKeys);
             }

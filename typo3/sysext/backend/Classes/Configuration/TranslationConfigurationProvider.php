@@ -96,7 +96,6 @@ class TranslationConfigurationProvider
                 $allSystemLanguages[$languageId] = [
                     'uid' => $languageId,
                     'title' => $language->getTitle() . ($includeSiteSuffix ? ' [Site: ' . $site->getIdentifier() . ']' : ''),
-                    'ISOcode' => $language->getTwoLetterIsoCode(),
                     'flagIcon' => $language->getFlagIdentifier(),
                 ];
             }

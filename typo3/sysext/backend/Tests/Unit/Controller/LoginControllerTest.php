@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -60,6 +61,7 @@ class LoginControllerTest extends UnitTestCase
                 new ExtensionConfiguration(),
                 new BackendEntryPointResolver(),
                 $formProtectionFactory,
+                new Locales(),
             ],
         );
 

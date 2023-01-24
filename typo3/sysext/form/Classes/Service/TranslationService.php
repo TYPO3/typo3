@@ -497,7 +497,6 @@ class TranslationService implements SingletonInterface
         $languageKeyHash = sha1($languageKey . '_' . $languageFilePath);
         if (!$this->runtimeCache->get($languageKeyHash)) {
             $languageService = $this->languageServiceFactory->create($languageKey);
-            $languageService->init($languageKey);
             if ($languageFilePath) {
                 $languageService->includeLLFile($languageFilePath);
             }

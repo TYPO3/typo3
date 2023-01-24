@@ -197,11 +197,10 @@ class ResetPasswordController
         $httpAcceptLanguage = $request->getServerParams()['HTTP_ACCEPT_LANGUAGE'] ?? '';
         $preferredBrowserLanguage = $this->locales->getPreferredClientLanguage($httpAcceptLanguage);
 
-        // If we found a $preferredBrowserLanguage and it is not the default language
+        // If we found a $preferredBrowserLanguage, which is not the default language
         // initialize $this->getLanguageService() again with $preferredBrowserLanguage
         if ($preferredBrowserLanguage !== 'default') {
             $languageService->init($preferredBrowserLanguage);
-            $this->pageRenderer->setLanguage($preferredBrowserLanguage);
         }
 
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $languageService);

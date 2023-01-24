@@ -115,7 +115,8 @@ class LoginController
         protected readonly LoginProviderResolver $loginProviderResolver,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly BackendEntryPointResolver $backendEntryPointResolver,
-        protected readonly FormProtectionFactory $formProtectionFactory
+        protected readonly FormProtectionFactory $formProtectionFactory,
+        protected readonly Locales $locales,
     ) {
     }
 
@@ -194,6 +195,16 @@ class LoginController
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
+        // Try to get the preferred browser language
+        $httpAcceptLanguage = $request->getServerParams()['HTTP_ACCEPT_LANGUAGE'] ?? '';
+        $preferredBrowserLanguage = $this->locales->getPreferredClientLanguage($httpAcceptLanguage);
+
+        // If we found a $preferredBrowserLanguage, which is not the default language, while no user is logged in,
+        // initialize $this->getLanguageService()
+        if (empty($backendUser->user['uid'])) {
+            $languageService->init($preferredBrowserLanguage);
+        }
+
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $languageService);
         $this->pageRenderer->setTitle('TYPO3 CMS Login: ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
 
@@ -203,16 +214,6 @@ class LoginController
         $this->loginRefresh = (bool)($parsedBody['loginRefresh'] ?? $queryParams['loginRefresh'] ?? false);
         // Value of "Login" button. If set, the login button was pressed.
         $this->submitValue = $parsedBody['commandLI'] ?? $queryParams['commandLI'] ?? null;
-        // Try to get the preferred browser language
-        $httpAcceptLanguage = $request->getServerParams()['HTTP_ACCEPT_LANGUAGE'] ?? '';
-        $preferredBrowserLanguage = GeneralUtility::makeInstance(Locales::class)->getPreferredClientLanguage($httpAcceptLanguage);
-
-        // If we found a $preferredBrowserLanguage, and it is not the default language and no be_user is logged in,
-        // initialize $this->getLanguageService() again with $preferredBrowserLanguage
-        if ($preferredBrowserLanguage !== 'default' && empty($backendUser->user['uid'])) {
-            $languageService->init($preferredBrowserLanguage);
-            $this->pageRenderer->setLanguage($preferredBrowserLanguage);
-        }
 
         // Setting the redirect URL to "index.php?M=main" if no alternative input is given
         if ($this->redirectUrl) {
