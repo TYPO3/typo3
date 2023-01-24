@@ -422,11 +422,11 @@ class SearchController extends ActionController
                 if ($rlParts[2] ?? false) {
                     $theId = $rlParts[2];
                     $theRLid = 'rl2_' . $rlParts[2];
-                } elseif ($rlParts[1]) {
+                } elseif ($rlParts[1] ?? false) {
                     $theId = $rlParts[1];
                     $theRLid = 'rl1_' . $rlParts[1];
                 } else {
-                    $theId = $rlParts[0];
+                    $theId = $rlParts[0] ?? 0;
                     $theRLid = '0';
                 }
                 $sectionName = $this->getPathFromPageId((int)$theId);
