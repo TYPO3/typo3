@@ -422,7 +422,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
                 // Intentional fall-through
             case 'select':
             case 'category':
-                if ($this->columnConfiguration['MM']) {
+                if ($this->columnConfiguration['MM'] ?? false) {
                     $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
                     $dbGroup->start(
                         $value,
@@ -433,7 +433,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
                         $this->columnConfiguration
                     );
                     $relatedUids = $dbGroup->tableArray[$this->getTableName()];
-                } elseif ($this->columnConfiguration['foreign_field']) {
+                } elseif ($this->columnConfiguration['foreign_field'] ?? false) {
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getQueryBuilderForTable($this->getTableName());
                     $queryBuilder->getRestrictions()->removeAll();
