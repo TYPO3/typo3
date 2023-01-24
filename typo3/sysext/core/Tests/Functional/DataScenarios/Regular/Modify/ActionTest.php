@@ -166,7 +166,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyContentToLanguage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguage.csv');
 
-        // Set up "dk" to not have overlays
+        // Set up "da" to not have overlays
         $languageConfiguration = $this->siteLanguageConfiguration;
         $languageConfiguration[self::VALUE_LanguageId]['fallbackType'] = 'free';
         $this->setUpFrontendSite(1, $languageConfiguration);
@@ -187,7 +187,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyContentToLanguageWithLanguageSynchronization();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageWSynchronization.csv');
 
-        // Set up "dk" to not have overlays
+        // Set up "da" to not have overlays
         $languageConfiguration = $this->siteLanguageConfiguration;
         $languageConfiguration[self::VALUE_LanguageId]['fallbackType'] = 'free';
         $this->setUpFrontendSite(1, $languageConfiguration);
@@ -208,7 +208,7 @@ class ActionTest extends AbstractActionTestCase
         parent::copyContentToLanguageWithLocalizationExclude();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageWExclude.csv');
 
-        // Set up "dk" to not have overlays
+        // Set up "da" to not have overlays
         $languageConfiguration = $this->siteLanguageConfiguration;
         $languageConfiguration[self::VALUE_LanguageId]['fallbackType'] = 'free';
         $this->setUpFrontendSite(1, $languageConfiguration);

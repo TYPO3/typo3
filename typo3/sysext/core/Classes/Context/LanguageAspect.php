@@ -41,7 +41,7 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  *  - previously known as $TSFE->sys_language_mode
  *  - defines "contentId" based on "if the current page is available in this language"
  *   - "strict"
- *   - "fallback" if current page is not available, check the fallbackChain"
+ *   - "fallback" if current page is not available, check the "fallbackChain"
  *   - "fallbackAndIgnore"
  *
  * "overlayType"
@@ -142,9 +142,6 @@ class LanguageAspect implements AspectInterface
         }
         if (empty($this->fallbackChain)) {
             return 'strict';
-        }
-        if ($this->fallbackChain === [-1]) {
-            return 'ignore';
         }
         return 'content_fallback';
     }

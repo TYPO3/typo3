@@ -1637,12 +1637,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $languageContentId = $languageAspect->getContentId();
 
         $pageTranslationVisibility = new PageTranslationVisibility((int)($this->page['l18n_cfg'] ?? 0));
-        // If sys_language_uid is set to another language than default:
+        // If the incoming language is set to another language than default
         if ($languageAspect->getId() > 0) {
-            // Request the overlay record for the sys_language_uid:
-            $olRec = $this->sys_page->getPageOverlay($this->id, $languageAspect->getId());
-            if (empty($olRec)) {
-                // If requested translation is not available:
+            // Request the translation for the requested language
+            $olRec = $this->sys_page->getPageOverlay($this->page, $languageAspect);
+            $overlaidLanguageId = (int)($olRec['sys_language_uid'] ?? 0);
+            if ($overlaidLanguageId !== $languageAspect->getId()) {
+                // If requested translation is not available
                 if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
                     $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                         $request,
@@ -1651,7 +1652,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     );
                     throw new PropagateResponseException($response, 1533931388);
                 }
-                switch ((string)$languageAspect->getLegacyLanguageMode()) {
+                switch ($languageAspect->getLegacyLanguageMode()) {
                     case 'strict':
                         $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                             $request,
@@ -1659,7 +1660,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                             ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE_STRICT_MODE]
                         );
                         throw new PropagateResponseException($response, 1533931395);
-                    case 'fallback':
                     case 'content_fallback':
                         // Setting content uid (but leaving the sys_language_uid) when a content_fallback
                         // value was found.
@@ -1668,7 +1668,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                                 $languageContentId = 0;
                                 break;
                             }
-                            if (MathUtility::canBeInterpretedAsInteger($orderValue) && !empty($this->sys_page->getPageOverlay($this->id, (int)$orderValue))) {
+                            if (MathUtility::canBeInterpretedAsInteger($orderValue) && $overlaidLanguageId === (int)$orderValue) {
                                 $languageContentId = (int)$orderValue;
                                 break;
                             }
@@ -1685,9 +1685,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                             }
                         }
                         break;
-                    case 'ignore':
-                        $languageContentId = $languageAspect->getId();
-                        break;
                     default:
                         // Default is that everything defaults to the default language...
                         $languageId = ($languageContentId = 0);
@@ -1703,10 +1700,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $languageAspect->getFallbackChain()
             );
 
-            // Setting the site language if an overlay record was found (which it is only if a language is used)
-            // We'll do this every time since the language aspect might have changed now
+            // Setting the $this->page if an overlay record was found (which it is only if a language is used)
             // Doing this ensures that page properties like the page title are resolved in the correct language
-            $this->page = $this->sys_page->getPageOverlay($this->page, $languageAspect->getContentId());
+            $this->page = $olRec;
         }
 
         // Set the language aspect
