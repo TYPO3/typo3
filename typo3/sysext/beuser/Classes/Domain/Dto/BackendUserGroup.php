@@ -22,12 +22,14 @@ namespace TYPO3\CMS\Beuser\Domain\Dto;
  */
 class BackendUserGroup
 {
-    protected string $title = '';
+    public function __construct(protected string $title = '')
+    {
+    }
 
     public static function fromUc(array $uc): self
     {
         $demand = new self();
-        $demand->title = $uc['title'] ?? '';
+        $demand->title = (string)($uc['title'] ?? '');
         return $demand;
     }
 
@@ -39,7 +41,7 @@ class BackendUserGroup
     public function forUc(): array
     {
         return [
-            'title' => $this->getTitle(),
+            'title' => $this->title,
         ];
     }
 }
