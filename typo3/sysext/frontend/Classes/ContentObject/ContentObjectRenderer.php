@@ -3448,7 +3448,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($k % 2) {
                 // font:
                 $tagName = strtolower($htmlParser->getFirstTagName($v));
-                $cfg = $conf['externalBlocks.'][$tagName . '.'];
+                $cfg = $conf['externalBlocks.'][$tagName . '.'] ?? [];
+                if ($cfg === []) {
+                    continue;
+                }
                 if (($cfg['stripNLprev'] ?? false) || ($cfg['stripNL'] ?? false)) {
                     $parts[$k - 1] = preg_replace('/' . CR . '?' . LF . '[ ]*$/', '', $parts[$k - 1]);
                 }
@@ -3464,7 +3467,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($k % 2) {
                 $tag = $htmlParser->getFirstTag($v);
                 $tagName = strtolower($htmlParser->getFirstTagName($v));
-                $cfg = $conf['externalBlocks.'][$tagName . '.'];
+                $cfg = $conf['externalBlocks.'][$tagName . '.'] ?? [];
+                if ($cfg === []) {
+                    continue;
+                }
                 if ($cfg['callRecursive'] ?? false) {
                     $parts[$k] = $this->parseFunc($htmlParser->removeFirstAndLastTag($v), $conf);
                     if (!($cfg['callRecursive.']['dontWrapSelf'] ?? false)) {
