@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\ConfigurationModuleProvider;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Lowlevel\Controller\ConfigurationController;
+use TYPO3\CMS\Lowlevel\Event\ModifyBlindedConfigurationOptionsEvent;
 
 class GlobalVariableProvider extends AbstractProvider
 {
@@ -71,6 +71,10 @@ class GlobalVariableProvider extends AbstractProvider
      */
     protected string $globalVariableKey;
 
+    public function __construct(protected readonly EventDispatcherInterface $eventDispatcher)
+    {
+    }
+
     public function __invoke(array $attributes): self
     {
         parent::__invoke($attributes);
@@ -86,13 +90,9 @@ class GlobalVariableProvider extends AbstractProvider
     public function getConfiguration(): array
     {
         $configurationArray = $GLOBALS[$this->globalVariableKey] ?? [];
-        $blindedConfigurationOptions = $this->blindedConfigurationOptions;
-
-        // Hook for Processing blindedConfigurationOptions
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][ConfigurationController::class]['modifyBlindedConfigurationOptions'] ?? [] as $classReference) {
-            $processingObject = GeneralUtility::makeInstance($classReference);
-            $blindedConfigurationOptions = $processingObject->modifyBlindedConfigurationOptions($blindedConfigurationOptions, $this);
-        }
+        $blindedConfigurationOptions = $this->eventDispatcher->dispatch(
+            new ModifyBlindedConfigurationOptionsEvent($this->blindedConfigurationOptions)
+        )->getBlindedConfigurationOptions();
 
         if (isset($blindedConfigurationOptions[$this->globalVariableKey])) {
             // Prepare blinding for all database connection types

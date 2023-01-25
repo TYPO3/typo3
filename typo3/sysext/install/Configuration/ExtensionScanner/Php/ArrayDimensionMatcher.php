@@ -961,4 +961,10 @@ return [
             'Deprecation-99592-DeprecatedFlushByTagHook.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Lowlevel\Controller\ConfigurationController\'][\'modifyBlindedConfigurationOptions\']' => [
+        'restFiles' => [
+            'Deprecation-99717-DeprecatedModifyBlindedConfigurationOptionsHook.rst',
+            'Feature-99717-NewPSR-14ModifyBlindedConfigurationOptionsEvent.rst',
+        ],
+    ],
 ];

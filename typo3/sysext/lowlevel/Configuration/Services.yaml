@@ -45,6 +45,9 @@ services:
   TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderRegistry:
     public: true
 
+  TYPO3\CMS\Lowlevel\HookProvider\ModifyBlindedConfigurationOptionsHookProvider:
+    tags: ['event.listener']
+
   lowlevel.configuration.module.provider.confvars:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\GlobalVariableProvider'
     tags:
