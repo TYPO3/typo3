@@ -15,122 +15,124 @@
 <f:comment><!-- This is a template that calls itself recursive for sub nodes. --></f:comment>
 
 <f:if condition="{tree.children}">
-    <ul
-        class="list-tree text-monospace list-group collapse show"
-        id="collapse-list-{listIdentifier}"
-    >
-        <f:for each="{tree.nextChild}" as="child">
-            <li>
-                <div class="row justify-content-between">
-                    <div class="col">
-                        <div class="row row-cols-auto justify-content-md-between">
-                            <div class="col col-12 col-lg-auto">
-                                <span class="list-tree-group">
-                                    <f:if condition="{child.children}">
-                                        <a
-                                            class="list-tree-control list-tree-control-collapsed"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target="#collapse-list-{child.identifier}"
-                                            aria-expanded="true"
-                                        >
-                                            <typo3-backend-icon identifier="actions-caret-right"></typo3-backend-icon>
-                                            <typo3-backend-icon identifier="actions-caret-down"></typo3-backend-icon>
-                                        </a>
+    <f:for each="{tree.nextChild}" as="child">
+        <li>
+            <div class="row justify-content-between">
+                <div class="col">
+                    <div class="row row-cols-auto justify-content-md-between">
+                        <div class="col col-12 col-lg-auto">
+                            <span class="list-tree-group">
+                                <f:if condition="{child.children}">
+                                    <a
+                                        class="list-tree-control list-tree-control-collapsed"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#collapse-list-{child.identifier}"
+                                        aria-expanded="true"
+                                    >
+                                        <typo3-backend-icon identifier="actions-caret-right"></typo3-backend-icon>
+                                        <typo3-backend-icon identifier="actions-caret-down"></typo3-backend-icon>
+                                    </a>
+                                </f:if>
+                                <span class="list-tree-label">
+                                    <f:if condition="{child.type} == 'Segment'">
+                                        <f:then>
+                                            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.type.Segment" />
+                                        </f:then>
+                                        <f:else if="{child.type} == 'DefaultTypoScriptMagicKey'">
+                                            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.type.DefaultTypoScriptMagicKey_formlabel" />
+                                        </f:else>
+                                        <f:else>{child.name}</f:else>
                                     </f:if>
-                                    <span class="list-tree-label">
-                                        <f:if condition="{child.type} == 'Segment'">
-                                            <f:then>
-                                                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.type.Segment" />
-                                            </f:then>
-                                            <f:else if="{child.type} == 'DefaultTypoScriptMagicKey'">
-                                                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.type.DefaultTypoScriptMagicKey_formlabel" />
-                                            </f:else>
-                                            <f:else>{child.name}</f:else>
-                                        </f:if>
-                                    </span>
                                 </span>
-                            </div>
-                            <div class="col col-12 col-lg-auto text-md-right">
-                                <f:comment><!-- Hand {child.type} over to f:translate and add locallang.xlf entries when Include classes stabilized. --></f:comment>
-                                <f:if condition="{child.sysTemplateRecord}">
-                                    <f:then>
-                                        <span class="badge">
-                                            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.sysTemplateRecord" arguments="{0: '{child.pid}'}" />
-                                        </span>
-                                    </f:then>
-                                    <f:else if="{child.type} != 'Segment'">
-                                        <span class="badge">
-                                            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.type.{child.type}" />
-                                        </span>
-                                    </f:else>
-                                </f:if>
-                                <f:if condition="{child.root}">
-                                    <span class="badge badge-info">
-                                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.setting.root" />
-                                    </span>
-                                </f:if>
-                                <f:if condition="{child.clear}">
-                                    <span class="badge badge-info">
-                                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.setting.clear" />
-                                    </span>
-                                </f:if>
-                                <f:if condition="{child.conditionToken}">
-                                    <f:then>
-                                        <f:if condition="{child.conditionVerdict}">
-                                            <f:then>
-                                                <span title="[{child.conditionToken.value}]" class="badge badge-success">
-                                                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.conditionVerdict.matched" />
-                                                </span>
-                                            </f:then>
-                                            <f:else>
-                                                <span title="[{child.conditionToken.value}]" class="badge badge-danger">
-                                                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.conditionVerdict.notMatched" />
-                                                </span>
-                                            </f:else>
-                                        </f:if>
-                                    </f:then>
-                                </f:if>
-                            </div>
+                            </span>
                         </div>
-                    </div>
-                    <div class="col col-auto text-right">
-                        <div class="btn-group tstemplate-tree-btn-group">
-                            <f:be.link
-                                route="web_typoscript_analyzer.source"
-                                parameters="{id: pageUid, includeType: type, identifier: child.identifier}"
-                                additionalAttributes="{'data-modal-title': child.name}"
-                                class="btn btn-default btn-sm t3js-typoscript-analyzer-modal{f:if(condition:'!{child.lineStream}', then:' disabled')}"
-                                title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.btn.sourceCode')}"
-                            >
-                                <core:icon identifier="{f:if(condition:'{child.lineStream}', then:'actions-variable', else: 'empty-empty')}" />
-                            </f:be.link>
-                            <f:be.link
-                                route="web_typoscript_analyzer.sourceWithIncludes"
-                                parameters="{id: pageUid, includeType: type, identifier: child.identifier}"
-                                additionalAttributes="{'data-modal-title': '{child.name} (with resolved includes)'}"
-                                class="btn btn-default btn-sm t3js-typoscript-analyzer-modal{f:if(condition:'!{child.children}', then:' disabled')}"
-                                title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.btn.sourceCodeWithResolvedIncludes')}"
-                            >
-                                <core:icon identifier="{f:if(condition:'{child.children}', then:'actions-variable-select', else: 'empty-empty')}" />
-                            </f:be.link>
+                        <div class="col col-12 col-lg-auto text-md-right">
+                            <f:comment><!-- Hand {child.type} over to f:translate and add locallang.xlf entries when Include classes stabilized. --></f:comment>
+                            <f:if condition="{child.sysTemplateRecord}">
+                                <f:then>
+                                    <span class="badge">
+                                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.sysTemplateRecord" arguments="{0: '{child.pid}'}" />
+                                    </span>
+                                </f:then>
+                                <f:else if="{child.type} != 'Segment'">
+                                    <span class="badge">
+                                        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.type.{child.type}" />
+                                    </span>
+                                </f:else>
+                            </f:if>
+                            <f:if condition="{child.root}">
+                                <span class="badge badge-info">
+                                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.setting.root" />
+                                </span>
+                            </f:if>
+                            <f:if condition="{child.clear}">
+                                <span class="badge badge-info">
+                                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.setting.clear" />
+                                </span>
+                            </f:if>
+                            <f:if condition="{child.conditionToken}">
+                                <f:then>
+                                    <f:if condition="{child.conditionVerdict}">
+                                        <f:then>
+                                            <span title="[{child.conditionToken.value}]" class="badge badge-success">
+                                                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.conditionVerdict.matched" />
+                                            </span>
+                                        </f:then>
+                                        <f:else>
+                                            <span title="[{child.conditionToken.value}]" class="badge badge-danger">
+                                                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.conditionVerdict.notMatched" />
+                                            </span>
+                                        </f:else>
+                                    </f:if>
+                                </f:then>
+                            </f:if>
                         </div>
                     </div>
                 </div>
+                <div class="col col-auto text-right">
+                    <div class="btn-group tstemplate-tree-btn-group">
+                        <f:be.link
+                            route="web_typoscript_analyzer.source"
+                            parameters="{id: pageUid, includeType: type, identifier: child.identifier}"
+                            additionalAttributes="{'data-modal-title': child.name}"
+                            class="btn btn-default btn-sm t3js-typoscript-analyzer-modal{f:if(condition:'!{child.lineStream}', then:' disabled')}"
+                            title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.btn.sourceCode')}"
+                        >
+                            <core:icon identifier="{f:if(condition:'{child.lineStream}', then:'actions-variable', else: 'empty-empty')}" />
+                        </f:be.link>
+                        <f:be.link
+                            route="web_typoscript_analyzer.sourceWithIncludes"
+                            parameters="{id: pageUid, includeType: type, identifier: child.identifier}"
+                            additionalAttributes="{'data-modal-title': '{child.name} (with resolved includes)'}"
+                            class="btn btn-default btn-sm t3js-typoscript-analyzer-modal{f:if(condition:'!{child.children}', then:' disabled')}"
+                            title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.btn.sourceCodeWithResolvedIncludes')}"
+                        >
+                            <core:icon identifier="{f:if(condition:'{child.children}', then:'actions-variable-select', else: 'empty-empty')}" />
+                        </f:be.link>
+                    </div>
+                </div>
+            </div>
 
-                <f:if condition="{child.children}">
+            <f:if condition="{child.children}">
+                <ul
+                    class="list-tree text-monospace list-group collapse"
+                    id="collapse-list-{child.identifier}"
+                    data-persist-collapse-state="true"
+                    data-persist-collapse-state-suffix="typoscript-include-{type}"
+                    data-persist-collapse-state-if-state="shown"
+                >
                     <f:render
                         partial="AnalyzerTree"
                         arguments="{
                             type: type,
                             pageUid: pageUid,
-                            tree: child,
-                            listIdentifier: child.identifier
+                            tree: child
                         }"
                     />
-                </f:if>
-            </li>
-        </f:for>
-    </ul>
+                </ul>
+            </f:if>
+        </li>
+    </f:for>
 </f:if>
 
 </html>

@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\TypoScript\AST\CurrentObjectPath\CurrentObjectPath;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
@@ -103,6 +102,14 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
             return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
         }
         $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
+        if (empty($pageRecord)) {
+            // Redirect to records overview if page could not be determined.
+            // Edge case if page has been removed meanwhile.
+            BackendUtility::setUpdateSignal('updatePageTree');
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
+        }
+
+        // @todo: Switch to BU::BEgetRootLine($pageUid, '', true) as in PageTsConfig? Similar in other controllers and actions.
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
 
         // Template selection handling for this page
@@ -126,15 +133,15 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
 
         // Force boolean toggles to bool and init further get/post vars
         if ($moduleData->clean('sortAlphabetically', [true, false])) {
-            $this->getBackendUser()->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
+            $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
         }
         $sortAlphabetically = $moduleData->get('sortAlphabetically');
         if ($moduleData->clean('displayConstantSubstitutions', [true, false])) {
-            $this->getBackendUser()->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
+            $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
         }
         $displayConstantSubstitutions = $moduleData->get('displayConstantSubstitutions');
         if ($moduleData->clean('displayComments', [true, false])) {
-            $this->getBackendUser()->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
+            $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
         }
         $displayComments = $moduleData->get('displayComments');
         $searchValue = $moduleData->get('searchValue');
@@ -142,7 +149,6 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
 
         // Build the constant include tree
-        /** @var SiteInterface|null $site */
         $site = $request->getAttribute('site');
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
         // Set enabled conditions in constant include tree
@@ -300,6 +306,14 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
         }
 
         $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
+        if (empty($pageRecord)) {
+            // Redirect to records overview if page could not be determined.
+            // Edge case if page has been removed meanwhile.
+            BackendUtility::setUpdateSignal('updatePageTree');
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
+        }
+
+        // @todo: Switch to BU::BEgetRootLine($pageUid, '', true) as in PageTsConfig? Similar in other controllers and actions.
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
 
         // Template selection handling
@@ -319,7 +333,6 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
             }
         }
 
-        /** @var SiteInterface|null $site */
         $site = $request->getAttribute('site');
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
 
@@ -523,7 +536,7 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
      * write updated active conditions to user's module data if needed and
      * prepare a list of active conditions for view.
      */
-    private function handleToggledSetupConditions(RootInclude $constantTree, ModuleData $moduleData, ?array $parsedBody, array $flattenedConstants): array
+    private function handleToggledSetupConditions(RootInclude $setupTree, ModuleData $moduleData, ?array $parsedBody, array $flattenedConstants): array
     {
         $this->treeTraverser->resetVisitors();
         $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
@@ -531,7 +544,7 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
         $this->treeTraverser->addVisitor($setupConditionConstantSubstitutionVisitor);
         $conditionAggregatorVisitor = GeneralUtility::makeInstance(IncludeTreeConditionAggregatorVisitor::class);
         $this->treeTraverser->addVisitor($conditionAggregatorVisitor);
-        $this->treeTraverser->traverse($constantTree);
+        $this->treeTraverser->traverse($setupTree);
         $setupConditions = $conditionAggregatorVisitor->getConditions();
         $conditionsFromPost = $parsedBody['setupConditions'] ?? [];
         $conditionsFromModuleData = array_flip((array)$moduleData->get('setupConditions'));

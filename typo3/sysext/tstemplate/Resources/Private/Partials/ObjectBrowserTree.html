@@ -1,5 +1,6 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     xmlns:ts="http://typo3.org/ns/TYPO3/CMS/Tstemplate/ViewHelpers"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
@@ -57,7 +58,7 @@
                             <f:translate
                                 key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:tree.valueWithConstant"
                                 arguments="{
-                                    0: '{ts:fineDiff(from: trimmedStream, to: child.value)}'
+                                    0: '{backend:typoScript.fineDiff(from: trimmedStream, to: child.value)}'
                                 }"
                             />
                         </f:format.raw>

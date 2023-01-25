@@ -14,15 +14,16 @@
     </div>
     <div id="template-analyzer-{type}-tree-body" class="panel-collapse collapse" data-persist-collapse-state="true" aria-labelledby="template-analyzer-{type}-tree-heading">
         <div class="tstemplate-tree-wrapper table-fit mb-0">
-            <f:render
-                partial="AnalyzerTree"
-                arguments="{
-                    type: type,
-                    pageUid: pageUid,
-                    tree: tree,
-                    listIdentifier: tree.identifier
-                }"
-            />
+            <ul class="list-tree text-monospace list-group">
+                <f:render
+                    partial="AnalyzerTree"
+                    arguments="{
+                        type: type,
+                        pageUid: pageUid,
+                        tree: tree
+                    }"
+                />
+            </ul>
         </div>
     </div>
 </div>

@@ -25,7 +25,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilderInterface;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
@@ -104,6 +103,12 @@ class ConstantEditorController extends AbstractTemplateModuleController
         }
 
         $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
+        if (empty($pageRecord)) {
+            // Redirect to records overview if page could not be determined.
+            // Edge case if page has been removed meanwhile.
+            BackendUtility::setUpdateSignal('updatePageTree');
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
+        }
 
         // Template selection handling for this page
         $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageUid);
@@ -129,7 +134,6 @@ class ConstantEditorController extends AbstractTemplateModuleController
         // Build the constant include tree
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
-        /** @var SiteInterface|null $site */
         $site = $request->getAttribute('site');
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
         $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeCommentAwareAstBuilderVisitor::class);
@@ -227,7 +231,6 @@ class ConstantEditorController extends AbstractTemplateModuleController
         }
 
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
-        /** @var SiteInterface|null $site */
         $site = $request->getAttribute('site');
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
@@ -265,6 +268,13 @@ class ConstantEditorController extends AbstractTemplateModuleController
             throw new \RuntimeException('No proper page uid given', 1661365944);
         }
         $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
+        if (empty($pageRecord)) {
+            // Redirect to records overview if page could not be determined.
+            // Edge case if page has been removed meanwhile.
+            BackendUtility::setUpdateSignal('updatePageTree');
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
+        }
+
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
         $view->getDocHeaderComponent()->setMetaInformation($pageRecord);

@@ -26,13 +26,28 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenStreamInterface;
  * Example TypoScript:
  * "foo = fooValue"
  * "foo.bar = barValue"
- * This creates a NodeRoot with one NodeObject name "foo" and value "fooValue",
- * that has a child NodeObject name "bar" and value "barValue".
+ * This creates a RootNode with one ChildNode name "foo" and value "fooValue",
+ * that has a child ChildNode name "bar" and value "barValue".
  *
  * @internal: Internal AST structure.
  */
 interface NodeInterface
 {
+    /**
+     * An identifier for this node. Typically, a hash of some kind. This identifier
+     * is unique within the tree, by being created from the parent identifier plus
+     * the name. This identifier is used in the backend, when referencing single nodes.
+     * Calculating identifiers is initiated by calling setIdentifier() on RootNode, which
+     * will recurse the tree. Call this on the final tree, after AST calculation finished,
+     * so AST building itself does not need to fiddle with identifier updates when for
+     * instance tree parts are cloned using '<' operator.
+     * Note this value is skipped when persisting to caches since it's a Backend related
+     * thing that does not use cached context: When retrieving nodes from cache (e.g. in Frontend),
+     * the identifier is null and calling the getter will throw an exception.
+     */
+    public function setIdentifier(string $parentIdentifier): void;
+    public function getIdentifier(): string;
+
     /**
      * Helper methods for node name.
      */

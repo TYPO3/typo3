@@ -1,13 +1,13 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:ts="http://typo3.org/ns/TYPO3/CMS/Tstemplate/ViewHelpers"
+    xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 
 <f:if condition="{conditions}">
     <div class="panel panel-default">
         <div class="panel-heading" role="tab">
-            <h2 class="panel-title" id="object-browser-{type}-conditions-haeding">
+            <h2 class="panel-title" id="object-browser-{type}-conditions-heading">
                 <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#object-browser-{type}-conditions-body" aria-expanded="false" aria-controls="object-browser-{type}-conditions-body">
                     <span class="caret"></span>
                     <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:panel.header.conditions"/></strong>
@@ -19,14 +19,14 @@
                 </a>
             </h2>
         </div>
-        <div class="panel-collapse collapse" id="object-browser-{type}-conditions-body" data-persist-collapse-state="true" role="tabpanel" aria-labelledby="object-browser-{type}-conditions-haeding">
+        <div class="panel-collapse collapse" id="object-browser-{type}-conditions-body" data-persist-collapse-state="true" role="tabpanel" aria-labelledby="object-browser-{type}-conditions-heading">
             <div class="panel-body">
                 <form action="{f:be.uri(route: 'web_typoscript_objectbrowser', parameters: '{id: pageUid}')}" method="post">
                     <div class="row">
                         <div class="col-12">
                             <f:for each="{conditions}" as="condition">
                                 <div class="form-check form-switch">
-                                    <label class="form-check-label" for="condition{condition.hash}">
+                                    <label class="form-check-label" for="{type}Condition{condition.hash}">
                                         <f:if condition="{displayConstantSubstitutions} && {condition.originalValue}">
                                             <f:then>
                                                 <span style="display: inline;">
@@ -36,7 +36,7 @@
                                                             <f:translate
                                                                 key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:panel.info.conditionWithConstant"
                                                                 arguments="{
-                                                                    0: '{ts:fineDiff(from: condition.originalValue, to: condition.value)}'
+                                                                    0: '{backend:typoScript.fineDiff(from: condition.originalValue, to: condition.value)}'
                                                                 }"
                                                             />
                                                         </f:format.raw>
@@ -53,6 +53,7 @@
                                         type="checkbox"
                                         class="form-check-input"
                                         name="{type}Conditions[{condition.hash}]"
+                                        id="{type}Condition{condition.hash}"
                                         value="1"
                                         {f:if(condition: condition.active, then:'checked="checked"')}
                                         data-global-event="change"

@@ -25,7 +25,6 @@ use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
@@ -81,6 +80,12 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
             return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
         }
         $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
+        if (empty($pageRecord)) {
+            // Redirect to records overview if page could not be determined.
+            // Edge case if page has been removed meanwhile.
+            BackendUtility::setUpdateSignal('updatePageTree');
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
+        }
 
         // Template selection handling for this page
         $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageUid);
@@ -106,7 +111,6 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
 
         // Build the constant include tree
-        /** @var SiteInterface|null $site */
         $site = $request->getAttribute('site');
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
         // Set enabled conditions in constant include tree
@@ -173,7 +177,6 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         }
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
-        /** @var SiteInterface|null $site */
         $site = $request->getAttribute('site');
         $includeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite($type, $sysTemplateRows, $this->losslessTokenizer, $site);
 
@@ -215,7 +218,6 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         }
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
-        /** @var SiteInterface|null $site */
         $site = $request->getAttribute('site');
         $includeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite($type, $sysTemplateRows, $this->losslessTokenizer, $site);
 

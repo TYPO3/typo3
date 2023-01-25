@@ -15,39 +15,32 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Tstemplate\ViewHelpers;
+namespace TYPO3\CMS\Backend\ViewHelpers\TypoScript;
 
+use cogpowered\FineDiff\Diff;
+use cogpowered\FineDiff\Granularity\Word;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Repeats rendering of children with a typical for loop:
- * Starting at index $from it will loop until the index has reached $to.
+ * Runs two strings through 'FineDiff' on word level.
  *
- * @internal This is not part of TYPO3 Core API.
+ * @internal This experimental ViewHelper is not part of TYPO3 Core API and may change or vanish any time.
  */
-final class ForViewHelper extends AbstractViewHelper
+final class FineDiffViewHelper extends AbstractViewHelper
 {
-    protected $escapeChildren = false;
     protected $escapeOutput = false;
 
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerArgument('to', 'integer', 'Number the index needs to be smaller than before stopping (<)', true);
-        $this->registerArgument('from', 'integer', 'Starting number for the index', false, 0);
+        $this->registerArgument('from', 'string', 'Source string', true, '');
+        $this->registerArgument('to', 'string', 'Target string', true, '');
     }
 
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $to = (int)$arguments['to'];
-        $from = (int)$arguments['from'];
-        $content = '';
-        if ($from < $to) {
-            for ($i = $from; $i < $to; $i++) {
-                $content .= $renderChildrenClosure();
-            }
-        }
-        return $content;
+        $diff = new Diff(new Word());
+        return $diff->render($arguments['from'], $arguments['to']);
     }
 }

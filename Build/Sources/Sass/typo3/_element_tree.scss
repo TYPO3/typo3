@@ -70,6 +70,11 @@ $tree-control-icon-size: 12px;
             left: 2px;
         }
 
+        &.list-tree-comment:before,
+        &.list-tree-constant-substitution:before {
+            width: 0;
+        }
+
         &:last-child:before {
             background: $tree-bg;
             height: auto;

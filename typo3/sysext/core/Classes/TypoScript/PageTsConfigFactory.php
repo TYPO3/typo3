@@ -61,6 +61,7 @@ final class PageTsConfigFactory
         if ($userTsConfig instanceof UserTsConfig) {
             $userTsConfigAst = $userTsConfig->getUserTsConfigTree();
             $userTsConfigPageOverrides = '';
+            // @todo: This is ugly and expensive. There should be a better way to do this. Similar in BE PageTsConfig controllers.
             $userTsConfigFlat = $userTsConfigAst->flatten();
             foreach ($userTsConfigFlat as $userTsConfigIdentifier => $userTsConfigValue) {
                 if (str_starts_with($userTsConfigIdentifier, 'page.')) {

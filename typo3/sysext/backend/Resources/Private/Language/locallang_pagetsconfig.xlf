@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="module.pagetsconfig.title" resname="module.pagetsconfig.title">
-				<source>Page TsConfig</source>
+				<source>PageTsConfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig.description" resname="module.pagetsconfig.description">
 				<source>The Page TsConfig module lets you manage configuration overrides for editors and option display throughout the Backend.</source>
@@ -37,16 +37,49 @@
 				<source>Active PageTsConfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.headline" resname="module.pagetsconfig_active.headline">
-				<source>Active PageTsConfig</source>
+				<source>Active PageTsConfig of page "%s"</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.description" resname="module.pagetsconfig_active.description">
-				<source>Overview of the current PageTsConfig of the system. A targeted search for values and names is possible. The list of results can also be filtered according to conditions.</source>
+				<source>Overview of the current PageTsConfig of the system. A targeted search for values and names is possible. The list of results can also be filtered according to conditions.Overview of the current PageTsConfig of the system. A targeted search for values and names is possible. The list of results can also be filtered according to conditions.</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.displayConstantSubstitutions" resname="module.pagetsconfig_active.displayConstantSubstitutions">
+				<source>Substitute site settings</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.displayComments" resname="module.pagetsconfig_active.displayComments">
+				<source>Display comments</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.sortAlphabetically" resname="module.pagetsconfig_active.sortAlphabetically">
-				<source>Sort alphabetically</source>
+				<source>Sort keys alphabetically</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.panel.header.conditions" resname="module.pagetsconfig_active.panel.header.conditions">
+				<source>Conditions</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.panel.header.numberOfSearchMatches" resname="module.pagetsconfig_active.panel.header.numberOfSearchMatches">
+				<source>%s search match(es)</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.panel.info.conditionActiveCount" resname="module.pagetsconfig_active.panel.info.conditionActiveCount">
+				<source>%s active condition(s)</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.panel.info.conditionWithConstant" resname="module.pagetsconfig_active.panel.info.conditionWithConstant">
+				<source>Site settings usage: [%s]</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.panel.header.configuration" resname="module.pagetsconfig_active.panel.header.configuration">
+				<source>Configuration</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.siteSettings" resname="module.pagetsconfig_active.siteSettings">
+				<source>Available constants from site settings</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.activePageTsConfig" resname="module.pagetsconfig_active.activePageTsConfig">
+				<source>Active PageTsConfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.noPageTSconfigAvailable" resname="module.pagetsconfig_active.noPageTSconfigAvailable">
 				<source>No suitable Page TSconfig available.</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.tree.comment" resname="module.pagetsconfig_active.tree.comment">
+				<source>Comment: </source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.tree.valueWithConstant" resname="module.pagetsconfig_active.tree.valueWithConstant">
+				<source>Constant usage: %s</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes" resname="module.pagetsconfig_includes">
 				<source>Included PageTsConfig</source>

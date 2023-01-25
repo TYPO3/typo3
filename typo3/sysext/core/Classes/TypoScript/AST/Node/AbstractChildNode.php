@@ -57,7 +57,7 @@ abstract class AbstractChildNode extends AbstractNode implements ChildNodeInterf
             if ($child instanceof ReferenceChildNode) {
                 // Hack for b/w compat parsing of `=<` operator. See ContentObjectRenderer cObjGetSingle() and mergeTSRef()
                 // @todo: adding the whitespace after '<' is another bit of a hack here ... maybe solve in tokenizer?
-                //        compare this for what happens when doing 'foo = bar' in old parser. is the whitespace kept for
+                //        compare this for what happens when doing 'foo = bar' in old parser: Is the whitespace kept for
                 //        value to not trigger the ref lookup to often if doing 'foo = <div...' ?
                 // @todo: same situation in RootNode!
                 $childValue = '< ' . $child->getReferenceSourceStream();

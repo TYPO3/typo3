@@ -105,7 +105,6 @@ final class TemplateCest
         $I->wantTo('change the TypoScript record within the TypoScript Object Browser');
         $I->selectOption('.t3-js-jumpMenuBox', 'Active TypoScript');
         $I->waitForText('Setup');
-        $I->click('#panel-tree-heading-setup');
         // find and open [page] in tree
         $I->waitForText('[page] = PAGE');
         $I->click('//span[@class="list-tree-label"]/a[text()=\'page\']/../../a');

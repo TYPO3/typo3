@@ -1,17 +1,22 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 
 <f:layout name="Module"/>
 
 <f:section name="Content">
-
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/context-menu.js',
             1: '@typo3/backend/element/immediate-action-element.js',
-            2: '@typo3/backend/page-tsconfig.js'
+            2: '@typo3/backend/element/icon-element.js',
+            3: '@typo3/backend/utility/collapse-state-persister.js',
+            4: '@typo3/backend/utility/collapse-state-search.js'
+        }"
+        addJsInlineLabels="{
+            'collapse-state-search.numberOfSearchMatches': 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.header.numberOfSearchMatches'
         }"
     />
 
@@ -19,24 +24,128 @@
     <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
 
     <h1>
-        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.headline" />
+        <f:translate
+            key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.headline"
+            arguments="{
+                0: '{pageTitle}'
+            }"
+        />
     </h1>
     <div>
         <p class="lead"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.description" /></p>
     </div>
 
-    <div class="row row-cols-auto align-items-end g-3 mb-3">
+    <f:render section="Options" arguments="{_all}" />
+
+    <f:comment><!-- Constants from Site settings --></f:comment>
+    <f:if condition="{siteSettingsAst}">
+        <h2><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.siteSettings" /></h2>
+        <div class="panel-group">
+            <f:render
+                section="TreePanel"
+                arguments="{
+                    type: 'constant',
+                    tree: siteSettingsAst,
+                    pageUid: pageUid,
+                    displayComments: 0
+                }"
+            />
+        </div>
+    </f:if>
+
+    <h2><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.activePageTsConfig" /></h2>
+    <f:if condition="!{pageTsConfigAst.children}">
+        <f:then>
+            <f:be.infobox
+                message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.noPageTSconfigAvailable')}"
+                state="-1"
+            />
+        </f:then>
+        <f:else>
+            <div class="panel-group">
+                <f:if condition="{pageTsConfigConditions}">
+                    <f:render
+                        section="Conditions"
+                        arguments="{
+                            pageUid: pageUid,
+                            conditions: pageTsConfigConditions,
+                            conditionActiveCount: pageTsConfigConditionsActiveCount,
+                            displayConstantSubstitutions: displayConstantSubstitutions
+                        }"
+                    />
+                </f:if>
+                <f:render
+                    section="TreePanel"
+                    arguments="{
+                        type: 'setup',
+                        tree: pageTsConfigAst,
+                        pageUid: pageUid,
+                        displayComments: displayComments,
+                        displayConstantSubstitutions: displayConstantSubstitutions
+                    }"
+                />
+            </div>
+        </f:else>
+    </f:if>
+</f:section>
+
+<f:section name="Options">
+    <div class="row row-cols-auto align-items-end g-3">
         <div class="col">
             <form action="#">
                 <div class="input-group">
                     <input
                         type="text"
-                        class="form-control"
+                        class="form-control t3js-collapse-search-term"
                         name="searchValue"
-                        id="searchValue"
-                        value="{searchValue}"
+                        data-persist-collapse-search-key="collapse-search-term-pagets"
+                        value=""
                         minlength="3"
                         placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}"
+                    />
+                </div>
+            </form>
+        </div>
+        <f:if condition="{siteSettingsAst}">
+            <div class="col">
+                <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
+                    <div class="form-check form-switch">
+                        <label class="form-check-label" for="displayConstantSubstitutions">
+                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.displayConstantSubstitutions" />
+                        </label>
+                        <input type="hidden" name="displayConstantSubstitutions" value="0" />
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            name="displayConstantSubstitutions"
+                            id="displayConstantSubstitutions"
+                            value="1"
+                            data-global-event="change"
+                            data-action-submit="$form"
+                            data-value-selector="input[name='displayConstantSubstitutions']"
+                            {f:if(condition: displayConstantSubstitutions, then: 'checked="checked"')}
+                        />
+                    </div>
+                </form>
+            </div>
+        </f:if>
+        <div class="col">
+            <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
+                <div class="form-check form-switch">
+                    <label class="form-check-label" for="displayComments">
+                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.displayComments" />
+                    </label>
+                    <input type="hidden" name="displayComments" value="0" />
+                    <input
+                        type="checkbox"
+                        class="form-check-input"
+                        name="displayComments"
+                        id="displayComments"
+                        value="1"
+                        data-global-event="change"
+                        data-action-submit="$form"
+                        data-value-selector="input[name='displayComments']"
+                        {f:if(condition: displayComments, then: 'checked="checked"')}
                     />
                 </div>
             </form>
@@ -44,30 +153,217 @@
         <div class="col">
             <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
                 <div class="form-check form-switch">
-                    <label class="form-check-label" for="alphaSort">
+                    <label class="form-check-label" for="sortAlphabetically">
                         <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.sortAlphabetically" />
                     </label>
-                    <input type="hidden" name="alphaSort" value="0" />
+                    <input type="hidden" name="sortAlphabetically" value="0" />
                     <input
                         type="checkbox"
                         class="form-check-input"
-                        name="alphaSort"
-                        id="alphaSort"
+                        name="sortAlphabetically"
+                        id="sortAlphabetically"
                         value="1"
-                        {f:if(condition: alphaSort, then:'checked="checked"')}
                         data-global-event="change"
                         data-action-submit="$form"
-                        data-value-selector="input[name='alphaSort']"
+                        data-value-selector="input[name='sortAlphabetically']"
+                        {f:if(condition: sortAlphabetically, then: 'checked="checked"')}
                     >
                 </div>
             </form>
         </div>
     </div>
+</f:section>
 
-    <div class="t3js-pagets-tree">
-        <f:render partial="PageTsConfig/Tree" arguments="{pageTsConfig: pageTsConfig}" />
+<f:section name="Conditions">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab">
+            <h2 class="panel-title" id="pagetsconfig-active-conditions-heading">
+                <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#pagetsconfig-active-conditions-body" aria-expanded="false" aria-controls="pagetsconfig-active-conditions-body">
+                    <span class="caret"></span>
+                    <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.header.conditions"/></strong>
+                    <f:if condition="{conditionActiveCount}">
+                        <span class="badge badge-info">
+                            <f:translate
+                                key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.info.conditionActiveCount"
+                                arguments="{0: conditionActiveCount}"
+                            />
+                        </span>
+                    </f:if>
+                </a>
+            </h2>
+        </div>
+        <div
+            class="panel-collapse collapse"
+            id="pagetsconfig-active-conditions-body"
+            data-persist-collapse-state="true"
+            data-persist-collapse-state-if-state="shown"
+            role="tabpanel"
+            aria-labelledby="pagetsconfig-active-conditions-heading"
+        >
+            <div class="panel-body">
+                <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
+                    <div class="row">
+                        <div class="col-12">
+                            <f:for each="{conditions}" as="condition">
+                                <div class="form-check form-switch">
+                                    <label class="form-check-label" for="condition{condition.hash}">
+                                        <f:if condition="{displayConstantSubstitutions} && {condition.originalValue}">
+                                            <f:then>
+                                                <span style="display: inline;">
+                                                    <span class="text-monospace">[{condition.value}]</span>
+                                                    <span class="diff-item-result diff-item-result-inline text-monospace p-0">
+                                                        <f:format.raw>
+                                                            <f:translate
+                                                                key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.info.conditionWithConstant"
+                                                                arguments="{
+                                                                    0: '{backend:typoScript.fineDiff(from: condition.originalValue, to: condition.value)}'
+                                                                }"
+                                                            />
+                                                        </f:format.raw>
+                                                    </span>
+                                                </span>
+                                            </f:then>
+                                            <f:else>
+                                                <span class="text-monospace">[{condition.value}]</span>
+                                            </f:else>
+                                        </f:if>
+                                    </label>
+                                    <input type="hidden" name="pageTsConfigConditions[{condition.hash}]" value="0" />
+                                    <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        id="condition{condition.hash}"
+                                        name="pageTsConfigConditions[{condition.hash}]"
+                                        value="1"
+                                        data-global-event="change"
+                                        data-action-submit="$form"
+                                        data-value-selector="input[name='pageTsConfigConditions[{condition.hash}]']"
+                                        {f:if(condition: condition.active, then: 'checked="checked"')}
+                                    />
+                                </div>
+                            </f:for>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+</f:section>
 
+<f:section name="TreePanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title" id="pagetsconfig-active-{type}-ast-heading">
+                <a
+                    href="#"
+                    class="collapsed"
+                    id="panel-tree-heading-{type}"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#pagetsconfig-active-{type}-ast-body"
+                    aria-expanded="false"
+                    aria-controls="pagetsconfig-active-{type}-ast-body"
+                >
+                    <span class="caret"></span>
+                    <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.header.configuration"/></strong>
+                    <span class="badge badge-success hidden t3js-collapse-states-search-numberOfSearchMatches"></span>
+                </a>
+            </h3>
+        </div>
+        <div
+            id="pagetsconfig-active-{type}-ast-body"
+            class="panel-collapse collapse"
+            data-persist-collapse-state="true"
+            data-persist-collapse-state-if-state="shown"
+            aria-labelledby="pagetsconfig-active-{type}-ast-heading"
+            role="tabpanel"
+        >
+            <div class="panel-body pagetsconfig-active-content t3js-collapse-states-search-tree">
+                <ul class="list-tree text-monospace">
+                    <f:render
+                        section="Tree"
+                        arguments="{
+                            type: type,
+                            tree: tree,
+                            pageUid: pageUid,
+                            displayConstantSubstitutions: displayConstantSubstitutions,
+                            displayComments: displayComments
+                        }"
+                    />
+                </ul>
+            </div>
+        </div>
+    </div>
+</f:section>
+
+<f:section name="Tree">
+    <f:for each="{tree.nextChild}" as="child">
+        <li class="list-tree-comment">
+            <f:if condition="{displayComments} && {child.comments}">
+                <f:for each="{child.comments}" as="comment" iteration="iterator">
+                    <div><f:format.nl2br>{comment}</f:format.nl2br></div>
+                </f:for>
+            </f:if>
+        </li>
+        <li class="list-tree-constant-substitution">
+            <f:if condition="{displayConstantSubstitutions} && {child.originalValueTokenStream}">
+                <span class="diff-item-result diff-item-result-inline text-monospace text-normal p-0">
+                    <f:format.raw>
+                        <f:variable name="trimmedValueTokenStream"><f:format.trim>{child.originalValueTokenStream}</f:format.trim></f:variable>
+                        <f:translate
+                            key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.tree.valueWithConstant"
+                            arguments="{
+                                0: '{backend:typoScript.fineDiff(from: trimmedValueTokenStream, to: child.value)}'
+                            }"
+                        />
+                    </f:format.raw>
+                </span>
+            </f:if>
+        </li>
+        <li>
+            <span class="list-tree-group">
+                <f:if condition="{child.children}">
+                    <a
+                        class="list-tree-control collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse-list-{child.identifier}"
+                        aria-expanded="false"
+                    >
+                        <typo3-backend-icon identifier="actions-caret-right"></typo3-backend-icon>
+                        <typo3-backend-icon identifier="actions-caret-down"></typo3-backend-icon>
+                    </a>
+                </f:if>
+                <span class="list-tree-label">{child.name}</span>
+                <f:if condition="!{child.valueNull}">
+                    =
+                    <span class="list-tree-value">{child.value}</span>
+                </f:if>
+                <f:if condition="{child.referenceSourceStream}">
+                    =< <span class="list-tree-value">{child.referenceSourceStream}</span>
+                </f:if>
+            </span>
+            <f:if condition="{child.children}">
+                <ul
+                    class="list-tree text-monospace collapse"
+                    data-persist-collapse-state="true"
+                    data-persist-collapse-state-suffix="pagets-active-{type}"
+                    data-persist-collapse-state-not-if-search="true"
+                    data-persist-collapse-state-if-state="shown"
+                    id="collapse-list-{child.identifier}"
+                >
+                    <f:render
+                        section="Tree"
+                        arguments="{
+                            type: type,
+                            tree: child,
+                            pageUid: pageUid,
+                            displayConstantSubstitutions: displayConstantSubstitutions,
+                            displayComments: displayComments
+                        }"
+                    />
+                </ul>
+            </f:if>
+        </li>
+    </f:for>
 </f:section>
 
 </html>

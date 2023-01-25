@@ -124,7 +124,10 @@ return [
             ],
         ],
         'moduleData' => [
-            'alphaSort' => false,
+            'sortAlphabetically' => true,
+            'displayComments' => true,
+            'displayConstantSubstitutions' => true,
+            'pageTsConfigConditions' => [],
         ],
     ],
     'pagetsconfig_includes' => [

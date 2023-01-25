@@ -43,8 +43,8 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\ConstantAwareTokenStream;
  * different operator lines like "=", "<" and so on.
  *
  * This AST builder is comment aware: Comments are assigned to nodes. This is used
- * in ext:tstemplate "Constant editor" and "Object Browser" backend module to add
- * the comment related TypoScript functionality.
+ * in ext:tstemplate and PageTsConfig backend modules to add the comment related
+ * TypoScript functionality.
  *
  * This AST builder variant adds runtime overhead and is slower than the main
  * AstBuilder class.

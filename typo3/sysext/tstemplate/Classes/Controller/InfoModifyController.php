@@ -71,6 +71,13 @@ class InfoModifyController extends AbstractTemplateModuleController
             throw new \RuntimeException('No proper page uid given', 1661769346);
         }
         $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
+        if (empty($pageRecord)) {
+            // Redirect to records overview if page could not be determined.
+            // Edge case if page has been removed meanwhile.
+            BackendUtility::setUpdateSignal('updatePageTree');
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
+        }
+
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
         $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
@@ -94,6 +101,12 @@ class InfoModifyController extends AbstractTemplateModuleController
         $languageService = $this->getLanguageService();
 
         $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
+        if (empty($pageRecord)) {
+            // Redirect to records overview if page could not be determined.
+            // Edge case if page has been removed meanwhile.
+            BackendUtility::setUpdateSignal('updatePageTree');
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
+        }
 
         $currentModule = $request->getAttribute('module');
         $currentModuleIdentifier = $currentModule->getIdentifier();

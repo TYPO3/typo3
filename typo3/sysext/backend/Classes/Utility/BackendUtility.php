@@ -2289,7 +2289,9 @@ class BackendUtility
      * Call to update the page tree frame (or something else..?) after
      * use 'updatePageTree' as a first parameter will set the page tree to be updated.
      *
-     * @param string $set Key to set the update signal. When setting, this value contains strings telling WHAT to set. At this point it seems that the value "updatePageTree" is the only one it makes sense to set. If empty, all update signals will be removed.
+     * @param string $set Key to set the update signal. When setting, this value contains strings telling WHAT to set.
+     *      At this point it seems that the value "updatePageTree" is the only one it makes sense to set.
+     *      If empty, all update signals will be removed.
      * @param mixed $params Additional information for the update signal, used to only refresh a branch of the tree
      * @see BackendUtility::getUpdateSignalDetails()
      */

@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenStreamInterface;
  */
 abstract class AbstractNode implements NodeInterface
 {
+    protected ?string $identifier = null;
     protected string $name;
     private ?string $value = null;
     private ?string $previousValue = null;
@@ -63,6 +64,14 @@ abstract class AbstractNode implements NodeInterface
         return $result;
     }
 
+    public function setIdentifier(string $parentIdentifier): void
+    {
+        $this->identifier = hash('xxh3', $parentIdentifier . $this->name);
+        foreach ($this->getNextChild() as $child) {
+            $child->setIdentifier($this->identifier);
+        }
+    }
+
     /**
      * This forces $this->name NOT to be readonly.
      * Used with '<' operator on tree root to copy:
@@ -73,6 +82,18 @@ abstract class AbstractNode implements NodeInterface
     public function updateName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getIdentifier(): string
+    {
+        if ($this->identifier === null) {
+            throw new \RuntimeException(
+                'Identifier has not been initialized. This happens when getIdentifier() is called on'
+                . ' trees retrieved from cache. The identifier is not supposed to be used in this context.',
+                1674620169
+            );
+        }
+        return $this->identifier;
     }
 
     public function addChild(ChildNodeInterface $node): void

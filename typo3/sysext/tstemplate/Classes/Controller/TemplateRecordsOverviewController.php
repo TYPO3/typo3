@@ -22,7 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -42,8 +42,14 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
         $backendUser = $this->getBackendUser();
         $currentModule = $request->getAttribute('module');
         $currentModuleIdentifier = $currentModule->getIdentifier();
-        $pageId = (int)($request->getQueryParams()['id'] ?? 0);
-        $pageRecord = BackendUtility::readPageAccess($pageId, '1=1') ?: [];
+        $pageUid = (int)($request->getQueryParams()['id'] ?? 0);
+        $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
+        if ($pageUid > 0 && empty($pageRecord)) {
+            // Redirect to records overview of page 0 if page could not be determined.
+            // Edge case if page has been removed meanwhile.
+            BackendUtility::setUpdateSignal('updatePageTree');
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
+        }
 
         $moduleData = $request->getAttribute('moduleData');
         if ($moduleData->cleanUp([])) {
@@ -68,10 +74,10 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
 
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($this->getLanguageService()->sL($currentModule->getTitle()), '');
-        $view->getDocHeaderComponent()->setMetaInformation(BackendUtility::readPageAccess(0, $backendUser->getPagePermsClause(Permission::PAGE_SHOW)) ?: []);
-        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageId);
-        if ($pageId !== 0) {
-            $view->makeDocHeaderModuleMenu(['id' => $pageId]);
+        $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
+        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
+        if ($pageUid !== 0) {
+            $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         }
         $view->assign('pageTree', $pagesWithTemplates);
         return $view->renderResponse('TemplateRecordsOverview');
