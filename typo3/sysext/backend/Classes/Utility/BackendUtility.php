@@ -1555,6 +1555,17 @@ class BackendUtility
             GeneralUtility::callUserFunction($_funcRef, $theColConf, $referenceObject);
         }
 
+        // For database type "JSON" the value in decoded state is most likely an array. This is not compatible with
+        // the "human-readable" processing and returning promise of this method. Thus, we ensure to handle value for
+        // this field as json encoded string. This should be the best readable version of the value data.
+        if ((string)($theColConf['dbType'] ?? '') === 'json'
+            && ((is_string($value) && !str_starts_with($value, '{') && !str_starts_with($value, '['))
+                || !is_string($value))
+        ) {
+            // @todo Consider to pretty print the json value, as this would match the "human readable" goal.
+            $value = \json_encode($value);
+        }
+
         $l = '';
         $lang = static::getLanguageService();
         switch ((string)($theColConf['type'] ?? '')) {
