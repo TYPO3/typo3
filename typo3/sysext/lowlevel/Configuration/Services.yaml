@@ -152,7 +152,7 @@ services:
         after: 'backendModules'
 
   lowlevel.configuration.module.provider.sitestcaconfiguration:
-    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\SitesTcaConfiguration'
+    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\SitesTcaConfigurationProvider'
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'sitesTcaConfiguration'
@@ -161,7 +161,7 @@ services:
         after: 'httpMiddlewareStacks'
 
   lowlevel.configuration.module.provider.sitesyamlconfiguration:
-    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\SitesYamlConfiguration'
+    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\SitesYamlConfigurationProvider'
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'sitesYamlConfiguration'

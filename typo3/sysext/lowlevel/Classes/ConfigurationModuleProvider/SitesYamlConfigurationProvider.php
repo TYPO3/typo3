@@ -17,21 +17,38 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\ConfigurationModuleProvider;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Lowlevel\Event\ModifyBlindedConfigurationOptionsEvent;
 
-class SitesYamlConfiguration extends AbstractProvider
+class SitesYamlConfigurationProvider extends AbstractProvider
 {
-    public function __construct(protected readonly SiteFinder $siteFinder)
-    {
+    public function __construct(
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly SiteFinder $siteFinder
+    ) {
     }
 
     public function getConfiguration(): array
     {
+        $blindedConfigurationOptions = $this
+            ->eventDispatcher
+            ->dispatch(new ModifyBlindedConfigurationOptionsEvent([], $this->identifier))
+            ->getBlindedConfigurationOptions();
+
         $configurationArray = [];
         foreach ($this->siteFinder->getAllSites() as $identifier => $site) {
             $configurationArray[$identifier] = $site->getConfiguration();
+            if (!isset($blindedConfigurationOptions[$identifier])) {
+                continue;
+            }
+            ArrayUtility::mergeRecursiveWithOverrule(
+                $configurationArray[$identifier],
+                ArrayUtility::intersectRecursive($blindedConfigurationOptions[$identifier], $configurationArray[$identifier])
+            );
         }
+
         ArrayUtility::naturalKeySortRecursive($configurationArray);
         return $configurationArray;
     }

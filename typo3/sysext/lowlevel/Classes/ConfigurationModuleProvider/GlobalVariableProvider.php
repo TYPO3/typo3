@@ -91,7 +91,7 @@ class GlobalVariableProvider extends AbstractProvider
     {
         $configurationArray = $GLOBALS[$this->globalVariableKey] ?? [];
         $blindedConfigurationOptions = $this->eventDispatcher->dispatch(
-            new ModifyBlindedConfigurationOptionsEvent($this->blindedConfigurationOptions)
+            new ModifyBlindedConfigurationOptionsEvent($this->blindedConfigurationOptions, $this->identifier)
         )->getBlindedConfigurationOptions();
 
         if (isset($blindedConfigurationOptions[$this->globalVariableKey])) {

@@ -33,6 +33,7 @@ class GlobalVariableProviderTest extends FunctionalTestCase
     {
         $modifyBlindedConfigurationOptionsEvent = null;
 
+        $identifier = 'foo-bar';
         $globalVariableKey = 'FOOBAR';
         $GLOBALS[$globalVariableKey] = ['someoption' => 'password123'];
         $blindedConfiguration = ['someoption' => '***blinded***'];
@@ -56,7 +57,7 @@ class GlobalVariableProviderTest extends FunctionalTestCase
 
         $subject = new GlobalVariableProvider($container->get(EventDispatcherInterface::class));
         $subject([
-            'identifier' => 'foo',
+            'identifier' => $identifier,
             'label' => 'bar',
             'globalVariableKey' => $globalVariableKey,
         ]);
@@ -64,6 +65,7 @@ class GlobalVariableProviderTest extends FunctionalTestCase
 
         self::assertInstanceOf(ModifyBlindedConfigurationOptionsEvent::class, $modifyBlindedConfigurationOptionsEvent);
         self::assertEquals($modifiedBlindedConfigurationOptions, $modifyBlindedConfigurationOptionsEvent->getBlindedConfigurationOptions());
+        self::assertEquals($identifier, $modifyBlindedConfigurationOptionsEvent->getProviderIdentifier());
         self::assertEquals($blindedConfiguration, $configuration);
     }
 }

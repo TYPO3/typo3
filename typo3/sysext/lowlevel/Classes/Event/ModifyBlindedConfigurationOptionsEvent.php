@@ -23,17 +23,33 @@ namespace TYPO3\CMS\Lowlevel\Event;
  */
 final class ModifyBlindedConfigurationOptionsEvent
 {
-    public function __construct(private array $blindedConfigurationOptions)
-    {
+    public function __construct(
+        private array $blindedConfigurationOptions,
+        private readonly string $identifier
+    ) {
     }
 
+    /**
+     * Allows to define configuration options to be blinded
+     */
     public function setBlindedConfigurationOptions(array $blindedConfigurationOptions): void
     {
         $this->blindedConfigurationOptions = $blindedConfigurationOptions;
     }
 
+    /**
+     * Returns the blinded configuration options
+     */
     public function getBlindedConfigurationOptions(): array
     {
         return $this->blindedConfigurationOptions;
+    }
+
+    /**
+     * Returns the configuration provider identifier, dispatching the event
+     */
+    public function getProviderIdentifier(): string
+    {
+        return $this->identifier;
     }
 }

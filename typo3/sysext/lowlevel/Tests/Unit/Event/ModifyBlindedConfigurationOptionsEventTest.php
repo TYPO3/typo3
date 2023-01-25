@@ -27,10 +27,12 @@ class ModifyBlindedConfigurationOptionsEventTest extends UnitTestCase
      */
     public function gettersReturnInitializedObjects(): void
     {
+        $identifier = 'myidentifier';
         $configuration = ['foo' => 'bar'];
         $blindedConfiguration = ['foo' => '***'];
-        $event = new ModifyBlindedConfigurationOptionsEvent($configuration);
+        $event = new ModifyBlindedConfigurationOptionsEvent($configuration, $identifier);
         self::assertEquals($configuration, $event->getBlindedConfigurationOptions());
+        self::assertEquals($identifier, $event->getProviderIdentifier());
         $event->setBlindedConfigurationOptions($blindedConfiguration);
         self::assertEquals($blindedConfiguration, $event->getBlindedConfigurationOptions());
     }

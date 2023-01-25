@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Lowlevel\ConfigurationModuleProvider;
 use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
-class SitesTcaConfiguration extends AbstractProvider
+class SitesTcaConfigurationProvider extends AbstractProvider
 {
     public function __construct(protected readonly SiteTcaConfiguration $siteTcaConfiguration)
     {
