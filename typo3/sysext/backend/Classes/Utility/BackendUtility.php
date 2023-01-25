@@ -1160,7 +1160,7 @@ class BackendUtility
             } else {
                 $row['shortcut'] = (int)($row['shortcut'] ?? 0);
                 $lRec = self::getRecordWSOL('pages', $row['shortcut'], 'title');
-                $label = ($lRec === null ? '' : $lRec['title']) . ' (id=' . $row['shortcut'] . ')';
+                $label = ($lRec['title'] ?? '') . ' (id=' . $row['shortcut'] . ')';
             }
             if (($row['shortcut_mode'] ?? 0) != PageRepository::SHORTCUT_MODE_NONE) {
                 $label .= ', ' . $lang->sL($GLOBALS['TCA']['pages']['columns']['shortcut_mode']['label']) . ' '
@@ -1204,7 +1204,9 @@ class BackendUtility
                     $fe_groups[] = $lang->sL(self::getLabelFromItemlist('pages', 'fe_group', (string)$fe_group));
                 } else {
                     $lRec = self::getRecordWSOL('fe_groups', $fe_group, 'title');
-                    $fe_groups[] = $lRec['title'];
+                    if (is_array($lRec)) {
+                        $fe_groups[] = $lRec['title'] ?? '';
+                    }
                 }
             }
             $label = implode(', ', $fe_groups);
