@@ -695,7 +695,7 @@ class PageLayoutController
                 $configuration->setLanguageMode(true);
             }
 
-            $numberOfHiddenElements = $this->getNumberOfHiddenElements($configuration->getLanguageColumns());
+            $numberOfHiddenElements = $this->getNumberOfHiddenElements($configuration->getLanguageMode());
 
             $pageActionsInstruction = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/PageActions');
             if ($this->context->isPageEditable()) {
@@ -900,14 +900,15 @@ class PageLayoutController
      * Other functions
      *
      ******************************/
+
     /**
      * Returns the number of hidden elements (including those hidden by start/end times)
      * on the current page (for the current sys_language)
      *
-     * @param array $languageColumns
+     * @param bool $isLanguageModeActive
      * @return int
      */
-    protected function getNumberOfHiddenElements(array $languageColumns): int
+    protected function getNumberOfHiddenElements(bool $isLanguageModeActive): int
     {
         $andWhere = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
@@ -926,53 +927,63 @@ class PageLayoutController
                 )
             );
 
-        if (!empty($languageColumns)) {
-            // Multi-language view is active
-            if ($this->current_sys_language > 0) {
-                $queryBuilder->andWhere(
-                    $queryBuilder->expr()->in(
-                        'sys_language_uid',
-                        [0, $queryBuilder->createNamedParameter($this->current_sys_language, Connection::PARAM_INT)]
-                    )
-                );
-            }
-        } else {
+        if ($this->current_sys_language === 0) {
+            // Default language is active (in columns or language mode) - consider "all languages" and the default
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq(
-                    'sys_language_uid',
-                    $queryBuilder->createNamedParameter($this->current_sys_language, Connection::PARAM_INT)
+                $queryBuilder->expr()->in(
+                    $GLOBALS['TCA']['tt_content']['ctrl']['languageField'],
+                    [-1, 0]
+                )
+            );
+        } elseif ($isLanguageModeActive && $this->current_sys_language !== -1) {
+            // Multi-language view with any translation is active -
+            // consider "all languages", the default and the translation
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    $GLOBALS['TCA']['tt_content']['ctrl']['languageField'],
+                    [-1, 0, $queryBuilder->createNamedParameter($this->current_sys_language, Connection::PARAM_INT)]
+                )
+            );
+        } elseif ($this->current_sys_language > 0) {
+            // Columns mode with any translation is active - consider "all languages" and the translation
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    $GLOBALS['TCA']['tt_content']['ctrl']['languageField'],
+                    [-1, $queryBuilder->createNamedParameter($this->current_sys_language, Connection::PARAM_INT)]
                 )
             );
         }
 
         if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'])) {
             $andWhere[] = $queryBuilder->expr()->neq(
-                'hidden',
+                $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'],
                 $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
             );
         }
 
         if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['starttime'])) {
+            $starttimeField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['starttime'];
             $andWhere[] = $queryBuilder->expr()->andX(
                 $queryBuilder->expr()->neq(
-                    'starttime',
+                    $starttimeField,
                     $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->gt(
-                    'starttime',
+                    $starttimeField,
                     $queryBuilder->createNamedParameter($GLOBALS['SIM_ACCESS_TIME'], Connection::PARAM_INT)
                 )
             );
         }
 
         if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['endtime'])) {
+            $endtimeField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['endtime'];
             $andWhere[] = $queryBuilder->expr()->andX(
                 $queryBuilder->expr()->neq(
-                    'endtime',
+                    $endtimeField,
                     $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->lte(
-                    'endtime',
+                    $endtimeField,
                     $queryBuilder->createNamedParameter($GLOBALS['SIM_ACCESS_TIME'], Connection::PARAM_INT)
                 )
             );
