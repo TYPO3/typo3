@@ -223,13 +223,13 @@ class ModuleProvider
             return $user->isSystemMaintainer();
         }
 
-        // Checking if admin-access is required
-        // If admin-permissions is required then return TRUE if user is admin
-        if ($moduleAccess === 'admin' && $user->isAdmin()) {
-            return true;
+        // Check if this module is only allowed by admins
+        if ($moduleAccess === 'admin') {
+            return $user->isAdmin();
         }
 
-        // This checks if a user is permitted to access the module
+        // This checks if a user is permitted to access the module, being
+        // either admin or having necessary module access permissions set.
         if ($user->isAdmin() || $user->check('modules', $identifier)) {
             return true;
         }
