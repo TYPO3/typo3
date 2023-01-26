@@ -127,8 +127,16 @@ class VimeoRenderer implements FileRendererInterface
      */
     protected function createVimeoUrl(array $options, FileInterface $file)
     {
-        $videoId = $this->getVideoIdFromFile($file);
+        $videoIdRaw = $this->getVideoIdFromFile($file);
+        $videoIdRaw = GeneralUtility::trimExplode('/', $videoIdRaw, true);
+
+        $videoId = $videoIdRaw[0];
+        $hash = $videoIdRaw[1] ?? null;
+
         $urlParams = [];
+        if (!empty($hash)) {
+            $urlParams[] = 'h=' . $hash;
+        }
         if (!empty($options['autoplay'])) {
             $urlParams[] = 'autoplay=1';
             // If autoplay is enabled, enforce muted=1, see https://developer.chrome.com/blog/autoplay/
