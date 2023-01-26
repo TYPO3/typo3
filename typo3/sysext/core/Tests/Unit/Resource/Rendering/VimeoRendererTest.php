@@ -227,7 +227,7 @@ final class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331/private0123?dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331?h=private0123&amp;dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $subject->render($fileResourceMock, '300m', '200')
         );
     }
@@ -247,7 +247,7 @@ final class VimeoRendererTest extends UnitTestCase
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
-            '<iframe src="https://player.vimeo.com/video/7331&lt;script&gt;danger&lt;/script&gt;&apos;&quot;random&quot;quotes;?dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            '<iframe src="https://player.vimeo.com/video/7331&lt;script&gt;danger&lt;?h=script&gt;&apos;&quot;random&quot;quotes;&amp;dnt=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $subject->render($fileResourceMock, '300m', '200')
         );
     }
