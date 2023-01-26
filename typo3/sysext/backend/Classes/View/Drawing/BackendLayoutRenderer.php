@@ -198,10 +198,13 @@ class BackendLayoutRenderer
      */
     public function drawContent(bool $renderUnused = true): string
     {
+        $backendUser = $this->getBackendUser();
+
         $this->view->assign('hideRestrictedColumns', (bool)(BackendUtility::getPagesTSconfig($this->context->getPageId())['mod.']['web_layout.']['hideRestrictedCols'] ?? false));
         $this->view->assign('newContentTitle', $this->getLanguageService()->getLL('newContentElement'));
         $this->view->assign('newContentTitleShort', $this->getLanguageService()->getLL('content'));
-        $this->view->assign('allowEditContent', $this->getBackendUser()->check('tables_modify', 'tt_content'));
+        $this->view->assign('allowEditContent', $backendUser->check('tables_modify', 'tt_content'));
+        $this->view->assign('maxTitleLength', $backendUser->uc['titleLen'] ?? 20);
 
         if ($this->context->getDrawingConfiguration()->getLanguageMode()) {
             if ($this->context->getDrawingConfiguration()->getDefaultLanguageBinding()) {
