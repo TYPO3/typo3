@@ -447,7 +447,7 @@ class MenuProcessor implements DataProcessorInterface
 
         // Process Configuration
         $menuContentObject = $this->contentObjectFactory->getContentObject('HMENU', $cObj->getRequest(), $cObj);
-        $renderedMenu = $menuContentObject->render($this->menuConfig);
+        $renderedMenu = $menuContentObject?->render($this->menuConfig);
         if (!$renderedMenu) {
             return $processedData;
         }

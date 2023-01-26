@@ -399,7 +399,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
 
         // Process Configuration
         $menuContentObject = $cObj->getContentObject('HMENU');
-        $renderedMenu = $menuContentObject->render($this->menuConfig);
+        $renderedMenu = $menuContentObject?->render($this->menuConfig);
         if (!$renderedMenu) {
             return $processedData;
         }
