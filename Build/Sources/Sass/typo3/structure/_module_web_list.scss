@@ -4,11 +4,13 @@
 
 .recordlist {
     overflow: unset;
+    box-shadow: var(--typo3-component-box-shadow);
 
     .recordlist-heading {
         font-weight: 700;
-        background-color: #d7d7d7;
-        color: #5a5a5a;
+        background-color: var(--panel-default-heading-bg);
+        border: var(--typo3-component-border-width) solid var(--panel-default-border-color);
+        color: var(--panel-default-heading-color);
 
         a {
             color: inherit;
@@ -19,6 +21,10 @@
         td.deletePlaceholder {
             text-decoration: line-through;
         }
+    }
+
+    .table-fit {
+        border-top: 0;
     }
 
     .pagination {
