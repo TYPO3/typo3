@@ -57,7 +57,7 @@
                         </f:if>
                     </div>
                     {languageColumn.pageIcon -> f:format.raw()}
-                    {languageColumn.context.localizedPageTitle}
+                    {languageColumn.context.localizedPageTitle -> f:format.crop(maxCharacters: maxTitleLength)}
                 </td>
             </f:for>
         </tr>

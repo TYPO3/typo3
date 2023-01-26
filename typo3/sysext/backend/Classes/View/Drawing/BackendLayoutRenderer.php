@@ -87,6 +87,7 @@ class BackendLayoutRenderer
      */
     public function drawContent(ServerRequestInterface $request, PageLayoutContext $pageLayoutContext, bool $renderUnused = true): string
     {
+        $backendUser = $this->getBackendUser();
         $contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $pageLayoutContext);
 
         $view = $this->backendViewFactory->create($request);
@@ -95,7 +96,8 @@ class BackendLayoutRenderer
             'hideRestrictedColumns' => (bool)(BackendUtility::getPagesTSconfig($pageLayoutContext->getPageId())['mod.']['web_layout.']['hideRestrictedCols'] ?? false),
             'newContentTitle' => $this->getLanguageService()->getLL('newContentElement'),
             'newContentTitleShort' => $this->getLanguageService()->getLL('content'),
-            'allowEditContent' => $this->getBackendUser()->check('tables_modify', 'tt_content'),
+            'allowEditContent' => $backendUser->check('tables_modify', 'tt_content'),
+            'maxTitleLength' => $backendUser->uc['titleLen'] ?? 20,
         ]);
 
         if ($pageLayoutContext->getDrawingConfiguration()->getLanguageMode()) {
