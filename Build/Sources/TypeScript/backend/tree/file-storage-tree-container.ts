@@ -437,7 +437,7 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
 
     if (command === 'copy') {
       params.data.copy = [];
-      params.copy.push({data: decodeURIComponent(data.identifier), target: decodeURIComponent(data.target.identifier)});
+      params.data.copy.push({data: decodeURIComponent(data.identifier), target: decodeURIComponent(data.target.identifier)});
     } else if (command === 'move') {
       params.data.move = [];
       params.data.move.push({data: decodeURIComponent(data.identifier), target: decodeURIComponent(data.target.identifier)});
