@@ -103,7 +103,7 @@ class RootlineUtility
      */
     public function __construct(int $uid, string $mountPointParameter = '', ?Context $context = null)
     {
-        $this->mountPointParameter = trim($mountPointParameter);
+        $this->mountPointParameter = $this->sanitizeMountPointParameter($mountPointParameter);
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
 
@@ -364,6 +364,23 @@ class RootlineUtility
         $mountedPageData['_MOUNTED_FROM'] = $this->pageUid;
         $mountedPageData['_MP_PARAM'] = $this->pageUid . '-' . $mountUid;
         return $mountedPageData;
+    }
+
+    /**
+     * Sanitize the MountPoint Parameter
+     * Splits the MP-Param via "," and removes mountpoints
+     * that don't have the format \d+-\d+
+     */
+    protected function sanitizeMountPointParameter(string $mountPointParameter): string
+    {
+        $mountPoints = GeneralUtility::trimExplode(',', $mountPointParameter);
+        foreach ($mountPoints as $key => $mP) {
+            // If MP has incorrect format, discard it
+            if (!preg_match('/^\d+-\d+$/', $mP)) {
+                unset($mountPoints[$key]);
+            }
+        }
+        return implode(',', $mountPoints);
     }
 
     /**
