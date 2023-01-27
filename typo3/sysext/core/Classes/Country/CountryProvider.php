@@ -1727,7 +1727,7 @@ class CountryProvider
      */
     public function getAll(): array
     {
-        return array_values($this->countries);
+        return $this->countries;
     }
 
     public function getByIsoCode(string $isoCode): ?Country
@@ -1768,5 +1768,41 @@ class CountryProvider
             }
         }
         return null;
+    }
+
+    /**
+     * @return array<string, Country>
+     */
+    public function getFiltered(CountryFilter $filter): array
+    {
+        if (empty($filter->getOnlyCountries()) && empty($filter->getExcludeCountries())) {
+            return $this->countries;
+        }
+
+        if (!empty($filter->getExcludeCountries())) {
+            $possibleCountries = [];
+            foreach ($this->countries as $country) {
+                if (!in_array($country->getAlpha2IsoCode(), $filter->getExcludeCountries(), true)
+                    && !in_array($country->getAlpha3IsoCode(), $filter->getExcludeCountries(), true)) {
+                    $possibleCountries[$country->getAlpha2IsoCode()] = $country;
+                }
+            }
+        } else {
+            $possibleCountries = $this->countries;
+        }
+
+        if (empty($filter->getOnlyCountries())) {
+            return $possibleCountries;
+        }
+
+        $countries = [];
+        foreach ($filter->getOnlyCountries() as $countryCode) {
+            $country = $this->getByIsoCode($countryCode);
+            if ($country !== null && isset($possibleCountries[$country->getAlpha2IsoCode()])) {
+                $countries[$country->getAlpha2IsoCode()] = $country;
+            }
+        }
+
+        return $countries;
     }
 }

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Country;
 
 use TYPO3\CMS\Core\Country\Country;
+use TYPO3\CMS\Core\Country\CountryFilter;
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -65,5 +66,31 @@ class CountryProviderTest extends UnitTestCase
         self::assertEquals('250', $countryIsoCode3->getNumericRepresentation());
         self::assertEquals('FR', $countryIsoCode3->getAlpha2IsoCode());
         self::assertEquals('FRA', $countryIsoCode3->getAlpha3IsoCode());
+    }
+
+    /**
+     * @test
+     * @dataProvider findByFilterReturnsValidObjectDataProvider
+     */
+    public function findByFilterReturnsValidObject(int $expectedCount, array $excludedCountries, array $includedCountries): void
+    {
+        $subject = new CountryProvider();
+        $filter = new CountryFilter();
+        $filter
+            ->setOnlyCountries($includedCountries)
+            ->setExcludeCountries($excludedCountries);
+        $list = $subject->getFiltered($filter);
+        self::assertCount($expectedCount, $list);
+    }
+
+    public function findByFilterReturnsValidObjectDataProvider(): array
+    {
+        return [
+            'full list' => [249, [], []],
+            'invalid list' => [0, ['ABC', 'DEF'], ['GHI']],
+            'list with included only' => [4, [], ['AT', 'DEU', 'ABC', 'py', 'plw', 'DEF']],
+            'list with excluded only' => [245, ['AT', 'DEU', 'ABC', 'py', 'plw', 'DEF'], []],
+            'combined list' => [2, ['CF', 'CH', 'cz', 'abc'], ['efg', 'FI', 'FJ', 'CH', 'cz', 'abc']],
+        ];
     }
 }

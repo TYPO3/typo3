@@ -109,7 +109,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
-        $this->registerTagAttribute('size', 'string', 'Size of input field');
+        $this->registerTagAttribute('size', 'string', 'Size of select field, a numeric value to show the amount of items to be visible at the same time - equivalent to HTML <select> site attribute');
         $this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
         $this->registerArgument('options', 'array', 'Associative array with internal IDs as key, and the values are displayed in the select box. Can be combined with or replaced by child f:form.select.* nodes.');
         $this->registerArgument('optionsAfterContent', 'boolean', 'If true, places auto-generated option tags after those rendered in the tag content. If false, automatic options come first.', false, false);

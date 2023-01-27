@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 use TYPO3\CMS\Core\Country\Country;
+use TYPO3\CMS\Core\Country\CountryFilter;
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -89,6 +90,7 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
+        $this->registerTagAttribute('size', 'string', 'Size of select field, a numeric value to show the amount of items to be visible at the same time - equivalent to HTML <select> site attribute');
         $this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
         $this->registerArgument('excludeCountries', 'array', 'Array with country codes that should not be shown.', false, []);
         $this->registerArgument('onlyCountries', 'array', 'If set, only the country codes in the list are rendered.', false, []);
@@ -97,9 +99,10 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this ViewHelper', false, 'f3-form-error');
         $this->registerArgument('prependOptionLabel', 'string', 'If specified, will provide an option at first position with the specified label.');
         $this->registerArgument('prependOptionValue', 'string', 'If specified, will provide an option at first position with the specified value.');
+        $this->registerArgument('multiple', 'boolean', 'If set multiple options may be selected.', false, false);
+        $this->registerArgument('required', 'boolean', 'If set no empty value is allowed.', false, false);
         $this->registerArgument('prioritizedCountries', 'array', 'A list of country codes which should be listed on top of the list.', false, []);
         $this->registerArgument('alternativeLanguage', 'string', 'If specified, the country list will be shown in the given language.');
-        $this->registerArgument('required', 'boolean', 'If set no empty value is allowed.', false, false);
     }
 
     public function render(): string
@@ -108,6 +111,10 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
             $this->tag->addAttribute('required', 'required');
         }
         $name = $this->getName();
+        if ($this->arguments['multiple']) {
+            $this->tag->addAttribute('multiple', 'multiple');
+            $name .= '[]';
+        }
         $this->addAdditionalIdentityPropertiesIfNeeded();
         $this->setErrorClassAttribute();
         $this->registerFieldNameForFormTokenGeneration($name);
@@ -224,24 +231,11 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
      */
     protected function getCountryList(): array
     {
-        $countryProvider = GeneralUtility::makeInstance(CountryProvider::class);
-        $countries = [];
-        $excludedCountryCodes = $this->arguments['excludeCountries'] ?? [];
-        $allowedCountryCodes = $this->arguments['onlyCountries'] ?? [];
-        if ($allowedCountryCodes !== []) {
-            foreach ($allowedCountryCodes as $countryCode) {
-                $country = $countryProvider->getByIsoCode($countryCode);
-                if ($country !== null) {
-                    $countries[$country->getAlpha2IsoCode()] = $country;
-                }
-            }
-        } else {
-            foreach ($countryProvider->getAll() as $country) {
-                if (!in_array($country->getAlpha2IsoCode(), $excludedCountryCodes)) {
-                    $countries[$country->getAlpha2IsoCode()] = $country;
-                }
-            }
-        }
-        return $countries;
+        $filter = new CountryFilter();
+        $filter
+            ->setOnlyCountries($this->arguments['onlyCountries'] ?? [])
+            ->setExcludeCountries($this->arguments['excludeCountries'] ?? []);
+
+        return GeneralUtility::makeInstance(CountryProvider::class)->getFiltered($filter);
     }
 }

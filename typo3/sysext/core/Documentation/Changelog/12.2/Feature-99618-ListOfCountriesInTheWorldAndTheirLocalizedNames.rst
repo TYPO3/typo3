@@ -34,6 +34,14 @@ It is now possible to load a list of all countries via PHP:
     $france = $countryProvider->getByName('France');
     // or
     $france = $countryProvider->getByAlpha3IsoCode('FRA');
+    // or
+    $allCountries = $countryProvider->getAll();
+    // or
+    $filter = new CountryFilter();
+    $filter
+        ->setOnlyCountries(['AT', 'DE', 'FR', 'DK'])
+        ->setExcludeCountries(['AUT, 'DK']);
+    $filteredCountries = $countryProvider->getFiltered($filter); // will be array with DE & FR
 
 A country object can be used to fetch all information about this,
 also with translatable labels:
@@ -62,10 +70,12 @@ for forms:
     />
 
 Available options
----------------------
+-----------------
 
 -   :php:`disabled`: Specifies that the form element should be disabled when the page loads.
 -   :php:`required`: If set no empty value is allowed.
+-   :php:`size`: Size of input field
+-   :php:`multiple`: If set multiple options may be selected
 -   :php:`errorClass`: Specify the CSS class to be set if there are errors for this ViewHelper.
 -   :php:`sortByOptionLabel`: Whether the country list should be sorted by option label or not.
 
