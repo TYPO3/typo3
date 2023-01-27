@@ -1,0 +1,36 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
+<formvh:renderRenderable renderable="{element}">
+    <f:render partial="Field/Field" arguments="{element: element}" contentAs="elementContent">
+        <f:if condition="{element.properties.prependOptionLabel}">
+            <f:then>
+                <f:form.countrySelect
+                        property="{element.identifier}"
+                        id="{element.uniqueIdentifier}"
+                        class="{element.properties.elementClassAttribute} form-control"
+                        errorClass="{element.properties.elementErrorClassAttribute}"
+                        additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
+                        prependOptionLabel="{formvh:translateElementProperty(element: element, property: 'prependOptionLabel')}"
+                        prependOptionValue="{formvh:translateElementProperty(element: element, property: 'prependOptionValue')}"
+                        sortByOptionLabel="true"
+                        prioritizedCountries="{element.properties.prioritizedCountries}"
+                        onlyCountries="{element.properties.onlyCountries}"
+                        excludeCountries="{element.properties.excludeCountries}"
+                />
+            </f:then>
+            <f:else>
+                <f:form.countrySelect
+                        property="{element.identifier}"
+                        id="{element.uniqueIdentifier}"
+                        class="{element.properties.elementClassAttribute} form-control"
+                        errorClass="{element.properties.elementErrorClassAttribute}"
+                        additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
+                        sortByOptionLabel="true"
+                        prioritizedCountries="{element.properties.prioritizedCountries}"
+                        onlyCountries="{element.properties.onlyCountries}"
+                        excludeCountries="{element.properties.excludeCountries}"
+                />
+            </f:else>
+        </f:if>
+    </f:render>
+</formvh:renderRenderable>
+</html>

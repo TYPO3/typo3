@@ -170,7 +170,7 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
         } else {
             ksort($options, SORT_NATURAL);
         }
-        if ($this->arguments['prioritizedCountries'] !== []) {
+        if (($this->arguments['prioritizedCountries'] ?? []) !== []) {
             $finalOptions = [];
             foreach ($this->arguments['prioritizedCountries'] as $countryCode) {
                 if (isset($options[$countryCode])) {

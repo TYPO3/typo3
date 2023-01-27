@@ -1,0 +1,113 @@
+prototypes:
+  standard:
+    formElementsDefinition:
+      CountrySelect:
+        formEditor:
+          editors:
+            100:
+              identifier: header
+              templateName: Inspector-FormElementHeaderEditor
+            200:
+              identifier: label
+              templateName: Inspector-TextEditor
+              label: formEditor.elements.FormElement.editor.label.label
+              propertyPath: label
+            230:
+              identifier: elementDescription
+              templateName: Inspector-TextEditor
+              label: formEditor.elements.FormElement.editor.elementDescription.label
+              propertyPath: properties.elementDescription
+            250:
+              identifier: inactiveOption
+              templateName: Inspector-TextEditor
+              label: formEditor.elements.SelectionMixin.editor.inactiveOption.label
+              propertyPath: properties.prependOptionLabel
+              fieldExplanationText: formEditor.elements.SelectionMixin.editor.inactiveOption.fieldExplanationText
+              doNotSetIfPropertyValueIsEmpty: true
+            300:
+              identifier: prioritizedCountries
+              templateName: Inspector-CountrySelectEditor
+              label: formEditor.elements.CountrySelect.editor.prioritizedCountries.label
+              propertyPath: properties.prioritizedCountries
+            310:
+              identifier: onlyCountries
+              templateName: Inspector-CountrySelectEditor
+              label: formEditor.elements.CountrySelect.editor.onlyCountries.label
+              propertyPath: properties.onlyCountries
+            320:
+              identifier: excludeCountries
+              templateName: Inspector-CountrySelectEditor
+              label: formEditor.elements.CountrySelect.editor.excludeCountries.label
+              propertyPath: properties.excludeCountries
+            700:
+              identifier: gridColumnViewPortConfiguration
+              templateName: Inspector-GridColumnViewPortConfigurationEditor
+              label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+              configurationOptions:
+                viewPorts:
+                  10:
+                    viewPortIdentifier: xs
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                  20:
+                    viewPortIdentifier: sm
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                  30:
+                    viewPortIdentifier: md
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                  40:
+                    viewPortIdentifier: lg
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                  50:
+                    viewPortIdentifier: xl
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label
+                  60:
+                    viewPortIdentifier: xxl
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label
+                numbersOfColumnsToUse:
+                  label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                  propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                  fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+            800:
+              identifier: requiredValidator
+              templateName: Inspector-RequiredValidatorEditor
+              label: formEditor.elements.FormElement.editor.requiredValidator.label
+              validatorIdentifier: NotEmpty
+              propertyPath: properties.fluidAdditionalAttributes.required
+              propertyValue: required
+              configurationOptions:
+                validationErrorMessage:
+                  label: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label
+                  propertyPath: properties.validationErrorMessages
+                  fieldExplanationText: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText
+                  errorCodes:
+                    10: 1221560910
+                    20: 1221560718
+                    30: 1347992400
+                    40: 1347992453
+            9999:
+              identifier: removeButton
+              templateName: Inspector-RemoveElementEditor
+          predefinedDefaults:
+            properties:
+              options: {  }
+          label: formEditor.elements.CountrySelect.label
+          group: select
+          groupSorting: 200
+          iconIdentifier: form-multi-select
+        implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+        properties:
+          containerClassAttribute: input
+          elementClassAttribute: ''
+          elementErrorClassAttribute: error
+        variants:
+          -
+            identifier: template-variant
+            condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
+            properties:
+              containerClassAttribute: 'form-element form-element-select mb-3'
+              elementClassAttribute: form-control
+              elementErrorClassAttribute: ~
+              labelClassAttribute: form-label
+    formEditor:
+      formEditorPartials:
+        FormElement-CountrySelect: Stage/SelectTemplate

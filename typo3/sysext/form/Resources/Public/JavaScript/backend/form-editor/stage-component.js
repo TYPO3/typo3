@@ -122,6 +122,7 @@ function factory($, Helper, Icons) {
         'FormElement-AdvancedPassword': 'FormElement-AdvancedPassword',
         'FormElement-Checkbox': 'FormElement-Checkbox',
         'FormElement-ContentElement': 'FormElement-ContentElement',
+        'FormElement-CountrySelect': 'FormElement-CountrySelect',
         'FormElement-DatePicker': 'FormElement-DatePicker',
         'FormElement-Fieldset': 'FormElement-Fieldset',
         'FormElement-GridRow': 'FormElement-GridRow',
@@ -307,6 +308,7 @@ function factory($, Helper, Icons) {
         case 'ImageUpload':
           renderFileUploadTemplates(formElement, template);
           break;
+        case 'CountrySelect':
         case 'SingleSelect':
         case 'RadioButton':
         case 'MultiSelect':

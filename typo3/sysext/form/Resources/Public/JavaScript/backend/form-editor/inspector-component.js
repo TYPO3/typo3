@@ -33,6 +33,7 @@ const {
   renderCheckboxEditor,
   renderCollectionElementEditors,
   renderCollectionElementHeaderEditor,
+  renderCountrySelectEditor,
   renderFileMaxSizeEditor,
   renderCollectionElementSelectionEditor,
   renderEditors,
@@ -356,6 +357,14 @@ function factory($, Helper, Icons, Notification, Modal, MessageUtility) {
           break;
         case 'Inspector-CheckboxEditor':
           renderCheckboxEditor(
+            editorConfiguration,
+            editorHtml,
+            collectionElementIdentifier,
+            collectionName
+          );
+          break;
+        case 'Inspector-CountrySelectEditor':
+          renderCountrySelectEditor(
             editorConfiguration,
             editorHtml,
             collectionElementIdentifier,
@@ -1473,6 +1482,83 @@ function factory($, Helper, Icons, Notification, Modal, MessageUtility) {
           propertyData,
           $(this).val()
         ));
+      });
+    };
+
+    /**
+     * @public
+     *
+     * @param object editorConfiguration
+     * @param object editorHtml
+     * @param string collectionElementIdentifier
+     * @param string collectionName
+     * @return void
+     * @throws 1674826430
+     * @throws 1674826431
+     * @throws 1674826432
+     */
+    function renderCountrySelectEditor(editorConfiguration, editorHtml, collectionElementIdentifier, collectionName) {
+      var propertyData, propertyPath, selectElement, options;
+      assert(
+        'object' === $.type(editorConfiguration),
+        'Invalid parameter "editorConfiguration"',
+        1674826430
+      );
+      assert(
+        'object' === $.type(editorHtml),
+        'Invalid parameter "editorHtml"',
+        1674826431
+      );
+      assert(
+        getUtility().isNonEmptyString(editorConfiguration['label']),
+        'Invalid configuration "label"',
+        1674826432
+      );
+
+      propertyPath = getFormEditorApp().buildPropertyPath(
+        editorConfiguration['propertyPath'],
+        collectionElementIdentifier,
+        collectionName
+      );
+
+      getHelper()
+        .getTemplatePropertyDomElement('label', editorHtml)
+        .append(editorConfiguration['label']);
+
+      selectElement = getHelper()
+        .getTemplatePropertyDomElement('selectOptions', editorHtml);
+
+      propertyData = getCurrentlySelectedFormElement().get(propertyPath);
+
+      options = $('option', selectElement);
+      selectElement.empty();
+
+      for (var i = 0, len = options.length; i < len; ++i) {
+        var option, selected = false;
+
+        for (var propertyDataKey in propertyData) {
+          if (!propertyData.hasOwnProperty(propertyDataKey)) {
+            continue;
+          }
+
+          if (options[i].value === propertyData[propertyDataKey]) {
+            selected = true;
+            break;
+          }
+        }
+
+        option = new Option(options[i].text, i, false, selected);
+        $(option).data({value: options[i].value});
+        selectElement.append(option);
+      }
+
+      selectElement.on('change', function() {
+        var selectValues = [];
+        $('option:selected', $(this)).each(function(i) {
+          selectValues.push($(this).data('value'));
+        });
+
+        getCurrentlySelectedFormElement().set(propertyPath, selectValues);
       });
     };
 
@@ -2704,6 +2790,7 @@ function factory($, Helper, Icons, Notification, Modal, MessageUtility) {
       renderPropertyGridEditor: renderPropertyGridEditor,
       renderRemoveElementEditor: renderRemoveElementEditor,
       renderRequiredValidatorEditor: renderRequiredValidatorEditor,
+      renderCountrySelectEditor: renderCountrySelectEditor,
       renderSingleSelectEditor: renderSingleSelectEditor,
       renderMultiSelectEditor: renderMultiSelectEditor,
       renderTextareaEditor: renderTextareaEditor,

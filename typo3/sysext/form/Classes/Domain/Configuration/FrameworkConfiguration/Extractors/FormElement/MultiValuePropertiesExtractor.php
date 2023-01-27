@@ -35,6 +35,7 @@ class MultiValuePropertiesExtractor extends AbstractExtractor
         if (
             $value !== 'Inspector-PropertyGridEditor'
             && $value !== 'Inspector-MultiSelectEditor'
+            && $value !== 'Inspector-CountrySelectEditor'
             && $value !== 'Inspector-ValidationErrorMessageEditor'
             && $value !== 'Inspector-RequiredValidatorEditor'
         ) {

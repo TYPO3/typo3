@@ -955,7 +955,11 @@
                 <source>Checkbox</source>
             </trans-unit>
 
-            <trans-unit id="formEditor.elements.MultiCheckbox.label" resname="formEditor.elements.MultiCheckbox.label" xml:space="preserve">
+            <trans-unit id="formEditor.elements.CountrySelect.label" resname="formEditor.elements.CountrySelect.label" xml:space="preserve">
+                <source>Country select</source>
+            </trans-unit>
+
+			<trans-unit id="formEditor.elements.MultiCheckbox.label" resname="formEditor.elements.MultiCheckbox.label" xml:space="preserve">
                 <source>Multi checkbox</source>
             </trans-unit>
 
@@ -1081,6 +1085,19 @@
             </trans-unit>
             <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp" resname="formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp" xml:space="preserve">
                 <source>Images (bmp)</source>
+            </trans-unit>
+
+            <trans-unit id="formEditor.elements.CountrySelect" resname="formEditor.elements.CountrySelect" xml:space="preserve">
+                <source>Country Select</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.CountrySelect.editor.prioritizedCountries.label" resname="formEditor.elements.CountrySelect.editor.prioritizedCountries.label" xml:space="preserve">
+                <source>Prioritized countries</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.CountrySelect.editor.onlyCountries.label" resname="formEditor.elements.CountrySelect.editor.onlyCountries.label" xml:space="preserve">
+                <source>Only countries</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.CountrySelect.editor.excludeCountries.label" resname="formEditor.elements.CountrySelect.editor.excludeCountries.label" xml:space="preserve">
+                <source>Exclude countries</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.UnknownElement" resname="formEditor.elements.UnknownElement" xml:space="preserve">

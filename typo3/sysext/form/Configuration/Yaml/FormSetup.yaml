@@ -35,6 +35,7 @@ imports:
     - { resource: './FormElements/MultiSelect.yaml' }
     - { resource: './FormElements/RadioButton.yaml' }
     - { resource: './FormElements/SingleSelect.yaml' }
+    - { resource: './FormElements/CountrySelect.yaml' }
     - { resource: './FormElements/DatePicker.yaml' }
     - { resource: './FormElements/StaticText.yaml' }
     - { resource: './FormElements/ContentElement.yaml' }
@@ -102,6 +103,7 @@ prototypes:
         Inspector-ValidationErrorMessageEditor: Inspector/ValidationErrorMessageEditor
         Inspector-Typo3WinBrowserEditor: Inspector/Typo3WinBrowserEditor
         Inspector-MaximumFileSizeEditor: Inspector/MaximumFileSizeEditor
+        Inspector-CountrySelectEditor: Inspector/CountrySelectEditor
 
       formElementPropertyValidatorsDefinition:
         NotEmpty:

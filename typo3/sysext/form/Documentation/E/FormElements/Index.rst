@@ -389,6 +389,23 @@ to the :ref:`default<form-elements-settings>`. Additional settings:
    Settings for the 'Multi select' element.
 
 
+.. _form-elements-select-elements-country-select:
+
+Country select
+============
+
+An element to create a country select. The settings for this element adhere
+to the :ref:`default<form-elements-settings>`. Additional settings:
+
+- **First option**: Define the "empty option", i.e. the first element of the
+  select. You can use this to provide additional guidance for the user.
+- **Prioritized countries**: A multi-selection of country names, which should
+  always be listed as first options in the form element.
+- **Only countries**: Restrict the countries to be rendered in the selection.
+- **Exclude countries**: Define which countries should not be shown in the
+  selection.
+
+
 .. _form-elements-advanced-elements:
 
 Advanced elements
