@@ -31,8 +31,9 @@ call_user_func(function () {
 
     $testbase->defineSitePath();
 
+    $composerMode = defined('TYPO3_COMPOSER_MODE') && TYPO3_COMPOSER_MODE === true;
     $requestType = \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_BE | \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_CLI;
-    \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run(0, $requestType);
+    \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run(0, $requestType, $composerMode);
 
     $testbase->createDirectory(\TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/typo3conf/ext');
     $testbase->createDirectory(\TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/typo3temp/assets');
@@ -49,7 +50,7 @@ call_user_func(function () {
 
     $cache = new \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend(
         'core',
-        new \TYPO3\CMS\Core\Cache\Backend\NullBackend('production', [])
+        new \TYPO3\CMS\Core\Cache\Backend\NullBackend('production', []),
     );
     // Set all packages to active
     $packageManager = \TYPO3\CMS\Core\Core\Bootstrap::createPackageManager(
