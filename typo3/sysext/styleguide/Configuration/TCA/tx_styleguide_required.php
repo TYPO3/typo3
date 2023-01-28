@@ -286,7 +286,7 @@ return [
                                         <label>text required</label>
                                         <config>
                                             <type>text</type>
-                                            <eval>required</eval>
+                                            <required>1</required>
                                         </config>
                                     </text_1>
                                 </el>
@@ -310,10 +310,10 @@ return [
                                         <type>array</type>
                                         <el>
                                             <input_1>
-                                                <label>input_1, eval=required</label>
+                                                <label>input_1, required=1</label>
                                                 <config>
                                                     <type>input</type>
-                                                    <eval>required</eval>
+                                                    <required>1</required>
                                                 </config>
                                             </input_1>
                                         </el>
@@ -334,10 +334,10 @@ return [
                                                         <title>container_1</title>
                                                         <el>
                                                             <input_1>
-                                                                <label>input_1, eval=required</label>
+                                                                <label>input_1, required=1</label>
                                                                 <config>
                                                                     <type>input</type>
-                                                                    <eval>required</eval>
+                                                                    <required>1</required>
                                                                 </config>
                                                             </input_1>
                                                         </el>
