@@ -28,7 +28,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['Disable'],
+                    ['label' => 'Disable'],
                 ],
             ],
         ],
@@ -45,10 +45,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_l10nreadonly',
                 'foreign_table_where' => 'AND {#tx_styleguide_l10nreadonly}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_l10nreadonly}.{#sys_language_uid} IN (-1,0)',
@@ -62,10 +59,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_l10nreadonly',
                 'foreign_table_where' => 'AND {#tx_styleguide_l10nreadonly}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_l10nreadonly}.{#uid}!=###THIS_UID###',
@@ -143,8 +137,8 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo'],
-                    ['bar'],
+                    ['label' => 'foo'],
+                    ['label' => 'bar'],
                 ],
             ],
         ],
@@ -157,13 +151,13 @@ return [
                 'renderType' => 'checkboxToggle',
                 'items' => [
                     [
-                        0 => 'foo',
+                        'label' => 'foo',
                         'labelChecked' => 'Enabled',
                         'labelUnchecked' => 'Disabled',
                         'invertStateDisplay' => true,
                     ],
                     [
-                        0 => 'bar',
+                        'label' => 'bar',
                     ],
                 ],
             ],
@@ -177,13 +171,13 @@ return [
                 'renderType' => 'checkboxLabeledToggle',
                 'items' => [
                     [
-                        0 => 'foo',
+                        'label' => 'foo',
                         'labelChecked' => 'Enabled',
                         'labelUnchecked' => 'Disabled',
                         'invertStateDisplay' => true,
                     ],
                     [
-                        0 => 'bar',
+                        'label' => 'bar',
                         'labelChecked' => 'Enabled',
                         'labelUnchecked' => 'Disabled',
                     ],
@@ -199,8 +193,8 @@ return [
             'config' => [
                 'type' => 'radio',
                 'items' => [
-                    ['foo', 1],
-                    ['bar', 2],
+                    ['label' => 'foo', 'value' => 1],
+                    ['label' => 'bar', 'value' => 2],
                 ],
             ],
         ],
@@ -383,10 +377,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['Static values', '--div--'],
-                    ['static -2', -2],
-                    ['static -1', -1],
-                    ['DB values', '--div--'],
+                    ['label' => 'Static values', 'value' => '--div--'],
+                    ['label' => 'static -2', 'value' => -2],
+                    ['label' => 'static -1', 'value' => -1],
+                    ['label' => 'DB values', 'value' => '--div--'],
                 ],
                 'foreign_table' => 'tx_styleguide_staticdata',
                 'foreign_table_where' => 'AND {#tx_styleguide_staticdata}.{#value_1} LIKE \'%foo%\' ORDER BY uid',
@@ -401,10 +395,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingleBox',
                 'items' => [
-                    ['Static values', '--div--'],
-                    ['static -2', -2],
-                    ['static -1', -1],
-                    ['DB values', '--div--'],
+                    ['label' => 'Static values', 'value' => '--div--'],
+                    ['label' => 'static -2', 'value' => -2],
+                    ['label' => 'static -1', 'value' => -1],
+                    ['label' => 'DB values', 'value' => '--div--'],
                 ],
                 'foreign_table' => 'tx_styleguide_staticdata',
                 'foreign_table_where' => 'AND {#tx_styleguide_staticdata}.{#value_1} LIKE \'%foo%\' ORDER BY uid',
@@ -419,10 +413,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'items' => [
-                    ['Static values', '--div--'],
-                    ['static -2', -2],
-                    ['static -1', -1],
-                    ['DB values', '--div--'],
+                    ['label' => 'Static values', 'value' => '--div--'],
+                    ['label' => 'static -2', 'value' => -2],
+                    ['label' => 'static -1', 'value' => -1],
+                    ['label' => 'DB values', 'value' => '--div--'],
                 ],
                 'foreign_table' => 'tx_styleguide_staticdata',
                 'foreign_table_where' => 'AND {#tx_styleguide_staticdata}.{#value_1} LIKE \'%foo%\' ORDER BY uid',
@@ -441,8 +435,8 @@ return [
                 'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'items' => [
-                    [ 'static from tca 4711', 4711 ],
-                    [ 'static from tca 4712', 4712 ],
+                    ['label' => 'static from tca 4711', 'value' => 4711],
+                    ['label' => 'static from tca 4712', 'value' => 4712],
                 ],
                 'treeConfig' => [
                     'parentField' => 'pid',
@@ -463,8 +457,8 @@ return [
                 'foreign_table' => 'pages',
                 'MM' => 'tx_styleguide_l10nreadonly_select_tree_mm',
                 'items' => [
-                    [ 'static from tca 4711', 4711 ],
-                    [ 'static from tca 4712', 4712 ],
+                    ['label' => 'static from tca 4711', 'value' => 4711],
+                    ['label' => 'static from tca 4712', 'value' => 4712],
                 ],
                 'treeConfig' => [
                     'parentField' => 'pid',
@@ -485,8 +479,8 @@ return [
                 'foreign_table' => 'pages',
                 'foreign_table_where' => 'AND {#pages}.{#sys_language_uid} = 0 ORDER BY pages.sorting LIMIT 10',
                 'items' => [
-                    [ 'static from tca 4711', 4711 ],
-                    [ 'static from tca 4712', 4712 ],
+                    ['label' => 'static from tca 4711', 'value' => 4711],
+                    ['label' => 'static from tca 4712', 'value' => 4712],
                 ],
                 'multiSelectFilterItems' => [
                     ['', ''],
@@ -513,8 +507,8 @@ return [
                 'foreign_table' => 'tx_styleguide_staticdata',
                 'MM' => 'tx_styleguide_l10nreadonly_select_multiplesidebyside_mm',
                 'items' => [
-                    [ 'static from tca 4711', 4711 ],
-                    [ 'static from tca 4712', 4712 ],
+                    ['label' => 'static from tca 4711', 'value' => 4711],
+                    ['label' => 'static from tca 4712', 'value' => 4712],
                 ],
                 'multiSelectFilterItems' => [
                     ['', ''],

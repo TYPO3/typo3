@@ -28,7 +28,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['Disable'],
+                    ['label' => 'Disable'],
                 ],
             ],
         ],
@@ -45,7 +45,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_required',
                 'foreign_table_where' => 'AND {#tx_styleguide_required}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_required}.{#sys_language_uid} IN (-1,0)',
@@ -59,10 +59,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_required',
                 'foreign_table_where' => 'AND {#tx_styleguide_required}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_required}.{#uid}!=###THIS_UID###',
@@ -86,17 +83,17 @@ return [
                 'size' => 1,
                 'maxitems' => 1,
                 'items' => [
-                    ['false values', '--div--'],
-                    ['integer 0', 0],
-                    ['string "0"', '0'],
-                    ['bool false', false],
-                    ['string empty', ''],
-                    ['true values', '--div--'],
-                    ['integer 1', 1],
-                    ['bool true', true],
-                    ['string "1"', '1'],
-                    ['string "true"', 'true'],
-                    ['string "false"', 'false'],
+                    ['label' => 'false values', 'value' => '--div--'],
+                    ['label' => 'integer 0', 'value' => 0],
+                    ['label' => 'string "0"', 'value' => '0'],
+                    ['label' => 'bool false', 'value' => false],
+                    ['label' => 'string empty', 'value' => ''],
+                    ['label' => 'true values', 'value' => '--div--'],
+                    ['label' => 'integer 1', 'value' => 1],
+                    ['label' => 'bool true', 'value' => true],
+                    ['label' => 'string "1"', 'value' => '1'],
+                    ['label' => 'string "true"', 'value' => 'true'],
+                    ['label' => 'string "false"', 'value' => 'false'],
                 ],
             ],
         ],
@@ -186,9 +183,9 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['foo1', 1],
-                    ['foo2', 2],
-                    ['foo42', 42],
+                    ['label' => 'foo1', 'value' => 1],
+                    ['label' => 'foo2', 'value' => 2],
+                    ['label' => 'foo42', 'value' => 42],
                 ],
                 'size' => 1,
                 'minitems' => 0,
@@ -202,8 +199,8 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo'],
-                    ['bar'],
+                    ['label' => 'foo'],
+                    ['label' => 'bar'],
                 ],
             ],
         ],
@@ -321,8 +318,8 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['Hide input_2 on flex_1', 0],
-                    ['Show input_2 on flex_1', 1],
+                    ['label' => 'Hide input_2 on flex_1', 'value' => 0],
+                    ['label' => 'Show input_2 on flex_1', 'value' => 1],
                 ],
                 'size' => 1,
                 'minitems' => 0,
@@ -411,12 +408,12 @@ return [
                                                 <renderType>selectSingle</renderType>
                                                 <items type="array">
                                                     <numIndex index="0" type="array">
-                                                        <numIndex index="0">hide input_2</numIndex>
-                                                        <numIndex index="1">0</numIndex>
+                                                        <label>hide input_2</label>
+                                                        <value>0</value>
                                                     </numIndex>
                                                     <numIndex index="1" type="array">
-                                                        <numIndex index="0">show input_2</numIndex>
-                                                        <numIndex index="1">1</numIndex>
+                                                        <label>show input_2</label>
+                                                        <value>1</value>
                                                     </numIndex>
                                                 </items>
                                                 <maxitems>1</maxitems>
@@ -477,12 +474,12 @@ return [
                                                 <renderType>selectSingle</renderType>
                                                 <items type="array">
                                                     <numIndex index="0" type="array">
-                                                        <numIndex index="0">hide input_3 on sheet_1</numIndex>
-                                                        <numIndex index="1">0</numIndex>
+                                                        <label>hide input_3 on sheet_1</label>
+                                                        <value>0</value>
                                                     </numIndex>
                                                     <numIndex index="1" type="array">
-                                                        <numIndex index="0">show input_3 on sheet_1</numIndex>
-                                                        <numIndex index="1">1</numIndex>
+                                                        <label>show input_3 on sheet_1</label>
+                                                        <value>1</value>
                                                     </numIndex>
                                                 </items>
                                                 <maxitems>1</maxitems>
@@ -507,14 +504,8 @@ return [
                 'renderType' => 'selectSingle',
                 'default' => 1,
                 'items' => [
-                    0 => [
-                        'hide input_2 in flex_3',
-                        0,
-                    ],
-                    1 => [
-                        'show input_2 in flex_3',
-                        1,
-                    ],
+                    ['label' => 'hide input_2 in flex_3', 'value' => 0],
+                    ['label' => 'show input_2 in flex_3', 'value' => 1],
                 ],
             ],
         ],
@@ -539,12 +530,12 @@ return [
                                                     <renderType>selectSingle</renderType>
                                                     <items type="array">
                                                         <numIndex index="0" type="array">
-                                                            <numIndex index="0">input_3 and input_4 not shown</numIndex>
-                                                            <numIndex index="1">0</numIndex>
+                                                            <label>input_3 and input_4 not shown</label>
+                                                            <value>0</value>
                                                         </numIndex>
                                                         <numIndex index="1" type="array">
-                                                            <numIndex index="0">input_3 and input_4 shown</numIndex>
-                                                            <numIndex index="1">1</numIndex>
+                                                            <label>input_3 and input_4 shown</label>
+                                                            <value>1</value>
                                                         </numIndex>
                                                     </items>
                                                     <maxitems>1</maxitems>
@@ -568,12 +559,12 @@ return [
                                                                     <renderType>selectSingle</renderType>
                                                                     <items type="array">
                                                                         <numIndex index="0" type="array">
-                                                                            <numIndex index="0">input_5 not shown</numIndex>
-                                                                            <numIndex index="1">0</numIndex>
+                                                                            <label>input_5 not shown</label>
+                                                                            <value>0</value>
                                                                         </numIndex>
                                                                         <numIndex index="1" type="array">
-                                                                            <numIndex index="0">input_5 shown</numIndex>
-                                                                            <numIndex index="1">1</numIndex>
+                                                                            <label>input_5 shown</label>
+                                                                            <value>1</value>
                                                                         </numIndex>
                                                                     </items>
                                                                     <maxitems>1</maxitems>
@@ -647,12 +638,12 @@ return [
                                                     <renderType>selectSingle</renderType>
                                                     <items type="array">
                                                         <numIndex index="0" type="array">
-                                                            <numIndex index="0">input_6 on sheet_1 containers not shown</numIndex>
-                                                            <numIndex index="1">0</numIndex>
+                                                            <label>input_6 on sheet_1 containers not shown</label>
+                                                            <value>0</value>
                                                         </numIndex>
                                                         <numIndex index="1" type="array">
-                                                            <numIndex index="0">input_6 on sheet_1 containers shown</numIndex>
-                                                            <numIndex index="1">1</numIndex>
+                                                            <label>input_6 on sheet_1 containers shown</label>
+                                                            <value>1</value>
                                                         </numIndex>
                                                     </items>
                                                     <maxitems>1</maxitems>

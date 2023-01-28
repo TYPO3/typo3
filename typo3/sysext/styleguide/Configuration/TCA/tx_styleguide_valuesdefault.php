@@ -29,7 +29,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['Disable'],
+                    ['label' => 'Disable'],
                 ],
             ],
         ],
@@ -46,7 +46,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_valuesdefault',
                 'foreign_table_where' => 'AND {#tx_styleguide_valuesdefault}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_valuesdefault}.{#sys_language_uid} IN (-1,0)',
@@ -60,10 +60,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_valuesdefault',
                 'foreign_table_where' => 'AND {#tx_styleguide_valuesdefault}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_valuesdefault}.{#uid}!=###THIS_UID###',
@@ -124,7 +121,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo'],
+                    ['label' => 'foo'],
                 ],
                 'default' => 1,
             ],
@@ -134,10 +131,10 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo1'],
-                    ['foo2'],
-                    ['foo3'],
-                    ['foo4'],
+                    ['label' => 'foo1'],
+                    ['label' => 'foo2'],
+                    ['label' => 'foo3'],
+                    ['label' => 'foo4'],
                 ],
                 'default' => 5,
             ],
@@ -147,13 +144,13 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['Mo'],
-                    ['Tu'],
-                    ['We'],
-                    ['Th'],
-                    ['Fr'],
-                    ['Sa'],
-                    ['Su'],
+                    ['label' => 'Mo'],
+                    ['label' => 'Tu'],
+                    ['label' => 'We'],
+                    ['label' => 'Th'],
+                    ['label' => 'Fr'],
+                    ['label' => 'Sa'],
+                    ['label' => 'Su'],
                 ],
                 'cols' => 'inline',
                 'default' => 5,
@@ -165,9 +162,9 @@ return [
             'config' => [
                 'type' => 'radio',
                 'items' => [
-                    ['foo1', 1],
-                    ['foo2', 2],
-                    ['foo3', 3],
+                    ['label' => 'foo1', 'value' => 1],
+                    ['label' => 'foo2', 'value' => 2],
+                    ['label' => 'foo3', 'value' => 3],
                 ],
                 'default' => 2,
             ],
@@ -177,9 +174,9 @@ return [
             'config' => [
                 'type' => 'radio',
                 'items' => [
-                    ['foo1', 'x'],
-                    ['foo2', 'y'],
-                    ['foo3', 'z'],
+                    ['label' => 'foo1', 'value' => 'x'],
+                    ['label' => 'foo2', 'value' => 'y'],
+                    ['label' => 'foo3', 'value' => 'z'],
                 ],
                 'default' => 'y',
             ],
@@ -189,9 +186,9 @@ return [
             'config' => [
                 'type' => 'radio',
                 'items' => [
-                    ['foo1', 'x'],
-                    ['foo2', 'y'],
-                    ['foo3', 'z'],
+                    ['label' => 'foo1', 'value' => 'x'],
+                    ['label' => 'foo2', 'value' => 'y'],
+                    ['label' => 'foo3', 'value' => 'z'],
                 ],
                 'default' => '',
             ],
@@ -205,9 +202,9 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['foo1', 1],
-                    ['foo2', 2],
-                    ['foo3', 4],
+                    ['label' => 'foo1', 'value' => 1],
+                    ['label' => 'foo2', 'value' => 2],
+                    ['label' => 'foo3', 'value' => 4],
                 ],
                 'default' => 2,
             ],
@@ -218,10 +215,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['foo 3', 3],
-                    ['foo 4', 4],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
+                    ['label' => 'foo 3', 'value' => 3],
+                    ['label' => 'foo 4', 'value' => 4],
                 ],
                 'default' => '1,3',
             ],

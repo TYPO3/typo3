@@ -37,7 +37,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_inline_mngroup',
                 'foreign_table_where' => 'AND {#tx_styleguide_inline_mngroup}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mngroup}.{#sys_language_uid} IN (-1,0)',
@@ -51,10 +51,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_inline_mngroup',
                 'foreign_table_where' => 'AND {#tx_styleguide_inline_mngroup}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mngroup}.{#uid}!=###THIS_UID###',

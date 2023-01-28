@@ -28,7 +28,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['Disable'],
+                    ['label' => 'Disable'],
                 ],
             ],
         ],
@@ -45,10 +45,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_elements_basic',
                 'foreign_table_where' => 'AND {#tx_styleguide_elements_basic}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_basic}.{#sys_language_uid} IN (-1,0)',
@@ -62,10 +59,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_elements_basic',
                 'foreign_table_where' => 'AND {#tx_styleguide_elements_basic}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_basic}.{#uid}!=###THIS_UID###',
@@ -935,7 +929,7 @@ backend_layout {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo'],
+                    ['label' => 'foo'],
                 ],
             ],
         ],
@@ -945,10 +939,10 @@ backend_layout {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo'],
-                    [''],
+                    ['label' => 'foo'],
+                    ['label' => ''],
                     [
-                        'foobar',
+                        'label' => 'foobar',
                         'iconIdentifierChecked' => 'content-beside-text-img-below-center',
                         'iconIdentifierUnchecked' => 'content-beside-text-img-below-center',
                     ],
@@ -961,14 +955,14 @@ backend_layout {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo'],
+                    ['label' => 'foo'],
                     [
-                        'foo and this here is very long text that maybe does not really fit into the form in one line.'
+                        'label' => 'foo and this here is very long text that maybe does not really fit into the form in one line.'
                         . ' Ok let us add even more text to see how this looks like if wrapped. Is this enough now? No?'
                         . ' Then let us add some even more useless text here!',
                     ],
-                    ['foobar'],
-                    ['foobar'],
+                    ['label' => 'foobar'],
+                    ['label' => 'foobar'],
                 ],
             ],
         ],
@@ -980,8 +974,8 @@ backend_layout {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo'],
-                    ['bar'],
+                    ['label' => 'foo'],
+                    ['label' => 'bar'],
                 ],
                 'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeCheckbox8ItemsProcFunc->itemsProcFunc',
             ],
@@ -1015,8 +1009,8 @@ backend_layout {
                 'type' => 'check',
                 'readOnly' => 1,
                 'items' => [
-                    ['foo1'],
-                    ['foo2'],
+                    ['label' => 'foo1'],
+                    ['label' => 'foo2'],
                 ],
             ],
         ],
@@ -1026,9 +1020,9 @@ backend_layout {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo1'],
-                    ['foo2'],
-                    ['foo3'],
+                    ['label' => 'foo1'],
+                    ['label' => 'foo2'],
+                    ['label' => 'foo3'],
                 ],
                 'cols' => '1',
             ],
@@ -1039,9 +1033,9 @@ backend_layout {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo1'],
-                    ['foo2'],
-                    ['foo3'],
+                    ['label' => 'foo1'],
+                    ['label' => 'foo2'],
+                    ['label' => 'foo3'],
                 ],
                 'cols' => '2',
             ],
@@ -1052,10 +1046,10 @@ backend_layout {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo1'],
-                    ['foo2'],
-                    ['foo3'],
-                    ['foo4'],
+                    ['label' => 'foo1'],
+                    ['label' => 'foo2'],
+                    ['label' => 'foo3'],
+                    ['label' => 'foo4'],
                 ],
                 'cols' => '3',
             ],
@@ -1066,17 +1060,17 @@ backend_layout {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo1'],
-                    ['foo2'],
+                    ['label' => 'foo1'],
+                    ['label' => 'foo2'],
                     [
-                        'foo3 and this here is very long text that maybe does not really fit into the'
+                        'label' => 'foo3 and this here is very long text that maybe does not really fit into the'
                         . ' form in one line. Ok let us add even more text to see how',
                     ],
-                    ['foo4'],
-                    ['foo5'],
-                    ['foo6'],
-                    ['foo7'],
-                    ['foo8'],
+                    ['label' => 'foo4'],
+                    ['label' => 'foo5'],
+                    ['label' => 'foo6'],
+                    ['label' => 'foo7'],
+                    ['label' => 'foo8'],
                 ],
                 'cols' => '4',
             ],
@@ -1087,13 +1081,13 @@ backend_layout {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo1'],
-                    ['foo2'],
-                    ['foo3'],
-                    ['foo4'],
-                    ['foo5'],
-                    ['foo6'],
-                    ['foo7'],
+                    ['label' => 'foo1'],
+                    ['label' => 'foo2'],
+                    ['label' => 'foo3'],
+                    ['label' => 'foo4'],
+                    ['label' => 'foo5'],
+                    ['label' => 'foo6'],
+                    ['label' => 'foo7'],
                 ],
                 'cols' => '5',
             ],
@@ -1104,13 +1098,13 @@ backend_layout {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo1'],
-                    ['foo2'],
-                    ['foo3'],
-                    ['foo4'],
-                    ['foo5'],
-                    ['foo6'],
-                    ['foo7'],
+                    ['label' => 'foo1'],
+                    ['label' => 'foo2'],
+                    ['label' => 'foo3'],
+                    ['label' => 'foo4'],
+                    ['label' => 'foo5'],
+                    ['label' => 'foo6'],
+                    ['label' => 'foo7'],
                 ],
                 'cols' => '6',
             ],
@@ -1121,13 +1115,13 @@ backend_layout {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['Mo'],
-                    ['Tu'],
-                    ['We'],
-                    ['Th'],
-                    ['Fr'],
-                    ['Sa'],
-                    ['Su'],
+                    ['label' => 'Mo'],
+                    ['label' => 'Tu'],
+                    ['label' => 'We'],
+                    ['label' => 'Th'],
+                    ['label' => 'Fr'],
+                    ['label' => 'Sa'],
+                    ['label' => 'Su'],
                 ],
                 'cols' => 'inline',
             ],
@@ -1140,7 +1134,7 @@ backend_layout {
                 'renderType' => 'checkboxToggle',
                 'items' => [
                     [
-                        0 => 'foo',
+                        'label' => 'foo',
                         'labelChecked' => 'Enabled',
                         'labelUnchecked' => 'Disabled',
                     ],
@@ -1155,7 +1149,7 @@ backend_layout {
                 'renderType' => 'checkboxToggle',
                 'items' => [
                     [
-                        0 => 'foo',
+                        'label' => 'foo',
                         'labelChecked' => 'Enabled',
                         'labelUnchecked' => 'Disabled',
                         'invertStateDisplay' => true,
@@ -1171,7 +1165,7 @@ backend_layout {
                 'renderType' => 'checkboxLabeledToggle',
                 'items' => [
                     [
-                        0 => 'foo',
+                        'label' => 'foo',
                         'labelChecked' => 'Enabled',
                         'labelUnchecked' => 'Disabled',
                     ],
@@ -1186,17 +1180,17 @@ backend_layout {
                 'renderType' => 'checkboxLabeledToggle',
                 'items' => [
                     [
-                        0 => 'foo',
+                        'label' => 'foo',
                         'labelChecked' => 'On',
                         'labelUnchecked' => 'Off',
                     ],
                     [
-                        0 => 'bar',
+                        'label' => 'bar',
                         'labelChecked' => 'On',
                         'labelUnchecked' => 'Off',
                     ],
                     [
-                        0 => 'inv',
+                        'label' => 'inv',
                         'labelChecked' => 'On',
                         'labelUnchecked' => 'Off',
                         'invertStateDisplay' => true,
@@ -1212,7 +1206,7 @@ backend_layout {
                 'renderType' => 'checkboxLabeledToggle',
                 'items' => [
                     [
-                        0 => 'foo',
+                        'label' => 'foo',
                         'labelChecked' => 'Enabled',
                         'labelUnchecked' => 'Disabled',
                         'invertStateDisplay' => true,
@@ -1227,10 +1221,10 @@ backend_layout {
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
                 'items' => [
-                    ['foo'],
-                    ['bar'],
-                    ['baz'],
-                    ['husel'],
+                    ['label' => 'foo'],
+                    ['label' => 'bar'],
+                    ['label' => 'baz'],
+                    ['label' => 'husel'],
                 ],
                 'cols' => '4',
             ],
@@ -1244,7 +1238,7 @@ backend_layout {
                 'readOnly' => true,
                 'items' => [
                     [
-                        0 => 'foo',
+                        'label' => 'foo',
                         'labelChecked' => 'Enabled',
                         'labelUnchecked' => 'Disabled',
                     ],
@@ -1260,7 +1254,7 @@ backend_layout {
                 'readOnly' => true,
                 'items' => [
                     [
-                        0 => 'foo',
+                        'label' => 'foo',
                         'labelChecked' => 'Enabled',
                         'labelUnchecked' => 'Disabled',
                     ],
@@ -1274,9 +1268,9 @@ backend_layout {
             'config' => [
                 'type' => 'radio',
                 'items' => [
-                    ['foo', 1],
-                    ['', 2],
-                    ['foobar', 3],
+                    ['label' => 'foo', 'value' => 1],
+                    ['label' => '', 'value' => 2],
+                    ['label' => 'foobar', 'value' => 3],
                 ],
             ],
         ],
@@ -1287,13 +1281,13 @@ backend_layout {
                 'type' => 'radio',
                 'items' => [
                     [
-                        'foo and this here is very long text that maybe does not really fit into the form in one line.'
+                        'label' => 'foo and this here is very long text that maybe does not really fit into the form in one line.'
                         . ' Ok let us add even more text to see how this looks like if wrapped. Is this enough now?'
                         . ' No? Then let us add some even more useless text here!',
-                        1,
+                        'value' => 1,
                     ],
-                    ['bar', 2],
-                    ['foobar', 3],
+                    ['label' => 'bar', 'value' => 2],
+                    ['label' => 'foobar', 'value' => 3],
                 ],
             ],
         ],
@@ -1303,22 +1297,22 @@ backend_layout {
             'config' => [
                 'type' => 'radio',
                 'items' => [
-                    ['foo1', 1],
-                    ['foo2', 2],
-                    ['foo3', 3],
-                    ['foo4', 4],
-                    ['foo5', 5],
-                    ['foo6', 6],
-                    ['foo7', 7],
-                    ['foo8', 8],
-                    ['foo9', 9],
-                    ['foo10', 10],
-                    ['foo11', 11],
-                    ['foo12', 12],
-                    ['foo13', 13],
-                    ['foo14', 14],
-                    ['foo15', 15],
-                    ['foo16', 16],
+                    ['label' => 'foo1', 'value' => 1],
+                    ['label' => 'foo2', 'value' => 2],
+                    ['label' => 'foo3', 'value' => 3],
+                    ['label' => 'foo4', 'value' => 4],
+                    ['label' => 'foo5', 'value' => 5],
+                    ['label' => 'foo6', 'value' => 6],
+                    ['label' => 'foo7', 'value' => 7],
+                    ['label' => 'foo8', 'value' => 8],
+                    ['label' => 'foo9', 'value' => 9],
+                    ['label' => 'foo10', 'value' => 10],
+                    ['label' => 'foo11', 'value' => 11],
+                    ['label' => 'foo12', 'value' => 12],
+                    ['label' => 'foo13', 'value' => 13],
+                    ['label' => 'foo14', 'value' => 14],
+                    ['label' => 'foo15', 'value' => 15],
+                    ['label' => 'foo16', 'value' => 16],
                 ],
             ],
         ],
@@ -1328,8 +1322,8 @@ backend_layout {
             'config' => [
                 'type' => 'radio',
                 'items' => [
-                    ['foo', 'foo'],
-                    ['bar', 'bar'],
+                    ['label' => 'foo', 'value' => 'foo'],
+                    ['label' => 'bar', 'value' => 'bar'],
                 ],
             ],
         ],
@@ -1341,8 +1335,8 @@ backend_layout {
             'config' => [
                 'type' => 'radio',
                 'items' => [
-                    ['foo', 1],
-                    ['bar', 2],
+                    ['label' => 'foo', 'value' => 1],
+                    ['label' => 'bar', 'value' => 2],
                 ],
                 'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeRadio5ItemsProcFunc->itemsProcFunc',
             ],
@@ -1354,8 +1348,8 @@ backend_layout {
                 'type' => 'radio',
                 'readOnly' => 1,
                 'items' => [
-                    ['foo', 1],
-                    ['bar', 2],
+                    ['label' => 'foo', 'value' => 1],
+                    ['label' => 'bar', 'value' => 2],
                 ],
             ],
         ],
@@ -1575,13 +1569,13 @@ backend_layout {
                                                     <type>check</type>
                                                     <items>
                                                         <numIndex index="0">
-                                                            <numIndex index="0">Foo</numIndex>
+                                                            <label>Foo</label>
                                                         </numIndex>
                                                         <numIndex index="1">
-                                                            <numIndex index="0">Bar</numIndex>
+                                                            <label>Bar</label>
                                                         </numIndex>
                                                         <numIndex index="2">
-                                                            <numIndex index="0">FooBar</numIndex>
+                                                            <label>FooBar</label>
                                                         </numIndex>
                                                     </items>
                                                 </config>
@@ -1592,15 +1586,15 @@ backend_layout {
                                                     <type>check</type>
                                                     <items>
                                                         <numIndex index="0">
-                                                            <numIndex index="0">Foo</numIndex>
+                                                            <label>Foo</label>
                                                             <invertStateDisplay>1</invertStateDisplay>
                                                         </numIndex>
                                                         <numIndex index="1">
-                                                            <numIndex index="0">Bar</numIndex>
+                                                            <label>Bar</label>
                                                             <invertStateDisplay>1</invertStateDisplay>
                                                         </numIndex>
                                                         <numIndex index="2">
-                                                            <numIndex index="0">FooBar</numIndex>
+                                                            <label>FooBar</label>
                                                             <invertStateDisplay>1</invertStateDisplay>
                                                         </numIndex>
                                                     </items>
@@ -1622,12 +1616,12 @@ backend_layout {
                                                     <type>radio</type>
                                                     <items>
                                                         <numIndex index="0">
-                                                            <numIndex index="0">Foo</numIndex>
-                                                            <numIndex index="1">1</numIndex>
+                                                            <label>Foo</label>
+                                                            <value>1</value>
                                                         </numIndex>
                                                         <numIndex index="1">
-                                                            <numIndex index="0">Bar</numIndex>
-                                                            <numIndex index="1">2</numIndex>
+                                                            <label>Bar</label>
+                                                            <value>2</value>
                                                         </numIndex>
                                                     </items>
                                                 </config>

@@ -28,7 +28,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['Disable'],
+                    ['label' => 'Disable'],
                 ],
             ],
         ],
@@ -45,10 +45,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_elements_select',
                 'foreign_table_where' => 'AND {#tx_styleguide_elements_select}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_select}.{#sys_language_uid} IN (-1,0)',
@@ -62,10 +59,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_elements_select',
                 'foreign_table_where' => 'AND {#tx_styleguide_elements_select}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_select}.{#uid}!=###THIS_UID###',
@@ -87,12 +81,12 @@ return [
                 'renderType' => 'selectSingle',
                 'items' => [
                     [
-                        'foo and this here is very long text that maybe does not really fit into the form in one line.'
+                        'label' => 'foo and this here is very long text that maybe does not really fit into the form in one line.'
                             . ' Ok let us add even more text to see how this looks like if wrapped. Is this enough now? No?'
                             . ' Then let us add some even more useless text here!',
-                        1,
+                        'value' => 1,
                     ],
-                    ['bar', 'bar'],
+                    ['label' => 'bar', 'value' => 'bar'],
                 ],
             ],
         ],
@@ -102,8 +96,8 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['foo', 1],
-                    ['bar', 'bar'],
+                    ['label' => 'foo', 'value' => 1],
+                    ['label' => 'bar', 'value' => 'bar'],
                 ],
                 'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeSelect2ItemsProcFunc->itemsProcFunc',
             ],
@@ -114,10 +108,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['Static values', '--div--'],
-                    ['static -2', -2],
-                    ['static -1', -1],
-                    ['DB values', '--div--'],
+                    ['label' => 'Static values', 'value' => '--div--'],
+                    ['label' => 'static -2', 'value' => -2],
+                    ['label' => 'static -1', 'value' => -1],
+                    ['label' => 'DB values', 'value' => '--div--'],
                 ],
                 'foreign_table' => 'tx_styleguide_staticdata',
                 'foreign_table_where' => 'AND {#tx_styleguide_staticdata}.{#value_1} LIKE \'%foo%\' ORDER BY uid',
@@ -130,8 +124,8 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['foo 1', 'foo1', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
-                    ['foo 2', 'foo2', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
+                    ['label' => 'foo 1', 'value' => 'foo1', 'icon' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
+                    ['label' => 'foo 2', 'value' => 'foo2', 'icon' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
                 ],
             ],
         ],
@@ -141,8 +135,8 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['foo 1', 'foo1', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
-                    ['foo 2', 'foo2', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
+                    ['label' => 'foo 1', 'value' => 'foo1', 'icon' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
+                    ['label' => 'foo 2', 'value' => 'foo2', 'icon' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
                 ],
                 'fieldWizard' => [
                     'selectIcons' => [
@@ -157,7 +151,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                 ],
                 'fileFolderConfig' => [
                     'folder' => 'EXT:styleguide/Resources/Public/Icons',
@@ -177,12 +171,12 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['First div with items', '--div--'],
-                    ['item 1', 1],
-                    ['item 2', 2],
-                    ['Second div without items', '--div--'],
-                    ['Third div with items', '--div--'],
-                    ['item 3', 3],
+                    ['label' => 'First div with items', 'value' => '--div--'],
+                    ['label' => 'item 1', 'value' => 1],
+                    ['label' => 'item 2', 'value' => 2],
+                    ['label' => 'Second div without items', 'value' => '--div--'],
+                    ['label' => 'Third div with items', 'value' => '--div--'],
+                    ['label' => 'item 3', 'value' => 3],
                 ],
             ],
         ],
@@ -193,10 +187,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['a divider', '--div--'],
-                    ['foo 3', 3],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
+                    ['label' => 'a divider', 'value' => '--div--'],
+                    ['label' => 'foo 3', 'value' => 3],
                 ],
                 'size' => 6,
             ],
@@ -207,8 +201,8 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
                 ],
                 'size' => 2,
             ],
@@ -234,8 +228,8 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['foo', 'foo'],
-                    ['bar', 'bar'],
+                    ['label' => 'foo', 'value' => 'foo'],
+                    ['label' => 'bar', 'value' => 'bar'],
                 ],
             ],
         ],
@@ -247,7 +241,7 @@ return [
                 'renderType' => 'selectSingle',
                 'readOnly' => true,
                 'items' => [
-                    ['bar', 'bar'],
+                    ['label' => 'bar', 'value' => 'bar'],
                 ],
             ],
         ],
@@ -267,10 +261,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['item 1', 1, '', 'group1'],
-                    ['item 2', 2, '', 'group1'],
-                    ['item 3', 3, '', 'group3'],
-                    ['item 4', 3],
+                    ['label' => 'item 1', 'value' => 1, 'group' => 'group1'],
+                    ['label' => 'item 2', 'value' => 2, 'group' => 'group1'],
+                    ['label' => 'item 3', 'value' => 3, 'group' => 'group3'],
+                    ['label' => 'item 4', 'value' => 3],
                 ],
                 'itemGroups' => [
                     'group1' => 'Group 1 with items',
@@ -286,10 +280,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['item 1', 1, '', 'group1'],
-                    ['item 2', 2, '', 'group1'],
-                    ['item 3', 3, '', 'group3'],
-                    ['item 4', 3],
+                    ['label' => 'item 1', 'value' => 1, 'group' => 'group1'],
+                    ['label' => 'item 2', 'value' => 2, 'group' => 'group1'],
+                    ['label' => 'item 3', 'value' => 3, 'group' => 'group3'],
+                    ['label' => 'item 4', 'value' => 3],
                 ],
                 'itemGroups' => [
                     'group1' => 'Group 1 with items',
@@ -306,10 +300,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['Plum tree', 1],
-                    ['Walnut tree', 2],
-                    ['Apple tree', 3],
-                    ['Cherry tree', 4],
+                    ['label' => 'Plum tree', 'value' => 1],
+                    ['label' => 'Walnut tree', 'value' => 2],
+                    ['label' => 'Apple tree', 'value' => 3],
+                    ['label' => 'Cherry tree', 'value' => 4],
                 ],
                 'sortItems' => [
                     'label' => 'asc',
@@ -324,10 +318,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['Plum tree', 1],
-                    ['Walnut tree', 2],
-                    ['Apple tree', 3],
-                    ['Cherry tree', 4],
+                    ['label' => 'Plum tree', 'value' => 1],
+                    ['label' => 'Walnut tree', 'value' => 2],
+                    ['label' => 'Apple tree', 'value' => 3],
+                    ['label' => 'Cherry tree', 'value' => 4],
                 ],
                 'sortItems' => [
                     'value' => 'desc',
@@ -342,10 +336,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['Plum tree', 1],
-                    ['Walnut tree', 2],
-                    ['Apple tree', 3],
-                    ['Cherry tree', 4],
+                    ['label' => 'Plum tree', 'value' => 1],
+                    ['label' => 'Walnut tree', 'value' => 2],
+                    ['label' => 'Apple tree', 'value' => 3],
+                    ['label' => 'Cherry tree', 'value' => 4],
                 ],
                 'sortItems' => [
                     'tx_styleguide' => 'TYPO3\CMS\Styleguide\UserFunctions\FormEngine\SelectItemSorter->sortReverseTitles',
@@ -360,11 +354,11 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingleBox',
                 'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['divider', '--div--'],
-                    ['foo 3', 3],
-                    ['foo 4', 4],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
+                    ['label' => 'divider', 'value' => '--div--'],
+                    ['label' => 'foo 3', 'value' => 3],
+                    ['label' => 'foo 4', 'value' => 4],
                 ],
             ],
         ],
@@ -376,11 +370,11 @@ return [
                 'renderType' => 'selectSingleBox',
                 'readOnly' => true,
                 'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['divider', '--div--'],
-                    ['foo 3', 3],
-                    ['foo 4', 4],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
+                    ['label' => 'divider', 'value' => '--div--'],
+                    ['label' => 'foo 3', 'value' => 3],
+                    ['label' => 'foo 4', 'value' => 4],
                 ],
             ],
         ],
@@ -391,10 +385,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingleBox',
                 'items' => [
-                    ['item 1', 1, '', 'group1'],
-                    ['item 2', 2, '', 'group1'],
-                    ['item 3', 3, '', 'group3'],
-                    ['item 4', 3],
+                    ['label' => 'item 1', 'value' => 1, 'group' => 'group1'],
+                    ['label' => 'item 2', 'value' => 2, 'group' => 'group1'],
+                    ['label' => 'item 3', 'value' => 3, 'group' => 'group3'],
+                    ['label' => 'item 4', 'value' => 3],
                 ],
                 'itemGroups' => [
                     'group1' => 'Group 1 with items',
@@ -411,9 +405,9 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['foo 3', 3],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
+                    ['label' => 'foo 3', 'value' => 3],
                 ],
             ],
         ],
@@ -424,9 +418,9 @@ return [
                 'renderType' => 'selectCheckBox',
                 'maxitems' => 1,
                 'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['foo 3', 3],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
+                    ['label' => 'foo 3', 'value' => 3],
                 ],
             ],
         ],
@@ -436,10 +430,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'items' => [
-                    ['foo 1', 1, '', null, ['title' => 'optional title', 'description' => 'optional description']],
-                    ['foo 2', 2, 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg', null, 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:translatedHelpTextForSelectCheckBox3'],
-                    ['foo 3', 3, 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
-                    ['foo 4', 4],
+                    ['label' => 'foo 1', 'value' => 1, 'description' => ['title' => 'optional title', 'description' => 'optional description']],
+                    ['label' => 'foo 2', 'value' => 2, 'icon' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg', 'description' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:translatedHelpTextForSelectCheckBox3'],
+                    ['label' => 'foo 3', 'value' => 3, 'icon' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
+                    ['label' => 'foo 4', 'value' => 4],
                 ],
             ],
         ],
@@ -451,8 +445,8 @@ return [
                 'renderType' => 'selectCheckBox',
                 'readOnly' => true,
                 'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
                 ],
             ],
         ],
@@ -465,13 +459,13 @@ return [
                     'expandAll' => true,
                 ],
                 'items' => [
-                    ['div 1', '--div--'],
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['foo 3', 3],
-                    ['div 2', '--div--'],
-                    ['foo 4', 4],
-                    ['foo 5', 5],
+                    ['label' => 'div 1', 'value' => '--div--'],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
+                    ['label' => 'foo 3', 'value' => 3],
+                    ['label' => 'div 2', 'value' => '--div--'],
+                    ['label' => 'foo 4', 'value' => 4],
+                    ['label' => 'foo 5', 'value' => 5],
                 ],
             ],
         ],
@@ -481,13 +475,13 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'items' => [
-                    ['div 1', '--div--'],
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['foo 3', 3],
-                    ['div 2', '--div--'],
-                    ['foo 4', 4],
-                    ['foo 5', 5],
+                    ['label' => 'div 1', 'value' => '--div--'],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
+                    ['label' => 'foo 3', 'value' => 3],
+                    ['label' => 'div 2', 'value' => '--div--'],
+                    ['label' => 'foo 4', 'value' => 4],
+                    ['label' => 'foo 5', 'value' => 5],
                 ],
             ],
         ],
@@ -498,11 +492,11 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'items' => [
-                    ['foo 1', 1, '', 'group1'],
-                    ['foo 2', 2, 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg', 'group1'],
-                    ['foo 3', 3, 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
-                    ['foo 4', 4],
-                    ['foo 5', 1, '', 'group3'],
+                    ['label' => 'foo 1', 'value' => 1, 'group' => 'group1'],
+                    ['label' => 'foo 2', 'value' => 2, 'icon' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg', 'group' => 'group1'],
+                    ['label' => 'foo 3', 'value' => 3, 'icon' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
+                    ['label' => 'foo 4', 'value' => 4],
+                    ['label' => 'foo 5', 'value' => 1, 'group' => 'group3'],
                 ],
                 'itemGroups' => [
                     'group1' => 'Group 1 with items',
@@ -519,13 +513,13 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['a divider', '--div--'],
-                    ['foo 3', 3],
-                    ['foo 4', 4],
-                    ['foo 5', 5],
-                    ['foo 6', 6],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
+                    ['label' => 'a divider', 'value' => '--div--'],
+                    ['label' => 'foo 3', 'value' => 3],
+                    ['label' => 'foo 4', 'value' => 4],
+                    ['label' => 'foo 5', 'value' => 5],
+                    ['label' => 'foo 6', 'value' => 6],
                 ],
                 'size' => 3,
                 'autoSizeMax' => 10,
@@ -538,14 +532,14 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'items' => [
-                    ['two exclusive items', '--div--'],
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['casual multiple items', '--div--'],
-                    ['foo 3', 3],
-                    ['foo 4', 4],
-                    ['foo 5', 5],
-                    ['foo 6', 6],
+                    ['label' => 'two exclusive items', 'value' => '--div--'],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
+                    ['label' => 'casual multiple items', 'value' => '--div--'],
+                    ['label' => 'foo 3', 'value' => 3],
+                    ['label' => 'foo 4', 'value' => 4],
+                    ['label' => 'foo 5', 'value' => 5],
+                    ['label' => 'foo 6', 'value' => 6],
                 ],
                 'multiple' => true,
                 'exclusiveKeys' => '1,2',
@@ -557,9 +551,9 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['foo 3', 3],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
+                    ['label' => 'foo 3', 'value' => 3],
                 ],
                 'itemListStyle' => 'width:250px;background-color:#ffcccc;',
                 'selectedListStyle' => 'width:250px;background-color:#ccffcc;',
@@ -572,10 +566,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['foo 3', 3],
-                    ['bar', 4],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
+                    ['label' => 'foo 3', 'value' => 3],
+                    ['label' => 'bar', 'value' => 4],
                 ],
                 'multiSelectFilterItems' => [
                     ['', ''],
@@ -615,13 +609,13 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['a divider', '--div--'],
-                    ['foo 3', 3],
-                    ['foo 4', 4],
-                    ['foo 5', 5],
-                    ['foo 6', 6],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
+                    ['label' => 'a divider', 'value' => '--div--'],
+                    ['label' => 'foo 3', 'value' => 3],
+                    ['label' => 'foo 4', 'value' => 4],
+                    ['label' => 'foo 5', 'value' => 5],
+                    ['label' => 'foo 6', 'value' => 6],
                 ],
                 'readOnly' => true,
                 'size' => 3,
@@ -647,10 +641,10 @@ return [
                 'renderType' => 'selectMultipleSideBySide',
                 'maxitems' => 1,
                 'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['foo 3', 3],
-                    ['bar', 4],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
+                    ['label' => 'foo 3', 'value' => 3],
+                    ['label' => 'bar', 'value' => 4],
                 ],
             ],
         ],
@@ -661,10 +655,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'items' => [
-                    ['item 1', 1, '', 'group1'],
-                    ['item 2', 2, '', 'group1'],
-                    ['item 3', 3, '', 'group3'],
-                    ['item 4', 4],
+                    ['label' => 'item 1', 'value' => 1, 'group' => 'group1'],
+                    ['label' => 'item 2', 'value' => 2, 'group' => 'group1'],
+                    ['label' => 'item 3', 'value' => 3, 'group' => 'group3'],
+                    ['label' => 'item 4', 'value' => 4],
                 ],
                 'itemGroups' => [
                     'group1' => 'Group 1 with items',
@@ -686,8 +680,8 @@ return [
                 'foreign_table_where' => 'ORDER BY pages.sorting',
                 'size' => 20,
                 'items' => [
-                    [ 'static from tca 4711', 4711 ],
-                    [ 'static from tca 4712', 4712 ],
+                    ['label' => 'static from tca 4711', 'value' => 4711],
+                    ['label' => 'static from tca 4712', 'value' => 4712],
                 ],
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
@@ -824,12 +818,9 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        'Just an item',
-                        1,
-                    ],
-                    ['bar', 'bar'],
-                    ['and yet another one', -1],
+                    ['label' => 'Just an item', 'value' => 1],
+                    ['label' => 'bar', 'value' => 'bar'],
+                    ['label' => 'and yet another one', 'value' => -1],
                 ],
             ],
         ],
@@ -855,12 +846,12 @@ return [
                                                     <renderType>selectSingle</renderType>
                                                     <items>
                                                         <numIndex index="0">
-                                                            <numIndex index="0">foo1</numIndex>
-                                                            <numIndex index="1">foo1</numIndex>
+                                                            <label>foo1</label>
+                                                            <value>foo1</value>
                                                         </numIndex>
                                                         <numIndex index="1">
-                                                            <numIndex index="0">foo2</numIndex>
-                                                            <numIndex index="1">foo2</numIndex>
+                                                            <label>foo2</label>
+                                                            <value>foo2</value>
                                                         </numIndex>
                                                     </items>
                                                 </config>
@@ -882,12 +873,12 @@ return [
                                                     <renderType>selectCheckBox</renderType>
                                                     <items>
                                                         <numIndex index="0">
-                                                            <numIndex index="0">foo1</numIndex>
-                                                            <numIndex index="1">1</numIndex>
+                                                            <label>foo1</label>
+                                                            <value>1</value>
                                                         </numIndex>
                                                         <numIndex index="1">
-                                                            <numIndex index="0">foo 2</numIndex>
-                                                            <numIndex index="1">2</numIndex>
+                                                            <label>foo 2</label>
+                                                            <value>2</value>
                                                         </numIndex>
                                                     </items>
                                                 </config>

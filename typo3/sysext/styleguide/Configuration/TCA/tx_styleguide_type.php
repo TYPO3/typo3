@@ -30,7 +30,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['Disable'],
+                    ['label' => 'Disable'],
                 ],
             ],
         ],
@@ -47,7 +47,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_type',
                 'foreign_table_where' => 'AND {#tx_styleguide_type}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_type}.{#sys_language_uid} IN (-1,0)',
@@ -61,10 +61,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_type',
                 'foreign_table_where' => 'AND {#tx_styleguide_type}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_type}.{#uid}!=###THIS_UID###',
@@ -83,9 +80,9 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['type 0', '0'],
-                    ['Type with changed fields', 'withChangedFields'],
-                    ['Type with columnsOverrides', 'withColumnsOverrides'],
+                    ['label' => 'type 0', 'value' => '0'],
+                    ['label' => 'Type with changed fields', 'value' => 'withChangedFields'],
+                    ['label' => 'Type with columnsOverrides', 'value' => 'withColumnsOverrides'],
                 ],
             ],
         ],

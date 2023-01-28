@@ -29,7 +29,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['Disable'],
+                    ['label' => 'Disable'],
                 ],
             ],
         ],
@@ -46,10 +46,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_elements_t3editor',
                 'foreign_table_where' => 'AND {#tx_styleguide_elements_t3editor}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_t3editor}.{#sys_language_uid} IN (-1,0)',
@@ -63,10 +60,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_elements_t3editor',
                 'foreign_table_where' => 'AND {#tx_styleguide_elements_t3editor}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_t3editor}.{#uid}!=###THIS_UID###',
@@ -98,12 +92,12 @@ return [
                 'renderType' => 'selectSingle',
                 'items' => [
                     [
-                        'label1',
-                        0,
+                        'label' => 'label1',
+                        'value' => 0,
                     ],
                     [
-                        'label2',
-                        1,
+                        'label' => 'label2',
+                        'value' => 1,
                     ],
                 ],
             ],

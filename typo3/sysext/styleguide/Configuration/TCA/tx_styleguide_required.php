@@ -28,7 +28,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['Disable'],
+                    ['label' => 'Disable'],
                 ],
             ],
         ],
@@ -45,7 +45,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_required',
                 'foreign_table_where' => 'AND {#tx_styleguide_required}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_required}.{#sys_language_uid} IN (-1,0)',
@@ -59,10 +59,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_required',
                 'foreign_table_where' => 'AND {#tx_styleguide_required}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_required}.{#uid}!=###THIS_UID###',
@@ -124,12 +121,12 @@ return [
                 'maxitems' => 5,
                 'minitems' => 2,
                 'items' => [
-                    ['foo1', 1],
-                    ['foo2', 2],
-                    ['foo3', 3],
-                    ['foo4', 4],
-                    ['foo5', 5],
-                    ['foo6', 6],
+                    ['label' => 'foo1', 'value' => 1],
+                    ['label' => 'foo2', 'value' => 2],
+                    ['label' => 'foo3', 'value' => 3],
+                    ['label' => 'foo4', 'value' => 4],
+                    ['label' => 'foo5', 'value' => 5],
+                    ['label' => 'foo6', 'value' => 6],
                 ],
             ],
         ],
@@ -139,9 +136,9 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['foo1', 1],
-                    ['foo2', 2],
-                    ['foo3', 3],
+                    ['label' => 'foo1', 'value' => 1],
+                    ['label' => 'foo2', 'value' => 2],
+                    ['label' => 'foo3', 'value' => 3],
                 ],
                 // combination size > 1 & maxitems 1 triggers "singlebox" mode
                 'size' => 2,
@@ -155,11 +152,11 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingleBox',
                 'items' => [
-                    ['foo 1', 1],
-                    ['foo 2', 2],
-                    ['divider', '--div--'],
-                    ['foo 3', 3],
-                    ['foo 4', 4],
+                    ['label' => 'foo 1', 'value' => 1],
+                    ['label' => 'foo 2', 'value' => 2],
+                    ['label' => 'divider', 'value' => '--div--'],
+                    ['label' => 'foo 3', 'value' => 3],
+                    ['label' => 'foo 4', 'value' => 4],
                 ],
                 'minitems' => 1,
                 'maxitems' => 2,
@@ -172,9 +169,9 @@ return [
                 // @todo: required handling on this type does not work yet
                 'renderType' => 'selectCheckBox',
                 'items' => [
-                    ['foo1', 1],
-                    ['foo2', 2],
-                    ['foo3', 3],
+                    ['label' => 'foo1', 'value' => 1],
+                    ['label' => 'foo2', 'value' => 2],
+                    ['label' => 'foo3', 'value' => 3],
                 ],
                 'minitems' => 1,
                 // @todo: maxitems does not work?

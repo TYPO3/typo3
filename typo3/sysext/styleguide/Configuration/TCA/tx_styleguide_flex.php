@@ -29,7 +29,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['Disable'],
+                    ['label' => 'Disable'],
                 ],
             ],
         ],
@@ -46,10 +46,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_flex',
                 'foreign_table_where' => 'AND {#tx_styleguide_flex}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_flex}.{#sys_language_uid} IN (-1,0)',
@@ -63,10 +60,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_styleguide_flex',
                 'foreign_table_where' => 'AND {#tx_styleguide_flex}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_flex}.{#uid}!=###THIS_UID###',
@@ -134,8 +128,8 @@ return [
                                            <type>check</type>
                                            <items type="array">
                                                <numIndex index="0" type="array">
-                                                   <numIndex index="0">foo</numIndex>
-                                                   <numIndex index="1"></numIndex>
+                                                   <label>foo</label>
+                                                   <value></value>
                                                </numIndex>
                                            </items>
                                        </config>
@@ -146,20 +140,20 @@ return [
                                            <type>check</type>
                                            <items type="array">
                                                <numIndex index="0" type="array">
-                                                   <numIndex index="0">foo1</numIndex>
-                                                   <numIndex index="1"></numIndex>
+                                                   <label>foo1</label>
+                                                   <value></value>
                                                </numIndex>
                                                <numIndex index="1" type="array">
-                                                   <numIndex index="0">foo2</numIndex>
-                                                   <numIndex index="1"></numIndex>
+                                                   <label>foo2</label>
+                                                   <value></value>
                                                </numIndex>
                                                <numIndex index="2" type="array">
-                                                   <numIndex index="0">foo3</numIndex>
-                                                   <numIndex index="1"></numIndex>
+                                                   <label>foo3</label>
+                                                   <value></value>
                                                </numIndex>
                                                <numIndex index="3" type="array">
-                                                   <numIndex index="0">foo4</numIndex>
-                                                   <numIndex index="1"></numIndex>
+                                                   <label>foo4</label>
+                                                   <value></value>
                                                </numIndex>
                                            </items>
                                            <cols>3</cols>
