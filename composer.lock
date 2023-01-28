@@ -8840,26 +8840,25 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "3baee32b70d60fe13741435597053c240ccc3463"
+                "reference": "ad141e12d28313637314fd0528a3ffcc31b95718"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/3baee32b70d60fe13741435597053c240ccc3463",
-                "reference": "3baee32b70d60fe13741435597053c240ccc3463",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/ad141e12d28313637314fd0528a3ffcc31b95718",
+                "reference": "ad141e12d28313637314fd0528a3ffcc31b95718",
                 "shasum": ""
             },
             "require-dev": {
                 "codeception/codeception": "^5.0",
                 "codeception/module-asserts": "^3.0",
                 "codeception/module-cli": "^2.0",
-                "codeception/module-webdriver": "^3.1",
-                "phpstan/phpstan": "^1.4.8",
-                "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "^0.0.1",
+                "codeception/module-webdriver": "^4.0",
+                "friendsofphp/php-cs-fixer": "^3.16.0",
+                "phpstan/phpstan": "^1.10.14",
                 "typo3/cms-core": "~12.4@dev",
                 "typo3/cms-frontend": "~12.4@dev",
                 "typo3/cms-install": "~12.4@dev",
-                "typo3/coding-standards": "^0.5.0",
-                "typo3/testing-framework": "dev-main"
+                "typo3/testing-framework": "^8.0"
             },
             "default-branch": true,
             "type": "typo3-cms-extension",
@@ -8905,7 +8904,7 @@
                 "issues": "https://github.com/TYPO3/styleguide/issues",
                 "source": "https://github.com/TYPO3/styleguide/tree/main"
             },
-            "time": "2023-04-16T14:44:15+00:00"
+            "time": "2023-04-25T14:06:57+00:00"
         },
         {
             "name": "typo3/testing-framework",
@@ -8913,19 +8912,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "b1e59366875c840eaf2a5f1686e2d576b5bc05d1"
+                "reference": "8f0101f06646a2aa181b7642a4139a5113f1701c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/b1e59366875c840eaf2a5f1686e2d576b5bc05d1",
-                "reference": "b1e59366875c840eaf2a5f1686e2d576b5bc05d1",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/8f0101f06646a2aa181b7642a4139a5113f1701c",
+                "reference": "8f0101f06646a2aa181b7642a4139a5113f1701c",
                 "shasum": ""
             },
             "require": {
                 "ext-pdo": "*",
-                "guzzlehttp/psr7": "^1.7 || ^2.0",
+                "guzzlehttp/psr7": "^2.5.0",
                 "php": "^8.1",
-                "phpunit/phpunit": "^9.5.25 || ^10.0.14",
+                "phpunit/phpunit": "^10.1",
                 "psr/container": "^1.1.0 || ^2.0.0",
                 "typo3/cms-backend": "12.*.*@dev",
                 "typo3/cms-core": "12.*.*@dev",
@@ -8933,6 +8932,9 @@
                 "typo3/cms-fluid": "12.*.*@dev",
                 "typo3/cms-frontend": "12.*.*@dev",
                 "typo3/cms-install": "12.*.*@dev"
+            },
+            "replace": {
+                "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "*"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.11.0",
@@ -8975,9 +8977,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/main"
+                "source": "https://github.com/TYPO3/testing-framework/tree/8.0.0"
             },
-            "time": "2023-04-16T15:28:08+00:00"
+            "time": "2023-04-25T12:42:00+00:00"
         }
     ],
     "aliases": [],
