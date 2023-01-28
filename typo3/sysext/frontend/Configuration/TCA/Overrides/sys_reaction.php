@@ -5,9 +5,9 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('reactions')) {
         'sys_reaction',
         'table_name',
         [
-            'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:tt_content',
-            'tt_content',
-            'mimetypes-x-content-text',
+            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:tt_content',
+            'value' => 'tt_content',
+            'icon' => 'mimetypes-x-content-text',
         ]
     );
 }

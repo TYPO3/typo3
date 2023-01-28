@@ -77,14 +77,14 @@ class TcaSystemLanguageCollectorTest extends FunctionalTestCase
         GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
         $expectedItems = [
             0 => [
-                0 => 'English [Site: site-1], English [Site: site-2]',
-                1 => 0,
-                2 => 'flags-us',
+                'label' => 'English [Site: site-1], English [Site: site-2]',
+                'value' => 0,
+                'icon' => 'flags-us',
             ],
             1 => [
-                0 => 'German [Site: site-1]',
-                1 => 2,
-                2 => 'flags-de',
+                'label' => 'German [Site: site-1]',
+                'value' => 2,
+                'icon' => 'flags-de',
             ],
         ];
         $fieldInformation = ['items' => []];
@@ -99,9 +99,9 @@ class TcaSystemLanguageCollectorTest extends FunctionalTestCase
     {
         $expectedItems = [
             0 => [
-                0 => 'Default',
-                1 => 0,
-                2 => '',
+                'label' => 'Default',
+                'value' => 0,
+                'icon' => '',
             ],
         ];
         $fieldInformation = ['items' => []];

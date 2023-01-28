@@ -39,7 +39,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_testirremnattributesimple_hotel',
                 'foreign_table_where' => 'AND {#tx_testirremnattributesimple_hotel}.{#pid}=###CURRENT_PID### AND {#tx_testirremnattributesimple_hotel}.{#sys_language_uid} IN (-1,0)',

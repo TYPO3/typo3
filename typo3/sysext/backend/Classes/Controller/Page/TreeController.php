@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -221,10 +222,11 @@ class TreeController
         $backendUser = $this->getBackendUser();
         $doktypeLabelMap = [];
         foreach ($GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'] as $doktypeItemConfig) {
-            if ($doktypeItemConfig[1] === '--div--') {
+            $selectionItem = SelectItem::fromTcaItemArray($doktypeItemConfig);
+            if ($selectionItem->isDivider()) {
                 continue;
             }
-            $doktypeLabelMap[$doktypeItemConfig[1]] = $doktypeItemConfig[0];
+            $doktypeLabelMap[$selectionItem->getValue()] = $selectionItem->getLabel();
         }
         $doktypes = GeneralUtility::intExplode(',', (string)($backendUser->getTSConfig()['options.']['pageTree.']['doktypesToShowInNewPageDragArea'] ?? ''), true);
         $doktypes = array_unique($doktypes);

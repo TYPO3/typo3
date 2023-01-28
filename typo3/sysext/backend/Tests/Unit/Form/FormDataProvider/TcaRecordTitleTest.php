@@ -618,9 +618,9 @@ class TcaRecordTitleTest extends UnitTestCase
                         'config' => [
                             'type' => 'radio',
                             'items' => [
-                                ['foo', 1],
-                                ['bar', 2],
-                                ['baz', 3],
+                                ['label' => 'foo', 'value' => 1],
+                                ['label' => 'bar', 'value' => 2],
+                                ['label' => 'baz', 'value' => 3],
                             ],
                         ],
                     ],
@@ -880,9 +880,9 @@ class TcaRecordTitleTest extends UnitTestCase
                         'config' => [
                             'type' => 'check',
                             'items' => [
-                                ['foo', ''],
-                                ['bar', ''],
-                                ['baz', ''],
+                                ['label' => 'foo'],
+                                ['label' => 'bar'],
+                                ['label' => 'baz'],
                             ],
                         ],
                     ],
@@ -980,9 +980,9 @@ class TcaRecordTitleTest extends UnitTestCase
                         'config' => [
                             'type' => 'select',
                             'items' => [
-                                ['foo', 1, null, null],
-                                ['bar', 2, null, null],
-                                ['baz', 4, null, null],
+                                ['label' => 'foo', 'value' => 1, 'icon' => null, 'group' => null],
+                                ['label' => 'bar', 'value' => 2, 'icon' => null, 'group' => null],
+                                ['label' => 'baz', 'value' => 4, 'icon' => null, 'group' => null],
                             ],
                         ],
                     ],

@@ -138,27 +138,26 @@ class SelectSingleElement extends AbstractFormElement
         }
 
         foreach ($selectItems as $item) {
-            $selected = $selectedValue === (string)$item[1];
+            $selected = $selectedValue === (string)$item['value'];
 
-            if ($item[1] === '--div--') {
+            if ($item['value'] === '--div--') {
                 // IS OPTGROUP
                 if ($selectItemCounter !== 0) {
                     $selectItemGroupCount++;
                 }
                 $selectItemGroups[$selectItemGroupCount]['header'] = [
-                    'title' => $item[0],
+                    'title' => $item['label'],
                 ];
-            } elseif ($selected || !in_array((int)$item[1], $uniqueIds, true)) {
-                // IS ITEM
-                $icon = !empty($item[2]) ? FormEngineUtility::getIconHtml($item[2], $item[0], $item[0]) : '';
+            } elseif ($selected || !in_array((int)$item['value'], $uniqueIds, true)) {
+                $icon = !empty($item['icon']) ? FormEngineUtility::getIconHtml($item['icon'], $item['label'], $item['label']) : '';
 
                 if ($selected) {
                     $selectedIcon = $icon;
                 }
 
                 $selectItemGroups[$selectItemGroupCount]['items'][] = [
-                    'title' => $this->appendValueToLabelInDebugMode($item[0], $item[1]),
-                    'value' => $item[1],
+                    'title' => $this->appendValueToLabelInDebugMode($item['label'], $item['value']),
+                    'value' => $item['value'],
                     'icon' => $icon,
                     'selected' => $selected,
                 ];

@@ -54,7 +54,7 @@ return [
                 'renderType' => 'selectSingle',
                 'required' => true,
                 'items' => [
-                    ['LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.reaction_type.select', ''],
+                    ['label' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.reaction_type.select', 'value' => ''],
                 ],
             ],
         ],
@@ -138,7 +138,7 @@ return [
                 'renderType' => 'checkboxToggle',
                 'items' => [
                     [
-                        0 => '',
+                        'label' => '',
                         'invertStateDisplay' => true,
                     ],
                 ],

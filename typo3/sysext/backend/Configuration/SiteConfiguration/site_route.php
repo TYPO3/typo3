@@ -34,9 +34,9 @@ return [
                 'renderType' => 'selectSingle',
                 'required' => true,
                 'items' => [
-                    ['', ''],
-                    ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.staticText', 'staticText'],
-                    ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.source', 'uri'],
+                    ['label' => '', 'value' => ''],
+                    ['label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.staticText', 'value' => 'staticText'],
+                    ['label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.source', 'value' => 'uri'],
                 ],
             ],
         ],

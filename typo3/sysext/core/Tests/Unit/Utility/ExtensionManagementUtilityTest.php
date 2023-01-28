@@ -1063,49 +1063,49 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 '',
                 '',
                 [
-                    0 => ['firstElement'],
-                    1 => ['matchMe'],
-                    2 => ['thirdElement'],
-                    3 => ['insertedElement'],
+                    0 => ['label' => 'firstElement'],
+                    1 => ['label' => 'matchMe'],
+                    2 => ['label' => 'thirdElement'],
+                    3 => ['label' => 'insertedElement'],
                 ],
             ],
             'replace element' => [
                 'matchMe',
                 'replace',
                 [
-                    0 => ['firstElement'],
-                    1 => ['insertedElement'],
-                    2 => ['thirdElement'],
+                    0 => ['label' => 'firstElement'],
+                    1 => ['label' => 'insertedElement'],
+                    2 => ['label' => 'thirdElement'],
                 ],
             ],
             'add element after' => [
                 'matchMe',
                 'after',
                 [
-                    0 => ['firstElement'],
-                    1 => ['matchMe'],
-                    2 => ['insertedElement'],
-                    3 => ['thirdElement'],
+                    0 => ['label' => 'firstElement'],
+                    1 => ['label' => 'matchMe'],
+                    2 => ['label' => 'insertedElement'],
+                    3 => ['label' => 'thirdElement'],
                 ],
             ],
             'add element before' => [
                 'matchMe',
                 'before',
                 [
-                    0 => ['firstElement'],
-                    1 => ['insertedElement'],
-                    2 => ['matchMe'],
-                    3 => ['thirdElement'],
+                    0 => ['label' => 'firstElement'],
+                    1 => ['label' => 'insertedElement'],
+                    2 => ['label' => 'matchMe'],
+                    3 => ['label' => 'thirdElement'],
                 ],
             ],
             'add at end if relative position was not found' => [
                 'notExistingItem',
                 'after',
                 [
-                    0 => ['firstElement'],
-                    1 => ['matchMe'],
-                    2 => ['thirdElement'],
-                    3 => ['insertedElement'],
+                    0 => ['label' => 'firstElement'],
+                    1 => ['label' => 'matchMe'],
+                    2 => ['label' => 'thirdElement'],
+                    3 => ['label' => 'insertedElement'],
                 ],
             ],
         ];
@@ -1123,16 +1123,16 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                     'testField' => [
                         'config' => [
                             'items' => [
-                                '0' => ['firstElement'],
-                                '1' => ['matchMe'],
-                                2 => ['thirdElement'],
+                                0 => ['label' => 'firstElement'],
+                                1 => ['label' => 'matchMe'],
+                                2 => ['label' => 'thirdElement'],
                             ],
                         ],
                     ],
                 ],
             ],
         ];
-        ExtensionManagementUtility::addTcaSelectItem('testTable', 'testField', ['insertedElement'], $relativeToField, $relativePosition);
+        ExtensionManagementUtility::addTcaSelectItem('testTable', 'testField', ['label' => 'insertedElement'], $relativeToField, $relativePosition);
         self::assertEquals($expectedResultArray, $GLOBALS['TCA']['testTable']['columns']['testField']['config']['items']);
     }
 
@@ -1614,10 +1614,10 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $extKey = 'indexed_search';
         $expectedTCA = [
             [
-                'label',
-                $extKey,
-                'EXT:' . $extKey . '/Resources/Public/Icons/Extension.png',
-                'default',
+                'label' => 'label',
+                'value' => $extKey,
+                'icon' => 'EXT:' . $extKey . '/Resources/Public/Icons/Extension.png',
+                'group' => 'default',
             ],
         ];
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
@@ -1633,10 +1633,10 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $extKey = 'felogin';
         $expectedTCA = [
             [
-                'label',
-                'felogin',
-                'content-form-login',
-                'default',
+                'label' => 'label',
+                'value' => 'felogin',
+                'icon' => 'content-form-login',
+                'group' => 'default',
             ],
         ];
         $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'] = [];

@@ -39,14 +39,14 @@ class ItemsProcessorFunctions
             foreach ($site->getAllLanguages() as $languageId => $language) {
                 if (!isset($fieldDefinition['items'][$languageId])) {
                     $fieldDefinition['items'][$languageId] = [
-                        $language->getTitle(),
-                        $languageId,
-                        $language->getFlagIdentifier(),
-                        [],
+                        'label' => $language->getTitle(),
+                        'value' => $languageId,
+                        'icon' => $language->getFlagIdentifier(),
+                        'tempTitles' => [],
                     ];
-                } elseif ($fieldDefinition['items'][$languageId][0] !== $language->getTitle()) {
+                } elseif ($fieldDefinition['items'][$languageId]['label'] !== $language->getTitle()) {
                     // Temporarily store different titles
-                    $fieldDefinition['items'][$languageId][3][] = $language->getTitle();
+                    $fieldDefinition['items'][$languageId]['tempTitles'][] = $language->getTitle();
                 }
             }
         }
@@ -56,18 +56,18 @@ class ItemsProcessorFunctions
             // default language ("0") to be always added to the site configuration,
             // we have to add it to the available items, in case it is not already
             // present. This only happens for the first ever created site configuration.
-            $fieldDefinition['items'][] = ['Default', 0, '', []];
+            $fieldDefinition['items'][] = ['label' => 'Default', 'value' => 0, 'icon' => '', 'tempTitles' => []];
         }
 
         ksort($fieldDefinition['items']);
 
         // Build the final language label
         foreach ($fieldDefinition['items'] as &$language) {
-            $language[0] .= ' [' . $language[1] . ']';
-            if ($language[3] !== []) {
-                $language[0] .= ' (' . implode(',', array_unique($language[3])) . ')';
+            $language['label'] .= ' [' . $language['value'] . ']';
+            if ($language['tempTitles'] !== []) {
+                $language['label'] .= ' (' . implode(',', array_unique($language['tempTitles'])) . ')';
                 // Unset the temporary title "storage"
-                unset($language[3]);
+                unset($language['tempTitles']);
             }
         }
         unset($language);
@@ -76,7 +76,7 @@ class ItemsProcessorFunctions
         // with the "Create new" button, which is usually not possible in "selector" mode.
         // Note: The placeholder will never be displayed in the selector.
         $fieldDefinition['items'] = array_values(
-            array_merge($fieldDefinition['items'], [['Placeholder', PHP_INT_MAX, '']])
+            array_merge($fieldDefinition['items'], [['label' => 'Placeholder', 'value' => PHP_INT_MAX]])
         );
     }
 
@@ -95,14 +95,14 @@ class ItemsProcessorFunctions
                 }
                 if (!isset($fieldDefinition['items'][$languageId])) {
                     $fieldDefinition['items'][$languageId] = [
-                        $language->getTitle(),
-                        $languageId,
-                        $language->getFlagIdentifier(),
-                        [],
+                        'label' => $language->getTitle(),
+                        'value' => $languageId,
+                        'icon' => $language->getFlagIdentifier(),
+                        'tempTitles' => [],
                     ];
-                } elseif ($fieldDefinition['items'][$languageId][0] !== $language->getTitle()) {
+                } elseif ($fieldDefinition['items'][$languageId]['label'] !== $language->getTitle()) {
                     // Temporarily store different titles
-                    $fieldDefinition['items'][$languageId][3][] = $language->getTitle();
+                    $fieldDefinition['items'][$languageId]['tempTitles'][] = $language->getTitle();
                 }
             }
         }
@@ -110,10 +110,10 @@ class ItemsProcessorFunctions
 
         // Build the final language label
         foreach ($fieldDefinition['items'] as &$language) {
-            if ($language[3] !== []) {
-                $language[0] .= ' (' . implode(',', array_unique($language[3])) . ')';
+            if ($language['tempTitles'] !== []) {
+                $language['label'] .= ' (' . implode(',', array_unique($language['tempTitles'])) . ')';
                 // Unset the temporary title "storage"
-                unset($language[3]);
+                unset($language['tempTitles']);
             }
         }
         unset($language);

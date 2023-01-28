@@ -90,9 +90,9 @@ class CheckboxElement extends AbstractFormElement
         // Traversing the array of items
         $items = $this->data['parameterArray']['fieldConf']['config']['items'] ?? [];
 
-        $numberOfItems = \count($items);
+        $numberOfItems = count($items);
         if ($numberOfItems === 0) {
-            $items[] = ['', ''];
+            $items[] = ['label' => ''];
             $numberOfItems = 1;
         }
         $formElementValue = (int)$this->data['parameterArray']['itemFormElValue'];
@@ -103,7 +103,7 @@ class CheckboxElement extends AbstractFormElement
             $counter = 0;
             // $itemKey is important here, because items could have been removed via TSConfig
             foreach ($items as $itemKey => $itemDefinition) {
-                $label = $itemDefinition[0];
+                $label = $itemDefinition['label'];
                 $elementHtml .=
                     '<div class="checkbox-column ' . $colClass . '">'
                     . $this->renderSingleCheckboxElement($label, $itemKey, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled) .
@@ -120,7 +120,7 @@ class CheckboxElement extends AbstractFormElement
             $elementHtml .= '</div>';
         } else {
             foreach ($items as $itemKey => $itemDefinition) {
-                $label = $itemDefinition[0];
+                $label = $itemDefinition['label'];
                 $elementHtml .= $this->renderSingleCheckboxElement($label, $itemKey, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled);
             }
         }

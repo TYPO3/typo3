@@ -46,7 +46,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'type' => 'check',
                                     'items' => [
                                         0 => [
-                                            'foo',
+                                            'label' => 'foo',
                                         ],
                                     ],
                                 ],
@@ -63,7 +63,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'type' => 'check',
                                     'items' => [
                                         0 => [
-                                            'foo', // @todo a followup patch should refactor towards 'label' => 'foo'
+                                            'label' => 'foo',
                                             'invertStateDisplay' => false,
                                         ],
                                     ],
@@ -83,7 +83,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'type' => 'check',
                                     'items' => [
                                         0 => [
-                                            'foo',
+                                            'label' => 'foo',
                                             'bar',
                                             'baz',
                                         ],
@@ -102,7 +102,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'type' => 'check',
                                     'items' => [
                                         0 => [
-                                            'foo',
+                                            'label' => 'foo',
                                             'invertStateDisplay' => false,
                                         ],
                                     ],
@@ -123,7 +123,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'renderType' => 'checkboxToggle',
                                     'items' => [
                                         0 => [
-                                            'foo',
+                                            'label' => 'foo',
                                             'labelChecked' => 'Enabled',
                                             'labelUnchecked' => 'Disabled',
                                         ],
@@ -143,7 +143,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'renderType' => 'checkboxToggle',
                                     'items' => [
                                         0 => [
-                                            'foo',
+                                            'label' => 'foo',
                                             'invertStateDisplay' => false,
                                         ],
                                     ],
@@ -164,7 +164,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'renderType' => 'checkboxToggle',
                                     'items' => [
                                         0 => [
-                                            'foo',
+                                            'label' => 'foo',
                                             'labelChecked' => 'Enabled',
                                             'labelUnchecked' => 'Disabled',
                                             'invertStateDisplay' => true,
@@ -185,7 +185,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'renderType' => 'checkboxToggle',
                                     'items' => [
                                         0 => [
-                                            'foo',
+                                            'label' => 'foo',
                                             'invertStateDisplay' => true,
                                         ],
                                     ],
@@ -206,7 +206,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'renderType' => 'checkboxLabeledToggle',
                                     'items' => [
                                         0 => [
-                                            'foo',
+                                            'label' => 'foo',
                                             'labelChecked' => 'Enabled',
                                             'labelUnchecked' => 'Disabled',
                                         ],
@@ -226,7 +226,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'renderType' => 'checkboxLabeledToggle',
                                     'items' => [
                                         0 => [
-                                            'foo',
+                                            'label' => 'foo',
                                             'labelChecked' => 'Enabled',
                                             'labelUnchecked' => 'Disabled',
                                             'invertStateDisplay' => false,
@@ -249,7 +249,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'renderType' => 'checkboxLabeledToggle',
                                     'items' => [
                                         0 => [
-                                            'foo',
+                                            'label' => 'foo',
                                             'labelChecked' => 'Enabled',
                                             'labelUnchecked' => 'Disabled',
                                             'invertStateDisplay' => true,
@@ -270,7 +270,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'renderType' => 'checkboxLabeledToggle',
                                     'items' => [
                                         0 => [
-                                            'foo',
+                                            'label' => 'foo',
                                             'labelChecked' => 'Enabled',
                                             'labelUnchecked' => 'Disabled',
                                             'invertStateDisplay' => true,
@@ -293,7 +293,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'renderType' => 'checkboxIconToggle',
                                     'items' => [
                                         0 => [
-                                            'foo',
+                                            'label' => 'foo',
                                             'labelChecked' => 'Enabled',
                                             'labelUnchecked' => 'Disabled',
                                             'iconIdentifierChecked' => 'styleguide-icon-toggle-checked',
@@ -315,7 +315,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'renderType' => 'checkboxIconToggle',
                                     'items' => [
                                         0 => [
-                                            'foo',
+                                            'label' => 'foo',
                                             'iconIdentifierChecked' => 'styleguide-icon-toggle-checked',
                                             'iconIdentifierUnchecked' => 'styleguide-icon-toggle-checked',
                                             'invertStateDisplay' => false,
@@ -338,7 +338,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'renderType' => 'checkboxIconToggle',
                                     'items' => [
                                         0 => [
-                                            'foo',
+                                            'label' => 'foo',
                                             'labelChecked' => 'Enabled',
                                             'labelUnchecked' => 'Disabled',
                                             'iconIdentifierChecked' => 'styleguide-icon-toggle-checked',
@@ -361,7 +361,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'renderType' => 'checkboxIconToggle',
                                     'items' => [
                                         0 => [
-                                            'foo',
+                                            'label' => 'foo',
                                             'iconIdentifierChecked' => 'styleguide-icon-toggle-checked',
                                             'iconIdentifierUnchecked' => 'styleguide-icon-toggle-checked',
                                             'invertStateDisplay' => true,
@@ -464,7 +464,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                             'type' => 'check',
                             'items' => [
                                 0 => [
-                                    0 => 'aLabel',
+                                    'label' => 'aLabel',
                                 ],
                             ],
                         ],
@@ -480,7 +480,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
         $languageService->expects(self::atLeastOnce())->method('sL')->with('aLabel')->willReturn('translated');
 
         $expected = $input;
-        $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'translated';
+        $expected['processedTca']['columns']['aField']['config']['items'][0]['label'] = 'translated';
         $expected['processedTca']['columns']['aField']['config']['items'][0]['invertStateDisplay'] = false;
 
         self::assertSame($expected, (new TcaCheckboxItems())->addData($input));
@@ -509,7 +509,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                             'items' => [],
                             'itemsProcFunc' => static function (array $parameters, $pObj) {
                                 $parameters['items'] = [
-                                    'foo' => 'bar',
+                                    ['foo'],
                                 ];
                             },
                         ],
@@ -522,14 +522,10 @@ class TcaCheckboxItemsTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
-        $expected = $input;
-        $expected['processedTca']['columns']['aField']['config'] = [
-            'type' => 'check',
-            'items' => [
-                'foo' => 'bar',
-            ],
-        ];
-        self::assertSame($expected, (new TcaCheckboxItems())->addData($input));
+        $items = (new TcaCheckboxItems())->addData($input)['processedTca']['columns']['aField']['config']['items'];
+
+        self::assertCount(1, $items);
+        self::assertSame('foo', $items[0]['label']);
     }
 
     /**
@@ -571,13 +567,14 @@ class TcaCheckboxItemsTest extends UnitTestCase
                             'aKey' => 'aValue',
                             'items' => [
                                 0 => [
-                                    0 => 'foo',
-                                    'invertedStateDisplay' => false,
+                                    'label' => 'foo',
+                                    'invertStateDisplay' => false,
                                 ],
                             ],
                             'itemsProcFunc' => static function (array $parameters, $pObj) {
                                 if (
-                                    $parameters['items'] !== [ 0 => [0 => 'foo', 'invertStateDisplay' => false]]
+                                    $parameters['items'][0]['label'] !== 'foo'
+                                    || $parameters['items'][0]['invertStateDisplay'] !== false
                                     || $parameters['config']['aKey'] !== 'aValue'
                                     || $parameters['TSconfig'] !== [ 'itemParamKey' => 'itemParamValue' ]
                                     || $parameters['table'] !== 'aTable'
@@ -653,8 +650,8 @@ class TcaCheckboxItemsTest extends UnitTestCase
                             'aKey' => 'aValue',
                             'items' => [
                                 0 => [
-                                    'foo',
-                                    'bar',
+                                    'label' => 'foo',
+                                    'value' => 'bar',
                                 ],
                             ],
                             'itemsProcFunc' => static function (array $parameters, $pObj) {
@@ -695,7 +692,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                             'type' => 'check',
                             'items' => [
                                 0 => [
-                                    0 => 'aLabel',
+                                    'label' => 'aLabel',
                                 ],
                             ],
                         ],
@@ -727,7 +724,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
         });
 
         $expected = $input;
-        $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'labelOverride';
+        $expected['processedTca']['columns']['aField']['config']['items'][0]['label'] = 'labelOverride';
         $expected['processedTca']['columns']['aField']['config']['items'][0]['invertStateDisplay'] = false;
 
         self::assertSame($expected, (new TcaCheckboxItems())->addData($input));

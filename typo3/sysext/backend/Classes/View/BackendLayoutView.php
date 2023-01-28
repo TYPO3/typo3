@@ -93,9 +93,9 @@ class BackendLayoutView implements SingletonInterface
                 }
 
                 $parameters['items'][] = [
-                    $this->getLanguageService()->sL($backendLayout->getTitle()),
-                    $combinedIdentifier,
-                    $backendLayout->getIconPath(),
+                    'label' => $this->getLanguageService()->sL($backendLayout->getTitle()),
+                    'value' => $combinedIdentifier,
+                    'icon' => $backendLayout->getIconPath(),
                 ];
             }
         }
@@ -357,9 +357,9 @@ class BackendLayoutView implements SingletonInterface
                             continue;
                         }
                         $backendLayoutData['__items'][] = [
-                            $this->getColumnName($column),
-                            $column['colPos'],
-                            null,
+                            'label' => $this->getColumnName($column),
+                            'value' => $column['colPos'],
+                            'icon' => null,
                         ];
                         $backendLayoutData['__colPosList'][] = $column['colPos'];
                         $backendLayoutData['usedColumns'][(int)$column['colPos']] = $column['name'];

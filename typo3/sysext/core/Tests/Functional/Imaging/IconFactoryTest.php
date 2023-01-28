@@ -486,9 +486,9 @@ class IconFactoryTest extends FunctionalTestCase
                         'config' => [
                             'items' => [
                                 [
-                                    'Blog example plugin',
-                                    'pi_blogexample',
-                                    $this->registeredIconIdentifier,
+                                    'label' => 'Blog example plugin',
+                                    'value' => 'pi_blogexample',
+                                    'icon' => $this->registeredIconIdentifier,
                                 ],
                             ],
                         ],

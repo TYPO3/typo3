@@ -52,7 +52,7 @@ final class CreateRecordReactionTable
             && in_array(
                 $this->table,
                 array_filter(
-                    array_column($GLOBALS['TCA']['sys_reaction']['columns']['table_name']['config']['items'], 1)
+                    array_column($GLOBALS['TCA']['sys_reaction']['columns']['table_name']['config']['items'], 'value')
                 ),
                 true
             );

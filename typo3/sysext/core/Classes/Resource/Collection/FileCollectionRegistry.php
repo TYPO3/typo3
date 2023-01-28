@@ -95,15 +95,15 @@ class FileCollectionRegistry implements SingletonInterface
         // search for existing type when found override label
         $typeFound = false;
         foreach ($GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'] as $key => $item) {
-            if ($item[1] === $type) {
+            if ($item['value'] === $type) {
                 $typeFound = true;
-                $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][$key][0] = $label;
+                $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][$key]['label'] = $label;
             }
         }
         if (!$typeFound) {
             $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][] = [
-                0 => $label,
-                1 => $type,
+                'label' => $label,
+                'value' => $type,
             ];
         }
         if ($additionalColumns !== []) {

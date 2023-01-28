@@ -152,8 +152,8 @@ class RedirectRepository
         $availableTypes = $GLOBALS['TCA']['sys_redirect']['columns']['creation_type']['config']['items'];
         foreach ($this->getGroupedRows('creation_type', 'type') as $row) {
             foreach ($availableTypes as $availableType) {
-                if ($availableType[1] === $row['type']) {
-                    $types[$row['type']] = $availableType[0];
+                if ($availableType['value'] === $row['type']) {
+                    $types[$row['type']] = $availableType['label'];
                 }
             }
         }

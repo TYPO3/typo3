@@ -216,9 +216,8 @@ class TcaRecordTitle implements FormDataProviderInterface
             return '';
         }
         foreach ($fieldConfig['items'] as $item) {
-            [$itemLabel, $itemValue] = $item;
-            if ((string)$value === (string)$itemValue) {
-                return $itemLabel;
+            if ((string)$value === (string)$item['value']) {
+                return $item['label'];
             }
         }
         return '';
@@ -253,11 +252,11 @@ class TcaRecordTitle implements FormDataProviderInterface
         }
         $labelParts = [];
         if (!empty($fieldConfig['items'])) {
-            $listOfValues = array_column($fieldConfig['items'], 1);
+            $listOfValues = array_column($fieldConfig['items'], 'value');
             foreach ($value as $itemValue) {
                 $itemKey = array_search($itemValue, $listOfValues);
                 if ($itemKey !== false) {
-                    $labelParts[] = $fieldConfig['items'][$itemKey][0];
+                    $labelParts[] = $fieldConfig['items'][$itemKey]['label'];
                 }
             }
         }
@@ -315,7 +314,7 @@ class TcaRecordTitle implements FormDataProviderInterface
             $labelParts = [];
             foreach ($fieldConfig['items'] as $key => $val) {
                 if ((int)$value & 2 ** $key) {
-                    $labelParts[] = $val[0];
+                    $labelParts[] = $val['label'];
                 }
             }
             $title = implode(', ', $labelParts);

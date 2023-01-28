@@ -77,7 +77,7 @@ class CheckboxToggleElement extends AbstractFormElement
 
         $numberOfItems = count($items);
         if ($numberOfItems === 0) {
-            $items[] = ['', ''];
+            $items[] = ['label' => ''];
             $numberOfItems = 1;
         }
         // The values in the array may be numeric strings, but we need real ints.
@@ -89,7 +89,7 @@ class CheckboxToggleElement extends AbstractFormElement
             $counter = 0;
             // $itemKey is important here, because items could have been removed via TSConfig
             foreach ($items as $itemKey => $itemDefinition) {
-                $label = $itemDefinition[0];
+                $label = $itemDefinition['label'];
                 $elementHtml .=
                     '<div class="checkbox-column ' . $colClass . '">'
                     . $this->renderSingleCheckboxElement($label, $itemKey, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled) .
@@ -106,8 +106,8 @@ class CheckboxToggleElement extends AbstractFormElement
             $elementHtml .= '</div>';
         } else {
             $counter = 0;
-            foreach ($items as $itemKey => $itemDefinition) {
-                $label = $itemDefinition[0];
+            foreach ($items as $itemDefinition) {
+                $label = $itemDefinition['label'];
                 $elementHtml .= $this->renderSingleCheckboxElement($label, $counter, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled);
                 ++$counter;
             }

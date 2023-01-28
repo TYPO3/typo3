@@ -118,26 +118,26 @@ class DataStructureIdentifierListener
 
                 if ($invalidFormDefinition) {
                     $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['config']['items'][] = [
-                        $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
-                        $form['persistenceIdentifier'],
-                        'overlay-missing',
+                        'label' => $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
+                        'value' => $form['persistenceIdentifier'],
+                        'icon' => 'overlay-missing',
                     ];
                 } else {
                     $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['config']['items'][] = [
-                        $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
-                        $form['persistenceIdentifier'],
-                        'content-form',
+                        'label' => $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
+                        'value' => $form['persistenceIdentifier'],
+                        'icon' => 'content-form',
                     ];
                 }
             }
 
             if (!empty($identifier['ext-form-persistenceIdentifier']) && !$formIsAccessible) {
                 $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['config']['items'][] = [
-                    sprintf(
+                    'label' => sprintf(
                         $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
                         $identifier['ext-form-persistenceIdentifier']
                     ),
-                    $identifier['ext-form-persistenceIdentifier'],
+                    'value' => $identifier['ext-form-persistenceIdentifier'],
                 ];
             }
 
@@ -289,11 +289,11 @@ class DataStructureIdentifierListener
     {
         if (!empty($persistenceIdentifier)) {
             $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['config']['items'][] = [
-                sprintf(
+                'label' => sprintf(
                     $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
                     $persistenceIdentifier
                 ),
-                $persistenceIdentifier,
+                'value' => $persistenceIdentifier,
             ];
         }
 

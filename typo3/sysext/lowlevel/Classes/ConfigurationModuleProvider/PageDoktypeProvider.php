@@ -47,8 +47,8 @@ class PageDoktypeProvider extends AbstractProvider
     {
         $types = [];
         foreach ($GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'] as $item) {
-            if (MathUtility::canBeInterpretedAsInteger($item[1])) {
-                $types[(int)$item[1]] = $item[0];
+            if (MathUtility::canBeInterpretedAsInteger($item['value'])) {
+                $types[(int)$item['value']] = $item['label'];
             }
         }
         return $types;

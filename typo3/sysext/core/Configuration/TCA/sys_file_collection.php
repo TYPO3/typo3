@@ -44,7 +44,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'sys_file_collection',
                 'foreign_table_where' => 'AND {#sys_file_collection}.{#pid}=###CURRENT_PID### AND {#sys_file_collection}.{#sys_language_uid} IN (-1,0)',
@@ -92,9 +92,9 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_collection.type.0', 'static'],
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_collection.type.1', 'folder'],
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_collection.type.2', 'category'],
+                    ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_collection.type.0', 'value' => 'static'],
+                    ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_collection.type.1', 'value' => 'folder'],
+                    ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_collection.type.2', 'value' => 'category'],
                 ],
             ],
         ],

@@ -103,8 +103,8 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                 $finalPageTsConfigItems = [];
                 foreach ($itemsFromPageTsConfig as $item) {
-                    if ($item[2] !== null) {
-                        $item[2] = $iconFactory->getIcon($item[2], Icon::SIZE_SMALL)->getMarkup('inline');
+                    if ($item['icon'] !== null) {
+                        $item['icon'] = $iconFactory->getIcon($item['icon'], Icon::SIZE_SMALL)->getMarkup('inline');
                     }
                     $finalPageTsConfigItems[] = $item;
                 }
@@ -135,19 +135,19 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                     $staticItems = $this->addIconFromAltIcons($result, $staticItems, $table, $fieldName);
                     // Now compile the target items using the same array structure as the "dynamic" list below
                     foreach ($staticItems as $item) {
-                        if ($item[1] === '--div--') {
+                        if ($item['value'] === '--div--') {
                             // Skip divs that may occur here for whatever reason
                             continue;
                         }
                         $finalItems[] = [
-                            'identifier' => $item[1],
-                            'name' => $item[0],
-                            'icon' => $item[2] ?? '',
+                            'identifier' => $item['value'],
+                            'name' => $item['label'],
+                            'icon' => $item['icon'] ?? '',
                             'iconOverlay' => '',
                             'depth' => 0,
                             'hasChildren' => false,
                             'selectable' => true,
-                            'checked' => in_array($item[1], $result['databaseRow'][$fieldName]),
+                            'checked' => in_array($item['value'], $result['databaseRow'][$fieldName]),
                         ];
                     }
                 }
@@ -162,8 +162,8 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 // Funnily, the only data needed for the tree code are the uids of the possible records (yuk!) - get them
                 $uidListOfAllDynamicItems = [];
                 foreach ($dynamicItems as $item) {
-                    if ((int)$item[1] > 0) {
-                        $uidListOfAllDynamicItems[] = (int)$item[1];
+                    if ((int)$item['value'] > 0) {
+                        $uidListOfAllDynamicItems[] = (int)$item['value'];
                     }
                 }
                 // Now kick in this tree stuff

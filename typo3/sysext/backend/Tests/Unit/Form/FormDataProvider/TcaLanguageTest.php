@@ -85,12 +85,12 @@ class TcaLanguageTest extends UnitTestCase
         $input = $this->getDefaultResultArray([], $this->getDefaultSystemLanguages());
 
         $expected = [
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', '--div--', null, null, null],
-            ['English', 0, 'flags-us', null, null],
-            ['Danish', 13, 'flags-dk', null, null],
-            ['German', 14, 'flags-de', null, null],
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', '--div--', null, null, null],
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1, 'flags-multiple', null, null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'English', 'value' => 0, 'icon' => 'flags-us', 'group' => null, 'description' => null],
+            ['label' => 'Danish', 'value' => 13, 'icon' => 'flags-dk', 'group' => null, 'description' => null],
+            ['label' => 'German', 'value' => 14, 'icon' => 'flags-de', 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', 'value' => -1, 'icon' => 'flags-multiple', 'group' => null, 'description' => null],
         ];
 
         self::assertEquals(
@@ -107,10 +107,10 @@ class TcaLanguageTest extends UnitTestCase
         $input = $this->getDefaultResultArray([], $this->getDefaultSystemLanguages(), [], ['tableName' => 'pages']);
 
         $expected = [
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', '--div--', null, null, null],
-            ['English', 0, 'flags-us', null, null],
-            ['Danish', 13, 'flags-dk', null, null],
-            ['German', 14, 'flags-de', null, null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'English', 'value' => 0, 'icon' => 'flags-us', 'group' => null, 'description' => null],
+            ['label' => 'Danish', 'value' => 13, 'icon' => 'flags-dk', 'group' => null, 'description' => null],
+            ['label' => 'German', 'value' => 14, 'icon' => 'flags-de', 'group' => null, 'description' => null],
         ];
 
         self::assertEquals(
@@ -131,10 +131,10 @@ class TcaLanguageTest extends UnitTestCase
         $input = $this->getDefaultResultArray([], $systemLanguages);
 
         $expected = [
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', '--div--', null, null, null],
-            ['English', 0, 'flags-us', null, null],
-            ['Danish', 13, 'flags-dk', null, null],
-            ['German', 14, 'flags-de', null, null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'English', 'value' => 0, 'icon' => 'flags-us', 'group' => null, 'description' => null],
+            ['label' => 'Danish', 'value' => 13, 'icon' => 'flags-dk', 'group' => null, 'description' => null],
+            ['label' => 'German', 'value' => 14, 'icon' => 'flags-de', 'group' => null, 'description' => null],
         ];
 
         self::assertEquals(
@@ -153,7 +153,7 @@ class TcaLanguageTest extends UnitTestCase
                 'config' => [
                     'items' => [
                         8 => [
-                            'User defined', 8, 'some-icon',
+                            'label' => 'User defined', 'value' => 8, 'icon' => 'some-icon',
                         ],
                     ],
                 ],
@@ -164,12 +164,12 @@ class TcaLanguageTest extends UnitTestCase
         );
 
         $expected = [
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', '--div--', null, null, null],
-            ['English', 0, 'flags-us', null, null],
-            ['Danish', 13, 'flags-dk', null, null],
-            ['German', 14, 'flags-de', null, null],
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', '--div--', null, null, null],
-            ['User defined', 8, 'some-icon', null, null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'English', 'value' => 0, 'icon' => 'flags-us', 'group' => null, 'description' => null],
+            ['label' => 'Danish', 'value' => 13, 'icon' => 'flags-dk', 'group' => null, 'description' => null],
+            ['label' => 'German', 'value' => 14, 'icon' => 'flags-de', 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'User defined', 'value' => 8, 'icon' => 'some-icon', 'group' => null, 'description' => null],
         ];
 
         self::assertEquals(
@@ -188,7 +188,7 @@ class TcaLanguageTest extends UnitTestCase
                 'config' => [
                     'items' => [
                         8 => [
-                            'User defined', 8, 'some-icon',
+                            'label' => 'User defined', 'value' => 8, 'icon' => 'some-icon',
                         ],
                     ],
                     'disableNoMatchingValueElement' => true,
@@ -197,8 +197,8 @@ class TcaLanguageTest extends UnitTestCase
         );
 
         $expected = [
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', '--div--', null, null, null],
-            ['User defined', 8, 'some-icon', null, null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'User defined', 'value' => 8, 'icon' => 'some-icon', 'group' => null, 'description' => null],
         ];
 
         self::assertEquals(
@@ -255,8 +255,8 @@ class TcaLanguageTest extends UnitTestCase
         );
 
         $expected = [
-            ['English', 0, 'flags-us', null, null],
-            ['Danish', 13, 'flags-dk', null, null],
+            ['label' => 'English', 'value' => 0, 'icon' => 'flags-us', 'group' => null, 'description' => null],
+            ['label' => 'Danish', 'value' => 13, 'icon' => 'flags-dk', 'group' => null, 'description' => null],
         ];
 
         self::assertEquals(
@@ -293,8 +293,8 @@ class TcaLanguageTest extends UnitTestCase
         );
 
         $expected = [
-            ['[ LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue ]', 5, null, null, null],
-            ['User defined', 8, 'some-icon', null, null],
+            ['label' => '[ LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue ]', 'value' => 5, 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'User defined', 'value' => 8, 'icon' => 'some-icon', 'group' => null, 'description' => null],
         ];
 
         self::assertEquals(
@@ -326,8 +326,8 @@ class TcaLanguageTest extends UnitTestCase
         );
 
         $expected = [
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', '--div--', null, null, null],
-            ['English', 0, 'flags-us', null, null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'English', 'value' => 0, 'icon' => 'flags-us', 'group' => null, 'description' => null],
         ];
 
         self::assertEquals(
@@ -344,11 +344,11 @@ class TcaLanguageTest extends UnitTestCase
         $input = $this->getDefaultResultArray([], $this->getDefaultSystemLanguages(), ['aField' => 5], ['tableName' => 'pages']);
 
         $expected = [
-            ['[ LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue ]', 5, null, null, null],
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', '--div--', null, null, null],
-            ['English', 0, 'flags-us', null, null],
-            ['Danish', 13, 'flags-dk', null, null],
-            ['German', 14, 'flags-de', null, null],
+            ['label' => '[ LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue ]', 'value' => 5, 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'English', 'value' => 0, 'icon' => 'flags-us', 'group' => null, 'description' => null],
+            ['label' => 'Danish', 'value' => 13, 'icon' => 'flags-dk', 'group' => null, 'description' => null],
+            ['label' => 'German', 'value' => 14, 'icon' => 'flags-de', 'group' => null, 'description' => null],
         ];
 
         self::assertEquals(
@@ -391,7 +391,7 @@ class TcaLanguageTest extends UnitTestCase
                 'config' => [
                     'items' => [
                         8 => [
-                            'User defined', 8, 'some-icon',
+                            'label' => 'User defined', 'value' => 8, 'icon' => 'some-icon',
                         ],
                     ],
                 ],
@@ -412,9 +412,9 @@ class TcaLanguageTest extends UnitTestCase
         );
 
         $expected = [
-            ['Custom label', 5, null, null, null],
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', '--div--', null, null, null],
-            ['User defined', 8, 'some-icon', null, null],
+            ['label' => 'Custom label', 'value' => 5, 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'User defined', 'value' => 8, 'icon' => 'some-icon', 'group' => null, 'description' => null],
         ];
 
         // Custom label is respected
@@ -450,12 +450,12 @@ class TcaLanguageTest extends UnitTestCase
         );
 
         $expected = [
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', '--div--', null, null, null],
-            ['Default Language', 0, 'flags-us', null, null],
-            ['Danish', 13, 'flags-dk', null, null],
-            ['Deutsch', 14, 'flags-de', null, null],
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', '--div--', null, null, null],
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1, 'flags-multiple', null, null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'Default Language', 'value' => 0, 'icon' => 'flags-us', 'group' => null, 'description' => null],
+            ['label' => 'Danish', 'value' => 13, 'icon' => 'flags-dk', 'group' => null, 'description' => null],
+            ['label' => 'Deutsch', 'value' => 14, 'icon' => 'flags-de', 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', 'value' => -1, 'icon' => 'flags-multiple', 'group' => null, 'description' => null],
         ];
 
         self::assertEquals(
@@ -490,12 +490,12 @@ class TcaLanguageTest extends UnitTestCase
         );
 
         $expected = [
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', '--div--', null, null, null],
-            ['English', 0, 'alternative-icon-default', null, null],
-            ['Danish', 13, 'flags-dk', null, null],
-            ['German', 14, 'alternative-icon-german', null, null],
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', '--div--', null, null, null],
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1, 'flags-multiple', null, null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'English', 'value' => 0, 'icon' => 'alternative-icon-default', 'group' => null, 'description' => null],
+            ['label' => 'Danish', 'value' => 13, 'icon' => 'flags-dk', 'group' => null, 'description' => null],
+            ['label' => 'German', 'value' => 14, 'icon' => 'alternative-icon-german', 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', 'value' => -1, 'icon' => 'flags-multiple', 'group' => null, 'description' => null],
         ];
 
         self::assertEquals(
@@ -527,10 +527,10 @@ class TcaLanguageTest extends UnitTestCase
         );
 
         $expected = [
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', '--div--', null, null, null],
-            ['English', 0, 'flags-us', null, null],
-            ['Danish', 13, 'flags-dk', null, null],
-            ['German', 14, 'flags-de', null, null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'English', 'value' => 0, 'icon' => 'flags-us', 'group' => null, 'description' => null],
+            ['label' => 'Danish', 'value' => 13, 'icon' => 'flags-dk', 'group' => null, 'description' => null],
+            ['label' => 'German', 'value' => 14, 'icon' => 'flags-de', 'group' => null, 'description' => null],
         ];
 
         self::assertEquals(
@@ -584,9 +584,9 @@ class TcaLanguageTest extends UnitTestCase
         $input = $this->getDefaultResultArray([], [], [], $config);
 
         $expected = [
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', '--div--', null, null, null],
-            ['English [Site: site-1], German [Site: site-2]', 0, 'flags-us', null, null],
-            ['German [Site: site-1]', 2, 'flags-de', null, null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'English [Site: site-1], German [Site: site-2]', 'value' => 0, 'icon' => 'flags-us', 'group' => null, 'description' => null],
+            ['label' => 'German [Site: site-1]', 'value' => 2, 'icon' => 'flags-de', 'group' => null, 'description' => null],
         ];
 
         self::assertEquals(

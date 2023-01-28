@@ -794,7 +794,26 @@ class TcaMigrationTest extends UnitTestCase
                     ],
                 ],
             ],
-            'dTable' => $input['dTable'],
+            'dTable' => [
+                'ctrl' => [
+                    'title' => 'dTable',
+                ],
+                'columns' => [
+                    'dLanguageField' => [
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'foreign_table' => 'sys_language',
+                            'items' => [
+                                ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', 'value' => -1],
+                                ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 'value' => 0],
+                            ],
+                            'default' => 0,
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $subject = new TcaMigration();
@@ -964,7 +983,7 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'select',
                             'renderType' => 'selectSingle',
-                            'items' => [['', 0]],
+                            'items' => [['label' => '', 'value' => 0]],
                             'fileFolderConfig' => [
                                 'folder' => 'EXT:styleguide/Resources/Public/Icons',
                                 'allowedExtensions' => 'svg',
@@ -980,7 +999,7 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'select',
                             'renderType' => 'selectSingle',
-                            'items' => [['', 0]],
+                            'items' => [['label' => '', 'value' => 0]],
                             'fileFolderConfig' => [
                                 'folder' => 'EXT:styleguide/Resources/Public/Icons',
                             ],
@@ -994,7 +1013,7 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'select',
                             'renderType' => 'selectSingle',
-                            'items' => [['', 0]],
+                            'items' => [['label' => '', 'value' => 0]],
                             'fileFolderConfig' => [
                                 'folder' => '',
                                 'allowedExtensions' => 'svg',
@@ -1022,7 +1041,7 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'select',
                             'renderType' => 'selectSingle',
-                            'items' => [['', 0]],
+                            'items' => [['label' => '', 'value' => 0]],
                             'fileFolder_extList' => 'svg',
                             'fileFolder_recursions' => 1,
                         ],
@@ -2526,11 +2545,11 @@ class TcaMigrationTest extends UnitTestCase
                                 'authMode' => 'explicitAllow',
                                 'items' => [
                                     [
-                                        'Label 1',
-                                        'Value 1',
-                                        null,
-                                        null,
-                                        '',
+                                        'label' => 'Label 1',
+                                        'value' => 'Value 1',
+                                        'icon' => null,
+                                        'group' => null,
+                                        'description' => '',
                                     ],
                                 ],
                             ],
@@ -2570,11 +2589,11 @@ class TcaMigrationTest extends UnitTestCase
                                 'authMode' => 'explicitAllow',
                                 'items' => [
                                     [
-                                        'Label 1',
-                                        'Value 1',
-                                        null,
-                                        null,
-                                        '',
+                                        'label' => 'Label 1',
+                                        'value' => 'Value 1',
+                                        'icon' => null,
+                                        'group' => null,
+                                        'description' => '',
                                     ],
                                 ],
                             ],
@@ -2621,18 +2640,18 @@ class TcaMigrationTest extends UnitTestCase
                                 'authMode' => 'explicitAllow',
                                 'items' => [
                                     [
-                                        'Label 1',
-                                        'Value 1',
-                                        null,
-                                        null,
-                                        '',
+                                        'label' => 'Label 1',
+                                        'value' => 'Value 1',
+                                        'icon' => null,
+                                        'group' => null,
+                                        'description' => '',
                                     ],
                                     [
-                                        'Label 2',
-                                        'Value 2',
-                                        null,
-                                        null,
-                                        'Description 2',
+                                        'label' => 'Label 2',
+                                        'value' => 'Value 2',
+                                        'icon' => null,
+                                        'group' => null,
+                                        'description' => 'Description 2',
                                     ],
                                 ],
                             ],
@@ -2655,7 +2674,7 @@ class TcaMigrationTest extends UnitTestCase
                                         'Value 1',
                                         null,
                                         null,
-                                        'Desription',
+                                        'Description',
                                     ],
                                 ],
                             ],
@@ -2672,11 +2691,11 @@ class TcaMigrationTest extends UnitTestCase
                                 'authMode' => 'explicitAllow',
                                 'items' => [
                                     [
-                                        'Label 1',
-                                        'Value 1',
-                                        null,
-                                        null,
-                                        'Desription',
+                                        'label' => 'Label 1',
+                                        'value' => 'Value 1',
+                                        'icon' => null,
+                                        'group' => null,
+                                        'description' => 'Description',
                                     ],
                                 ],
                             ],
@@ -2699,7 +2718,7 @@ class TcaMigrationTest extends UnitTestCase
                                         'Value 1',
                                         null,
                                         null,
-                                        'Desription',
+                                        'Description',
                                         'EXPL_ALLOW',
                                     ],
                                     [
@@ -2707,7 +2726,7 @@ class TcaMigrationTest extends UnitTestCase
                                         'Value 1',
                                         null,
                                         null,
-                                        'Desription',
+                                        'Description',
                                         'EXPL_DENY',
                                     ],
                                     [
@@ -2715,7 +2734,7 @@ class TcaMigrationTest extends UnitTestCase
                                         'Value 1',
                                         null,
                                         null,
-                                        'Desription',
+                                        'Description',
                                         'somethingElse',
                                     ],
                                 ],
@@ -2733,25 +2752,25 @@ class TcaMigrationTest extends UnitTestCase
                                 'authMode' => 'explicitAllow',
                                 'items' => [
                                     [
-                                        'Label 1',
-                                        'Value 1',
-                                        null,
-                                        null,
-                                        'Desription',
+                                        'label' => 'Label 1',
+                                        'value' => 'Value 1',
+                                        'icon' => null,
+                                        'group' => null,
+                                        'description' => 'Description',
                                     ],
                                     [
-                                        'Label 1',
-                                        'Value 1',
-                                        null,
-                                        null,
-                                        'Desription',
+                                        'label' => 'Label 1',
+                                        'value' => 'Value 1',
+                                        'icon' => null,
+                                        'group' => null,
+                                        'description' => 'Description',
                                     ],
                                     [
-                                        'Label 1',
-                                        'Value 1',
-                                        null,
-                                        null,
-                                        'Desription',
+                                        'label' => 'Label 1',
+                                        'value' => 'Value 1',
+                                        'icon' => null,
+                                        'group' => null,
+                                        'description' => 'Description',
                                     ],
                                 ],
                             ],
@@ -3517,6 +3536,123 @@ class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
+        self::assertSame($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function itemsAreMigratedToAssociatedArray(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                [
+                                    'foo',
+                                    'bar',
+                                    'baz',
+                                    'bee',
+                                    'boo',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'radio',
+                            'items' => [
+                                [
+                                    'foo',
+                                    'bar',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'cColumn' => [
+                        'config' => [
+                            'type' => 'check',
+                            'items' => [
+                                [
+                                    0 => 'foo',
+                                    'invertStateDisplay' => true,
+                                ],
+                            ],
+                        ],
+                    ],
+                    'dColumn' => [
+                        'config' => [
+                            'type' => 'foo',
+                            'items' => [
+                                [
+                                    'foo',
+                                    'bar',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                [
+                                    'label' => 'foo',
+                                    'value' => 'bar',
+                                    'icon' => 'baz',
+                                    'group' => 'bee',
+                                    'description' => 'boo',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'radio',
+                            'items' => [
+                                [
+                                    'label' => 'foo',
+                                    'value' => 'bar',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'cColumn' => [
+                        'config' => [
+                            'type' => 'check',
+                            'items' => [
+                                [
+                                    'invertStateDisplay' => true,
+                                    'label' => 'foo',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'dColumn' => [
+                        'config' => [
+                            'type' => 'foo',
+                            'items' => [
+                                [
+                                    'foo',
+                                    'bar',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
         self::assertSame($expected, (new TcaMigration())->migrate($input));
     }
 }

@@ -38,7 +38,7 @@ class ReactionItemsProcFunc
         }
         // Add default select option at the top
         $fieldDefinition['items'] = array_merge(
-            [['LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.table_name.select', '']],
+            [['label' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.table_name.select', 'value' => '']],
             $fieldDefinition['items']
         );
     }

@@ -43,7 +43,7 @@ class IsoCodeService
 
         $items = [];
         foreach ($languages as $isoCode => $name) {
-            $items[] = [$name, $isoCode];
+            $items[] = ['label' => $name, 'value' => $isoCode];
         }
 
         $conf['items'] = array_merge($conf['items'], $items);

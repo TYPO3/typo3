@@ -788,8 +788,8 @@ class TcaFlexProcessTest extends UnitTestCase
                                                         'type' => 'radio',
                                                         'items' => [
                                                             0 => [
-                                                                0 => 'aLabel',
-                                                                1 => 'aValue',
+                                                                'label' => 'aLabel',
+                                                                'value' => 'aValue',
                                                             ],
                                                         ],
                                                     ],
@@ -846,8 +846,8 @@ class TcaFlexProcessTest extends UnitTestCase
                                     'type' => 'radio',
                                     'items' => [
                                         0 => [
-                                            0 => 'labelOverride',
-                                            1 => 'aValue',
+                                            'label' => 'labelOverride',
+                                            'value' => 'aValue',
                                         ],
                                     ],
                                 ],

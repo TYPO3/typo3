@@ -65,7 +65,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
      */
     public function populateAvailableTablesTest(): void
     {
-        $fieldDefinition = ['items' => [0 => ['---', 0]]];
+        $fieldDefinition = ['items' => [0 => ['label' => '---', 'value' => 0]]];
 
         $GLOBALS['TCA'] = [
             'notInResult' => [
@@ -83,13 +83,13 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         $expected = [
             'items' => [
                 0 => [
-                    '---',
-                    0,
+                    'label' => '---',
+                    'value' => 0,
                 ],
                 1 => [
-                    0 => 'aTitle',
-                    1 => 'aTable',
-                    2 => null,
+                    'label' => 'aTitle',
+                    'value' => 'aTable',
+                    'icon' => null,
                 ],
             ],
         ];
@@ -110,15 +110,15 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
 
         $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'] = [
             0 => [
-                0 => 'Divider',
-                1 => '--div--',
+                'label' => 'Divider',
+                'value' => '--div--',
             ],
             1 => [
-                0 => 'invalid',
+                'label' => 'invalid',
             ],
             2 => [
-                0 => 'aLabel',
-                1 => 'aValue',
+                'label' => 'aLabel',
+                'value' => 'aValue',
             ],
         ];
 
@@ -131,9 +131,9 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                     1 => 0,
                 ],
                 1 => [
-                    0 => 'aLabel',
-                    1 => 'aValue',
-                    2 => null,
+                    'label' => 'aLabel',
+                    'value' => 'aValue',
+                    'icon' => null,
                 ],
             ],
         ];
@@ -168,21 +168,19 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         $fieldDefinition = $expected = ['items' => []];
         $expected['items'] = [
             0 => [
-                0 => 'LLL:EXT:a-module/locallang:mlang_tabs_tab',
-                1 => 'aModule',
-                2 => 'a-module',
-                3 => null,
-                4 => [
+                'label' => 'LLL:EXT:a-module/locallang:mlang_tabs_tab',
+                'value' => 'aModule',
+                'icon' => 'a-module',
+                'description' => [
                     'title' => 'LLL:EXT:a-module/locallang:mlang_labels_tablabel',
                     'description' => 'LLL:EXT:a-module/locallang:mlang_labels_tabdescr',
                 ],
             ],
             1 => [
-                0 => 'LLL:EXT:b-module/locallang:mlang_tabs_tab',
-                1 => 'bModule',
-                2 => 'b-module',
-                3 => null,
-                4 => [
+                'label' => 'LLL:EXT:b-module/locallang:mlang_tabs_tab',
+                'value' => 'bModule',
+                'icon' => 'b-module',
+                'description' => [
                     'title' => 'LLL:EXT:b-module/locallang:mlang_labels_tablabel',
                     'description' => 'LLL:EXT:b-module/locallang:mlang_labels_tabdescr',
                 ],
@@ -237,14 +235,14 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 [
                     // expected items
                     'fooTable' => [
-                        0 => 'fooTableTitle',
-                        1 => '--div--',
-                        2 => null,
+                        'label' => 'fooTableTitle',
+                        'value' => '--div--',
+                        'icon' => null,
                     ],
                     0 => [
-                        0 => 'barColumnTitle (bar)',
-                        1 => 'fooTable:bar',
-                        2 => 'empty-empty',
+                        'label' => 'barColumnTitle (bar)',
+                        'value' => 'fooTable:bar',
+                        'icon' => 'empty-empty',
                     ],
                 ],
             ],
@@ -270,14 +268,14 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 [
                     // expected items
                     'fooTable' => [
-                        0 => 'fooTableTitle',
-                        1 => '--div--',
-                        2 => null,
+                        'label' => 'fooTableTitle',
+                        'value' => '--div--',
+                        'icon' => null,
                     ],
                     0 => [
-                        0 => 'barColumnTitle (bar)',
-                        1 => 'fooTable:bar',
-                        2 => 'empty-empty',
+                        'label' => 'barColumnTitle (bar)',
+                        'value' => 'fooTable:bar',
+                        'icon' => 'empty-empty',
                     ],
                 ],
             ],
@@ -369,14 +367,14 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         $expected = [
             'items' => [
                 'fooTableTitle aFlexFieldTitle dummy' => [
-                    0 => 'fooTableTitle aFlexFieldTitle dummy',
-                    1 => '--div--',
-                    2 => null,
+                    'label' => 'fooTableTitle aFlexFieldTitle dummy',
+                    'value' => '--div--',
+                    'icon' => null,
                 ],
                 0 => [
-                    0 => 'flexInputLabel (input1)',
-                    1 => 'fooTable:aFlexField;dummy;sDEF;input1',
-                    2 => 'empty-empty',
+                    'label' => 'flexInputLabel (input1)',
+                    'value' => 'fooTable:aFlexField;dummy;sDEF;input1',
+                    'icon' => 'empty-empty',
                 ],
             ],
         ];
@@ -426,8 +424,8 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                                 'authMode' => 'explicitAllow',
                                 'items' => [
                                     0 => [
-                                        'anItemTitle',
-                                        'anItemValue',
+                                        'label' => 'anItemTitle',
+                                        'value' => 'anItemValue',
                                     ],
                                 ],
                             ],
@@ -437,13 +435,13 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
             ],
             [
                 0 => [
-                    0 => 'fooTableTitle: aFieldTitle',
-                    1 => '--div--',
+                    'label' => 'fooTableTitle: aFieldTitle',
+                    'value' => '--div--',
                 ],
                 1 => [
-                    0 => 'anItemTitle',
-                    1 => 'fooTable:aField:anItemValue',
-                    2 => 'status-status-permission-granted',
+                    'label' => 'anItemTitle',
+                    'value' => 'fooTable:aField:anItemValue',
+                    'icon' => 'status-status-permission-granted',
                 ],
             ],
         ];
@@ -473,22 +471,20 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         $expected = [
             'items' => [
                 0 => [
-                    0 => 'aHeader',
-                    1 => '--div--',
+                    'label' => 'aHeader',
+                    'value' => '--div--',
                 ],
                 1 => [
-                    0 => 'anItemTitle',
-                    1 => 'aKey:anItemKey',
-                    2 => 'empty-empty',
-                    3 => null,
-                    4 => '',
+                    'label' => 'anItemTitle',
+                    'value' => 'aKey:anItemKey',
+                    'icon' => 'empty-empty',
+                    'description' => '',
                 ],
                 2 => [
-                    0 => 'anotherTitle',
-                    1 => 'aKey:anotherKey',
-                    2 => 'empty-empty',
-                    3 => null,
-                    4 => 'aDescription',
+                    'label' => 'anotherTitle',
+                    'value' => 'aKey:anotherKey',
+                    'icon' => 'empty-empty',
+                    'description' => 'aDescription',
                 ],
             ],
         ];
@@ -570,12 +566,12 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
             ],
             [
                 0 => [
-                    0 => 'aField label',
-                    1 => 'aField',
+                    'label' => 'aField label',
+                    'value' => 'aField',
                 ],
                 1 => [
-                    0 => 'dField label',
-                    1 => 'dField',
+                    'label' => 'dField label',
+                    'value' => 'dField',
                 ],
             ],
         ];
@@ -586,8 +582,8 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
             ],
             [
                 0 => [
-                    0 => 'cField label',
-                    1 => 'cField',
+                    'label' => 'cField label',
+                    'value' => 'cField',
                 ],
             ],
         ];
@@ -605,16 +601,16 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
             ],
             [
                 0 => [
-                    0 => 'aField label',
-                    1 => 'aField',
+                    'label' => 'aField label',
+                    'value' => 'aField',
                 ],
                 1 => [
-                    0 => 'cField label',
-                    1 => 'cField',
+                    'label' => 'cField label',
+                    'value' => 'cField',
                 ],
                 2 => [
-                    0 => 'dField label',
-                    1 => 'dField',
+                    'label' => 'dField label',
+                    'value' => 'dField',
                 ],
             ],
         ];

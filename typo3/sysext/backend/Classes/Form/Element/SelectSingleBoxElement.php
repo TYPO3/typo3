@@ -92,8 +92,8 @@ class SelectSingleBoxElement extends AbstractFormElement
         $width = $this->formMaxWidth($this->defaultInputWidth);
 
         $optionElements = [];
-        foreach ($selectItems as $i => $item) {
-            $value = $item[1];
+        foreach ($selectItems as $item) {
+            $value = $item['value'];
             $attributes = [];
             // Selected or not by default
             if (isset($itemArray[$value])) {
@@ -105,7 +105,7 @@ class SelectSingleBoxElement extends AbstractFormElement
                 $attributes['disabled'] = 'disabled';
                 $attributes['class'] = 'formcontrol-select-divider';
             }
-            $optionElements[] = $this->renderOptionElement($value, $item[0], $attributes);
+            $optionElements[] = $this->renderOptionElement($value, $item['label'], $attributes);
         }
 
         $selectElement = $this->renderSelectElement($optionElements, $parameterArray, $config);

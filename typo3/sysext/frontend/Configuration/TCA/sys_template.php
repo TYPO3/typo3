@@ -48,7 +48,7 @@ return [
                 'default' => 0,
                 'items' => [
                     [
-                        0 => '',
+                        'label' => '',
                         'invertStateDisplay' => true,
                     ],
                 ],
@@ -88,8 +88,8 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['Constants'],
-                    ['Setup'],
+                    ['label' => 'Constants'],
+                    ['label' => 'Setup'],
                 ],
             ],
         ],
@@ -180,10 +180,10 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode.0', '0'],
-                    ['LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode.1', '1'],
-                    ['LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode.2', '2'],
-                    ['LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode.3', '3'],
+                    ['label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode.0', 'value' => '0'],
+                    ['label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode.1', 'value' => '1'],
+                    ['label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode.2', 'value' => '2'],
+                    ['label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode.3', 'value' => '3'],
                 ],
                 'default' => 0,
             ],

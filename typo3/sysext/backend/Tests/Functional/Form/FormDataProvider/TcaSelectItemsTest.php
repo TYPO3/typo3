@@ -64,8 +64,8 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'type' => 'radio',
                             'items' => [
                                 0 => [
-                                    'foo',
-                                    'bar',
+                                    'label' => 'foo',
+                                    'value' => 'bar',
                                 ],
                             ],
                         ],
@@ -75,8 +75,8 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'type' => 'group',
                             'items' => [
                                 0 => [
-                                    'foo',
-                                    'bar',
+                                    'label' => 'foo',
+                                    'value' => 'bar',
                                 ],
                             ],
                         ],
@@ -103,7 +103,7 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'type' => 'select',
                             'renderType' => 'selectSingle',
                             'items' => [
-                                0 => 'foo',
+                                'label' => 'foo',
                             ],
                         ],
                     ],
@@ -135,8 +135,8 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
-                                    0 => 'LLL:EXT:test_tca_select_items/Resources/Private/Language/locallang.xlf:aLabel',
-                                    1 => 'aValue',
+                                    'label' => 'LLL:EXT:test_tca_select_items/Resources/Private/Language/locallang.xlf:aLabel',
+                                    'value' => 'aValue',
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -147,10 +147,10 @@ class TcaSelectItemsTest extends FunctionalTestCase
         ];
 
         $expected = $input;
-        $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'translated';
-        $expected['processedTca']['columns']['aField']['config']['items'][0][2] = null;
-        $expected['processedTca']['columns']['aField']['config']['items'][0][3] = null;
-        $expected['processedTca']['columns']['aField']['config']['items'][0][4] = null;
+        $expected['processedTca']['columns']['aField']['config']['items'][0]['label'] = 'translated';
+        $expected['processedTca']['columns']['aField']['config']['items'][0]['icon'] = null;
+        $expected['processedTca']['columns']['aField']['config']['items'][0]['group'] = null;
+        $expected['processedTca']['columns']['aField']['config']['items'][0]['description'] = null;
 
         $expected['databaseRow']['aField'] = ['aValue'];
 
@@ -175,18 +175,18 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 [
-                                    'aLabel',
-                                    'aValue',
-                                    'an-icon-reference',
-                                    'non-existing-group',
-                                    null,
+                                    'label' => 'aLabel',
+                                    'value' => 'aValue',
+                                    'icon' => 'an-icon-reference',
+                                    'group' => 'non-existing-group',
+                                    'description' => null,
                                 ],
                                 [
-                                    'anotherLabel',
-                                    'anotherValue',
-                                    'an-icon-reference',
-                                    'example-group',
-                                    null,
+                                    'label' => 'anotherLabel',
+                                    'value' => 'anotherValue',
+                                    'icon' => 'an-icon-reference',
+                                    'group' => 'example-group',
+                                    'description' => null,
                                 ],
                             ],
                             'itemGroups' => [
@@ -203,31 +203,28 @@ class TcaSelectItemsTest extends FunctionalTestCase
         $expected['databaseRow']['aField'] = ['aValue'];
         $expected['processedTca']['columns']['aField']['config']['items'] = [
             [
-                'My Example Group',
-                '--div--',
-                null,
-                'example-group',
-                null,
+                'label' => 'My Example Group',
+                'value' => '--div--',
+                'group' => 'example-group',
             ],
             [
-                'anotherLabel',
-                'anotherValue',
-                'an-icon-reference',
-                'example-group',
-                null,
-            ], [
-                'non-existing-group',
-                '--div--',
-                null,
-                'non-existing-group',
-                null,
+                'label' => 'anotherLabel',
+                'value' => 'anotherValue',
+                'icon' => 'an-icon-reference',
+                'group' => 'example-group',
+                'description' => null,
             ],
             [
-                'aLabel',
-                'aValue',
-                'an-icon-reference',
-                'non-existing-group',
-                null,
+                'label' => 'non-existing-group',
+                'value' => '--div--',
+                'group' => 'non-existing-group',
+            ],
+            [
+                'label' => 'aLabel',
+                'value' => 'aValue',
+                'icon' => 'an-icon-reference',
+                'group' => 'non-existing-group',
+                'description' => null,
             ],
         ];
 
@@ -252,11 +249,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
-                                    0 => 'aLabel',
-                                    1 => 'aValue',
-                                    2 => 'an-icon-reference',
-                                    3 => null,
-                                    4 => null,
+                                    'label' => 'aLabel',
+                                    'value' => 'aValue',
+                                    'icon' => 'an-icon-reference',
+                                    'group' => null,
+                                    'description' => null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -308,18 +305,18 @@ class TcaSelectItemsTest extends FunctionalTestCase
 
         $expectedItems = [
             0 => [
-                0 => 'anImage.gif',
-                1 => 'anImage.gif',
-                2 => $directory . 'anImage.gif',
-                3 => null,
-                4 => null,
+                'label' => 'anImage.gif',
+                'value' => 'anImage.gif',
+                'icon' => $directory . 'anImage.gif',
+                'group' => null,
+                'description' => null,
             ],
             1 => [
-                0 => 'subdir/anotherImage.gif',
-                1 => 'subdir/anotherImage.gif',
-                2 => $directory . 'subdir/anotherImage.gif',
-                3 => null,
-                4 => null,
+                'label' => 'subdir/anotherImage.gif',
+                'value' => 'subdir/anotherImage.gif',
+                'icon' => $directory . 'subdir/anotherImage.gif',
+                'group' => null,
+                'description' => null,
             ],
         ];
 
@@ -390,11 +387,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
 
         $expectedItems = [
             0 => [
-                0 => 'anOverriddenIcon.svg',
-                1 => 'anOverriddenIcon.svg',
-                2 => $overriddenDirectory . 'anOverriddenIcon.svg',
-                3 => null,
-                4 => null,
+                'label' => 'anOverriddenIcon.svg',
+                'value' => 'anOverriddenIcon.svg',
+                'icon' => $overriddenDirectory . 'anOverriddenIcon.svg',
+                'group' => null,
+                'description' => null,
             ],
         ];
 
@@ -449,11 +446,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
-                                    0 => 'keepMe',
-                                    1 => 'keep',
-                                    null,
-                                    null,
-                                    null,
+                                    'label' => 'keepMe',
+                                    'value' => 'keep',
+                                    'icon' => null,
+                                    'group' => null,
+                                    'description' => null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -477,11 +474,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = [];
         $expected['processedTca']['columns']['aField']['config']['items'][1] = [
-            0 => 'addMe',
-            1 => '1',
-            null,
-            null,
-            null,
+            'label' => 'addMe',
+            'value' => 1,
+            'icon' => null,
+            'group' => null,
+            'description' => null,
         ];
 
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
@@ -505,11 +502,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
-                                    0 => 'keepMe',
-                                    1 => 'keep',
-                                    null,
-                                    'none',
-                                    null,
+                                    'label' => 'keepMe',
+                                    'value' => 'keep',
+                                    'icon' => null,
+                                    'group' => 'none',
+                                    'description' => null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -536,18 +533,16 @@ class TcaSelectItemsTest extends FunctionalTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = [];
         $expected['processedTca']['columns']['aField']['config']['items'][1] = [
-            'custom-group',
-            '--div--',
-            null,
-            'custom-group',
-            null,
+            'label' => 'custom-group',
+            'value' => '--div--',
+            'group' => 'custom-group',
         ];
         $expected['processedTca']['columns']['aField']['config']['items'][2] = [
-            0 => 'addMe',
-            1 => 1,
-            null,
-            'custom-group',
-            null,
+            'label' => 'addMe',
+            'value' => 1,
+            'icon' => null,
+            'group' => 'custom-group',
+            'description' => null,
         ];
 
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
@@ -571,11 +566,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
-                                    0 => 'keepMe',
-                                    1 => 'keep',
-                                    null,
-                                    null,
-                                    null,
+                                    'label' => 'keepMe',
+                                    'value' => 'keep',
+                                    'icon' => null,
+                                    'group' => null,
+                                    'description' => null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -599,11 +594,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = [];
         $expected['processedTca']['columns']['aField']['config']['items'][1] = [
-            0 => 'addMe',
-            1 => 'keep',
-            null,
-            null,
-            null,
+            'label' => 'addMe',
+            'value' => 'keep',
+            'icon' => null,
+            'group' => null,
+            'description' => null,
         ];
 
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
@@ -616,11 +611,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.title=\'###REC_FIELD_rowField###\'',
                 [
                     [
-                        0 => 'Item 1',
-                        1 => 1,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 1',
+                        'value' => 1,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [],
@@ -629,11 +624,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.title=###REC_FIELD_rowFieldFlexForm###',
                 [
                     [
-                        0 => 'Item 2',
-                        1 => 2,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 2',
+                        'value' => 2,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [
@@ -653,11 +648,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.title=###REC_FIELD_rowField###',
                 [
                     [
-                        0 => 'Item 1',
-                        1 => 1,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 1',
+                        'value' => 1,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [],
@@ -666,11 +661,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.title=###REC_FIELD_rowFieldThree###',
                 [
                     [
-                        0 => 'Item 3',
-                        1 => 3,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 3',
+                        'value' => 3,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [
@@ -685,18 +680,18 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND ( foreign_table.title=\'###REC_FIELD_rowField###\' OR foreign_table.title=###REC_FIELD_rowFieldTwo### )',
                 [
                     [
-                        0 => 'Item 1',
-                        1 => 1,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 1',
+                        'value' => 1,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                     [
-                        0 => 'Item 2',
-                        1 => 2,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 2',
+                        'value' => 2,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [],
@@ -705,11 +700,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.uid=###CURRENT_PID###',
                 [
                     [
-                        0 => 'Item 1',
-                        1 => 1,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 1',
+                        'value' => 1,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [],
@@ -718,11 +713,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.uid=###CURRENT_PID###',
                 [
                     [
-                        0 => 'Item 4',
-                        1 => 4,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 4',
+                        'value' => 4,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [
@@ -735,11 +730,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.uid=###CURRENT_PID###',
                 [
                     [
-                        0 => 'Item 4',
-                        1 => 4,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 4',
+                        'value' => 4,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [
@@ -750,11 +745,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.uid=###THIS_UID###',
                 [
                     [
-                        0 => 'Item 5',
-                        1 => 5,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 5',
+                        'value' => 5,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [],
@@ -763,11 +758,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.uid=###THIS_UID###',
                 [
                     [
-                        0 => 'Item 5',
-                        1 => 5,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 5',
+                        'value' => 5,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [
@@ -780,11 +775,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.uid=###SITEROOT###',
                 [
                     [
-                        0 => 'Item 6',
-                        1 => 6,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 6',
+                        'value' => 6,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [],
@@ -793,11 +788,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.uid=###SITEROOT###',
                 [
                     [
-                        0 => 'Item 6',
-                        1 => 6,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 6',
+                        'value' => 6,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [
@@ -812,11 +807,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.uid=###PAGE_TSCONFIG_ID###',
                 [
                     [
-                        0 => 'Item 3',
-                        1 => 3,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 3',
+                        'value' => 3,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [
@@ -835,11 +830,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.uid=###PAGE_TSCONFIG_ID###',
                 [
                     [
-                        0 => 'Item 3',
-                        1 => 3,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 3',
+                        'value' => 3,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [
@@ -858,11 +853,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.uid=\'###PAGE_TSCONFIG_STR###\'',
                 [
                     [
-                        0 => 'Item 4',
-                        1 => 4,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 4',
+                        'value' => 4,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [
@@ -881,18 +876,18 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.uid IN (###PAGE_TSCONFIG_IDLIST###)',
                 [
                     [
-                        0 => 'Item 3',
-                        1 => 3,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 3',
+                        'value' => 3,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                     [
-                        0 => 'Item 4',
-                        1 => 4,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 4',
+                        'value' => 4,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [
@@ -911,18 +906,18 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.uid IN (###PAGE_TSCONFIG_IDLIST###)',
                 [
                     [
-                        0 => 'Item 3',
-                        1 => 3,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 3',
+                        'value' => 3,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                     [
-                        0 => 'Item 4',
-                        1 => 4,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 4',
+                        'value' => 4,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [
@@ -941,11 +936,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.uid = ###SITE:rootPageId###',
                 [
                     [
-                        0 => 'Item 6',
-                        1 => 6,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 6',
+                        'value' => 6,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [],
@@ -954,11 +949,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND foreign_table.title = ###SITE:mySetting.foobar###',
                 [
                     [
-                        0 => 'Item 5',
-                        1 => 5,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 5',
+                        'value' => 5,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [],
@@ -972,32 +967,32 @@ class TcaSelectItemsTest extends FunctionalTestCase
                 'AND ( foreign_table.uid = ###SITE:rootPageId### OR foreign_table.title = ###SITE:mySetting.foobar### OR foreign_table.uid IN (###PAGE_TSCONFIG_IDLIST###) )',
                 [
                     [
-                        0 => 'Item 3',
-                        1 => 3,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 3',
+                        'value' => 3,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                     [
-                        0 => 'Item 4',
-                        1 => 4,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 4',
+                        'value' => 4,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                     [
-                        0 => 'Item 5',
-                        1 => 5,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 5',
+                        'value' => 5,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                     [
-                        0 => 'Item 6',
-                        1 => 6,
-                        2 => 'default-not-found',
-                        3 => null,
-                        4 => null,
+                        'label' => 'Item 6',
+                        'value' => 6,
+                        'icon' => 'default-not-found',
+                        'group' => null,
+                        'description' => null,
                     ],
                 ],
                 [
@@ -1132,18 +1127,18 @@ class TcaSelectItemsTest extends FunctionalTestCase
 
         $expected['processedTca']['columns']['aField']['config']['items'] = [
             [
-                0 => 'Item 3',
-                1 => 3,
-                2 => 'default-not-found',
-                3 => null,
-                4 => null,
+                'label' => 'Item 3',
+                'value' => 3,
+                'icon' => 'default-not-found',
+                'group' => null,
+                'description' => null,
             ],
             [
-                0 => 'Item 4',
-                1 => 4,
-                2 => 'default-not-found',
-                3 => null,
-                4 => null,
+                'label' => 'Item 4',
+                'value' => 4,
+                'icon' => 'default-not-found',
+                'group' => null,
+                'description' => null,
             ],
         ];
 
@@ -1173,11 +1168,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'foreign_table' => 'non_existing_table',
                             'items' => [
                                 0 => [
-                                    0 => 'itemLabel',
-                                    1 => 'itemValue',
-                                    2 => null,
-                                    3 => null,
-                                    4 => null,
+                                    'label' => 'itemLabel',
+                                    'value' => 'itemValue',
+                                    'icon' => null,
+                                    'group' => null,
+                                    'description' => null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -1235,11 +1230,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
         $expected['databaseRow']['aField'] = [];
         $expected['processedTca']['columns']['aField']['config']['items'] = [
             [
-                0 => 'aPrefixItem 1',
-                1 => 1,
-                2 => 'default-not-found',
-                3 => null,
-                4 => null,
+                'label' => 'aPrefixItem 1',
+                'value' => 1,
+                'icon' => 'default-not-found',
+                'group' => null,
+                'description' => null,
             ],
         ];
 
@@ -1267,8 +1262,8 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'foreign_table' => 'sys_file_storage',
                             'items' => [
                                 [
-                                    0 => 'some other file storage',
-                                    1 => 2,
+                                    'label' => 'some other file storage',
+                                    'value' => 2,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -1283,11 +1278,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
         $expected['databaseRow']['aField'] = [];
         $expected['processedTca']['columns']['aField']['config']['items'] = [
             [
-                0 => 'fileadmin/ (auto-created)',
-                1 => 1,
-                2 => 'mimetypes-x-sys_file_storage',
-                3 => null,
-                4 => null,
+                'label' => 'fileadmin/ (auto-created)',
+                'value' => 1,
+                'icon' => 'mimetypes-x-sys_file_storage',
+                'group' => null,
+                'description' => null,
             ],
         ];
 
@@ -1327,18 +1322,18 @@ class TcaSelectItemsTest extends FunctionalTestCase
         $expected['databaseRow']['aField'] = [];
         $expected['processedTca']['columns']['aField']['config']['items'] = [
             [
-                0 => 'Item 1',
-                1 => 1,
-                2 => 'fileadmin/file1.png',
-                3 => null,
-                4 => null,
+                'label' => 'Item 1',
+                'value' => 1,
+                'icon' => 'fileadmin/file1.png',
+                'group' => null,
+                'description' => null,
             ],
             [
-                0 => 'Item 2',
-                1 => 2,
-                2 => 'fileadmin/file2.png',
-                3 => null,
-                4 => null,
+                'label' => 'Item 2',
+                'value' => 2,
+                'icon' => 'fileadmin/file2.png',
+                'group' => null,
+                'description' => null,
             ],
         ];
 
@@ -1366,19 +1361,19 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
-                                    0 => 'keepMe',
-                                    1 => 'keep',
-                                    null,
-                                    null,
-                                    null,
+                                    'label' => 'keepMe',
+                                    'value' => 'keep',
+                                    'icon' => null,
+                                    'group' => null,
+                                    'description' => null,
                                 ],
                                 1 => [
-                                    0 => 'removeMe',
-                                    1 => 'remove',
+                                    'label' => 'removeMe',
+                                    'value' => 'remove',
                                 ],
                                 2 => [
-                                    0 => 'removeMe',
-                                    1 => 0,
+                                    'label' => 'removeMe',
+                                    'value' => 0,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -1476,14 +1471,14 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
-                                    0 => 'keepMe',
-                                    1 => '1',
-                                    null,
-                                    null,
+                                    'label' => 'keepMe',
+                                    'value' => '1',
+                                    'icon' => null,
+                                    'group' => null,
                                 ],
                                 1 => [
-                                    0 => 'removeMe',
-                                    1 => 'remove',
+                                    'label' => 'removeMe',
+                                    'value' => 'remove',
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -1510,25 +1505,25 @@ class TcaSelectItemsTest extends FunctionalTestCase
         $expected['databaseRow']['aField'] = [];
         $expected['processedTca']['columns']['aField']['config']['items'] = [
             0 => [
-                0 => 'keepMe',
-                1 => '1',
-                null,
-                null,
-                null,
+                'label' => 'keepMe',
+                'value' => '1',
+                'icon' => null,
+                'group' => null,
+                'description' => null,
             ],
             1 => [
-                0 => 'addItem #1',
-                1 => '1',
-                null,
-                null,
-                null,
+                'label' => 'addItem #1',
+                'value' => '1',
+                'icon' => null,
+                'group' => null,
+                'description' => null,
             ],
             2 => [
-                0 => 'addItem #12',
-                1 => '12',
-                null,
-                null,
-                null,
+                'label' => 'addItem #12',
+                'value' => '12',
+                'icon' => null,
+                'group' => null,
+                'description' => null,
             ],
         ];
 
@@ -1553,22 +1548,22 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
-                                    0 => 'keepMe',
-                                    1 => 'keep',
-                                    null,
-                                    null,
-                                    null,
+                                    'label' => 'keepMe',
+                                    'value' => 'keep',
+                                    'icon' => null,
+                                    'group' => null,
+                                    'description' => null,
                                 ],
                                 1 => [
-                                    0 => 'removeMe',
-                                    1 => 'remove',
+                                    'label' => 'removeMe',
+                                    'value' => 'remove',
                                 ],
                                 2 => [
-                                    0 => 'keep me',
-                                    1 => 0,
-                                    null,
-                                    null,
-                                    null,
+                                    'label' => 'keep me',
+                                    'value' => 0,
+                                    'icon' => null,
+                                    'group' => null,
+                                    'description' => null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -1612,22 +1607,22 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
-                                    0 => 'keepMe',
-                                    1 => 'keep',
-                                    null,
-                                    null,
-                                    null,
+                                    'label' => 'keepMe',
+                                    'value' => 'keep',
+                                    'icon' => null,
+                                    'group' => null,
+                                    'description' => null,
                                 ],
                                 1 => [
-                                    0 => 'keepMe',
-                                    1 => 'keepMe2',
-                                    null,
-                                    null,
-                                    null,
+                                    'label' => 'keepMe',
+                                    'value' => 'keepMe2',
+                                    'icon' => null,
+                                    'group' => null,
+                                    'description' => null,
                                 ],
                                 2 => [
-                                    0 => 'remove me',
-                                    1 => 0,
+                                    'label' => 'remove me',
+                                    'value' => 0,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -1670,15 +1665,15 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
-                                    0 => 'keepMe',
-                                    1 => 'keep',
-                                    null,
-                                    null,
-                                    null,
+                                    'label' => 'keepMe',
+                                    'value' => 'keep',
+                                    'icon' => null,
+                                    'group' => null,
+                                    'description' => null,
                                 ],
                                 1 => [
-                                    0 => 'removeMe',
-                                    1 => 'remove',
+                                    'label' => 'removeMe',
+                                    'value' => 'remove',
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -1728,16 +1723,16 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
-                                    0 => 'Default',
-                                    1 => '0',
+                                    'label' => 'Default',
+                                    'value' => '0',
                                 ],
                                 1 => [
-                                    0 => 'German',
-                                    1 => '1',
+                                    'label' => 'German',
+                                    'value' => '1',
                                 ],
                                 2 => [
-                                    0 => 'Danish',
-                                    1 => '2',
+                                    'label' => 'Danish',
+                                    'value' => '2',
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -1777,18 +1772,18 @@ class TcaSelectItemsTest extends FunctionalTestCase
         ];
         $expected['processedTca']['columns']['aField']['config']['items'] = [
             0 => [
-                0 => 'Default',
-                1 => '0',
-                2 => null,
-                3 => null,
-                4 => null,
+                'label' => 'Default',
+                'value' => '0',
+                'icon' => null,
+                'group' => null,
+                'description' => null,
             ],
             1 => [
-                0 => 'German',
-                1 => '1',
-                2 => null,
-                3 => null,
-                4 => null,
+                'label' => 'German',
+                'value' => '1',
+                'icon' => null,
+                'group' => null,
+                'description' => null,
             ],
         ];
 
@@ -1813,11 +1808,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
-                                    0 => 'keepMe',
-                                    1 => 'keep',
-                                    null,
-                                    null,
-                                    null,
+                                    'label' => 'keepMe',
+                                    'value' => 'keep',
+                                    'icon' => null,
+                                    'group' => null,
+                                    'description' => null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -1855,15 +1850,15 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
-                                    0 => 'keepMe',
-                                    1 => 'keep',
-                                    null,
-                                    null,
-                                    null,
+                                    'label' => 'keepMe',
+                                    'value' => 'keep',
+                                    'icon' => null,
+                                    'group' => null,
+                                    'description' => null,
                                 ],
                                 1 => [
-                                    0 => 'removeMe',
-                                    1 => 'remove',
+                                    'label' => 'removeMe',
+                                    'value' => 'remove',
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -1930,11 +1925,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
             'renderType' => 'selectSingle',
             'items' => [
                 0 => [
-                    0 => 'aLabel',
-                    1 => 'aValue',
-                    2 => null,
-                    3 => null,
-                    4 => null,
+                    'label' => 'aLabel',
+                    'value' => 'aValue',
+                    'icon' => null,
+                    'group' => null,
+                    'description' => null,
                 ],
             ],
             'maxitems' => 99999,
@@ -2005,11 +2000,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
             'foreign_table' => 'foreign_table',
             'items' => [
                 0 => [
-                    0 => 'Item 2',
-                    1 => 2,
-                    2 => null,
-                    3 => null,
-                    4 => null,
+                    'label' => 'Item 2',
+                    'value' => 2,
+                    'icon' => null,
+                    'group' => null,
+                    'description' => null,
                 ],
             ],
             'maxitems' => 99999,
@@ -2092,11 +2087,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
             'foreign_table' => 'foreign_table',
             'items' => [
                 0 => [
-                    0 => 'Item 1',
-                    1 => 1,
-                    2 => null,
-                    3 => null,
-                    4 => null,
+                    'label' => 'Item 1',
+                    'value' => 1,
+                    'icon' => null,
+                    'group' => null,
+                    'description' => null,
                 ],
             ],
             'maxitems' => 99999,
@@ -2181,18 +2176,18 @@ class TcaSelectItemsTest extends FunctionalTestCase
             'foreign_table' => 'foreign_table',
             'items' => [
                 0 => [
-                    0 => 'Item 2',
-                    1 => 2,
-                    2 => null,
-                    3 => null,
-                    4 => null,
+                    'label' => 'Item 2',
+                    'value' => 2,
+                    'icon' => null,
+                    'group' => null,
+                    'description' => null,
                 ],
                 1 => [
-                    0 => 'Label of the added item',
-                    1 => 12,
-                    2 => null,
-                    3 => null,
-                    4 => null,
+                    'label' => 'Label of the added item',
+                    'value' => 12,
+                    'icon' => null,
+                    'group' => null,
+                    'description' => null,
                 ],
             ],
             'maxitems' => 99999,
@@ -2240,12 +2235,13 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'aKey' => 'aValue',
                             'items' => [
                                 0 => [
-                                    0 => 'aLabel',
-                                    1 => 'aValue',
+                                    'label' => 'aLabel',
+                                    'value' => 'aValue',
                                 ],
                             ],
                             'itemsProcFunc' => static function (array $parameters, $pObj) {
-                                if ($parameters['items'] !== [ 0 => [ 'aLabel', 'aValue'] ]
+                                if ($parameters['items'][0]['label'] !== 'aLabel'
+                                    || $parameters['items'][0]['value'] !== 'aValue'
                                     || $parameters['config']['aKey'] !== 'aValue'
                                     || $parameters['TSconfig'] !== [ 'itemParamKey' => 'itemParamValue' ]
                                     || $parameters['table'] !== 'aTable'
@@ -2350,11 +2346,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
-                                    0 => 'aLabel',
-                                    1 => 'aValue',
-                                    null,
-                                    null,
-                                    null,
+                                    'label' => 'aLabel',
+                                    'value' => 'aValue',
+                                    'icon' => null,
+                                    'group' => null,
+                                    'description' => null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -2377,7 +2373,7 @@ class TcaSelectItemsTest extends FunctionalTestCase
 
         $expected = $input;
         $expected['databaseRow']['aField'] = ['aValue'];
-        $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'labelOverride';
+        $expected['processedTca']['columns']['aField']['config']['items'][0]['label'] = 'labelOverride';
 
         self::assertSame($expected, (new TcaSelectItems())->addData($input));
     }
@@ -2400,11 +2396,11 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
-                                    0 => 'aLabel',
-                                    1 => 'aValue',
-                                    2 => 'icon-identifier',
-                                    null,
-                                    null,
+                                    'label' => 'aLabel',
+                                    'value' => 'aValue',
+                                    'icon' => 'icon-identifier',
+                                    'group' => null,
+                                    'description' => null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -2427,7 +2423,7 @@ class TcaSelectItemsTest extends FunctionalTestCase
 
         $expected = $input;
         $expected['databaseRow']['aField'] = ['aValue'];
-        $expected['processedTca']['columns']['aField']['config']['items'][0][2] = 'icon-identifier-override';
+        $expected['processedTca']['columns']['aField']['config']['items'][0]['icon'] = 'icon-identifier-override';
 
         self::assertSame($expected, (new TcaSelectItems())->addData($input));
     }
@@ -2516,7 +2512,7 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'foreign_table' => 'foreign_table',
                             'maxitems' => 999,
                             'items' => [
-                                ['foo', 'foo', null, null, null],
+                                ['label' => 'foo', 'value' => 'foo', 'icon' => null, 'group' => null, 'description' => null],
                             ],
                         ],
                     ],
@@ -2545,8 +2541,8 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'maxitems' => 999,
                             'items' => [
-                                ['foo', 'foo', null, null, null],
-                                ['bar', 'bar', null, null, null],
+                                ['label' => 'foo', 'value' => 'foo', 'icon' => null, 'group' => null, 'description' => null],
+                                ['label' => 'bar', 'value' => 'bar', 'icon' => null, 'group' => null, 'description' => null],
                             ],
                         ],
                     ],
@@ -2611,9 +2607,9 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'maxitems' => 999,
                             'items' => [
-                                ['a', '', null, null, null],
-                                ['b', 'b', null, null, null],
-                                ['c', 'c', null, null, null],
+                                ['label' => 'a', 'value' => '', 'icon' => null, 'group' => null, 'description' => null],
+                                ['label' => 'b', 'value' => 'b', 'icon' => null, 'group' => null, 'description' => null],
+                                ['label' => 'c', 'value' => 'c', 'icon' => null, 'group' => null, 'description' => null],
                             ],
                         ],
                     ],
@@ -2653,7 +2649,7 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'maxitems' => 999,
                             'items' => [
-                                ['foo', 'foo', null, null, null],
+                                ['label' => 'foo', 'value' => 'foo', 'icon' => null, 'group' => null, 'description' => null],
                             ],
                         ],
                     ],
@@ -2690,7 +2686,7 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'renderType' => 'selectSingle',
                             'maxitems' => 99999,
                             'items' => [
-                                ['foo', 'foo', null, null, null],
+                                ['label' => 'foo', 'value' => 'foo', 'icon' => null, 'group' => null, 'description' => null],
                             ],
                         ],
                     ],
@@ -2701,10 +2697,10 @@ class TcaSelectItemsTest extends FunctionalTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = ['foo'];
         $expected['processedTca']['columns']['aField']['config']['items'] = [
-            ['[ INVALID VALUE ("bar") ]', 'bar', null, 'none', null],
-            ['[ INVALID VALUE ("2") ]', '2', null, 'none', null],
-            ['[ INVALID VALUE ("1") ]', '1', null, 'none', null],
-            ['foo', 'foo', null, null, null],
+            ['label' => '[ INVALID VALUE ("bar") ]', 'value' => 'bar', 'icon' => null, 'group' => 'none', 'description' => null],
+            ['label' => '[ INVALID VALUE ("2") ]', 'value' => '2', 'icon' => null, 'group' => 'none', 'description' => null],
+            ['label' => '[ INVALID VALUE ("1") ]', 'value' => '1', 'icon' => null, 'group' => 'none', 'description' => null],
+            ['label' => 'foo', 'value' => 'foo', 'icon' => null, 'group' => null, 'description' => null],
         ];
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
@@ -2728,10 +2724,10 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'multiple' => true,
                             'maxitems' => 999,
                             'items' => [
-                                ['1', '1', null, null, null],
-                                ['foo', 'foo', null, null, null],
-                                ['bar', 'bar', null, null, null],
-                                ['2', '2', null, null, null],
+                                ['label' => '1', 'value' => '1', 'icon' => null, 'group' => null, 'description' => null],
+                                ['label' => 'foo', 'value' => 'foo', 'icon' => null, 'group' => null, 'description' => null],
+                                ['label' => 'bar', 'value' => 'bar', 'icon' => null, 'group' => null, 'description' => null],
+                                ['label' => '2', 'value' => '2', 'icon' => null, 'group' => null, 'description' => null],
                             ],
                         ],
                     ],
@@ -2770,10 +2766,10 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'multiple' => false,
                             'maxitems' => 999,
                             'items' => [
-                                ['1', '1', null, null, null],
-                                ['foo', 'foo', null, null, null],
-                                ['bar', 'bar', null, null, null],
-                                ['2', '2', null, null, null],
+                                ['label' => '1', 'value' => '1', 'icon' => null, 'group' => null, 'description' => null],
+                                ['label' => 'foo', 'value' => 'foo', 'icon' => null, 'group' => null, 'description' => null],
+                                ['label' => 'bar', 'value' => 'bar', 'icon' => null, 'group' => null, 'description' => null],
+                                ['label' => '2', 'value' => '2', 'icon' => null, 'group' => null, 'description' => null],
                             ],
                         ],
                     ],

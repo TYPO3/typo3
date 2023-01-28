@@ -271,8 +271,8 @@ class IconFactory
         $result = null;
         $items = $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'];
         foreach ($items as $item) {
-            if ($item[1] === $pluginName) {
-                $result = $item[2];
+            if ($item['value'] === $pluginName) {
+                $result = $item['icon'];
                 break;
             }
         }

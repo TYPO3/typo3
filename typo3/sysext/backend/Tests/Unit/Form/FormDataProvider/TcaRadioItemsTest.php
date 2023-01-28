@@ -77,8 +77,8 @@ class TcaRadioItemsTest extends UnitTestCase
                             'type' => 'radio',
                             'items' => [
                                 0 => [
-                                    'foo',
-                                    'bar',
+                                    'label' => 'foo',
+                                    'value' => 'bar',
                                 ],
                             ],
                         ],
@@ -170,7 +170,7 @@ class TcaRadioItemsTest extends UnitTestCase
                             'type' => 'radio',
                             'items' => [
                                 0 => [
-                                    0 => 'aLabel',
+                                    'label' => 'aLabel',
                                 ],
                             ],
                         ],
@@ -202,8 +202,8 @@ class TcaRadioItemsTest extends UnitTestCase
                             'type' => 'radio',
                             'items' => [
                                 0 => [
-                                    0 => 'aLabel',
-                                    1 => 'aValue',
+                                    'label' => 'aLabel',
+                                    'value' => 'aValue',
                                 ],
                             ],
                         ],
@@ -218,7 +218,7 @@ class TcaRadioItemsTest extends UnitTestCase
         $languageService->expects(self::atLeastOnce())->method('sL')->with('aLabel')->willReturn('translated');
 
         $expected = $input;
-        $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'translated';
+        $expected['processedTca']['columns']['aField']['config']['items'][0]['label'] = 'translated';
 
         self::assertSame($expected, (new TcaRadioItems())->addData($input));
         (new TcaRadioItems())->addData($input);
@@ -247,7 +247,7 @@ class TcaRadioItemsTest extends UnitTestCase
                             'items' => [],
                             'itemsProcFunc' => static function (array $parameters, $pObj) {
                                 $parameters['items'] = [
-                                    'foo' => 'bar',
+                                    ['foo', 'bar'],
                                 ];
                             },
                         ],
@@ -260,14 +260,11 @@ class TcaRadioItemsTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
-        $expected = $input;
-        $expected['processedTca']['columns']['aField']['config'] = [
-            'type' => 'radio',
-            'items' => [
-                'foo' => 'bar',
-            ],
-        ];
-        self::assertSame($expected, (new TcaRadioItems())->addData($input));
+        $items = (new TcaRadioItems())->addData($input)['processedTca']['columns']['aField']['config']['items'];
+
+        self::assertCount(1, $items);
+        self::assertSame('foo', $items[0]['label']);
+        self::assertSame('bar', $items[0]['value']);
     }
 
     /**
@@ -306,12 +303,13 @@ class TcaRadioItemsTest extends UnitTestCase
                             'aKey' => 'aValue',
                             'items' => [
                                 0 => [
-                                    'foo',
-                                    'bar',
+                                    'label' => 'foo',
+                                    'value' => 'bar',
                                 ],
                             ],
                             'itemsProcFunc' => static function (array $parameters, $pObj) {
-                                if ($parameters['items'] !== [ 0 => [ 'foo', 'bar'] ]
+                                if ($parameters['items'][0]['label'] !== 'foo'
+                                    || $parameters['items'][0]['value'] !== 'bar'
                                     || $parameters['config']['aKey'] !== 'aValue'
                                     || $parameters['TSconfig'] !== [ 'itemParamKey' => 'itemParamValue' ]
                                     || $parameters['table'] !== 'aTable'
@@ -386,8 +384,8 @@ class TcaRadioItemsTest extends UnitTestCase
                             'aKey' => 'aValue',
                             'items' => [
                                 0 => [
-                                    'foo',
-                                    'bar',
+                                    'label' => 'foo',
+                                    'value' => 'bar',
                                 ],
                             ],
                             'itemsProcFunc' => static function (array $parameters, $pObj) {
@@ -428,8 +426,8 @@ class TcaRadioItemsTest extends UnitTestCase
                             'type' => 'radio',
                             'items' => [
                                 0 => [
-                                    0 => 'aLabel',
-                                    1 => 'aValue',
+                                    'label' => 'aLabel',
+                                    'value' => 'aValue',
                                 ],
                             ],
                         ],
@@ -462,7 +460,7 @@ class TcaRadioItemsTest extends UnitTestCase
             return $args[0];
         });
         $expected = $input;
-        $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'labelOverride';
+        $expected['processedTca']['columns']['aField']['config']['items'][0]['label'] = 'labelOverride';
 
         self::assertSame($expected, (new TcaRadioItems())->addData($input));
         (new TcaRadioItems())->addData($input);

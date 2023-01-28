@@ -44,7 +44,7 @@ class ResetSelection extends AbstractNode
         $itemArray = array_flip($parameterArray['itemFormElValue']);
         $initiallySelectedIndices = [];
         foreach ($selectItems as $i => $item) {
-            $value = $item[1];
+            $value = $item['value'];
             // Selected or not by default
             if (isset($itemArray[$value])) {
                 $initiallySelectedIndices[] = $i;

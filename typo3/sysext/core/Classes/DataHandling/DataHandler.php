@@ -2241,7 +2241,7 @@ class DataHandler implements LoggerAwareInterface
     {
         if (is_array($tcaFieldConf['items'])) {
             foreach ($tcaFieldConf['items'] as $set) {
-                if ((string)$set[1] === (string)$value) {
+                if ((string)$set['value'] === (string)$value) {
                     $res['value'] = $value;
                     break;
                 }
@@ -2261,7 +2261,7 @@ class DataHandler implements LoggerAwareInterface
             );
 
             foreach ($processedItems as $set) {
-                if ((string)$set[1] === (string)$value) {
+                if ((string)$set['value'] === (string)$value) {
                     $res['value'] = $value;
                     break;
                 }

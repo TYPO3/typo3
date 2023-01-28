@@ -84,8 +84,8 @@ class RadioElement extends AbstractFormElement
         $html[] =   '<div class="form-wizards-wrap">';
         $html[] =       '<div class="form-wizards-element">';
         foreach ($this->data['parameterArray']['fieldConf']['config']['items'] as $itemNumber => $itemLabelAndValue) {
-            $label = $itemLabelAndValue[0];
-            $value = $itemLabelAndValue[1];
+            $label = $itemLabelAndValue['label'];
+            $value = $itemLabelAndValue['value'];
             $radioId = htmlspecialchars($this->data['parameterArray']['itemFormElID'] . '_' . $itemNumber);
             $radioElementAttrs = array_merge(
                 [

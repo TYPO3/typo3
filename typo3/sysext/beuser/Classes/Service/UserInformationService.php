@@ -197,7 +197,7 @@ class UserInformationService
         if ($filePermissions) {
             $items = GeneralUtility::trimExplode(',', $filePermissions, true);
             foreach ($GLOBALS['TCA']['be_groups']['columns']['file_permissions']['config']['items'] as $availableItem) {
-                if (in_array($availableItem[1], $items, true)) {
+                if (in_array($availableItem['value'], $items, true)) {
                     $data['fileFolderPermissions'][] = $availableItem;
                 }
             }
@@ -227,11 +227,11 @@ class UserInformationService
         // page types
         $specialItems = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
         foreach ($specialItems as $specialItem) {
-            $value = $specialItem[1];
+            $value = $specialItem['value'];
             if (!GeneralUtility::inList($user->groupData['pagetypes_select'] ?? '', $value)) {
                 continue;
             }
-            $label = $specialItem[0];
+            $label = $specialItem['label'];
             $icon = $this->iconFactory->mapRecordTypeToIconIdentifier('pages', ['doktype' => $specialItem[1]]);
             $data['pageTypes'][] = ['label' => $label, 'value' => $value, 'icon' => $icon];
         }

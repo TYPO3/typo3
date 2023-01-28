@@ -15,8 +15,8 @@ if (!isset($GLOBALS['TCA']['fe_users']['ctrl']['type'])) {
                     'type' => 'select',
                     'renderType' => 'selectSingle',
                     'items' => [
-                        ['LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:fe_users.tx_extbase_type.0', '0'],
-                        ['LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:fe_users.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUser', 'Tx_Extbase_Domain_Model_FrontendUser'],
+                        ['label' => 'LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:fe_users.tx_extbase_type.0', 'value' => '0'],
+                        ['label' => 'LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:fe_users.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUser', 'value' => 'Tx_Extbase_Domain_Model_FrontendUser'],
                     ],
                     'maxitems' => 1,
                     'default' => 0,

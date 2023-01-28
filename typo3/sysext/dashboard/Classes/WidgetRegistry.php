@@ -115,11 +115,10 @@ class WidgetRegistry implements SingletonInterface
     {
         foreach ($this->widgets as $widget) {
             $parameters['items'][] = [
-                $widget->getTitle(),
-                $widget->getIdentifier(),
-                $widget->getIconIdentifier(),
-                null,
-                $widget->getDescription(),
+                'label' => $widget->getTitle(),
+                'value' => $widget->getIdentifier(),
+                'icon' => $widget->getIconIdentifier(),
+                'description' => $widget->getDescription(),
             ];
         }
     }

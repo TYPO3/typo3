@@ -161,7 +161,9 @@ class FileCollectionRegistryTest extends UnitTestCase
             'columns' => [
                 'type' => [
                     'config' => [
-                        'items' => ['Type B', 'typeB'],
+                        'items' => [
+                            ['label' => 'Type B', 'value' => 'typeB'],
+                        ],
                     ],
                 ],
             ],
@@ -173,13 +175,16 @@ class FileCollectionRegistryTest extends UnitTestCase
         $subject = new FileCollectionRegistry();
         $subject->addTypeToTCA($type, $label, 'something');
 
+        // Add another item, so that phpstan doesn't complain about non-existing array keys.
+        $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][] = [
+            ['label' => 'Type C', 'value' => 'typeC'],
+        ];
+
         // check type
         self::assertEquals('sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, something', $GLOBALS['TCA']['sys_file_collection']['types']['my_type']['showitem']);
 
-        $indexOfNewType = count($GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items']) - 1;
-
         // check if columns.type.item exist
-        self::assertEquals($type, $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][$indexOfNewType][1]);
-        self::assertEquals($label, $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][$indexOfNewType][0]);
+        self::assertEquals($type, $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][1]['value']);
+        self::assertEquals($label, $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][1]['label']);
     }
 }

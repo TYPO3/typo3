@@ -205,7 +205,7 @@ return [
                 'renderType' => 'checkboxToggle',
                 'items' => [
                     [
-                        0 => '',
+                        'label' => '',
                         'invertStateDisplay' => true,
                     ],
                 ],

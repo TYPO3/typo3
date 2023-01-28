@@ -92,15 +92,15 @@ class SelectCheckBoxElement extends AbstractFormElement
         $counter = 0;
         foreach ($selectItems as $item) {
             // Non-selectable element:
-            if ($item[1] === '--div--') {
+            if ($item['value'] === '--div--') {
                 $selIcon = '';
-                if (isset($item[2]) && $item[2] !== 'empty-empty') {
-                    $selIcon = FormEngineUtility::getIconHtml($item[2]);
+                if (isset($item['icon']) && $item['icon'] !== 'empty-empty') {
+                    $selIcon = FormEngineUtility::getIconHtml($item['icon']);
                 }
                 $currentGroup++;
                 $groups[$currentGroup]['header'] = [
                     'icon' => $selIcon,
-                    'title' => $item[0],
+                    'title' => $item['label'],
                 ];
             } else {
                 // Check if some help text is available
@@ -110,29 +110,29 @@ class SelectCheckBoxElement extends AbstractFormElement
                 // is a string and use it as a description (this could happen if items
                 // are modified with an itemProcFunc)
                 $help = '';
-                if (!empty($item[4])) {
-                    if (is_array($item[4])) {
-                        $helpArray = $item[4];
+                if (!empty($item['description'])) {
+                    if (is_array($item['description'])) {
+                        $helpArray = $item['description'];
                     } else {
-                        $helpArray['description'] = $item[4];
+                        $helpArray['description'] = $item['description'];
                     }
                     $help = $this->wrapInHelp($helpArray);
                 }
 
                 // Check if current item is selected. If found, unset the key in the $itemArray.
-                $checked = isset($itemArray[$item[1]]);
+                $checked = isset($itemArray[$item['value']]);
                 if ($checked) {
-                    unset($itemArray[$item[1]]);
+                    unset($itemArray[$item['value']]);
                 }
 
                 // Build item array
                 $groups[$currentGroup]['items'][] = [
                     'id' => StringUtility::getUniqueId('select_checkbox_row_'),
                     'name' => $parameterArray['itemFormElName'] . '[' . $counter . ']',
-                    'value' => $item[1],
+                    'value' => $item['value'],
                     'checked' => $checked,
-                    'icon' => FormEngineUtility::getIconHtml(!empty($item[2]) ? $item[2] : 'empty-empty'),
-                    'title' => $item[0],
+                    'icon' => FormEngineUtility::getIconHtml(!empty($item['icon']) ? $item['icon'] : 'empty-empty'),
+                    'title' => $item['label'],
                     'help' => $help,
                 ];
                 $counter++;

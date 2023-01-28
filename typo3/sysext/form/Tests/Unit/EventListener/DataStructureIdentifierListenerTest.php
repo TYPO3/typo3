@@ -200,8 +200,8 @@ class DataStructureIdentifierListenerTest extends UnitTestCase
                                 'config' => [
                                     'items' => [
                                         0 => [
-                                            0 => 'default, no value',
-                                            1 => '',
+                                            'label' => 'default, no value',
+                                            'value' => '',
                                         ],
                                     ],
                                 ],
@@ -221,8 +221,8 @@ class DataStructureIdentifierListenerTest extends UnitTestCase
                                 'config' => [
                                     'items' => [
                                         0 => [
-                                            0 => 'default, no value',
-                                            1 => '',
+                                            'label' => 'default, no value',
+                                            'value' => '',
                                         ],
                                         1 => $expectedItem,
                                     ],
@@ -254,9 +254,9 @@ class DataStructureIdentifierListenerTest extends UnitTestCase
                     'location' => 'extension',
                 ],
                 [
-                    'myHugo1 (hugo1)',
-                    'hugo1',
-                    'content-form',
+                    'label' => 'myHugo1 (hugo1)',
+                    'value' => 'hugo1',
+                    'icon' => 'content-form',
                 ],
             ],
             'invalid' => [
@@ -268,9 +268,9 @@ class DataStructureIdentifierListenerTest extends UnitTestCase
                     'invalid' => true,
                 ],
                 [
-                    'Test Error Name (Error.yaml)',
-                    'Error.yaml',
-                    'overlay-missing',
+                    'label' => 'Test Error Name (Error.yaml)',
+                    'value' => 'Error.yaml',
+                    'icon' => 'overlay-missing',
                 ],
             ],
         ];

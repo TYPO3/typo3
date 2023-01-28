@@ -1501,11 +1501,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Pagination/SimplePaginationTest.php
 
 		-
-			message: "#^Offset 'my_type' does not exist on array\\{typeB\\: array\\{showitem\\: 'fieldA, fieldB,…'\\}\\}\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/Collection/FileCollectionRegistryTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$expected of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) expects class\\-string\\<ad9195e2487eea33c8a2abd5cf33cba4\\>, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Index/ExtractorRegistryTest.php

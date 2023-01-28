@@ -178,18 +178,16 @@ class MfaProviderRegistryTest extends FunctionalTestCase
             [
                 'items' => [
                     [
-                        'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totp.title',
-                        'totp',
-                        'actions-qrcode',
-                        null,
-                        'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totp.description',
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totp.title',
+                        'value' => 'totp',
+                        'icon' => 'actions-qrcode',
+                        'description' => 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totp.description',
                     ],
                     [
-                        'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:recoveryCodes.title',
-                        'recovery-codes',
-                        'content-text-columns',
-                        null,
-                        'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:recoveryCodes.description',
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:recoveryCodes.title',
+                        'value' => 'recovery-codes',
+                        'icon' => 'content-text-columns',
+                        'description' => 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:recoveryCodes.description',
                     ],
                 ],
             ],

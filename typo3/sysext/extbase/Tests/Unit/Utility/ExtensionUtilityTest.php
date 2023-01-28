@@ -260,11 +260,11 @@ class ExtensionUtilityTest extends UnitTestCase
         );
         self::assertEquals(
             'EXT:indexed_search/Resources/Public/Icons/Extension.png',
-            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][2]
+            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0]['icon']
         );
         self::assertSame(
             'indexedsearch_pi2',
-            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][1]
+            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0]['value']
         );
     }
 
@@ -298,11 +298,11 @@ class ExtensionUtilityTest extends UnitTestCase
         );
         self::assertEquals(
             'EXT:indexed_search/Resources/Public/Icons/Extension.png',
-            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][2]
+            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0]['icon']
         );
         self::assertSame(
             'indexedsearch_pi2',
-            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][1]
+            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0]['value']
         );
     }
 
@@ -323,7 +323,7 @@ class ExtensionUtilityTest extends UnitTestCase
         );
         self::assertEquals(
             'EXT:indexed_search/foo.gif',
-            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][2]
+            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0]['icon']
         );
     }
 

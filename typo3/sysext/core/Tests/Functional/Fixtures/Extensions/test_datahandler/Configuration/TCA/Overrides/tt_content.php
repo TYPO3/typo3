@@ -43,7 +43,7 @@ defined('TYPO3') or die();
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'items' => [
-                    ['predefined label', 'predefined value'],
+                    ['label' => 'predefined label', 'value' => 'predefined value'],
                 ],
                 'itemsProcFunc' => \TYPO3\TestDatahandler\Classes\Tca\SelectElementItems::class . '->getItems',
                 'minitems' => 1,
@@ -70,7 +70,7 @@ defined('TYPO3') or die();
             'config' => [
                 'type' => 'radio',
                 'items' => [
-                    ['predefined label', 'predefined value'],
+                    ['label' => 'predefined label', 'value' => 'predefined value'],
                 ],
                 'itemsProcFunc' => \TYPO3\TestDatahandler\Classes\Tca\RadioElementItems::class . '->getItems',
                 'default' => '',
@@ -82,7 +82,7 @@ defined('TYPO3') or die();
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['predefined label'],
+                    ['label' => 'predefined label'],
                 ],
                 'itemsProcFunc' => \TYPO3\TestDatahandler\Classes\Tca\CheckboxElementItems::class . '->getItems',
                 'default' => '',

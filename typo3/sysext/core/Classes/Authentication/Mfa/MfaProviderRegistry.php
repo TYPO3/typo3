@@ -36,9 +36,9 @@ class MfaProviderRegistry
         $this->providers[$provider->getIdentifier()] = $provider;
     }
 
-    public function hasProvider(string $identifer): bool
+    public function hasProvider(string $identifier): bool
     {
-        return isset($this->providers[$identifer]);
+        return isset($this->providers[$identifier]);
     }
 
     public function hasProviders(): bool
@@ -126,11 +126,10 @@ class MfaProviderRegistry
     {
         foreach ($this->providers as $provider) {
             $parameters['items'][] = [
-                $provider->getTitle(),
-                $provider->getIdentifier(),
-                $provider->getIconIdentifier(),
-                null,
-                $provider->getDescription(),
+                'label' => $provider->getTitle(),
+                'value' => $provider->getIdentifier(),
+                'icon' => $provider->getIconIdentifier(),
+                'description' => $provider->getDescription(),
             ];
         }
     }

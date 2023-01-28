@@ -34,10 +34,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_testselectflexmm_foreign',
                 'foreign_table_where' => 'AND {#tx_testselectflexmm_foreign}.{#pid}=###CURRENT_PID### AND {#tx_testselectflexmm_foreign}.{#sys_language_uid} IN (-1,0)',
@@ -52,10 +49,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [
-                        '',
-                        0,
-                    ],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_testselectflexmm_foreign',
                 'foreign_table_where' => 'AND {#tx_testselectflexmm_foreign}.{#pid}=###CURRENT_PID### AND {#tx_testselectflexmm_foreign}.{#uid}!=###THIS_UID###',

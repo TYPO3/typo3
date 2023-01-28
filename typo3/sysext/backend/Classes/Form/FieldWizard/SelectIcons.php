@@ -39,15 +39,15 @@ class SelectIcons extends AbstractNode
 
         $selectItemCounter = 0;
         foreach ($selectItems as $item) {
-            if ($item[1] === '--div--') {
+            if ($item['value'] === '--div--') {
                 continue;
             }
-            $icon = !empty($item[2]) ? FormEngineUtility::getIconHtml($item[2], $item[0], $item[0]) : '';
+            $icon = !empty($item['icon']) ? FormEngineUtility::getIconHtml($item['icon'], $item['label'], $item['label']) : '';
             if ($icon) {
                 $fieldValue = $this->data['databaseRow'][$this->data['fieldName']];
                 $selectIcons[] = [
-                        'title' => $item[0],
-                        'active' => ($fieldValue[0] ?? false) === (string)($item[1] ?? ''),
+                        'title' => $item['label'],
+                        'active' => ($fieldValue[0] ?? false) === (string)($item['value'] ?? ''),
                         'icon' => $icon,
                         'index' => $selectItemCounter,
                     ];

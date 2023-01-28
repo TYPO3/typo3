@@ -723,9 +723,9 @@ class BackendUtilityTest extends UnitTestCase
                         'menu_type' => [
                             'config' => [
                                 'items' => [
-                                    ['Item 1', '0'],
-                                    ['Item 2', '1'],
-                                    ['Item 3', '3'],
+                                    ['label' => 'Item 1', 'value' => '0'],
+                                    ['label' => 'Item 2', 'value' => '1'],
+                                    ['label' => 'Item 3', 'value' => '3'],
                                 ],
                             ],
                         ],
@@ -742,10 +742,10 @@ class BackendUtilityTest extends UnitTestCase
                         'menu_type' => [
                             'config' => [
                                 'items' => [
-                                    ['Item 1', '0'],
-                                    ['Item 2a', '1'],
-                                    ['Item 2b', '1'],
-                                    ['Item 3', '3'],
+                                    ['label' => 'Item 1', 'value' => '0'],
+                                    ['label' => 'Item 2a', 'value' => '1'],
+                                    ['label' => 'Item 2b', 'value' => '1'],
+                                    ['label' => 'Item 3', 'value' => '3'],
                                 ],
                             ],
                         ],
@@ -762,9 +762,9 @@ class BackendUtilityTest extends UnitTestCase
                         'menu_type' => [
                             'config' => [
                                 'items' => [
-                                    ['Item 1', '0'],
-                                    ['Item 2', '1'],
-                                    ['Item 3', '2'],
+                                    ['label' => 'Item 1', 'value' => '0'],
+                                    ['label' => 'Item 2', 'value' => '1'],
+                                    ['label' => 'Item 3', 'value' => '2'],
                                 ],
                             ],
                         ],
@@ -804,9 +804,9 @@ class BackendUtilityTest extends UnitTestCase
                         'menu_type' => [
                             'config' => [
                                 'items' => [
-                                    ['Item 1', '0'],
-                                    ['Item 2', '1'],
-                                    ['Item 3', '3'],
+                                    ['label' => 'Item 1', 'value' => '0'],
+                                    ['label' => 'Item 2', 'value' => '1'],
+                                    ['label' => 'Item 3', 'value' => '3'],
                                 ],
                             ],
                         ],
@@ -824,9 +824,9 @@ class BackendUtilityTest extends UnitTestCase
                         'menu_type' => [
                             'config' => [
                                 'items' => [
-                                    ['Item 1', '0'],
-                                    ['Item 2', '1'],
-                                    ['Item 3', '3'],
+                                    ['label' => 'Item 1', 'value' => '0'],
+                                    ['label' => 'Item 2', 'value' => '1'],
+                                    ['label' => 'Item 3', 'value' => '3'],
                                 ],
                             ],
                         ],
@@ -866,8 +866,8 @@ class BackendUtilityTest extends UnitTestCase
                         'someColumn' => [
                             'config' => [
                                 'items' => [
-                                    '0' => ['aFooLabel', 'foo'],
-                                    '1' => ['aBarLabel', 'bar'],
+                                    ['label' => 'aFooLabel', 'value' => 'foo'],
+                                    ['label' => 'aBarLabel', 'value' => 'bar'],
                                 ],
                             ],
                         ],
@@ -885,8 +885,8 @@ class BackendUtilityTest extends UnitTestCase
                         'someColumn' => [
                             'config' => [
                                 'items' => [
-                                    '0' => ['aFooLabel', 'foo'],
-                                    '1' => ['aBarLabel', 'bar'],
+                                    ['label' => 'aFooLabel', 'value' => 'foo'],
+                                    ['label' => 'aBarLabel', 'value' => 'bar'],
                                 ],
                             ],
                         ],
@@ -935,8 +935,8 @@ class BackendUtilityTest extends UnitTestCase
                     'config' => [
                         'type' => 'select',
                         'items' => [
-                            '0' => ['aFooLabel', 'foo'],
-                            '1' => ['aBarLabel', 'bar'],
+                            ['label' => 'aFooLabel', 'value' => 'foo'],
+                            ['label' => 'aBarLabel', 'value' => 'bar'],
                         ],
                     ],
                 ],
@@ -964,7 +964,7 @@ class BackendUtilityTest extends UnitTestCase
                     'config' => [
                         'type' => 'select',
                         'items' => [
-                            '0' => ['aFooLabel', 'foo'],
+                            '0' => ['label' => 'aFooLabel', 'value' => 'foo'],
                         ],
                     ],
                 ],

@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -55,7 +56,15 @@ class ItemProcessingService
         // The itemsProcFunc method may throw an exception.
         // If it does, display an error message and return items unchanged.
         try {
+            $params['items'] = array_map(
+                fn (array $item) => SelectItem::fromTcaItemArray($item, $params['config']['type']),
+                $params['items']
+            );
             GeneralUtility::callUserFunction($tcaConfig['itemsProcFunc'], $params, $this);
+            $params['items'] = array_map(
+                fn ($item) => $item instanceof SelectItem ? $item : SelectItem::fromTcaItemArray($item, $params['config']['type']),
+                $params['items']
+            );
         } catch (\Exception $exception) {
             $languageService = $this->getLanguageService();
             $fieldLabel = $field;

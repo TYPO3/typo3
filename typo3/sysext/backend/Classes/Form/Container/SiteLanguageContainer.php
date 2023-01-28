@@ -118,7 +118,7 @@ class SiteLanguageContainer extends AbstractContainer
         $uniquePossibleRecords = $config['uniquePossibleRecords'] ?? [];
         $possibleRecordsUidToTitle = [];
         foreach ($uniquePossibleRecords as $possibleRecord) {
-            $possibleRecordsUidToTitle[$possibleRecord[1]] = $possibleRecord[0];
+            $possibleRecordsUidToTitle[$possibleRecord['value']] = $possibleRecord['label'];
         }
         $this->inlineData['unique'][$nameObject . '-' . self::FOREIGN_TABLE] = [
             // Usually "max" would the the number of possible records. However, since
@@ -140,8 +140,8 @@ class SiteLanguageContainer extends AbstractContainer
 
         foreach ($config['uniquePossibleRecords'] ?? [] as $record) {
             // Do not add the PHP_INT_MAX placeholder or already configured languages
-            if ($record[1] !== PHP_INT_MAX && !in_array($record[1], $uniqueIds, true)) {
-                $selectorOptions[] = ['value' => (string)$record[1], 'label' => (string)$record[0]];
+            if ($record['value'] !== PHP_INT_MAX && !in_array($record['value'], $uniqueIds, true)) {
+                $selectorOptions[] = ['value' => (string)$record['value'], 'label' => (string)$record['label']];
             }
         }
 

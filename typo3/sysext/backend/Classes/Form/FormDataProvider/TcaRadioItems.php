@@ -58,21 +58,21 @@ class TcaRadioItems extends AbstractItemProvider implements FormDataProviderInte
                         1438607163
                     );
                 }
-                if (!array_key_exists(0, $itemValue)) {
+                if (!array_key_exists('label', $itemValue)) {
                     throw new \UnexpectedValueException(
                         'Item ' . $itemKey . ' of field ' . $fieldName . ' of TCA table ' . $result['tableName'] . ' has no label',
                         1438607164
                     );
                 }
-                if (!array_key_exists(1, $itemValue)) {
+                if (!array_key_exists('value', $itemValue)) {
                     throw new \UnexpectedValueException(
                         'Item ' . $itemKey . ' of field ' . $fieldName . ' of TCA table ' . $result['tableName'] . ' has no value',
                         1438607165
                     );
                 }
                 $newItems[$itemKey] = [
-                    $languageService->sL(trim($itemValue[0])),
-                    $itemValue[1],
+                    'label' => $languageService->sL(trim($itemValue['label'])),
+                    'value' => $itemValue['value'],
                 ];
             }
             $items = $newItems;
@@ -89,8 +89,8 @@ class TcaRadioItems extends AbstractItemProvider implements FormDataProviderInte
                 && is_array($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'])
             ) {
                 foreach ($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'] as $itemKey => $label) {
-                    if (isset($items[$itemKey][0])) {
-                        $items[$itemKey][0] = $languageService->sL(trim($label));
+                    if (isset($items[$itemKey]['label'])) {
+                        $items[$itemKey]['label'] = $languageService->sL(trim($label));
                     }
                 }
             }

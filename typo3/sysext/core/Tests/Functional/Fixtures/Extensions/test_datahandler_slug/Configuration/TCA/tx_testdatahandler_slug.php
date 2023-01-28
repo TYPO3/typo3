@@ -65,7 +65,7 @@ return [
                 'type'  => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table'       => 'tx_testdatahandler_slug',
                 'foreign_table_where' => 'AND {#tx_testdatahandler_slug}.{#pid}=###CURRENT_PID### AND {#tx_testdatahandler_slug}.{#sys_language_uid} IN (-1,0)',

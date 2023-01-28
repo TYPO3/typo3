@@ -86,6 +86,7 @@ class TcaMigration
         $tca = $this->removeFalRelatedElementBrowserOptions($tca);
         $tca = $this->removeFalRelatedOptionsFromTypeInline($tca);
         $tca = $this->removePassContentFromTypeNone($tca);
+        $tca = $this->migrateItemsToAssociativeArray($tca);
 
         return $tca;
     }
@@ -1362,6 +1363,84 @@ class TcaMigration
                     $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' uses '
                         . '\'pass_content\'. This config key is obsolete and has been removed. '
                         . 'Please adjust your TCA accordingly.';
+                }
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Converts the item list of type "select", "radio" and "check" to an associated array.
+     *
+     * // From:
+     * [
+     *     0 => 'A label',
+     *     1 => 'value',
+     *     2 => 'icon-identifier',
+     *     3 => 'group1',
+     *     4 => 'a custom description'
+     * ]
+     *
+     * // To:
+     * [
+     *     'label' => 'A label',
+     *     'value' => 'value',
+     *     'icon' => 'icon-identifier',
+     *     'group' => 'group1',
+     *     'description' => 'a custom description'
+     * ]
+     */
+    protected function migrateItemsToAssociativeArray(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (
+                    array_key_exists('items', $fieldConfig['config'] ?? [])
+                    && in_array(($fieldConfig['config']['type'] ?? ''), ['select', 'radio', 'check'], true)
+                ) {
+                    $hasLegacyItemConfiguration = false;
+                    $items = $fieldConfig['config']['items'];
+                    foreach ($items as $key => $item) {
+                        if (!is_array($item)) {
+                            continue;
+                        }
+                        if (array_key_exists(0, $item)) {
+                            $hasLegacyItemConfiguration = true;
+                            $items[$key]['label'] = $item[0];
+                            unset($items[$key][0]);
+                        }
+                        if (($fieldConfig['config']['type'] !== 'check') && array_key_exists(1, $item)) {
+                            $hasLegacyItemConfiguration = true;
+                            $items[$key]['value'] = $item[1];
+                            unset($items[$key][1]);
+                        }
+                        if ($fieldConfig['config']['type'] === 'select') {
+                            if (array_key_exists(2, $item)) {
+                                $hasLegacyItemConfiguration = true;
+                                $items[$key]['icon'] = $item[2];
+                                unset($items[$key][2]);
+                            }
+                            if (array_key_exists(3, $item)) {
+                                $hasLegacyItemConfiguration = true;
+                                $items[$key]['group'] = $item[3];
+                                unset($items[$key][3]);
+                            }
+                            if (array_key_exists(4, $item)) {
+                                $hasLegacyItemConfiguration = true;
+                                $items[$key]['description'] = $item[4];
+                                unset($items[$key][4]);
+                            }
+                        }
+                    }
+                    if ($hasLegacyItemConfiguration) {
+                        $tca[$table]['columns'][$fieldName]['config']['items'] = $items;
+                        $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' uses '
+                            . 'the legacy way of defining \'items\'. Please switch to associated array keys: '
+                            . 'label, value, icon, group, description.';
+                    }
                 }
             }
         }

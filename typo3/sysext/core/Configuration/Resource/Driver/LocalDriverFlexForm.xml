@@ -18,12 +18,12 @@
 					<type>radio</type>
 					<items type="array">
 						<numIndex index="0" type="array">
-							<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType_relative</numIndex>
-							<numIndex index="1">relative</numIndex>
+							<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType_relative</label>
+							<value>relative</value>
 						</numIndex>
 						<numIndex index="1" type="array">
-							<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType_absolute</numIndex>
-							<numIndex index="1">absolute</numIndex>
+							<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType_absolute</label>
+							<value>absolute</value>
 						</numIndex>
 					</items>
 					<default>relative</default>

@@ -83,16 +83,16 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
                 // In case siteLanguages are available, add the "site languages" group
                 $fieldConfig['config']['items'] = [
                     [
-                        0 => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages',
-                        1 => '--div--',
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages',
+                        'value' => '--div--',
                     ],
                 ];
                 // Add the fetched site languages to the field config items array
                 foreach ($siteLanguages as $languageId => $language) {
                     $fieldConfig['config']['items'][] = [
-                        0 => $language['title'],
-                        1 => $languageId,
-                        2 => $language['flagIconIdentifier'],
+                        'label' => $language['title'],
+                        'value' => $languageId,
+                        'icon' => $language['flagIconIdentifier'],
                     ];
                 }
             }
@@ -100,17 +100,17 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
             // Add the "special" group for "ALL" and / or user defined items
             if (($table !== 'pages' && isset($result['systemLanguageRows'][-1])) || $userDefinedItems !== []) {
                 $fieldConfig['config']['items'][] = [
-                    0 => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages',
-                    1 => '--div--',
+                    'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages',
+                    'value' => '--div--',
                 ];
             }
             // Add "-1" for all TCA records except pages in case the user is allowed to.
             // The item is added to the "special" group, in order to not provide it as default by accident.
             if ($table !== 'pages' && isset($result['systemLanguageRows'][-1])) {
                 $fieldConfig['config']['items'][] = [
-                    0 => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
-                    1 => -1,
-                    2 => 'flags-multiple',
+                    'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
+                    'value' => -1,
+                    'icon' => 'flags-multiple',
                 ];
             }
 
@@ -130,7 +130,7 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
 
             // Check current database value
             $currentDatabaseValue = (int)($result['databaseRow'][$fieldName] ?? 0);
-            if (!in_array($currentDatabaseValue, array_map('intval', array_column($fieldConfig['config']['items'], 1)), true)) {
+            if (!in_array($currentDatabaseValue, array_map('intval', array_column($fieldConfig['config']['items'], 'value')), true)) {
                 // Current value is invalid, so add it with a proper message at the top
                 $fieldConfig['config']['items'] = $this->addInvalidItem($result, $table, $fieldName, $currentDatabaseValue, $fieldConfig['config']['items']);
             }
@@ -139,7 +139,7 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
             $fieldConfig['config']['items'] = array_values($fieldConfig['config']['items']);
 
             // In case the last element is a divider, remove it
-            if ((string)($fieldConfig['config']['items'][array_key_last($fieldConfig['config']['items'])][1] ?? '') === '--div--') {
+            if ((string)($fieldConfig['config']['items'][array_key_last($fieldConfig['config']['items'])]['value'] ?? '') === '--div--') {
                 array_pop($fieldConfig['config']['items']);
             }
 
@@ -174,7 +174,7 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
             : '[ ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue') . ' ]';
 
         // Add the invalid value at the top
-        array_unshift($items, [@sprintf($noMatchingLabel, $invalidValue), $invalidValue, null]);
+        array_unshift($items, ['label' => @sprintf($noMatchingLabel, $invalidValue), 'value' => $invalidValue, 'icon' => null]);
 
         return $items;
     }

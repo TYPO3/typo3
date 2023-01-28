@@ -1269,8 +1269,8 @@ class BackendUtility
             // Traverse the items-array...
             foreach ($GLOBALS['TCA'][$table]['columns'][$col]['config']['items'] as $v) {
                 // ... and return the first found label where the value was equal to $key
-                if ((string)$v[1] === (string)$key) {
-                    return $v[0];
+                if ((string)$v['value'] === (string)$key) {
+                    return $v['label'];
                 }
             }
         }
@@ -1350,9 +1350,8 @@ class BackendUtility
             if ($label === null) {
                 // Otherwise lookup the label in TCA items list
                 foreach ($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'] as $itemConfiguration) {
-                    [$currentLabel, $currentKey] = $itemConfiguration;
-                    if ((string)$key === (string)$currentKey) {
-                        $label = $currentLabel;
+                    if ($key === (string)$itemConfiguration['value']) {
+                        $label = $itemConfiguration['label'];
                         break;
                     }
                 }
@@ -1621,7 +1620,7 @@ class BackendUtility
                     $lA = [];
                     foreach ($theColConf['items'] as $key => $val) {
                         if ((int)$value & 2 ** $key) {
-                            $lA[] = $lang->sL($val[0]);
+                            $lA[] = $lang->sL($val['label']);
                         }
                     }
                     $l = implode(', ', $lA);

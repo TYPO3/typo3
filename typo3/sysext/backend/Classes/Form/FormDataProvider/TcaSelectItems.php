@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -89,7 +90,10 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
             $result['databaseRow'][$fieldName] = $currentDatabaseValuesArray;
 
             // add item values as keys to determine which items are stored in the database and should be preselected
-            $itemArrayValues = array_column($fieldConfig['config']['items'], 1);
+            $itemArrayValues = array_column(
+                array_map(fn ($item) => $item instanceof SelectItem ? $item->toArray() : $item, $fieldConfig['config']['items']),
+                'value'
+            );
             $itemArray = array_fill_keys(
                 $itemArrayValues,
                 $fieldConfig['config']['items']
@@ -157,16 +161,28 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 
         $unmatchedValues = array_diff(
             array_values($databaseValues),
-            array_column($fieldConf['config']['items'], 1),
-            array_column($removedItems, 1)
+            array_column(
+                array_map(
+                    fn ($item) => $item instanceof SelectItem ? $item->toArray() : $item,
+                    $fieldConf['config']['items']
+                ),
+                'value'
+            ),
+            array_column(
+                array_map(
+                    fn ($item) => $item instanceof SelectItem ? $item->toArray() : $item,
+                    $removedItems
+                ),
+                'value'
+            )
         );
 
         foreach ($unmatchedValues as $unmatchedValue) {
             $invalidItem = [
-                @sprintf($noMatchingLabel, $unmatchedValue),
-                $unmatchedValue,
-                null,
-                'none', // put it in the very first position in the "none" group
+                'label' => @sprintf($noMatchingLabel, $unmatchedValue),
+                'value' => $unmatchedValue,
+                'icon' => null,
+                'group' => 'none', // put it in the very first position in the "none" group
             ];
             array_unshift($fieldConf['config']['items'], $invalidItem);
         }
@@ -198,7 +214,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
      *
      * All grouped items are then "flattened" out and --div-- items are added for each group to keep backwards-compatibility.
      *
-     * @param array $allItems all resolved items including the ones from foreign_table values. The group ID information can be found in fourth key [3] of an item.
+     * @param array $allItems all resolved items including the ones from foreign_table values. The group ID information can be found in key ['group'] of an item.
      * @param array $definedGroups [config][itemGroups]
      * @param array $sortOrders [config][sortOrders]
      */
@@ -212,22 +228,22 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
         }
         $currentGroup = 'none';
         // Extract --div-- into itemGroups
-        foreach ($allItems as $key => $item) {
-            if ($item[1] === '--div--') {
+        foreach ($allItems as $item) {
+            if ($item['value'] === '--div--') {
                 // A divider is added as a group (existing groups will get their label overridden)
-                if (isset($item[3])) {
-                    $currentGroup = $item[3];
-                    $itemGroups[$currentGroup] = $item[0];
+                if (isset($item['group'])) {
+                    $currentGroup = $item['group'];
+                    $itemGroups[$currentGroup] = $item['label'];
                 } else {
                     $currentGroup = 'none';
                 }
                 continue;
             }
             // Put the given item in the currentGroup if no group has been given already
-            if (!isset($item[3])) {
-                $item[3] = $currentGroup;
+            if (!isset($item['group'])) {
+                $item['group'] = $currentGroup;
             }
-            $groupIdOfItem = !empty($item[3]) ? $item[3] : 'none';
+            $groupIdOfItem = !empty($item['group']) ? $item['group'] : 'none';
             // It is still possible to have items that have an "unassigned" group, so they are moved to the "none" group
             if (!isset($itemGroups[$groupIdOfItem])) {
                 $itemGroups[$groupIdOfItem] = '';
@@ -266,7 +282,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
             if ($groupId !== 'none') {
                 // Fall back to the groupId, if there is no label for it
                 $groupLabel = $groupLabel ?: $groupId;
-                $finalItems[] = [$groupLabel, '--div--', null, $groupId, null];
+                $finalItems[] = ['label' => $groupLabel, 'value' => '--div--', 'group' => $groupId];
             }
             $finalItems = array_merge($finalItems, $itemsInGroup);
         }
@@ -290,9 +306,9 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
                         $items,
                         static function ($item1, $item2) use ($direction) {
                             if ($direction === 'desc') {
-                                return (strcasecmp($item1[0], $item2[0]) <= 0) ? 1 : 0;
+                                return (strcasecmp($item1['label'], $item2['label']) <= 0) ? 1 : 0;
                             }
-                            return strcasecmp($item1[0], $item2[0]);
+                            return strcasecmp($item1['label'], $item2['label']);
                         }
                     );
                     break;
@@ -302,9 +318,9 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
                         $items,
                         static function ($item1, $item2) use ($direction) {
                             if ($direction === 'desc') {
-                                return (strcasecmp($item1[1], $item2[1]) <= 0) ? 1 : 0;
+                                return (strcasecmp($item1['value'], $item2['value']) <= 0) ? 1 : 0;
                             }
-                            return strcasecmp($item1[1], $item2[1]);
+                            return strcasecmp($item1['value'], $item2['value']);
                         }
                     );
                     break;

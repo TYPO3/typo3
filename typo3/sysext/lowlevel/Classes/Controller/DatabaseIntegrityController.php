@@ -1073,7 +1073,7 @@ class DatabaseIntegrityController
                     if (is_array($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items'] ?? false)) {
                         $items = $GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items'];
                         foreach ($items as $labelArray) {
-                            $labelFieldSelect[$labelArray[1]] = $languageService->sL($labelArray[0]);
+                            $labelFieldSelect[$labelArray['value']] = $languageService->sL($labelArray['label']);
                         }
                         $useSelectLabels = 1;
                     }
@@ -1081,7 +1081,7 @@ class DatabaseIntegrityController
                     if (is_array($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'] ?? false)) {
                         $items = $GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'];
                         foreach ($items as $altLabelArray) {
-                            $altLabelFieldSelect[$altLabelArray[1]] = $languageService->sL($altLabelArray[0]);
+                            $altLabelFieldSelect[$altLabelArray['value']] = $languageService->sL($altLabelArray['label']);
                         }
                         $useAltSelectLabels = 1;
                     }
@@ -2648,11 +2648,11 @@ class DatabaseIntegrityController
         $doktype = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
         if (is_array($doktype)) {
             foreach ($doktype as $setup) {
-                if ($setup[1] !== '--div--') {
+                if ($setup['value'] !== '--div--') {
                     $doktypes[] = [
-                        'icon' => $this->iconFactory->getIconForRecord('pages', ['doktype' => $setup[1]], Icon::SIZE_SMALL)->render(),
-                        'title' => $languageService->sL($setup[0]) . ' (' . $setup[1] . ')',
-                        'count' => (int)($databaseIntegrityCheck->getRecStats()['doktype'][$setup[1]] ?? 0),
+                        'icon' => $this->iconFactory->getIconForRecord('pages', ['doktype' => $setup['value']], Icon::SIZE_SMALL)->render(),
+                        'title' => $languageService->sL($setup['label']) . ' (' . $setup['value'] . ')',
+                        'count' => (int)($databaseIntegrityCheck->getRecStats()['doktype'][$setup['value']] ?? 0),
                     ];
                 }
             }

@@ -137,8 +137,8 @@ prototypes:
                   size: 1
                   items:
                     10:
-                      - tt_content.finishersDefinition.EmailToReceiver.language.1
-                      - default
+                      label: tt_content.finishersDefinition.EmailToReceiver.language.1
+                      value: default
             title:
               label: tt_content.finishersDefinition.EmailToReceiver.title.label
               config:

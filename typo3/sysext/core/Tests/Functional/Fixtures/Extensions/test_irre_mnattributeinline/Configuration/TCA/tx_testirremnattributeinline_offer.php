@@ -39,7 +39,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_testirremnattributeinline_offer',
                 'foreign_table_where' => 'AND {#tx_testirremnattributeinline_offer}.{#pid}=###CURRENT_PID### AND {#tx_testirremnattributeinline_offer}.{#sys_language_uid} IN (-1,0)',

@@ -224,7 +224,7 @@ class InlineControlContainer extends AbstractContainer
             $possibleRecords = $config['selectorOrUniquePossibleRecords'] ?? [];
             $possibleRecordsUidToTitle = [];
             foreach ($possibleRecords as $possibleRecord) {
-                $possibleRecordsUidToTitle[$possibleRecord[1]] = $possibleRecord[0];
+                $possibleRecordsUidToTitle[$possibleRecord['value']] = $possibleRecord['label'];
             }
             $uniqueMax = ($config['appearance']['useCombination'] ?? false) || empty($possibleRecords) ? -1 : count($possibleRecords);
             $this->inlineData['unique'][$nameObject . '-' . $foreign_table] = [
@@ -528,9 +528,9 @@ class InlineControlContainer extends AbstractContainer
         $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
         // Create option tags:
         $opt = [];
-        foreach ($possibleRecords as $p) {
-            if (!in_array($p[1], $uniqueIds)) {
-                $opt[] = '<option value="' . htmlspecialchars($p[1]) . '">' . htmlspecialchars($p[0]) . '</option>';
+        foreach ($possibleRecords as $possibleRecord) {
+            if (!in_array($possibleRecord['value'], $uniqueIds)) {
+                $opt[] = '<option value="' . htmlspecialchars($possibleRecord['value']) . '">' . htmlspecialchars($possibleRecord['value']) . '</option>';
             }
         }
         // Put together the selector box:

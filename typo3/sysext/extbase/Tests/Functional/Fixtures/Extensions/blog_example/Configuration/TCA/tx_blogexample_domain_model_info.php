@@ -35,7 +35,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_blogexample_domain_model_info',
                 'foreign_table_where' => ' AND {#tx_blogexample_domain_model_info}.{#pid}=###CURRENT_PID### AND {#tx_blogexample_domain_model_info}.{#sys_language_uid} IN (-1,0)',
@@ -56,7 +56,7 @@ return [
                 'renderType' => 'checkboxToggle',
                 'items' => [
                     [
-                        0 => '',
+                        'label' => '',
                         'invertStateDisplay' => true,
                     ],
                 ],

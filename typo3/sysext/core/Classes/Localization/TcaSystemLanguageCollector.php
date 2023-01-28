@@ -50,9 +50,9 @@ class TcaSystemLanguageCollector
         foreach ($languageItems as $typo3Language => $name) {
             $available = in_array($typo3Language, $installedLanguages, true) || is_dir(Environment::getLabelsPath() . '/' . $typo3Language);
             if ($available) {
-                $availableLanguages[] = [$name, $typo3Language, '', 'installed'];
+                $availableLanguages[] = ['label' => $name, 'value' => $typo3Language, 'group' => 'installed'];
             } else {
-                $unavailableLanguages[] = [$name, $typo3Language, '', 'unavailable'];
+                $unavailableLanguages[] = ['label' => $name, 'value' => $typo3Language, 'group' => 'unavailable'];
             }
         }
 
@@ -76,13 +76,13 @@ class TcaSystemLanguageCollector
                 $languageId = $language->getLanguageId();
                 if (isset($allLanguages[$languageId])) {
                     // Language already provided by another site, just add the label separately
-                    $allLanguages[$languageId][0] .= ', ' . $language->getTitle() . ' [Site: ' . $site->getIdentifier() . ']';
+                    $allLanguages[$languageId]['label'] .= ', ' . $language->getTitle() . ' [Site: ' . $site->getIdentifier() . ']';
                     continue;
                 }
                 $allLanguages[$languageId] = [
-                    0 => $language->getTitle() . ' [Site: ' . $site->getIdentifier() . ']',
-                    1 => $languageId,
-                    2 => $language->getFlagIdentifier(),
+                    'label' => $language->getTitle() . ' [Site: ' . $site->getIdentifier() . ']',
+                    'value' => $languageId,
+                    'icon' => $language->getFlagIdentifier(),
                 ];
             }
         }
@@ -101,9 +101,9 @@ class TcaSystemLanguageCollector
 
         foreach ($languages as $languageId => $language) {
             $fieldInformation['items'][] = [
-                0 => $language->getTitle(),
-                1 => $languageId,
-                2 => $language->getFlagIdentifier(),
+                'label' => $language->getTitle(),
+                'value' => $languageId,
+                'icon' => $language->getFlagIdentifier(),
             ];
         }
     }

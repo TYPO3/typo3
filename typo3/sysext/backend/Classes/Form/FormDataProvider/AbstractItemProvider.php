@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -93,7 +94,15 @@ abstract class AbstractItemProvider
         }
 
         try {
+            $items = array_map(
+                fn (array $item) => SelectItem::fromTcaItemArray($item, $config['type']),
+                $items
+            );
             GeneralUtility::callUserFunction($config['itemsProcFunc'], $processorParameters, $this);
+            $items = array_map(
+                fn ($item) => $item instanceof SelectItem ? $item : SelectItem::fromTcaItemArray($item, $config['type']),
+                $processorParameters['items']
+            );
         } catch (\Exception $exception) {
             // The itemsProcFunc method may throw an exception, create a flash message if so
             $languageService = $this->getLanguageService();
@@ -159,7 +168,12 @@ abstract class AbstractItemProvider
                     }
                 }
 
-                $items[] = [$label, $value, $iconIdentifier, $group];
+                $items[] = [
+                    'label' => $label,
+                    'value' => $value,
+                    'icon' => $iconIdentifier,
+                    'group' => $group,
+                ];
             }
         }
         return $items;
@@ -226,9 +240,9 @@ abstract class AbstractItemProvider
                     ? $folder . $fileReference
                     : '';
                 $items[] = [
-                    $fileReference,
-                    $fileReference,
-                    $icon,
+                    'label' => $fileReference,
+                    'value' => $fileReference,
+                    'icon' => $icon,
                 ];
             }
         }
@@ -336,9 +350,9 @@ abstract class AbstractItemProvider
                     $icon = $iconFactory->mapRecordTypeToIconIdentifier($foreignTable, $foreignRow);
                 }
                 $item = [
-                    0 => $labelPrefix . BackendUtility::getRecordTitle($foreignTable, $foreignRow),
-                    1 => $foreignRow['uid'],
-                    2 => $icon,
+                    'label' => $labelPrefix . BackendUtility::getRecordTitle($foreignTable, $foreignRow),
+                    'value' => $foreignRow['uid'],
+                    'icon' => $icon,
                 ];
                 if ($includeFullRows) {
                     // @todo: This is part of the category tree performance hack
@@ -379,7 +393,7 @@ abstract class AbstractItemProvider
             $items,
             $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'],
             static function ($value) {
-                return $value[1];
+                return $value['value'];
             }
         );
     }
@@ -410,7 +424,7 @@ abstract class AbstractItemProvider
             true
         ));
         foreach ($items as $key => $itemValues) {
-            if (isset($removeItems[$itemValues[1]])) {
+            if (isset($removeItems[$itemValues['value']])) {
                 unset($items[$key]);
             }
         }
@@ -439,7 +453,7 @@ abstract class AbstractItemProvider
 
         $backendUser = $this->getBackendUser();
         foreach ($items as $key => $itemValues) {
-            if (!$backendUser->checkLanguageAccess($itemValues[1])) {
+            if (!$backendUser->checkLanguageAccess($itemValues['value'])) {
                 unset($items[$key]);
             }
         }
@@ -468,7 +482,7 @@ abstract class AbstractItemProvider
 
         $backendUser = $this->getBackendUser();
         foreach ($items as $key => $itemValues) {
-            if (!$backendUser->checkAuthMode($result['tableName'], $fieldName, $itemValues[1])) {
+            if (!$backendUser->checkAuthMode($result['tableName'], $fieldName, $itemValues['value'])) {
                 unset($items[$key]);
             }
         }
@@ -498,7 +512,7 @@ abstract class AbstractItemProvider
 
         $allowedPageTypes = $backendUser->groupData['pagetypes_select'];
         foreach ($items as $key => $itemValues) {
-            if (!GeneralUtility::inList($allowedPageTypes, $itemValues[1])) {
+            if (!GeneralUtility::inList($allowedPageTypes, $itemValues['value'])) {
                 unset($items[$key]);
             }
         }
@@ -533,7 +547,7 @@ abstract class AbstractItemProvider
         return array_filter(
             $items,
             static function (array $item) use ($allowedStorageIds) {
-                $itemValue = $item[1] ?? null;
+                $itemValue = $item['value'] ?? null;
                 return empty($itemValue)
                     || in_array((int)$itemValue, $allowedStorageIds, true);
             }
@@ -1021,32 +1035,32 @@ abstract class AbstractItemProvider
         $languageService = $this->getLanguageService();
 
         foreach ($itemArray as $key => $item) {
-            $labelIndex = $item[1] ?? '';
+            $labelIndex = $item['value'] ?? '';
 
             if (isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$labelIndex])
                 && !empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$labelIndex])
             ) {
                 $label = $languageService->sL($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$labelIndex]);
             } else {
-                $label = $languageService->sL(trim($item[0] ?? ''));
+                $label = $languageService->sL(trim($item['label'] ?? ''));
             }
-            $value = strlen((string)($item[1] ?? '')) > 0 ? $item[1] : '';
-            $icon = !empty($item[2]) ? $item[2] : null;
-            $groupId = $item[3] ?? null;
+            $value = strlen((string)($item['value'] ?? '')) > 0 ? $item['value'] : '';
+            $icon = !empty($item['icon']) ? $item['icon'] : null;
+            $groupId = $item['group'] ?? null;
             $helpText = null;
-            if (!empty($item[4])) {
-                if (\is_string($item[4])) {
-                    $helpText = $languageService->sL($item[4]);
+            if (!empty($item['description'])) {
+                if (is_string($item['description'])) {
+                    $helpText = $languageService->sL($item['description']);
                 } else {
-                    $helpText = $item[4];
+                    $helpText = $item['description'];
                 }
             }
             $itemArray[$key] = [
-                $label,
-                $value,
-                $icon,
-                $groupId,
-                $helpText,
+                'label' => $label,
+                'value' => $value,
+                'icon' => $icon,
+                'group' => $groupId,
+                'description' => $helpText,
             ];
         }
 
@@ -1059,10 +1073,10 @@ abstract class AbstractItemProvider
     public function addIconFromAltIcons(array $result, array $items, string $table, string $fieldName): array
     {
         foreach ($items as &$item) {
-            if (isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altIcons.'][$item[1]])
-                && !empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altIcons.'][$item[1]])
+            if (isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altIcons.'][$item['value']])
+                && !empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altIcons.'][$item['value']])
             ) {
-                $item[2] = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altIcons.'][$item[1]];
+                $item['icon'] = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altIcons.'][$item['value']];
             }
         }
 

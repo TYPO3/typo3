@@ -41,7 +41,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_blogexample_domain_model_blog',
                 'foreign_table_where' => 'AND {#tx_blogexample_domain_model_blog}.{#uid}=###REC_FIELD_l18n_parent### AND {#tx_blogexample_domain_model_blog}.{#sys_language_uid} IN (-1,0)',
@@ -70,16 +70,16 @@ return [
                 'maxitems' => 20,
                 'items' => [
                     [
-                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
-                        -1,
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
+                        'value' => -1,
                     ],
                     [
-                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
-                        -2,
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
+                        'value' => -2,
                     ],
                     [
-                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
-                        '--div--',
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
+                        'value' => '--div--',
                     ],
                 ],
                 'exclusiveKeys' => '-1,-2',
@@ -145,7 +145,7 @@ return [
                 'foreign_table' => 'fe_users',
                 'foreign_table_where' => "AND {#fe_users}.{#tx_extbase_type}='ExtbaseTeam\\\\BlogExample\\\\Domain\\\\Model\\\\Administrator'",
                 'items' => [
-                    ['--none--', 0],
+                    ['label' => '--none--', 'value' => 0],
                 ],
                 'fieldControl' => [
                     'editPopup' => [

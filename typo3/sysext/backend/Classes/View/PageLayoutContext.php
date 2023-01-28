@@ -245,7 +245,7 @@ class PageLayoutContext
     {
         if (empty($this->contentTypeLabels)) {
             foreach ($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] as $val) {
-                $this->contentTypeLabels[$val[1]] = $this->getLanguageService()->sL($val[0]);
+                $this->contentTypeLabels[$val['value']] = $this->getLanguageService()->sL($val['label']);
             }
         }
         return $this->contentTypeLabels;

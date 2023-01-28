@@ -94,7 +94,7 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
                 $dynamicItems = $this->removeItemsByRemoveItemsPageTsConfig($result, $fieldName, $dynamicItems);
                 // Finally, the only data needed for the tree code are the valid uids of the possible records
                 $uidListOfAllDynamicItems = array_map('intval', array_filter(
-                    array_values(array_column($dynamicItems, 1)),
+                    array_values(array_column($dynamicItems, 'value')),
                     static fn ($uid) => (int)$uid > 0
                 ));
                 $fullRowsOfDynamicItems = [];

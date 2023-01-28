@@ -57,7 +57,7 @@ return [
                 'renderType' => 'checkboxToggle',
                 'items' => [
                     [
-                        0 => '',
+                        'label' => '',
                         'invertStateDisplay' => true,
                     ],
                 ],
@@ -156,34 +156,29 @@ return [
                 'renderType' => 'selectSingle',
                 'items' => [
                     [
-                        'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target_statuscode.301',
-                        301,
-                        '',
-                        'change',
+                        'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target_statuscode.301',
+                        'value' => 301,
+                        'group' => 'change',
                     ],
                     [
-                        'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target_statuscode.302',
-                        302,
-                        '',
-                        'change',
+                        'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target_statuscode.302',
+                        'value' => 302,
+                        'group' => 'change',
                     ],
                     [
-                        'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target_statuscode.303',
-                        303,
-                        '',
-                        'change',
+                        'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target_statuscode.303',
+                        'value' => 303,
+                        'group' => 'change',
                     ],
                     [
-                        'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target_statuscode.307',
-                        307,
-                        '',
-                        'keep',
+                        'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target_statuscode.307',
+                        'value' => 307,
+                        'group' => 'keep',
                     ],
                     [
-                        'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target_statuscode.308',
-                        308,
-                        '',
-                        'keep',
+                        'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target_statuscode.308',
+                        'value' => 308,
+                        'group' => 'keep',
                     ],
                 ],
                 'itemGroups' => [
@@ -230,7 +225,7 @@ return [
                 'renderType' => 'checkboxLabeledToggle',
                 'items' => [
                     [
-                        0 => '',
+                        'label' => '',
                         'labelChecked' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
                         'labelUnchecked' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disabled',
                         'invertStateDisplay' => true,
@@ -263,12 +258,12 @@ return [
                 'renderType' => 'selectSingle',
                 'items' => [
                     [
-                        'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.creation_type.0',
-                        0,
+                        'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.creation_type.0',
+                        'value' => 0,
                     ],
                     [
-                        'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.creation_type.1',
-                        1,
+                        'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.creation_type.1',
+                        'value' => 1,
                     ],
                 ],
                 'default' => 1,

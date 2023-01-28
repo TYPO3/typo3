@@ -38,7 +38,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_testirremnsymmetric_hotel_rel',
                 'foreign_table_where' => 'AND {#tx_testirremnsymmetric_hotel_rel}.{#pid}=###CURRENT_PID### AND {#tx_testirremnsymmetric_hotel_rel}.{#sys_language_uid} IN (-1,0)',

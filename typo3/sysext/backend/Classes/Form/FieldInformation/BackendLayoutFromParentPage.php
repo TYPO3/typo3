@@ -94,8 +94,8 @@ class BackendLayoutFromParentPage extends AbstractNode
     protected function getFieldValueLabel(array $fieldConfiguration, string $fieldValue): string
     {
         foreach ($fieldConfiguration['config']['items'] as $item) {
-            if (($item[1] ?? '') === $fieldValue && !empty($item[0])) {
-                return $item[0];
+            if (($item['value'] ?? '') === $fieldValue && !empty($item['label'])) {
+                return $item['label'];
             }
         }
 

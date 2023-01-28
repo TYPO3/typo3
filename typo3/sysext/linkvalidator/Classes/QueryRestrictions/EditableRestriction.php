@@ -106,7 +106,7 @@ class EditableRestriction implements QueryRestrictionInterface
         $allowDenyFieldTypes = [];
         $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$typeField]['config'];
         foreach ($fieldConfig['items'] as $iVal) {
-            $itemIdentifier = (string)$iVal[1];
+            $itemIdentifier = (string)$iVal['value'];
             if ($itemIdentifier === '--div--') {
                 continue;
             }

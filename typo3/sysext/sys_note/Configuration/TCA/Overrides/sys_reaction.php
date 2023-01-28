@@ -5,9 +5,9 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('reactions')) {
         'sys_reaction',
         'table_name',
         [
-            'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note',
-            'sys_note',
-            'mimetypes-x-sys_note',
+            'label' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note',
+            'value' => 'sys_note',
+            'icon' => 'mimetypes-x-sys_note',
         ]
     );
 }

@@ -157,8 +157,8 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $selectedItemsHtml = [];
         foreach ($selectedItems as $itemValue) {
             foreach ($possibleItems as $possibleItem) {
-                if ($possibleItem[1] == $itemValue) {
-                    $title = $possibleItem[0];
+                if ($possibleItem['value'] == $itemValue) {
+                    $title = $possibleItem['label'];
                     $listOfSelectedValues[] = $itemValue;
                     $selectedItemsHtml[] = '<option value="' . htmlspecialchars((string)$itemValue) . '" title="' . htmlspecialchars((string)$title) . '">' . htmlspecialchars($this->appendValueToLabelInDebugMode($title, $itemValue)) . '</option>';
                     break;
@@ -174,21 +174,21 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         // Initialize groups
         foreach ($possibleItems as $possibleItem) {
             $disableAttributes = [];
-            if (!$itemCanBeSelectedMoreThanOnce && in_array((string)$possibleItem[1], $selectedItems, true)) {
+            if (!$itemCanBeSelectedMoreThanOnce && in_array((string)$possibleItem['value'], $selectedItems, true)) {
                 $disableAttributes = [
                     'disabled' => 'disabled',
                     'class' => 'hidden',
                 ];
             }
-            if ($possibleItem[1] === '--div--') {
+            if ($possibleItem['value'] === '--div--') {
                 if ($selectableItemCounter !== 0) {
                     $selectableItemGroupCounter++;
                 }
-                $selectableItemGroups[$selectableItemGroupCounter]['header']['title'] = $possibleItem[0];
+                $selectableItemGroups[$selectableItemGroupCounter]['header']['title'] = $possibleItem['label'];
             } else {
                 $selectableItemGroups[$selectableItemGroupCounter]['items'][] = [
-                    'label' => $this->appendValueToLabelInDebugMode($possibleItem[0], $possibleItem[1]),
-                    'attributes' => array_merge(['title' => $possibleItem[0], 'value' => $possibleItem[1]], $disableAttributes),
+                    'label' => $this->appendValueToLabelInDebugMode($possibleItem['label'], $possibleItem['value']),
+                    'attributes' => array_merge(['title' => $possibleItem['label'], 'value' => $possibleItem['value']], $disableAttributes),
                 ];
                 // In case the item is not disabled, enable the group (if any)
                 if ($disableAttributes === [] && isset($selectableItemGroups[$selectableItemGroupCounter]['header'])) {
@@ -437,8 +437,8 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $optionsHtml = [];
         foreach ($selectedItems as $itemValue) {
             foreach ($possibleItems as $possibleItem) {
-                if ($possibleItem[1] == $itemValue) {
-                    $title = $possibleItem[0];
+                if ($possibleItem['value'] == $itemValue) {
+                    $title = $possibleItem['label'];
                     $listOfSelectedValues[] = $itemValue;
                     $optionsHtml[] = '<option value="' . htmlspecialchars($itemValue) . '" title="' . htmlspecialchars($title) . '">' . htmlspecialchars($title) . '</option>';
                     break;

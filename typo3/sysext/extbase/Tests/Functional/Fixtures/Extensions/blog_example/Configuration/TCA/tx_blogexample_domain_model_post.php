@@ -50,7 +50,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_blogexample_domain_model_post',
                 'foreign_table_where' => 'AND {#tx_blogexample_domain_model_post}.{#uid}=###REC_FIELD_l18n_parent### AND {#tx_blogexample_domain_model_post}.{#sys_language_uid} IN (-1,0)',
@@ -106,7 +106,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['--none--', 0],
+                    ['label' => '--none--', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_blogexample_domain_model_person',
                 'fieldControl' => [

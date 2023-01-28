@@ -993,12 +993,22 @@ class ExtensionManagementUtility
         }
         if (is_array($GLOBALS['TCA']['tt_content']['columns']) && is_array($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'])) {
             foreach ($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'] as $k => $v) {
-                if ((string)$v[1] === (string)$itemArray[1]) {
-                    $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'][$k] = $itemArray;
+                if ((string)($v['value'] ?? '') === (string)$itemArray[1]) {
+                    $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'][$k] = [
+                        'label' => $itemArray[0] ?? '',
+                        'value' => $itemArray[1] ?? '',
+                        'icon' => $itemArray[2],
+                        'group' => $itemArray[3],
+                    ];
                     return;
                 }
             }
-            $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'][] = $itemArray;
+            $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'][] = [
+                'label' => $itemArray[0] ?? '',
+                'value' => $itemArray[1] ?? '',
+                'icon' => $itemArray[2],
+                'group' => $itemArray[3],
+            ];
         }
         // Ensure to have at least some basic information available when editing the new type in FormEngine
         if ($type === 'CType' && !isset($GLOBALS['TCA']['tt_content']['types'][$itemArray[1]]) && isset($GLOBALS['TCA']['tt_content']['types']['header'])) {
@@ -1127,7 +1137,7 @@ tt_content.' . $key . $suffix . ' {
         }
         if (is_array($GLOBALS['TCA']['sys_template']['columns'])) {
             $value = str_replace(',', '', 'EXT:' . $extKey . '/' . $path);
-            $itemArray = [trim($title . ' (' . $extKey . ')'), $value];
+            $itemArray = ['label' => trim($title . ' (' . $extKey . ')'), 'value' => $value];
             $GLOBALS['TCA']['sys_template']['columns']['include_static_file']['config']['items'][] = $itemArray;
         }
     }
@@ -1154,7 +1164,7 @@ tt_content.' . $key . $suffix . ' {
         }
 
         $value = str_replace(',', '', 'EXT:' . $extKey . '/' . $filePath);
-        $itemArray = [trim($title . ' (' . $extKey . ')'), $value];
+        $itemArray = ['label' => trim($title . ' (' . $extKey . ')'), 'value' => $value];
         $GLOBALS['TCA']['pages']['columns']['tsconfig_includes']['config']['items'][] = $itemArray;
     }
 

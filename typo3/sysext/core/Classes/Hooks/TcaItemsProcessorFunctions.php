@@ -50,7 +50,7 @@ class TcaItemsProcessorFunctions
             }
             $label = ($tableConfiguration['ctrl']['title'] ?? '') ?: '';
             $icon = $this->iconFactory->mapRecordTypeToIconIdentifier($tableName, []);
-            $fieldDefinition['items'][] = [$label, $tableName, $icon];
+            $fieldDefinition['items'][] = ['label' => $label, 'value' => $tableName, 'icon' => $icon];
         }
     }
 
@@ -59,13 +59,12 @@ class TcaItemsProcessorFunctions
         $pageTypes = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'] ?? [];
         if (is_array($pageTypes) && $pageTypes !== []) {
             foreach ($pageTypes as $pageType) {
-                if (!is_array($pageType) || !isset($pageType[1]) || $pageType[1] === '--div--') {
+                if (!is_array($pageType) || !isset($pageType['value']) || $pageType['value'] === '--div--') {
                     // Skip non arrays and divider items
                     continue;
                 }
-                [$label, $value] = $pageType;
-                $icon = $this->iconFactory->mapRecordTypeToIconIdentifier('pages', ['doktype' => $pageType[1]]);
-                $fieldDefinition['items'][] = [$label, $value, $icon];
+                $icon = $this->iconFactory->mapRecordTypeToIconIdentifier('pages', ['doktype' => $pageType['value']]);
+                $fieldDefinition['items'][] = ['label' => $pageType['label'], 'value' => $pageType['value'], 'icon' => $icon];
             }
         }
     }
@@ -93,11 +92,10 @@ class TcaItemsProcessorFunctions
                 ];
             }
             $fieldDefinition['items'][] = [
-                $label,
-                $identifier,
-                $module->getIconIdentifier(),
-                null,
-                $help,
+                'label' => $label,
+                'value' => $identifier,
+                'icon' => $module->getIconIdentifier(),
+                'description' => $help,
             ];
         }
     }
@@ -116,13 +114,13 @@ class TcaItemsProcessorFunctions
                 if (!isset($fieldDefinition['items'][$sectionHeader])) {
                     // there is no icon handling for plugins - we take the icon from the table
                     $icon = $this->iconFactory->mapRecordTypeToIconIdentifier($table, []);
-                    $fieldDefinition['items'][$sectionHeader] = [$sectionHeader, '--div--', $icon];
+                    $fieldDefinition['items'][$sectionHeader] = ['label' => $sectionHeader, 'value' => '--div--', 'icon' => $icon];
                 }
             } elseif (!isset($fieldDefinition['items'][$table])) {
                 // Add header if not yet set for table
                 $sectionHeader = $GLOBALS['TCA'][$table]['ctrl']['title'] ?? '';
                 $icon = $this->iconFactory->mapRecordTypeToIconIdentifier($table, []);
-                $fieldDefinition['items'][$table] = [$sectionHeader, '--div--', $icon];
+                $fieldDefinition['items'][$table] = ['label' => $sectionHeader, 'value' => '--div--', 'icon' => $icon];
             }
             $fullField = $excludeFieldGroup['fullField'] ?? '';
             $fieldName = $excludeFieldGroup['fieldName'] ?? '';
@@ -131,9 +129,9 @@ class TcaItemsProcessorFunctions
                 : $languageService->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'] ?? '');
             // Item configuration:
             $fieldDefinition['items'][] = [
-                rtrim($label, ':') . ' (' . $fieldName . ')',
-                $table . ':' . $fullField,
-                'empty-empty',
+                'label' => rtrim($label, ':') . ' (' . $fieldName . ')',
+                'value' => $table . ':' . $fullField,
+                'icon' => 'empty-empty',
             ];
         }
     }
@@ -147,15 +145,15 @@ class TcaItemsProcessorFunctions
             }
             // Add header:
             $fieldDefinition['items'][] = [
-                $tableFields['tableFieldLabel'] ?? '',
-                '--div--',
+                'label' => $tableFields['tableFieldLabel'] ?? '',
+                'value' => '--div--',
             ];
             // Traverse options for this field:
             foreach ($tableFields['items'] as $itemValue => $itemContent) {
                 $fieldDefinition['items'][] = [
-                    $itemContent,
-                    $groupKey . ':' . preg_replace('/[:|,]/', '', (string)$itemValue),
-                    'status-status-permission-granted',
+                    'label' => $itemContent,
+                    'value' => $groupKey . ':' . preg_replace('/[:|,]/', '', (string)$itemValue),
+                    'icon' => 'status-status-permission-granted',
                 ];
             }
         }
@@ -174,8 +172,8 @@ class TcaItemsProcessorFunctions
             }
             // Add header:
             $fieldDefinition['items'][] = [
-                $languageService->sL($customOptionsValue['header'] ?? ''),
-                '--div--',
+                'label' => $languageService->sL($customOptionsValue['header'] ?? ''),
+                'value' => '--div--',
             ];
             // Traverse items:
             foreach ($customOptionsValue['items'] as $itemKey => $itemConfig) {
@@ -189,11 +187,10 @@ class TcaItemsProcessorFunctions
                     $helpText = $languageService->sL($itemConfig[2]);
                 }
                 $fieldDefinition['items'][] = [
-                    $languageService->sL($itemConfig[0] ?? ''),
-                    $customOptionsKey . ':' . preg_replace('/[:|,]/', '', (string)$itemKey),
-                    $icon,
-                    null,
-                    $helpText,
+                    'label' => $languageService->sL($itemConfig[0] ?? ''),
+                    'value' => $customOptionsKey . ':' . preg_replace('/[:|,]/', '', (string)$itemKey),
+                    'icon' => $icon,
+                    'description' => $helpText,
                 ];
             }
         }
@@ -229,7 +226,7 @@ class TcaItemsProcessorFunctions
                 continue;
             }
             $fieldLabel = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label']);
-            $fieldDefinition['items'][] = [$fieldLabel, $fieldName];
+            $fieldDefinition['items'][] = ['label' => $fieldLabel, 'value' => $fieldName];
         }
     }
 
@@ -427,12 +424,12 @@ class TcaItemsProcessorFunctions
                     . $languageService->sL($GLOBALS['TCA'][$table]['columns'][$field]['label'] ?? '');
 
                 foreach ($fieldConfig['items'] as $item) {
-                    $itemIdentifier = (string)($item[1] ?? '');
+                    $itemIdentifier = (string)($item['value'] ?? '');
                     // Values '' and '--div--' are not controlled by this setting.
                     if ($itemIdentifier === '' || $itemIdentifier === '--div--') {
                         continue;
                     }
-                    $allowOptions[$table . ':' . $field]['items'][$itemIdentifier] = $languageService->sL($item[0] ?? '');
+                    $allowOptions[$table . ':' . $field]['items'][$itemIdentifier] = $languageService->sL($item['label'] ?? '');
                 }
             }
         }

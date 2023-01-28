@@ -97,7 +97,7 @@ class DriverRegistry implements SingletonInterface
         $configurationFieldConfig = &$GLOBALS['TCA']['sys_file_storage']['columns']['configuration']['config'];
         foreach ($this->driverConfigurations as $driver) {
             $label = $driver['label'] ?: $driver['class'];
-            $driverFieldConfig['items'][$driver['shortName']] = [$label, $driver['shortName']];
+            $driverFieldConfig['items'][$driver['shortName']] = ['label' => $label, 'value' => $driver['shortName']];
             if ($driver['flexFormDS']) {
                 $configurationFieldConfig['ds'][$driver['shortName']] = $driver['flexFormDS'];
             }

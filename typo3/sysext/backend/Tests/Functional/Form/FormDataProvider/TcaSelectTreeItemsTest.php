@@ -153,8 +153,8 @@ class TcaSelectTreeItemsTest extends FunctionalTestCase
                             ],
                             'foreign_table' => 'foreign_table',
                             'items' => [
-                                ['static item foo', 1, 'foo-icon'],
-                                ['static item bar', 2, 'bar-icon'],
+                                ['label' => 'static item foo', 'value' => 1, 'icon' => 'foo-icon'],
+                                ['label' => 'static item bar', 'value' => 2, 'icon' => 'bar-icon'],
                             ],
                             'maxitems' => 1,
                         ],

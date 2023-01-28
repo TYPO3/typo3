@@ -11,8 +11,7 @@
 							<type>check</type>
 							<items type="array">
 								<numIndex index="0" type="array">
-									<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled</numIndex>
-									<numIndex index="1">1</numIndex>
+									<label>LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled</label>
 								</numIndex>
 							</items>
 						</config>
@@ -24,8 +23,7 @@
 							<type>check</type>
 							<items type="array">
 								<numIndex index="0" type="array">
-									<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled</numIndex>
-									<numIndex index="1">1</numIndex>
+									<label>LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled</label>
 								</numIndex>
 							</items>
 						</config>
@@ -37,8 +35,7 @@
 							<type>check</type>
 							<items type="array">
 								<numIndex index="0" type="array">
-									<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled</numIndex>
-									<numIndex index="1">1</numIndex>
+									<label>LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled</label>
 								</numIndex>
 							</items>
 						</config>
@@ -62,28 +59,28 @@
 							<renderType>selectSingle</renderType>
 							<items type="array">
 								<numIndex index="0" type="array">
-									<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:recursive.I.0</numIndex>
-									<numIndex index="1"></numIndex>
+									<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:recursive.I.0</label>
+									<value></value>
 								</numIndex>
 								<numIndex index="1" type="array">
-									<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:recursive.I.1</numIndex>
-									<numIndex index="1">1</numIndex>
+									<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:recursive.I.1</label>
+									<value>1</value>
 								</numIndex>
 								<numIndex index="2" type="array">
-									<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:recursive.I.2</numIndex>
-									<numIndex index="1">2</numIndex>
+									<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:recursive.I.2</label>
+									<value>2</value>
 								</numIndex>
 								<numIndex index="3" type="array">
-									<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:recursive.I.3</numIndex>
-									<numIndex index="1">3</numIndex>
+									<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:recursive.I.3</label>
+									<value>3</value>
 								</numIndex>
 								<numIndex index="4" type="array">
-									<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:recursive.I.4</numIndex>
-									<numIndex index="1">4</numIndex>
+									<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:recursive.I.4</label>
+									<value>4</value>
 								</numIndex>
 								<numIndex index="5" type="array">
-									<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:recursive.I.5</numIndex>
-									<numIndex index="1">250</numIndex>
+									<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:recursive.I.5</label>
+									<value>250</value>
 								</numIndex>
 							</items>
 							<minitems>0</minitems>
@@ -106,37 +103,36 @@
 							<renderType>selectMultipleSideBySide</renderType>
 							<items type="array">
 								<numIndex index="0" type="array">
-									<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.0</numIndex>
-									<numIndex index="1">groupLogin</numIndex>
+									<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.0</label>
+									<value>groupLogin</value>
 								</numIndex>
 								<numIndex index="1" type="array">
-									<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.1</numIndex>
-									<numIndex index="1">userLogin</numIndex>
+									<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.1</label>
+									<value>userLogin</value>
 								</numIndex>
-
 								<numIndex index="2" type="array">
-									<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.2</numIndex>
-									<numIndex index="1">login</numIndex>
+									<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.2</label>
+									<value>login</value>
 								</numIndex>
 								<numIndex index="3" type="array">
-									<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.3</numIndex>
-									<numIndex index="1">logout</numIndex>
+									<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.3</label>
+									<value>logout</value>
 								</numIndex>
 								<numIndex index="4" type="array">
-									<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.4</numIndex>
-									<numIndex index="1">loginError</numIndex>
+									<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.4</label>
+									<value>loginError</value>
 								</numIndex>
 								<numIndex index="5" type="array">
-									<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.5</numIndex>
-									<numIndex index="1">getpost</numIndex>
+									<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.5</label>
+									<value>getpost</value>
 								</numIndex>
 								<numIndex index="6" type="array">
-									<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.6</numIndex>
-									<numIndex index="1">referer</numIndex>
+									<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.6</label>
+									<value>referer</value>
 								</numIndex>
 								<numIndex index="7" type="array">
-									<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.7</numIndex>
-									<numIndex index="1">refererDomains</numIndex>
+									<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.7</label>
+									<value>refererDomains</value>
 								</numIndex>
 							</items>
 							<size>8</size>
@@ -150,8 +146,7 @@
 							<type>check</type>
 							<items type="array">
 								<numIndex index="0" type="array">
-									<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled</numIndex>
-									<numIndex index="1">1</numIndex>
+									<label>LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled</label>
 								</numIndex>
 							</items>
 						</config>
@@ -192,8 +187,7 @@
 							<type>check</type>
 							<items type="array">
 								<numIndex index="0" type="array">
-									<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disable</numIndex>
-									<numIndex index="1">1</numIndex>
+									<label>LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disable</label>
 								</numIndex>
 							</items>
 						</config>

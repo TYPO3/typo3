@@ -595,8 +595,8 @@ class SetupModuleController
         $defaultLanguageLabelService = $this->languageServiceFactory->create('default');
         $defaultLanguageLabelService->includeLLFile('EXT:setup/Resources/Private/Language/locallang.xlf');
         foreach ($items as $item) {
-            $languageCode = $item[1];
-            $name = $item[0];
+            $languageCode = $item['value'];
+            $name = $item['label'];
             $available = in_array($languageCode, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] ?? [], true) || is_dir(Environment::getLabelsPath() . '/' . $languageCode);
             if ($available || $languageCode === 'default') {
                 $localizedName = htmlspecialchars($languageService->getLL('lang_' . $languageCode) ?: $name);

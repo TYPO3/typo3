@@ -54,11 +54,11 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
 
             // Set label overrides from pageTsConfig if given
             if (isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'])
-                && \is_array($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'])
+                && is_array($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'])
             ) {
                 foreach ($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'] as $itemKey => $label) {
-                    if (isset($items[$itemKey][0])) {
-                        $items[$itemKey][0] = $languageService->sL($label);
+                    if (isset($items[$itemKey]['label'])) {
+                        $items[$itemKey]['label'] = $languageService->sL($label);
                     }
                 }
             }
@@ -79,7 +79,7 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
         foreach ($config['items'] as $itemKey => $checkboxEntry) {
             $this->basicChecks($fieldName, $tableName, $checkboxEntry, $itemKey);
             $newItems[$itemKey] = [
-                $this->getLanguageService()->sL(trim($checkboxEntry[0])),
+                'label' => $this->getLanguageService()->sL(trim($checkboxEntry['label'])),
             ];
             if (isset($config['renderType']) && $config['renderType'] === 'checkboxToggle') {
                 $newItems = $this->sanitizeToggleCheckbox($checkboxEntry, $itemKey, $newItems);
@@ -98,13 +98,13 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
      */
     private function basicChecks(string $fieldName, string $tableName, $checkboxEntry, int $checkboxKey)
     {
-        if (!\is_array($checkboxEntry)) {
+        if (!is_array($checkboxEntry)) {
             throw new \UnexpectedValueException(
                 'Item ' . $checkboxKey . ' of field ' . $fieldName . ' of TCA table ' . $tableName . ' is not an array as expected',
                 1440499337
             );
         }
-        if (!\array_key_exists(0, $checkboxEntry)) {
+        if (!array_key_exists('label', $checkboxEntry)) {
             throw new \UnexpectedValueException(
                 'Item ' . $checkboxKey . ' of field ' . $fieldName . ' of TCA table ' . $tableName . ' has no label',
                 1440499338
