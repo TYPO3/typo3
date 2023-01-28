@@ -68,66 +68,69 @@
         </div>
     </f:if>
 
-    <table class="table table-striped table-hover">
-        <tbody>
-        <tr>
-            <td class="text-nowrap">
-                <be:link.editRecord
-                    table="sys_template"
-                    uid="{templateRecord.uid}"
-                    fields="title"
-                    class="btn d-block text-start btn-default"
-                >
-                    <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.title" />
-                </be:link.editRecord>
-            </td>
-            <td width="90%">{templateRecord.title}</td>
-        </tr>
-        <tr>
-            <td class="text-nowrap">
-                <be:link.editRecord
-                    table="sys_template"
-                    uid="{templateRecord.uid}"
-                    fields="description"
-                    class="btn d-block text-start btn-default"
-                >
-                    <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.description" />
-                </be:link.editRecord>
-            </td>
-            <td width="90%">{templateRecord.description}</td>
-        </tr>
-        <tr>
-            <td class="text-nowrap">
-                <be:link.editRecord
-                    table="sys_template"
-                    uid="{templateRecord.uid}"
-                    fields="constants"
-                    class="btn d-block text-start btn-default"
-                >
-                    <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.constants" />
-                </be:link.editRecord>
-            </td>
-            <td width="90%"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.lines" arguments="{0: numberOfConstantsLines}" /></td>
-        </tr>
-        <tr>
-            <td class="text-nowrap">
-                <be:link.editRecord
-                    table="sys_template"
-                    uid="{templateRecord.uid}"
-                    fields="config"
-                    class="btn d-block text-start btn-default"
-                >
-                    <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.setup" />
-                </be:link.editRecord>
-            </td>
-            <td width="90%"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.lines" arguments="{0: numberOfSetupLines}" /></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="table-fit">
+        <table class="table table-striped table-hover">
+            <tbody>
+            <tr>
+                <td class="text-nowrap">
+                    <be:link.editRecord
+                        table="sys_template"
+                        uid="{templateRecord.uid}"
+                        fields="title"
+                        class="btn d-block text-start btn-default"
+                    >
+                        <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.title" />
+                    </be:link.editRecord>
+                </td>
+                <td width="90%">{templateRecord.title}</td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">
+                    <be:link.editRecord
+                        table="sys_template"
+                        uid="{templateRecord.uid}"
+                        fields="description"
+                        class="btn d-block text-start btn-default"
+                    >
+                        <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.description" />
+                    </be:link.editRecord>
+                </td>
+                <td width="90%">{templateRecord.description}</td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">
+                    <be:link.editRecord
+                        table="sys_template"
+                        uid="{templateRecord.uid}"
+                        fields="constants"
+                        class="btn d-block text-start btn-default"
+                    >
+                        <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.constants" />
+                    </be:link.editRecord>
+                </td>
+                <td width="90%"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.lines" arguments="{0: numberOfConstantsLines}" /></td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">
+                    <be:link.editRecord
+                        table="sys_template"
+                        uid="{templateRecord.uid}"
+                        fields="config"
+                        class="btn d-block text-start btn-default"
+                    >
+                        <core:icon identifier="actions-open" /> <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.setup" />
+                    </be:link.editRecord>
+                </td>
+                <td width="90%"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:table.column.lines" arguments="{0: numberOfSetupLines}" /></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <be:link.editRecord
         table="sys_template"
         uid="{templateRecord.uid}"
+        class="btn btn-default"
     >
         <core:icon identifier="actions-document-open" />
         <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:btn.editTypoScriptRecord"/>
