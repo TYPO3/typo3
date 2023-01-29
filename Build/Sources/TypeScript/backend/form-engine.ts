@@ -690,7 +690,7 @@ export default (function() {
    * Initialize input / text field "null" checkbox placeholder / real field if placeholder is set.
    */
   FormEngine.initializeNullWithPlaceholderCheckboxes = function(): void {
-    document.querySelectorAll('.t3-form-field-eval-null-checkbox').forEach((el: HTMLElement) => {
+    document.querySelectorAll('.t3js-form-field-eval-null-placeholder-checkbox').forEach((el: HTMLElement) => {
       FormEngine.toggleCheckboxField($(el).find('input[type="checkbox"]'), false);
     });
   };
