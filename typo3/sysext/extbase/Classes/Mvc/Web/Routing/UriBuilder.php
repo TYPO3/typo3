@@ -28,6 +28,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
@@ -159,7 +160,6 @@ class UriBuilder
      * Sets the current request
      *
      * @return static the current UriBuilder to allow method chaining
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setRequest(RequestInterface $request): UriBuilder
     {
@@ -178,7 +178,10 @@ class UriBuilder
                     'Make sure to provide such object by calling $uriBuilder->setRequest() before calculating URLs.',
                 E_USER_DEPRECATED
             );
-            $this->request = $GLOBALS['TYPO3_REQUEST'];
+            $request = $GLOBALS['TYPO3_REQUEST'];
+            if ($request instanceof ServerRequestInterface && !$request instanceof RequestInterface) {
+                $this->request = new Request($request);
+            }
         }
         return $this->request;
     }
