@@ -20,7 +20,7 @@ Impact
 ======
 
 When creating TCA type `user` fields with a database JSON field, the
-dbType `user` can now be set. After setting the dbType, the form engine will
+dbType `json` can now be set. After setting the dbType, the form engine will
 automatically provide the decoded JSON to the RecordProviders and the `user`
 PHP implementation can then use the field value.
 
