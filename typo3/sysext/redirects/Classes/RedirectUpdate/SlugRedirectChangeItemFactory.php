@@ -17,19 +17,22 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\RedirectUpdate;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent;
 
 /**
  * @internal This factory class is a specific implementation for creating SlugRedirectChangeItems
  *           and is not part of the public TYPO3 API.
  */
-class SlugRedirectChangeItemFactory
+final class SlugRedirectChangeItemFactory
 {
     public function __construct(
-        protected SiteFinder $siteFinder
+        private readonly SiteFinder $siteFinder,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -44,8 +47,8 @@ class SlugRedirectChangeItemFactory
         try {
             $site = $this->siteFinder->getSiteByPageId($defaultLanguagePageId);
         } catch(SiteNotFoundException) {
-            // Auto redirecs/slug updating is a site configuration. Not finding one means that we should not handle
-            // the creation of them, thus no need to create a change item.
+            // "autoCreateRedirects" and "autoUpdateSlugs" are site configuration settings. Not finding one
+            // means that we should not handle the creation of them, thus no need to create a change item.
             return null;
         }
         $siteLanguage = $site->getLanguageById($languageId);
@@ -57,26 +60,16 @@ class SlugRedirectChangeItemFactory
         if (!($autoUpdateSlugs || $autoCreateRedirects)) {
             return null;
         }
-        // We create a plain slug replacement source, which mirrors the behaviour since redirects implementation. This
-        // may vanish anytime. Introducing an event here opens up the possibility to add custom source definitions, for
-        // example doing a real URI building to cover route decorators and enhancers, or creating redirects for more
-        // than only one source.
-        $plainSlugSource = new PlainSlugReplacementRedirectSource(
-            host: $siteLanguage->getBase()->getHost() ?: '*',
-            path: rtrim($siteLanguage->getBase()->getPath(), '/') . $original['slug'],
-            targetLinkParameters: []
-        );
-        $sourcesCollection = new RedirectSourceCollection($plainSlugSource);
         $changeItem = new SlugRedirectChangeItem(
             defaultLanguagePageId: $defaultLanguagePageId,
             pageId: $pageId,
             site: $site,
             siteLanguage: $siteLanguage,
             original: $original,
-            sourcesCollection: $sourcesCollection,
+            sourcesCollection: new RedirectSourceCollection(),
             changed: $changed
         );
-        // @todo Introduce an event here in a dedicated feature patch.
-        return $changeItem;
+        return $this->eventDispatcher->dispatch(new SlugRedirectChangeItemCreatedEvent($changeItem))
+            ->getSlugRedirectChangeItem();
     }
 }

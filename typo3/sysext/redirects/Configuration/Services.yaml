@@ -44,3 +44,8 @@ services:
     tags:
       - name: event.listener
         identifier: 'redirects-increment-hit-count'
+
+  TYPO3\CMS\Redirects\EventListener\AddPlainSlugReplacementSource:
+    tags:
+      - name: event.listener
+        identifier: 'redirects-add-plain-slug-replacement-source'
