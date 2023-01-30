@@ -1529,7 +1529,7 @@ class FlexFormToolsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function parseDataStructureByIdentifierThrowsEsxceptionOnInvalidMaxitems(): void
+    public function parseDataStructureByIdentifierThrowsExceptionOnInvalidMaxitems(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>

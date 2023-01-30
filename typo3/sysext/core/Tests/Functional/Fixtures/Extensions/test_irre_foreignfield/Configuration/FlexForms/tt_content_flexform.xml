@@ -27,16 +27,7 @@
 					<files>
 						<label>Files</label>
 						<config>
-							<type>inline</type>
-							<foreign_table>sys_file_reference</foreign_table>
-							<foreign_field>uid_foreign</foreign_field>
-							<foreign_sortby>sorting_foreign</foreign_sortby>
-							<foreign_table_field>tablenames</foreign_table_field>
-							<foreign_match_fields>
-								<fieldname>files</fieldname>
-							</foreign_match_fields>
-							<foreign_label>uid_local</foreign_label>
-							<foreign_selector>uid_local</foreign_selector>
+							<type>file</type>
 							<maxitems>10</maxitems>
 							<appearance type="array">
 								<showSynchronizationLink>1</showSynchronizationLink>
