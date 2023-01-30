@@ -209,22 +209,55 @@ class Bootstrap
      */
     public static function checkIfEssentialConfigurationExists(ConfigurationManager $configurationManager): bool
     {
-        $properlyConfigured = file_exists($configurationManager->getSystemConfigurationFileLocation())
-            && (Environment::isComposerMode() || file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php'));
-        if ($properlyConfigured) {
+        if (!Environment::isComposerMode()
+            && !file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php')
+        ) {
+            // Early return in case system is not properly set up
+            return false;
+        }
+
+        $systemConfigurationPath = $configurationManager->getSystemConfigurationFileLocation();
+        $legacyLocalConfigurationPath = $configurationManager->getLocalConfigurationFileLocation();
+        $additionalConfigurationPath = $configurationManager->getAdditionalConfigurationFileLocation();
+        $legacyAdditionConfigurationPath = Environment::getLegacyConfigPath() . '/AdditionalConfiguration.php';
+
+        $systemConfigurationFileExists = file_exists($systemConfigurationPath);
+        $legacySystemConfigurationFileExists = file_exists($legacyLocalConfigurationPath);
+        $additionalConfigurationFileExists = file_exists($additionalConfigurationPath);
+        $legacyAdditionalConfigurationFileExists = file_exists($legacyAdditionConfigurationPath);
+
+        // Check if system configuration file exist. Additionally, check whether the additional configuration
+        // file does not yet exist, while the legacy one does -> can be migrated.
+        if ($systemConfigurationFileExists
+            && ($additionalConfigurationFileExists || !$legacyAdditionalConfigurationFileExists)
+        ) {
             return true;
         }
-        // Check if the previous filename "LocalConfiguration" exists. If so, let's move it to the new location
-        // Can be removed with TYPO3 v14.0
-        if (file_exists($configurationManager->getLocalConfigurationFileLocation())) {
-            mkdir(dirname($configurationManager->getSystemConfigurationFileLocation()), 02775, true);
-            rename($configurationManager->getLocalConfigurationFileLocation(), $configurationManager->getSystemConfigurationFileLocation());
-            if (file_exists(Environment::getLegacyConfigPath() . '/AdditionalConfiguration.php')) {
-                rename(Environment::getLegacyConfigPath() . '/AdditionalConfiguration.php', $configurationManager->getAdditionalConfigurationFileLocation());
+
+        $migrated = false;
+
+        // In case no system configuration file exists at this point, check for the legacy "LocalConfiguration"
+        // file. If it exists, move it to the new location. Otherwise the system is not complete.
+        // @deprecated Fallback can be removed with TYPO3 v14.0
+        if (!$systemConfigurationFileExists) {
+            if ($legacySystemConfigurationFileExists) {
+                mkdir(dirname($systemConfigurationPath), 02775, true);
+                rename($legacyLocalConfigurationPath, $systemConfigurationPath);
+                $migrated = true;
+            } else {
+                // Directly return as essential system configuration does not exist
+                return false;
             }
-            return Environment::isComposerMode() || file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php');
         }
-        return false;
+        // In case no additional configuration file exists at this point, check for the legacy
+        // "AdditionalConfiguration" file. If it exists, move it to the new location.
+        // @deprecated Fallback can be removed with TYPO3 v14.0
+        if (!$additionalConfigurationFileExists && $legacyAdditionalConfigurationFileExists) {
+            rename($legacyAdditionConfigurationPath, $additionalConfigurationPath);
+            $migrated = true;
+        }
+
+        return $migrated;
     }
 
     /**
