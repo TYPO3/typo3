@@ -82,10 +82,7 @@ export default (function() {
           text: TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
           btnClass: 'btn-default',
-          name: 'cancel',
-          trigger: () => {
-            modal.hideModal();
-          }
+          name: 'cancel'
         },
         {
           text: TYPO3.lang['button.ok'] || 'OK',
@@ -97,6 +94,7 @@ export default (function() {
         }
       ]
     });
+    modal.addEventListener('button.clicked', () => modal.hideModal());
   });
   // @see \TYPO3\CMS\Backend\Form\Behavior\UpdateBitmaskOnFieldChange
   onFieldChangeHandlers.set('typo3-backend-form-update-bitmask', (data: {position: number, total: number, invert: boolean, elementName: string }, evt: Event) => {
