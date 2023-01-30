@@ -3486,7 +3486,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     // decode HTML entities, they're encoded later again
                     $attrib = GeneralUtility::get_tag_attributes('<' . $fwParts[0] . '>', true);
                     $str_content = $backParts[0];
-                    $sameBeginEnd = substr(strtolower($backParts[1]), 1, strlen($tagName)) === strtolower($tagName);
+                    // Ensure that $backParts could be exploded into 2 items
+                    if (isset($backParts[1])) {
+                        $sameBeginEnd = strtolower(substr($backParts[1], 1, strlen($tagName))) === strtolower($tagName);
+                    }
                 }
             }
             if ($sameBeginEnd && in_array(strtolower($tagName), $encapTags)) {
