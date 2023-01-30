@@ -89,7 +89,6 @@ namespace PHPSTORM_META {
     expectedArguments(
         \Psr\Http\Message\ServerRequestInterface::getAttribute(),
         0,
-        'backend.user',
         'frontend.user',
         'normalizedParams',
         'site',
@@ -102,7 +101,6 @@ namespace PHPSTORM_META {
     );
 
     override(\Psr\Http\Message\ServerRequestInterface::getAttribute(), map([
-        'backend.user' => \TYPO3\CMS\Backend\FrontendBackendUserAuthentication::class,
         'frontend.user' => \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class,
         'normalizedParams' => \TYPO3\CMS\Core\Http\NormalizedParams::class,
         'site' => \TYPO3\CMS\Core\Site\Entity\SiteInterface::class,
@@ -117,7 +115,6 @@ namespace PHPSTORM_META {
     expectedArguments(
         \TYPO3\CMS\Core\Http\ServerRequest::getAttribute(),
         0,
-        'backend.user',
         'frontend.user',
         'normalizedParams',
         'site',
@@ -128,7 +125,6 @@ namespace PHPSTORM_META {
     );
 
     override(\TYPO3\CMS\Core\Http\ServerRequest::getAttribute(), map([
-        'backend.user' => \TYPO3\CMS\Backend\FrontendBackendUserAuthentication::class,
         'frontend.user' => \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class,
         'normalizedParams' => \TYPO3\CMS\Core\Http\NormalizedParams::class,
         'site' => \TYPO3\CMS\Core\Site\Entity\SiteInterface::class,

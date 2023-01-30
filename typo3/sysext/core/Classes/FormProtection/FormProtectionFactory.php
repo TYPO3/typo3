@@ -96,7 +96,7 @@ class FormProtectionFactory
         if ($this->isFrontendSession($request)) {
             return 'frontend';
         }
-        if ($this->isBackendSession($request)) {
+        if ($this->isBackendSession()) {
             return 'backend';
         }
         return 'disabled';
@@ -127,7 +127,7 @@ class FormProtectionFactory
             }
         }
         if ($type === 'backend') {
-            $user = $request ? $request->getAttribute('backend.user', $GLOBALS['BE_USER'] ?? null) : ($GLOBALS['BE_USER'] ?? null);
+            $user = $GLOBALS['BE_USER'] ?? null;
             $isAjaxCall = (bool)($request ? $request->getAttribute('route')?->getOption('ajax') : false);
             if ($user && isset($user->user['uid'])) {
                 return [
@@ -228,9 +228,9 @@ class FormProtectionFactory
     /**
      * Checks if a user is logged in and the session is active.
      */
-    protected function isBackendSession(ServerRequestInterface $request): bool
+    protected function isBackendSession(): bool
     {
-        $user = $request->getAttribute('backend.user', $GLOBALS['BE_USER'] ?? null);
+        $user = $GLOBALS['BE_USER'] ?? null;
         return $user instanceof BackendUserAuthentication && isset($user->user['uid']);
     }
 

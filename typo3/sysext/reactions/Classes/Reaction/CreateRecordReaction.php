@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Reactions\Authentication\ReactionUserAuthentication;
 use TYPO3\CMS\Reactions\Model\ReactionInstruction;
 use TYPO3\CMS\Reactions\Validation\CreateRecordReactionTable;
 
@@ -61,7 +62,6 @@ class CreateRecordReaction implements ReactionInterface
     {
         // @todo: Response needs to be based on given accept headers
 
-        $user = $request->getAttribute('backend.user');
         $table = (string)($reaction->toArray()['table_name'] ?? '');
         $fields = (array)($reaction->toArray()['fields'] ?? []);
 
@@ -81,7 +81,7 @@ class CreateRecordReaction implements ReactionInterface
 
         $data[$table][StringUtility::getUniqueId('NEW')] = $dataHandlerData;
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start($data, [], $user);
+        $dataHandler->start($data, [], $this->getBackendUser());
         $dataHandler->process_datamap();
 
         return $this->buildResponseFromDataHandler($dataHandler, 201);
@@ -130,5 +130,10 @@ class CreateRecordReaction implements ReactionInterface
             ->createResponse($statusCode)
             ->withHeader('Content-Type', 'application/json')
             ->withBody($this->streamFactory->createStream((string)json_encode($data)));
+    }
+
+    private function getBackendUser(): ReactionUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

@@ -61,8 +61,8 @@ class CreateRecordReactionTest extends FunctionalTestCase
             ],
         ];
         $user = $this->setUpReactionBackendUser($request, $reactionRecord);
+        $GLOBALS['BE_USER'] = $user;
         $request = $request->withHeader('x-api-key', $reactionRecord->toArray()['secret']);
-        $request = $request->withAttribute('backend.user', $user);
 
         self::assertCount(0, $this->getTestPages());
 
@@ -80,9 +80,7 @@ class CreateRecordReactionTest extends FunctionalTestCase
         $reactionRecord = (new ReactionRepository())->getReactionRecordByIdentifier('invalid-table');
         $reaction = GeneralUtility::makeInstance(CreateRecordReaction::class);
         $request = new ServerRequest('http://localhost/', 'POST');
-        $user = $this->setUpReactionBackendUser($request, $reactionRecord);
         $request = $request->withHeader('x-api-key', $reactionRecord->toArray()['secret']);
-        $request = $request->withAttribute('backend.user', $user);
 
         $response = $reaction->react($request, [], $reactionRecord);
         self::assertEquals(400, $response->getStatusCode());
@@ -97,9 +95,7 @@ class CreateRecordReactionTest extends FunctionalTestCase
         $reactionRecord = (new ReactionRepository())->getReactionRecordByIdentifier('invalid-fields');
         $reaction = GeneralUtility::makeInstance(CreateRecordReaction::class);
         $request = new ServerRequest('http://localhost/', 'POST');
-        $user = $this->setUpReactionBackendUser($request, $reactionRecord);
         $request = $request->withHeader('x-api-key', $reactionRecord->toArray()['secret']);
-        $request = $request->withAttribute('backend.user', $user);
 
         $response = $reaction->react($request, [], $reactionRecord);
         self::assertEquals(400, $response->getStatusCode());

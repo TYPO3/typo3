@@ -60,7 +60,7 @@ class ReactionHandler
 
         // Prepare the user and language object before calling the reaction execution process
         $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($user);
-        $request = $request->withAttribute('backend.user', $user);
+        $GLOBALS['BE_USER'] = $user;
 
         $payload = $this->getPayload($request);
         $response = $reaction->react($request, $payload, $reactionInstruction);

@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\DisabledFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -109,8 +108,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     public function createForTypeReturnsDisabledIfBackendUserIsNotAvailable(): void
     {
         $user = new BackendUserAuthentication();
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://example.com/backend/login/');
-        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('backend.user', $user);
+        $GLOBALS['BE_USER'] = $user;
         $formProtection = $this->subject->createForType('backend');
         // User is not logged in
         self::assertInstanceOf(DisabledFormProtection::class, $formProtection);
@@ -123,8 +121,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     {
         $user = new BackendUserAuthentication();
         $user->user = ['uid' => 13];
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://example.com/backend/login/');
-        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('backend.user', $user);
+        $GLOBALS['BE_USER'] = $user;
         $formProtection = $this->subject->createForType('backend');
         // User is now logged in
         self::assertInstanceOf(BackendFormProtection::class, $formProtection);
@@ -136,8 +133,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     public function createForTypeReturnsTheSameInstanceEvenThoughUserWasLoggedInLaterOn(): void
     {
         $user = new BackendUserAuthentication();
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://example.com/backend/login/');
-        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('backend.user', $user);
+        $GLOBALS['BE_USER'] = $user;
         $formProtection = $this->subject->createForType('backend');
         // User is not logged in
         self::assertInstanceOf(DisabledFormProtection::class, $formProtection);
