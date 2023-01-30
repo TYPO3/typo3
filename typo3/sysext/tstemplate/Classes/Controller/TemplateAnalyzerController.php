@@ -113,6 +113,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         // Build the constant include tree
         $site = $request->getAttribute('site');
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
+        $constantIncludeTree->setIdentifier('tstemplate constant includes');
         // Set enabled conditions in constant include tree
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, $parsedBody);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
@@ -130,6 +131,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
 
         // Build the setup include tree
         $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->losslessTokenizer, $site);
+        $setupIncludeTree->setIdentifier('tstemplate setup includes');
         // Set enabled conditions in setup include tree and let it handle constant substitutions in setup conditions.
         $setupConditions = $this->handleToggledSetupConditions($setupIncludeTree, $moduleData, $parsedBody, $flattenedConstants);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);

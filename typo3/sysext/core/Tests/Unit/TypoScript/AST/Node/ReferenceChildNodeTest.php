@@ -54,13 +54,13 @@ class ReferenceChildNodeTest extends UnitTestCase
         $referenceChildNode = new ReferenceChildNode('referenceChild');
         $node->addChild($referenceChildNode);
         $node->setIdentifier('testing1');
-        self::assertSame('a938d0f2f9b8d3ae', $node->getIdentifier());
-        self::assertSame('e79dcb87f1a23701', $childNode->getIdentifier());
-        self::assertSame('a5690684acd44697', $referenceChildNode->getIdentifier());
+        self::assertSame('341005f4ad49cdec', $node->getIdentifier());
+        self::assertSame('8fd35cb34a348554', $childNode->getIdentifier());
+        self::assertSame('96d0197da8ad1760', $referenceChildNode->getIdentifier());
         // Update rootNode identifier to verify child identifiers change
         $node->setIdentifier('testing2');
-        self::assertSame('9432340ddb8d76f8', $node->getIdentifier());
-        self::assertSame('8697b1591b1fc4a1', $childNode->getIdentifier());
-        self::assertSame('38583b9e9ea973fc', $referenceChildNode->getIdentifier());
+        self::assertSame('df6c9d843ccc5d0a', $node->getIdentifier());
+        self::assertSame('aee30d139766c0c3', $childNode->getIdentifier());
+        self::assertSame('3bba59e44d03ca84', $referenceChildNode->getIdentifier());
     }
 }

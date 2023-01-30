@@ -61,19 +61,6 @@ final class TreeFromLineStreamBuilder
     private TokenizerInterface $tokenizer;
 
     /**
-     * Helper property to create unique identifiers: This is incremented each
-     * time we setIdentifier() on an include via getNextNodeNumber(). The
-     * current int is then used as part of the calculated identifier to make
-     * it unique. This is the easiest solution here: We do not need a string 0-n
-     * count per level, just some seed that is reproducible when the same tree
-     * is calculated again. We can't rely on the node lines "content" alone since
-     * maybe some nodes have the same content on the same level. The identifiers
-     * created here typically use something like this:
-     * setIdentifier($parentNode->getIdentifier() . $this->getNextNodeNumber());
-     */
-    private int $nodeCounter = 0;
-
-    /**
      * Using "@import" with wildcards, the file ending depends on the given type:
      * With Frontend TypoScript, .typoscript is allowed, with TsConfig, .tsconfig
      * is allowed. This property maps types to their file suffixes.
@@ -100,7 +87,6 @@ final class TreeFromLineStreamBuilder
         }
         $this->type = $type;
         $this->tokenizer = $tokenizer;
-        $this->nodeCounter = 0;
         $this->buildTreeInternal($node);
     }
 
@@ -132,7 +118,6 @@ final class TreeFromLineStreamBuilder
         $givenTokenLineStream = $node->getLineStream();
         $lineStream = new LineStream();
         $childNode = new SegmentInclude();
-        $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
         $childNode->setName($node->getName());
         $childNode->setPath($node->getPath());
 
@@ -159,7 +144,6 @@ final class TreeFromLineStreamBuilder
                 }
                 $childNode = new ConditionInclude();
                 $childNode->setSplit();
-                $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
                 $childNode->setName($node->getName());
                 $childNode->setPath($node->getPath());
                 $childNode->setConditionToken($conditionValueToken);
@@ -169,7 +153,6 @@ final class TreeFromLineStreamBuilder
                 $parentNode = $node;
                 $node = $childNode;
                 $childNode = new SegmentInclude();
-                $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
                 $childNode->setName($node->getName());
                 $childNode->setPath($node->getPath());
                 $lineStream = new LineStream();
@@ -186,7 +169,6 @@ final class TreeFromLineStreamBuilder
                 $node->addChild($childNode);
                 $node = $parentNode;
                 $childNode = new SegmentInclude();
-                $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
                 $childNode->setName($node->getName());
                 $childNode->setPath($node->getPath());
                 $lineStream = new LineStream();
@@ -204,7 +186,6 @@ final class TreeFromLineStreamBuilder
                 $node = $parentNode;
                 $childNode = new ConditionElseInclude();
                 $childNode->setSplit();
-                $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
                 $childNode->setName($node->getName());
                 $childNode->setPath($node->getPath());
                 $childNode->setConditionToken($conditionToken);
@@ -215,7 +196,6 @@ final class TreeFromLineStreamBuilder
                 $parentNode = $node;
                 $node = $childNode;
                 $childNode = new SegmentInclude();
-                $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
                 $childNode->setName($node->getName());
                 $childNode->setPath($node->getPath());
                 $lineStream = new LineStream();
@@ -231,7 +211,6 @@ final class TreeFromLineStreamBuilder
                     $lineStream = new LineStream();
                 }
                 $childNode = new SegmentInclude();
-                $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
                 $childNode->setName($node->getName());
                 $childNode->setPath($node->getPath());
                 $allowedSuffixes = $this->atImportTypeToSuffixMap[$this->type];
@@ -250,7 +229,6 @@ final class TreeFromLineStreamBuilder
                     $lineStream = new LineStream();
                 }
                 $childNode = new SegmentInclude();
-                $childNode->setIdentifier($node->getIdentifier() . $this->getNextNodeNumber());
                 $childNode->setName($node->getName());
                 $childNode->setPath($node->getPath());
                 $this->processIncludeTyposcript($node, $includeTypoScriptValueToken, $line);
@@ -363,7 +341,6 @@ final class TreeFromLineStreamBuilder
     {
         $content = file_get_contents($absoluteFileName);
         $newNode = new AtImportInclude();
-        $newNode->setIdentifier($parentNode->getIdentifier() . $this->getNextNodeNumber());
         $newNode->setName($path);
         $newNode->setPath($path);
         $newNode->setLineStream($this->tokenizer->tokenize($content));
@@ -502,7 +479,6 @@ final class TreeFromLineStreamBuilder
         $nodeToAddTo = $parentNode;
         if ($condition) {
             $conditionNode = new ConditionIncludeTyposcriptInclude();
-            $conditionNode->setIdentifier($parentNode->getIdentifier() . $this->getNextNodeNumber());
             $conditionNode->setName($fileName);
             $conditionNode->setConditionToken(new Token(TokenType::T_VALUE, $condition, 0, 0));
             $conditionNode->setSplit();
@@ -521,7 +497,6 @@ final class TreeFromLineStreamBuilder
     {
         $content = file_get_contents($absoluteFileName);
         $newNode = new IncludeTyposcriptInclude();
-        $newNode->setIdentifier($parentNode->getIdentifier() . $this->getNextNodeNumber());
         $newNode->setName($path);
         $newNode->setPath($path);
         $newNode->setLineStream($this->tokenizer->tokenize($content));
@@ -562,21 +537,11 @@ final class TreeFromLineStreamBuilder
             $source = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['defaultContentRendering'] ?? null;
             if (!empty($source)) {
                 $node = new DefaultTypoScriptMagicKeyInclude();
-                $node->setIdentifier($parentNode->getIdentifier() . $this->getNextNodeNumber());
                 $node->setName('TYPO3_CONF_VARS defaultContentRendering for ' . $path);
                 $node->setLineStream($this->tokenizer->tokenize($source));
                 $this->buildTreeInternal($node);
                 $parentNode->addChild($node);
             }
         }
-    }
-
-    /**
-     * See $this->nodeCounter property description.
-     */
-    private function getNextNodeNumber(): int
-    {
-        $this->nodeCounter++;
-        return $this->nodeCounter;
     }
 }

@@ -71,7 +71,6 @@ final class PageTsConfigFactory
             if (!empty($userTsConfigPageOverrides)) {
                 $includeNode = new TsConfigInclude();
                 $includeNode->setName('pageTsConfig-overrides-by-userTsConfig');
-                $includeNode->setIdentifier('pagetsconfig-overrides-by-usertsconfig');
                 $includeNode->setLineStream($this->tokenizer->tokenize($userTsConfigPageOverrides));
                 $pagesTsConfigTree->addChild($includeNode);
             }
@@ -96,11 +95,9 @@ final class PageTsConfigFactory
                         $siteConstants .= $nodeIdentifier . ' = ' . $value . LF;
                     }
                     $siteSettingsNode = new SiteInclude();
-                    $siteSettingsNode->setIdentifier($siteSettingsCacheIdentifier);
                     $siteSettingsNode->setName('Site constants settings of site ' . $site->getIdentifier());
                     $siteSettingsNode->setLineStream($this->tokenizer->tokenize($siteConstants));
                     $siteSettingsTreeRoot = new RootInclude();
-                    $siteSettingsTreeRoot->setIdentifier('Root of site settings cache identifier ' . $siteSettingsCacheIdentifier);
                     $siteSettingsTreeRoot->addChild($siteSettingsNode);
                     /** @var IncludeTreeAstBuilderVisitor $astBuilderVisitor */
                     $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);

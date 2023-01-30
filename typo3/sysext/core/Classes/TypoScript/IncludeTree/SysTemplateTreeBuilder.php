@@ -111,7 +111,6 @@ final class SysTemplateTreeBuilder
         $this->includedSysTemplateUids = [];
 
         $rootNode = new RootInclude();
-        $rootNode->setIdentifier('Root ' . $type);
         if (empty($sysTemplateRows)) {
             return $rootNode;
         }
@@ -148,7 +147,6 @@ final class SysTemplateTreeBuilder
             $includeNode = new SysTemplateInclude();
             $name = '[sys_template:' . $sysTemplateRow['uid'] . '] ' . $sysTemplateRow['title'];
             $includeNode->setName($name);
-            $includeNode->setIdentifier($rootNode->getIdentifier() . $cacheIdentifier);
             $includeNode->setPid((int)$sysTemplateRow['pid']);
             if ($this->type === 'constants') {
                 $includeNode->setLineStream($this->tokenizer->tokenize($sysTemplateRow['constants'] ?? ''));
@@ -234,7 +232,6 @@ final class SysTemplateTreeBuilder
                 }
             }
             $node = new IncludeStaticFileDatabaseInclude();
-            $node->setIdentifier($parentNode->getIdentifier() . $cacheIdentifier);
             $node->setName($includeStaticFile);
             $this->handleSingleIncludeStaticFile($node, $includeStaticFile);
             $this->cache?->set($cacheIdentifier, $this->prepareNodeForCache($node));
@@ -264,7 +261,6 @@ final class SysTemplateTreeBuilder
                 $this->includedSysTemplateUids[] = (int)$sysTemplateRow['uid'];
                 $includeNode = new SysTemplateInclude();
                 $name = '[sys_template:' . $sysTemplateRow['uid'] . '] ' . $sysTemplateRow['title'];
-                $includeNode->setIdentifier($parentNode->getIdentifier() . $name);
                 $includeNode->setName($name);
                 $includeNode->setPid((int)$sysTemplateRow['pid']);
                 if ($this->type === 'constants') {
@@ -328,7 +324,6 @@ final class SysTemplateTreeBuilder
         if (file_exists($path . 'include_static_file.txt')) {
             $includeStaticFileFileInclude = new IncludeStaticFileFileInclude();
             $name = 'EXT:' . $extensionKey . '/' . $pathSegmentWithAppendedSlash . 'include_static_file.txt';
-            $includeStaticFileFileInclude->setIdentifier($parentNode->getIdentifier() . $name);
             $includeStaticFileFileInclude->setName($name);
             $includeStaticFileFileInclude->setPath($includeStaticFileString);
             $parentNode->addChild($includeStaticFileFileInclude);
@@ -348,7 +343,6 @@ final class SysTemplateTreeBuilder
                 $fileContent = file_get_contents($fileName);
                 $fileNode = new FileInclude();
                 $name = 'EXT:' . $extensionKey . '/' . $pathSegmentWithAppendedSlash . $this->type . $extension;
-                $fileNode->setIdentifier($parentNode->getIdentifier() . $name);
                 $fileNode->setName($name);
                 $fileNode->setPath($name);
                 $fileNode->setLineStream($this->tokenizer->tokenize($fileContent));
@@ -383,7 +377,6 @@ final class SysTemplateTreeBuilder
                 $fileContent = file_get_contents($file);
                 $this->addStaticMagicFromGlobals($parentNode, $extensionKeyWithoutUnderscores);
                 $node = new ExtensionStaticInclude();
-                $node->setIdentifier($parentNode->getIdentifier() . $identifier);
                 $node->setName('EXT:' . $extensionKey . '/ext_typoscript_' . $this->type . '.typoscript');
                 $node->setPath('EXT:' . $extensionKey . '/ext_typoscript_' . $this->type . '.typoscript');
                 $node->setLineStream($this->tokenizer->tokenize($fileContent));
@@ -411,7 +404,6 @@ final class SysTemplateTreeBuilder
                 }
             }
             $node = new DefaultTypoScriptInclude();
-            $node->setIdentifier($parentConstantNode->getIdentifier() . $cacheIdentifier);
             $node->setName('TYPO3_CONF_VARS[\'FE\'][\'defaultTypoScript_' . $this->type . '\']');
             $node->setLineStream($this->tokenizer->tokenize($defaultTypoScriptConstants));
             $this->treeFromTokenStreamBuilder->buildTree($node, $this->type, $this->tokenizer);
@@ -446,7 +438,6 @@ final class SysTemplateTreeBuilder
             $siteConstants .= $nodeIdentifier . ' = ' . $value . LF;
         }
         $node = new SiteInclude();
-        $node->setIdentifier($parentConstantNode->getIdentifier() . $cacheIdentifier);
         $node->setName('Site constants settings of site ' . $site->getIdentifier());
         $node->setLineStream($this->tokenizer->tokenize($siteConstants));
         $this->cache?->set($cacheIdentifier, $this->prepareNodeForCache($node));
@@ -463,7 +454,6 @@ final class SysTemplateTreeBuilder
         $source = $GLOBALS['TYPO3_CONF_VARS ']['FE']['defaultTypoScript_' . $this->type . '.'][$identifier] ?? null;
         if (!empty($source)) {
             $node = new DefaultTypoScriptMagicKeyInclude();
-            $node->setIdentifier($parentNode->getIdentifier() . 'globals-defaultTypoScript-' . $this->type . '-' . $identifier);
             $node->setName('TYPO3_CONF_VARS globals_defaultTypoScript_' . $this->type . '.' . $identifier);
             $node->setLineStream($this->tokenizer->tokenize($source));
             $this->treeFromTokenStreamBuilder->buildTree($node, $this->type, $this->tokenizer);
@@ -474,7 +464,6 @@ final class SysTemplateTreeBuilder
             $source = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $this->type . '.']['defaultContentRendering'] ?? null;
             if (!empty($source)) {
                 $node = new DefaultTypoScriptMagicKeyInclude();
-                $node->setIdentifier($parentNode->getIdentifier() . 'globals-defaultTypoScript-' . $this->type . '-defaultContentRendering-' . $identifier);
                 $node->setName('TYPO3_CONF_VARS defaultContentRendering ' . $this->type . ' for ' . $identifier);
                 $node->setLineStream($this->tokenizer->tokenize($source));
                 $this->treeFromTokenStreamBuilder->buildTree($node, $this->type, $this->tokenizer);

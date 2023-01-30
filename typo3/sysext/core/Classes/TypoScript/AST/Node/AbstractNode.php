@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenStreamInterface;
  */
 abstract class AbstractNode implements NodeInterface
 {
-    protected ?string $identifier = null;
+    private ?string $identifier = null;
     protected string $name;
     private ?string $value = null;
     private ?string $previousValue = null;
@@ -64,11 +64,13 @@ abstract class AbstractNode implements NodeInterface
         return $result;
     }
 
-    public function setIdentifier(string $parentIdentifier): void
+    public function setIdentifier(string $identifier): void
     {
-        $this->identifier = hash('xxh3', $parentIdentifier . $this->name);
+        $this->identifier = hash('xxh3', $identifier);
+        $childCounter = 0;
         foreach ($this->getNextChild() as $child) {
-            $child->setIdentifier($this->identifier);
+            $child->setIdentifier($this->identifier . $childCounter);
+            $childCounter ++;
         }
     }
 

@@ -114,11 +114,9 @@ class PageTsConfigActiveController
             }
             $siteSettingsHash = 'site-settings-flat-' . hash('xxh3', $siteConstants);
             $siteSettingsNode = new SiteInclude();
-            $siteSettingsNode->setIdentifier($siteSettingsHash);
             $siteSettingsNode->setName('Site constants settings of site ' . $site->getIdentifier());
             $siteSettingsNode->setLineStream((new LosslessTokenizer())->tokenize($siteConstants));
             $siteSettingsTreeRoot = new RootInclude();
-            $siteSettingsTreeRoot->setIdentifier('Root of site settings ' . $siteSettingsHash);
             $siteSettingsTreeRoot->addChild($siteSettingsNode);
             /** @var IncludeTreeAstBuilderVisitor $astBuilderVisitor */
             $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
@@ -159,7 +157,6 @@ class PageTsConfigActiveController
         if (!empty($userTsConfigPageOverrides)) {
             $includeNode = new TsConfigInclude();
             $includeNode->setName('pageTsConfig-overrides-by-userTsConfig');
-            $includeNode->setIdentifier('pagetsconfig-overrides-by-usertsconfig');
             $includeNode->setLineStream((new LosslessTokenizer())->tokenize($userTsConfigPageOverrides));
             $pagesTsConfigTree->addChild($includeNode);
         }

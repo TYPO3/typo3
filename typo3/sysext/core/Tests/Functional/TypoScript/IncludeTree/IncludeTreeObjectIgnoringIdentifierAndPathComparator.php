@@ -21,7 +21,7 @@ use SebastianBergmann\Comparator\ObjectComparator;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
 
 /**
- * Custom comparator to compare default IncludeTree without looking at the identifier.
+ * Custom comparator to compare default IncludeTree without looking at the path.
  */
 final class IncludeTreeObjectIgnoringIdentifierAndPathComparator extends ObjectComparator
 {
@@ -34,7 +34,7 @@ final class IncludeTreeObjectIgnoringIdentifierAndPathComparator extends ObjectC
     {
         $arrayRepresentation = parent::toArray($object);
         if ($object instanceof IncludeInterface) {
-            unset($arrayRepresentation['identifier'], $arrayRepresentation['path']);
+            unset($arrayRepresentation['path']);
         }
         return $arrayRepresentation;
     }

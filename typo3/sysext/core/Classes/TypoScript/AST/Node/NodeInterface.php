@@ -45,7 +45,7 @@ interface NodeInterface
      * thing that does not use cached context: When retrieving nodes from cache (e.g. in Frontend),
      * the identifier is null and calling the getter will throw an exception.
      */
-    public function setIdentifier(string $parentIdentifier): void;
+    public function setIdentifier(string $identifier): void;
     public function getIdentifier(): string;
 
     /**

@@ -43,14 +43,6 @@ final class RootNode extends AbstractNode
         ];
     }
 
-    public function setIdentifier(string $identifier): void
-    {
-        $this->identifier = hash('xxh3', $identifier);
-        foreach ($this->getNextChild() as $child) {
-            $child->setIdentifier($this->identifier);
-        }
-    }
-
     public function getName(): ?string
     {
         return null;

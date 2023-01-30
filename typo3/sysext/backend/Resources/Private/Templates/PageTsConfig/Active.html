@@ -297,15 +297,15 @@
 
 <f:section name="Tree">
     <f:for each="{tree.nextChild}" as="child">
-        <li class="list-tree-comment">
-            <f:if condition="{displayComments} && {child.comments}">
+        <f:if condition="{displayComments} && {child.comments}">
+            <li class="list-tree-comment">
                 <f:for each="{child.comments}" as="comment" iteration="iterator">
                     <div><f:format.nl2br>{comment}</f:format.nl2br></div>
                 </f:for>
-            </f:if>
-        </li>
-        <li class="list-tree-constant-substitution">
-            <f:if condition="{displayConstantSubstitutions} && {child.originalValueTokenStream}">
+            </li>
+        </f:if>
+        <f:if condition="{displayConstantSubstitutions} && {child.originalValueTokenStream}">
+            <li class="list-tree-constant-substitution">
                 <span class="diff-item-result diff-item-result-inline text-monospace text-normal p-0">
                     <f:format.raw>
                         <f:variable name="trimmedValueTokenStream"><f:format.trim>{child.originalValueTokenStream}</f:format.trim></f:variable>
@@ -317,8 +317,8 @@
                         />
                     </f:format.raw>
                 </span>
-            </f:if>
-        </li>
+            </li>
+        </f:if>
         <li>
             <span class="list-tree-group">
                 <f:if condition="{child.children}">

@@ -15,11 +15,10 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\AST\Node;
+namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\IncludeTree\IncludeNode;
 
-use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
-use TYPO3\CMS\Core\TypoScript\AST\Node\ReferenceChildNode;
-use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\StringInclude;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RootNodeTest extends UnitTestCase
@@ -30,8 +29,8 @@ class RootNodeTest extends UnitTestCase
     public function getIdentifierThrowsExceptionIfNotIdentifierHasBeenSet(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1674620169);
-        (new RootNode())->getIdentifier();
+        $this->expectExceptionCode(1673634853);
+        (new RootInclude())->getIdentifier();
     }
 
     /**
@@ -39,7 +38,7 @@ class RootNodeTest extends UnitTestCase
      */
     public function setIdentifierCreatesIdentifierString(): void
     {
-        $rootNode = new RootNode();
+        $rootNode = new RootInclude();
         $rootNode->setIdentifier('testing');
         self::assertSame('5c638577a9858bb2', $rootNode->getIdentifier());
     }
@@ -49,19 +48,19 @@ class RootNodeTest extends UnitTestCase
      */
     public function setIdentifierTriggersIdentifierCalculationForChild(): void
     {
-        $rootNode = new RootNode();
-        $childNode = new ChildNode('child');
+        $rootNode = new RootInclude();
+        $childNode = new StringInclude();
         $rootNode->addChild($childNode);
-        $referenceChildNode = new ReferenceChildNode('referenceChild');
-        $rootNode->addChild($referenceChildNode);
+        $childNode2 = new StringInclude();
+        $rootNode->addChild($childNode2);
+        $rootNode->setIdentifier('testing');
+        self::assertSame('5c638577a9858bb2', $rootNode->getIdentifier());
+        self::assertSame('32461a3cf2fd1b37', $childNode->getIdentifier());
+        self::assertSame('915fb7c57d95d83c', $childNode2->getIdentifier());
+        // Update rootNode identifier to verify child identifiers change
         $rootNode->setIdentifier('testing1');
         self::assertSame('341005f4ad49cdec', $rootNode->getIdentifier());
         self::assertSame('8fd35cb34a348554', $childNode->getIdentifier());
-        self::assertSame('96d0197da8ad1760', $referenceChildNode->getIdentifier());
-        // Update rootNode identifier to verify child identifiers change
-        $rootNode->setIdentifier('testing2');
-        self::assertSame('df6c9d843ccc5d0a', $rootNode->getIdentifier());
-        self::assertSame('aee30d139766c0c3', $childNode->getIdentifier());
-        self::assertSame('3bba59e44d03ca84', $referenceChildNode->getIdentifier());
+        self::assertSame('96d0197da8ad1760', $childNode2->getIdentifier());
     }
 }

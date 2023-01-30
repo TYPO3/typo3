@@ -36,7 +36,7 @@ final class UnserializedIncludeTreeObjectComparator extends ObjectComparator
     {
         $arrayRepresentation = parent::toArray($object);
         if ($object instanceof IncludeInterface) {
-            unset($arrayRepresentation['identifier'], $arrayRepresentation['path'], $arrayRepresentation['name'], $arrayRepresentation['pid']);
+            unset($arrayRepresentation['path'], $arrayRepresentation['name'], $arrayRepresentation['pid']);
         }
         return $arrayRepresentation;
     }

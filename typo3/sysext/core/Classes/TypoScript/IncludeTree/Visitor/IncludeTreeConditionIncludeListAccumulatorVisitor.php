@@ -35,7 +35,6 @@ final class IncludeTreeConditionIncludeListAccumulatorVisitor implements Include
     public function __construct()
     {
         $this->rootInclude = new RootInclude();
-        $this->rootInclude->setIdentifier('Include tree condition include list accumulator');
     }
 
     public function getConditionIncludes(): RootInclude

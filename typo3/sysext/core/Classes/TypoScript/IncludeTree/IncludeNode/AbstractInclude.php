@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
  */
 abstract class AbstractInclude implements IncludeInterface
 {
-    protected ?string $identifier = null;
+    private ?string $identifier = null;
     protected string $name = '';
     protected string $path = '';
 
@@ -80,6 +80,11 @@ abstract class AbstractInclude implements IncludeInterface
     public function setIdentifier(string $identifier): void
     {
         $this->identifier = hash('xxh3', $identifier);
+        $childCounter = 0;
+        foreach ($this->getNextChild() as $child) {
+            $child->setIdentifier($this->identifier . $childCounter);
+            $childCounter++;
+        }
     }
 
     public function getIdentifier(): string

@@ -59,10 +59,8 @@ final class StringTreeBuilder
             }
         }
         $includeTree = new RootInclude();
-        $includeTree->setIdentifier($identifier);
         $includeNode = new StringInclude();
         $includeNode->setName('[string] ' . $name);
-        $includeNode->setIdentifier($lowerCaseName);
         $includeNode->setLineStream($tokenizer->tokenize($typoScriptString));
         $this->treeFromTokenStreamBuilder->buildTree($includeNode, 'other', $tokenizer);
         $includeTree->addChild($includeNode);

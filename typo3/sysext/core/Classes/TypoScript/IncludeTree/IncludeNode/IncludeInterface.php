@@ -45,11 +45,14 @@ interface IncludeInterface
     /**
      * An identifier for this include. Typically, a hash of some kind. This identifier
      * is unique within the tree, by being created from the parent identifier plus
-     * something unique for this level like a counter. This identifier is used
-     * for instance in the backend, when referencing single includes to be rendered.
-     * Note this value is skipped when persisting to caches since it's a Backend
-     * related thing that does not use cached context: When retrieving includes from
-     * cache (e.g. in Frontend), the identifier is null and the getter will except.
+     * something unique for this level like a counter. This identifier is used in the backend,
+     * when referencing single includes to be rendered.
+     * Calculating identifiers is initiated by calling setIdentifier() on RootNode, which
+     * will recurse the tree. Call this on the final tree, after include calculation finished,
+     * so include building itself does not need to fiddle with identifier updates.
+     * Note this value is skipped when persisting to caches since it's a Backend related
+     * thing that does not use cached context: When retrieving includes from cache
+     * (e.g. in Frontend), the identifier is null and calling the getter will throw an exception.
      */
     public function setIdentifier(string $identifier): void;
     public function getIdentifier(): string;
