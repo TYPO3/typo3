@@ -7,9 +7,7 @@
 >
 
 <f:for each="{tree.nextChild}" as="child">
-
     <ts:astCurrentObjectPathAppend currentObjectPath="{currentObjectPath}" node="{child}" />
-
     <li>
         <span class="list-tree-group">
             <f:if condition="{child.children}">
@@ -39,10 +37,10 @@
             <span class="list-tree-label">
                 <f:if condition="{child.searchMatchInName}">
                     <f:then>
-                        [<f:be.link route="web_typoscript_objectbrowser" parameters="{id: pageUid, action:'edit', type: type, currentObjectPath: currentObjectPath.pathAsString}"><strong class="text-danger">{child.name}</strong></f:be.link>]
+                        <f:be.link route="web_typoscript_objectbrowser" parameters="{id: pageUid, action:'edit', type: type, currentObjectPath: currentObjectPath.pathAsString}"><strong class="text-danger">{child.name}</strong></f:be.link>
                     </f:then>
                     <f:else>
-                        [<f:be.link route="web_typoscript_objectbrowser" parameters="{id: pageUid, action:'edit', type: type, currentObjectPath: currentObjectPath.pathAsString}">{child.name}</f:be.link>]
+                        <f:be.link route="web_typoscript_objectbrowser" parameters="{id: pageUid, action:'edit', type: type, currentObjectPath: currentObjectPath.pathAsString}">{child.name}</f:be.link>
                     </f:else>
                 </f:if>
             </span>
@@ -74,9 +72,7 @@
                 </f:if>
                 <span class="diff-item-result diff-item-result-inline text-monospace text-normal p-0 ps-4">
                     <f:for each="{child.comments}" as="comment" iteration="iterator">
-                        <f:if condition="!{iterator.isFirst}">
-                            <br />
-                        </f:if>
+                        <f:if condition="!{iterator.isFirst}"><br></f:if>
                         <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:tree.comment" /> <f:format.trim>{comment}</f:format.trim>
                     </f:for>
                 </span>

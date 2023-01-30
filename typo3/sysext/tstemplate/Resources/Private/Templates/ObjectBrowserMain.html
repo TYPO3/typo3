@@ -41,18 +41,20 @@
     </div>
 
     <f:comment><!-- General options --></f:comment>
-    <f:render
-        partial="ObjectBrowserOptions"
-        arguments="{
-            allTemplatesOnPage: allTemplatesOnPage,
-            pageUid: pageUid,
-            selectedTemplateUid: selectedTemplateUid,
-            searchValue: searchValue,
-            displayConstantSubstitutions: displayConstantSubstitutions,
-            displayComments: displayComments,
-            sortAlphabetically: sortAlphabetically
-        }"
-    />
+    <f:if condition="{constantAst.children} || {setupAst.children}">
+        <f:render
+            partial="ObjectBrowserOptions"
+            arguments="{
+                allTemplatesOnPage: allTemplatesOnPage,
+                pageUid: pageUid,
+                selectedTemplateUid: selectedTemplateUid,
+                searchValue: searchValue,
+                displayConstantSubstitutions: displayConstantSubstitutions,
+                displayComments: displayComments,
+                sortAlphabetically: sortAlphabetically
+            }"
+        />
+    </f:if>
 
     <f:comment><!-- Constants: Conditions and tree --></f:comment>
     <f:if condition="{constantAst.children}">

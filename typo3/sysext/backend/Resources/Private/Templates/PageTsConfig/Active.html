@@ -1,6 +1,7 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 
@@ -103,6 +104,7 @@
                         minlength="3"
                         placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}"
                     />
+                    <button type="submit" class="btn btn-default disabled"><core:icon identifier="actions-search" /></button>
                 </div>
             </form>
         </div>
@@ -177,20 +179,50 @@
 <f:section name="Conditions">
     <div class="panel panel-default">
         <div class="panel-heading" role="tab">
-            <h2 class="panel-title" id="pagetsconfig-active-conditions-heading">
-                <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#pagetsconfig-active-conditions-body" aria-expanded="false" aria-controls="pagetsconfig-active-conditions-body">
-                    <span class="caret"></span>
-                    <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.header.conditions"/></strong>
-                    <f:if condition="{conditionActiveCount}">
-                        <span class="badge badge-info">
-                            <f:translate
-                                key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.info.conditionActiveCount"
-                                arguments="{0: conditionActiveCount}"
-                            />
-                        </span>
-                    </f:if>
-                </a>
-            </h2>
+            <f:if condition="{conditionActiveCount}">
+                <f:then>
+                    <div class="row align-items-center justify-content-between">
+                        <div class="col align-middle">
+                            <h3 class="panel-title" id="pagetsconfig-active-conditions-heading">
+                                <a
+                                    href="#"
+                                    class="collapsed"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#pagetsconfig-active-conditions-body"
+                                    aria-expanded="false"
+                                    aria-controls="pagetsconfig-active-conditions-body"
+                                >
+                                    <span class="caret"></span>
+                                    <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.header.conditions"/></strong>
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="col text-right">
+                            <span class="badge badge-info">
+                                <f:translate
+                                    key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.info.conditionActiveCount.{f:if(condition: '{conditionActiveCount} > 1', then:'multiple', else: 'single')}"
+                                    arguments="{0: conditionActiveCount}"
+                                />
+                            </span>
+                        </div>
+                    </div>
+                </f:then>
+                <f:else>
+                    <h3 class="panel-title" id="pagetsconfig-active-conditions-heading">
+                        <a
+                            href="#"
+                            class="collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#pagetsconfig-active-conditions-body"
+                            aria-expanded="false"
+                            aria-controls="pagetsconfig-active-conditions-body"
+                        >
+                            <span class="caret"></span>
+                            <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.header.conditions"/></strong>
+                        </a>
+                    </h3>
+                </f:else>
+            </f:if>
         </div>
         <div
             class="panel-collapse collapse"
@@ -253,21 +285,27 @@
 <f:section name="TreePanel">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title" id="pagetsconfig-active-{type}-ast-heading">
-                <a
-                    href="#"
-                    class="collapsed"
-                    id="panel-tree-heading-{type}"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#pagetsconfig-active-{type}-ast-body"
-                    aria-expanded="false"
-                    aria-controls="pagetsconfig-active-{type}-ast-body"
-                >
-                    <span class="caret"></span>
-                    <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.header.configuration"/></strong>
+            <div class="row align-items-center justify-content-between">
+                <div class="col align-middle">
+                    <h3 class="panel-title" id="pagetsconfig-active-{type}-ast-heading">
+                        <a
+                            href="#"
+                            class="collapsed"
+                            id="panel-tree-heading-{type}"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#pagetsconfig-active-{type}-ast-body"
+                            aria-expanded="false"
+                            aria-controls="pagetsconfig-active-{type}-ast-body"
+                        >
+                            <span class="caret"></span>
+                            <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.header.configuration"/></strong>
+                        </a>
+                    </h3>
+                </div>
+                <div class="col text-right">
                     <span class="badge badge-success hidden t3js-collapse-states-search-numberOfSearchMatches"></span>
-                </a>
-            </h3>
+                </div>
+            </div>
         </div>
         <div
             id="pagetsconfig-active-{type}-ast-body"

@@ -39,8 +39,11 @@
 			<trans-unit id="panel.header.configuration" resname="panel.header.configuration">
 				<source>Configuration</source>
 			</trans-unit>
-			<trans-unit id="panel.info.conditionActiveCount" resname="panel.info.conditionActiveCount">
-				<source>%s active condition(s)</source>
+			<trans-unit id="panel.info.conditionActiveCount.multiple" resname="panel.info.conditionActiveCount.multiple">
+				<source>%s active conditions</source>
+			</trans-unit>
+			<trans-unit id="panel.info.conditionActiveCount.single" resname="panel.info.conditionActiveCount.single">
+				<source>%s active condition</source>
 			</trans-unit>
 			<trans-unit id="panel.info.conditionWithConstant" resname="panel.info.conditionWithConstant">
 				<source>Constant usage: [%s]</source>

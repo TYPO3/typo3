@@ -105,14 +105,14 @@ final class TemplateCest
         $I->wantTo('change the TypoScript record within the TypoScript Object Browser');
         $I->selectOption('.t3-js-jumpMenuBox', 'Active TypoScript');
         $I->waitForText('Setup');
-        // find and open [page] in tree
-        $I->waitForText('[page] = PAGE');
+        // find and open page in tree
+        $I->waitForText('page = PAGE');
         $I->click('//span[@class="list-tree-label"]/a[text()=\'page\']/../../a');
-        // find and open [page][10] in tree
-        $I->waitForText('[10] = TEXT');
+        // find and open page.10 in tree
+        $I->waitForText('10 = TEXT');
         $I->click('//span[@class="list-tree-label"]/a[text()=\'page\']/../../../ul//span[@class="list-tree-label"]/a[text()=\'10\']/../../a');
-        // find and edit [page][10][value] in tree
-        $I->waitForText('[value] = Hello Acceptance Test!');
+        // find and edit page.10.value in tree
+        $I->waitForText('value = Hello Acceptance Test!');
         $I->click('//span[@class="list-tree-label"]/a[text()=\'10\']/../../../ul//span[@class="list-tree-label"]/a[text()=\'value\']');
         $I->waitForText('page.10.value =');
         $I->fillField('//input[@name="value"]', 'HELLO WORLD!');
@@ -120,7 +120,7 @@ final class TemplateCest
         $I->wait(2);
         $I->waitForText('Line added to current TypoScript record');
         $I->see('page.10.value = HELLO WORLD!');
-        $I->see('[value] = HELLO WORLD!');
+        $I->see('value = HELLO WORLD!');
     }
 
     public function checkClosestTemplateButton(ApplicationTester $I): void

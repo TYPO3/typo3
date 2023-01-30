@@ -43,7 +43,7 @@
 				<source>Overview of the current PageTsConfig of the system. A targeted search for values and names is possible. The list of results can also be filtered according to conditions.</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.displayConstantSubstitutions" resname="module.pagetsconfig_active.displayConstantSubstitutions">
-				<source>Substitute site settings</source>
+				<source>Substitute constants in PageTsConfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.displayComments" resname="module.pagetsconfig_active.displayComments">
 				<source>Display comments</source>
@@ -57,8 +57,11 @@
 			<trans-unit id="module.pagetsconfig_active.panel.header.numberOfSearchMatches" resname="module.pagetsconfig_active.panel.header.numberOfSearchMatches">
 				<source>%s search match(es)</source>
 			</trans-unit>
-			<trans-unit id="module.pagetsconfig_active.panel.info.conditionActiveCount" resname="module.pagetsconfig_active.panel.info.conditionActiveCount">
-				<source>%s active condition(s)</source>
+			<trans-unit id="module.pagetsconfig_active.panel.info.conditionActiveCount.multiple" resname="module.pagetsconfig_active.panel.info.conditionActiveCount.multiple">
+				<source>%s active conditions</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active.panel.info.conditionActiveCount.single" resname="module.pagetsconfig_active.panel.info.conditionActiveCount.single">
+				<source>%s active condition</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.panel.info.conditionWithConstant" resname="module.pagetsconfig_active.panel.info.conditionWithConstant">
 				<source>Site settings usage: [%s]</source>
@@ -67,10 +70,10 @@
 				<source>Configuration</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.siteSettings" resname="module.pagetsconfig_active.siteSettings">
-				<source>Available constants from site settings</source>
+				<source>Constants from site settings</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.activePageTsConfig" resname="module.pagetsconfig_active.activePageTsConfig">
-				<source>Active PageTsConfig</source>
+				<source>PageTsConfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.noPageTSconfigAvailable" resname="module.pagetsconfig_active.noPageTSconfigAvailable">
 				<source>No suitable Page TSconfig available.</source>
@@ -79,7 +82,7 @@
 				<source>Comment: </source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.tree.valueWithConstant" resname="module.pagetsconfig_active.tree.valueWithConstant">
-				<source>Constant usage: %s</source>
+				<source>Constant usage: [%s]</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes" resname="module.pagetsconfig_includes">
 				<source>Included PageTsConfig</source>
