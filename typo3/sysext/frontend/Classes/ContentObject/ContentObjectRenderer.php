@@ -3462,7 +3462,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         $str_content = '';
         foreach ($lParts as $k => $l) {
-            $sameBeginEnd = 0;
+            $sameBeginEnd = false;
             $emptyTag = false;
             $l = trim($l);
             $attrib = [];
@@ -3476,7 +3476,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $tagName = substr($tagName, 0, -1);
                     }
                     if (substr($fwParts[0], -1) === '/') {
-                        $sameBeginEnd = 1;
+                        $sameBeginEnd = true;
                         $emptyTag = true;
                         // decode HTML entities, they're encoded later again
                         $attrib = GeneralUtility::get_tag_attributes('<' . substr($fwParts[0], 0, -1) . '>', true);
