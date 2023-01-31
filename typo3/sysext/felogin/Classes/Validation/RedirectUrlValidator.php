@@ -21,6 +21,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 
 /**
  * Used to check if a referrer or a redirect URL is valid to be used as within Frontend Logins
@@ -32,23 +33,20 @@ class RedirectUrlValidator implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    protected SiteFinder $siteFinder;
-
-    public function __construct(?SiteFinder $siteFinder)
+    public function __construct(protected SiteFinder $siteFinder)
     {
-        $this->siteFinder = $siteFinder ?? GeneralUtility::makeInstance(SiteFinder::class);
     }
 
     /**
      * Checks if a given URL is valid / properly sanitized and/or the domain is known to TYPO3.
      */
-    public function isValid(string $value): bool
+    public function isValid(RequestInterface $request, string $value): bool
     {
         if ($value === '') {
             return false;
         }
         // Validate the URL
-        if ($this->isRelativeUrl($value) || $this->isInCurrentDomain($value) || $this->isInLocalDomain($value)) {
+        if ($this->isRelativeUrl($value) || $this->isInCurrentDomain($request, $value) || $this->isInLocalDomain($value)) {
             return true;
         }
         // URL is not allowed
@@ -60,15 +58,15 @@ class RedirectUrlValidator implements LoggerAwareInterface
      * Determines whether the URL is on the current host and belongs to the
      * current TYPO3 installation. The scheme part is ignored in the comparison.
      */
-    protected function isInCurrentDomain(string $url): bool
+    protected function isInCurrentDomain(RequestInterface $request, string $url): bool
     {
         $urlWithoutSchema = preg_replace('#^https?://#', '', $url) ?? '';
-        $siteUrlWithoutSchema = preg_replace('#^https?://#', '', $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl()) ?? '';
+        $siteUrlWithoutSchema = preg_replace('#^https?://#', '', $request->getAttribute('normalizedParams')->getSiteUrl()) ?? '';
         // this condition only exists to satisfy phpstan, which complains that this could be an array, too.
         if (is_array($siteUrlWithoutSchema)) {
             $siteUrlWithoutSchema = $siteUrlWithoutSchema[0];
         }
-        return str_starts_with($urlWithoutSchema . '/', $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getHttpHost() . '/')
+        return str_starts_with($urlWithoutSchema . '/', $request->getAttribute('normalizedParams')->getHttpHost() . '/')
             && str_starts_with($urlWithoutSchema, $siteUrlWithoutSchema);
     }
 

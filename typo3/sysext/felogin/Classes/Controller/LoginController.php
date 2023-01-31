@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Security\RequestToken;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\FrontendLogin\Configuration\RedirectConfiguration;
 use TYPO3\CMS\FrontendLogin\Event\BeforeRedirectEvent;
@@ -31,11 +30,12 @@ use TYPO3\CMS\FrontendLogin\Event\LoginErrorOccurredEvent;
 use TYPO3\CMS\FrontendLogin\Event\LogoutConfirmedEvent;
 use TYPO3\CMS\FrontendLogin\Event\ModifyLoginFormViewEvent;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectHandler;
-use TYPO3\CMS\FrontendLogin\Redirect\ServerRequestHandler;
 use TYPO3\CMS\FrontendLogin\Service\UserService;
 
 /**
  * Used for plugin login
+ *
+ * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
 class LoginController extends AbstractLoginFormController
 {
@@ -51,10 +51,10 @@ class LoginController extends AbstractLoginFormController
 
     public function __construct(
         protected RedirectHandler $redirectHandler,
-        protected ServerRequestHandler $requestHandler,
-        protected UserService $userService
+        protected UserService $userService,
+        protected Context $context
     ) {
-        $this->userAspect = GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user');
+        $this->userAspect = $context->getAspect('frontend.user');
     }
 
     /**
@@ -62,7 +62,7 @@ class LoginController extends AbstractLoginFormController
      */
     public function initializeAction(): void
     {
-        $this->loginType = (string)$this->requestHandler->getPropertyFromGetAndPost('logintype');
+        $this->loginType = (string)($this->request->getParsedBody()['logintype'] ?? $this->request->getQueryParams()['logintype'] ?? '');
         $this->configuration = RedirectConfiguration::fromSettings($this->settings);
 
         if ($this->isLoginOrLogoutInProgress() && !$this->isRedirectDisabled()) {
@@ -72,6 +72,7 @@ class LoginController extends AbstractLoginFormController
             }
 
             $this->redirectUrl = $this->redirectHandler->processRedirect(
+                $this->request,
                 $this->loginType,
                 $this->configuration,
                 $this->request->hasArgument('redirectReferrer') ? $this->request->getArgument('redirectReferrer') : ''
@@ -104,9 +105,9 @@ class LoginController extends AbstractLoginFormController
                 'cookieWarning' => $this->showCookieWarning,
                 'messageKey' => $this->getStatusMessageKey(),
                 'permaloginStatus' => $this->getPermaloginStatus(),
-                'redirectURL' => $this->redirectHandler->getLoginFormRedirectUrl($this->configuration, $this->isRedirectDisabled()),
+                'redirectURL' => $this->redirectHandler->getLoginFormRedirectUrl($this->request, $this->configuration, $this->isRedirectDisabled()),
                 'redirectReferrer' => $this->request->hasArgument('redirectReferrer') ? (string)$this->request->getArgument('redirectReferrer') : '',
-                'referer' => $this->requestHandler->getPropertyFromGetAndPost('referer'),
+                'referer' => (string)($this->request->getParsedBody()['referer'] ?? $this->request->getQueryParams()['referer'] ?? ''),
                 'noRedirect' => $this->isRedirectDisabled(),
                 'requestToken' => RequestToken::create('core/user-auth/fe')
                     ->withMergedParams(['pid' => implode(',', $this->getStorageFolders())]),
@@ -147,7 +148,7 @@ class LoginController extends AbstractLoginFormController
     public function logoutAction(int $redirectPageLogout = 0): ResponseInterface
     {
         if (($redirectResponse = $this->handleRedirect()) !== null) {
-            return $this->handleRedirect();
+            return $redirectResponse;
         }
 
         $this->view->assignMultiple(
@@ -155,7 +156,12 @@ class LoginController extends AbstractLoginFormController
                 'cookieWarning' => $this->showCookieWarning,
                 'user' => $this->userService->getFeUserData(),
                 'noRedirect' => $this->isRedirectDisabled(),
-                'actionUri' => $this->redirectHandler->getLogoutFormRedirectUrl($this->configuration, $redirectPageLogout, $this->isRedirectDisabled()),
+                'actionUri' => $this->redirectHandler->getLogoutFormRedirectUrl(
+                    $this->request,
+                    $this->configuration,
+                    $redirectPageLogout,
+                    $this->isRedirectDisabled()
+                ),
             ]
         );
 

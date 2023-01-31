@@ -50,7 +50,7 @@ class PasswordRecoveryController extends AbstractLoginFormController
     }
 
     /**
-     * Shows the recovery form. If $userIdentifier is set an email will be sent, if the corresponding user exists and
+     * Shows the recovery form. If $userIdentifier is set, an email will be sent, if the corresponding user exists and
      * has a valid email address set.
      */
     public function recoveryAction(string $userIdentifier = null): ResponseInterface
@@ -67,7 +67,7 @@ class PasswordRecoveryController extends AbstractLoginFormController
         if ($userData && GeneralUtility::validEmail($userData['email'])) {
             $hash = $this->recoveryConfiguration->getForgotHash();
             $this->userRepository->updateForgotHashForUserByUid($userData['uid'], GeneralUtility::hmac($hash));
-            $this->recoveryService->sendRecoveryEmail($userData, $hash);
+            $this->recoveryService->sendRecoveryEmail($this->request, $userData, $hash);
         }
 
         if ($this->exposeNoneExistentUser($userData)) {

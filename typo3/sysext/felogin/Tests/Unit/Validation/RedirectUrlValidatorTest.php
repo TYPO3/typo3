@@ -25,6 +25,9 @@ use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -34,6 +37,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
     protected bool $backupEnvironment = true;
 
     protected RedirectUrlValidator&AccessibleObjectInterface $accessibleFixture;
+    protected RequestInterface $extbaseRequest;
     protected string $testHostName;
     protected string $testSitePath;
 
@@ -66,8 +70,8 @@ class RedirectUrlValidatorTest extends UnitTestCase
         $request = ServerRequestFactory::fromGlobals();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $normalizedParams = NormalizedParams::createFromRequest($request);
-        $request = $request->withAttribute('normalizedParams', $normalizedParams);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $request = $request->withAttribute('normalizedParams', $normalizedParams)->withAttribute('extbase', new ExtbaseRequestParameters());
+        $this->extbaseRequest = new Request($request);
     }
 
     /**
@@ -110,7 +114,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
             Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        self::assertFalse($this->accessibleFixture->isValid($url));
+        self::assertFalse($this->accessibleFixture->isValid($this->extbaseRequest, $url));
     }
 
     /**
@@ -121,13 +125,13 @@ class RedirectUrlValidatorTest extends UnitTestCase
         return [
             'sane absolute URL' => ['http://sub.domainhostname.tld/path/'],
             'sane absolute URL with script' => ['http://sub.domainhostname.tld/path/index.php?id=1'],
-            'sane absolute URL with realurl' => ['http://sub.domainhostname.tld/path/foo/bar/foo.html'],
+            'sane absolute URL with routing' => ['http://sub.domainhostname.tld/path/foo/bar/foo.html'],
             'sane absolute URL with homedir' => ['http://sub.domainhostname.tld/path/~user/'],
             'sane absolute URL with some strange chars encoded' => ['http://sub.domainhostname.tld/path/~user/a%cc%88o%cc%88%c3%9fa%cc%82/foo.html'],
             'relative URL, no leading slash 1' => ['index.php?id=1'],
             'relative URL, no leading slash 2' => ['foo/bar/index.php?id=2'],
-            'relative URL, leading slash, no realurl' => ['/index.php?id=1'],
-            'relative URL, leading slash, realurl' => ['/de/service/imprint.html'],
+            'relative URL, leading slash, no routing' => ['/index.php?id=1'],
+            'relative URL, leading slash, routing' => ['/de/service/imprint.html'],
         ];
     }
 
@@ -148,7 +152,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
             Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        self::assertTrue($this->accessibleFixture->isValid($url));
+        self::assertTrue($this->accessibleFixture->isValid($this->extbaseRequest, $url));
     }
 
     /**
@@ -175,7 +179,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
         GeneralUtility::flushInternalRuntimeCaches();
         $this->testSitePath = '/subdir/';
         $this->setUpFakeSitePathAndHost();
-        self::assertFalse($this->accessibleFixture->isValid($url));
+        self::assertFalse($this->accessibleFixture->isValid($this->extbaseRequest, $url));
     }
 
     /**
@@ -185,12 +189,12 @@ class RedirectUrlValidatorTest extends UnitTestCase
     {
         return [
             'absolute URL, correct subdirectory' => ['http://hostname.tld/subdir/'],
-            'absolute URL, correct subdirectory, realurl' => ['http://hostname.tld/subdir/de/imprint.html'],
-            'absolute URL, correct subdirectory, no realurl' => ['http://hostname.tld/subdir/index.php?id=10'],
+            'absolute URL, correct subdirectory, routing' => ['http://hostname.tld/subdir/de/imprint.html'],
+            'absolute URL, correct subdirectory, no routing' => ['http://hostname.tld/subdir/index.php?id=10'],
             'absolute URL, correct subdirectory of site base' => ['http://sub.domainhostname.tld/path/'],
-            'relative URL, no leading slash, realurl' => ['de/service/imprint.html'],
-            'relative URL, no leading slash, no realurl' => ['index.php?id=1'],
-            'relative nested URL, no leading slash, no realurl' => ['foo/bar/index.php?id=2'],
+            'relative URL, no leading slash, routing' => ['de/service/imprint.html'],
+            'relative URL, no leading slash, no routing' => ['index.php?id=1'],
+            'relative nested URL, no leading slash, no routing' => ['foo/bar/index.php?id=2'],
         ];
     }
 
@@ -213,7 +217,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
         );
         $this->testSitePath = '/subdir/';
         $this->setUpFakeSitePathAndHost();
-        self::assertTrue($this->accessibleFixture->isValid($url));
+        self::assertTrue($this->accessibleFixture->isValid($this->extbaseRequest, $url));
     }
 
     /**************************************************
@@ -275,10 +279,10 @@ class RedirectUrlValidatorTest extends UnitTestCase
         $request = ServerRequestFactory::fromGlobals();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $normalizedParams = NormalizedParams::createFromRequest($request);
-        $request = $request->withAttribute('normalizedParams', $normalizedParams);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $request = $request->withAttribute('normalizedParams', $normalizedParams)->withAttribute('extbase', new ExtbaseRequestParameters());
+        $extbaseRequest = new Request($request);
 
-        self::assertTrue($this->accessibleFixture->_call('isInCurrentDomain', $url));
+        self::assertTrue($this->accessibleFixture->_call('isInCurrentDomain', $extbaseRequest, $url));
     }
 
     public function isInCurrentDomainReturnsFalseIfDomainsAreDifferentDataProvider(): array
@@ -304,7 +308,14 @@ class RedirectUrlValidatorTest extends UnitTestCase
     public function isInCurrentDomainReturnsFalseIfDomainsAreDifferent(string $host, string $url): void
     {
         $_SERVER['HTTP_HOST'] = $host;
-        self::assertFalse($this->accessibleFixture->_call('isInCurrentDomain', $url));
+
+        $request = ServerRequestFactory::fromGlobals();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $normalizedParams = NormalizedParams::createFromRequest($request);
+        $request = $request->withAttribute('normalizedParams', $normalizedParams)->withAttribute('extbase', new ExtbaseRequestParameters());
+        $extbaseRequest = new Request($request);
+
+        self::assertFalse($this->accessibleFixture->_call('isInCurrentDomain', $extbaseRequest, $url));
     }
 
     /**************************************************

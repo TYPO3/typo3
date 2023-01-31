@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Redirect;
 
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserGroupRepository;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
@@ -32,27 +32,20 @@ use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
  */
 class RedirectModeHandler
 {
-    protected RedirectUrlValidator $redirectUrlValidator;
-
     public function __construct(
         protected UriBuilder $uriBuilder,
-        protected ServerRequestHandler $serverRequestHandler,
+        protected RedirectUrlValidator $redirectUrlValidator,
         private UserService $userService,
         private FrontendUserRepository $frontendUserRepository,
         private FrontendUserGroupRepository $frontendUserGroupRepository
     ) {
-        $this->redirectUrlValidator = GeneralUtility::makeInstance(
-            RedirectUrlValidator::class,
-            GeneralUtility::makeInstance(SiteFinder::class)
-        );
     }
 
     /**
      * Handle redirect mode groupLogin
      */
-    public function redirectModeGroupLogin(): string
+    public function redirectModeGroupLogin(RequestInterface $request): string
     {
-        // taken from dkd_redirect_at_login written by Ingmar Schlecht; database-field changed
         $groups = $this->userService->getFeUserGroupData();
 
         if (empty($groups)) {
@@ -65,7 +58,7 @@ class RedirectModeHandler
             $redirectPageId = (int)$this->frontendUserGroupRepository
                 ->findRedirectPageIdByGroupId($groupUid);
             if ($redirectPageId > 0) {
-                return $this->buildUriForPageUid($redirectPageId);
+                return $this->buildUriForPageUid($request, $redirectPageId);
             }
         }
         return '';
@@ -74,7 +67,7 @@ class RedirectModeHandler
     /**
      * Handle redirect mode userLogin
      */
-    public function redirectModeUserLogin(): string
+    public function redirectModeUserLogin(RequestInterface $request): string
     {
         $redirectPageId = $this->frontendUserRepository->findRedirectIdPageByUserId(
             $this->userService->getFeUserData()['uid']
@@ -84,17 +77,17 @@ class RedirectModeHandler
             return '';
         }
 
-        return $this->buildUriForPageUid($redirectPageId);
+        return $this->buildUriForPageUid($request, $redirectPageId);
     }
 
     /**
      * Handle redirect mode login
      */
-    public function redirectModeLogin(int $redirectPageLogin): string
+    public function redirectModeLogin(RequestInterface $request, int $redirectPageLogin): string
     {
         $redirectUrl = '';
         if ($redirectPageLogin !== 0) {
-            $redirectUrl = $this->buildUriForPageUid($redirectPageLogin);
+            $redirectUrl = $this->buildUriForPageUid($request, $redirectPageLogin);
         }
 
         return $redirectUrl;
@@ -103,12 +96,12 @@ class RedirectModeHandler
     /**
      * Handle redirect mode referrer
      */
-    public function redirectModeReferrer(string $redirectReferrer): string
+    public function redirectModeReferrer(RequestInterface $request, string $redirectReferrer): string
     {
         $redirectUrl = '';
         if ($redirectReferrer !== 'off') {
             // Avoid forced logout, when trying to login immediately after a logout
-            $redirectUrl = preg_replace('/[&?]logintype=[a-z]+/', '', $this->getReferer());
+            $redirectUrl = preg_replace('/[&?]logintype=[a-z]+/', '', $this->getReferer($request));
         }
 
         return $redirectUrl ?? '';
@@ -117,7 +110,7 @@ class RedirectModeHandler
     /**
      * Handle redirect mode refererDomains
      */
-    public function redirectModeRefererDomains(string $domains, string $redirectReferrer): string
+    public function redirectModeRefererDomains(RequestInterface $request, string $domains, string $redirectReferrer): string
     {
         $redirectUrl = '';
         if ($redirectReferrer !== '') {
@@ -127,10 +120,9 @@ class RedirectModeHandler
         // Auto redirect.
         // Feature to redirect to the page where the user came from (HTTP_REFERER).
         // Allowed domains to redirect to, can be configured with plugin.tx_felogin_login.domains
-        // Thanks to plan2.net / Martin Kutschker for implementing this feature.
         // also avoid redirect when logging in after changing password
         if ($domains) {
-            $url = $this->getReferer();
+            $url = $this->getReferer($request);
             // Is referring url allowed to redirect?
             $match = [];
             if (preg_match('#^http://([[:alnum:]._-]+)/#', $url, $match)) {
@@ -158,11 +150,11 @@ class RedirectModeHandler
     /**
      * Handle redirect mode loginError after login-error
      */
-    public function redirectModeLoginError(int $redirectPageLoginError = 0): string
+    public function redirectModeLoginError(RequestInterface $request, int $redirectPageLoginError = 0): string
     {
         $redirectUrl = '';
         if ($redirectPageLoginError > 0) {
-            $redirectUrl = $this->buildUriForPageUid($redirectPageLoginError);
+            $redirectUrl = $this->buildUriForPageUid($request, $redirectPageLoginError);
         }
 
         return $redirectUrl;
@@ -171,33 +163,34 @@ class RedirectModeHandler
     /**
      * Handle redirect mode logout
      */
-    public function redirectModeLogout(int $redirectPageLogout): string
+    public function redirectModeLogout(RequestInterface $request, int $redirectPageLogout): string
     {
         $redirectUrl = '';
         if ($redirectPageLogout > 0) {
-            $redirectUrl = $this->buildUriForPageUid($redirectPageLogout);
+            $redirectUrl = $this->buildUriForPageUid($request, $redirectPageLogout);
         }
 
         return $redirectUrl;
     }
 
-    protected function buildUriForPageUid(int $pageUid): string
+    protected function buildUriForPageUid(RequestInterface $request, int $pageUid): string
     {
         $this->uriBuilder->reset();
+        $this->uriBuilder->setRequest($request);
         $this->uriBuilder->setTargetPageUid($pageUid);
 
         return $this->uriBuilder->build();
     }
 
-    protected function getReferer(): string
+    protected function getReferer(RequestInterface $request): string
     {
         $referer = '';
-        $requestReferer = (string)$this->serverRequestHandler->getPropertyFromGetAndPost('referer');
+        $requestReferer = (string)($request->getParsedBody()['referer'] ?? $request->getQueryParams()['referer'] ?? '');
         if ($requestReferer === '') {
-            $requestReferer = $this->serverRequestHandler->getHttpReferer();
+            $requestReferer = $request->getServerParams()['HTTP_REFERER'] ?? '';
         }
 
-        if ($this->redirectUrlValidator->isValid($requestReferer)) {
+        if ($this->redirectUrlValidator->isValid($request, $requestReferer)) {
             $referer = $requestReferer;
         }
 

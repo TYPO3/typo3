@@ -22,12 +22,15 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\FrontendLogin\Configuration\RedirectConfiguration;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectHandler;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectModeHandler;
-use TYPO3\CMS\FrontendLogin\Redirect\ServerRequestHandler;
+use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RedirectHandlerTest extends UnitTestCase
@@ -35,23 +38,29 @@ class RedirectHandlerTest extends UnitTestCase
     protected bool $resetSingletonInstances = true;
     protected RedirectHandler $subject;
     protected ServerRequestInterface $typo3Request;
-    protected MockObject&ServerRequestHandler $serverRequestHandler;
     protected MockObject&RedirectModeHandler $redirectModeHandler;
+    protected MockObject&RedirectUrlValidator $redirectUrlValidator;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->serverRequestHandler = $this->getMockBuilder(ServerRequestHandler::class)->disableOriginalConstructor()->getMock();
-        $this->redirectModeHandler = $this->getMockBuilder(RedirectModeHandler::class)->disableOriginalConstructor()->getMock();
+        $this->redirectModeHandler = $this->createMock(RedirectModeHandler::class);
+        $this->redirectUrlValidator = $this->createMock(RedirectUrlValidator::class);
 
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
 
         $this->subject = new RedirectHandler(
-            $this->serverRequestHandler,
             $this->redirectModeHandler,
+            $this->redirectUrlValidator,
             new Context()
         );
+    }
+
+    public function loginTypeLogoutDataProvider(): Generator
+    {
+        yield 'empty string on empty redirect mode' => ['', ''];
+        yield 'empty string on redirect mode logout' => ['', 'logout'];
     }
 
     /**
@@ -60,15 +69,30 @@ class RedirectHandlerTest extends UnitTestCase
      */
     public function processShouldReturnStringForLoginTypeLogout(string $expect, string $redirectMode): void
     {
-        $this->redirectModeHandler->method('redirectModeLogout')->with(0)->willReturn('');
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
 
-        self::assertEquals($expect, $this->subject->processRedirect('logout', new RedirectConfiguration($redirectMode, '', 0, '', 0, 0), ''));
+        $this->redirectModeHandler->method('redirectModeLogout')->with($request, 0)->willReturn('');
+
+        $result = $this->subject->processRedirect($request, 'logout', new RedirectConfiguration($redirectMode, '', 0, '', 0, 0), '');
+        self::assertEquals($expect, $result);
     }
 
-    public function loginTypeLogoutDataProvider(): Generator
+    public function getLogoutRedirectUrlDataProvider(): Generator
     {
-        yield 'empty string on empty redirect mode' => ['', ''];
-        yield 'empty string on redirect mode logout' => ['', 'logout'];
+        yield 'empty redirect mode should return empty returnUrl' => ['', [], [], false];
+        yield 'redirect mode getpost should return param return_url' => [
+            'https://dummy.url',
+            ['getpost'],
+            ['return_url' => 'https://dummy.url'],
+            false,
+        ];
+        yield 'redirect mode getpost, logout should return param return_url on not logged in user' => [
+            'https://dummy.url/3',
+            ['getpost', 'logout'],
+            ['return_url' => 'https://dummy.url/3'],
+            false,
+        ];
     }
 
     /**
@@ -82,32 +106,20 @@ class RedirectHandlerTest extends UnitTestCase
         bool $userLoggedIn
     ): void {
         $this->subject = new RedirectHandler(
-            $this->serverRequestHandler,
             $this->redirectModeHandler,
+            $this->redirectUrlValidator,
             $this->getContextMockWithUserLoggedIn($userLoggedIn)
         );
 
-        $this->serverRequestHandler->method('getRedirectUrlRequestParam')->willReturn($body['return_url'] ?? '');
+        $serverRequest = (new ServerRequest())->withParsedBody($body)->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
+
+        if ($expected !== '') {
+            $this->redirectUrlValidator->expects(self::once())->method('isValid')->with($request, $body['return_url'])->willReturn(true);
+        }
 
         $configuration = RedirectConfiguration::fromSettings(['redirectMode' => $redirectModes]);
-        self::assertEquals($expected, $this->subject->getLogoutFormRedirectUrl($configuration, 13, false));
-    }
-
-    public function getLogoutRedirectUrlDataProvider(): Generator
-    {
-        yield 'empty redirect mode should return empty returnUrl' => ['', [], [], false];
-        yield 'redirect mode getpost should return param return_url' => [
-            'https://dummy.url',
-            ['getpost'],
-            ['return_url' => 'https://dummy.url'],
-            false,
-        ];
-        yield 'redirect mode getpost,logout should return param return_url on not logged in user' => [
-            'https://dummy.url/3',
-            ['getpost', 'logout'],
-            ['return_url' => 'https://dummy.url/3'],
-            false,
-        ];
+        self::assertEquals($expected, $this->subject->getLogoutFormRedirectUrl($request, $configuration, 13, false));
     }
 
     /**
@@ -116,16 +128,18 @@ class RedirectHandlerTest extends UnitTestCase
     public function getLogoutRedirectUrlShouldReturnAlternativeRedirectUrlForLoggedInUserAndRedirectPageLogoutSet(): void
     {
         $this->subject = new RedirectHandler(
-            $this->serverRequestHandler,
             $this->redirectModeHandler,
+            $this->redirectUrlValidator,
             $this->getContextMockWithUserLoggedIn()
         );
 
-        $this->serverRequestHandler->method('getRedirectUrlRequestParam')->willReturn('');
-        $this->redirectModeHandler->method('redirectModeLogout')->with(3)->willReturn('https://logout.url');
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
+
+        $this->redirectModeHandler->method('redirectModeLogout')->with($request, 3)->willReturn('https://logout.url');
 
         $configuration = RedirectConfiguration::fromSettings(['redirectMode' => ['logout']]);
-        self::assertEquals('https://logout.url', $this->subject->getLogoutFormRedirectUrl($configuration, 3, false));
+        self::assertEquals('https://logout.url', $this->subject->getLogoutFormRedirectUrl($request, $configuration, 3, false));
     }
 
     protected function getContextMockWithUserLoggedIn(bool $userLoggedIn = true): Context
@@ -151,7 +165,13 @@ class RedirectHandlerTest extends UnitTestCase
                 false,
                 '',
             ],
-            'redirect enabled, GET/POST redirect mode configured' => [
+            'redirect enabled, GET/POST redirect mode configured, invalid URL' => [
+                'https://invalid-redirect.url',
+                'login,getpost',
+                false,
+                '',
+            ],
+            'redirect enabled, GET/POST redirect mode configured, valid URL' => [
                 'https://redirect.url',
                 'login,getpost',
                 false,
@@ -169,16 +189,21 @@ class RedirectHandlerTest extends UnitTestCase
         string $redirectMode,
         bool $redirectDisabled,
         string $expected
-    ) {
+    ): void {
         $this->subject = new RedirectHandler(
-            $this->serverRequestHandler,
             $this->redirectModeHandler,
+            $this->redirectUrlValidator,
             new Context()
         );
 
-        $this->serverRequestHandler->method('getRedirectUrlRequestParam')->willReturn($redirectUrl);
+        $serverRequest = (new ServerRequest())->withQueryParams(['redirect_url' => $redirectUrl])->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
+
+        if ($redirectUrl === $expected) {
+            $this->redirectUrlValidator->expects(self::once())->method('isValid')->with($request, $redirectUrl)->willReturn(true);
+        }
 
         $configuration = RedirectConfiguration::fromSettings(['redirectMode' => $redirectMode]);
-        self::assertEquals($expected, $this->subject->getLoginFormRedirectUrl($configuration, $redirectDisabled));
+        self::assertEquals($expected, $this->subject->getLoginFormRedirectUrl($request, $configuration, $redirectDisabled));
     }
 }

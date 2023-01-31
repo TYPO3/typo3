@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Service;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -26,6 +25,7 @@ use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\FrontendLogin\Configuration\RecoveryConfiguration;
@@ -52,13 +52,14 @@ class RecoveryService
      * Sends an email with an absolute link including the given forgot hash to the passed user
      * with instructions to recover the account.
      *
-     *
      * @throws TransportExceptionInterface
      */
-    public function sendRecoveryEmail(array $userData, string $hash): void
+    public function sendRecoveryEmail(RequestInterface $request, array $userData, string $hash): void
     {
+        $this->uriBuilder->setRequest($request);
+
         $receiver = new Address($userData['email'], $this->getReceiverName($userData));
-        $email = $this->prepareMail($receiver, $hash);
+        $email = $this->prepareMail($request, $receiver, $hash);
 
         $event = new SendRecoveryEmailEvent($email, $userData);
         $this->eventDispatcher->dispatch($event);
@@ -85,7 +86,7 @@ class RecoveryService
     /**
      * Create email object from configuration.
      */
-    protected function prepareMail(Address $receiver, string $hash): Email
+    protected function prepareMail(RequestInterface $request, Address $receiver, string $hash): Email
     {
         $url = $this->uriBuilder->setCreateAbsoluteUri(true)
             ->uriFor(
@@ -105,6 +106,7 @@ class RecoveryService
         $mailTemplatePaths = $this->recoveryConfiguration->getMailTemplatePaths();
 
         $mail = GeneralUtility::makeInstance(FluidEmail::class, $mailTemplatePaths);
+        $mail->setRequest($request);
         $mail->subject($this->getEmailSubject())
             ->from($this->recoveryConfiguration->getSender())
             ->to($receiver)
@@ -114,10 +116,6 @@ class RecoveryService
         $replyTo = $this->recoveryConfiguration->getReplyTo();
         if ($replyTo) {
             $mail->addReplyTo($replyTo);
-        }
-
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
-            $mail->setRequest($GLOBALS['TYPO3_REQUEST']);
         }
 
         return $mail;

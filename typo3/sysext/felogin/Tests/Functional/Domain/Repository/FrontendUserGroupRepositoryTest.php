@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Tests\Functional\Domain\Repository;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserGroupRepository;
@@ -32,16 +33,10 @@ class FrontendUserGroupRepositoryTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-
+        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         $GLOBALS['TSFE']->fe_user = new FrontendUserAuthentication();
 
-        $this->repository = new FrontendUserGroupRepository(
-            new UserService()
-        );
+        $this->repository = new FrontendUserGroupRepository(new UserService(), new ConnectionPool());
 
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/fe_groups.csv');
     }

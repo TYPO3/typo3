@@ -20,7 +20,6 @@ namespace TYPO3\CMS\FrontendLogin\Domain\Repository;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\FrontendLogin\Service\UserService;
 
 /**
@@ -30,9 +29,12 @@ class FrontendUserRepository
 {
     protected Connection $connection;
 
-    public function __construct(protected UserService $userService, protected Context $context)
-    {
-        $this->connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->getTable());
+    public function __construct(
+        protected UserService $userService,
+        protected Context $context,
+        ConnectionPool $connectionPool
+    ) {
+        $this->connection = $connectionPool->getConnectionForTable($this->getTable());
     }
 
     public function getTable(): string

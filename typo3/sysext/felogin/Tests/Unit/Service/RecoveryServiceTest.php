@@ -21,10 +21,16 @@ use Generator;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mime\Address;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\FrontendLogin\Configuration\RecoveryConfiguration;
@@ -39,13 +45,20 @@ class RecoveryServiceTest extends UnitTestCase
     protected MockObject&FrontendUserRepository $userRepository;
     protected MockObject&RecoveryConfiguration $recoveryConfiguration;
     protected MockObject&TemplatePaths $templatePaths;
+    protected RequestInterface $extbaseRequest;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->userRepository = $this->getMockBuilder(FrontendUserRepository::class)->disableOriginalConstructor()->getMock();
-        $this->recoveryConfiguration = $this->getMockBuilder(RecoveryConfiguration::class)->disableOriginalConstructor()->getMock();
-        $this->templatePaths = $this->getMockBuilder(TemplatePaths::class)->disableOriginalConstructor()->getMock();
+        $this->userRepository = $this->createMock(FrontendUserRepository::class);
+        $this->recoveryConfiguration = $this->createMock(RecoveryConfiguration::class);
+        $this->templatePaths = $this->createMock(TemplatePaths::class);
+
+        $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $normalizedParams = NormalizedParams::createFromRequest($request);
+        $request = $request->withAttribute('normalizedParams', $normalizedParams)->withAttribute('extbase', new ExtbaseRequestParameters());
+        $this->extbaseRequest = new Request($request);
     }
 
     /**
@@ -106,7 +119,7 @@ class RecoveryServiceTest extends UnitTestCase
             )->getMock();
         $subject->method('getEmailSubject')->willReturn('translation');
 
-        $subject->sendRecoveryEmail($userData, $recoveryConfiguration['forgotHash']);
+        $subject->sendRecoveryEmail($this->extbaseRequest, $userData, $recoveryConfiguration['forgotHash']);
     }
 
     public function configurationDataProvider(): Generator
