@@ -491,9 +491,6 @@
 			<trans-unit id="sys_template.config" resname="sys_template.config">
 				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="sys_template.editorcfg" resname="sys_template.editorcfg">
-				<source>Backend Editor Configuration</source>
-			</trans-unit>
 			<trans-unit id="sys_template.description" resname="sys_template.description">
 				<source>Description</source>
 			</trans-unit>
