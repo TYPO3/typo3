@@ -40,7 +40,7 @@ than 4 arguments are affected.
 Migration
 =========
 
-Arguments 4 and 5 can be safely removed as they are already unused.
+Arguments 5 and 6 can be safely removed as they are already unused.
 
 If :php:`$returnTagParameters` was set to :php:`true` the newly introduced method
 :php:`BackendUtility::getClickMenuOnIconTagParameters()` should be called to
