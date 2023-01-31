@@ -18,8 +18,7 @@ import '@typo3/backend/element/icon-element';
 import {TreeNode} from '@typo3/backend/tree/tree-node';
 import Persistent from '@typo3/backend/storage/persistent';
 import ContextMenu from '../context-menu';
-import {D3DragEvent} from 'd3-drag';
-import {DragDropHandler, DragDrop, DraggablePositionEnum} from './drag-drop';
+import {DragDropHandler, DragDrop, DraggablePositionEnum, DragDropTargetPosition} from './drag-drop';
 import Modal from '../modal';
 import Severity from '../severity';
 import Notification from '../notification';
@@ -195,9 +194,6 @@ export class FileStorageTreeNavigationComponent extends LitElement {
   }
 }
 
-
-
-
 interface NodePositionOptions {
   node: TreeNode,
   target: TreeNode,
@@ -205,20 +201,29 @@ interface NodePositionOptions {
   position: DraggablePositionEnum
 }
 
-interface NodeTargetPosition {
-  target: TreeNode,
-  position: DraggablePositionEnum
-}
-
 /**
  * Extends Drag&Drop functionality for File Storage Tree positioning when dropping
+ * Works with and without d3.drag.
  */
 class FileStorageTreeActions extends DragDrop {
+
+  /**
+   * returns true if the node that is currently active has the EXACT same parent node.
+   * Typical use case: You cannot move a folder to the parent folder.
+   * @param activeHoveredNode
+   * @param targetNode
+   */
+  public isInSameParentNode(activeHoveredNode: TreeNode, targetNode: TreeNode): boolean {
+    return activeHoveredNode.stateIdentifier == targetNode.stateIdentifier
+      || activeHoveredNode.parentsStateIdentifier[0] == targetNode.stateIdentifier
+      || targetNode.parentsStateIdentifier.includes(activeHoveredNode.stateIdentifier);
+  }
+
   public changeNodePosition(droppedNode: TreeNode): null|NodePositionOptions {
     const nodes = this.tree.nodes;
-    const identifier = this.tree.settings.nodeDrag.identifier;
+    const identifier = this.tree.settings.draggingNode.identifier;
     let position = this.tree.settings.nodeDragPosition;
-    let target = droppedNode || this.tree.settings.nodeDrag;
+    let target = droppedNode || this.tree.settings.draggingNode;
 
     if (identifier === target.identifier) {
       return null;
@@ -235,7 +240,7 @@ class FileStorageTreeActions extends DragDrop {
     }
 
     return {
-      node: this.tree.settings.nodeDrag,
+      node: this.tree.settings.draggingNode,
       identifier: identifier, // dragged node id
       target: target, // hovered node
       position: position // before, in, after
@@ -245,7 +250,7 @@ class FileStorageTreeActions extends DragDrop {
   /**
    * Returns position and target node
    */
-  public setNodePositionAndTarget(index: number): null|NodeTargetPosition {
+  public setNodePositionAndTarget(index: number): null|DragDropTargetPosition {
     const nodes = this.tree.nodes;
     const nodeOver = nodes[index];
     const nodeOverDepth = nodeOver.depth;
@@ -272,7 +277,7 @@ class FileStorageTreeActions extends DragDrop {
     return null;
   }
 
-  public changeNodeClasses(event: any): void {
+  public changeNodeClasses(): void {
     const elementNodeBg = this.tree.svg.select('.node-over');
     const svg = this.tree.svg.node() as SVGElement;
     const nodeDd = svg.parentNode.querySelector('.node-dd') as HTMLElement;
@@ -285,7 +290,6 @@ class FileStorageTreeActions extends DragDrop {
       this.tree.settings.nodeDragPosition = DraggablePositionEnum.INSIDE;
     }
   }
-
 }
 
 
@@ -293,7 +297,7 @@ class FileStorageTreeActions extends DragDrop {
  * Drag and drop for nodes (copy/move)
  */
 class FileStorageTreeNodeDragHandler implements DragDropHandler {
-  public startDrag: boolean = false;
+  public dragStarted: boolean = false;
   public startPageX: number = 0;
   public startPageY: number = 0;
   private isDragged: boolean = false;
@@ -305,38 +309,36 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
     this.actionHandler = actionHandler;
   }
 
-  public dragStart(event: D3DragEvent<any, any, any>): boolean {
-    let node = event.subject;
-    if (node.depth === 0) {
+  public onDragStart(event: MouseEvent, draggingNode: TreeNode|null): boolean {
+    if (draggingNode.depth === 0) {
       return false;
     }
-    this.startPageX = event.sourceEvent.pageX;
-    this.startPageY = event.sourceEvent.pageY;
-    this.startDrag = false;
+    this.startPageX = event.pageX;
+    this.startPageY = event.pageY;
+    this.dragStarted = false;
     return true;
   };
 
-  public dragDragged(event: D3DragEvent<any, any, any>): boolean {
-    let node = event.subject;
+  public onDragOver(event: MouseEvent, draggingNode: TreeNode|null): boolean {
     if (this.actionHandler.isDragNodeDistanceMore(event, this)) {
-      this.startDrag = true;
+      this.dragStarted = true;
     } else {
       return false;
     }
 
-    if (node.depth === 0) {
+    if (draggingNode.depth === 0) {
       return false;
     }
 
-    this.tree.settings.nodeDrag = node;
+    this.tree.settings.draggingNode = draggingNode;
 
-    let nodeBg = this.tree.svg.node().querySelector('.node-bg[data-state-id="' + node.stateIdentifier + '"]');
+    let nodeBg = this.tree.svg.node().querySelector('.node-bg[data-state-id="' + draggingNode.stateIdentifier + '"]');
     let nodeDd = this.tree.svg.node().parentNode.querySelector('.node-dd') as HTMLElement;
 
-    // Create the draggable
+    // Create the draggable = the shadowed element which follows the cursor
     if (!this.isDragged) {
       this.isDragged = true;
-      this.actionHandler.createDraggable(this.tree.getIconId(node), node.name);
+      this.actionHandler.createDraggable(this.tree.getIconId(draggingNode), draggingNode.name);
       nodeBg?.classList.add('node-bg--dragging');
     }
 
@@ -344,51 +346,42 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
     this.actionHandler.openNodeTimeout();
     this.actionHandler.updateDraggablePosition(event);
 
-    if (node.isOver
-      || (this.tree.hoveredNode && this.tree.hoveredNode.parentsStateIdentifier.indexOf(node.stateIdentifier) !== -1)
+    if (draggingNode.isOver
+      || this.actionHandler.isTheSameNode(this.tree.hoveredNode, draggingNode)
       || !this.tree.isOverSvg) {
-
       this.actionHandler.addNodeDdClass(nodeDd, 'nodrop');
-
-      if (!this.tree.isOverSvg) {
-        this.tree.nodesBgContainer.selectAll('.node-bg__border').style('display', 'none');
-      }
+    }
+    if (!this.tree.isOverSvg) {
+      this.tree.nodesBgContainer.selectAll('.node-bg__border').style('display', 'none');
     }
 
-    if (!this.tree.hoveredNode || this.isInSameParentNode(node, this.tree.hoveredNode)) {
+    if (!this.tree.hoveredNode || this.actionHandler.isInSameParentNode(draggingNode, this.tree.hoveredNode)) {
       this.actionHandler.addNodeDdClass(nodeDd, 'nodrop');
       this.tree.nodesBgContainer.selectAll('.node-bg__border').style('display', 'none');
     } else {
-      this.actionHandler.changeNodeClasses(event);
+      this.actionHandler.changeNodeClasses();
     }
     return true;
   }
 
-  public isInSameParentNode(activeHoveredNode: TreeNode, targetNode: TreeNode): boolean {
-    return activeHoveredNode.stateIdentifier == targetNode.stateIdentifier
-      || activeHoveredNode.parentsStateIdentifier[0] == targetNode.stateIdentifier
-      || targetNode.parentsStateIdentifier.includes(activeHoveredNode.stateIdentifier);
-  }
 
-  public dragEnd(event: D3DragEvent<any, any, any>): boolean {
-    let node = event.subject;
+  public onDrop(event: MouseEvent, draggingNode: TreeNode): boolean {
 
-    if (!this.startDrag || node.depth === 0) {
+    if (!this.dragStarted || draggingNode.depth === 0) {
       return false;
     }
 
-    let droppedNode = this.tree.hoveredNode;
     this.isDragged = false;
     this.actionHandler.removeNodeDdClass();
 
     if (
-      !(node.isOver
-        || (droppedNode && droppedNode.parentsStateIdentifier.indexOf(node.stateIdentifier) !== -1)
+      !(draggingNode.isOver
+        || this.actionHandler.isTheSameNode(this.tree.hoveredNode, draggingNode)
         || !this.tree.settings.canNodeDrag
         || !this.tree.isOverSvg
       )
     ) {
-      let options = this.actionHandler.changeNodePosition(droppedNode);
+      let options = this.actionHandler.changeNodePosition(this.tree.hoveredNode);
       let modalText = options.position === DraggablePositionEnum.INSIDE ? TYPO3.lang['mess.move_into'] : TYPO3.lang['mess.move_after'];
       modalText = modalText.replace('%s', options.node.name).replace('%s', options.target.name);
 

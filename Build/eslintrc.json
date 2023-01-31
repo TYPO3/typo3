@@ -54,7 +54,9 @@
     "no-caller": "error",
     "no-debugger": "error",
     "no-empty": "error",
-    "no-empty-function": "error",
+    "no-empty-function": ["error", {
+        "allow": ["constructors"]
+    }],
     "no-eval": "error",
     "no-fallthrough": "error",
     "no-new-wrappers": "error",

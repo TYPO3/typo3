@@ -14,8 +14,8 @@
 import {html, TemplateResult} from 'lit';
 import {renderNodes} from '@typo3/core/lit-helper';
 import * as d3drag from 'd3-drag';
-import * as d3selection from 'd3-selection';
-import {SvgTree, SvgTreeWrapper} from '../svg-tree';
+import {SvgTree} from '../svg-tree';
+import {TreeNode} from '@typo3/backend/tree/tree-node';
 
 /**
  * Contains basic types for allowing dragging + dropping in trees
@@ -46,13 +46,18 @@ export enum DraggablePositionEnum {
   AFTER = 'after'
 }
 
+export interface DragDropTargetPosition {
+  target: TreeNode,
+  position: DraggablePositionEnum
+}
+
 export interface DragDropHandler {
-  startDrag: boolean;
+  dragStarted: boolean;
   startPageX: number;
   startPageY: number;
-  dragStart(event: d3drag.D3DragEvent<any, any, any>): boolean;
-  dragDragged(event: d3drag.D3DragEvent<any, any, any>): boolean;
-  dragEnd(event: d3drag.D3DragEvent<any, any, any>): boolean;
+  onDragStart(event: MouseEvent, draggingNode: TreeNode|null): boolean;
+  onDragOver(event: MouseEvent, draggingNode: TreeNode|null): boolean;
+  onDrop(event: MouseEvent, draggingNode: TreeNode|null): boolean;
 }
 
 /**
@@ -85,9 +90,9 @@ export class DragDrop {
       .drag()
       .filter((event) => { return event instanceof MouseEvent; })
       .clickDistance(5)
-      .on('start', function(evt: d3drag.D3DragEvent<any, any, any>) { dragHandler.dragStart(evt) && DragDrop.setDragStart(); })
-      .on('drag', function(evt: d3drag.D3DragEvent<any, any, any>) { dragHandler.dragDragged(evt); })
-      .on('end', function(evt: d3drag.D3DragEvent<any, any, any>) { DragDrop.setDragEnd(); dragHandler.dragEnd(evt); })
+      .on('start', function(evt: d3drag.D3DragEvent<any, any, any>) { dragHandler.onDragStart(evt.sourceEvent, evt.subject) && DragDrop.setDragStart(); })
+      .on('drag', function(evt: d3drag.D3DragEvent<any, any, any>) { dragHandler.onDragOver(evt.sourceEvent, evt.subject); })
+      .on('end', function(evt: d3drag.D3DragEvent<any, any, any>) { DragDrop.setDragEnd(); dragHandler.onDrop(evt.sourceEvent, evt.subject); })
   }
 
   public createDraggable(icon: string, name: string)
@@ -98,15 +103,15 @@ export class DragDrop {
     this.tree.svg.node().querySelector('.nodes-wrapper')?.classList.add('nodes-wrapper--dragging');
   }
 
-  public updateDraggablePosition(evt: d3drag.D3DragEvent<any, any, any>): void {
+  public updateDraggablePosition(evt: MouseEvent): void {
     let left = 18;
     let top = 15;
-    if (evt.sourceEvent && evt.sourceEvent.pageX) {
-      left += evt.sourceEvent.pageX;
+    if (evt && evt.pageX) {
+      left += evt.pageX;
     }
 
-    if (evt.sourceEvent && evt.sourceEvent.pageY) {
-      top += evt.sourceEvent.pageY;
+    if (evt && evt.pageY) {
+      top += evt.pageY;
     }
     document.querySelectorAll('.node-dd').forEach((draggable: HTMLElement) => {
       draggable.style.top = top + 'px';
@@ -133,72 +138,6 @@ export class DragDrop {
       }
     } else {
       clearTimeout(this.timeout.time);
-    }
-  }
-
-  public changeNodeClasses(event: any): void {
-    const elementNodeBg = this.tree.svg.select('.node-over');
-    const svg = this.tree.svg.node() as SVGElement;
-    const nodeDd = svg.parentNode.querySelector('.node-dd') as HTMLElement;
-    type NodeBgBorderSelection = d3selection.Selection<SVGElement, any, SVGElement, any>
-    | d3selection.Selection<SVGElement, any, SvgTreeWrapper, any>;
-    let nodeBgBorder: NodeBgBorderSelection = this.tree.nodesBgContainer.selectAll('.node-bg__border');
-
-    if (elementNodeBg.size() && this.tree.isOverSvg) {
-      // line between nodes
-      if (nodeBgBorder.empty()) {
-        nodeBgBorder = this.tree.nodesBgContainer
-          .append('rect')
-          .attr('class', 'node-bg__border')
-          .attr('height', '1px')
-          .attr('width', '100%');
-      }
-
-      const coordinates = d3selection.pointer(event, elementNodeBg.node());
-      let y = coordinates[1];
-
-      if (y < 3) {
-        const attr = nodeBgBorder.attr('transform', 'translate(' + (this.tree.settings.indentWidth / 2 * -1) + ', ' + (this.tree.hoveredNode.y - (this.tree.settings.nodeHeight / 2)) + ')') as NodeBgBorderSelection;
-        attr.style('display', 'block');
-
-        if (this.tree.hoveredNode.depth === 0) {
-          this.addNodeDdClass(nodeDd, 'nodrop');
-        } else if (this.tree.hoveredNode.firstChild) {
-          this.addNodeDdClass(nodeDd, 'ok-above');
-        } else {
-          this.addNodeDdClass(nodeDd, 'ok-between');
-        }
-
-        this.tree.settings.nodeDragPosition = DraggablePositionEnum.BEFORE;
-      } else if (y > 17) {
-        nodeBgBorder.style('display', 'none');
-
-        if (this.tree.hoveredNode.expanded && this.tree.hoveredNode.hasChildren) {
-          this.addNodeDdClass(nodeDd, 'ok-append');
-          this.tree.settings.nodeDragPosition = DraggablePositionEnum.INSIDE;
-        } else {
-          const attr = nodeBgBorder.attr('transform', 'translate(' + (this.tree.settings.indentWidth / 2 * -1) + ', ' + (this.tree.hoveredNode.y + (this.tree.settings.nodeHeight / 2)) + ')') as NodeBgBorderSelection;
-          attr.style('display', 'block');
-
-          if (this.tree.hoveredNode.lastChild) {
-            this.addNodeDdClass(nodeDd, 'ok-below');
-          } else {
-            this.addNodeDdClass(nodeDd, 'ok-between');
-          }
-
-          this.tree.settings.nodeDragPosition = DraggablePositionEnum.AFTER;
-        }
-      } else {
-        nodeBgBorder.style('display', 'none');
-        this.addNodeDdClass(nodeDd, 'ok-append');
-        this.tree.settings.nodeDragPosition = DraggablePositionEnum.INSIDE;
-      }
-    } else {
-      this.tree.nodesBgContainer
-        .selectAll('.node-bg__border')
-        .style('display', 'none');
-
-      this.addNodeDdClass(nodeDd, 'nodrop');
     }
   }
 
@@ -231,15 +170,20 @@ export class DragDrop {
     this.tree.svg.node().parentNode.querySelector('.node-dd').remove();
   }
 
+  public isTheSameNode(targetNode: TreeNode|null, draggingNode: TreeNode): boolean
+  {
+    return targetNode && targetNode.parentsStateIdentifier.indexOf(draggingNode.stateIdentifier) !== -1;
+  }
+
   /**
    * Check if node is dragged at least @distance
    */
-  public isDragNodeDistanceMore(event: d3drag.D3DragEvent<any, any, any>, dragHandler: DragDropHandler): boolean {
-    return (dragHandler.startDrag ||
-      (((dragHandler.startPageX - this.minimalDistance) > event.sourceEvent.pageX) ||
-        ((dragHandler.startPageX + this.minimalDistance) < event.sourceEvent.pageX) ||
-        ((dragHandler.startPageY - this.minimalDistance) > event.sourceEvent.pageY) ||
-        ((dragHandler.startPageY + this.minimalDistance) < event.sourceEvent.pageY)));
+  public isDragNodeDistanceMore(event: MouseEvent, dragHandler: DragDropHandler): boolean {
+    return (dragHandler.dragStarted ||
+      (((dragHandler.startPageX - this.minimalDistance) > event.pageX) ||
+        ((dragHandler.startPageX + this.minimalDistance) < event.pageX) ||
+        ((dragHandler.startPageY - this.minimalDistance) > event.pageY) ||
+        ((dragHandler.startPageY + this.minimalDistance) < event.pageY)));
   }
 
   private applyNodeClassNames(target: HTMLElement|SVGElement, prefix: string, className: string): void {

@@ -1202,22 +1202,12 @@ export class SvgTree extends LitElement {
     this.appendTextElement(nodeEnter);
     return nodes.merge(nodeEnter);
   }
-  /**
-   * Updates variables used for visible nodes calculation
-   */
-  private updateScrollPosition(): void {
-    this.viewportHeight = this.getBoundingClientRect().height;
-    this.scrollBottom = this.scrollTop + this.viewportHeight + (this.viewportHeight / 2);
-    // wait for the tooltip to appear and disable tooltips when scrolling
-    setTimeout(() => {
-      Tooltip.hide(document.querySelector(<string>this.tooltipOptions.container).querySelectorAll('.bs-tooltip-end'));
-    }, <number>this.tooltipOptions.delay)
-  }
+
 
   /**
    * node background events if mouse enters a node
    */
-  private onMouseOverNode(node: TreeNode): void {
+  protected onMouseOverNode(node: TreeNode): void {
     node.isOver = true;
     this.hoveredNode = node;
 
@@ -1237,7 +1227,7 @@ export class SvgTree extends LitElement {
   /**
    * node background event if mouse leaves a node
    */
-  private onMouseOutOfNode(node: TreeNode): void {
+  protected onMouseOutOfNode(node: TreeNode): void {
     node.isOver = false;
     this.hoveredNode = null;
 
@@ -1250,6 +1240,18 @@ export class SvgTree extends LitElement {
     if (elementNodeAction.size()) {
       elementNodeAction.classed('node-action-over', false);
     }
+  }
+
+  /**
+   * Updates variables used for visible nodes calculation
+   */
+  private updateScrollPosition(): void {
+    this.viewportHeight = this.getBoundingClientRect().height;
+    this.scrollBottom = this.scrollTop + this.viewportHeight + (this.viewportHeight / 2);
+    // wait for the tooltip to appear and disable tooltips when scrolling
+    setTimeout(() => {
+      Tooltip.hide(document.querySelector(<string>this.tooltipOptions.container).querySelectorAll('.bs-tooltip-end'));
+    }, <number>this.tooltipOptions.delay)
   }
 
   /**
