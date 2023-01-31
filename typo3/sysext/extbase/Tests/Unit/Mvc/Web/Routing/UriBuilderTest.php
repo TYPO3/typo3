@@ -148,6 +148,7 @@ class UriBuilderTest extends UnitTestCase
     {
         $expectedArguments =['foo' => 'bar', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController'];
         $GLOBALS['TSFE'] = null;
+        $this->mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->uriBuilder->uriFor(null, ['foo' => 'bar', 'baz' => ['extbase' => 'fluid']], 'SomeController', 'SomeExtension', 'SomePlugin');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
     }
@@ -160,6 +161,7 @@ class UriBuilderTest extends UnitTestCase
         $arguments = ['foo' => 'bar', 'additionalParam' => 'additionalValue'];
         $controllerArguments = ['foo' => 'overruled', 'baz' => ['extbase' => 'fluid']];
         $expectedArguments = ['foo' => 'overruled', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController', 'additionalParam' => 'additionalValue'];
+        $this->mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->uriBuilder->setArguments($arguments);
         $this->uriBuilder->uriFor(null, $controllerArguments, 'SomeController', 'SomeExtension', 'SomePlugin');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
@@ -171,6 +173,7 @@ class UriBuilderTest extends UnitTestCase
     public function uriForOnlySetsActionArgumentIfSpecified(): void
     {
         $expectedArguments = ['controller' => 'SomeController'];
+        $this->mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->uriBuilder->uriFor(null, [], 'SomeController', 'SomeExtension', 'SomePlugin');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
     }
@@ -182,6 +185,7 @@ class UriBuilderTest extends UnitTestCase
     {
         $this->mockRequest->expects(self::once())->method('getControllerName')->willReturn('SomeControllerFromRequest');
         $expectedArguments = ['controller' => 'SomeControllerFromRequest'];
+        $this->mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->uriBuilder->uriFor(null, [], null, 'SomeExtension', 'SomePlugin');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
     }
@@ -193,6 +197,7 @@ class UriBuilderTest extends UnitTestCase
     {
         $this->mockRequest->expects(self::once())->method('getControllerExtensionName')->willReturn('SomeExtensionNameFromRequest');
         $expectedArguments = ['controller' => 'SomeController'];
+        $this->mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->uriBuilder->uriFor(null, [], 'SomeController', null, 'SomePlugin');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
     }
@@ -202,10 +207,10 @@ class UriBuilderTest extends UnitTestCase
      */
     public function uriForSetsPluginNameFromRequestIfPluginNameIsNotSetInFrontend(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest(new Uri('')))->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->willReturn('tx_someextension_somepluginnamefromrequest');
         $this->mockRequest->expects(self::once())->method('getPluginName')->willReturn('SomePluginNameFromRequest');
         $expectedArguments = ['tx_someextension_somepluginnamefromrequest' => ['controller' => 'SomeController']];
+        $this->mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $this->uriBuilder->uriFor(null, [], 'SomeController', 'SomeExtension');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
     }
@@ -216,6 +221,7 @@ class UriBuilderTest extends UnitTestCase
     {
         $this->mockRequest->expects(self::once())->method('getPluginName')->willReturn('SomePluginNameFromRequest');
         $expectedArguments = ['controller' => 'SomeController'];
+        $this->mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->uriBuilder->uriFor(null, [], 'SomeController', 'SomeExtension');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
     }

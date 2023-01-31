@@ -28,6 +28,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
@@ -180,7 +181,12 @@ class UriBuilder
             );
             $request = $GLOBALS['TYPO3_REQUEST'];
             if ($request instanceof ServerRequestInterface && !$request instanceof RequestInterface) {
-                $this->request = new Request($request);
+                // Usually, UriBuilder gets the request set via setRequest() from extbase abstract ActionController
+                // in processRequest(). Otherwise, if not in extbase context, this class fell back to non-extbase request
+                // which is set as $GLOBALS['TYPO3_REQUEST']. Since this method must return an extbase request, and the
+                // constructor of Request throws an exception if no ExtbaseRequestParameters attribute is given, we simply
+                // create an empty attribute, attach it and create the extbase request.
+                $this->request = new Request($request->withAttribute('extbase', new ExtbaseRequestParameters()));
             }
         }
         return $this->request;
@@ -509,8 +515,8 @@ class UriBuilder
         if ($extensionName === null) {
             $extensionName = $this->request->getControllerExtensionName();
         }
-        $isFrontend = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
+        $isFrontend = $this->getRequest() instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($this->getRequest())->isFrontend();
         if ($pluginName === null && $isFrontend) {
             $pluginName = $this->extensionService->getPluginNameByAction($extensionName, $controllerArguments['controller'], $controllerArguments['action'] ?? null);
         }
@@ -683,7 +689,8 @@ class UriBuilder
         if ($this->targetPageType !== 0) {
             $typolinkConfiguration['parameter'] .= ',' . $this->targetPageType;
         } elseif ($this->format !== '') {
-            $targetPageType = $this->extensionService->getTargetPageTypeByFormat($this->request->getControllerExtensionName(), $this->format);
+            $request = $this->getRequest();
+            $targetPageType = $this->extensionService->getTargetPageTypeByFormat($request->getControllerExtensionName(), $this->format);
             $typolinkConfiguration['parameter'] .= ',' . $targetPageType;
         }
         if (!empty($this->arguments)) {
