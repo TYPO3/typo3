@@ -104,6 +104,7 @@ final class TemplateCest
 
         $I->wantTo('change the TypoScript record within the TypoScript Object Browser');
         $I->selectOption('.t3-js-jumpMenuBox', 'Active TypoScript');
+        $I->click('#panel-tree-heading-setup');
         $I->waitForText('Setup');
         // find and open page in tree
         $I->waitForText('page = PAGE');
@@ -176,7 +177,7 @@ final class TemplateCest
     /**
      * @depends addANewSiteTemplate
      */
-    public function searchInTypoScriptObjectBrowser(ApplicationTester $I): void
+    public function searchInTypoScriptActive(ApplicationTester $I): void
     {
         $I->wantTo('Open the TypoScript Object Browser and search a keyword.');
         $I->switchToMainFrame();
@@ -186,8 +187,7 @@ final class TemplateCest
         $I->waitForText('Active TypoScript for record');
         $I->amGoingTo('type "styles" into the search field and submit.');
         $I->fillField('#searchValue', 'styles');
-        $I->click('button[type="submit"]');
         $I->waitForText('Setup');
-        $I->seeInSource('<strong class="text-danger">styles</strong>');
+        $I->seeInSource('<strong data-markjs="true" class="text-danger">styles</strong>');
     }
 }

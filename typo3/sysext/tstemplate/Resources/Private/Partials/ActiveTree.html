@@ -1,0 +1,80 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:for each="{tree.nextChild}" as="child">
+    <f:if condition="{displayComments} && {child.comments}">
+        <li class="list-tree-comment">
+            <f:for each="{child.comments}" as="comment" iteration="iterator">
+                <div><f:format.nl2br>{comment}</f:format.nl2br></div>
+            </f:for>
+        </li>
+    </f:if>
+    <f:if condition="{displayConstantSubstitutions} && {child.originalValueTokenStream}">
+        <li class="list-tree-constant-substitution">
+            <span class="diff-item-result diff-item-result-inline text-monospace text-normal p-0">
+                <f:format.raw>
+                    <f:variable name="trimmedValueTokenStream"><f:format.trim>{child.originalValueTokenStream}</f:format.trim></f:variable>
+                    <f:translate
+                        key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:tree.valueWithConstant"
+                        arguments="{
+                            0: '{backend:typoScript.fineDiff(from: trimmedValueTokenStream, to: child.value)}'
+                        }"
+                    />
+                </f:format.raw>
+            </span>
+        </li>
+    </f:if>
+    <li>
+        <span class="list-tree-group">
+            <f:if condition="{child.children}">
+                <a
+                    class="list-tree-control collapsed"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse-list-{child.identifier}"
+                    aria-expanded="false"
+                >
+                    <typo3-backend-icon identifier="actions-caret-right"></typo3-backend-icon>
+                    <typo3-backend-icon identifier="actions-caret-down"></typo3-backend-icon>
+                </a>
+            </f:if>
+
+            <span class="list-tree-label">
+                <f:be.link route="typoscript_active.edit" parameters="{id: pageUid, action:'edit', type: type, nodeIdentifier: child.identifier}">{child.name}</f:be.link>
+            </span>
+
+            <f:if condition="!{child.valueNull}">
+                =
+                <span class="list-tree-value">{child.value}</span>
+            </f:if>
+            <f:if condition="{child.referenceSourceStream}">
+                =< <span class="list-tree-value">{child.referenceSourceStream}</span>
+            </f:if>
+        </span>
+        <f:if condition="{child.children}">
+            <ul
+                class="list-tree text-monospace collapse"
+                data-persist-collapse-state="true"
+                data-persist-collapse-state-suffix="typoscript-active-{type}"
+                data-persist-collapse-state-not-if-search="true"
+                data-persist-collapse-state-if-state="shown"
+                id="collapse-list-{child.identifier}"
+            >
+                <f:render
+                    partial="ActiveTree"
+                    arguments="{
+                        type: type,
+                        tree: child,
+                        pageUid: pageUid,
+                        displayConstantSubstitutions: displayConstantSubstitutions,
+                        displayComments: displayComments
+                    }"
+                />
+            </ul>
+        </f:if>
+    </li>
+</f:for>
+
+</html>

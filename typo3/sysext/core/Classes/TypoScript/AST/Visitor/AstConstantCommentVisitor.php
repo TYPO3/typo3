@@ -486,12 +486,12 @@ final class AstConstantCommentVisitor implements AstVisitorInterface
 
     public function visit(RootNode $rootNode, NodeInterface $node, CurrentObjectPath $currentObjectPath, int $currentDepth): void
     {
-        // dummy to fulfill interface
+        // Implement interface
     }
 
     public function visitAfterChildren(RootNode $rootNode, NodeInterface $node, CurrentObjectPath $currentObjectPath, int $currentDepth): void
     {
-        // dummy to fulfill interface
+        // Implement interface
     }
 
     private function getLanguageService(): LanguageService

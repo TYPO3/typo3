@@ -104,23 +104,29 @@ export class CollapseStatePersister {
       if (id === '' || !this.shallRecoverState(element)) {
         return;
       }
-      const collapsible = BootstrapCollapse.getOrCreateInstance(element, {
-        toggle: false
-      });
       const storeExpandedState = (element.dataset.persistCollapseStateIfState ?? 'shown') === 'shown';
       const storeHiddenState = (element.dataset.persistCollapseStateIfState ?? 'hidden') === 'hidden';
+      const isExpanded = element.classList.contains('show');
       if (storeExpandedState === true) {
         if (currentStates[id] === true) {
-          collapsible.show();
+          if (!isExpanded) {
+            BootstrapCollapse.getOrCreateInstance(element, { toggle: false }).show();
+          }
         } else {
-          collapsible.hide();
+          if (isExpanded) {
+            BootstrapCollapse.getOrCreateInstance(element, { toggle: false }).hide();
+          }
         }
       }
       if (storeHiddenState === true) {
         if (currentStates[id] === false) {
-          collapsible.hide();
+          if (isExpanded) {
+            BootstrapCollapse.getOrCreateInstance(element, { toggle: false }).hide();
+          }
         } else {
-          collapsible.show();
+          if (!isExpanded) {
+            BootstrapCollapse.getOrCreateInstance(element, { toggle: false }).show();
+          }
         }
       }
     });

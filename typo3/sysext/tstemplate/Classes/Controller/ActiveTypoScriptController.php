@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Tstemplate\Controller;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -29,8 +31,8 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\TypoScript\AST\CurrentObjectPath\CurrentObjectPath;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
+use TYPO3\CMS\Core\TypoScript\AST\Visitor\AstNodeFinderVisitor;
 use TYPO3\CMS\Core\TypoScript\AST\Visitor\AstSortChildrenVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
@@ -42,49 +44,31 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConst
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Tstemplate\TypoScript\AST\Visitor\AstExpandStateVisitor;
-use TYPO3\CMS\Tstemplate\TypoScript\AST\Visitor\AstSearchVisitor;
 use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeCommentAwareAstBuilderVisitor;
 use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeConditionAggregatorVisitor;
 use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnforcerVisitor;
 
 /**
- * This class displays the submodule "TypoScript Object Browser" inside the Web > Template module
+ * The "TypoScript -> Active TypoScript" Backend module
  *
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
-final class ObjectBrowserController extends AbstractTemplateModuleController
+#[Controller]
+final class ActiveTypoScriptController extends AbstractTemplateModuleController
 {
     public function __construct(
+        private readonly ContainerInterface $container,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly FlashMessageService $flashMessageService,
         private readonly SysTemplateRepository $sysTemplateRepository,
-        private readonly IncludeTreeTraverser $treeTraverser,
-        private readonly ConditionVerdictAwareIncludeTreeTraverser $treeTraverserConditionVerdictAware,
         private readonly SysTemplateTreeBuilder $treeBuilder,
-        private readonly AstTraverser $astTraverser,
-        private readonly LosslessTokenizer $losslessTokenizer,
     ) {
-    }
-
-    /**
-     * Main public action dispatcher.
-     */
-    public function handleRequest(ServerRequestInterface $request): ResponseInterface
-    {
-        if (($request->getQueryParams()['action'] ?? '') === 'edit') {
-            return $this->editAction($request);
-        }
-        if (($request->getParsedBody()['action'] ?? '') === 'update') {
-            return $this->updateAction($request);
-        }
-        return $this->showAction($request);
     }
 
     /**
      * Default view renders options, constant and setup conditions, constant and setup tree.
      */
-    private function showAction(ServerRequestInterface $request): ResponseInterface
+    public function indexAction(ServerRequestInterface $request): ResponseInterface
     {
         $backendUser = $this->getBackendUser();
         $languageService = $this->getLanguageService();
@@ -144,120 +128,50 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
             $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
         }
         $displayComments = $moduleData->get('displayComments');
-        $searchValue = $moduleData->get('searchValue');
 
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
 
         // Build the constant include tree
         $site = $request->getAttribute('site');
-        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
+        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, new LosslessTokenizer(), $site);
         // Set enabled conditions in constant include tree
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, $parsedBody);
-        $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
+        $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
         $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($constantConditions, static fn ($condition) => $condition['active']), 'value'));
-        // @todo: $conditionEnforcerVisitor and $constantAstBuilderVisitor can be combined into one run?
-        $this->treeTraverser->resetVisitors();
-        $this->treeTraverser->addVisitor($conditionEnforcerVisitor);
-        $this->treeTraverser->traverse($constantIncludeTree);
-        // Build the constant AST
-        $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeCommentAwareAstBuilderVisitor::class);
-        $this->treeTraverserConditionVerdictAware->resetVisitors();
-        $this->treeTraverserConditionVerdictAware->addVisitor($constantAstBuilderVisitor);
-        $this->treeTraverserConditionVerdictAware->traverse($constantIncludeTree);
+        $treeTraverser = new ConditionVerdictAwareIncludeTreeTraverser();
+        $treeTraverser->addVisitor($conditionEnforcerVisitor);
+        $constantAstBuilderVisitor = $this->container->get(IncludeTreeCommentAwareAstBuilderVisitor::class);
+        $treeTraverser->addVisitor($constantAstBuilderVisitor);
+        $treeTraverser->traverse($constantIncludeTree);
         $constantAst = $constantAstBuilderVisitor->getAst();
-        // Constant expand & collapse handling with and without search value
-        if (($parsedBody['constantExpand'] ?? false) || ($parsedBody['constantCollapse'] ?? false) || empty($searchValue)) {
-            // Apply expanded & collapsed state to AST
-            $astExpandStateVisitor = GeneralUtility::makeInstance(AstExpandStateVisitor::class);
-            $astExpandStateVisitor->setToExpandPath($parsedBody['constantExpand'] ?? '');
-            $astExpandStateVisitor->setToCollapsePath($parsedBody['constantCollapse'] ?? '');
-            $astExpandStateVisitor->setStoredExpands($moduleData->get('constantExpandState'));
-            $this->astTraverser->resetVisitors();
-            $this->astTraverser->addVisitor($astExpandStateVisitor);
-            if ($sortAlphabetically) {
-                $this->astTraverser->addVisitor(GeneralUtility::makeInstance(AstSortChildrenVisitor::class));
-            }
-            $this->astTraverser->traverse($constantAst);
-            if (($parsedBody['constantExpand'] ?? false) || ($parsedBody['constantCollapse'] ?? false)) {
-                // Reset search word if expanding / collapsing after a search happened
-                $searchValue = '';
-                $moduleData->set('searchValue', $searchValue);
-                // Persist updated expand / collapsed state if needed
-                $updatedStoredExpands = $astExpandStateVisitor->getStoredExpands();
-                $moduleData->set('constantExpandState', $updatedStoredExpands);
-                $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
-            }
-        } else {
-            $astSearchVisitor = GeneralUtility::makeInstance(AstSearchVisitor::class);
-            $astSearchVisitor->setSearchValue($searchValue);
-            $this->astTraverser->resetVisitors();
-            $this->astTraverser->addVisitor($astSearchVisitor);
-            if ($sortAlphabetically) {
-                $this->astTraverser->addVisitor(GeneralUtility::makeInstance(AstSortChildrenVisitor::class));
-            }
-            $this->astTraverser->traverse($constantAst);
-            // Persist updated expand / collapsed state
-            $updatedStoredExpands = $astSearchVisitor->getStoredExpands();
-            $moduleData->set('constantExpandState', $updatedStoredExpands);
-            $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
+        $constantAst->setIdentifier('TypoScript constants');
+        if ($sortAlphabetically) {
+            $astTraverser = new AstTraverser();
+            $astTraverser->addVisitor(new AstSortChildrenVisitor());
+            $astTraverser->traverse($constantAst);
         }
 
         // Flatten constant AST. Needed for setup condition display and setup AST constant substitution.
         $flattenedConstants = $constantAst->flatten();
         // Build the setup include tree
-        $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->losslessTokenizer, $site);
+        $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, new LosslessTokenizer(), $site);
         // Set enabled conditions in setup include tree and let it handle constant substitutions in setup conditions.
         $setupConditions = $this->handleToggledSetupConditions($setupIncludeTree, $moduleData, $parsedBody, $flattenedConstants);
-        $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
+        $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
         $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($setupConditions, static fn ($condition) => $condition['active']), 'value'));
-        $this->treeTraverser->resetVisitors();
-        $this->treeTraverser->addVisitor($conditionEnforcerVisitor);
-        $this->treeTraverser->traverse($setupIncludeTree);
-        // Build the setup AST
-        $setupAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeCommentAwareAstBuilderVisitor::class);
+        $treeTraverser = new ConditionVerdictAwareIncludeTreeTraverser();
+        $treeTraverser->addVisitor($conditionEnforcerVisitor);
+        $setupAstBuilderVisitor = $this->container->get(IncludeTreeCommentAwareAstBuilderVisitor::class);
         $setupAstBuilderVisitor->setFlatConstants($flattenedConstants);
-        $this->treeTraverserConditionVerdictAware->resetVisitors();
-        $this->treeTraverserConditionVerdictAware->addVisitor($setupAstBuilderVisitor);
-        $this->treeTraverserConditionVerdictAware->traverse($setupIncludeTree);
+        $treeTraverser->addVisitor($setupAstBuilderVisitor);
+        $treeTraverser->traverse($setupIncludeTree);
+        // Build the setup AST
         $setupAst = $setupAstBuilderVisitor->getAst();
-        // Setup expand & collapse handling with and without search value
-        if (($parsedBody['setupExpand'] ?? false) || ($parsedBody['setupCollapse'] ?? false) || empty($searchValue)) {
-            // Apply expanded & collapsed state to AST
-            $astExpandStateVisitor = GeneralUtility::makeInstance(AstExpandStateVisitor::class);
-            $astExpandStateVisitor->setToExpandPath($parsedBody['setupExpand'] ?? '');
-            $astExpandStateVisitor->setToCollapsePath($parsedBody['setupCollapse'] ?? '');
-            $astExpandStateVisitor->setStoredExpands((array)$moduleData->get('setupExpandState'));
-            $this->astTraverser->resetVisitors();
-            $this->astTraverser->addVisitor($astExpandStateVisitor);
-            if ($sortAlphabetically) {
-                $this->astTraverser->addVisitor(GeneralUtility::makeInstance(AstSortChildrenVisitor::class));
-            }
-            $this->astTraverser->traverse($setupAst);
-            if (($parsedBody['setupExpand'] ?? false) || ($parsedBody['setupCollapse'] ?? false)) {
-                // Reset search word if expanding / collapsing after a search happened
-                $searchValue = '';
-                $moduleData->set('searchValue', $searchValue);
-                // Persist updated expand / collapsed state if needed
-                $updatedStoredExpands = $astExpandStateVisitor->getStoredExpands();
-                $moduleData->set('setupExpandState', $updatedStoredExpands);
-                $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
-            }
-        } else {
-            $astSearchVisitor = GeneralUtility::makeInstance(AstSearchVisitor::class);
-            $astSearchVisitor->setSearchValue($searchValue);
-            if ($displayConstantSubstitutions) {
-                $astSearchVisitor->enableSearchInConstants();
-            }
-            $this->astTraverser->resetVisitors();
-            $this->astTraverser->addVisitor($astSearchVisitor);
-            if ($sortAlphabetically) {
-                $this->astTraverser->addVisitor(GeneralUtility::makeInstance(AstSortChildrenVisitor::class));
-            }
-            $this->astTraverser->traverse($setupAst);
-            // Persist updated expand / collapsed state
-            $updatedStoredExpands = $astSearchVisitor->getStoredExpands();
-            $moduleData->set('setupExpandState', $updatedStoredExpands);
-            $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
+        $setupAst->setIdentifier('TypoScript setup');
+        if ($sortAlphabetically) {
+            $astTraverser = new AstTraverser();
+            $astTraverser->addVisitor(new AstSortChildrenVisitor());
+            $astTraverser->traverse($setupAst);
         }
 
         $view = $this->moduleTemplateFactory->create($request);
@@ -271,27 +185,24 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
             'selectedTemplateUid' => $selectedTemplateUid,
             'pageUid' => $pageUid,
             'allTemplatesOnPage' => $allTemplatesOnPage,
-            'searchValue' => $searchValue,
             'sortAlphabetically' => $sortAlphabetically,
             'displayConstantSubstitutions' => $displayConstantSubstitutions,
             'displayComments' => $displayComments,
-            'constantCurrentObjectPath' => new CurrentObjectPath(),
             'constantConditions' => $constantConditions,
             'constantConditionsActiveCount' => count(array_filter($constantConditions, static fn ($condition) => $condition['active'])),
             'constantAst' => $constantAst,
-            'setupCurrentObjectPath' => new CurrentObjectPath(),
             'setupConditions' => $setupConditions,
             'setupConditionsActiveCount' => count(array_filter($setupConditions, static fn ($condition) => $condition['active'])),
             'setupAst' => $setupAst,
         ]);
 
-        return $view->renderResponse('ObjectBrowserMain');
+        return $view->renderResponse('ActiveMain');
     }
 
     /**
      * Edit a single property. Linked from "show" view when clicking a property.
      */
-    private function editAction(ServerRequestInterface $request): ResponseInterface
+    public function editAction(ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
         $queryParams = $request->getQueryParams();
@@ -299,9 +210,9 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
         $moduleData = $request->getAttribute('moduleData');
         $pageUid = (int)($queryParams['id'] ?? 0);
         $type = $queryParams['type'] ?? '';
-        $currentObjectPath = $queryParams['currentObjectPath'] ?? '';
+        $nodeIdentifier = $queryParams['nodeIdentifier'] ?? '';
 
-        if (empty($pageUid) || !in_array($type, ['constant', 'setup']) || empty($currentObjectPath)) {
+        if (empty($pageUid) || !in_array($type, ['constant', 'setup']) || empty($nodeIdentifier)) {
             throw new \RuntimeException('Required action argument missing or invalid', 1658562276);
         }
 
@@ -338,40 +249,50 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
 
         // Get current value of to-edit object path
         // Build the constant include tree
-        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
+        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, new LosslessTokenizer(), $site);
         // Set enabled conditions in constant include tree
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, null);
-        $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
+        $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
         $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($constantConditions, static fn ($condition) => $condition['active']), 'value'));
-        $this->treeTraverser->resetVisitors();
-        $this->treeTraverser->addVisitor($conditionEnforcerVisitor);
-        $this->treeTraverser->traverse($constantIncludeTree);
-        // Build the constant AST
-        $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
-        $this->treeTraverserConditionVerdictAware->resetVisitors();
-        $this->treeTraverserConditionVerdictAware->addVisitor($constantAstBuilderVisitor);
-        $this->treeTraverserConditionVerdictAware->traverse($constantIncludeTree);
-        $flattenedConstants = $constantAstBuilderVisitor->getAst()->flatten();
+        $treeTraverser = new ConditionVerdictAwareIncludeTreeTraverser();
+        $treeTraverser->addVisitor($conditionEnforcerVisitor);
+        $constantAstBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
+        $treeTraverser->addVisitor($constantAstBuilderVisitor);
+        $treeTraverser->traverse($constantIncludeTree);
+
+        $astNodeFinderVisitor = new AstNodeFinderVisitor();
+        $astNodeFinderVisitor->setNodeIdentifier($nodeIdentifier);
         if ($type === 'constant') {
-            $currentValue = $flattenedConstants[$currentObjectPath] ?? '';
+            $constantAst = $constantAstBuilderVisitor->getAst();
+            $constantAst->setIdentifier('TypoScript constants');
+            $astTraverser = new AstTraverser();
+            $astTraverser->addVisitor($astNodeFinderVisitor);
+            $astTraverser->traverse($constantAst);
         } else {
             // Build the setup include tree
-            $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->losslessTokenizer, $site);
+            $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, new LosslessTokenizer(), $site);
+            $flattenedConstants = $constantAstBuilderVisitor->getAst()->flatten();
             // Set enabled conditions in setup include tree
             $setupConditions = $this->handleToggledSetupConditions($setupIncludeTree, $moduleData, null, $flattenedConstants);
-            $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
+            $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
             $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($setupConditions, static fn ($condition) => $condition['active']), 'value'));
-            $this->treeTraverser->resetVisitors();
-            $this->treeTraverser->addVisitor($conditionEnforcerVisitor);
-            $this->treeTraverser->traverse($setupIncludeTree);
-            // Build the setup AST
-            $setupAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
+            $treeTraverser = new ConditionVerdictAwareIncludeTreeTraverser();
+            $treeTraverser->addVisitor($conditionEnforcerVisitor);
+            $setupAstBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
             $setupAstBuilderVisitor->setFlatConstants($flattenedConstants);
-            $this->treeTraverserConditionVerdictAware->resetVisitors();
-            $this->treeTraverserConditionVerdictAware->addVisitor($setupAstBuilderVisitor);
-            $this->treeTraverserConditionVerdictAware->traverse($setupIncludeTree);
-            $flattenedSetup = $setupAstBuilderVisitor->getAst()->flatten();
-            $currentValue = $flattenedSetup[$currentObjectPath] ?? '';
+            $treeTraverser->addVisitor($setupAstBuilderVisitor);
+            $treeTraverser->traverse($setupIncludeTree);
+            $setupAst = $setupAstBuilderVisitor->getAst();
+            $setupAst->setIdentifier('TypoScript setup');
+            $astTraverser = new AstTraverser();
+            $astTraverser->addVisitor($astNodeFinderVisitor);
+            $astTraverser->traverse($setupAst);
+        }
+        $foundNode = $astNodeFinderVisitor->getFoundNode();
+        $foundNodeCurrentObjectPath = $astNodeFinderVisitor->getFoundNodeCurrentObjectPath();
+
+        if ($foundNode === null || $foundNodeCurrentObjectPath === null) {
+            throw new \RuntimeException('Node with identifier ' . $nodeIdentifier . ' to edit not found', 1675241994);
         }
 
         $view = $this->moduleTemplateFactory->create($request);
@@ -384,11 +305,11 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
             'hasTemplate' => $hasTemplate,
             'templateTitle' => $templateTitle,
             'type' => $type,
-            'currentObjectPath' => $currentObjectPath,
-            'currentValue' => $currentValue,
+            'currentObjectPath' => $foundNodeCurrentObjectPath->getPathAsString(),
+            'currentValue' => $foundNode->getValue(),
         ]);
 
-        return $view->renderResponse('ObjectBrowserEdit');
+        return $view->renderResponse('ActiveEdit');
     }
 
     /**
@@ -396,7 +317,7 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
      * property or adding a child in 'edit' view. Update either 'constants' or 'config' field
      * using DataHandler, add a flash message and redirect to default "show" action.
      */
-    private function updateAction(ServerRequestInterface $request): ResponseInterface
+    public function updateAction(ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
         $moduleData = $request->getAttribute('moduleData');
@@ -448,8 +369,8 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
                 if (empty($childName) || preg_replace('/[^a-zA-Z0-9_\.]*/', '', $childName) != $childName) {
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:updateAction.noSpaces'),
-                        $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:updateAction.lineNotAdded'),
+                        $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:updateAction.noSpaces'),
+                        $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:updateAction.lineNotAdded'),
                         ContextualFeedbackSeverity::WARNING,
                         true
                     );
@@ -480,14 +401,14 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 $newLine,
-                $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:updateAction.lineAdded'),
+                $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:updateAction.lineAdded'),
                 ContextualFeedbackSeverity::OK,
                 true
             );
             $flashMessageQueue->enqueue($flashMessage);
         }
 
-        return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_objectbrowser', ['id' => $pageUid]));
+        return new RedirectResponse($this->uriBuilder->buildUriFromRoute('typoscript_active', ['id' => $pageUid]));
     }
 
     /**
@@ -497,10 +418,10 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
      */
     private function handleToggledConstantConditions(RootInclude $constantTree, ModuleData $moduleData, ?array $parsedBody): array
     {
-        $conditionAggregatorVisitor = GeneralUtility::makeInstance(IncludeTreeConditionAggregatorVisitor::class);
-        $this->treeTraverser->resetVisitors();
-        $this->treeTraverser->addVisitor($conditionAggregatorVisitor);
-        $this->treeTraverser->traverse($constantTree);
+        $conditionAggregatorVisitor = new IncludeTreeConditionAggregatorVisitor();
+        $treeTraverser = new IncludeTreeTraverser();
+        $treeTraverser->addVisitor($conditionAggregatorVisitor);
+        $treeTraverser->traverse($constantTree);
         $constantConditions = $conditionAggregatorVisitor->getConditions();
         $conditionsFromPost = $parsedBody['constantConditions'] ?? [];
         $conditionsFromModuleData = array_flip((array)$moduleData->get('constantConditions'));
@@ -538,13 +459,13 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
      */
     private function handleToggledSetupConditions(RootInclude $setupTree, ModuleData $moduleData, ?array $parsedBody, array $flattenedConstants): array
     {
-        $this->treeTraverser->resetVisitors();
         $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
         $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flattenedConstants);
-        $this->treeTraverser->addVisitor($setupConditionConstantSubstitutionVisitor);
-        $conditionAggregatorVisitor = GeneralUtility::makeInstance(IncludeTreeConditionAggregatorVisitor::class);
-        $this->treeTraverser->addVisitor($conditionAggregatorVisitor);
-        $this->treeTraverser->traverse($setupTree);
+        $treeTraverser = new IncludeTreeTraverser();
+        $treeTraverser->addVisitor($setupConditionConstantSubstitutionVisitor);
+        $conditionAggregatorVisitor = new IncludeTreeConditionAggregatorVisitor();
+        $treeTraverser->addVisitor($conditionAggregatorVisitor);
+        $treeTraverser->traverse($setupTree);
         $setupConditions = $conditionAggregatorVisitor->getConditions();
         $conditionsFromPost = $parsedBody['setupConditions'] ?? [];
         $conditionsFromModuleData = array_flip((array)$moduleData->get('setupConditions'));
@@ -576,12 +497,29 @@ final class ObjectBrowserController extends AbstractTemplateModuleController
         return $typoscriptConditions;
     }
 
+    private function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageUid): void
+    {
+        $languageService = $this->getLanguageService();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
+        $shortcutTitle = sprintf(
+            '%s: %s [%d]',
+            $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:submodule.title'),
+            BackendUtility::getRecordTitle('pages', $pageInfo),
+            $pageUid
+        );
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setRouteIdentifier($moduleIdentifier)
+            ->setDisplayName($shortcutTitle)
+            ->setArguments(['id' => $pageUid]);
+        $buttonBar->addButton($shortcutButton);
+    }
+
     private function addBackButtonToDocHeader(ModuleTemplate $view, int $pageUid): void
     {
         $languageService = $this->getLanguageService();
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $backButton = $buttonBar->makeLinkButton()
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('web_typoscript_objectbrowser', ['id' => $pageUid]))
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('typoscript_active', ['id' => $pageUid]))
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
             ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
         $buttonBar->addButton($backButton);

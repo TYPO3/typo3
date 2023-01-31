@@ -11,9 +11,12 @@
         includeJavaScriptModules="{
             0: '@typo3/backend/context-menu.js',
             1: '@typo3/backend/element/immediate-action-element.js',
-            2: '@typo3/backend/tooltip.js',
-            3: '@typo3/backend/utility/collapse-state-persister.js',
-            4: '@typo3/tstemplate/typo-script-object-browser.js'
+            3: '@typo3/backend/element/icon-element.js',
+            4: '@typo3/backend/utility/collapse-state-persister.js',
+            5: '@typo3/backend/utility/collapse-state-search.js'
+        }"
+        addJsInlineLabels="{
+            'collapse-state-search.numberOfSearchMatches': 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:panel.header.numberOfSearchMatches'
         }"
     />
 
@@ -25,30 +28,29 @@
         <f:if condition="{templateTitle}">
             <f:then>
                 <f:translate
-                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:submodule.titleWithRecord"
+                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:submodule.titleWithRecord"
                     arguments="{
                         0: '{templateTitle}'
                     }"
                 />
             </f:then>
             <f:else>
-                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:submodule.title" />
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:submodule.title" />
             </f:else>
         </f:if>
     </h1>
     <div>
-        <p class="lead"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:submodule.description" /></p>
+        <p class="lead"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:submodule.description" /></p>
     </div>
 
     <f:comment><!-- General options --></f:comment>
     <f:if condition="{constantAst.children} || {setupAst.children}">
         <f:render
-            partial="ObjectBrowserOptions"
+            partial="ActiveOptions"
             arguments="{
                 allTemplatesOnPage: allTemplatesOnPage,
                 pageUid: pageUid,
                 selectedTemplateUid: selectedTemplateUid,
-                searchValue: searchValue,
                 displayConstantSubstitutions: displayConstantSubstitutions,
                 displayComments: displayComments,
                 sortAlphabetically: sortAlphabetically
@@ -58,10 +60,10 @@
 
     <f:comment><!-- Constants: Conditions and tree --></f:comment>
     <f:if condition="{constantAst.children}">
-        <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:sectionHeadline.constants" /></h2>
+        <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:sectionHeadline.constants" /></h2>
         <div class="panel-group">
             <f:render
-                partial="ObjectBrowserConditions"
+                partial="ActiveConditions"
                 arguments="{
                     pageUid: pageUid,
                     type: 'constant',
@@ -70,12 +72,11 @@
                 }"
             />
             <f:render
-                partial="ObjectBrowserTreePanel"
+                partial="ActiveTreePanel"
                 arguments="{
                     type: 'constant',
                     tree: constantAst,
                     pageUid: pageUid,
-                    currentObjectPath: constantCurrentObjectPath,
                     displayComments: displayComments
                 }"
             />
@@ -84,10 +85,10 @@
 
     <f:comment><!-- Setup: Conditions and tree --></f:comment>
     <f:if condition="{setupAst.children}">
-        <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:sectionHeadline.setup" /></h2>
+        <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:sectionHeadline.setup" /></h2>
         <div class="panel-group">
             <f:render
-                partial="ObjectBrowserConditions"
+                partial="ActiveConditions"
                 arguments="{
                     pageUid: pageUid,
                     type: 'setup',
@@ -97,12 +98,11 @@
                 }"
             />
             <f:render
-                partial="ObjectBrowserTreePanel"
+                partial="ActiveTreePanel"
                 arguments="{
                     type: 'setup',
                     tree: setupAst,
                     pageUid: pageUid,
-                    currentObjectPath: setupCurrentObjectPath,
                     displayConstantSubstitutions: displayConstantSubstitutions,
                     displayComments: displayComments
                 }"
@@ -112,7 +112,7 @@
 
     <f:if condition="!{constantAst.children} && !{setupAst.children}">
         <f:be.infobox
-            message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:infobox.message.noTypoScriptFound')}"
+            message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:infobox.message.noTypoScriptFound')}"
             state="-1"
         />
     </f:if>

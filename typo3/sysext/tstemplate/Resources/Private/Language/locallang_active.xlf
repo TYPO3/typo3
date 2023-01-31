@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate">
+	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_active.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
 			<trans-unit id="submodule.title" resname="submodule.title">
@@ -39,6 +39,9 @@
 			<trans-unit id="panel.header.configuration" resname="panel.header.configuration">
 				<source>Configuration</source>
 			</trans-unit>
+			<trans-unit id="panel.header.numberOfSearchMatches" resname="panel.header.numberOfSearchMatches">
+				<source>%s search match(es)</source>
+			</trans-unit>
 			<trans-unit id="panel.info.conditionActiveCount.multiple" resname="panel.info.conditionActiveCount.multiple">
 				<source>%s active conditions</source>
 			</trans-unit>
@@ -50,9 +53,6 @@
 			</trans-unit>
 			<trans-unit id="tree.valueWithConstant" resname="tree.valueWithConstant">
 				<source>Constant usage: %s</source>
-			</trans-unit>
-			<trans-unit id="tree.comment" resname="tree.comment">
-				<source>Comment:</source>
 			</trans-unit>
 
 			<!-- Edit action -->

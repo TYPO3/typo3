@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -40,8 +41,10 @@ use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeCommentAwareA
 
 /**
  * TypoScript Constant editor
+ *
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 class ConstantEditorController extends AbstractTemplateModuleController
 {
     public function __construct(
@@ -279,7 +282,6 @@ class ConstantEditorController extends AbstractTemplateModuleController
         $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
         $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
         $this->addPreviewButtonToDocHeader($view, $pageUid, (int)$pageRecord['doktype']);
-        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
         $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         $view->assignMultiple([
             'pageUid' => $pageUid,
@@ -467,5 +469,22 @@ class ConstantEditorController extends AbstractTemplateModuleController
             ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
             ->setShowLabelText(true);
         $buttonBar->addButton($saveButton);
+    }
+
+    private function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageUid): void
+    {
+        $languageService = $this->getLanguageService();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
+        $shortcutTitle = sprintf(
+            '%s: %s [%d]',
+            $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:submodule.title'),
+            BackendUtility::getRecordTitle('pages', $pageInfo),
+            $pageUid
+        );
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setRouteIdentifier($moduleIdentifier)
+            ->setDisplayName($shortcutTitle)
+            ->setArguments(['id' => $pageUid]);
+        $buttonBar->addButton($shortcutButton);
     }
 }

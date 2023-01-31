@@ -41,11 +41,10 @@ class CollapseStateSearch {
 
   constructor() {
     DocumentService.ready().then(() => {
-      const treeContainers: NodeListOf<HTMLElement>|null = document.querySelectorAll('.t3js-collapse-states-search-tree');
-      if (treeContainers === null) {
+      this.treeContainers = document.querySelectorAll('.t3js-collapse-states-search-tree');
+      if (this.treeContainers.length === 0) {
         return;
       }
-      this.treeContainers = treeContainers;
       this.numberOfSearchMatchesContainer = document.querySelectorAll('.t3js-collapse-states-search-numberOfSearchMatches');
       this.searchField = document.querySelector(this.searchValueSelector);
       this.searchForm = this.searchField.closest('form');
@@ -126,11 +125,15 @@ class CollapseStateSearch {
 
     const allNodes = Array.from(treeContainer.querySelectorAll('.collapse')) as HTMLElement[];
     for (let node of allNodes) {
-      const collapsible = BootstrapCollapse.getOrCreateInstance(node, { toggle: false });
+      const isExpanded = node.classList.contains('show');
       if (matchingCollapsibleIds.has(node.id)) {
-        collapsible.show();
+        if (!isExpanded) {
+          BootstrapCollapse.getOrCreateInstance(node, { toggle: false }).show();
+        }
       } else {
-        collapsible.hide();
+        if (isExpanded) {
+          BootstrapCollapse.getOrCreateInstance(node, { toggle: false }).hide();
+        }
       }
     }
 

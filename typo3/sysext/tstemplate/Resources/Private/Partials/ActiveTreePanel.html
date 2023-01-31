@@ -1,0 +1,57 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row align-items-center justify-content-between">
+            <div class="col align-middle">
+                <h3 class="panel-title" id="typoscript-active-{type}-ast-heading">
+                    <a
+                        href="#"
+                        class="collapsed"
+                        id="panel-tree-heading-{type}"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#typoscript-active-{type}-ast-body"
+                        aria-expanded="false"
+                        aria-controls="typoscript-active-{type}-ast-body"
+                    >
+                        <span class="caret"></span>
+                        <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:panel.header.configuration"/></strong>
+                    </a>
+                </h3>
+            </div>
+            <div class="col text-right">
+                <span class="badge badge-success hidden t3js-collapse-states-search-numberOfSearchMatches"></span>
+            </div>
+        </div>
+    </div>
+    <div
+        id="typoscript-active-{type}-ast-body"
+        class="panel-collapse collapse"
+        data-persist-collapse-state="true"
+        data-persist-collapse-state-if-state="shown"
+        aria-labelledby="typoscript-active-{type}-ast-heading"
+        role="tabpanel"
+    >
+        <div class="panel-body  t3js-collapse-states-search-tree">
+            <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
+                <ul class="list-tree text-monospace">
+                    <f:render
+                        partial="ActiveTree"
+                        arguments="{
+                            type: type,
+                            tree: tree,
+                            pageUid: pageUid,
+                            displayConstantSubstitutions: displayConstantSubstitutions,
+                            displayComments: displayComments
+                        }"
+                    />
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+
+</html>

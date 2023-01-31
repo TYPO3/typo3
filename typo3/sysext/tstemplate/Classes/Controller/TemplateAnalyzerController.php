@@ -21,7 +21,9 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Module\ModuleData;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -48,6 +50,7 @@ use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeSourceAggrega
  *
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Controller]
 final class TemplateAnalyzerController extends AbstractTemplateModuleController
 {
     public function __construct(
@@ -113,7 +116,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         // Build the constant include tree
         $site = $request->getAttribute('site');
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
-        $constantIncludeTree->setIdentifier('tstemplate constant includes');
+        $constantIncludeTree->setIdentifier('constants tstemplate includes');
         // Set enabled conditions in constant include tree
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, $parsedBody);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
@@ -131,7 +134,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
 
         // Build the setup include tree
         $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->losslessTokenizer, $site);
-        $setupIncludeTree->setIdentifier('tstemplate setup includes');
+        $setupIncludeTree->setIdentifier('setup tstemplate includes');
         // Set enabled conditions in setup include tree and let it handle constant substitutions in setup conditions.
         $setupConditions = $this->handleToggledSetupConditions($setupIncludeTree, $moduleData, $parsedBody, $flattenedConstants);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
@@ -181,6 +184,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
         $site = $request->getAttribute('site');
         $includeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite($type, $sysTemplateRows, $this->losslessTokenizer, $site);
+        $includeTree->setIdentifier($type . ' tstemplate includes');
 
         $nodeFinderVisitor = GeneralUtility::makeInstance(IncludeTreeNodeFinderVisitor::class);
         $nodeFinderVisitor->setNodeIdentifier($includeIdentifier);
@@ -222,6 +226,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
         $site = $request->getAttribute('site');
         $includeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite($type, $sysTemplateRows, $this->losslessTokenizer, $site);
+        $includeTree->setIdentifier($type . ' tstemplate includes');
 
         $sourceAggregatorVisitor = GeneralUtility::makeInstance(IncludeTreeSourceAggregatorVisitor::class);
         $sourceAggregatorVisitor->setStartNodeIdentifier($includeIdentifier);
@@ -320,5 +325,22 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
             $this->getBackendUser()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
         }
         return $typoscriptConditions;
+    }
+
+    private function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageUid): void
+    {
+        $languageService = $this->getLanguageService();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
+        $shortcutTitle = sprintf(
+            '%s: %s [%d]',
+            $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:submodule.title'),
+            BackendUtility::getRecordTitle('pages', $pageInfo),
+            $pageUid
+        );
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setRouteIdentifier($moduleIdentifier)
+            ->setDisplayName($shortcutTitle)
+            ->setArguments(['id' => $pageUid]);
+        $buttonBar->addButton($shortcutButton);
     }
 }

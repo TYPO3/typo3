@@ -22,15 +22,37 @@ use TYPO3\CMS\Core\TypoScript\AST\Node\NodeInterface;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 
 /**
- * Sort all children alphabetically. Used in backend Object Browser.
+ * Find a single node in tree identified by node identifier.
  *
- * @internal: Internal AST structure.
+ * @internal This is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
-final class AstSortChildrenVisitor implements AstVisitorInterface
+final class AstNodeFinderVisitor implements AstVisitorInterface
 {
+    private string $nodeIdentifier;
+    private ?NodeInterface $foundNode = null;
+    private ?CurrentObjectPath $foundNodeCurrentObjectPath = null;
+
+    public function setNodeIdentifier(string $nodeIdentifier)
+    {
+        $this->nodeIdentifier = $nodeIdentifier;
+    }
+
+    public function getFoundNode(): ?NodeInterface
+    {
+        return $this->foundNode;
+    }
+
+    public function getFoundNodeCurrentObjectPath(): ?CurrentObjectPath
+    {
+        return $this->foundNodeCurrentObjectPath;
+    }
+
     public function visitBeforeChildren(RootNode $rootNode, NodeInterface $node, CurrentObjectPath $currentObjectPath, int $currentDepth): void
     {
-        $node->sortChildren();
+        if ($node->getIdentifier() === $this->nodeIdentifier) {
+            $this->foundNode = $node;
+            $this->foundNodeCurrentObjectPath = clone $currentObjectPath;
+        }
     }
 
     public function visit(RootNode $rootNode, NodeInterface $node, CurrentObjectPath $currentObjectPath, int $currentDepth): void

@@ -148,23 +148,6 @@ abstract class AbstractTemplateModuleController
         }
     }
 
-    protected function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageId): void
-    {
-        $languageService = $this->getLanguageService();
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $shortcutTitle = sprintf(
-            '%s: %s [%d]',
-            $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tablabel'),
-            BackendUtility::getRecordTitle('pages', $pageInfo),
-            $pageId
-        );
-        $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier($moduleIdentifier)
-            ->setDisplayName($shortcutTitle)
-            ->setArguments(['id' => $pageId]);
-        $buttonBar->addButton($shortcutButton);
-    }
-
     /**
      * Get the closest page row that has a template up in rootline
      */

@@ -18,7 +18,7 @@
 			<trans-unit id="submodules.option.infoModify" resname="submodules.option.infoModify">
 				<source>Edit TypoScript Record</source>
 			</trans-unit>
-			<trans-unit id="submodules.option.objectBrowser" resname="submodules.option.objectBrowser">
+			<trans-unit id="submodules.option.active" resname="submodules.option.active">
 				<source>Active TypoScript</source>
 			</trans-unit>
 			<trans-unit id="submodules.option.templateAnalyzer" resname="submodules.option.templateAnalyzer">

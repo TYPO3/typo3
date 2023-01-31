@@ -90,21 +90,6 @@ interface NodeInterface
     public function getOriginalValueTokenStream(): ?TokenStreamInterface;
 
     /**
-     * Helper methods mostly for backend object browser to declare a node expanded or not,
-     * and to query expand / collapsed state.
-     */
-    public function setExpanded(bool $expanded): void;
-    public function isExpanded(): bool;
-
-    /**
-     * Helper methods mostly for backend object browser to declare a node matched a search value.
-     */
-    public function setSearchMatchInName(): void;
-    public function hasSearchMatchInName(): bool;
-    public function setSearchMatchInValue(): void;
-    public function hasSearchMatchInValue(): bool;
-
-    /**
      * Helper methods to attach TypoScript tokens to a node.
      * This is used in ext:tstemplate "Constant Editor" and "Object Browser" and handled
      * by CommentAwareAstBuilder.

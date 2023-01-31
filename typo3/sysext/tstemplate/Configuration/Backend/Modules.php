@@ -1,8 +1,8 @@
 <?php
 
+use TYPO3\CMS\Tstemplate\Controller\ActiveTypoScriptController;
 use TYPO3\CMS\Tstemplate\Controller\ConstantEditorController;
 use TYPO3\CMS\Tstemplate\Controller\InfoModifyController;
-use TYPO3\CMS\Tstemplate\Controller\ObjectBrowserController;
 use TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerController;
 use TYPO3\CMS\Tstemplate\Controller\TemplateRecordsOverviewController;
 
@@ -72,29 +72,32 @@ return [
             'selectedTemplatePerPage' => [],
         ],
     ],
-    'web_typoscript_objectbrowser' => [
+    'typoscript_active' => [
         'parent' => 'web_ts',
         'access' => 'admin',
-        'path' => '/module/web/typoscript/object-browser',
+        'path' => '/module/typoscript/active',
         'iconIdentifier' => 'module-tstemplate',
         'labels' => [
-            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.objectBrowser',
+            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.active',
         ],
         'routes' => [
             '_default' => [
-                'target' => ObjectBrowserController::class . '::handleRequest',
+                'target' => ActiveTypoScriptController::class . '::indexAction',
+            ],
+            'edit' => [
+                'target' => ActiveTypoScriptController::class . '::editAction',
+            ],
+            'update' => [
+                'target' => ActiveTypoScriptController::class . '::updateAction',
             ],
         ],
         'moduleData' => [
             'sortAlphabetically' => true,
             'displayConstantSubstitutions' => true,
             'displayComments' => true,
-            'searchValue' => '',
             'selectedTemplatePerPage' => [],
             'constantConditions' => [],
             'setupConditions' => [],
-            'constantExpandState' => [],
-            'setupExpandState' => [],
         ],
     ],
     'web_typoscript_analyzer' => [

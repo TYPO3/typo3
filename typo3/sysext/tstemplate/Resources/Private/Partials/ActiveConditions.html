@@ -11,14 +11,14 @@
                 <f:then>
                     <div class="row align-items-center justify-content-between">
                         <div class="col align-middle">
-                            <h3 class="panel-title" id="object-browser-{type}-conditions-heading">
+                            <h3 class="panel-title" id="typoscript-active-{type}-conditions-heading">
                                 <a
                                     href="#"
                                     class="collapsed"
                                     data-bs-toggle="collapse"
-                                    data-bs-target="#object-browser-{type}-conditions-body"
+                                    data-bs-target="#typoscript-active-{type}-conditions-body"
                                     aria-expanded="false"
-                                    aria-controls="object-browser-{type}-conditions-body"
+                                    aria-controls="typoscript-active-{type}-conditions-body"
                                 >
                                     <span class="caret"></span>
                                     <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:panel.header.conditions"/></strong>
@@ -28,7 +28,7 @@
                         <div class="col text-right">
                             <span class="badge badge-info">
                                 <f:translate
-                                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:panel.info.conditionActiveCount.{f:if(condition: '{conditionActiveCount} > 1', then:'multiple', else: 'single')}"
+                                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:panel.info.conditionActiveCount.{f:if(condition: '{conditionActiveCount} > 1', then:'multiple', else: 'single')}"
                                     arguments="{0: conditionActiveCount}"
                                 />
                             </span>
@@ -36,14 +36,14 @@
                     </div>
                 </f:then>
                 <f:else>
-                    <h3 class="panel-title" id="object-browser-{type}-conditions-heading">
+                    <h3 class="panel-title" id="typoscript-active-{type}-conditions-heading">
                         <a
                             href="#"
                             class="collapsed"
                             data-bs-toggle="collapse"
-                            data-bs-target="#object-browser-{type}-conditions-body"
+                            data-bs-target="#typoscript-active-{type}-conditions-body"
                             aria-expanded="false"
-                            aria-controls="object-browser-{type}-conditions-body"
+                            aria-controls="typoscript-active-{type}-conditions-body"
                         >
                             <span class="caret"></span>
                             <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:panel.header.conditions"/></strong>
@@ -54,13 +54,13 @@
         </div>
         <div
             class="panel-collapse collapse"
-            id="object-browser-{type}-conditions-body"
+            id="typoscript-active-{type}-conditions-body"
             data-persist-collapse-state="true"
             role="tabpanel"
-            aria-labelledby="object-browser-{type}-conditions-heading"
+            aria-labelledby="typoscript-active-{type}-conditions-heading"
         >
             <div class="panel-body">
-                <form action="{f:be.uri(route: 'web_typoscript_objectbrowser', parameters: '{id: pageUid}')}" method="post">
+                <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
                     <div class="row">
                         <div class="col-12">
                             <f:for each="{conditions}" as="condition">
@@ -73,7 +73,7 @@
                                                     <span class="diff-item-result diff-item-result-inline text-monospace p-0">
                                                         <f:format.raw>
                                                             <f:translate
-                                                                key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:panel.info.conditionWithConstant"
+                                                                key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:panel.info.conditionWithConstant"
                                                                 arguments="{
                                                                     0: '{backend:typoScript.fineDiff(from: condition.originalValue, to: condition.value)}'
                                                                 }"

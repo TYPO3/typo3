@@ -36,10 +36,7 @@ abstract class AbstractNode implements NodeInterface
      * @var array<string, ChildNodeInterface>
      */
     protected array $children = [];
-    private bool $expanded = false;
     private ?TokenStreamInterface $originalValueTokenStream = null;
-    private bool $searchMatchInName = false;
-    private bool $searchMatchInValue = false;
     private array $comments = [];
 
     /**
@@ -171,36 +168,6 @@ abstract class AbstractNode implements NodeInterface
     public function getOriginalValueTokenStream(): ?TokenStreamInterface
     {
         return $this->originalValueTokenStream;
-    }
-
-    public function setExpanded(bool $expanded): void
-    {
-        $this->expanded = $expanded;
-    }
-
-    public function isExpanded(): bool
-    {
-        return $this->expanded;
-    }
-
-    public function setSearchMatchInName(): void
-    {
-        $this->searchMatchInName = true;
-    }
-
-    public function hasSearchMatchInName(): bool
-    {
-        return $this->searchMatchInName;
-    }
-
-    public function setSearchMatchInValue(): void
-    {
-        $this->searchMatchInValue = true;
-    }
-
-    public function hasSearchMatchInValue(): bool
-    {
-        return $this->searchMatchInValue;
     }
 
     public function addComment(TokenStreamInterface $tokenStream): void

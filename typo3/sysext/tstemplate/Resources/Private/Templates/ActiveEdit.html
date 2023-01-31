@@ -19,14 +19,14 @@
         <f:if condition="{templateTitle}">
             <f:then>
                 <f:translate
-                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.submodule.titleWithTemplate"
+                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.submodule.titleWithTemplate"
                     arguments="{
                         0: '{templateTitle}'
                     }"
                 />
             </f:then>
             <f:else>
-                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.submodule.title" />
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.submodule.title" />
             </f:else>
         </f:if>
     </h1>
@@ -35,20 +35,19 @@
     <f:if condition="!{hasTemplate}">
         <f:then>
             <f:be.infobox
-                title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.infobox.title.noTypoScriptTemplateOnCurrentPage')}"
-                message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.infobox.message.noTypoScriptTemplateOnCurrentPage')}"
+                title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.infobox.title.noTypoScriptTemplateOnCurrentPage')}"
+                message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.infobox.message.noTypoScriptTemplateOnCurrentPage')}"
                 state="-1"
             />
         </f:then>
         <f:else>
             <f:comment><!-- Edit property --></f:comment>
-            <form action="{f:be.uri(route: 'web_typoscript_objectbrowser', parameters: '{id: pageUid}')}" method="post">
-                <input type="hidden" name="action" value="update" />
+            <form action="{f:be.uri(route: 'typoscript_active.update', parameters: '{id: pageUid}')}" method="post">
                 <input type="hidden" name="currentObjectPath" value="{currentObjectPath}" />
                 <input type="hidden" name="pageUid" value="{pageUid}" />
                 <input type="hidden" name="type" value="{type}" />
 
-                <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.editProperty.headline" /></h2>
+                <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.editProperty.headline" /></h2>
                 <div class="row row-cols-auto align-items-end g-1">
                     <div class="col mb-4">
                         <label class="visually-hidden">{currentObjectPath} =</label>
@@ -61,13 +60,13 @@
                         <input
                             type="submit"
                             name="updateValue"
-                            value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.editProperty.btn')}"
+                            value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.editProperty.btn')}"
                             class="btn btn-primary"
                         />
                     </div>
                 </div>
 
-                <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.addProperty.headline" /></h2>
+                <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.addProperty.headline" /></h2>
                 <div class="row row-cols-auto align-items-end g-1 mb-8">
                     <div class="col mb-4">
                         <label class="visually-hidden">{currentObjectPath}.</label>
@@ -86,16 +85,16 @@
                         <input
                             type="submit"
                             name="addChild"
-                            value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.addProperty.btn')}"
+                            value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.addProperty.btn')}"
                             class="btn btn-primary"
                         />
                     </div>
                 </div>
 
-                <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.clearObject.headline" /></h2>
+                <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.clearObject.headline" /></h2>
                 <p>
                     <f:translate
-                        key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.clearObject.infotextWithProperty"
+                        key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.clearObject.infotextWithProperty"
                         arguments="{
                             0: '{currentObjectPath}'
                         }"
@@ -104,7 +103,7 @@
                 <input
                     type="submit"
                     name="clear"
-                    value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editAction.clearObject.btn')}"
+                    value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:editAction.clearObject.btn')}"
                     class="btn btn-primary"
                 />
             </form>
