@@ -9,8 +9,8 @@
 			<trans-unit id="overview.site" resname="overview.site">
 				<source>Site</source>
 			</trans-unit>
-			<trans-unit id="overview.configuration" resname="overview.configuration">
-				<source>Configuration Folder</source>
+			<trans-unit id="overview.siteIdentifier" resname="overview.siteIdentifier">
+				<source>Site identifier</source>
 			</trans-unit>
 			<trans-unit id="overview.noPages.title" resname="overview.noPages.title">
 				<source>No pages found!</source>
@@ -27,11 +27,8 @@
 			<trans-unit id="overview.deleteSiteConfiguration" resname="overview.deleteSiteConfiguration">
 				<source>Delete site configuration</source>
 			</trans-unit>
-			<trans-unit id="overview.fullUrlPrefix" resname="overview.fullUrlPrefix">
-				<source>Full URL prefix</source>
-			</trans-unit>
 			<trans-unit id="overview.baseUrl" resname="overview.baseUrl">
-				<source>Base URLs</source>
+				<source>Base URL</source>
 			</trans-unit>
 			<trans-unit id="overview.unassignedSites.title" resname="overview.unassignedSites.title">
 				<source>Unassigned site configurations</source>
