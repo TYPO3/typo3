@@ -68,10 +68,6 @@ export class DragDrop {
   protected tree: SvgTree;
   private timeout: any = {};
   private minimalDistance: number = 10;
-  /**
-   * This keeps an info, if the draggable / container has the "nodrop" CSS class, if so, this is false
-   */
-  private allowedDropFromLastUpdate: boolean = false;
 
   public static setDragStart(): void {
     document.querySelectorAll('iframe').forEach((htmlElement: HTMLIFrameElement) => htmlElement.style.pointerEvents = 'none' );
@@ -180,21 +176,12 @@ export class DragDrop {
     if (nodesWrap) {
       this.applyNodeClassNames(nodesWrap, 'nodes-wrapper--', className);
     }
-    this.allowedDropFromLastUpdate = className !== 'nodrop';
   }
 
   // Clean up after a finished drag+drop move
   public cleanupDrop(): void {
     const nodesWrap = this.tree.svg.node().querySelector('.nodes-wrapper');
-    // remove any classes from wrapper
-    [
-      'nodes-wrapper--nodrop',
-      'nodes-wrapper--ok-append',
-      'nodes-wrapper--ok-below',
-      'nodes-wrapper--ok-between',
-      'nodes-wrapper--ok-above',
-      'nodes-wrapper--dragging'
-    ].forEach((className: string) => nodesWrap.classList.remove(className) );
+    nodesWrap.classList.remove('nodes-wrapper--nodrop', 'nodes-wrapper--ok-append', 'nodes-wrapper--ok-below', 'nodes-wrapper--ok-between', 'nodes-wrapper--ok-above', 'nodes-wrapper--dragging');
 
     this.tree.nodesBgContainer.node().querySelector('.node-bg.node-bg--dragging')?.classList.remove('node-bg--dragging');
     this.hidePositioningLine();
@@ -254,15 +241,17 @@ export class DragDrop {
         ((dragHandler.startPageY + this.minimalDistance) < event.pageY)));
   }
 
-  protected _isDropAllowed(): boolean {
-    return this.allowedDropFromLastUpdate;
-  }
-
   private applyNodeClassNames(target: HTMLElement|SVGElement, prefix: string, className: string): void {
-    const classNames = ['nodrop', 'ok-append', 'ok-below', 'ok-between', 'ok-above'];
+    const classNames = ['nodrop', 'ok-append', 'ok-below', 'ok-between', 'ok-above']
+      .filter((classNameToRemove: string) => classNameToRemove !== className)
+      .map((classNameToRemove: string) => prefix + classNameToRemove);
+
     // remove any existing classes
-    classNames.forEach((className: string) => target.classList.remove(prefix + className));
-    // apply new class
-    target.classList.add(prefix + className);
+    target.classList.remove(...classNames);
+
+    if (!target.classList.contains(prefix + className)) {
+      // apply new class
+      target.classList.add(prefix + className);
+    }
   }
 }

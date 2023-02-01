@@ -319,10 +319,6 @@ class FileStorageTreeActions extends DragDrop {
     if (this.isTheSameNode(hoveredNode, draggingNode)) {
       return false;
     }
-    // Current "icon" is "nodrop" -> there has got to be a reason
-    if (!this._isDropAllowed()) {
-      return false;
-    }
     if (!this.tree.isOverSvg) {
       return false;
     }

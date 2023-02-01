@@ -689,7 +689,7 @@ class PageTreeDragDrop extends DragDrop {
     if (this.isTheSameNode(hoveredNode, draggingNode)) {
       return false;
     }
-    return this._isDropAllowed();
+    return true;
   }
 }
 
@@ -976,8 +976,9 @@ class PageTreeNodeDragHandler implements DragDropHandler {
       this.dragDrop.hidePositioningLine();
     } else if (this.dropZoneDelete && this.dropZoneDelete.node().dataset.open !== 'false') {
       this.animateDropZone('hide', this.dropZoneDelete.node(), draggingNode);
+    } else {
+      this.dragDrop.updateStateOfHoveredNode(event);
     }
-    this.dragDrop.updateStateOfHoveredNode(event);
     return true;
   }
 
