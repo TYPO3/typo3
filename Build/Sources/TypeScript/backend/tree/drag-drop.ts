@@ -68,6 +68,10 @@ export class DragDrop {
   protected tree: SvgTree;
   private timeout: any = {};
   private minimalDistance: number = 10;
+  /**
+   * This keeps an info, if the draggable / container has the "nodrop" CSS class, if so, this is false
+   */
+  private allowedDropFromLastUpdate: boolean = false;
 
   public static setDragStart(): void {
     document.querySelectorAll('iframe').forEach((htmlElement: HTMLIFrameElement) => htmlElement.style.pointerEvents = 'none' );
@@ -95,12 +99,35 @@ export class DragDrop {
       .on('end', function(evt: d3drag.D3DragEvent<any, any, any>) { DragDrop.setDragEnd(); dragHandler.onDrop(evt.sourceEvent, evt.subject); })
   }
 
+  /**
+   * Create the "shadowed" element around the SVG tree as HTML element.
+   */
   public createDraggable(icon: string, name: string)
   {
     let svg = this.tree.svg.node() as SVGElement;
     const draggable = renderNodes(DraggableTemplate.get(icon, name));
     svg.after(...draggable);
     this.tree.svg.node().querySelector('.nodes-wrapper')?.classList.add('nodes-wrapper--dragging');
+  }
+
+  /**
+   * Create the "shadowed" element around the SVG tree as HTML from an existing node.
+   * This is especially helpful to also mark the existing node as "node-bg-dragging" currently.
+   */
+  public createDraggableFromExistingNode(node: TreeNode)
+  {
+    this.createDraggable(this.tree.getIconId(node), node.name);
+    const nodeBg = this.tree.svg.node().querySelector('.node-bg[data-state-id="' + node.stateIdentifier + '"]');
+    nodeBg?.classList.add('node-bg--dragging');
+  }
+
+  /**
+   * Returns the HTML element (if exists) that is used as "shadowed", from "createDraggable".
+   */
+  public getDraggable(): HTMLElement|null
+  {
+    let draggable = this.tree.svg.node().parentNode.querySelector('.node-dd') as HTMLElement;
+    return draggable || null;
   }
 
   public updateDraggablePosition(evt: MouseEvent): void {
@@ -141,19 +168,23 @@ export class DragDrop {
     }
   }
 
-  public addNodeDdClass(nodeDd: HTMLElement|null, className: string): void {
+  /**
+   * Add a CSS Class to the nodes-wrapper container, and to a possible draggable, if it exists.
+   */
+  public addNodeDdClass(className: string): void {
     const nodesWrap = this.tree.svg.node().querySelector('.nodes-wrapper') as SVGElement;
-    if (nodeDd) {
-      this.applyNodeClassNames(nodeDd, 'node-dd--', className);
+    const draggableItem = this.getDraggable();
+    if (draggableItem) {
+      this.applyNodeClassNames(draggableItem, 'node-dd--', className);
     }
     if (nodesWrap) {
       this.applyNodeClassNames(nodesWrap, 'nodes-wrapper--', className);
     }
-    this.tree.settings.canNodeDrag = className !== 'nodrop';
+    this.allowedDropFromLastUpdate = className !== 'nodrop';
   }
 
   // Clean up after a finished drag+drop move
-  public removeNodeDdClass(): void {
+  public cleanupDrop(): void {
     const nodesWrap = this.tree.svg.node().querySelector('.nodes-wrapper');
     // remove any classes from wrapper
     [
@@ -166,8 +197,45 @@ export class DragDrop {
     ].forEach((className: string) => nodesWrap.classList.remove(className) );
 
     this.tree.nodesBgContainer.node().querySelector('.node-bg.node-bg--dragging')?.classList.remove('node-bg--dragging');
-    this.tree.nodesBgContainer.selectAll('.node-bg__border').style('display', 'none');
+    this.hidePositioningLine();
     this.tree.svg.node().parentNode.querySelector('.node-dd').remove();
+  }
+
+  /**
+   * Creates positioning line is used when drag/drop can be used to add something between two nodes,
+   * if it does not exist yet.
+   */
+  public createPositioningLine(): void
+  {
+    let nodeBgBorder = this.tree.nodesBgContainer.selectAll('.node-bg__border');
+    if (nodeBgBorder.empty()) {
+      this.tree.nodesBgContainer
+        .append('rect')
+        .attr('class', 'node-bg__border')
+        .attr('height', '1px')
+        .attr('width', '100%');
+    }
+  }
+
+  /**
+   * Update the positioning line and also makes sure it is shown again
+   */
+  public updatePositioningLine(hoveredNode: TreeNode): void
+  {
+    this.tree.nodesBgContainer
+      .selectAll('.node-bg__border')
+      .attr('transform', 'translate(' + (this.tree.settings.indentWidth / 2 * -1) + ', ' + (hoveredNode.y - (this.tree.settings.nodeHeight / 2)) + ')')
+      .style('display', 'block');
+  }
+
+  /**
+   * Hide the positioning line (e.g. when a node is about to be dropped INSIDE the hoveredNode)
+   */
+  public hidePositioningLine(): void
+  {
+    this.tree.nodesBgContainer
+      .selectAll('.node-bg__border')
+      .style('display', 'none');
   }
 
   public isTheSameNode(targetNode: TreeNode|null, draggingNode: TreeNode): boolean
@@ -184,6 +252,10 @@ export class DragDrop {
         ((dragHandler.startPageX + this.minimalDistance) < event.pageX) ||
         ((dragHandler.startPageY - this.minimalDistance) > event.pageY) ||
         ((dragHandler.startPageY + this.minimalDistance) < event.pageY)));
+  }
+
+  protected _isDropAllowed(): boolean {
+    return this.allowedDropFromLastUpdate;
   }
 
   private applyNodeClassNames(target: HTMLElement|SVGElement, prefix: string, className: string): void {

@@ -210,20 +210,22 @@ class FileStorageTreeActions extends DragDrop {
   /**
    * returns true if the node that is currently active has the EXACT same parent node.
    * Typical use case: You cannot move a folder to the parent folder.
-   * @param activeHoveredNode
-   * @param targetNode
    */
-  public isInSameParentNode(activeHoveredNode: TreeNode, targetNode: TreeNode): boolean {
-    return activeHoveredNode.stateIdentifier == targetNode.stateIdentifier
-      || activeHoveredNode.parentsStateIdentifier[0] == targetNode.stateIdentifier
-      || targetNode.parentsStateIdentifier.includes(activeHoveredNode.stateIdentifier);
+  public isInSameParentNode(draggingNode: TreeNode, targetNode: TreeNode): boolean {
+    return draggingNode.stateIdentifier == targetNode.stateIdentifier
+      || draggingNode.parentsStateIdentifier[0] == targetNode.stateIdentifier
+      || targetNode.parentsStateIdentifier.includes(draggingNode.stateIdentifier);
   }
 
-  public changeNodePosition(droppedNode: TreeNode): null|NodePositionOptions {
+  /**
+   * Prepares all the details, which node is dropped on which other, if it is inside or before
+   * the target node (= droppedNode).
+   */
+  public getDropCommandDetails(droppedNode: TreeNode, draggingNode: TreeNode): null|NodePositionOptions {
     const nodes = this.tree.nodes;
-    const identifier = this.tree.settings.draggingNode.identifier;
+    const identifier = draggingNode.identifier;
     let position = this.tree.settings.nodeDragPosition;
-    let target = droppedNode || this.tree.settings.draggingNode;
+    let target = droppedNode || draggingNode;
 
     if (identifier === target.identifier) {
       return null;
@@ -240,7 +242,7 @@ class FileStorageTreeActions extends DragDrop {
     }
 
     return {
-      node: this.tree.settings.draggingNode,
+      node: draggingNode,
       identifier: identifier, // dragged node id
       target: target, // hovered node
       position: position // before, in, after
@@ -248,7 +250,7 @@ class FileStorageTreeActions extends DragDrop {
   }
 
   /**
-   * Returns position and target node
+   * Returns position and target node where it should be added
    */
   public setNodePositionAndTarget(index: number): null|DragDropTargetPosition {
     const nodes = this.tree.nodes;
@@ -277,18 +279,54 @@ class FileStorageTreeActions extends DragDrop {
     return null;
   }
 
-  public changeNodeClasses(): void {
-    const elementNodeBg = this.tree.svg.select('.node-over');
-    const svg = this.tree.svg.node() as SVGElement;
-    const nodeDd = svg.parentNode.querySelector('.node-dd') as HTMLElement;
-
-    if (elementNodeBg.size() && this.tree.isOverSvg) {
-      this.tree.nodesBgContainer
-        .selectAll('.node-bg__border')
-        .style('display', 'none');
-      this.addNodeDdClass(nodeDd, 'ok-append');
-      this.tree.settings.nodeDragPosition = DraggablePositionEnum.INSIDE;
+  /**
+   * Checks various conditions and updates the dragging element (CSS class) and the drag position
+   * in order to show if a node can be dropped.
+   *
+   * @param draggingNode
+   */
+  public updateStateOfHoveredNode(draggingNode: TreeNode|null): void {
+    this.tree.settings.nodeDragPosition = false;
+    // Mouse is not on a node, deny
+    if (!this.tree.hoveredNode) {
+      this.addNodeDdClass('nodrop');
+      return;
     }
+    // Mouse is outside SVG, deny
+    if (!this.tree.isOverSvg) {
+      this.addNodeDdClass('nodrop');
+      return;
+    }
+    // we are hovering over the currently dragged node, deny
+    if (draggingNode.isOver || this.isTheSameNode(this.tree.hoveredNode, draggingNode)) {
+      this.addNodeDdClass('nodrop');
+      return;
+    }
+    // File storage specific, does not make sense to move into the same folder (we have it in the same folder)
+    if (this.isInSameParentNode(draggingNode, this.tree.hoveredNode)) {
+      this.addNodeDdClass('nodrop');
+      return;
+    }
+    // All good
+    this.addNodeDdClass('ok-append');
+    this.tree.settings.nodeDragPosition = DraggablePositionEnum.INSIDE;
+  }
+
+  public isDropAllowed(hoveredNode: TreeNode, draggingNode: TreeNode): boolean {
+    if (draggingNode.isOver) {
+      return false;
+    }
+    if (this.isTheSameNode(hoveredNode, draggingNode)) {
+      return false;
+    }
+    // Current "icon" is "nodrop" -> there has got to be a reason
+    if (!this._isDropAllowed()) {
+      return false;
+    }
+    if (!this.tree.isOverSvg) {
+      return false;
+    }
+    return true;
   }
 }
 
@@ -300,7 +338,6 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
   public dragStarted: boolean = false;
   public startPageX: number = 0;
   public startPageY: number = 0;
-  private isDragged: boolean = false;
   private tree: FileStorageTree;
   private actionHandler: FileStorageTreeActions;
 
@@ -330,58 +367,27 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
       return false;
     }
 
-    this.tree.settings.draggingNode = draggingNode;
-
-    let nodeBg = this.tree.svg.node().querySelector('.node-bg[data-state-id="' + draggingNode.stateIdentifier + '"]');
-    let nodeDd = this.tree.svg.node().parentNode.querySelector('.node-dd') as HTMLElement;
-
     // Create the draggable = the shadowed element which follows the cursor
-    if (!this.isDragged) {
-      this.isDragged = true;
-      this.actionHandler.createDraggable(this.tree.getIconId(draggingNode), draggingNode.name);
-      nodeBg?.classList.add('node-bg--dragging');
+    if (!this.actionHandler.getDraggable()) {
+      this.actionHandler.createDraggableFromExistingNode(draggingNode);
     }
 
-    this.tree.settings.nodeDragPosition = false;
     this.actionHandler.openNodeTimeout();
     this.actionHandler.updateDraggablePosition(event);
 
-    if (draggingNode.isOver
-      || this.actionHandler.isTheSameNode(this.tree.hoveredNode, draggingNode)
-      || !this.tree.isOverSvg) {
-      this.actionHandler.addNodeDdClass(nodeDd, 'nodrop');
-    }
-    if (!this.tree.isOverSvg) {
-      this.tree.nodesBgContainer.selectAll('.node-bg__border').style('display', 'none');
-    }
-
-    if (!this.tree.hoveredNode || this.actionHandler.isInSameParentNode(draggingNode, this.tree.hoveredNode)) {
-      this.actionHandler.addNodeDdClass(nodeDd, 'nodrop');
-      this.tree.nodesBgContainer.selectAll('.node-bg__border').style('display', 'none');
-    } else {
-      this.actionHandler.changeNodeClasses();
-    }
+    // Calculate if the draggingNode is allowed to be dropped, and update the currently hovered node / bg for this
+    this.actionHandler.updateStateOfHoveredNode(draggingNode);
     return true;
   }
 
-
   public onDrop(event: MouseEvent, draggingNode: TreeNode): boolean {
-
     if (!this.dragStarted || draggingNode.depth === 0) {
       return false;
     }
 
-    this.isDragged = false;
-    this.actionHandler.removeNodeDdClass();
-
-    if (
-      !(draggingNode.isOver
-        || this.actionHandler.isTheSameNode(this.tree.hoveredNode, draggingNode)
-        || !this.tree.settings.canNodeDrag
-        || !this.tree.isOverSvg
-      )
-    ) {
-      let options = this.actionHandler.changeNodePosition(this.tree.hoveredNode);
+    this.actionHandler.cleanupDrop();
+    if (this.actionHandler.isDropAllowed(this.tree.hoveredNode, draggingNode)) {
+      let options = this.actionHandler.getDropCommandDetails(this.tree.hoveredNode, draggingNode);
       let modalText = options.position === DraggablePositionEnum.INSIDE ? TYPO3.lang['mess.move_into'] : TYPO3.lang['mess.move_after'];
       modalText = modalText.replace('%s', options.node.name).replace('%s', options.target.name);
 
@@ -421,7 +427,7 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
   }
 
   /**
-   * Used when something a folder was drag+dropped.
+   * When something a folder was drag+dropped, this will send an AJAX request to the server.
    */
   private sendChangeCommand(command: string, data: any): void {
     let params = {
