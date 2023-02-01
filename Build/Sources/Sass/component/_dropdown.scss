@@ -181,3 +181,20 @@ h4.dropdown-headline {
         display: none !important;
     }
 }
+
+.dropdown-row-icon {
+    padding: calc(var(--typo3-list-item-padding-y) / 2) calc(var(--typo3-list-item-padding-x) / 2);
+    padding-left: var(--typo3-list-item-padding-x);
+    padding-right: 0;
+
+    .icon {
+        vertical-align: unset;
+    }
+}
+
+.dropdown-row-message {
+    padding: calc(var(--typo3-list-item-padding-y) / 2) calc(var(--typo3-list-item-padding-x) / 2);
+    padding-right: var(--typo3-list-item-padding-x);
+
+    @include link-reset();
+}

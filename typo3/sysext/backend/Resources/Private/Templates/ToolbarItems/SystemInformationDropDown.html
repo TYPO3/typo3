@@ -30,7 +30,7 @@
                     <f:translate key="{info.title}" default="{info.title}"/>
                     <f:if condition="{info.titleAddition}"> ({info.titleAddition -> f:format.htmlspecialchars()})</f:if>
                 </th>
-                <td class="{f:if(condition: info.status, then: 'text-{info.status}')}">
+                <td>
                     {info.value}
                 </td>
             </tr>
@@ -43,28 +43,50 @@
 <f:if condition="{messages -> f:count()} > 0">
     <f:then>
         <f:for each="{messages}" as="message">
-            <f:if condition="{message.module}">
-                <f:then>
-                    <p id="systeminformation_{message.module}"
-                        class="dropdown-item-text t3js-systeminformation-module typo3-module-menu-item submodule mod-{message.module}"
-                        data-modulename="{message.module}" data-moduleparams="{message.params}">
-                        <span class="text-{message.status}"><f:format.raw>{message.text}</f:format.raw></span>
-                    </p>
-                </f:then>
-                <f:else>
-                    <p class="dropdown-item-text text-{message.status}">
-                        <f:format.raw>{message.text}</f:format.raw>
-                    </p>
-                </f:else>
-            </f:if>
+            <div class="d-flex align-items-start dropdown-row">
+                <div class="dropdown-row-icon">
+                    <span class="text-{message.status}">
+                        <core:icon identifier="actions-exclamation-circle-alt" />
+                    </span>
+                </div>
+                <div class="dropdown-row-message">
+                    <f:if condition="{message.module}">
+                        <f:then>
+                            <p
+                                id="systeminformation_{message.module}"
+                                class="mb-0 t3js-systeminformation-module typo3-module-menu-item submodule mod-{message.module}"
+                                data-modulename="{message.module}"
+                                data-moduleparams="{message.params}"
+                            >
+                                <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.systemStatus.header" /></strong><br>
+                                <f:format.raw>{message.text}</f:format.raw>
+                            </p>
+                        </f:then>
+                        <f:else>
+                            <p>
+                                <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.systemStatus.header" /></strong><br>
+                                <f:format.raw>{message.text}</f:format.raw>
+                            </p>
+                        </f:else>
+                    </f:if>
+                </div>
+            </div>
         </f:for>
     </f:then>
     <f:else>
-        <p class="dropdown-item-text text-success">
-            <f:format.nl2br>
-                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.allgood"/>
-            </f:format.nl2br>
-        </p>
+        <div class="d-flex align-items-start dropdown-row">
+            <div class="dropdown-row-icon">
+                <span class="text-success">
+                    <core:icon identifier="actions-check-circle-alt" />
+                </span>
+            </div>
+            <div class="dropdown-row-message">
+                <p>
+                    <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.systemStatus.header" /></strong><br>
+                    <f:format.nl2br><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.allgood" /></f:format.nl2br>
+                </p>
+            </div>
+        </div>
     </f:else>
 </f:if>
 </html>
