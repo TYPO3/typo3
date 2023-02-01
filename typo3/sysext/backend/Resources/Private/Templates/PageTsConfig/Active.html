@@ -111,11 +111,8 @@
         <f:if condition="{siteSettingsAst}">
             <div class="col">
                 <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
+                    <input type="hidden" name="displayConstantSubstitutions" value="0" />
                     <div class="form-check form-switch">
-                        <label class="form-check-label" for="displayConstantSubstitutions">
-                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.displayConstantSubstitutions" />
-                        </label>
-                        <input type="hidden" name="displayConstantSubstitutions" value="0" />
                         <input
                             type="checkbox"
                             class="form-check-input"
@@ -127,17 +124,17 @@
                             data-value-selector="input[name='displayConstantSubstitutions']"
                             {f:if(condition: displayConstantSubstitutions, then: 'checked="checked"')}
                         />
+                        <label class="form-check-label" for="displayConstantSubstitutions">
+                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.displayConstantSubstitutions" />
+                        </label>
                     </div>
                 </form>
             </div>
         </f:if>
         <div class="col">
             <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
+                <input type="hidden" name="displayComments" value="0" />
                 <div class="form-check form-switch">
-                    <label class="form-check-label" for="displayComments">
-                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.displayComments" />
-                    </label>
-                    <input type="hidden" name="displayComments" value="0" />
                     <input
                         type="checkbox"
                         class="form-check-input"
@@ -149,16 +146,16 @@
                         data-value-selector="input[name='displayComments']"
                         {f:if(condition: displayComments, then: 'checked="checked"')}
                     />
+                    <label class="form-check-label" for="displayComments">
+                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.displayComments" />
+                    </label>
                 </div>
             </form>
         </div>
         <div class="col">
             <form action="{f:be.uri(route: 'pagetsconfig_active', parameters: '{id: pageUid}')}" method="post">
+                <input type="hidden" name="sortAlphabetically" value="0" />
                 <div class="form-check form-switch">
-                    <label class="form-check-label" for="sortAlphabetically">
-                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.sortAlphabetically" />
-                    </label>
-                    <input type="hidden" name="sortAlphabetically" value="0" />
                     <input
                         type="checkbox"
                         class="form-check-input"
@@ -169,7 +166,10 @@
                         data-action-submit="$form"
                         data-value-selector="input[name='sortAlphabetically']"
                         {f:if(condition: sortAlphabetically, then: 'checked="checked"')}
-                    >
+                    />
+                    <label class="form-check-label" for="sortAlphabetically">
+                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.sortAlphabetically" />
+                    </label>
                 </div>
             </form>
         </div>
@@ -237,7 +237,19 @@
                     <div class="row">
                         <div class="col-12">
                             <f:for each="{conditions}" as="condition">
+                                <input type="hidden" name="pageTsConfigConditions[{condition.hash}]" value="0" />
                                 <div class="form-check form-switch">
+                                    <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        id="condition{condition.hash}"
+                                        name="pageTsConfigConditions[{condition.hash}]"
+                                        value="1"
+                                        data-global-event="change"
+                                        data-action-submit="$form"
+                                        data-value-selector="input[name='pageTsConfigConditions[{condition.hash}]']"
+                                        {f:if(condition: condition.active, then: 'checked="checked"')}
+                                    />
                                     <label class="form-check-label" for="condition{condition.hash}">
                                         <f:if condition="{displayConstantSubstitutions} && {condition.originalValue}">
                                             <f:then>
@@ -260,18 +272,6 @@
                                             </f:else>
                                         </f:if>
                                     </label>
-                                    <input type="hidden" name="pageTsConfigConditions[{condition.hash}]" value="0" />
-                                    <input
-                                        type="checkbox"
-                                        class="form-check-input"
-                                        id="condition{condition.hash}"
-                                        name="pageTsConfigConditions[{condition.hash}]"
-                                        value="1"
-                                        data-global-event="change"
-                                        data-action-submit="$form"
-                                        data-value-selector="input[name='pageTsConfigConditions[{condition.hash}]']"
-                                        {f:if(condition: condition.active, then: 'checked="checked"')}
-                                    />
                                 </div>
                             </f:for>
                         </div>

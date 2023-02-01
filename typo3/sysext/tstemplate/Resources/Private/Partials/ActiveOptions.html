@@ -50,11 +50,8 @@
     </div>
     <div class="col">
         <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
+            <input type="hidden" name="displayConstantSubstitutions" value="0" />
             <div class="form-check form-switch">
-                <label class="form-check-label" for="displayConstantSubstitutions">
-                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:options.displayConstantSubstitutions" />
-                </label>
-                <input type="hidden" name="displayConstantSubstitutions" value="0" />
                 <input
                     type="checkbox"
                     class="form-check-input"
@@ -66,16 +63,16 @@
                     data-action-submit="$form"
                     data-value-selector="input[name='displayConstantSubstitutions']"
                 />
+                <label class="form-check-label" for="displayConstantSubstitutions">
+                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:options.displayConstantSubstitutions" />
+                </label>
             </div>
         </form>
     </div>
     <div class="col">
         <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
+            <input type="hidden" name="displayComments" value="0" />
             <div class="form-check form-switch">
-                <label class="form-check-label" for="displayComments">
-                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:options.displayComments" />
-                </label>
-                <input type="hidden" name="displayComments" value="0" />
                 <input
                     type="checkbox"
                     class="form-check-input"
@@ -87,16 +84,16 @@
                     data-action-submit="$form"
                     data-value-selector="input[name='displayComments']"
                 />
+                <label class="form-check-label" for="displayComments">
+                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:options.displayComments" />
+                </label>
             </div>
         </form>
     </div>
     <div class="col">
         <form action="{f:be.uri(route: 'typoscript_active', parameters: '{id: pageUid}')}" method="post">
+            <input type="hidden" name="sortAlphabetically" value="0" />
             <div class="form-check form-switch">
-                <label class="form-check-label" for="sortAlphabetically">
-                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:options.sortAlphabetically" />
-                </label>
-                <input type="hidden" name="sortAlphabetically" value="0" />
                 <input
                     type="checkbox"
                     class="form-check-input"
@@ -108,6 +105,9 @@
                     data-action-submit="$form"
                     data-value-selector="input[name='sortAlphabetically']"
                 />
+                <label class="form-check-label" for="sortAlphabetically">
+                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:options.sortAlphabetically" />
+                </label>
             </div>
         </form>
     </div>

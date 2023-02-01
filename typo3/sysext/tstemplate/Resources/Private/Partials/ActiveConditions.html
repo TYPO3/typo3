@@ -64,7 +64,19 @@
                     <div class="row">
                         <div class="col-12">
                             <f:for each="{conditions}" as="condition">
+                                <input type="hidden" name="{type}Conditions[{condition.hash}]" value="0" />
                                 <div class="form-check form-switch">
+                                    <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="{type}Conditions[{condition.hash}]"
+                                        id="{type}Condition{condition.hash}"
+                                        value="1"
+                                        {f:if(condition: condition.active, then:'checked="checked"')}
+                                        data-global-event="change"
+                                        data-action-submit="$form"
+                                        data-value-selector="input[name='{type}Conditions[{condition.hash}]']"
+                                    />
                                     <label class="form-check-label" for="{type}Condition{condition.hash}">
                                         <f:if condition="{displayConstantSubstitutions} && {condition.originalValue}">
                                             <f:then>
@@ -87,18 +99,6 @@
                                             </f:else>
                                         </f:if>
                                     </label>
-                                    <input type="hidden" name="{type}Conditions[{condition.hash}]" value="0" />
-                                    <input
-                                        type="checkbox"
-                                        class="form-check-input"
-                                        name="{type}Conditions[{condition.hash}]"
-                                        id="{type}Condition{condition.hash}"
-                                        value="1"
-                                        {f:if(condition: condition.active, then:'checked="checked"')}
-                                        data-global-event="change"
-                                        data-action-submit="$form"
-                                        data-value-selector="input[name='{type}Conditions[{condition.hash}]']"
-                                    />
                                 </div>
                             </f:for>
                         </div>
