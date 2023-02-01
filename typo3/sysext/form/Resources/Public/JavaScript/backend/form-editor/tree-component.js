@@ -273,10 +273,7 @@ function factory($, Helper, Icons) {
       Icons.getIcon(getFormElementDefinition(formElement, 'iconIdentifier'), Icons.sizes.small, null, Icons.states.default).then(function(icon) {
         expanderItem.after(
           $(icon).addClass(getHelper().getDomElementClassName('icon'))
-            .tooltip({
-              title: 'id = ' + formElement.get('identifier'),
-              placement: 'right'
-            })
+            .attr('title', 'id = ' + formElement.get('identifier'))
         );
 
         if (getFormElementDefinition(formElement, '_isCompositeFormElement')) {

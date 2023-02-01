@@ -545,10 +545,7 @@ function factory($, TreeComponent, ModalsComponent, InspectorComponent, StageCom
 
       $(getHelper().getDomElementDataIdentifierSelector('iconMailform'),
         $(getHelper().getDomElementDataIdentifierSelector('structureRootContainer'))
-      ).tooltip({
-        title: 'identifier: ' + getRootFormElement().get('identifier'),
-        placement: 'right'
-      });
+      ).attr('title', 'identifier: ' + getRootFormElement().get('identifier'));
     };
 
     /**

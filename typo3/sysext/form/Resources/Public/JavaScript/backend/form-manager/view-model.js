@@ -72,8 +72,6 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
         showReferences: {identifier: '[data-identifier="showReferences"]'},
         referenceLink: {identifier: '[data-identifier="referenceLink"]'},
 
-        tooltip: {identifier: '[data-bs-toggle="tooltip"]'},
-
         moduleBody: {class: '.module-body.t3js-module-body'},
         t3Logo: {class: '.t3-message-page-logo'},
         t3Footer: {id: '#t3-footer'}
@@ -866,7 +864,6 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
       _newFormSetup();
       _duplicateFormSetup();
       _showReferencesSetup();
-      $(getDomElementIdentifier('tooltip')).tooltip();
     };
 
     /**

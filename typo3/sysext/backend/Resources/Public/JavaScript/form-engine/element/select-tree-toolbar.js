@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(e,t,l,o){var i,n=arguments.length,a=n<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,l):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(e,t,l,o);else for(var r=e.length-1;r>=0;r--)(i=e[r])&&(a=(n<3?i(a):n>3?i(t,l,a):i(t,l))||a);return n>3&&a&&Object.defineProperty(t,l,a),a};import{Tooltip}from"bootstrap";import{html,LitElement}from"lit";import{customElement}from"lit/decorators.js";import{lll}from"@typo3/core/lit-helper.js";let SelectTreeToolbar=class extends LitElement{constructor(){super(...arguments),this.settings={collapseAllBtn:"collapse-all-btn",expandAllBtn:"expand-all-btn",searchInput:"search-input",toggleHideUnchecked:"hide-unchecked-btn"},this.hideUncheckedState=!1}createRenderRoot(){return this}firstUpdated(){this.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((e=>new Tooltip(e)))}render(){return html`
+var __decorate=function(e,t,l,i){var n,o=arguments.length,r=o<3?t:null===i?i=Object.getOwnPropertyDescriptor(t,l):i;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)r=Reflect.decorate(e,t,l,i);else for(var c=e.length-1;c>=0;c--)(n=e[c])&&(r=(o<3?n(r):o>3?n(t,l,r):n(t,l))||r);return o>3&&r&&Object.defineProperty(t,l,r),r};import{html,LitElement}from"lit";import{customElement}from"lit/decorators.js";import{lll}from"@typo3/core/lit-helper.js";let SelectTreeToolbar=class extends LitElement{constructor(){super(...arguments),this.settings={collapseAllBtn:"collapse-all-btn",expandAllBtn:"expand-all-btn",searchInput:"search-input",toggleHideUnchecked:"hide-unchecked-btn"},this.hideUncheckedState=!1}createRenderRoot(){return this}render(){return html`
       <div class="tree-toolbar btn-toolbar">
         <div class="input-group">
           <span class="input-group-addon input-group-icon filter">
@@ -19,13 +19,13 @@ var __decorate=function(e,t,l,o){var i,n=arguments.length,a=n<3?t:null===o?o=Obj
           <input type="text" class="form-control ${this.settings.searchInput}" placeholder="${lll("tcatree.findItem")}" @input="${e=>this.filter(e)}">
         </div>
         <div class="btn-group">
-          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.expandAllBtn}" title="${lll("tcatree.expandAll")}" @click="${()=>this.expandAll()}">
+          <button type="button" class="btn btn-default ${this.settings.expandAllBtn}" title="${lll("tcatree.expandAll")}" @click="${()=>this.expandAll()}">
             <typo3-backend-icon identifier="apps-pagetree-category-expand-all" size="small"></typo3-backend-icon>
           </button>
-          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.collapseAllBtn}" title="${lll("tcatree.collapseAll")}" @click="${e=>this.collapseAll(e)}">
+          <button type="button" class="btn btn-default ${this.settings.collapseAllBtn}" title="${lll("tcatree.collapseAll")}" @click="${e=>this.collapseAll(e)}">
             <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small"></typo3-backend-icon>
           </button>
-          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.toggleHideUnchecked}" title="${lll("tcatree.toggleHideUnchecked")}" @click="${()=>this.toggleHideUnchecked()}">
+          <button type="button" class="btn btn-default ${this.settings.toggleHideUnchecked}" title="${lll("tcatree.toggleHideUnchecked")}" @click="${()=>this.toggleHideUnchecked()}">
             <typo3-backend-icon identifier="apps-pagetree-category-toggle-hide-checked" size="small"></typo3-backend-icon>
           </button>
         </div>

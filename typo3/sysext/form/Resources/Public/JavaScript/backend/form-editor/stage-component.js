@@ -868,20 +868,8 @@ function factory($, Helper, Icons) {
 
         if (
           !getFormElementDefinition(formElement, '_isTopLevelFormElement')
-          && getFormElementDefinition(formElement, '_isCompositeFormElement')
         ) {
-          $(this).tooltip({
-            title: 'identifier: ' + formElement.get('identifier') + ' (type: ' + formElement.get('type') + ')',
-            placement: 'right'
-          });
-        } else if (
-          !getFormElementDefinition(formElement, '_isTopLevelFormElement')
-          && !getFormElementDefinition(formElement, '_isCompositeFormElement')
-        ) {
-          $(this).tooltip({
-            title: 'identifier: ' + formElement.get('identifier') + ' (type: ' + formElement.get('type') + ')',
-            placement: 'left'
-          });
+          $(this).attr('title', 'identifier: ' + formElement.get('identifier') + ' (type: ' + formElement.get('type') + ')');
         }
 
         if (getFormElementDefinition(formElement, '_isTopLevelFormElement')) {

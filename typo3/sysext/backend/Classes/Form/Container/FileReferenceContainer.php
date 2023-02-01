@@ -454,7 +454,7 @@ class FileReferenceContainer extends AbstractContainer
         }
         if ($lockInfo = BackendUtility::isRecordLocked(self::FILE_REFERENCE_TABLE, $databaseRow['uid'])) {
             $controls['locked'] = '
-				<button type="button" class="btn btn-default" data-bs-toggle="tooltip" title="' . htmlspecialchars($lockInfo['msg']) . '">
+				<button type="button" class="btn btn-default" title="' . htmlspecialchars($lockInfo['msg']) . '">
 					' . $this->iconFactory->getIcon('status-user-backend', Icon::SIZE_SMALL, 'overlay-edit')->render() . '
 				</button>';
         }

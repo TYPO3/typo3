@@ -263,7 +263,7 @@
                                                         <f:be.link route="system_txschedulerM1"
                                                             parameters="{action: {'stop': task.uid}}"
                                                             class="btn btn-default t3js-modal-trigger"
-                                                            data="{bs-toggle: 'tooltip',
+                                                            data="{
                                                                 severity: 'warning',
                                                                 button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}',
                                                                 bs-content='{f:translate(key: \'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stop\')}'
@@ -279,7 +279,6 @@
                                                         <f:be.link route="system_txschedulerM1"
                                                             parameters="{action: 'edit', 'uid': task.uid}"
                                                             class="btn btn-default"
-                                                            data="{bs-toggle: 'tooltip'}"
                                                             title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}"
                                                         >
                                                             <core:icon identifier="actions-open"/>
@@ -290,7 +289,6 @@
                                                                     type="submit"
                                                                     name="action[toggleHidden]"
                                                                     value="{task.uid}"
-                                                                    data-bs-toggle="tooltip"
                                                                     class="btn btn-default"
                                                                     title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:enable')}"
                                                                 >
@@ -302,7 +300,6 @@
                                                                     type="submit"
                                                                     name="action[toggleHidden]"
                                                                     value="{task.uid}"
-                                                                    data-bs-toggle="tooltip"
                                                                     class="btn btn-default"
                                                                     title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disable')}"
                                                                 >
@@ -314,7 +311,7 @@
                                                         <f:be.link route="system_txschedulerM1"
                                                             parameters="{action: {'delete': task.uid}}"
                                                             class="btn btn-default t3js-modal-trigger"
-                                                            data="{bs-toggle: 'tooltip',
+                                                            data="{
                                                                 severity: 'warning',
                                                                 button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}',
                                                                 bs-content='{f:translate(key: \'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.delete\')}'
@@ -327,7 +324,6 @@
                                                     <div class="btn-group" role="group">
                                                         <button type="submit"
                                                             class="btn btn-default"
-                                                            data-bs-toggle="tooltip"
                                                             name="scheduleCron"
                                                             value="{task.uid}"
                                                             title="{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:action.run_task_cron')}"
@@ -336,7 +332,6 @@
                                                         </button>
                                                         <button type="submit"
                                                             class="btn btn-default"
-                                                            data-bs-toggle="tooltip"
                                                             name="execute"
                                                             value="{task.uid}"
                                                             title="{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:action.run_task')}"
@@ -409,7 +404,7 @@
                                                 route="system_txschedulerM1"
                                                 parameters="{action: {'delete': errorClass.uid}}"
                                                 class="btn btn-default t3js-modal-trigger"
-                                                data="{bs-toggle: 'tooltip',
+                                                data="{
                                                     severity: 'warning',
                                                     button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}',
                                                     bs-content='{f:translate(key: \'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.delete\')}'

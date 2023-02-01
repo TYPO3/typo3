@@ -50,13 +50,11 @@ final class FileClipboardCest
     public function seeAddRemoveSingleRecord(ApplicationTester $I): void
     {
         $fileName = 'bus_lane.jpg';
-        $I->switchToMainFrame();
-        $I->click('//*[text()="styleguide"]');
-        $I->click('.scaffold-content-navigation-switcher-close');
-        $I->switchToContentFrame();
         $I->click('//*[text()="View"]');
         $I->click('//*[text()="List"]');
-
+        $I->waitForText('styleguide');
+        $I->click('styleguide');
+        $I->waitForText($fileName);
         $this->openActionDropdown($I, $fileName)->click();
         $I->click('Cut');
         $I->see($fileName, '.clipboard-panel a');
@@ -67,13 +65,10 @@ final class FileClipboardCest
     public function seeAddRemoveMultipleRecords(ApplicationTester $I): void
     {
         $expectedFiles = ['bus_lane.jpg', 'telephone_box.jpg', 'underground.jpg'];
-
-        $I->switchToMainFrame();
-        $I->click('//*[text()="styleguide"]');
-        $I->click('.scaffold-content-navigation-switcher-close');
-        $I->switchToContentFrame();
         $I->click('//*[text()="View"]');
         $I->click('//*[text()="List"]');
+        $I->waitForText('styleguide');
+        $I->click('styleguide');
 
         $I->amGoingTo('add multiple elements to clipboard');
         $I->click('Clipboard #1 (multi-selection mode)');

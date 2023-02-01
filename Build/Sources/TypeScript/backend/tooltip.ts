@@ -18,6 +18,8 @@ import DocumentService from '@typo3/core/document-service';
  * The main tooltip object
  *
  * Hint: Due to the current usage of tooltips, this class can't be static right now
+ *
+ * @deprecated bootstrap tooltip has been deprecated since TYPO3 v12 and will be removed with v13.
  */
 class Tooltip {
   private static applyAttributes(attributes: { [key: string]: string }, node: HTMLElement): void {
@@ -28,6 +30,7 @@ class Tooltip {
 
   constructor() {
     DocumentService.ready().then((): void => {
+      console.warn('Tooltip has been deprecated since TYPO3 v12 and will be removed with v13. Rely on browser title instead.');
       this.initialize('[data-bs-toggle="tooltip"]');
     });
   }

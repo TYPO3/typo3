@@ -12,7 +12,6 @@
 */
 
 import type {SelectTree} from './select-tree';
-import {Tooltip} from 'bootstrap';
 import {html, LitElement, TemplateResult} from 'lit';
 import {customElement} from 'lit/decorators';
 import {lll} from '@typo3/core/lit-helper';
@@ -40,10 +39,6 @@ export class SelectTreeToolbar extends LitElement {
     return this;
   }
 
-  protected firstUpdated(): void {
-    this.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((tooltipTriggerEl: HTMLElement) => new Tooltip(tooltipTriggerEl));
-  }
-
   protected render(): TemplateResult {
     return html`
       <div class="tree-toolbar btn-toolbar">
@@ -54,13 +49,13 @@ export class SelectTreeToolbar extends LitElement {
           <input type="text" class="form-control ${this.settings.searchInput}" placeholder="${lll('tcatree.findItem')}" @input="${(evt: InputEvent) => this.filter(evt)}">
         </div>
         <div class="btn-group">
-          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.expandAllBtn}" title="${lll('tcatree.expandAll')}" @click="${() => this.expandAll()}">
+          <button type="button" class="btn btn-default ${this.settings.expandAllBtn}" title="${lll('tcatree.expandAll')}" @click="${() => this.expandAll()}">
             <typo3-backend-icon identifier="apps-pagetree-category-expand-all" size="small"></typo3-backend-icon>
           </button>
-          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.collapseAllBtn}" title="${lll('tcatree.collapseAll')}" @click="${(evt: MouseEvent) => this.collapseAll(evt)}">
+          <button type="button" class="btn btn-default ${this.settings.collapseAllBtn}" title="${lll('tcatree.collapseAll')}" @click="${(evt: MouseEvent) => this.collapseAll(evt)}">
             <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small"></typo3-backend-icon>
           </button>
-          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.toggleHideUnchecked}" title="${lll('tcatree.toggleHideUnchecked')}" @click="${() => this.toggleHideUnchecked()}">
+          <button type="button" class="btn btn-default ${this.settings.toggleHideUnchecked}" title="${lll('tcatree.toggleHideUnchecked')}" @click="${() => this.toggleHideUnchecked()}">
             <typo3-backend-icon identifier="apps-pagetree-category-toggle-hide-checked" size="small"></typo3-backend-icon>
           </button>
         </div>

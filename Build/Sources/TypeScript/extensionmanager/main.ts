@@ -16,7 +16,6 @@ import $ from 'jquery';
 import BrowserSession from '@typo3/backend/storage/browser-session';
 import NProgress from 'nprogress';
 import {default as Modal, ModalElement} from '@typo3/backend/modal';
-import Tooltip from '@typo3/backend/tooltip';
 import Severity from '@typo3/backend/severity';
 import SecurityUtility from '@typo3/core/security-utility';
 import ExtensionManagerRepository from './repository';
@@ -138,8 +137,6 @@ class ExtensionManager {
       this.Repository.initDom();
       this.Update.initializeEvents();
       this.UploadForm.initializeEvents();
-
-      Tooltip.initialize('#typo3-extension-list [title]');
     });
   }
 

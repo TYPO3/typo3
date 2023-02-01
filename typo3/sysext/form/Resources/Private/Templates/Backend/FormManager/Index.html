@@ -34,17 +34,17 @@
                                 <td class="col-icon">
                                     <f:if condition="{form.invalid}">
                                         <f:then>
-                                            <span title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.invalid')}" data-bs-toggle="tooltip" data-bs-placement="top">
+                                            <span title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.invalid')}">
                                                 <core:icon identifier="overlay-missing" />
                                             </span>
                                         </f:then>
                                         <f:else if="{form.duplicateIdentifier}">
-                                            <span title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_identifier')} {form.identifier}" data-bs-toggle="tooltip" data-bs-placement="top">
+                                            <span title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_identifier')} {form.identifier}">
                                                 <core:icon identifier="overlay-missing" />
                                             </span>
                                         </f:else>
                                         <f:else>
-                                            <span title="id={form.identifier}" data-bs-toggle="tooltip" data-bs-placement="right">
+                                            <span title="id={form.identifier}">
                                                 <core:icon identifier="content-form" />
                                             </span>
                                         </f:else>
@@ -56,7 +56,7 @@
                                                 <div title="{form.name}">{form.name}</div>
                                             </f:then>
                                             <f:else>
-                                                <f:link.action controller="FormEditor" action="index" arguments="{formPersistenceIdentifier: form.persistenceIdentifier}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.edit_form')}" data="{toggle: 'tooltip', placement: 'right'}">{form.name}</f:link.action>
+                                                <f:link.action controller="FormEditor" action="index" arguments="{formPersistenceIdentifier: form.persistenceIdentifier}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.edit_form')}">{form.name}</f:link.action>
                                             </f:else>
                                     </f:if>
                                 </td>

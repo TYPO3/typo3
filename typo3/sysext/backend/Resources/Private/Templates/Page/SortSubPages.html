@@ -12,8 +12,7 @@
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0:'@typo3/backend/context-menu.js',
-            1:'@typo3/backend/modal.js',
-            2:'@typo3/backend/tooltip.js'
+            1:'@typo3/backend/modal.js'
         }"
     />
 
@@ -71,10 +70,7 @@
                                     <td class="text-nowrap">
                                         <core:iconForRecord table="pages" row="{page.record}" />
                                         <f:if condition="!{page.canEdit}">
-                                            <span
-                                                data-bs-toggle="tooltip"
-                                                title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:noEditPermissions')}"
-                                            >
+                                            <span title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:noEditPermissions')}">
                                                 <core:icon identifier="status-status-permission-denied" />
                                             </span>
                                         </f:if>

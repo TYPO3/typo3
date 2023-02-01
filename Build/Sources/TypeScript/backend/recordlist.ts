@@ -15,7 +15,6 @@ import $ from 'jquery';
 import Icons from '@typo3/backend/icons';
 import PersistentStorage from '@typo3/backend/storage/persistent';
 import RegularEvent from '@typo3/core/event/regular-event';
-import Tooltip from '@typo3/backend/tooltip';
 import DocumentService from '@typo3/core/document-service';
 import {ActionConfiguration, ActionEventDetails} from '@typo3/backend/multi-record-selection-action';
 import {default as Modal, ModalElement} from '@typo3/backend/modal';
@@ -99,7 +98,6 @@ class Recordlist {
     $(document).on('click', this.identifier.localize, this.disableButton);
     $(document).on('click', this.identifier.searchboxToggle, this.toggleSearchbox);
     DocumentService.ready().then((): void => {
-      Tooltip.initialize('.table-fit a[title]');
       this.registerPaginationEvents();
     });
     new RegularEvent('typo3:datahandler:process', this.handleDataHandlerResult.bind(this)).bindTo(document);

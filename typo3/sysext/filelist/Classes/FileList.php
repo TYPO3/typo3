@@ -1022,7 +1022,7 @@ class FileList
         if ($cellOutput !== '') {
             $icon = $this->iconFactory->getIcon('actions-menu-alternative', Icon::SIZE_SMALL);
             $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more');
-            $output .= '<div class="btn-group dropdown position-static" data-bs-toggle="tooltip" title="' . htmlspecialchars($title) . '" >' .
+            $output .= '<div class="btn-group dropdown position-static" title="' . htmlspecialchars($title) . '" >' .
                 '<a href="#actions_' . $fileOrFolderObject->getHashedIdentifier() . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
                 '<ul id="actions_' . $fileOrFolderObject->getHashedIdentifier() . '" class="dropdown-menu">' . $cellOutput . '</ul>' .
                 '</div>';
@@ -1164,7 +1164,7 @@ class FileList
         }
 
         return $translations !== [] ? '
-            <div class="btn-group dropdown position-static" data-bs-toggle="tooltip" title="' . htmlspecialchars($this->getLanguageService()->getLL('translateMetadata')) . '">
+            <div class="btn-group dropdown position-static" title="' . htmlspecialchars($this->getLanguageService()->getLL('translateMetadata')) . '">
                 <button class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" type="button" id="translations_' . $file->getHashedIdentifier() . '" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
                     ' . $this->iconFactory->getIcon('actions-translate', Icon::SIZE_SMALL)->render() . '
                 </button>

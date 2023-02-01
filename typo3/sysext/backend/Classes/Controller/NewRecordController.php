@@ -212,7 +212,6 @@ class NewRecordController
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
         // Setting up the context sensitive menu:
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tooltip.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/new-content-element-wizard-button.js');
         // Id a positive id is supplied, ask for the page record with permission information contained:
         if ($this->id > 0) {

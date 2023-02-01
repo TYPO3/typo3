@@ -202,7 +202,7 @@ class LinkElement extends AbstractFormElement
         $expansionHtml[] =      '<div class="form-wizards-element">';
         $expansionHtml[] =          '<div class="input-group t3js-form-field-link">';
         $expansionHtml[] =              '<span class="t3js-form-field-link-icon input-group-addon">' . ($linkExplanation['icon'] ?? '') . '</span>';
-        $expansionHtml[] =              '<input class="form-control t3js-form-field-link-explanation" data-bs-toggle="tooltip" title="' . $explanation . '" value="' . $explanation . '" readonly>';
+        $expansionHtml[] =              '<input class="form-control t3js-form-field-link-explanation" title="' . $explanation . '" value="' . $explanation . '" readonly>';
         $expansionHtml[] =              '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $expansionHtml[] =              '<button class="btn btn-default t3js-form-field-link-explanation-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '">';
         $expansionHtml[] =                  $this->iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL)->render();

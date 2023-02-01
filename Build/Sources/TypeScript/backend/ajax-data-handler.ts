@@ -129,7 +129,6 @@ class AjaxDataHandler {
     $(document).on('click', Identifiers.delete, (evt: JQueryEventObject): void => {
       evt.preventDefault();
       const $anchorElement = $(evt.currentTarget);
-      $anchorElement.tooltip('hide');
       const modal = Modal.confirm($anchorElement.data('title'), $anchorElement.data('message'), SeverityEnum.warning, [
         {
           text: $anchorElement.data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
@@ -177,16 +176,6 @@ class AjaxDataHandler {
       iconName = 'actions-edit-unhide';
     }
     $anchorElement.data('state', nextState).data('params', nextParams);
-
-    // Update tooltip title
-    $anchorElement.one('hidden.bs.tooltip', (): void => {
-      const nextTitle = $anchorElement.data('toggleTitle');
-      // Bootstrap Tooltip internally uses only .attr('data-bs-original-title')
-      $anchorElement
-        .data('toggleTitle', $anchorElement.attr('data-bs-original-title'))
-        .attr('data-bs-original-title', nextTitle);
-    });
-    $anchorElement.tooltip('hide');
 
     const $iconElement = $anchorElement.find(Identifiers.icon);
     Icons.getIcon(iconName, Icons.sizes.small).then((icon: string): void => {

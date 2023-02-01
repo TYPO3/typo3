@@ -1004,7 +1004,7 @@ class DatabaseRecordList
                 // If the record is edit-locked	by another user, we will show a little warning sign:
                 $lockInfo = BackendUtility::isRecordLocked($table, $row['uid']);
                 if ($lockInfo) {
-                    $warning = '<span tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right"'
+                    $warning = '<span tabindex="0"'
                         . ' title="' . htmlspecialchars($lockInfo['msg']) . '"'
                         . ' aria-label="' . htmlspecialchars($lockInfo['msg']) . '">'
                         . $this->iconFactory->getIcon('status-user-backend', Icon::SIZE_SMALL, 'overlay-edit')->render()
@@ -1683,7 +1683,7 @@ class DatabaseRecordList
                 if ($cellOutput !== '') {
                     $icon = $this->iconFactory->getIcon('actions-menu-alternative', Icon::SIZE_SMALL);
                     $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more');
-                    $output .= ' <div class="btn-group dropdown position-static" data-bs-toggle="tooltip" title="' . htmlspecialchars($title) . '">' .
+                    $output .= ' <div class="btn-group dropdown position-static" title="' . htmlspecialchars($title) . '">' .
                         '<a href="#actions_' . $table . '_' . $row['uid'] . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
                         '<ul id="actions_' . $table . '_' . $row['uid'] . '" class="dropdown-menu">' . $cellOutput . '</ul>' .
                         '</div>';

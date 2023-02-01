@@ -487,7 +487,7 @@ class PageTreeToolbar extends Toolbar {
             ? this.tree.settings.doktypes.map((item: any) => {
               return html`
                 <div class="svg-toolbar__menuitem svg-toolbar__drag-node" data-tree-icon="${item.icon}" data-node-type="${item.nodeType}"
-                     title="${item.title}" tooltip="${item.tooltip}">
+                     title="${item.title}">
                   <typo3-backend-icon identifier="${item.icon}" size="small"></typo3-backend-icon>
                 </div>
               `;
@@ -539,7 +539,6 @@ interface NodeCreationOptions {
   type: string,
   name: string,
   title?: string;
-  tooltip: string,
   icon: string,
   position: DraggablePositionEnum,
   target: TreeNode
@@ -702,7 +701,6 @@ class ToolbarDragHandler implements DragDropHandler {
   public startPageY: number = 0;
   private readonly id: string = '';
   private readonly name: string = '';
-  private readonly tooltip: string = '';
   private readonly icon: string = '';
   private dragDrop: PageTreeDragDrop;
   private tree: EditablePageTree;
@@ -710,7 +708,6 @@ class ToolbarDragHandler implements DragDropHandler {
   constructor(item: any, tree: EditablePageTree, dragDrop: PageTreeDragDrop) {
     this.id = item.nodeType;
     this.name = item.title;
-    this.tooltip = item.tooltip;
     this.icon = item.icon;
     this.tree = tree;
     this.dragDrop = dragDrop;
@@ -750,7 +747,6 @@ class ToolbarDragHandler implements DragDropHandler {
       this.addNewNode({
         type: this.id,
         name: this.name,
-        tooltip: this.tooltip,
         icon: this.icon,
         position: this.tree.settings.nodeDragPosition,
         target: this.tree.hoveredNode

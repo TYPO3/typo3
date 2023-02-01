@@ -17,7 +17,6 @@ import Notification from '@typo3/backend/notification';
 import InfoWindow from '@typo3/backend/info-window';
 import {BroadcastMessage} from '@typo3/backend/broadcast-message';
 import broadcastService from '@typo3/backend/broadcast-service';
-import Tooltip from '@typo3/backend/tooltip';
 import NProgress from 'nprogress';
 import Icons from '@typo3/backend/icons';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -181,7 +180,6 @@ export default class Filelist {
         }));
       }).delegateTo(document, '.t3js-element-browser');
 
-      Tooltip.initialize('.table-fit a[title]');
       // file index events
       new RegularEvent('click', (event: Event, target: HTMLElement): void => {
         event.preventDefault();

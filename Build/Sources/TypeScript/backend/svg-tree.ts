@@ -19,13 +19,11 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Notification from './notification';
 import {KeyTypesEnum as KeyTypes} from './enum/key-types';
 import Icons from './icons';
-import Tooltip from './tooltip';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import {MarkupIdentifiers} from './enum/icon-types';
 import {lll} from '@typo3/core/lit-helper';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import '@typo3/backend/element/icon-element';
-import {Tooltip as BootstrapTooltip} from 'bootstrap';
 
 export type TreeWrapperSelection<TBase extends d3selection.BaseType> = d3selection.Selection<TBase, any, any, any>;
 export type TreeNodeSelection = d3selection.Selection<d3selection.BaseType, TreeNode, any, any>;
@@ -136,8 +134,6 @@ export class SvgTree extends LitElement {
   protected networkErrorTitle: string = top.TYPO3.lang.tree_networkError;
   protected networkErrorMessage: string = top.TYPO3.lang.tree_networkErrorDescription;
 
-  protected tooltipOptions: Partial<BootstrapTooltip.Options> = {};
-
   /**
    * Initializes the tree component - created basic markup, loads and renders data
    * @todo declare private
@@ -155,13 +151,6 @@ export class SvgTree extends LitElement {
     this.linksContainer = this.container.select('.links') as TreeWrapperSelection<SVGGElement>;
     this.nodesContainer = this.container.select('.nodes') as TreeWrapperSelection<SVGGElement>;
     this.iconsContainer = this.svg.select('defs') as TreeWrapperSelection<SVGGElement>;
-
-    this.tooltipOptions = {
-      delay: 50,
-      trigger: 'hover',
-      placement: 'right',
-      container: typeof this.settings.id !== 'undefined' ? '#' + this.settings.id : 'body',
-    }
 
     this.updateScrollPosition();
     this.loadCommonIcons();
@@ -1140,12 +1129,10 @@ export class SvgTree extends LitElement {
       const nodeContainer = nodeEnter
         .append('svg')
         .attr('class', 'node-icon-container')
-        .attr('title', this.getNodeTitle)
         .attr('height', '20')
         .attr('width', '20')
         .attr('x', '6')
         .attr('y', '-10')
-        .attr('data-bs-toggle', 'tooltip')
         .on('click', (evt: MouseEvent, node: TreeNode) => {
           evt.preventDefault();
           this.clickOnIcon(node)
@@ -1197,7 +1184,7 @@ export class SvgTree extends LitElement {
         .attr('class', 'node-icon-locked');
     }
 
-    Tooltip.initialize('[data-bs-toggle="tooltip"]', this.tooltipOptions);
+    nodeEnter.append('title').text(this.getNodeTitle);
 
     this.appendTextElement(nodeEnter);
     return nodes.merge(nodeEnter);
@@ -1248,10 +1235,6 @@ export class SvgTree extends LitElement {
   private updateScrollPosition(): void {
     this.viewportHeight = this.getBoundingClientRect().height;
     this.scrollBottom = this.scrollTop + this.viewportHeight + (this.viewportHeight / 2);
-    // wait for the tooltip to appear and disable tooltips when scrolling
-    setTimeout(() => {
-      Tooltip.hide(document.querySelector(<string>this.tooltipOptions.container).querySelectorAll('.bs-tooltip-end'));
-    }, <number>this.tooltipOptions.delay)
   }
 
   /**

@@ -522,7 +522,7 @@ class InlineRecordContainer extends AbstractContainer
         // If the record is edit-locked by another user, we will show a little warning sign:
         if ($lockInfo = BackendUtility::isRecordLocked($foreignTable, $rec['uid'])) {
             $cells['locked'] = '
-				<button type="button" class="btn btn-default" data-bs-toggle="tooltip" title="' . htmlspecialchars($lockInfo['msg']) . '">
+				<button type="button" class="btn btn-default" title="' . htmlspecialchars($lockInfo['msg']) . '">
 					' . $this->iconFactory->getIcon('status-user-backend', Icon::SIZE_SMALL, 'overlay-edit')->render() . '
 				</button>';
         }

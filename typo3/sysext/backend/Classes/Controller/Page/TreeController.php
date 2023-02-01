@@ -239,7 +239,6 @@ class TreeController
                 'nodeType' => $doktype,
                 'icon' => $GLOBALS['TCA']['pages']['ctrl']['typeicon_classes'][$doktype] ?? '',
                 'title' => $label,
-                'tooltip' => $label,
             ];
         }
         return $output;

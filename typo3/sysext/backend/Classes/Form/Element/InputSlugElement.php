@@ -155,7 +155,6 @@ class InputSlugElement extends AbstractFormElement
         // field to manipulate the value, and the final hidden field used to send the value
         $mainFieldHtml[] =                  '<input';
         $mainFieldHtml[] =                      ' class="form-control t3js-form-field-slug-readonly"';
-        $mainFieldHtml[] =                      ' data-bs-toggle="tooltip"';
         $mainFieldHtml[] =                      ' title="' . htmlspecialchars($itemValue) . '"';
         $mainFieldHtml[] =                      ' value="' . htmlspecialchars($itemValue) . '"';
         $mainFieldHtml[] =                      ' readonly';

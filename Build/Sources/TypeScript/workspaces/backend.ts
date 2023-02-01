@@ -20,7 +20,6 @@ import '@typo3/backend/input/clearable';
 import Workspaces from './workspaces';
 import {default as Modal, ModalElement} from '@typo3/backend/modal';
 import Persistent from '@typo3/backend/storage/persistent';
-import Tooltip from '@typo3/backend/tooltip';
 import Utility from '@typo3/backend/utility';
 import Wizard from '@typo3/backend/wizard';
 import SecurityUtility from '@typo3/core/security-utility';
@@ -652,9 +651,6 @@ class Backend extends Workspaces {
       if (item.integrity.messages !== '') {
         $integrityIcon = $('<span>' + this.getIcon(item.integrity.status) + '</span>');
         $integrityIcon
-          .attr('data-bs-toggle', 'tooltip')
-          .attr('data-bs-placement', 'top')
-          .attr('data-bs-html', 'true')
           .attr('title', item.integrity.messages);
       }
 
@@ -723,15 +719,6 @@ class Backend extends Workspaces {
           $('<td />', {class: 'text-end nowrap'}).append($actions),
         ),
       );
-
-      Tooltip.initialize('[data-bs-toggle="tooltip"]', {
-        delay: {
-          show: 500,
-          hide: 100,
-        },
-        trigger: 'hover',
-        container: 'body',
-      });
     }
   }
 
@@ -1250,7 +1237,6 @@ class Backend extends Workspaces {
       return $('<button />', {
         class: 'btn btn-default',
         'data-action': action,
-        'data-bs-toggle': 'tooltip',
       }).append(this.getIcon(iconIdentifier));
     }
     return $('<span />', {class: 'btn btn-default disabled'}).append(this.getIcon('empty-empty'));

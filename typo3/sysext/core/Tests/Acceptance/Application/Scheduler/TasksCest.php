@@ -70,7 +70,7 @@ final class TasksCest
      */
     public function canEditTask(ApplicationTester $I): void
     {
-        $I->click('//a[contains(@aria-label, "Edit")]');
+        $I->click('//a[contains(@title, "Edit")]');
         $I->waitForText('Edit scheduled task "System Status Update (reports)"');
         $I->seeInField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'foo@local.typo3.org');
@@ -85,15 +85,15 @@ final class TasksCest
     public function canEnableAndDisableTask(ApplicationTester $I): void
     {
         $I->wantTo('See a enable button for a task');
-        $I->click('//button[contains(@aria-label, "Enable")]', '#tx_scheduler_form');
+        $I->click('//button[contains(@title, "Enable")]', '#tx_scheduler_form');
         $I->dontSeeElement('.tx_scheduler_mod1 .disabled');
         $I->dontSee('disabled');
         $I->wantTo('See a disable button for a task');
         // Give tooltips some time to fully init
         $I->wait(1);
-        $I->moveMouseOver('//button[contains(@aria-label, "Disable")]');
+        $I->moveMouseOver('//button[contains(@title, "Disable")]');
         $I->wait(1);
-        $I->click('//button[contains(@aria-label, "Disable")]');
+        $I->click('//button[contains(@title, "Disable")]');
         $I->waitForElementVisible('div.tx_scheduler_mod1');
         $I->seeElement('.tx_scheduler_mod1 .disabled');
         $I->see('disabled');
@@ -105,8 +105,8 @@ final class TasksCest
     public function canDeleteTask(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->wantTo('See a delete button for a task');
-        $I->seeElement('//a[contains(@aria-label, "Delete")]');
-        $I->click('//a[contains(@aria-label, "Delete")]');
+        $I->seeElement('//a[contains(@title, "Delete")]');
+        $I->click('//a[contains(@title, "Delete")]');
         $I->wantTo('Cancel the delete dialog');
 
         // don't use $modalDialog->clickButtonInDialog due to too low timeout
@@ -116,7 +116,7 @@ final class TasksCest
 
         $I->switchToContentFrame();
         $I->wantTo('Still see and can click the Delete button as the deletion has been canceled');
-        $I->click('//a[contains(@aria-label, "Delete")]');
+        $I->click('//a[contains(@title, "Delete")]');
         $modalDialog->clickButtonInDialog('OK');
         $I->switchToContentFrame();
         $I->see('The task was successfully deleted.');

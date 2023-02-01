@@ -14,7 +14,6 @@
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import RegularEvent from '@typo3/core/event/regular-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import Tooltip from '@typo3/backend/tooltip';
 
 /**
  * Module: @typo3/beuser/permissions
@@ -63,9 +62,6 @@ class Permissions {
     let page = element.dataset.page;
     let who = element.dataset.who;
 
-    // Hide all Tooltips to avoid permanent visible/never hidden Tooltips
-    Tooltip.hide(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-
     (new AjaxRequest(this.ajaxUrl)).post({
       page: page,
       who: who,
@@ -77,8 +73,6 @@ class Permissions {
       const element = document.getElementById(page + '_' + who);
       // Replace content
       element.outerHTML = data;
-      // Reinitialize tooltip
-      Tooltip.initialize('[data-bs-toggle="tooltip"]');
     });
   }
 
