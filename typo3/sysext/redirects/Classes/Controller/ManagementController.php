@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Controller;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Redirects\Event\ModifyRedirectManagementControllerViewDataEvent;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 
@@ -38,23 +40,13 @@ use TYPO3\CMS\Redirects\Repository\RedirectRepository;
  */
 class ManagementController
 {
-    protected ?ModuleTemplate $moduleTemplate = null;
-
-    protected UriBuilder $uriBuilder;
-    protected IconFactory $iconFactory;
-    protected RedirectRepository $redirectRepository;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        UriBuilder $uriBuilder,
-        IconFactory $iconFactory,
-        RedirectRepository $redirectRepository,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected UriBuilder $uriBuilder,
+        protected IconFactory $iconFactory,
+        protected RedirectRepository $redirectRepository,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
-        $this->uriBuilder = $uriBuilder;
-        $this->iconFactory = $iconFactory;
-        $this->redirectRepository = $redirectRepository;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -68,19 +60,30 @@ class ManagementController
         $view->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:mlang_tabs_tab')
         );
-
         $this->registerDocHeaderButtons($view, $request->getAttribute('normalizedParams')->getRequestUri());
 
+        $event = $this->eventDispatcher->dispatch(
+            new ModifyRedirectManagementControllerViewDataEvent(
+                $demand,
+                $this->redirectRepository->findRedirectsByDemand($demand),
+                $this->redirectRepository->findHostsOfRedirects(),
+                $this->redirectRepository->findStatusCodesOfRedirects(),
+                $this->redirectRepository->findCreationTypes(),
+                GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount'),
+                $view,
+                $request,
+            )
+        );
+        $view = $event->getView();
         $view->assignMultiple([
-            'redirects' => $this->redirectRepository->findRedirectsByDemand($demand),
-            'hosts' => $this->redirectRepository->findHostsOfRedirects(),
-            'statusCodes' => $this->redirectRepository->findStatusCodesOfRedirects(),
-            'creationTypes' => $this->redirectRepository->findCreationTypes(),
-            'demand' => $demand,
-            'showHitCounter' => GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount'),
-            'pagination' => $this->preparePagination($demand),
+            'redirects' => $event->getRedirects(),
+            'hosts' => $event->getHosts(),
+            'statusCodes' => $event->getStatusCodes(),
+            'creationTypes' => $event->getCreationTypes(),
+            'demand' => $event->getDemand(),
+            'showHitCounter' => $event->getShowHitCounter(),
+            'pagination' => $this->preparePagination($event->getDemand()),
         ]);
-
         return $view->renderResponse('Management/Overview');
     }
 
