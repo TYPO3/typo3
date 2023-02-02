@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
  * $item = GeneralUtility::makeInstance(DropDownDivider::class);
  * $dropDownButton->addItem($item);
  */
-class DropDownDivider implements DropDownItemInterface
+class DropDownDivider implements DropDownItemInterface, \Stringable
 {
     public function getType(): string
     {
@@ -38,5 +38,10 @@ class DropDownDivider implements DropDownItemInterface
     public function render(): string
     {
         return '<hr class="dropdown-divider">';
+    }
+
+    public function __toString(): string
+    {
+        return $this->render();
     }
 }

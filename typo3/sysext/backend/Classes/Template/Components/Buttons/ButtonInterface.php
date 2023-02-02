@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons;
 /**
  * Interface for buttons
  */
-interface ButtonInterface
+interface ButtonInterface extends \Stringable
 {
     /**
      * Validates all set parameters of a button.
@@ -33,13 +33,6 @@ interface ButtonInterface
      * @return string
      */
     public function getType();
-
-    /**
-     * RenderMethod of a button if accessed as string from fluid
-     *
-     * @return string
-     */
-    public function __toString();
 
     /**
      * Renders the markup for the button

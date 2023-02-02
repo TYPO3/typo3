@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
  *     ->setLabel('Label');
  * $dropDownButton->addItem($item);
  */
-class DropDownHeader implements DropDownItemInterface
+class DropDownHeader implements DropDownItemInterface, \Stringable
 {
     protected ?string $label = null;
 
@@ -54,5 +54,10 @@ class DropDownHeader implements DropDownItemInterface
     public function render(): string
     {
         return '<h6 class="dropdown-header">' . htmlspecialchars(trim($this->getLabel())) . '</h6>';
+    }
+
+    public function __toString(): string
+    {
+        return $this->render();
     }
 }

@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-abstract class AbstractDropDownItem
+abstract class AbstractDropDownItem implements \Stringable
 {
     protected string $tag = 'a';
     protected ?Icon $icon = null;
@@ -129,5 +129,12 @@ abstract class AbstractDropDownItem
     protected function getRenderedIcon(): string
     {
         return $this->getIcon()?->render() ?? '';
+    }
+
+    abstract public function render();
+
+    public function __toString(): string
+    {
+        return $this->render();
     }
 }

@@ -118,10 +118,8 @@ class LinkButton extends AbstractButton
 
     /**
      * Magic method so Fluid can access a button via {button}
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render();
     }

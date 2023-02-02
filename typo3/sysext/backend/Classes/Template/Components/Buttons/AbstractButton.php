@@ -131,10 +131,8 @@ class AbstractButton extends AbstractControl implements ButtonInterface
     /**
      * Implementation from ButtonInterface
      * This object is an abstract, so no implementation is necessary
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return '';
     }

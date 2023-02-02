@@ -145,10 +145,8 @@ class HelpButton implements ButtonInterface, PositionInterface
 
     /**
      * Renders the button
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render();
     }
