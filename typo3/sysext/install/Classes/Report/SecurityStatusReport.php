@@ -15,28 +15,31 @@
 
 namespace TYPO3\CMS\Install\Report;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Install\SystemEnvironment\ServerResponse\ServerResponseCheck;
+use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
 use TYPO3\CMS\Reports\Status;
-use TYPO3\CMS\Reports\StatusProviderInterface;
 
 /**
  * Provides a status report of the security of the install tool
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class SecurityStatusReport implements StatusProviderInterface
+final class SecurityStatusReport implements RequestAwareStatusProviderInterface
 {
     /**
      * Compiles a collection of system status checks as a status report.
      *
      * @return Status[]
      */
-    public function getStatus(): array
+    public function getStatus(ServerRequestInterface $request = null): array
     {
-        $this->executeAdminCommand();
+        if ($request !== null) {
+            $this->removeInstallToolEnableFilesIfRequested($request);
+        }
         return [
             'installToolProtection' => $this->getInstallToolProtectionStatus(),
             'serverResponseStatus' => GeneralUtility::makeInstance(ServerResponseCheck::class)->asStatus(),
@@ -53,15 +56,17 @@ class SecurityStatusReport implements StatusProviderInterface
      *
      * @return Status An object representing whether ENABLE_INSTALL_TOOL exists
      */
-    protected function getInstallToolProtectionStatus()
+    private function getInstallToolProtectionStatus(): Status
     {
         $enableInstallToolFile = EnableFileService::getBestLocationForInstallToolEnableFile();
+        // @todo: Note $this->getLanguageService() is declared to allow null. Calling ->getLL() may fatal?!
         $value = $this->getLanguageService()->getLL('status_disabled');
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
         if (EnableFileService::installToolEnableFileExists()) {
             if (EnableFileService::isInstallToolEnableFilePermanent()) {
                 $severity = ContextualFeedbackSeverity::WARNING;
+                // @todo: See todo on removeInstallToolEnableFilesIfRequested() when this GU::getIndpEnv() is about to be removed.
                 $disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&adminCmd=remove_ENABLE_INSTALL_TOOL';
                 $value = $this->getLanguageService()->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_enabledPermanently');
                 $message = sprintf(
@@ -75,6 +80,7 @@ class SecurityStatusReport implements StatusProviderInterface
                     EnableFileService::removeInstallToolEnableFile();
                 } else {
                     $severity = ContextualFeedbackSeverity::NOTICE;
+                    // @todo: See todo on removeInstallToolEnableFilesIfRequested() when this GU::getIndpEnv() is about to be removed.
                     $disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&adminCmd=remove_ENABLE_INSTALL_TOOL';
                     $value = $this->getLanguageService()->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_enabledTemporarily');
                     $message = sprintf(
@@ -96,22 +102,19 @@ class SecurityStatusReport implements StatusProviderInterface
         );
     }
 
-    /**
-     * Executes commands like removing the Install Tool enable file.
-     */
-    protected function executeAdminCommand()
+    private function removeInstallToolEnableFilesIfRequested(ServerRequestInterface $request): void
     {
-        $command = GeneralUtility::_GET('adminCmd');
-        switch ($command) {
-            case 'remove_ENABLE_INSTALL_TOOL':
-                EnableFileService::removeInstallToolEnableFile();
-                break;
-            default:
-                // Do nothing
+        // @todo: This should of course be a POST-only call! No idea how, but it should be.
+        //        Also, the EnableFileService is pretty ugly nowadays, since it can handle
+        //        multiple file locations, but does not reflect this in its methods properly.
+        //        Thankfully, EnableFileService is @internal, so all this could be cleaned up
+        //        without being breaking ...
+        if (($request->getQueryParams()['adminCmd'] ?? '') === 'remove_ENABLE_INSTALL_TOOL') {
+            EnableFileService::removeInstallToolEnableFile();
         }
     }
 
-    protected function getLanguageService(): ?LanguageService
+    private function getLanguageService(): ?LanguageService
     {
         return $GLOBALS['LANG'] ?? null;
     }
