@@ -215,6 +215,7 @@ class SilentConfigurationUpgradeService
         $this->migrateCachingFrameworkCaches();
         $this->migrateMailSettingsToSendmail();
         $this->migrateMailSmtpEncryptSetting();
+        $this->migrateVersionNumberInFileNameSetting();
 
         // Should run at the end to prevent obsolete settings are removed before migration
         $this->removeObsoleteLocalConfigurationSettings();
@@ -1107,6 +1108,25 @@ class SilentConfigurationUpgradeService
             }
         } catch (MissingArrayPathException $e) {
             // no change inside the system/settings.php found, so nothing needs to be modified
+        }
+    }
+
+    /**
+     * Migrate [FE][versionNumberInFilename] to become a boolean flag
+     */
+    protected function migrateVersionNumberInFileNameSetting(): void
+    {
+        try {
+            $confManager = $this->configurationManager;
+            $currentOption = $confManager->getLocalConfigurationValueByPath('FE/versionNumberInFilename');
+            if ($currentOption === 'embed') {
+                $confManager->setLocalConfigurationValueByPath('FE/versionNumberInFilename', true);
+            } else {
+                $confManager->removeLocalConfigurationKeysByPath(['FE/versionNumberInFilename']);
+            }
+            $this->throwConfigurationChangedException();
+        } catch (MissingArrayPathException $e) {
+            // no flag set, so nothing to be configured
         }
     }
 }

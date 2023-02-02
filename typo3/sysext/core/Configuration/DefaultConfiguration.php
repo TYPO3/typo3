@@ -1383,7 +1383,7 @@ return [
         ],
         'additionalCanonicalizedUrlParameters' => [],
         'workspacePreviewLogoutTemplate' => '',
-        'versionNumberInFilename' => 'querystring',
+        'versionNumberInFilename' => false,
         'contentRenderingTemplates' => [], // Array to define the TypoScript parts that define the main content rendering. Extensions like "fluid_styled_content" provide content rendering templates. Other extensions like "felogin" or "indexed search" extend these templates and their TypoScript parts are added directly after the content templates.
         'typolinkBuilder' => [  // Matches the LinkService implementations for generating URL, link text via typolink
             'page' => \TYPO3\CMS\Frontend\Typolink\PageLinkBuilder::class,

@@ -2107,20 +2107,20 @@ class GeneralUtility
      *
      * Behaviour is influenced by the setting
      * TYPO3_CONF_VARS['BE' and 'FE'][versionNumberInFilename]
-     * = TRUE (BE) / "embed" (FE) : modify filename
-     * = FALSE (BE) / "querystring" (FE) : add timestamp as parameter
+     * = TRUE : modify filename ("embed" is also allowed until TYPO3 v13 in FE for legacy reasons)
+     * = FALSE : add timestamp as query parameter
      *
      * @param string $file Relative path to file including all potential query parameters (not htmlspecialchared yet)
      * @return string Relative path with version filename including the timestamp
      */
-    public static function createVersionNumberedFilename($file)
+    public static function createVersionNumberedFilename($file): string
     {
         $isFrontend = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
         $lookupFile = explode('?', $file);
         $path = $lookupFile[0];
 
-        // @todo: in v12 this should be resolved by using Environment::getPublicPath() once
+        // @todo: in v13 this should be resolved by using Environment::getPublicPath() only
         if ($isFrontend) {
             // Frontend should still allow /static/myfile.css - see #98106
             // This should happen regardless of the incoming path is absolute or not
@@ -2130,34 +2130,30 @@ class GeneralUtility
             $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $path);
         }
 
-        $doNothing = false;
-
         if ($isFrontend) {
-            $mode = strtolower($GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename']);
-            if ($mode === 'embed') {
-                $mode = true;
+            $configValue = $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'] ?? false;
+            // Fallback layer for TYPO3 v12 - @deprecated can be removed in TYPO3 v13.0.
+            if ($configValue === 'embed') {
+                // no @deprecated warning here, as this might fill a lot of log files.
+                $configValue = true;
             } else {
-                if ($mode === 'querystring') {
-                    $mode = false;
-                } else {
-                    $doNothing = true;
-                }
+                $configValue = $configValue === true;
             }
         } else {
-            $mode = $GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename'];
+            $configValue = (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename'] ?? false);
         }
         try {
             $fileExists = file_exists($path);
         } catch (\Throwable $e) {
             $fileExists = false;
         }
-        if ($doNothing || !$fileExists) {
+        if (!$fileExists) {
             // File not found, return filename unaltered
             $fullName = $file;
         } else {
-            if (!$mode) {
-                // If use of .htaccess rule is not configured,
-                // we use the default query-string method
+            if (!$configValue) {
+                // If .htaccess rule is not configured,
+                // use the default query-string method
                 if (!empty($lookupFile[1])) {
                     $separator = '&';
                 } else {

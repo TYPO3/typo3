@@ -675,6 +675,24 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
+    public function migrateVersionNumberInFilenameDoesNothingIfOptionIsNotSet(): void
+    {
+        $configurationManagerException = new MissingArrayPathException('Path does not exist in array', 1676108609);
+        $configurationManagerMock = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $configurationManagerMock->method('getLocalConfigurationValueByPath')->willThrowException($configurationManagerException);
+        $configurationManagerMock->expects(self::never())->method('setLocalConfigurationValueByPath');
+
+        $silentConfigurationUpgradeService = $this->getAccessibleMock(
+            SilentConfigurationUpgradeService::class,
+            ['dummy'],
+            [$configurationManagerMock]
+        );
+        $silentConfigurationUpgradeService->_call('migrateVersionNumberInFileNameSetting');
+    }
+
+    /**
+     * @test
+     */
     public function migrateSaltedPasswordsSettingsDoesNothingIfExtensionConfigsAreNotSet(): void
     {
         $configurationManagerException = new MissingArrayPathException('Path does not exist in array', 1533989414);
