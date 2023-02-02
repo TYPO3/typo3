@@ -43,6 +43,8 @@ import RegularEvent from '@typo3/core/event/regular-event';
  *
  * @internal
  */
+type PersistStateObject = { [key: string]: boolean };
+
 export class CollapseStatePersister {
   private readonly localStorageKey: string = 'collapse-states-';
   private readonly localStorageKeyDefaultSuffix: string = 'general';
@@ -50,7 +52,11 @@ export class CollapseStatePersister {
   private searchField: HTMLInputElement|null = null;
   private searchForm: HTMLFormElement|null = null;
 
+  private stateCache: Map<string, PersistStateObject>;
+
   public constructor() {
+    this.stateCache = new Map();
+
     DocumentService.ready().then((): void => {
       this.searchField = document.querySelector(this.searchValueSelector);
       if (this.searchField !== null) {
@@ -141,15 +147,16 @@ export class CollapseStatePersister {
     return this.searchField !== null && this.searchField.value === '';
   }
 
-  private fromStorage(suffix: string): { [key: string]: boolean } {
-    const currentStates = Client.get(this.localStorageKey + suffix);
-    if (currentStates === null) {
-      return {};
+  private fromStorage(suffix: string): PersistStateObject {
+    let result;
+    if (this.stateCache.has(this.localStorageKey + suffix)) {
+      result = this.stateCache.get(this.localStorageKey + suffix);
+    } else {
+      const currentStates = Client.get(this.localStorageKey + suffix);
+      result = currentStates !== null ? JSON.parse(currentStates) : {};
+      this.stateCache.set(this.localStorageKey + suffix, result);
     }
-    // We may store currentStates in a class variable to not trigger JSON.parse() each time, and update
-    // a class variable instead in toStorage() when changed? However, maybe browsers "optimize-away" repeated
-    // JSON.parse() of the same string already, so repeating this every time here may be cost-free?
-    return JSON.parse(currentStates);
+    return result;
   }
 
   private toStorage(element: HTMLElement, expanded: boolean) {
@@ -160,20 +167,25 @@ export class CollapseStatePersister {
     const storeHiddenState = (element.dataset.persistCollapseStateIfState ?? 'hidden') === 'hidden';
     if (expanded === true && storeExpandedState === true && currentStates[key] !== true) {
       currentStates[key] = true;
-      Client.set(this.localStorageKey + suffix, JSON.stringify(currentStates));
+      this.updateStates(this.localStorageKey + suffix, currentStates);
     }
     if (expanded === true && storeHiddenState === true && currentStates[key] === false) {
       delete currentStates[key];
-      Client.set(this.localStorageKey + suffix, JSON.stringify(currentStates));
+      this.updateStates(this.localStorageKey + suffix, currentStates);
     }
     if (expanded === false && storeHiddenState === true && currentStates[key] !== false) {
       currentStates[key] = false;
-      Client.set(this.localStorageKey + suffix, JSON.stringify(currentStates));
+      this.updateStates(this.localStorageKey + suffix, currentStates);
     }
     if (expanded === false && storeExpandedState === true && currentStates[key] === true) {
       delete currentStates[key];
-      Client.set(this.localStorageKey + suffix, JSON.stringify(currentStates));
+      this.updateStates(this.localStorageKey + suffix, currentStates);
     }
+  }
+
+  private updateStates(key: string, currentStates: PersistStateObject) {
+    Client.set(key, JSON.stringify(currentStates));
+    this.stateCache.set(key, currentStates);
   }
 }
 
