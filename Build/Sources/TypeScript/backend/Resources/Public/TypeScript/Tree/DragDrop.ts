@@ -216,15 +216,7 @@ export class DragDrop {
   // Clean up after a finished drag+drop move
   public removeNodeDdClass(): void {
     const nodesWrap = this.tree.svg.node().querySelector('.nodes-wrapper');
-    // remove any classes from wrapper
-    [
-      'nodes-wrapper--nodrop',
-      'nodes-wrapper--ok-append',
-      'nodes-wrapper--ok-below',
-      'nodes-wrapper--ok-between',
-      'nodes-wrapper--ok-above',
-      'nodes-wrapper--dragging'
-    ].forEach((className: string) => nodesWrap.classList.remove(className) );
+    nodesWrap.classList.remove('nodes-wrapper--nodrop', 'nodes-wrapper--ok-append', 'nodes-wrapper--ok-below', 'nodes-wrapper--ok-between', 'nodes-wrapper--ok-above', 'nodes-wrapper--dragging');
 
     this.tree.nodesBgContainer.node().querySelector('.node-bg.node-bg--dragging')?.classList.remove('node-bg--dragging');
     this.tree.nodesBgContainer.selectAll('.node-bg__border').style('display', 'none');
@@ -243,10 +235,16 @@ export class DragDrop {
   }
 
   private applyNodeClassNames(target: HTMLElement|SVGElement, prefix: string, className: string): void {
-    const classNames = ['nodrop', 'ok-append', 'ok-below', 'ok-between', 'ok-above', 'dragging'];
+    const classNames = ['nodrop', 'ok-append', 'ok-below', 'ok-between', 'ok-above']
+      .filter((classNameToRemove: string) => classNameToRemove !== className)
+      .map((classNameToRemove: string) => prefix + classNameToRemove);
+
     // remove any existing classes
-    classNames.forEach((className: string) => target.classList.remove(prefix + className));
-    // apply new class
-    target.classList.add(prefix + className);
+    target.classList.remove(...classNames);
+
+    if (!target.classList.contains(prefix + className)) {
+      // apply new class
+      target.classList.add(prefix + className);
+    }
   }
 }
