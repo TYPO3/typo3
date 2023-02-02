@@ -17,10 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\NullLogger;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -28,6 +32,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Redirects\Event\BeforeRedirectMatchDomainEvent;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\RedirectService;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -109,7 +114,8 @@ class RedirectServiceTest extends FunctionalTestCase
         $redirectService = new RedirectService(
             new RedirectCacheService(),
             $linkServiceMock,
-            $siteFinder
+            $siteFinder,
+            new NoopEventDispatcher(),
         );
         $redirectService->setLogger($logger);
 
@@ -797,5 +803,64 @@ class RedirectServiceTest extends FunctionalTestCase
             self::assertEquals('TYPO3 Redirect ' . $expectedRedirectUid, $response->getHeader('X-Redirect-By')[0]);
             self::assertEquals($expectedRedirectUri, $response->getHeader('location')[0]);
         }
+    }
+
+    /**
+     * @test
+     */
+    public function beforeRedirectMatchDomainEventIsTriggered(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/BeforeRedirectMatchDomainEventIsTriggered.csv');
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1, 'https://acme.com/')
+        );
+        $typoscriptFile = Environment::getVarPath() . '/transient/setup.typoscript';
+        file_put_contents($typoscriptFile, 'page = PAGE' . PHP_EOL . 'page.typeNum = 0');
+        $this->testFilesToDelete[] = $typoscriptFile;
+        $this->setUpFrontendRootPage(1, [$typoscriptFile]);
+
+        $logger = new NullLogger();
+        $frontendUserAuthentication = new FrontendUserAuthentication();
+
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $uri = new Uri('https://acme.com/non-existing-page');
+        $request = $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest($uri))
+            ->withAttribute('site', $siteFinder->getSiteByRootPageId(1))
+            ->withAttribute('frontend.user', $frontendUserAuthentication)
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+
+        $dispatchedEvents = [];
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            'before-redirect-match-domain-event-is-triggered',
+            static function (BeforeRedirectMatchDomainEvent $event) use (
+                &$dispatchedEvents
+            ): void {
+                $dispatchedEvents[] = $event;
+                if ($event->getMatchDomainName() === '*') {
+                    $event->setMatchedRedirect(['wildcard-manual-matched' => $event->getPath()]);
+                }
+            }
+        );
+
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(BeforeRedirectMatchDomainEvent::class, 'before-redirect-match-domain-event-is-triggered');
+
+        $redirectService = new RedirectService(
+            new RedirectCacheService(),
+            new LinkService(),
+            $siteFinder,
+            $this->get(EventDispatcherInterface::class),
+        );
+        $redirectService->setLogger($logger);
+
+        $redirectMatch = $redirectService->matchRedirect($uri->getHost(), $uri->getPath(), $uri->getQuery());
+
+        self::assertCount(2, $dispatchedEvents);
+        self::assertNull($dispatchedEvents[0]->getMatchedRedirect());
+        self::assertEquals(['wildcard-manual-matched' => $uri->getPath()], $dispatchedEvents[1]->getMatchedRedirect());
+        self::assertSame(['wildcard-manual-matched' => $uri->getPath()], $redirectMatch);
     }
 }

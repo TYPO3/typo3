@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Service;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -39,6 +40,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
+use TYPO3\CMS\Redirects\Event\BeforeRedirectMatchDomainEvent;
 
 /**
  * Creates a proper URL to redirect from a matched redirect of a request
@@ -49,26 +51,12 @@ class RedirectService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var RedirectCacheService
-     */
-    protected $redirectCacheService;
-
-    /**
-     * @var LinkService
-     */
-    protected $linkService;
-
-    /**
-     * @var SiteFinder
-     */
-    protected $siteFinder;
-
-    public function __construct(RedirectCacheService $redirectCacheService, LinkService $linkService, SiteFinder $siteFinder)
-    {
-        $this->redirectCacheService = $redirectCacheService;
-        $this->linkService = $linkService;
-        $this->siteFinder = $siteFinder;
+    public function __construct(
+        private readonly RedirectCacheService $redirectCacheService,
+        private readonly LinkService $linkService,
+        private readonly SiteFinder $siteFinder,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
     /**
@@ -80,6 +68,17 @@ class RedirectService implements LoggerAwareInterface
         // Check if the domain matches, or if there is a
         // redirect fitting for any domain
         foreach ([$domain, '*'] as $domainName) {
+            $matchedRedirect = $this->eventDispatcher->dispatch(
+                new BeforeRedirectMatchDomainEvent(
+                    $domain,
+                    $path,
+                    $query,
+                    $domainName,
+                )
+            )->getMatchedRedirect();
+            if ($matchedRedirect !== null && $matchedRedirect !== []) {
+                return $matchedRedirect;
+            }
             $redirects = $this->fetchRedirects($domainName);
             if (empty($redirects)) {
                 continue;

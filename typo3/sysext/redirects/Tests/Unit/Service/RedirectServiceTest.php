@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Redirects\Tests\Unit\Service;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\NullLogger;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -54,7 +55,7 @@ class RedirectServiceTest extends UnitTestCase
         $this->siteFinder = $this->getMockBuilder(SiteFinder::class)->disableOriginalConstructor()->getMock();
         $this->redirectRepository = $this->getMockBuilder(RedirectRepository::class)->disableOriginalConstructor()->getMock();
 
-        $this->redirectService = new RedirectService($this->redirectCacheServiceMock, $this->linkServiceMock, $this->siteFinder);
+        $this->redirectService = new RedirectService($this->redirectCacheServiceMock, $this->linkServiceMock, $this->siteFinder, new NoopEventDispatcher());
         $this->redirectService->setLogger($logger);
 
         $GLOBALS['SIM_ACCESS_TIME'] = 42;
@@ -622,7 +623,7 @@ class RedirectServiceTest extends UnitTestCase
         $redirectService = $this->getAccessibleMock(
             RedirectService::class,
             ['getUriFromCustomLinkDetails'],
-            [$this->redirectCacheServiceMock, $this->linkServiceMock, $this->siteFinder, $this->redirectRepository],
+            [$this->redirectCacheServiceMock, $this->linkServiceMock, $this->siteFinder, new NoopEventDispatcher()],
             '',
         );
 

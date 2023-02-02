@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -41,6 +42,7 @@ class IntegrityServiceTest extends FunctionalTestCase
                 new RedirectCacheService(),
                 $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock(),
                 $siteFinder,
+                new NoopEventDispatcher(),
             ),
             $siteFinder
         );
