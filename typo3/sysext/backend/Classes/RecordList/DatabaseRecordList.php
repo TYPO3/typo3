@@ -137,10 +137,8 @@ class DatabaseRecordList
 
     /**
      * Field, to sort list by
-     *
-     * @var string
      */
-    public $sortField;
+    public string $sortField = '';
 
     /**
      * Data of the module from the user's session
@@ -277,14 +275,12 @@ class DatabaseRecordList
      *
      * @var bool
      */
-    public $sortRev;
+    public bool $sortRev = false;
 
     /**
      * String, can contain the field name from a table which must have duplicate values marked.
-     *
-     * @var string
      */
-    protected $duplicateField;
+    protected string $duplicateField = '';
 
     /**
      * Specify a list of tables which are the only ones allowed to be displayed.
@@ -411,7 +407,7 @@ class DatabaseRecordList
 
     /**
      * Returns a list of all fields / columns including meta columns such as
-     * "_REF_" or "_PATH_" which should be rendered for the databsae table.
+     * "_REF_" or "_PATH_" which should be rendered for the database table.
      */
     public function getColumnsToRender(string $table, bool $includeMetaColumns): array
     {
@@ -2139,10 +2135,9 @@ class DatabaseRecordList
         $this->showLimit = MathUtility::forceIntegerInRange((int)$showLimit, 0, 10000);
         $this->searchString = trim($search);
         $this->searchLevels = (int)$levels;
-        // Setting GPvars
-        $this->sortField = GeneralUtility::_GP('sortField');
-        $this->sortRev = GeneralUtility::_GP('sortRev');
-        $this->duplicateField = GeneralUtility::_GP('duplicateField');
+        $this->sortField = (string)($this->request->getParsedBody()['sortField'] ?? $this->request->getQueryParams()['sortField'] ?? '');
+        $this->sortRev = (bool)($this->request->getParsedBody()['sortRev'] ?? $this->request->getQueryParams()['sortRev'] ?? false);
+        $this->duplicateField = (string)($this->request->getParsedBody()['duplicateField'] ?? $this->request->getQueryParams()['duplicateField'] ?? '');
 
         // If there is a current link to a record, set the current link uid and get the table name from the link handler configuration
         $currentLinkValue = trim($this->overrideUrlParameters['P']['currentValue'] ?? '');

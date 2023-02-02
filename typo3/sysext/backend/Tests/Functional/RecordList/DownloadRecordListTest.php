@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Backend\RecordList\DownloadRecordList;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -42,6 +43,7 @@ class DownloadRecordListTest extends FunctionalTestCase
     public function downloadReturnsAListOfAllBackendUsers(): void
     {
         $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest(new ServerRequest());
         $recordList->start(0, 'be_users', 0);
         $recordList->setFields['be_users'] = [
             'username',
@@ -79,6 +81,7 @@ class DownloadRecordListTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages_download_record_list.csv');
         $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest(new ServerRequest());
         $recordList->start(1, 'pages', 0);
         $recordList->setFields['pages'] = [
             'uid',
@@ -168,6 +171,7 @@ class DownloadRecordListTest extends FunctionalTestCase
     public function downloadReturnsRawValues(): void
     {
         $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest(new ServerRequest());
         $recordList->start(0, 'be_users', 0);
         $recordList->setFields['be_users'] = [
             'username',
