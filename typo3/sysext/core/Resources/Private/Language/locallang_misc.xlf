@@ -441,18 +441,6 @@
 			<trans-unit id="liveSearch_help.shortcutOpen" resname="liveSearch_help.shortcutOpen">
 				<source>You can open the live search by pressing the Ctrl+K or Cmd+K keystroke</source>
 			</trans-unit>
-			<trans-unit id="viewPort_tooltipModuleMenuSplit" resname="viewPort_tooltipModuleMenuSplit">
-				<source>Drag to resize the Modules Menu</source>
-			</trans-unit>
-			<trans-unit id="viewPort_tooltipNavigationContainerSplitDrag" resname="viewPort_tooltipNavigationContainerSplitDrag">
-				<source>Drag to resize or double click to collapse the page tree area</source>
-			</trans-unit>
-			<trans-unit id="viewPort_tooltipNavigationContainerSplitClick" resname="viewPort_tooltipNavigationContainerSplitClick">
-				<source>Click to toggle the page tree area</source>
-			</trans-unit>
-			<trans-unit id="viewPort_tooltipDebugPanelSplitDrag" resname="viewPort_tooltipDebugPanelSplitDrag">
-				<source>Drag to resize or click to collapse the Debug Panel.</source>
-			</trans-unit>
 			<trans-unit id="viewport_navigation_show" resname="viewport_navigation_show">
 				<source>Show Navigation</source>
 			</trans-unit>

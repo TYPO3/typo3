@@ -1401,9 +1401,6 @@ Do you want to refresh it now?</source>
 			<trans-unit id="link.to.filefile.correctly" resname="link.to.filefile.correctly">
 				<source>Please, do not link to this page.</source>
 			</trans-unit>
-			<trans-unit id="csh_tooltip_loading" resname="csh_tooltip_loading">
-				<source>Loading help...</source>
-			</trans-unit>
 			<trans-unit id="error.database_schema_mismatch" resname="error.database_schema_mismatch">
 				<source>A SQL error occurred. This may indicate a schema mismatch between TCA and the database. Try running database compare in the Install Tool.</source>
 			</trans-unit>
