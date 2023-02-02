@@ -109,6 +109,11 @@ class DragUploaderPlugin {
   private readonly defaultAction: Action;
   private manuallyTriggered: boolean;
 
+  /**
+   * This property controls whether a drag was started within the document. If true, dropzones become unavailable.
+   */
+  private dragStartedInDocument: boolean = false;
+
   constructor(element: HTMLElement) {
     this.$body = $('body');
     this.$element = $(element);
@@ -154,6 +159,9 @@ class DragUploaderPlugin {
       return;
     }
 
+    this.$body.on('dragstart', (e: JQueryEventObject): void => {
+      this.dragStartedInDocument = true;
+    });
     this.$body.on('dragover', this.dragFileIntoDocument);
     this.$body.on('dragend', this.dragAborted);
     this.$body.on('drop', this.ignoreDrop);
@@ -240,6 +248,10 @@ class DragUploaderPlugin {
    * @returns {boolean}
    */
   public dragFileIntoDocument = (event: JQueryTypedEvent<DragEvent>): boolean => {
+    if (this.dragStartedInDocument) {
+      return false;
+    }
+
     event.stopPropagation();
     event.preventDefault();
     $(event.currentTarget).addClass('drop-in-progress');
@@ -260,6 +272,7 @@ class DragUploaderPlugin {
     event.stopPropagation();
     event.preventDefault();
     $(event.currentTarget).removeClass('drop-in-progress');
+    this.dragStartedInDocument = false;
     return false;
   }
 
