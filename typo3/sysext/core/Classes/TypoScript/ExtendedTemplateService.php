@@ -706,7 +706,7 @@ class ExtendedTemplateService extends TemplateService
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $GLOBALS['BE_USER']->workspace));
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->context->getAspect('workspace')->get('id')));
 
         $queryBuilder->select('*')
             ->from('sys_template')
