@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, TemplateResult, LitElement} from 'lit';
+import {html, css, TemplateResult, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators';
 import Notification from '@typo3/backend/notification';
 import {lll} from '@typo3/core/lit-helper';
@@ -29,6 +29,7 @@ import {lll} from '@typo3/core/lit-helper';
  */
 @customElement('typo3-copy-to-clipboard')
 class CopyToClipboard extends LitElement {
+  static styles = [css`:host { cursor: pointer; appearance: button; }`];
   @property({type: String}) text: string;
 
   public constructor() {
@@ -37,6 +38,21 @@ class CopyToClipboard extends LitElement {
       e.preventDefault();
       this.copyToClipboard()
     });
+    this.addEventListener('keydown', (e: KeyboardEvent): void => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        this.copyToClipboard()
+      }
+    })
+  }
+
+  public connectedCallback(): void {
+    if (!this.hasAttribute('role')) {
+      this.setAttribute('role', 'button');
+    }
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', '0');
+    }
   }
 
   protected render(): TemplateResult {

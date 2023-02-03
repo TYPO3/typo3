@@ -424,7 +424,8 @@ class PermissionController
                     ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_BeuserTxPermission', ['depth' => $value]));
             }
             $viewModeButton = $buttonBar->makeDropDownButton()
-                ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'));
+                ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'))
+                ->setShowLabelText(true);
             foreach ($viewModeItems as $viewModeItem) {
                 $viewModeButton->addItem($viewModeItem);
             }

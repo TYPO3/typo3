@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Backend\Template\Components\Buttons;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * InputButton
  *
@@ -150,7 +152,7 @@ class InputButton extends AbstractButton
     {
         $attributes = [
             'name' => $this->getName(),
-            'class' => 'btn btn-default btn-sm ' . $this->getClasses(),
+            'class' => 'btn btn-sm btn-default ' . $this->getClasses(),
             'value' => $this->getValue(),
             'title' => $this->getTitle(),
             'form' => trim($this->getForm()),
@@ -165,15 +167,11 @@ class InputButton extends AbstractButton
         foreach ($this->dataAttributes as $attributeName => $attributeValue) {
             $attributes['data-' . $attributeName] = $attributeValue;
         }
-        $attributesString = '';
-        foreach ($attributes as $key => $value) {
-            if ($value !== '') {
-                $attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
-            }
-        }
-        return '<button' . $attributesString . '>'
+        $attributesString = GeneralUtility::implodeAttributes($attributes, true);
+
+        return '<button ' . $attributesString . '>'
             . $this->getIcon()->render() . htmlspecialchars($labelText)
-        . '</button>';
+            . '</button>';
     }
 
     /**

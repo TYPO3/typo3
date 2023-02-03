@@ -13,23 +13,35 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
+namespace TYPO3\CMS\Backend\Template\Components\Buttons;
 
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-abstract class AbstractDropDownItem implements \Stringable
+/**
+ * GenericButton
+ *
+ * $button = GeneralUtility::makeInstance(GenericButton::class)
+ *     ->setTag('a')
+ *     ->setHref('#')
+ *     ->setLabel('Label')
+ *     ->setTitle('Title')
+ *     ->setIcon($this->iconFactory->getIcon('actions-heart'))
+ *     ->setAttributes(['data-value' => '123']);
+ */
+class GenericButton implements ButtonInterface
 {
-    protected string $tag = 'a';
+    protected string $tag = 'button';
     protected ?Icon $icon = null;
-    protected ?string $label = null;
+    protected string $label = '';
     protected ?string $title = null;
     protected ?string $href = null;
     protected array $attributes = [];
+    protected bool $showLabelText = false;
 
     public function setTag(string $tag): self
     {
-        $this->$tag = htmlspecialchars(trim($tag));
+        $this->tag = htmlspecialchars(trim($tag));
         return $this;
     }
 
@@ -102,9 +114,22 @@ abstract class AbstractDropDownItem implements \Stringable
         return $this->attributes;
     }
 
+    public function getShowLabelText(): bool
+    {
+        return $this->showLabelText;
+    }
+
+    public function setShowLabelText(bool $showLabelText): self
+    {
+        $this->showLabelText = $showLabelText;
+        return $this;
+    }
+
     public function isValid(): bool
     {
-        return $this->getLabel() !== null && trim($this->getLabel()) !== '';
+        return !empty($this->getLabel())
+            && $this->getType() === self::class
+            && $this->getIcon() !== null;
     }
 
     public function getType(): string
@@ -126,12 +151,18 @@ abstract class AbstractDropDownItem implements \Stringable
         return GeneralUtility::implodeAttributes($attributes, true);
     }
 
-    protected function getRenderedIcon(): string
+    public function render(): string
     {
-        return $this->getIcon()?->render() ?? '';
-    }
+        $labelText = '';
+        if ($this->getShowLabelText()) {
+            $labelText = $this->getLabel();
+        }
 
-    abstract public function render();
+        return '<' . $this->getTag() . ' ' . $this->getAttributesString() . '>'
+            . ($this->getIcon() ? $this->getIcon()->render() : '')
+            . htmlspecialchars($labelText)
+            . '</' . $this->getTag() . '>';
+    }
 
     public function __toString(): string
     {

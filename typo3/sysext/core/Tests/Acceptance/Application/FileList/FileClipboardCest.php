@@ -50,7 +50,7 @@ final class FileClipboardCest
     public function seeAddRemoveSingleRecord(ApplicationTester $I): void
     {
         $fileName = 'bus_lane.jpg';
-        $I->click('//*[text()="View"]');
+        $I->click('//*[text()=" View"]');
         $I->click('//*[text()="List"]');
         $I->waitForText('styleguide');
         $I->click('styleguide');
@@ -65,7 +65,7 @@ final class FileClipboardCest
     public function seeAddRemoveMultipleRecords(ApplicationTester $I): void
     {
         $expectedFiles = ['bus_lane.jpg', 'telephone_box.jpg', 'underground.jpg'];
-        $I->click('//*[text()="View"]');
+        $I->click('//*[text()=" View"]');
         $I->click('//*[text()="List"]');
         $I->waitForText('styleguide');
         $I->click('styleguide');

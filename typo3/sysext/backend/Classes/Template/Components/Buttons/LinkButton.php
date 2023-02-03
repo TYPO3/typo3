@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Backend\Template\Components\Buttons;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * LinkButton
  *
@@ -92,7 +94,7 @@ class LinkButton extends AbstractButton
     {
         $attributes = [
             'href' => $this->getHref(),
-            'class' => 'btn btn-default btn-sm ' . $this->getClasses(),
+            'class' => 'btn btn-sm btn-default ' . $this->getClasses(),
             'title' => $this->getTitle(),
         ];
         $labelText = '';
@@ -106,14 +108,11 @@ class LinkButton extends AbstractButton
             $attributes['disabled'] = 'disabled';
             $attributes['class'] .= ' disabled';
         }
-        $attributesString = '';
-        foreach ($attributes as $key => $value) {
-            $attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
-        }
+        $attributesString = GeneralUtility::implodeAttributes($attributes, true);
 
         return '<a ' . $attributesString . '>'
             . $this->getIcon()->render() . htmlspecialchars($labelText)
-        . '</a>';
+            . '</a>';
     }
 
     /**

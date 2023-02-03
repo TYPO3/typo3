@@ -37,7 +37,6 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\PositionInterface;
 class HelpButton implements ButtonInterface, PositionInterface
 {
     /**
-    /**
      * @var string
      */
     protected $moduleName;

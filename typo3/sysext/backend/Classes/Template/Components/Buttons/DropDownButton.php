@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *      ->setLabel('Dropdown')
  *      ->setTitle('Save')
  *      ->setIcon($this->iconFactory->getIcon('actions-heart'))
+ *      ->getShowLabelText(true)
  *      ->addItem(
  *          GeneralUtility::makeInstance(DropDownItem::class)
  *              ->setLabel('Item')
@@ -48,6 +49,7 @@ class DropDownButton implements ButtonInterface
     protected string $label = '';
     protected ?string $title = null;
     protected array $items = [];
+    protected bool $showLabelText = false;
 
     public function getIcon(): ?Icon
     {
@@ -85,6 +87,17 @@ class DropDownButton implements ButtonInterface
         return $this;
     }
 
+    public function getShowLabelText(): bool
+    {
+        return $this->showLabelText;
+    }
+
+    public function setShowLabelText(bool $showLabelText): self
+    {
+        $this->showLabelText = $showLabelText;
+        return $this;
+    }
+
     public function addItem(DropDownItemInterface $item): self
     {
         if (!$item->isValid()) {
@@ -115,6 +128,7 @@ class DropDownButton implements ButtonInterface
     public function isValid()
     {
         return !empty($this->getLabel())
+            && ($this->getShowLabelText() || $this->getIcon())
             && !empty($this->getItems());
     }
 
@@ -156,10 +170,15 @@ class DropDownButton implements ButtonInterface
             $attributes['title'] = $this->getTitle();
         }
 
+        $labelText = '';
+        if ($this->getShowLabelText()) {
+            $labelText = ' ' . $this->getLabel();
+        }
+
         $content = '<div class="btn-group">'
-            . '<button ' . GeneralUtility::implodeAttributes($attributes) . '>'
+            . '<button ' . GeneralUtility::implodeAttributes($attributes, true) . '>'
             . ($this->getIcon() !== null ? $this->getIcon()->render() : '')
-            . htmlspecialchars($this->getLabel())
+            . htmlspecialchars($labelText)
             . '</button>'
             . '<ul class="dropdown-menu">';
 
@@ -169,8 +188,7 @@ class DropDownButton implements ButtonInterface
         }
         $content .= '
             </ul>
-        </div>
-        ';
+        </div>';
         return $content;
     }
 

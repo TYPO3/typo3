@@ -35,7 +35,7 @@ final class BookmarkCest
     /**
      * Selector for the "Add to bookmark" button
      */
-    private static string $docHeaderBookmarkButtonSelector = '#dropdownShortcutMenu';
+    private static string $docHeaderBookmarkButtonSelector = 'button[title="Share"]';
 
     public function _before(ApplicationTester $I): void
     {

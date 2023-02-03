@@ -20,6 +20,9 @@ use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
+use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\PositionInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -204,88 +207,66 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         $alreadyBookmarkedText = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.alreadyBookmarked');
 
         if (!$this->copyUrlToClipboard) {
-            return GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)
-                ? '<button type="button" class="active btn btn-default btn-sm" title="' . htmlspecialchars($alreadyBookmarkedText) . '">'
-                    . $iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL)->render()
-                    . '</button>'
-                : '<button type="button" class="btn btn-default btn-sm" title="' . htmlspecialchars($confirmationText) . '" ' . $this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText) . '>'
-                    . $iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render()
-                    . '</button>';
+            $shortcutButton = GeneralUtility::makeInstance(GenericButton::class);
+            if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)) {
+                $shortcutButton->setLabel($alreadyBookmarkedText);
+                $shortcutButton->setIcon($iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL));
+            } else {
+                $shortcutButton->setIcon($iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL));
+                $shortcutButton->setLabel($confirmationText);
+                $shortcutButton->setAttributes($this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText));
+            }
+            return (string)$shortcutButton;
         }
 
-        $menuItems = [];
+        $dropdownItems = [];
 
+        // Shortcut Button
+        $shortcutItem = GeneralUtility::makeInstance(DropDownItem::class);
+        $shortcutItem->setTag('button');
         if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)) {
-            $menuItems[] =
-                '<li>' .
-                    '<button type="button" class="dropdown-item disabled">' .
-                        '<span class="dropdown-item-columns">' .
-                            '<span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">' .
-                                $iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL)->render() .
-                            '</span>' .
-                            '<span class="dropdown-item-column dropdown-item-column-title">' .
-                                htmlspecialchars($alreadyBookmarkedText) .
-                            '</span>' .
-                        '</span>' .
-                    '</button>' .
-                '</li>';
+            $shortcutItem->setLabel($alreadyBookmarkedText);
+            $shortcutItem->setIcon($iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL));
         } else {
-            $menuItems[] = '
-                <li>' .
-                    '<button type="button" class="dropdown-item" ' . $this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText) . '>' .
-                        '<span class="dropdown-item-columns">' .
-                            '<span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">' .
-                                $iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() .
-                            '</span>' .
-                            '<span class="dropdown-item-column dropdown-item-column-title">' .
-                                htmlspecialchars($confirmationText) .
-                            '</span>' .
-                        '</span>' .
-                    '</button>' .
-                '</li>';
+            $shortcutItem->setLabel($confirmationText);
+            $shortcutItem->setIcon($iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL));
+            $shortcutItem->setAttributes($this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText));
         }
+        $dropdownItems[] = $shortcutItem;
 
+        // Clipboard Button
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->loadJavaScriptModule('@typo3/backend/copy-to-clipboard.js');
         $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_copytoclipboard.xlf');
+        $clipboardItem = GeneralUtility::makeInstance(DropDownItem::class);
+        $clipboardItem->setTag('typo3-copy-to-clipboard');
+        $clipboardItem->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.copyCurrentUrl'));
+        $clipboardItem->setAttributes([
+            'text' => GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
+                $routeIdentifier,
+                $arguments,
+                UriBuilder::SHAREABLE_URL
+            ),
+        ]);
+        $clipboardItem->setIcon($iconFactory->getIcon('actions-link', Icon::SIZE_SMALL));
+        $dropdownItems[] = $clipboardItem;
 
-        $currentUrl = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
-            $routeIdentifier,
-            $arguments,
-            UriBuilder::SHAREABLE_URL
-        );
+        $dropdownButton = GeneralUtility::makeInstance(DropDownButton::class);
+        $dropdownButton->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.share'));
+        $dropdownButton->setIcon($iconFactory->getIcon('actions-share-alt', Icon::SIZE_SMALL));
+        foreach ($dropdownItems as $dropdownItem) {
+            $dropdownButton->addItem($dropdownItem);
+        }
 
-        $menuItems[] = '
-            <li>
-                <typo3-copy-to-clipboard text="' . htmlspecialchars($currentUrl) . '">
-                    <button type="button" class="dropdown-item">' .
-                        '<span class="dropdown-item-columns">' .
-                            '<span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">' .
-                                $iconFactory->getIcon('actions-link', Icon::SIZE_SMALL)->render() .
-                            '</span>' .
-                            '<span class="dropdown-item-column dropdown-item-column-title">' .
-                                htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.copyCurrentUrl')) .
-                            '</span>' .
-                        '</span>' .
-                    '</button>' .
-                '</typo3-copy-to-clipboard>' .
-            '</li>';
-
-        return '
-            <button type="button" class="btn btn-default btn-sm" id="dropdownShortcutMenu" data-bs-toggle="dropdown" aria-expanded="false" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.share')) . '">' .
-                $iconFactory->getIcon('actions-share-alt', Icon::SIZE_SMALL)->render() .
-            '</button>' .
-            '<ul class="dropdown-menu" aria-labelledby="dropdownShortcutMenu">' .
-                implode(LF, $menuItems) .
-            '</ul>';
+        return (string)$dropdownButton;
     }
 
     /**
      * Returns HTML attributes for client-side `ActionDispatcher` of the "add shortcut" button.
      */
-    protected function getDispatchActionAttrs(string $routeIdentifier, string $encodedArguments, string $confirmationText): string
+    protected function getDispatchActionAttrs(string $routeIdentifier, string $encodedArguments, string $confirmationText): array
     {
-        $attrs = [
+        return [
             'data-dispatch-action' => 'TYPO3.ShortcutMenu.createShortcut',
             'data-dispatch-args' => GeneralUtility::jsonEncodeForHtmlAttribute([
                 $routeIdentifier,
@@ -293,9 +274,8 @@ class ShortcutButton implements ButtonInterface, PositionInterface
                 $this->displayName,
                 $confirmationText,
                 '{$target}',
-            ], false),
+            ]),
         ];
-        return GeneralUtility::implodeAttributes($attrs, true);
     }
 
     protected function routeExists(string $routeIdentifier): bool

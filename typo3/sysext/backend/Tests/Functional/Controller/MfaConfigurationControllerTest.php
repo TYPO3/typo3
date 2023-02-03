@@ -171,7 +171,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
 
         self::assertEquals(200, $response->getStatusCode());
         $response->getBody()->rewind();
-        self::assertStringContainsString('href="' . $returnUrl . '" class="btn btn-default btn-sm " title="Go back"', $response->getBody()->getContents());
+        self::assertStringContainsString('href="' . $returnUrl . '" class="btn btn-sm btn-default " title="Go back"', $response->getBody()->getContents());
     }
 
     /**
