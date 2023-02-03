@@ -22,19 +22,3 @@ services:
     arguments:
       $excludedDoktypes: [ 3, 4, 6, 7, 199, 254, 255 ]
       $limit: 8
-
-  dashboard.widget.pagesWithoutMetaDescription:
-    class: TYPO3\CMS\Seo\Widgets\PagesWithoutDescriptionWidget
-    arguments:
-      $dataProvider: '@TYPO3\CMS\Seo\Widgets\Provider\PagesWithoutDescriptionDataProvider'
-      $options:
-        refreshAvailable: true
-    tags:
-      - name: dashboard.widget
-        identifier: 'seo-pagesWithoutMetaDescription'
-        groupNames: 'seo'
-        title: 'LLL:EXT:seo/Resources/Private/Language/locallang_dashboard.xlf:widget.pagesWithoutMetaDescription.title'
-        description: 'LLL:EXT:seo/Resources/Private/Language/locallang_dashboard.xlf:widget.pagesWithoutMetaDescription.description'
-        iconIdentifier: 'content-widget-list'
-        height: 'large'
-        width: 'medium'
