@@ -55,8 +55,8 @@ class ClickEnlargeViewHelper extends AbstractViewHelper
         $this->registerArgument('image', FileInterface::class, 'The original image file', true);
         $this->registerArgument(
             'configuration',
-            'mixed',
-            'String, \TYPO3\CMS\Core\Resource\File or \TYPO3\CMS\Core\Resource\FileReference with link configuration',
+            'array',
+            'TypoScript properties for the "imageLinkWrap" function',
             true
         );
     }
