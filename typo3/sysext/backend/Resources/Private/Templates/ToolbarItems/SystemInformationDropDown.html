@@ -43,13 +43,13 @@
 <f:if condition="{messages -> f:count()} > 0">
     <f:then>
         <f:for each="{messages}" as="message">
-            <div class="d-flex align-items-start dropdown-row">
-                <div class="dropdown-row-icon">
+            <div class="dropdown-row">
+                <div>
                     <span class="text-{message.status}">
                         <core:icon identifier="actions-exclamation-circle-alt" />
                     </span>
                 </div>
-                <div class="dropdown-row-message">
+                <div>
                     <f:if condition="{message.module}">
                         <f:then>
                             <p
@@ -74,13 +74,13 @@
         </f:for>
     </f:then>
     <f:else>
-        <div class="d-flex align-items-start dropdown-row">
-            <div class="dropdown-row-icon">
+        <div class="dropdown-row">
+            <div>
                 <span class="text-success">
                     <core:icon identifier="actions-check-circle-alt" />
                 </span>
             </div>
-            <div class="dropdown-row-message">
+            <div>
                 <p>
                     <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.systemStatus.header" /></strong><br>
                     <f:format.nl2br><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.allgood" /></f:format.nl2br>
