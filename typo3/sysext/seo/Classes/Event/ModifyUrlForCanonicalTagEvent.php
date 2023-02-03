@@ -19,17 +19,18 @@ namespace TYPO3\CMS\Seo\Event;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Domain\Page;
+use TYPO3\CMS\Seo\Exception\CanonicalGenerationDisabledException;
 
 /**
  * PSR-14 event to alter (or empty) a canonical URL for the href="" attribute of a canonical URL.
  */
 final class ModifyUrlForCanonicalTagEvent
 {
-    private string $url = '';
-
     public function __construct(
         private readonly ServerRequestInterface $request,
-        private readonly Page $page
+        private readonly Page $page,
+        private string $url,
+        private readonly ?CanonicalGenerationDisabledException $canonicalGenerationDisabledException
     ) {}
 
     public function getUrl(): string
@@ -50,5 +51,10 @@ final class ModifyUrlForCanonicalTagEvent
     public function getPage(): Page
     {
         return $this->page;
+    }
+
+    public function getCanonicalGenerationDisabledException(): ?CanonicalGenerationDisabledException
+    {
+        return $this->canonicalGenerationDisabledException;
     }
 }

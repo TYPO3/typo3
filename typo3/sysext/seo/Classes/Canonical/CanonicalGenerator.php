@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Utility\CanonicalizationUtility;
 use TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent;
+use TYPO3\CMS\Seo\Exception\CanonicalGenerationDisabledException;
 
 /**
  * Class to add the canonical tag to the page
@@ -43,33 +44,36 @@ readonly class CanonicalGenerator
         /** @var ServerRequestInterface $request */
         $request = $params['request'];
         $pageRecord = $request->getAttribute('frontend.page.information')->getPageRecord();
-        if ($request->getAttribute('frontend.controller')->config['config']['disableCanonical'] ?? false) {
-            return '';
-        }
+        $canonicalGenerationDisabledException = null;
 
-        $event = new ModifyUrlForCanonicalTagEvent($request, new Page($pageRecord));
-        $event = $this->eventDispatcher->dispatch($event);
-        $href = $event->getUrl();
+        $href = '';
+        try {
+            if ($request->getAttribute('frontend.controller')->config['config']['disableCanonical'] ?? false) {
+                throw new CanonicalGenerationDisabledException('Generation of the canonical tag is disabled via TypoScript "disableCanonical"', 1706104146);
+            }
+            if ((int)$pageRecord['no_index'] === 1) {
+                throw new CanonicalGenerationDisabledException('Generation of the canonical is disabled due to "no_index" being set active in the page properties', 1706104147);
+            }
 
-        $pageInformation = $request->getAttribute('frontend.page.information');
-        if (empty($href) && (int)$pageInformation->getPageRecord()['no_index'] === 1) {
-            return '';
-        }
-
-        if (empty($href)) {
             // 1) Check if page has canonical URL set
             $href = $this->checkForCanonicalLink($request);
-        }
-        if (empty($href)) {
-            // 2) Check if page show content from other page
-            $href = $this->checkContentFromPid($request);
-        }
-        if (empty($href)) {
-            // 3) Fallback, create canonical URL
-            $href = $this->checkDefaultCanonical($request);
+            if ($href === '') {
+                // 2) Check if page show content from other page
+                $href = $this->checkContentFromPid($request);
+            }
+            if ($href === '') {
+                // 3) Fallback, create canonical URL
+                $href = $this->checkDefaultCanonical($request);
+            }
+        } catch (CanonicalGenerationDisabledException $canonicalGenerationDisabledException) {
+        } finally {
+            $event = $this->eventDispatcher->dispatch(
+                new ModifyUrlForCanonicalTagEvent($request, new Page($pageRecord), $href, $canonicalGenerationDisabledException)
+            );
+            $href = $event->getUrl();
         }
 
-        if (!empty($href)) {
+        if ($href !== '') {
             $canonical = '<link ' . GeneralUtility::implodeAttributes([
                 'rel' => 'canonical',
                 'href' => $href,
@@ -134,7 +138,7 @@ readonly class CanonicalGenerator
         // Temporarily remove current mount point information as we want to have the
         // URL of the target page and not of the page within the mount point if the
         // current page is a mount point.
-        $pageInformation = clone $request->getAttribute('frontend.page.information');
+        $pageInformation = clone $pageInformation;
         $pageInformation->setMountPoint('');
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $request->getAttribute('frontend.controller'));

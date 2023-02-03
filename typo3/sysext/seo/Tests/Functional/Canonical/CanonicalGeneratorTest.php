@@ -25,6 +25,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\CMS\Seo\Canonical\CanonicalGenerator;
 use TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent;
+use TYPO3\CMS\Seo\Exception\CanonicalGenerationDisabledException;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -161,6 +162,7 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
             'modify-url-for-canonical-tag-listener',
             static function (ModifyUrlForCanonicalTagEvent $event) use (&$modifyUrlForCanonicalTagEvent) {
                 $modifyUrlForCanonicalTagEvent = $event;
+                $modifyUrlForCanonicalTagEvent->setUrl('https://canonical-url.com');
             }
         );
 
@@ -181,9 +183,11 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
         $this->get(CanonicalGenerator::class)->generate(['request' => $request]);
 
         self::assertInstanceOf(ModifyUrlForCanonicalTagEvent::class, $modifyUrlForCanonicalTagEvent);
-        self::assertEmpty('', $modifyUrlForCanonicalTagEvent->getUrl());
-        self::assertEquals('https://example.com', (string)$modifyUrlForCanonicalTagEvent->getRequest()->getUri());
-        self::assertEquals(123, $modifyUrlForCanonicalTagEvent->getPage()->getPageId());
+        self::assertSame('https://canonical-url.com', $modifyUrlForCanonicalTagEvent->getUrl());
+        self::assertSame('https://example.com', (string)$modifyUrlForCanonicalTagEvent->getRequest()->getUri());
+        self::assertSame(123, $modifyUrlForCanonicalTagEvent->getPage()->getPageId());
+        self::assertInstanceOf(CanonicalGenerationDisabledException::class, $modifyUrlForCanonicalTagEvent->getCanonicalGenerationDisabledException());
+        self::assertSame(1706104147, $modifyUrlForCanonicalTagEvent->getCanonicalGenerationDisabledException()->getCode());
     }
 
     private function buildPageTypoScript(): TypoScriptInstruction

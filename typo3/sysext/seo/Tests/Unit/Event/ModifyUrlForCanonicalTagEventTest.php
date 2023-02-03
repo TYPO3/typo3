@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Seo\Tests\Unit\Event;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent;
+use TYPO3\CMS\Seo\Exception\CanonicalGenerationDisabledException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ModifyUrlForCanonicalTagEventTest extends UnitTestCase
@@ -31,11 +32,35 @@ final class ModifyUrlForCanonicalTagEventTest extends UnitTestCase
     {
         $request = (new ServerRequest(''));
         $page = new Page(['uid' => 123]);
-        $event = new ModifyUrlForCanonicalTagEvent($request, $page);
-        $event->setUrl('https://example.com');
+        $url = 'https://example.com';
+        $exception = new CanonicalGenerationDisabledException('disabled', 1706105185);
+        $event = new ModifyUrlForCanonicalTagEvent($request, $page, $url, $exception);
 
-        self::assertEquals('https://example.com', $event->getUrl());
-        self::assertEquals($request, $event->getRequest());
-        self::assertEquals($page, $event->getPage());
+        self::assertSame($url, $event->getUrl());
+        self::assertSame($request, $event->getRequest());
+        self::assertSame($page, $event->getPage());
+        self::assertSame($exception, $event->getCanonicalGenerationDisabledException());
+    }
+
+    /**
+     * @test
+     */
+    public function setOverwritesParameters(): void
+    {
+        $request = (new ServerRequest(''));
+        $page = new Page(['uid' => 123]);
+        $url = 'https://example.com';
+        $exception = new CanonicalGenerationDisabledException('disabled', 1706105186);
+        $event = new ModifyUrlForCanonicalTagEvent($request, $page, $url, $exception);
+
+        self::assertSame($url, $event->getUrl());
+        self::assertSame($request, $event->getRequest());
+        self::assertSame($page, $event->getPage());
+        self::assertSame($exception, $event->getCanonicalGenerationDisabledException());
+
+        $newUrl = 'https://new-url.com';
+        $event->setUrl($newUrl);
+
+        self::assertSame($newUrl, $event->getUrl());
     }
 }
