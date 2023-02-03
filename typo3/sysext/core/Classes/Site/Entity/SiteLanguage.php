@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Site\Entity;
 
 use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Localization\Locale;
 
 /**
  * Entity representing a site_language configuration of a site object.
@@ -32,11 +33,9 @@ class SiteLanguage
     protected $languageId;
 
     /**
-     * Locale, like 'de_CH' or 'en_GB'
-     *
-     * @var string
+     * Locale, like 'de-CH' or 'en-GB'
      */
-    protected $locale;
+    protected Locale $locale;
 
     /**
      * The Base URL for this language
@@ -125,7 +124,7 @@ class SiteLanguage
     public function __construct(int $languageId, string $locale, UriInterface $base, array $configuration)
     {
         $this->languageId = $languageId;
-        $this->locale = $locale;
+        $this->locale = new Locale($locale);
         $this->base = $base;
         $this->configuration = $configuration;
 
@@ -184,7 +183,8 @@ class SiteLanguage
     {
         return array_merge($this->configuration, [
             'languageId' => $this->getLanguageId(),
-            'locale' => $this->getLocale(),
+            // kept for backwards-compat for the time being, might change to BGP-47 format
+            'locale' => $this->getLocale()->posixFormatted(),
             'base' => (string)$this->getBase(),
             'title' => $this->getTitle(),
             'websiteTitle' => $this->getWebsiteTitle(),
@@ -205,7 +205,7 @@ class SiteLanguage
         return $this->languageId;
     }
 
-    public function getLocale(): string
+    public function getLocale(): Locale
     {
         return $this->locale;
     }

@@ -32,6 +32,7 @@ class Locale implements \Stringable
     protected string $languageCode;
     protected ?string $languageScript = null;
     protected ?string $countryCode = null;
+    protected ?string $codeSet = null;
 
     /**
      * List of language dependencies for an actual language. This setting is used for local variants of a language
@@ -46,6 +47,9 @@ class Locale implements \Stringable
         array $dependencies = []
     ) {
         $locale = $this->normalize($locale);
+        if (str_contains($locale, '.')) {
+            [$locale, $this->codeSet] = explode('.', $locale);
+        }
         if (str_contains($locale, '-')) {
             [$this->languageCode, $tail] = explode('-', $locale, 2);
             if (str_contains($tail, '-')) {
@@ -71,9 +75,6 @@ class Locale implements \Stringable
         return $this->locale;
     }
 
-    /**
-     * @return string
-     */
     public function getLanguageCode(): string
     {
         return $this->languageCode;
@@ -87,6 +88,25 @@ class Locale implements \Stringable
     public function getCountryCode(): ?string
     {
         return $this->countryCode;
+    }
+
+    /**
+     * Return the locale as ISO/IEC 15897 format, including a possible POSIX charset
+     * "cs_CZ.UTF-8"
+     * see https://en.wikipedia.org/wiki/ISO/IEC_15897
+     * https://en.wikipedia.org/wiki/Locale_(computer_software)#POSIX_platforms
+     * @internal
+     */
+    public function posixFormatted(): string
+    {
+        $formatted = $this->languageCode;
+        if ($this->countryCode) {
+            $formatted .= '_' . $this->countryCode;
+        }
+        if ($this->codeSet) {
+            $formatted .= '.' . $this->codeSet;
+        }
+        return $formatted;
     }
 
     public function getDependencies(): array
@@ -103,9 +123,6 @@ class Locale implements \Stringable
             $locale = str_replace('_', '-', $locale);
         }
 
-        if (str_contains($locale, '.')) {
-            [$locale] = explode('.', $locale);
-        }
         return $locale;
     }
 

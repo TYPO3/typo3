@@ -421,14 +421,15 @@ class ConditionMatcherTest extends FunctionalTestCase
                 [
                     'languageId' => 2,
                     'title' => 'UK',
-                    'locale' => 'en_UK.UTF-8',
+                    'locale' => 'en-UK',
                 ],
             ],
         ]);
         $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('language', $site->getLanguageById(0));
         $subject = $this->getConditionMatcher();
-        self::assertTrue($subject->match('[siteLanguage("locale") == "en_US.UTF-8"]'));
-        self::assertTrue($subject->match('[siteLanguage("locale") in ["de_DE", "en_US.UTF-8"]]'));
+        self::assertTrue($subject->match('[siteLanguage("locale") == "en-US"]'));
+        self::assertTrue($subject->match('[siteLanguage("locale").posixFormatted() == "en_US.UTF-8"]'));
+        self::assertTrue($subject->match('[siteLanguage("locale").posixFormatted() in ["de_DE", "en_US.UTF-8"]]'));
     }
 
     /**

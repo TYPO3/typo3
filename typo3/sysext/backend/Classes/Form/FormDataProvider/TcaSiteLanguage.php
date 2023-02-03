@@ -300,7 +300,7 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
         foreach (GeneralUtility::makeInstance(SiteFinder::class)->getAllSites() as $site) {
             foreach ($site->getAllLanguages() as $language) {
                 if ($language->getLanguageId() === 0) {
-                    $defaultDatabaseRow['locale'] = $language->getLocale();
+                    $defaultDatabaseRow['locale'] = $language->getLocale()->posixFormatted();
                     if ($language->getTitle() !== '') {
                         $defaultDatabaseRow['title'] = $language->getTitle();
                     }

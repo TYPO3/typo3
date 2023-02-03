@@ -347,9 +347,8 @@ class Locales implements SingletonInterface
      */
     public static function setSystemLocaleFromSiteLanguage(SiteLanguage $siteLanguage): bool
     {
-        $locale = $siteLanguage->getLocale();
-        // No locale was given, so return false
-        if (!$locale) {
+        $locale = $siteLanguage->getLocale()->posixFormatted();
+        if ($locale === '') {
             return false;
         }
         return self::setLocale($locale, $locale);

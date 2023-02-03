@@ -90,9 +90,9 @@ class LocaleModifier implements ModifiableAspectInterface, SiteLanguageAwareInte
      */
     public function modify(): ?string
     {
-        $locale = $this->siteLanguage->getLocale();
+        $locale = (string)$this->siteLanguage->getLocale();
         foreach ($this->localeMap as $item) {
-            $pattern = '#^' . $item['locale'] . '#i';
+            $pattern = '#^' . str_replace('_', '-', $item['locale']) . '#i';
             if (preg_match($pattern, $locale)) {
                 return (string)$item['value'];
             }

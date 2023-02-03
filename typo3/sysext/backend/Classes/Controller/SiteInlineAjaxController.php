@@ -89,7 +89,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
                 $language = $this->getLanguageById($childChildUid);
                 if ($language !== null) {
                     $defaultDatabaseRow['languageId'] = $language->getLanguageId();
-                    $defaultDatabaseRow['locale'] = $language->getLocale();
+                    $defaultDatabaseRow['locale'] = $language->getLocale()->posixFormatted();
                     if ($language->getTitle() !== '') {
                         $defaultDatabaseRow['title'] = $language->getTitle();
                     }

@@ -76,7 +76,7 @@ class SiteListCommand extends Command
                     $language->getTitle(),
                     $language->getLanguageId()
                 );
-                $locales[] = $language->getLocale();
+                $locales[] = (string)$language->getLocale();
                 $status[] = $language->isEnabled()
                     ? '<fg=green>enabled</>'
                     : '<fg=yellow>disabled</>';

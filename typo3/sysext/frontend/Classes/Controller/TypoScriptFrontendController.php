@@ -2297,9 +2297,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Set header for content-type + charset-encoding
         $response = $response->withHeader('Content-Type', $this->contentType . '; charset=utf-8');
         // Set header for content language unless disabled
-        $contentLanguage = $this->language->getTwoLetterIsoCode();
-        if (empty($this->config['config']['disableLanguageHeader']) && !empty($contentLanguage)) {
-            $response = $response->withHeader('Content-Language', trim($contentLanguage));
+        $contentLanguage = (string)$this->language->getLocale();
+        if (empty($this->config['config']['disableLanguageHeader'])) {
+            $response = $response->withHeader('Content-Language', $contentLanguage);
         }
 
         // Add a Response header to show debug information if a page was fetched from cache

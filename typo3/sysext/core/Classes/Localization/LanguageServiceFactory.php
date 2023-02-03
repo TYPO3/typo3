@@ -59,7 +59,7 @@ class LanguageServiceFactory
 
     public function createFromSiteLanguage(SiteLanguage $language): LanguageService
     {
-        $languageService = $this->create($language->getLocale() ?: $language->getTypo3Language());
+        $languageService = $this->create($language->getLocale());
         // Always disable debugging for frontend
         $languageService->debugKey = false;
         return $languageService;

@@ -123,9 +123,9 @@ class StaticValueMapper implements StaticMappableAspectInterface, SiteLanguageAw
      */
     protected function retrieveLocaleMap(): ?array
     {
-        $locale = $this->siteLanguage->getLocale();
+        $locale = (string)$this->siteLanguage->getLocale();
         foreach ($this->localeMap as $item) {
-            $pattern = '#^' . $item['locale'] . '#i';
+            $pattern = '#^' . str_replace('_', '-', $item['locale']) . '#i';
             if (preg_match($pattern, $locale)) {
                 return array_map('strval', $item['map']);
             }
