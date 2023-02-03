@@ -413,7 +413,7 @@ class RedirectService implements LoggerAwareInterface
             TypoScriptFrontendController::class,
             GeneralUtility::makeInstance(Context::class),
             $site,
-            $site->getDefaultLanguage(),
+            $originalRequest->getAttribute('language', $site->getDefaultLanguage()),
             new PageArguments($site->getRootPageId(), '0', []),
             $originalRequest->getAttribute('frontend.user')
         );
