@@ -13,22 +13,23 @@ Description
 
 A new PSR-14 event :php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Event\AfterVideoPreviewFetchedEvent`
 has been introduced. The purpose of this event is to modify the preview file
-of OnlineMedia previews (like YouTube and Vimeo).
-If for example a processed file is bad (blank or outdated), this Event can be
+of online media previews (like YouTube and Vimeo).
+If, for example, a processed file is bad (blank or outdated), this event can be
 used to modify and/or update the preview file.
 
 The event features the following methods:
 
-- :php:`getFile()`: Returns the :php:`\TYPO3\CMS\Core\Resource\File` in question
-- :php:`getOnlineMediaId()`: Returns the video ID
-- :php:`getPreviewImageFilename()`: Returns the filename of the preview image
-- :php:`setPreviewImageFilename()`: Set the filename for the preview image
+-   :php:`getFile()`: Returns the :php:`\TYPO3\CMS\Core\Resource\File` in question
+-   :php:`getOnlineMediaId()`: Returns the video ID
+-   :php:`getPreviewImageFilename()`: Returns the filename of the preview image
+-   :php:`setPreviewImageFilename()`: Set the filename for the preview image
 
 Registration of the event in your extension's :file:`Services.yaml`:
 
 ..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Services.yaml
 
-    Vendor\MyExtension\EventListener\ExampleEventListener:
+    MyVendor\MyExtension\EventListener\ExampleEventListener:
         tags:
           - name: event.listener
             identifier: 'exampleEventListener'
@@ -36,6 +37,9 @@ Registration of the event in your extension's :file:`Services.yaml`:
 The corresponding event listener class:
 
 ..  code-block:: php
+    :caption: EXT:my_extension/Classes/EventListener/ExampleEventListener.php
+
+    namespace MyVendor\MyExtension\EventListener;
 
     use TYPO3\CMS\Core\Resource\OnlineMedia\Event\AfterVideoPreviewFetchedEvent;
 
@@ -43,7 +47,9 @@ The corresponding event listener class:
     {
         public function __invoke(AfterVideoPreviewFetchedEvent $event): void
         {
-            $event->setPreviewImageFilename('/var/www/websites/typo3-master/typo3temp/assets/online_media/new-preview-image.jpg');
+            $event->setPreviewImageFilename(
+                '/var/www/websites/typo3temp/assets/online_media/new-preview-image.jpg'
+            );
             // An extension could use this to fetch new images again.
         }
     }

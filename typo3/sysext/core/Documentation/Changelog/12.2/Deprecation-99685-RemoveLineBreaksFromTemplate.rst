@@ -11,11 +11,12 @@ See :issue:`99685`
 Description
 ===========
 
-The following methods have been marked as deprecated and will be removed with TYPO3 v13:
+The following methods have been marked as deprecated and will be removed
+in TYPO3 v13:
 
-- :php:`PageRenderer::enableRemoveLineBreaksFromTemplate()`
-- :php:`PageRenderer::disableRemoveLineBreaksFromTemplate()`
-- :php:`PageRenderer::getRemoveLineBreaksFromTemplate()`
+*   :php:`\TYPO3\CMS\Core\Page\PageRenderer::enableRemoveLineBreaksFromTemplate()`
+*   :php:`\TYPO3\CMS\Core\Page\PageRenderer::disableRemoveLineBreaksFromTemplate()`
+*   :php:`\TYPO3\CMS\Core\Page\PageRenderer::getRemoveLineBreaksFromTemplate()`
 
 The methods provide a means to remove line break characters from the rendered output,
 what would reduce the size of the response. There are better options available nowadays
@@ -31,7 +32,7 @@ working with TYPO3 v13.
 Affected installations
 ======================
 
-Instances with extensions that call the methods are affected.
+Instances with extensions that call these methods are affected.
 
 The extension scanner reports shows usages found.
 
@@ -39,9 +40,10 @@ The extension scanner reports shows usages found.
 Migration
 =========
 
-The methods will only remove linebreaks from the rendered HTML output, what is not
-much use in terms of reducing response size. Rather migrate to a proper output
-optimization tool like tidy.
-All calls to the deprecated messages should simply be removed from the codebase.
+These methods only remove linebreaks from the rendered HTML output. They are not
+much use in terms of reducing response size. Migrate to a proper output
+optimization tool like `tidy <https://www.html-tidy.org/>`__.
+
+All calls to the deprecated messages should be removed from the codebase.
 
 .. index:: Backend, TCA, FullyScanned, ext:core

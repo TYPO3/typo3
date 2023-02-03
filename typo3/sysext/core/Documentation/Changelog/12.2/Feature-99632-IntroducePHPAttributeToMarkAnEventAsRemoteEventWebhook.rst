@@ -11,8 +11,8 @@ See :issue:`99632`
 Description
 ===========
 
-A new custom PHP attribute :php:`TYPO3\CMS\Core\Attribute\RemoteEvent` has
-been added in order to be register an event as remote event.
+A new custom PHP attribute :php:`\TYPO3\CMS\Core\Attribute\RemoteEvent` has
+been added in order to register an event as remote event.
 
 The attribute must have a description that explains the purpose of the event.
 
@@ -33,7 +33,7 @@ Example
 Impact
 ======
 
-It's now possible to tag an event as remote event by the PHP attribute
-:php:`TYPO3\CMS\Core\Attribute\RemoteEvent`.
+It is now possible to tag an event as remote event by the PHP attribute
+:php:`\TYPO3\CMS\Core\Attribute\RemoteEvent`.
 
 .. index:: Backend, Frontend, PHP-API, ext:core

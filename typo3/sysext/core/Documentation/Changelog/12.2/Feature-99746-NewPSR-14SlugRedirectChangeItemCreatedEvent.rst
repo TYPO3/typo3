@@ -11,20 +11,22 @@ See :issue:`99746`
 Description
 ===========
 
-A new PSR-14 :php:`\TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent`
 has been added to TYPO3 Core. This event is fired in the
 :php:`\TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory` and
-allows extensions to manage the redirect sources for which redirects should be
-created.
+allows extension authors to manage the redirect sources for which redirects
+should be created.
 
-The event features following methods:
+The event features the following methods:
 
-- :php:`getSlugRedirectChangeItem()`: Returns the current :php:`\TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem`
-- :php:`setSlugRedirectChangeItem()`: Can be used to set a new or changed :php:`SlugRedirectChangeItem`
+-   :php:`getSlugRedirectChangeItem()`: Returns the current
+    :php:`\TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem`
+-   :php:`setSlugRedirectChangeItem()`: Can be used to set a new or changed
+    :php:`SlugRedirectChangeItem`
 
 TYPO3 already implements the :php:`\TYPO3\CMS\Redirects\EventListener\AddPlainSlugReplacementSource`
 listener. It is used to add the plain slug value based source type, which provides the same
-behaviour like before. Implementing this as a core listener gives extensions the ability to
+behaviour like before. Implementing this as a Core listener gives extension authors the ability to
 remove the source added by :php:`AddPlainSlugReplacementSource`, when their listeners are
 registered and executed afterwards. See the example below.
 
@@ -36,24 +38,27 @@ Additionally, this allows to transport custom information and data.
 Registration of the event in your extension's :file:`Services.yaml`:
 
 ..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Services.yaml
 
-    MyVendor\MyPackage\Redirects\MyEventListener:
+    MyVendor\MyExtension\Redirects\MyEventListener:
       tags:
         - name: event.listener
-          identifier: 'my-package/redirects/add-redirect-source'
+          identifier: 'my-extension/redirects/add-redirect-source'
           after: 'redirects-add-plain-slug-replacement-source'
 
 The corresponding event listener class:
 
 ..  code-block:: php
+    :caption: EXT:my_extension/Classes/Redirects/MyEventListener.php
 
-    use MyVendor\MyPackage\Redirects\CustomSource;
+    namespace MyVendor\MyExtension\Redirects;
+
+    use MyVendor\MyExtension\Redirects\CustomSource;
     use TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent;
     use TYPO3\CMS\Redirects\RedirectUpdate\PlainSlugReplacementRedirectSource;
     use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceCollection;
 
-    class MyEventListener {
-
+    final class MyEventListener {
         public function __invoke(SlugRedirectChangeItemCreatedEvent $event): void
         {
             // Retrieve change item and sources
@@ -61,7 +66,10 @@ The corresponding event listener class:
             $sources = $changeItem->getSourcesCollection()->all();
 
             // remove plain slug replacement redirect source from sources
-            array_filter($sources, fn ($source) => !($source instanceof PlainSlugReplacementRedirectSource));
+            $sources = array_filter(
+                $sources,
+                fn ($source) => !($source instanceof PlainSlugReplacementRedirectSource)
+            );
 
             // add custom source implementation
             $sources[] = new CustomSource();
@@ -79,6 +87,9 @@ The corresponding event listener class:
 Custom source implementation (example):
 
 ..  code-block:: php
+    :caption: EXT:my_extension/Classes/Redirects/CustomSource.php
+
+    namespace MyVendor\MyExtension\Redirects;
 
     use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceInterface;
 
@@ -103,7 +114,7 @@ Custom source implementation (example):
 Impact
 ======
 
-With the new :php:`SlugRedirectChangeItemCreatedEvent`, it's possible to manage
+With the new :php:`SlugRedirectChangeItemCreatedEvent`, it is possible to manage
 the redirect sources for which redirects should be created. It furthermore allows
 to influence existing Core functionality.
 

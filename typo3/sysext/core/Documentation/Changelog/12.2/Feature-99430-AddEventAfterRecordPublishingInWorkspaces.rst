@@ -16,33 +16,36 @@ has been added to allow extension developers to react on record publishing
 in workspaces.
 
 The new event is fired after a record has been published in a workspace and
-provides the following information:
+provides the following methods:
 
-- :php:`getTable()`: The records' table name
-- :php:`getRecordId()`: The records' uid
-- :php:`getWorkspaceId()`: The workspace the record has been published in
+-   :php:`getTable()`: The record's table name
+-   :php:`getRecordId()`: The record's UID
+-   :php:`getWorkspaceId()`: The workspace the record has been published in
 
 Example
 =======
 
-Registration of the :php:`AfterRecordPublishedEvent` in your extensions'
+Registration of the :php:`AfterRecordPublishedEvent` in your extension's
 :file:`Services.yaml`:
 
 ..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Services.yaml
 
-    MyVendor\MyPackage\Workspaces\MyEventListener:
+    MyVendor\MyExtension\Workspaces\MyEventListener:
       tags:
         - name: event.listener
-          identifier: 'my-package/after-record-published'
+          identifier: 'my-extension/after-record-published'
 
 The corresponding event listener class:
 
 ..  code-block:: php
+    :caption: EXT:my_extension/Classes/Workspaces/MyEventListener.php
+
+    namespace MyVendor\MyExtension\Workspaces;
 
     use TYPO3\CMS\Workspaces\Event\AfterRecordPublishedEvent;
 
-    class MyEventListener {
-
+    final class MyEventListener {
         public function __invoke(AfterRecordPublishedEvent $event): void
         {
             // Do your magic here
@@ -52,7 +55,7 @@ The corresponding event listener class:
 Impact
 ======
 
-With the new PSR-14 :php:`AfterRecordPublishedEvent` it is possible to
+With the new PSR-14 event :php:`AfterRecordPublishedEvent` it is possible to
 execute custom functionality after a record has been published in a workspace.
 
 .. index:: PHP-API, ext:workspaces

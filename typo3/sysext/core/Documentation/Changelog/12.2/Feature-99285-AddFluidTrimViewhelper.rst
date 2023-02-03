@@ -11,13 +11,13 @@ See :issue:`99285`
 Description
 ===========
 
-Add a format trim view helper to trim strings.
+A trim ViewHelper to trim strings is now available.
 
 Possible sides are:
 
-* ``both`` Strip whitespace (or other characters) from the beginning and end of a string
-* ``left`` Strip whitespace (or other characters) from the beginning of a string
-* ``right`` Strip whitespace (or other characters) from the end of a string
+*   `both` Strip whitespace (or other characters) from the beginning and end of a string
+*   `left` Strip whitespace (or other characters) from the beginning of a string
+*   `right` Strip whitespace (or other characters) from the end of a string
 
 
 Examples

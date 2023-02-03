@@ -11,9 +11,9 @@ See :issue:`97923`
 Description
 ===========
 
-The class :php:`TYPO3\CMS\Core\Resource\Service\UserFileMountService` is not
-used anymore within the TYPO3 Core and has been marked as deprecated. The class
-will finally be removed with TYPO3 v13.
+The class :php:`\TYPO3\CMS\Core\Resource\Service\UserFileMountService` is not
+used anymore within the TYPO3 Core and has been marked deprecated. The class
+will finally be removed in TYPO3 v13.
 
 Impact
 ======
@@ -34,7 +34,7 @@ Migration
 =========
 
 Instead of using the class in TCA for an :php:`itemsProcFunc`, the TCA
-type `folder` should be used, to improve the usability on selecting a folder.
+type `folder` should be used, to improve the usability of selecting a folder.
 
 ..  code-block:: php
 

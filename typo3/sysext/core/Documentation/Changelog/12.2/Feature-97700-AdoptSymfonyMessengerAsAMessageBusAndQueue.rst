@@ -17,10 +17,10 @@ For backwards compatibility, the default implementation uses the synchronous
 transport. This means that the message bus will behave exactly as before, but it
 will be possible to switch to a different (async) transport on a per-project
 base. To offer asynchronicity, the feature also provides a transport implementation
-based on the doctrine DBAL messenger transport from Symfony and a basic
+based on the Doctrine DBAL messenger transport from Symfony and a basic
 implementation of a consumer command.
 
-As an example, the workspace's StageChangeNotification has been rebuilt as a
+As an example, the workspace :class:`StageChangeNotification` has been rebuilt as a
 message and corresponding handler.
 
 "Everyday" usage - as a developer
@@ -95,14 +95,14 @@ Define handled message by argument type reflection or by key `message`.
 Everyday Usage - as a sysadmin/integrator
 -----------------------------------------
 
-By default, the system will behave as before. This means that the message bus
-will use the synchronous transport and all messages will be handled immediately.
+By default, the system behaves as before. This means that the message bus
+uses the synchronous transport and all messages are handled immediately.
 To benefit from the message bus, it is recommended to switch to an asynchronous
 transport. Using asynchronous transports increases the resilience of the system
 by decoupling external dependencies even further.
 
-The TYPO3 core currently provides an asynchronous transport based on the
-doctrine DBAL messenger transport. This transport is configured to use the
+The TYPO3 Core currently provides an asynchronous transport based on the
+Doctrine DBAL messenger transport. This transport is configured to use the
 default TYPO3 database connection. It is pre-configured and can be used
 by changing the settings in :file:`config/settings.php`:
 
@@ -112,7 +112,7 @@ by changing the settings in :file:`config/settings.php`:
 
 This will route all messages to the asynchronous transport.
 
-If you are using the doctrine transport, make sure to take care of running the
+If you are using the Doctrine transport, make sure to take care of running the
 consume command (see below).
 
 
@@ -125,9 +125,9 @@ slimmed-down wrapper for the Symfony command `messenger:consume`, it only provid
 the basic consumption functionality. As this command is running as a worker,
 it is stopped after 1 hour to avoid memory leaks. The command should therefore
 be run from a service manager like `systemd` to automatically restart it after
-the command exists due to the time limit.
+the command exits due to the time limit.
 
-Create a service via :`file:/etc/systemd/system/typo3-message-consumer.service`
+Create a service via :file:`/etc/systemd/system/typo3-message-consumer.service`:
 
 ..  code-block:: ini
 
@@ -151,19 +151,20 @@ Create a service via :`file:/etc/systemd/system/typo3-message-consumer.service`
     [Install]
     WantedBy=multi-user.target
 
-The mssage worker can than be enabled and started via
+The message worker can than be enabled and started via
 :bash:`systemctl enable --now typo3-message-consumer`
 
 
 Advanced Usage
 --------------
 
-Configure a custom transport (Senders/Receivers)
+Configure a custom transport (senders/receivers)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Set up transports in services configuration. To allow configuring a transport per
-message TYPO3 configuration (:file:`settings.php`, :file:`additional.php` on system level
-or :file:`ext_localconf.php`) is utilized. The transport/sender name used in the settings is
+Set up transports in services configuration. To configure one transport per
+message, the TYPO3 configuration (:file:`config/settings.php`,
+:file:`config/additional.php` on system level or :file:`ext_localconf.php`) is
+used. The transport/sender name used in the settings is
 resolved to a service that has been tagged with `message.sender` and the
 respective identifier.
 
@@ -204,17 +205,19 @@ respective identifier.
         - name: 'messenger.receiver'
           identifier: 'default'
 
-The TYPO3 core has been tested with three transports:
+The TYPO3 Core has been tested with three transports:
 
--   SyncTransport (default)
--   DoctrineTransport (using the doctrine DBAL messenger transport)
--   InMemoryTransport (for testing)
+-   :php:`\Symfony\Component\Messenger\Transport\Sync\SyncTransport` (default)
+-   :php:`\Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport` (using the Doctrine DBAL messenger transport)
+-   :php:`\Symfony\Component\Messenger\Transport\InMemoryTransport` (for testing)
 
 InMemoryTransport for testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The InMemoryTransport is a transport that should only be used while testing.
-See the Symfony documentation for more details.
+:php:`\Symfony\Component\Messenger\Transport\InMemoryTransport` is a
+transport that should only be used while testing. See the `SymfonyCasts
+tutorial <https://symfonycasts.com/screencast/messenger/test-in-memory>`__
+for more details.
 
 ..  code-block:: yaml
 
@@ -235,10 +238,13 @@ See the Symfony documentation for more details.
 Configure a custom middleware
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Set up middleware in the services configuration. By default, the :php:`SendMessageMiddleware`
-and the :php:`HandleMessageMiddleware` are registered - see also Symfony's documentation.
-To add your own, tag it as :php:`messenger.middleware` and set the order using TYPO3's
-`before` and `after` ordering mechanism.
+Set up a middleware in the services configuration. By default,
+:php:`\Symfony\Component\Messenger\Middleware\SendMessageMiddleware`
+and :php:`\Symfony\Component\Messenger\Middleware\HandleMessageMiddleware`
+are registered - see also `Symfony's documentation
+<https://symfony.com/doc/current/components/messenger.html#bus>`__.
+To add your own message middleware, tag it as :yaml:`messenger.middleware`
+and set the order using TYPO3's `before` and `after` ordering mechanism.
 
 ..  code-block:: yaml
 

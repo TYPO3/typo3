@@ -19,8 +19,8 @@ a meta description.
 Impact
 ======
 
-TYPO3 users who have access to the Dashboard module and are granted access to
-the new widget can now add and use the widget.
+TYPO3 users who have access to the :guilabel:`Dashboard` module and are
+granted access to the new widget can now add and use the widget.
 The users will only see pages with missing meta description they are
 allowed to edit.
 

@@ -11,7 +11,7 @@ See :issue:`99220`
 Description
 ===========
 
-A new event :php:`\TYPO3\CMS\Backend\Search\Event\ModifyResultItemInLiveSearchEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Backend\Search\Event\ModifyResultItemInLiveSearchEvent`
 is added to allow extension developers to take control over search result items
 rendered in the backend search.
 
@@ -32,7 +32,7 @@ Example
     Some code in this example is experimental API and may change until TYPO3 v12 LTS.
 
 ..  code-block:: php
-    :caption: Classes/Search/EventListener/AddLiveSearchResultActionsListener.php
+    :caption: EXT:my_extension/Classes/Search/EventListener/AddLiveSearchResultActionsListener.php
 
     namespace MyVendor\MyExtension\Search\EventListener;
 
@@ -62,7 +62,8 @@ Example
 
             if (($resultItem->getExtraData()['table'] ?? null) === 'tt_content') {
                 /**
-                 * WARNING: THIS EXAMPLE OMITS ANY ACCESS CHECK FOR SIMPLICITY REASONS - DO NOT USE AS-IS
+                 * WARNING: THIS EXAMPLE OMITS ANY ACCESS CHECK FOR SIMPLICITY REASONS.
+                 *          DO NOT USE AS-IS!
                  */
                 $showHistoryAction = (new ResultItemAction('view_history'))
                     ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:history'))
@@ -76,12 +77,12 @@ Example
     }
 
 ..  code-block:: yaml
-    :caption: Configuration/Services.yaml
+    :caption: EXT:my_extension/Configuration/Services.yaml
 
     MyVendor\MyExtension\Search\EventListener\AddLiveSearchResultActionsListener:
     tags:
       -
         name: event.listener
-        identifier: 'my-vendor/my-extension/add-live-search-result-actions-listener'
+        identifier: 'my-extension/add-live-search-result-actions-listener'
 
 .. index:: Backend, ext:backend

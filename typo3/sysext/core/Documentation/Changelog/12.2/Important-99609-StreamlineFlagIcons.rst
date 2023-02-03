@@ -12,7 +12,7 @@ Description
 ===========
 
 We streamlined the flag icons and make them easier to handle.
-The core provides a range of flag icons that are representing countries,
+The Core provides a range of flag icons that are representing countries,
 regions, movements, islands, and more. The flags are mostly used in
 conjunction with languages.
 
@@ -29,16 +29,19 @@ New flags: black, blue, cyan, green, indigo, orange, pink, purple, red,
 teal, white, yellow, rainbow.
 
 Flags of historic countries have been removed:
-- AN, Netherlands Antilles (until 2010)
-- CS, State Union of Serbia and Montenegro (until 2006)
+
+-   AN, Netherlands Antilles (until 2010)
+-   CS, State Union of Serbia and Montenegro (until 2006)
 
 Flags for language codes have been removed:
-- kl, Greenlandic
-- mi, Māori
+
+-   kl, Greenlandic
+-   mi, Māori
 
 Flags for country regions have been aligned:
-- Spain, Catalonia: catalonia -> es-ct
-- Canada, Quebec: qc -> ca-qc
+
+-   Spain, Catalonia: catalonia -> es-ct
+-   Canada, Quebec: qc -> ca-qc
 
 Please adjust your site configuration if you are using one of
 the removed or renamed flag icons.

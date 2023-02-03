@@ -12,10 +12,11 @@ Description
 ===========
 
 The method :php:`\TYPO3\CMS\Backend\Utility\GeneralUtility::_POST()` has
-been marked as deprecated and should not be used any longer.
+been marked deprecated and should not be used any longer.
 
-Modern code should access GET and POST data from the PSR-7 :php:`ServerRequestInterface`,
-and should avoid accessing superglobals :php:`$_GET` and :php:`$_POST`
+Modern code should access GET and POST data from the PSR-7
+:php:`\Psr\Http\Message\ServerRequestInterface`, and should avoid accessing
+super-globals :php:`$_GET` and :php:`$_POST`
 directly. This will avoid future side-effects when using sub-requests. Some
 :php:`GeneralUtility` related helper methods like :php:`_POST()` violate this,
 using them is considered a technical debt. They are being phased out.
@@ -42,17 +43,19 @@ Migration
 =========
 
 :php:`GeneralUtility::_POST()` is a helper method that retrieves
-incoming HTTP body parameters / a.k. POST parameters and returns the value.
+incoming HTTP body parameters / `POST` parameters and returns the value.
 
 The same result can be achieved by retrieving arguments from the request object.
-An instance of the PSR-7 :php:`ServerRequestInterface` is hand over to
-controllers by TYPO3 core PSR-15 :php:`RequestHandlerInterface` and Middleware
-implementations, and is available in various related scopes like the Frontend
-:php:`ContentObjectRenderer`.
+An instance of the PSR-7 :php:`ServerRequestInterface` is handed over to
+controllers by TYPO3 Core's PSR-15 :php:`\TYPO3\CMS\Core\Http\RequestHandlerInterface`
+and middleware implementations, and is available in various related scopes
+like the frontend :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer`.
 
 Typical code:
 
 ..  code-block:: php
+
+    use TYPO3\CMS\Backend\Utility\GeneralUtility;
 
     // Before
     $value = GeneralUtility::_POST('tx_scheduler');

@@ -11,7 +11,7 @@ See :issue:`99341`
 Description
 ===========
 
-To be able to automate the backend user creation, a new CLI command `backend:user:create`
+A new CLI command `backend:user:create`, which automates backend user creation,
 is introduced as an alternative to the existing backend module.
 
 Impact

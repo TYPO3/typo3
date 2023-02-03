@@ -11,8 +11,9 @@ See :issue:`77072`
 Description
 ===========
 
-The password used to create the backend user during install (GUI and setup command) does now consider
-the configurable password policy introduced in :ref:`#97388 <feature-97388>`.
+The password used to create the backend user during install (GUI and setup
+command) now considers the configurable password policy introduced in
+:ref:`#97388 <feature-97388>`.
 
 Impact
 ======

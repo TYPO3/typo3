@@ -19,7 +19,7 @@ then solely rely on a locally set request object.
 Impact
 ======
 
-Using the :php:`UriBuilder` class of extbase without a local
+Using the :php:`UriBuilder` class of Extbase without a local
 request object will trigger a PHP deprecation warning.
 
 
@@ -36,7 +36,7 @@ Migration
 Make sure to call :php:`setRequest($request)` before using the
 :php:`UriBuilder`, when no other component has done this already.
 
-Using ViewHelpers won't trigger the warning, as TYPO3 Core will take care by
-itself to ensure the proper setup.
+Using ViewHelpers will not trigger the warning, as the TYPO3 Core ensures
+the proper setup.
 
 .. index:: PHP-API, FullyScanned, ext:core

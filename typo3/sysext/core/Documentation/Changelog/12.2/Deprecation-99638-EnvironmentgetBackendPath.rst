@@ -11,7 +11,9 @@ See :issue:`99638`
 Description
 ===========
 
-TYPO3's Backend path "/typo3" is currently resolved statically in :php:`Environment::getBackendPath()` to return the full path to the backend entrypoint.
+TYPO3's backend path `/typo3` is currently resolved statically in
+:php:`Environment::getBackendPath()` to return the full path to the
+backend entrypoint.
 
 However, as TYPO3's code base is evolving, the usages to the hardcoded path have been reduced
 and the functionality is now migrated into a new :php:`BackendEntryPointResolver` class,
@@ -34,7 +36,8 @@ Migration
 =========
 
 Check for the extension scanner, and see if the code is necessary, or if any alternative,
-such as the :php:`BackendEntryPointResolver` or :php:`NormalizedParams` might be better
+such as the :php:`\TYPO3\CMS\Core\Routing\BackendEntryPointResolver`
+or :php:`\TYPO3\CMS\Core\Http\NormalizedParams` might be better
 suited as third-party extensions should not rely on the hard-coded paths to resources from
 :file:`typo3/*` anymore.
 

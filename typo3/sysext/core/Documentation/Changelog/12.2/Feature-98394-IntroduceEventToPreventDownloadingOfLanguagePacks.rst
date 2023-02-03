@@ -12,10 +12,10 @@ Description
 ===========
 
 ..  code-block:: yaml
-    :caption: Configuration/Services.yaml
+    :caption: EXT:my_extension/Configuration/Services.yaml
 
     services:
-      KA\Myext\EventListener\ModifyLanguagePacks:
+      MyVendor\MyExtension\EventListener\ModifyLanguagePacks:
         tags:
           - name: event.listener
             identifier: 'modifyLanguagePacks'
@@ -24,14 +24,14 @@ Description
 
 
 ..  code-block:: php
-    :caption: Classes/EventListener/ModifyLanguagePacks.php
+    :caption: EXT:my_extension/Classes/EventListener/ModifyLanguagePacks.php
 
     <?php
-    namespace KA\Myext\EventListener;
+    namespace MyVendor\MyExtension\EventListener;
 
     use TYPO3\CMS\Install\Service\Event\ModifyLanguagePacksEvent;
 
-    class ModifyLanguagePacks
+    final class ModifyLanguagePacks
     {
         public function modifyLanguagePacks(ModifyLanguagePacksEvent $event): void
         {
@@ -50,8 +50,8 @@ Impact
 
 With the newly introduced event, it is possible to ignore extensions or
 individual language packs for extensions when downloading the language packs.
-It is still the case that only language packs for extensions and languages
-available in the system can be downloaded. The options of the language:update
+However, only language packs for extensions and languages
+available in the system can be downloaded. The options of the `language:update`
 command can be used to further restrict the download (ignore additional
 extensions or download only specific languages), but not to ignore decisions
 made by the event.

@@ -12,29 +12,30 @@ Description
 ===========
 
 Non-breaking spaces and soft hyphens are now visible in
-the editor to help the editor to identify them visually.
+the rich-text editor to help the editor to identify them visually.
 
 Keyboard shortcuts are now working for non-breaking spaces
 and soft hyphens and use more common defaults:
-- ctrl+shift+space for non-breaking space
-- ctrl+shift+dash for soft hyphen
 
-The SoftHyphen plugin for CKEditor is now deprecated and
-replaced with a new Whitespace Plugin that handles
+*   :kbd:`ctrl` + :kbd:`shift` + :kbd:`space` for non-breaking space
+*   :kbd:`ctrl` + :kbd:`shift` + :kbd:`dash` for soft hyphen
+
+The :js:`SoftHyphen` plugin for the CKEditor is now deprecated and
+replaced with a new whitespace plugin that handles
 non-breaking spaces and soft hyphens. Loading the
-SoftHyphen will trigger a console warning.
+:js:`SoftHyphen` will trigger a console warning.
 
 
 Impact
 ======
 
-Including the SoftHyphen will trigger a deprecation warning.
+Including the :js:`SoftHyphen` plugin will trigger a deprecation warning.
 
 
 Affected installations
 ======================
 
-All installations that include the Plugin manually.
+All installations that include the :js:`SoftHyphen` plugin manually.
 
 
 Migration
@@ -43,18 +44,20 @@ Migration
 Replace the module to resolve the deprecation.
 
 Before
-~~~~~~
+------
 
 ..  code-block:: yaml
+
     editor:
         config:
             importModules:
                 - '@typo3/rte-ckeditor/plugin/soft-hyphen.js'
 
 After
-~~~~~
+-----
 
 ..  code-block:: yaml
+
     editor:
         config:
             importModules:

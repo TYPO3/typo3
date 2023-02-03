@@ -35,15 +35,19 @@ The event features the following methods:
 Registration of the event in your extension's :file:`Services.yaml`:
 
 ..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Services.yaml
 
-    MyVendor\MyPackage\Backend\MyEventListener:
-      tags
+    MyVendor\MyExtension\Backend\MyEventListener:
+      tags:
         - name: event.listener
-          identifier: 'my-package/backend/modify-file-is-selectable'
+          identifier: 'my-extension/backend/modify-file-is-selectable'
 
 The corresponding event listener class:
 
 ..  code-block:: php
+    :caption: EXT:my_extension/Classes/Backend/MyEventListener.php
+
+    namespace MyVendor\MyExtension\Backend;
 
     use TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent;
 

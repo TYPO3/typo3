@@ -17,9 +17,9 @@ a given "cHash" acts as a signature of other query parameters in order to use a
 cached version of a frontend page.
 
 However, the check only provided information about an invalid "cHash" in the
-query parameters. When no "cHash" was given, the only option was to add an
+query parameters. When no "cHash" was given, the only option was to add a
 "required list" (global TYPO3 configuration option
-`requireCacheHashPresenceParameters`), but not based on the a final
+`requireCacheHashPresenceParameters`), but not based on the final
 `excludedParameters` for cache hash calculation of given query parameters.
 
 For this reason, a new global TYPO3 configuration option
