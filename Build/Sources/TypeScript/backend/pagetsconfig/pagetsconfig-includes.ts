@@ -21,11 +21,11 @@ import type {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import type {JavaScriptItemPayload} from '@typo3/core/java-script-item-processor';
 
 /**
- * @todo: This could be code-de-duplicated with ext:backend pagetsconfig/pagetconfig-includes.ts,
+ * @todo: This could be code-de-duplicated with ext:tstemplate template-analyzer.ts,
  *        by making "Show t3editor code in a modal" a more general solution.
  *        Main trigger is t3js-pagetsconfig-includes-modal vs. t3js-typoscript-analyzer-modal
  */
-class TemplateAnalyzer {
+class PageTsConfigIncludes {
   constructor() {
     this.registerEventListeners();
   }
@@ -33,7 +33,7 @@ class TemplateAnalyzer {
   private async registerEventListeners(): Promise<void> {
     await DocumentService.ready();
 
-    document.querySelectorAll('.t3js-typoscript-analyzer-modal').forEach((link: HTMLAnchorElement): void => {
+    document.querySelectorAll('.t3js-pagetsconfig-includes-modal').forEach((link: HTMLAnchorElement): void => {
       link.addEventListener('click', (e: Event): void => {
         e.preventDefault();
 
@@ -74,4 +74,4 @@ class TemplateAnalyzer {
   }
 }
 
-export default new TemplateAnalyzer();
+export default new PageTsConfigIncludes();

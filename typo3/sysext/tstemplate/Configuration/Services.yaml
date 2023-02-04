@@ -9,12 +9,3 @@ services:
 
   TYPO3\CMS\Tstemplate\Hooks\DataHandlerClearCachePostProcHook:
     public: true
-
-  TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeSourceAggregatorVisitor:
-    public: true
-
-  TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeCommentAwareAstBuilderVisitor:
-    public: true
-    # This Ast builder visitor creates state and should not be re-used
-    shared: false
-

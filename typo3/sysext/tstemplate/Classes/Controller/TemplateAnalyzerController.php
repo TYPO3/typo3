@@ -34,15 +34,15 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionAggregatorVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnforcerVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeNodeFinderVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSourceAggregatorVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeConditionAggregatorVisitor;
-use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnforcerVisitor;
-use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeNodeFinderVisitor;
-use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeSourceAggregatorVisitor;
 
 /**
  * TypoScript template analyzer.
@@ -228,7 +228,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         $includeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite($type, $sysTemplateRows, $this->losslessTokenizer, $site);
         $includeTree->setIdentifier($type . ' tstemplate includes');
 
-        $sourceAggregatorVisitor = GeneralUtility::makeInstance(IncludeTreeSourceAggregatorVisitor::class);
+        $sourceAggregatorVisitor = new IncludeTreeSourceAggregatorVisitor();
         $sourceAggregatorVisitor->setStartNodeIdentifier($includeIdentifier);
         $this->treeTraverser->resetVisitors();
         $this->treeTraverser->addVisitor($sourceAggregatorVisitor);

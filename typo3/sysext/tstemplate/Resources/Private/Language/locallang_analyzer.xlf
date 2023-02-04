@@ -60,12 +60,6 @@
 			<trans-unit id="tree.child.sysTemplateRecord" resname="tree.child.sysTemplateRecord">
 				<source>TypoScript record (page UID %s)</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.Abstract" resname="tree.child.type.Abstract">
-				<source>Abstract</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.AbstractCondition" resname="tree.child.type.AbstractCondition">
-				<source>Abstract Condition</source>
-			</trans-unit>
 			<trans-unit id="tree.child.type.AtImport" resname="tree.child.type.AtImport">
 				<source>Included via "@import"</source>
 			</trans-unit>
@@ -111,14 +105,8 @@
 			<trans-unit id="tree.child.type.Site" resname="tree.child.type.Site">
 				<source>Site</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.String" resname="tree.child.type.String">
-				<source>String</source>
-			</trans-unit>
 			<trans-unit id="tree.child.type.SysTemplate" resname="tree.child.type.SysTemplate">
 				<source>TypoScript record</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.TsConfig" resname="tree.child.type.TsConfig">
-				<source>TSconfig</source>
 			</trans-unit>
 		</body>
 	</file>

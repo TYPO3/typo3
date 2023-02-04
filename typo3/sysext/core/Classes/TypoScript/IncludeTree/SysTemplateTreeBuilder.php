@@ -438,7 +438,7 @@ final class SysTemplateTreeBuilder
             $siteConstants .= $nodeIdentifier . ' = ' . $value . LF;
         }
         $node = new SiteInclude();
-        $node->setName('Site constants settings of site ' . $site->getIdentifier());
+        $node->setName('Site constants settings of site "' . $site->getIdentifier() . '"');
         $node->setLineStream($this->tokenizer->tokenize($siteConstants));
         $this->cache?->set($cacheIdentifier, $this->prepareNodeForCache($node));
         $parentConstantNode->addChild($node);

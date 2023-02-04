@@ -15,14 +15,16 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor;
+namespace TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor;
 
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeConditionInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeVisitorInterface;
 
 /**
- * When conditions are simulated in the backend, this visitor forces their verdict.
+ * Force condition verdicts.
+ *
+ * This visitor is used in ext:tstemplate TypoScript modules and ext:backend PageTsConfig
+ * backend modules to toggle on/off selected conditions.
  *
  * @internal This is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */

@@ -12,9 +12,11 @@
 			<trans-unit id="module.pagetsconfig.shortDescription" resname="module.pagetsconfig.shortDescription">
 				<source>Page TsConfig tools</source>
 			</trans-unit>
+
 			<trans-unit id="module.pagetsconfig.noAccess" resname="module.pagetsconfig.noAccess">
 				<source>Access to this module denied.</source>
 			</trans-unit>
+
 			<trans-unit id="module.pagetsconfig_records" resname="module.pagetsconfig_records">
 				<source>PageTsConfig Records</source>
 			</trans-unit>
@@ -33,6 +35,7 @@
 			<trans-unit id="module.pagetsconfig_records.written_tsconfig_lines" resname="module.pagetsconfig_records.written_tsconfig_lines">
 				<source>Lines</source>
 			</trans-unit>
+
 			<trans-unit id="module.pagetsconfig_active" resname="module.pagetsconfig_active">
 				<source>Active PageTsConfig</source>
 			</trans-unit>
@@ -78,12 +81,10 @@
 			<trans-unit id="module.pagetsconfig_active.noPageTSconfigAvailable" resname="module.pagetsconfig_active.noPageTSconfigAvailable">
 				<source>No suitable Page TSconfig available.</source>
 			</trans-unit>
-			<trans-unit id="module.pagetsconfig_active.tree.comment" resname="module.pagetsconfig_active.tree.comment">
-				<source>Comment: </source>
-			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.tree.valueWithConstant" resname="module.pagetsconfig_active.tree.valueWithConstant">
 				<source>Constant usage: [%s]</source>
 			</trans-unit>
+
 			<trans-unit id="module.pagetsconfig_includes" resname="module.pagetsconfig_includes">
 				<source>Included PageTsConfig</source>
 			</trans-unit>
@@ -93,11 +94,62 @@
 			<trans-unit id="module.pagetsconfig_includes.description" resname="module.pagetsconfig_includes.description">
 				<source>Overview of the included TypoScript and include order for the current page.</source>
 			</trans-unit>
-			<trans-unit id="module.pagetsconfig_includes.editTsConfig" resname="module.pagetsconfig_includes.editTsConfig">
-				<source>Edit TSconfig for this page</source>
+			<trans-unit id="module.pagetsconfig_includes.siteSettings" resname="module.pagetsconfig_includes.siteSettings">
+				<source>Constants from site settings</source>
 			</trans-unit>
-			<trans-unit id="module.pagetsconfig_includes.editTsConfigAll" resname="module.pagetsconfig_includes.editTsConfigAll">
-				<source>Edit TSconfig for all shown pages</source>
+			<trans-unit id="module.pagetsconfig_includes.pagetsconfig" resname="module.pagetsconfig_includes.pagetsconfig">
+				<source>PageTsConfig</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.panel.header.configuration" resname="module.pagetsconfig_includes.panel.header.configuration">
+				<source>Configuration</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.panel.header.conditions" resname="module.pagetsconfig_includes.panel.header.conditions">
+				<source>Conditions</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.panel.info.conditionActiveCount.multiple" resname="module.pagetsconfig_includes.panel.info.conditionActiveCount.multiple">
+				<source>%s active conditions</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.panel.info.conditionActiveCount.single" resname="module.pagetsconfig_includes.panel.info.conditionActiveCount.single">
+				<source>%s active condition</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.panel.info.conditionWithConstant" resname="module.pagetsconfig_includes.panel.info.conditionWithConstant">
+				<source>Constant usage: [%s]</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.tree.child.type.Segment" resname="module.pagetsconfig_includes.tree.child.type.Segment">
+				<source>Code segment</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.tree.child.type.AtImport" resname="module.pagetsconfig_includes.tree.child.type.AtImport">
+				<source>Included via "@import"</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.tree.child.type.Condition" resname="module.pagetsconfig_includes.tree.child.type.Condition">
+				<source>Condition (then)</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionElse" resname="module.pagetsconfig_includes.tree.child.type.ConditionElse">
+				<source>Condition (else)</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionIncludeTyposcript" resname="module.pagetsconfig_includes.tree.child.type.ConditionIncludeTyposcript">
+				<source>Included via "INCLUDE_TYPOSCRIPT" (with condition)</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.tree.child.type.IncludeTyposcript" resname="module.pagetsconfig_includes.tree.child.type.IncludeTyposcript">
+				<source>Included via "INCLUDE_TYPOSCRIPT"</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.tree.child.type.Segment" resname="module.pagetsconfig_includes.tree.child.type.Segment">
+				<source>Code segment</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.tree.child.type.TsConfig" resname="module.pagetsconfig_includes.tree.child.type.TsConfig">
+				<source>TSconfig</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.tree.child.conditionVerdict.matched" resname="module.pagetsconfig_includes.tree.child.conditionVerdict.matched">
+				<source>Matched</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.tree.child.conditionVerdict.notMatched" resname="module.pagetsconfig_includes.tree.child.conditionVerdict.notMatched">
+				<source>Not matched</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.tree.child.btn.sourceCode" resname="module.pagetsconfig_includes.tree.child.btn.sourceCode">
+				<source>Show code</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.tree.child.btn.sourceCodeWithResolvedIncludes" resname="module.pagetsconfig_includes.tree.child.btn.sourceCodeWithResolvedIncludes">
+				<source>Show code including possible includes/imports</source>
 			</trans-unit>
 		</body>
 	</file>

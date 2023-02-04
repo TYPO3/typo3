@@ -15,23 +15,22 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor;
+namespace TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor;
 
 use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SysTemplateInclude;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeVisitorInterface;
 
 /**
  * Secondary visitor that creates the TypoScript AST: When adding this visitor
  * and traversing the IncludeTree, the final AST can be fetched using getAst().
- * This is an "extended" version of ext:core IncludeTreeAstBuilderVisitor that uses
+ * This is an "extended" version of IncludeTreeAstBuilderVisitor that uses
  * the CommentAwareAstBuilder instead of the AstBuilder to build the AST: This special
  * AST builder is comment aware and adds TypoScript comments to nodes.
  *
- * This visitor is used in ext:tstemplate Constant Editor and Object Browser and
- * allows implementation of the "comment" related functionality.
+ * This visitor is used in ext:tstemplate TypoScript modules and ext:backend PageTsConfig
+ * to allow implementation of the "comment" related functionality.
  *
  * When parsing "setup", "flattened" constants should be assigned to this visitor, so
  * the AstBuilder can resolve constants.

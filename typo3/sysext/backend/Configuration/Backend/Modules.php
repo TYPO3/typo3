@@ -140,8 +140,17 @@ return [
         ],
         'routes' => [
             '_default' => [
-                'target' => PageTsConfigIncludesController::class . '::handleRequest',
+                'target' => PageTsConfigIncludesController::class . '::indexAction',
             ],
+            'source' => [
+                'target' => PageTsConfigIncludesController::class . '::sourceAction',
+            ],
+            'sourceWithIncludes' => [
+                'target' => PageTsConfigIncludesController::class . '::sourceWithIncludesAction',
+            ],
+        ],
+        'moduleData' => [
+            'pageTsConfigConditions' => [],
         ],
     ],
 ];

@@ -15,17 +15,20 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor;
+namespace TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor;
 
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\AtImportInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionElseInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeTyposcriptInclude;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeVisitorInterface;
 
 /**
- * Create a TypoScript source back from an IncludeTree. Used in Template Analyzer.
+ * Create a TypoScript source back from an IncludeTree. Inline source from
+ * "@import" and friends.
+ *
+ * This visitor is used in ext:tstemplate TypoScript modules and ext:backend PageTsConfig
+ * backend modules to show code of single includes with their resolved imports.
  *
  * @internal This is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */

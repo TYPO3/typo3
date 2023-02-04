@@ -95,7 +95,7 @@ final class PageTsConfigFactory
                         $siteConstants .= $nodeIdentifier . ' = ' . $value . LF;
                     }
                     $siteSettingsNode = new SiteInclude();
-                    $siteSettingsNode->setName('Site constants settings of site ' . $site->getIdentifier());
+                    $siteSettingsNode->setName('Site constants settings of site "' . $site->getIdentifier() . '"');
                     $siteSettingsNode->setLineStream($this->tokenizer->tokenize($siteConstants));
                     $siteSettingsTreeRoot = new RootInclude();
                     $siteSettingsTreeRoot->addChild($siteSettingsNode);

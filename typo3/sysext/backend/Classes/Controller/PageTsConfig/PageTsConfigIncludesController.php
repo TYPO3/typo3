@@ -17,31 +17,36 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller\PageTsConfig;
 
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
-use TYPO3\CMS\Backend\Module\ModuleInterface;
-use TYPO3\CMS\Backend\Module\ModuleProvider;
-use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
+use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SiteInclude;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\TsConfigInclude;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\TsConfigTreeBuilder;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionAggregatorVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnforcerVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeNodeFinderVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSourceAggregatorVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\TypoScript\UserTsConfig;
 
 /**
  * PageTsConfig > Included PageTsConfig
@@ -49,226 +54,331 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[Controller]
-class PageTsConfigIncludesController
+final class PageTsConfigIncludesController
 {
-    protected ModuleInterface $currentModule;
-    protected ?ModuleTemplate $view;
-    public array $pageinfo = [];
-
-    /**
-     * Value of the GET/POST var 'id' = the current page ID
-     */
-    protected int $id;
-
     public function __construct(
-        protected readonly IconFactory $iconFactory,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly ModuleProvider $moduleProvider,
-        protected readonly PageRenderer $pageRenderer,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly ContainerInterface $container,
+        private readonly UriBuilder $uriBuilder,
+        private readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly TsConfigTreeBuilder $tsConfigTreeBuilder,
+        private readonly ResponseFactoryInterface $responseFactory,
+        private readonly StreamFactoryInterface $streamFactory,
     ) {
     }
 
-    public function handleRequest(ServerRequestInterface $request): ResponseInterface
+    public function indexAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->id = (int)($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
-        if ($this->id === 0) {
+        $backendUser = $this->getBackendUser();
+        $languageService = $this->getLanguageService();
+
+        $queryParams = $request->getQueryParams();
+        $parsedBody = $request->getParsedBody();
+
+        $currentModule = $request->getAttribute('module');
+        $currentModuleIdentifier = $currentModule->getIdentifier();
+        $moduleData = $request->getAttribute('moduleData');
+
+        $pageUid = (int)($queryParams['id'] ?? 0);
+        if ($pageUid === 0) {
+            // Redirect to template record overview if on page 0.
             return new RedirectResponse($this->uriBuilder->buildUriFromRoute('pagetsconfig_records'));
         }
-        $this->view = $this->moduleTemplateFactory->create($request);
-        $this->currentModule = $request->getAttribute('module');
-        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
-        $this->view->setTitle(
-            $this->getLanguageService()->sL($this->currentModule->getTitle()),
-            $this->id !== 0 && isset($this->pageinfo['title']) ? $this->pageinfo['title'] : ''
-        );
-        // The page will show only if there is a valid page and if this page may be viewed by the user
-        if ($this->pageinfo !== []) {
-            $this->view->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+        $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
+        if (empty($pageRecord)) {
+            // Redirect to records overview if page could not be determined.
+            // Edge case if page has been removed meanwhile.
+            BackendUtility::setUpdateSignal('updatePageTree');
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('pagetsconfig_records'));
         }
-        $accessContent = false;
+
+        // Prepare site constants if any
+        $site = $request->getAttribute('site');
+        $siteSettingsTree = new RootInclude();
+        $siteSettingsFlat = [];
+        if ($site instanceof Site && !$site->getSettings()->isEmpty()) {
+            $siteSettings = $site->getSettings()->getAllFlat();
+            $siteConstants = '';
+            foreach ($siteSettings as $nodeIdentifier => $value) {
+                $siteConstants .= $nodeIdentifier . ' = ' . $value . LF;
+            }
+            $siteSettingsNode = new SiteInclude();
+            $siteSettingsNode->setName('Site constants settings of site "' . $site->getIdentifier() . '"');
+            $siteSettingsNode->setLineStream((new LosslessTokenizer())->tokenize($siteConstants));
+            $siteSettingsTree->addChild($siteSettingsNode);
+            $siteSettingsTree->setIdentifier('pageTsConfig-siteSettingsTree');
+            /** @var IncludeTreeAstBuilderVisitor $astBuilderVisitor */
+            $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
+            $includeTreeTraverser = new IncludeTreeTraverser();
+            $includeTreeTraverser->addVisitor($astBuilderVisitor);
+            $includeTreeTraverser->traverse($siteSettingsTree);
+            $siteSettingsAst = $astBuilderVisitor->getAst();
+            $siteSettingsFlat = $siteSettingsAst->flatten();
+        }
+
+        // Base PageTsConfig tree
+        $rootLine = BackendUtility::BEgetRootLine($pageUid, '', true);
+        ksort($rootLine);
+        $pageTsConfigTree = $this->tsConfigTreeBuilder->getPagesTsConfigTree($rootLine, new LosslessTokenizer());
+
+        // Overload tree with userTsConfig if any
+        $userTsConfig = $backendUser->getUserTsConfig();
+        if (!$userTsConfig instanceof UserTsConfig) {
+            throw new \RuntimeException('UserTsConfig not initialized', 1675535278);
+        }
+        $userTsConfigAst = $userTsConfig->getUserTsConfigTree();
+        $userTsConfigPageOverrides = '';
+        // @todo: Ugly, similar in PageTsConfigFactory.
+        $userTsConfigFlat = $userTsConfigAst->flatten();
+        foreach ($userTsConfigFlat as $userTsConfigIdentifier => $userTsConfigValue) {
+            if (str_starts_with($userTsConfigIdentifier, 'page.')) {
+                $userTsConfigPageOverrides .= substr($userTsConfigIdentifier, 5) . ' = ' . $userTsConfigValue . chr(10);
+            }
+        }
+        if (!empty($userTsConfigPageOverrides)) {
+            $includeNode = new TsConfigInclude();
+            $includeNode->setName('pageTsConfig-overrides-by-userTsConfig');
+            $includeNode->setLineStream((new LosslessTokenizer())->tokenize($userTsConfigPageOverrides));
+            $pageTsConfigTree->addChild($includeNode);
+        }
+        $pageTsConfigTree->setIdentifier('pageTsConfig-pageTsConfigTree');
+
+        // Set enabled conditions in pageTsConfig include tree and let it handle constant substitutions in pageTsConfig conditions.
+        $pageTsConfigConditions = $this->handleToggledPageTsConfigConditions($pageTsConfigTree, $moduleData, $parsedBody, $siteSettingsFlat);
+        $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
+        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($pageTsConfigConditions, static fn ($condition) => $condition['active']), 'value'));
+        $treeTraverser = new IncludeTreeTraverser();
+        $treeTraverser->addVisitor($conditionEnforcerVisitor);
+        $treeTraverser->traverse($pageTsConfigTree);
+
+        $view = $this->moduleTemplateFactory->create($request);
+        $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
+        $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
+        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
+        $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
+        $view->assignMultiple([
+            'pageUid' => $pageUid,
+            'siteSettingsTree' => $siteSettingsTree,
+            'pageTsConfigTree' => $pageTsConfigTree,
+            'pageTsConfigConditions' => $pageTsConfigConditions,
+            'pageTsConfigConditionsActiveCount' => count(array_filter($pageTsConfigConditions, static fn ($condition) => $condition['active'])),
+        ]);
+        return $view->renderResponse('PageTsConfig/Includes');
+    }
+
+    public function sourceAction(ServerRequestInterface $request): ResponseInterface
+    {
         $backendUser = $this->getBackendUser();
-        if ($this->pageinfo !== [] || $backendUser->isAdmin()) {
-            $accessContent = true;
-            if ($backendUser->isAdmin()) {
-                // @todo This reset to stripped down dataset with hardcoded values seems to be clumsy. Consider if
-                //       this should be extended or solved in another way. See `getButtons()` where a `doktype` check
-                //       is done based in this `pageinf` array.
-                $this->pageinfo = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
-            }
-            $this->view->assign('id', $this->id);
-            // Setting up the buttons and the module menu for the doc header
-            $this->getButtons();
-            $this->view->makeDocHeaderModuleMenu(['id' => $this->id]);
-        }
-        $this->view->assign('accessContent', $accessContent);
-
-        $moduleData = $request->getAttribute('moduleData');
-        if ($moduleData->cleanUp([])) {
-            $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
+        $queryParams = $request->getQueryParams();
+        $pageUid = (int)($queryParams['id'] ?? 0);
+        $type = $queryParams['includeType'] ?? null;
+        $includeIdentifier = $queryParams['identifier'] ?? null;
+        if ($pageUid === 0 || $includeIdentifier === null || !in_array($type, ['constants', 'setup'], true)) {
+            return $this->responseFactory->createResponse(400);
         }
 
-        $rootLine = BackendUtility::BEgetRootLine($this->id, '', true);
-
-        $tsConfigTreeBuilder = GeneralUtility::makeInstance(TsConfigTreeBuilder::class);
-        $pageTsConfigTree = $tsConfigTreeBuilder->getPagesTsConfigTree($rootLine, new LosslessTokenizer());
-        // @todo: This is a bit dusty. It would be better to render the full tree similar to
-        //        tstemplate Template Analyzer. For now, we simply create an array with the
-        //        to-string'ed content and render this.
-        $TSparts = [];
-        foreach ($pageTsConfigTree->getNextChild() as $child) {
-            $lineStream = $child->getLineStream();
-            if ($lineStream instanceof LineStream) {
-                $TSparts[$child->getName()] = (string)$lineStream;
+        if ($type === 'constants') {
+            // Prepare site constants if any
+            $site = $request->getAttribute('site');
+            $includeTree = new RootInclude();
+            if ($site instanceof Site && !$site->getSettings()->isEmpty()) {
+                $siteSettings = $site->getSettings()->getAllFlat();
+                $siteConstants = '';
+                foreach ($siteSettings as $nodeIdentifier => $value) {
+                    $siteConstants .= $nodeIdentifier . ' = ' . $value . LF;
+                }
+                $siteSettingsNode = new SiteInclude();
+                $siteSettingsNode->setName('Site constants settings of site "' . $site->getIdentifier() . '"');
+                $siteSettingsNode->setLineStream((new LosslessTokenizer())->tokenize($siteConstants));
+                $includeTree->addChild($siteSettingsNode);
+                $includeTree->setIdentifier('pageTsConfig-siteSettingsTree');
             }
-        }
-
-        $lines = [];
-        $pUids = [];
-
-        foreach ($TSparts as $key => $value) {
-            $title = $key;
-            $line = [
-                'title' => $key,
-            ];
-            if (str_starts_with($key, 'pagesTsConfig-page-')) {
-                $pageId = (int)explode('-', $key)[2];
-                $pUids[] = $pageId;
-                $row = BackendUtility::getRecordWSOL('pages', $pageId);
-                $icon = $this->iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL);
-                $urlParameters = [
-                    'edit' => [
-                        'pages' => [
-                            $pageId => 'edit',
-                        ],
-                    ],
-                    'columnsOnly' => 'TSconfig,tsconfig_includes',
-                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
-                ];
-                $line['editIcon'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                $title = BackendUtility::getRecordTitle('pages', $row);
-                $line['title'] = BackendUtility::wrapClickMenuOnIcon((string)$icon, 'pages', $row['uid']) . ' ' . htmlspecialchars($title);
-            }
-
-            if (ExtensionManagementUtility::isLoaded('t3editor')) {
-                // @todo: Let EXT:t3editor add the deps via events in the render-loops above
-                $line['content'] = $this->getCodeMirrorHtml($title, trim($value));
-                $this->pageRenderer->loadJavaScriptModule('@typo3/t3editor/element/code-mirror-element.js');
-            } else {
-                $line['content'] = $this->getTextareaMarkup(trim($value));
-            }
-
-            $lines[] = $line;
-        }
-
-        if (!empty($pUids)) {
-            $urlParameters = [
-                'edit' => [
-                    'pages' => [
-                        implode(',', $pUids) => 'edit',
-                    ],
-                ],
-                'columnsOnly' => 'TSconfig,tsconfig_includes',
-                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
-            ];
-            $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-            $editIcon = htmlspecialchars($url);
         } else {
-            $editIcon = '';
+            // Base PageTsConfig tree
+            $rootLine = BackendUtility::BEgetRootLine($pageUid, '', true);
+            ksort($rootLine);
+            $includeTree = $this->tsConfigTreeBuilder->getPagesTsConfigTree($rootLine, new LosslessTokenizer());
+
+            // Overload tree with userTsConfig if any
+            $userTsConfig = $backendUser->getUserTsConfig();
+            if (!$userTsConfig instanceof UserTsConfig) {
+                throw new \RuntimeException('UserTsConfig not initialized', 1675535279);
+            }
+            $userTsConfigAst = $userTsConfig->getUserTsConfigTree();
+            $userTsConfigPageOverrides = '';
+            // @todo: Ugly, similar in PageTsConfigFactory.
+            $userTsConfigFlat = $userTsConfigAst->flatten();
+            foreach ($userTsConfigFlat as $userTsConfigIdentifier => $userTsConfigValue) {
+                if (str_starts_with($userTsConfigIdentifier, 'page.')) {
+                    $userTsConfigPageOverrides .= substr($userTsConfigIdentifier, 5) . ' = ' . $userTsConfigValue . chr(10);
+                }
+            }
+            if (!empty($userTsConfigPageOverrides)) {
+                $includeNode = new TsConfigInclude();
+                $includeNode->setName('pageTsConfig-overrides-by-userTsConfig');
+                $includeNode->setLineStream((new LosslessTokenizer())->tokenize($userTsConfigPageOverrides));
+                $includeTree->addChild($includeNode);
+            }
+            $includeTree->setIdentifier('pageTsConfig-pageTsConfigTree');
         }
 
-        $this->view->assign('lines', $lines);
-        $this->view->assign('editIcon', $editIcon);
-        $this->view->assign('pageUid', $this->id);
-        return $this->view->renderResponse('PageTsConfig/Includes');
+        $nodeFinderVisitor = new IncludeTreeNodeFinderVisitor();
+        $nodeFinderVisitor->setNodeIdentifier($includeIdentifier);
+        $treeTraverser = new IncludeTreeTraverser();
+        $treeTraverser->addVisitor($nodeFinderVisitor);
+        $treeTraverser->traverse($includeTree);
+        $foundNode = $nodeFinderVisitor->getFoundNode();
+
+        if (!$foundNode instanceof IncludeInterface) {
+            return $this->responseFactory->createResponse(400);
+        }
+        $lineStream = $foundNode->getLineStream();
+        if (!$lineStream instanceof LineStream) {
+            return $this->responseFactory->createResponse(400);
+        }
+
+        return $this->responseFactory
+            ->createResponse()
+            ->withHeader('Content-Type', 'text/plain')
+            ->withBody($this->streamFactory->createStream((string)$foundNode->getLineStream()));
     }
 
-    protected function getCodeMirrorHtml(string $label, string $content): string
+    public function sourceWithIncludesAction(ServerRequestInterface $request): ResponseInterface
     {
-        $codeMirrorConfig = [
-            'label' => $label,
-            'panel' => 'top',
-            'mode' => GeneralUtility::jsonEncodeForHtmlAttribute(JavaScriptModuleInstruction::create('@typo3/t3editor/language/typoscript.js', 'typoscript')->invoke(), false),
-            'autoheight' => 'true',
-            'nolazyload' => 'true',
-            'readonly' => 'true',
-        ];
-        $textareaAttributes = [
-            'rows' => (string)count(explode(LF, $content)),
-            'class' => 'form-control',
-            'readonly' => 'readonly',
-        ];
+        $backendUser = $this->getBackendUser();
+        $queryParams = $request->getQueryParams();
+        $pageUid = (int)($queryParams['id'] ?? 0);
+        $type = $queryParams['includeType'] ?? null;
+        $includeIdentifier = $queryParams['identifier'] ?? null;
+        if ($pageUid === 0 || $includeIdentifier === null || !in_array($type, ['constants', 'setup'], true)) {
+            return $this->responseFactory->createResponse(400);
+        }
 
-        $code = '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
-        $code .= '<textarea ' . GeneralUtility::implodeAttributes($textareaAttributes, true) . '>' . htmlspecialchars($content) . '</textarea>';
-        $code .= '</typo3-t3editor-codemirror>';
+        if ($type === 'constants') {
+            // Prepare site constants if any
+            $site = $request->getAttribute('site');
+            $includeTree = new RootInclude();
+            if ($site instanceof Site && !$site->getSettings()->isEmpty()) {
+                $siteSettings = $site->getSettings()->getAllFlat();
+                $siteConstants = '';
+                foreach ($siteSettings as $nodeIdentifier => $value) {
+                    $siteConstants .= $nodeIdentifier . ' = ' . $value . LF;
+                }
+                $siteSettingsNode = new SiteInclude();
+                $siteSettingsNode->setName('Site constants settings of site "' . $site->getIdentifier() . '"');
+                $siteSettingsNode->setLineStream((new LosslessTokenizer())->tokenize($siteConstants));
+                $includeTree->addChild($siteSettingsNode);
+                $includeTree->setIdentifier('pageTsConfig-siteSettingsTree');
+            }
+        } else {
+            // Base PageTsConfig tree
+            $rootLine = BackendUtility::BEgetRootLine($pageUid, '', true);
+            ksort($rootLine);
+            $includeTree = $this->tsConfigTreeBuilder->getPagesTsConfigTree($rootLine, new LosslessTokenizer());
 
-        return $code;
-    }
+            // Overload tree with userTsConfig if any
+            $userTsConfig = $backendUser->getUserTsConfig();
+            if (!$userTsConfig instanceof UserTsConfig) {
+                throw new \RuntimeException('UserTsConfig not initialized', 1675535280);
+            }
+            $userTsConfigAst = $userTsConfig->getUserTsConfigTree();
+            $userTsConfigPageOverrides = '';
+            // @todo: Ugly, similar in PageTsConfigFactory.
+            $userTsConfigFlat = $userTsConfigAst->flatten();
+            foreach ($userTsConfigFlat as $userTsConfigIdentifier => $userTsConfigValue) {
+                if (str_starts_with($userTsConfigIdentifier, 'page.')) {
+                    $userTsConfigPageOverrides .= substr($userTsConfigIdentifier, 5) . ' = ' . $userTsConfigValue . chr(10);
+                }
+            }
+            if (!empty($userTsConfigPageOverrides)) {
+                $includeNode = new TsConfigInclude();
+                $includeNode->setName('pageTsConfig-overrides-by-userTsConfig');
+                $includeNode->setLineStream((new LosslessTokenizer())->tokenize($userTsConfigPageOverrides));
+                $includeTree->addChild($includeNode);
+            }
+            $includeTree->setIdentifier('pageTsConfig-pageTsConfigTree');
+        }
 
-    protected function getTextareaMarkup(string $content): string
-    {
-        return '<textarea class="form-control" rows="' . count(explode(LF, $content)) . '" disabled>'
-            . htmlspecialchars($content)
-            . '</textarea>';
+        $sourceAggregatorVisitor = new IncludeTreeSourceAggregatorVisitor();
+        $sourceAggregatorVisitor->setStartNodeIdentifier($includeIdentifier);
+        $treeTraverser = new IncludeTreeTraverser();
+        $treeTraverser->addVisitor($sourceAggregatorVisitor);
+        $treeTraverser->traverse($includeTree);
+        $source =  $sourceAggregatorVisitor->getSource();
+
+        return $this->responseFactory
+            ->createResponse()
+            ->withHeader('Content-Type', 'text/plain')
+            ->withBody($this->streamFactory->createStream($source));
     }
 
     /**
-     * Create the panel of buttons for submitting the form or otherwise perform operations.
+     * Align module data active pageTsConfig conditions with toggled conditions from POST,
+     * write updated active conditions to user's module data if needed and
+     * prepare a list of active conditions for view.
      */
-    protected function getButtons(): void
+    private function handleToggledPageTsConfigConditions(RootInclude $pageTsConfigTree, ModuleData $moduleData, ?array $parsedBody, array $flattenedConstants): array
     {
-        $languageService = $this->getLanguageService();
-        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
-
-        if ($this->id) {
-            // View
-            $pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid']);
-            if (isset($pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
-                $excludeDokTypes = GeneralUtility::intExplode(
-                    ',',
-                    (string)$pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'],
-                    true
-                );
-            } else {
-                // exclude sysfolders and recycler by default
-                $excludeDokTypes = [
-                    PageRepository::DOKTYPE_RECYCLER,
-                    PageRepository::DOKTYPE_SYSFOLDER,
-                    PageRepository::DOKTYPE_SPACER,
-                ];
+        $treeTraverser = new IncludeTreeTraverser();
+        $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
+        $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flattenedConstants);
+        $treeTraverser->addVisitor($setupConditionConstantSubstitutionVisitor);
+        $conditionAggregatorVisitor = new IncludeTreeConditionAggregatorVisitor();
+        $treeTraverser->addVisitor($conditionAggregatorVisitor);
+        $treeTraverser->traverse($pageTsConfigTree);
+        $pageTsConfigConditions = $conditionAggregatorVisitor->getConditions();
+        $conditionsFromPost = $parsedBody['pageTsConfigConditions'] ?? [];
+        $conditionsFromModuleData = array_flip((array)$moduleData->get('pageTsConfigConditions'));
+        $conditions = [];
+        foreach ($pageTsConfigConditions as $condition) {
+            $conditionHash = hash('xxh3', $condition['value']);
+            $conditionActive = array_key_exists($conditionHash, $conditionsFromModuleData);
+            // Note we're not feeding the post values directly to module data, but filter
+            // them through available conditions to prevent polluting module data with
+            // manipulated post values.
+            if (($conditionsFromPost[$conditionHash] ?? null) === '0') {
+                unset($conditionsFromModuleData[$conditionHash]);
+                $conditionActive = false;
+            } elseif (($conditionsFromPost[$conditionHash] ?? null) === '1') {
+                $conditionsFromModuleData[$conditionHash] = true;
+                $conditionActive = true;
             }
-            // @todo Recheck if resetting property `pageinfo` for admins in `handleRequest()` should contain more
-            //       default values. Guard it here for now with null coalescing operator.
-            if (!in_array((int)($this->pageinfo['doktype'] ?? 0), $excludeDokTypes, true)) {
-                // View page
-                $previewDataAttributes = PreviewUriBuilder::create((int)$this->pageinfo['uid'])
-                    ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
-                    ->buildDispatcherDataAttributes();
-                $viewButton = $buttonBar->makeLinkButton()
-                    ->setHref('#')
-                    ->setDataAttributes($previewDataAttributes ?? [])
-                    ->setShowLabelText(true)
-                    ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                    ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL));
-                $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT);
-            }
+            $conditions[] = [
+                'value' => $condition['value'],
+                'originalValue' => $condition['originalValue'],
+                'hash' => $conditionHash,
+                'active' => $conditionActive,
+            ];
         }
-
-        // Shortcut
-        $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier($this->currentModule->getIdentifier())
-            ->setDisplayName($this->currentModule->getTitle())
-            ->setArguments(['id' => $this->id]);
-        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        if ($conditionsFromPost) {
+            $moduleData->set('pageTsConfigConditions', array_keys($conditionsFromModuleData));
+            $this->getBackendUser()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
+        }
+        return $conditions;
     }
 
-    protected function getLanguageService(): LanguageService
+    private function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageUid): void
+    {
+        $languageService = $this->getLanguageService();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
+        $shortcutTitle = sprintf(
+            '%s: %s [%d]',
+            $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes'),
+            BackendUtility::getRecordTitle('pages', $pageInfo),
+            $pageUid
+        );
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setRouteIdentifier($moduleIdentifier)
+            ->setDisplayName($shortcutTitle)
+            ->setArguments(['id' => $pageUid]);
+        $buttonBar->addButton($shortcutButton);
+    }
+
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

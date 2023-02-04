@@ -70,13 +70,14 @@
                                         type="checkbox"
                                         class="form-check-input"
                                         name="{type}Conditions[{condition.hash}]"
+                                        id="{type}Condition{condition.hash}"
                                         value="1"
                                         {f:if(condition: condition.active, then:'checked="checked"')}
                                         data-global-event="change"
                                         data-action-submit="$form"
                                         data-value-selector="input[name='{type}Conditions[{condition.hash}]']"
                                     />
-                                    <label class="form-check-label" for="condition{condition.hash}">
+                                    <label class="form-check-label" for="{type}Condition{condition.hash}">
                                         <f:if condition="{condition.originalValue}">
                                             <f:then>
                                                 <span style="display: inline;">

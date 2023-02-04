@@ -338,6 +338,11 @@ services:
     # Ast builder visitor creates state and should not be re-used
     shared: false
 
+  TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeCommentAwareAstBuilderVisitor:
+    public: true
+    # This Ast builder visitor creates state and should not be re-used
+    shared: false
+
   TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionMatcherVisitor:
     public: true
     # This visitor creates state and should not be re-used

@@ -1,21 +1,24 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 
 <f:layout name="Module"/>
 
 <f:section name="Content">
-
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/context-menu.js',
-            1: '@typo3/backend/element/immediate-action-element.js'
+            1: '@typo3/backend/element/immediate-action-element.js',
+            2: '@typo3/backend/element/icon-element.js',
+            3: '@typo3/backend/utility/collapse-state-persister.js',
+            4: '@typo3/backend/pagetsconfig/pagetsconfig-includes.js'
         }"
     />
 
-    <f:variable name="args" value="{0: 'web', 1: id}" />
+    <f:variable name="args" value="{0: 'web', 1: pageUid}" />
     <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
 
     <h1>
@@ -25,39 +28,281 @@
         <p class="lead"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.description" /></p>
     </div>
 
-    <f:if condition="!{accessContent}">
-        <f:then>
-            <f:be.infobox state="-1" message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig.noAccess')}" />
-        </f:then>
-        <f:else>
-            <f:for each="{lines}" as="line">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <f:format.raw>{line.title}</f:format.raw>
-                    </div>
-                    <div class="panel-body">
-                        <f:if condition="{line.content -> f:format.stripTags() -> f:spaceless()}">
-                            <f:format.raw>{line.content}</f:format.raw>
-                        </f:if>
-                        <f:render section="EditIcon" arguments="{editIcon: line.editIcon, editTitle: 'editTsConfig'}" />
-                    </div>
-                </div>
-            </f:for>
-            <f:render section="EditIcon" arguments="{editIcon: editIcon, editTitle: 'editTsConfigAll', editAll: 1}" />
-
-        </f:else>
+    <f:if condition="{siteSettingsTree.children}">
+        <h2><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.siteSettings" /></h2>
+        <div class="panel-group">
+            <f:render
+                section="TreePanel"
+                arguments="{
+                    type: 'constants',
+                    tree: siteSettingsTree,
+                    pageUid: pageUid
+                }"
+            />
+        </div>
     </f:if>
 
+    <f:if condition="{pageTsConfigTree.children}">
+        <h2><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.pagetsconfig" /></h2>
+        <div class="panel-group">
+            <f:render
+                section="Conditions"
+                arguments="{
+                    pageUid: pageUid,
+                    conditions: pageTsConfigConditions,
+                    conditionActiveCount: pageTsConfigConditionsActiveCount
+                }"
+            />
+            <f:render
+                section="TreePanel"
+                arguments="{
+                    type: 'setup',
+                    tree: pageTsConfigTree,
+                    pageUid: pageUid
+                }"
+            />
+        </div>
+    </f:if>
 </f:section>
 
-<f:section name="EditIcon">
-    <f:if condition="{editIcon}">
-        <a href="{editIcon -> f:format.raw()}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.{editTitle}')}" class="btn btn-default">
-            <core:icon identifier="actions-document-open" />
-            <f:if condition="{editAll}">
-                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.editTsConfigAll" />
-            </f:if>
-        </a>
+<f:section name="TreePanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title" id="pagetsconfig-includes-{type}-tree-heading">
+                <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#pagetsconfig-includes-{type}-tree-body" aria-expanded="false" aria-controls="pagetsconfig-includes-{type}-tree-body">
+                    <span class="caret"></span>
+                    <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.header.configuration"/></strong>
+                </a>
+            </h3>
+        </div>
+        <div id="pagetsconfig-includes-{type}-tree-body" class="panel-collapse collapse" data-persist-collapse-state="true" aria-labelledby="pagetsconfig-includes-{type}-tree-heading">
+            <div class="tstemplate-tree-wrapper table-fit mb-0">
+                <ul class="list-tree text-monospace list-group">
+                    <f:render
+                        section="Tree"
+                        arguments="{
+                            type: type,
+                            pageUid: pageUid,
+                            tree: tree
+                        }"
+                    />
+                </ul>
+            </div>
+        </div>
+    </div>
+</f:section>
+
+<f:section name="Tree">
+    <f:if condition="{tree.children}">
+        <f:for each="{tree.nextChild}" as="child">
+            <li>
+                <div class="row justify-content-between">
+                    <div class="col">
+                        <div class="row row-cols-auto justify-content-md-between">
+                            <div class="col col-12 col-lg-auto">
+                                <span class="list-tree-group">
+                                    <f:if condition="{child.children}">
+                                        <a
+                                            class="list-tree-control list-tree-control-collapsed"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#collapse-list-{child.identifier}"
+                                            aria-expanded="false"
+                                        >
+                                            <typo3-backend-icon identifier="actions-caret-down"></typo3-backend-icon>
+                                            <typo3-backend-icon identifier="actions-caret-right"></typo3-backend-icon>
+                                        </a>
+                                    </f:if>
+                                    <span class="list-tree-label">
+                                        <f:if condition="{child.type} == 'Segment'">
+                                            <f:then>
+                                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.tree.child.type.Segment" />
+                                            </f:then>
+                                            <f:else>
+                                                {child.name}
+                                            </f:else>
+                                        </f:if>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="col col-12 col-lg-auto text-md-right">
+                                <f:comment><!-- Hand {child.type} over to f:translate and add locallang.xlf entries when Include classes stabilized. --></f:comment>
+                                <f:if condition="{child.type} != 'Segment'">
+                                    <f:then>
+                                        <span class="badge">
+                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.tree.child.type.{child.type}" />
+                                        </span>
+                                    </f:then>
+                                </f:if>
+                                <f:if condition="{child.conditionToken}">
+                                    <f:then>
+                                        <f:if condition="{child.conditionVerdict}">
+                                            <f:then>
+                                                <span title="[{child.conditionToken.value}]" class="badge badge-success">
+                                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.tree.child.conditionVerdict.matched" />
+                                                </span>
+                                            </f:then>
+                                            <f:else>
+                                                <span title="[{child.conditionToken.value}]" class="badge badge-danger">
+                                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.tree.child.conditionVerdict.notMatched" />
+                                                </span>
+                                            </f:else>
+                                        </f:if>
+                                    </f:then>
+                                </f:if>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-auto text-right">
+                        <div class="btn-group">
+                            <f:be.link
+                                route="pagetsconfig_includes.source"
+                                parameters="{id: pageUid, includeType: type, identifier: child.identifier}"
+                                additionalAttributes="{'data-modal-title': child.name}"
+                                class="btn btn-default btn-sm t3js-pagetsconfig-includes-modal{f:if(condition:'!{child.lineStream}', then:' disabled')}"
+                                title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.tree.child.btn.sourceCode')}"
+                            >
+                                <core:icon identifier="{f:if(condition:'{child.lineStream}', then:'actions-variable', else: 'empty-empty')}" />
+                            </f:be.link>
+                            <f:be.link
+                                route="pagetsconfig_includes.sourceWithIncludes"
+                                parameters="{id: pageUid, includeType: type, identifier: child.identifier}"
+                                additionalAttributes="{'data-modal-title': '{child.name} (with resolved includes)'}"
+                                class="btn btn-default btn-sm t3js-pagetsconfig-includes-modal{f:if(condition:'!{child.children}', then:' disabled')}"
+                                title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.tree.child.btn.sourceCodeWithResolvedIncludes')}"
+                            >
+                                <core:icon identifier="{f:if(condition:'{child.children}', then:'actions-variable-select', else: 'empty-empty')}" />
+                            </f:be.link>
+                        </div>
+                    </div>
+                </div>
+
+                <f:if condition="{child.children}">
+                    <ul
+                        class="list-tree text-monospace list-group collapse"
+                        id="collapse-list-{child.identifier}"
+                        data-persist-collapse-state="true"
+                        data-persist-collapse-state-suffix="typoscript-include-{type}"
+                        data-persist-collapse-state-if-state="shown"
+                    >
+                        <f:render
+                            section="Tree"
+                            arguments="{
+                                type: type,
+                                pageUid: pageUid,
+                                tree: child
+                            }"
+                        />
+                    </ul>
+                </f:if>
+            </li>
+        </f:for>
+    </f:if>
+</f:section>
+
+<f:section name="Conditions">
+    <f:if condition="{conditions}">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab">
+                <f:if condition="{conditionActiveCount}">
+                    <f:then>
+                        <div class="row align-items-center justify-content-between">
+                            <div class="col align-middle">
+                                <h3 class="panel-title" id="pagetsconfig-includes-conditions-heading">
+                                    <a
+                                        href="#"
+                                        class="collapsed"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#pagetsconfig-includes-conditions-body"
+                                        aria-expanded="false"
+                                        aria-controls="pagetsconfig-includes-conditions-body"
+                                    >
+                                        <span class="caret"></span>
+                                        <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.header.conditions"/></strong>
+                                    </a>
+                                </h3>
+                            </div>
+                            <div class="col text-right">
+                                <span class="badge badge-info">
+                                    <f:translate
+                                        key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.info.conditionActiveCount.{f:if(condition: '{conditionActiveCount} > 1', then:'multiple', else: 'single')}"
+                                        arguments="{0: conditionActiveCount}"
+                                    />
+                                </span>
+                            </div>
+                        </div>
+                    </f:then>
+                    <f:else>
+                        <h3 class="panel-title" id="pagetsconfig-includes-conditions-heading">
+                            <a
+                                href="#"
+                                class="collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#pagetsconfig-includes-conditions-body"
+                                aria-expanded="false"
+                                aria-controls="pagetsconfig-includes-conditions-body"
+                            >
+                                <span class="caret"></span>
+                                <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.header.conditions"/></strong>
+                            </a>
+                        </h3>
+                    </f:else>
+                </f:if>
+            </div>
+            <div
+                class="panel-collapse collapse"
+                id="pagetsconfig-includes-conditions-body"
+                data-persist-collapse-state="true"
+                role="tabpanel"
+                aria-labelledby="pagetsconfig-includes-conditions-heading"
+            >
+                <div class="panel-body">
+                    <form action="{f:be.uri(route: 'pagetsconfig_includes', parameters: '{id: pageUid}')}" method="post">
+                        <div class="row">
+                            <div class="col-12">
+                                <f:for each="{conditions}" as="condition">
+                                    <input type="hidden" name="pageTsConfigConditions[{condition.hash}]" value="0" />
+                                    <div class="form-check form-switch">
+                                        <input
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            name="pageTsConfigConditions[{condition.hash}]"
+                                            id="pageTsConfigCondition{condition.hash}"
+                                            value="1"
+                                            data-global-event="change"
+                                            data-action-submit="$form"
+                                            data-value-selector="input[name='pageTsConfigConditions[{condition.hash}]']"
+                                            {f:if(condition: condition.active, then:'checked="checked"')}
+                                        />
+                                        <label class="form-check-label" for="pageTsConfigCondition{condition.hash}">
+                                            <f:if condition="{condition.originalValue}">
+                                                <f:then>
+                                                    <span style="display: inline;">
+                                                        <span class="text-monospace">[{condition.value}]</span>
+                                                        <span class="diff-item-result diff-item-result-inline text-monospace p-0">
+                                                            <f:format.raw>
+                                                                <f:translate
+                                                                    key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.info.conditionWithConstant"
+                                                                    arguments="{
+                                                                        0: '{backend:typoScript.fineDiff(from: condition.originalValue, to: condition.value)}'
+                                                                    }"
+                                                                />
+                                                            </f:format.raw>
+                                                        </span>
+                                                    </span>
+                                                </f:then>
+                                                <f:else>
+                                                    <span class="text-monospace">[{condition.value}]</span>
+                                                </f:else>
+                                            </f:if>
+                                        </label>
+                                    </div>
+                                </f:for>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </f:if>
 </f:section>
 

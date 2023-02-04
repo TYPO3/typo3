@@ -39,12 +39,12 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareInclude
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\TsConfigTreeBuilder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeCommentAwareAstBuilderVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionAggregatorVisitor;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnforcerVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\TypoScript\UserTsConfig;
-use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeCommentAwareAstBuilderVisitor;
-use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeConditionAggregatorVisitor;
-use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnforcerVisitor;
 
 /**
  * PageTsConfig > Active Page TsConfig
@@ -52,7 +52,7 @@ use TYPO3\CMS\Tstemplate\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnfo
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[Controller]
-class PageTsConfigActiveController
+final class PageTsConfigActiveController
 {
     public function __construct(
         private readonly ContainerInterface $container,
@@ -112,9 +112,8 @@ class PageTsConfigActiveController
             foreach ($siteSettings as $nodeIdentifier => $value) {
                 $siteConstants .= $nodeIdentifier . ' = ' . $value . LF;
             }
-            $siteSettingsHash = 'site-settings-flat-' . hash('xxh3', $siteConstants);
             $siteSettingsNode = new SiteInclude();
-            $siteSettingsNode->setName('Site constants settings of site ' . $site->getIdentifier());
+            $siteSettingsNode->setName('Site constants settings of site "' . $site->getIdentifier() . '"');
             $siteSettingsNode->setLineStream((new LosslessTokenizer())->tokenize($siteConstants));
             $siteSettingsTreeRoot = new RootInclude();
             $siteSettingsTreeRoot->addChild($siteSettingsNode);

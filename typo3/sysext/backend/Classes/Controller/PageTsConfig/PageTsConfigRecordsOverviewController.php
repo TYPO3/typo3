@@ -21,7 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
-use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -31,7 +30,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -45,7 +43,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[Controller]
-class PageTsConfigRecordsOverviewController
+final class PageTsConfigRecordsOverviewController
 {
     public function __construct(
         private readonly IconFactory $iconFactory,
@@ -201,42 +199,7 @@ class PageTsConfigRecordsOverviewController
 
     private function getButtons(ModuleTemplate $view, ModuleInterface $currentModule, ?int $pageId, ?array $pageRecord): void
     {
-        $languageService = $this->getLanguageService();
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-
-        if ($pageId) {
-            // View
-            $pagesTSconfig = BackendUtility::getPagesTSconfig($pageRecord['uid']);
-            if (isset($pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
-                $excludeDokTypes = GeneralUtility::intExplode(
-                    ',',
-                    (string)$pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'],
-                    true
-                );
-            } else {
-                // exclude sysfolders and recycler by default
-                $excludeDokTypes = [
-                    PageRepository::DOKTYPE_RECYCLER,
-                    PageRepository::DOKTYPE_SYSFOLDER,
-                    PageRepository::DOKTYPE_SPACER,
-                ];
-            }
-            if (!in_array((int)$pageRecord['doktype'], $excludeDokTypes, true)) {
-                // View page
-                $previewDataAttributes = PreviewUriBuilder::create((int)$pageRecord['uid'])
-                    ->withRootLine(BackendUtility::BEgetRootLine($pageRecord['uid']))
-                    ->buildDispatcherDataAttributes();
-                $viewButton = $buttonBar->makeLinkButton()
-                    ->setHref('#')
-                    ->setDataAttributes($previewDataAttributes ?? [])
-                    ->setShowLabelText(true)
-                    ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                    ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL));
-                $buttonBar->addButton($viewButton);
-            }
-        }
-
-        // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier($currentModule->getIdentifier())
             ->setDisplayName($currentModule->getTitle())
