@@ -50,9 +50,6 @@ class HtmlViewHelperTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider contentIsRenderedDataProvider
-     * @see \TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Format\HtmlViewHelperTest::invalidInvocationIsDetermined for
-     *      the counterpart which tests for the deprecation directly. Here we test that deprecated functionality still
-     *      works.
      */
     public function contentIsRendered(string $fluidTemplateSource, string $expected): void
     {

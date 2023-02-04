@@ -75,43 +75,6 @@ class HtmlViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString($expected, (string)$response->getBody());
     }
 
-    public function invalidInvocationIsDeterminedDataProvider(): array
-    {
-        return [
-            'explicitly empty parseFunc path' => [
-                '<f:format.html parseFuncTSPath="">TYPO3 is a cool CMS</f:format.html>',
-            ],
-            'non-existing parseFunc path' => [
-                '<f:format.html parseFuncTSPath="null.this.does.not.exist">TYPO3 is a cool CMS</f:format.html>',
-            ],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider invalidInvocationIsDeterminedDataProvider
-     * @see \TYPO3\CMS\Fluid\Tests\FunctionalDeprecated\ViewHelpers\Format\HtmlViewHelperTest::contentIsRendered for
-     *      the counterpart which tests that the deprecated functionality still works.
-     */
-    public function invalidInvocationIsDetermined(string $fluidTemplateSource): void
-    {
-        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
-        $this->writeSiteConfiguration(
-            'test',
-            $this->buildSiteConfiguration(1, '/'),
-            [
-                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
-            ]
-        );
-        $this->createTypoScriptTemplate($fluidTemplateSource);
-
-        $this->expectDeprecation();
-        $this->expectExceptionMessage('Invoking ContentObjectRenderer::parseFunc without any configuration will trigger an exception in TYPO3 v12.0');
-        $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(1)
-        );
-    }
-
     private function createTypoScriptTemplate(string $fluidTemplateSource): void
     {
         (new ConnectionPool())->getConnectionForTable('sys_template')

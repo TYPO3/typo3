@@ -106,7 +106,7 @@ class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
     public function parseDateTimeTypeWithInvalidLowerBound(): void
     {
         $this->expectException(StatementException::class);
-        $this->expectDeprecationMessageMatches(
+        $this->expectExceptionMessageMatches(
             '@Error: the fractional seconds part for TIME, DATETIME or TIMESTAMP columns must >= 0@'
         );
         $this->createSubject('TIME(-1)');
@@ -118,7 +118,7 @@ class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
     public function parseDateTimeTypeWithInvalidUpperBound(): void
     {
         $this->expectException(StatementException::class);
-        $this->expectDeprecationMessageMatches(
+        $this->expectExceptionMessageMatches(
             '@Error: the fractional seconds part for TIME, DATETIME or TIMESTAMP columns must <= 6@'
         );
         $this->createSubject('TIME(7)');

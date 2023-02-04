@@ -503,46 +503,6 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function setCacheConfigurationsMergesLegacyConfigCorrectly(): void
-    {
-        $rawConfiguration = [
-            'pages' => [
-                'frontend' => VariableFrontend::class,
-                'backend' => Typo3DatabaseBackend::class,
-                'options' => [
-                    'compression' => true,
-                ],
-                'groups' => ['pages'],
-            ],
-            'cache_pages' => [
-                'backend' => \TYPO3\CMS\Core\Cache\Backend\RedisBackend::class,
-                'options' => [
-                    'hostname' => 'redis',
-                ],
-                'groups' => ['pages'],
-            ],
-        ];
-        $expectedConfiguration = [
-            'pages' => [
-                'frontend' => VariableFrontend::class,
-                'backend' => \TYPO3\CMS\Core\Cache\Backend\RedisBackend::class,
-                'options' => [
-                    'compression' => true,
-                    'hostname' => 'redis',
-                ],
-                'groups' => ['pages'],
-            ],
-        ];
-        $this->expectDeprecation();
-
-        $manager = $this->getAccessibleMock(CacheManager::class, ['dummy']);
-        $manager->setCacheConfigurations($rawConfiguration);
-        self::assertEquals($expectedConfiguration, $manager->_get('cacheConfigurations'));
-    }
-
-    /**
-     * @test
-     */
     public function setCacheConfigurationsThrowsExceptionIfConfiguredCacheDoesNotHaveAnIdentifier(): void
     {
         $this->expectException(\InvalidArgumentException::class);

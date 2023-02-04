@@ -59,11 +59,13 @@ class CommandRegistryTest extends UnitTestCase
      */
     public function iteratesLazyCommandsOfActivePackages(): void
     {
-        $command1MockClass = $this->getMockClass(Command::class, ['dummy']);
-        $command2MockClass = $this->getMockClass(Command::class, ['dummy']);
+        $command1Mock = $this->createMock(Command::class);
+        $command2Mock = $this->createMock(Command::class);
+        $command1MockClass = get_class($command1Mock);
+        $command2MockClass = get_class($command2Mock);
 
-        $this->containerProphecy->get('command1')->willReturn(new $command1MockClass());
-        $this->containerProphecy->get('command2')->willReturn(new $command2MockClass());
+        $this->containerProphecy->get('command1')->willReturn($command1Mock);
+        $this->containerProphecy->get('command2')->willReturn($command2Mock);
 
         $commandRegistry = new CommandRegistry($this->containerProphecy->reveal());
         $commandRegistry->addLazyCommand('test:command', 'command1');
@@ -73,6 +75,6 @@ class CommandRegistryTest extends UnitTestCase
 
         self::assertCount(2, $commandNames);
         self::assertInstanceOf($command1MockClass, $commandRegistry->get('test:command'));
-        self::assertInstanceOf($command1MockClass, $commandRegistry->get('test:command2'));
+        self::assertInstanceOf($command2MockClass, $commandRegistry->get('test:command2'));
     }
 }

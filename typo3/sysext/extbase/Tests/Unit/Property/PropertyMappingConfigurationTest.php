@@ -118,7 +118,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      */
     public function setTypeConverterOptionsCanBeRetrievedAgain(): void
     {
-        $mockTypeConverterClass = $this->getMockClass(TypeConverterInterface::class);
+        $mockTypeConverterClass = get_class($this->createMock(TypeConverterInterface::class));
 
         $this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, ['k1' => 'v1', 'k2' => 'v2']);
         self::assertEquals('v1', $this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k1'));
@@ -138,7 +138,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      */
     public function setTypeConverterOptionsShouldOverrideAlreadySetOptions(): void
     {
-        $mockTypeConverterClass = $this->getMockClass(TypeConverterInterface::class);
+        $mockTypeConverterClass = get_class($this->createMock(TypeConverterInterface::class));
         $this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, ['k1' => 'v1', 'k2' => 'v2']);
         $this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, ['k3' => 'v3']);
 
@@ -151,7 +151,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      */
     public function setTypeConverterOptionShouldOverrideAlreadySetOptions(): void
     {
-        $mockTypeConverterClass = $this->getMockClass(TypeConverterInterface::class);
+        $mockTypeConverterClass = get_class($this->createMock(TypeConverterInterface::class));
         $this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, ['k1' => 'v1', 'k2' => 'v2']);
         $this->propertyMappingConfiguration->setTypeConverterOption($mockTypeConverterClass, 'k1', 'v3');
 
@@ -203,7 +203,8 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      */
     public function fluentInterfaceMethodsDataProvider(): array
     {
-        $mockTypeConverterClass = $this->getMockClass(TypeConverterInterface::class);
+        $mockTypeConverter = $this->createMock(TypeConverterInterface::class);
+        $mockTypeConverterClass = get_class($mockTypeConverter);
 
         return [
             ['allowAllProperties'],
@@ -212,7 +213,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ['setMapping', ['k1', 'k1a']],
             ['setTypeConverterOptions', [$mockTypeConverterClass, ['k1' => 'v1', 'k2' => 'v2']]],
             ['setTypeConverterOption', [$mockTypeConverterClass, 'k1', 'v3']],
-            ['setTypeConverter', [$this->createMock(TypeConverterInterface::class)]],
+            ['setTypeConverter', [$mockTypeConverter]],
         ];
     }
 

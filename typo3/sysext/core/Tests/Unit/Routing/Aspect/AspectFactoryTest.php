@@ -51,12 +51,12 @@ class AspectFactoryTest extends UnitTestCase
         $this->siteProphecy = $this->prophesize(
             Site::class
         );
-        $this->persistedMockClass = $this->getMockClass(
+        $this->persistedMockClass = get_class($this->createMock(
             PersistedMappableAspectInterface::class
-        );
-        $this->aspectMockClass = $this->getMockClass(
+        ));
+        $this->aspectMockClass = get_class($this->createMock(
             AspectInterface::class
-        );
+        ));
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects'] = [
             'Persisted' => $this->persistedMockClass,
             'Aspect' => $this->aspectMockClass,
