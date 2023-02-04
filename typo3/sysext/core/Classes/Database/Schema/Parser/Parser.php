@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Schema\Parser;
 
+use Doctrine\Common\Lexer\Token;
 use Doctrine\DBAL\Schema\Table;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateDefinitionItem;
@@ -66,22 +67,12 @@ use TYPO3\CMS\Core\Database\Schema\Parser\AST\ReferenceDefinition;
 /**
  * An LL(*) recursive-descent parser for MySQL CREATE TABLE statements.
  * Parses a CREATE TABLE statement, reports any errors in it, and generates an AST.
+ * @todo mark as internal/final
  */
 class Parser
 {
-    /**
-     * The lexer.
-     *
-     * @var Lexer
-     */
-    protected $lexer;
-
-    /**
-     * The statement to parse.
-     *
-     * @var string
-     */
-    protected $statement;
+    protected Lexer $lexer;
+    protected string $statement = '';
 
     /**
      * Creates a new statement parser object.
@@ -96,6 +87,7 @@ class Parser
 
     /**
      * Gets the lexer used by the parser.
+     * @todo unused. drop after recheck.
      */
     public function getLexer(): Lexer
     {
@@ -121,12 +113,11 @@ class Parser
      *
      * @param int $token The token type.
      *
-     *
      * @throws StatementException If the tokens don't match.
      */
-    public function match($token)
+    public function match(int $token)
     {
-        $lookaheadType = $this->lexer->lookahead['type'];
+        $lookaheadType = $this->lexer->lookahead->type;
 
         // Short-circuit on first condition, usually types match
         if ($lookaheadType !== $token) {
@@ -163,7 +154,7 @@ class Parser
      * @param bool $deep Whether to clean peek and reset errors.
      * @param int $position Position to reset.
      */
-    public function free($deep = false, $position = 0)
+    public function free(bool $deep = false, int $position = 0): void
     {
         // WARNING! Use this method with care. It resets the scanner!
         $this->lexer->resetPosition($position);
@@ -204,22 +195,21 @@ class Parser
      * Generates a new syntax error.
      *
      * @param string $expected Expected string.
-     * @param array|null $token Got token.
+     * @param Token|null $token Got token.
      *
      *
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    public function syntaxError($expected = '', $token = null)
+    public function syntaxError(string $expected = '', ?Token $token = null): void
     {
         if ($token === null) {
             $token = $this->lexer->lookahead;
         }
-
-        $tokenPos = $token['position'] ?? '-1';
+        $tokenPos = $token->position;
 
         $message = "line 0, col {$tokenPos}: Error: ";
         $message .= ($expected !== '') ? "Expected {$expected}, got " : 'Unexpected ';
-        $message .= ($this->lexer->lookahead === null) ? 'end of string.' : "'{$token['value']}'";
+        $message .= ($this->lexer->lookahead === null) ? 'end of string.' : "'{$token->value}'";
 
         throw StatementException::syntaxError($message, StatementException::sqlError($this->statement));
     }
@@ -228,16 +218,17 @@ class Parser
      * Generates a new semantical error.
      *
      * @param string $message Optional message.
-     * @param array|null $token Optional token.
+     * @param Token|null $token Optional token.
      *
      *
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    public function semanticalError($message = '', $token = null)
+    public function semanticalError(string $message = '', ?Token $token = null): void
     {
         if ($token === null) {
             $token = $this->lexer->lookahead ?? [];
         }
+        $tokenPos = $token->position;
 
         // Minimum exposed chars ahead of token
         $distance = 12;
@@ -245,12 +236,11 @@ class Parser
         // Find a position of a final word to display in error string
         $createTableStatement = $this->statement;
         $length = strlen($createTableStatement);
-        $pos = $token['position'] + $distance;
+        $pos = $tokenPos + $distance;
         $pos = strpos($createTableStatement, ' ', ($length > $pos) ? $pos : $length);
-        $length = ($pos !== false) ? $pos - $token['position'] : $distance;
+        $length = ($pos !== false) ? $pos - $tokenPos : $distance;
 
-        $tokenPos = array_key_exists('position', $token) && $token['position'] > 0 ? $token['position'] : '-1';
-        $tokenStr = substr($createTableStatement, $token['position'], $length);
+        $tokenStr = substr($createTableStatement, $tokenPos, $length);
 
         // Building informative message
         $message = 'line 0, col ' . $tokenPos . " near '" . $tokenStr . "': Error: " . $message;
@@ -263,15 +253,15 @@ class Parser
      *
      * @param bool $resetPeek Reset peek after finding the closing parenthesis.
      *
-     * @return array
+     * @return Token
      */
-    protected function peekBeyondClosingParenthesis($resetPeek = true)
+    protected function peekBeyondClosingParenthesis(bool $resetPeek = true): Token
     {
         $token = $this->lexer->peek();
         $numUnmatched = 1;
 
         while ($numUnmatched > 0 && $token !== null) {
-            switch ($token['type']) {
+            switch ($token->type) {
                 case Lexer::T_OPEN_PARENTHESIS:
                     ++$numUnmatched;
                     break;
@@ -301,7 +291,7 @@ class Parser
     {
         $this->lexer->moveNext();
 
-        if ($this->lexer->lookahead['type'] !== Lexer::T_CREATE) {
+        if (($this->lexer->lookahead?->type ?? null) !== Lexer::T_CREATE) {
             $this->syntaxError('CREATE');
         }
 
@@ -326,7 +316,7 @@ class Parser
         $statement = null;
         $this->match(Lexer::T_CREATE);
 
-        switch ($this->lexer->lookahead['type']) {
+        switch ($this->lexer->lookahead->type) {
             case Lexer::T_TEMPORARY:
                 // Intentional fall-through
             case Lexer::T_TABLE:
@@ -439,7 +429,7 @@ class Parser
     {
         $definitionItem = null;
 
-        switch ($this->lexer->lookahead['type']) {
+        switch ($this->lexer->lookahead->type) {
             case Lexer::T_FULLTEXT:
                 // Intentional fall-through
             case Lexer::T_SPATIAL:
@@ -483,7 +473,7 @@ class Parser
         $isUnique = false;
         $indexDefinition = new CreateIndexDefinitionItem();
 
-        switch ($this->lexer->lookahead['type']) {
+        switch ($this->lexer->lookahead->type) {
             case Lexer::T_PRIMARY:
                 $this->match(Lexer::T_PRIMARY);
                 // KEY is a required keyword for PRIMARY index
@@ -623,7 +613,7 @@ class Parser
 
         $this->match(Lexer::T_USING);
 
-        switch ($this->lexer->lookahead['type']) {
+        switch ($this->lexer->lookahead->type) {
             case Lexer::T_BTREE:
                 $this->match(Lexer::T_BTREE);
                 $indexType = 'BTREE';
@@ -652,14 +642,14 @@ class Parser
         $options = [];
 
         while ($this->lexer->lookahead && !$this->lexer->isNextTokenAny([Lexer::T_COMMA, Lexer::T_CLOSE_PARENTHESIS])) {
-            switch ($this->lexer->lookahead['type']) {
+            switch ($this->lexer->lookahead->type) {
                 case Lexer::T_KEY_BLOCK_SIZE:
                     $this->match(Lexer::T_KEY_BLOCK_SIZE);
                     if ($this->lexer->isNextToken(Lexer::T_EQUALS)) {
                         $this->match(Lexer::T_EQUALS);
                     }
                     $this->lexer->moveNext();
-                    $options['key_block_size'] = (int)$this->lexer->token['value'];
+                    $options['key_block_size'] = (int)$this->lexer->token->value;
                     break;
                 case Lexer::T_USING:
                     $options['index_type'] = $this->indexType();
@@ -672,7 +662,7 @@ class Parser
                 case Lexer::T_COMMENT:
                     $this->match(Lexer::T_COMMENT);
                     $this->match(Lexer::T_STRING);
-                    $options['comment'] = $this->lexer->token['value'];
+                    $options['comment'] = $this->lexer->token->value;
                     break;
                 default:
                     $this->syntaxError('KEY_BLOCK_SIZE, USING, WITH PARSER or COMMENT');
@@ -703,7 +693,7 @@ class Parser
         $columnDefinitionItem = new CreateColumnDefinitionItem($columnName, $dataType);
 
         while ($this->lexer->lookahead && !$this->lexer->isNextTokenAny([Lexer::T_COMMA, Lexer::T_CLOSE_PARENTHESIS])) {
-            switch ($this->lexer->lookahead['type']) {
+            switch ($this->lexer->lookahead->type) {
                 case Lexer::T_NOT:
                     $columnDefinitionItem->allowNull = false;
                     $this->match(Lexer::T_NOT);
@@ -742,7 +732,7 @@ class Parser
                 case Lexer::T_COMMENT:
                     $this->match(Lexer::T_COMMENT);
                     if ($this->lexer->isNextToken(Lexer::T_STRING)) {
-                        $columnDefinitionItem->comment = $this->lexer->lookahead['value'];
+                        $columnDefinitionItem->comment = $this->lexer->lookahead->value;
                         $this->match(Lexer::T_STRING);
                     }
                     break;
@@ -824,7 +814,7 @@ class Parser
     {
         $dataType = null;
 
-        switch ($this->lexer->lookahead['type']) {
+        switch ($this->lexer->lookahead->type) {
             case Lexer::T_BIT:
                 $this->match(Lexer::T_BIT);
                 $dataType = new BitDataType(
@@ -1015,20 +1005,20 @@ class Parser
      * @return mixed
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    protected function columnDefaultValue()
+    protected function columnDefaultValue(): mixed
     {
         $this->match(Lexer::T_DEFAULT);
         $value = null;
 
-        switch ($this->lexer->lookahead['type']) {
+        switch ($this->lexer->lookahead->type) {
             case Lexer::T_INTEGER:
-                $value = (int)$this->lexer->lookahead['value'];
+                $value = (int)$this->lexer->lookahead->value;
                 break;
             case Lexer::T_FLOAT:
-                $value = (float)$this->lexer->lookahead['value'];
+                $value = (float)$this->lexer->lookahead->value;
                 break;
             case Lexer::T_STRING:
-                $value = (string)$this->lexer->lookahead['value'];
+                $value = (string)$this->lexer->lookahead->value;
                 break;
             case Lexer::T_CURRENT_TIMESTAMP:
                 $value = 'CURRENT_TIMESTAMP';
@@ -1061,7 +1051,7 @@ class Parser
         }
 
         $this->match(Lexer::T_OPEN_PARENTHESIS);
-        $length = (int)$this->lexer->lookahead['value'];
+        $length = (int)$this->lexer->lookahead->value;
         $this->match(Lexer::T_INTEGER);
         $this->match(Lexer::T_CLOSE_PARENTHESIS);
 
@@ -1081,12 +1071,12 @@ class Parser
         }
 
         $this->match(Lexer::T_OPEN_PARENTHESIS);
-        $options['length'] = (int)$this->lexer->lookahead['value'];
+        $options['length'] = (int)$this->lexer->lookahead->value;
         $this->match(Lexer::T_INTEGER);
 
         if ($this->lexer->isNextToken(Lexer::T_COMMA)) {
             $this->match(Lexer::T_COMMA);
-            $options['decimals'] = (int)$this->lexer->lookahead['value'];
+            $options['decimals'] = (int)$this->lexer->lookahead->value;
             $this->match(Lexer::T_INTEGER);
         }
 
@@ -1109,7 +1099,7 @@ class Parser
         }
 
         while ($this->lexer->isNextTokenAny([Lexer::T_UNSIGNED, Lexer::T_ZEROFILL])) {
-            switch ($this->lexer->lookahead['type']) {
+            switch ($this->lexer->lookahead->type) {
                 case Lexer::T_UNSIGNED:
                     $this->match(Lexer::T_UNSIGNED);
                     $options['unsigned'] = true;
@@ -1158,7 +1148,7 @@ class Parser
         }
 
         while ($this->lexer->isNextTokenAny([Lexer::T_CHARACTER, Lexer::T_COLLATE, Lexer::T_BINARY])) {
-            switch ($this->lexer->lookahead['type']) {
+            switch ($this->lexer->lookahead->type) {
                 case Lexer::T_BINARY:
                     $this->match(Lexer::T_BINARY);
                     $options['binary'] = true;
@@ -1167,12 +1157,12 @@ class Parser
                     $this->match(Lexer::T_CHARACTER);
                     $this->match(Lexer::T_SET);
                     $this->match(Lexer::T_STRING);
-                    $options['charset'] = $this->lexer->token['value'];
+                    $options['charset'] = $this->lexer->token->value;
                     break;
                 case Lexer::T_COLLATE:
                     $this->match(Lexer::T_COLLATE);
                     $this->match(Lexer::T_STRING);
-                    $options['collation'] = $this->lexer->token['value'];
+                    $options['collation'] = $this->lexer->token->value;
                     break;
                 default:
                     $this->syntaxError('BINARY, CHARACTER SET or COLLATE');
@@ -1196,17 +1186,17 @@ class Parser
         }
 
         while ($this->lexer->isNextTokenAny([Lexer::T_CHARACTER, Lexer::T_COLLATE])) {
-            switch ($this->lexer->lookahead['type']) {
+            switch ($this->lexer->lookahead->type) {
                 case Lexer::T_CHARACTER:
                     $this->match(Lexer::T_CHARACTER);
                     $this->match(Lexer::T_SET);
                     $this->match(Lexer::T_STRING);
-                    $options['charset'] = $this->lexer->token['value'];
+                    $options['charset'] = $this->lexer->token->value;
                     break;
                 case Lexer::T_COLLATE:
                     $this->match(Lexer::T_COLLATE);
                     $this->match(Lexer::T_STRING);
-                    $options['collation'] = $this->lexer->token['value'];
+                    $options['collation'] = $this->lexer->token->value;
                     break;
                 default:
                     $this->syntaxError('CHARACTER SET or COLLATE');
@@ -1247,7 +1237,7 @@ class Parser
     {
         $this->match(Lexer::T_STRING);
 
-        return (string)$this->lexer->token['value'];
+        return (string)$this->lexer->token->value;
     }
 
     /**
@@ -1277,10 +1267,10 @@ class Parser
         $referenceDefinition = new ReferenceDefinition($tableName, $referenceColumns);
 
         while (!$this->lexer->isNextTokenAny([Lexer::T_COMMA, Lexer::T_CLOSE_PARENTHESIS])) {
-            switch ($this->lexer->lookahead['type']) {
+            switch ($this->lexer->lookahead->type) {
                 case Lexer::T_MATCH:
                     $this->match(Lexer::T_MATCH);
-                    $referenceDefinition->match = $this->lexer->lookahead['value'];
+                    $referenceDefinition->match = $this->lexer->lookahead->value;
                     $this->lexer->moveNext();
                     break;
                 case Lexer::T_ON:
@@ -1332,7 +1322,7 @@ class Parser
     {
         $action = null;
 
-        switch ($this->lexer->lookahead['type']) {
+        switch ($this->lexer->lookahead->type) {
             case Lexer::T_RESTRICT:
                 $this->match(Lexer::T_RESTRICT);
                 $action = 'RESTRICT';
@@ -1394,7 +1384,7 @@ class Parser
         $options = [];
 
         while ($this->lexer->lookahead && !$this->lexer->isNextToken(Lexer::T_SEMICOLON)) {
-            switch ($this->lexer->lookahead['type']) {
+            switch ($this->lexer->lookahead->type) {
                 case Lexer::T_DEFAULT:
                     // DEFAULT prefix is optional for COLLATE/CHARACTER SET, do nothing
                     $this->match(Lexer::T_DEFAULT);
@@ -1546,7 +1536,7 @@ class Parser
      * @return mixed
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    protected function tableOptionValue()
+    protected function tableOptionValue(): mixed
     {
         // Skip the optional equals sign
         if ($this->lexer->isNextToken(Lexer::T_EQUALS)) {
@@ -1554,7 +1544,7 @@ class Parser
         }
         $this->lexer->moveNext();
 
-        return $this->lexer->token['value'];
+        return $this->lexer->token->value;
     }
 
     /**
@@ -1564,9 +1554,9 @@ class Parser
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
-    protected function schemaObjectName()
+    protected function schemaObjectName(): Identifier
     {
-        $schemaObjectName = $this->lexer->lookahead['value'];
+        $schemaObjectName = $this->lexer->lookahead->value;
         $this->lexer->moveNext();
 
         return new Identifier((string)$schemaObjectName);
