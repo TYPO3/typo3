@@ -75,7 +75,7 @@ class ContentMovingPagePositionMap extends AbstractContentPagePositionMap
         }
         return '
             <a href="' . htmlspecialchars($location) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:insertNewRecordHere')) . '">
-                ' . $this->iconFactory->getIcon('actions-arrow-left', Icon::SIZE_SMALL)->render() . '
+                ' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '
             </a>';
     }
 
