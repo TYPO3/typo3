@@ -42,7 +42,7 @@
             </f:if>
 
             <span class="list-tree-label">
-                <f:be.link route="typoscript_active.edit" parameters="{id: pageUid, action:'edit', type: type, nodeIdentifier: child.identifier}">{child.name}</f:be.link>
+                <a href="{editUri}&nodeIdentifier={child.identifier}">{child.name}</a>
             </span>
 
             <f:if condition="!{child.valueNull}">
@@ -69,7 +69,8 @@
                         tree: child,
                         pageUid: pageUid,
                         displayConstantSubstitutions: displayConstantSubstitutions,
-                        displayComments: displayComments
+                        displayComments: displayComments,
+                        editUri: editUri
                     }"
                 />
             </ul>
