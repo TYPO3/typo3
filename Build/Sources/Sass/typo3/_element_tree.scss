@@ -9,9 +9,9 @@ $navigation-border: rgb(195, 195, 195);
 // Trees Variables
 //
 $tree-indentation: 16px;
-$tree-intendation-space: 6px;
+$tree-indentation-space: 4px;
 $tree-line-height: 21px;
-$tree-border: #666;
+$tree-border: #ddd;
 $tree-bg: white;
 $tree-control-size: 20px;
 $tree-control-icon-size: 12px;
@@ -35,7 +35,7 @@ $tree-control-icon-size: 12px;
         bottom: ceil($tree-line-height * .5);
         left: 0;
         margin-bottom: -2px;
-        border-left: 1px dotted $tree-border;
+        border-left: 1px solid $tree-border;
     }
 }
 
@@ -46,8 +46,8 @@ $tree-control-icon-size: 12px;
                 &:before {
                     content: '';
                     position: absolute;
-                    right: -$tree-intendation-space;
-                    left: -$tree-intendation-space;
+                    right: -$tree-indentation-space;
+                    left: -$tree-indentation-space;
                     top: -1px;
                     bottom: -1px;
                     display: block;
@@ -61,13 +61,13 @@ $tree-control-icon-size: 12px;
         &:before {
             content: '';
             display: block;
-            width: ceil($tree-indentation - $tree-intendation-space - 1px);
+            width: ceil($tree-indentation - $tree-indentation-space - 1px);
             height: 0;
-            border-top: 1px dotted $tree-border;
+            border-top: 1px solid $tree-border;
             margin-top: -2px;
             position: absolute;
             top: ceil($tree-line-height * .5) + 1;
-            left: 2px;
+            left: 1px;
         }
 
         &.list-tree-comment:before,
@@ -79,7 +79,7 @@ $tree-control-icon-size: 12px;
             background: $tree-bg;
             height: auto;
             left: 0;
-            width: ceil($tree-indentation - $tree-intendation-space) + 1;
+            width: ceil($tree-indentation - $tree-indentation-space) + 1;
             bottom: 0;
         }
         margin: 0;
@@ -245,11 +245,11 @@ $tree-control-icon-size: 12px;
         height: 100%;
         width: 2px;
         margin-left: -1px;
-        border-left: 1px dotted $tree-border;
+        border-left: 1px solid $tree-border;
     }
 
     &:after {
-        border-top: 1px dotted $tree-border;
+        border-top: 1px solid $tree-border;
         height: 2px;
         width: 100%;
         top: 50%;
