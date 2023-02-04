@@ -8,6 +8,12 @@ return [
             'Deprecation-73516-VariousGeneralUtilityMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::intExplode' => [
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-99900-GeneralUtilityIntExplodeLimitParameter.rst',
+        ],
+    ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS' => [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [

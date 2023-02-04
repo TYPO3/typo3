@@ -833,7 +833,8 @@ class GeneralUtility
      * @param string $delimiter Delimiter string to explode with
      * @param string $string The string to explode
      * @param bool $removeEmptyValues If set, all empty values (='') will NOT be set in output
-     * @param int $limit If positive, the result will contain a maximum of limit elements,
+     * @param int $limit @deprecated will be removed in TYPO3 v13.0 without replacement.
+     *        If positive, the result will contain a maximum of `$limit` elements.
      * @return int[] Exploded values, all converted to integers
      */
     public static function intExplode($delimiter, $string, $removeEmptyValues = false, $limit = 0)
@@ -848,6 +849,8 @@ class GeneralUtility
         }
         unset($value);
         if ($limit !== 0) {
+            trigger_error('The parameter $limit will be removed from ' . __METHOD__ . ' in TYPO3 v13.0.', E_USER_DEPRECATED);
+
             if ($limit < 0) {
                 $result = array_slice($result, 0, $limit);
             } elseif (count($result) > $limit) {
