@@ -11,12 +11,6 @@ See :issue:`97816`
 Description
 ===========
 
-.. note::
-
-    The new TypoScript parser is currently not or only partially active
-    in the system. The full implementation should be finished until v12 LTS.
-    This note should be removed later.
-
 TYPO3 v12 comes with a new TypoScript syntax parser that is more performant,
 more robust and allows better tooling in the Backend.
 
