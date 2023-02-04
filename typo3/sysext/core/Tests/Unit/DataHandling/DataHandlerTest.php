@@ -1230,7 +1230,7 @@ class DataHandlerTest extends UnitTestCase
         $values = [1, 2, 3, 4, 5];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1336051942);
-        $this->expectDeprecationMessage('Expected userFunc filter "TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\UserOddNumberFilter->filter" to return an array. Got NULL.');
+        $this->expectExceptionMessage('Expected userFunc filter "TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\UserOddNumberFilter->filter" to return an array. Got NULL.');
         $this->subject->_call('applyFiltersToValues', $tcaFieldConfiguration, $values);
     }
 

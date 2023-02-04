@@ -31,8 +31,8 @@ class AspectFactoryTest extends UnitTestCase
     {
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects'] = [
-            'Persisted' => $this->getMockClass(PersistedMappableAspectInterface::class),
-            'Aspect' => $this->getMockClass(AspectInterface::class),
+            'Persisted' => get_class($this->createMock(PersistedMappableAspectInterface::class)),
+            'Aspect' => get_class($this->createMock(AspectInterface::class)),
         ];
     }
 

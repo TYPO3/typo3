@@ -56,7 +56,7 @@ class TypeConverterRegistryTest extends UnitTestCase
 
         $this->expectException(DuplicateTypeConverterException::class);
         $this->expectExceptionCode(1297951378);
-        $this->expectErrorMessage(
+        $this->expectExceptionMessage(
             sprintf(
                 'There exist at least two type converters which handle the conversion from "boolean" to "boolean" with priority "10": %s and %s',
                 ltrim(BooleanConverter::class),
@@ -97,7 +97,7 @@ class TypeConverterRegistryTest extends UnitTestCase
     {
         $this->expectException(TypeConverterException::class);
         $this->expectExceptionCode(1476044883);
-        $this->expectErrorMessage('No converter found which can be used to convert from "array" to "boolean".');
+        $this->expectExceptionMessage('No converter found which can be used to convert from "array" to "boolean".');
 
         $this->subject->findTypeConverter('array', 'boolean');
     }
@@ -109,7 +109,7 @@ class TypeConverterRegistryTest extends UnitTestCase
     {
         $this->expectException(InvalidTargetException::class);
         $this->expectExceptionCode(1297948764);
-        $this->expectErrorMessage('Could not find a suitable type converter for "NonExistingClass" because no such class or interface exists.');
+        $this->expectExceptionMessage('Could not find a suitable type converter for "NonExistingClass" because no such class or interface exists.');
 
         $this->subject->findTypeConverter('integer', 'NonExistingClass');
     }
@@ -121,7 +121,7 @@ class TypeConverterRegistryTest extends UnitTestCase
     {
         $this->expectException(TypeConverterException::class);
         $this->expectExceptionCode(1476044883);
-        $this->expectErrorMessage('No converter found which can be used to convert from "array" to "stdClass".');
+        $this->expectExceptionMessage('No converter found which can be used to convert from "array" to "stdClass".');
 
         $this->subject->findTypeConverter('array', \stdClass::class);
     }
@@ -210,7 +210,7 @@ class TypeConverterRegistryTest extends UnitTestCase
 
         $this->expectException(TypeConverterException::class);
         $this->expectExceptionCode(1476044883);
-        $this->expectErrorMessage('No converter found which can be used to convert from "array" to "TYPO3\CMS\Core\Authentication\LoginType".');
+        $this->expectExceptionMessage('No converter found which can be used to convert from "array" to "TYPO3\CMS\Core\Authentication\LoginType".');
 
         $this->subject->findTypeConverter('array', LoginType::class);
     }
