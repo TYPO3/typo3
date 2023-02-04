@@ -273,11 +273,6 @@ $panel-heading-bg-scale: -85%;
     background-color: $nav-tabs-active-link-bg;
 }
 
-.panel-tab + .panel-tab,
-.panel-tab + .form-section {
-    margin-top: -($line-height-computed+1);
-}
-
 .tab-pane {
     > .panel-tab:first-child {
         border-top: none;
