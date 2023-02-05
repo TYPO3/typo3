@@ -5,7 +5,6 @@ declare(strict_types=1);
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders;
 use TYPO3\CMS\Redirects\Evaluation\SourceHost;
 use TYPO3\CMS\Redirects\FormDataProvider\ValuePickerItemDataProvider;
-use TYPO3\CMS\Redirects\Hooks\BackendControllerHook;
 use TYPO3\CMS\Redirects\Hooks\DataHandlerCacheFlushingHook;
 use TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook;
 use TYPO3\CMS\Redirects\Hooks\DispatchNotificationHook;
@@ -26,9 +25,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRe
 
 // Add validation call for form field source_host and source_path
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][SourceHost::class] = '';
-
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostProcess'][]
-    = BackendControllerHook::class . '->registerClientSideEventHandler';
 
 // Register update signal to send delayed notifications
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook']['redirects:slugChanged'] = DispatchNotificationHook::class . '->dispatchNotification';

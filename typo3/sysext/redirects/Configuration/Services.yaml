@@ -31,6 +31,11 @@ services:
         command: 'redirects:cleanup'
         description: 'Cleanup old redirects periodically for given constraints like days, hit count or domains.'
 
+  TYPO3\CMS\Redirects\EventListener\AfterBackendPageRendererEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'redirects-after-backend-page-renderer-event'
+
   TYPO3\CMS\Redirects\EventListener\RecordHistoryRollbackEventsListener:
     tags:
       - name: event.listener
