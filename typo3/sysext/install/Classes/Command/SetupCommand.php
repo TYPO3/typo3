@@ -50,25 +50,13 @@ class SetupCommand extends Command
         'sqlite' => 'Manually configured SQLite connection',
     ];
 
-    protected SetupDatabaseService $setupDatabaseService;
-    protected SetupService $setupService;
-    protected ConfigurationManager $configurationManager;
-    protected LateBootService $lateBootService;
-    protected OutputInterface $output;
-    protected InputInterface $input;
-    protected QuestionHelper $questionHelper;
-
     public function __construct(
         string $name,
-        SetupDatabaseService $setupDatabaseService,
-        SetupService $setupService,
-        ConfigurationManager $configurationManager,
-        LateBootService $lateBootService
+        private readonly SetupDatabaseService $setupDatabaseService,
+        private readonly SetupService $setupService,
+        private readonly ConfigurationManager $configurationManager,
+        private readonly LateBootService $lateBootService
     ) {
-        $this->setupDatabaseService = $setupDatabaseService;
-        $this->setupService = $setupService;
-        $this->configurationManager = $configurationManager;
-        $this->lateBootService = $lateBootService;
         parent::__construct($name);
     }
 
@@ -176,18 +164,25 @@ If a value is missing, the user will be asked for it.
 ---------------------------------
 TYPO3_DB_DRIVER=mysqli \
 TYPO3_DB_USERNAME=db \
-TYPO3_DB_PASSWORD=db \
 TYPO3_DB_PORT=3306 \
 TYPO3_DB_HOST=db \
 TYPO3_DB_DBNAME=db \
-TYPO3_SETUP_ADMIN_EMAIL=admin@email.com \
+TYPO3_SETUP_ADMIN_EMAIL=admin@example.com \
 TYPO3_SETUP_ADMIN_USERNAME=admin \
-TYPO3_SETUP_PASSWORD=password \
+TYPO3_SETUP_CREATE_SITE="https://your-typo3-site.com/" \
 TYPO3_PROJECT_NAME="Automated Setup" \
-TYPO3_CREATE_SITE="https://your-typo3-site.com/" \
 ./bin/typo3 setup --force
 ---------------------------------
 
+<fg=yellow>
+Variable `TYPO3_DB_PASSWORD` (option `--password`) can be used to provide a
+password for the database and `TYPO3_SETUP_ADMIN_PASSWORD`
+(option `--admin-user-password`) for the admin user password.
+Using this can be a security risk since the password may end up in shell
+history files. Prefer the interactive mode. Additionally, writing a command
+to shell history can be suppressed by prefixing the command with a space
+when using `bash` or `zsh`.
+</>
 EOT
             );
     }
@@ -197,12 +192,9 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->output = $output;
-        $this->input = $input;
-        $this->input->setInteractive(!$input->getOption('no-interaction'));
+        $input->setInteractive(!$input->getOption('no-interaction'));
         /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelper('question');
-        $this->questionHelper = $questionHelper;
 
         // Ensure all required files and folders exist
         $folderStructureFactory = GeneralUtility::makeInstance(DefaultFactory::class);
@@ -216,7 +208,7 @@ EOT
                 'Configuration already exists do you want to overwrite it [default: no] ? ',
                 false
             );
-            $configOverwrite = $this->questionHelper->ask($input, $output, $configOverwriteQuestion);
+            $configOverwrite = $questionHelper->ask($input, $output, $configOverwriteQuestion);
 
             if (!$configOverwrite) {
                 return Command::FAILURE;
@@ -226,23 +218,23 @@ EOT
         }
 
         // Get database connection details
-        $databaseConnection = $this->getConnectionDetails();
+        $databaseConnection = $this->getConnectionDetails($questionHelper, $input, $output);
 
         // Select the database and prepare it
-        if ($exitCode = $this->selectAndImportDatabase($databaseConnection)) {
+        if ($exitCode = $this->selectAndImportDatabase($questionHelper, $input, $output, $databaseConnection)) {
             return $exitCode;
         }
 
-        $username = $this->getAdminUserName();
-        $password = $this->getAdminUserPassword();
-        $email = $this->getAdminEmailAddress();
+        $username = $this->getAdminUserName($questionHelper, $input, $output);
+        $password = $this->getAdminUserPassword($questionHelper, $input, $output);
+        $email = $this->getAdminEmailAddress($questionHelper, $input, $output);
         $this->setupService->createUser($username, $password, $email);
         $this->setupService->setInstallToolPassword($password);
 
-        $siteName = $this->getProjectName();
+        $siteName = $this->getProjectName($questionHelper, $input, $output);
         $this->setupService->setSiteName($siteName);
 
-        $siteUrl = $this->getSiteSetup();
+        $siteUrl = $this->getSiteSetup($questionHelper, $input, $output);
         if ($siteUrl) {
             $pageUid = $this->setupService->createSite();
             $this->setupService->createSiteConfiguration('main', (int)$pageUid, $siteUrl);
@@ -250,12 +242,12 @@ EOT
 
         $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
         $this->setupDatabaseService->markWizardsDone($container);
-        $this->writeSuccess('Congratulations - TYPO3 Setup is done.');
+        $this->writeSuccess($output, 'Congratulations - TYPO3 Setup is done.');
 
         return Command::SUCCESS;
     }
 
-    protected function selectAndImportDatabase(mixed $databaseConnection): int
+    protected function selectAndImportDatabase(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output, mixed $databaseConnection): int
     {
         if ($databaseConnection['driver'] !== 'pdo_sqlite') {
             // Set temporary database configuration, so we are able to
@@ -265,7 +257,7 @@ EOT
             try {
                 $databaseList = $this->setupDatabaseService->getDatabaseList();
             } catch (DBALException $exception) {
-                $this->writeError($exception->getMessage());
+                $this->writeError($output, $exception->getMessage());
 
                 return Command::FAILURE;
             }
@@ -298,11 +290,11 @@ EOT
                 return $dbname;
             };
 
-            $dbnameFromCli = $this->getFallbackValueEnvOrOption('dbname', 'TYPO3_SETUP_DBNAME');
-            if ($dbnameFromCli === false && $this->input->isInteractive()) {
+            $dbnameFromCli = $this->getFallbackValueEnvOrOption($input, 'dbname', 'TYPO3_DB_DBNAME');
+            if ($dbnameFromCli === false && $input->isInteractive()) {
                 $dbname = new ChoiceQuestion('Select which database to use: ', $dbChoices);
                 $dbname->setValidator($dbNameValidator);
-                $databaseConnection['database'] = $this->questionHelper->ask($this->input, $this->output, $dbname);
+                $databaseConnection['database'] = $questionHelper->ask($input, $output, $dbname);
             } else {
                 $dbNameValidator($dbnameFromCli);
                 $databaseConnection['database'] = $dbnameFromCli;
@@ -310,7 +302,7 @@ EOT
 
             $checkDatabase = $this->setupDatabaseService->checkExistingDatabase($databaseConnection['database']);
             if ($checkDatabase->getSeverity() !== ContextualFeedbackSeverity::OK) {
-                $this->writeError($checkDatabase->getMessage());
+                $this->writeError($output, $checkDatabase->getMessage());
 
                 return Command::FAILURE;
             }
@@ -321,7 +313,7 @@ EOT
         [$success, $messages] = $this->setupDatabaseService->setDefaultConnectionSettings($databaseConnection);
         if (!$success) {
             foreach ($messages as $message) {
-                $this->writeError($message->getMessage());
+                $this->writeError($output, $message->getMessage());
             }
 
             return Command::FAILURE;
@@ -333,21 +325,21 @@ EOT
         $this->setupDatabaseService->checkRequiredDatabasePermissions();
         $importResults = $this->setupDatabaseService->importDatabaseData();
         foreach ($importResults as $result) {
-            $this->writeError((string)$result);
+            $this->writeError($output, (string)$result);
         }
 
         if (count($importResults) > 0) {
-            $this->writeError('Database import failed. Please see the errors shown above');
+            $this->writeError($output, 'Database import failed. Please see the errors shown above');
             return Command::FAILURE;
         }
 
         return Command::SUCCESS;
     }
 
-    protected function getConnectionDetails(): array
+    protected function getConnectionDetails(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): array
     {
-        $this->input->hasParameterOption('--driver');
-        $driverTypeCli = $this->getFallbackValueEnvOrOption('driver', 'TYPO3_DB_DRIVER');
+        $input->hasParameterOption('--driver');
+        $driverTypeCli = $this->getFallbackValueEnvOrOption($input, 'driver', 'TYPO3_DB_DRIVER');
         $driverOptions = $this->setupDatabaseService->getDriverOptions();
         $availableConnectionTypes = implode(', ', array_keys($this->connectionLabels));
 
@@ -362,10 +354,10 @@ EOT
             return $connectionType;
         };
 
-        if ($driverTypeCli === false && $this->input->isInteractive()) {
+        if ($driverTypeCli === false && $input->isInteractive()) {
             $driver = new ChoiceQuestion('Database driver?', $this->connectionLabels);
             $driver->setValidator($connectionValidator);
-            $driverType = $this->questionHelper->ask($this->input, $this->output, $driver);
+            $driverType = $questionHelper->ask($input, $output, $driver);
         } else {
             $driverType = $connectionValidator($driverTypeCli);
         }
@@ -380,7 +372,7 @@ EOT
                 case 'driver':
                     break;
                 case 'username':
-                    $usernameFromCli = $this->getFallbackValueEnvOrOption('username', 'TYPO3_DB_USERNAME');
+                    $usernameFromCli = $this->getFallbackValueEnvOrOption($input, 'username', 'TYPO3_DB_USERNAME');
                     $emptyValidator = static function ($value) {
                         if (empty($value)) {
                             throw new \RuntimeException(
@@ -392,12 +384,12 @@ EOT
                         return $value;
                     };
 
-                    if ($usernameFromCli === false && $this->input->isInteractive()) {
+                    if ($usernameFromCli === false && $input->isInteractive()) {
                         $default = $this->getDefinition()->getOption($key)->getDefault();
                         $defaultLabel = ' [default: ' . $default . ']';
                         $question = new Question('Enter the database "username"' . $defaultLabel . ' ? ', $default);
                         $question->setValidator($emptyValidator);
-                        $username = $this->questionHelper->ask($this->input, $this->output, $question);
+                        $username = $questionHelper->ask($input, $output, $question);
                         // @todo: Investigate the difference between username and user.... why?
                         $databaseConnectionOptions['username'] = $username;
                         $databaseConnectionOptions['user'] = $username;
@@ -409,7 +401,7 @@ EOT
                     $databaseConnectionOptions['user'] = $validUsername;
                     break;
                 default:
-                    $envValue = $this->getFallbackValueEnvOrOption($key, 'TYPO3_DB_' . strtoupper($key));
+                    $envValue = $this->getFallbackValueEnvOrOption($input, $key, 'TYPO3_DB_' . strtoupper($key));
                     $default = $this->getDefinition()->getOption($key)->getDefault();
                     $defaultLabel = empty($value) ? '' : ' [default: ' . $default . ']';
                     $question = new Question('Enter the database "' . $key . '"' . $defaultLabel . ' ? ', $default);
@@ -456,8 +448,15 @@ EOT
                         $question->setValidator($emptyValidator);
                     }
 
-                    if ($envValue === false && $this->input->isInteractive()) {
-                        $value = $this->questionHelper->ask($this->input, $this->output, $question);
+                    if ($envValue === false && $key === 'password') {
+                        // Force this question if no `TYPO3_DB_PASSWORD` set via cli.
+                        // Thus, the user will always be prompted for a password even --no-interaction is set.
+                        $currentlyInteractive = $input->isInteractive();
+                        $input->setInteractive(true);
+                        $value = $questionHelper->ask($input, $output, $question);
+                        $input->setInteractive($currentlyInteractive);
+                    } elseif ($envValue === false && $input->isInteractive()) {
+                        $value = $questionHelper->ask($input, $output, $question);
                     } else {
                         // All passed in values should go through the set validator,
                         // therefore, we can't break early
@@ -472,7 +471,7 @@ EOT
         return $databaseConnectionOptions;
     }
 
-    protected function getAdminUserName(): string
+    protected function getAdminUserName(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): string
     {
         $usernameValidator = static function ($username) {
             if (empty($username)) {
@@ -485,17 +484,17 @@ EOT
             return $username;
         };
 
-        $usernameFromCli = $this->getFallbackValueEnvOrOption('admin-username', 'TYPO3_SETUP_ADMIN_USERNAME');
-        if ($usernameFromCli === false && $this->input->isInteractive()) {
+        $usernameFromCli = $this->getFallbackValueEnvOrOption($input, 'admin-username', 'TYPO3_SETUP_ADMIN_USERNAME');
+        if ($usernameFromCli === false && $input->isInteractive()) {
             $questionUsername = new Question('Admin username (user will be "system maintainer") ? ');
             $questionUsername->setValidator($usernameValidator);
-            return $this->questionHelper->ask($this->input, $this->output, $questionUsername);
+            return $questionHelper->ask($input, $output, $questionUsername);
         }
 
         return $usernameValidator($usernameFromCli);
     }
 
-    protected function getAdminUserPassword(): string
+    protected function getAdminUserPassword(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): string
     {
         $passwordValidator = function ($password) {
             $passwordValidationErrors = $this->setupDatabaseService->getBackendUserPasswordValidationErrors((string)$password);
@@ -510,20 +509,26 @@ EOT
             return $password;
         };
 
-        $passwordFromCli = $this->getFallbackValueEnvOrOption('admin-user-password', 'TYPO3_SETUP_PASSWORD');
-        if ($passwordFromCli === false && $this->input->isInteractive()) {
+        $passwordFromCli = $this->getFallbackValueEnvOrOption($input, 'admin-user-password', 'TYPO3_SETUP_ADMIN_PASSWORD');
+        if ($passwordFromCli === false) {
+            // Force this question if `TYPO3_SETUP_ADMIN_PASSWORD` is not set via cli.
+            // Thus, the user will always be prompted for a password even --no-interaction is set.
+            $currentlyInteractive = $input->isInteractive();
+            $input->setInteractive(true);
             $questionPassword = new Question('Admin user and installer password ? ');
             $questionPassword->setHidden(true);
             $questionPassword->setHiddenFallback(false);
             $questionPassword->setValidator($passwordValidator);
+            $password = $questionHelper->ask($input, $output, $questionPassword);
+            $input->setInteractive($currentlyInteractive);
 
-            return $this->questionHelper->ask($this->input, $this->output, $questionPassword);
+            return $password;
         }
 
         return $passwordValidator($passwordFromCli);
     }
 
-    protected function getAdminEmailAddress(): string|false
+    protected function getAdminEmailAddress(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): string|false
     {
         $emailValidator = static function ($email) {
             if (!empty($email) && !GeneralUtility::validEmail($email)) {
@@ -536,35 +541,35 @@ EOT
             return $email;
         };
 
-        $emailFromCli = $this->getFallbackValueEnvOrOption('admin-email', 'TYPO3_SETUP_ADMIN_EMAIL');
-        if ($emailFromCli === false && $this->input->isInteractive()) {
+        $emailFromCli = $this->getFallbackValueEnvOrOption($input, 'admin-email', 'TYPO3_SETUP_ADMIN_EMAIL');
+        if ($emailFromCli === false && $input->isInteractive()) {
             $questionEmail = new Question('Admin user email ? ', '');
             $questionEmail->setValidator($emailValidator);
 
-            return $this->questionHelper->ask($this->input, $this->output, $questionEmail);
+            return $questionHelper->ask($input, $output, $questionEmail);
         }
 
         return $emailValidator($emailFromCli);
     }
 
-    protected function getProjectName(): string
+    protected function getProjectName(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): string
     {
-        $nameFromCli = $this->getFallbackValueEnvOrOption('project-name', 'TYPO3_PROJECT_NAME');
+        $nameFromCli = $this->getFallbackValueEnvOrOption($input, 'project-name', 'TYPO3_PROJECT_NAME');
         $defaultProjectName = $this->getDefinition()->getOption('project-name')->getDefault();
 
-        if ($nameFromCli === false && $this->input->isInteractive()) {
+        if ($nameFromCli === false && $input->isInteractive()) {
             $question = new Question(
                 'Give your project a name [default: ' . $defaultProjectName . '] ? ',
                 $defaultProjectName
             );
 
-            return $this->questionHelper->ask($this->input, $this->output, $question);
+            return $questionHelper->ask($input, $output, $question);
         }
 
         return $nameFromCli ?: $defaultProjectName;
     }
 
-    protected function getSiteSetup(): string|bool
+    protected function getSiteSetup(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): string|bool
     {
         $urlValidator = static function ($url) {
             if ($url && !GeneralUtility::isValidUrl($url)) {
@@ -577,26 +582,26 @@ EOT
             return $url;
         };
 
-        $createSiteFromCli = $this->getFallbackValueEnvOrOption('create-site', 'TYPO3_SETUP_CREATE_SITE');
+        $createSiteFromCli = $this->getFallbackValueEnvOrOption($input, 'create-site', 'TYPO3_SETUP_CREATE_SITE');
 
-        if ($createSiteFromCli === false && $this->input->isInteractive()) {
+        if ($createSiteFromCli === false && $input->isInteractive()) {
             $questionCreateSite = new Question('Create a basic site? Please enter a URL [default: no] ', false);
             $questionCreateSite->setValidator($urlValidator);
 
-            return $this->questionHelper->ask($this->input, $this->output, $questionCreateSite);
+            return $questionHelper->ask($input, $output, $questionCreateSite);
         }
 
         return $urlValidator($createSiteFromCli);
     }
 
-    protected function writeSuccess(string $message): void
+    protected function writeSuccess(OutputInterface $output, string $message): void
     {
-        $this->output->writeln('<fg=green>✓</> ' . $message);
+        $output->writeln('<fg=green>✓</> ' . $message);
     }
 
-    protected function writeError(string $message): void
+    protected function writeError(OutputInterface $output, string $message): void
     {
-        $this->output->writeln('<fg=red>☓</> [Error]: ' . $message);
+        $output->writeln('<fg=red>☓</> [Error]: ' . $message);
     }
 
     /**
@@ -604,8 +609,8 @@ EOT
      * 1. environment variable
      * 2. cli option
      */
-    protected function getFallbackValueEnvOrOption(string $option, string $envVar): string|false
+    protected function getFallbackValueEnvOrOption(InputInterface $input, string $option, string $envVar): string|false
     {
-        return $this->input->hasParameterOption('--' . $option) ? $this->input->getOption($option) : getenv($envVar);
+        return $input->hasParameterOption('--' . $option) ? $input->getOption($option) : getenv($envVar);
     }
 }

@@ -36,16 +36,22 @@ Automated setup:
 
     TYPO3_DB_DRIVER=mysqli \
     TYPO3_DB_USERNAME=db \
-    TYPO3_DB_PASSWORD=db \
     TYPO3_DB_PORT=3306 \
     TYPO3_DB_HOST=db \
     TYPO3_DB_DBNAME=db \
-    TYPO3_SETUP_ADMIN_EMAIL=admin@email.com \
+    TYPO3_SETUP_ADMIN_EMAIL=admin@example.com \
     TYPO3_SETUP_ADMIN_USERNAME=admin \
-    TYPO3_SETUP_PASSWORD=password \
+    TYPO3_SETUP_CREATE_SITE="https://your-typo3-site.com/" \
     TYPO3_PROJECT_NAME="Automated Setup" \
-    TYPO3_CREATE_SITE="https://your-typo3-site.example.com/" \
     ./bin/typo3 setup --force
 
+.. warning::
+    Variable `TYPO3_DB_PASSWORD` (option `--password`) can be used to provide a
+    password for the database and `TYPO3_SETUP_ADMIN_PASSWORD`
+    (option `--admin-user-password`) for the admin user password.
+    Using this can be a security risk since the password may end up in shell
+    history files. Prefer the interactive mode. Additionally, writing a command
+    to shell history can be suppressed by prefixing the command with a space
+    when using `bash` or `zsh`.
 
 .. index:: ext:install
