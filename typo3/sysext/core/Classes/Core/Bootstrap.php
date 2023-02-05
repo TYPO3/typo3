@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Core\Core;
 use Composer\Autoload\ClassLoader;
 use Composer\InstalledVersions;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -192,9 +191,6 @@ class Bootstrap
     public static function initializeClassLoader(ClassLoader $classLoader)
     {
         ClassLoadingInformation::setClassLoader($classLoader);
-
-        /** @see initializeAnnotationRegistry */
-        AnnotationRegistry::registerLoader([$classLoader, 'loadClass']);
 
         // Annotations used in unit tests
         AnnotationReader::addGlobalIgnoredName('test');
