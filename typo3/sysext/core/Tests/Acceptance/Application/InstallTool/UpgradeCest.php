@@ -34,7 +34,7 @@ final class UpgradeCest extends AbstractCest
 
     public function seeUpgradeCore(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $I->click('Update Core');
+        $I->click('Update Core…');
         $modalDialog->canSeeDialog();
 
         $I->amGoingTo('open the core updater');
@@ -46,7 +46,7 @@ final class UpgradeCest extends AbstractCest
     {
         $versionPanel = '#version-2 .t3js-changelog-list > div:first-child';
 
-        $I->click('View Upgrade Documentation');
+        $I->click('View Upgrade Documentation…');
         $modalDialog->canSeeDialog();
 
         $I->amGoingTo('open the view upgrade documentation');
@@ -77,7 +77,7 @@ final class UpgradeCest extends AbstractCest
 
     public function seeCheckTca(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $I->click('Check TCA');
+        $I->click('Check TCA…');
         $modalDialog->canSeeDialog();
         $I->see('No TCA changes in ext_tables.php files.', ModalDialog::$openedModalSelector);
 
@@ -86,7 +86,7 @@ final class UpgradeCest extends AbstractCest
 
     public function seeCheckForBrokenExtensions(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $I->click('Check Extension Compatibility');
+        $I->click('Check Extension Compatibility…');
         $modalDialog->canSeeDialog();
         $I->see('ext_localconf.php of all loaded extensions successfully loaded', ModalDialog::$openedModalSelector);
         $I->see('ext_tables.php of all loaded extensions successfully loaded', ModalDialog::$openedModalSelector);
@@ -101,7 +101,7 @@ final class UpgradeCest extends AbstractCest
 
     public function seeCheckTcaMigrations(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $I->click('Check TCA Migrations');
+        $I->click('Check TCA Migrations…');
         $modalDialog->canSeeDialog();
         $I->see('Checks whether the current TCA needs migrations and displays the new migration paths which need to be adjusted manually', ModalDialog::$openedModalSelector);
 
@@ -112,7 +112,7 @@ final class UpgradeCest extends AbstractCest
     {
         $buttonText = 'Rescan';
 
-        $I->click('Scan Extension Files');
+        $I->click('Scan Extension Files…');
         $modalDialog->canSeeDialog();
         $I->click('Extension: styleguide', ModalDialog::$openedModalSelector);
         $I->waitForText($buttonText, 30, ModalDialog::$openedModalSelector);

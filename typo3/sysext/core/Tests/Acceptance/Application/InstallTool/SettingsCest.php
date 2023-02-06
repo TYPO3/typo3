@@ -36,7 +36,7 @@ final class SettingsCest extends AbstractCest
     {
         $logoAltText = 'TYPO3 logo alt text';
         $inputAltText = '#em-backend-loginLogoAlt';
-        $button = 'Configure extensions';
+        $button = 'Configure extensions…';
         $modalSave = 'Save "backend" configuration';
         $panel = 'backend';
 
@@ -69,7 +69,7 @@ final class SettingsCest extends AbstractCest
     {
         $expectedInitialPasswordValue = '';
 
-        $I->click('Change Install Tool Password');
+        $I->click('Change Install Tool Password…');
         $modalDialog->canSeeDialog();
 
         $I->amGoingTo('check if password fields are initially empty');
@@ -89,7 +89,7 @@ final class SettingsCest extends AbstractCest
 
     public function seeManageSystemMaintainers(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $button = 'Manage System Maintainers';
+        $button = 'Manage System Maintainers…';
         $modalSave = 'Save system maintainer list';
 
         $I->amGoingTo('add a system maintainer to the list');
@@ -118,7 +118,7 @@ final class SettingsCest extends AbstractCest
 
     public function seeConfigurationPresets(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $button = 'Choose Preset';
+        $button = 'Choose Preset…';
         $modalButton = 'Activate preset';
         $expectedFlashMessageText = 'Configuration written';
 
@@ -153,7 +153,7 @@ final class SettingsCest extends AbstractCest
 
     public function seeFeatureToggles(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $button = 'Configure Features';
+        $button = 'Configure Features…';
         $modalButton = 'Save';
         $featureToggle = '#t3-install-tool-features-redirects.hitCount';
 
@@ -178,7 +178,7 @@ final class SettingsCest extends AbstractCest
 
     public function seeConfigureInstallationWideOptions(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $button = 'Configure options';
+        $button = 'Configure options…';
         $panel = 'Backend';
         $checkbox = '#BE_lockSSL';
         $modalButton = 'Write configuration';

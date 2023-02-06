@@ -37,11 +37,11 @@ final class EnvironmentCest extends AbstractCest
     private function cardsDataProvider(): array
     {
         return [
-            ['title' => 'Environment Overview', 'button' => 'Show System Information', 'seeInModal' => 'Operating system'],
-            ['title' => 'Environment Status', 'button' => 'Check Environment', 'seeInModal' => 'File uploads allowed in PHP'],
-            ['title' => 'Directory Status', 'button' => 'Check Environment', 'seeInModal' => 'PHP version is fine'],
-            ['title' => 'PHP Info', 'button' => 'View PHP Info', 'seeInModal' => 'PHP Version'],
-            ['title' => 'Test Mail Setup', 'button' => 'Test Mail Setup', 'seeInModal' => 'Check the basic mail functionality by entering your email address here and clicking the button.'],
+            ['title' => 'Environment Overview', 'button' => 'Show System Information…', 'seeInModal' => 'Operating system'],
+            ['title' => 'Environment Status', 'button' => 'Check Environment…', 'seeInModal' => 'File uploads allowed in PHP'],
+            ['title' => 'Directory Status', 'button' => 'Check Environment…', 'seeInModal' => 'PHP version is fine'],
+            ['title' => 'PHP Info', 'button' => 'View PHP Info…', 'seeInModal' => 'PHP Version'],
+            ['title' => 'Test Mail Setup', 'button' => 'Test Mail Setup…', 'seeInModal' => 'Check the basic mail functionality by entering your email address here and clicking the button.'],
         ];
     }
 
