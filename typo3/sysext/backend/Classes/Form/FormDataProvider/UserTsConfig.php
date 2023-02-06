@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
- * Add user TsConfig to result
+ * Add user TSconfig to result
  */
 class UserTsConfig implements FormDataProviderInterface
 {

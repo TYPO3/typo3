@@ -50,7 +50,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\TypoScript\UserTsConfig;
 
 /**
- * PageTsConfig > Included PageTsConfig
+ * Page TSconfig > Included page TSconfig
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
@@ -112,15 +112,15 @@ final class PageTsConfigIncludesController
             $siteSettingsFlat = $siteSettingsAst->flatten();
         }
 
-        // Base PageTsConfig tree
+        // Base page TSconfig tree
         $rootLine = BackendUtility::BEgetRootLine($pageUid, '', true);
         ksort($rootLine);
         $pageTsConfigTree = $this->tsConfigTreeBuilder->getPagesTsConfigTree($rootLine, new LosslessTokenizer());
 
-        // Overload tree with userTsConfig if any
+        // Overload tree with user TSconfig if any
         $userTsConfig = $backendUser->getUserTsConfig();
         if (!$userTsConfig instanceof UserTsConfig) {
-            throw new \RuntimeException('UserTsConfig not initialized', 1675535278);
+            throw new \RuntimeException('User TSconfig not initialized', 1675535278);
         }
         $userTsConfigAst = $userTsConfig->getUserTsConfigTree();
         $userTsConfigPageOverrides = '';
@@ -139,7 +139,7 @@ final class PageTsConfigIncludesController
         }
         $pageTsConfigTree->setIdentifier('pageTsConfig-pageTsConfigTree');
 
-        // Set enabled conditions in pageTsConfig include tree and let it handle constant substitutions in pageTsConfig conditions.
+        // Set enabled conditions in page TSconfig include tree and let it handle constant substitutions in page TSconfig conditions.
         $treeTraverser = new IncludeTreeTraverser();
         $syntaxScannerVisitor = new IncludeTreeSyntaxScannerVisitor();
         $treeTraverser->addVisitor($syntaxScannerVisitor);
@@ -195,12 +195,12 @@ final class PageTsConfigIncludesController
                 $includeTree->setIdentifier('pageTsConfig-siteSettingsTree');
             }
         } else {
-            // Base PageTsConfig tree
+            // Base page TSconfig tree
             $rootLine = BackendUtility::BEgetRootLine($pageUid, '', true);
             ksort($rootLine);
             $includeTree = $this->tsConfigTreeBuilder->getPagesTsConfigTree($rootLine, new LosslessTokenizer());
 
-            // Overload tree with userTsConfig if any
+            // Overload tree with user TSconfig if any
             $userTsConfig = $backendUser->getUserTsConfig();
             if (!$userTsConfig instanceof UserTsConfig) {
                 throw new \RuntimeException('UserTsConfig not initialized', 1675535279);
@@ -272,12 +272,12 @@ final class PageTsConfigIncludesController
                 $includeTree->setIdentifier('pageTsConfig-siteSettingsTree');
             }
         } else {
-            // Base PageTsConfig tree
+            // Base page TSconfig tree
             $rootLine = BackendUtility::BEgetRootLine($pageUid, '', true);
             ksort($rootLine);
             $includeTree = $this->tsConfigTreeBuilder->getPagesTsConfigTree($rootLine, new LosslessTokenizer());
 
-            // Overload tree with userTsConfig if any
+            // Overload tree with user TSconfig if any
             $userTsConfig = $backendUser->getUserTsConfig();
             if (!$userTsConfig instanceof UserTsConfig) {
                 throw new \RuntimeException('UserTsConfig not initialized', 1675535280);
@@ -314,7 +314,7 @@ final class PageTsConfigIncludesController
     }
 
     /**
-     * Align module data active pageTsConfig conditions with toggled conditions from POST,
+     * Align module data active page TSconfig conditions with toggled conditions from POST,
      * write updated active conditions to user's module data if needed and
      * prepare a list of active conditions for view.
      */

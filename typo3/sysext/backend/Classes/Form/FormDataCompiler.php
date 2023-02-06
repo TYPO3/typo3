@@ -177,10 +177,10 @@ class FormDataCompiler
             // For "new", this is the permission bitmask of the page the record is added to
             // @todo: Remove if not needed on a lower level
             'userPermissionOnPage' => 0,
-            // Full user TsConfig
+            // Full user TSconfig
             'userTsConfig' => [],
-            // Full page TSConfig of the page that is edited or of the parent page if a record is added.
-            // This includes any defaultPageTSconfig and is merged with user TsConfig page. section. After type
+            // Full page TSconfig of the page that is edited or of the parent page if a record is added.
+            // This includes any defaultPageTSconfig and is merged with user TSconfig page. section. After type
             // of handled record was determined, record type specific settings [TCEFORM.][tableName.][field.][types.][type.]
             // are merged into [TCEFORM.][tableName.][field.]. Array keys still contain the concatenation dots.
             'pageTsConfig' => [],

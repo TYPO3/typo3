@@ -25,9 +25,9 @@ use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /**
- * Some scopes - especially fetching PageTsConfig do not have a Request, for instance
- * when the DataHandler needs PageTsConfig of a page. As such, using conditions based
- * on Request data is problematic for UserTsConfig and PageTsConfig.
+ * Some scopes - especially fetching page TSconfig do not have a Request, for instance
+ * when the DataHandler needs page TSconfig of a page. As such, using conditions based
+ * on Request data is problematic for user TSconfig and page TSconfig.
  *
  * This was working in v11, though. To deprecate this case, we provide the 'request'
  * variable through this DeprecatingRequestWrapper and log usages.
@@ -47,7 +47,7 @@ class DeprecatingRequestWrapper extends RequestWrapper
     public function getQueryParams(): array
     {
         trigger_error(
-            'Using conditions based on request data within PageTsConfig or UserTsConfig has been deprecated' .
+            'Using conditions based on request data within page TScnfig or user TSconfig has been deprecated' .
             ' and will stop working with TYPO3 v13. Switch to a different condition instead, for instance ' .
             ' based on the backend user object.',
             E_USER_DEPRECATED
@@ -58,7 +58,7 @@ class DeprecatingRequestWrapper extends RequestWrapper
     public function getParsedBody(): array
     {
         trigger_error(
-            'Using conditions based on request data within PageTsConfig or UserTsConfig has been deprecated' .
+            'Using conditions based on request data within page TScnfig or user TScnfig has been deprecated' .
             ' and will stop working with TYPO3 v13. Switch to a different condition instead, for instance ' .
             ' based on the backend user object.',
             E_USER_DEPRECATED
@@ -69,7 +69,7 @@ class DeprecatingRequestWrapper extends RequestWrapper
     public function getHeaders(): array
     {
         trigger_error(
-            'Using conditions based on request data within PageTsConfig or UserTsConfig has been deprecated' .
+            'Using conditions based on request data within page TSconfig or user TSconfig has been deprecated' .
             ' and will stop working with TYPO3 v13. Switch to a different condition instead, for instance ' .
             ' based on the backend user object.',
             E_USER_DEPRECATED
@@ -80,7 +80,7 @@ class DeprecatingRequestWrapper extends RequestWrapper
     public function getCookieParams(): array
     {
         trigger_error(
-            'Using conditions based on request data within PageTsConfig or UserTsConfig has been deprecated' .
+            'Using conditions based on request data within page TSconfig or user TSconfig has been deprecated' .
             ' and will stop working with TYPO3 v13. Switch to a different condition instead, for instance ' .
             ' based on the backend user object.',
             E_USER_DEPRECATED
@@ -94,7 +94,7 @@ class DeprecatingRequestWrapper extends RequestWrapper
     public function getSite(): ?SiteInterface
     {
         trigger_error(
-            'Using conditions based on request data within PageTsConfig or UserTsConfig has been deprecated' .
+            'Using conditions based on request data within page TSconfig or user TSconfig has been deprecated' .
             ' and will stop working with TYPO3 v13. Switch to a different condition instead, for instance ' .
             ' based on the backend user object.',
             E_USER_DEPRECATED
@@ -108,7 +108,7 @@ class DeprecatingRequestWrapper extends RequestWrapper
     public function getSiteLanguage(): ?SiteLanguage
     {
         trigger_error(
-            'Using conditions based on request data within PageTsConfig or UserTsConfig has been deprecated' .
+            'Using conditions based on request data within page TSconfig or user TSconfig has been deprecated' .
             ' and will stop working with TYPO3 v13. Switch to a different condition instead, for instance ' .
             ' based on the backend user object.',
             E_USER_DEPRECATED
@@ -119,7 +119,7 @@ class DeprecatingRequestWrapper extends RequestWrapper
     public function getNormalizedParams(): ?NormalizedParams
     {
         trigger_error(
-            'Using conditions based on request data within PageTsConfig or UserTsConfig has been deprecated' .
+            'Using conditions based on request data within page TSconfig or user TSconfig has been deprecated' .
             ' and will stop working with TYPO3 v13. Switch to a different condition instead, for instance ' .
             ' based on the backend user object.',
             E_USER_DEPRECATED
@@ -130,7 +130,7 @@ class DeprecatingRequestWrapper extends RequestWrapper
     public function getPageArguments(): ?RouteResultInterface
     {
         trigger_error(
-            'Using conditions based on request data within PageTsConfig or UserTsConfig has been deprecated' .
+            'Using conditions based on request data within page TSconfig or user TSconfig has been deprecated' .
             ' and will stop working with TYPO3 v13. Switch to a different condition instead, for instance ' .
             ' based on the backend user object.',
             E_USER_DEPRECATED

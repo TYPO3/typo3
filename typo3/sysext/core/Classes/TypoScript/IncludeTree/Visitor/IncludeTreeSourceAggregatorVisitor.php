@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeTyposcriptInclude;
  * Create a TypoScript source back from an IncludeTree. Inline source from
  * "@import" and friends.
  *
- * This visitor is used in ext:tstemplate TypoScript modules and ext:backend PageTsConfig
+ * This visitor is used in ext:tstemplate TypoScript modules and ext:backend page TSconfig
  * backend modules to show code of single includes with their resolved imports.
  *
  * @internal This is a specific Backend implementation and is not considered part of the Public TYPO3 API.

@@ -1350,7 +1350,7 @@ return [
         ',
         // String (exclude). Enter lines of default backend user/group TSconfig.
         'defaultPageTSconfig' => '',
-        // String (exclude).Enter lines of default Page TSconfig.
+        // String (exclude).Enter lines of default page TSconfig.
         'defaultPermissions' => [],
         'defaultUC' => [],
         'customPermOptions' => [], // Array with sets of custom permission options. Syntax is; 'key' => array('header' => 'header string, language split', 'items' => array('key' => array('label, language split','icon reference', 'Description text, language split'))). Keys cannot contain ":|," characters.

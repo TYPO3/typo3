@@ -127,7 +127,7 @@ class NullSite implements SiteInterface
     }
 
     /**
-     * This takes pageTsConfig into account (unlike Site interface) to find
+     * This takes page TSconfig into account (unlike Site interface) to find
      * mod.SHARED.disableLanguages and mod.SHARED.defaultLanguageLabel
      */
     public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, int $pageId = null): array

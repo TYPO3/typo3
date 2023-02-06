@@ -690,7 +690,7 @@ class BackendUtility
      *******************************************/
 
     /**
-     * Returns the PageTsConfig for page with uid $pageUid
+     * Returns the page TSconfig for page with uid $pageUid
      *
      * @param int $pageUid
      */
@@ -1320,7 +1320,7 @@ class BackendUtility
      * @param string $table Table name, present in TCA
      * @param string $column Field name
      * @param string $keyList Key or comma-separated list of keys.
-     * @param array $columnTsConfig page TSConfig for $column (TCEMAIN.<table>.<column>)
+     * @param array $columnTsConfig page TSconfig for $column (TCEMAIN.<table>.<column>)
      * @return string Comma-separated list of localized labels
      */
     public static function getLabelsFromItemsList($table, $column, $keyList, array $columnTsConfig = [])
@@ -1506,7 +1506,7 @@ class BackendUtility
      * @param bool $noRecordLookup If set, no records will be looked up, UIDs are just shown.
      * @param int $uid Uid of the current record
      * @param bool $forceResult If BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
-     * @param int $pid Optional page uid is used to evaluate page TSConfig for the given field
+     * @param int $pid Optional page uid is used to evaluate page TSconfig for the given field
      * @throws \InvalidArgumentException
      * @return string|null
      */
@@ -1809,7 +1809,7 @@ class BackendUtility
      * @param int $fixed_lgd_chars The max amount of characters the value may occupy
      * @param int $uid Uid of the current record
      * @param bool $forceResult If BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
-     * @param int $pid Optional page uid is used to evaluate page TSConfig for the given field
+     * @param int $pid Optional page uid is used to evaluate page TSconfig for the given field
      * @return string
      * @see getProcessedValue()
      */
@@ -2685,7 +2685,7 @@ class BackendUtility
     }
 
     /**
-     * Returns TSConfig for the TCEFORM object in Page TSconfig.
+     * Returns TSConfig for the TCEFORM object in page TSconfig.
      * Used in TCEFORMs
      *
      * @param string $table Table name present in TCA

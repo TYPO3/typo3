@@ -65,7 +65,7 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
                     // @deprecated: ip() without given request should stop working in v13. Throw an exception here.
                     trigger_error(
                         'Using expression language function "ip(' . $str . ')" in a context without request.' .
-                        ' A typical usage is UserTsConfig or PageTsConfig which can not provide a request object' .
+                        ' A typical usage is user TSconfig or page TSconfig which can not provide a request object' .
                         ' since especially the DataHandler can not provide one. The implementation uses a fallback' .
                         ' for now, but will stop working in v13.',
                         E_USER_DEPRECATED

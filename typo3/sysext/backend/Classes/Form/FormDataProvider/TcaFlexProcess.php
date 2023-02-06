@@ -214,7 +214,7 @@ class TcaFlexProcess implements FormDataProviderInterface
      * @param array $result Result array
      * @param string $fieldName Handled field name
      * @param string $flexIdentifier Determined identifier
-     * @return array PageTsConfig for this flex
+     * @return array Page TSconfig for this flex
      */
     protected function getPageTsOfFlex(array $result, $fieldName, $flexIdentifier)
     {

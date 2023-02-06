@@ -18,7 +18,7 @@ Prevent unauthorized access
 
 The export function is available by default for editors without admin
 rights. It is limited to content to which the editor has access. The export
-functionality can be hidden in the editor's context menu by the user TsConfig
+functionality can be hidden in the editor's context menu by the user TSconfig
 :ref:`contextMenu disableItems <t3tsconfig:useroptions-contextMenu-key-disableItems>`.
 
 Note that it cannot be completely disabled as there are currently other entry

@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * The following order applies:
  * - defaultPermissions as defined in this class.
  * - TYPO3_CONF_VARS[BE][defaultPermissions]
- * - PageTSconfig va TCEMAIN.permissions
+ * - Page TSconfig va TCEMAIN.permissions
  */
 class PagePermissionAssembler
 {
@@ -58,7 +58,7 @@ class PagePermissionAssembler
     }
 
     /**
-     * Set default permissions of a new page, and override via pageTSconfig.
+     * Set default permissions of a new page, and override via page TSconfig.
      *
      * @param array $fieldArray the field array to be used
      * @param int $pid the parent page ID
@@ -130,7 +130,7 @@ class PagePermissionAssembler
     /**
      * Calculates the bitvalue of the permissions given in a string, comma-separated
      *
-     * @param string $listOfPermissions a comma-separated list like "show,delete", usually from pageTSconfig
+     * @param string $listOfPermissions a comma-separated list like "show,delete", usually from page TSconfig
      * @return int Integer mask
      */
     protected function assemblePermissions($listOfPermissions): int

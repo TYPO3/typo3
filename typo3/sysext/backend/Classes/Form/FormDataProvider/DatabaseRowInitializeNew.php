@@ -239,7 +239,7 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
 
     /**
      * Set the pid. This is either the vanillaUid (see description in FormDataCompiler),
-     * or a pid given by pageTsConfig for inline children.
+     * or a pid given by page TSconfig for inline children.
      *
      * @param array $result Result array
      * @return array Modified result array
@@ -252,13 +252,13 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
         $result['databaseRow']['pid'] = $result['vanillaUid'];
 
         // In case a new inline record is created, the pid can be set to a different value
-        // by pageTsConfig, but not by userTsConfig. This overrides the above pid selection
+        // by page TSconfig, but not by user TSconfig. This overrides the above pid selection
         // and forces the pid of new inline children.
         $tableNameWithDot = $result['tableName'] . '.';
         if ($result['isInlineChild'] && isset($result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot]['pid'])) {
             if (!MathUtility::canBeInterpretedAsInteger($result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot]['pid'])) {
                 throw new \UnexpectedValueException(
-                    'page TSConfig setting TCAdefaults.' . $tableNameWithDot . 'pid must be a number, but given string '
+                    'page TSconfig setting TCAdefaults.' . $tableNameWithDot . 'pid must be a number, but given string '
                     . $result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot]['pid'] . ' can not be interpreted as integer',
                     1461598332
                 );

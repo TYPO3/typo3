@@ -71,7 +71,7 @@ class MagicImageService
     /**
      * Set maximum dimensions of magic images based on RTE configuration
      *
-     * @param array $rteConfiguration RTE configuration probably coming from PageTSConfig
+     * @param array $rteConfiguration RTE configuration probably coming from page TSconfig
      */
     public function setMagicImageMaximumDimensions(array $rteConfiguration)
     {

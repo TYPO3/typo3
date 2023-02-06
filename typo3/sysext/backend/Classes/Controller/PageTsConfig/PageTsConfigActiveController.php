@@ -47,7 +47,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\TypoScript\UserTsConfig;
 
 /**
- * PageTsConfig > Active Page TsConfig
+ * Page TSconfig > Active page TSconfig
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
@@ -128,15 +128,15 @@ final class PageTsConfigActiveController
             }
         }
 
-        // Base PageTsConfig tree
+        // Base page TSconfig tree
         $rootLine = BackendUtility::BEgetRootLine($pageUid, '', true);
         ksort($rootLine);
         $pagesTsConfigTree = $this->tsConfigTreeBuilder->getPagesTsConfigTree($rootLine, new LosslessTokenizer());
 
-        // Overload tree with userTsConfig if any
+        // Overload tree with user TSconfig if any
         $userTsConfig = $backendUser->getUserTsConfig();
         if (!$userTsConfig instanceof UserTsConfig) {
-            throw new \RuntimeException('UserTsConfig not initialized', 1674609098);
+            throw new \RuntimeException('User TSconfig not initialized', 1674609098);
         }
         $userTsConfigAst = $userTsConfig->getUserTsConfigTree();
         $userTsConfigPageOverrides = '';
@@ -154,7 +154,7 @@ final class PageTsConfigActiveController
             $pagesTsConfigTree->addChild($includeNode);
         }
 
-        // Set enabled conditions in pageTsConfig include tree and let it handle constant substitutions in pageTsConfig conditions.
+        // Set enabled conditions in page TSconfig include tree and let it handle constant substitutions in page TSconfig conditions.
         $pageTsConfigConditions = $this->handleToggledPageTsConfigConditions($pagesTsConfigTree, $moduleData, $parsedBody, $siteSettingsFlat);
         $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
         $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($pageTsConfigConditions, static fn ($condition) => $condition['active']), 'value'));
@@ -198,7 +198,7 @@ final class PageTsConfigActiveController
     }
 
     /**
-     * Align module data active pageTsConfig conditions with toggled conditions from POST,
+     * Align module data active page TSconfig conditions with toggled conditions from POST,
      * write updated active conditions to user's module data if needed and
      * prepare a list of active conditions for view.
      */

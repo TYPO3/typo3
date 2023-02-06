@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\ConditionMatcherIn
 use TYPO3\CMS\Core\Site\Entity\Site;
 
 /**
- * Main entry point for fetching PageTsConfig for frontend and backend.
+ * Main entry point for fetching page TSconfig for frontend and backend.
  *
  * @deprecated since TYPO3 v12, will be removed with v13. Use PageTsConfigFactory instead.
  *             When removing, also remove entries in core Services.yaml and usage in TypoScriptFrontendController.
@@ -45,7 +45,7 @@ class PageTsConfig
     }
 
     /**
-     * Load, parse and match all PageTsConfig for a given page from a root line.
+     * Load, parse and match all page TSconfig for a given page from a root line.
      */
     public function getForRootLine(array $rootLine, ?Site $site, ConditionMatcherInterface $conditionMatcher): array
     {
@@ -57,7 +57,7 @@ class PageTsConfig
     }
 
     /**
-     * Fetch and compile all PageTsConfig for a given page from a root line,
+     * Fetch and compile all page TSconfig for a given page from a root line,
      * but also overloads user-specific "page." properties which is possible too.
      *
      * This then caches a specific version away during runtime to avoid multiple overloads.
@@ -72,11 +72,11 @@ class PageTsConfig
         $tsConfig = $this->getForRootLine($rootLine, $site, $conditionMatcher);
         $cacheHash = md5((string)json_encode($tsConfig));
 
-        // Get UserTsConfig overlay, if no backend user is logged-in, this needs to be checked as well
+        // Get user TSconfig overlay, if no backend user is logged-in, this needs to be checked as well
         if ($user) {
             $userTsConfig = $user->getTSConfig()['page.'] ?? [];
             if (!empty($userTsConfig)) {
-                // Override PageTsConfig with UserTsConfig
+                // Override page TSconfig with user TSconfig
                 $tsConfig = array_replace_recursive($tsConfig, $userTsConfig);
                 $cacheHash .= '_user' . $user->user['uid'];
             }

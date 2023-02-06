@@ -15,7 +15,7 @@ The module :ref:`System > DB Check > Full Search <module-db-check-full-search>`
 can be configured with the following
 :ref:`User TSconfig <t3tsconfig:usertsconfig>`.
 
-See also the chapter of :ref:`Setting User TSconfig
+See also the chapter of :ref:`Setting user TSconfig
 <t3tsconfig:setting-page-tsconfig>`.
 
 .. include:: /Images/AutomaticScreenshots/Modules/DB_Check_Advanced_query_tt_content.rst.txt

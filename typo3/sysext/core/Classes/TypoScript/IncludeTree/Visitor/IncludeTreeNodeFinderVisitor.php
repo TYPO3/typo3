@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
 /**
  * Find a single node in tree identified by node identifier.
  *
- * This visitor is used in ext:tstemplate TypoScript modules and ext:backend PageTsConfig
+ * This visitor is used in ext:tstemplate TypoScript modules and ext:backend page TSconfig
  * backend modules to find single nodes, for instance when their source should be rendered.
  *
  * @internal This is a specific Backend implementation and is not considered part of the Public TYPO3 API.

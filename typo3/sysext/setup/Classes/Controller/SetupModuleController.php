@@ -142,9 +142,9 @@ class SetupModuleController
         ]);
         $languageService->includeLLFile('EXT:setup/Resources/Private/Language/locallang.xlf');
         $view->setTitle($languageService->getLL('UserSettings'));
-        // Getting the 'override' values as set might be set in User TSconfig
+        // Getting the 'override' values as set might be set in user TSconfig
         $this->overrideConf = $backendUser->getTSConfig()['setup.']['override.'] ?? [];
-        // Getting the disabled fields might be set in User TSconfig (eg setup.fields.password.disabled=1)
+        // Getting the disabled fields might be set in user TSconfig (eg setup.fields.password.disabled=1)
         $this->tsFieldConf = $backendUser->getTSConfig()['setup.']['fields.'] ?? [];
         // if password is disabled, disable repeat of password too (password2)
         if ($this->tsFieldConf['password.']['disabled'] ?? false) {

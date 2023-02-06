@@ -84,7 +84,7 @@ class TcaRadioItems extends AbstractItemProvider implements FormDataProviderInte
                 unset($result['processedTca']['columns'][$fieldName]['config']['itemsProcFunc']);
             }
 
-            // Set label overrides from pageTsConfig if given
+            // Set label overrides from page TSconfig if given
             if (isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'])
                 && is_array($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'])
             ) {

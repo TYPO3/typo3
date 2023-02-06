@@ -7,7 +7,7 @@
 				<source>Page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig.description" resname="module.pagetsconfig.description">
-				<source>The Page TSconfig module lets you manage configuration overrides for editors and option display throughout the Backend.</source>
+				<source>The page TSconfig module lets you manage configuration overrides for editors and option display throughout the Backend.</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig.shortDescription" resname="module.pagetsconfig.shortDescription">
 				<source>Page TSconfig tools</source>
@@ -17,16 +17,16 @@
 				<source>Access to this module denied.</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_pages" resname="module.pagetsconfig_pages">
-				<source>Pages containing PageTsConfig</source>
+				<source>Pages containing page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_pages.headline" resname="module.pagetsconfig_pages.headline">
-				<source>Pages containing PageTsConfig</source>
+				<source>Pages containing page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_pages.description" resname="module.pagetsconfig_pages.description">
-				<source>Global overview of all pages in the database containing Page TSconfig.</source>
+				<source>Global overview of all pages in the database containing page TSconfig.</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_pages.noRecords" resname="module.pagetsconfig_pages.noRecords">
-				<source>There are no pages containing Page TSconfig settings in the page configuration.</source>
+				<source>There are no pages containing page TSconfig settings in the page configuration.</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_pages.pagename" resname="module.pagetsconfig_pages.pagename">
 				<source>Page name</source>
@@ -36,16 +36,16 @@
 			</trans-unit>
 
 			<trans-unit id="module.pagetsconfig_active" resname="module.pagetsconfig_active">
-				<source>Active Page TSconfig</source>
+				<source>Active page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.headline" resname="module.pagetsconfig_active.headline">
-				<source>Active Page TSconfig of page "%s"</source>
+				<source>Active page TSconfig of page "%s"</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.description" resname="module.pagetsconfig_active.description">
-				<source>Overview of the current Page TSconfig of the system. A targeted search for values and names is possible. The list of results can also be filtered according to conditions.</source>
+				<source>Overview of the current page TSconfig of the system. A targeted search for values and names is possible. The list of results can also be filtered according to conditions.</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.displayConstantSubstitutions" resname="module.pagetsconfig_active.displayConstantSubstitutions">
-				<source>Substitute constants in Page TSconfig</source>
+				<source>Substitute constants in page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.displayComments" resname="module.pagetsconfig_active.displayComments">
 				<source>Display comments</source>
@@ -78,17 +78,17 @@
 				<source>Page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.noPageTSconfigAvailable" resname="module.pagetsconfig_active.noPageTSconfigAvailable">
-				<source>No suitable Page TSconfig available.</source>
+				<source>No suitable page TSconfig available.</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.tree.valueWithConstant" resname="module.pagetsconfig_active.tree.valueWithConstant">
 				<source>Constant usage: [%s]</source>
 			</trans-unit>
 
 			<trans-unit id="module.pagetsconfig_includes" resname="module.pagetsconfig_includes">
-				<source>Included Page TSconfig</source>
+				<source>Included page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.headline" resname="module.pagetsconfig_includes.headline">
-				<source>Included Page TSconfig of page "%s"</source>
+				<source>Included page TSconfig of page "%s"</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.description" resname="module.pagetsconfig_includes.description">
 				<source>Overview of the included TypoScript and include order for the current page.</source>

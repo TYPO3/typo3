@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SysTemplateInclude;
  * the CommentAwareAstBuilder instead of the AstBuilder to build the AST: This special
  * AST builder is comment aware and adds TypoScript comments to nodes.
  *
- * This visitor is used in ext:tstemplate TypoScript modules and ext:backend PageTsConfig
+ * This visitor is used in ext:tstemplate TypoScript modules and ext:backend page TSconfig
  * to allow implementation of the "comment" related functionality.
  *
  * When parsing "setup", "flattened" constants should be assigned to this visitor, so

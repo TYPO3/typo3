@@ -693,7 +693,7 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Initializes default values coming from User TSconfig
+     * Initializes default values coming from user TSconfig
      *
      * @param array $userTS User TSconfig array
      * @internal should only be used from within DataHandler
@@ -9075,7 +9075,7 @@ class DataHandler implements LoggerAwareInterface
 
         // Filter duplicate cache commands from cacheQueue
         $clearCacheCommands = array_unique($clearCacheCommands);
-        // Execute collected clear cache commands from page TSConfig
+        // Execute collected clear cache commands from page TSconfig
         foreach ($clearCacheCommands as $command) {
             $this->clear_cacheCmd($command);
         }

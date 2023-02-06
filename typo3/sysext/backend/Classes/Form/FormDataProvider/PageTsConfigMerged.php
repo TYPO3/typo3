@@ -19,12 +19,12 @@ use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
- * Page TsConfig relevant for this record
+ * Page TSconfig relevant for this record
  */
 class PageTsConfigMerged implements FormDataProviderInterface
 {
     /**
-     * Merge type specific page TS to pageTsConfig
+     * Merge type specific page TS to page TSconfig
      *
      * @return array
      */

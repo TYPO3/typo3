@@ -256,7 +256,7 @@ class ShortcutRepository
     }
 
     /**
-     * Gets the available shortcut groups from default groups, user TSConfig, and global groups
+     * Gets the available shortcut groups from default groups, user TSconfig, and global groups
      */
     protected function initShortcutGroups(): array
     {

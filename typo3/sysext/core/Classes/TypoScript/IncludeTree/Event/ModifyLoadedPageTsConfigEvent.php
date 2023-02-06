@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\TypoScript\IncludeTree\Event;
 
 /**
- * Extensions can modify pageTsConfig entries that can be overridden or added, based on the root line
+ * Extensions can modify page TSconfig entries that can be overridden or added, based on the root line
  */
 final class ModifyLoadedPageTsConfigEvent
 {

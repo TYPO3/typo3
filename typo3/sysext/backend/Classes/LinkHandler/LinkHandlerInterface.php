@@ -26,7 +26,7 @@ use TYPO3\CMS\Backend\Controller\AbstractLinkBrowserController;
  *
  * A link handler is a tab in the link modal.
  *
- * Link handlers are configured with PageTsConfig TCEMAIN.linkHandler - each tab is a sub-key in this area.
+ * Link handlers are configured with page TSconfig TCEMAIN.linkHandler - each tab is a sub-key in this area.
  * The core configures a couple of default link handlers like linking to a page, a mail, telephone and similar.
  *
  * Link handlers create a TYPO3 specific URI prefixed with 't3://' managed by ext:core LinkHandling classes.

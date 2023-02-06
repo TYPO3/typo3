@@ -29,9 +29,9 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Calculate UserTsConfig. This does the heavy lifting additionally supported by
- * TsConfigTreeBuilder: Load basic userTsConfig tree, then build the UserTsConfig AST
- * and return UserTsConfig DTO.
+ * Calculate user TSconfig. This does the heavy lifting additionally supported by
+ * TsConfigTreeBuilder: Load basic user TSconfig tree, then build the user TSconfig AST
+ * and return user TSconfig DTO.
  *
  * @internal Internal for now until API stabilized. Use backendUser->getTSConfig().
  */
@@ -50,8 +50,8 @@ final class UserTsConfigFactory
         $includeTreeTraverserConditionVerdictAware = new ConditionVerdictAwareIncludeTreeTraverser();
         $userTsConfigTree = $this->tsConfigTreeBuilder->getUserTsConfigTree($backendUser, $this->tokenizer, $this->cache);
         $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
-        // UserTsConfig is not within page context, that what PageTsConfig is for, so 'page', 'pageId',
-        // 'rootLine' and 'tree' can not be used in UserTsConfig conditions. There is no request, either.
+        // User TSconfig is not within page context, that what page TSconfig is for, so 'page', 'pageId',
+        // 'rootLine' and 'tree' can not be used in user TSconfig conditions. There is no request, either.
         $conditionMatcherVisitor->initializeExpressionMatcherWithVariables([
             'page' => [],
             'pageId' => 0,

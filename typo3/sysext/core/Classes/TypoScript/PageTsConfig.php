@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\TypoScript;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 
 /**
- * A data object that carries the final PageTsConfig. This is created by PageTsConfigFactory.
+ * A data object that carries the final page TSconfig. This is created by PageTsConfigFactory.
  *
  * @internal Internal for now until API stabilized. Use BackendUtility::getPagesTSconfig().
  */

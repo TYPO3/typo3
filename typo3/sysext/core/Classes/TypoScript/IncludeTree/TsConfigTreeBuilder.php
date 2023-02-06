@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Build include tree for UserTsConfig and PageTsConfig. This is typically used only by
+ * Build include tree for user TSconfig and page TSconfig. This is typically used only by
  * UserTsConfigFactory and PageTsConfigFactory.
  *
  * @internal

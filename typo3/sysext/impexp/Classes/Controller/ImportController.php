@@ -61,7 +61,7 @@ class ImportController
     {
         if (!$this->getBackendUser()->isImportEnabled()) {
             throw new \RuntimeException(
-                'Import module is disabled for non admin users and userTsConfig options.impexp.enableImportForNonAdminUser is not enabled.',
+                'Import module is disabled for non admin users and user TSconfig options.impexp.enableImportForNonAdminUser is not enabled.',
                 1464435459
             );
         }

@@ -215,7 +215,7 @@ class LanguageService
 
     /**
      * Translates prepared labels which are handed in, and also uses the fallback if no language is given.
-     * This is common in situations such as PageTsConfig where labels or references to labels are used.
+     * This is common in situations such as page TSconfig where labels or references to labels are used.
      * @internal not part of TYPO3 Core API for the time being.
      */
     public function translateLabel(array|string $input, string $fallback): string

@@ -58,7 +58,7 @@ class PageTsConfigLoader
     }
 
     /**
-     * Main method to get all PageTSconfig from the rootline including the defaultTSconfig settings.
+     * Main method to get all page TSconfig from the rootline including the defaultTSconfig settings.
      */
     public function load(array $rootLine): string
     {

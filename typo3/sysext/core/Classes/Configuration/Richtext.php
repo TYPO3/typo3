@@ -88,7 +88,7 @@ class Richtext
 
     /**
      * Load a configuration preset from an external resource (currently only YAML is supported).
-     * This is the default behaviour and can be overridden by pageTSconfig.
+     * This is the default behaviour and can be overridden by page TSconfig.
      *
      * @return array the parsed configuration
      */
@@ -174,7 +174,7 @@ class Richtext
      */
     protected function getPageTsConfiguration(string $table, string $field, int $pid, string $recordType): array
     {
-        // Load PageTSconfig configuration
+        // Load page TSconfig configuration
         $fullPageTsConfig = $this->getRtePageTsConfigOfPid($pid);
         $defaultPageTsConfigOverrides = $fullPageTsConfig['default.'] ?? null;
 

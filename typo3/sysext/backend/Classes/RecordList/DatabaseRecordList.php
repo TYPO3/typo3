@@ -2202,7 +2202,7 @@ class DatabaseRecordList
 
             if (!$hideTable) {
                 // Don't show table if hidden by TCA ctrl section
-                // Don't show table if hidden by pageTSconfig mod.web_list.hideTables
+                // Don't show table if hidden by page TSconfig mod.web_list.hideTables
                 $hideTable = !empty($GLOBALS['TCA'][$tableName]['ctrl']['hideTable'])
                     || in_array($tableName, $hideTablesArray, true)
                     || in_array('*', $hideTablesArray, true);

@@ -24,7 +24,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 class PageTsConfig implements FormDataProviderInterface
 {
     /**
-     * Add page TsConfig
+     * Add page TSconfig
      *
      * @return array
      */

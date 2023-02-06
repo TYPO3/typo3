@@ -131,7 +131,7 @@ abstract class AbstractItemProvider
     }
 
     /**
-     * PageTsConfig addItems:
+     * Page TSconfig addItems:
      *
      * TCEFORMS.aTable.aField[.types][.aType].addItems.aValue = aLabel,
      * with type specific options merged by pageTsConfig already
@@ -674,9 +674,9 @@ abstract class AbstractItemProvider
      * ###THIS_UID### - is current element uid (zero if new).
      * ###CURRENT_PID### - is the current page id (pid of the record).
      * ###SITEROOT###
-     * ###PAGE_TSCONFIG_ID### - a value you can set from Page TSconfig dynamically.
-     * ###PAGE_TSCONFIG_IDLIST### - a value you can set from Page TSconfig dynamically.
-     * ###PAGE_TSCONFIG_STR### - a value you can set from Page TSconfig dynamically.
+     * ###PAGE_TSCONFIG_ID### - a value you can set from page TSconfig dynamically.
+     * ###PAGE_TSCONFIG_IDLIST### - a value you can set from page TSconfig dynamically.
+     * ###PAGE_TSCONFIG_STR### - a value you can set from page TSconfig dynamically.
      *
      * @param array $result Result array
      * @param string $foreignTableName Name of foreign table

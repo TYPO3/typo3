@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\TypoScript;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 
 /**
- * A data object that carries the final UserTsConfig. This is created by UserTsConfigFactory.
+ * A data object that carries the final user TSconfig. This is created by UserTsConfigFactory.
  *
  * @internal Internal for now until API stabilized. Use backendUser->getTSConfig().
  */

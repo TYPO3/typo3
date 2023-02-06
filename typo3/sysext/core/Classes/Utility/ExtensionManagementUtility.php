@@ -724,7 +724,7 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Adds $content to the default Page TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultPageTSconfig']
+     * Adds $content to the default page TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultPageTSconfig']
      * Prefixed with a [GLOBAL] line
      * FOR USE IN ext_localconf.php FILE
      *
@@ -736,7 +736,7 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Adds $content to the default User TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultUserTSconfig']
+     * Adds $content to the default user TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultUserTSconfig']
      * Prefixed with a [GLOBAL] line
      * FOR USE IN ext_localconf.php FILE
      *
@@ -1143,7 +1143,7 @@ tt_content.' . $key . $suffix . ' {
     }
 
     /**
-     * Call this method to add an entry in the pageTSconfig list found in pages
+     * Call this method to add an entry in the page TSconfig list found in pages
      * FOR USE in Configuration/TCA/Overrides/pages.php
      *
      * @param string $extKey The extension key

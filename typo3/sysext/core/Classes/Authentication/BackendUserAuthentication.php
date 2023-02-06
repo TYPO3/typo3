@@ -975,7 +975,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Return the full UserTsConfig object instead of just the array as in getTSConfig()
+     * Return the full user TSconfig object instead of just the array as in getTSConfig()
      *
      * @internal for now until API stabilized
      */
@@ -1019,7 +1019,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * If there is a temporary mount point active in the page tree it will be used.
      *
-     * If the User TSconfig options.pageTree.altElementBrowserMountPoints is not empty the pages configured
+     * If the user TSconfig options.pageTree.altElementBrowserMountPoints is not empty the pages configured
      * there are used as web mounts If options.pageTree.altElementBrowserMountPoints.append is enabled,
      * they are appended to the existing webmounts.
      *
@@ -1224,26 +1224,26 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Parse userTsConfig from current user and its groups and set it as $this->userTS.
+     * Parse user TSconfig from current user and its groups and set it as $this->userTS.
      */
     protected function prepareUserTsConfig(): void
     {
         $tsConfigFactory = GeneralUtility::makeInstance(UserTsConfigFactory::class);
         $this->userTsConfig = $tsConfigFactory->create($this);
         if (!empty($this->getUserTsConfig()->getUserTsConfigArray()['setup.']['override.'])) {
-            // @todo: This logic is ugly. userTsConfig "setup.override." is used to force options
+            // @todo: This logic is ugly. user TSconfig "setup.override." is used to force options
             //        in the user settings module, along with "setup.fields." and "setup.default.".
             //        See the docs about this.
             //        The fun part is, this is merged into user UC. As such, whenever these setup
             //        options are used, user UC has to be updated. The toggle below triggers this
             //        and initiates an update query of this users UC.
-            //        Before v12, this was only triggered if userTsConfig could not be fetched from
-            //        cache, but this was flawed, too: When two users had the same userTsConfig, UC
+            //        Before v12, this was only triggered if user TSconfig could not be fetched from
+            //        cache, but this was flawed, too: When two users had the same user TSconfig, UC
             //        of one user would be updated, but not UC of the other user if caches were not
             //        cleared in between their two calls.
             //        This toggle and UC overriding should vanish altogether: It would be better if
-            //        userTsConfig no longer overlays UC, instead the settings / setup module
-            //        controller should look at userTsConfig "setup." on the fly when rendering, and
+            //        user TSconfig no longer overlays UC, instead the settings / setup module
+            //        controller should look at user TSconfig "setup." on the fly when rendering, and
             //        consumers that access user setup / settings values should get values overloaded
             //        on the fly as well using some helper or a late init logic or similar.
             $this->userTSUpdated = true;
@@ -1398,7 +1398,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     $path = $readOnlyMountPointConfiguration[1];
                 } else {
                     if (empty($defaultStorageRow)) {
-                        throw new \RuntimeException('Read only mount points have been defined in User TsConfig without specific storage, but a default storage could not be resolved.', 1404472382);
+                        throw new \RuntimeException('Read only mount points have been defined in user TSconfig without specific storage, but a default storage could not be resolved.', 1404472382);
                     }
                     // Backwards compatibility: If no storage is passed, we use the default storage
                     $storageUid = $defaultStorageRow['uid'];
@@ -1500,7 +1500,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     /**
      * Returns the information about file permissions.
      * Previously, this was stored in the DB field fileoper_perms now it is file_permissions.
-     * Besides it can be handled via userTSconfig
+     * Besides it can be handled via user TSconfig
      *
      * permissions.file.default {
      * addFile = 1
@@ -1565,7 +1565,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     }
                 );
 
-                // Finally overlay any userTSconfig
+                // Finally overlay any user TSconfig
                 $permissionsTsConfig = $this->getTSConfig()['permissions.']['file.']['default.'] ?? [];
                 if (!empty($permissionsTsConfig)) {
                     array_walk(

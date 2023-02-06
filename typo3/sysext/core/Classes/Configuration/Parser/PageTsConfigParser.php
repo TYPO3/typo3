@@ -51,7 +51,7 @@ class PageTsConfigParser
      *
      * If a site is provided the settings stored in the site's configuration is available as constants for the TSconfig.
      *
-     * @param string $content pageTSconfig, usually accumulated by the PageTsConfigLoader
+     * @param string $content page TSconfig, usually accumulated by the PageTsConfigLoader
      * @param ConditionMatcherInterface $matcher an instance to match strings
      * @param Site|null $site The current site the page TSconfig is parsed for
      * @return array the
@@ -120,8 +120,8 @@ class PageTsConfigParser
     /**
      * Does the actual parsing using the TypoScriptParser "parse" method by applying a condition matcher.
      *
-     * @param string $content The TSConfig being parsed
-     * @return array Array containing the parsed TSConfig, the encountered sections, the matched sections. This is stored in cache.
+     * @param string $content The TSconfig being parsed
+     * @return array Array containing the parsed TSconfig, the encountered sections, the matched sections. This is stored in cache.
      */
     protected function parseAndMatch(string $content, ConditionMatcherInterface $matcher): array
     {

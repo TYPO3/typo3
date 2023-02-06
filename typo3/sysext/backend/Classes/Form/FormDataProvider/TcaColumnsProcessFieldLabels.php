@@ -107,7 +107,7 @@ class TcaColumnsProcessFieldLabels implements FormDataProviderInterface
     }
 
     /**
-     * pageTsConfig can override labels:
+     * Page TSconfig can override labels:
      *
      * TCEFORM.aTable.aField.label = 'override'
      * TCEFORM.aTable.aField.label.en = 'override'

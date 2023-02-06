@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
- * This Provider adds Backend Layouts based on PageTsConfig
+ * This Provider adds Backend Layouts based on page TSconfig
  *
  * = Example =
  * mod {
@@ -94,7 +94,7 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
     }
 
     /**
-     * Gets PageTsConfig from DataProviderContext if available from context,
+     * Gets page TSconfig from DataProviderContext if available from context,
      * else fetch from BackendUtility by pageId.
      */
     protected function getPageTsConfig(?DataProviderContext $dataProviderContext, ?int $pageId): array
@@ -124,7 +124,7 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
     }
 
     /**
-     * Generates a Backend Layout from PageTsConfig array
+     * Generates a Backend Layout from page TSconfig array
      *
      * @param string $identifier
      * @param array $data

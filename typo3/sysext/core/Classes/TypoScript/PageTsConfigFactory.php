@@ -34,9 +34,9 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Calculate PageTsConfig. This does the heavy lifting additionally supported by
- * TsConfigTreeBuilder: Load basic pageTsConfig tree, overload with userTsConfig, parse
- * site settings ("constants"), then build the PageTsConfig AST and return PageTsConfig DTO.
+ * Calculate page TSconfig. This does the heavy lifting additionally supported by
+ * TsConfigTreeBuilder: Load basic page TSconfig tree, overload with user TSconfig, parse
+ * site settings ("constants"), then build the page TSconfig AST and return page TSconfig DTO.
  *
  * @internal Internal for now until API stabilized. Use BackendUtility::getPagesTSconfig().
  */
@@ -57,11 +57,11 @@ final class PageTsConfigFactory
     ): PageTsConfig {
         $pagesTsConfigTree = $this->tsConfigTreeBuilder->getPagesTsConfigTree($fullRootLine, $this->tokenizer, $this->cache);
 
-        // Overloading with userTsConfig if hand over
+        // Overloading with user TSconfig if hand over
         if ($userTsConfig instanceof UserTsConfig) {
             $userTsConfigAst = $userTsConfig->getUserTsConfigTree();
             $userTsConfigPageOverrides = '';
-            // @todo: This is ugly and expensive. There should be a better way to do this. Similar in BE PageTsConfig controllers.
+            // @todo: This is ugly and expensive. There should be a better way to do this. Similar in BE page TSconfig controllers.
             $userTsConfigFlat = $userTsConfigAst->flatten();
             foreach ($userTsConfigFlat as $userTsConfigIdentifier => $userTsConfigValue) {
                 if (str_starts_with($userTsConfigIdentifier, 'page.')) {

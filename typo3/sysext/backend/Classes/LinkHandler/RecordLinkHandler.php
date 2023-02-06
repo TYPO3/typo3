@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * A typical use case is linking a single new record.
  *
- * Additional PageTsConfig TCEMAIN.linkHandler setup is necessary to use this.
+ * Additional page TSconfig TCEMAIN.linkHandler setup is necessary to use this.
  *
  * A typical configuration looks like the below snippet. It configures a tab that allows linking to
  * ext:news news records ("table" is mandatory), labels them as "Book reports" (LLL: is possible),
@@ -87,7 +87,7 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
         $this->identifier = $identifier;
         if (empty($configuration['table'])) {
             throw new \LogicException(
-                'PageTsConfig TCEMAIN.linkHandler.' . $identifier . '.configuration.table is mandatory and must be set to a table name.',
+                'Page TSconfig TCEMAIN.linkHandler.' . $identifier . '.configuration.table is mandatory and must be set to a table name.',
                 1657960610
             );
         }

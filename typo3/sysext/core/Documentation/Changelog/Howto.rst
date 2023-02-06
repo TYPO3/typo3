@@ -193,7 +193,7 @@ TypoScript
     Changes that imply or introduce alterations to some TypoScript settings or
     modify the behavior of TypoScript itself. Frontend TypoScript only.
 
-TSConfig
+TSconfig
     Changes or modifications on the PageTS or UserTS or the behavior of this
     field.
 

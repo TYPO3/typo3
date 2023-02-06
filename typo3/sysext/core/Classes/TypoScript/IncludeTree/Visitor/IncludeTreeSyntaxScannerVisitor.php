@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\InvalidLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineInterface;
 
 /**
- * This implements a simple TypoScript syntax scanner. It is used in PageTsConfig
+ * This implements a simple TypoScript syntax scanner. It is used in page TSconfig
  * and TypoScript "include" submodules to find and show broken syntax.
  *
  * @internal This is a specific Backend implementation and is not considered part of the Public TYPO3 API.

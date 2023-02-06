@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
 /**
  * Gather conditions in an IncludeTree.
  *
- * This visitor is used in ext:tstemplate TypoScript modules and ext:backend PageTsConfig
+ * This visitor is used in ext:tstemplate TypoScript modules and ext:backend page TSconfig
  * backend modules to find available conditions and make them toggleable.
  *
  * @internal This is a specific Backend implementation and is not considered part of the Public TYPO3 API.

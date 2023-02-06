@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Configuration\Event;
 
 /**
- * Extensions can modify pageTSConfig entries that can be overridden or added, based on the root line
+ * Extensions can modify page TSconfig entries that can be overridden or added, based on the root line
  *
  * @deprecated since v12, will be removed in v13. Switch to \TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent.
  *             When removing, delete the class and adapt test_typoscript_pagetsconfigfactory test extension and related test.

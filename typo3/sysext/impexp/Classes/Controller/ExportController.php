@@ -84,7 +84,7 @@ class ExportController
         if ($this->getBackendUser()->isExportEnabled() === false) {
             throw new \RuntimeException(
                 'Export module is disabled for non admin users and '
-                . 'userTsConfig options.impexp.enableExportForNonAdminUser is not enabled.',
+                . 'user TSconfig options.impexp.enableExportForNonAdminUser is not enabled.',
                 1636901978
             );
         }
