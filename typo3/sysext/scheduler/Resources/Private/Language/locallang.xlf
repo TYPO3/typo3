@@ -393,6 +393,9 @@
 			<trans-unit id="status.disabled" resname="status.disabled">
 				<source>disabled</source>
 			</trans-unit>
+			<trans-unit id="status.disabledByGroup" resname="status.disabledByGroup">
+				<source>disabled by group</source>
+			</trans-unit>
 			<trans-unit id="status.failure" resname="status.failure">
 				<source>failure</source>
 			</trans-unit>

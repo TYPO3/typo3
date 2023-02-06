@@ -31,6 +31,11 @@
                             </f:then>
                             <f:else>
                                 <span>{taskGroup.groupName}</span> (<span class="t3js-table-total-items" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.taskCount')}">{taskGroup.tasks -> f:count()}</span>)
+                                <f:if condition="{taskGroup.groupHidden}">
+                                    <span class="badge badge-warning">
+                                        <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabled" />
+                                    </span>
+                                </f:if>
                             </f:else>
                         </f:if>
                     </button>
@@ -158,7 +163,7 @@
                                             <f:if condition="{task.isRunning}">
                                                 <span class="badge badge-success"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.running" /></span>
                                             </f:if>
-                                            <f:if condition="{task.nextExecution} && {task.nextExecution} < {now}">
+                                            <f:if condition="{task.nextExecution} && {task.nextExecution} < {now} && !{taskGroup.groupHidden} && !{task.disabled}">
                                                 <span
                                                     class="badge badge-warning"
                                                     title="{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.legend.scheduled')}"
@@ -167,7 +172,10 @@
                                                 </span>
                                             </f:if>
                                             <f:if condition="{task.disabled} && !{task.isRunning}">
-                                                <span class="badge badge-default"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabled" /></span>
+                                                <span class="badge badge-warning"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabled" /></span>
+                                            </f:if>
+                                            <f:if condition="{taskGroup.groupHidden} && !{task.isRunning}">
+                                                <span class="badge badge-warning"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabledByGroup" /></span>
                                             </f:if>
                                             <f:if condition="{task.lastExecutionFailure}">
                                                 <f:if condition="{task.lastExecutionFailureMessage}">
@@ -241,7 +249,7 @@
                                             </f:if>
                                         </td>
                                         <td>
-                                            <f:if condition="{task.isRunning} || {task.disabled}">
+                                            <f:if condition="{task.isRunning} || {task.disabled} || {taskGroup.groupHidden}">
                                                 <f:then>-</f:then>
                                                 <f:else>
                                                     <f:if condition="{task.nextExecution}">

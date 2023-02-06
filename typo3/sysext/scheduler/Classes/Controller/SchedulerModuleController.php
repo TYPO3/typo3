@@ -641,6 +641,7 @@ class SchedulerModuleController
                 'g.description AS taskGroupDescription',
                 'g.uid AS taskGroupId',
                 'g.deleted AS isTaskGroupDeleted',
+                'g.hidden AS isTaskGroupHidden',
             )
             ->from('tx_scheduler_task', 't')
             ->leftJoin(
@@ -723,6 +724,7 @@ class SchedulerModuleController
                     'groupName' => $row['taskGroupName'],
                     'groupDescription' => $row['taskGroupDescription'],
                     'taskGroupCollapsed' => (bool)($moduleData->get('task-group-' . ($row['taskGroupId'] ?? 0), false)),
+                    'groupHidden' => $row['isTaskGroupHidden'],
                 ];
             }
             $taskGroupsWithTasks[(int)$row['task_group']]['tasks'][] = $taskData;
