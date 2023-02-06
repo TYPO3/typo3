@@ -332,8 +332,7 @@ class AbstractPluginTest extends UnitTestCase
                 [
                     'base' => '/',
                     'languageId' => 0,
-                    'locale' => 'en_US',
-                    'typo3Language' => 'en',
+                    'locale' => 'en-US',
                 ],
             ],
         ]);

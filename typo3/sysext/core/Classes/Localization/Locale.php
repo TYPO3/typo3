@@ -49,6 +49,12 @@ class Locale implements \Stringable
         $locale = $this->normalize($locale);
         if (str_contains($locale, '.')) {
             [$locale, $this->codeSet] = explode('.', $locale);
+        } elseif (strtolower($locale) === 'c') {
+            $this->codeSet = 'C';
+            $locale = 'en';
+        } elseif (strtolower($locale) === 'posix') {
+            $this->codeSet = 'POSIX';
+            $locale = 'en';
         }
         if (str_contains($locale, '-')) {
             [$this->languageCode, $tail] = explode('-', $locale, 2);
@@ -99,6 +105,9 @@ class Locale implements \Stringable
      */
     public function posixFormatted(): string
     {
+        if ($this->codeSet === 'C' || $this->codeSet === 'POSIX') {
+            return $this->codeSet;
+        }
         $formatted = $this->languageCode;
         if ($this->countryCode) {
             $formatted .= '_' . $this->countryCode;

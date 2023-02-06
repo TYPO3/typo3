@@ -108,7 +108,6 @@ trait SiteBasedTestTrait
         string $base
     ): array {
         $configuration = $this->buildLanguageConfiguration($identifier, $base);
-        $configuration['typo3Language'] = 'default';
         $configuration['flag'] = 'global';
         unset($configuration['fallbackType'], $configuration['fallbacks']);
         return $configuration;
@@ -131,7 +130,6 @@ trait SiteBasedTestTrait
             'iso-639-1' => $preset['iso'] ?? '',
             'hreflang' => $preset['hrefLang'] ?? '',
             'direction' => $preset['direction'] ?? '',
-            'typo3Language' => $preset['iso'] ?? '',
             'flag' => $preset['iso'] ?? '',
             'fallbackType' => $fallbackType ?? (empty($fallbackIdentifiers) ? 'strict' : 'fallback'),
         ];

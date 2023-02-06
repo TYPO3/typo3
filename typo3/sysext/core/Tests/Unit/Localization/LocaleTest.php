@@ -33,6 +33,12 @@ class LocaleTest extends UnitTestCase
         self::assertEquals('en', $subject->getLanguageCode());
         self::assertEquals('en', (string)$subject);
 
+        $subject = new Locale('C');
+        self::assertNull($subject->getLanguageScriptCode());
+        self::assertNull($subject->getCountryCode());
+        self::assertEquals('en', $subject->getLanguageCode());
+        self::assertEquals('en', (string)$subject);
+
         // Also with mixed case
         $subject = new Locale('eN');
         self::assertNull($subject->getLanguageScriptCode());

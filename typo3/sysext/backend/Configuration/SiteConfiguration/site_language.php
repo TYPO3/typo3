@@ -114,17 +114,6 @@ return [
                 ],
             ],
         ],
-        'typo3Language' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.typo3Language',
-            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_language.typo3Language',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                // Fed by data provider
-                'items' => [],
-                'default' => 'default',
-            ],
-        ],
         'flag' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.flag',
             'config' => [
@@ -451,7 +440,7 @@ return [
         ],
         'locale-related' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.palette.locales',
-            'showitem' => 'typo3Language, locale, iso-639-1',
+            'showitem' => 'locale, iso-639-1',
         ],
         'rendering-related' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.palette.frontend',

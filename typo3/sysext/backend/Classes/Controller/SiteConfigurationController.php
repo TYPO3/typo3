@@ -817,14 +817,22 @@ class SiteConfigurationController
 
         // @todo: this should go away, once base variants for languages are managable via the GUI.
         $existingLanguageConfigurationsWithBaseVariants = [];
+        $existingLanguagesWithLegacyProperties = [];
         foreach ($currentSiteConfiguration['languages'] ?? [] as $languageConfiguration) {
             if (isset($languageConfiguration['baseVariants'])) {
                 $existingLanguageConfigurationsWithBaseVariants[$languageConfiguration['languageId']] = $languageConfiguration['baseVariants'];
             }
+            if (isset($languageConfiguration['typo3Language'])) {
+                $existingLanguagesWithLegacyProperties[$languageConfiguration['languageId']]['typo3Language'] = $languageConfiguration['typo3Language'];
+            }
         }
         foreach ($newSysSiteData['languages'] ?? [] as $key => $languageConfiguration) {
-            if (isset($existingLanguageConfigurationsWithBaseVariants[$languageConfiguration['languageId']])) {
-                $newSysSiteData['languages'][$key]['baseVariants'] = $existingLanguageConfigurationsWithBaseVariants[$languageConfiguration['languageId']];
+            $languageId = $languageConfiguration['languageId'];
+            if (isset($existingLanguageConfigurationsWithBaseVariants[$languageId])) {
+                $newSysSiteData['languages'][$key]['baseVariants'] = $existingLanguageConfigurationsWithBaseVariants[$languageId];
+            }
+            foreach ($existingLanguagesWithLegacyProperties[$languageId] ?? [] as $propertyName => $propertyValue) {
+                $newSysSiteData['languages'][$key][$propertyName] = $propertyValue;
             }
         }
 

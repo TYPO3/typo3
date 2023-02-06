@@ -25,7 +25,6 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\SiteConfigurationDataGroup;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\JavaScriptItems;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -92,13 +91,6 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
                     $defaultDatabaseRow['locale'] = $language->getLocale()->posixFormatted();
                     if ($language->getTitle() !== '') {
                         $defaultDatabaseRow['title'] = $language->getTitle();
-                    }
-                    if ($language->getTypo3Language() !== '') {
-                        $locales = GeneralUtility::makeInstance(Locales::class);
-                        $allLanguages = $locales->getLanguages();
-                        if (isset($allLanguages[$language->getTypo3Language()])) {
-                            $defaultDatabaseRow['typo3Language'] = $language->getTypo3Language();
-                        }
                     }
                     if ($language->getTwoLetterIsoCode() !== '') {
                         $defaultDatabaseRow['iso-639-1'] = $language->getTwoLetterIsoCode();

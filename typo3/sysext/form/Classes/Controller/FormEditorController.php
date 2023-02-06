@@ -289,7 +289,6 @@ class FormEditorController extends AbstractBackendController
                     'languageId' => $languageId,
                     'title' => 'Dummy',
                     'navigationTitle' => '',
-                    'typo3Language' => '',
                     'flag' => '',
                     'locale' => '',
                     'iso-639-1' => '',

@@ -51,13 +51,12 @@ class SlugServiceTest extends FunctionalTestCase
      */
     private $correlationId;
 
-    private $languages = [
+    private array $languages = [
         [
             'title' => 'English',
             'enabled' => true,
             'languageId' => '0',
             'base' => '/en/',
-            'typo3Language' => 'default',
             'locale' => 'en_US.UTF-8',
             'iso-639-1' => 'en',
             'navigationTitle' => 'English',
@@ -70,7 +69,6 @@ class SlugServiceTest extends FunctionalTestCase
             'enabled' => true,
             'languageId' => '1',
             'base' => 'https://de.example.com/',
-            'typo3Language' => 'de',
             'locale' => 'de_DE.UTF-8',
             'iso-639-1' => 'de',
             'navigationTitle' => 'German',
@@ -83,7 +81,6 @@ class SlugServiceTest extends FunctionalTestCase
             'enabled' => true,
             'languageId' => '2',
             'base' => '/es/',
-            'typo3Language' => 'es',
             'locale' => 'es_ES.UTF-8',
             'iso-639-1' => 'es',
             'navigationTitle' => 'Spanish',

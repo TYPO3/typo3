@@ -96,7 +96,6 @@ class Site implements SiteInterface
                 'languageId' => 0,
                 'title' => 'Default',
                 'navigationTitle' => '',
-                'typo3Language' => 'default',
                 'flag' => 'us',
                 'locale' => 'en_US.UTF-8',
                 'iso-639-1' => 'en',

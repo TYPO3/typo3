@@ -15,7 +15,6 @@ languages:
     enabled: false
     languageId: '1'
     base: /da
-    typo3Language: da
     locale: da_DK.utf8
     iso-639-1: da
     hreflang: ''

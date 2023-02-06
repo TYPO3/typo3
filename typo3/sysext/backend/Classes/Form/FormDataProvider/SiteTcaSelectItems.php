@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Service\IsoCodeService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -41,20 +40,6 @@ class SiteTcaSelectItems implements FormDataProviderInterface
         if ($table !== 'site_language') {
             return $result;
         }
-
-        // Available languages from Locales class put as "typo3Language" items
-        $locales = GeneralUtility::makeInstance(Locales::class);
-        $languages = $locales->getLanguages();
-        asort($languages);
-
-        $items = [];
-        foreach ($languages as $key => $label) {
-            $items[] = [
-                0 => $label,
-                1 => $key,
-            ];
-        }
-        $result['processedTca']['columns']['typo3Language']['config']['items'] = $items;
 
         // Available ISO-639-1 codes fetch from service class and put as "iso-639-1" items
         $isoItems = GeneralUtility::makeInstance(IsoCodeService::class)->renderIsoCodeSelectDropdown(['items' => []]);

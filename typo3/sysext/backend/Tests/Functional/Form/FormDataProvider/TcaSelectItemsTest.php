@@ -1753,7 +1753,6 @@ class TcaSelectItemsTest extends FunctionalTestCase
                         [
                             'languageId' => 0,
                             'title' => 'Default',
-                            'typo3Language' => 'default',
                             'locale' => 'en_US.UTF-8',
                             'iso-639-1' => 'en',
                         ],
@@ -1762,14 +1761,12 @@ class TcaSelectItemsTest extends FunctionalTestCase
                             'title' => 'German',
                             'locale' => 'de_DE.UTF-8',
                             'iso-639-1' => 'de',
-                            'typo3Language' => 'de',
                         ],
                         [
                             'languageId' => 2,
                             'title' => 'Danish',
                             'locale' => 'da_DK.UTF-8',
                             'iso-639-1' => 'da',
-                            'typo3Language' => 'da',
                         ],
                     ],
                 ]

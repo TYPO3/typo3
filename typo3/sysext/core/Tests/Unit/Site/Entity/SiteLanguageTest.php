@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Site\Entity;
 
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteLanguageTest extends UnitTestCase
@@ -98,7 +100,7 @@ class SiteLanguageTest extends UnitTestCase
             'twoLetterIsoCode' => 'en',
             'hreflang' => '',
             'direction' => '',
-            'typo3Language' => 'default',
+            'typo3Language' => 'de',
             'flagIdentifier' => '',
             'fallbackType' => 'strict',
             'enabled' => true,
@@ -108,6 +110,56 @@ class SiteLanguageTest extends UnitTestCase
             ],
         ];
         self::assertSame($expected, $subject->toArray());
+    }
+
+    protected function typo3LanguageAndLocaleDataProvider(): \Generator
+    {
+        yield 'Defined "default" configuration' => [
+            'en-US',
+            [
+                'typo3Language' => 'default',
+            ],
+            'default',
+        ];
+        yield 'Undefined "default" configuration' => [
+            'en-US',
+            [],
+            'en_US',
+        ];
+        yield 'Undefined "default" configuration with POSIX' => [
+            'C',
+            [],
+            'default',
+        ];
+        yield 'Defined language + country combination' => [
+            'de-AT',
+            [
+                'typo3Language' => 'de_AT',
+            ],
+            'de_AT',
+        ];
+        yield 'Undefined language + country combination' => [
+            'de-AT',
+            [],
+            'de_AT',
+        ];
+        yield 'Different language + country combination' => [
+            'de-AT',
+            [
+                'typo3Language' => 'de',
+            ],
+            'de',
+        ];
+    }
+
+    /**
+     * @dataProvider typo3LanguageAndLocaleDataProvider
+     * @test
+     */
+    public function typo3LanguageIsEitherSetOrProperlyDerivedFromLocale(string $locale, array $configuration, $expected): void
+    {
+        $language = new SiteLanguage(0, $locale, new Uri('/'), $configuration);
+        self::assertSame($expected, $language->getTypo3Language());
     }
 
     private function createSiteWithLanguage(array $languageConfiguration): Site

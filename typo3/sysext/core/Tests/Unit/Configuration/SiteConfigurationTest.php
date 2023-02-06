@@ -138,7 +138,6 @@ class SiteConfigurationTest extends UnitTestCase
             'enabled' => true,
             'languageId' => '0',
             'base' => '/en',
-            'typo3Language' => 'default',
             'locale' => 'en_US.utf8',
             'iso-639-1' => 'en',
             'hreflang' => '',

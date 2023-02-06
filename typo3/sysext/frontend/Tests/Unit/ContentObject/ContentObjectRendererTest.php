@@ -146,7 +146,6 @@ class ContentObjectRendererTest extends UnitTestCase
             'base' => '/',
             'languageId' => 2,
             'locale' => 'en_UK',
-            'typo3Language' => 'default',
         ]);
 
         $GLOBALS['SIM_ACCESS_TIME'] = 1534278180;
@@ -6097,7 +6096,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 'original',
                 'original',
                 [],
-                'de',
+                'de_DE',
             ],
             'translation de' => [
                 'Übersetzung',
@@ -6108,7 +6107,7 @@ class ContentObjectRendererTest extends UnitTestCase
                         'it' => 'traduzione',
                     ],
                 ],
-                'de',
+                'de_DE',
             ],
             'translation it' => [
                 'traduzione',
@@ -6119,7 +6118,7 @@ class ContentObjectRendererTest extends UnitTestCase
                         'it' => 'traduzione',
                     ],
                 ],
-                'it',
+                'it_IT',
             ],
             'no translation' => [
                 'original',
@@ -6130,7 +6129,7 @@ class ContentObjectRendererTest extends UnitTestCase
                         'it' => 'traduzione',
                     ],
                 ],
-                '',
+                'en',
             ],
             'missing label' => [
                 'original',
@@ -6141,7 +6140,7 @@ class ContentObjectRendererTest extends UnitTestCase
                         'it' => 'traduzione',
                     ],
                 ],
-                'fr',
+                'fr_FR',
             ],
         ];
     }
@@ -6161,8 +6160,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $site = $this->createSiteWithLanguage([
             'base' => '/',
             'languageId' => 2,
-            'locale' => 'en_UK',
-            'typo3Language' => $language,
+            'locale' => $language,
         ]);
         $this->frontendControllerMock->_set('language', $site->getLanguageById(2));
         self::assertSame(

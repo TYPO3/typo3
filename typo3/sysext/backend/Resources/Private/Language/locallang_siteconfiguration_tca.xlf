@@ -103,9 +103,6 @@
 			<trans-unit id="site_language.direction.rightToLeft" resname="site_language.direction.rightToLeft">
 				<source>Right to Left</source>
 			</trans-unit>
-			<trans-unit id="site_language.typo3Language" resname="site_language.typo3Language">
-				<source>Language Key for XLF Files</source>
-			</trans-unit>
 			<trans-unit id="site_language.flag" resname="site_language.flag">
 				<source>Flag icon</source>
 			</trans-unit>

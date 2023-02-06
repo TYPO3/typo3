@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\SiteConfigurationDataGroup;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -303,13 +302,6 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
                     $defaultDatabaseRow['locale'] = $language->getLocale()->posixFormatted();
                     if ($language->getTitle() !== '') {
                         $defaultDatabaseRow['title'] = $language->getTitle();
-                    }
-                    if ($language->getTypo3Language() !== '') {
-                        $locales = GeneralUtility::makeInstance(Locales::class);
-                        $allLanguages = $locales->getLanguages();
-                        if (isset($allLanguages[$language->getTypo3Language()])) {
-                            $defaultDatabaseRow['typo3Language'] = $language->getTypo3Language();
-                        }
                     }
                     if ($language->getTwoLetterIsoCode() !== '') {
                         $defaultDatabaseRow['iso-639-1'] = $language->getTwoLetterIsoCode();
