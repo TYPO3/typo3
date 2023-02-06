@@ -1336,9 +1336,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // We now gathered everything to calculate the page cache identifier: It depends on sys_template rows, the calculated
         // constant condition verdicts, the setup condition verdicts, plus various not TypoScript related details like
         // obviously the page id.
+        $this->lock = GeneralUtility::makeInstance(ResourceMutex::class);
+        $this->newHash = $this->createHashBase($sysTemplateRows, $constantConditionList, $setupConditionList);
         if (!$this->no_cache) {
-            $this->newHash = $this->createHashBase($sysTemplateRows, $constantConditionList, $setupConditionList);
-            $this->lock = GeneralUtility::makeInstance(ResourceMutex::class);
             if ($this->shouldAcquireCacheData($request)) {
                 // Try to get a page cache row.
                 $this->getTimeTracker()->push('Cache Row');
@@ -1379,6 +1379,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 // User forced page cache rebuilding. Get a lock for the page content so other processes can't interfere.
                 $this->lock->acquireLock('pages', $this->newHash);
             }
+        } else {
+            // Caching is not allowed. We'll rebuild the page. Lock this.
+            $this->lock->acquireLock('pages', $this->newHash);
         }
 
         $forceTemplateParsing = $this->context->getPropertyFromAspect('typoscript', 'forcedTemplateParsing');
@@ -1569,7 +1572,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected function shouldAcquireCacheData(ServerRequestInterface $request): bool
     {
         // Trigger event for possible by-pass of requiring of page cache (for re-caching purposes)
-        $event = new ShouldUseCachedPageDataIfAvailableEvent($request, $this, $this->no_cache);
+        $event = new ShouldUseCachedPageDataIfAvailableEvent($request, $this, !$this->no_cache);
         GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
         return $event->shouldUseCachedPageData();
     }
