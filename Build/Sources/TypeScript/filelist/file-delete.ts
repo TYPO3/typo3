@@ -30,11 +30,11 @@ class FileDelete {
           ? encodeURIComponent(redirectUrl)
           : encodeURIComponent(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
 
-        const identifier = eventTarget.dataset.identifier;
-        const deleteType = eventTarget.dataset.deleteType;
-        const deleteUrl = eventTarget.dataset.deleteUrl + '&data[delete][0][data]=' + encodeURIComponent(identifier);
+        const identifier = eventTarget.dataset.filelistDeleteIdentifier;
+        const deleteType = eventTarget.dataset.filelistDeleteType;
+        const deleteUrl = eventTarget.dataset.filelistDeleteUrl + '&data[delete][0][data]=' + encodeURIComponent(identifier);
         const target = deleteUrl + '&data[delete][0][redirect]=' + redirectUrl;
-        if (eventTarget.dataset.check) {
+        if (eventTarget.dataset.filelistDeleteCheck) {
           const modal = Modal.confirm(eventTarget.dataset.title, eventTarget.dataset.bsContent, SeverityEnum.warning, [
             {
               text: TYPO3.lang['buttons.confirm.delete_file.no'] || 'Cancel',
@@ -61,7 +61,7 @@ class FileDelete {
         } else {
           top.list_frame.location.href = target;
         }
-      }).delegateTo(document, '.t3js-filelist-delete');
+      }).delegateTo(document, '[data-filelist-delete="true"]');
     });
   }
 }

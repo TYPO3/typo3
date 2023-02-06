@@ -15,15 +15,13 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Filelist\Dto;
+namespace TYPO3\CMS\Filelist\Matcher;
 
 /**
  * @internal
  */
-class UserPermissions
+interface MatcherInterface
 {
-    public function __construct(
-        public readonly bool $editMetaData = false
-    ) {
-    }
+    public function supports(mixed $item): bool;
+    public function match(mixed $item): bool;
 }

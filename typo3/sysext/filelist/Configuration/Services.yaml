@@ -30,3 +30,9 @@ services:
 
   TYPO3\CMS\Filelist\Controller\File\ReplaceFileController:
     tags: [ 'backend.controller' ]
+
+  TYPO3\CMS\Filelist\ElementBrowser\FileBrowser:
+    shared: false
+
+  TYPO3\CMS\Filelist\ElementBrowser\FolderBrowser:
+    shared: false

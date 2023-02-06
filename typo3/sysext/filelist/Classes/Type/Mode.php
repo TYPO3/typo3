@@ -15,15 +15,21 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Filelist\Dto;
+namespace TYPO3\CMS\Filelist\Type;
 
 /**
  * @internal
  */
-class UserPermissions
+enum Mode: string
 {
-    public function __construct(
-        public readonly bool $editMetaData = false
-    ) {
+    case MANAGE = 'manage';
+    case BROWSE = 'browse';
+
+    public function fieldArray(): array
+    {
+        return match ($this) {
+            Mode::MANAGE => ['_SELECTOR_', 'icon', 'name', '_CONTROL_', 'record_type', 'size', 'rw', '_REF_'],
+            Mode::BROWSE => ['_SELECTOR_', 'icon', 'name', '_CONTROL_'],
+        };
     }
 }

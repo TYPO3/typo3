@@ -11,44 +11,46 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {lll} from '@typo3/core/lit-helper';
+import { lll } from '@typo3/core/lit-helper';
 import DocumentService from '@typo3/core/document-service';
 import Notification from '@typo3/backend/notification';
 import InfoWindow from '@typo3/backend/info-window';
-import {BroadcastMessage} from '@typo3/backend/broadcast-message';
+import { BroadcastMessage } from '@typo3/backend/broadcast-message';
 import broadcastService from '@typo3/backend/broadcast-service';
+import { FileListActionEvent, FileListActionDetail, FileListActionSelector, FileListActionResourceFromElement, FileListActionResource } from '@typo3/filelist/file-list-actions';
 import NProgress from 'nprogress';
 import Icons from '@typo3/backend/icons';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import RegularEvent from '@typo3/core/event/regular-event';
-import {ModuleStateStorage} from '@typo3/backend/storage/module-state-storage';
-import {ActionConfiguration, ActionEventDetails} from '@typo3/backend/multi-record-selection-action';
-import {default as Modal, ModalElement} from '@typo3/backend/modal';
-import {SeverityEnum} from '@typo3/backend/enum/severity';
+import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
+import { ActionConfiguration, ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
+import { default as Modal, ModalElement } from '@typo3/backend/modal';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
+import ContextMenu from '@typo3/backend/context-menu';
 import {DragDropDataTransferItem} from '@typo3/backend/drag-drop/drag-drop';
 
 type QueryParameters = {[key: string]: string};
+
 type DragImageCanvasOperation = {
   offsetX: number,
   offsetY: number,
   reference: HTMLImageElement,
 };
+
 interface DragImageCanvasConfiguration {
   width: number,
   height: number,
   operations: DragImageCanvasOperation[],
 }
 
-interface EditFileMetadataConfiguration extends ActionConfiguration{
+interface EditFileMetadataConfiguration extends ActionConfiguration {
   table: string;
   returnUrl: string;
 }
-interface DownloadConfiguration extends ActionConfiguration{
-  fileIdentifier: string;
-  folderIdentifier: string;
+interface DownloadConfiguration extends ActionConfiguration {
   downloadUrl: string;
 }
 
@@ -62,7 +64,7 @@ enum Selectors {
   fileListFormSelector = 'form[name="fileListForm"]',
   commandSelector = 'input[name="cmd"]',
   searchFieldSelector = 'input[name="searchTerm"]',
-  pointerFieldSelector = 'input[name="pointer"]'
+  pointerFieldSelector = 'input[name="pointer"]',
 }
 
 /**
@@ -120,12 +122,12 @@ export default class Filelist {
     const message = new BroadcastMessage(
       'filelist',
       'treeUpdateRequested',
-      {type: 'folder', identifier: identifier}
+      { type: 'folder', identifier: identifier }
     );
     broadcastService.post(message);
   }
 
-  private static parseQueryParameters (location: Location): QueryParameters {
+  private static parseQueryParameters(location: Location): QueryParameters {
     let queryParameters: QueryParameters = {};
     if (location && Object.prototype.hasOwnProperty.call(location, 'search')) {
       let parameters = location.search.substr(1).split('&');
@@ -147,11 +149,11 @@ export default class Filelist {
   constructor() {
     Filelist.processTriggers();
 
-    new RegularEvent(fileListOpenElementBrowser, (e: CustomEvent): void => {
-      const url = new URL(e.detail.actionUrl, window.location.origin);
+    new RegularEvent(fileListOpenElementBrowser, (event: CustomEvent): void => {
+      const url = new URL(event.detail.actionUrl, window.location.origin);
 
-      url.searchParams.set('expandFolder', e.detail.identifier);
-      url.searchParams.set('mode', e.detail.mode);
+      url.searchParams.set('expandFolder', event.detail.identifier);
+      url.searchParams.set('mode', event.detail.mode);
 
       const modal = Modal.advanced({
         type: Modal.types.iframe,
@@ -165,8 +167,49 @@ export default class Filelist {
       });
     }).bindTo(document);
 
+    // Filelist resource events
+    new RegularEvent(FileListActionEvent.primary, (event: CustomEvent): void => {
+      const detail: FileListActionDetail = event.detail;
+      if (detail.resource.type === 'file') {
+        window.location.href = top.TYPO3.settings.FormEngine.moduleUrl
+          + '&edit[sys_file_metadata][' + detail.resource.uid + ']=edit'
+          + '&returnUrl=' + Filelist.getReturnUrl('');
+      }
+      if (detail.resource.type === 'folder') {
+        let parameters = Filelist.parseQueryParameters(document.location)
+        parameters.id = detail.resource.identifier
+        let parameterString = '';
+        Object.keys(parameters).forEach(key => {
+          if (parameters[key] === '') { return; }
+          parameterString = parameterString + '&' + key + '=' + parameters[key];
+        });
+        window.location.href = window.location.pathname + '?' + parameterString.substring(1)
+      }
+    }).bindTo(document);
+
+    new RegularEvent(FileListActionEvent.primaryContextmenu, (event: CustomEvent): void => {
+      const detail: FileListActionDetail = event.detail;
+      ContextMenu.show(
+        'sys_file',
+        detail.resource.identifier,
+        '',
+        '',
+        '',
+        detail.trigger
+      );
+    }).bindTo(document);
+
+    new RegularEvent(FileListActionEvent.show, (event: CustomEvent): void => {
+      const detail: FileListActionDetail = event.detail;
+      Filelist.openInfoPopup('_' + detail.resource.type.toUpperCase(), detail.resource.identifier);
+    }).bindTo(document);
+
+    new RegularEvent(FileListActionEvent.download, (event: CustomEvent): void => {
+      const detail: FileListActionDetail = event.detail;
+      this.triggerDownload([detail.resource.identifier], detail.url, detail.trigger);
+    }).bindTo(document);
+
     DocumentService.ready().then((): void => {
-      const fileListContainer = document.querySelector('.t3-filelist-container');
 
       new RegularEvent('click', (e: Event, trigger: HTMLAnchorElement): void => {
         e.preventDefault();
@@ -180,76 +223,46 @@ export default class Filelist {
         }));
       }).delegateTo(document, '.t3js-element-browser');
 
-      // file index events
-      new RegularEvent('click', (event: Event, target: HTMLElement): void => {
-        event.preventDefault();
-        Filelist.openInfoPopup(
-          target.dataset.filelistShowItemType,
-          target.dataset.filelistShowItemIdentifier
-        );
-      }).delegateTo(document, '[data-filelist-show-item-identifier][data-filelist-show-item-type]');
-
-      // file search events
-      new RegularEvent('click', (event: Event, target: HTMLElement): void => {
-        event.preventDefault();
-        Filelist.openInfoPopup('_FILE', target.dataset.identifier);
-      }).delegateTo(document, 'a.filelist-file-info');
-
-      new RegularEvent('click', (event: Event, target: HTMLElement): void => {
-        event.preventDefault();
-        Filelist.openInfoPopup('_FILE', target.dataset.identifier);
-      }).delegateTo(document, 'a.filelist-file-references');
-
-      new RegularEvent('click', (event: Event, target: HTMLElement): void => {
-        event.preventDefault();
-        const url = target.getAttribute('href');
-        let redirectUrl = (url)
-          ? encodeURIComponent(url)
-          : encodeURIComponent(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
-        top.list_frame.location.href = url + '&redirect=' + redirectUrl;
-      }).delegateTo(document, 'a.filelist-file-copy');
-
       new RegularEvent('dragstart', (event: DragEvent, target: HTMLElement): void => {
-        const dragCollection = [];
-        const allCheckedItems = document.querySelectorAll(MultiRecordSelectionSelectors.checkboxSelector + ':checked') as NodeListOf<HTMLInputElement>;
-        if (allCheckedItems.length > 0) {
-          // Build a drag collection for all checked items
-          for (let checkedItem of allCheckedItems) {
-            const draggableElement = checkedItem.closest('[data-filelist-draggable-container]') as HTMLElement;
-            dragCollection.push({
-              type: draggableElement.dataset.type,
-              identifier: draggableElement.dataset.identifier,
-              name: draggableElement.dataset.name,
-              extra: {
-                referencedElement: (draggableElement.querySelector('img') as HTMLImageElement|null),
-                stateIdentifier: draggableElement.dataset.stateIdentifier,
-              }
-            });
-          }
-        } else {
-          // Only drag current item
-          const containerElement = target.closest('[data-filelist-draggable-container]') as HTMLElement;
-          dragCollection.push({
-            type: containerElement.dataset.type,
-            identifier: containerElement.dataset.identifier,
-            name: containerElement.dataset.name,
-            extra: {
-              referencedElement: (containerElement.querySelector('img') as HTMLImageElement|null),
-              stateIdentifier: containerElement.dataset.stateIdentifier,
+        const dragCollection: DragDropDataTransferItem[] = [];
+        const selectedItems: FileListActionResource[] = [];
+
+        const checkedItems = document.querySelectorAll(MultiRecordSelectionSelectors.checkboxSelector + ':checked') as NodeListOf<HTMLInputElement>;
+        if (checkedItems.length) {
+          checkedItems.forEach((checkbox: HTMLInputElement) => {
+            if (checkbox.checked) {
+              const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
+              const resource = FileListActionResourceFromElement(element);
+              selectedItems.push(resource);
             }
           });
+        } else {
+          const element = target.closest(FileListActionSelector.elementSelector) as HTMLElement;
+          const resource = FileListActionResourceFromElement(element);
+          selectedItems.push(resource);
         }
+
+        selectedItems.forEach((resource: FileListActionResource) => {
+          dragCollection.push({
+            type: resource.type,
+            identifier: resource.identifier,
+            name: resource.name,
+            extra: {
+              referencedElement: (resource.origin.querySelector('img') as HTMLImageElement|null),
+              stateIdentifier: resource.stateIdentifier,
+            }
+          });
+        });
 
         this.drawDataTransferPreview(event.dataTransfer, dragCollection);
         event.dataTransfer.setData('application/json', JSON.stringify(dragCollection));
-      }).delegateTo(document, '.t3-filelist-container [draggable="true"]');
+      }).delegateTo(document, '.t3-filelist-container [data-filelist-element="true"]');
     });
 
     // Respond to multi record selection action events
     new RegularEvent('multiRecordSelection:action:edit', this.editFileMetadata).bindTo(document);
     new RegularEvent('multiRecordSelection:action:delete', this.deleteMultiple).bindTo(document);
     new RegularEvent('multiRecordSelection:action:download', this.downloadFilesAndFolders).bindTo(document);
-    new RegularEvent('click', this.downloadFolder).delegateTo(document, 'button[data-folder-download]');
     new RegularEvent('multiRecordSelection:action:copyMarked', (event: CustomEvent): void => {
       Filelist.submitClipboardFormWithCommand('copyMarked', event.target as HTMLButtonElement)
     }).bindTo(document);
@@ -268,9 +281,9 @@ export default class Filelist {
         // Disable dragging for all unchecked items
         const allUncheckedItems = document.querySelectorAll(MultiRecordSelectionSelectors.checkboxSelector + ':not(:checked)') as NodeListOf<HTMLInputElement>;
         allUncheckedItems.forEach((checkboxElement: HTMLElement): void => {
-          const draggableElement = checkboxElement.closest('[data-filelist-draggable]') as HTMLElement;
+          const draggableElement = checkboxElement.closest(FileListActionSelector.elementSelector) as HTMLElement;
           draggableElement.draggable = false;
-          draggableElement.querySelectorAll('[data-filelist-draggable]').forEach((nestedDraggableElement: HTMLElement) => {
+          draggableElement.querySelectorAll(FileListActionSelector.elementSelector).forEach((nestedDraggableElement: HTMLElement) => {
             nestedDraggableElement.draggable = false;
           })
         });
@@ -278,9 +291,9 @@ export default class Filelist {
         // Check if all checkboxes are unchecked => set draggable to true again
         const allCheckedItems = document.querySelectorAll(MultiRecordSelectionSelectors.checkboxSelector + ':checked') as NodeListOf<HTMLInputElement>;
         if (allCheckedItems.length === 0) {
-          document.querySelectorAll('.t3-filelist-container [data-filelist-draggable]').forEach((draggableElement: HTMLElement): void => {
+          document.querySelectorAll(FileListActionSelector.elementSelector).forEach((draggableElement: HTMLElement): void => {
             draggableElement.draggable = true;
-            draggableElement.querySelectorAll('[data-filelist-draggable]').forEach((nestedDraggableElement: HTMLElement) => {
+            draggableElement.querySelectorAll(FileListActionSelector.elementSelector).forEach((nestedDraggableElement: HTMLElement) => {
               nestedDraggableElement.draggable = true;
             })
           });
@@ -456,32 +469,26 @@ export default class Filelist {
     }
   }
 
-  private downloadFilesAndFolders = (e: CustomEvent): void => {
-    const target: HTMLButtonElement = e.target as HTMLButtonElement;
-    const eventDetails: ActionEventDetails = (e.detail as ActionEventDetails);
+  private downloadFilesAndFolders = (event: CustomEvent): void => {
+    event.preventDefault();
+    const target: HTMLElement = event.target as HTMLElement;
+    const eventDetails: ActionEventDetails = (event.detail as ActionEventDetails);
     const configuration: DownloadConfiguration = (eventDetails.configuration as DownloadConfiguration);
 
     const filesAndFolders: Array<string> = [];
     eventDetails.checkboxes.forEach((checkbox: HTMLInputElement) => {
-      const checkboxContainer: HTMLElement = checkbox.closest(MultiRecordSelectionSelectors.elementSelector);
-      if (checkboxContainer?.dataset[configuration.folderIdentifier]) {
-        filesAndFolders.push(checkboxContainer.dataset[configuration.folderIdentifier]);
-      } else if (checkboxContainer?.dataset[configuration.fileIdentifier]) {
-        filesAndFolders.push(checkboxContainer.dataset[configuration.fileIdentifier]);
+      if (checkbox.checked) {
+        const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
+        const resource = FileListActionResourceFromElement(element);
+        filesAndFolders.unshift(resource.identifier);
       }
     });
+
     if (filesAndFolders.length) {
       this.triggerDownload(filesAndFolders, configuration.downloadUrl, target);
     } else {
       Notification.warning(lll('file_download.invalidSelection'));
     }
-  }
-
-
-  private downloadFolder = (e: MouseEvent): void => {
-    const target: HTMLButtonElement = e.target as HTMLButtonElement;
-    const folderIdentifier = target.dataset.folderIdentifier;
-    this.triggerDownload([folderIdentifier], target.dataset.folderDownload, target);
   }
 
   private triggerDownload(items: Array<string>, downloadUrl: string, button: HTMLElement): void {
@@ -497,9 +504,9 @@ export default class Filelist {
     });
     // Configure and start the progress bar, while preparing
     NProgress
-      .configure({parent: '#typo3-filelist', showSpinner: false})
+      .configure({ parent: '#typo3-filelist', showSpinner: false })
       .start();
-    (new AjaxRequest(downloadUrl)).post({items: items})
+    (new AjaxRequest(downloadUrl)).post({ items: items })
       .then(async (response: AjaxResponse): Promise<any> => {
         let fileName = response.response.headers.get('Content-Disposition');
         if (!fileName) {
@@ -513,7 +520,7 @@ export default class Filelist {
         }
         fileName = fileName.substring(fileName.indexOf(' filename=') + 10);
         const data = await response.raw().arrayBuffer();
-        const blob = new Blob([data], {type: response.raw().headers.get('Content-Type')});
+        const blob = new Blob([data], { type: response.raw().headers.get('Content-Type') });
         const downloadUrl = URL.createObjectURL(blob);
         const anchorTag = document.createElement('a');
         anchorTag.href = downloadUrl;

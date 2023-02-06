@@ -1,21 +1,23 @@
-<div class="resource-tiles">
-    <f:if condition="{pagination.backward}">
-        <f:render section="PaginationTile" arguments="{
-            iconIdentifier: 'actions-move-left',
-            link: pagination.backward,
-            id: 'pagination-backward'
-        }" />
-    </f:if>
-    <f:for each="{resources}" as="resource">
-        <f:render section="ResourceTile" arguments="{resource: resource, displayThumbs: displayThumbs}" />
-    </f:for>
-    <f:if condition="{pagination.forward}">
-        <f:render section="PaginationTile" arguments="{
-            iconIdentifier: 'actions-move-right',
-            link: pagination.forward,
-            id: 'pagination-forward'
-        }" />
-    </f:if>
+<div class="resource-tiles-container">
+    <div class="resource-tiles">
+        <f:if condition="{pagination.backward}">
+            <f:render section="PaginationTile" arguments="{
+                iconIdentifier: 'actions-move-left',
+                link: pagination.backward,
+                id: 'pagination-backward'
+            }" />
+        </f:if>
+        <f:for each="{resources}" as="resource">
+            <f:render section="ResourceTile" arguments="{resource: resource, displayThumbs: displayThumbs}" />
+        </f:for>
+        <f:if condition="{pagination.forward}">
+            <f:render section="PaginationTile" arguments="{
+                iconIdentifier: 'actions-move-right',
+                link: pagination.forward,
+                id: 'pagination-forward'
+            }" />
+        </f:if>
+    </div>
 </div>
 
 <f:section name="PaginationTile">
@@ -42,23 +44,18 @@
     <div
         class="resource-tile"
         aria-labelledby="resource-tile-label-{resource.uid}"
-        data-type="{resource.type}"
-        data-identifier="{resource.resource.combinedIdentifier}"
-        data-name="{resource.resource.name}"
-        data-file-uid="{resource.resource.uid}"
+        data-filelist-element="true"
+        data-filelist-type="{resource.type}"
+        data-filelist-identifier="{resource.identifier}"
+        data-filelist-name="{resource.name}"
+        data-filelist-uid="{resource.uid}"
+        data-filelist-selectable="{f:if(condition: resource.isSelectable, then: 'true', else: 'false')}"
+        data-filelist-state-identifier="{resource.stateIdentifier}"
         data-multi-record-selection-element="true"
-        data-state-identifier="{resource.stateIdentifier}"
-        draggable="{resource.userPermissions.moveResource ? 'true' : 'false'}"
-        data-filelist-draggable-container
-        data-filelist-draggable
         {f:if(condition: resource.metaDataUid, then: 'data-metadata-uid="{resource.metaDataUid}"')}
+        draggable="{resource.canMove ? 'true' : 'false'}"
     >
-        <a
-            href="{f:if(condition: resource.moduleUri, then: resource.moduleUri, else: 'javascript:;')}"
-            data-contextmenu-trigger="contextmenu"
-            data-contextmenu-table="{resource.contextMenuConfig.table}"
-            data-contextmenu-uid="{resource.contextMenuConfig.uid}"
-        >
+        <a title="{resource.name}" href="javascript:;" data-filelist-action="primary">
             <span class="resource-tile-label" id="resource-tile-label-{resource.uid}">{resource.name}</span>
             <span class="resource-tile-preview" role="presentation">
                 <span class="resource-tile-preview-content">
@@ -79,14 +76,21 @@
                 </span>
             </span>
             <span class="resource-tile-nameplate">
+                <f:if condition="{resource.missing}">
+                    <span class="resource-tile-nameplate-badge">
+                        <span class="badge badge-danger"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing" /></span><br>
+                    </span>
+                </f:if>
                 <span class="resource-tile-nameplate-label">{resource.name}</span>
                 <span class="resource-tile-nameplate-activity">{resource.updatedAt -> f:format.date()}</span>
             </span>
         </a>
-        <span class="resource-tile-checkbox" role="checkbox" aria-label="{resource.name}">
-            <div class="form-check">
-                <input class="form-check-input {resource.checkboxConfig.class}" type="checkbox" name="{resource.checkboxConfig.name}" value="{resource.checkboxConfig.value}">
-            </div>
-        </span>
+        <f:if condition="{resource.isSelectable} && {resource.checkboxConfig}">
+            <span class="resource-tile-checkbox" role="checkbox" aria-label="{resource.name}">
+                <div class="form-check">
+                    <input class="form-check-input {resource.checkboxConfig.class}" type="checkbox" name="{resource.checkboxConfig.name}" value="{resource.checkboxConfig.value}">
+                </div>
+            </span>
+        </f:if>
     </div>
 </f:section>

@@ -103,7 +103,7 @@ class FileListController implements LoggerAwareInterface
 
         $this->id = (string)($parsedBody['id'] ?? $queryParams['id'] ?? '');
         $this->cmd = (string)($parsedBody['cmd'] ?? $queryParams['cmd'] ?? '');
-        $this->searchTerm = (string)($parsedBody['searchTerm'] ?? $queryParams['searchTerm'] ?? '');
+        $this->searchTerm = (string)trim($parsedBody['searchTerm'] ?? $queryParams['searchTerm'] ?? '');
         $this->currentPage = (int)($parsedBody['currentPage'] ?? $queryParams['currentPage'] ?? 1);
         $this->overwriteExistingFiles = DuplicationBehavior::cast(
             $parsedBody['overwriteExistingFiles'] ?? $queryParams['overwriteExistingFiles'] ?? null
@@ -190,6 +190,7 @@ class FileListController implements LoggerAwareInterface
         $javaScriptRenderer->addJavaScriptModuleInstruction(
             JavaScriptModuleInstruction::create('@typo3/filelist/file-list.js')->instance()
         );
+        $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-list-actions.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-delete.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/clipboard-panel.js');
@@ -369,8 +370,6 @@ class FileListController implements LoggerAwareInterface
                 $this->view->assign(
                     'downloadActionConfiguration',
                     GeneralUtility::jsonEncodeForHtmlAttribute([
-                        'fileIdentifier' => 'fileUid',
-                        'folderIdentifier' => 'combinedIdentifier',
                         'downloadUrl' => (string)$this->uriBuilder->buildUriFromRoute('file_download'),
                     ], true)
                 );
@@ -494,6 +493,7 @@ class FileListController implements LoggerAwareInterface
             $parentFolder = $this->folderObject->getParentFolder();
             if ($currentStorage->isWithinFileMountBoundaries($parentFolder)
                 && $parentFolder->getIdentifier() !== $this->folderObject->getIdentifier()
+                && $parentFolder instanceof Folder
             ) {
                 $levelUpButton = $buttonBar->makeLinkButton()
                     ->setDataAttributes([

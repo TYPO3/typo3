@@ -1,0 +1,26 @@
+<f:layout name="{f:if(condition: treeEnabled, then: 'ElementBrowserWithNavigation', else: 'ElementBrowser')}" />
+
+<f:section name="Navigation">
+    <f:if condition="{tree}">
+        <f:then>
+            <div class="element-browser-body">
+                {tree -> f:format.raw()}
+            </div>
+        </f:then>
+        <f:else>
+            <typo3-backend-component-filestorage-browser
+                class="scaffold-content-navigation-component"
+                active-folder="{f:if(condition: selectedFolder, then: selectedFolder.combinedIdentifier, else: '') -> f:format.htmlentities()}"
+            >
+            </typo3-backend-component-filestorage-browser>
+        </f:else>
+    </f:if>
+</f:section>
+
+<f:section name="Content">
+    <f:if condition="{selectedFolder}">
+        <h4 class="text-truncate mb-4">{selectedFolderIcon -> f:format.raw()} {selectedFolder.storage.name}: {selectedFolder.identifier}</h4>
+    </f:if>
+    <f:flashMessages queueIdentifier="core.template.flashMessages"/>
+    <f:format.raw>{content}</f:format.raw>
+</f:section>

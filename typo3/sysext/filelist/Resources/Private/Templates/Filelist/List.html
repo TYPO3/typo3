@@ -1,6 +1,12 @@
 <div class="table-fit">
     <table class="table table-striped table-hover" id="typo3-filelist">
-        <thead>{tableHeaderHtml -> f:format.raw()}</thead>
-        <tbody data-multi-record-selection-row-selection="true">{tableBodyHtml -> f:format.raw()}</tbody>
+        <thead>
+            {tableHeader -> f:format.raw()}
+        </thead>
+        <tbody data-multi-record-selection-row-selection="true">
+            {tableBackwardNavigation -> f:format.raw()}
+            {tableBody -> f:format.raw()}
+            {tableForwardNavigation -> f:format.raw()}
+        </tbody>
     </table>
 </div>

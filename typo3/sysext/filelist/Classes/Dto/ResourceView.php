@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Filelist\Dto;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\InaccessibleFolder;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,6 +35,9 @@ class ResourceView
     public ?string $editDataUri;
     public ?string $replaceUri;
     public ?string $renameUri;
+
+    public bool $isSelectable = true;
+    public bool $isDownloadable = true;
 
     public function __construct(
         public readonly ResourceInterface $resource,
@@ -56,12 +60,22 @@ class ResourceView
         return $this->resource->getStorage()->getUid() . ':' . $this->resource->getIdentifier();
     }
 
+    /**
+     * Calculates a state identifier used for drag&drop into the file tree
+     */
+    public function getStateIdentifier(): string
+    {
+        if ($this->resource instanceof Folder) {
+            return $this->resource->getStorage()->getUid() . '_' . GeneralUtility::md5int($this->resource->getIdentifier());
+        }
+
+        return '';
+    }
+
     public function getMetaDataUid(): ?int
     {
-        if ($this->resource instanceof File &&
-            $this->resource->isIndexed() &&
-            $this->resource->checkActionPermission('editMeta') &&
-            $this->userPermissions->editMetaData) {
+        if ($this->resource instanceof File
+            && $this->canEditMetadata()) {
             return (int)$this->resource->getMetaData()->offsetGet('uid');
         }
 
@@ -87,6 +101,28 @@ class ResourceView
         }
 
         return $this->resource->getName();
+    }
+
+    public function getPath(): string
+    {
+        $resource = $this->resource;
+        if ($resource instanceof File) {
+            $resource = $resource->getParentFolder();
+        }
+        if ($resource instanceof Folder) {
+            return $resource->getReadablePath();
+        }
+
+        return '';
+    }
+
+    public function getPublicUrl(): ?string
+    {
+        if (!$this->resource instanceof File) {
+            return null;
+        }
+
+        return $this->resource->getPublicUrl();
     }
 
     public function getPreview(): ?File
@@ -124,6 +160,18 @@ class ResourceView
         return $icon;
     }
 
+    public function getCreatedAt(): ?int
+    {
+        if ($this->resource instanceof File) {
+            return $this->resource->getCreationTime();
+        }
+        if ($this->resource instanceof Folder) {
+            return $this->resource->getCreationTime();
+        }
+
+        return null;
+    }
+
     public function getUpdatedAt(): ?int
     {
         if ($this->resource instanceof File) {
@@ -145,28 +193,79 @@ class ResourceView
 
         return [
             'class' => 't3js-multi-record-selection-check',
-            'name' => 'CBC[_FILE|' . md5($this->getIdentifier()) . ']',
+            'name' => 'CBC[_' . strtoupper($this->getType()) . '|' . md5($this->getIdentifier()) . ']',
             'value' => $this->getIdentifier(),
         ];
     }
 
-    public function getContextMenuConfig(): array
+    public function isMissing(): ?bool
     {
-        return [
-            'uid' => $this->getIdentifier(),
-            'table' => 'sys_file',
-        ];
-    }
-
-    /**
-     * Calculates a state identifier used for drag&drop into the file tree
-     */
-    public function getStateIdentifier(): string
-    {
-        if ($this->resource instanceof Folder) {
-            return $this->resource->getStorage()->getUid() . '_' . GeneralUtility::md5int($this->resource->getIdentifier());
+        if ($this->resource instanceof File) {
+            return $this->resource->isMissing();
         }
 
-        return '';
+        return null;
+    }
+
+    public function isLocked(): bool
+    {
+        if ($this->resource instanceof InaccessibleFolder) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function canEditMetadata(): bool
+    {
+        return $this->resource instanceof File
+            && $this->resource->isIndexed()
+            && $this->resource->checkActionPermission('editMeta')
+            && $this->userPermissions->editMetaData;
+    }
+
+    public function canRead(): ?bool
+    {
+        if ($this->resource instanceof File || $this->resource instanceof Folder) {
+            return $this->resource->checkActionPermission('read');
+        }
+
+        return null;
+    }
+
+    public function canWrite(): ?bool
+    {
+        if ($this->resource instanceof File || $this->resource instanceof Folder) {
+            return $this->resource->checkActionPermission('write');
+        }
+
+        return null;
+    }
+
+    public function canDelete(): ?bool
+    {
+        if ($this->resource instanceof File || $this->resource instanceof Folder) {
+            return $this->resource->checkActionPermission('delete');
+        }
+
+        return null;
+    }
+
+    public function canCopy(): ?bool
+    {
+        if ($this->resource instanceof File || $this->resource instanceof Folder) {
+            return $this->resource->checkActionPermission('copy');
+        }
+
+        return null;
+    }
+
+    public function canMove(): ?bool
+    {
+        if ($this->resource instanceof File || $this->resource instanceof Folder) {
+            return $this->resource->checkActionPermission('move');
+        }
+
+        return null;
     }
 }

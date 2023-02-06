@@ -78,14 +78,14 @@ namespace TYPO3\CMS\Recordlist\Browser {
     /**
      * @deprecated since TYPO3 v12, will be removed in TYPO3 v13
      */
-    class FileBrowser extends \TYPO3\CMS\Backend\ElementBrowser\FileBrowser
+    class FileBrowser extends \TYPO3\CMS\Filelist\ElementBrowser\FileBrowser
     {
     }
 
     /**
      * @deprecated since TYPO3 v12, will be removed in TYPO3 v13
      */
-    class FolderBrowser extends \TYPO3\CMS\Backend\ElementBrowser\FolderBrowser
+    class FolderBrowser extends \TYPO3\CMS\Filelist\ElementBrowser\FolderBrowser
     {
     }
 }

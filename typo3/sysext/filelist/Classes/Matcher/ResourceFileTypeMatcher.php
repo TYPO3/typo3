@@ -15,15 +15,23 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Filelist\Dto;
+namespace TYPO3\CMS\Filelist\Matcher;
+
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ResourceInterface;
 
 /**
  * @internal
  */
-class UserPermissions
+class ResourceFileTypeMatcher implements MatcherInterface
 {
-    public function __construct(
-        public readonly bool $editMetaData = false
-    ) {
+    public function supports(mixed $item): bool
+    {
+        return $item instanceof ResourceInterface;
+    }
+
+    public function match(mixed $item): bool
+    {
+        return $item instanceof File;
     }
 }

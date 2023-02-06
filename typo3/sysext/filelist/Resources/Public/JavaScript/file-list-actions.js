@@ -1,0 +1,13 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+import DocumentService from"@typo3/core/document-service.js";import RegularEvent from"@typo3/core/event/regular-event.js";export var FileListActionEvent;!function(e){e.primary="typo3:filelist:resource:action:primary",e.primaryContextmenu="typo3:filelist:resource:action:primaryContextmenu",e.show="typo3:filelist:resource:action:show",e.select="typo3:filelist:resource:action:select",e.download="typo3:filelist:resource:action:download"}(FileListActionEvent||(FileListActionEvent={}));export var FileListActionSelector;!function(e){e.elementSelector="[data-filelist-element]",e.actionSelector="[data-filelist-action]"}(FileListActionSelector||(FileListActionSelector={}));export function FileListActionResourceFromElement(e){return{type:e.dataset.filelistType,identifier:e.dataset.filelistIdentifier,stateIdentifier:e.dataset.filelistStateIdentifier,name:e.dataset.filelistName,uid:e.dataset.filelistUid?parseInt(e.dataset.filelistUid,10):null,origin:e}}class FileListActions{constructor(){DocumentService.ready().then((()=>{new RegularEvent("contextmenu",((e,t)=>{e.preventDefault();const i=this.getActionDetail(e,t);if("primary"===i.action)document.dispatchEvent(new CustomEvent(FileListActionEvent.primaryContextmenu,{detail:i}))})).delegateTo(document,FileListActionSelector.actionSelector),new RegularEvent("click",((e,t)=>{e.preventDefault();const i=this.getActionDetail(e,t);switch(i.action){case"primary":document.dispatchEvent(new CustomEvent(FileListActionEvent.primary,{detail:i}));break;case"show":document.dispatchEvent(new CustomEvent(FileListActionEvent.show,{detail:i}));break;case"select":document.dispatchEvent(new CustomEvent(FileListActionEvent.select,{detail:i}));break;case"download":document.dispatchEvent(new CustomEvent(FileListActionEvent.download,{detail:i}))}})).delegateTo(document,FileListActionSelector.actionSelector)}))}getActionDetail(e,t){const i=t.dataset.filelistAction,n=t.closest(FileListActionSelector.elementSelector);return{event:e,trigger:t,action:i,resource:FileListActionResourceFromElement(n),url:t.dataset.filelistActionUrl??null}}}export default new FileListActions;

@@ -100,12 +100,6 @@ services:
   TYPO3\CMS\Backend\ElementBrowser\DatabaseBrowser:
     shared: false
 
-  TYPO3\CMS\Backend\ElementBrowser\FileBrowser:
-    shared: false
-
-  TYPO3\CMS\Backend\ElementBrowser\FolderBrowser:
-    shared: false
-
   TYPO3\CMS\Backend\ElementBrowser\ElementBrowserRegistry:
     arguments:
       - !tagged_iterator recordlist.elementbrowser

@@ -64,11 +64,11 @@ final class FileOperationsCest
 
         // Delete file
         $I->amGoingTo('delete the file');
-        $I->clickWithRightButton('a[data-contextmenu-uid="1:/' . $fileName . '"]');
+        $I->clickWithRightButton('[data-filelist-identifier="1:/' . $fileName . '"] a[data-filelist-action="primary"]');
         $I->click('[data-title="Delete"]');
         $modalDialog->canSeeDialog();
         $modalDialog->clickButtonInDialog('Yes, delete this file');
-        $I->waitForElementNotVisible('a[data-contextmenu-uid="1:/' . $fileName . '"]');
+        $I->waitForElementNotVisible('[data-filelist-identifier="1:/' . $fileName . '"]');
         $I->switchToContentFrame();
         $I->see('File deleted', $flashMessageSelector);
         $I->dontSee($fileName, '[data-multi-record-selection-element="true"]');

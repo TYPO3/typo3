@@ -28,17 +28,30 @@
     margin-bottom: $spacer;
 }
 
-@media (min-width: 480px) {
+// Container queries are currently not supported by clean-css and stylelint,
+// to avoid invalid removals we are ignoring the following lines for now.
+//
+// Container queries are expected to be stable by the end of 2022:
+// Edge, Chrome, Firefox, Safari
+
+/* clean-css ignore:start */
+.resource-tiles-container {
+    container-type: inline-size;
+}
+
+@container (min-width: 480px) {
     .resource-tiles {
         --resource-tiles-grid-width: 170px;
     }
 }
 
-@media (min-width: 768px) {
+@container (min-width: 768px) {
     .resource-tiles {
         --resource-tiles-grid-width: 200px;
     }
 }
+
+/* clean-css ignore:end */
 
 .resource-tile {
     position: relative;

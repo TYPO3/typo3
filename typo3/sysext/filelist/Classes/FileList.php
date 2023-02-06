@@ -19,30 +19,36 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
+use TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
+use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
+use TYPO3\CMS\Backend\Template\Components\Buttons\InputButton;
+use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
-use TYPO3\CMS\Core\Resource\InaccessibleFolder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Resource\StorageRepository;
-use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Filelist\Dto\PaginationLink;
@@ -50,7 +56,11 @@ use TYPO3\CMS\Filelist\Dto\ResourceCollection;
 use TYPO3\CMS\Filelist\Dto\ResourceView;
 use TYPO3\CMS\Filelist\Dto\UserPermissions;
 use TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent;
+use TYPO3\CMS\Filelist\Matcher\Matcher;
+use TYPO3\CMS\Filelist\Matcher\ResourceFileExtensionMatcher;
+use TYPO3\CMS\Filelist\Matcher\ResourceFolderTypeMatcher;
 use TYPO3\CMS\Filelist\Pagination\ResourceCollectionPaginator;
+use TYPO3\CMS\Filelist\Type\Mode;
 use TYPO3\CMS\Filelist\Type\NavigationDirection;
 use TYPO3\CMS\Filelist\Type\ViewMode;
 
@@ -61,6 +71,7 @@ use TYPO3\CMS\Filelist\Type\ViewMode;
  */
 class FileList
 {
+    public Mode $mode = Mode::MANAGE;
     public ViewMode $viewMode = ViewMode::TILES;
 
     /**
@@ -99,11 +110,6 @@ class FileList
     public bool $thumbs = false;
 
     /**
-     * Space icon used for alignment when no button is available
-     */
-    public string $spaceIcon;
-
-    /**
      * Max length of strings
      */
     public int $maxTitleLength = 30;
@@ -135,8 +141,11 @@ class FileList
      */
     public $clipObj;
 
+    protected ?Matcher $resourceDownloadMatcher = null;
+    protected ?Matcher $resourceDisplayMatcher = null;
+    protected ?Matcher $resourceSelectMatcher = null;
+
     protected ?FileSearchDemand $searchDemand = null;
-    protected ?FileExtensionFilter $fileExtensionFilter = null;
     protected EventDispatcherInterface $eventDispatcher;
     protected ServerRequestInterface $request;
     protected IconFactory $iconFactory;
@@ -164,18 +173,42 @@ class FileList
         $this->getLanguageService()->includeLLFile('EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf');
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_common.xlf');
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $this->spaceIcon = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
-        // Initialize file extension filter, if configured
+
+        // Initialize Resource Download
+        $this->resourceDownloadMatcher = GeneralUtility::makeInstance(Matcher::class);
+        $this->resourceDownloadMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
+
+        // Create filter for file extensions
+        $fileExtensionMatcher = GeneralUtility::makeInstance(ResourceFileExtensionMatcher::class);
         $fileDownloadConfiguration = (array)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['fileDownload.'] ?? []);
         if ($fileDownloadConfiguration !== []) {
-            $this->fileExtensionFilter = GeneralUtility::makeInstance(FileExtensionFilter::class);
-            $this->fileExtensionFilter->setAllowedFileExtensions(
-                GeneralUtility::trimExplode(',', (string)($fileDownloadConfiguration['allowedFileExtensions'] ?? ''), true)
-            );
-            $this->fileExtensionFilter->setDisallowedFileExtensions(
-                GeneralUtility::trimExplode(',', (string)($fileDownloadConfiguration['disallowedFileExtensions'] ?? ''), true)
-            );
+            $allowedExtensions = GeneralUtility::trimExplode(',', (string)($fileDownloadConfiguration['allowedFileExtensions'] ?? ''), true);
+            $disallowedExtensions = GeneralUtility::trimExplode(',', (string)($fileDownloadConfiguration['disallowedFileExtensions'] ?? ''), true);
+            $fileExtensionMatcher = GeneralUtility::makeInstance(ResourceFileExtensionMatcher::class);
+            $fileExtensionMatcher->setExtensions($allowedExtensions);
+            $fileExtensionMatcher->setIgnoredExtensions($disallowedExtensions);
+        } else {
+            $fileExtensionMatcher->addExtension('*');
         }
+        $this->resourceDownloadMatcher->addMatcher($fileExtensionMatcher);
+    }
+
+    public function setResourceDownloadMatcher(?Matcher $matcher): self
+    {
+        $this->resourceDownloadMatcher = $matcher;
+        return $this;
+    }
+
+    public function setResourceDisplayMatcher(?Matcher $matcher): self
+    {
+        $this->resourceDisplayMatcher = $matcher;
+        return $this;
+    }
+
+    public function setResourceSelectMatcher(?Matcher $matcher): self
+    {
+        $this->resourceSelectMatcher = $matcher;
+        return $this;
     }
 
     /**
@@ -185,17 +218,25 @@ class FileList
      * @param int $currentPage The current page to render
      * @param string $sort Sorting column
      * @param bool $sortRev Sorting direction
+     * @param Mode $mode Mode of the file list
      */
-    public function start(Folder $folderObject, int $currentPage, $sort, $sortRev)
+    public function start(Folder $folderObject, int $currentPage, string $sort, bool $sortRev, Mode $mode = Mode::MANAGE)
     {
         $this->folderObject = $folderObject;
-        $this->totalbytes = 0;
+        $this->currentPage = MathUtility::forceIntegerInRange($currentPage, 1, 100000);
         $this->sort = $sort;
         $this->sortRev = $sortRev;
-        $this->currentPage = MathUtility::forceIntegerInRange($currentPage, 1, 100000);
-        $this->fieldArray = [
-            '_SELECTOR_', 'icon', 'name', '_CONTROL_', 'record_type', 'size', 'rw', '_REF_',
-        ];
+        $this->totalbytes = 0;
+        $this->resourceDownloadMatcher = null;
+        $this->resourceDisplayMatcher = null;
+        $this->resourceSelectMatcher = null;
+        $this->setMode($mode);
+    }
+
+    public function setMode(Mode $mode)
+    {
+        $this->mode = $mode;
+        $this->fieldArray = $mode->fieldArray();
     }
 
     public function setColumnsToRender(array $additionalFields = []): void
@@ -203,24 +244,11 @@ class FileList
         $this->fieldArray = array_unique(array_merge($this->fieldArray, $additionalFields));
     }
 
-    protected function renderTiles(ResourceCollectionPaginator $paginator, ViewInterface $view): string
+    /**
+     * @param ResourceView[] $resourceViews
+     */
+    protected function renderTiles(ResourceCollectionPaginator $paginator, array $resourceViews, ViewInterface $view): string
     {
-        // Prepare Resources for View
-        $resourceViews = [];
-        foreach ($paginator->getPaginatedItems() as $resource) {
-            $resourceView = new ResourceView(
-                $resource,
-                $this->getUserPermissions($resource),
-                $this->iconFactory->getIconForResource($resource, Icon::SIZE_SMALL)
-            );
-            $resourceView->moduleUri = $this->createModuleUriForResource($resource);
-            $resourceView->editDataUri = $this->createEditDataUriForResource($resource);
-            $resourceView->editContentUri = $this->createEditContentUriForResource($resource);
-            $resourceView->replaceUri = $this->createReplaceUriForResource($resource);
-            $resourceView->renameUri = $this->createRenameUriForResource($resource);
-            $resourceViews[] = $resourceView;
-        }
-
         $view->assign('displayThumbs', $this->thumbs);
         $view->assign('pagination', [
             'backward' => $this->getPaginationLinkForDirection($paginator, NavigationDirection::BACKWARD),
@@ -231,92 +259,52 @@ class FileList
         return $view->render('Filelist/Tiles');
     }
 
-    protected function renderList(ResourceCollectionPaginator $paginator, ViewInterface $view): string
+    /**
+     * @param ResourceView[] $resourceViews
+     */
+    protected function renderList(ResourceCollectionPaginator $paginator, array $resourceViews, ViewInterface $view): string
     {
-        $resources = $paginator->getPaginatedItems();
-        $folders = $resources->getFolders();
-        $files = $resources->getFiles();
-
-        $output = $this->renderListForwardBackwardNavigation($paginator, NavigationDirection::BACKWARD);
-        $output .= $this->formatDirList($folders);
-        $output .= $this->formatFileList($files);
-        $output .= $this->renderListForwardBackwardNavigation($paginator, NavigationDirection::FORWARD);
-
-        // Header line is drawn
-        $theData = [];
-        foreach ($this->fieldArray as $fieldName) {
-            if ($fieldName === '_SELECTOR_') {
-                $theData[$fieldName] = $this->renderCheckboxActions();
-            } elseif ($fieldName === '_CONTROL_') {
-                // Special case: The control column header should not be wrapped into a sort link
-                $theData[$fieldName] = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_');
-            } elseif ($specialLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $fieldName)) {
-                $theData[$fieldName] = $this->linkWrapSort($fieldName, $specialLabel);
-            } elseif ($customLabel = $this->getLanguageService()->getLL('c_' . $fieldName)) {
-                $theData[$fieldName] = $this->linkWrapSort($fieldName, $customLabel);
-            } elseif ($fieldName !== 'icon') {
-                // Normal database field
-                $theData[$fieldName] = $this->linkWrapSort($fieldName);
-            }
-        }
-
-        $view->assign('tableHeaderHtml', $this->addElement($theData, [], true));
-        $view->assign('tableBodyHtml', $output);
+        $view->assign('tableHeader', $this->renderListTableHeader());
+        $view->assign('tableBackwardNavigation', $this->renderListTableForwardBackwardNavigation($paginator, NavigationDirection::BACKWARD));
+        $view->assign('tableBody', $this->renderListTableBody($resourceViews));
+        $view->assign('tableForwardNavigation', $this->renderListTableForwardBackwardNavigation($paginator, NavigationDirection::FORWARD));
 
         return $view->render('Filelist/List');
     }
 
-    protected function renderListForwardBackwardNavigation(
-        ResourceCollectionPaginator $paginator,
-        NavigationDirection $direction
-    ): string {
-        if (!$link = $this->getPaginationLinkForDirection($paginator, $direction)) {
+    public function render(?FileSearchDemand $searchDemand, ViewInterface $view): string
+    {
+        $storage = $this->folderObject->getStorage();
+        $storage->resetFileAndFolderNameFiltersToDefault();
+        if (!$this->folderObject->getStorage()->isBrowsable()) {
             return '';
         }
 
-        $iconIdentifier = null;
-        switch ($direction) {
-            case NavigationDirection::BACKWARD:
-                $iconIdentifier = 'actions-move-up';
-                break;
-            case NavigationDirection::FORWARD:
-                $iconIdentifier = 'actions-move-down';
-                break;
-        }
-
-        $data = [];
-        $data['_SELECTOR_'] = '<a href="' . htmlspecialchars($link->uri) . '">'
-            . ($iconIdentifier !== null ? $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() : '')
-            . '<i>[' . $link->label . ']</i>'
-            . '</a>';
-
-        return $this->addElement($data);
-    }
-
-    public function render(?FileSearchDemand $searchDemand, ViewInterface $view): string
-    {
         if ($searchDemand !== null) {
-            $this->searchDemand = $searchDemand;
-            $folders = [];
-            $files = iterator_to_array($this->folderObject->searchFiles($this->searchDemand));
-            // Add special "Path" field for the search result
-            array_splice($this->fieldArray, 3, 0, '_PATH_');
-        } else {
-            $storage = $this->folderObject->getStorage();
-            $storage->resetFileAndFolderNameFiltersToDefault();
-            if (!$this->folderObject->getStorage()->isBrowsable()) {
-                return '';
+            if ($searchDemand->getSearchTerm() && $searchDemand->getSearchTerm() !== '') {
+                $folders = [];
+                // Add special "Path" field for the search result
+                array_splice($this->fieldArray, 3, 0, '_PATH_');
+            } else {
+                $folders = $storage->getFoldersInFolder($this->folderObject);
             }
+            $files = iterator_to_array($this->folderObject->searchFiles($searchDemand));
+        } else {
             $folders = $storage->getFoldersInFolder($this->folderObject);
             $files = $this->folderObject->getFiles();
         }
 
         // Remove processing folders
-        $folders = array_filter($folders, static function (Folder $folder) {
+        $folders = array_filter($folders, function (Folder $folder) {
             return $folder->getRole() !== FolderInterface::ROLE_PROCESSING;
         });
 
-        $resourceCollection = new ResourceCollection($folders + $files);
+        // Apply filter
+        $resources = array_filter($folders + $files, function (ResourceInterface $resource) {
+            return $this->resourceDisplayMatcher === null || $this->resourceDisplayMatcher->match($resource);
+        });
+
+        $resourceCollection = new ResourceCollection($resources);
         $this->totalItems = $resourceCollection->getTotalCount();
         $this->totalbytes = $resourceCollection->getTotalBytes();
 
@@ -325,12 +313,37 @@ class FileList
             $resourceCollection->setResources($this->sortResources($resourceCollection->getResources(), $this->sort));
         }
 
-        $pagination = new ResourceCollectionPaginator($resourceCollection, $this->currentPage, $this->itemsPerPage);
-        if ($this->viewMode === ViewMode::TILES) {
-            return $this->renderTiles($pagination, $view);
+        $paginator = new ResourceCollectionPaginator($resourceCollection, $this->currentPage, $this->itemsPerPage);
+
+        // Prepare Resources for View
+        $resourceViews = [];
+        $userPermissions = $this->getUserPermissions();
+        foreach ($paginator->getPaginatedItems() as $resource) {
+            $resourceView = new ResourceView(
+                $resource,
+                $userPermissions,
+                $this->iconFactory->getIconForResource($resource, Icon::SIZE_SMALL)
+            );
+            $resourceView->moduleUri = $this->createModuleUriForResource($resource);
+            $resourceView->editDataUri = $this->createEditDataUriForResource($resource);
+            $resourceView->editContentUri = $this->createEditContentUriForResource($resource);
+            $resourceView->replaceUri = $this->createReplaceUriForResource($resource);
+            $resourceView->renameUri = $this->createRenameUriForResource($resource);
+
+            $resourceView->isDownloadable = $this->resourceDownloadMatcher === null || $this->resourceDownloadMatcher->match($resource);
+            $resourceView->isSelectable = $this->resourceSelectMatcher === null || $this->resourceSelectMatcher->match($resource);
+            if ($this->mode === Mode::BROWSE && $resource instanceof File) {
+                $resourceView->isSelectable = $this->eventDispatcher->dispatch(new IsFileSelectableEvent($resource))->isFileSelectable();
+            }
+
+            $resourceViews[] = $resourceView;
         }
 
-        return $this->renderList($pagination, $view);
+        if ($this->viewMode === ViewMode::TILES) {
+            return $this->renderTiles($paginator, $resourceViews, $view);
+        }
+
+        return $this->renderList($paginator, $resourceViews, $view);
     }
 
     /**
@@ -393,254 +406,121 @@ class FileList
         return $this->totalItems . ' ' . htmlspecialchars($fileLabel) . ', ' . GeneralUtility::formatSize($this->totalbytes, htmlspecialchars($this->getLanguageService()->getLL('byteSizeUnits')));
     }
 
-    /**
-     * This returns tablerows for the directories in the array $items['sorting'].
-     *
-     * @param Folder[] $folders
-     */
-    protected function formatDirList(array $folders): string
+    protected function renderListTableHeader(): string
     {
-        $out = '';
-        foreach (ListUtility::resolveSpecialFolderNames($folders) as $folderName => $folderObject) {
-            $role = $folderObject->getRole();
-            if ($role !== FolderInterface::ROLE_DEFAULT) {
-                $displayName = '<strong>' . htmlspecialchars($folderName) . '</strong>';
-            } else {
-                $displayName = htmlspecialchars($folderName);
+        $data = [];
+        foreach ($this->fieldArray as $fieldName) {
+            if ($fieldName === '_SELECTOR_') {
+                $data[$fieldName] = $this->renderCheckboxActions();
+            } elseif ($fieldName === '_CONTROL_') {
+                // Special case: The control column header should not be wrapped into a sort link
+                $data[$fieldName] = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_');
+            } elseif ($specialLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $fieldName)) {
+                $data[$fieldName] = $this->linkWrapSort($fieldName, $specialLabel);
+            } elseif ($customLabel = $this->getLanguageService()->getLL('c_' . $fieldName)) {
+                $data[$fieldName] = $this->linkWrapSort($fieldName, $customLabel);
+            } elseif ($fieldName !== 'icon') {
+                // Normal database field
+                $data[$fieldName] = $this->linkWrapSort($fieldName);
             }
+        }
 
-            $isLocked = $folderObject instanceof InaccessibleFolder;
-            $isWritable = $folderObject->checkActionPermission('write');
+        return $this->addElement($data, [], true);
+    }
 
-            // The icon - will be linked later on, if not locked
-            $theIcon = $this->getFileOrFolderIcon($folderName, $folderObject);
-
-            // Preparing and getting the data-array
-            $theData = [];
-
-            // Preparing table row attributes
+    /**
+     * @param ResourceView[] $resourceViews
+     */
+    protected function renderListTableBody(array $resourceViews): string
+    {
+        $output = '';
+        foreach ($resourceViews as $resourceView) {
+            $data = [];
             $attributes = [
-                'data-type' => 'folder',
-                'data-identifier' => $folderObject->getCombinedIdentifier(),
-                'data-name' => $folderObject->getName(),
-                'data-folder-identifier' => $folderObject->getIdentifier(),
+                'data-filelist-element' => 'true',
+                'data-filelist-type' => $resourceView->getType(),
+                'data-filelist-identifier' => $resourceView->getIdentifier(),
+                'data-filelist-state-identifier' => $resourceView->getStateIdentifier(),
+                'data-filelist-name' => htmlspecialchars($resourceView->getName()),
+                'data-filelist-uid' => $resourceView->getUid(),
+                'data-filelist-selectable' => $resourceView->isSelectable ? 'true' : 'false',
                 'data-multi-record-selection-element' => 'true',
-                'data-filelist-draggable' => 'true',
-                'data-filelist-draggable-container' => 'true',
-                'data-state-identifier' => $folderObject->getStorage()->getUid() . '_' . GeneralUtility::md5int($folderObject->getIdentifier()),
-                'draggable' => $folderObject->checkActionPermission('move') ? 'true' : 'false',
+                'draggable' => $resourceView->canMove() ? 'true' : 'false',
             ];
-            if ($isLocked) {
-                foreach ($this->fieldArray as $field) {
-                    $theData[$field] = '';
-                }
-                $theData['icon'] = $theIcon;
-                $theData['name'] = $displayName;
-            } else {
-                foreach ($this->fieldArray as $field) {
-                    switch ($field) {
-                        case 'size':
-                            try {
-                                $numFiles = $folderObject->getFileCount();
-                            } catch (InsufficientFolderAccessPermissionsException $e) {
-                                $numFiles = 0;
-                            }
-                            $theData[$field] = $numFiles . ' ' . htmlspecialchars($this->getLanguageService()->getLL(($numFiles === 1 ? 'file' : 'files')));
-                            break;
-                        case 'rw':
-                            $theData[$field] = '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('read')) . '</strong>' . (!$isWritable ? '' : '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('write')) . '</strong>');
-                            break;
-                        case 'record_type':
-                            $theData[$field] = htmlspecialchars($this->getLanguageService()->getLL('folder'));
-                            break;
-                        case 'icon':
-                            $theData[$field] = BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $folderObject->getCombinedIdentifier());
-                            break;
-                        case 'name':
-                            $theData[$field] = $this->linkWrapDir($displayName, $folderObject);
-                            break;
-                        case '_CONTROL_':
-                            $theData[$field] = $this->makeEdit($folderObject);
-                            break;
-                        case '_SELECTOR_':
-                            $theData[$field] = $this->makeCheckbox($folderObject);
-                            break;
-                        case '_REF_':
-                            $theData[$field] = '-';
-                            break;
-                        case '_PATH_':
-                            $theData[$field] = $this->makePath($folderObject);
-                            break;
-                        default:
-                            $theData[$field] = GeneralUtility::fixed_lgd_cs($theData[$field] ?? '', $this->maxTitleLength);
-                    }
-                }
-            }
-            $out .= $this->addElement($theData, $attributes);
-        }
-        return $out;
-    }
-
-    /**
-     * Wraps the directory-titles
-     *
-     * @param string $title String to be wrapped in links
-     * @param Folder $folderObject Folder to work on
-     */
-    protected function linkWrapDir(string $title, Folder $folderObject): string
-    {
-        $href = $this->createModuleUriForResource($folderObject);
-        // Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
-        if ($title === strip_tags($title)) {
-            return '<a href="' . htmlspecialchars($href) . '" title="' . htmlspecialchars($title) . '" data-filelist-draggable>' . $title . '</a>';
-        }
-        return '<a href="' . htmlspecialchars($href) . '" data-filelist-draggable>' . $title . '</a>';
-    }
-
-    /**
-     * Wraps filenames in links which opens the metadata editor.
-     *
-     * @param string $code String to be wrapped in links
-     * @param File $fileObject File to be linked
-     */
-    protected function linkWrapFile(string $code, File $fileObject): string
-    {
-        try {
-            if ($this->isEditMetadataAllowed($fileObject)
-                && ($metaDataUid = $fileObject->getMetaData()->offsetGet('uid'))
-            ) {
-                $urlParameters = [
-                    'edit' => [
-                        'sys_file_metadata' => [
-                            $metaDataUid => 'edit',
-                        ],
-                    ],
-                    'returnUrl' => $this->createModuleUri(),
-                ];
-                $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
-                $code = '<a class="responsive-title" href="' . htmlspecialchars($url) . '" title="' . $title . '" data-filelist-draggable>' . $code . '</a>';
-            }
-        } catch (\Exception $e) {
-            // intentional fall-through
-        }
-        return $code;
-    }
-
-    /**
-     * This returns tablerows for the files in the array $items['sorting'].
-     *
-     * @param File[] $files File items
-     */
-    protected function formatFileList(array $files): string
-    {
-        $out = '';
-        foreach ($files as $fileObject) {
-            $ext = $fileObject->getExtension();
-            $fileUid = $fileObject->getUid();
-            $fileName = trim($fileObject->getName());
-            // Preparing and getting the data-array
-            $theData = [];
-            // Preparing table row attributes
-            $attributes = [
-                'data-type' => 'file',
-                'data-identifier' => $fileObject->getCombinedIdentifier(),
-                'data-name' => $fileObject->getName(),
-                'data-file-uid' => $fileUid,
-                'data-filelist-draggable' => 'true',
-                'data-filelist-draggable-container' => 'true',
-                'data-multi-record-selection-element' => 'true',
-                'draggable' => $fileObject->checkActionPermission('move') ? 'true' : 'false',
-            ];
-            if ($this->isEditMetadataAllowed($fileObject)
-                && ($metaDataUid = $fileObject->getMetaData()->offsetGet('uid'))
-            ) {
-                $attributes['data-metadata-uid'] = (string)$metaDataUid;
+            if ($resourceView->getMetaDataUid()) {
+                $attributes['data-metadata-uid'] = (string)$resourceView->getMetaDataUid();
             }
             foreach ($this->fieldArray as $field) {
                 switch ($field) {
-                    case 'size':
-                        $theData[$field] = GeneralUtility::formatSize((int)$fileObject->getSize(), htmlspecialchars($this->getLanguageService()->getLL('byteSizeUnits')));
-                        break;
-                    case 'rw':
-                        $theData[$field] = '' . (!$fileObject->checkActionPermission('read') ? ' ' : '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('read')) . '</strong>') . (!$fileObject->checkActionPermission('write') ? '' : '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('write')) . '</strong>');
-                        break;
-                    case 'record_type':
-                        $theData[$field] = htmlspecialchars($this->getLanguageService()->getLL('file') . ($ext ? ' (' . strtoupper($ext) . ')' : ''));
-                        break;
-                    case '_CONTROL_':
-                        $theData[$field] = $this->makeEdit($fileObject);
-                        break;
-                    case '_SELECTOR_':
-                        $theData[$field] = $this->makeCheckbox($fileObject);
-                        break;
-                    case '_REF_':
-                        $theData[$field] = $this->makeRef($fileObject);
-                        break;
-                    case '_PATH_':
-                        $theData[$field] = $this->makePath($fileObject);
-                        break;
                     case 'icon':
-                        $theData[$field] = BackendUtility::wrapClickMenuOnIcon($this->getFileOrFolderIcon($fileName, $fileObject), 'sys_file', $fileObject->getCombinedIdentifier());
+                        $data[$field] = $this->renderIcon($resourceView);
                         break;
                     case 'name':
-                        // Edit metadata of file
-                        $theData[$field] = $this->linkWrapFile(htmlspecialchars($fileName), $fileObject);
-
-                        if ($fileObject->isMissing()) {
-                            $theData[$field] .= '<span class="badge badge-danger badge-space-left">'
-                                . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
-                                . '</span>';
-                        // Thumbnails?
-                        } elseif ($this->thumbs && ($fileObject->isImage() || $fileObject->isMediaFile())) {
-                            $processedFile = $fileObject->process(
-                                ProcessedFile::CONTEXT_IMAGEPREVIEW,
-                                [
-                                    'width' => (int)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['thumbnail.']['width'] ?? 64),
-                                    'height' => (int)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['thumbnail.']['height'] ?? 64),
-                                ]
-                            );
-                            $theData[$field] .= '<br /><img src="' . htmlspecialchars($processedFile->getPublicUrl() ?? '') . '" ' .
-                                'width="' . htmlspecialchars($processedFile->getProperty('width')) . '" ' .
-                                'height="' . htmlspecialchars($processedFile->getProperty('height')) . '" ' .
-                                'title="' . htmlspecialchars($fileName) . '" alt="" ' .
-                                'data-filelist-draggable />';
-                        }
+                        $data[$field] = $this->renderName($resourceView)
+                            . $this->renderThumbnail($resourceView);
+                        break;
+                    case 'size':
+                        $data[$field] = $this->renderSize($resourceView);
+                        break;
+                    case 'rw':
+                        $data[$field] = $this->renderPermission($resourceView);
+                        break;
+                    case 'record_type':
+                        $data[$field] = $this->renderType($resourceView);
                         break;
                     case 'crdate':
-                        $crdate = $fileObject->getCreationTime();
-                        $theData[$field] = $crdate ? BackendUtility::datetime($crdate) : '-';
+                        $data[$field] = $this->renderCreationTime($resourceView);
                         break;
                     case 'tstamp':
-                        $tstamp = $fileObject->getModificationTime();
-                        $theData[$field] = $tstamp ? BackendUtility::datetime($tstamp) : '-';
+                        $data[$field] = $this->renderModificationTime($resourceView);
+                        break;
+                    case '_SELECTOR_':
+                        $data[$field] = $this->renderSelector($resourceView);
+                        break;
+                    case '_PATH_':
+                        $data[$field] = $this->renderPath($resourceView);
+                        break;
+                    case '_REF_':
+                        $data[$field] = $this->renderReferenceCount($resourceView);
+                        break;
+                    case '_CONTROL_':
+                        $data[$field] = $this->renderControl($resourceView);
                         break;
                     default:
-                        $theData[$field] = '';
-                        if ($fileObject->hasProperty($field)) {
-                            if ($field === 'storage') {
-                                // Fetch storage name of the current file
-                                $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid((int)$fileObject->getProperty($field));
-                                if ($storage !== null) {
-                                    $theData[$field] = htmlspecialchars($storage->getName());
-                                }
-                            } else {
-                                $theData[$field] = htmlspecialchars(
-                                    (string)BackendUtility::getProcessedValueExtra(
-                                        $this->getConcreteTableName($field),
-                                        $field,
-                                        $fileObject->getProperty($field),
-                                        $this->maxTitleLength,
-                                        $fileObject->getMetaData()->offsetGet('uid')
-                                    )
-                                );
-                            }
-                        }
+                        $data[$field] = $this->renderField($resourceView, $field);
                 }
             }
-            $out .= $this->addElement($theData, $attributes);
+            $output .= $this->addElement($data, $attributes);
         }
-        return $out;
+
+        return $output;
+    }
+
+    protected function renderListTableForwardBackwardNavigation(
+        ResourceCollectionPaginator $paginator,
+        NavigationDirection $direction
+    ): string {
+        if (!$link = $this->getPaginationLinkForDirection($paginator, $direction)) {
+            return '';
+        }
+
+        $iconIdentifier = null;
+        switch ($direction) {
+            case NavigationDirection::BACKWARD:
+                $iconIdentifier = 'actions-move-up';
+                break;
+            case NavigationDirection::FORWARD:
+                $iconIdentifier = 'actions-move-down';
+                break;
+        }
+
+        $data = [];
+        $data['_SELECTOR_'] = '<a href="' . htmlspecialchars($link->uri) . '">'
+            . ($iconIdentifier !== null ? $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() : '')
+            . '<i>[' . $link->label . ']</i>'
+            . '</a>';
+
+        return $this->addElement($data);
     }
 
     /**
@@ -685,7 +565,7 @@ class FileList
      * @param string $fieldName The field to sort
      * @param string $label The label to be wrapped - will be determined if not given
      */
-    public function linkWrapSort(string $fieldName, string $label = ''): string
+    protected function linkWrapSort(string $fieldName, string $label = ''): string
     {
         // Determine label if not given
         if ($label === '') {
@@ -716,284 +596,275 @@ class FileList
     }
 
     /**
-     * Creates the clipboard actions
-     *
-     * @param File|Folder $fileOrFolderObject Array with information about the file/directory for which to make the clipboard actions for the listing.
+     * Render icon
      */
-    public function makeClip($fileOrFolderObject): array
+    protected function renderIcon(ResourceView $resourceView): string
     {
-        if (!$fileOrFolderObject->checkActionPermission('read')) {
-            return [];
-        }
-        $actions = [];
-        $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
-        $fullName = $fileOrFolderObject->getName();
-        $md5 = md5($fullIdentifier);
-
-        // Add copy/cut buttons in "normal" mode:
-        if ($this->clipObj->current === 'normal') {
-            $isSel = $this->clipObj->isSelected('_FILE', $md5);
-
-            if ($fileOrFolderObject->checkActionPermission('copy')) {
-                $copyTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSel === 'copy' ? 'copyrelease' : 'copy'));
-                $copyUrl = $this->clipObj->selUrlFile($fullIdentifier, true, $isSel === 'copy');
-                $actions['copy'] = '
-                    <a class="btn btn-default" href="' . htmlspecialchars($copyUrl) . '" title="' . htmlspecialchars($copyTitle) . '">
-                        ' . $this->iconFactory->getIcon($isSel === 'copy' ? 'actions-edit-copy-release' : 'actions-edit-copy', Icon::SIZE_SMALL)->render() . '
-                    </a>';
-            }
-
-            if ($fileOrFolderObject->checkActionPermission('move')) {
-                $cutTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSel === 'cut' ? 'cutrelease' : 'cut'));
-                $cutUrl = $this->clipObj->selUrlFile($fullIdentifier, false, $isSel === 'cut');
-                $actions['cut'] = '
-                    <a class="btn btn-default" href="' . htmlspecialchars($cutUrl) . '" title="' . htmlspecialchars($cutTitle) . '">
-                        ' . $this->iconFactory->getIcon($isSel === 'cut' ? 'actions-edit-cut-release' : 'actions-edit-cut', Icon::SIZE_SMALL)->render() . '
-                    </a>';
-            }
-        }
-
-        $elFromTable = $this->clipObj->elFromTable('_FILE');
-        $addPasteButton = $this->folderObject->checkActionPermission(
-            ($this->clipObj->clipData[$this->clipObj->current]['mode'] ?? '') === 'copy' ? 'copy' : 'move'
-        );
-        if (!$fileOrFolderObject instanceof Folder
-            || $elFromTable === []
-            || !$addPasteButton
-            || !$fileOrFolderObject->checkActionPermission('write')
-        ) {
-            //early return actions, in case paste should not be displayed
-            return $actions;
-        }
-
-        $elToConfirm = [];
-        foreach ($elFromTable as $key => $element) {
-            $clipBoardElement = $this->resourceFactory->retrieveFileOrFolderObject($element);
-            if ($clipBoardElement instanceof Folder
-                && $clipBoardElement->getStorage()->isWithinFolder($clipBoardElement, $fileOrFolderObject)
-            ) {
-                // In case folder is already present in the target folder, return actions without paste button
-                return $actions;
-            }
-            $elToConfirm[$key] = $clipBoardElement->getName();
-        }
-
-        $pasteUrl = $this->clipObj->pasteUrl('_FILE', $fullIdentifier);
-        $pasteTitle = $this->getLanguageService()->getLL('clip_pasteInto');
-        $pasteContent = $this->clipObj->confirmMsgText('_FILE', $fullName, 'into', $elToConfirm);
-        $actions[] = '
-                <a class="btn btn-default t3js-modal-trigger" data-severity="warning"  href="' . htmlspecialchars($pasteUrl) . '" data-bs-content="' . htmlspecialchars($pasteContent) . '" data-title="' . htmlspecialchars($pasteTitle) . '" title="' . htmlspecialchars($pasteTitle) . '">
-                    ' . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render() . '
-                </a>';
-
-        return $actions;
+        return BackendUtility::wrapClickMenuOnIcon($resourceView->getIconSmall()->render(), 'sys_file', $resourceView->getIdentifier());
     }
 
     /**
-     * Adds the checkbox to select a file/folder in the listing
-     *
-     * @param File|Folder $fileOrFolderObject
+     * Render name
      */
-    protected function makeCheckbox($fileOrFolderObject): string
+    protected function renderName(ResourceView $resourceView): string
     {
-        if (!$fileOrFolderObject->checkActionPermission('read')) {
+        $resourceName = htmlspecialchars($resourceView->getName());
+        if ($resourceView->resource instanceof Folder
+            && $resourceView->resource->getRole() !== FolderInterface::ROLE_DEFAULT) {
+            $resourceName = '<strong>' . $resourceName . '</strong>';
+        }
+
+        $attributes = [];
+        $attributes['title'] = $resourceView->getName();
+        $attributes['href'] = 'javascript:;';
+        $attributes['data-filelist-action'] = 'primary';
+
+        $output = '<a ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $resourceName . '</a>';
+        if ($resourceView->isMissing()) {
+            $label = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'));
+            $output = '<span class="badge badge-danger">' . $label . '</span> ' . $output;
+        }
+
+        return $output;
+    }
+
+    /**
+     * Render thumbnail
+     */
+    protected function renderThumbnail(ResourceView $resourceView): string
+    {
+        if ($this->thumbs === false
+            || $resourceView->getPreview() === null
+            || !($resourceView->getPreview()->isImage() || $resourceView->getPreview()->isMediaFile())
+        ) {
             return '';
         }
 
-        $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
-        $md5 = md5($fullIdentifier);
-        $identifier = '_FILE|' . $md5;
+        $processedFile = $resourceView->getPreview()->process(
+            ProcessedFile::CONTEXT_IMAGEPREVIEW,
+            [
+                'width' => (int)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['thumbnail.']['width'] ?? 64),
+                'height' => (int)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['thumbnail.']['height'] ?? 64),
+            ]
+        );
 
-        return '
-            <span class="form-check form-toggle">
-                <input class="form-check-input t3js-multi-record-selection-check" type="checkbox" name="CBC[' . $identifier . ']" value="' . htmlspecialchars($fullIdentifier) . '"/>
-            </span>';
+        return '<br><img src="' . htmlspecialchars($processedFile->getPublicUrl() ?? '') . '" ' .
+            'width="' . htmlspecialchars($processedFile->getProperty('width')) . '" ' .
+            'height="' . htmlspecialchars($processedFile->getProperty('height')) . '" ' .
+            'title="' . htmlspecialchars($resourceView->getName()) . '" />';
     }
 
     /**
-     * Creates the edit control section
-     *
-     * @param File|Folder $fileOrFolderObject Array with information about the file/directory for which to make the edit control section for the listing.
+     * Render type
      */
-    public function makeEdit($fileOrFolderObject): string
+    protected function renderType(ResourceView $resourceView): string
     {
-        $cells = [];
-        $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
-
-        // Edit file content (if editable)
-        if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('write') && $fileOrFolderObject->isTextFile()) {
-            $attributes = [
-                'href' => $this->createEditContentUriForResource($fileOrFolderObject),
-                'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent'),
-            ];
-            $cells['edit'] = '<a class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>'
-                . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render()
-                . '</a>';
-        } else {
-            $cells['edit'] = $this->spaceIcon;
+        $content = $this->getLanguageService()->getLL($resourceView->getType());
+        if ($resourceView->resource instanceof File && $resourceView->resource->getExtension() !== '') {
+            $content .= ' (' . strtoupper($resourceView->resource->getExtension()) . ')';
         }
 
-        // Edit metadata of file
-        if ($fileOrFolderObject instanceof File
-            && $this->isEditMetadataAllowed($fileOrFolderObject)
-            && $fileOrFolderObject->getMetaData()->offsetGet('uid')
-        ) {
-            $url = $this->createEditDataUriForResource($fileOrFolderObject);
-            $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
-            $cells['metadata'] = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
+        return htmlspecialchars($content);
+    }
+
+    /**
+     * Render creation time
+     */
+    protected function renderCreationTime(ResourceView $resourceView): string
+    {
+        $timestamp = ($resourceView->resource instanceof File) ? $resourceView->getCreatedAt() : null;
+        return $timestamp ? BackendUtility::datetime($timestamp) : '';
+    }
+
+    /**
+     * Render modification time
+     */
+    protected function renderModificationTime(ResourceView $resourceView): string
+    {
+        $timestamp = ($resourceView->resource instanceof File) ? $resourceView->getUpdatedAt() : null;
+        return $timestamp ? BackendUtility::datetime($timestamp) : '';
+    }
+
+    /**
+     * Render size
+     */
+    protected function renderSize(ResourceView $resourceView): string
+    {
+        if ($resourceView->resource instanceof File) {
+            return GeneralUtility::formatSize((int)$resourceView->resource->getSize(), htmlspecialchars($this->getLanguageService()->getLL('byteSizeUnits')));
         }
 
-        // Get translation actions
-        if ($fileOrFolderObject instanceof File && ($translations = $this->makeTranslations($fileOrFolderObject))) {
-            $cells['translations'] = $translations;
-        }
-
-        // document view
-        if ($fileOrFolderObject instanceof File) {
-            $fileUrl = $fileOrFolderObject->getPublicUrl();
-            if ($fileUrl) {
-                $cells['view'] = '<a href="' . htmlspecialchars($fileUrl) . '" target="_blank" class="btn btn-default" title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view') . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
-            } else {
-                $cells['view'] = $this->spaceIcon;
+        if ($resourceView->resource instanceof Folder) {
+            try {
+                $numFiles = $resourceView->resource->getFileCount();
+            } catch (InsufficientFolderAccessPermissionsException $e) {
+                $numFiles = 0;
             }
-        } else {
-            $cells['view'] = $this->spaceIcon;
+
+            return $numFiles . ' ' . htmlspecialchars($this->getLanguageService()->getLL(($numFiles === 1 ? 'file' : 'files')));
         }
 
-        // replace file
-        if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('replace')) {
-            $attributes = [
-                'href' => $this->createReplaceUriForResource($fileOrFolderObject),
-                'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.replace'),
-            ];
-            $cells['replace'] = '<a class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $this->iconFactory->getIcon('actions-edit-replace', Icon::SIZE_SMALL)->render() . '</a>';
-        }
+        return '';
+    }
 
-        // rename the file
-        if ($fileOrFolderObject->checkActionPermission('rename')) {
-            $attributes = [
-                'href' => $this->createRenameUriForResource($fileOrFolderObject),
-                'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename'),
-            ];
-            $cells['rename'] = '<a class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $this->iconFactory->getIcon('actions-edit-rename', Icon::SIZE_SMALL)->render() . '</a>';
-        } else {
-            $cells['rename'] = $this->spaceIcon;
-        }
+    /**
+     * Render resource permission
+     */
+    protected function renderPermission(ResourceView $resourceView): string
+    {
+        return '<strong class="text-danger">'
+            . htmlspecialchars($this->getLanguageService()->getLL('read'))
+            . ($resourceView->canWrite() ? htmlspecialchars($this->getLanguageService()->getLL('write')) : '')
+            . '</strong>';
+    }
 
-        // file download
-        if ($fileOrFolderObject->checkActionPermission('read') && $this->fileDownloadEnabled()) {
-            if ($fileOrFolderObject instanceof File
-                && ($this->fileExtensionFilter === null || $this->fileExtensionFilter->isAllowed($fileOrFolderObject->getExtension()))
-            ) {
-                $fileUrl = $fileOrFolderObject->getPublicUrl();
-                if ($fileUrl) {
-                    $cells['download'] = '<a href="' . htmlspecialchars($fileUrl) . '" download="' . htmlspecialchars($fileOrFolderObject->getName()) . '" class="btn btn-default" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download')) . '">' . $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL)->render() . '</a>';
-                }
-            // Folder download
-            } elseif ($fileOrFolderObject instanceof Folder) {
-                $cells['download'] = '<button type="button" data-folder-download="' . htmlspecialchars($this->uriBuilder->buildUriFromRoute('file_download')) . '" data-folder-identifier="' . htmlspecialchars($fileOrFolderObject->getCombinedIdentifier()) . '" class="btn btn-default" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download')) . '">' . $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL)->render() . '</button>';
-            }
-        }
-
-        // upload files
-        if ($fileOrFolderObject->getStorage()->checkUserActionPermission('add', 'File') && $fileOrFolderObject->checkActionPermission('write')) {
-            if ($fileOrFolderObject instanceof Folder) {
-                $attributes = [
-                    'href' => (string)$this->uriBuilder->buildUriFromRoute('file_upload', ['target' => $fullIdentifier, 'returnUrl' => $this->createModuleUri()]),
-                    'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload'),
-                ];
-                $cells['upload'] = '<a class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $this->iconFactory->getIcon('actions-edit-upload', Icon::SIZE_SMALL)->render() . '</a>';
-            }
-        }
-
-        if ($fileOrFolderObject->checkActionPermission('read')) {
-            $attributes = [
-                'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info'),
-                'data-filelist-show-item-type' => $fileOrFolderObject instanceof File ? '_FILE' : '_FOLDER',
-                'data-filelist-show-item-identifier' => $fullIdentifier,
-            ];
-            $cells['info'] = '<a href="#" class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>'
-                . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
-        } else {
-            $cells['info'] = $this->spaceIcon;
-        }
-
-        // delete the file
-        if ($fileOrFolderObject->checkActionPermission('delete')) {
-            $recordInfo = $fileOrFolderObject->getName();
-
-            if ($fileOrFolderObject instanceof Folder) {
-                $identifier = $fileOrFolderObject->getIdentifier();
-                $referenceCountText = BackendUtility::referenceCount('_FILE', $identifier, LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFolder'));
-                $deleteType = 'delete_folder';
-                if ($this->getBackendUser()->shallDisplayDebugInformation()) {
-                    $recordInfo .= ' [' . $identifier . ']';
+    /**
+     * Render any resource field
+     */
+    protected function renderField(ResourceView $resourceView, string $field): string
+    {
+        if ($resourceView->resource instanceof File && $resourceView->resource->hasProperty($field)) {
+            if ($field === 'storage') {
+                // Fetch storage name of the current file
+                $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid((int)$resourceView->resource->getProperty($field));
+                if ($storage !== null) {
+                    return htmlspecialchars($storage->getName());
                 }
             } else {
-                $referenceCountText = BackendUtility::referenceCount('sys_file', (string)$fileOrFolderObject->getUid(), LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFile'));
-                $deleteType = 'delete_file';
-                if ($this->getBackendUser()->shallDisplayDebugInformation()) {
-                    $recordInfo .= ' [sys_file:' . $fileOrFolderObject->getUid() . ']';
-                }
+                return htmlspecialchars(
+                    (string)BackendUtility::getProcessedValueExtra(
+                        $this->getConcreteTableName($field),
+                        $field,
+                        $resourceView->resource->getProperty($field),
+                        $this->maxTitleLength,
+                        $resourceView->resource->getMetaData()->offsetGet('uid')
+                    )
+                );
             }
-
-            if ($this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE)) {
-                $confirmationCheck = '1';
-            } else {
-                $confirmationCheck = '0';
-            }
-
-            $deleteUrl = (string)$this->uriBuilder->buildUriFromRoute('tce_file');
-            $confirmationMessage = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete'), trim($recordInfo)) . $referenceCountText;
-            $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete');
-            $cells['delete'] = '<a href="#" class="btn btn-default t3js-filelist-delete" data-bs-content="' . htmlspecialchars($confirmationMessage)
-                . '" data-check="' . $confirmationCheck
-                . '" data-delete-url="' . htmlspecialchars($deleteUrl)
-                . '" data-title="' . htmlspecialchars($title)
-                . '" data-identifier="' . htmlspecialchars($fileOrFolderObject->getCombinedIdentifier())
-                . '" data-delete-type="' . $deleteType
-                . '" title="' . htmlspecialchars($title) . '">'
-                . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
-        } else {
-            $cells['delete'] = $this->spaceIcon;
         }
 
-        // Get clipboard actions
-        $clipboardActions = $this->makeClip($fileOrFolderObject);
-        if ($clipboardActions !== []) {
-            // Add divider in case at least one clipboard action is displayed
-            $cells['divider'] = '<hr class="dropdown-divider">';
+        return '';
+    }
+
+    /**
+     * Renders the checkbox to select a resource in the listing
+     */
+    protected function renderSelector(ResourceView $resourceView): string
+    {
+        $checkboxConfig = $resourceView->getCheckboxConfig();
+        if ($checkboxConfig === null) {
+            return '';
         }
-        // Merge the clipboard actions into the existing cells
-        $cells = array_merge($cells, $clipboardActions);
+        if (!$resourceView->isSelectable) {
+            return '';
+        }
 
-        $event = new ProcessFileListActionsEvent($fileOrFolderObject, $cells);
-        $event = $this->eventDispatcher->dispatch($event);
-        $cells = $event->getActionItems();
+        return '<span class="form-check form-toggle">'
+            . '<input class="form-check-input ' . $checkboxConfig['class'] . '" type="checkbox" name="' . $checkboxConfig['name'] . '" value="' . $checkboxConfig['value'] . '" />'
+            . '</span>';
+    }
 
-        // Compile items into a dropdown
-        $cellOutput = '';
-        $output = '';
-        $primaryActions = ['view', 'metadata', 'translations', 'delete'];
+    /**
+     * Render resource path
+     */
+    protected function renderPath(ResourceView $resourceView): string
+    {
+        return htmlspecialchars($resourceView->getPath());
+    }
+
+    /**
+     * Render reference count. Wraps the count into a button to
+     * open the element information in case references exists.
+     */
+    protected function renderReferenceCount(ResourceView $resourceView): string
+    {
+        if (!$resourceView->resource instanceof File) {
+            return '-';
+        }
+
+        $referenceCount = $this->getFileReferenceCount($resourceView->resource);
+        if (!$referenceCount) {
+            return '-';
+        }
+
+        $attributes = [
+            'type' => 'button',
+            'class' => 'btn btn-sm btn-link',
+            'data-filelist-action' => 'show',
+            'title' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references') . ' (' . $referenceCount . ')',
+        ];
+
+        return '<button ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $referenceCount . '</button>';
+    }
+
+    /**
+     * Renders the control section
+     */
+    protected function renderControl(ResourceView $resourceView): string
+    {
+        if ($this->mode === Mode::MANAGE) {
+            return $this->renderControlManage($resourceView);
+        }
+        if ($this->mode === Mode::BROWSE) {
+            return $this->renderControlBrowse($resourceView);
+        }
+
+        return '';
+    }
+
+    /**
+     * Creates the control section for the file list module
+     */
+    protected function renderControlManage(ResourceView $resourceView): string
+    {
+        if (!$resourceView->resource instanceof File && !$resourceView->resource instanceof Folder) {
+            return '';
+        }
+
+        // primary actions
+        $primaryActions =  ['view', 'metadata', 'translations', 'delete'];
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         if ($userTsConfig['options.']['file_list.']['primaryActions'] ?? false) {
             $primaryActions = GeneralUtility::trimExplode(',', $userTsConfig['options.']['file_list.']['primaryActions']);
-
             // Always add "translations" as this action has an own dropdown container and therefore cannot be a secondary action
             if (!in_array('translations', $primaryActions, true)) {
                 $primaryActions[] = 'translations';
             }
         }
-        foreach ($cells as $key => $action) {
+
+        $actions = [
+            'edit' => $this->createControlEditContent($resourceView),
+            'metadata' => $this->createControlEditMetaData($resourceView),
+            'translations' => $this->createControlTranslation($resourceView),
+            'view' => $this->createControlView($resourceView),
+            'replace' => $this->createControlReplace($resourceView),
+            'rename' => $this->createControlRename($resourceView),
+            'download' => $this->createControlDownload($resourceView),
+            'upload' => $this->createControlUpload($resourceView),
+            'info' => $this->createControlInfo($resourceView),
+            'delete' => $this->createControlDelete($resourceView),
+            'copy' => $this->createControlCopy($resourceView),
+            'cut' => $this->createControlCut($resourceView),
+            'paste' => $this->createControlPaste($resourceView),
+        ];
+
+        // Remove empty actions
+        $actions = array_filter($actions, static fn ($action) => $action !== null && trim($action) !== '');
+
+        $event = new ProcessFileListActionsEvent($resourceView->resource, $actions);
+        $event = $this->eventDispatcher->dispatch($event);
+        $actions = $event->getActionItems();
+
+        // Compile items into a dropdown
+        $cellOutput = '';
+        $output = '';
+        foreach ($actions as $key => $action) {
             if (in_array($key, $primaryActions, true)) {
                 $output .= $action;
                 continue;
             }
-            if ($action === $this->spaceIcon || $action === null) {
-                continue;
-            }
             // This is a backwards-compat layer for the existing hook items, which will be removed in TYPO3 v12.
-            $action = str_replace('btn btn-default', 'dropdown-item dropdown-item-spaced', $action);
+            $action = str_replace('btn btn-sm btn-default', 'dropdown-item dropdown-item-spaced', $action);
             $title = [];
             preg_match('/title="([^"]*)"/', $action, $title);
             if (empty($title)) {
@@ -1003,7 +874,8 @@ class FileList
                 $action = str_replace(
                     [
                         '</a>',
-                        '</button>', ],
+                        '</button>',
+                    ],
                     [
                         ' ' . $title[1] . '</a>',
                         ' ' . $title[1] . '</button>',
@@ -1020,63 +892,221 @@ class FileList
         }
 
         if ($cellOutput !== '') {
-            $icon = $this->iconFactory->getIcon('actions-menu-alternative', Icon::SIZE_SMALL);
             $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more');
-            $output .= '<div class="btn-group dropdown position-static" title="' . htmlspecialchars($title) . '" >' .
-                '<a href="#actions_' . $fileOrFolderObject->getHashedIdentifier() . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
-                '<ul id="actions_' . $fileOrFolderObject->getHashedIdentifier() . '" class="dropdown-menu">' . $cellOutput . '</ul>' .
-                '</div>';
-        } else {
-            $output .= $this->spaceIcon;
+            $output .= '<div class="btn-group dropdown position-static" title="' . htmlspecialchars($title) . '" >'
+                . '<a href="#actions_' . $resourceView->resource->getHashedIdentifier() . '" class="btn btn-sm btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">'
+                . $this->iconFactory->getIcon('actions-menu-alternative', Icon::SIZE_SMALL)->render()
+                . '</a>'
+                . '<ul id="actions_' . $resourceView->resource->getHashedIdentifier() . '" class="dropdown-menu">' . $cellOutput . '</ul>'
+                . '</div>';
         }
 
-        return '<div class="btn-group position-static">' . $output . '</div>';
+        return '<div class="btn-group">' . $output . '</div>';
     }
 
     /**
-     * Make reference count. Wraps the count into a button to
-     * open the element information in case references exists.
+     * Creates the control section for the element browser
      */
-    public function makeRef(File $file): string
+    protected function renderControlBrowse(ResourceView $resourceView): string
     {
-        $referenceCount = $this->getFileReferenceCount($file);
-        if (!$referenceCount) {
-            return '-';
-        }
-
-        $attributes = [
-            'type' => 'button',
-            'class' => 'btn btn-link p-0',
-            'data-filelist-show-item-type' => '_FILE',
-            'data-filelist-show-item-identifier' => $file->getCombinedIdentifier(),
-            'title' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references') . ' (' . $referenceCount . ')',
-        ];
-
-        return '
-            <button ' . GeneralUtility::implodeAttributes($attributes, true) . '>
-                ' . $referenceCount . '
-            </button>';
-    }
-
-    /**
-     * Generate readable path
-     */
-    protected function makePath(ResourceInterface $resource): string
-    {
-        $folder = null;
-        $method = 'getReadablePath';
-
-        if ($resource instanceof FileInterface) {
-            $folder = $resource->getParentFolder();
-        } elseif ($resource instanceof FolderInterface) {
-            $folder = $resource;
-        }
-
-        if ($folder === null || !is_callable([$folder, $method])) {
+        $fileOrFolderObject = $resourceView->resource;
+        if (!$fileOrFolderObject instanceof File && !$fileOrFolderObject instanceof Folder) {
             return '';
         }
 
-        return htmlspecialchars($folder->$method());
+        $actions = [
+            'select' => $this->createControlSelect($resourceView),
+            'info' => $this->createControlInfo($resourceView),
+        ];
+
+        // Remove empty actions
+        $actions = array_filter($actions, static fn ($action) => $action !== null && trim($action) !== '');
+        if (empty($actions)) {
+            return '';
+        }
+
+        return '<div class="btn-group">' . implode(' ', $actions) . '</div>';
+    }
+
+    protected function createControlSelect(ResourceView $resourceView): ?ButtonInterface
+    {
+        if (!$resourceView->isSelectable) {
+            return null;
+        }
+
+        $button = GeneralUtility::makeInstance(InputButton::class);
+        $button->setTitle($resourceView->getName());
+        $button->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL));
+        $button->setDataAttributes(['filelist-action' => 'select']);
+
+        return $button;
+    }
+
+    protected function createControlEditContent(ResourceView $resourceView): ?ButtonInterface
+    {
+        if (!($resourceView->resource instanceof File && $resourceView->resource->isTextFile())
+            || !$resourceView->canWrite()) {
+            return null;
+        }
+
+        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent'));
+        $button->setHref($resourceView->editContentUri);
+        $button->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
+
+        return $button;
+    }
+
+    protected function createControlEditMetaData(ResourceView $resourceView): ?ButtonInterface
+    {
+        if (!$resourceView->getMetaDataUid()) {
+            return null;
+        }
+
+        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
+        $button->setHref($resourceView->editDataUri);
+        $button->setIcon($this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL));
+
+        return $button;
+    }
+
+    protected function createControlView(ResourceView $resourceView): ?ButtonInterface
+    {
+        if (!$resourceView->getPublicUrl()) {
+            return null;
+        }
+
+        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button->setTag('a');
+        $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view'));
+        $button->setHref($resourceView->getPublicUrl());
+        $button->setAttributes(['target' => '_blank']);
+        $button->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL));
+
+        return $button;
+    }
+
+    protected function createControlReplace(ResourceView $resourceView): ?ButtonInterface
+    {
+        if (!$resourceView->replaceUri) {
+            return null;
+        }
+
+        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.replace'));
+        $button->setHref($resourceView->replaceUri);
+        $button->setIcon($this->iconFactory->getIcon('actions-edit-replace', Icon::SIZE_SMALL));
+
+        return $button;
+    }
+
+    protected function createControlRename(ResourceView $resourceView): ?ButtonInterface
+    {
+        if (!$resourceView->renameUri) {
+            return null;
+        }
+
+        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename'));
+        $button->setHref($resourceView->renameUri);
+        $button->setIcon($this->iconFactory->getIcon('actions-edit-rename', Icon::SIZE_SMALL));
+
+        return $button;
+    }
+
+    protected function createControlDownload(ResourceView $resourceView): ?ButtonInterface
+    {
+        if (!$resourceView->canRead() || !(bool)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['fileDownload.']['enabled'] ?? true)) {
+            return null;
+        }
+
+        if (!$resourceView->isDownloadable) {
+            return null;
+        }
+
+        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button->setTitle($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download'));
+        $button->setHref('javascript:;');
+        $button->setDataAttributes([
+            'filelist-action' => 'download',
+            'filelist-action-url' => $this->uriBuilder->buildUriFromRoute('file_download'),
+        ]);
+        $button->setIcon($this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL));
+
+        return $button;
+    }
+
+    protected function createControlUpload(ResourceView $resourceView): ?ButtonInterface
+    {
+        if (!$resourceView->resource->getStorage()->checkUserActionPermission('add', 'File')
+            || !$resourceView->resource instanceof Folder
+            || !$resourceView->canWrite()) {
+            return null;
+        }
+
+        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload'));
+        $button->setHref($this->uriBuilder->buildUriFromRoute('file_upload', ['target' => $resourceView->getIdentifier(), 'returnUrl' => $this->createModuleUri()]));
+        $button->setIcon($this->iconFactory->getIcon('actions-edit-upload', Icon::SIZE_SMALL));
+
+        return $button;
+    }
+
+    protected function createControlInfo(ResourceView $resourceView): ?ButtonInterface
+    {
+        if (!$resourceView->canRead()) {
+            return null;
+        }
+
+        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info'));
+        $button->setHref('javascript:;');
+        $button->setDataAttributes(['filelist-action' => 'show']);
+        $button->setIcon($this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL));
+
+        return $button;
+    }
+
+    protected function createControlDelete(ResourceView $resourceView): ?ButtonInterface
+    {
+        if (!$resourceView->canDelete()) {
+            return null;
+        }
+
+        $recordInfo = $resourceView->getName();
+
+        if ($resourceView->resource instanceof Folder) {
+            $identifier = $resourceView->getIdentifier();
+            $referenceCountText = BackendUtility::referenceCount('_FILE', $identifier, LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFolder'));
+            $deleteType = 'delete_folder';
+            if ($this->getBackendUser()->shallDisplayDebugInformation()) {
+                $recordInfo .= ' [' . $identifier . ']';
+            }
+        } else {
+            $referenceCountText = BackendUtility::referenceCount('sys_file', (string)$resourceView->getUid(), LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFile'));
+            $deleteType = 'delete_file';
+            if ($this->getBackendUser()->shallDisplayDebugInformation()) {
+                $recordInfo .= ' [sys_file:' . $resourceView->getUid() . ']';
+            }
+        }
+
+        $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete');
+        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button->setTitle($title);
+        $button->setHref('javascript:;');
+        $button->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL));
+        $button->setDataAttributes([
+            'title' => $title,
+            'bs-content' => sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete'), trim($recordInfo)) . $referenceCountText,
+            'filelist-delete' => 'true',
+            'filelist-delete-identifier' => $resourceView->getIdentifier(),
+            'filelist-delete-url' => $this->uriBuilder->buildUriFromRoute('tce_file'),
+            'filelist-delete-type' => $deleteType,
+            'filelist-delete-check' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE) ? '1' : '0',
+        ]);
+
+        return $button;
     }
 
     /**
@@ -1085,8 +1115,12 @@ class FileList
      * the current state, either a new translation can be created or
      * an existing translation can be edited.
      */
-    protected function makeTranslations(File $file): string
+    protected function createControlTranslation(ResourceView $resourceView): ?ButtonInterface
     {
+        if (!$resourceView->resource instanceof File) {
+            return null;
+        }
+
         $backendUser = $this->getBackendUser();
 
         // Fetch all system languages except "default (0)" and "all languages (-1)"
@@ -1097,17 +1131,17 @@ class FileList
 
         if ($systemLanguages === []
             || !($GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] ?? false)
-            || !$file->isIndexed()
-            || !$file->checkActionPermission('editMeta')
+            || !$resourceView->resource->isIndexed()
+            || !$resourceView->resource->checkActionPermission('editMeta')
             || !$backendUser->check('tables_modify', 'sys_file_metadata')
         ) {
             // Early return in case no system languages exists or metadata
             // of this file can not be created / edited by the current user.
-            return '';
+            return null;
         }
 
-        $translations = [];
-        $metaDataRecord = $file->getMetaData()->get();
+        $dropdownItems = [];
+        $metaDataRecord = $resourceView->resource->getMetaData()->get();
         $existingTranslations = $this->getTranslationsForMetaData($metaDataRecord);
 
         foreach ($systemLanguages as $languageId => $language) {
@@ -1148,52 +1182,108 @@ class FileList
                 );
             }
 
-            $translations[] = '
-                <li>
-                    <a href="' . htmlspecialchars($url) . '" class="dropdown-item" title="' . htmlspecialchars($title) . '">
-                        <span class="dropdown-item-columns">
-                            <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
-                                ' . $this->iconFactory->getIcon($language['flagIcon'], Icon::SIZE_SMALL, 'overlay-' . $actionType)->render() . '
-                            </span>
-                            <span class="dropdown-item-column dropdown-item-column-title">
-                                ' . htmlspecialchars($title) . '
-                            </span>
-                        </span>
-                    </a>
-                </li>';
+            $dropdownItem = GeneralUtility::makeInstance(DropDownItem::class);
+            $dropdownItem->setLabel($title);
+            $dropdownItem->setHref($url);
+            $dropdownItem->setIcon($this->iconFactory->getIcon($language['flagIcon'], Icon::SIZE_SMALL, 'overlay-' . $actionType));
+            $dropdownItems[] = $dropdownItem;
         }
 
-        return $translations !== [] ? '
-            <div class="btn-group dropdown position-static" title="' . htmlspecialchars($this->getLanguageService()->getLL('translateMetadata')) . '">
-                <button class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" type="button" id="translations_' . $file->getHashedIdentifier() . '" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
-                    ' . $this->iconFactory->getIcon('actions-translate', Icon::SIZE_SMALL)->render() . '
-                </button>
-                <ul  class="dropdown-menu dropdown-list" aria-labelledby="translations_' . $file->getHashedIdentifier() . '">
-                    ' . implode(LF, $translations) . '
-                </ul>
-            </div>' : '';
+        if (empty($dropdownItems)) {
+            return null;
+        }
+
+        $dropdownButton = GeneralUtility::makeInstance(DropDownButton::class);
+        $dropdownButton->setLabel('Translations');
+        $dropdownButton->setIcon($this->iconFactory->getIcon('actions-translate', Icon::SIZE_SMALL));
+        foreach ($dropdownItems as $dropdownItem) {
+            $dropdownButton->addItem($dropdownItem);
+        }
+
+        return $dropdownButton;
+    }
+
+    protected function createControlCopy(ResourceView $resourceView): ?ButtonInterface
+    {
+        if (!$resourceView->canRead() || !$resourceView->canCopy()) {
+            return null;
+        }
+
+        if ($this->clipObj->current === 'normal') {
+            $isSelected = $this->clipObj->isSelected('_FILE', md5($resourceView->getIdentifier()));
+            $button = GeneralUtility::makeInstance(LinkButton::class);
+            $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSelected === 'copy' ? 'copyrelease' : 'copy')));
+            $button->setHref($this->clipObj->selUrlFile($resourceView->getIdentifier(), true, $isSelected === 'copy'));
+            $button->setIcon($this->iconFactory->getIcon($isSelected === 'copy' ? 'actions-edit-copy-release' : 'actions-edit-copy', Icon::SIZE_SMALL));
+            return $button;
+        }
+
+        return null;
+    }
+
+    protected function createControlCut(ResourceView $resourceView): ?ButtonInterface
+    {
+        if (!$resourceView->canRead() || !$resourceView->canMove()) {
+            return null;
+        }
+
+        if ($this->clipObj->current === 'normal') {
+            $isSelected = $this->clipObj->isSelected('_FILE', md5($resourceView->getIdentifier()));
+            $button = GeneralUtility::makeInstance(LinkButton::class);
+            $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSelected === 'cut' ? 'cutrelease' : 'cut')));
+            $button->setHref($this->clipObj->selUrlFile($resourceView->getIdentifier(), true, $isSelected === 'cut'));
+            $button->setIcon($this->iconFactory->getIcon($isSelected === 'cut' ? 'actions-edit-cut-release' : 'actions-edit-cut', Icon::SIZE_SMALL));
+            $actions['cut'] = $button;
+
+            return $button;
+        }
+
+        return null;
+    }
+
+    protected function createControlPaste(ResourceView $resourceView): ?ButtonInterface
+    {
+        $permission = ($this->clipObj->clipData[$this->clipObj->current]['mode'] ?? '') === 'copy' ? 'copy' : 'move';
+        $addPasteButton = $this->folderObject->checkActionPermission($permission);
+        $elementFromTable = $this->clipObj->elFromTable('_FILE');
+        if ($elementFromTable === []
+            || !$addPasteButton
+            || !$resourceView->canRead()
+            || !$resourceView->canWrite()
+            || !$resourceView->resource instanceof Folder) {
+            return null;
+        }
+
+        $elementsToConfirm = [];
+        foreach ($elementFromTable as $key => $element) {
+            $clipBoardElement = $this->resourceFactory->retrieveFileOrFolderObject($element);
+            if ($clipBoardElement instanceof Folder
+                && $clipBoardElement->getStorage()->isWithinFolder($clipBoardElement, $resourceView->resource)
+            ) {
+                // In case folder is already present in the target folder, return actions without paste button
+                return null;
+            }
+            $elementsToConfirm[$key] = $clipBoardElement->getName();
+        }
+
+        $pasteTitle = $this->getLanguageService()->getLL('clip_pasteInto');
+        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button->setTitle($pasteTitle);
+        $button->setHref($this->clipObj->pasteUrl('_FILE', $resourceView->getIdentifier()));
+        $button->setDataAttributes([
+            'title' => $pasteTitle,
+            'bs-content' => $this->clipObj->confirmMsgText('_FILE', $resourceView->getName(), 'into', $elementsToConfirm),
+        ]);
+        $button->setIcon($this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL));
+
+        return $button;
     }
 
     protected function isEditMetadataAllowed(File $file): bool
     {
         return $file->isIndexed()
             && $file->checkActionPermission('editMeta')
-            && $this->getUserPermissions($file)->editMetaData;
-    }
-
-    /**
-     * Get the icon for a file or folder object
-     *
-     * @param string $title The icon title
-     * @param File|Folder $fileOrFolderObject
-     * @return string The wrapped icon for the file or folder
-     */
-    protected function getFileOrFolderIcon(string $title, $fileOrFolderObject): string
-    {
-        return '
-            <span title="' . htmlspecialchars($title) . '">
-                ' . $this->iconFactory->getIconForResource($fileOrFolderObject, Icon::SIZE_SMALL)->render() . '
-            </span>';
+            && $this->getUserPermissions()->editMetaData;
     }
 
     /**
@@ -1272,14 +1362,6 @@ class FileList
         return ($GLOBALS['TCA']['sys_file']['columns'][$fieldName] ?? false) ? 'sys_file' : 'sys_file_metadata';
     }
 
-    /**
-     * Whether file download is enabled for the user
-     */
-    protected function fileDownloadEnabled(): bool
-    {
-        return (bool)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['fileDownload.']['enabled'] ?? true);
-    }
-
     protected function getPaginationLinkForDirection(ResourceCollectionPaginator $paginator, NavigationDirection $direction): ?PaginationLink
     {
         $currentPagination = new SimplePagination($paginator);
@@ -1311,28 +1393,56 @@ class FileList
         $targetPaginator = $paginator->withCurrentPageNumber($targetPage);
         $targetPagination = new SimplePagination($targetPaginator);
 
+        $uri = new Uri($this->request->getAttribute('normalizedParams')->getRequestUri());
+        parse_str($uri->getQuery(), $queryParameters);
+        unset($queryParameters['contentOnly']);
+        $queryParameters = array_merge($queryParameters, ['currentPage' => $targetPage]);
+        $uri = $uri->withQuery(HttpUtility::buildQueryString($queryParameters, '&'));
+
         return new PaginationLink(
             $targetPagination->getStartRecordNumber() . '-' . $targetPagination->getEndRecordNumber(),
-            $this->createModuleUri(['currentPage' => $targetPage])
+            (string)$uri,
         );
     }
 
     /**
      * Returns list URL; This is the URL of the current script with id and imagemode parameters, that's all.
      */
-    public function createModuleUri(array $params = []): string
+    public function createModuleUri(array $params = []): ?string
     {
-        $params = array_replace_recursive([
+        $request = $this->request;
+        $queryParams = $request->getQueryParams();
+        $parsedBody = $request->getParsedBody();
+
+        $route = $request->getAttribute('route');
+        if (!$route instanceof Route) {
+            return null;
+        }
+
+        $baseParams = [
             'currentPage' => $this->currentPage,
             'id' => $this->folderObject->getCombinedIdentifier(),
             'searchTerm' => $this->searchDemand ? $this->searchDemand->getSearchTerm() : '',
-        ], $params);
+        ];
 
+        // Keep ElementBrowser Settings
+        if ($mode = $parsedBody['mode'] ?? $queryParams['mode'] ?? null) {
+            $baseParams['mode'] = $mode;
+        }
+        if ($bparams = $parsedBody['bparams'] ?? $queryParams['bparams'] ?? null) {
+            $baseParams['bparams'] = $bparams;
+        }
+
+        $params = array_replace_recursive($baseParams, $params);
+
+        // Expanded folder is used in the element browser.
+        // We always map it to the id here.
+        $params['expandFolder'] = $params['id'];
         $params = array_filter($params, static function ($value) {
             return $value !== null && trim($value) !== '';
         });
 
-        return (string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', $params);
+        return (string)$this->uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $params);
     }
 
     protected function createEditDataUriForResource(ResourceInterface $resource): ?string
@@ -1523,12 +1633,9 @@ class FileList
             ->fetchOne();
     }
 
-    protected function getUserPermissions(Folder|File $resource): UserPermissions
+    protected function getUserPermissions(): UserPermissions
     {
-        return new UserPermissions(
-            moveResource: $resource->checkActionPermission('move'),
-            editMetaData: $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')
-        );
+        return new UserPermissions($this->getBackendUser()->check('tables_modify', 'sys_file_metadata'));
     }
 
     protected function getLanguageService(): LanguageService

@@ -16,6 +16,8 @@ declare(strict_types=1);
  */
 
 return [
+    'TYPO3\\CMS\\Backend\\ElementBrowser\\FileBrowser' => \TYPO3\CMS\Filelist\ElementBrowser\FileBrowser::class,
+    'TYPO3\\CMS\\Backend\\ElementBrowser\\FolderBrowser' => \TYPO3\CMS\Filelist\ElementBrowser\FolderBrowser::class,
     'TYPO3\\CMS\\Backend\\Form\\Element\\InputLinkElement' => \TYPO3\CMS\Backend\Form\Element\LinkElement::class,
     'TYPO3\\CMS\\Backend\\Form\\Element\\InputDateTimeElement' => \TYPO3\CMS\Backend\Form\Element\DatetimeElement::class,
     'TYPO3\\CMS\\Backend\\Form\\Element\\InputColorPickerElement' => \TYPO3\CMS\Backend\Form\Element\ColorElement::class,
@@ -23,8 +25,8 @@ return [
     'TYPO3\\CMS\\Recordlist\\Browser\\DatabaseBrowser' => \TYPO3\CMS\Backend\ElementBrowser\DatabaseBrowser::class,
     'TYPO3\\CMS\\Recordlist\\Browser\\ElementBrowserInterface' => \TYPO3\CMS\Backend\ElementBrowser\ElementBrowserInterface::class,
     'TYPO3\\CMS\\Recordlist\\Browser\\ElementBrowserRegistry' => \TYPO3\CMS\Backend\ElementBrowser\ElementBrowserRegistry::class,
-    'TYPO3\\CMS\\Recordlist\\Browser\\FileBrowser' => \TYPO3\CMS\Backend\ElementBrowser\FileBrowser::class,
-    'TYPO3\\CMS\\Recordlist\\Browser\\FolderBrowser' => \TYPO3\CMS\Backend\ElementBrowser\FolderBrowser::class,
+    'TYPO3\\CMS\\Recordlist\\Browser\\FileBrowser' => \TYPO3\CMS\Filelist\ElementBrowser\FileBrowser::class,
+    'TYPO3\\CMS\\Recordlist\\Browser\\FolderBrowser' => \TYPO3\CMS\Filelist\ElementBrowser\FolderBrowser::class,
     'TYPO3\\CMS\\Recordlist\\Controller\\AbstractLinkBrowserController' => \TYPO3\CMS\Backend\Controller\AbstractLinkBrowserController::class,
     'TYPO3\\CMS\\Recordlist\\Controller\\AccessDeniedException' => \TYPO3\CMS\Backend\Exception\AccessDeniedException::class,
     'TYPO3\\CMS\\Recordlist\\Controller\\ClearPageCacheController' => \TYPO3\CMS\Backend\Controller\ClearPageCacheController::class,
