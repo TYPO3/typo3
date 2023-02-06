@@ -13,6 +13,7 @@
 
 import documentService = require('TYPO3/CMS/Core/DocumentService');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import Viewport = require('./Viewport');
 
 type HTMLFormChildElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
@@ -124,19 +125,23 @@ class GlobalEventHandler {
     }
     const value = this.resolveHTMLFormChildElementValue(resolvedTarget);
     const navigateValue = resolvedTarget.dataset.navigateValue;
+    let locationHref = null;
     if (actionNavigate === '$data=~s/$value/' && navigateValue && value !== null) {
-      window.location.href = this.substituteValueVariable(navigateValue, value);
-      return true;
+      locationHref = this.substituteValueVariable(navigateValue, value);
+    } else if (actionNavigate === '$data' && navigateValue) {
+      locationHref = navigateValue;
+    } else if (actionNavigate === '$value' && value) {
+      locationHref = value;
     }
-    if (actionNavigate === '$data' && navigateValue) {
-      window.location.href = navigateValue;
-      return true;
+    if (locationHref === null) {
+      return false;
     }
-    if (actionNavigate === '$value' && value) {
-      window.location.href = value;
-      return true;
+    if (window === Viewport.ContentContainer.get()) {
+      Viewport.ContentContainer.setUrl(locationHref);
+    } else {
+      window.location.href = locationHref;
     }
-    return false;
+    return true;
   }
 
   private handleFormNavigateAction(evt: Event, resolvedTarget: HTMLFormElement): boolean {
@@ -148,15 +153,21 @@ class GlobalEventHandler {
     const navigateValue = resolvedTarget.dataset.navigateValue;
     const valueSelector = resolvedTarget.dataset.valueSelector;
     const value = this.resolveHTMLFormChildElementValue(resolvedTarget.querySelector(valueSelector));
+    let locationHref = null;
     if (actionNavigate === '$form=~s/$value/' && navigateValue && value !== null) {
-      window.location.href = this.substituteValueVariable(navigateValue, value);
-      return true;
+      locationHref = this.substituteValueVariable(navigateValue, value);
+    } else if (actionNavigate === '$form') {
+      locationHref = formAction;
     }
-    if (actionNavigate === '$form') {
-      window.location.href = formAction;
-      return true;
+    if (locationHref === null) {
+      return false;
     }
-    return false;
+    if (window === Viewport.ContentContainer.get()) {
+      Viewport.ContentContainer.setUrl(locationHref);
+    } else {
+      window.location.href = locationHref;
+    }
+    return true;
   }
 
   private substituteValueVariable(haystack: string, substitute: string): string {
