@@ -24,32 +24,20 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Check system environment status
+ * Check system environment status.
  *
  * This class is a hardcoded requirement check of the underlying
  * server and PHP system.
  *
  * The class *must not* check for any TYPO3 specific things like
- * specific configuration values or directories. It should not fail
- * if there is no TYPO3 at all.
+ * specific configuration values or directories.
  *
- * The only core code used is the class loader
+ * This class is instantiated as a very early during installation.
  *
- * This class is instantiated as the *very first* class during
- * installation. It is meant to be *standalone* und must not have
- * any requirements, except the status classes. It must be possible
- * to run this script separated from the rest of the core, without
- * dependencies.
- *
- * This means especially:
+ * Be picky with dependencies here:
  * * No hooks or anything like that
- * * No usage of *any* TYPO3 code like GeneralUtility
- * * No require of anything but the status classes
  * * No localization
- *
- * The status messages and title *must not* include HTML, use plain
- * text only. The return values of this class are not bound to HTML
- * and can be used in different scopes (eg. as json array).
+ * * Only low level ext:core classes if free of side effects
  *
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
