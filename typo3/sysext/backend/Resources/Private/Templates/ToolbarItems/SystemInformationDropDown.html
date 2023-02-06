@@ -4,7 +4,7 @@
     data-count="{count}"
     data-severityclass="{severityBadgeClass}"></span>
 
-<h3 class="dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.header"/></h3>
+<h3 class="dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemInformation.header"/></h3>
 <f:if condition="{environmentToolUrl}">
     <p class="dropdown-item-text typo3-module-menu-item submodule mod-tools_toolsenvironment" data-modulename="tools_toolsenvironment">
         <f:format.raw>
@@ -14,7 +14,6 @@
 </f:if>
 
 <f:if condition="{systemInformation}">
-    <hr class="dropdown-divider" aria-hidden="true">
     <table class="dropdown-table">
         <f:for each="{systemInformation}" as="info">
             <tr>
@@ -58,13 +57,11 @@
                                 data-modulename="{message.module}"
                                 data-moduleparams="{message.params}"
                             >
-                                <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.systemStatus.header" /></strong><br>
                                 <f:format.raw>{message.text}</f:format.raw>
                             </p>
                         </f:then>
                         <f:else>
                             <p>
-                                <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.systemStatus.header" /></strong><br>
                                 <f:format.raw>{message.text}</f:format.raw>
                             </p>
                         </f:else>
@@ -82,7 +79,6 @@
             </div>
             <div>
                 <p>
-                    <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.systemStatus.header" /></strong><br>
                     <f:format.nl2br><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.allgood" /></f:format.nl2br>
                 </p>
             </div>

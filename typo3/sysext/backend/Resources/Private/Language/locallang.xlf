@@ -12,14 +12,11 @@
 			<trans-unit id="show_references" resname="show_references">
 				<source>Show references</source>
 			</trans-unit>
-			<trans-unit id="systemmessage.header" resname="systemmessage.header">
-				<source>Application Information</source>
+			<trans-unit id="systemInformation.header" resname="systemInformation.header">
+				<source>System Information</source>
 			</trans-unit>
 			<trans-unit id="systemmessage.intro" resname="systemmessage.intro">
 				<source><![CDATA[This is a short system overview. For advanced information please head to the <a href="%s">Environment Module</a>.]]></source>
-			</trans-unit>
-			<trans-unit id="systemmessage.systemStatus.header" resname="systemmessage.systemStatus.header">
-				<source>System status</source>
 			</trans-unit>
 			<trans-unit id="systemmessage.allgood" resname="systemmessage.allgood" xml:space="preserve">
 				<source>Your system is fully operational.

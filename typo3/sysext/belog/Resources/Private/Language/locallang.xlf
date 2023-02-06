@@ -325,7 +325,7 @@
 				<source>Time</source>
 			</trans-unit>
 			<trans-unit id="systemmessage.errorsInPeriod" resname="systemmessage.errorsInPeriod">
-				<source><![CDATA[We have found %1$d errors. Please check your <a href="%2$s">system log</a>.]]></source>
+				<source><![CDATA[We have found %1$d error(s). Please check your <a href="%2$s">system log</a>.]]></source>
 			</trans-unit>
 			<trans-unit id="actions" resname="actions">
 				<source>Actions</source>

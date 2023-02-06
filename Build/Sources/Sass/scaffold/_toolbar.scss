@@ -104,8 +104,8 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
 
 .toolbar-item-badge {
     position: absolute;
-    bottom: 4px;
-    right: 4px;
+    top: 14px;
+    right: 11px;
     --bs-badge-border-radius: .65rem;
 }
 
@@ -147,5 +147,11 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
 @media (min-width: $scaffold-breakpoint) {
     .toolbar-item-title {
         display: none;
+    }
+
+    .toolbar-item-badge {
+        top: auto;
+        bottom: 4px;
+        right: 4px;
     }
 }

@@ -110,6 +110,8 @@ h4.dropdown-headline {
     a:not([class]) {
         color: var(--typo3-list-item-active-color);
     }
+
+    @include link-reset();
 }
 
 .dropdown-item-columns {
