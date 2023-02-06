@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -949,9 +950,10 @@ class SchedulerModuleController
      */
     protected function getRegisteredTaskGroups(): array
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('tx_scheduler_task_group')
-            ->select('*')
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task_group');
+        $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+
+        return $queryBuilder->select('*')
             ->from('tx_scheduler_task_group')
             ->orderBy('sorting')
             ->executeQuery()
