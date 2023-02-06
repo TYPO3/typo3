@@ -42,10 +42,9 @@ class RedisBackendTest extends FunctionalTestCase
         if (!getenv('typo3TestingRedisHost')) {
             self::markTestSkipped('environment variable "typo3TestingRedisHost" must be set to run this test');
         }
-        // Note we assume that if that typo3TestingRedisHost env is set, we can use that for testing,
+        // Note we assume that if typo3TestingRedisHost env is set, we can use that for testing,
         // there is no test to see if the daemon is actually up and running. Tests will fail if env
         // is set but daemon is down.
-
         parent::setUp();
     }
 

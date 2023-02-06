@@ -123,6 +123,7 @@
 		"webmozart/assert": "^1.11.0"
 	},
 	"suggest": {
+		"ext-apcu": "Needed when non-default APCU based cache backends are used",
 		"ext-gd": "GDlib/Freetype is required for building images with text (GIFBUILDER) and can also be used to scale images",
 		"ext-fileinfo": "Used for proper file type detection in the file abstraction layer",
 		"ext-zlib": "TYPO3 uses zlib for amongst others output compression and un/packing t3x extension files",
