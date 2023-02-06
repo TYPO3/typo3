@@ -18,15 +18,16 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\SchemaDiff;
-use Doctrine\DBAL\Schema\SchemaException;
-use Doctrine\DBAL\Schema\Sequence;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\BinaryType;
 use Doctrine\DBAL\Types\BlobType;
+use Doctrine\DBAL\Types\DecimalType;
+use Doctrine\DBAL\Types\GuidType;
+use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\TextType;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
@@ -37,66 +38,57 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  */
 class Comparator extends \Doctrine\DBAL\Schema\Comparator
 {
-    /**
-     * @var AbstractPlatform|null
-     */
-    protected $databasePlatform;
+    protected AbstractPlatform $databasePlatform;
 
-    /**
-     * Comparator constructor.
-     */
-    public function __construct(AbstractPlatform $platform = null)
+    public function __construct(protected AbstractPlatform $platform)
     {
         $this->databasePlatform = $platform;
         parent::__construct($platform);
+    }
+
+    public function compareSchemas(Schema $oldSchema, Schema $newSchema): SchemaDiff
+    {
+        return SchemaDiff::ensure(parent::compareSchemas($oldSchema, $newSchema));
     }
 
     /**
      * Returns the difference between the tables $fromTable and $toTable.
      *
      * If there are no differences this method returns the boolean false.
-     *
-     * @param \Doctrine\DBAL\Schema\Table $fromTable
-     * @param \Doctrine\DBAL\Schema\Table $toTable
-     * @return false|\Doctrine\DBAL\Schema\TableDiff|\TYPO3\CMS\Core\Database\Schema\TableDiff
-     * @throws \InvalidArgumentException
      */
-    public function diffTable(Table $fromTable, Table $toTable)
+    public function compareTables(Table $oldTable, Table $newTable): TableDiff
     {
-        $newTableOptions = array_merge($fromTable->getOptions(), $toTable->getOptions());
-        $optionDiff = ArrayUtility::arrayDiffAssocRecursive($newTableOptions, $fromTable->getOptions());
-        $tableDifferences = parent::diffTable($fromTable, $toTable);
-
-        // No changed table options, return parent result
-        if (count($optionDiff) === 0) {
-            return $tableDifferences;
+        $newTableOptions = array_merge($oldTable->getOptions(), $newTable->getOptions());
+        $optionDiff = ArrayUtility::arrayDiffAssocRecursive($newTableOptions, $oldTable->getOptions());
+        $tableDifferences = parent::compareTables($oldTable, $newTable);
+        // Rebuild TableDiff with enhanced TYPO3 TableDiff class
+        $tableDifferences = TableDiff::ensure($tableDifferences);
+        // Set the table options to be parsed in the AlterTable event. Only add changed table options.
+        if (count($optionDiff) > 0) {
+            $tableDifferences->setTableOptions($optionDiff);
         }
-
-        if ($tableDifferences === false) {
-            $tableDifferences = new TableDiff($fromTable->getName());
-            $tableDifferences->fromTable = $fromTable;
-        } else {
-            $renamedColumns = $tableDifferences->renamedColumns;
-            $renamedIndexes = $tableDifferences->renamedIndexes;
-            // Rebuild TableDiff with enhanced TYPO3 TableDiff class
-            $tableDifferences = new TableDiff(
-                $tableDifferences->name,
-                $tableDifferences->addedColumns,
-                $tableDifferences->changedColumns,
-                $tableDifferences->removedColumns,
-                $tableDifferences->addedIndexes,
-                $tableDifferences->changedIndexes,
-                $tableDifferences->removedIndexes,
-                $tableDifferences->fromTable
-            );
-            $tableDifferences->renamedColumns = $renamedColumns;
-            $tableDifferences->renamedIndexes = $renamedIndexes;
-        }
-
-        // Set the table options to be parsed in the AlterTable event.
-        $tableDifferences->setTableOptions($optionDiff);
-
         return $tableDifferences;
+    }
+
+    /**
+     * @todo: Remove this override after blocking issues has been resolved in the methods
+     *        Comparator::typo3DiffColumn() and Comparator::doctrineDbalMajorThreeDiffColumn().
+     *
+     * @see Comparator::typo3DiffColumn()                       blocker, see comments
+     * @see Comparator::doctrineDbalMajorThreeDiffColumn()      blocker, see comments
+     */
+    protected function columnsEqual(Column $column1, Column $column2): bool
+    {
+        // doctrine/dbal 4+ enforces the use of a platform and dispatches the column equal check to
+        // the used platform. That's a change in behaviour for TYPO3, therefore we reintroduce the
+        // old fallback without a set platform, the dropped `diffColumn()` methods.
+        //
+        // To avoid cloning the full `compareTables()` method code, we now override this transaction
+        // method, not dispatching to the Platform->columnsEqual() and using the preserved `diffColumn()`
+        // code chain.
+        //
+        // return parent::columnsEqual($column1, $column2);
+        return $this->typo3DiffColumn($column1, $column2) === [];
     }
 
     /**
@@ -104,20 +96,22 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
      * by first checking the doctrine diffColumn. Extend the Doctrine
      * method by taking into account MySQL TINY/MEDIUM/LONG type variants.
      *
-     * @return array
+     * @todo    Move the column length override for MariaDB/MySQL to the extended platform classes, when the
+     *          the workaround here can be removed and `AbstractPlatform::columnsEqual() used. Currently blocked
+     *          by the used Comparator::doctrineDbalMajorThreeDiffColumn() code which compares differently than
+     *          the new platform code of doctrine. See the todo regarding the platform options in that method.
+     *
+     * @see Comparator::doctrineDbalMajorThreeDiffColumn()      blocker
      */
-    public function diffColumn(Column $column1, Column $column2)
+    public function typo3DiffColumn(Column $column1, Column $column2): array
     {
-        $changedProperties = parent::diffColumn($column1, $column2);
-
+        $changedProperties = $this->doctrineDbalMajorThreeDiffColumn($column1, $column2);
         // Only MySQL has variable length versions of TEXT/BLOB
-        if (!$this->databasePlatform instanceof MySQLPlatform) {
+        if (!($this->platform instanceof DoctrineMariaDBPlatform || $this->databasePlatform instanceof DoctrineMySQLPlatform)) {
             return $changedProperties;
         }
-
         $properties1 = $column1->toArray();
         $properties2 = $column2->toArray();
-
         if ($properties1['type'] instanceof BlobType || $properties1['type'] instanceof TextType) {
             // Doctrine does not provide a length for LONGTEXT/LONGBLOB columns
             $length1 = $properties1['length'] ?: 2147483647;
@@ -127,165 +121,98 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
                 $changedProperties[] = 'length';
             }
         }
-
         return array_unique($changedProperties);
     }
 
     /**
-     * Returns a SchemaDiff object containing the differences between the schemas
-     * $fromSchema and $toSchema.
+     * Returns the difference between the columns
      *
-     * This method should be called non-statically since it will be declared as
-     * non-static in the next doctrine/dbal major release.
+     * If there are differences this method returns the changed properties as a
+     * string array, otherwise an empty array gets returned.
      *
-     * doctrine/dbal uses new self() in this method, which instantiate the doctrine
-     * Comparator class and not our extended class, thus not calling our overridden
-     * methods 'diffTable()' and 'diffColum()' and breaking core table engine support,
-     * which is tested in core functional tests explicity. See corresponding test
-     * `TYPO3\CMS\Core\Tests\Functional\Database\Schema\SchemaMigratorTest->changeTableEngine()`
+     * @deprecated Use {@see columnsEqual()} instead.
      *
-     * @return SchemaDiff
-     * @throws SchemaException
+     * @return string[]
      *
-     * @todo Create PR for doctrine/dbal to change to late binding 'new static()', so our
-     *       override is working correctly and remove this method after min package raise,
-     *       if PR was accepted and merged. Also remove 'isAutoIncrementSequenceInSchema()'.
+     * Note: cloned from doctrine/dbal 3.7.1
      */
-    public static function compareSchemas(
-        Schema $fromSchema,
-        Schema $toSchema
-    ) {
-        $comparator       = new self();
-        $diff             = new SchemaDiff();
-        $diff->fromSchema = $fromSchema;
-
-        $foreignKeysToTable = [];
-
-        foreach ($toSchema->getNamespaces() as $namespace) {
-            if ($fromSchema->hasNamespace($namespace)) {
-                continue;
-            }
-
-            $diff->newNamespaces[$namespace] = $namespace;
-        }
-
-        foreach ($fromSchema->getNamespaces() as $namespace) {
-            if ($toSchema->hasNamespace($namespace)) {
-                continue;
-            }
-
-            $diff->removedNamespaces[$namespace] = $namespace;
-        }
-
-        foreach ($toSchema->getTables() as $table) {
-            $tableName = $table->getShortestName($toSchema->getName());
-            if (!$fromSchema->hasTable($tableName)) {
-                $diff->newTables[$tableName] = $toSchema->getTable($tableName);
-            } else {
-                $tableDifferences = $comparator->diffTable(
-                    $fromSchema->getTable($tableName),
-                    $toSchema->getTable($tableName)
-                );
-
-                if ($tableDifferences !== false) {
-                    $diff->changedTables[$tableName] = $tableDifferences;
-                }
-            }
-        }
-
-        /* Check if there are tables removed */
-        foreach ($fromSchema->getTables() as $table) {
-            $tableName = $table->getShortestName($fromSchema->getName());
-
-            $table = $fromSchema->getTable($tableName);
-            if (!$toSchema->hasTable($tableName)) {
-                $diff->removedTables[$tableName] = $table;
-            }
-
-            // also remember all foreign keys that point to a specific table
-            foreach ($table->getForeignKeys() as $foreignKey) {
-                $foreignTable = strtolower($foreignKey->getForeignTableName());
-                if (!isset($foreignKeysToTable[$foreignTable])) {
-                    $foreignKeysToTable[$foreignTable] = [];
-                }
-
-                $foreignKeysToTable[$foreignTable][] = $foreignKey;
-            }
-        }
-
-        foreach ($diff->removedTables as $tableName => $table) {
-            if (!isset($foreignKeysToTable[$tableName])) {
-                continue;
-            }
-
-            $diff->orphanedForeignKeys = array_merge($diff->orphanedForeignKeys, $foreignKeysToTable[$tableName]);
-
-            // deleting duplicated foreign keys present on both on the orphanedForeignKey
-            // and the removedForeignKeys from changedTables
-            foreach ($foreignKeysToTable[$tableName] as $foreignKey) {
-                // strtolower the table name to make if compatible with getShortestName
-                $localTableName = strtolower($foreignKey->getLocalTableName());
-                if (!isset($diff->changedTables[$localTableName])) {
-                    continue;
-                }
-
-                foreach ($diff->changedTables[$localTableName]->removedForeignKeys as $key => $removedForeignKey) {
-                    assert($removedForeignKey instanceof ForeignKeyConstraint);
-
-                    // We check if the key is from the removed table if not we skip.
-                    if ($tableName !== strtolower($removedForeignKey->getForeignTableName())) {
-                        continue;
-                    }
-
-                    unset($diff->changedTables[$localTableName]->removedForeignKeys[$key]);
-                }
-            }
-        }
-
-        foreach ($toSchema->getSequences() as $sequence) {
-            $sequenceName = $sequence->getShortestName($toSchema->getName());
-            if (!$fromSchema->hasSequence($sequenceName)) {
-                if (!$comparator->isAutoIncrementSequenceInSchema($fromSchema, $sequence)) {
-                    $diff->newSequences[] = $sequence;
-                }
-            } else {
-                if ($comparator->diffSequence($sequence, $fromSchema->getSequence($sequenceName))) {
-                    $diff->changedSequences[] = $toSchema->getSequence($sequenceName);
-                }
-            }
-        }
-
-        foreach ($fromSchema->getSequences() as $sequence) {
-            if ($comparator->isAutoIncrementSequenceInSchema($toSchema, $sequence)) {
-                continue;
-            }
-
-            $sequenceName = $sequence->getShortestName($fromSchema->getName());
-
-            if ($toSchema->hasSequence($sequenceName)) {
-                continue;
-            }
-
-            $diff->removedSequences[] = $sequence;
-        }
-
-        return $diff;
-    }
-
-    /**
-     * @param Schema   $schema
-     * @param Sequence $sequence
-     * @todo Remove this method, when 'compareSchemas()' could removed. We needed to borrow
-     *       this method along with 'compareSchemas()' through missing late-static binding.
-     */
-    private function isAutoIncrementSequenceInSchema($schema, $sequence): bool
+    public function doctrineDbalMajorThreeDiffColumn(Column $column1, Column $column2): array
     {
-        foreach ($schema->getTables() as $table) {
-            if ($sequence->isAutoIncrementsFor($table)) {
-                return true;
+        $properties1 = $column1->toArray();
+        $properties2 = $column2->toArray();
+
+        $changedProperties = [];
+
+        if (get_class($properties1['type']) !== get_class($properties2['type'])) {
+            $changedProperties[] = 'type';
+        }
+
+        foreach (['notnull', 'unsigned', 'autoincrement'] as $property) {
+            if ($properties1[$property] === $properties2[$property]) {
+                continue;
+            }
+
+            $changedProperties[] = $property;
+        }
+
+        // Null values need to be checked additionally as they tell whether to create or drop a default value.
+        // null != 0, null != false, null != '' etc. This affects platform's table alteration SQL generation.
+        if (
+            ($properties1['default'] === null) !== ($properties2['default'] === null)
+            || $properties1['default'] != $properties2['default']
+        ) {
+            $changedProperties[] = 'default';
+        }
+
+        if (
+            ($properties1['type'] instanceof StringType && !$properties1['type'] instanceof GuidType) ||
+            $properties1['type'] instanceof BinaryType
+        ) {
+            // check if value of length is set at all, default value assumed otherwise.
+            $length1 = $properties1['length'] ?? 255;
+            $length2 = $properties2['length'] ?? 255;
+            if ($length1 !== $length2) {
+                $changedProperties[] = 'length';
+            }
+
+            if ($properties1['fixed'] !== $properties2['fixed']) {
+                $changedProperties[] = 'fixed';
+            }
+        } elseif ($properties1['type'] instanceof DecimalType) {
+            if (($properties1['precision'] ?? 10) !== ($properties2['precision'] ?? 10)) {
+                $changedProperties[] = 'precision';
+            }
+
+            if ($properties1['scale'] !== $properties2['scale']) {
+                $changedProperties[] = 'scale';
             }
         }
 
-        return false;
+        // A null value and an empty string are actually equal for a comment so they should not trigger a change.
+        if (
+            $properties1['comment'] !== $properties2['comment'] &&
+            !($properties1['comment'] === null && $properties2['comment'] === '') &&
+            !($properties2['comment'] === null && $properties1['comment'] === '')
+        ) {
+            $changedProperties[] = 'comment';
+        }
+
+        $platformOptions1 = $column1->getPlatformOptions();
+        $platformOptions2 = $column2->getPlatformOptions();
+
+        // NOTE:    This is an important point, as only the overlapping platform option keys are compared. Doctrine DBAL
+        //          4.x comparison using the `columnsEqual()` method generate the create table statement type string for
+        //          the column and comparing these strings. That means, that we cannot replace this old compare with the
+        //          new one. At least this needs additional work and mainly for all extended platforms.
+        // @todo    Invest time to evaluate this in Doctrine DBAL directly and getting a fix for it (3.x + 4.x)
+        foreach (array_keys(array_intersect_key($platformOptions1, $platformOptions2)) as $key) {
+            if ($properties1[$key] === $properties2[$key]) {
+                continue;
+            }
+
+            $changedProperties[] = $key;
+        }
+
+        return array_unique($changedProperties);
     }
 }

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 
 use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Query\From;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
@@ -207,7 +208,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             } else {
                 $queryBuilder = $queryParser->convertQueryToDoctrineQueryBuilder($query);
             }
-            $selectParts = $queryBuilder->getQueryPart('select');
+            $selectParts = $queryBuilder->getSelect();
             if ($queryParser->isDistinctQuerySuggested() && !empty($selectParts)) {
                 $selectParts[0] = 'DISTINCT ' . $selectParts[0];
                 $queryBuilder->selectLiteral(...$selectParts);
@@ -254,7 +255,10 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             // Prepared Doctrine DBAL statement
         } elseif ($realStatement instanceof \Doctrine\DBAL\Statement) {
             try {
-                $result = $realStatement->executeQuery($parameters);
+                foreach ($parameters as $parameterIdentifier => $parameterValue) {
+                    $realStatement->bindValue($parameterIdentifier, $parameterValue);
+                }
+                $result = $realStatement->executeQuery();
             } catch (DBALException $e) {
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1481281404, $e);
             }
@@ -299,14 +303,15 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             $queryParser  = GeneralUtility::makeInstance(Typo3DbQueryParser::class);
             $queryBuilder = $queryParser
                 ->convertQueryToDoctrineQueryBuilder($query)
-                ->resetQueryPart('orderBy');
+                ->resetOrderBy();
 
             if ($queryParser->isDistinctQuerySuggested()) {
-                $source = $queryBuilder->getQueryPart('from')[0];
+                $source = $queryBuilder->getFrom()[0];
                 // Tablename is already quoted for the DBMS, we need to treat table and field names separately
-                $tableName = $source['alias'] ?: $source['table'];
+                $tableName = $source->alias ?: $source->table;
                 $fieldName = $queryBuilder->quoteIdentifier('uid');
-                $queryBuilder->resetQueryPart('groupBy')
+                $queryBuilder
+                    ->resetGroupBy()
                     ->selectLiteral(sprintf('COUNT(DISTINCT %s.%s)', $tableName, $fieldName));
             } else {
                 $queryBuilder->count('*');
@@ -341,6 +346,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     public function getUidOfAlreadyPersistedValueObject(AbstractValueObject $object): ?int
     {
         $className = get_class($object);
+        /** @var DataMapper $dataMapper */
         $dataMapper = GeneralUtility::makeInstance(DataMapper::class);
         $dataMap = $dataMapper->getDataMap($className);
         $tableName = $dataMap->getTableName();

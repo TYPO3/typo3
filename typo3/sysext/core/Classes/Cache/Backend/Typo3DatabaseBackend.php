@@ -120,7 +120,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
             }
             GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable($this->tagsTable)
-                ->bulkInsert($this->tagsTable, $tagRows, ['identifier', 'tag']);
+                ->bulkInsert($this->tagsTable, $tagRows, ['identifier', 'tag'], ['identifier' => Connection::PARAM_STR, 'tag' => Connection::PARAM_STR]);
         }
     }
 
@@ -201,13 +201,15 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
             ->getConnectionForTable($this->cacheTable)
             ->delete(
                 $this->cacheTable,
-                ['identifier' => $entryIdentifier]
+                ['identifier' => $entryIdentifier],
+                ['identifier' => Connection::PARAM_STR]
             );
         GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable($this->tagsTable)
             ->delete(
                 $this->tagsTable,
-                ['identifier' => $entryIdentifier]
+                ['identifier' => $entryIdentifier],
+                ['identifier' => Connection::PARAM_STR]
             );
         return (bool)$numberOfRowsRemoved;
     }

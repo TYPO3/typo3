@@ -23,7 +23,7 @@ use Doctrine\DBAL\Driver\Result as ResultInterface;
 /**
  * TYPO3's custom Statement decorator object for Database statements based on Doctrine DBAL in TYPO3's drivers.
  *
- * This is a lowlevel wrapper around PDOStatement for TYPO3 based drivers to ensure the PDOStatement is put into
+ * This is a low-level wrapper around PDOStatement for TYPO3 based drivers to ensure the PDOStatement is put into
  * TYPO3's DriverResult object, and not in Doctrine's Result object. If Doctrine DBAL had a factory
  * for DriverResults this class could be removed.
  *
@@ -34,8 +34,8 @@ class DriverStatement extends AbstractStatementMiddleware
     /**
      * {@inheritdoc}
      */
-    public function execute($params = null): ResultInterface
+    public function execute(): ResultInterface
     {
-        return new DriverResult(parent::execute($params));
+        return new DriverResult(parent::execute());
     }
 }

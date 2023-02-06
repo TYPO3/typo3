@@ -44,13 +44,24 @@ final class SysFileCollectionIdentifierMigrationTest extends FunctionalTestCase
             ->getConnectionForTable(self::TABLE_NAME)
             ->createSchemaManager();
 
+        $tableDetails = $schemaManager->introspectTable(self::TABLE_NAME);
         $schemaManager->alterTable(
             new TableDiff(
-                self::TABLE_NAME,
+                $tableDetails,
                 [
-                    new Column('storage', new IntegerType(), ['default' => '0', 'notnull' => true]),
-                    new Column('folder', new StringType(), ['length' => 255, 'default' => '', 'notnull' => true]),
-                ]
+                    'storage' => new Column('storage', new IntegerType(), ['default' => '0', 'notnull' => true]),
+                    'folder' => new Column('folder', new StringType(), ['length' => 255, 'default' => '', 'notnull' => true]),
+                ],
+                [],
+                [],
+                [],
+                [],
+                [],
+                [],
+                [],
+                [],
+                [],
+                [],
             )
         );
 

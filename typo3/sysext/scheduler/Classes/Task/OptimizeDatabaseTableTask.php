@@ -53,7 +53,7 @@ class OptimizeDatabaseTableTask extends AbstractTask
 
             if ($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform) {
                 try {
-                    $connection->query('OPTIMIZE TABLE ' . $connection->quoteIdentifier($tableName));
+                    $connection->executeStatement('OPTIMIZE TABLE ' . $connection->quoteIdentifier($tableName));
                 } catch (DBALException $e) {
                     throw new \RuntimeException(
                         TableGarbageCollectionTask::class . ' failed for: ' . $tableName . ': ' .

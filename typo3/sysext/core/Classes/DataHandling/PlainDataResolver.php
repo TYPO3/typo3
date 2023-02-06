@@ -290,7 +290,7 @@ class PlainDataResolver
 
         if (!empty($this->sortingStatement)) {
             foreach ($this->sortingStatement as $sortingStatement) {
-                $queryBuilder->add('orderBy', $sortingStatement, true);
+                $queryBuilder->getConcreteQueryBuilder()->addOrderBy($sortingStatement);
             }
         }
         // Always add explicit order by uid to have deterministic rows from dbms like postgres.

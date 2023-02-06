@@ -46,14 +46,23 @@ final class FeLoginModeExtractionUpdateTest extends FunctionalTestCase
             ->getConnectionForTable('pages')
             ->createSchemaManager();
 
-        if (!isset($schemaManager->listTableColumns('pages')['fe_login_mode'])) {
+        $pagesDetails = $schemaManager->introspectTable('pages');
+        if ($pagesDetails->hasColumn('fe_login_mode') === false) {
             $schemaManager->alterTable(
                 new TableDiff(
-                    'pages',
-                    [
-                        new Column('fe_login_mode', new IntegerType(), ['default' => 0, 'unsigned' => true]),
-                    ]
-                )
+                    $pagesDetails,
+                    ['fe_login_mode' => new Column('fe_login_mode', new IntegerType(), ['default' => 0, 'unsigned' => true])],
+                    [],
+                    [],
+                    [],
+                    [],
+                    [],
+                    [],
+                    [],
+                    [],
+                    [],
+                    [],
+                ),
             );
         }
 

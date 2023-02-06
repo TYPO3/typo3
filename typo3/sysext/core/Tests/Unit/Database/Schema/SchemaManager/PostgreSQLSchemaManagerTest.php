@@ -22,8 +22,6 @@ use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\Platform\PostgreSQL100Platform;
-use TYPO3\CMS\Core\Database\Platform\PostgreSQL94Platform;
 use TYPO3\CMS\Core\Database\Platform\PostgreSQLPlatform;
 use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
 use TYPO3\CMS\Core\Database\Schema\Types\SetType;
@@ -108,14 +106,6 @@ final class PostgreSQLSchemaManagerTest extends UnitTestCase
     {
         yield 'Use TYPO3 PostgreSQLPlatform' => [
             'platform' => PostgreSQLPlatform::class,
-        ];
-        // @todo Remove with `doctrine/dbal 4.0` upgrade.
-        yield 'Use TYPO3 PostgreSQL94Platform' => [
-            'platform' => PostgreSQL94Platform::class,
-        ];
-        // @todo Remove with `doctrine/dbal 4.0` upgrade.
-        yield 'Use TYPO3 PostgreSQL100Platform' => [
-            'platform' => PostgreSQL100Platform::class,
         ];
     }
 

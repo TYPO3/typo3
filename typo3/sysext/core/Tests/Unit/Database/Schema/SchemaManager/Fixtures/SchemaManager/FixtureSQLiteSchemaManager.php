@@ -42,7 +42,7 @@ class FixtureSQLiteSchemaManager extends SQLiteSchemaManager
     {
         return $this->processCustomDoctrineTypesColumnDefinition(
             tableColumn: $tableColumn,
-            platform: $this->_platform,
+            platform: $this->platform,
         );
     }
 }

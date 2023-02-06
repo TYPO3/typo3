@@ -55,17 +55,19 @@ class PermissionsCheck
     {
         $this->checkCreateTable($this->testTableName);
         $connection = $this->getConnection();
-        $schemaCurrent = $this->createSchemaManager()->createSchema();
-        $schemaNew = $this->createSchemaManager()->createSchema();
-        $schemaCurrent
+        $schemaManager = $this->createSchemaManager();
+        $schemaCurrent = $schemaManager->introspectSchema();
+        $schemaNew = $schemaManager->introspectSchema();
+        $schemaDiff = $schemaManager->createComparator()->compareSchemas($schemaCurrent, $schemaNew);
+        $schemaNew
             ->getTable($this->testTableName)
             ->addColumn('index_test', 'integer', ['unsigned' => true]);
         $platform = $connection->getDatabasePlatform();
         try {
-            foreach ($schemaNew->getMigrateToSql($schemaCurrent, $platform) as $query) {
+            foreach ($platform->getAlterSchemaSQL($schemaDiff) as $query) {
                 $connection->executeQuery($query);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->messages[] = 'The database user needs ALTER permission';
         }
         $this->checkDropTable($this->testTableName);
@@ -76,18 +78,20 @@ class PermissionsCheck
     {
         if ($this->checkCreateTable($this->testTableName)) {
             $connection = $this->getConnection();
-            $schemaCurrent = $this->createSchemaManager()->createSchema();
-            $schemaNew = $this->createSchemaManager()->createSchema();
-            $testTable = $schemaCurrent->getTable($this->testTableName);
+            $schemaManager = $this->createSchemaManager();
+            $schemaCurrent = $schemaManager->introspectSchema();
+            $schemaNew = $schemaManager->introspectSchema();
+            $testTable = $schemaNew->getTable($this->testTableName);
             $testTable->addColumn('index_test', 'integer', ['unsigned' => true]);
             $testTable->addIndex(['index_test'], 'test_index');
+            $schemaDiff = $schemaManager->createComparator()->compareSchemas($schemaCurrent, $schemaNew);
             $platform = $connection->getDatabasePlatform();
             try {
-                foreach ($schemaNew->getMigrateToSql($schemaCurrent, $platform) as $query) {
+                $statements = $platform->getAlterSchemaSQL($schemaDiff);
+                foreach ($statements as $query) {
                     $connection->executeQuery($query);
                 }
-            } catch (\Exception $e) {
-                $this->checkDropTable($this->testTableName);
+            } catch (\Exception) {
                 $this->messages[] = 'The database user needs INDEX permission';
             }
             $this->checkDropTable($this->testTableName);
@@ -101,8 +105,8 @@ class PermissionsCheck
         $connection = $this->getConnection();
         try {
             $sql = 'CREATE TEMPORARY TABLE %s AS (SELECT id FROM %s )';
-            $connection->exec(sprintf($sql, $this->testTableName . '_tmp', $this->testTableName));
-        } catch (\Exception $e) {
+            $connection->executeStatement(sprintf($sql, $this->testTableName . '_tmp', $this->testTableName));
+        } catch (\Exception) {
             $this->messages[] = 'The database user needs CREATE TEMPORARY TABLE permission';
         }
         $this->checkDropTable($this->testTableName);
@@ -116,7 +120,7 @@ class PermissionsCheck
         try {
             $connection->insert($this->testTableName, ['id' => 1]);
             $connection->select(['id'], $this->testTableName);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->messages[] = 'The database user needs SELECT permission';
         }
         $this->checkDropTable($this->testTableName);
@@ -129,7 +133,7 @@ class PermissionsCheck
         $connection = $this->getConnection();
         try {
             $connection->insert($this->testTableName, ['id' => 1]);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->messages[] = 'The database user needs INSERT permission';
         }
         $this->checkDropTable($this->testTableName);
@@ -143,7 +147,7 @@ class PermissionsCheck
         try {
             $connection->insert($this->testTableName, ['id' => 1]);
             $connection->update($this->testTableName, ['id' => 2], ['id' => 1]);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->messages[] = 'The database user needs UPDATE permission';
         }
         $this->checkDropTable($this->testTableName);
@@ -157,7 +161,7 @@ class PermissionsCheck
         try {
             $connection->insert($this->testTableName, ['id' => 1]);
             $connection->delete($this->testTableName, ['id' => 1]);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->messages[] = 'The database user needs DELETE permission';
         }
         $this->checkDropTable($this->testTableName);
@@ -172,7 +176,7 @@ class PermissionsCheck
     private function checkCreateTable(string $tablename): bool
     {
         $connection = $this->getConnection();
-        $schema = $connection->createSchemaManager()->createSchema();
+        $schema = $connection->createSchemaManager()->introspectSchema();
         $testTable = $schema->createTable($tablename);
         $testTable->addColumn('id', 'integer', ['unsigned' => true]);
         $testTable->setPrimaryKey(['id']);
@@ -181,7 +185,7 @@ class PermissionsCheck
             foreach ($schema->toSql($platform) as $query) {
                 $connection->executeQuery($query);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return false;
         }
         return true;
@@ -191,15 +195,17 @@ class PermissionsCheck
     {
         $connection = $this->getConnection();
         try {
-            $schemaCurrent = $connection->createSchemaManager()->createSchema();
-            $schemaNew = $connection->createSchemaManager()->createSchema();
+            $schemaManager = $connection->createSchemaManager();
+            $schemaCurrent = $schemaManager->introspectSchema();
+            $schemaNew = $schemaManager->introspectSchema();
 
             $schemaNew->dropTable($tablename);
+            $schemaDiff = $schemaManager->createComparator()->compareSchemas($schemaCurrent, $schemaNew);
             $platform = $connection->getDatabasePlatform();
-            foreach ($schemaCurrent->getMigrateToSql($schemaNew, $platform) as $query) {
+            foreach ($platform->getAlterSchemaSQL($schemaDiff) as $query) {
                 $connection->executeQuery($query);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return false;
         }
         return true;

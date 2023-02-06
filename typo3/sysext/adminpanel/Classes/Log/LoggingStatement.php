@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Log;
 
-use Doctrine\DBAL\Driver\Middleware\AbstractStatementMiddleware;
 use Doctrine\DBAL\Driver\Result as ResultInterface;
+use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Driver\Statement as StatementInterface;
 use Doctrine\DBAL\ParameterType;
 
@@ -27,33 +27,29 @@ use Doctrine\DBAL\ParameterType;
  *
  * @internal
  */
-final class LoggingStatement extends AbstractStatementMiddleware
+final class LoggingStatement implements Statement
 {
-    private DoctrineSqlLogger $logger;
-    private string $sql;
     private array $params = [];
     private array $types = [];
 
-    public function __construct(StatementInterface $statement, DoctrineSqlLogger $logger, string $sql)
-    {
-        parent::__construct($statement);
+    public function __construct(
+        private StatementInterface $wrappedStatement,
+        private DoctrineSqlLogger $logger,
+        private string $sql
+    ) {}
 
-        $this->logger = $logger;
-        $this->sql    = $sql;
-    }
-
-    public function bindValue($param, $value, $type = ParameterType::STRING)
+    public function bindValue(int|string $param, mixed $value, ParameterType $type = ParameterType::STRING): void
     {
         $this->params[$param] = $value;
         $this->types[$param]  = $type;
 
-        return parent::bindValue($param, $value, $type);
+        $this->wrappedStatement->bindValue($param, $value, $type);
     }
 
-    public function execute($params = null): ResultInterface
+    public function execute(): ResultInterface
     {
-        $this->logger->startQuery($this->sql, $params ?? $this->params, $this->types);
-        $result = parent::execute($params);
+        $this->logger->startQuery($this->sql, $this->params, $this->types);
+        $result = $this->wrappedStatement->execute();
         $this->logger->stopQuery();
 
         return $result;

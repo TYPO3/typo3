@@ -772,12 +772,12 @@ abstract class AbstractMenuContentObject
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
         $extraWhere = ($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0') . $this->getDoktypeExcludeWhere();
         if ($this->conf['special.']['excludeNoSearchPages'] ?? false) {
-            $extraWhere .= sprintf(' AND %s=%s', $connection->quoteIdentifier('pages.no_search'), $connection->quote(0, Connection::PARAM_INT));
+            $extraWhere .= sprintf(' AND %s=%s', $connection->quoteIdentifier('pages.no_search'), $connection->quote('0'));
         }
         if ($maxAge > 0) {
-            $extraWhere .= sprintf(' AND %s>%s', $connection->quoteIdentifier($sortField), $connection->quote(($GLOBALS['SIM_ACCESS_TIME'] - $maxAge), Connection::PARAM_INT));
+            $extraWhere .= sprintf(' AND %s>%s', $connection->quoteIdentifier($sortField), $connection->quote((string)($GLOBALS['SIM_ACCESS_TIME'] - $maxAge)));
         }
-        $extraWhere = sprintf('%s>=%s', $connection->quoteIdentifier($sortField), $connection->quote(0, Connection::PARAM_INT)) . $extraWhere;
+        $extraWhere = sprintf('%s>=%s', $connection->quoteIdentifier($sortField), $connection->quote('0')) . $extraWhere;
 
         $i = 0;
         $pageRecords = $this->sys_page->getMenuForPages($pageIds, '*', $sortingField ?: $sortField . ' DESC', $extraWhere, true, $this->disableGroupAccessCheck);

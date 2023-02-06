@@ -19,45 +19,30 @@ namespace TYPO3\CMS\Core\Database\Driver;
 
 use Doctrine\DBAL\Driver\Middleware\AbstractDriverMiddleware;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MariaDb1027Platform as DoctrineMariaDB1027Platform;
-use Doctrine\DBAL\Platforms\MariaDb1043Platform as DoctrineMariaDB1043Platform;
-use Doctrine\DBAL\Platforms\MariaDb1052Platform as DoctrineMariaDB1052Platform;
+use Doctrine\DBAL\Platforms\MariaDB1052Platform as DoctrineMariaDB1052Platform;
+use Doctrine\DBAL\Platforms\MariaDB1060Platform as DoctrineMariaDB1060Platform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
-use Doctrine\DBAL\Platforms\MySQL57Platform as DoctrineMySQL57Platform;
 use Doctrine\DBAL\Platforms\MySQL80Platform as DoctrineMySQL80Platform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL100Platform as DoctrinePostgreSQL100Platform;
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform as DoctrinePostgreSQL94Platform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
-use TYPO3\CMS\Core\Database\Platform\MariaDB1027Platform;
-use TYPO3\CMS\Core\Database\Platform\MariaDB1043Platform;
-use TYPO3\CMS\Core\Database\Platform\MariaDB1052Platform;
-use TYPO3\CMS\Core\Database\Platform\MariaDBPlatform;
-use TYPO3\CMS\Core\Database\Platform\MySQL57Platform;
-use TYPO3\CMS\Core\Database\Platform\MySQL80Platform;
-use TYPO3\CMS\Core\Database\Platform\MySQLPlatform;
-use TYPO3\CMS\Core\Database\Platform\PostgreSQL100Platform;
-use TYPO3\CMS\Core\Database\Platform\PostgreSQL94Platform;
-use TYPO3\CMS\Core\Database\Platform\PostgreSQLPlatform;
-use TYPO3\CMS\Core\Database\Platform\SQLitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
+use Doctrine\DBAL\ServerVersionProvider;
+use TYPO3\CMS\Core\Database\Platform\MariaDB1052Platform as Typo3MariaDB1052Platform;
+use TYPO3\CMS\Core\Database\Platform\MariaDB1060Platform as Typo3MariaDB1060Platform;
+use TYPO3\CMS\Core\Database\Platform\MariaDBPlatform as Typo3MariaDBPlatform;
+use TYPO3\CMS\Core\Database\Platform\MySQL80Platform as Typo3MySQL80Platform;
+use TYPO3\CMS\Core\Database\Platform\MySQLPlatform as Typo3MySQLPlatform;
+use TYPO3\CMS\Core\Database\Platform\PostgreSQLPlatform as Typo3PostgreSQLPlatform;
+use TYPO3\CMS\Core\Database\Platform\SQLitePlatform as Typo3SQLitePlatform;
 
 /**
  * @internal this implementation is not part of TYPO3's Public API.
  */
 final class CustomPlatformDriverDecorator extends AbstractDriverMiddleware
 {
-    /**
-     * Note: The method signature will change with doctrine/dbal 4.0 getting the database platform passed.
-     */
-    public function getDatabasePlatform(): AbstractPlatform
+    public function getDatabasePlatform(ServerVersionProvider $versionProvider): AbstractPlatform
     {
-        return $this->elevatePlatform(parent::getDatabasePlatform());
-    }
-
-    public function createDatabasePlatformForVersion($version)
-    {
-        return $this->elevatePlatform(parent::createDatabasePlatformForVersion($version));
+        return $this->elevatePlatform(parent::getDatabasePlatform($versionProvider));
     }
 
     /**
@@ -71,18 +56,13 @@ final class CustomPlatformDriverDecorator extends AbstractDriverMiddleware
     private function elevatePlatform(AbstractPlatform $platform): AbstractPlatform
     {
         return match ($platform::class) {
-            DoctrineMySQLPlatform::class => new MySQLPlatform(),
-            DoctrineMySQL80Platform::class => new MySQL80Platform(),
-            DoctrineMariaDBPlatform::class => new MariaDBPlatform(),
-            DoctrineMariaDB1052Platform::class => new MariaDB1052Platform(),
-            DoctrineSQLitePlatform::class  => new SQLitePlatform(),
-            DoctrinePostgreSQLPlatform::class => new PostgreSQLPlatform(),
-            // @todo Remove following platforms with doctrine/dbal 4.0 (except default)
-            DoctrinePostgreSQL94Platform::class => new PostgreSQL94Platform(),
-            DoctrinePostgreSQL100Platform::class => new PostgreSQL100Platform(),
-            DoctrineMySQL57Platform::class => new MySQL57Platform(),
-            DoctrineMariaDB1027Platform::class => new MariaDB1027Platform(),
-            DoctrineMariaDB1043Platform::class => new MariaDB1043Platform(),
+            DoctrineMySQLPlatform::class => new Typo3MySQLPlatform(),
+            DoctrineMySQL80Platform::class => new Typo3MySQL80Platform(),
+            DoctrineMariaDBPlatform::class => new Typo3MariaDBPlatform(),
+            DoctrineMariaDB1052Platform::class => new Typo3MariaDB1052Platform(),
+            DoctrineMariaDB1060Platform::class => new Typo3MariaDB1060Platform(),
+            DoctrineSQLitePlatform::class  => new Typo3SQLitePlatform(),
+            DoctrinePostgreSQLPlatform::class => new Typo3PostgreSQLPlatform(),
             default => $platform,
         };
     }

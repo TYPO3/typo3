@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Database\Schema\TableDiff;
 class MySQL80Platform extends DoctrineMySQL80Platform
 {
     use MySQLCompatibleAlterTablePlatformAwareTrait;
-    use PlatformSaveAlterSchemaSQLTrait;
 
     /**
      * Gets the SQL statements for altering an existing table.
@@ -42,22 +41,6 @@ class MySQL80Platform extends DoctrineMySQL80Platform
      */
     public function getAlterTableSQL(TableDiff|DoctrineTableDiff $diff): array
     {
-        return $this->getCustomAlterTableSQLEngineOptions(
-            platform: $this,
-            tableDiff: $diff,
-            result: parent::getAlterTableSQL(
-                diff: $diff,
-            ),
-        );
-    }
-
-    /**
-     * @internal Only for internal usage. doctrine/dbal deprecated this method on platforms. Usage may be removed at
-     *           any time.
-     * @see https://github.com/doctrine/dbal/issues/4749
-     */
-    public function getName(): string
-    {
-        return 'mysql';
+        return $this->getCustomAlterTableSQLEngineOptions($this, $diff, parent::getAlterTableSQL($diff));
     }
 }

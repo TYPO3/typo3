@@ -181,7 +181,7 @@ class SetupDatabaseService
                     $connectionParams['charset'] = 'utf-8';
                 }
                 $connection = DriverManager::getConnection($connectionParams);
-                if ($connection->getWrappedConnection() !== null) {
+                if ($connection->getNativeConnection() !== null) {
                     $connection->executeQuery($connection->getDatabasePlatform()->getDummySelectSQL());
                     $success = true;
                 }
@@ -226,7 +226,7 @@ class SetupDatabaseService
             $connectionParams['charset'] = 'utf-8';
             try {
                 $connection = DriverManager::getConnection($connectionParams);
-                if ($connection->getWrappedConnection() !== null) {
+                if ($connection->getNativeConnection() !== null) {
                     $connection->executeQuery($connection->getDatabasePlatform()->getDummySelectSQL());
                     return $envCredentials;
                 }
@@ -330,7 +330,7 @@ class SetupDatabaseService
             try {
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-                if ($connection->getWrappedConnection() !== null) {
+                if ($connection->getNativeConnection() !== null) {
                     $connection->executeQuery($connection->getDatabasePlatform()->getDummySelectSQL());
                     $success = true;
                 }
@@ -352,7 +352,7 @@ class SetupDatabaseService
             ->getDatabasePlatform();
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        $connection->exec(
+        $connection->executeStatement(
             PlatformInformation::getDatabaseCreateStatementWithCharset(
                 $platform,
                 $connection->quoteIdentifier($name)
@@ -370,7 +370,7 @@ class SetupDatabaseService
         try {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-            if ($connection->getWrappedConnection() !== null) {
+            if ($connection->getNativeConnection() !== null) {
                 $connection->executeQuery($connection->getDatabasePlatform()->getDummySelectSQL());
                 return true;
             }

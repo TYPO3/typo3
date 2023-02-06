@@ -18,12 +18,16 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Database\Schema;
 
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
+use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\BigIntType;
 use Doctrine\DBAL\Types\TextType;
+use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Schema\SchemaDiff;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
+use TYPO3\CMS\Core\Database\Schema\TableDiff;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SchemaMigratorTest extends FunctionalTestCase
@@ -69,7 +73,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
      */
     private function getTableDetails(): Table
     {
-        return $this->schemaManager->listTableDetails('a_test_table');
+        return $this->schemaManager->introspectTable('a_test_table');
     }
 
     /**
@@ -80,7 +84,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         $subject = $this->get(SchemaMigrator::class);
         $statements = $this->sqlReader->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newTable.sql'));
         $updateSuggestions = $subject->getUpdateSuggestions($statements);
-        $subject->migrate(
+        $result = $subject->migrate(
             $statements,
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table']
         );
@@ -214,14 +218,35 @@ final class SchemaMigratorTest extends FunctionalTestCase
         $subject = $this->get(SchemaMigrator::class);
         $this->prepareTestTable($subject);
         $connection = $this->connectionPool->getConnectionForTable('a_test_table');
-        $fromSchema = $this->schemaManager->createSchema();
-        $toSchema = clone $fromSchema;
-        $toSchema->getTable('a_test_table')->addColumn('zzz_deleted_testfield', 'integer', ['notnull' => false]);
-        $statements = $fromSchema->getMigrateToSql(
-            $toSchema,
-            $connection->getDatabasePlatform()
+        $fromSchema = $this->schemaManager->introspectSchema();
+        $tableDiff = new TableDiff(
+            oldTable: $fromSchema->getTable('a_test_table'),
+            addedColumns: ['zzz_deleted_testfield' => new Column('zzz_deleted_testfield', Type::getType('integer'), ['notnull' => false])],
+            modifiedColumns: [],
+            droppedColumns: [],
+            renamedColumns: [],
+            addedIndexes: [],
+            modifiedIndexes: [],
+            droppedIndexes: [],
+            renamedIndexes: [],
+            addedForeignKeys: [],
+            modifiedForeignKeys: [],
+            droppedForeignKeys: [],
+            tableOptions: [],
         );
-        $connection->executeStatement($statements[0]);
+        $schemaDiff = new SchemaDiff(
+            createdSchemas: [],
+            droppedSchemas: [],
+            createdTables: [],
+            alteredTables: ['a_test_table' => $tableDiff],
+            droppedTables: [],
+            createdSequences: [],
+            alteredSequences: [],
+            droppedSequences: [],
+        );
+        foreach ($connection->getDatabasePlatform()->getAlterSchemaSQL($schemaDiff) as $statement) {
+            $connection->executeStatement($statement);
+        }
         self::assertTrue($this->getTableDetails()->hasColumn('zzz_deleted_testfield'));
         $statements = $this->sqlReader->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newTable.sql'));
         $updateSuggestions = $subject->getUpdateSuggestions($statements, true);
@@ -292,7 +317,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         $this->prepareTestTable($subject);
         $statements = $this->sqlReader->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/changeExistingIndex.sql'));
         $updateSuggestions = $subject->getUpdateSuggestions($statements);
-        $subject->migrate(
+        $result = $subject->migrate(
             $statements,
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']
         );

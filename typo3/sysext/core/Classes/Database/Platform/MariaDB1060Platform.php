@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Platform;
 
-use Doctrine\DBAL\Platforms\MariaDb1043Platform as DoctrineMariaDB1043Platform;
+use Doctrine\DBAL\Platforms\MariaDB1060Platform as DoctrineMariaDB1060Platform;
 use Doctrine\DBAL\Schema\TableDiff as DoctrineTableDiff;
 use TYPO3\CMS\Core\Database\Schema\TableDiff;
 
@@ -27,13 +27,10 @@ use TYPO3\CMS\Core\Database\Schema\TableDiff;
  * extend the platform classes to provide some changes for TYPO3 database schema operations.
  *
  * @internal not part of Public Core API.
- * @todo `doctrine/dbal:4.0` will replace MariaDBPlatform with the MariaDB1043Platform and drop the concrete class due
- *        to raised supported minimum MariaDB version. Remove this extended class with `doctrine/dbal:4.0` upgrade.
  */
-class MariaDB1043Platform extends DoctrineMariaDB1043Platform
+class MariaDB1060Platform extends DoctrineMariaDB1060Platform
 {
     use MySQLCompatibleAlterTablePlatformAwareTrait;
-    use PlatformSaveAlterSchemaSQLTrait;
 
     /**
      * Gets the SQL statements for altering an existing table.
@@ -44,22 +41,6 @@ class MariaDB1043Platform extends DoctrineMariaDB1043Platform
      */
     public function getAlterTableSQL(TableDiff|DoctrineTableDiff $diff): array
     {
-        return $this->getCustomAlterTableSQLEngineOptions(
-            platform: $this,
-            tableDiff: $diff,
-            result: parent::getAlterTableSQL(
-                diff: $diff,
-            ),
-        );
-    }
-
-    /**
-     * @internal Only for internal usage. doctrine/dbal deprecated this method on platforms. Usage may be removed at
-     *           any time. doctrine/dbal v3 reported mysql for MariaDB, we keep that for now.
-     * @see https://github.com/doctrine/dbal/issues/4749
-     */
-    public function getName(): string
-    {
-        return 'mysql';
+        return $this->getCustomAlterTableSQLEngineOptions($this, $diff, parent::getAlterTableSQL($diff));
     }
 }

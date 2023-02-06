@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Lowlevel\Tests\Functional\Controller;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Database\Platform\PlatformHelper;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -373,6 +374,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
             $iconFactoryMock,
             GeneralUtility::makeInstance(UriBuilder::class),
             GeneralUtility::makeInstance(ModuleTemplateFactory::class),
+            GeneralUtility::makeInstance(PlatformHelper::class),
         ]);
         $subject->_call('init', 'queryConfig', $settings['queryTable']);
         $subject->_call('makeSelectorTable', $settings, $request);

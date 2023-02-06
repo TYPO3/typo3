@@ -238,7 +238,6 @@ final class TableBuilderTest extends UnitTestCase
         self::assertInstanceOf(ForeignKeyConstraint::class, $subject);
         self::assertSame(['`pid`'], $subject->getForeignColumns());
         self::assertSame(['`uid`'], $subject->getLocalColumns());
-        self::assertSame('aTestTable', $subject->getLocalTableName());
         self::assertSame('any_foreign_table', $subject->getForeignTableName());
     }
 

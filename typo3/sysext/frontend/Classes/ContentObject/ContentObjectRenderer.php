@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Query\From;
+use Doctrine\DBAL\Query\Join;
 use Doctrine\DBAL\Result;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -4945,31 +4947,33 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $fromClauses = [];
         $knownAliases = [];
         $queryParts = [];
+        $fromParts = $queryBuilder->getFrom();
+        $joinParts = $queryBuilder->getJoin();
 
         // Loop through all FROM clauses
-        foreach ($queryBuilder->getQueryPart('from') as $from) {
-            if ($from['alias'] === null) {
-                $tableSql = $from['table'];
-                $tableReference = $from['table'];
+        foreach ($fromParts as $from) {
+            if ($from->alias === null) {
+                $tableSql = $from->table;
+                $tableReference = $from->table;
             } else {
-                $tableSql = $from['table'] . ' ' . $from['alias'];
-                $tableReference = $from['alias'];
+                $tableSql = $from->table . ' ' . $from->alias;
+                $tableReference = $from->alias;
             }
 
             $knownAliases[$tableReference] = true;
 
             $fromClauses[$tableReference] = $tableSql . $this->getQueryArrayJoinHelper(
                 $tableReference,
-                $queryBuilder->getQueryPart('join'),
+                $joinParts,
                 $knownAliases
             );
         }
 
-        $queryParts['SELECT'] = implode(', ', $queryBuilder->getQueryPart('select'));
+        $queryParts['SELECT'] = implode(', ', $queryBuilder->getSelect());
         $queryParts['FROM'] = implode(', ', $fromClauses);
-        $queryParts['WHERE'] = (string)$queryBuilder->getQueryPart('where') ?: '';
-        $queryParts['GROUPBY'] = implode(', ', $queryBuilder->getQueryPart('groupBy'));
-        $queryParts['ORDERBY'] = implode(', ', $queryBuilder->getQueryPart('orderBy'));
+        $queryParts['WHERE'] = (string)$queryBuilder->getWhere() ?: '';
+        $queryParts['GROUPBY'] = implode(', ', $queryBuilder->getGroupBy());
+        $queryParts['ORDERBY'] = implode(', ', $queryBuilder->getOrderBy());
         if ($queryBuilder->getFirstResult() > 0) {
             $queryParts['LIMIT'] = $queryBuilder->getFirstResult() . ',' . $queryBuilder->getMaxResults();
         } elseif ($queryBuilder->getMaxResults() > 0) {
@@ -4982,28 +4986,32 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Helper to transform the QueryBuilder join part into a SQL fragment.
      *
+     * @param array<string, Join[]> $joinParts
+     * @param array<string, bool>   $knownAliases
+     *
      * @throws \RuntimeException
      */
     protected function getQueryArrayJoinHelper(string $fromAlias, array $joinParts, array &$knownAliases): string
     {
         $sql = '';
 
-        if (isset($joinParts['join'][$fromAlias])) {
-            foreach ($joinParts['join'][$fromAlias] as $join) {
-                if (array_key_exists($join['joinAlias'], $knownAliases)) {
+        if (isset($joinParts[$fromAlias])) {
+            foreach ($joinParts[$fromAlias] as $join) {
+                /** @var Join $join */
+                if (array_key_exists($join->alias, $knownAliases)) {
                     throw new \RuntimeException(
-                        'Non unique join alias: "' . $join['joinAlias'] . '" found.',
+                        'Non unique join alias: "' . $join->alias . '" found.',
                         1472748872
                     );
                 }
-                $sql .= ' ' . strtoupper($join['joinType'])
-                    . ' JOIN ' . $join['joinTable'] . ' ' . $join['joinAlias']
-                    . ' ON ' . ((string)$join['joinCondition']);
-                $knownAliases[$join['joinAlias']] = true;
+                $sql .= ' ' . strtoupper($join->type)
+                    . ' JOIN ' . $join->table . ' ' . $join->alias
+                    . ' ON ' . ((string)$join->condition);
+                $knownAliases[$join->alias] = true;
             }
 
-            foreach ($joinParts['join'][$fromAlias] as $join) {
-                $sql .= $this->getQueryArrayJoinHelper($join['joinAlias'], $joinParts, $knownAliases);
+            foreach ($joinParts[$fromAlias] as $join) {
+                $sql .= $this->getQueryArrayJoinHelper($join->alias, $joinParts, $knownAliases);
             }
         }
 

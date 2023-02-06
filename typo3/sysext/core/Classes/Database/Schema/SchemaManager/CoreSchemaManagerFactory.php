@@ -19,8 +19,10 @@ namespace TYPO3\CMS\Core\Database\Schema\SchemaManager;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform as DoctrineAbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\SchemaManagerFactory;
 
@@ -49,12 +51,13 @@ final class CoreSchemaManagerFactory implements SchemaManagerFactory
         //
         // @link https://github.com/doctrine/dbal/blob/3.7.x/UPGRADE.md#deprecated-not-setting-a-schema-manager-factory
         // @link https://github.com/doctrine/dbal/blob/3.7.x/UPGRADE.md#deprecated-extension-via-doctrine-event-manager
+        // @todo Consider make check on SchemaManager instance retrieved from $platform->createSchemaManager()
         return match (true) {
             $platform instanceof DoctrineSQLitePlatform => new SQLiteSchemaManager($connection, $platform),
-            // AbstractMySQLPlatform covers the MySQL and MariaDB branch with doctrine/dbal 4.0+ and now. There is no
-            // MariaDBSchemaManager in doctrine, both are using the same one. TYPO3 aligns here to doctrine/dbal.
-            $platform instanceof DoctrineAbstractMySQLPlatform => new MySQLSchemaManager($connection, $platform),
             $platform instanceof DoctrinePostgreSQLPlatform => new PostgreSQLSchemaManager($connection, $platform),
+            $platform instanceof DoctrineMariaDBPlatform,
+            $platform instanceof DoctrineMySQLPlatform,
+            $platform instanceof DoctrineAbstractMySQLPlatform => new MySQLSchemaManager($connection, $platform),
             default => $platform->createSchemaManager($connection),
         };
     }

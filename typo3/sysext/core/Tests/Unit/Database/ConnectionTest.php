@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver\AbstractMySQLDriver;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Result;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
@@ -34,31 +32,27 @@ final class ConnectionTest extends UnitTestCase
 {
     protected Connection&MockObject $connection;
 
-    protected ?AbstractPlatform $platform;
-    protected string $testTable = 'testTable';
-
     /**
      * Create a new database connection mock object for every test.
      */
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->connection = $this->getMockBuilder(Connection::class)
             ->onlyMethods(
                 [
                     'connect',
                     'ensureDatabaseValueTypes',
                     'executeQuery',
-                    'executeUpdate',
                     'executeStatement',
                     'getDatabasePlatform',
                     'getDriver',
                     'getExpressionBuilder',
-                    'getWrappedConnection',
+                    'getNativeConnection',
+                    'getServerVersion',
                 ]
             )
-            ->setConstructorArgs([['platform' => $this->createMock(MySQLPlatform::class)], $this->createMock(AbstractMySQLDriver::class), new Configuration(), null])
+            ->setConstructorArgs([[], $this->createMock(AbstractMySQLDriver::class), new Configuration(), null])
             ->getMock();
 
         $this->connection
@@ -464,12 +458,9 @@ final class ConnectionTest extends UnitTestCase
      */
     public function getServerVersionReportsServerVersionOnly(): void
     {
-        $wrappedConnectionMock = $this->createMock(Connection::class);
-        $wrappedConnectionMock->method('getServerVersion')->willReturn('5.7.11');
-
         $this->connection
-            ->method('getWrappedConnection')
-            ->willReturn($wrappedConnectionMock);
+            ->method('getServerVersion')
+            ->willReturn('5.7.11');
 
         self::assertSame('5.7.11', $this->connection->getServerVersion());
     }
@@ -479,12 +470,9 @@ final class ConnectionTest extends UnitTestCase
      */
     public function getPlatformServerVersionReportsPlatformVersion(): void
     {
-        $wrappedConnectionMock = $this->createMock(Connection::class);
-        $wrappedConnectionMock->method('getServerVersion')->willReturn('5.7.11');
-
         $this->connection
-            ->method('getWrappedConnection')
-            ->willReturn($wrappedConnectionMock);
+            ->method('getServerVersion')
+            ->willReturn('5.7.11');
 
         self::assertSame('Mock 5.7.11', $this->connection->getPlatformServerVersion());
     }

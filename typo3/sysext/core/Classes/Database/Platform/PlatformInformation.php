@@ -22,7 +22,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform as DoctrineAbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 
 /**
  * Helper to handle platform specific details
@@ -31,19 +31,13 @@ use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
  */
 class PlatformInformation
 {
-    /**
-     * @var array
-     */
-    protected static $identifierLimits = [
+    protected static array $identifierLimits = [
         'mysql' => 63,
         'postgresql' => 63,
         'sqlite' => 1024, // arbitrary limit, SQLite is only limited by the total statement length
     ];
 
-    /**
-     * @var array
-     */
-    protected static $bindParameterLimits = [
+    protected static array $bindParameterLimits = [
         'mysql' => 65535,
         'postgresql' => 34464,
         'sqlite' => 999,
@@ -52,7 +46,7 @@ class PlatformInformation
     /**
      * @var string[]
      */
-    protected static $charSetMap = [
+    protected static array $charSetMap = [
         'mysql' => 'utf8mb4',
         'postgresql' => 'UTF8',
         'sqlite' => 'utf8',
@@ -61,7 +55,7 @@ class PlatformInformation
     /**
      * @var string[]
      */
-    protected static $databaseCreateWithCharsetMap = [
+    protected static array $databaseCreateWithCharsetMap = [
         'mysql' => 'CHARACTER SET %s',
         'postgresql' => "ENCODING '%s'",
     ];
@@ -72,7 +66,6 @@ class PlatformInformation
     public static function getCharset(DoctrineAbstractPlatform $platform): string
     {
         $platformName = static::getPlatformIdentifier($platform);
-
         return static::$charSetMap[$platformName];
     }
 
@@ -102,7 +95,6 @@ class PlatformInformation
     public static function getMaxIdentifierLength(DoctrineAbstractPlatform $platform): int
     {
         $platformName = static::getPlatformIdentifier($platform);
-
         return self::$identifierLimits[$platformName];
     }
 
@@ -114,7 +106,6 @@ class PlatformInformation
     public static function getMaxBindParameters(DoctrineAbstractPlatform $platform): int
     {
         $platformName = static::getPlatformIdentifier($platform);
-
         return self::$bindParameterLimits[$platformName];
     }
 
@@ -126,9 +117,9 @@ class PlatformInformation
      */
     protected static function getPlatformIdentifier(DoctrineAbstractPlatform $platform): string
     {
-        // doctrine/dbal 4.0 MariaDBPlatform extends AbstractMySQLPlatform instead of MySQLPlatform. We return the
-        // 'mysql' for the meanwhile.
-        // @todo Change this to 'mariadb' after usage have been verified and properly addressed.
+        // @todo: In doctrine/dbal 3 MariaDBPlatform extended from MySQLPlatform, since doctrine/dbal 4+ from
+        //        AbstractMySQLPlatform. Consider to returning directly 'mariadb' here if consuming code is
+        //        prepared for the change.
         if ($platform instanceof DoctrineMariaDBPlatform) {
             return 'mysql';
         }
@@ -138,7 +129,7 @@ class PlatformInformation
         if ($platform instanceof DoctrinePostgreSqlPlatform) {
             return 'postgresql';
         }
-        if ($platform instanceof DoctrineSQlitePlatform) {
+        if ($platform instanceof DoctrineSQLitePlatform) {
             return 'sqlite';
         }
         throw new \RuntimeException(

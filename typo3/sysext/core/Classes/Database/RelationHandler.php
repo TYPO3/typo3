@@ -595,7 +595,7 @@ class RelationHandler
             }
             // Select, update or delete only those relations that match the configured fields
             foreach ($this->MM_match_fields as $field => $value) {
-                $additionalWhere = $additionalWhere->with($expressionBuilder->eq($field, $expressionBuilder->literal($value)));
+                $additionalWhere = $additionalWhere->with($expressionBuilder->eq($field, $expressionBuilder->literal((string)$value)));
             }
 
             $queryBuilder = $connection->createQueryBuilder();
@@ -874,9 +874,8 @@ class RelationHandler
             if (!empty($conf['symmetric_sortby']) && !empty($conf['symmetric_field'])) {
                 // Sorting depends on, from which side of the relation we're looking at it
                 // This requires bypassing automatic quoting and setting of the default sort direction
-                // @TODO: Doctrine: generalize to standard SQL to guarantee database independency
-                $queryBuilder->add(
-                    'orderBy',
+                // @todo Doctrine - generalize to standard SQL to guarantee database independence
+                $queryBuilder->getConcreteQueryBuilder()->orderBy(
                     'CASE
 						WHEN ' . $queryBuilder->expr()->eq($conf['foreign_field'], $uid) . '
 						THEN ' . $queryBuilder->quoteIdentifier($conf['foreign_sortby']) . '
@@ -912,8 +911,7 @@ class RelationHandler
             $rows[(int)$row['uid']] = $row;
         }
         if (!empty($rows)) {
-            // Retrieve the parsed and prepared ORDER BY configuration for the resolver
-            $sortby = $queryBuilder->getQueryPart('orderBy');
+            $sortby = $queryBuilder->getOrderBy();
             $ids = $this->getResolver($foreign_table, array_keys($rows), $sortby)->get();
             foreach ($ids as $id) {
                 $this->itemArray[$key]['id'] = $id;

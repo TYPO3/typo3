@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
@@ -59,8 +58,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         // 1-4: language constraint, pid constraint, workspace constraint, enable fields constraint.
         self::assertCount(4, $compositeExpression);
     }
@@ -107,8 +105,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         // 1-4: language constraint, pid constraint, workspace constraint, enable fields constraint.
         // 5: custom constraint uid = 1
         self::assertCount(5, $compositeExpression);
@@ -132,8 +129,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         // 1-4: language constraint, pid constraint, workspace constraint, enable fields constraint.
         // 5: custom constraint NOT(uid = 1)
         self::assertCount(5, $compositeExpression);
@@ -161,11 +157,10 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
-        // 1-4: language constraint, pid constraint, workspace constraint, enable fields constraint.
-        // 5: custom AND constraint title = 'Heinz' AND description = 'Heinz'
-        self::assertCount(5, $compositeExpression);
+        $compositeExpression = $queryBuilder->getWhere();
+        // 1-2: custom AND constraint title = 'Heinz' AND description = 'Heinz'
+        // 3-6: language constraint, pid constraint, workspace constraint, enable fields constraint.
+        self::assertCount(6, $compositeExpression);
         self::assertMatchesRegularExpression('/title.* AND .*description/', (string)$compositeExpression);
     }
 
@@ -190,8 +185,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         // 1-4: language constraint, pid constraint, workspace constraint, enable fields constraint.
         // 5: custom AND constraint title = 'Heinz' OR description = 'Heinz'
         self::assertCount(5, $compositeExpression);
@@ -214,8 +208,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertMatchesRegularExpression('/sys_language_uid. IN \(0, -1\)/', (string)$compositeExpression);
     }
 
@@ -240,8 +233,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertMatchesRegularExpression('/sys_language_uid. IN \(1, -1\)/', (string)$compositeExpression);
     }
 
@@ -262,8 +254,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertMatchesRegularExpression('/sys_language_uid. IN \(1, -1\)/', (string)$compositeExpression);
     }
 
@@ -285,8 +276,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertMatchesRegularExpression('/l18n_parent. IN \(SELECT/', (string)$compositeExpression);
         self::assertStringNotContainsString('deleted', (string)$compositeExpression);
     }
@@ -312,8 +302,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertMatchesRegularExpression('/l18n_parent. IN \(SELECT/', (string)$compositeExpression);
         self::assertStringContainsString('deleted', (string)$compositeExpression);
     }
@@ -336,8 +325,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertMatchesRegularExpression('/l18n_parent. IN \(SELECT/', (string)$compositeExpression);
         self::assertStringContainsString('deleted', (string)$compositeExpression);
     }
@@ -364,7 +352,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        $orderBy = $queryBuilder->getQueryPart('orderBy');
+        $orderBy = $queryBuilder->getOrderBy();
         self::assertMatchesRegularExpression('/title. DESC/', $orderBy[0]);
     }
 
@@ -418,7 +406,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        $orderBy = $queryBuilder->getQueryPart('orderBy');
+        $orderBy = $queryBuilder->getOrderBy();
         self::assertMatchesRegularExpression('/title. DESC/', $orderBy[0]);
         self::assertMatchesRegularExpression('/description. ASC/', $orderBy[1]);
     }
@@ -442,8 +430,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertStringNotContainsString('hidden', (string)$compositeExpression);
         self::assertStringNotContainsString('deleted', (string)$compositeExpression);
     }
@@ -467,8 +454,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertStringNotContainsString('hidden', (string)$compositeExpression);
         self::assertStringContainsString('deleted', (string)$compositeExpression);
     }
@@ -491,8 +477,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertStringContainsString('hidden', (string)$compositeExpression);
         self::assertStringNotContainsString('deleted', (string)$compositeExpression);
     }
@@ -515,8 +500,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertStringContainsString('hidden', (string)$compositeExpression);
         self::assertStringContainsString('deleted', (string)$compositeExpression);
     }
@@ -542,8 +526,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertStringNotContainsString('hidden', (string)$compositeExpression);
         self::assertStringNotContainsString('deleted', (string)$compositeExpression);
     }
@@ -569,8 +552,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertStringNotContainsString('hidden', (string)$compositeExpression);
         self::assertStringContainsString('deleted', (string)$compositeExpression);
     }
@@ -597,8 +579,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertStringNotContainsString('fe_group', (string)$compositeExpression);
         self::assertStringContainsString('hidden', (string)$compositeExpression);
         self::assertStringContainsString('deleted', (string)$compositeExpression);
@@ -625,8 +606,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertStringContainsString('fe_group', (string)$compositeExpression);
         self::assertStringContainsString('hidden', (string)$compositeExpression);
         self::assertStringContainsString('deleted', (string)$compositeExpression);
@@ -656,8 +636,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertMatchesRegularExpression('/endtime_column. = 0\) OR \(.*endtime_column. > 1451779200/', (string)$compositeExpression);
     }
 
@@ -683,8 +662,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertMatchesRegularExpression('/endtime_column. = 0\) OR \(.*endtime_column. > 1451779200/', (string)$compositeExpression);
     }
 
@@ -772,8 +750,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
 
-        /** @var CompositeExpression $compositeExpression */
-        $compositeExpression = $queryBuilder->getQueryPart('where');
+        $compositeExpression = $queryBuilder->getWhere();
         self::assertMatchesRegularExpression($expectedSql, (string)$compositeExpression);
     }
 }

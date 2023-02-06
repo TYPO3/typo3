@@ -22,33 +22,44 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaConfig;
-use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Schema\UniqueConstraint;
+use Doctrine\DBAL\Types\BigIntType;
 use Doctrine\DBAL\Types\BinaryType;
+use Doctrine\DBAL\Types\IntegerType;
+use Doctrine\DBAL\Types\SmallIntType;
 use Doctrine\DBAL\Types\StringType;
 use TYPO3\CMS\Core\Database\Connection as Typo3Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
+use TYPO3\CMS\Core\Database\Schema\ColumnDiff as Typo3ColumnDiff;
+use TYPO3\CMS\Core\Database\Schema\SchemaDiff as Typo3SchemaDiff;
+use TYPO3\CMS\Core\Database\Schema\TableDiff as Typo3TableDiff;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Handling schema migrations per connection.
  *
  * @internal not part of public core API.
+ *
+ * @todo The whole ConnectionMigrator and comparison stack needs a refactoring. Specially, the normalization steps
+ *       needs to be centralized and reworked to a more workable solution. Additionally, the reporting states are
+ *       eligible for a refactoring to a more suitable solution to group into safe and unsafe operations along with
+ *       database value normalization for column alterations. Further, operating on the properties for the diff classes
+ *       is also suboptimal and should be refactored with care. For example, the `normalize*` methods should be reworked.
  */
 class ConnectionMigrator
 {
     /**
      * @var string Prefix of deleted tables
      */
-    protected $deletedPrefix = 'zzz_deleted_';
+    protected string $deletedPrefix = 'zzz_deleted_';
 
     /**
      * @param Table[] $tables
@@ -56,16 +67,15 @@ class ConnectionMigrator
     public function __construct(
         private readonly string $connectionName,
         private readonly Typo3Connection $connection,
-        private array $tables,
+        private readonly array $tables,
     ) {}
 
     /**
-     * @param non-empty-string  $connectionName
-     * @param Typo3Connection   $connection
-     * @param Table[]           $tables
-     * @return ConnectionMigrator
+     * @param non-empty-string $connectionName
+     * @param Typo3Connection $connection
+     * @param Table[] $tables
      */
-    public static function create(string $connectionName, Typo3Connection $connection, array $tables)
+    public static function create(string $connectionName, Typo3Connection $connection, array $tables): self
     {
         return GeneralUtility::makeInstance(
             static::class,
@@ -79,7 +89,7 @@ class ConnectionMigrator
      * Return the raw Doctrine SchemaDiff object for the current connection.
      * This diff contains all changes without any pre-processing.
      */
-    public function getSchemaDiff(): SchemaDiff
+    public function getSchemaDiff(): Typo3SchemaDiff
     {
         return $this->buildSchemaDiff(false);
     }
@@ -91,7 +101,6 @@ class ConnectionMigrator
     public function getUpdateSuggestions(bool $remove = false): array
     {
         $schemaDiff = $this->buildSchemaDiff();
-
         if ($remove === false) {
             return array_merge_recursive(
                 ['add' => [], 'create_table' => [], 'change' => [], 'change_currentValue' => []],
@@ -111,19 +120,17 @@ class ConnectionMigrator
     }
 
     /**
-     * Perform add/change/create operations on tables and fields in an
-     * optimized, non-interactive, mode using the original doctrine
-     * PlatformSaveAlterSchemaSQLTrait->getSaveAlterSchemaSQL() method.
+     * Perform add/change/create operations on tables and fields in an optimized, non-interactive, mode.
      */
     public function install(bool $createOnly = false): array
     {
         $result = [];
         $schemaDiff = $this->buildSchemaDiff(false);
 
-        $schemaDiff->removedTables = [];
-        foreach ($schemaDiff->changedTables as $key => $changedTable) {
-            $schemaDiff->changedTables[$key]->removedColumns = [];
-            $schemaDiff->changedTables[$key]->removedIndexes = [];
+        $schemaDiff->droppedTables = [];
+        foreach ($schemaDiff->alteredTables as $key => $changedTable) {
+            $schemaDiff->alteredTables[$key]->droppedColumns = [];
+            $schemaDiff->alteredTables[$key]->droppedIndexes = [];
 
             // With partial ext_tables.sql files the SchemaManager is detecting
             // existing columns as false positives for a column rename. In this
@@ -149,22 +156,18 @@ class ConnectionMigrator
                         },
                         $addedIndex->getColumns()
                     );
-                    $columnChanges = array_intersect($indexColumns, array_keys($changedTable->changedColumns));
+                    $columnChanges = array_intersect($indexColumns, array_keys($changedTable->modifiedColumns));
                     if (!empty($columnChanges)) {
-                        unset($schemaDiff->changedTables[$key]->addedIndexes[$indexName]);
+                        unset($schemaDiff->alteredTables[$key]->addedIndexes[$indexName]);
                     }
                 }
-                $schemaDiff->changedTables[$key]->changedColumns = [];
-                $schemaDiff->changedTables[$key]->changedIndexes = [];
-                $schemaDiff->changedTables[$key]->renamedIndexes = [];
+                $schemaDiff->alteredTables[$key]->modifiedColumns = [];
+                $schemaDiff->alteredTables[$key]->modifiedIndexes = [];
+                $schemaDiff->alteredTables[$key]->renamedIndexes = [];
             }
         }
 
-        $databasePlatform = $this->connection->getDatabasePlatform();
-        $statements = method_exists($databasePlatform, 'getSaveAlterSchemaSQL')
-            ? $databasePlatform->getSaveAlterSchemaSQL($schemaDiff)
-            : $databasePlatform->getAlterSchemaSQL($schemaDiff);
-
+        $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($schemaDiff);
         foreach ($statements as $statement) {
             try {
                 $this->connection->executeStatement($statement);
@@ -186,7 +189,7 @@ class ConnectionMigrator
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
-    protected function buildSchemaDiff(bool $renameUnused = true): SchemaDiff
+    protected function buildSchemaDiff(bool $renameUnused = true): Typo3SchemaDiff
     {
         // Unmapped tables in a non-default connection are ignored by TYPO3
         $tablesForConnection = [];
@@ -194,7 +197,24 @@ class ConnectionMigrator
             // If there are no mapped tables return a SchemaDiff without any changes
             // to avoid update suggestions for tables not related to TYPO3.
             if (empty($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'] ?? null)) {
-                return new SchemaDiff();
+                return new SchemaDiff(
+                    // createdSchemas
+                    [],
+                    // droppedSchemas
+                    [],
+                    // createdTables
+                    [],
+                    // alteredTables
+                    [],
+                    // droppedTables:
+                    [],
+                    // createdSequences
+                    [],
+                    // alteredSequences
+                    [],
+                    // droppedSequences
+                    [],
+                );
             }
 
             // Collect the table names that have been mapped to this connection.
@@ -218,11 +238,11 @@ class ConnectionMigrator
         }
 
         // Build the schema definitions
-        $fromSchema = $this->connection->createSchemaManager()->createSchema();
+        $fromSchema = $this->connection->createSchemaManager()->introspectSchema();
         $toSchema = $this->buildExpectedSchemaDefinitions($this->connectionName);
 
         // Add current table options to the fromSchema
-        $tableOptions = $this->getTableOptions($fromSchema->getTableNames());
+        $tableOptions = $this->getTableOptions($this->getSchemaTableNames($fromSchema));
         foreach ($fromSchema->getTables() as $table) {
             $tableName = $table->getName();
             if (!array_key_exists($tableName, $tableOptions)) {
@@ -236,6 +256,9 @@ class ConnectionMigrator
         // Build SchemaDiff and handle renames of tables and columns
         $comparator = GeneralUtility::makeInstance(Comparator::class, $this->connection->getDatabasePlatform());
         $schemaDiff = $comparator->compareSchemas($fromSchema, $toSchema);
+        if (! $schemaDiff instanceof Typo3SchemaDiff) {
+            $schemaDiff = Typo3SchemaDiff::ensure($schemaDiff);
+        }
         $schemaDiff = $this->migrateColumnRenamesToDistinctActions($schemaDiff);
 
         if ($renameUnused) {
@@ -249,9 +272,9 @@ class ConnectionMigrator
         }
 
         // Remove all tables that are not assigned to this connection from the diff
-        $schemaDiff->newTables = $this->removeUnrelatedTables($schemaDiff->newTables, $tablesForConnection);
-        $schemaDiff->changedTables = $this->removeUnrelatedTables($schemaDiff->changedTables, $tablesForConnection);
-        $schemaDiff->removedTables = $this->removeUnrelatedTables($schemaDiff->removedTables, $tablesForConnection);
+        $schemaDiff->createdTables = $this->removeUnrelatedTables($schemaDiff->createdTables, $tablesForConnection);
+        $schemaDiff->alteredTables = $this->removeUnrelatedTables($schemaDiff->alteredTables, $tablesForConnection);
+        $schemaDiff->droppedTables = $this->removeUnrelatedTables($schemaDiff->droppedTables, $tablesForConnection);
 
         return $schemaDiff;
     }
@@ -310,14 +333,26 @@ class ConnectionMigrator
      *
      * @throws \InvalidArgumentException
      */
-    protected function getNewTableUpdateSuggestions(SchemaDiff $schemaDiff): array
+    protected function getNewTableUpdateSuggestions(Typo3SchemaDiff $schemaDiff): array
     {
         // Build a new schema diff that only contains added tables
-        $addTableSchemaDiff = new SchemaDiff(
-            $schemaDiff->newTables,
+        $addTableSchemaDiff = new Typo3SchemaDiff(
+            // createdSchemas
             [],
+            // droppedSchemas
             [],
-            $schemaDiff->fromSchema
+            // createdTables
+            $schemaDiff->getCreatedTables(),
+            // alteredTables
+            [],
+            // droppedTables
+            [],
+            // createdSequences
+            [],
+            // alteredSequences
+            [],
+            // droppedSequences
+            [],
         );
 
         $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($addTableSchemaDiff);
@@ -332,26 +367,40 @@ class ConnectionMigrator
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
-    protected function getNewFieldUpdateSuggestions(SchemaDiff $schemaDiff): array
+    protected function getNewFieldUpdateSuggestions(Typo3SchemaDiff $schemaDiff): array
     {
         $changedTables = [];
 
-        foreach ($schemaDiff->changedTables as $index => $changedTable) {
-            $fromTable = $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name));
-
+        foreach ($schemaDiff->alteredTables as $index => $changedTable) {
             if (count($changedTable->addedColumns) !== 0) {
                 // Treat each added column with a new diff to get a dedicated suggestions
                 // just for this single column.
                 foreach ($changedTable->addedColumns as $columnName => $addedColumn) {
-                    $changedTables[$index . ':tbl_' . $addedColumn->getName()] = new TableDiff(
-                        $changedTable->name,
+                    $changedTables[$index . ':tbl_' . $columnName] = new Typo3TableDiff(
+                        // oldTable
+                        $this->buildQuotedTable($changedTable->getOldTable()),
+                        // addedColumns
                         [$columnName => $addedColumn],
+                        // modifiedColumns
                         [],
+                        // droppedColumns
                         [],
+                        // renamedColumns
                         [],
+                        // addedIndexes
                         [],
+                        // modifiedIndexes
                         [],
-                        $fromTable
+                        // droppedIndexes
+                        [],
+                        // renamedIndexes
+                        [],
+                        // addedForeignKeys
+                        [],
+                        // modifiedForeignKeys
+                        [],
+                        // droppedForeignKeys
+                        [],
                     );
                 }
             }
@@ -360,15 +409,31 @@ class ConnectionMigrator
                 // Treat each added index with a new diff to get a dedicated suggestions
                 // just for this index.
                 foreach ($changedTable->addedIndexes as $indexName => $addedIndex) {
-                    $changedTables[$index . ':idx_' . $addedIndex->getName()] = new TableDiff(
-                        $changedTable->name,
+                    $changedTables[$index . ':idx_' . $indexName] = new Typo3TableDiff(
+                        // oldTable
+                        $this->buildQuotedTable($changedTable->getOldTable()),
+                        // addedColumns
                         [],
+                        // modifiedColumns
                         [],
+                        // droppedColumns
                         [],
+                        // renamedColumns
+                        [],
+                        // addedIndexes
                         [$indexName => $this->buildQuotedIndex($addedIndex)],
+                        // modifiedIndexes
                         [],
+                        // droppedIndexes
                         [],
-                        $fromTable
+                        // renamedIndexes
+                        [],
+                        // addedForeignKeys
+                        [],
+                        // modifiedForeignKeys
+                        [],
+                        // droppedForeignKeys
+                        [],
                     );
                 }
             }
@@ -378,27 +443,54 @@ class ConnectionMigrator
                 // just for this foreign key.
                 foreach ($changedTable->addedForeignKeys as $addedForeignKey) {
                     $fkIndex = $index . ':fk_' . $addedForeignKey->getName();
-                    $changedTables[$fkIndex] = new TableDiff(
-                        $changedTable->name,
+                    $changedTables[$fkIndex] = new Typo3TableDiff(
+                        // oldTable
+                        $this->buildQuotedTable($changedTable->getOldTable()),
+                        // addedColumns
                         [],
+                        // modifiedColumns
                         [],
+                        // droppedColumns
                         [],
+                        // renamedColumns
                         [],
+                        // addedIndexes
                         [],
+                        // modifiedIndexes
                         [],
-                        $fromTable
+                        // droppedIndexes
+                        [],
+                        // renamedIndexes
+                        [],
+                        // addedForeignKeys
+                        [$this->buildQuotedForeignKey($addedForeignKey)],
+                        // modifiedForeignKeys
+                        [],
+                        // droppedForeignKeys
+                        [],
                     );
-                    $changedTables[$fkIndex]->addedForeignKeys = [$this->buildQuotedForeignKey($addedForeignKey)];
                 }
             }
         }
 
         // Build a new schema diff that only contains added fields
-        $addFieldSchemaDiff = new SchemaDiff(
+        $addFieldSchemaDiff = new Typo3SchemaDiff(
+            // createdSchemas
             [],
+            // droppedSchemas
+            [],
+            // createdTables
+            [],
+            // alteredTables
             $changedTables,
+            // droppedTables
             [],
-            $schemaDiff->fromSchema
+            // createdSequences
+            [],
+            // alteredSequences
+            [],
+            // droppedSequences
+            [],
         );
 
         $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($addFieldSchemaDiff);
@@ -407,46 +499,70 @@ class ConnectionMigrator
     }
 
     /**
-     * Extract update suggestions (SQL statements) for changed options
-     * (like ENGINE) from the complete schema diff.
+     * Extract update suggestions (SQL statements) for changed options (like ENGINE) from the complete schema diff.
      *
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
-    protected function getChangedTableOptions(SchemaDiff $schemaDiff): array
+    protected function getChangedTableOptions(Typo3SchemaDiff $schemaDiff): array
     {
         $updateSuggestions = [];
 
-        foreach ($schemaDiff->changedTables as $tableDiff) {
+        foreach ($schemaDiff->alteredTables as $index => $tableDiff) {
             // Skip processing if this is the base TableDiff class or has no table options set.
-            if (!$tableDiff instanceof TableDiff || count($tableDiff->getTableOptions()) === 0) {
+            if (!$tableDiff instanceof Typo3TableDiff || count($tableDiff->getTableOptions()) === 0) {
                 continue;
             }
 
             $tableOptions = $tableDiff->getTableOptions();
-            $tableOptionsDiff = new TableDiff(
-                $tableDiff->name,
+            $tableOptionsDiff = new Typo3TableDiff(
+                // oldTable
+                $tableDiff->getOldTable(),
+                // addedColumns
                 [],
+                // modifiedColumns
                 [],
+                // droppedColumns
                 [],
+                // renamedColumns
                 [],
+                // addedIndexes
                 [],
+                // modifiedIndexes
                 [],
-                $tableDiff->fromTable
+                // droppedIndexes
+                [],
+                // renamedIndexes
+                [],
+                // addedForeignKeys
+                [],
+                // modifiedForeignKeys
+                [],
+                // droppedForeignKeys
+                [],
             );
             $tableOptionsDiff->setTableOptions($tableOptions);
 
-            $tableOptionsSchemaDiff = new SchemaDiff(
+            $tableOptionsSchemaDiff = new Typo3SchemaDiff(
+                // createdSchemas
                 [],
-                [$tableOptionsDiff],
+                // droppedSchemas
                 [],
-                $schemaDiff->fromSchema
+                // createdTables
+                [],
+                // alteredTables
+                [$index => $tableOptionsDiff],
+                // droppedTables
+                [],
+                // createdSequences
+                [],
+                // alteredSequences
+                [],
+                // droppedSequences
+                [],
             );
 
-            $databasePlatform = $this->connection->getDatabasePlatform();
-            $statements = method_exists($databasePlatform, 'getSaveAlterSchemaSQL')
-                ? $databasePlatform->getSaveAlterSchemaSQL($tableOptionsSchemaDiff)
-                : $databasePlatform->getAlterSchemaSQL($tableOptionsSchemaDiff);
+            $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($tableOptionsSchemaDiff);
             foreach ($statements as $statement) {
                 $updateSuggestions['change'][md5($statement)] = $statement;
             }
@@ -462,32 +578,60 @@ class ConnectionMigrator
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
-    protected function getChangedFieldUpdateSuggestions(SchemaDiff $schemaDiff): array
+    protected function getChangedFieldUpdateSuggestions(Typo3SchemaDiff $schemaDiff): array
     {
         $databasePlatform = $this->connection->getDatabasePlatform();
         $updateSuggestions = [];
 
-        foreach ($schemaDiff->changedTables as $index => $changedTable) {
+        foreach ($schemaDiff->alteredTables as $index => $changedTable) {
             // Treat each changed index with a new diff to get a dedicated suggestions
             // just for this index.
-            if (count($changedTable->changedIndexes) !== 0) {
-                foreach ($changedTable->changedIndexes as $indexName => $changedIndex) {
-                    $indexDiff = new TableDiff(
-                        $changedTable->name,
+            if (count($changedTable->modifiedIndexes) !== 0) {
+                foreach ($changedTable->modifiedIndexes as $indexName => $changedIndex) {
+                    $indexDiff = new Typo3TableDiff(
+                        // oldTable
+                        $changedTable->getOldTable(),
+                        // addedColumns
                         [],
+                        // modifiedColumns
                         [],
+                        // droppedColumns
                         [],
+                        // renamedColumns
                         [],
+                        // addedIndexes
+                        [],
+                        // modifiedIndexes
                         [$indexName => $changedIndex],
+                        // droppedIndexes
                         [],
-                        $schemaDiff->fromSchema->getTable($changedTable->name)
+                        // renamedIndexes
+                        [],
+                        // addedForeignKeys
+                        [],
+                        // modifiedForeignKeys
+                        [],
+                        // droppedForeignKeys
+                        [],
                     );
 
-                    $temporarySchemaDiff = new SchemaDiff(
+                    $temporarySchemaDiff = new Typo3SchemaDiff(
+                        // createdSchemas
                         [],
-                        [$indexDiff],
+                        // droppedSchemas
                         [],
-                        $schemaDiff->fromSchema
+                        // createdTables
+                        [],
+                        // alteredTables
+                        [$changedTable->getOldTable()->getName() => $indexDiff],
+                        // droppedTables
+                        [],
+                        // createdSequences
+                        [],
+                        // alteredSequences
+                        [],
+                        // droppedSequences
+                        [],
                     );
 
                     $statements = $databasePlatform->getAlterSchemaSQL($temporarySchemaDiff);
@@ -501,15 +645,31 @@ class ConnectionMigrator
             if (count($changedTable->renamedIndexes) !== 0) {
                 // Create a base table diff without any changes, there's no constructor
                 // argument to pass in renamed indexes.
-                $tableDiff = new TableDiff(
-                    $changedTable->name,
+                $tableDiff = new Typo3TableDiff(
+                    // oldTable
+                    $changedTable->getOldTable(),
+                    // addedColumns
                     [],
+                    // modifiedColumns
                     [],
+                    // droppedColumns
                     [],
+                    // renamedColumns
                     [],
+                    // addedIndexes
                     [],
+                    // modifiedIndexes
                     [],
-                    $schemaDiff->fromSchema->getTable($changedTable->name)
+                    // droppedIndexes
+                    [],
+                    // renamedIndexes
+                    [],
+                    // addedForeignKeys
+                    [],
+                    // modifiedForeignKeys
+                    [],
+                    // droppedForeignKeys
+                    [],
                 );
 
                 // Treat each renamed index with a new diff to get a dedicated suggestions
@@ -518,11 +678,23 @@ class ConnectionMigrator
                     $indexDiff = clone $tableDiff;
                     $indexDiff->renamedIndexes = [$key => $renamedIndex];
 
-                    $temporarySchemaDiff = new SchemaDiff(
+                    $temporarySchemaDiff = new Typo3SchemaDiff(
+                        // createdSchemas
                         [],
-                        [$indexDiff],
+                        // droppedSchemas
                         [],
-                        $schemaDiff->fromSchema
+                        // createdTables
+                        [],
+                        // alteredTables
+                        [$indexDiff->getOldTable()->getName() => $indexDiff],
+                        // droppedTables
+                        [],
+                        // createdSequences
+                        [],
+                        // alteredSequences
+                        [],
+                        // droppedSequences
+                        [],
                     );
 
                     $statements = $databasePlatform->getAlterSchemaSQL($temporarySchemaDiff);
@@ -532,49 +704,93 @@ class ConnectionMigrator
                 }
             }
 
-            if (count($changedTable->changedColumns) !== 0) {
+            if (count($changedTable->modifiedColumns) !== 0) {
                 // Treat each changed column with a new diff to get a dedicated suggestions
                 // just for this single column.
-                $fromTable = $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name));
-
-                foreach ($changedTable->changedColumns as $columnName => $changedColumn) {
+                foreach ($changedTable->modifiedColumns as $columnName => $changedColumn) {
                     // Field has been renamed and will be handled separately
-                    if ($changedColumn->getOldColumnName()->getName() !== $changedColumn->column->getName()) {
+                    if ($changedColumn->getOldColumn()->getName() !== $changedColumn->getNewColumn()->getName()) {
                         continue;
                     }
 
-                    if ($changedColumn->fromColumn !== null) {
-                        $changedColumn->fromColumn = $this->buildQuotedColumn($changedColumn->fromColumn);
+                    if ($changedColumn->getOldColumn() !== null) {
+                        $changedColumn->oldColumn = $this->buildQuotedColumn($changedColumn->oldColumn);
                     }
 
                     // Get the current SQL declaration for the column
-                    $currentColumn = $fromTable->getColumn($changedColumn->getOldColumnName()->getName());
+                    $currentColumn = $changedColumn->getOldColumn();
                     $currentDeclaration = $databasePlatform->getColumnDeclarationSQL(
                         $currentColumn->getQuotedName($this->connection->getDatabasePlatform()),
                         $currentColumn->toArray()
                     );
 
                     // Build a dedicated diff just for the current column
-                    $tableDiff = new TableDiff(
-                        $changedTable->name,
+                    $tableDiff = new Typo3TableDiff(
+                        // oldTable
+                        $this->buildQuotedTable($changedTable->getOldTable()),
+                        // addedColumns
                         [],
+                        // modifiedColumns
                         [$columnName => $changedColumn],
+                        // droppedColumns
                         [],
+                        // renamedColumns
                         [],
+                        // addedIndexes
                         [],
+                        // modifiedIndexes
                         [],
-                        $fromTable
+                        // droppedIndexes
+                        [],
+                        // renamedIndexes
+                        [],
+                        // addedForeignKeys
+                        [],
+                        // modifiedForeignKeys
+                        [],
+                        // droppedForeignKeys
+                        [],
+                    );
+                    $temporarySchemaDiff = new Typo3SchemaDiff(
+                        // createdSchemas
+                        [],
+                        // droppedSchemas
+                        [],
+                        // createdTables
+                        [],
+                        // alteredTables
+                        [$tableDiff->getOldTable()->getName() => $tableDiff],
+                        // droppedTables
+                        [],
+                        // createdSequences
+                        [],
+                        // alteredSequences
+                        [],
+                        // droppedSequences
+                        [],
                     );
 
-                    $temporarySchemaDiff = new SchemaDiff(
-                        [],
-                        [$tableDiff],
-                        [],
-                        $schemaDiff->fromSchema
-                    );
-
+                    // Get missing update statements to mimic documented Doctrine DBAL 4 SERIAL to IDENTITY column
+                    // migration without loosing sequence table data.
+                    // @see https://github.com/doctrine/dbal/blob/4.0.x/docs/en/how-to/postgresql-identity-migration.rst
+                    $postgreSQLMigrationStatements = $this->getPostgreSQLMigrationStatements($this->connection, $changedTable, $changedColumn);
                     $statements = $databasePlatform->getAlterSchemaSQL($temporarySchemaDiff);
                     foreach ($statements as $statement) {
+                        // Combine SERIAL to IDENTITY COLUMN date migration statements to the statement
+                        // @todo This is a hackish way to provide data migration along with DDL changes in a connected
+                        //       way. There is currently no other way to archive this and again emphasizes the need to
+                        //       refactor the complete database analyzer stack and handling.
+                        if ($postgreSQLMigrationStatements !== []) {
+                            if (str_contains($statement, 'DROP DEFAULT')) {
+                                $statement = rtrim($statement, '; ') . ';' . implode(';', $postgreSQLMigrationStatements);
+                            }
+                            if (str_contains($statement, 'ADD GENERATED BY DEFAULT AS IDENTITY')) {
+                                // Due to the proper migration replacement we need to skip the Doctrine DBAL add statement
+                                // which will fail anyway - and is covered by the manual update above. This ensures, that
+                                // the sequence table is not dropped and recreated with empty state.
+                                continue;
+                            }
+                        }
                         $updateSuggestions['change'][md5($statement)] = $statement;
                         $updateSuggestions['change_currentValue'][md5($statement)] = $currentDeclaration;
                     }
@@ -583,27 +799,55 @@ class ConnectionMigrator
 
             // Treat each changed foreign key with a new diff to get a dedicated suggestions
             // just for this foreign key.
-            if (count($changedTable->changedForeignKeys) !== 0) {
-                $tableDiff = new TableDiff(
-                    $changedTable->name,
+            if (count($changedTable->modifiedForeignKeys) !== 0) {
+                $tableDiff = new Typo3TableDiff(
+                    // oldTable
+                    $changedTable->getOldTable(),
+                    // addedColumns
                     [],
+                    // modifiedColumns
                     [],
+                    // droppedColumns
                     [],
+                    // renamedColumns
                     [],
+                    // addedIndexes
                     [],
+                    // modifiedIndexes
                     [],
-                    $schemaDiff->fromSchema->getTable($changedTable->name)
+                    // droppedIndexes
+                    [],
+                    // renamedIndexes
+                    [],
+                    // addedForeignKeys
+                    [],
+                    // modifiedForeignKeys
+                    [],
+                    // droppedForeignKeys
+                    [],
                 );
 
-                foreach ($changedTable->changedForeignKeys as $changedForeignKey) {
+                foreach ($changedTable->modifiedForeignKeys as $changedForeignKey) {
                     $foreignKeyDiff = clone $tableDiff;
-                    $foreignKeyDiff->changedForeignKeys = [$this->buildQuotedForeignKey($changedForeignKey)];
+                    $foreignKeyDiff->modifiedForeignKeys = [$this->buildQuotedForeignKey($changedForeignKey)];
 
-                    $temporarySchemaDiff = new SchemaDiff(
+                    $temporarySchemaDiff = new Typo3SchemaDiff(
+                        // createdSchemas
                         [],
-                        [$foreignKeyDiff],
+                        // droppedSchemas
                         [],
-                        $schemaDiff->fromSchema
+                        // createdTables
+                        [],
+                        // alteredTables
+                        [$foreignKeyDiff->getOldTable()->getName() => $foreignKeyDiff],
+                        // droppedTables
+                        [],
+                        // createdSequences
+                        [],
+                        // alteredSequences
+                        [],
+                        // droppedSequences
+                        [],
                     );
 
                     $statements = $databasePlatform->getAlterSchemaSQL($temporarySchemaDiff);
@@ -626,30 +870,24 @@ class ConnectionMigrator
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
-    protected function getUnusedTableUpdateSuggestions(SchemaDiff $schemaDiff): array
+    protected function getUnusedTableUpdateSuggestions(Typo3SchemaDiff $schemaDiff): array
     {
         $updateSuggestions = [];
-        foreach ($schemaDiff->changedTables as $tableDiff) {
+        foreach ($schemaDiff->alteredTables as $tableName => $tableDiff) {
             // Skip tables that are not being renamed or where the new name isn't prefixed
             // with the deletion marker.
-            if ($tableDiff->getNewName() === false
-                || !str_starts_with($tableDiff->getNewName()->getName(), $this->deletedPrefix)
+            if ($tableDiff->getNewName() === null
+                || !str_starts_with($this->trimIdentifierQuotes($tableDiff->getNewName()), $this->deletedPrefix)
             ) {
                 continue;
             }
-            // Build a new schema diff that only contains this table
-            $changedFieldDiff = new SchemaDiff(
-                [],
-                [$tableDiff],
-                [],
-                $schemaDiff->fromSchema
-            );
 
-            $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($changedFieldDiff);
-            foreach ($statements as $statement) {
-                $updateSuggestions['change_table'][md5($statement)] = $statement;
-            }
-            $updateSuggestions['tables_count'][md5($statements[0])] = $this->getTableRecordCount((string)$tableDiff->name);
+            $statement = $this->connection->getDatabasePlatform()->getRenameTableSQL(
+                $tableDiff->getOldTable()->getName(),
+                $tableDiff->newName
+            );
+            $updateSuggestions['change_table'][md5($statement)] = $statement;
+            $updateSuggestions['tables_count'][md5($statement)] = $this->getTableRecordCount($tableDiff->getOldTable()->getName());
         }
 
         return $updateSuggestions;
@@ -664,39 +902,55 @@ class ConnectionMigrator
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
-    protected function getUnusedFieldUpdateSuggestions(SchemaDiff $schemaDiff): array
+    protected function getUnusedFieldUpdateSuggestions(Typo3SchemaDiff $schemaDiff): array
     {
         $changedTables = [];
 
-        foreach ($schemaDiff->changedTables as $index => $changedTable) {
-            if (count($changedTable->changedColumns) === 0) {
+        foreach ($schemaDiff->alteredTables as $tableName => $changedTable) {
+            if (count($changedTable->modifiedColumns) === 0) {
                 continue;
             }
 
-            $databasePlatform = $this->getDatabasePlatformForTable($index);
+            $databasePlatform = $this->getDatabasePlatformForTable($tableName);
 
             // Treat each changed column with a new diff to get a dedicated suggestions
             // just for this single column.
-            foreach ($changedTable->changedColumns as $oldFieldName => $changedColumn) {
+            foreach ($changedTable->modifiedColumns as $oldFieldName => $changedColumn) {
                 // Field has not been renamed
-                if ($changedColumn->getOldColumnName()->getName() === $changedColumn->column->getName()) {
+                if ($changedColumn->getOldColumn()->getName() === $changedColumn->getNewColumn()->getName()) {
                     continue;
                 }
 
-                $renameColumnTableDiff = new TableDiff(
-                    $changedTable->name,
+                $renameColumnTableDiff = new Typo3TableDiff(
+                    // oldTable
+                    $this->buildQuotedTable($changedTable->getOldTable()),
+                    // addedColumns
                     [],
+                    // modifiedColumns
                     [$oldFieldName => $changedColumn],
+                    // droppedColumns
                     [],
+                    // renamedColumns
                     [],
+                    // addedIndexes
                     [],
+                    // modifiedIndexes
                     [],
-                    $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name))
+                    // droppedIndexes
+                    [],
+                    // renamedIndexes
+                    [],
+                    // addedForeignKeys
+                    [],
+                    // modifiedForeignKeys
+                    [],
+                    // droppedForeignKeys
+                    [],
                 );
                 if ($databasePlatform instanceof DoctrinePostgreSQLPlatform) {
-                    $renameColumnTableDiff->renamedColumns[$oldFieldName] = $changedColumn->column;
+                    $renameColumnTableDiff->renamedColumns[$oldFieldName] = $changedColumn->getNewColumn();
                 }
-                $changedTables[$index . ':' . $changedColumn->column->getName()] = $renameColumnTableDiff;
+                $changedTables[$tableName . ':' . $changedColumn->getNewColumn()->getName()] = $renameColumnTableDiff;
 
                 if ($databasePlatform instanceof DoctrineSQLitePlatform) {
                     break;
@@ -705,11 +959,23 @@ class ConnectionMigrator
         }
 
         // Build a new schema diff that only contains unused fields
-        $changedFieldDiff = new SchemaDiff(
+        $changedFieldDiff = new Typo3SchemaDiff(
+            // createdSchemas
             [],
+            // droppedSchemas
+            [],
+            // createdTables
+            [],
+            // alteredTables
             $changedTables,
+            // droppedTables
             [],
-            $schemaDiff->fromSchema
+            // createdSequences
+            [],
+            // alteredSequences
+            [],
+            // droppedSequences
+            [],
         );
 
         $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($changedFieldDiff);
@@ -726,29 +992,43 @@ class ConnectionMigrator
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
-    protected function getDropFieldUpdateSuggestions(SchemaDiff $schemaDiff): array
+    protected function getDropFieldUpdateSuggestions(Typo3SchemaDiff $schemaDiff): array
     {
         $changedTables = [];
 
-        foreach ($schemaDiff->changedTables as $index => $changedTable) {
-            $fromTable = $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name));
-
+        foreach ($schemaDiff->alteredTables as $index => $changedTable) {
             $isSqlite = $this->getDatabasePlatformForTable($index) instanceof DoctrineSQLitePlatform;
             $addMoreOperations = true;
 
-            if (count($changedTable->removedColumns) !== 0) {
+            if (count($changedTable->droppedColumns) !== 0) {
                 // Treat each changed column with a new diff to get a dedicated suggestions
                 // just for this single column.
-                foreach ($changedTable->removedColumns as $columnName => $removedColumn) {
-                    $changedTables[$index . ':tbl_' . $removedColumn->getName()] = new TableDiff(
-                        $changedTable->name,
+                foreach ($changedTable->droppedColumns as $columnName => $removedColumn) {
+                    $changedTables[$index . ':tbl_' . $removedColumn->getName()] = new Typo3TableDiff(
+                        // oldTable
+                        $this->buildQuotedTable($changedTable->getOldTable()),
+                        // addedColumns
                         [],
+                        // modifiedColumns
                         [],
+                        // droppedColumns
                         [$columnName => $this->buildQuotedColumn($removedColumn)],
+                        // renamedColumns
                         [],
+                        // addedIndexes
                         [],
+                        // modifiedIndexes
                         [],
-                        $fromTable
+                        // droppedIndexes
+                        [],
+                        // renamedIndexes
+                        [],
+                        // addedForeignKeys
+                        [],
+                        // modifiedForeignKeys
+                        [],
+                        // droppedForeignKeys
+                        [],
                     );
                     if ($isSqlite) {
                         $addMoreOperations = false;
@@ -757,19 +1037,35 @@ class ConnectionMigrator
                 }
             }
 
-            if ($addMoreOperations && count($changedTable->removedIndexes) !== 0) {
+            if ($addMoreOperations && count($changedTable->droppedIndexes) !== 0) {
                 // Treat each removed index with a new diff to get a dedicated suggestions
                 // just for this index.
-                foreach ($changedTable->removedIndexes as $indexName => $removedIndex) {
-                    $changedTables[$index . ':idx_' . $removedIndex->getName()] = new TableDiff(
-                        $changedTable->name,
+                foreach ($changedTable->droppedIndexes as $indexName => $removedIndex) {
+                    $changedTables[$index . ':idx_' . $removedIndex->getName()] = new Typo3TableDiff(
+                        // oldTable
+                        $this->buildQuotedTable($changedTable->getOldTable()),
+                        // addedColumns
                         [],
+                        // modifiedColumns
                         [],
+                        // droppedColumns
                         [],
+                        // renamedColumns
                         [],
+                        // addedIndexes
                         [],
+                        // modifiedIndexes
+                        [],
+                        // droppedIndexes
                         [$indexName => $this->buildQuotedIndex($removedIndex)],
-                        $fromTable
+                        // renamedIndexes
+                        [],
+                        // addedForeignKeys
+                        [],
+                        // modifiedForeignKeys
+                        [],
+                        // droppedForeignKeys
+                        [],
                     );
                     if ($isSqlite) {
                         $addMoreOperations = false;
@@ -778,25 +1074,37 @@ class ConnectionMigrator
                 }
             }
 
-            if ($addMoreOperations && count($changedTable->removedForeignKeys) !== 0) {
+            if ($addMoreOperations && count($changedTable->droppedForeignKeys) !== 0) {
                 // Treat each removed foreign key with a new diff to get a dedicated suggestions
                 // just for this foreign key.
-                foreach ($changedTable->removedForeignKeys as $removedForeignKey) {
-                    if (is_string($removedForeignKey)) {
-                        continue;
-                    }
+                foreach ($changedTable->droppedForeignKeys as $removedForeignKey) {
                     $fkIndex = $index . ':fk_' . $removedForeignKey->getName();
-                    $changedTables[$fkIndex] = new TableDiff(
-                        $changedTable->name,
+                    $changedTables[$fkIndex] = new Typo3TableDiff(
+                        // oldTable
+                        $this->buildQuotedTable($changedTable->getOldTable()),
+                        // addedColumns
                         [],
+                        // modifiedColumns
                         [],
+                        // droppedColumns
                         [],
+                        // renamedColumns
                         [],
+                        // addedIndexes
                         [],
+                        // modifiedIndexes
                         [],
-                        $fromTable
+                        // droppedIndexes
+                        [],
+                        // renamedIndexes
+                        [],
+                        // addedForeignKeys
+                        [],
+                        // modifiedForeignKeys
+                        [],
+                        // droppedForeignKeys
+                        [$this->buildQuotedForeignKey($removedForeignKey)],
                     );
-                    $changedTables[$fkIndex]->removedForeignKeys = [$this->buildQuotedForeignKey($removedForeignKey)];
                     if ($isSqlite) {
                         break;
                     }
@@ -805,11 +1113,23 @@ class ConnectionMigrator
         }
 
         // Build a new schema diff that only contains removable fields
-        $removedFieldDiff = new SchemaDiff(
+        $removedFieldDiff = new Typo3SchemaDiff(
+            // createdSchemas
             [],
+            // droppedSchemas
+            [],
+            // createdTables
+            [],
+            // alteredTables
             $changedTables,
+            // droppedTables
             [],
-            $schemaDiff->fromSchema
+            // createdSequences
+            [],
+            // alteredSequences
+            [],
+            // droppedSequences
+            [],
         );
 
         $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($removedFieldDiff);
@@ -826,16 +1146,28 @@ class ConnectionMigrator
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
-    protected function getDropTableUpdateSuggestions(SchemaDiff $schemaDiff): array
+    protected function getDropTableUpdateSuggestions(Typo3SchemaDiff $schemaDiff): array
     {
         $updateSuggestions = [];
-        foreach ($schemaDiff->removedTables as $removedTable) {
+        foreach ($schemaDiff->droppedTables as $index => $removedTable) {
             // Build a new schema diff that only contains this table
-            $tableDiff = new SchemaDiff(
+            $tableDiff = new Typo3SchemaDiff(
+                // createdSchemas
                 [],
+                // droppedSchemas
                 [],
-                [$this->buildQuotedTable($removedTable)],
-                $schemaDiff->fromSchema
+                // createdTables
+                [],
+                // alteredTables
+                [],
+                // droppedTables
+                [$index => $this->buildQuotedTable($removedTable)],
+                // createdSequences
+                [],
+                // alteredSequences
+                [],
+                // droppedSequences
+                [],
             );
 
             $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($tableDiff);
@@ -862,21 +1194,37 @@ class ConnectionMigrator
      *
      * @throws \InvalidArgumentException
      */
-    protected function migrateUnprefixedRemovedTablesToRenames(SchemaDiff $schemaDiff): SchemaDiff
+    protected function migrateUnprefixedRemovedTablesToRenames(Typo3SchemaDiff $schemaDiff): Typo3SchemaDiff
     {
-        foreach ($schemaDiff->removedTables as $index => $removedTable) {
-            if (str_starts_with($removedTable->getName(), $this->deletedPrefix)) {
+        foreach ($schemaDiff->droppedTables as $index => $removedTable) {
+            if (str_starts_with($this->trimIdentifierQuotes($removedTable->getName()), $this->deletedPrefix)) {
                 continue;
             }
-            $tableDiff = new TableDiff(
-                $removedTable->getQuotedName($this->connection->getDatabasePlatform()),
-                [], // added columns
-                [], // changed columns
-                [], // removed columns
-                [], // added indexes
-                [], // changed indexes
-                [], // removed indexed
-                $this->buildQuotedTable($removedTable)
+            $tableDiff = new Typo3TableDiff(
+                // oldTable
+                $this->buildQuotedTable($removedTable),
+                // addedColumns
+                [],
+                // modifiedColumns
+                [],
+                // droppedColumns
+                [],
+                // renamedColumns
+                [],
+                // addedIndexes
+                [],
+                // modifiedIndexes
+                [],
+                // droppedIndexes
+                [],
+                // renamedIndexes
+                [],
+                // addedForeignKeys
+                [],
+                // modifiedForeignKeys
+                [],
+                // droppedForeignKeys
+                [],
             );
 
             $tableDiff->newName = $this->connection->getDatabasePlatform()->quoteIdentifier(
@@ -886,8 +1234,8 @@ class ConnectionMigrator
                     PlatformInformation::getMaxIdentifierLength($this->connection->getDatabasePlatform())
                 )
             );
-            $schemaDiff->changedTables[$index] = $tableDiff;
-            unset($schemaDiff->removedTables[$index]);
+            $schemaDiff->alteredTables[$index] = $tableDiff;
+            unset($schemaDiff->droppedTables[$index]);
         }
 
         return $schemaDiff;
@@ -900,15 +1248,15 @@ class ConnectionMigrator
      *
      * @throws \InvalidArgumentException
      */
-    protected function migrateUnprefixedRemovedFieldsToRenames(SchemaDiff $schemaDiff): SchemaDiff
+    protected function migrateUnprefixedRemovedFieldsToRenames(Typo3SchemaDiff $schemaDiff): Typo3SchemaDiff
     {
-        foreach ($schemaDiff->changedTables as $tableIndex => $changedTable) {
-            if (count($changedTable->removedColumns) === 0) {
+        foreach ($schemaDiff->alteredTables as $tableIndex => $changedTable) {
+            if (count($changedTable->droppedColumns) === 0) {
                 continue;
             }
 
-            foreach ($changedTable->removedColumns as $columnIndex => $removedColumn) {
-                if (str_starts_with($removedColumn->getName(), $this->deletedPrefix)) {
+            foreach ($changedTable->droppedColumns as $columnIndex => $removedColumn) {
+                if (str_starts_with($this->trimIdentifierQuotes($removedColumn->getName()), $this->deletedPrefix)) {
                     continue;
                 }
 
@@ -925,18 +1273,13 @@ class ConnectionMigrator
                 );
 
                 // Build the diff object for the column to rename
-                $columnDiff = new ColumnDiff(
-                    $removedColumn->getQuotedName($this->connection->getDatabasePlatform()),
-                    $renamedColumn,
-                    [], // changed properties
-                    $this->buildQuotedColumn($removedColumn)
-                );
+                $columnDiff = new Typo3ColumnDiff($this->buildQuotedColumn($removedColumn), $renamedColumn);
 
                 // Add the column with the required rename information to the changed column list
-                $schemaDiff->changedTables[$tableIndex]->changedColumns[$columnIndex] = $columnDiff;
+                $schemaDiff->alteredTables[$tableIndex]->modifiedColumns[$columnIndex] = $columnDiff;
 
                 // Remove the column from the list of columns to be dropped
-                unset($schemaDiff->changedTables[$tableIndex]->removedColumns[$columnIndex]);
+                unset($schemaDiff->alteredTables[$tableIndex]->droppedColumns[$columnIndex]);
             }
         }
 
@@ -950,10 +1293,10 @@ class ConnectionMigrator
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
-    protected function migrateColumnRenamesToDistinctActions(SchemaDiff $schemaDiff): SchemaDiff
+    protected function migrateColumnRenamesToDistinctActions(Typo3SchemaDiff $schemaDiff): Typo3SchemaDiff
     {
-        foreach ($schemaDiff->changedTables as $index => $changedTable) {
-            if (count($changedTable->renamedColumns) === 0) {
+        foreach ($schemaDiff->alteredTables as $index => $changedTable) {
+            if (count($changedTable->getRenamedColumns()) === 0) {
                 continue;
             }
 
@@ -961,13 +1304,12 @@ class ConnectionMigrator
             // suggestion just for this single column.
             foreach ($changedTable->renamedColumns as $originalColumnName => $renamedColumn) {
                 $columnOptions = $this->prepareColumnOptions($renamedColumn);
-
                 $changedTable->addedColumns[$renamedColumn->getName()] = new Column(
                     $renamedColumn->getName(),
                     $renamedColumn->getType(),
                     $columnOptions
                 );
-                $changedTable->removedColumns[$originalColumnName] = new Column(
+                $changedTable->droppedColumns[$originalColumnName] = new Column(
                     $originalColumnName,
                     $renamedColumn->getType(),
                     $columnOptions
@@ -1014,7 +1356,7 @@ class ConnectionMigrator
      * Replace the array keys with a md5 sum of the actual SQL statement
      *
      * @param string[] $statements
-     * @return string[]
+     * @return array<non-empty-string, non-empty-string>
      */
     protected function calculateUpdateSuggestionsHashes(array $statements): array
     {
@@ -1024,32 +1366,41 @@ class ConnectionMigrator
     /**
      * Helper for buildSchemaDiff to filter an array of TableDiffs against a list of valid table names.
      *
-     * @param \Doctrine\DBAL\Schema\TableDiff[]|Table[] $tableDiffs
+     * @param array<non-empty-string, Typo3TableDiff|\Doctrine\DBAL\Schema\TableDiff|Table> $tableDiffs
      * @param string[] $validTableNames
-     * @return \Doctrine\DBAL\Schema\TableDiff[]
+     * @return array<non-empty-string, Typo3TableDiff|Table>
      * @throws \InvalidArgumentException
      */
     protected function removeUnrelatedTables(array $tableDiffs, array $validTableNames): array
     {
-        return array_filter(
+        $tableDiffs = array_filter(
             $tableDiffs,
-            function (TableDiff|Table $table) use ($validTableNames): bool {
+            function (Typo3TableDiff|Table $table) use ($validTableNames): bool {
                 if ($table instanceof Table) {
                     $tableName = $table->getName();
                 } else {
-                    $tableName = $table->newName ?: $table->name;
+                    $tableName = $table->getNewName() ?? $table->getOldTable()->getName();
                 }
 
                 // If the tablename has a deleted prefix strip it of before comparing
                 // it against the list of valid table names so that drop operations
                 // don't get removed.
-                if (str_starts_with($tableName, $this->deletedPrefix)) {
+                if (str_starts_with($this->trimIdentifierQuotes($tableName), $this->deletedPrefix)) {
                     $tableName = substr($tableName, strlen($this->deletedPrefix));
                 }
                 return in_array($tableName, $validTableNames, true)
                     || in_array($this->deletedPrefix . $tableName, $validTableNames, true);
             }
         );
+        foreach ($tableDiffs as &$tableDiff) {
+            if ($tableDiff instanceof Table) {
+                continue;
+            }
+            if (! $tableDiff instanceof Typo3TableDiff) {
+                $tableDiff = Typo3TableDiff::ensure($tableDiff);
+            }
+        }
+        return $tableDiffs;
     }
 
     /**
@@ -1205,7 +1556,7 @@ class ConnectionMigrator
         $databasePlatform = $this->connection->getDatabasePlatform();
 
         return new Column(
-            $databasePlatform->quoteIdentifier($column->getName()),
+            $databasePlatform->quoteIdentifier($this->trimIdentifierQuotes($column->getName())),
             $column->getType(),
             $this->prepareColumnOptions($column)
         );
@@ -1261,14 +1612,6 @@ class ConnectionMigrator
             }
             $options['platformOptions'][$optionName] = $optionValue;
         }
-        $schemaOptions = $column->getCustomSchemaOptions();
-        foreach ($schemaOptions as $optionName => $optionValue) {
-            unset($options[$optionName]);
-            if (!isset($options['schemaOptions'])) {
-                $options['schemaOptions'] = [];
-            }
-            $options['schemaOptions'][$optionName] = $optionValue;
-        }
         unset($options['name'], $options['type']);
         return $options;
     }
@@ -1292,6 +1635,16 @@ class ConnectionMigrator
         };
     }
 
+    protected function getSchemaTableNames(Schema $schema)
+    {
+        $tableNames = [];
+        foreach ($schema->getTables() as $table) {
+            $tableNames[] = $table->getName();
+        }
+        ksort($tableNames);
+        return $tableNames;
+    }
+
     /**
      * Due to portability reasons it is necessary to normalize the virtual generated schema against the target
      * connection platform.
@@ -1312,18 +1665,156 @@ class ConnectionMigrator
     protected function normalizeTablesForTargetConnection(array $tables, Typo3Connection $connection): array
     {
         $databasePlatform = $connection->getDatabasePlatform();
-        $isSQLite = $databasePlatform instanceof DoctrineSQLitePlatform;
-        $isMariaDBOrMySQL = ($databasePlatform instanceof DoctrineMariaDBPlatform || $databasePlatform instanceof DoctrineMySQLPlatform);
-
-        if (!$isSQLite && !$isMariaDBOrMySQL) {
-            // No normalization required
-            return $tables;
-        }
         array_walk($tables, function (Table &$table) use ($databasePlatform): void {
+            $this->normalizeTableIdentifiers($databasePlatform, $table);
             $this->normalizeTableForMariaDBOrMySQL($databasePlatform, $table);
+            $this->normalizeTableForPostgreSQL($databasePlatform, $table);
+            $this->normalizeTableForSQLite($databasePlatform, $table);
         });
 
         return $tables;
+    }
+
+    /**
+     * @param AbstractPlatform $platform
+     * @param Table &$table
+     */
+    protected function normalizeTableIdentifiers(AbstractPlatform $platform, Table &$table): void
+    {
+        $table = new Table(
+            // name
+            $platform->quoteIdentifier($this->trimIdentifierQuotes($table->getName())),
+            // columns
+            $this->normalizeTableColumnIdentifiers($platform, $table->getColumns()),
+            // indexes
+            $this->normalizeTableIndexIdentifiers($platform, $table->getIndexes()),
+            // uniqueConstraints
+            $this->normalizeTableUniqueConstraintIdentifiers($platform, $table->getUniqueConstraints()),
+            // fkConstraints
+            $this->normalizeTableForeignKeyConstraints($platform, $table->getForeignKeys()),
+            // options
+            $table->getOptions(),
+        );
+    }
+
+    /**
+     * @param AbstractPlatform $platform
+     * @param ForeignKeyConstraint[] $foreignKeyConstraints
+     * @return ForeignKeyConstraint[]
+     */
+    protected function normalizeTableForeignKeyConstraints(AbstractPlatform $platform, array $foreignKeyConstraints): array
+    {
+        $normalizedForeignKeyConstraints = [];
+        foreach ($foreignKeyConstraints as $foreignKeyConstraint) {
+            $normalizedForeignKeyConstraints[] = new ForeignKeyConstraint(
+                // localColumnNames
+                $foreignKeyConstraint->getQuotedLocalColumns($platform),
+                // foreignTableName
+                $platform->quoteIdentifier($this->trimIdentifierQuotes($foreignKeyConstraint->getForeignTableName())),
+                // foreignColumnNames
+                $foreignKeyConstraint->getQuotedForeignColumns($platform),
+                // name
+                $platform->quoteIdentifier($foreignKeyConstraint->getName()),
+                // options
+                $foreignKeyConstraint->getOptions(),
+            );
+        }
+        return $normalizedForeignKeyConstraints;
+    }
+
+    /**
+     * Ensure correct initialized identifier names for table unique constraints.
+     *
+     * @param UniqueConstraint[] $uniqueConstraints
+     * @return UniqueConstraint[]
+     */
+    protected function normalizeTableUniqueConstraintIdentifiers(AbstractPlatform $platform, array $uniqueConstraints): array
+    {
+        $normalizedUniqueConstraints = [];
+        foreach ($uniqueConstraints as $uniqueConstraint) {
+            $columns = $uniqueConstraint->getColumns();
+            foreach ($columns as &$column) {
+                $column = $platform->quoteIdentifier($this->trimIdentifierQuotes($column));
+            }
+            $normalizedUniqueConstraints[] = new UniqueConstraint(
+                // name
+                $platform->quoteIdentifier($this->trimIdentifierQuotes($uniqueConstraint->getName())),
+                // columns
+                $columns,
+                // flags
+                $uniqueConstraint->getFlags(),
+                // options
+                $uniqueConstraint->getOptions(),
+            );
+        }
+        return $normalizedUniqueConstraints;
+    }
+
+    /**
+     * Ensure correct initialized identifier names for table indexes.
+     *
+     * @param AbstractPlatform $platform
+     * @param Index[] $indexes
+     * @return Index[]
+     */
+    protected function normalizeTableIndexIdentifiers(AbstractPlatform $platform, array $indexes): array
+    {
+        $normalizedIndexes = [];
+        foreach ($indexes as $index) {
+            $columns = $index->getColumns();
+            foreach ($columns as &$column) {
+                $column = $platform->quoteIdentifier($this->trimIdentifierQuotes($column));
+            }
+            $normalizedIndexes[] = new Index(
+                // name
+                $platform->quoteIdentifier($this->trimIdentifierQuotes($index->getName())),
+                // columns
+                $columns,
+                // isUnique
+                $index->isUnique(),
+                // isPrimary
+                $index->isPrimary(),
+                // flags
+                $index->getFlags(),
+                // options
+                $index->getOptions(),
+            );
+        }
+        return $normalizedIndexes;
+    }
+
+    /**
+     * Ensure correct initialized identifier names for table columns.
+     *
+     * @param AbstractPlatform $platform
+     * @param Column[] $columns
+     * @return Column[]
+     */
+    protected function normalizeTableColumnIdentifiers(AbstractPlatform $platform, array $columns): array
+    {
+        $normalizedColumns = [];
+        foreach ($columns as $column) {
+            // It seems that since Doctrine DBAL 4 matching the autoincrement column, when defined as `UNSIGNED` is
+            // not working anymore. The platform always create a signed autoincrement primary key, and it looks that
+            // this code has not changed between v3 and v4. It's mysterious why we need to remove the UNSIGNED flag
+            // for autoincrement columns for SQLite.
+            // @todo This needs further validation and investigation.
+            if ($column->getAutoincrement() === true && $platform instanceof DoctrineSQLitePlatform) {
+                // @todo why do we need this with Doctrine DBAL 4 ???
+                $column->setUnsigned(false);
+            }
+            $columnData = $column->toArray();
+            unset($columnData['name'], $columnData['type']);
+            $normalizedColumns[] = new Column(
+                // name
+                $platform->quoteIdentifier($this->trimIdentifierQuotes($column->getName())),
+                // type
+                $column->getType(),
+                // options
+                $columnData,
+            );
+        }
+        return $normalizedColumns;
     }
 
     /**
@@ -1360,5 +1851,209 @@ class ConnectionMigrator
             // `AbstractPlatform->getBinaryMaxLength()` value
             $column->setLength(255);
         }
+    }
+
+    /**
+     * Normalize fields towards PostgreSQL compatibility.
+     */
+    protected function normalizeTableForPostgreSQL(AbstractPlatform $databasePlatform, Table $table): void
+    {
+        if (!($databasePlatform instanceof DoctrinePostgreSQLPlatform)) {
+            return;
+        }
+
+        foreach ($table->getColumns() as $column) {
+            // PostgreSQL does not support length definition for integer type fields. Therefore, we remove the pseudo
+            // MySQL length information to avoid compare issues.
+            if ((
+                $column->getType() instanceof SmallIntType
+                || $column->getType() instanceof IntegerType
+                || $column->getType() instanceof BigIntType
+            ) && $column->getLength() !== null
+            ) {
+                $column->setLength(null);
+            }
+        }
+    }
+
+    /**
+     * Normalize fields towards SQLite compatibility.
+     *
+     * @see https://github.com/doctrine/dbal/commit/33555d36e7e7d07a5880e01
+     */
+    protected function normalizeTableForSQLite(AbstractPlatform $databasePlatform, Table $table): void
+    {
+        if (!($databasePlatform instanceof DoctrineSQLitePlatform)) {
+            return;
+        }
+
+        // doctrine/dbal detects both sqlite autoincrement variants (row_id alias and autoincrement) through assumptions
+        // which have been made. TYPO3 reads the ext_tables.sql files as MySQL/MariaDB variant, thus not setting the
+        // autoincrement value to true for the row_id alias variant, which leads to an endless missmatch during database
+        // comparison. This method adopts the doctrine/dbal assumption and apply it to the meta schema to mitigate
+        // endless database compare detections in these cases.
+        //
+        // @see https://github.com/doctrine/dbal/commit/33555d36e7e7d07a5880e01
+        $primaryColumns = $table->getPrimaryKey()?->getColumns() ?? [];
+        $primaryKeyColumnCount = count($primaryColumns);
+        $firstPrimaryKeyColumnName = $primaryColumns[0] ?? '';
+        $singlePrimaryKeyColumn = $table->hasColumn($firstPrimaryKeyColumnName)
+            ? $table->getColumn($firstPrimaryKeyColumnName)
+            : null;
+        if ($primaryKeyColumnCount === 1
+            && $singlePrimaryKeyColumn !== null
+            && $singlePrimaryKeyColumn->getType() instanceof IntegerType
+        ) {
+            $singlePrimaryKeyColumn->setAutoincrement(true);
+        }
+    }
+
+    /**
+     * Trim all possible identifier quotes from identifier. This method has been cloned from Doctrine DBAL.
+     *
+     * @see \Doctrine\DBAL\Schema\AbstractAsset::trimQuotes()
+     */
+    private function trimIdentifierQuotes(string $identifier): string
+    {
+        return str_replace(['`', '"', '[', ']'], '', $identifier);
+    }
+
+    /**
+     * Retrieve data migration statements for PostgreSQL SERIAL to IDENTITY autoincrement column changes.
+     *
+     * @see ConnectionMigrator::getChangedFieldUpdateSuggestions()
+     *
+     * @return string[]
+     * @throws DBALException
+     */
+    private function getPostgreSQLMigrationStatements(Typo3Connection $connection, TableDiff $changedTable, ColumnDiff $modifiedColumn): array
+    {
+        $sequenceInfo = $this->getTableSequenceInformation($connection, $changedTable, $modifiedColumn);
+        if ($sequenceInfo === null) {
+            return [];
+        }
+        $newColumn = $modifiedColumn->getNewColumn();
+        $tableName = $this->trimIdentifierQuotes($changedTable->getOldTable()->getName());
+        $fieldName = $this->trimIdentifierQuotes($newColumn->getName());
+        $seqId = $sequenceInfo['seqid'];
+        $combinedStatementParts = [];
+        // @todo use QueryBuilder to generate the upgrade statement
+        $combinedStatementParts[] = sprintf(
+            'UPDATE %s SET deptype = %s WHERE (classid, objid, objsubid) = (%s::regclass, %s, 0) AND deptype = %s',
+            $connection->quoteIdentifier('pg_depend'),
+            $connection->quote('i'),
+            $connection->quote('pg_class'),
+            $connection->quote((string)$seqId),
+            $connection->quote('a'),
+        );
+        // mark the column as identity column
+        // @todo use QueryBuilder to generate the upgrade statement
+        $combinedStatementParts[] = sprintf(
+            'UPDATE %s SET attidentity = %s WHERE attrelid = %s::regclass AND attname = %s::name',
+            $connection->quoteIdentifier('pg_attribute'),
+            $connection->quote('d'),
+            $connection->quote($tableName),
+            $connection->quote($fieldName)
+        );
+        return $combinedStatementParts;
+    }
+
+    /**
+     * Fetch PostgreSQL table sequence information. If existing, that means that a old Doctrine DBAL v3 autoincrement
+     * sequence has not been migrated and altered yet.
+     *
+     * @see https://github.com/doctrine/dbal/blob/4.0.x/UPGRADE.md#bc-break-auto-increment-columns-on-postgresql-are-implemented-as-identity-not-serial
+     * @see ConnectionMigrator::getPostgreSQLMigrationStatements()
+     *
+     * @return array{seqid: int, objid: int}|null
+     * @throws DBALException
+     */
+    private function getTableSequenceInformation(Typo3Connection $connection, TableDiff $changedTable, ColumnDiff $modifiedColumn): array|null
+    {
+        $oldColumn = $modifiedColumn->getOldColumn();
+        $newColumn = $modifiedColumn->getNewColumn();
+        $tableName = $this->trimIdentifierQuotes($changedTable->getOldTable()->getName());
+        $fieldName = $this->trimIdentifierQuotes($newColumn->getName());
+        $isAutoIncrementChange = ($newColumn->getAutoincrement() === true && $newColumn->getAutoincrement() !== $oldColumn->getAutoincrement());
+
+        if (!($connection->getDatabasePlatform() instanceof DoctrinePostgreSQLPlatform && $isAutoIncrementChange)) {
+            return null;
+        }
+        $colNum = $this->getTableFieldColumnNumber($connection, $tableName, $fieldName);
+        if ($colNum === null) {
+            return null;
+        }
+        return $this->getSequenceInfo($connection, $tableName, $fieldName, $colNum);
+    }
+
+    /**
+     * Fetch PostgreSQL table sequence information. If existing, that means that a old Doctrine DBAL v3 autoincrement
+     * sequence has not been migrated and altered yet.
+     *
+     * @see https://github.com/doctrine/dbal/blob/4.0.x/UPGRADE.md#bc-break-auto-increment-columns-on-postgresql-are-implemented-as-identity-not-serial
+     * @see ConnectionMigrator::getTableSequenceInformation()
+     *
+     * @return array{seqid: int, objid: int}|null
+     * @throws DBALException
+     */
+    private function getSequenceInfo(Typo3Connection $connection, string $table, string $field, int $colNum): array|null
+    {
+        $quotedTable = $connection->quote($table);
+        $colNum = $connection->quote((string)$colNum);
+        $quotedPgClass = $connection->quote('pg_class');
+        $depType = $connection->quote('a');
+        // @todo Use QueryBuilder to retrieve the data
+        $sql = sprintf(
+            'SELECT classid as seqid, objid FROM pg_depend WHERE (refclassid, refobjid, refobjsubid) = (%s::regclass, %s::regclass, %s) AND classid = %s::regclass AND objsubid = 0 AND deptype = %s;',
+            $quotedPgClass,
+            $quotedTable,
+            $colNum,
+            $quotedPgClass,
+            $depType
+        );
+        $rows = $connection->executeQuery($sql)->fetchAllAssociative();
+        $count = count($rows);
+        if ($count === 1) {
+            $row = reset($rows);
+            if (is_array($row)) {
+                return $row;
+            }
+        } elseif ($count > 1) {
+            // @todo Throw a concrete exception class
+            throw new \RuntimeException(
+                sprintf(
+                    'Found more than one linked sequence table for %s.%s',
+                    $table,
+                    $field
+                ),
+                1705673988
+            );
+        }
+
+        return null;
+    }
+
+    /**
+     * Fetch PostgreSQL table field column nummber from schema definition.
+     *
+     * @see https://github.com/doctrine/dbal/blob/4.0.x/UPGRADE.md#bc-break-auto-increment-columns-on-postgresql-are-implemented-as-identity-not-serial
+     * @see ConnectionMigrator::getTableSequenceInformation()
+     */
+    private function getTableFieldColumnNumber(Typo3Connection $connection, string $table, string $field): int|null
+    {
+        $table = $connection->quote($table);
+        $field = $connection->quote($field);
+        // @todo Use QueryBuilder to retrieve the data
+        $sql = sprintf(
+            'SELECT attnum FROM pg_attribute WHERE attrelid = %s::regclass AND attname = %s::name;',
+            $table,
+            $field
+        );
+        $rows = $connection->executeQuery($sql)->fetchAllAssociative();
+        $row = reset($rows);
+        if (is_array($row)) {
+            return (int)$row['attnum'];
+        }
+        return null;
     }
 }

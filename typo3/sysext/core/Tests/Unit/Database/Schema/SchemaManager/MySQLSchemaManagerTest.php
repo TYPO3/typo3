@@ -22,11 +22,8 @@ use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\Platform\MariaDB1027Platform;
-use TYPO3\CMS\Core\Database\Platform\MariaDB1043Platform;
 use TYPO3\CMS\Core\Database\Platform\MariaDB1052Platform;
 use TYPO3\CMS\Core\Database\Platform\MariaDBPlatform;
-use TYPO3\CMS\Core\Database\Platform\MySQL57Platform;
 use TYPO3\CMS\Core\Database\Platform\MySQL80Platform;
 use TYPO3\CMS\Core\Database\Platform\MySQLPlatform;
 use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
@@ -121,19 +118,6 @@ final class MySQLSchemaManagerTest extends UnitTestCase
         ];
         yield 'Use TYPO3 MariaDB1052Platform' => [
             'platform' => MariaDB1052Platform::class,
-        ];
-
-        // @todo Remove with `doctrine/dbal 4.0` upgrade.
-        yield 'Use TYPO3 MySQL57Platform' => [
-            'platform' => MySQL57Platform::class,
-        ];
-        // @todo Remove with `doctrine/dbal 4.0` upgrade.
-        yield 'Use TYPO3 MariaDB1027Platform' => [
-            'platform' => MariaDB1027Platform::class,
-        ];
-        // @todo Remove with `doctrine/dbal 4.0` upgrade.
-        yield 'Use TYPO3 MariaDB1043Platform' => [
-            'platform' => MariaDB1043Platform::class,
         ];
     }
 

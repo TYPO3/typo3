@@ -33,7 +33,7 @@ class DriverResult extends AbstractResultMiddleware
     /**
      * {@inheritDoc}
      */
-    public function fetchNumeric()
+    public function fetchNumeric(): array|false
     {
         return $this->mapResourceToString(parent::fetchNumeric());
     }
@@ -41,7 +41,7 @@ class DriverResult extends AbstractResultMiddleware
     /**
      * {@inheritDoc}
      */
-    public function fetchAssociative()
+    public function fetchAssociative(): array|false
     {
         return $this->mapResourceToString(parent::fetchAssociative());
     }
@@ -49,7 +49,7 @@ class DriverResult extends AbstractResultMiddleware
     /**
      * {@inheritDoc}
      */
-    public function fetchOne()
+    public function fetchOne(): mixed
     {
         return $this->mapResourceToString(parent::fetchOne());
     }
@@ -103,7 +103,6 @@ class DriverResult extends AbstractResultMiddleware
                 $record
             );
         }
-
         return $record;
     }
 }

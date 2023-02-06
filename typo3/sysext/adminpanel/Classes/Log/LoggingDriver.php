@@ -36,8 +36,10 @@ final class LoggingDriver extends AbstractDriverMiddleware
         $this->logger = $logger;
     }
 
-    public function connect(array $params)
-    {
+    public function connect(
+        #[\SensitiveParameter]
+        array $params,
+    ): LoggingConnection {
         return new LoggingConnection(parent::connect($params), $this->logger);
     }
 }

@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 
+use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\ParameterType;
+use Doctrine\DBAL\Types\Type;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
@@ -385,7 +388,7 @@ class Typo3DbQueryParser
                 }
                 return $this->queryBuilder->expr()->inSet(
                     $tableName . '.' . $columnName,
-                    $this->queryBuilder->quote($value)
+                    $this->queryBuilder->quote((string)$value)
                 );
             }
             throw new RepositoryException('Unsupported or non-existing property name "' . $propertyName . '" used in relation matching.', 1327065745);
@@ -480,11 +483,8 @@ class Typo3DbQueryParser
     /**
      * Maps plain value of operand to PDO types to help Doctrine and/or the database driver process the value
      * correctly when building the query.
-     *
-     * @param mixed $value The parameter value
-     * @throws \InvalidArgumentException
      */
-    protected function getParameterType($value): int
+    protected function getParameterType(mixed $value): ParameterType
     {
         $parameterType = gettype($value);
         switch ($parameterType) {
@@ -506,11 +506,11 @@ class Typo3DbQueryParser
      * one of the \PDO::PARAM_* types by specifying the $forceType argument.
      *
      * @param mixed $value The input value that should be sent to the database
-     * @param int|null $forceType The \PDO::PARAM_* type that should be forced
+     * @param ParameterType|Type|ArrayParameterType|null $forceType The \TYPO3\CMS\Core\Database\Connection::PARAM_* type that should be forced
      * @return string The placeholder string to be used in the query
      * @see \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::getPlainValue()
      */
-    protected function createTypedNamedParameter($value, int $forceType = null): string
+    protected function createTypedNamedParameter(mixed $value, ParameterType|Type|ArrayParameterType|null $forceType = null): string
     {
         if ($value instanceof DomainObjectInterface
             && $value->_hasProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID)

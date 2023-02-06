@@ -17,13 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Query;
 
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Driver\Statement as DriverStatement;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
+use Doctrine\DBAL\Query\From;
+use Doctrine\DBAL\Query\Join;
+use Doctrine\DBAL\Query\QueryType;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\StringType;
@@ -35,11 +39,15 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\LimitToTablesRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionInterface;
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend;
+use TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Storage\Typo3DbQueryParserTest;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
- * Object oriented approach to building SQL queries.
+ * Object-oriented approach to building SQL queries.
  *
  * It's a facade to the Doctrine DBAL QueryBuilder that implements PHP7 type hinting and automatic
  * quoting of table and column names.
@@ -54,29 +62,13 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * Additional functionality included is support for COUNT() and TRUNCATE() statements.
  */
-class QueryBuilder
+class QueryBuilder extends ConcreteQueryBuilder
 {
-    /**
-     * The DBAL Connection.
-     *
-     * @var Connection
-     */
-    protected $connection;
+    protected ConcreteQueryBuilder $concreteQueryBuilder;
 
-    /**
-     * @var \Doctrine\DBAL\Query\QueryBuilder
-     */
-    protected $concreteQueryBuilder;
+    protected QueryRestrictionContainerInterface $restrictionContainer;
 
-    /**
-     * @var QueryRestrictionContainerInterface
-     */
-    protected $restrictionContainer;
-
-    /**
-     * @var array
-     */
-    protected $additionalRestrictions;
+    protected array $additionalRestrictions;
 
     /**
      * List of table aliases which are completely ignored
@@ -87,26 +79,47 @@ class QueryBuilder
      *
      * @var string[]
      */
-    private $restrictionsAppliedInJoinCondition = [];
+    private array $restrictionsAppliedInJoinCondition = [];
 
     /**
      * Initializes a new QueryBuilder.
      *
      * @param Connection $connection The DBAL Connection.
      * @param QueryRestrictionContainerInterface|null $restrictionContainer
-     * @param \Doctrine\DBAL\Query\QueryBuilder|null $concreteQueryBuilder
+     * @param ConcreteQueryBuilder|null $concreteQueryBuilder
      * @param array|null $additionalRestrictions
      */
     public function __construct(
         Connection $connection,
         QueryRestrictionContainerInterface $restrictionContainer = null,
-        \Doctrine\DBAL\Query\QueryBuilder $concreteQueryBuilder = null,
+        ConcreteQueryBuilder $concreteQueryBuilder = null,
         array $additionalRestrictions = null
     ) {
-        $this->connection = $connection;
+        parent::__construct($connection);
         $this->additionalRestrictions = $additionalRestrictions ?: $GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions'] ?? [];
         $this->setRestrictions($restrictionContainer ?: GeneralUtility::makeInstance(DefaultRestrictionContainer::class));
-        $this->concreteQueryBuilder = $concreteQueryBuilder ?: GeneralUtility::makeInstance(\Doctrine\DBAL\Query\QueryBuilder::class, $connection);
+        $this->concreteQueryBuilder = $concreteQueryBuilder ?: GeneralUtility::makeInstance(ConcreteQueryBuilder::class, $connection);
+    }
+
+    /**
+     * Deep clone of the QueryBuilder
+     * @see \Doctrine\DBAL\Query\QueryBuilder::__clone()
+     */
+    public function __clone()
+    {
+        $this->concreteQueryBuilder = clone $this->concreteQueryBuilder;
+        $this->restrictionContainer = clone $this->restrictionContainer;
+    }
+
+    /**
+     * Gets a string representation of this QueryBuilder which corresponds to
+     * the final SQL query being constructed.
+     *
+     * @return string The string representation of this QueryBuilder.
+     */
+    public function __toString(): string
+    {
+        return $this->getSQL();
     }
 
     public function getRestrictions(): QueryRestrictionContainerInterface
@@ -155,32 +168,11 @@ class QueryBuilder
     }
 
     /**
-     * Gets the type of the currently built query.
-     *
-     * @internal
-     */
-    public function getType(): int
-    {
-        return $this->concreteQueryBuilder->getType();
-    }
-
-    /**
      * Gets the associated DBAL Connection for this query builder.
      */
     public function getConnection(): Connection
     {
         return $this->connection;
-    }
-
-    /**
-     * Gets the state of this query builder instance.
-     *
-     * @return int Either QueryBuilder::STATE_DIRTY or QueryBuilder::STATE_CLEAN.
-     * @internal
-     */
-    public function getState(): int
-    {
-        return $this->concreteQueryBuilder->getState();
     }
 
     /**
@@ -213,24 +205,27 @@ class QueryBuilder
     public function prepare(): Statement
     {
         $connection = $this->getConnection();
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
         $originalWhereConditions = null;
-        if ($this->getType() === \Doctrine\DBAL\Query\QueryBuilder::SELECT) {
-            $originalWhereConditions = $this->addAdditionalWhereConditions();
+        try {
+            if ($concreteQueryBuilder->type === QueryType::SELECT) {
+                $originalWhereConditions = $this->addAdditionalWhereConditions();
+            }
+            $sql = $concreteQueryBuilder->getSQL();
+            $params = $concreteQueryBuilder->getParameters();
+            $types = $concreteQueryBuilder->getParameterTypes();
+            $this->throwExceptionOnInvalidPreparedStatementParamArrayType($types);
+            $this->throwExceptionOnNamedParameterForPreparedStatement($params);
+            $statement = $connection->prepare($sql)->getWrappedStatement();
+            $this->bindTypedValues($statement, $params, $types);
+        } finally {
+            if ($concreteQueryBuilder->type === QueryType::SELECT) {
+                $concreteQueryBuilder->resetWhere();
+                if ($originalWhereConditions !== null) {
+                    $concreteQueryBuilder->where($originalWhereConditions);
+                }
+            }
         }
-
-        $sql = $this->concreteQueryBuilder->getSQL();
-        $params = $this->concreteQueryBuilder->getParameters();
-        $types = $this->concreteQueryBuilder->getParameterTypes();
-        $this->throwExceptionOnInvalidPreparedStatementParamArrayType($types);
-        $this->throwExceptionOnNamedParameterForPreparedStatement($params);
-        $statement = $connection->prepare($sql)->getWrappedStatement();
-        $this->bindTypedValues($statement, $params, $types);
-
-        if ($originalWhereConditions !== null) {
-            $this->concreteQueryBuilder->add('where', $originalWhereConditions, false);
-        }
-
         return new Statement($connection, $statement, $sql);
     }
 
@@ -249,14 +244,15 @@ class QueryBuilder
     {
         // Set additional query restrictions
         $originalWhereConditions = $this->addAdditionalWhereConditions();
-
-        $result = $this->concreteQueryBuilder->executeQuery();
-
-        // Restore the original query conditions in case the user keeps
-        // on modifying the state.
-        $this->concreteQueryBuilder->add('where', $originalWhereConditions, false);
-
-        return $result;
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        try {
+            return $concreteQueryBuilder->executeQuery();
+        } finally {
+            $concreteQueryBuilder->resetWhere();
+            if ($originalWhereConditions !== null) {
+                $concreteQueryBuilder->where($originalWhereConditions);
+            }
+        }
     }
 
     /**
@@ -275,7 +271,8 @@ class QueryBuilder
      */
     public function executeStatement(): int
     {
-        return $this->concreteQueryBuilder->executeStatement();
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->executeStatement();
     }
 
     /**
@@ -288,19 +285,20 @@ class QueryBuilder
      */
     public function getSQL(): string
     {
-        if ($this->getType() !== \Doctrine\DBAL\Query\QueryBuilder::SELECT) {
-            return $this->concreteQueryBuilder->getSQL();
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        if ($concreteQueryBuilder->type !== QueryType::SELECT) {
+            return $concreteQueryBuilder->getSQL();
         }
-
         // Set additional query restrictions
-        $originalWhereConditions = $this->addAdditionalWhereConditions();
-
-        $sql = $this->concreteQueryBuilder->getSQL();
-
-        // Restore the original query conditions in case the user keeps
-        // on modifying the state.
-        $this->concreteQueryBuilder->add('where', $originalWhereConditions, false);
-
+        $originalWhereConditions =  $this->addAdditionalWhereConditions();
+        try {
+            $sql = $concreteQueryBuilder->getSQL();
+        } finally {
+            $concreteQueryBuilder->resetWhere();
+            if ($originalWhereConditions !== null) {
+                $concreteQueryBuilder->where($originalWhereConditions);
+            }
+        }
         return $sql;
     }
 
@@ -309,40 +307,46 @@ class QueryBuilder
      *
      * @param string|int $key The parameter position or name.
      * @param mixed $value The parameter value.
-     * @param int|null $type One of the Connection::PARAM_* constants.
+     * @param string|ParameterType|Type|ArrayParameterType $type One of the Connection::PARAM_* constants.
      *
      * @return QueryBuilder This QueryBuilder instance.
+     *
+     * @deprecated Null and integer value for $type deprecated since v12. Remove from signature in v13.
      */
-    public function setParameter($key, $value, int $type = null): QueryBuilder
-    {
-        $this->concreteQueryBuilder->setParameter($key, $value, $type);
-
+    public function setParameter(
+        int|string $key,
+        mixed $value,
+        string|ParameterType|Type|ArrayParameterType $type = ParameterType::STRING,
+    ): QueryBuilder {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->setParameter($key, $value, $type);
         return $this;
     }
 
     /**
      * Sets a collection of query parameters for the query being constructed.
      *
-     * @param array $params The query parameters to set.
-     * @param array $types The query parameters types to set.
+     * @param list<mixed>|array<string, mixed> $params The query parameters to set.
+     * @param array<int<0, max>, string|Type|ParameterType|ArrayParameterType>|array<string, string|Type|ParameterType|ArrayParameterType> $types The query parameters types to set.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
     public function setParameters(array $params, array $types = []): QueryBuilder
     {
-        $this->concreteQueryBuilder->setParameters($params, $types);
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->setParameters($params, $types);
         return $this;
     }
 
     /**
      * Gets all defined query parameters for the query being constructed indexed by parameter index or name.
      *
-     * @return array The currently defined query parameters indexed by parameter index or name.
+     * @return list<mixed>|array<string, mixed> The currently defined query parameters indexed by parameter index or name.
      */
     public function getParameters(): array
     {
-        return $this->concreteQueryBuilder->getParameters();
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->getParameters();
     }
 
     /**
@@ -352,19 +356,21 @@ class QueryBuilder
      *
      * @return mixed The value of the bound parameter.
      */
-    public function getParameter($key)
+    public function getParameter(string|int $key): mixed
     {
-        return $this->concreteQueryBuilder->getParameter($key);
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->getParameter($key);
     }
 
     /**
      * Gets all defined query parameter types for the query being constructed indexed by parameter index or name.
      *
-     * @return array The currently defined query parameter types indexed by parameter index or name.
+     * @return array<int<0, max>, string|Type|ParameterType|ArrayParameterType>|array<string, string|Type|ParameterType|ArrayParameterType> The currently defined query parameter types indexed by parameter index or name.
      */
     public function getParameterTypes(): array
     {
-        return $this->concreteQueryBuilder->getParameterTypes();
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->getParameterTypes();
     }
 
     /**
@@ -372,11 +378,12 @@ class QueryBuilder
      *
      * @param string|int $key The key (index or name) of the bound parameter type.
      *
-     * @return mixed The value of the bound parameter type.
+     * @return string|ParameterType|Type|ArrayParameterType The value of the bound parameter type.
      */
-    public function getParameterType($key)
+    public function getParameterType(string|int $key): string|ParameterType|Type|ArrayParameterType
     {
-        return $this->concreteQueryBuilder->getParameterType($key);
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->getParameterType($key);
     }
 
     /**
@@ -388,8 +395,8 @@ class QueryBuilder
      */
     public function setFirstResult(int $firstResult): QueryBuilder
     {
-        $this->concreteQueryBuilder->setFirstResult($firstResult);
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->setFirstResult($firstResult);
         return $this;
     }
 
@@ -401,20 +408,21 @@ class QueryBuilder
      */
     public function getFirstResult(): int
     {
-        return (int)$this->concreteQueryBuilder->getFirstResult();
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->getFirstResult();
     }
 
     /**
      * Sets the maximum number of results to retrieve (the "limit").
      *
-     * @param int $maxResults The maximum number of results to retrieve.
+     * @param int|null $maxResults The maximum number of results to retrieve or NULL to retrieve all results.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function setMaxResults(int $maxResults): QueryBuilder
+    public function setMaxResults(int|null $maxResults = null): QueryBuilder
     {
-        $this->concreteQueryBuilder->setMaxResults($maxResults);
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->setMaxResults($maxResults);
         return $this;
     }
 
@@ -422,30 +430,12 @@ class QueryBuilder
      * Gets the maximum number of results the query object was set to retrieve (the "limit").
      * Returns 0 if setMaxResults was not applied to this query builder.
      *
-     * @return int The maximum number of results.
+     * @return int|null The maximum number of results.
      */
-    public function getMaxResults(): int
+    public function getMaxResults(): int|null
     {
-        return (int)$this->concreteQueryBuilder->getMaxResults();
-    }
-
-    /**
-     * Either appends to or replaces a single, generic query part.
-     *
-     * The available parts are: 'select', 'from', 'set', 'where',
-     * 'groupBy', 'having' and 'orderBy'.
-     *
-     * @param string $sqlPartName
-     * @param string|array $sqlPart
-     * @param bool $append
-     *
-     * @return QueryBuilder This QueryBuilder instance.
-     */
-    public function add(string $sqlPartName, $sqlPart, bool $append = false): QueryBuilder
-    {
-        $this->concreteQueryBuilder->add($sqlPartName, $sqlPart, $append);
-
-        return $this;
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->getMaxResults();
     }
 
     /**
@@ -460,7 +450,8 @@ class QueryBuilder
         $countExpr = $this->getCountExpression(
             $item === '*' ? $item : $this->quoteIdentifier($item)
         );
-        $this->concreteQueryBuilder->select($countExpr);
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->select($countExpr);
 
         return $this;
     }
@@ -473,35 +464,31 @@ class QueryBuilder
     /**
      * Specifies items that are to be returned in the query result.
      * Replaces any previously specified selections, if any.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
      */
     public function select(string ...$selects): QueryBuilder
     {
-        $this->concreteQueryBuilder->select(...$this->quoteIdentifiersForSelect($selects));
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->select(...$this->quoteIdentifiersForSelect($selects));
         return $this;
     }
 
     /**
-     * Specifies that this query should be DISTINCT.
+     * Adds or removes DISTINCT to/from the query.
      */
-    public function distinct(): QueryBuilder
+    public function distinct(bool $distinct = true): QueryBuilder
     {
-        $this->concreteQueryBuilder->distinct();
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->distinct($distinct);
         return $this;
     }
 
     /**
      * Adds an item that is to be returned in the query result.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
      */
     public function addSelect(string ...$selects): QueryBuilder
     {
-        $this->concreteQueryBuilder->addSelect(...$this->quoteIdentifiersForSelect($selects));
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->addSelect(...$this->quoteIdentifiersForSelect($selects));
         return $this;
     }
 
@@ -512,12 +499,11 @@ class QueryBuilder
      * quoting/escaping of any kind will be performed on the items.
      *
      * @param string ...$selects Literal SQL expressions to be selected. Warning: No quoting will be done!
-     * @return QueryBuilder This QueryBuilder instance.
      */
     public function selectLiteral(string ...$selects): QueryBuilder
     {
-        $this->concreteQueryBuilder->select(...$selects);
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->select(...$selects);
         return $this;
     }
 
@@ -527,12 +513,11 @@ class QueryBuilder
      * any kind will be performed on the items.
      *
      * @param string ...$selects Literal SQL expressions to be selected.
-     * @return QueryBuilder This QueryBuilder instance.
      */
     public function addSelectLiteral(string ...$selects): QueryBuilder
     {
-        $this->concreteQueryBuilder->addSelect(...$selects);
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->addSelect(...$selects);
         return $this;
     }
 
@@ -540,20 +525,13 @@ class QueryBuilder
      * Turns the query being built into a bulk delete query that ranges over
      * a certain table.
      *
-     * @param string $delete The table whose rows are subject to the deletion.
-     *                       Will be quoted according to database platform automatically.
-     * @param string|null $alias The table alias used in the constructed query.
+     * @param string $table The table whose rows are subject to the deletion.
      *                      Will be quoted according to database platform automatically.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
      */
-    public function delete(string $delete, string $alias = null): QueryBuilder
+    public function delete(string $table): QueryBuilder
     {
-        $this->concreteQueryBuilder->delete(
-            $this->quoteIdentifier($delete),
-            empty($alias) ? $alias : $this->quoteIdentifier($alias)
-        );
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->delete($this->quoteIdentifier($table));
         return $this;
     }
 
@@ -561,18 +539,12 @@ class QueryBuilder
      * Turns the query being built into a bulk update query that ranges over
      * a certain table
      *
-     * @param string $update The table whose rows are subject to the update.
-     * @param string|null $alias The table alias used in the constructed query.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
+     * @param string $table The table whose rows are subject to the update.
      */
-    public function update(string $update, string $alias = null): QueryBuilder
+    public function update(string $table): QueryBuilder
     {
-        $this->concreteQueryBuilder->update(
-            $this->quoteIdentifier($update),
-            empty($alias) ? $alias : $this->quoteIdentifier($alias)
-        );
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->update($this->quoteIdentifier($table));
         return $this;
     }
 
@@ -580,14 +552,12 @@ class QueryBuilder
      * Turns the query being built into an insert query that inserts into
      * a certain table
      *
-     * @param string $insert The table into which the rows should be inserted.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
+     * @param string $table The table into which the rows should be inserted.
      */
-    public function insert(string $insert): QueryBuilder
+    public function insert(string $table): QueryBuilder
     {
-        $this->concreteQueryBuilder->insert($this->quoteIdentifier($insert));
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->insert($this->quoteIdentifier($table));
         return $this;
     }
 
@@ -595,18 +565,16 @@ class QueryBuilder
      * Creates and adds a query root corresponding to the table identified by the
      * given alias, forming a cartesian product with any existing query roots.
      *
-     * @param string $from The table. Will be quoted according to database platform automatically.
+     * @param string $table The table. Will be quoted according to database platform automatically.
      * @param string|null $alias The alias of the table. Will be quoted according to database platform automatically.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
      */
-    public function from(string $from, string $alias = null): QueryBuilder
+    public function from(string $table, string $alias = null): QueryBuilder
     {
-        $this->concreteQueryBuilder->from(
-            $this->quoteIdentifier($from),
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->from(
+            $this->quoteIdentifier($table),
             empty($alias) ? $alias : $this->quoteIdentifier($alias)
         );
-
         return $this;
     }
 
@@ -617,18 +585,16 @@ class QueryBuilder
      * @param string $join The table name to join.
      * @param string $alias The alias of the join table.
      * @param string|null $condition The condition for the join.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
      */
     public function join(string $fromAlias, string $join, string $alias, string $condition = null): QueryBuilder
     {
-        $this->concreteQueryBuilder->innerJoin(
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->innerJoin(
             $this->quoteIdentifier($fromAlias),
             $this->quoteIdentifier($join),
             $this->quoteIdentifier($alias),
             $condition
         );
-
         return $this;
     }
 
@@ -639,18 +605,16 @@ class QueryBuilder
      * @param string $join The table name to join.
      * @param string $alias The alias of the join table.
      * @param string|null $condition The condition for the join.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
      */
     public function innerJoin(string $fromAlias, string $join, string $alias, string $condition = null): QueryBuilder
     {
-        $this->concreteQueryBuilder->innerJoin(
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->innerJoin(
             $this->quoteIdentifier($fromAlias),
             $this->quoteIdentifier($join),
             $this->quoteIdentifier($alias),
             $condition
         );
-
         return $this;
     }
 
@@ -661,24 +625,21 @@ class QueryBuilder
      * @param string $join The table name to join.
      * @param string $alias The alias of the join table.
      * @param CompositeExpression|string|null $condition The condition for the join.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
      */
     public function leftJoin(string $fromAlias, string $join, string $alias, CompositeExpression|string $condition = null): QueryBuilder
     {
-        $conditionExpression = $this->expr()->and(
+        $conditionExpression = (string)$this->expr()->and(
             $condition,
             $this->restrictionContainer->buildExpression([$alias ?? $join => $join], $this->expr())
         );
         $this->restrictionsAppliedInJoinCondition[] = $alias ?? $join;
-
-        $this->concreteQueryBuilder->leftJoin(
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->leftJoin(
             $this->quoteIdentifier($fromAlias),
             $this->quoteIdentifier($join),
             $this->quoteIdentifier($alias),
             $conditionExpression
         );
-
         return $this;
     }
 
@@ -689,33 +650,29 @@ class QueryBuilder
      * @param string $join The table name to join.
      * @param string $alias The alias of the join table.
      * @param string|null $condition The condition for the join.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
      */
     public function rightJoin(string $fromAlias, string $join, string $alias, string $condition = null): QueryBuilder
     {
         $fromTable = $fromAlias;
         // find the table belonging to the $fromAlias, if it's an alias at all
-        foreach ($this->getQueryPart('from') ?: [] as $from) {
-            if (isset($from['alias']) && $this->unquoteSingleIdentifier($from['alias']) === $fromAlias) {
-                $fromTable = $this->unquoteSingleIdentifier($from['table']);
+        foreach ($this->concreteQueryBuilder->from as $from) {
+            if (is_string($from->alias) && $from->alias !== '' && $this->unquoteSingleIdentifier($from->alias) === $fromAlias) {
+                $fromTable = $this->unquoteSingleIdentifier($from->alias);
                 break;
             }
         }
-
-        $conditionExpression = $this->expr()->and(
+        $conditionExpression = (string)$this->expr()->and(
             $condition,
             $this->restrictionContainer->buildExpression([$fromAlias => $fromTable], $this->expr())
         );
         $this->restrictionsAppliedInJoinCondition[] = $fromAlias;
-
-        $this->concreteQueryBuilder->rightJoin(
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->rightJoin(
             $this->quoteIdentifier($fromAlias),
             $this->quoteIdentifier($join),
             $this->quoteIdentifier($alias),
             $conditionExpression
         );
-
         return $this;
     }
 
@@ -725,16 +682,14 @@ class QueryBuilder
      * @param string $key The column to set.
      * @param mixed $value The value, expression, placeholder, etc.
      * @param bool $createNamedParameter Automatically create a named parameter for the value
-     *
-     * @return QueryBuilder This QueryBuilder instance.
      */
-    public function set(string $key, $value, bool $createNamedParameter = true, int $type = Connection::PARAM_STR): QueryBuilder
+    public function set(string $key, $value, bool $createNamedParameter = true, ParameterType|ArrayParameterType $type = Connection::PARAM_STR): QueryBuilder
     {
-        $this->concreteQueryBuilder->set(
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->set(
             $this->quoteIdentifier($key),
             $createNamedParameter ? $this->createNamedParameter($value, $type) : $value
         );
-
         return $this;
     }
 
@@ -743,18 +698,18 @@ class QueryBuilder
      * Replaces any previously specified restrictions, if any.
      *
      * @param string|CompositeExpression ...$predicates
-     * @return QueryBuilder This QueryBuilder instance.
      */
     public function where(...$predicates): QueryBuilder
     {
         // Doctrine DBAL 3.x requires a non-empty $predicate, however TYPO3 uses static values
         // such as PageRepository->$where_hid_del which could be empty
-        $predicates = array_filter($predicates);
+        $predicates = array_filter($predicates, static fn(CompositeExpression|string|null $value): bool => !self::isEmptyPart($value));
         if (empty($predicates)) {
+            $this->resetWhere();
             return $this;
         }
-        $this->concreteQueryBuilder->where(...$predicates);
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->where(...$predicates);
         return $this;
     }
 
@@ -762,22 +717,19 @@ class QueryBuilder
      * Adds one or more restrictions to the query results, forming a logical
      * conjunction with any previously specified restrictions.
      *
-     * @param string|CompositeExpression ...$where The query restrictions.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
-     *
+     * @param string|CompositeExpression ...$predicates The query restrictions.
      * @see where()
      */
-    public function andWhere(...$where): QueryBuilder
+    public function andWhere(...$predicates): QueryBuilder
     {
         // Doctrine DBAL 3.x requires a non-empty $predicate, however TYPO3 uses static values
         // such as PageRepository->$where_hid_del which could be empty
-        $where = array_filter($where);
-        if (empty($where)) {
+        $predicates = array_filter($predicates, static fn(CompositeExpression|string|null $value): bool => !self::isEmptyPart($value));
+        if (empty($predicates)) {
             return $this;
         }
-        $this->concreteQueryBuilder->andWhere(...$where);
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->andWhere(...$predicates);
         return $this;
     }
 
@@ -785,22 +737,19 @@ class QueryBuilder
      * Adds one or more restrictions to the query results, forming a logical
      * disjunction with any previously specified restrictions.
      *
-     * @param string|CompositeExpression ...$where The WHERE statement.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
-     *
+     * @param string|CompositeExpression ...$predicates The WHERE statement.
      * @see where()
      */
-    public function orWhere(...$where): QueryBuilder
+    public function orWhere(...$predicates): QueryBuilder
     {
         // Doctrine DBAL 3.x requires a non-empty $predicate, however TYPO3 uses static values
         // such as PageRepository->$where_hid_del which could be empty
-        $where = array_filter($where);
-        if (empty($where)) {
+        $predicates = array_filter($predicates, static fn(CompositeExpression|string|null $value): bool => !self::isEmptyPart($value));
+        if (empty($predicates)) {
             return $this;
         }
-        $this->concreteQueryBuilder->orWhere(...$where);
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->orWhere(...$predicates);
         return $this;
     }
 
@@ -809,13 +758,11 @@ class QueryBuilder
      * Replaces any previously specified groupings, if any.
      *
      * @param string ...$groupBy The grouping expression.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
      */
     public function groupBy(...$groupBy): QueryBuilder
     {
-        $this->concreteQueryBuilder->groupBy(...$this->quoteIdentifiers($groupBy));
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->groupBy(...$this->quoteIdentifiers($groupBy));
         return $this;
     }
 
@@ -823,13 +770,11 @@ class QueryBuilder
      * Adds a grouping expression to the query.
      *
      * @param string ...$groupBy The grouping expression.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
      */
     public function addGroupBy(...$groupBy): QueryBuilder
     {
-        $this->concreteQueryBuilder->addGroupBy(...$this->quoteIdentifiers($groupBy));
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->addGroupBy(...$this->quoteIdentifiers($groupBy));
         return $this;
     }
 
@@ -839,16 +784,14 @@ class QueryBuilder
      * @param string $column The column into which the value should be inserted.
      * @param mixed $value The value that should be inserted into the column.
      * @param bool $createNamedParameter Automatically create a named parameter for the value
-     *
-     * @return QueryBuilder This QueryBuilder instance.
      */
     public function setValue(string $column, $value, bool $createNamedParameter = true): QueryBuilder
     {
-        $this->concreteQueryBuilder->setValue(
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->setValue(
             $this->quoteIdentifier($column),
             $createNamedParameter ? $this->createNamedParameter($value) : $value
         );
-
         return $this;
     }
 
@@ -858,8 +801,6 @@ class QueryBuilder
      *
      * @param array $values The values to specify for the insert query indexed by column names.
      * @param bool $createNamedParameters Automatically create named parameters for all values
-     *
-     * @return QueryBuilder This QueryBuilder instance.
      */
     public function values(array $values, bool $createNamedParameters = true): QueryBuilder
     {
@@ -868,9 +809,8 @@ class QueryBuilder
                 $value = $this->createNamedParameter($value);
             }
         }
-
-        $this->concreteQueryBuilder->values($this->quoteColumnValuePairs($values));
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->values($this->quoteColumnValuePairs($values));
         return $this;
     }
 
@@ -878,13 +818,17 @@ class QueryBuilder
      * Specifies a restriction over the groups of the query.
      * Replaces any previous having restrictions, if any.
      *
-     * @param mixed ...$having The restriction over the groups.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
+     * @param mixed ...$predicates The restriction over the groups.
      */
-    public function having(...$having): QueryBuilder
+    public function having(...$predicates): QueryBuilder
     {
-        $this->concreteQueryBuilder->having(...$having);
+        $predicates = array_filter($predicates, static fn(CompositeExpression|string|null $value): bool => !self::isEmptyPart($value));
+        if (empty($predicates)) {
+            $this->resetHaving();
+            return $this;
+        }
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->having(...$predicates);
         return $this;
     }
 
@@ -892,14 +836,16 @@ class QueryBuilder
      * Adds a restriction over the groups of the query, forming a logical
      * conjunction with any existing having restrictions.
      *
-     * @param mixed ...$having The restriction to append.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
+     * @param mixed ...$predicates The restriction to append.
      */
-    public function andHaving(...$having): QueryBuilder
+    public function andHaving(...$predicates): QueryBuilder
     {
-        $this->concreteQueryBuilder->andHaving(...$having);
-
+        $predicates = array_filter($predicates, static fn(CompositeExpression|string|null $value): bool => !self::isEmptyPart($value));
+        if (empty($predicates)) {
+            return $this;
+        }
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->andHaving(...$predicates);
         return $this;
     }
 
@@ -907,14 +853,16 @@ class QueryBuilder
      * Adds a restriction over the groups of the query, forming a logical
      * disjunction with any existing having restrictions.
      *
-     * @param mixed ...$having The restriction to add.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
+     * @param mixed ...$predicates The restriction to add.
      */
-    public function orHaving(...$having): QueryBuilder
+    public function orHaving(...$predicates): QueryBuilder
     {
-        $this->concreteQueryBuilder->orHaving(...$having);
-
+        $predicates = array_filter($predicates, static fn(CompositeExpression|string|null $value): bool => !self::isEmptyPart($value));
+        if (empty($predicates)) {
+            return $this;
+        }
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->orHaving(...$predicates);
         return $this;
     }
 
@@ -924,13 +872,11 @@ class QueryBuilder
      *
      * @param string $fieldName The fieldName to order by. Will be quoted according to database platform automatically.
      * @param string|null $order The ordering direction. No automatic quoting/escaping.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
      */
     public function orderBy(string $fieldName, string $order = null): QueryBuilder
     {
-        $this->concreteQueryBuilder->orderBy($this->connection->quoteIdentifier($fieldName), $order);
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->orderBy($this->connection->quoteIdentifier($fieldName), $order);
         return $this;
     }
 
@@ -939,93 +885,83 @@ class QueryBuilder
      *
      * @param string $fieldName The fieldName to order by. Will be quoted according to database platform automatically.
      * @param string|null $order The ordering direction.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
      */
     public function addOrderBy(string $fieldName, string $order = null): QueryBuilder
     {
-        $this->concreteQueryBuilder->addOrderBy($this->connection->quoteIdentifier($fieldName), $order);
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->addOrderBy($this->connection->quoteIdentifier($fieldName), $order);
         return $this;
     }
 
     /**
-     * Gets a query part by its name.
-     *
-     *
-     * @return mixed
+     * Resets the WHERE conditions for the query.
      */
-    public function getQueryPart(string $queryPartName)
+    public function resetWhere(): self
     {
-        return $this->concreteQueryBuilder->getQueryPart($queryPartName);
-    }
-
-    /**
-     * Gets all query parts.
-     */
-    public function getQueryParts(): array
-    {
-        return $this->concreteQueryBuilder->getQueryParts();
-    }
-
-    /**
-     * Resets SQL parts.
-     *
-     * @param array|null $queryPartNames
-     *
-     * @return QueryBuilder This QueryBuilder instance.
-     */
-    public function resetQueryParts(array $queryPartNames = null): QueryBuilder
-    {
-        $this->concreteQueryBuilder->resetQueryParts($queryPartNames);
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->resetWhere();
         return $this;
     }
 
     /**
-     * Resets a single SQL part.
-     *
-     *
-     * @return QueryBuilder This QueryBuilder instance.
+     * Resets the grouping for the query.
      */
-    public function resetQueryPart(string $queryPartName): QueryBuilder
+    public function resetGroupBy(): self
     {
-        $this->concreteQueryBuilder->resetQueryPart($queryPartName);
-
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->resetGroupBy();
         return $this;
     }
 
     /**
-     * Gets a string representation of this QueryBuilder which corresponds to
-     * the final SQL query being constructed.
-     *
-     * @return string The string representation of this QueryBuilder.
+     * Resets the HAVING conditions for the query.
      */
-    public function __toString(): string
+    public function resetHaving(): self
     {
-        return $this->getSQL();
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->resetHaving();
+        return $this;
+    }
+
+    /**
+     * Resets the ordering for the query.
+     */
+    public function resetOrderBy(): self
+    {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->resetOrderBy();
+        return $this;
     }
 
     /**
      * Creates a new named parameter and bind the value $value to it.
      *
-     * This method provides a shortcut for PDOStatement::bindValue
+     * This method provides a shortcut for {@see Statement::bindValue()}
      * when using prepared statements.
      *
      * The parameter $value specifies the value that you want to bind. If
-     * $placeholder is not provided bindValue() will automatically create a
-     * placeholder for you. An automatic placeholder will be of the name
-     * ':dcValue1', ':dcValue2' etc.
+     * $placeholder is not provided createNamedParameter() will automatically
+     * create a placeholder for you. An automatic placeholder will be of the
+     * name ':dcValue1', ':dcValue2' etc.
      *
-     * @param mixed $value
-     * @param int $type
+     * Example:
+     * <code>
+     * $value = 2;
+     * $q->eq( 'id', $q->createNamedParameter( $value ) );
+     * $stmt = $q->executeQuery(); // executed with 'id = 2'
+     * </code>
+     *
+     * @link http://www.zetacomponents.org
      * @param string|null $placeHolder The name to bind with. The string must start with a colon ':'.
-     *
      * @return string the placeholder name used.
      */
-    public function createNamedParameter($value, int $type = Connection::PARAM_STR, string $placeHolder = null): string
-    {
-        return $this->concreteQueryBuilder->createNamedParameter($value, $type, $placeHolder);
+    public function createNamedParameter(
+        mixed $value,
+        string|ParameterType|Type|ArrayParameterType $type = ParameterType::STRING,
+        string $placeHolder = null
+    ): string {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->createNamedParameter($value, $type, $placeHolder);
     }
 
     /**
@@ -1036,19 +972,27 @@ class QueryBuilder
      * statement , otherwise they get bound in the wrong order which can lead to serious
      * bugs in your code.
      *
-     * @param mixed $value
-     * @param int $type
+     * Example:
+     * <code>
+     *  $qb = $conn->createQueryBuilder();
+     *  $qb->select('u.*')
+     *     ->from('users', 'u')
+     *     ->where('u.username = ' . $qb->createPositionalParameter('Foo', ParameterType::STRING))
+     *     ->orWhere('u.username = ' . $qb->createPositionalParameter('Bar', ParameterType::STRING))
+     * </code>
      */
-    public function createPositionalParameter($value, int $type = Connection::PARAM_STR): string
-    {
-        return $this->concreteQueryBuilder->createPositionalParameter($value, $type);
+    public function createPositionalParameter(
+        mixed $value,
+        string|ParameterType|Type|ArrayParameterType $type = ParameterType::STRING,
+    ): string {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->createPositionalParameter($value, $type);
     }
 
     /**
      * Quotes like wildcards for given string value.
      *
      * @param string $value The value to be quoted.
-     *
      * @return string The quoted value.
      */
     public function escapeLikeWildcards(string $value): string
@@ -1059,13 +1003,12 @@ class QueryBuilder
     /**
      * Quotes a given input parameter.
      *
-     * @param mixed $input The parameter to be quoted.
-     * @param int $type The type of the parameter.
-     * @return mixed Often string, but also int or float or similar depending on $input and platform
+     * @param string $input The parameter to be quoted.
+     * @return string Often string, but also int or float or similar depending on $input and platform
      */
-    public function quote($input, int $type = Connection::PARAM_STR)
+    public function quote(string $input): string
     {
-        return $this->getConnection()->quote($input, $type);
+        return $this->getConnection()->quote($input);
     }
 
     /**
@@ -1075,7 +1018,6 @@ class QueryBuilder
      * Delimiting style depends on the underlying database platform that is being used.
      *
      * @param string $identifier The name to be quoted.
-     *
      * @return string The quoted name.
      */
     public function quoteIdentifier(string $identifier): string
@@ -1087,8 +1029,6 @@ class QueryBuilder
      * Quotes an array of column names so it can be safely used, even if the name is a reserved name.
      *
      * Delimiting style depends on the underlying database platform that is being used.
-     *
-     * @param array $input
      */
     public function quoteIdentifiers(array $input): array
     {
@@ -1101,8 +1041,6 @@ class QueryBuilder
      * statements.
      *
      * Delimiting style depends on the underlying database platform that is being used.
-     *
-     * @param array $input
      *
      * @throws \InvalidArgumentException
      */
@@ -1149,8 +1087,6 @@ class QueryBuilder
      * if the name is a reserved name.
      *
      * Delimiting style depends on the underlying database platform that is being used.
-     *
-     * @param array $input
      */
     public function quoteColumnValuePairs(array $input): array
     {
@@ -1178,16 +1114,13 @@ class QueryBuilder
         if (empty($values)) {
             return 'NULL';
         }
-
         // Ensure values are all integer
         $values = GeneralUtility::intExplode(',', implode(',', $values));
-
         // Ensure all values are quoted as int for used dbms
         $connection = $this;
         array_walk($values, static function (mixed &$value) use ($connection): void {
-            $value = $connection->quote($value, Connection::PARAM_INT);
+            $value = $connection->quote((string)$value);
         });
-
         return implode(',', $values);
     }
 
@@ -1212,16 +1145,13 @@ class QueryBuilder
         if (empty($values)) {
             return 'NULL';
         }
-
         // Ensure values are all strings
         $values = GeneralUtility::trimExplode(',', implode(',', $values));
-
         // Ensure all values are quoted as string values for used dbmns
         $connection = $this;
         array_walk($values, static function (mixed &$value) use ($connection): void {
-            $value = $connection->quote($value);
+            $value = $connection->quote((string)$value);
         });
-
         return implode(',', $values);
     }
 
@@ -1245,7 +1175,6 @@ class QueryBuilder
         if ($databasePlatform instanceof DoctrineSQLitePlatform) {
             return sprintf('CAST(%s as TEXT)', $this->connection->quoteIdentifier($fieldName));
         }
-
         throw new \RuntimeException(
             sprintf(
                 '%s is not implemented for the used database platform "%s", yet!',
@@ -1274,37 +1203,143 @@ class QueryBuilder
     }
 
     /**
+     * @internal This method reflects needed quoted char determination for `unquoteSingleIdentifier()`. Until `doctrine/dbal ^4`
+     *           the corresponding information has been used from the database platform class which is not available
+     *           anymore.
+     */
+    protected function getIdentifierQuoteCharacter(): string
+    {
+        return substr($this->connection->getDatabasePlatform()->quoteSingleIdentifier('fake'), 0, 1);
+    }
+
+    /**
+     * Returns selected fields from internal query state.
+     *
+     * @see ContentObjectRenderer::getQueryArray()
+     * @internal only, used for Extbase internal handling, ContentObject Query handling and core tests. Don't use it.
+     * @return string[]
+     */
+    public function getSelect(): array
+    {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->select;
+    }
+
+    /**
+     * Returns from tables from internal query state.
+     *
+     * @see ContentObjectRenderer::getQueryArray()
+     * @see Typo3DbBackend::getObjectDataByQuery()
+     * @see Typo3DbBackend::getObjectCountByQuery()
+     * @internal only, used for Extbase internal handling, ContentObject Query handling and core tests. Don't use it.
+     * @return From[]
+     */
+    public function getFrom()
+    {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->from;
+    }
+
+    /**
+     * Returns where expressions from internal query state.
+     *
+     * @see ContentObjectRenderer::getQueryArray()
+     * @see Typo3DbQueryParserTest
+     * @internal only, used for Extbase internal handling, ContentObject Query handling and core tests. Don't use it.
+     * @return CompositeExpression|string|null
+     */
+    public function getWhere(): CompositeExpression|string|null
+    {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->where;
+    }
+
+    /**
+     * Returns having expressions from internal query state.
+     *
+     * @see ContentObjectRenderer::getQueryArray()
+     * @internal only, used for Extbase internal handling, ContentObject Query handling and core tests. Don't use it.
+     * @return CompositeExpression|string|null
+     */
+    public function getHaving(): CompositeExpression|string|null
+    {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->having;
+    }
+
+    /**
+     * Returns order-by definitions from internal query state.
+     *
+     * @return string[]
+     * @see ContentObjectRenderer::getQueryArray()
+     * @see RelationHandler::readForeignField()
+     * @see Typo3DbQueryParserTest
+     * @internal only, used for Extbase internal handling, ContentObject Query handling and core tests. Don't use it.
+     */
+    public function getOrderBy(): array
+    {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->orderBy;
+    }
+
+    /**
+     * Returns selected group-by definitions from internal query state.
+     *
+     * @see ContentObjectRenderer::getQueryArray()
+     * @see Typo3DbQueryParserTest
+     * @return string[]
+     * @internal only, used for Extbase internal handling, ContentObject Query handling and core tests. Don't use it.
+     */
+    public function getGroupBy(): array
+    {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->groupBy;
+    }
+
+    /**
+     * Returns the list of joins, indexed by `from-alias` from the internal query state.
+     *
+     * @see ContentObjectRenderer::getQueryArray()
+     * @return array<string, Join[]>
+     * @internal only, used for Extbase internal handling, ContentObject Query handling and core tests. Don't use it.
+     */
+    public function getJoin(): array
+    {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        return $concreteQueryBuilder->join;
+    }
+
+    /**
      * Return all tables/aliases used in FROM or JOIN query parts from the query builder.
      *
      * The table names are automatically unquoted. This is a helper for to build the list
      * of queried tables for the AbstractRestrictionContainer.
      *
-     * @return string[]
+     * @return array<non-empty-string, non-empty-string>
      */
     protected function getQueriedTables(): array
     {
+        /** @var array<non-empty-string, non-empty-string> $queriedTables */
         $queriedTables = [];
-
         // Loop through all FROM tables
-        foreach ($this->getQueryPart('from') as $from) {
-            $tableName = $this->unquoteSingleIdentifier($from['table']);
-            $tableAlias = isset($from['alias']) ? $this->unquoteSingleIdentifier($from['alias']) : $tableName;
+        foreach ($this->concreteQueryBuilder->from as $from) {
+            $tableName = $this->unquoteSingleIdentifier($from->table);
+            $tableAlias = is_string($from->alias) && $from->alias !== '' ? $this->unquoteSingleIdentifier($from->alias) : $tableName;
             if (!in_array($tableAlias, $this->restrictionsAppliedInJoinCondition, true)) {
                 $queriedTables[$tableAlias] = $tableName;
             }
         }
 
         // Loop through all JOIN tables
-        foreach ($this->getQueryPart('join') as $fromTable => $joins) {
+        foreach ($this->concreteQueryBuilder->join as $fromTable => $joins) {
             foreach ($joins as $join) {
-                $tableName = $this->unquoteSingleIdentifier($join['joinTable']);
-                $tableAlias = isset($join['joinAlias']) ? $this->unquoteSingleIdentifier($join['joinAlias']) : $tableName;
+                $tableName = $this->unquoteSingleIdentifier($join->table);
+                $tableAlias = is_string($join->alias) && $join->alias !== '' ? $this->unquoteSingleIdentifier($join->alias) : $tableName;
                 if (!in_array($tableAlias, $this->restrictionsAppliedInJoinCondition, true)) {
                     $queriedTables[$tableAlias] = $tableName;
                 }
             }
         }
-
         return $queriedTables;
     }
 
@@ -1312,48 +1347,31 @@ class QueryBuilder
      * Add the additional query conditions returned by the QueryRestrictionBuilder
      * to the current query and return the original set of conditions so that they
      * can be restored after the query has been built/executed.
-     *
-     * @return \Doctrine\DBAL\Query\Expression\CompositeExpression|mixed
      */
-    protected function addAdditionalWhereConditions()
+    protected function addAdditionalWhereConditions(): CompositeExpression|string|null
     {
-        $originalWhereConditions = $this->concreteQueryBuilder->getQueryPart('where');
+        $originalWhereConditions = $this->getWhere();
         $expression = $this->restrictionContainer->buildExpression($this->getQueriedTables(), $this->expr());
         // This check would be obsolete, as the composite expression would not add empty expressions anyway
         // But we keep it here to only clone the previous state, in case we really will change it.
         // Once we remove this state preserving functionality, we can remove the count check here
         // and just add the expression to the query builder.
         if ($expression->count() > 0) {
-            if ($originalWhereConditions instanceof CompositeExpression) {
-                // Save the original query conditions so we can restore
-                // them after the query has been built.
-                $originalWhereConditions = clone $originalWhereConditions;
-            }
             $this->concreteQueryBuilder->andWhere($expression);
         }
-
         return $originalWhereConditions;
-    }
-
-    /**
-     * Deep clone of the QueryBuilder
-     * @see \Doctrine\DBAL\Query\QueryBuilder::__clone()
-     */
-    public function __clone()
-    {
-        $this->concreteQueryBuilder = clone $this->concreteQueryBuilder;
-        $this->restrictionContainer = clone $this->restrictionContainer;
     }
 
     private function throwExceptionOnInvalidPreparedStatementParamArrayType(array $types): void
     {
-        $invalidTypeMap = [
-            Connection::PARAM_INT_ARRAY => 'PARAM_INT_ARRAY',
-            Connection::PARAM_STR_ARRAY => 'PARAM_STR_ARRAY',
-        ];
         foreach ($types as $type) {
-            if ($invalidTypeMap[$type] ?? false) {
-                throw UnsupportedPreparedStatementParameterTypeException::new($invalidTypeMap[$type]);
+            $invalidTypeLabel = match ($type) {
+                Connection::PARAM_INT_ARRAY => 'PARAM_INT_ARRAY',
+                Connection::PARAM_STR_ARRAY => 'PARAM_STR_ARRAY',
+                default => false,
+            };
+            if ($invalidTypeLabel !== false) {
+                throw UnsupportedPreparedStatementParameterTypeException::new($invalidTypeLabel);
             }
         }
     }
@@ -1377,9 +1395,10 @@ class QueryBuilder
      *
      * This needs to be checked with each doctrine/dbal release raise.
      *
-     * @param DriverStatement                                                      $stmt   Prepared statement
-     * @param list<mixed>|array<string, mixed>                                     $params Statement parameters
-     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
+     * @see \Doctrine\DBAL\Connection::bindParameters()
+     * @param DriverStatement $stmt
+     * @param list<mixed>|array<string, mixed> $params
+     * @param array<int, string|ParameterType|Type>|array<string, string|ParameterType|Type> $types
      */
     private function bindTypedValues(DriverStatement $stmt, array $params, array $types): void
     {
@@ -1406,7 +1425,7 @@ class QueryBuilder
     }
 
     /**
-     * Gets the binding type of a given type.
+     * Gets the binding type of given type.
      *
      * Cloned from doctrine/dbal connection, as we need to call from external
      * to support and work with prepared statement from QueryBuilder instance
@@ -1414,24 +1433,22 @@ class QueryBuilder
      *
      * This needs to be checked with each doctrine/dbal release raise.
      *
-     * @param mixed                $value The value to bind.
-     * @param int|string|Type|null $type  The type to bind (PDO or DBAL).
-     *
-     * @return array{mixed, int} [0] => the (escaped) value, [1] => the binding type.
+     * @see \Doctrine\DBAL\Connection::getBindingInfo()
+     * @param mixed $value The value to bind.
+     * @param string|ParameterType|Type $type The type to bind.
+     * @return array{mixed, ParameterType} [0] => the (escaped) value, [1] => the binding type.
      */
-    private function getBindingInfo($value, $type): array
+    private function getBindingInfo(mixed $value, string|ParameterType|Type $type): array
     {
         if (is_string($type)) {
             $type = Type::getType($type);
         }
-
         if ($type instanceof Type) {
-            $value       = $type->convertToDatabaseValue($value, $this->getConnection()->getDatabasePlatform());
+            $value       = $type->convertToDatabaseValue($value, $this->connection->getDatabasePlatform());
             $bindingType = $type->getBindingType();
         } else {
-            $bindingType = $type ?? ParameterType::STRING;
+            $bindingType = $type;
         }
-
         return [$value, $bindingType];
     }
 }

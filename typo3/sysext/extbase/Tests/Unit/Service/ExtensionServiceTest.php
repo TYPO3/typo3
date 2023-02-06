@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\ConcreteQueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockMySQLPlatform;
@@ -102,7 +103,7 @@ final class ExtensionServiceTest extends UnitTestCase
         $queryBuilder = new QueryBuilder(
             $connection,
             null,
-            new \Doctrine\DBAL\Query\QueryBuilder($connection)
+            new ConcreteQueryBuilder($connection),
         );
 
         $connectionPool = $this->createMock(ConnectionPool::class);

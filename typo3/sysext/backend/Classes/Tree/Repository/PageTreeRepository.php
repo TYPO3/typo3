@@ -239,8 +239,8 @@ class PageTreeRepository
             }
         }
 
+        $queryBuilder->getConcreteQueryBuilder()->select(...$this->quotedFields);
         $queryBuilder
-            ->add('select', $this->quotedFields)
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
@@ -299,8 +299,8 @@ class PageTreeRepository
 
             if (!empty($recordIds)) {
                 $queryBuilder->getRestrictions()->removeAll();
+                $queryBuilder->getConcreteQueryBuilder()->select(...$this->quotedFields);
                 $pageRecords = $queryBuilder
-                    ->add('select', $this->quotedFields)
                     ->from('pages')
                     ->where(
                         $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($recordIds, Connection::PARAM_INT_ARRAY))
@@ -365,8 +365,8 @@ class PageTreeRepository
             }
         }
 
+        $queryBuilder->getConcreteQueryBuilder()->select(...$this->quotedFields);
         $query = $queryBuilder
-            ->add('select', $this->quotedFields)
             ->from('pages')
             ->where(
                 // Only show records in default language
@@ -422,8 +422,8 @@ class PageTreeRepository
             $recordIds = $resolver->get();
 
             $queryBuilder->getRestrictions()->removeAll();
+            $queryBuilder->getConcreteQueryBuilder()->select(...$this->quotedFields);
             $pageRecords = $queryBuilder
-                ->add('select', $this->quotedFields)
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->in('uid', $recordIds)
@@ -533,8 +533,8 @@ class PageTreeRepository
             );
         }
 
+        $queryBuilder->getConcreteQueryBuilder()->select(...$this->quotedFields);
         $queryBuilder = $queryBuilder
-            ->add('select', $this->quotedFields)
             ->from('pages')
             ->where(
                 // Only show records in default language
@@ -612,8 +612,8 @@ class PageTreeRepository
             $pageRecords = [];
             if (!empty($recordIds)) {
                 $queryBuilder->getRestrictions()->removeAll();
+                $queryBuilder->getConcreteQueryBuilder()->select(...$this->quotedFields);
                 $queryBuilder
-                    ->add('select', $this->quotedFields)
                     ->from('pages')
                     ->where(
                         $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($recordIds, Connection::PARAM_INT_ARRAY))

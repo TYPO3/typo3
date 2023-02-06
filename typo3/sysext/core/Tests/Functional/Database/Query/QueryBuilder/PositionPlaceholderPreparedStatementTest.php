@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\QueryBuilder;
 
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Statement;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -240,7 +241,7 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
      * @test
      * @dataProvider invalidParameterTypesForPreparedStatements
      */
-    public function preparedStatementThrowsExceptionForInvalidParameterType(int $arrayParameterType, string $arrayParameterName, array $arrayValues): void
+    public function preparedStatementThrowsExceptionForInvalidParameterType(ArrayParameterType $arrayParameterType, string $arrayParameterName, array $arrayValues): void
     {
         // expected exception
         $this->expectExceptionObject(UnsupportedPreparedStatementParameterTypeException::new($arrayParameterName));

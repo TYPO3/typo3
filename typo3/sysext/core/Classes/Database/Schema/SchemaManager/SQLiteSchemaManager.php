@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Schema\SchemaManager;
 
-use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\SqliteSchemaManager as DoctrineSQLiteSchemaManager;
+use Doctrine\DBAL\Schema\SQLiteSchemaManager as DoctrineSQLiteSchemaManager;
 
 /**
  * Extending the doctrine SQLiteSchemaManager to integrate additional processing stuff
@@ -45,14 +45,12 @@ class SQLiteSchemaManager extends DoctrineSQLiteSchemaManager
      * Gets Table Column Definition.
      *
      * @param array<string, mixed> $tableColumn
-     *
-     * @todo Add `array` type to `$tableColumn` argument with doctrine/dbal 4.0 upgrade.
      */
-    protected function _getPortableTableColumnDefinition($tableColumn): Column
+    protected function _getPortableTableColumnDefinition(array $tableColumn): Column
     {
         /** @var DoctrineSQLitePlatform $platform */
-        $platform = $this->_platform;
-        return $this->processCustomDoctrineTypesColumnDefinition(tableColumn: $tableColumn, platform: $platform)
-            ?? parent::_getPortableTableColumnDefinition(tableColumn: $tableColumn);
+        $platform = $this->platform;
+        return $this->processCustomDoctrineTypesColumnDefinition($tableColumn, $platform)
+            ?? parent::_getPortableTableColumnDefinition($tableColumn);
     }
 }

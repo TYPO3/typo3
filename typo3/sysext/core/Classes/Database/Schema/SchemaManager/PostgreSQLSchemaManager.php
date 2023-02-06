@@ -44,14 +44,12 @@ class PostgreSQLSchemaManager extends \Doctrine\DBAL\Schema\PostgreSQLSchemaMana
      * Gets Table Column Definition.
      *
      * @param array<string, mixed> $tableColumn
-     *
-     * @todo Add `array` type to `$tableColumn` argument with doctrine/dbal 4.0 upgrade.
      */
-    protected function _getPortableTableColumnDefinition($tableColumn): Column
+    protected function _getPortableTableColumnDefinition(array $tableColumn): Column
     {
         /** @var DoctrinePostgreSQLPlatform $platform */
-        $platform = $this->_platform;
-        return $this->processCustomDoctrineTypesColumnDefinition(tableColumn: $tableColumn, platform: $platform)
-            ?? parent::_getPortableTableColumnDefinition(tableColumn: $tableColumn);
+        $platform = $this->platform;
+        return $this->processCustomDoctrineTypesColumnDefinition($tableColumn, $platform)
+            ?? parent::_getPortableTableColumnDefinition($tableColumn);
     }
 }

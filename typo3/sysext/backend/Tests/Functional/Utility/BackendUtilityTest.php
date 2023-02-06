@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Utility;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -227,7 +227,7 @@ final class BackendUtilityTest extends FunctionalTestCase
         $replaces = [
             '${tableName}' => $tableName,
         ];
-        // replace mysql identifier quotings with sqlite identifier qotings in expected sql string
+        // replace mysql identifier quoting with sqlite identifier quoting in expected sql string
         if ($platform instanceof DoctrineSQLitePlatform || $platform instanceof DoctrinePostgreSQLPlatform) {
             $replaces['`'] = '"';
         }

@@ -17,15 +17,21 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 
+use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform as DoctrineAbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
-use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
+use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
+use Doctrine\DBAL\Query\From;
+use Doctrine\DBAL\Query\Join;
+use Doctrine\DBAL\Query\QueryType;
 use Doctrine\DBAL\Result;
+use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\Query\ConcreteQueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\AbstractRestrictionContainer;
@@ -40,7 +46,7 @@ final class QueryBuilderTest extends UnitTestCase
 {
     private Connection&MockObject $connection;
     private ?QueryBuilder $subject;
-    private DoctrineQueryBuilder&MockObject $concreteQueryBuilder;
+    private ConcreteQueryBuilder&MockObject $concreteQueryBuilder;
 
     /**
      * Create a new database connection mock object for every test.
@@ -48,7 +54,7 @@ final class QueryBuilderTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->concreteQueryBuilder = $this->createMock(DoctrineQueryBuilder::class);
+        $this->concreteQueryBuilder = $this->createMock(ConcreteQueryBuilder::class);
         $this->connection = $this->createMock(Connection::class);
         $this->subject = new QueryBuilder(
             $this->connection,
@@ -70,32 +76,15 @@ final class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTypeDelegatesToConcreteQueryBuilder(): void
-    {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getType')
-            ->willReturn(DoctrineQueryBuilder::INSERT);
-        $this->subject->getType();
-    }
-
-    /**
-     * @test
-     */
-    public function getStateDelegatesToConcreteQueryBuilder(): void
-    {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getState')
-            ->willReturn(DoctrineQueryBuilder::STATE_CLEAN);
-        $this->subject->getState();
-    }
-
-    /**
-     * @test
-     */
     public function getSQLDelegatesToConcreteQueryBuilder(): void
     {
+        // Set protected type of the concrete QueryBuilder
+        $setQueryType = \Closure::bind(function (string $property, QueryType $value) {
+            $this->{$property} = $value;
+        }, $this->concreteQueryBuilder, ConcreteQueryBuilder::class);
+        $setQueryType->call($this->concreteQueryBuilder, 'type', QueryType::UPDATE);
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getSQL')
             ->willReturn('UPDATE aTable SET pid = 7');
-        $this->concreteQueryBuilder->method('getType')
-            ->willReturn(2); // Update Type
         $this->subject->getSQL();
     }
 
@@ -194,16 +183,6 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getMaxResults')->willReturn(1);
         $this->subject->getMaxResults();
-    }
-
-    /**
-     * @test
-     */
-    public function addDelegatesToConcreteQueryBuilder(): void
-    {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('add')->with('select', 'aField', self::anything())
-            ->willReturn($this->subject);
-        $this->subject->add('select', 'aField');
     }
 
     /**
@@ -390,25 +369,23 @@ final class QueryBuilderTest extends UnitTestCase
 
     /**
      * @test
-     * @todo: Test with alias
      */
     public function deleteQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aTable')
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->method('delete')->with('aTable', self::anything())->willReturn($this->subject);
+        $this->concreteQueryBuilder->method('delete')->with('aTable')->willReturn($this->subject);
         $this->subject->delete('aTable');
     }
 
     /**
      * @test
-     * @todo: Test with alias
      */
     public function updateQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aTable')
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->method('update')->with('aTable', self::anything())->willReturn($this->subject);
+        $this->concreteQueryBuilder->method('update')->with('aTable')->willReturn($this->subject);
         $this->subject->update('aTable');
     }
 
@@ -518,7 +495,11 @@ final class QueryBuilderTest extends UnitTestCase
             });
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('rightJoin')
             ->with('fromAlias', 'join', 'alias', self::anything())->willReturn($this->subject);
-        $this->concreteQueryBuilder->method('getQueryPart')->with('from')->willReturn([]);
+        // Set protected properties of the concrete QueryBuilder
+        $setParts = \Closure::bind(function (string $property, array $value) {
+            $this->{$property} = $value;
+        }, $this->concreteQueryBuilder, ConcreteQueryBuilder::class);
+        $setParts->call($this->concreteQueryBuilder, 'from', []);
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
         $this->subject->rightJoin('fromAlias', 'join', 'alias');
@@ -722,46 +703,6 @@ final class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getQueryPartDelegatesToConcreteQueryBuilder(): void
-    {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getQueryPart')->with('from')
-            ->willReturn('aTable');
-        $this->subject->getQueryPart('from');
-    }
-
-    /**
-     * @test
-     */
-    public function getQueryPartsDelegatesToConcreteQueryBuilder(): void
-    {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getQueryParts')
-            ->willReturn([]);
-        $this->subject->getQueryParts();
-    }
-
-    /**
-     * @test
-     */
-    public function resetQueryPartsDelegatesToConcreteQueryBuilder(): void
-    {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('resetQueryParts')->with(['select', 'from'])
-            ->willReturn($this->subject);
-        $this->subject->resetQueryParts(['select', 'from']);
-    }
-
-    /**
-     * @test
-     */
-    public function resetQueryPartDelegatesToConcreteQueryBuilder(): void
-    {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('resetQueryPart')->with('select')
-            ->willReturn($this->subject);
-        $this->subject->resetQueryPart('select');
-    }
-
-    /**
-     * @test
-     */
     public function createNamedParameterDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('createNamedParameter')
@@ -799,18 +740,20 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
         $connectionBuilder = GeneralUtility::makeInstance(
-            DoctrineQueryBuilder::class,
+            ConcreteQueryBuilder::class,
             $this->connection
         );
 
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
+        /** @var QueryBuilder $subject */
         $subject = GeneralUtility::makeInstance(
             QueryBuilder::class,
             $this->connection,
             null,
-            $connectionBuilder
+            $connectionBuilder,
+            null
         );
 
         $subject->select('*')
@@ -818,7 +761,7 @@ final class QueryBuilderTest extends UnitTestCase
             ->where('uid=1');
 
         $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
-        $this->connection->method('executeQuery')->with($expectedSQL, self::anything())
+        $this->connection->method('executeQuery')->with($expectedSQL, self::anything(), self::anything(), self::anything())
             ->willReturn($this->createMock(Result::class));
 
         $subject->executeQuery();
@@ -844,7 +787,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
         $connectionBuilder = GeneralUtility::makeInstance(
-            DoctrineQueryBuilder::class,
+            ConcreteQueryBuilder::class,
             $this->connection
         );
 
@@ -891,7 +834,7 @@ final class QueryBuilderTest extends UnitTestCase
             ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection));
 
         $concreteQueryBuilder = GeneralUtility::makeInstance(
-            DoctrineQueryBuilder::class,
+            ConcreteQueryBuilder::class,
             $this->connection
         );
 
@@ -937,7 +880,7 @@ final class QueryBuilderTest extends UnitTestCase
             ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection));
 
         $concreteQueryBuilder = GeneralUtility::makeInstance(
-            DoctrineQueryBuilder::class,
+            ConcreteQueryBuilder::class,
             $this->connection
         );
 
@@ -980,34 +923,26 @@ final class QueryBuilderTest extends UnitTestCase
     public function getQueriedTablesReturnsSameTableTwiceForInnerJoin(): void
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
-        $series = [
-            [
-                'from',
-                [
-                    [
-                        'table' => 'aTable',
-                    ],
-                ],
-            ],
-            [
-                'join',
-                [
-                    'aTable' => [
-                        [
-                            'joinType' => 'inner',
-                            'joinTable' => 'aTable',
-                            'joinAlias' => 'aTable_alias',
-                        ],
-                    ],
-                ],
+        $from = [
+            new From(table: 'aTable'),
+        ];
+        $joins = [
+            'aTable' => [
+                Join::inner(
+                    table: 'aTable',
+                    alias: 'aTable_alias',
+                    condition: null,
+                ),
             ],
         ];
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getQueryPart')
-            ->willReturnCallback(function (string $sql) use (&$series): array {
-                $arguments = array_shift($series);
-                self::assertSame($arguments[0], $sql);
-                return $arguments[1];
-            });
+
+        // Set protected properties of the concrete QueryBuilder
+        $setParts = \Closure::bind(function (string $property, array $value) {
+            $this->{$property} = $value;
+        }, $this->concreteQueryBuilder, ConcreteQueryBuilder::class);
+        $setParts->call($this->concreteQueryBuilder, 'from', $from);
+        $setParts->call($this->concreteQueryBuilder, 'join', $joins);
+
         // Call a protected method
         $result = \Closure::bind(function () {
             return $this->getQueriedTables();
@@ -1122,7 +1057,7 @@ final class QueryBuilderTest extends UnitTestCase
             ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection));
 
         $concreteQueryBuilder = GeneralUtility::makeInstance(
-            DoctrineQueryBuilder::class,
+            ConcreteQueryBuilder::class,
             $this->connection
         );
 
@@ -1246,11 +1181,11 @@ final class QueryBuilderTest extends UnitTestCase
      * @dataProvider createNamedParameterInput
      * @param mixed $input
      */
-    public function setWithNamedParameterPassesGivenTypeToCreateNamedParameter($input, int $type): void
+    public function setWithNamedParameterPassesGivenTypeToCreateNamedParameter($input, string|ParameterType|Type|ArrayParameterType $type): void
     {
         $this->connection->method('quoteIdentifier')->with('aField')
             ->willReturnArgument(0);
-        $concreteQueryBuilder = new DoctrineQueryBuilder($this->connection);
+        $concreteQueryBuilder = new ConcreteQueryBuilder($this->connection);
 
         $subject = new QueryBuilder($this->connection, null, $concreteQueryBuilder);
         $subject->set('aField', $input, true, $type);
@@ -1287,7 +1222,7 @@ final class QueryBuilderTest extends UnitTestCase
                 'CONVERT(aField, CHAR)',
             ],
             'Test cast for MariaDBPlatform' => [
-                new DoctrineMySQLPlatform(),
+                new DoctrineMariaDBPlatform(),
                 'CONVERT(aField, CHAR)',
             ],
             'Test cast for PostgreSqlPlatform' => [
@@ -1312,7 +1247,7 @@ final class QueryBuilderTest extends UnitTestCase
 
         $this->connection->method('getDatabasePlatform')->willReturn($platform);
 
-        $concreteQueryBuilder = new DoctrineQueryBuilder($this->connection);
+        $concreteQueryBuilder = new ConcreteQueryBuilder($this->connection);
 
         $subject = new QueryBuilder($this->connection, null, $concreteQueryBuilder);
         $result = $subject->castFieldToTextType('aField');
@@ -1337,7 +1272,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
         $connectionBuilder = GeneralUtility::makeInstance(
-            DoctrineQueryBuilder::class,
+            ConcreteQueryBuilder::class,
             $this->connection
         );
 
@@ -1386,7 +1321,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
         $connectionBuilder = GeneralUtility::makeInstance(
-            DoctrineQueryBuilder::class,
+            ConcreteQueryBuilder::class,
             $this->connection
         );
 
@@ -1436,7 +1371,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
         $connectionBuilder = GeneralUtility::makeInstance(
-            DoctrineQueryBuilder::class,
+            ConcreteQueryBuilder::class,
             $this->connection
         );
 
@@ -1484,7 +1419,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
         $connectionBuilder = GeneralUtility::makeInstance(
-            DoctrineQueryBuilder::class,
+            ConcreteQueryBuilder::class,
             $this->connection
         );
 

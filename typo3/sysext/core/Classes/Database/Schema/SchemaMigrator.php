@@ -18,13 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\IntegerType;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
@@ -62,7 +59,6 @@ class SchemaMigrator
         $updateSuggestions = [];
         foreach ($this->connectionPool->getConnectionNames() as $connectionName) {
             $connection = $this->connectionPool->getConnectionByName($connectionName);
-            $this->adoptDoctrineAutoincrementDetectionForSqlite($tables, $connection);
             $connectionMigrator = ConnectionMigrator::create($connectionName, $connection, $tables);
             $updateSuggestions[$connectionName] = $connectionMigrator->getUpdateSuggestions($remove);
         }
@@ -135,8 +131,7 @@ class SchemaMigrator
     }
 
     /**
-     * Perform add/change/create operations on tables and fields in an optimized, non-interactive, mode
-     * using the original doctrine PlatformSaveAlterSchemaSQLTrait->getSaveAlterSchemaSQL() method.
+     * Perform add/change/create operations on tables and fields in an optimized, non-interactive, mode.
      *
      * @param string[] $statements The CREATE TABLE statements
      * @param bool $createOnly Only perform changes that add fields or create tables
@@ -151,7 +146,6 @@ class SchemaMigrator
     {
         $tables = $this->parseCreateTableStatements($statements);
         $result = [];
-
         foreach ($this->connectionPool->getConnectionNames() as $connectionName) {
             $connection = $this->connectionPool->getConnectionByName($connectionName);
             $connectionMigrator = ConnectionMigrator::create($connectionName, $connection, $tables);
@@ -359,37 +353,5 @@ class SchemaMigrator
         }
 
         return $prioritizedFieldNames;
-    }
-
-    /**
-     * doctrine/dbal detects both sqlite autoincrement variants (row_id alias and autoincrement) through assumptions
-     * which have been made. TYPO3 reads the ext_tables.sql files as MySQL/MariaDB variant, thus not setting the
-     * autoincrement value to true for the row_id alias variant, which leads to an endless missmatch during database
-     * comparison. This method adopts the doctrine/dbal assumption and apply it to the meta schema to mitigate
-     * endless database compare detections in these cases.
-     *
-     * @see https://github.com/doctrine/dbal/commit/33555d36e7e7d07a5880e01
-     *
-     * @param Table[] $tables
-     */
-    protected function adoptDoctrineAutoincrementDetectionForSqlite(array $tables, Connection $connection): void
-    {
-        if (!($connection->getDatabasePlatform() instanceof DoctrineSQLitePlatform)) {
-            return;
-        }
-        array_walk($tables, static function (Table $table): void {
-            $primaryColumns = $table->getPrimaryKey()?->getColumns() ?? [];
-            $primaryKeyColumnCount = count($primaryColumns);
-            $firstPrimaryKeyColumnName = $primaryColumns[0] ?? '';
-            $singlePrimaryKeyColumn = $table->hasColumn($firstPrimaryKeyColumnName)
-                ? $table->getColumn($firstPrimaryKeyColumnName)
-                : null;
-            if ($primaryKeyColumnCount === 1
-                && $singlePrimaryKeyColumn !== null
-                && $singlePrimaryKeyColumn->getType() instanceof IntegerType
-            ) {
-                $singlePrimaryKeyColumn->setAutoincrement(true);
-            }
-        });
     }
 }

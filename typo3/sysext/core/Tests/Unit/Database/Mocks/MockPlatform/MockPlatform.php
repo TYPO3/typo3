@@ -17,61 +17,70 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 
-use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform as DoctrineAbstractPlatform;
+
+use Doctrine\DBAL\Platforms\DateIntervalUnit;
+use Doctrine\DBAL\Platforms\Exception\NotSupported;
+use Doctrine\DBAL\Platforms\Keywords\KeywordList;
+use Doctrine\DBAL\Schema\AbstractSchemaManager;
+use Doctrine\DBAL\Schema\TableDiff;
+use Doctrine\DBAL\TransactionIsolationLevel;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockKeywordList;
 
 class MockPlatform extends DoctrineAbstractPlatform
 {
     /**
-     * Gets the SQL Snippet used to declare a BLOB column type.
-     *
-     * @return string|void
-     * @throws \Doctrine\DBAL\Exception
+     * @internal Unit test workaround related, see method `quoteStringLiteral()`.
      */
-    public function getBlobTypeDeclarationSQL(array $field)
+    public string $stringLiteralQuoteChar = '"';
+
+    /**
+     * Gets the SQL Snippet used to declare a BLOB column type.
+     */
+    public function getBlobTypeDeclarationSQL(array $field): string
     {
-        throw DBALException::notSupported(__METHOD__);
+        return '';
     }
 
     /**
      * Returns the SQL snippet that declares a boolean column.
      */
-    public function getBooleanTypeDeclarationSQL(array $columnDef): ?string
+    public function getBooleanTypeDeclarationSQL(array $columnDef): string
     {
-        return null;
+        return '';
     }
 
     /**
      * Returns the SQL snippet that declares a 4 byte integer column.
      */
-    public function getIntegerTypeDeclarationSQL(array $columnDef): ?string
+    public function getIntegerTypeDeclarationSQL(array $columnDef): string
     {
-        return null;
+        return '';
     }
 
     /**
      * Returns the SQL snippet that declares an 8 byte integer column.
      */
-    public function getBigIntTypeDeclarationSQL(array $columnDef): ?string
+    public function getBigIntTypeDeclarationSQL(array $columnDef): string
     {
-        return null;
+        return '';
     }
 
     /**
      * Returns the SQL snippet that declares a 2 byte integer column.
      */
-    public function getSmallIntTypeDeclarationSQL(array $columnDef): ?string
+    public function getSmallIntTypeDeclarationSQL(array $columnDef): string
     {
-        return null;
+        return '';
     }
 
     /**
      * Returns the SQL snippet that declares common properties of an integer column.
      */
-    public function _getCommonIntegerTypeDeclarationSQL(array $columnDef): ?string
+    public function _getCommonIntegerTypeDeclarationSQL(array $columnDef): string
     {
-        return null;
+        return '';
     }
 
     /**
@@ -114,29 +123,18 @@ class MockPlatform extends DoctrineAbstractPlatform
     }
 
     /**
-     * Gets the name of the platform.
-     *
-     * @return string
-     */
-    public function getName(): string
-    {
-        throw DBALException::notSupported(__METHOD__);
-    }
-
-    /**
      * Lazy load Doctrine Type Mappings.
      */
     protected function initializeDoctrineTypeMappings(): void {}
 
     /**
      * @param int $length
-     * @param bool $fixed
      *
      * @return string
      *
      * @throws \Doctrine\DBAL\Exception If not supported on this platform.
      */
-    protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed): ?string
+    protected function getVarcharTypeDeclarationSQLSnippet($length): string
     {
         return '';
     }
@@ -155,5 +153,84 @@ class MockPlatform extends DoctrineAbstractPlatform
     public function getCurrentDatabaseExpression(): string
     {
         return "''";
+    }
+
+    public function getLocateExpression(string $string, string $substring, ?string $start = null): string
+    {
+        return '';
+    }
+
+    public function getDateDiffExpression(string $date1, string $date2): string
+    {
+        return '';
+    }
+
+    protected function getDateArithmeticIntervalExpression(
+        string $date,
+        string $operator,
+        string $interval,
+        DateIntervalUnit $unit,
+    ): string {
+        return '';
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    public function getAlterTableSQL(TableDiff $diff): array
+    {
+        return [];
+    }
+
+    public function getListViewsSQL(string $database): string
+    {
+        return '';
+    }
+
+    public function getSetTransactionIsolationSQL(TransactionIsolationLevel $level): string
+    {
+        return '';
+    }
+
+    public function getDateTimeTypeDeclarationSQL(array $column): string
+    {
+        return '';
+    }
+
+    public function getDateTypeDeclarationSQL(array $column): string
+    {
+        return '';
+    }
+
+    public function getTimeTypeDeclarationSQL(array $column): string
+    {
+        return '';
+    }
+
+    protected function createReservedKeywordsList(): KeywordList
+    {
+        return new class () extends KeywordList {
+            protected function getKeywords(): array
+            {
+                return [];
+            }
+        };
+    }
+
+    public function createSchemaManager(Connection $connection): AbstractSchemaManager
+    {
+        throw NotSupported::new(__METHOD__);
+    }
+
+    /**
+     * @internal This is a unit test related workaround.
+     */
+    public function quoteStringLiteral(string $str): string
+    {
+        $quoteChar = $this->stringLiteralQuoteChar;
+        if ($quoteChar === '') {
+            return $str;
+        }
+        return $quoteChar . str_replace($quoteChar, $quoteChar . $quoteChar, $str) . $quoteChar;
     }
 }

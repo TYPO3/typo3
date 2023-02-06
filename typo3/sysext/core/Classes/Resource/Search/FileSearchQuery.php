@@ -76,12 +76,9 @@ class FileSearchQuery
             );
         }
 
-        $query->queryBuilder->add(
-            'select',
-            [
-                'DISTINCT ' . $query->queryBuilder->quoteIdentifier(self::FILES_TABLE . '.identifier'),
-                $query->queryBuilder->quoteIdentifier(self::FILES_TABLE) . '.*',
-            ]
+        $query->queryBuilder->getConcreteQueryBuilder()->select(
+            'DISTINCT ' . $query->queryBuilder->quoteIdentifier(self::FILES_TABLE . '.identifier'),
+            $query->queryBuilder->quoteIdentifier(self::FILES_TABLE) . '.*',
         );
 
         if ($searchDemand->getFirstResult() !== null) {
@@ -106,9 +103,8 @@ class FileSearchQuery
                 throw new \RuntimeException(sprintf('Invalid file search ordering given table: "%s", field: "%s", direction: "%s".', $tableName, $fieldName, $direction), 1555850106);
             }
             // Add order by fields to select, to make postgres happy and use random names to make sure to not interfere with file fields
-            $query->queryBuilder->add(
-                'select',
-                $query->queryBuilder->quoteIdentifiersForSelect([
+            $query->queryBuilder->getConcreteQueryBuilder()->addSelect(
+                ...$query->queryBuilder->quoteIdentifiersForSelect([
                     $tableName . '.' . $fieldName
                     . ' AS '
                     . preg_replace(
@@ -116,8 +112,7 @@ class FileSearchQuery
                         '',
                         StringUtility::getUniqueId($tableName . $fieldName)
                     ),
-                ]),
-                true
+                ])
             );
             $query->queryBuilder->addOrderBy($tableName . '.' . $fieldName, $direction);
         }
@@ -143,8 +138,7 @@ class FileSearchQuery
             );
         }
 
-        $query->queryBuilder->add(
-            'select',
+        $query->queryBuilder->getConcreteQueryBuilder()->select(
             'COUNT(DISTINCT ' . $query->queryBuilder->quoteIdentifier(self::FILES_TABLE . '.identifier') . ')'
         );
 

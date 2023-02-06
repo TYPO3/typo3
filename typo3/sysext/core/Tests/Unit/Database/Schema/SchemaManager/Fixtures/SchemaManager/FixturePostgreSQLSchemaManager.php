@@ -42,7 +42,7 @@ class FixturePostgreSQLSchemaManager extends PostgreSQLSchemaManager
     {
         return $this->processCustomDoctrineTypesColumnDefinition(
             tableColumn: $tableColumn,
-            platform: $this->_platform,
+            platform: $this->platform,
         );
     }
 }

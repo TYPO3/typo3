@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\QueryRestrictions;
 
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -183,11 +182,11 @@ class EditableRestriction implements QueryRestrictionInterface
                     $additionalWhere[] = $expressionBuilder->and(
                         $expressionBuilder->eq(
                             'tx_linkvalidator_link.table_name',
-                            $this->queryBuilder->quote($table)
+                            $this->queryBuilder->quote((string)$table)
                         ),
                         $expressionBuilder->eq(
                             'tx_linkvalidator_link.field',
-                            $this->queryBuilder->quote($field)
+                            $this->queryBuilder->quote((string)$field)
                         )
                     );
                 }
@@ -205,7 +204,7 @@ class EditableRestriction implements QueryRestrictionInterface
             $additionalWhere[] = $expressionBuilder->and(
                 $expressionBuilder->eq(
                     'tx_linkvalidator_link.table_name',
-                    $this->queryBuilder->quote($table)
+                    $this->queryBuilder->quote((string)$table)
                 ),
                 $expressionBuilder->in(
                     'tx_linkvalidator_link.element_type',
@@ -214,7 +213,7 @@ class EditableRestriction implements QueryRestrictionInterface
             );
             $additionalWhere[] = $expressionBuilder->neq(
                 'tx_linkvalidator_link.table_name',
-                $this->queryBuilder->quote($table)
+                $this->queryBuilder->quote((string)$table)
             );
             $constraints[] = $expressionBuilder->or(...$additionalWhere);
         }
@@ -225,11 +224,11 @@ class EditableRestriction implements QueryRestrictionInterface
                 $additionalWhere[] = $expressionBuilder->or(
                     $expressionBuilder->eq(
                         'tx_linkvalidator_link.language',
-                        $this->queryBuilder->quote($langId, Connection::PARAM_INT)
+                        $this->queryBuilder->quote((string)$langId)
                     ),
                     $expressionBuilder->eq(
                         'tx_linkvalidator_link.language',
-                        $this->queryBuilder->quote(-1, Connection::PARAM_INT)
+                        $this->queryBuilder->quote('-1')
                     )
                 );
             }

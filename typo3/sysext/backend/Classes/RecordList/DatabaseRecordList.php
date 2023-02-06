@@ -2493,7 +2493,7 @@ class DatabaseRecordList
                 } elseif ($this->isTextFieldType($fieldType)) {
                     $constraints[] = $expressionBuilder->like(
                         $fieldName,
-                        $queryBuilder->quote('%' . (int)$this->searchString . '%')
+                        $queryBuilder->quote('%' . $this->searchString . '%')
                     );
                 }
             }

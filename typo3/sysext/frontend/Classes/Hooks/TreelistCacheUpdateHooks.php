@@ -278,7 +278,7 @@ class TreelistCacheUpdateHooks
         $queryBuilder
             ->delete('cache_treelist')
             ->where(
-                $queryBuilder->expr()->inSet('treelist', $queryBuilder->quote($affectedPage))
+                $queryBuilder->expr()->inSet('treelist', $queryBuilder->quote((string)$affectedPage))
             )
             ->executeStatement();
     }
@@ -297,7 +297,7 @@ class TreelistCacheUpdateHooks
         $queryBuilder
             ->update('cache_treelist')
             ->where(
-                $queryBuilder->expr()->inSet('treelist', $queryBuilder->quote($affectedPage))
+                $queryBuilder->expr()->inSet('treelist', $queryBuilder->quote((string)$affectedPage))
             )
             ->set('expires', $expirationTime)
             ->executeStatement();

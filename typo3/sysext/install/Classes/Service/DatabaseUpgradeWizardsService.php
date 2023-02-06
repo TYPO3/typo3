@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Service;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
@@ -51,7 +52,7 @@ class DatabaseUpgradeWizardsService
         $databaseDifferences = $this->schemaMigrator->getSchemaDiffs($databaseDefinitions);
         $adds = [];
         foreach ($databaseDifferences as $schemaDiff) {
-            foreach ($schemaDiff->newTables as $newTable) {
+            foreach ($schemaDiff->getCreatedTables() as $newTable) {
                 /** @var Table $newTable */
                 if (!is_array($adds['tables'] ?? false)) {
                     $adds['tables'] = [];
@@ -60,24 +61,24 @@ class DatabaseUpgradeWizardsService
                     'table' => $newTable->getName(),
                 ];
             }
-            foreach ($schemaDiff->changedTables as $changedTable) {
-                foreach ($changedTable->addedColumns as $addedColumn) {
+            foreach ($schemaDiff->getAlteredTables() as $changedTable) {
+                foreach ($changedTable->getAddedColumns() as $addedColumn) {
                     /** @var Column $addedColumn */
                     if (!is_array($adds['columns'] ?? false)) {
                         $adds['columns'] = [];
                     }
                     $adds['columns'][] = [
-                        'table' => $changedTable->name,
+                        'table' => $changedTable->getOldTable()->getName(),
                         'field' => $addedColumn->getName(),
                     ];
                 }
-                foreach ($changedTable->addedIndexes as $addedIndex) {
+                foreach ($changedTable->getAddedIndexes() as $addedIndex) {
                     /** $var Index $addedIndex */
                     if (!is_array($adds['indexes'] ?? false)) {
                         $adds['indexes'] = [];
                     }
                     $adds['indexes'][] = [
-                        'table' => $changedTable->name,
+                        'table' => $changedTable->getOldTable()->getName(),
                         'index' => $addedIndex->getName(),
                     ];
                 }
@@ -142,6 +143,6 @@ class DatabaseUpgradeWizardsService
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
         $sql = 'ALTER DATABASE ' . $connection->quoteIdentifier($connection->getDatabase()) . ' CHARACTER SET utf8';
-        $connection->exec($sql);
+        $connection->executeStatement($sql);
     }
 }

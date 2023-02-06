@@ -55,7 +55,7 @@ class ClearCacheService
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         foreach (self::legacyDatabaseCacheTables as $tableName) {
             $connection = $connectionPool->getConnectionForTable($tableName);
-            if ($connection->createSchemaManager()->tablesExist($tableName)) {
+            if ($connection->createSchemaManager()->tablesExist([$tableName])) {
                 $connection->truncate($tableName);
             }
         }

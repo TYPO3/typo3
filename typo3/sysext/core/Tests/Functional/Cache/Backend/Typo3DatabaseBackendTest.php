@@ -369,6 +369,8 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
             ],
             ['identifier', 'expires', 'content'],
             [
+                'identifier' => Connection::PARAM_STR,
+                'expires' => Connection::PARAM_INT,
                 'content' => Connection::PARAM_LOB,
             ]
         );
@@ -385,7 +387,11 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
                 ['otherIdentifier', 'aTag'],
                 ['otherIdentifier', 'otherTag'],
             ],
-            ['identifier', 'tag']
+            ['identifier', 'tag'],
+            [
+                'identifier' => Connection::PARAM_STR,
+                'tag' => Connection::PARAM_STR,
+            ]
         );
 
         $subject->remove('myIdentifier');

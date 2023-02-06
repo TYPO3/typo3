@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 
-use Doctrine\DBAL\Exception as DBALException;
 use TYPO3\CMS\Core\Database\Platform\SQLitePlatform as Typo3SQLitePlatform;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockKeywordList;
 
@@ -26,52 +25,52 @@ class MockSQLitePlatform extends Typo3SQLitePlatform
     /**
      * Gets the SQL Snippet used to declare a BLOB column type.
      *
-     * @return string|void
+     * @return string
      * @throws \Doctrine\DBAL\Exception
      */
-    public function getBlobTypeDeclarationSQL(array $field)
+    public function getBlobTypeDeclarationSQL(array $field): string
     {
-        throw DBALException::notSupported(__METHOD__);
+        return '';
     }
 
     /**
      * Returns the SQL snippet that declares a boolean column.
      */
-    public function getBooleanTypeDeclarationSQL(array $columnDef): ?string
+    public function getBooleanTypeDeclarationSQL(array $columnDef): string
     {
-        return null;
+        return '';
     }
 
     /**
      * Returns the SQL snippet that declares a 4 byte integer column.
      */
-    public function getIntegerTypeDeclarationSQL(array $columnDef): ?string
+    public function getIntegerTypeDeclarationSQL(array $columnDef): string
     {
-        return null;
+        return '';
     }
 
     /**
      * Returns the SQL snippet that declares an 8 byte integer column.
      */
-    public function getBigIntTypeDeclarationSQL(array $columnDef): ?string
+    public function getBigIntTypeDeclarationSQL(array $columnDef): string
     {
-        return null;
+        return '';
     }
 
     /**
      * Returns the SQL snippet that declares a 2 byte integer column.
      */
-    public function getSmallIntTypeDeclarationSQL(array $columnDef): ?string
+    public function getSmallIntTypeDeclarationSQL(array $columnDef): string
     {
-        return null;
+        return '';
     }
 
     /**
      * Returns the SQL snippet that declares common properties of an integer column.
      */
-    public function _getCommonIntegerTypeDeclarationSQL(array $columnDef): ?string
+    public function _getCommonIntegerTypeDeclarationSQL(array $columnDef): string
     {
-        return null;
+        return '';
     }
 
     /**
@@ -114,29 +113,18 @@ class MockSQLitePlatform extends Typo3SQLitePlatform
     }
 
     /**
-     * Gets the name of the platform.
-     *
-     * @return string
-     */
-    public function getName(): string
-    {
-        throw DBALException::notSupported(__METHOD__);
-    }
-
-    /**
      * Lazy load Doctrine Type Mappings.
      */
     protected function initializeDoctrineTypeMappings(): void {}
 
     /**
      * @param int $length
-     * @param bool $fixed
      *
      * @return string
      *
      * @throws \Doctrine\DBAL\Exception If not supported on this platform.
      */
-    protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed): ?string
+    protected function getVarcharTypeDeclarationSQLSnippet($length): string
     {
         return '';
     }

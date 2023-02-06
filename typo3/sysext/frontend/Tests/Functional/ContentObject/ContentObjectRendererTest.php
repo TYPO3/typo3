@@ -230,10 +230,11 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         $result = $subject->getQuery($table, $conf, true);
 
         $databasePlatform = (new ConnectionPool())->getConnectionForTable('tt_content')->getDatabasePlatform();
+        $identifierQuoteCharacter = (new PlatformHelper())->getIdentifierQuoteCharacter($databasePlatform);
         foreach ($expected as $field => $value) {
-            // Replace the MySQL backtick quote character with the actual quote character for the DBMS,
+            // Replace the TYPO3 quote character with the actual quote character for the DBMS,
             if ($field === 'SELECT') {
-                $quoteChar = GeneralUtility::makeInstance(PlatformHelper::class)->getIdentifierQuoteCharacter($databasePlatform);
+                $quoteChar = $identifierQuoteCharacter;
                 $value = str_replace(['[', ']'], [$quoteChar, $quoteChar], $value);
             }
             self::assertEquals($value, $result[$field]);

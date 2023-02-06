@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform as DoctrineAbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Exception\InvalidType;
 
 /**
  * This custom type extends doctrine native DateTimeType to allow a
@@ -29,7 +28,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class DateTimeType extends \Doctrine\DBAL\Types\DateTimeType
 {
-    public function convertToDatabaseValue($value, DoctrineAbstractPlatform $platform)
+    public function convertToDatabaseValue($value, DoctrineAbstractPlatform $platform): null|string
     {
         if ($value === null || (is_string($value) && $value !== '')) {
             return $value;
@@ -39,6 +38,6 @@ class DateTimeType extends \Doctrine\DBAL\Types\DateTimeType
             return $value->format($platform->getDateTimeFormatString());
         }
 
-        throw ConversionException::conversionFailedInvalidType($value, self::getTypeRegistry()->lookupName($this), ['null', 'string', 'DateTime']);
+        throw InvalidType::new($value, self::getTypeRegistry()->lookupName($this), ['null', 'string', 'DateTime']);
     }
 }

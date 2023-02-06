@@ -19,14 +19,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Schema\ConnectionMigrator;
+use TYPO3\CMS\Core\Database\Schema\SchemaDiff;
+use TYPO3\CMS\Core\Database\Schema\TableDiff;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -58,14 +58,23 @@ final class ConnectionMigratorTest extends UnitTestCase
      */
     public function tableNamesStickToTheMaximumCharactersWhenPrefixedForRemoval(): void
     {
-        $originalSchemaDiff = new SchemaDiff([], [], [$this->getTable()]);
-        $renamedSchemaDiff = $this->subject->_call('migrateUnprefixedRemovedTablesToRenames', $originalSchemaDiff);
-
-        self::assertStringStartsWith('zzz_deleted_', $renamedSchemaDiff->changedTables[0]->newName);
-        self::assertEquals(
-            $this->maxIdentifierLength,
-            strlen($renamedSchemaDiff->changedTables[0]->newName)
+        $originalSchemaDiff = new SchemaDiff(
+            createdSchemas: [],
+            droppedSchemas: [],
+            createdTables: [],
+            alteredTables: [],
+            droppedTables: [$this->getTable()->getName() => $this->getTable()],
+            createdSequences: [],
+            alteredSequences: [],
+            droppedSequences: [],
         );
+        /** @var SchemaDiff $renamedSchemaDiff */
+        $renamedSchemaDiff = $this->subject->_call('migrateUnprefixedRemovedTablesToRenames', $originalSchemaDiff);
+        $firstAlteredTableName = array_key_first($renamedSchemaDiff->getAlteredTables());
+        $firstAlteredTableNewName = $renamedSchemaDiff->getAlteredTables()[$firstAlteredTableName]->newName;
+
+        self::assertStringStartsWith('zzz_deleted_', $firstAlteredTableNewName);
+        self::assertEquals($this->maxIdentifierLength, strlen($firstAlteredTableNewName));
     }
 
     /**
@@ -74,17 +83,42 @@ final class ConnectionMigratorTest extends UnitTestCase
     public function columnNamesStickToTheMaximumCharactersWhenPrefixedForRemoval(): void
     {
         $table = $this->getTable();
-        $tableDiff = new TableDiff($table->getName(), [], [], [$this->getColumn()]);
-        $originalSchemaDiff = new SchemaDiff([], [$tableDiff]);
+        $tableDiff = new TableDiff(
+            oldTable: $table,
+            addedColumns: [],
+            modifiedColumns: [],
+            droppedColumns: [$this->getColumn()->getName() => $this->getColumn()],
+            renamedColumns: [],
+            addedIndexes: [],
+            modifiedIndexes: [],
+            droppedIndexes: [],
+            renamedIndexes: [],
+            addedForeignKeys: [],
+            modifiedForeignKeys: [],
+            droppedForeignKeys: [],
+        );
+        $originalSchemaDiff = new SchemaDiff(
+            createdSchemas: [],
+            droppedSchemas: [],
+            createdTables: [],
+            alteredTables: [$tableDiff->getOldTable()->getName() => $tableDiff],
+            droppedTables: [],
+            createdSequences: [],
+            alteredSequences: [],
+            droppedSequences: [],
+        );
+        /** @var SchemaDiff $renamedSchemaDiff */
         $renamedSchemaDiff = $this->subject->_call('migrateUnprefixedRemovedFieldsToRenames', $originalSchemaDiff);
+        $firstColumnName = array_key_first($renamedSchemaDiff->getAlteredTables()[$table->getName()]->getModifiedColumns());
+        $firstColumn = $renamedSchemaDiff->getAlteredTables()[$table->getName()]->getModifiedColumns()[$firstColumnName];
 
         self::assertStringStartsWith(
             'zzz_deleted_',
-            $renamedSchemaDiff->changedTables[0]->changedColumns[0]->column->getName()
+            $firstColumn->getNewColumn()->getName()
         );
         self::assertEquals(
             $this->maxIdentifierLength,
-            strlen($renamedSchemaDiff->changedTables[0]->changedColumns[0]->column->getName())
+            strlen($firstColumn->getNewColumn()->getName())
         );
     }
 

@@ -265,7 +265,7 @@ class ConfigurationStatus implements StatusProviderInterface
                 ->from('information_schema.tables')
                 ->where(
                     $queryBuilder->expr()->and(
-                        $queryBuilder->expr()->eq('table_schema', $queryBuilder->quote($connection->getDatabase())),
+                        $queryBuilder->expr()->eq('table_schema', $queryBuilder->quote((string)$connection->getDatabase())),
                         $queryBuilder->expr()->notLike('table_collation', $queryBuilder->quote('utf8%'))
                     )
                 )

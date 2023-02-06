@@ -44,13 +44,24 @@ final class SysFileMountIdentifierMigrationTest extends FunctionalTestCase
             ->getConnectionForTable(self::TABLE_NAME)
             ->createSchemaManager();
 
+        $tableDetails = $schemaManager->introspectTable(self::TABLE_NAME);
         $schemaManager->alterTable(
             new TableDiff(
-                self::TABLE_NAME,
+                $tableDetails,
                 [
-                    new Column('base', new IntegerType(), ['default' => '0', 'notnull' => true]),
-                    new Column('path', new StringType(), ['length' => 255, 'default' => '', 'notnull' => true]),
-                ]
+                    'base' => new Column('base', new IntegerType(), ['default' => '0', 'notnull' => true]),
+                    'path' => new Column('path', new StringType(), ['length' => 255, 'default' => '', 'notnull' => true]),
+                ],
+                [],
+                [],
+                [],
+                [],
+                [],
+                [],
+                [],
+                [],
+                [],
+                [],
             )
         );
 

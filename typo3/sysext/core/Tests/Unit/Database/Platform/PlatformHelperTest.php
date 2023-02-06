@@ -20,28 +20,18 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Platform;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform as DoctrineAbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\AbstractPlatform as DoctrineAbstractPlatform;
 use Doctrine\DBAL\Platforms\DB2Platform as DoctrineDB2Platform;
-use Doctrine\DBAL\Platforms\MariaDb1027Platform as DoctrineMariaDb1027Platform;
-use Doctrine\DBAL\Platforms\MariaDb1043Platform as DoctrineMariaDb1043Platform;
-use Doctrine\DBAL\Platforms\MariaDb1052Platform as DoctrineMariaDB1052Platform;
+use Doctrine\DBAL\Platforms\MariaDB1052Platform as DoctrineMariaDB1052Platform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
-use Doctrine\DBAL\Platforms\MySQL57Platform as DoctrineMySQL57Platform;
 use Doctrine\DBAL\Platforms\MySQL80Platform as DoctrineMySQL80Platform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform as DoctrineOraclePlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL100Platform as DoctrinePostgreSQL100Platform;
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform as DoctrinePostgreSQL94Platform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
-use TYPO3\CMS\Core\Database\Platform\MariaDB1027Platform as Typo3MariaDB1027Platform;
-use TYPO3\CMS\Core\Database\Platform\MariaDB1043Platform as Typo3MariaDB1043Platform;
+use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use TYPO3\CMS\Core\Database\Platform\MariaDB1052Platform as Typo3MariaDB1052Platform;
 use TYPO3\CMS\Core\Database\Platform\MariaDBPlatform as Typo3MariaDBPlatform;
-use TYPO3\CMS\Core\Database\Platform\MySQL57Platform as Typo3MySQL57Platform;
 use TYPO3\CMS\Core\Database\Platform\MySQL80Platform as Typo3MySQL80Platform;
 use TYPO3\CMS\Core\Database\Platform\MySQLPlatform as Typo3MySQLPlatform;
 use TYPO3\CMS\Core\Database\Platform\PlatformHelper;
-use TYPO3\CMS\Core\Database\Platform\PostgreSQL100Platform as Typo3PostgreSQL100Platform;
-use TYPO3\CMS\Core\Database\Platform\PostgreSQL94Platform as Typo3PostgreSQL94Platform;
 use TYPO3\CMS\Core\Database\Platform\PostgreSQLPlatform as Typo3PostgreSQLPlatform;
 use TYPO3\CMS\Core\Database\Platform\SQLitePlatform as Typo3SQLitePlatform;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -73,18 +63,6 @@ final class PlatformHelperTest extends UnitTestCase
         // **unsupported platforms (compat check)**
         yield 'Unsupported ' . DoctrineDB2Platform::class => [new DoctrineDB2Platform()];
         yield 'Unsupported ' . DoctrineOraclePlatform::class => [new DoctrineOraclePlatform()];
-
-        // @todo deprecated by Doctrine DBAL, remove with Doctrine DBAL 4.x upgrade
-        yield 'Supported ' . DoctrineMySQL57Platform::class => [new DoctrineMySQL57Platform()];
-        yield 'Supported ' . Typo3MySQL57Platform::class => [new Typo3MySQL57Platform()];
-        yield 'Supported ' . DoctrineMariaDb1027Platform::class => [new DoctrineMariaDb1027Platform()];
-        yield 'Supported ' . Typo3MariaDB1027Platform::class => [new Typo3MariaDB1027Platform()];
-        yield 'Supported ' . DoctrineMariaDb1043Platform::class => [new DoctrineMariaDb1043Platform()];
-        yield 'Supported ' . Typo3MariaDB1043Platform::class => [new Typo3MariaDB1043Platform()];
-        yield 'Supported ' . DoctrinePostgreSQL94Platform::class => [new DoctrinePostgreSQL94Platform()];
-        yield 'Supported ' . Typo3PostgreSQL94Platform::class => [new Typo3PostgreSQL94Platform()];
-        yield 'Supported ' . DoctrinePostgreSQL100Platform::class => [new DoctrinePostgreSQL100Platform()];
-        yield 'Supported ' . Typo3PostgreSQL100Platform::class => [new Typo3PostgreSQL100Platform()];
     }
 
     /**
@@ -97,7 +75,5 @@ final class PlatformHelperTest extends UnitTestCase
     {
         $expectedIdentifierQuoteChar = $platform->quoteIdentifier('fake_identifier')[0];
         self::assertSame($expectedIdentifierQuoteChar, (new PlatformHelper())->getIdentifierQuoteCharacter($platform));
-        // @todo Remove following assertion with Doctrine DBAL 4.x upgrade. Method is removed in next major version.
-        self::assertSame($expectedIdentifierQuoteChar, $platform->getIdentifierQuoteCharacter());
     }
 }

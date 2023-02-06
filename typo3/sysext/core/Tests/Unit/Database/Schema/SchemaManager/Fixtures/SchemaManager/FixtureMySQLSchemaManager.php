@@ -42,7 +42,7 @@ class FixtureMySQLSchemaManager extends MySQLSchemaManager
     {
         return $this->processCustomDoctrineTypesColumnDefinition(
             tableColumn: $tableColumn,
-            platform: $this->_platform,
+            platform: $this->platform,
         );
     }
 }

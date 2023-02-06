@@ -89,7 +89,7 @@ final class SysTemplateNoWorkspaceMigration implements UpgradeWizardInterface
     private function sysTemplateTableExists(): bool
     {
         $schemaManager = $this->getConnectionPool()->getConnectionForTable(self::TABLE_NAME)->createSchemaManager();
-        return $schemaManager->tablesExist(self::TABLE_NAME);
+        return $schemaManager->tablesExist([self::TABLE_NAME]);
     }
 
     private function sysTemplateT3verWsidFieldExists(): bool

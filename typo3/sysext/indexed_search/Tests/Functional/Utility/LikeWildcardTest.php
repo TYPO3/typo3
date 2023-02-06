@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\Tests\Functional\Utility;
 
-use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
@@ -33,16 +34,17 @@ final class LikeWildcardTest extends FunctionalTestCase
     public function getLikeQueryPart(string $tableName, string $fieldName, string $likeValue, LikeWildcard $subject, string $expected): void
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
-        if ($connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
+        $databasePlatform = $connection->getDatabasePlatform();
+        if ($databasePlatform instanceof DoctrinePostgreSQLPlatform) {
             $expected = str_replace('LIKE', 'ILIKE', $expected);
         }
         // MySQL has support for backslash escape sequences, the expected results needs to take
         // the additional quoting into account.
-        if ($connection->getDatabasePlatform() instanceof MySQLPlatform) {
+        if ($databasePlatform instanceof DoctrineMariaDBPlatform || $databasePlatform instanceof DoctrineMySQLPlatform) {
             $expected = addcslashes($expected, '\\');
         }
         $expected = $connection->quoteIdentifier($fieldName) . ' ' . $expected;
-        if (!$connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
+        if (!($databasePlatform instanceof DoctrinePostgreSQLPlatform)) {
             $expected .= ' ESCAPE ' . $connection->quote('\\');
         }
         self::assertSame($expected, $subject->getLikeQueryPart($tableName, $fieldName, $likeValue));

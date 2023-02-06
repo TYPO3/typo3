@@ -386,31 +386,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/SoftReference/TypolinkSoftReferenceParser.php
 
 		-
-			message: "#^PHPDoc type TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder of property TYPO3\\\\CMS\\\\Core\\\\Database\\\\Connection\\:\\:\\$_expr is not covariant with PHPDoc type Doctrine\\\\DBAL\\\\Query\\\\Expression\\\\ExpressionBuilder of overridden property Doctrine\\\\DBAL\\\\Connection\\:\\:\\$_expr\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Connection.php
-
-		-
-			message: "#^Return type \\(TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\) of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Connection\\:\\:getExpressionBuilder\\(\\) should be compatible with return type \\(Doctrine\\\\DBAL\\\\Query\\\\Expression\\\\ExpressionBuilder\\) of method Doctrine\\\\DBAL\\\\Connection\\:\\:getExpressionBuilder\\(\\)$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Connection.php
-
-		-
-			message: "#^Return type \\(TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\QueryBuilder\\) of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Connection\\:\\:createQueryBuilder\\(\\) should be compatible with return type \\(Doctrine\\\\DBAL\\\\Query\\\\QueryBuilder\\) of method Doctrine\\\\DBAL\\\\Connection\\:\\:createQueryBuilder\\(\\)$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Connection.php
-
-		-
-			message: "#^Parameter \\#4 \\$condition of method Doctrine\\\\DBAL\\\\Query\\\\QueryBuilder\\:\\:leftJoin\\(\\) expects string\\|null, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
-
-		-
-			message: "#^Parameter \\#4 \\$condition of method Doctrine\\\\DBAL\\\\Query\\\\QueryBuilder\\:\\:rightJoin\\(\\) expects string\\|null, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
-
-		-
 			message: "#^Variable \\$alias on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
@@ -419,16 +394,6 @@ parameters:
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/RelationHandler.php
-
-		-
-			message: "#^Property Doctrine\\\\DBAL\\\\Schema\\\\SchemaDiff\\:\\:\\$newTables \\(array\\<Doctrine\\\\DBAL\\\\Schema\\\\Table\\>\\) does not accept array\\<Doctrine\\\\DBAL\\\\Schema\\\\TableDiff\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Schema/ConnectionMigrator.php
-
-		-
-			message: "#^Property Doctrine\\\\DBAL\\\\Schema\\\\SchemaDiff\\:\\:\\$removedTables \\(array\\<Doctrine\\\\DBAL\\\\Schema\\\\Table\\>\\) does not accept array\\<Doctrine\\\\DBAL\\\\Schema\\\\TableDiff\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Schema/ConnectionMigrator.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Package\\\\PackageInterface\\:\\:getServiceProvider\\(\\)\\.$#"

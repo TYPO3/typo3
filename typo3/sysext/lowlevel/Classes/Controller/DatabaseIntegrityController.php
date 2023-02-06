@@ -224,7 +224,8 @@ class DatabaseIntegrityController
     public function __construct(
         protected IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly PlatformHelper $platformHelper,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -2555,13 +2556,13 @@ class DatabaseIntegrityController
                     continue;
                 }
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-                $identifierQuoteChar = GeneralUtility::makeInstance(PlatformHelper::class)->getIdentifierQuoteCharacter($connection->getDatabasePlatform());
+                $identifierQuoteCharacter = $this->platformHelper->getIdentifierQuoteCharacter($connection->getDatabasePlatform());
                 $tableColumns = $connection->createSchemaManager()->listTableColumns($table);
                 $normalizedTableColumns = [];
                 $fieldsInDatabase = [];
                 foreach ($tableColumns as $column) {
                     $fieldsInDatabase[] = $column->getName();
-                    $normalizedTableColumns[trim($column->getName(), $identifierQuoteChar)] = $column;
+                    $normalizedTableColumns[trim($column->getName(), $identifierQuoteCharacter)] = $column;
                 }
                 $fields = array_intersect(array_keys($conf['columns']), $fieldsInDatabase);
 
@@ -2571,7 +2572,7 @@ class DatabaseIntegrityController
                 $likes = [];
                 $escapedLikeString = '%' . $queryBuilder->escapeLikeWildcards($swords) . '%';
                 foreach ($fields as $field) {
-                    $field = trim($field, $identifierQuoteChar);
+                    $field = trim($field, $identifierQuoteCharacter);
                     $quotedField = $queryBuilder->quoteIdentifier($field);
                     $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
                     if ($column !== null
@@ -2601,7 +2602,7 @@ class DatabaseIntegrityController
                         ->setMaxResults(200);
                     $likes = [];
                     foreach ($fields as $field) {
-                        $field = trim($field, $identifierQuoteChar);
+                        $field = trim($field, $identifierQuoteCharacter);
                         $quotedField = $queryBuilder->quoteIdentifier($field);
                         $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
                         if ($column !== null

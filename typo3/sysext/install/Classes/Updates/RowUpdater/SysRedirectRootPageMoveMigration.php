@@ -101,7 +101,7 @@ class SysRedirectRootPageMoveMigration implements RowUpdaterInterface
     private function sysRedirectsTableExists(): bool
     {
         $schemaManager = $this->connectionPool->getConnectionForTable(self::TABLE_NAME)->createSchemaManager();
-        return $schemaManager->tablesExist(self::TABLE_NAME);
+        return $schemaManager->tablesExist([self::TABLE_NAME]);
     }
 
     private function getPreparedQueryBuilder(): QueryBuilder

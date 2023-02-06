@@ -1610,7 +1610,7 @@ class PageRepository implements LoggerAwareInterface
         // If the field contains zero, then OK
         $orChecks[] = $expressionBuilder->eq($field, $expressionBuilder->literal('0'));
         foreach ($memberGroups as $value) {
-            $orChecks[] = $expressionBuilder->inSet($field, $expressionBuilder->literal($value));
+            $orChecks[] = $expressionBuilder->inSet($field, $expressionBuilder->literal((string)($value ?? '')));
         }
 
         $accessGroupWhere = ' AND (' . $expressionBuilder->or(...$orChecks) . ')';
