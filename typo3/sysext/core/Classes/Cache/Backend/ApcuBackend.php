@@ -40,7 +40,7 @@ use TYPO3\CMS\Core\Core\Environment;
  * This prefix makes sure that keys from the different installations do not
  * conflict.
  */
-class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
+class ApcuBackend extends AbstractBackend implements TaggableBackendInterface, TransientBackendInterface
 {
     /**
      * A prefix to separate stored data from other data possible stored in the APC
@@ -111,9 +111,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
     {
         if (!$this->cache instanceof FrontendInterface) {
             throw new Exception('No cache frontend has been set yet via setCache().', 1232986118);
-        }
-        if (!is_string($data)) {
-            throw new InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1232986125);
         }
         $tags[] = '%APCBE%' . $this->cacheIdentifier;
         $expiration = $lifetime ?? $this->defaultLifetime;
