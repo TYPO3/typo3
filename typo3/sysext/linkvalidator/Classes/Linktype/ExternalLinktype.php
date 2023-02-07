@@ -186,7 +186,8 @@ class ExternalLinktype extends AbstractLinktype
         try {
             $response = $this->requestFactory->request($url, $method, $options);
             if ($response->getStatusCode() >= 300) {
-                $this->errorParams['errorType'] = $response->getStatusCode();
+                $this->errorParams['errorType'] = self::ERROR_TYPE_HTTP_STATUS_CODE;
+                $this->errorParams['errno'] = $response->getStatusCode();
                 $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
             } else {
                 $isValidUrl = true;
@@ -246,10 +247,21 @@ class ExternalLinktype extends AbstractLinktype
     public function getErrorMessage($errorParams)
     {
         $lang = $this->getLanguageService();
-        $errorType = $errorParams['errorType'];
+        $errorType = $errorParams['errorType'] ?? '';
+        $errno = (int)($errorParams['errno'] ?? 0);
+        $exception = $errorParams['exception'] ?? '';
+        $message = '';
+
         switch ($errorType) {
             case self::ERROR_TYPE_HTTP_STATUS_CODE:
-                switch ($errorParams['errno'] ?? 0) {
+                // in this case error is HTTP status code
+                switch ($errno) {
+                    case 300:
+                        $message = $lang->getLL('list.report.error.httpstatuscode.300');
+                        break;
+                    case 305:
+                        $message = $lang->getLL('list.report.error.httpstatuscode.305');
+                        break;
                     case 403:
                         $message = $lang->getLL('list.report.pageforbidden403');
                         break;
@@ -260,25 +272,21 @@ class ExternalLinktype extends AbstractLinktype
                         $message = $lang->getLL('list.report.internalerror500');
                         break;
                     default:
-                        // fall back to other error messages
-                        $message = $lang->getLL('list.report.error.httpstatuscode.' . $errorParams['errno']);
-                        if (!$message) {
-                            // fall back to generic error message
-                            $message = sprintf($lang->getLL('list.report.externalerror'), $errorType);
+                        if ($errno) {
+                            // show generic error message with HTTP status code
+                            $message = sprintf($lang->getLL('list.report.externalerror'), $errno);
                         }
                 }
                 break;
 
             case self::ERROR_TYPE_LOWLEVEL_LIBCURL_ERRNO:
-                $message = '';
-                if ($errorParams['errno'] ?? 0) {
+                if ($errno) {
                     // get localized error message
                     $message = $lang->getLL('list.report.error.libcurl.' . $errorParams['errno']);
-                }
-                if (!$message) {
+                } else {
                     // fallback to  generic error message and show exception
                     $message = $lang->getLL('list.report.networkexception');
-                    if (($errorParams['exception'] ?? '') != '') {
+                    if ($exception !== '') {
                         $message .= ' ('
                             . $errorParams['exception']
                             . ')';
@@ -289,7 +297,7 @@ class ExternalLinktype extends AbstractLinktype
             case 'loop':
                 $message = sprintf(
                     $lang->getLL('list.report.redirectloop'),
-                    $errorParams['exception'],
+                    ($errorParams['exception'] ?? ''),
                     ''
                 );
                 break;
@@ -299,11 +307,19 @@ class ExternalLinktype extends AbstractLinktype
                 break;
 
             case 'exception':
-                $message = sprintf($lang->getLL('list.report.httpexception'), $errorParams['exception']);
+                if ($exception) {
+                    $message = sprintf($lang->getLL('list.report.httpexception'), $exception);
+                }
                 break;
-
-            default:
-                $message = sprintf($lang->getLL('list.report.otherhttpcode'), $errorType, $errorParams['exception']);
+        }
+        if (!$message) {
+            // use generic error message as fallback
+            if ($exception) {
+                // Show exception, if available
+                $message = sprintf($lang->getLL('list.report.httpexception'), $exception);
+            } else {
+                $message = $lang->getLL('linkcheck.error.external.generic');
+            }
         }
         return $message;
     }

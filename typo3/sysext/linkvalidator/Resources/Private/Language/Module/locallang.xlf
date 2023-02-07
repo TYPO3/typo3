@@ -159,6 +159,11 @@
 			<trans-unit id="list.report.timeout" resname="list.report.timeout">
 				<source>Operation timeout. The specified time-out period was reached according to the conditions.</source>
 			</trans-unit>
+
+			<!-- external linktype check errors -->
+			<trans-unit id="linkcheck.error.external.generic" resname="linkcheck.error.external.generic">
+				<source>External link is broken.</source>
+			</trans-unit>
 			<trans-unit id="list.report.couldnotresolvehost" resname="list.report.couldnotresolvehost">
 				<source>Could not resolve host. The given remote host was not resolved.</source>
 			</trans-unit>
@@ -176,10 +181,10 @@
 			</trans-unit>
 
 			<!-- HTTP status code error messages -->
-			<trans-unit id="list.report.error.httpstatuscode.300" resname="list.report.pageforbidden403">
+			<trans-unit id="list.report.error.httpstatuscode.300" resname="list.report.error.httpstatuscode.300">
 				<source>Multiple Choices (300).</source>
 			</trans-unit>
-			<trans-unit id="list.report.error.httpstatuscode.300" resname="list.report.pageforbidden403">
+			<trans-unit id="list.report.error.httpstatuscode.305" resname="list.report.error.httpstatuscode.305">
 				<source>Use proxy (305).</source>
 			</trans-unit>
 			<trans-unit id="list.report.pageforbidden403" resname="list.report.pageforbidden403">
