@@ -155,7 +155,6 @@ class BackendCoreEnvironment extends BackendEnvironment
             'SCRIPT_NAME' => '/typo3/index.php',
             'PHP_SELF' => '/typo3/index.php',
             'SCRIPT_FILENAME' => $docRoot . '/index.php',
-            'PATH_TRANSLATED' => $docRoot . '/index.php',
             'QUERY_STRING' => $requestUrlParts['query'] ?? '',
             'REQUEST_URI' => $requestUrlParts['path'] . (isset($requestUrlParts['query']) ? '?' . $requestUrlParts['query'] : ''),
             'REQUEST_METHOD' => $method,

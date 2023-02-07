@@ -379,7 +379,6 @@ class UriBuilderTest extends UnitTestCase
         $GLOBALS['TYPO3_REQUEST'] = $this->getRequestWithRouteAttribute();
         $_SERVER['HTTP_HOST'] = 'baseuri';
         $_SERVER['SCRIPT_NAME'] = '/index.php';
-        $_SERVER['ORIG_SCRIPT_NAME'] = '/index.php';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $this->uriBuilder->setCreateAbsoluteUri(true);
         $expectedResult = 'http://baseuri/' . TYPO3_mainDir . 'test/Path?token=dummyToken';
@@ -406,7 +405,6 @@ class UriBuilderTest extends UnitTestCase
         $GLOBALS['TYPO3_REQUEST'] = $this->getRequestWithRouteAttribute();
         $_SERVER['HTTP_HOST'] = 'baseuri';
         $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
-        $_SERVER['ORIG_SCRIPT_NAME'] = '/typo3/index.php';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $this->uriBuilder->setCreateAbsoluteUri(true);
         $expectedResult = 'http://baseuri/' . TYPO3_mainDir . 'test/Path?token=dummyToken';

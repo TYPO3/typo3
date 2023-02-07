@@ -3026,6 +3026,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (!$this->absRefPrefix) {
             return;
         }
+        $encodedAbsRefPrefix = htmlspecialchars($this->absRefPrefix, ENT_QUOTES | ENT_HTML5);
         $search = [
             '"_assets/',
             '"typo3temp/',
@@ -3034,17 +3035,17 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             '"' . PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
         ];
         $replace = [
-            '"' . $this->absRefPrefix . '_assets/',
-            '"' . $this->absRefPrefix . 'typo3temp/',
-            '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getExtensionsPath()) . '/',
-            '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getBackendPath()) . '/ext/',
-            '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
+            '"' . $encodedAbsRefPrefix . '_assets/',
+            '"' . $encodedAbsRefPrefix . 'typo3temp/',
+            '"' . $encodedAbsRefPrefix . PathUtility::stripPathSitePrefix(Environment::getExtensionsPath()) . '/',
+            '"' . $encodedAbsRefPrefix . PathUtility::stripPathSitePrefix(Environment::getBackendPath()) . '/ext/',
+            '"' . $encodedAbsRefPrefix . PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
         ];
         // Process additional directories
         $directories = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['additionalAbsRefPrefixDirectories'], true);
         foreach ($directories as $directory) {
             $search[] = '"' . $directory;
-            $replace[] = '"' . $this->absRefPrefix . $directory;
+            $replace[] = '"' . $encodedAbsRefPrefix . $directory;
         }
         $this->content = str_replace(
             $search,

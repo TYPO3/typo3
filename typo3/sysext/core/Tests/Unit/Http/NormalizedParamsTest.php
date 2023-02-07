@@ -369,77 +369,19 @@ class NormalizedParamsTest extends UnitTestCase
                 [],
                 '',
             ],
-            'use ORIG_SCRIPT_NAME if ORIG_PATH_INFO is set but empty' => [
-                [
-                    'ORIG_PATH_INFO' => '',
-                    'PATH_INFO' => '',
-                    'ORIG_SCRIPT_NAME' => '/orig/script/name.php',
-                    'SCRIPT_NAME' => '/script/name.php',
-                ],
-                [],
-                '/orig/script/name.php',
-            ],
-            'use ORIG_SCRIPT_NAME if PATH_INFO is set but empty' => [
-                [
-                    'PATH_INFO' => '',
-                    'ORIG_SCRIPT_NAME' => '/orig/script/name.php',
-                    'SCRIPT_NAME' => '/script/name.php',
-                ],
-                [],
-                '/orig/script/name.php',
-            ],
-            'use SCRIPT_NAME if ORIG_PATH_INFO is set but empty' => [
-                [
-                    'ORIG_PATH_INFO' => '',
-                    'PATH_INFO' => '',
-                    'ORIG_SCRIPT_NAME' => '',
-                    'SCRIPT_NAME' => '/script/name.php',
-                ],
-                [],
-                '/script/name.php',
-            ],
-            'use SCRIPT_NAME if PATH_INFO is set but empty' => [
-                [
-                    'PATH_INFO' => '',
-                    'ORIG_SCRIPT_NAME' => '',
-                    'SCRIPT_NAME' => '/script/name.php',
-                ],
-                [],
-                '/script/name.php',
-            ],
-            'use SCRIPT_NAME if ORIG_PATH_INFO is set' => [
-                [
-                    'ORIG_PATH_INFO' => '/foo/bar',
-                    'PATH_INFO' => '',
-                    'ORIG_SCRIPT_NAME' => '',
-                    'SCRIPT_NAME' => '/script/name.php',
-                ],
-                [],
-                '/script/name.php',
-            ],
-            'use SCRIPT_NAME if PATH_INFO is set' => [
-                [
-                    'PATH_INFO' => '/foo/bar',
-                    'ORIG_SCRIPT_NAME' => '',
-                    'SCRIPT_NAME' => '/script/name.php',
-                ],
-                [],
-                '/script/name.php',
-            ],
-            'use ORIG_SCRIPT_NAME' => [
-                [
-                    'ORIG_SCRIPT_NAME' => '/orig/script/name.php',
-                    'SCRIPT_NAME' => '/script/name.php',
-                ],
-                [],
-                '/orig/script/name.php',
-            ],
             'use SCRIPT_NAME' => [
                 [
                     'SCRIPT_NAME' => '/script/name.php',
                 ],
                 [],
                 '/script/name.php',
+            ],
+            'apply URL encoding to SCRIPT_NAME' => [
+                [
+                    'SCRIPT_NAME' => '/test:site/script/name.php',
+                ],
+                [],
+                '/test%3Asite/script/name.php',
             ],
             'add proxy ssl prefix' => [
                 [
@@ -508,6 +450,14 @@ class NormalizedParamsTest extends UnitTestCase
                 ],
                 [],
                 '/typo3/index.php?parameter=foo/bar&id=42',
+            ],
+            'use query string and script name in special subdirectory if REQUEST_URI is not set' => [
+                [
+                    'QUERY_STRING' => 'parameter=foo/bar&id=42',
+                    'SCRIPT_NAME' => '/sub:dir/typo3/index.php',
+                ],
+                [],
+                '/sub%3Adir/typo3/index.php?parameter=foo/bar&id=42',
             ],
             'prefix with proxy prefix with ssl if using REQUEST_URI' => [
                 [
@@ -936,7 +886,6 @@ class NormalizedParamsTest extends UnitTestCase
         $serverParams = [
             'SCRIPT_NAME' => '/typo3/index.php',
             'HTTP_HOST' => 'www.domain.com',
-            'PATH_INFO' => '/typo3/index.php',
         ];
         $pathThisScript = '/var/www/myInstance/Web/typo3/index.php';
         $pathSite = '/var/www/myInstance/Web';
@@ -1013,7 +962,8 @@ class NormalizedParamsTest extends UnitTestCase
         return [
             'not in a sub directory' => [
                 [
-                    'SCRIPT_NAME' => '/typo3/index.php?id=42&foo=bar',
+                    'SCRIPT_NAME' => '/typo3/index.php',
+                    'REQUEST_URI' => '/typo3/index.php?id=42&foo=bar',
                     'HTTP_HOST' => 'www.domain.com',
                 ],
                 '/var/www/myInstance/Web/typo3/index.php',
@@ -1022,7 +972,8 @@ class NormalizedParamsTest extends UnitTestCase
             ],
             'in a sub directory' => [
                 [
-                    'SCRIPT_NAME' => '/some/sub/dir/typo3/index.php?id=42&foo=bar',
+                    'SCRIPT_NAME' => '/some/sub/dir/typo3/index.php',
+                    'REQUEST_URI' => '/some/sub/dir/typo3/index.php?id=42&foo=bar',
                     'HTTP_HOST' => 'www.domain.com',
                 ],
                 '/var/www/myInstance/Web/typo3/index.php',
@@ -1062,9 +1013,9 @@ class NormalizedParamsTest extends UnitTestCase
     public function getPathInfoReturnsExpectedValue(): void
     {
         $serverParams = [
-            'PATH_INFO' => '/typo3/index.php',
+            'PATH_INFO' => '/foo/bar',
         ];
-        $expected = '/typo3/index.php';
+        $expected = '/foo/bar';
         $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         self::assertSame($expected, $serverRequestParameters->getPathInfo());
     }
