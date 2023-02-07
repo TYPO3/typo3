@@ -80,7 +80,7 @@ class WidgetRequestBuilderTest extends UnitTestCase
             'REMOTE_ADDR' => 'foo',
             'SSL_SESSION_ID' => 'foo',
             'REQUEST_URI' => 'foo',
-            'ORIG_SCRIPT_NAME' => 'foo',
+            'SCRIPT_NAME' => 'foo',
             'REQUEST_METHOD' => 'foo'
         ];
         $_GET = [
@@ -100,7 +100,7 @@ class WidgetRequestBuilderTest extends UnitTestCase
             'REMOTE_ADDR' => 'foo',
             'SSL_SESSION_ID' => 'foo',
             'REQUEST_URI' => 'foo',
-            'ORIG_SCRIPT_NAME' => 'foo',
+            'SCRIPT_NAME' => 'foo',
             'REQUEST_METHOD' => 'foo'
         ];
         $_GET = [
@@ -121,7 +121,7 @@ class WidgetRequestBuilderTest extends UnitTestCase
             'REMOTE_ADDR' => 'foo',
             'SSL_SESSION_ID' => 'foo',
             'REQUEST_URI' => 'foo',
-            'ORIG_SCRIPT_NAME' => 'foo',
+            'SCRIPT_NAME' => 'foo',
             'REQUEST_METHOD' => 'foo'
         ];
         $_GET = [
@@ -142,7 +142,7 @@ class WidgetRequestBuilderTest extends UnitTestCase
             'REMOTE_ADDR' => 'foo',
             'SSL_SESSION_ID' => 'foo',
             'REQUEST_URI' => 'foo',
-            'ORIG_SCRIPT_NAME' => 'foo',
+            'SCRIPT_NAME' => 'foo',
             'REQUEST_METHOD' => 'POST'
         ];
         $_GET = [
@@ -162,7 +162,7 @@ class WidgetRequestBuilderTest extends UnitTestCase
             'REMOTE_ADDR' => 'foo',
             'SSL_SESSION_ID' => 'foo',
             'REQUEST_URI' => 'foo',
-            'ORIG_SCRIPT_NAME' => 'foo',
+            'SCRIPT_NAME' => 'foo',
             'REQUEST_METHOD' => 'POST'
         ];
         $_GET = [
@@ -186,7 +186,7 @@ class WidgetRequestBuilderTest extends UnitTestCase
             'REMOTE_ADDR' => 'foo',
             'SSL_SESSION_ID' => 'foo',
             'REQUEST_URI' => 'foo',
-            'ORIG_SCRIPT_NAME' => 'foo',
+            'SCRIPT_NAME' => 'foo',
             'REQUEST_METHOD' => 'GET'
         ];
         $_GET = [
@@ -210,7 +210,7 @@ class WidgetRequestBuilderTest extends UnitTestCase
             'REMOTE_ADDR' => 'foo',
             'SSL_SESSION_ID' => 'foo',
             'REQUEST_URI' => 'foo',
-            'ORIG_SCRIPT_NAME' => 'foo',
+            'SCRIPT_NAME' => 'foo',
             'REQUEST_METHOD' => 'foo'
         ];
         $_GET = [
@@ -231,7 +231,7 @@ class WidgetRequestBuilderTest extends UnitTestCase
             'REMOTE_ADDR' => 'foo',
             'SSL_SESSION_ID' => 'foo',
             'REQUEST_URI' => 'foo',
-            'ORIG_SCRIPT_NAME' => 'foo',
+            'SCRIPT_NAME' => 'foo',
             'REQUEST_METHOD' => 'foo'
         ];
         $_GET = [
@@ -252,7 +252,7 @@ class WidgetRequestBuilderTest extends UnitTestCase
             'REMOTE_ADDR' => 'foo',
             'SSL_SESSION_ID' => 'foo',
             'REQUEST_URI' => 'foo',
-            'ORIG_SCRIPT_NAME' => 'foo',
+            'SCRIPT_NAME' => 'foo',
             'REQUEST_METHOD' => 'foo'
         ];
         $_GET = [

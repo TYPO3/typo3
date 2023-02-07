@@ -635,7 +635,7 @@ class ResourceCompressorTest extends BaseTestCase
         // script point here to fake the backend call.
         $bePath = Environment::getBackendPath();
         $subfolderFake = basename(Environment::getPublicPath());
-        $_SERVER['ORIG_SCRIPT_NAME'] = '/' . $subfolderFake . '/typo3/index.php';
+        $_SERVER['SCRIPT_NAME'] = '/' . $subfolderFake . '/typo3/index.php';
         Environment::initialize(
             Environment::getContext(),
             true,

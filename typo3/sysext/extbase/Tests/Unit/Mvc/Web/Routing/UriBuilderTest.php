@@ -377,7 +377,6 @@ class UriBuilderTest extends UnitTestCase
         $_GET['route'] = '/test/Path';
         $_SERVER['HTTP_HOST'] = 'baseuri';
         $_SERVER['SCRIPT_NAME'] = '/index.php';
-        $_SERVER['ORIG_SCRIPT_NAME'] = '/index.php';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $this->mockRequest->expects(self::any())->method('getBaseUri')->willReturn('http://baseuri');
         $this->uriBuilder->setCreateAbsoluteUri(true);
@@ -405,7 +404,6 @@ class UriBuilderTest extends UnitTestCase
         $_GET['route'] = '/test/Path';
         $_SERVER['HTTP_HOST'] = 'baseuri';
         $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
-        $_SERVER['ORIG_SCRIPT_NAME'] = '/typo3/index.php';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $this->mockRequest->expects(self::any())->method('getBaseUri')->willReturn('http://baseuri');
         $this->uriBuilder->setCreateAbsoluteUri(true);

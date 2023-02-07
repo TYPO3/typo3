@@ -3420,6 +3420,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (!$this->absRefPrefix) {
             return;
         }
+        $encodedAbsRefPrefix = htmlspecialchars($this->absRefPrefix, ENT_QUOTES | ENT_HTML5);
         $search = [
             '"typo3temp/',
             '"' . PathUtility::stripPathSitePrefix(Environment::getExtensionsPath()) . '/',
@@ -3427,10 +3428,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             '"' . PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
         ];
         $replace = [
-            '"' . $this->absRefPrefix . 'typo3temp/',
-            '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getExtensionsPath()) . '/',
-            '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getBackendPath()) . '/ext/',
-            '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
+            '"' . $encodedAbsRefPrefix . 'typo3temp/',
+            '"' . $encodedAbsRefPrefix . PathUtility::stripPathSitePrefix(Environment::getExtensionsPath()) . '/',
+            '"' . $encodedAbsRefPrefix . PathUtility::stripPathSitePrefix(Environment::getBackendPath()) . '/ext/',
+            '"' . $encodedAbsRefPrefix . PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
         ];
         /** @var StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
@@ -3439,14 +3440,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if ($storage->getDriverType() === 'Local' && $storage->isPublic() && $storage->isOnline()) {
                 $folder = $storage->getPublicUrl($storage->getRootLevelFolder(), true);
                 $search[] = '"' . $folder;
-                $replace[] = '"' . $this->absRefPrefix . $folder;
+                $replace[] = '"' . $encodedAbsRefPrefix . $folder;
             }
         }
         // Process additional directories
         $directories = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['additionalAbsRefPrefixDirectories'], true);
         foreach ($directories as $directory) {
             $search[] = '"' . $directory;
-            $replace[] = '"' . $this->absRefPrefix . $directory;
+            $replace[] = '"' . $encodedAbsRefPrefix . $directory;
         }
         $this->content = str_replace(
             $search,
