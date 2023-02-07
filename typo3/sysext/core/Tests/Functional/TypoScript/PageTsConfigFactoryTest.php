@@ -47,6 +47,18 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function pageTsConfigLoadsSingleFileWithOldImportSyntaxFromGlobals(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:test_typoscript_pagetsconfigfactory/Configuration/TsConfig/tsconfig-includes.tsconfig">';
+        /** @var PageTsConfigFactory $subject */
+        $subject = $this->get(PageTsConfigFactory::class);
+        $pageTsConfig = $subject->create([], new NullSite());
+        self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
+    }
+
+    /**
+     * @test
+     */
     public function pageTsConfigLoadsFromPagesTsconfigTestExtensionConfigurationFile(): void
     {
         $subject = $this->get(PageTsConfigFactory::class);
@@ -100,6 +112,23 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create($rootLine, new NullSite());
         self::assertSame('loadedFromTsconfigIncludesWithTyposcriptSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTyposcriptSuffix']);
+    }
+
+    /**
+     * @test
+     */
+    public function pageTsConfigLoadsSingleFileWithOldImportSyntax(): void
+    {
+        $rootLine = [
+            [
+                'uid' => 1,
+                'TSconfig' => '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:test_typoscript_pagetsconfigfactory/Configuration/TsConfig/tsconfig-includes.tsconfig">',
+            ],
+        ];
+        /** @var PageTsConfigFactory $subject */
+        $subject = $this->get(PageTsConfigFactory::class);
+        $pageTsConfig = $subject->create($rootLine, new NullSite());
+        self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
     }
 
     /**

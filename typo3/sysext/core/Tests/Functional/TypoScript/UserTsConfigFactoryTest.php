@@ -45,6 +45,20 @@ final class UserTsConfigFactoryTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function userTsConfigLoadsSingleFileWithOldImportSyntaxFromGlobals(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:test_typoscript_usertsconfigfactory/Configuration/TsConfig/tsconfig-includes.tsconfig">';
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        /** @var UserTsConfigFactory $subject */
+        $subject = $this->get(UserTsConfigFactory::class);
+        $userTsConfig = $subject->create($backendUser);
+        self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $userTsConfig->getUserTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
+    }
+
+    /**
+     * @test
+     */
     public function userTsConfigLoadsDefaultFromBackendUserTsConfigField(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
