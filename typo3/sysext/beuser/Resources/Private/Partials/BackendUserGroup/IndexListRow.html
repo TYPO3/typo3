@@ -43,6 +43,22 @@
                     <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_groups][{backendUserGroup.uid}][hidden]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key:'visibility.hide')}"><core:icon identifier="actions-edit-hide" /></a>
                 </f:else>
             </f:if>
+            <button
+                type="submit"
+                class="btn btn-default t3js-modal-trigger"
+                data-target-form="be_user_group_remove_{backendUserGroup.uid}"
+                data-severity="warning"
+                data-title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
+                data-bs-content="{f:translate(key:'backendUserGroup.confirmDelete',arguments:'{0:backendUserGroup.title}')}"
+                data-button-close-text="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                data-button-ok-text="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.yes')}"
+                title="{f:translate(key:'delete')}"
+            >
+                <core:icon identifier="actions-edit-delete"/>
+            </button>
+            <form action="{be:moduleLink(route:'tce_db', currentUrlParameterName:'redirect')}" name="be_user_group_remove_{backendUserGroup.uid}" id="be_user_group_remove_{backendUserGroup.uid}" method="post">
+                <input name="cmd[be_groups][{backendUserGroup.uid}][delete]=1" type="hidden" value="{group.uid}">
+            </form>
         </div>
         <div class="btn-group" role="group">
             <a class="btn btn-default" href="#" data-dispatch-action="TYPO3.InfoWindow.showItem" data-dispatch-args-list="be_groups,{backendUserGroup.uid}">

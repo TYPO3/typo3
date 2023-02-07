@@ -166,7 +166,10 @@
 				<source>Switch to user</source>
 			</trans-unit>
 			<trans-unit id="confirm" resname="confirm">
-				<source>Are you sure you want to delete this backend user %s?</source>
+				<source>Are you sure you want to delete the backend user '%s'?</source>
+			</trans-unit>
+			<trans-unit id="backendUserGroup.confirmDelete" resname="backendUserGroup.confirmDelete">
+				<source>Are you sure you want to delete the usergroup '%s'?</source>
 			</trans-unit>
 			<trans-unit id="section.compare" resname="section.compare">
 				<source>Compare</source>
