@@ -19,8 +19,8 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-core": "12.2.*@dev",
-		"typo3/cms-info": "12.2.*@dev"
+		"typo3/cms-core": "10.4.35",
+		"typo3/cms-info": "10.4.35"
 	},
 	"suggest": {
 		"typo3/cms-scheduler": "Regular checks of links"

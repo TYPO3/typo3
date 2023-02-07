@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'TypoScript PageTsConfigFactory extension test',
     'description' => 'TypoScript PageTsConfigFactory extension test',
     'category' => 'example',
-    'version' => '12.2.0',
+    'version' => '10.4.35',
     'state' => 'beta',
     'author' => 'Christian Kuhn',
     'author_email' => 'lolli@schwarzbu.ch',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '12.2.0',
+            'typo3' => '10.4.35',
         ],
         'conflicts' => [],
         'suggests' => [],
