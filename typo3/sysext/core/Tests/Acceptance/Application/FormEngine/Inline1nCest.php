@@ -70,7 +70,7 @@ final class Inline1nCest
 
     public function createInline1nInlineElement(ApplicationTester $I): void
     {
-        $I->click('span[data-identifier="actions-add"]', 'div.typo3-newRecordLink');
+        $I->click('span[data-identifier="actions-plus"]', 'div.typo3-newRecordLink');
 
         $fieldLabel = 'input_1';
         $testValue = 'Fo Bar';

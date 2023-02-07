@@ -91,7 +91,7 @@ class AddRecord extends AbstractNode
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return [
-            'iconIdentifier' => 'actions-add',
+            'iconIdentifier' => 'actions-plus',
             'title' => $title,
             'linkAttributes' => [
                 'id' => htmlspecialchars($id),

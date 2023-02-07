@@ -68,7 +68,7 @@ class RecordProvider extends AbstractProvider
         ],
         'new' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.new',
-            'iconIdentifier' => 'actions-add',
+            'iconIdentifier' => 'actions-plus',
             'callbackAction' => 'newRecord',
         ],
         'info' => [
@@ -115,7 +115,7 @@ class RecordProvider extends AbstractProvider
             'childItems' => [
                 'newWizard' => [
                     'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:CM_newWizard',
-                    'iconIdentifier' => 'actions-add',
+                    'iconIdentifier' => 'actions-plus',
                     'callbackAction' => 'newContentWizard',
                 ],
             ],

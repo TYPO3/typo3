@@ -104,13 +104,13 @@
             <f:if condition="{compareUserUidList.{backendUser.uid}}">
                 <f:then>
                     <f:link.action action="removeFromCompareList" arguments="{uid: backendUser.uid}" class="btn btn-default" title="{f:translate(key: 'compare')}">
-                        <core:icon identifier="actions-remove" size="small"/>
+                        <core:icon identifier="actions-minus" size="small"/>
                         <f:translate key="compare" />
                     </f:link.action>
                 </f:then>
                 <f:else>
                     <f:link.action action="addToCompareList" arguments="{uid: backendUser.uid}" class="btn btn-default" title="{f:translate(key: 'compare')}">
-                        <core:icon identifier="actions-add" size="small"/> <f:translate key="compare" />
+                        <core:icon identifier="actions-plus" size="small"/> <f:translate key="compare" />
                     </f:link.action>
                 </f:else>
             </f:if>

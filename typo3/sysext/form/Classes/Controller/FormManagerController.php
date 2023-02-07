@@ -498,7 +498,7 @@ class FormManagerController extends AbstractBackendController
             ->setHref('#')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.create_new_form'))
             ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL));
         $buttonBar->addButton($addFormButton, ButtonBar::BUTTON_POSITION_LEFT);
 
         // Reload

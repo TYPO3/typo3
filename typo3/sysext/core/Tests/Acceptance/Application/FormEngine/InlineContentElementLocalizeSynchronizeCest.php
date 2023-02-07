@@ -38,7 +38,7 @@ final class InlineContentElementLocalizeSynchronizeCest
     public function addingResourceToDefaultLangPageAddResourceToLocalizedPage(ApplicationTester $I): void
     {
         // Add a content element type images and localize it
-        $I->click('.module-body td[data-language-uid="0"] span[data-identifier="actions-add"]');
+        $I->click('.module-body td[data-language-uid="0"] span[data-identifier="actions-plus"]');
         $I->switchToWindow('typo3-backend');
         $I->waitForText('Images Only');
         $I->click('Images Only');

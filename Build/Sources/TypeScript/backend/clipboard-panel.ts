@@ -155,7 +155,7 @@ export class ClipboardPanel extends LitElement {
             </div>
             ${!clipboardData.elementCount ? html`` : html`
               <button type="button" class="btn btn-default btn-sm" title="${clipboardData.labels.removeAll}" data-action="removeAll" @click="${(event: PointerEvent) => this.updateClipboard(event, {CB: {'removeAll': tab.identifier}})}">
-                <typo3-backend-icon identifier="actions-remove" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                <typo3-backend-icon identifier="actions-minus" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
                 ${clipboardData.labels.removeAll}
               </button>`}
           `}
@@ -188,7 +188,7 @@ export class ClipboardPanel extends LitElement {
             ${!tabItem.identifier ? html`` : html`
               <button type="button" class="btn btn-default btn-sm" title="${clipboardData.labels.removeItem}" data-action="remove" @click="${(event: PointerEvent) => this.updateClipboard(event,{CB: {'remove': tabItem.identifier}})}">
                 <span>
-                    <typo3-backend-icon identifier="actions-remove" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                    <typo3-backend-icon identifier="actions-minus" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
                     ${clipboardData.labels.removeItem}
                 </span>
               </button>

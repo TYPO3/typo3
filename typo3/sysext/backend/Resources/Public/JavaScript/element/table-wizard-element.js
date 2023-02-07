@@ -48,7 +48,7 @@ var __decorate=function(t,e,l,a){var o,i=arguments.length,n=i<3?e:null===a?a=Obj
         </button>
         <button class="btn btn-default" type="button" title="${lll("table_setCount")}"
                 @click="${t=>this.showTableConfigurationModal(t)}">
-          <typo3-backend-icon identifier="actions-add" size="small"></typo3-backend-icon>
+          <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
         </button>
         <button class="btn btn-default" type="button" title="${lll("table_showCode")}"
                 @click="${t=>this.showTableSyntax(t)}">
@@ -71,7 +71,7 @@ var __decorate=function(t,e,l,a){var o,i=arguments.length,n=i<3?e:null===a?a=Obj
         </button>
         <button class="btn btn-default" type="button" title="${lll("table_addColumn")}"
                 @click="${e=>this.appendColumn(e,t)}">
-          <typo3-backend-icon identifier="actions-add" size="small"></typo3-backend-icon>
+          <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
         </button>
       </span>
     `}renderRowButtons(t,e){const l={title:lll(0===t?"table_bottom":"table_up"),class:0===t?"bar-down":"up",target:0===t?e:t-1},a={title:lll(t===e?"table_top":"table_down"),class:t===e?"bar-up":"down",target:t===e?0:t+1};return html`
@@ -90,7 +90,7 @@ var __decorate=function(t,e,l,a){var o,i=arguments.length,n=i<3?e:null===a?a=Obj
         </button>
         <button class="btn btn-default" type="button" title="${lll("table_addRow")}"
                 @click="${e=>this.appendRow(e,t)}">
-          <typo3-backend-icon identifier="actions-add" size="small"></typo3-backend-icon>
+          <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
         </button>
       </span>
     `}showTableConfigurationModal(t){const e=this.firstRow.length,l=this.table.length,a=l||1,o=e||1,i=Modal.advanced({content:"",title:lll("table_setCountHeadline"),severity:SeverityEnum.notice,size:Modal.sizes.small,buttons:[{text:lll("button.close")||"Close",active:!0,btnClass:"btn-default",name:"cancel",trigger:()=>Modal.dismiss()},{text:lll("table_buttonApply")||"Apply",btnClass:"btn-"+Severity.getCssClass(SeverityEnum.info),name:"apply",trigger:()=>{const a=i.querySelector("#t3js-expand-rows"),o=i.querySelector("#t3js-expand-cols");if(null!==a&&null!==o)if(a.checkValidity()&&o.checkValidity()){const i=Number(a.value)-l,n=Number(o.value)-e;this.setColAndRowCount(t,n,i),Modal.dismiss()}else a.reportValidity(),o.reportValidity()}}],callback:t=>{render(html`

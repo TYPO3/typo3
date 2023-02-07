@@ -315,7 +315,7 @@ class RecordListController
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'returnUrl' => $listUrl]))
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordGeneral'))
                 ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL));
             $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
 

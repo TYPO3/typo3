@@ -159,7 +159,7 @@
     "@lit/reactive-element": "^1.0.0",
     "@lodder/grunt-postcss": "^3.1.1",
     "@popperjs/core": "^2.11.6",
-    "@typo3/icons": "^3.4.0",
+    "@typo3/icons": "^3.5.0",
     "autosize": "^4.0.2",
     "bootstrap": "^5.2.2",
     "broadcastchannel-polyfill": "^1.0.0",

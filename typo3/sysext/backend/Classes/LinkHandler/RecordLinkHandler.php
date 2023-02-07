@@ -251,7 +251,7 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
             $html[] = '<p>' . $this->iconFactory->getIconForRecord('pages', $mainPageRecord, Icon::SIZE_SMALL)->render() . '&nbsp;';
             if ($table === 'pages') {
                 $html[] = '<span data-uid="' . htmlspecialchars((string)$mainPageRecord['uid']) . '" data-table="pages" data-title="' . htmlspecialchars($mainPageRecord['title']) . '">';
-                $html[] =    '<a href="#" data-close="0">' . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</a>';
+                $html[] =    '<a href="#" data-close="0">' . $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL)->render() . '</a>';
                 $html[] =    '<a href="#" data-close="1">' . $pText . '</a>';
                 $html[] = '</span>';
             } else {

@@ -94,7 +94,7 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
          * Wizard step 1
          */
         MultiStepWizard.addSlide('new-form-step-1', TYPO3.lang['formManager.newFormWizard.step1.title'], '', Severity.info, TYPO3.lang['formManager.newFormWizard.step1.progressLabel'], function(slide) {
-          Icons.getIcon('actions-add', Icons.sizes.small).then(function (addIconMarkup) {
+          Icons.getIcon('actions-plus', Icons.sizes.small).then(function (addIconMarkup) {
             Icons.getIcon('form-page', Icons.sizes.large).then(function (duplicateIconMarkup) {
               Icons.getIcon('apps-pagetree-page-default', Icons.sizes.large).then(function (blankIconMarkup) {
                 var folders, html, modal, nextButton;

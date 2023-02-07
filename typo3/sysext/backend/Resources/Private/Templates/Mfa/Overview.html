@@ -93,7 +93,7 @@
                 </f:then>
                 <f:else>
                     <f:be.link route="mfa" parameters="{action: 'setup', identifier: provider.identifier}" class="btn btn-{f:if(condition: '{recommendedProvider} == {provider.identifier}', then: 'success', else: 'default')}" title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:overview.setupLinkTitle', arguments: {0: providerTitle})}">
-                        <core:icon identifier="actions-add" />
+                        <core:icon identifier="actions-plus" />
                         <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:overview.setupLinkLabel"/>
                     </f:be.link>
                 </f:else>

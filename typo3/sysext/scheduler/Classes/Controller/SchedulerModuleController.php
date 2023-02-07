@@ -1014,7 +1014,7 @@ class SchedulerModuleController
         $addButton = $buttonBar->makeLinkButton()
             ->setTitle($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add'))
             ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL))
             ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_txschedulerM1', ['action' => 'add']));
         $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
     }

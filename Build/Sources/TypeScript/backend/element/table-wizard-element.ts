@@ -226,7 +226,7 @@ export class TableWizardElement extends LitElement {
         </button>
         <button class="btn btn-default" type="button" title="${lll('table_setCount')}"
                 @click="${(evt: Event) => this.showTableConfigurationModal(evt)}">
-          <typo3-backend-icon identifier="actions-add" size="small"></typo3-backend-icon>
+          <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
         </button>
         <button class="btn btn-default" type="button" title="${lll('table_showCode')}"
                 @click="${(evt: Event) => this.showTableSyntax(evt)}">
@@ -263,7 +263,7 @@ export class TableWizardElement extends LitElement {
         </button>
         <button class="btn btn-default" type="button" title="${lll('table_addColumn')}"
                 @click="${(evt: Event) => this.appendColumn(evt, col)}">
-          <typo3-backend-icon identifier="actions-add" size="small"></typo3-backend-icon>
+          <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
         </button>
       </span>
     `;
@@ -296,7 +296,7 @@ export class TableWizardElement extends LitElement {
         </button>
         <button class="btn btn-default" type="button" title="${lll('table_addRow')}"
                 @click="${(evt: Event) => this.appendRow(evt, row)}">
-          <typo3-backend-icon identifier="actions-add" size="small"></typo3-backend-icon>
+          <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
         </button>
       </span>
     `;

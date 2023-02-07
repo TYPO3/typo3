@@ -553,7 +553,7 @@ class SetupModuleController
                         break;
                     }
                     $html .= '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('mfa')) . '" class="btn btn-' . ($hasActiveProviders ? 'default' : 'success') . '">';
-                    $html .=    $this->iconFactory->getIcon($hasActiveProviders ? 'actions-cog' : 'actions-add', Icon::SIZE_SMALL);
+                    $html .=    $this->iconFactory->getIcon($hasActiveProviders ? 'actions-cog' : 'actions-plus', Icon::SIZE_SMALL);
                     $html .=    ' <span>' . htmlspecialchars($lang->getLL('mfaProviders.' . ($hasActiveProviders ? 'manageLinkTitle' : 'setupLinkTitle'))) . '</span>';
                     $html .= '</a>';
                     break;

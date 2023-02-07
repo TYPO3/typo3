@@ -818,7 +818,7 @@ class DatabaseRecordList
             return '';
         }
 
-        $iconIdentifier = 'actions-add';
+        $iconIdentifier = 'actions-plus';
         $title = $this->getLanguageService()->getLL('new');
         $attributes = [
             'title' => $title,
@@ -1468,7 +1468,7 @@ class DatabaseRecordList
                             ],
                             'returnUrl' => $this->listURL(),
                         ];
-                        $icon = ($table === 'pages' ? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
+                        $icon = ($table === 'pages' ? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL));
                         $titleLabel = 'new';
                         if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? false) {
                             $titleLabel .= ($table === 'pages' ? 'Page' : 'Record');
@@ -2965,7 +2965,7 @@ class DatabaseRecordList
         $dropdownItems['checkAll'] = '
             <li>
                 <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '">
-                    ' . $this->iconFactory->getIcon('actions-check-square', Icon::SIZE_SMALL)->render() . '
+                    ' . $this->iconFactory->getIcon('actions-selection-elements-all', Icon::SIZE_SMALL)->render() . '
                     ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '
                 </button>
             </li>';
@@ -2973,7 +2973,7 @@ class DatabaseRecordList
         $dropdownItems['checkNone'] = '
             <li>
                 <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-none" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '">
-                    ' . $this->iconFactory->getIcon('actions-square', Icon::SIZE_SMALL)->render() . '
+                    ' . $this->iconFactory->getIcon('actions-selection-elements-none', Icon::SIZE_SMALL)->render() . '
                     ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '
                 </button>
             </li>';
@@ -2981,7 +2981,7 @@ class DatabaseRecordList
         $dropdownItems['toggleSelection'] = '
             <li>
                 <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="toggle" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '">
-                    ' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '
+                    ' . $this->iconFactory->getIcon('actions-selection-elements-invert', Icon::SIZE_SMALL)->render() . '
                     ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '
                 </button>
             </li>';
@@ -2989,7 +2989,7 @@ class DatabaseRecordList
         return '
             <div class="btn-group dropdown position-static">
                 <button type="button" class="btn btn-borderless dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
-                    ' . $this->iconFactory->getIcon('content-special-div', Icon::SIZE_SMALL) . '
+                    ' . $this->iconFactory->getIcon('actions-selection', Icon::SIZE_SMALL) . '
                 </button>
                 <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
                     ' . implode(PHP_EOL, $dropdownItems) . '
@@ -3051,7 +3051,7 @@ class DatabaseRecordList
             $removeMarked = '
                 <button type="button" class="btn btn-default btn-sm ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '" data-multi-record-selection-action="removeMarked">
                     <span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.removeFromClipboard')) . '">
-                        ' . $this->iconFactory->getIcon('actions-remove', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.removeFromClipboard')) . '
+                        ' . $this->iconFactory->getIcon('actions-minus', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.removeFromClipboard')) . '
                     </span>
                 </button>';
             // Add "copy marked" after "edit", or in case "edit" is not set, as first item

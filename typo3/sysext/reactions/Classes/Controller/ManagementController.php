@@ -86,7 +86,7 @@ class ManagementController
             ))
             ->setShowLabelText(true)
             ->setTitle($languageService->sL('LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:reaction_create'))
-            ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL));
         $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
 
         // Reload

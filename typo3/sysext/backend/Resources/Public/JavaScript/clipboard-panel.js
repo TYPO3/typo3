@@ -65,7 +65,7 @@ var ClipboardPanel_1,CopyMode,__decorate=function(t,e,a,i){var o,n=arguments.len
             </div>
             ${e.elementCount?html`
               <button type="button" class="btn btn-default btn-sm" title="${e.labels.removeAll}" data-action="removeAll" @click="${e=>this.updateClipboard(e,{CB:{removeAll:t.identifier}})}">
-                <typo3-backend-icon identifier="actions-remove" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                <typo3-backend-icon identifier="actions-minus" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
                 ${e.labels.removeAll}
               </button>`:html``}
           `}
@@ -94,7 +94,7 @@ var ClipboardPanel_1,CopyMode,__decorate=function(t,e,a,i){var o,n=arguments.len
             ${t.identifier?html`
               <button type="button" class="btn btn-default btn-sm" title="${a.labels.removeItem}" data-action="remove" @click="${e=>this.updateClipboard(e,{CB:{remove:t.identifier}})}">
                 <span>
-                    <typo3-backend-icon identifier="actions-remove" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                    <typo3-backend-icon identifier="actions-minus" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
                     ${a.labels.removeItem}
                 </span>
               </button>

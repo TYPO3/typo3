@@ -167,7 +167,7 @@ class BackendUserController extends ActionController
         $this->addMainMenu('index');
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $addUserButton = $buttonBar->makeLinkButton()
-            ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.create', 'beuser'))
             ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
@@ -241,7 +241,7 @@ class BackendUserController extends ActionController
             ]));
         $buttonBar->addButton($editButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         $addUserButton = $buttonBar->makeLinkButton()
-            ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.create', 'beuser'))
             ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
@@ -416,7 +416,7 @@ class BackendUserController extends ActionController
         $this->addMainMenu('groups');
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $addGroupButton = $buttonBar->makeLinkButton()
-            ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.create', 'beuser'))
             ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
@@ -516,7 +516,7 @@ class BackendUserController extends ActionController
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
         $addFilemountButton = $buttonBar->makeLinkButton()
-            ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:filemount.create', 'beuser'))
             ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [

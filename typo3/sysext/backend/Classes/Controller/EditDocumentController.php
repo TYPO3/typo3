@@ -1447,7 +1447,7 @@ class EditDocumentController
         ) {
             $newButton = $buttonBar->makeLinkButton()
                 ->setHref('#')
-                ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL))
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.newDoc'))
                 ->setClasses('t3js-editform-new');

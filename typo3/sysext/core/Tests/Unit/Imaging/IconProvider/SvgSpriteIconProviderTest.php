@@ -50,10 +50,10 @@ class SvgSpriteIconProviderTest extends UnitTestCase
     public function prepareIconMarkupWithRelativeSourceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $this->subject->prepareIconMarkup($this->icon, [
-            'sprite' => 'fileadmin/sprites/actions.svg#actions-add',
-            'source' => 'fileadmin/svg/actions-add.svg',
+            'sprite' => 'fileadmin/sprites/actions.svg#actions-plus',
+            'source' => 'fileadmin/svg/actions-plus.svg',
         ]);
-        self::assertEquals('<svg class="icon-color"><use xlink:href="fileadmin/sprites/actions.svg#actions-add" /></svg>', $this->icon->getMarkup());
+        self::assertEquals('<svg class="icon-color"><use xlink:href="fileadmin/sprites/actions.svg#actions-plus" /></svg>', $this->icon->getMarkup());
     }
 
     /**
@@ -62,10 +62,10 @@ class SvgSpriteIconProviderTest extends UnitTestCase
     public function prepareIconMarkupWithAbsoluteSourceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $this->subject->prepareIconMarkup($this->icon, [
-            'sprite' => Environment::getPublicPath() . '/fileadmin/sprites/actions.svg#actions-add',
-            'source' => Environment::getPublicPath() . '/fileadmin/svg/actions-add.svg',
+            'sprite' => Environment::getPublicPath() . '/fileadmin/sprites/actions.svg#actions-plus',
+            'source' => Environment::getPublicPath() . '/fileadmin/svg/actions-plus.svg',
         ]);
-        self::assertEquals('<svg class="icon-color"><use xlink:href="fileadmin/sprites/actions.svg#actions-add" /></svg>', $this->icon->getMarkup());
+        self::assertEquals('<svg class="icon-color"><use xlink:href="fileadmin/sprites/actions.svg#actions-plus" /></svg>', $this->icon->getMarkup());
     }
 
     /**
@@ -74,10 +74,10 @@ class SvgSpriteIconProviderTest extends UnitTestCase
     public function getIconWithEXTSourceReferenceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $this->subject->prepareIconMarkup($this->icon, [
-            'sprite' => 'EXT:core/Resources/Public/Images/sprites/actions.svg#actions-add',
-            'source' => 'EXT:core/Resources/Public/Images/svg/actions-add.svg',
+            'sprite' => 'EXT:core/Resources/Public/Images/sprites/actions.svg#actions-plus',
+            'source' => 'EXT:core/Resources/Public/Images/svg/actions-plus.svg',
         ]);
-        self::assertEquals('<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Images/sprites/actions.svg#actions-add" /></svg>', $this->icon->getMarkup());
+        self::assertEquals('<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Images/sprites/actions.svg#actions-plus" /></svg>', $this->icon->getMarkup());
     }
 
     /**

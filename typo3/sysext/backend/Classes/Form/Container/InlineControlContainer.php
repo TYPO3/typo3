@@ -408,7 +408,7 @@ class InlineControlContainer extends AbstractContainer
         switch ($type) {
             case 'newRecord':
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.createnew'));
-                $icon = 'actions-add';
+                $icon = 'actions-plus';
                 $className = 'typo3-newRecordLink t3js-inline-controls';
                 $attributes['class'] = 'btn btn-default t3js-create-new-button';
                 if (!empty($conf['inline']['inlineNewButtonStyle'])) {
@@ -559,7 +559,7 @@ class InlineControlContainer extends AbstractContainer
             $item .= '
             <span class="input-group-btn">
                 <button type="button" class="btn btn-default t3js-create-new-button" title="' . $createNewRelationText . '">
-                    ' . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . $createNewRelationText . '
+                    ' . $this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL)->render() . $createNewRelationText . '
                 </button>
             </span>';
         } else {
