@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'DataHandler Testing test_irre_csv',
     'description' => 'DataHandler Testing test_irre_csv',
     'category' => 'example',
-    'version' => '12.2.0',
+    'version' => '12.3.0',
     'state' => 'beta',
     'author' => 'Anja Leichsenring',
     'author_email' => 'aleichsenring@ab-softlab.de',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '12.2.0',
+            'typo3' => '12.3.0',
         ],
         'conflicts' => [],
         'suggests' => [],

@@ -3,7 +3,7 @@
 	"type": "typo3-cms-extension",
 	"extra": {
 		"branch-alias": {
-			"dev-main": "12.2.x-dev"
+			"dev-main": "12.3.x-dev"
 		},
 		"typo3/cms": {
 			"extension-key": "test_templates_a"

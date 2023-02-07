@@ -24,7 +24,7 @@
 		"symfony/dependency-injection": "^6.2",
 		"symfony/property-access": "^6.2",
 		"symfony/property-info": "^6.2",
-		"typo3/cms-core": "12.2.0"
+		"typo3/cms-core": "12.3.*@dev"
 	},
 	"suggest": {
 		"typo3/cms-scheduler": "Additional scheduler tasks"
@@ -34,7 +34,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-main": "12.2.x-dev"
+			"dev-main": "12.3.x-dev"
 		},
 		"typo3/cms": {
 			"Package": {
