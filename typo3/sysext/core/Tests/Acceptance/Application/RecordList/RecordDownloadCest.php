@@ -42,7 +42,7 @@ final class RecordDownloadCest
         $I->wait(0.2);
         $I->switchToContentFrame();
         $I->canSee('Download');
-        $I->click('typo3-recordlist-record-download-button button');
+        $I->click('typo3-recordlist-record-download-button');
         $modalDialog->canSeeDialog();
         $I->canSee('Download Page:', ModalDialog::$openedModalSelector . ' .modal-title');
         $I->fillField(ModalDialog::$openedModalSelector . ' input[name="filename"]', 'test-download');

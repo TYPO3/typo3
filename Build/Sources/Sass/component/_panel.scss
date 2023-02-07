@@ -59,9 +59,9 @@ $panel-heading-bg-scale: -85%;
     --panel-border-color: #ccc;
     --panel-border-radius: var(--typo3-component-border-radius);
     --panel-border-width: var(--typo3-component-border-width);
-    --panel-padding: 1rem;
-    --panel-header-padding-x: 1rem;
-    --panel-header-padding-y: .75rem;
+    --panel-padding: var(--typo3-component-padding-x);
+    --panel-header-padding-x: var(--typo3-component-padding-x);
+    --panel-header-padding-y: var(--typo3-component-padding-y);
     --panel-spacing: var(--typo3-spacing);
     --panel-box-shadow: var(--typo3-component-box-shadow);
 

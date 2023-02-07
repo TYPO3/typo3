@@ -73,6 +73,14 @@ export class IconElement extends LitElement {
         --icon-size-mega: 64px;
         --icon-unify-modifier: 0.86;
         --icon-opacity-disabled: 0.5
+
+        display: inline-block;
+      }
+
+      .icon-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .icon {
@@ -159,6 +167,6 @@ export class IconElement extends LitElement {
           ${unsafeHTML(markup)}
         `;
       });
-    return html`${until(icon, html`<typo3-backend-spinner></typo3-backend-spinner>`)}`;
+    return html`<div class="icon-wrapper">${until(icon, html`<typo3-backend-spinner></typo3-backend-spinner>`)}</div>`;
   }
 }

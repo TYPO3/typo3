@@ -49,6 +49,17 @@
         margin: 0;
     }
 
+    th,
+    td {
+        &:first-child {
+            padding-left: var(--typo3-component-padding-x);
+        }
+
+        &:last-child {
+            padding-right: var(--typo3-component-padding-x);
+        }
+    }
+
     .col-icon {
         text-align: center;
     }

@@ -316,9 +316,9 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 <tr>
                     <th colspan="3" class="nowrap">
                         <div class="btn-group dropdown position-static me-1">
-                            <button type="button" class="btn btn-borderless dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                            <a href="javascript:;" class="dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
                                 ' . $this->iconFactory->getIcon('actions-selection', Icon::SIZE_SMALL) . '
-                            </button>
+                            </a>
                             <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
                                 <li>
                                     <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '">' .

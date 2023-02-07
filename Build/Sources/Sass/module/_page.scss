@@ -210,8 +210,6 @@ html {
 .t3-page-ce-actions {
     text-align: center;
     z-index: 2;
-    // Apply same height as dropzones to avoid jumping elements
-    height: 40px;
 }
 
 //
@@ -226,7 +224,7 @@ html {
 
     &.active {
         border: 1px dashed rgba(0, 0, 0, .15);
-        height: 40px;
+        height: 25.75px; // @todo refactor later
         width: 100%;
 
         &.t3-page-ce-dropzone-possible {

@@ -12,7 +12,7 @@
  */
 
 import {customElement, property} from 'lit/decorators';
-import {html, LitElement, TemplateResult} from 'lit';
+import {html, css, LitElement, TemplateResult} from 'lit';
 import Modal from '@typo3/backend/modal';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
 import {NewContentElementWizard} from '@typo3/backend/new-content-element-wizard';
@@ -21,10 +21,11 @@ import {NewContentElementWizard} from '@typo3/backend/new-content-element-wizard
  * Module: @typo3/backend/new-content-element-wizard-button
  *
  * @example
- * <typo3-backend-new-content-element-wizard-button url="link/to/endpoint" title="Wizard title" ></typo3-backend-new-content-element-wizard-button>
+ * <typo3-backend-new-content-element-wizard-button class="btn btn-default" url="link/to/endpoint" title="Wizard title" ></typo3-backend-new-content-element-wizard-button>
  */
 @customElement('typo3-backend-new-content-element-wizard-button')
 export class NewContentElementWizardButton extends LitElement {
+  static styles = [css`:host { cursor: pointer; appearance: button; }`];
   @property({type: String}) url: string;
   @property({type: String}) title: string;
 
@@ -43,6 +44,21 @@ export class NewContentElementWizardButton extends LitElement {
       e.preventDefault();
       this.renderWizard();
     });
+    this.addEventListener('keydown', (e: KeyboardEvent): void => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        this.renderWizard();
+      }
+    })
+  }
+
+  public connectedCallback(): void {
+    if (!this.hasAttribute('role')) {
+      this.setAttribute('role', 'button');
+    }
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', '0');
+    }
   }
 
   protected render(): TemplateResult {

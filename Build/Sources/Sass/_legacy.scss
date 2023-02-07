@@ -187,3 +187,9 @@ label {
 .modal-backdrop.in {
     opacity: .5;
 }
+
+div.typo3-newRecordLink,
+div.typo3-localizationLink,
+div.typo3-synchronizationLink {
+    display: inline;
+}

@@ -631,11 +631,13 @@ class DatabaseRecordList
             if (!$this->table) {
                 $title = sprintf(htmlspecialchars($lang->getLL('collapseExpandTable')), $tableTitle);
                 $icon = '<span class="collapseIcon">' . $this->iconFactory->getIcon(($tableCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icon::SIZE_SMALL)->render() . '</span>';
-                $tableActions .= '<button type="button"'
-                    . ' class="btn btn-default btn-sm float-end t3js-toggle-recordlist"'
+                $tableActions .= '
+                    <button type="button"'
+                    . ' class="btn btn-sm btn-default t3js-toggle-recordlist"'
                     . ' title="' . $title . '"'
                     . ' aria-label="' . $title . '"'
                     . ' aria-expanded="' . ($tableCollapsed ? 'false' : 'true') . '"'
+                    . ' data-recordlist-action="toggle"'
                     . ' data-table="' . htmlspecialchars($tableIdentifier) . '"'
                     . ' data-bs-toggle="collapse"'
                     . ' data-bs-target="#recordlist-' . htmlspecialchars($tableIdentifier) . '">'
@@ -754,13 +756,11 @@ class DatabaseRecordList
         $multiRecordSelectionActions = '';
         if ($this->noControlPanels === false) {
             $multiRecordSelectionActions = '
-                <div class="col t3js-multi-record-selection-actions hidden">
-                    <div class="row row-cols-auto align-items-center g-2">
-                        <div class="col">
-                            <strong>
-                                ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection')) . '
-                            </strong>
-                        </div>
+                <div class="recordlist-heading-row t3js-multi-record-selection-actions hidden">
+                    <div class="recordlist-heading-title">
+                        <strong>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection')) . '</strong>
+                    </div>
+                    <div class="recordlist-heading-actions">
                         ' . $this->renderMultiRecordSelectionActions($table, $currentIdList) . '
                     </div>
                 </div>
@@ -770,23 +770,19 @@ class DatabaseRecordList
         $collapseClass = $tableCollapsed && !$this->table ? 'collapse' : 'collapse show';
         $dataState = $tableCollapsed && !$this->table ? 'collapsed' : 'expanded';
         return '
-            <div class="recordlist my-5" id="t3-table-' . htmlspecialchars($tableIdentifier) . '" data-multi-record-selection-identifier="t3-table-' . htmlspecialchars($tableIdentifier) . '">
+            <div class="recordlist" id="t3-table-' . htmlspecialchars($tableIdentifier) . '" data-multi-record-selection-identifier="t3-table-' . htmlspecialchars($tableIdentifier) . '">
                 <form action="' . htmlspecialchars($this->listURL()) . '#t3-table-' . htmlspecialchars($tableIdentifier) . '" method="post" name="list-table-form-' . htmlspecialchars($tableIdentifier) . '">
                     <input type="hidden" name="cmd_table" value="' . htmlspecialchars($tableIdentifier) . '" />
                     <input type="hidden" name="cmd" />
-                    <div class="recordlist-heading row m-0 p-2 g-0 gap-1 align-items-center ' . ($multiRecordSelectionActions !== '' ? 'multi-record-selection-panel' : '') . '">
-                        ' . $multiRecordSelectionActions . '
-                        <div class="col ms-2">
-                            <span class="text-truncate">
-                            ' . $tableHeader . '
-                            </span>
-                        </div>
-                        <div class="col-auto">
-                         ' . $tableActions . '
-                        </div>
+                    <div class="recordlist-heading ' . ($multiRecordSelectionActions !== '' ? 'multi-record-selection-panel' : '') . '">
+                    <div class="recordlist-heading-row">
+                        <div class="recordlist-heading-title">' . $tableHeader . '</div>
+                        <div class="recordlist-heading-actions">' . $tableActions . '</div>
+                    </div>
+                    ' . $multiRecordSelectionActions . '
                     </div>
                     <div class="' . $collapseClass . '" data-state="' . $dataState . '" id="recordlist-' . htmlspecialchars($tableIdentifier) . '">
-                        <div class="table-fit mb-0">
+                        <div class="table-fit">
                             <table data-table="' . htmlspecialchars($tableIdentifier) . '" class="table table-striped table-hover mb-0">
                                 <thead>
                                     ' . $columnsOutput . '
@@ -823,11 +819,12 @@ class DatabaseRecordList
         $attributes = [
             'title' => $title,
             'aria-label' => $title,
-            'class' => 'btn btn-default btn-sm',
+            'class' => 'btn btn-sm btn-default',
+            'data-recordlist-action' => 'new',
         ];
 
         if ($table === 'tt_content') {
-            $url = (string)$this->uriBuilder->buildUriFromRoute(
+            $attributes['url'] = (string)$this->uriBuilder->buildUriFromRoute(
                 'new_content_element_wizard',
                 [
                     'id' => $this->id,
@@ -835,14 +832,10 @@ class DatabaseRecordList
                 ]
             );
             return '
-                <div class="btn-group me-2">
-                    <typo3-backend-new-content-element-wizard-button url="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($title) . '">
-                        <button type="button" ' . GeneralUtility::implodeAttributes($attributes, true) . '>
-                            ' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() . '
-                            ' . htmlspecialchars($title) . '
-                        </button>
-                    </typo3-backend-new-content-element-wizard-button>
-                </div>';
+                <typo3-backend-new-content-element-wizard-button ' . GeneralUtility::implodeAttributes($attributes, true) . '">
+                    ' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() . '
+                    ' . htmlspecialchars($title) . '
+                </typo3-backend-new-content-element-wizard-button>';
         }
 
         if ($table === 'pages') {
@@ -867,12 +860,10 @@ class DatabaseRecordList
         }
 
         return '
-            <div class="btn-group me-2">
-                <a ' . GeneralUtility::implodeAttributes($attributes, true) . '>
-                    ' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() . '
-                    ' . htmlspecialchars($title) . '
-                </a>
-            </div>';
+            <a ' . GeneralUtility::implodeAttributes($attributes, true) . '>
+                ' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() . '
+                ' . htmlspecialchars($title) . '
+            </a>';
     }
 
     protected function createDownloadButtonForTable(string $table, int $totalItems): string
@@ -899,19 +890,17 @@ class DatabaseRecordList
         );
 
         return '
-            <div class="float-end">
-                <typo3-recordlist-record-download-button
-                    url="' . htmlspecialchars($downloadSettingsUrl) . '"
-                    title="' . htmlspecialchars($downloadSettingsTitle) . '"
-                    ok="' . htmlspecialchars($downloadButtonTitle) . '"
-                    close="' . htmlspecialchars($downloadCancelTitle) . '"
-                >
-                    <button type="button" class="btn btn-default btn-sm me-2" title="' . htmlspecialchars($downloadButtonTitle) . '">' .
-                        $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL) . ' ' .
-                        htmlspecialchars($downloadButtonLabel) .
-                    '</button>
-                </typo3-recordlist-record-download-button>
-            </div>';
+            <typo3-recordlist-record-download-button
+                class="btn btn-sm btn-default"
+                url="' . htmlspecialchars($downloadSettingsUrl) . '"
+                title="' . htmlspecialchars($downloadSettingsTitle) . '"
+                ok="' . htmlspecialchars($downloadButtonTitle) . '"
+                close="' . htmlspecialchars($downloadCancelTitle) . '"
+                data-recordlist-action="download"
+            >
+                ' . $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL) . '
+                ' . htmlspecialchars($downloadButtonLabel) . '
+            </typo3-recordlist-record-download-button>';
     }
 
     /**
@@ -1918,20 +1907,19 @@ class DatabaseRecordList
         );
 
         return '
-            <div class="float-end me-2 p-0">
-                <typo3-backend-column-selector-button
-                    class="btn btn-default btn-sm"
-                    url="' . htmlspecialchars($columnSelectorUrl) . '"
-                    target="' . htmlspecialchars($this->listURL() . '#t3-table-' . $tableIdentifier) . '"
-                    title="' . htmlspecialchars($columnSelectorTitle) . '"
-                    ok="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView')) . '"
-                    close="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"
-                    error="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.error')) . '"
-                >'
-                    . $this->iconFactory->getIcon('actions-options', Icon::SIZE_SMALL) . ' '
-                    . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumns')) .
-                '</typo3-backend-column-selector-button>
-            </div>';
+            <typo3-backend-column-selector-button
+                class="btn btn-sm btn-default"
+                url="' . htmlspecialchars($columnSelectorUrl) . '"
+                target="' . htmlspecialchars($this->listURL() . '#t3-table-' . $tableIdentifier) . '"
+                title="' . htmlspecialchars($columnSelectorTitle) . '"
+                ok="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView')) . '"
+                close="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"
+                error="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.error')) . '"
+                data-recordlist-action="columns"
+            >'
+                . $this->iconFactory->getIcon('actions-options', Icon::SIZE_SMALL) . ' '
+                . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumns')) .
+            '</typo3-backend-column-selector-button>';
     }
 
     /*********************************
@@ -2988,9 +2976,9 @@ class DatabaseRecordList
 
         return '
             <div class="btn-group dropdown position-static">
-                <button type="button" class="btn btn-borderless dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                <a href="javascript:;" class="dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
                     ' . $this->iconFactory->getIcon('actions-selection', Icon::SIZE_SMALL) . '
-                </button>
+                </a>
                 <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
                     ' . implode(PHP_EOL, $dropdownItems) . '
                 </ul>
@@ -3018,7 +3006,7 @@ class DatabaseRecordList
                 'returnUrl' =>  $this->listURL(),
             ], true);
             $actions['edit'] = '
-                <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="' . $editActionConfiguration . '">
+                <button type="button" class="btn btn-sm btn-default" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="' . $editActionConfiguration . '">
                     <span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit')) . '">
                         ' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit')) . '
                     </span>
@@ -3032,7 +3020,7 @@ class DatabaseRecordList
                     'content' => sprintf($lang->getLL('clip_deleteMarkedWarning'), $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
                 ], true);
                 $actions['delete'] = '
-                    <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="delete" data-multi-record-selection-action-config="' . $deleteActionConfiguration . '" aria-haspopup="dialog">
+                    <button type="button" class="btn btn-sm btn-default" data-multi-record-selection-action="delete" data-multi-record-selection-action-config="' . $deleteActionConfiguration . '" aria-haspopup="dialog">
                         <span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete')) . '">
                             ' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete')) . '
                         </span>
@@ -3043,16 +3031,20 @@ class DatabaseRecordList
         // Add clipboard actions in case they  are enabled and clipboard is not deactivated
         if ($addClipboardActions && (string)($this->modTSconfig['enableClipBoard'] ?? '') !== 'deactivated') {
             $copyMarked = '
-                <button type="button" class="btn btn-default btn-sm ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '" data-multi-record-selection-action="copyMarked">
-                    <span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.transferToClipboard')) . '">
-                        ' . $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.transferToClipboard')) . '
-                    </span>
+                <button type="button"
+                    class="btn btn-sm btn-default ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '"
+                    title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.transferToClipboard')) . '"
+                    data-multi-record-selection-action="copyMarked">
+                    ' . $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render() . '
+                    ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.transferToClipboard')) . '
                 </button>';
             $removeMarked = '
-                <button type="button" class="btn btn-default btn-sm ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '" data-multi-record-selection-action="removeMarked">
-                    <span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.removeFromClipboard')) . '">
-                        ' . $this->iconFactory->getIcon('actions-minus', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.removeFromClipboard')) . '
-                    </span>
+                <button type="button"
+                    class="btn btn-sm btn-default ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '"
+                    title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.removeFromClipboard')) . '"
+                    data-multi-record-selection-action="removeMarked">
+                    ' . $this->iconFactory->getIcon('actions-minus', Icon::SIZE_SMALL)->render() . '
+                    ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.removeFromClipboard')) . '
                 </button>';
             // Add "copy marked" after "edit", or in case "edit" is not set, as first item
             if (!isset($actions['edit'])) {
@@ -3073,20 +3065,13 @@ class DatabaseRecordList
             // In case the user does not have permissions to execute on of the above
             // actions or a hook removed all remaining actions, inform the user about this.
             return '
-                <div class="col pt-1 pb-1">
-                    <span class="badge badge-info">
+                <span class="badge badge-info">
                     ' . htmlspecialchars($lang->sL($event->getNoActionLabel() ?: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noActionAvailable')) . '
-                    </span>
-                </div>';
+                </span>
+                ';
         }
 
-        // In case both clipboard actions should be rendered, wrap them into a button group
-        if (($actions['copyMarked'] ?? false) && ($actions['removeMarked'] ?? false)) {
-            $actions['copyMarked'] = '<div class="btn-group">' . $actions['copyMarked'] . $actions['removeMarked'] . '</div>';
-            unset($actions['removeMarked']);
-        }
-
-        return implode(LF, array_map(static fn (string $action): string => '<div class="col">' . $action . '</div>', $actions));
+        return implode(LF, $actions);
     }
 
     /**

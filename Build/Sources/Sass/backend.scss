@@ -54,6 +54,7 @@
 @import "component/form";
 @import "component/contextmenu";
 @import "component/livesearch";
+@import "component/recordlist";
 @import "component/resources";
 @import "component/recordsearchbox";
 @import "component/switchuser";
@@ -86,7 +87,6 @@
 @import "typo3/main_form";
 @import "typo3/main_new_content_element_wizard";
 @import "typo3/wizard_localization";
-@import "typo3/structure/module_web_list";
 @import "typo3/structure/module_file_filelist";
 @import "typo3/visual/element_typoscript";
 

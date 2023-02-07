@@ -175,6 +175,11 @@ h4.dropdown-headline {
     }
 }
 
+// Avoid unwanted underlines in dropdown toggles
+a.dropdown-toggle {
+    text-decoration: none;
+}
+
 // Hide dropdown toggle
 .dropdown-toggle-no-chevron {
     &:after {
