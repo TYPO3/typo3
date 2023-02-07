@@ -64,7 +64,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
      */
     protected function setUpFakeSitePathAndHost(): void
     {
-        $_SERVER['ORIG_PATH_INFO'] = $_SERVER['PATH_INFO'] = $_SERVER['ORIG_SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'] = $this->testSitePath . 'index.php';
+        $_SERVER['SCRIPT_NAME'] = $this->testSitePath . 'index.php';
         $_SERVER['HTTP_HOST'] = $this->testHostName;
 
         $request = ServerRequestFactory::fromGlobals();

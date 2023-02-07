@@ -30,9 +30,8 @@ class WebProcessorTest extends UnitTestCase
      */
     public function webProcessorAddsWebDataToLogRecord(): void
     {
-        $_SERVER['PATH_INFO'] = '';
         $_SERVER['REQUEST_URI'] = '';
-        $_SERVER['ORIG_SCRIPT_NAME'] = '';
+        $_SERVER['SCRIPT_NAME'] = '';
         $_SERVER['REMOTE_ADDR'] = '';
         $_SERVER['QUERY_STRING'] = '';
         $_SERVER['SSL_SESSION_ID'] = '';

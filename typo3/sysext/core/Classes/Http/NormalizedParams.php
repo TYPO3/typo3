@@ -311,12 +311,13 @@ class NormalizedParams
         $requestHost = $this->requestHost = ($isHttps ? 'https://' : 'http://') . $httpHost;
         $requestHostOnly = $this->requestHostOnly = self::determineRequestHostOnly($httpHost);
         $this->requestPort = self::determineRequestPort($httpHost, $requestHostOnly);
-        $scriptName = $this->scriptName = self::determineScriptName(
+        $scriptNameOnFileSystem = self::determineScriptName(
             $serverParams,
             $configuration,
             $isHttps,
             $isBehindReverseProxy
         );
+        $scriptName = $this->scriptName = self::encodeFileSystemPathComponentForUrlPath($scriptNameOnFileSystem);
         $requestUri = $this->requestUri = self::determineRequestUri(
             $serverParams,
             $configuration,
@@ -329,7 +330,7 @@ class NormalizedParams
         $requestDir = $this->requestDir = $requestHost . GeneralUtility::dirname($scriptName) . '/';
         $this->remoteAddress = self::determineRemoteAddress($serverParams, $configuration, $isBehindReverseProxy);
         $scriptFilename = $this->scriptFilename = $pathThisScript;
-        $this->documentRoot = self::determineDocumentRoot($scriptName, $scriptFilename);
+        $this->documentRoot = self::determineDocumentRoot($scriptNameOnFileSystem, $scriptFilename);
         $siteUrl = $this->siteUrl = self::determineSiteUrl($requestDir, $pathThisScript, $pathSite . '/');
         $this->sitePath = self::determineSitePath($requestHost, $siteUrl);
         $this->siteScript = self::determineSiteScript($requestUrl, $siteUrl);
@@ -342,6 +343,11 @@ class NormalizedParams
         $this->httpAcceptLanguage = $serverParams['HTTP_ACCEPT_LANGUAGE'] ?? '';
         $this->remoteHost = $serverParams['REMOTE_HOST'] ?? '';
         $this->queryString = $serverParams['QUERY_STRING'] ?? '';
+    }
+
+    private static function encodeFileSystemPathComponentForUrlPath(string $path): string
+    {
+        return implode('/', array_map('rawurlencode', explode('/', $path)));
     }
 
     /**
@@ -632,17 +638,7 @@ class NormalizedParams
         bool $isHttps,
         bool $isBehindReverseProxy
     ): string {
-        // see https://forge.typo3.org/issues/89312
-        // When using a CGI wrapper to dispatch the PHP process `ORIG_SCRIPT_NAME`
-        // contains the name of the wrapper script (which is most probably outside
-        // the TYPO3's project root) and leads to invalid prefixes, e.g. resolving
-        // the `siteUrl` incorrectly as `http://ip10.local/fcgi/` instead of
-        // actual `http://ip10.local/`
-        $possiblePathInfo = ($serverParams['ORIG_PATH_INFO'] ?? '') ?: ($serverParams['PATH_INFO'] ?? '');
-        $possibleScriptName = ($serverParams['ORIG_SCRIPT_NAME'] ?? '') ?: ($serverParams['SCRIPT_NAME'] ?? '');
-        $scriptName = Environment::isRunningOnCgiServer() && $possiblePathInfo
-            ? $possiblePathInfo
-            : $possibleScriptName;
+        $scriptName = $serverParams['SCRIPT_NAME'] ?? '';
         if ($isBehindReverseProxy) {
             // Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
             if ($isHttps && !empty($configuration['reverseProxyPrefixSSL'])) {
@@ -778,11 +774,11 @@ class NormalizedParams
     /**
      * Calculate absolute path to web document root
      *
-     * @param string $scriptName Entry script path of URI, without domain and without query parameters, with leading /
+     * @param string $scriptNameOnFileSystem Entry script path of URI on file system, without domain and without query parameters, with leading /
      * @param string $scriptFilename Absolute path to entry script on server filesystem
      * @return string Path to document root with trailing slash
      */
-    protected static function determineDocumentRoot(string $scriptName, string $scriptFilename): string
+    protected static function determineDocumentRoot(string $scriptNameOnFileSystem, string $scriptFilename): string
     {
         // Get the web root (it is not the root of the TYPO3 installation)
         // Some CGI-versions (LA13CGI) and mod-rewrite rules on MODULE versions will deliver a 'wrong'
@@ -790,7 +786,7 @@ class NormalizedParams
         // disturb this as well. Therefore the DOCUMENT_ROOT is always calculated as the SCRIPT_FILENAME
         // minus the end part shared with SCRIPT_NAME.
         $webDocRoot = '';
-        $scriptNameArray = explode('/', strrev($scriptName));
+        $scriptNameArray = explode('/', strrev($scriptNameOnFileSystem));
         $scriptFilenameArray = explode('/', strrev($scriptFilename));
         $path = [];
         foreach ($scriptNameArray as $segmentNumber => $segment) {

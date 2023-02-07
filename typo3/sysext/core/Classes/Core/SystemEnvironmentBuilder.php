@@ -255,23 +255,17 @@ class SystemEnvironmentBuilder
     }
 
     /**
-     * Calculate path to entry script if not in cli mode.
-     *
-     * Depending on the environment, the script path is found in different $_SERVER variables.
+     * Return path to entry script if not in cli mode.
      *
      * @return string Absolute path to entry script
      */
     protected static function getPathThisScriptNonCli()
     {
-        $isCgi = Environment::isRunningOnCgiServer();
-        if ($isCgi && Environment::usesCgiFixPathInfo()) {
-            return $_SERVER['SCRIPT_FILENAME'];
+        if (Environment::isRunningOnCgiServer() && !Environment::usesCgiFixPathInfo()) {
+            throw new \Exception('TYPO3 does only support being used with cgi.fix_pathinfo=1 on CGI server APIs.', 1675108421);
         }
-        $cgiPath = $_SERVER['ORIG_PATH_TRANSLATED'] ?? $_SERVER['PATH_TRANSLATED'] ?? '';
-        if ($cgiPath && $isCgi) {
-            return $cgiPath;
-        }
-        return $_SERVER['ORIG_SCRIPT_FILENAME'] ?? $_SERVER['SCRIPT_FILENAME'];
+
+        return $_SERVER['SCRIPT_FILENAME'];
     }
 
     /**
