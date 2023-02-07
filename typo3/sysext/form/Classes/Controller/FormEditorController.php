@@ -533,7 +533,7 @@ class FormEditorController extends AbstractBackendController
                 continue;
             }
             foreach ($configuration['formEditor']['editors'] as $editorConfiguration) {
-                if ($editorConfiguration['templateName'] === 'Inspector-PropertyGridEditor') {
+                if (($editorConfiguration['templateName'] ?? '') === 'Inspector-PropertyGridEditor') {
                     $multiValueFormElementProperties[$type][] = $editorConfiguration['propertyPath'];
                 }
             }
@@ -545,7 +545,7 @@ class FormEditorController extends AbstractBackendController
             }
 
             foreach ($configuration['editors'] as $editorConfiguration) {
-                if ($editorConfiguration['templateName'] === 'Inspector-PropertyGridEditor') {
+                if (($editorConfiguration['templateName'] ?? '') === 'Inspector-PropertyGridEditor') {
                     $multiValueFinisherProperties[$configuration['identifier']][] = $editorConfiguration['propertyPath'];
                 }
             }
