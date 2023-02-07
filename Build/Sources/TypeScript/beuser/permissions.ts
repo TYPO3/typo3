@@ -137,7 +137,7 @@ class Permissions {
     span.setAttribute('id', `o_${page}`);
 
     const buttonSelector = document.createElement('button');
-    buttonSelector.classList.add('ug_selector', 'changeowner', 'btn', 'btn-link');
+    buttonSelector.classList.add('ug_selector', 'changeowner', 'btn', 'btn-sm', 'btn-link');
     buttonSelector.setAttribute('type', 'button');
     buttonSelector.setAttribute('data-page', page);
     buttonSelector.setAttribute('data-owner', element.dataset.owner);
@@ -160,7 +160,7 @@ class Permissions {
     span.setAttribute('id', `g_${page}`);
 
     const buttonSelector = document.createElement('button');
-    buttonSelector.classList.add('ug_selector', 'changegroup', 'btn', 'btn-link');
+    buttonSelector.classList.add('ug_selector', 'changegroup', 'btn', 'btn-sm', 'btn-link');
     buttonSelector.setAttribute('type', 'button');
     buttonSelector.setAttribute('data-page', page);
     buttonSelector.setAttribute('data-group-id', element.dataset.groupId);

@@ -1,4 +1,28 @@
 //
+// Table
+//
+td {
+    &.permission-column-name {
+        white-space: nowrap;
+
+        a {
+            text-decoration: none;
+        }
+    }
+
+    &.permission-column-list {
+        white-space: nowrap;
+        width: 106px;
+    }
+
+    &.permission-column-group {
+        padding-left: 0;
+        width: 200px;
+        white-space: nowrap;
+    }
+}
+
+//
 // Legend
 //
 .access-legend {

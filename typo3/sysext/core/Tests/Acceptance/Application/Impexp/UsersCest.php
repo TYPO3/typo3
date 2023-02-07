@@ -173,8 +173,8 @@ final class UsersCest extends AbstractCest
         $I->waitForElement($this->inPageTree . ' .node', 5);
         $pageTree->openPath($pagePath);
         $I->switchToContentFrame();
-        $I->waitForElementVisible('//table[@id="typo3-permissionList"]/tbody/tr[1]/td[2]/a[@title="Change permissions"]');
-        $I->click('//table[@id="typo3-permissionList"]/tbody/tr[1]/td[2]/a[@title="Change permissions"]');
+        $I->waitForElementVisible('#typo3-permissionList tr:nth-child(2) [title="Change permissions"]');
+        $I->click('#typo3-permissionList tr:nth-child(2) [title="Change permissions"]');
         $I->waitForElementVisible('#PermissionControllerEdit');
         $I->selectOption('//select[@id="selectGroup"]', ['value' => $userGroupId]);
         $recursionLevelOption = $I->grabTextFrom('//select[@id="recursionLevel"]/option[' . $recursionLevel . ']');

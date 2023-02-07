@@ -21,9 +21,6 @@
 			<trans-unit id="Everybody" resname="Everybody">
 				<source>Everybody</source>
 			</trans-unit>
-			<trans-unit id="EditLock" resname="EditLock">
-				<source>Lock</source>
-			</trans-unit>
 			<trans-unit id="EditLock_descr" resname="EditLock_descr">
 				<source>Disable the »Admin-only« edit lock for this page. Currently this page and all content is locked for editing by all non-Admin users.</source>
 			</trans-unit>

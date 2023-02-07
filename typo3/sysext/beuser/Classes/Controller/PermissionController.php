@@ -456,9 +456,9 @@ class PermissionController
 
         // Create the tree from $this->id
         if ($this->id) {
-            $tree->tree[] = ['row' => $this->pageInfo, 'HTML' => $tree->getIcon($this->pageInfo)];
+            $tree->tree[] = ['row' => $this->pageInfo, 'HTML' => '', 'icon' => $tree->getIcon($this->pageInfo)];
         } else {
-            $tree->tree[] = ['row' => $this->pageInfo, 'HTML' => $tree->getRootIcon($this->pageInfo)];
+            $tree->tree[] = ['row' => $this->pageInfo, 'HTML' => '', 'icon' => $tree->getRootIcon($this->pageInfo)];
         }
         $tree->getTree($this->id, $this->depth);
 

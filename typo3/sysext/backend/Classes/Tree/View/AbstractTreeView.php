@@ -450,6 +450,7 @@ abstract class AbstractTreeView
             $this->tree[$treeKey] = [
                 'row' => $row,
                 'HTML' => $HTML,
+                'icon' => $this->getIcon($row),
                 'invertedDepth' => $depth,
                 'depthData' => $depthData,
                 'hasSub' => $nextCount && $hasSub,
