@@ -15,6 +15,7 @@ import { AbstractSortableSelectItems } from './abstract-sortable-select-items';
 import DocumentService from '@typo3/core/document-service';
 import FormEngine from '@typo3/backend/form-engine';
 import SelectBoxFilter from './extra/select-box-filter';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 class SelectMultipleSideBySideElement extends AbstractSortableSelectItems {
   private selectedOptionsElement: HTMLSelectElement = null;
@@ -32,31 +33,47 @@ class SelectMultipleSideBySideElement extends AbstractSortableSelectItems {
 
   private registerEventHandler(): void {
     this.registerSortableEventHandler(this.selectedOptionsElement);
+    this.registerKeyboardEvents();
 
     this.availableOptionsElement.addEventListener('click', (e: Event): void => {
       const el = <HTMLSelectElement>e.currentTarget;
-      const fieldName = el.dataset.relatedfieldname;
-      if (fieldName) {
-        const exclusiveValues = el.dataset.exclusivevalues;
-        const selectedOptions = el.querySelectorAll('option:checked'); // Yep, :checked finds selected options
-        if (selectedOptions.length > 0) {
-          selectedOptions.forEach((optionElement: HTMLOptionElement): void => {
-            FormEngine.setSelectOptionFromExternalSource(
-              fieldName,
-              optionElement.value,
-              optionElement.textContent,
-              optionElement.getAttribute('title'),
-              exclusiveValues,
-              optionElement,
-            );
-          });
-        }
-      }
+      this.handleOptionChecked(el);
     });
 
     // tslint:disable-next-line:no-unused-expression
     new SelectBoxFilter(this.availableOptionsElement);
   }
+
+  private handleOptionChecked(element: HTMLSelectElement): void {
+    const fieldName = element.dataset.relatedfieldname;
+    if (fieldName) {
+      const exclusiveValues = element.dataset.exclusivevalues;
+      const selectedOptions = element.querySelectorAll('option:checked'); // Yep, :checked finds selected options
+      if (selectedOptions.length > 0) {
+        selectedOptions.forEach((optionElement: HTMLOptionElement): void => {
+          FormEngine.setSelectOptionFromExternalSource(
+            fieldName,
+            optionElement.value,
+            optionElement.textContent,
+            optionElement.getAttribute('title'),
+            exclusiveValues,
+            optionElement,
+          );
+        });
+      }
+    }
+  }
+
+  private registerKeyboardEvents(): void {
+    new RegularEvent('keydown', (e: KeyboardEvent): void => {
+      const el = <HTMLSelectElement>e.currentTarget;
+      if (e.code === 'Enter') {
+        e.preventDefault();
+        this.handleOptionChecked(el);
+      }
+    }).bindTo(this.availableOptionsElement);
+  }
+
 }
 
 export default SelectMultipleSideBySideElement;

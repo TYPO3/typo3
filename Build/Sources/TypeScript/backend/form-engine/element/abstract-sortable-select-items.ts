@@ -13,6 +13,7 @@
 
 import FormEngine from '@typo3/backend/form-engine';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 export abstract class AbstractSortableSelectItems {
 
@@ -82,6 +83,7 @@ export abstract class AbstractSortableSelectItems {
    * @param {HTMLSelectElement} availableFieldElement
    */
   private static removeOption(fieldElement: HTMLSelectElement, availableFieldElement: HTMLSelectElement): void {
+    const previousSelectIndex = fieldElement.selectedIndex;
     fieldElement.querySelectorAll(':checked').forEach((option: HTMLOptionElement): void => {
       const originalOption = <HTMLOptionElement>availableFieldElement.querySelector('option[value="' + option.value + '"]');
       if (originalOption !== null) {
@@ -89,15 +91,19 @@ export abstract class AbstractSortableSelectItems {
         originalOption.disabled = false;
         FormEngine.enableOptGroup(originalOption);
       }
-
       fieldElement.removeChild(option);
     });
+
+    // set the next selected option to the previous sibling removed
+    fieldElement.selectedIndex = previousSelectIndex > 0 ? (previousSelectIndex - 1) : 0;
   }
 
   /**
    * @param {HTMLSelectElement} fieldElement
    */
   protected registerSortableEventHandler = (fieldElement: HTMLSelectElement): void => {
+    this.registerKeyboardEventHandler(fieldElement);
+
     const aside = fieldElement.closest('.form-wizards-wrap').querySelector('.form-wizards-items-aside');
     if (aside === null) {
       return;
@@ -140,5 +146,47 @@ export abstract class AbstractSortableSelectItems {
       FormEngineValidation.markFieldAsChanged(relatedAvailableValuesField);
       FormEngineValidation.validateField(relatedAvailableValuesField);
     });
-  };
+  }
+
+  /**
+   * @param {HTMLSelectElement} fieldElement
+   */
+  private registerKeyboardEventHandler = (fieldElement: HTMLSelectElement): void => {
+    const relatedFieldName = fieldElement.dataset.formengineInputName;
+    const relatedField = FormEngine.getFieldElement(relatedFieldName).get(0) as HTMLSelectElement;
+    const relatedAvailableValuesField = FormEngine.getFieldElement(relatedFieldName,'_avail').get(0) as HTMLSelectElement;
+
+    new RegularEvent('keydown', (e: KeyboardEvent): void => {
+      if (e.code === 'Delete' || e.code === 'Backspace') {
+        e.preventDefault();
+        AbstractSortableSelectItems.removeOption(
+          fieldElement,
+          relatedAvailableValuesField,
+        );
+      }
+      if (e.code === 'ArrowUp' && e.altKey) {
+        e.preventDefault();
+        AbstractSortableSelectItems.moveOptionUp(fieldElement);
+      }
+      if (e.code === 'ArrowDown' && e.altKey) {
+        e.preventDefault();
+        AbstractSortableSelectItems.moveOptionDown(fieldElement);
+      }
+      if (e.code === 'ArrowUp' && e.altKey && e.shiftKey) {
+        e.preventDefault();
+        AbstractSortableSelectItems.moveOptionToTop(fieldElement);
+      }
+      if (e.code === 'ArrowDown' && e.altKey && e.shiftKey) {
+        e.preventDefault();
+        AbstractSortableSelectItems.moveOptionToBottom(fieldElement);
+      }
+      if (e.defaultPrevented) {
+        FormEngine.updateHiddenFieldValueFromSelect(fieldElement, relatedField);
+        FormEngine.legacyFieldChangedCb();
+        FormEngineValidation.markFieldAsChanged(relatedAvailableValuesField);
+        FormEngineValidation.validateField(relatedAvailableValuesField);
+      }
+    }).bindTo(fieldElement);
+  }
+
 }
