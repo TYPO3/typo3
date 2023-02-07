@@ -256,7 +256,7 @@ class ExternalLinktype extends AbstractLinktype
     public function getErrorMessage($errorParams)
     {
         $lang = $this->getLanguageService();
-        $errorType = $errorParams['errorType'];
+        $errorType = $errorParams['errorType'] ?? '';
         switch ($errorType) {
             case self::ERROR_TYPE_HTTP_STATUS_CODE:
                 switch ($errorParams['errno'] ?? 0) {
@@ -271,7 +271,7 @@ class ExternalLinktype extends AbstractLinktype
                         break;
                     default:
                         // fall back to other error messages
-                        $message = $lang->getLL('list.report.error.httpstatuscode.' . $errorParams['errno']);
+                        $message = $lang->getLL('list.report.error.httpstatuscode.' . ($errorParams['errno'] ?? 0));
                         if (!$message) {
                             // fall back to generic error message
                             $message = sprintf($lang->getLL('list.report.externalerror'), $errorType);
@@ -299,7 +299,7 @@ class ExternalLinktype extends AbstractLinktype
             case 'loop':
                 $message = sprintf(
                     $lang->getLL('list.report.redirectloop'),
-                    $errorParams['exception'],
+                    ($errorParams['exception'] ?? ''),
                     ''
                 );
                 break;
@@ -309,11 +309,11 @@ class ExternalLinktype extends AbstractLinktype
                 break;
 
             case 'exception':
-                $message = sprintf($lang->getLL('list.report.httpexception'), $errorParams['exception']);
+                $message = sprintf($lang->getLL('list.report.httpexception'), ($errorParams['exception'] ?? ''));
                 break;
 
             default:
-                $message = sprintf($lang->getLL('list.report.otherhttpcode'), $errorType, $errorParams['exception']);
+                $message = sprintf($lang->getLL('list.report.otherhttpcode'), $errorType, ($errorParams['exception'] ?? ''));
         }
         return $message;
     }

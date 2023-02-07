@@ -574,14 +574,14 @@ class LinkValidatorReport
         $variables['link_title'] = $row['link_title'];
         $variables['linktarget'] = $hookObj->getBrokenUrl($row);
         $response = $row['url_response'];
-        if ($response['valid']) {
+        if ($response['valid'] ?? false) {
             $linkMessage = '<span class="text-success">' . htmlspecialchars($languageService->getLL('list.msg.ok')) . '</span>';
         } else {
             $linkMessage = '<span class="text-danger">'
                 . nl2br(
                     // Encode for output
                     htmlspecialchars(
-                        $hookObj->getErrorMessage($response['errorParams']),
+                        $hookObj->getErrorMessage($response['errorParams'] ?? ['errorType' => 'unknown', 'exception' => 'Invalid response']),
                         ENT_QUOTES,
                         'UTF-8',
                         false
