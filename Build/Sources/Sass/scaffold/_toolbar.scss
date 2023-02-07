@@ -71,7 +71,7 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
 .toolbar-item {
     .dropdown-menu {
         width: 350px;
-        max-height: 500px;
+        max-height: calc(100vh - #{$toolbar-height} - 1rem);
         overflow-y: auto;
 
         @media (min-width: $scaffold-breakpoint) {
@@ -86,7 +86,7 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
             top: 50% !important;
             left: 50% !important;
             transform: translate(-50%, -50%) !important;
-            max-height: 500px !important;
+            max-height: calc(100vh - 2rem);
         }
     }
 }
