@@ -206,15 +206,16 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
             return $this->evaluateQueryParametersWithoutCacheHash($pageArguments->getDynamicArguments(), $pageNotFoundOnCacheHashError);
         }
         $relevantParameters = $this->getRelevantParametersForCacheHashCalculation($pageArguments);
-        // There are no parameters that require a cHash.
-        // We end up here when the site was called with an `id` param, e.g. https://example.org/index?id=123.
-        if (empty($relevantParameters)) {
-            return true;
-        }
         // There are parameters that would be needed for the current page, but no cHash is given.
         // Thus, a "page not found" error is thrown - as configured via "pageNotFoundOnCHashError".
-        if ($pageNotFoundOnCacheHashError) {
+        if (!empty($relevantParameters) && $pageNotFoundOnCacheHashError) {
             return false;
+        }
+        // There are no parameters that require a cHash.
+        // We end up here when the site was called with an `id` param, e.g. https://example.org/index?id=123.
+        // Avoid disabling caches in this case.
+        if (empty($relevantParameters)) {
+            return true;
         }
         // Caching is disabled now (but no 404)
         $this->disableCache = true;
