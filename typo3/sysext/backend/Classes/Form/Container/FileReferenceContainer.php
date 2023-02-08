@@ -53,11 +53,6 @@ class FileReferenceContainer extends AbstractContainer
     private const FILE_REFERENCE_TABLE = 'sys_file_reference';
     private const FOREIGN_SELECTOR = 'uid_local';
 
-    private const SYS_FILE_LABEL_FIELDS = [
-        'title',
-        'name',
-    ];
-
     /**
      * File reference data used for JSON output
      */
@@ -493,45 +488,67 @@ class FileReferenceContainer extends AbstractContainer
             return $this->data['recordTitle'] ?: (string)$databaseRow['uid'];
         }
 
-        $title = '';
-        foreach (self::SYS_FILE_LABEL_FIELDS as $field) {
-            $value = '';
-            if ($field === 'title') {
-                $fullTitle = '';
-                if (isset($databaseRow['title'])) {
-                    $fullTitle = $databaseRow['title'];
-                } elseif ($fileRecord['uid'] ?? false) {
-                    try {
-                        $metaData = $this->metaDataRepository->findByFileUid($fileRecord['uid']);
-                        $fullTitle = $metaData['title'] ?? '';
-                    } catch (InvalidUidException $e) {
-                    }
-                }
-                $value = BackendUtility::getRecordTitlePrep($fullTitle);
-            } elseif (isset($databaseRow[$field])) {
-                $value = htmlspecialchars((string)$databaseRow[$field]);
-            } elseif (isset($fileRecord[$field])) {
-                $value = BackendUtility::getRecordTitlePrep($fileRecord[$field]);
-            }
-            if ($value === '') {
-                continue;
-            }
+        $value = '';
 
-            $title = '
-                <dt class="col text-truncate">
-                    ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.' . $field)) . '
-                </dt>
-                <dd class="col">
-                    ' . $value . '
-                </dd>';
+        $recordTitle = $this->getTitleForRecord($databaseRow, $fileRecord);
+        $recordName = $this->getLabelFieldForRecord($databaseRow, $fileRecord, 'name');
 
-            // In debug mode, add the table name to the record title
-            if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
-                $title .= '<div class="col"><code class="m-0">[' . self::FILE_REFERENCE_TABLE . ']</code></div>';
+        $labelField = !empty($recordTitle) ? 'title' : 'name';
+
+        if (!empty($recordTitle)) {
+            $value .= $recordTitle . ' (' . $recordName . ')';
+        } else {
+            $value .= $recordName;
+        }
+
+        $title = '
+            <dt class="col-1">
+                ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.' . $labelField)) . '
+            </dt>
+            <dd class="col text-truncate">
+                ' . $value . '
+            </dd>
+            <div class="w-100"></div>';
+
+        // In debug mode, add the table name to the record title
+        if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
+            $title .= '<div class="col"><code class="m-0">[' . self::FILE_REFERENCE_TABLE . ']</code></div>';
+        }
+
+        return '<dl class="row row-cols-auto">' . $title . '</dl>';
+    }
+
+    protected function getTitleForRecord(array $databaseRow, array $fileRecord): string
+    {
+        $fullTitle = '';
+        if (isset($databaseRow['title'])) {
+            $fullTitle = $databaseRow['title'];
+        } elseif ($fileRecord['uid'] ?? false) {
+            try {
+                $metaData = $this->metaDataRepository->findByFileUid($fileRecord['uid']);
+                $fullTitle = $metaData['title'] ?? '';
+            } catch (InvalidUidException $e) {
             }
         }
 
-        return '<dl class="row row-cols-auto g-2">' . $title . '</dl>';
+        if ($fullTitle === '') {
+            return '';
+        }
+
+        return BackendUtility::getRecordTitlePrep($fullTitle);
+    }
+
+    protected function getLabelFieldForRecord(array $databaseRow, array $fileRecord, string $field): string
+    {
+        $value = '';
+
+        if (isset($databaseRow[$field])) {
+            $value = htmlspecialchars((string)$databaseRow[$field]);
+        } elseif (isset($fileRecord[$field])) {
+            $value = BackendUtility::getRecordTitlePrep($fileRecord[$field]);
+        }
+
+        return $value;
     }
 
     protected function getLanguageService(): LanguageService
