@@ -491,6 +491,16 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Connection.php
 
 		-
+			message: "#^Offset 'persistent' on array\\{charset\\?\\: string, dbname\\?\\: string, defaultTableOptions\\?\\: array\\<string, mixed\\>, default_dbname\\?\\: string, driver\\?\\: 'ibm_db2'\\|'mysqli'\\|'oci8'\\|'pdo_mysql'\\|'pdo_oci'\\|'pdo_pgsql'\\|'pdo_sqlite'\\|'pdo_sqlsrv'\\|'pgsql'\\|'sqlite3'\\|'sqlsrv', driverClass\\?\\: class\\-string\\<Doctrine\\\\DBAL\\\\Driver\\>, driverOptions\\?\\: array, host\\?\\: string, \\.\\.\\.\\} in empty\\(\\) does not exist\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Database/Driver/PDOMySql/Driver.php
+
+		-
+			message: "#^Offset 'persistent' on array\\{charset\\?\\: string, dbname\\?\\: string, defaultTableOptions\\?\\: array\\<string, mixed\\>, default_dbname\\?\\: string, driver\\?\\: 'ibm_db2'\\|'mysqli'\\|'oci8'\\|'pdo_mysql'\\|'pdo_oci'\\|'pdo_pgsql'\\|'pdo_sqlite'\\|'pdo_sqlsrv'\\|'pgsql'\\|'sqlite3'\\|'sqlsrv', driverClass\\?\\: class\\-string\\<Doctrine\\\\DBAL\\\\Driver\\>, driverOptions\\?\\: array, host\\?\\: string, \\.\\.\\.\\} in empty\\(\\) does not exist\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Database/Driver/PDOPgSql/Driver.php
+
+		-
 			message: "#^Parameter \\#4 \\$condition of method Doctrine\\\\DBAL\\\\Query\\\\QueryBuilder\\:\\:leftJoin\\(\\) expects string\\|null, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
@@ -544,6 +554,21 @@ parameters:
 			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Core\\\\Database\\\\Schema\\\\Exception\\\\DefaultTcaSchemaTablePositionException is never thrown in the try block\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Schema/DefaultTcaSchema.php
+
+		-
+			message: "#^Conditional return type uses subject type T which is not part of PHPDoc @template tags\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Database/Schema/Types/DateTimeType.php
+
+		-
+			message: "#^Conditional return type uses subject type T which is not part of PHPDoc @template tags\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Database/Schema/Types/DateType.php
+
+		-
+			message: "#^Conditional return type uses subject type T which is not part of PHPDoc @template tags\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Database/Schema/Types/TimeType.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Package\\\\PackageInterface\\:\\:getServiceProvider\\(\\)\\.$#"
