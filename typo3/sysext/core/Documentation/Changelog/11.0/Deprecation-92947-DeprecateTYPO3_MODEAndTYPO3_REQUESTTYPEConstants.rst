@@ -155,6 +155,8 @@ Before::
 
 After::
 
+    use TYPO3\CMS\Core\Http\ApplicationType;
+    ...
     if (ApplicationType::fromRequest($request)->isFrontend()) {
         ...
     }
