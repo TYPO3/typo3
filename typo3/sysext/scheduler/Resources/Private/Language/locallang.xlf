@@ -6,6 +6,9 @@
 			<trans-unit id="button.cancel" resname="button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
+			<trans-unit id="button.group.modalOk" resname="button.group.modalOk">
+				<source>Create group</source>
+			</trans-unit>
 			<trans-unit id="function.scheduler" resname="function.scheduler">
 				<source>Scheduled tasks</source>
 			</trans-unit>
@@ -19,7 +22,13 @@
 				<source>Edit scheduled task "%s"</source>
 			</trans-unit>
 			<trans-unit id="function.add" resname="function.add">
-				<source>Add new scheduler task</source>
+				<source>New task</source>
+			</trans-unit>
+			<trans-unit id="function.group.add" resname="function.group.add">
+				<source>New group</source>
+			</trans-unit>
+			<trans-unit id="function.group.label" resname="function.group.label">
+				<source>Group name</source>
 			</trans-unit>
 			<trans-unit id="hdg.cliScript" resname="hdg.cliScript">
 				<source>CLI script</source>
@@ -174,11 +183,32 @@
 			<trans-unit id="label.group.taskCount" resname="label.group.taskCount">
 			    <source>Amount of tasks in this scheduler task group</source>
 			</trans-unit>
+			<trans-unit id="label.group.taskUnusedCount" resname="label.group.taskUnusedCount">
+			    <source>Amount of unused task groups</source>
+			</trans-unit>
 			<trans-unit id="label.noGroup" resname="label.noGroup">
-				<source>[No task group]</source>
+				<source>Not assigned to any task group</source>
 			</trans-unit>
 			<trans-unit id="label.noGroup.taskCount" resname="label.noGroup.taskCount">
 				<source>Amount of tasks that are not assigned to any scheduler task group</source>
+			</trans-unit>
+			<trans-unit id="label.group.isDisabled" resname="label.group.isDisabled">
+				<source>Disabled</source>
+			</trans-unit>
+			<trans-unit id="label.group.unused" resname="label.noGroup">
+				<source>Unused task groups</source>
+			</trans-unit>
+			<trans-unit id="label.group.tableColumn" resname="label.noGroup">
+				<source>Group</source>
+			</trans-unit>
+			<trans-unit id="label.group.enable" resname="label.noGroup">
+				<source>Enable group</source>
+			</trans-unit>
+			<trans-unit id="label.group.disable" resname="label.noGroup">
+				<source>Disable group</source>
+			</trans-unit>
+			<trans-unit id="label.group.edit" resname="label.noGroup">
+				<source>Edit group</source>
 			</trans-unit>
 			<trans-unit id="label.errorClass" resname="label.errorClass">
 				<source>Broken tasks</source>
@@ -381,6 +411,13 @@
 			<trans-unit id="msg.taskQueuedForExecution" resname="msg.taskQueuedForExecution">
 				<source>Task "%s" with uid "%s" has been queued for execution at next scheduler CLI run.</source>
 			</trans-unit>
+			<trans-unit id="msg.group.deleted" resname="msg.group.deleted">
+				<source>Successfully deleted scheduler group.</source>
+			</trans-unit>
+			<trans-unit id="msg.group.delete.failed" resname="msg.group.delete.failed">
+				<source>Failed to delete scheduler group.</source>
+			</trans-unit>
+
 			<trans-unit id="none" resname="none">
 				<source>None</source>
 			</trans-unit>
@@ -515,6 +552,12 @@
 			</trans-unit>
 			<trans-unit id="systeminformation.lastRunValue" resname="systeminformation.lastRunValue">
 				<source>%1$s at %2$s, Duration %3$s, (started %4$s)</source>
+			</trans-unit>
+			<trans-unit id="msg.group.notification.error.title" resname="group.notification.error.title">
+				<source>Error</source>
+			</trans-unit>
+			<trans-unit id="msg.group.notification.error.message" resname="group.notification.error.message">
+				<source>Could not create group</source>
 			</trans-unit>
 		</body>
 	</file>

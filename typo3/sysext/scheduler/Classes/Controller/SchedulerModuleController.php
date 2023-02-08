@@ -95,12 +95,6 @@ class SchedulerModuleController
             $this->toggleDisabledFlag($view, (int)$parsedBody['action']['toggleHidden']);
             return $this->renderListTasksView($view, $moduleData);
         }
-        if (!empty($queryParams['action']['delete'])) {
-            // @todo: This should be POST only, but modals on button type="submit" don't trigger and buttons in doc header can't do that, either.
-            //        Compare with 'toggleHidden' solution above which has no modal.
-            $this->deleteTask($view, (int)$queryParams['action']['delete']);
-            return $this->renderListTasksView($view, $moduleData);
-        }
         if (!empty($queryParams['action']['stop'])) {
             // @todo: Same as above.
             $this->stopTask($view, (int)$queryParams['action']['stop']);
@@ -115,8 +109,29 @@ class SchedulerModuleController
             return $this->renderListTasksView($view, $moduleData);
         }
 
+        if (!empty($parsedBody['action']['group']['uid'])) {
+            $this->groupDisable((int)$parsedBody['action']['group']['uid'], (int)($parsedBody['action']['group']['hidden'] ?? 0));
+            return $this->renderListTasksView($view, $moduleData);
+        }
+
+        if (!empty($parsedBody['action']['delete'])) {
+            $this->deleteTask($view, (int)$parsedBody['action']['delete']);
+            return $this->renderListTasksView($view, $moduleData);
+        }
+
+        if (!empty($parsedBody['action']['groupRemove'])) {
+            $rows = $this->groupRemove((int)$parsedBody['action']['groupRemove']);
+            if ($rows > 0) {
+                $view->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.group.deleted'));
+            } else {
+                $view->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.group.delete.failed'), '', ContextualFeedbackSeverity::WARNING);
+            }
+
+            return $this->renderListTasksView($view, $moduleData);
+        }
+
         if (($parsedBody['action'] ?? '') === Action::ADD
-            && in_array($parsedBody['CMD'], ['save', 'saveclose', 'close'], true)
+            && in_array($parsedBody['CMD'] ?? '', ['save', 'saveclose', 'close'], true)
         ) {
             // Received data for adding a new task - validate, persist, render requested 'next' action.
             $isTaskDataValid = $this->isSubmittedTaskDataValid($view, $request, true);
@@ -136,7 +151,7 @@ class SchedulerModuleController
         }
 
         if (($parsedBody['action'] ?? '') === Action::EDIT
-            && in_array($parsedBody['CMD'], ['save', 'close', 'saveclose', 'new'], true)
+            && in_array($parsedBody['CMD'] ?? '', ['save', 'close', 'saveclose', 'new'], true)
         ) {
             // Received data for updating existing task - validate, persist, render requested 'next' action.
             $isTaskDataValid = $this->isSubmittedTaskDataValid($view, $request, false);
@@ -302,10 +317,19 @@ class SchedulerModuleController
         // Class selection can be GET - link and + button in info screen.
         $queryParams = $request->getQueryParams()['tx_scheduler'] ?? [];
         $parsedBody = $request->getParsedBody()['tx_scheduler'] ?? [];
+
+        if ((int)($parsedBody['select_latest_group'] ?? 0) === 1) {
+            $groups = array_column($this->getRegisteredTaskGroups(), 'uid');
+            rsort($groups);
+            $selectedTaskGroup = $groups[0] ?? 0;
+        } else {
+            $selectedTaskGroup = 0;
+        }
+
         $currentData = [
             'class' => $parsedBody['class'] ?? $queryParams['class'] ?? key($registeredClasses),
             'disable' => (bool)($parsedBody['disable'] ?? false),
-            'task_group' => (int)($parsedBody['task_group'] ?? 0),
+            'task_group' => $selectedTaskGroup,
             'type' => (int)($parsedBody['type'] ?? AbstractTask::TYPE_RECURRING),
             'start' => $parsedBody['start'] ?? $this->context->getAspect('date')->get('timestamp'),
             'end' => $parsedBody['end'] ?? 0,
@@ -344,6 +368,7 @@ class SchedulerModuleController
             'currentData' => $currentData,
             'groupedClasses' => $groupedClasses,
             'registeredTaskGroups' => $this->getRegisteredTaskGroups(),
+            'preSelectedTaskGroup' => (int)($request->getQueryParams()['groupId'] ?? 0),
             'frequencyOptions' => (array)($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['frequencyOptions'] ?? []),
             'additionalFields' => $additionalFields,
             // Adding a group in edit view switches to formEngine. returnUrl is needed to go back to edit view on group record close.
@@ -541,7 +566,6 @@ class SchedulerModuleController
         $result = $queryBuilder->select('t.*')
             ->addSelect(
                 'g.groupName AS taskGroupName',
-                'g.description AS taskGroupDescription',
                 'g.uid AS taskGroupId',
                 'g.deleted AS isTaskGroupDeleted',
                 'g.hidden AS isTaskGroupHidden',
@@ -621,20 +645,24 @@ class SchedulerModuleController
                 }
             }
 
-            if (!isset($taskGroupsWithTasks[(int)$row['task_group']])) {
-                $taskGroupsWithTasks[(int)$row['task_group']] = [
+            // If a group is deleted or no group is set it needs to go into "not assigned groups"
+            $groupIndex = $row['isTaskGroupDeleted'] === 1 || $row['isTaskGroupDeleted'] === null ? 0 : (int)$row['task_group'];
+            if (!isset($taskGroupsWithTasks[$groupIndex])) {
+                $taskGroupsWithTasks[$groupIndex] = [
                     'tasks' => [],
                     'groupName' => $row['taskGroupName'],
-                    'groupDescription' => $row['taskGroupDescription'],
-                    'taskGroupCollapsed' => (bool)($moduleData->get('task-group-' . ($row['taskGroupId'] ?? 0), false)),
+                    'groupUid' => $row['taskGroupId'],
                     'groupHidden' => $row['isTaskGroupHidden'],
+                    'taskGroupCollapsed' => (bool)($moduleData->get('task-group-' . ($row['taskGroupId'] ?? 0), false)),
                 ];
             }
-            $taskGroupsWithTasks[(int)$row['task_group']]['tasks'][] = $taskData;
+
+            $taskGroupsWithTasks[$groupIndex]['tasks'][] = $taskData;
         }
 
         $view->assignMultiple([
             'tasks' => $taskGroupsWithTasks,
+            'groupsWithoutTasks' => $this->getGroupsWithoutTasks($taskGroupsWithTasks),
             'now' => $this->context->getAspect('date')->get('timestamp'),
             'errorClasses' => $errorClasses,
             'errorClassesCollapsed' => (bool)($moduleData->get('task-group-missing', false)),
@@ -907,6 +935,15 @@ class SchedulerModuleController
             ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL))
             ->setHref((string)$this->uriBuilder->buildUriFromRoute('scheduler_manage', ['action' => 'add']));
         $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+
+        $addGroupButton = $buttonBar->makeInputButton()
+            ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+            ->setName('createSchedulerGroup')
+            ->setShowLabelText(true)
+            ->setTitle($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.group.add'))
+            ->setValue('1')
+            ->setClasses('t3js-create-group');
+        $buttonBar->addButton($addGroupButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
     }
 
     protected function addDocHeaderCloseAndSaveButtons(ModuleTemplate $moduleTemplate): void
@@ -919,14 +956,6 @@ class SchedulerModuleController
             ->setShowLabelText(true)
             ->setHref((string)$this->uriBuilder->buildUriFromRoute('scheduler_manage'));
         $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
-        $saveAndCloseButton = $buttonBar->makeInputButton()
-            ->setName('CMD')
-            ->setValue('saveclose')
-            ->setForm('tx_scheduler_form')
-            ->setIcon($this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL))
-            ->setShowLabelText(true)
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:saveAndClose'));
-        $buttonBar->addButton($saveAndCloseButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
         $saveButton = $buttonBar->makeInputButton()
             ->setName('CMD')
             ->setValue('save')
@@ -1013,5 +1042,40 @@ class SchedulerModuleController
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    private function getGroupsWithoutTasks(array $taskGroupsWithTasks): array
+    {
+        $uidGroupsWithTasks = array_filter(array_column($taskGroupsWithTasks, 'groupUid'));
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task_group');
+        $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+        $resultEmptyGroups = $queryBuilder->select('*')
+            ->from('tx_scheduler_task_group')
+            ->orderBy('groupName');
+
+        // Only add where statement if we have taskGroups to consider.
+        if (!empty($uidGroupsWithTasks)) {
+            $resultEmptyGroups->where($queryBuilder->expr()->notIn('uid', $uidGroupsWithTasks));
+        }
+
+        return $resultEmptyGroups->executeQuery()->fetchAllAssociative();
+    }
+
+    private function groupRemove(int $groupId): int
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task_group');
+        return $queryBuilder->delete('tx_scheduler_task_group')
+            ->where($queryBuilder->expr()->eq('uid', $groupId))
+            ->set('deleted', 1)
+            ->executeStatement();
+    }
+
+    private function groupDisable(int $groupId, int $hidden): void
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task_group');
+        $queryBuilder->update('tx_scheduler_task_group')
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($groupId)))
+            ->set('hidden', $hidden)
+            ->executeStatement();
     }
 }

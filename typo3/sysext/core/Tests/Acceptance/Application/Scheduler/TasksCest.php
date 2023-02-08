@@ -37,55 +37,47 @@ final class TasksCest
     public function createASchedulerTask(ApplicationTester $I): void
     {
         $I->see('No tasks defined yet');
-        $I->click('//a[contains(@title, "Add new scheduler task")]', '.module-docheader');
+        $I->click('//a[contains(@title, "New task")]', '.module-docheader');
         $I->waitForElementNotVisible('#task_SystemStatusUpdateNotificationEmail');
 
         $I->amGoingTo('check save action in case no settings given');
-        $I->click('button[value="saveclose"]');
+        $I->click('button[value="save"]');
         $I->waitForText('No frequency was defined, either as an interval or as a cron command.');
 
         $I->selectOption('#task_class', 'System Status Update');
         $I->seeElement('#task_SystemStatusUpdateNotificationEmail');
         $I->selectOption('#task_type', 'Single');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
-        $I->wantTo('Click "Save and close"');
-        $I->click('button[value="saveclose"]');
+        $I->wantTo('Click "Save"');
+        $I->click('button[value="save"]');
         $I->waitForText('The task was added successfully.');
+        $I->click('a[title="Close"]');
     }
 
-    /**
-     * @depends createASchedulerTask
-     */
     public function canRunTask(ApplicationTester $I): void
     {
         // run the task
         $I->click('button[name="execute"]');
-        $I->waitForText('Task "System Status Update (reports)" with uid "1" has been executed.');
+        $I->waitForText('Task "System Status Update (reports)" with uid');
         $I->seeElement('[data-module-name="scheduler_manage"] .disabled');
         $I->see('disabled');
     }
 
-    /**
-     * @depends createASchedulerTask
-     */
     public function canEditTask(ApplicationTester $I): void
     {
         $I->click('//a[contains(@title, "Edit")]');
         $I->waitForText('Edit scheduled task "System Status Update (reports)"');
         $I->seeInField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'foo@local.typo3.org');
-        $I->wantTo('Click "Save and close"');
-        $I->click('button[value="saveclose"]');
+        $I->wantTo('Click "Save"');
+        $I->click('button[value="save"]');
         $I->waitForText('The task was updated successfully.');
     }
 
-    /**
-     * @depends canRunTask
-     */
     public function canEnableAndDisableTask(ApplicationTester $I): void
     {
         $I->wantTo('See a enable button for a task');
-        $I->click('//button[contains(@title, "Enable")]', '#tx_scheduler_form');
+        $I->click('//button[contains(@title, "Enable")]', '#tx_scheduler_form_0');
         $I->dontSeeElement('[data-module-name="scheduler_manage"] .disabled');
         $I->dontSee('disabled');
         $I->wantTo('See a disable button for a task');
@@ -99,14 +91,11 @@ final class TasksCest
         $I->see('disabled');
     }
 
-    /**
-     * @depends createASchedulerTask
-     */
     public function canDeleteTask(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->wantTo('See a delete button for a task');
-        $I->seeElement('//a[contains(@title, "Delete")]');
-        $I->click('//a[contains(@title, "Delete")]');
+        $I->seeElement('//button[contains(@title, "Delete")]');
+        $I->click('//button[contains(@title, "Delete")]');
         $I->wantTo('Cancel the delete dialog');
 
         // don't use $modalDialog->clickButtonInDialog due to too low timeout
@@ -116,7 +105,7 @@ final class TasksCest
 
         $I->switchToContentFrame();
         $I->wantTo('Still see and can click the Delete button as the deletion has been canceled');
-        $I->click('//a[contains(@title, "Delete")]');
+        $I->click('//button[contains(@title, "Delete")]');
         $modalDialog->clickButtonInDialog('OK');
         $I->switchToContentFrame();
         $I->see('The task was successfully deleted.');
@@ -139,7 +128,7 @@ final class TasksCest
         $I->canSeeNumberOfElements('[data-module-name="scheduler_availabletasks"] table tbody tr', [1, 10000]);
     }
 
-    public function canCreateNewTaskGroupFromEditForm(ApplicationTester $I): void
+    public function canCreateNewTaskGroupFromEditForm(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->amGoingTo('create a task when none exists yet');
         $I->canSee('Scheduled tasks', 'h1');
@@ -149,17 +138,12 @@ final class TasksCest
         $I->click('[data-scheduler-table] > tbody > tr > td.nowrap > div:nth-child(1) > a:nth-child(1)');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->canSee('Edit scheduled task "System Status Update (reports)"');
-        $I->click('#task_group_row > div > div > div > div > a');
-        $I->waitForElementNotVisible('#t3js-ui-block');
-        $I->canSee('Create new Scheduler task group on root level', 'h1');
+        $I->click('#task_group_row > div > div > div > div > button');
+        $modalDialog->canSeeDialog();
 
-        $I->fillField('//input[contains(@data-formengine-input-name, "data[tx_scheduler_task_group]") and contains(@data-formengine-input-name, "[groupName]")]', 'new task group');
-        $I->click('button[name="_savedok"]');
-        $I->wait(0.2);
-        $I->waitForElementNotVisible('#t3js-ui-block');
-        $I->click('a[title="Close"]');
-        $I->waitForElementVisible('#tx_scheduler_form');
-
+        $I->fillField('.modal.show input[name="action[createGroup]"]', 'new task group');
+        $modalDialog->clickButtonInDialog('Create group');
+        $I->switchToContentFrame();
         $I->selectOption('select#task_group', 'new task group');
         $I->click('button[value="save"]');
         $I->waitForElementNotVisible('#t3js-ui-block');

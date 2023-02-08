@@ -11,7 +11,16 @@
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/modal.js',
-            1: '@typo3/scheduler/scheduler.js'
+            1: '@typo3/scheduler/scheduler.js',
+            3: '@typo3/scheduler/scheduler-add-group.js'
+        }"
+        addJsInlineLabels="{
+            'scheduler.createGroup': 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.group.add',
+            'scheduler.groupName': 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.group.label',
+            'scheduler.modalCancel': 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:button.cancel',
+            'scheduler.modalOk': 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:button.group.modalOk',
+            'scheduler.group.error.title': 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.group.notification.error.title',
+            'scheduler.group.error.message': 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.group.notification.error.message'
         }"
     />
     <form class="form" name="tx_scheduler_form" id="tx_scheduler_form" method="post">

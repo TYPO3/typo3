@@ -1,0 +1,16 @@
+//
+// Scheduler module
+//
+.scheduler-group-dragitem {
+    cursor: move;
+
+    [editable="true"],
+    a,
+    button {
+        cursor: initial;
+    }
+}
+
+.scheduler-group-panel {
+    overflow: unset;
+}

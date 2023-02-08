@@ -9,17 +9,18 @@
                         <option
                             value="{registeredTaskGroup.uid}"
                             title="{registeredTaskGroup.groupName}"
-                            {f:if(condition:'{currentData.task_group} == {registeredTaskGroup.uid}',then:'selected="selected"')}
+                            {f:if(condition:'{currentData.task_group} == {registeredTaskGroup.uid} || {preSelectedTaskGroup} == {registeredTaskGroup.uid}',then:'selected="selected"')}
                         >
                         {registeredTaskGroup.groupName}
                         </option>
                     </f:for>
                 </select>
                 <div class="input-group-btn" role="group">
-                    <be:link.newRecord class="btn btn-default" table="tx_scheduler_task_group" returnUrl="{returnUrl}">
+                    <button class="btn btn-default t3js-create-group">
                         <core:icon identifier="actions-plus" />
-                    </be:link.newRecord>
+                    </button>
                 </div>
+                <input type="hidden" name="tx_scheduler[select_latest_group]" value="0">
             </div>
         </div>
     </div>
