@@ -12,13 +12,115 @@
  */
 
 import {lll} from '@typo3/core/lit-helper';
-import {html, LitElement, TemplateResult} from 'lit';
+import {html, css, LitElement, TemplateResult} from 'lit';
 import {customElement, property, state} from 'lit/decorators';
 import './icon-element';
 import AjaxDataHandler from '../ajax-data-handler';
 
 @customElement('typo3-backend-editable-page-title')
 class EditablePageTitle extends LitElement {
+  static styles = css`
+    :host {
+      display: block;
+      --border-color: #bebebe;
+      --hover-bg: #cacaca;
+      --hover-border-color: #bebebe;
+      --focus-bg: #cacaca;
+      --focus-border-color: #bebebe;
+    }
+
+    h1 {
+      font-weight: inherit;
+      font-size: inherit;
+      font-family: inherit;
+      line-height: inherit;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      padding: 1px 0;
+      margin: 0;
+    }
+
+    input {
+      outline: none;
+      background: transparent;
+      font-weight: inherit;
+      font-size: inherit;
+      font-family: inherit;
+      line-height: inherit;
+      padding: 0;
+      border: 0;
+      border-top: 1px solid transparent;
+      border-bottom: 1px dashed var(--border-color);
+      margin: 0;
+      width: 100%;
+    }
+
+    input:hover {
+      border-bottom: 1px dashed var(--hover-border-color);
+    }
+
+    input:focus {
+      border-bottom: 1px dashed var(--focus-border-color);
+    }
+
+    .wrapper {
+      position: relative;
+    }
+
+    div.wrapper {
+      padding-right: 1.5em;
+    }
+
+    form.wrapper {
+      padding-right: 2.5em;
+    }
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: inherit;
+      line-height: inherit;
+      border: 0;
+      padding: 0;
+      height: 100%;
+      width: 1em;
+      position: absolute;
+      top: 0;
+      border-radius: 2px;
+      overflow: hidden;
+      outline: none;
+      border: 1px solid transparent;
+      background: transparent;
+      opacity: .3;
+      transition: all .2s ease-in-out;
+    }
+
+    button:hover {
+      opacity: 1;
+      background: var(--hover-bg);
+      border-color: var(--hover-border-color);
+    }
+
+    button:focus {
+      opacity: 1;
+      background: var(--focus-bg);
+      border-color: var(--focus-border-color);
+    }
+
+    button[data-action="edit"] {
+      right: 0;
+    }
+
+    button[data-action="save"] {
+      right: calc(1em + 2px);
+    }
+
+    button[data-action="close"] {
+      right: 0;
+    }
+    `;
   @property({type: String}) pageTitle: string = '';
   @property({type: Number}) pageId: number = 0;
   @property({type: Number}) localizedPageId: number = 0;
@@ -26,9 +128,12 @@ class EditablePageTitle extends LitElement {
   @state() _isEditing: boolean = false;
   @state() _isSubmitting: boolean = false;
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
-    // Avoid shadow DOM for Bootstrap CSS to be applied
-    return this;
+  async startEditing(): Promise<void> {
+    if (this.isEditable()) {
+      this._isEditing = true;
+      await this.updateComplete;
+      this.shadowRoot.querySelector('input')?.focus();
+    }
   }
 
   protected render(): TemplateResult {
@@ -36,21 +141,17 @@ class EditablePageTitle extends LitElement {
       return html``;
     }
 
-    const pageTitleHeadline = html`<h1 @dblclick="${(): void => { this.startEditing(); }}">${this.pageTitle}</h1>`;
     if (!this.isEditable()) {
-      return pageTitleHeadline;
+      return html`<div class="wrapper"><h1>${this.pageTitle}</h1></div>`;
     }
 
     let content;
     if (!this._isEditing) {
-      content = html`<div class="row">
-        <div class="col-md-auto">
-          ${pageTitleHeadline}
-        </div>
-        <div class="col">
+      content = html`
+        <div class="wrapper">
+          <h1 @dblclick="${(): void => { this.startEditing(); }}">${this.pageTitle}</h1>
           ${this.composeEditButton()}
-        </div>
-      </div>`;
+        </div>`;
     } else {
       content = this.composeEditForm();
     }
@@ -60,12 +161,6 @@ class EditablePageTitle extends LitElement {
 
   private isEditable(): boolean {
     return this.editable && this.pageId > 0;
-  }
-
-  private startEditing(): void {
-    if (this.isEditable()) {
-      this._isEditing = true;
-    }
   }
 
   private endEditing(): void {
@@ -114,24 +209,22 @@ class EditablePageTitle extends LitElement {
   }
 
   private composeEditButton(): TemplateResult {
-    return html`<button type="button" class="btn btn-link" aria-label="${lll('editPageTitle')}" @click="${(): void => { this.startEditing(); }}">
-      <typo3-backend-icon identifier="actions-open" size="small"></typo3-backend-icon>
-    </button>`;
+    return html`
+      <button data-action="edit" type="button" aria-label="${lll('editPageTitle')}" @click="${(): void => { this.startEditing(); }}">
+        <typo3-backend-icon identifier="actions-open" size="small"></typo3-backend-icon>
+      </button>`;
   }
 
   private composeEditForm(): TemplateResult {
-    return html`<form class="t3js-title-edit-form" @submit="${ this.updatePageTitle }">
-      <div class="form-group">
-        <div class="input-group input-group-lg">
-          <input class="form-control" name="newPageTitle" ?disabled="${this._isSubmitting}" value="${this.pageTitle}" @keydown="${(e: KeyboardEvent): void => { if (e.key === 'Escape') { this.endEditing(); } }}">
-          <button class="btn btn-default" type="submit" ?disabled="${this._isSubmitting}">
-            <typo3-backend-icon identifier="actions-save" size="small"></typo3-backend-icon>
-          </button>
-          <button class="btn btn-default" type="button" ?disabled="${this._isSubmitting}" @click="${(): void => { this.endEditing(); }}">
-            <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
-          </button>
-        </div>
-      </div>
-    </form>`;
+    return html`
+      <form class="wrapper" @submit="${ this.updatePageTitle }">
+        <input autocomplete="off" name="newPageTitle" ?disabled="${this._isSubmitting}" value="${this.pageTitle}" @keydown="${(e: KeyboardEvent): void => { if (e.key === 'Escape') { this.endEditing(); } }}">
+        <button data-action="save" type="submit" ?disabled="${this._isSubmitting}">
+          <typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>
+        </button>
+        <button data-action="close" type="button" ?disabled="${this._isSubmitting}" @click="${(): void => { this.endEditing(); }}">
+          <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
+        </button>
+      </form>`;
   }
 }

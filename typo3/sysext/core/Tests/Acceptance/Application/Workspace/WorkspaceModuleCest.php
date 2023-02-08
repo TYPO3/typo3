@@ -54,9 +54,11 @@ final class WorkspaceModuleCest
 
         $I->comment('Rename page');
         $I->switchToContentFrame();
-        $I->click('typo3-backend-editable-page-title button');
-        $I->fillField('typo3-backend-editable-page-title input[name="newPageTitle"]', self::$newPageTitle);
-        $I->click('typo3-backend-editable-page-title button[type="submit"]');
+
+        $I->canSeeElement('typo3-backend-editable-page-title');
+        $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('[data-action=\"edit\"]').click()");
+        $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('input').value = '" . self::$newPageTitle . "'");
+        $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('[data-action=\"save\"]').click()");
 
         $I->switchToMainFrame();
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);

@@ -63,22 +63,23 @@ final class PageModuleCest
 
     private function renamePage(ApplicationTester $I, string $oldTitle, string $newTitle): void
     {
-        $editLinkSelector = 'typo3-backend-editable-page-title button';
-        $inputFieldSelector = 'typo3-backend-editable-page-title input[name="newPageTitle"]';
-
-        $I->waitForText($oldTitle, 10, 'h1');
+        $I->canSeeElement('typo3-backend-editable-page-title');
+        $currentPageTitle = $I->executeJS("return document.querySelector('typo3-backend-editable-page-title').pageTitle");
+        if ($currentPageTitle !== $oldTitle) {
+            $I->fail('The current page title "' . $currentPageTitle . '" does not match "' . $oldTitle . '"');
+        }
 
         $I->comment('Activate inline edit of page title');
-        $I->waitForElement($editLinkSelector);
-        $I->click($editLinkSelector);
-        $I->waitForElement($inputFieldSelector);
+        $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('[data-action=\"edit\"]').click()");
 
         $I->comment('Set new value and save');
-        $I->fillField($inputFieldSelector, $newTitle);
-        $I->click('typo3-backend-editable-page-title button[type="submit"]');
+        $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('input').value = '" . $newTitle . "'");
+        $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('[data-action=\"save\"]').click()");
 
         $I->comment('See the new page title');
-        $I->waitForElementNotVisible($inputFieldSelector);
-        $I->waitForText($newTitle, 5, 'h1');
+        $currentPageTitle = $I->executeJS("return document.querySelector('typo3-backend-editable-page-title').pageTitle");
+        if ($currentPageTitle !== $newTitle) {
+            $I->fail('The current page title "' . $currentPageTitle . '" does not match "' . $newTitle . '"');
+        }
     }
 }

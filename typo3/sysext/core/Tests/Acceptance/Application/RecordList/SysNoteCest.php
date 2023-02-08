@@ -54,7 +54,7 @@ final class SysNoteCest
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->click('a[title="Close"]');
         $I->wait(1);
-        $I->canSee('styleguide TCA demo', 'h1');
+        $I->canSeeElement('typo3-backend-editable-page-title[pagetitle="styleguide TCA demo"]');
         $I->click('button.t3js-toggle-recordlist[data-table="pages"]');
         $I->canSee('Internal notes', 'h2');
         $I->canSee('new sys_note');

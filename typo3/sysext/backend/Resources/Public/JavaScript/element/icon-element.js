@@ -47,8 +47,6 @@ var __decorate=function(e,i,t,o){var n,r=arguments.length,s=r<3?i:null===o?o=Obj
         width: var(--icon-size, 1em);
         line-height: var(--icon-size, 1em);
         flex-shrink: 0;
-        /** copied from typo3_src/Build/Sources/Sass/component/_icon.scss */
-        vertical-align: -22%
       }
 
       .icon img, .icon svg {
