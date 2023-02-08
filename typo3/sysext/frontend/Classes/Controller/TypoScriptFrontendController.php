@@ -1903,7 +1903,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($isInWorkspace) {
             return;
         }
-        if ($this->page['SYS_LASTCHANGED'] < (int)$this->register['SYS_LASTCHANGED']) {
+        if ($this->page['SYS_LASTCHANGED'] < (int)($this->register['SYS_LASTCHANGED'] ?? 0)) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('pages');
             $pageId = $this->page['_PAGES_OVERLAY_UID'] ?? $this->id;
