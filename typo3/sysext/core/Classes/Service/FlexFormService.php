@@ -41,7 +41,7 @@ class FlexFormService implements SingletonInterface
         $flexFormArray = GeneralUtility::xml2array($flexFormContent);
         $flexFormArray = $flexFormArray['data'] ?? [];
         foreach (array_values($flexFormArray) as $languages) {
-            if (!is_array($languages[$languagePointer])) {
+            if (!is_array($languages[$languagePointer] ?? false)) {
                 continue;
             }
             foreach ($languages[$languagePointer] as $valueKey => $valueDefinition) {
