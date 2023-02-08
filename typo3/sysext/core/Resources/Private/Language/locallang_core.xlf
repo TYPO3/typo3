@@ -1419,6 +1419,12 @@ Do you want to refresh it now?</source>
 			<trans-unit id="labels.contextMenu.open.recordLabel" resname="labels.contextMenu.open.recordLabel">
 				<source>Open context menu for record: %s</source>
 			</trans-unit>
+			<trans-unit id="countries.default" resname="countries.default" xml:space="preserve">
+				<source>Default countries</source>
+			</trans-unit>
+			<trans-unit id="countries.prioritized" resname="countries.prioritized" xml:space="preserve">
+				<source>Prioritized countries</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

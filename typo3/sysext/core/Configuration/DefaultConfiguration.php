@@ -565,6 +565,12 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCountry::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaLanguage::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class,
@@ -576,6 +582,7 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaLanguage::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCountry::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
                         ],

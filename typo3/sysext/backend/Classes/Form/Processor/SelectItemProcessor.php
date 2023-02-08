@@ -31,9 +31,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @todo Move additional shareable code from form-engine into here.
  */
 #[Autoconfigure(public: true)]
-final class SelectItemProcessor
+final readonly class SelectItemProcessor
 {
-    public function __construct(protected readonly LanguageServiceFactory $languageServiceFactory) {}
+    public function __construct(
+        private LanguageServiceFactory $languageServiceFactory,
+    ) {}
 
     /**
      * Is used when --div-- elements in the item list are used, or if groups are defined via "groupItems" config array.

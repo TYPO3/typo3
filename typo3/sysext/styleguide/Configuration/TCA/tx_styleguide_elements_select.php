@@ -952,6 +952,64 @@ return [
                                     </ROOT>
                                 </sMultiplesidebyside>
 
+                                <!-- @todo implement country for flexforms. -->
+                                <sCountry>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <sheetTitle>Country</sheetTitle>
+                                        <el>
+                                            <country_1>
+                                                <label>Country Basic</label>
+                                                <config>
+                                                    <type>country</type>
+                                                    <labelField>iso2</labelField>
+                                                </config>
+                                            </country_1>
+                                            <country_2>
+                                                <label>Country 2</label>
+                                                <description>labelField=officialName,prioritizedCountries=AT,CH,sortByOptionLabel</description>
+                                                <config>
+                                                    <type>country</type>
+                                                    <labelField>officialName</labelField>
+                                                    <prioritizedCountries>
+                                                        <numIndex index="0">AT</numIndex>
+                                                        <numIndex index="1">CH</numIndex>
+                                                    </prioritizedCountries>
+                                                    <default>CH</default>
+                                                    <sortItems>
+                                                        <label>asc</label>
+                                                    </sortItems>
+                                                </config>
+                                            </country_2>
+                                            <country_3>
+                                                <label>Country 3</label>
+                                                <description>labelField=localizedOfficialName,filter</description>
+                                                <config>
+                                                    <type>country</type>
+                                                    <labelField>localizedOfficialName</labelField>
+                                                    <onlyCountries>
+                                                        <numIndex index="0">DE</numIndex>
+                                                        <numIndex index="1">AT</numIndex>
+                                                        <numIndex index="2">CH</numIndex>
+                                                        <numIndex index="1">FR</numIndex>
+                                                        <numIndex index="3">IT</numIndex>
+                                                        <numIndex index="4">HU</numIndex>
+                                                        <numIndex index="5">US</numIndex>
+                                                        <numIndex index="6">GR</numIndex>
+                                                        <numIndex index="7">ES</numIndex>
+                                                    </onlyCountries>
+                                                    <excludeCountries>
+                                                        <numIndex index="0">DE</numIndex>
+                                                        <numIndex index="1">ES</numIndex>
+                                                    </excludeCountries>
+                                                    <sortItems>
+                                                        <label>asc</label>
+                                                    </sortItems>
+                                                </config>
+                                            </country_3>
+                                        </el>
+                                    </ROOT>
+                                </sCountry>
                             </sheets>
                         </T3DataStructure>
                     ',
@@ -959,6 +1017,43 @@ return [
             ],
         ],
 
+        'country_1' => [
+            'label' => 'Country Basic',
+            'config' => [
+                'type' => 'country',
+                'labelField' => 'iso2',
+            ],
+        ],
+        'country_2' => [
+            'label' => 'Country 2',
+            'description' => 'labelField=officialName,prioritizedCountries=AT,CH,sortByOptionLabel',
+            'config' => [
+                'type' => 'country',
+                'labelField' => 'officialName',
+                'prioritizedCountries' => ['AT', 'CH'],
+                'default' => 'CH',
+                'sortItems' => [
+                    'label' => 'asc',
+                ],
+            ],
+        ],
+        'country_3' => [
+            'label' => 'Country 3',
+            'description' => 'labelField=localizedOfficialName,filter',
+            'config' => [
+                'type' => 'country',
+                'labelField' => 'localizedOfficialName',
+                'filter' => [
+                    // restrict to the given country ISO2 or ISO3 codes
+                    'onlyCountries' => ['DE', 'AT', 'CH', 'FR', 'IT', 'HU', 'US', 'GR', 'ES'],
+                    // exclude by the given country ISO2 or ISO3 codes
+                    'excludeCountries' => ['DE', 'ES'],
+                ],
+                'sortItems' => [
+                    'label' => 'asc',
+                ],
+            ],
+        ],
     ],
 
     'types' => [
@@ -987,6 +1082,8 @@ return [
                     flex_1,
                 --div--;requestUpdate,
                     select_requestUpdate_1,
+                 --div--;type=country,
+                    country_1,country_2,country_3,
                 --div--;meta,
                     sys_language_uid, l10n_parent, l10n_source,
             ',
