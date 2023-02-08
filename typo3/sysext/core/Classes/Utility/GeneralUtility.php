@@ -966,7 +966,7 @@ class GeneralUtility
      * @param string $delimiter Delimiter string to explode with
      * @param string $string The string to explode
      * @param int $count Number of array entries
-     * @return string[] Exploded values
+     * @return list<string> Exploded values
      */
     public static function revExplode($delimiter, $string, $count = 0)
     {
@@ -1000,7 +1000,7 @@ class GeneralUtility
      * @param int $limit If limit is set and positive, the returned array will contain a maximum of limit elements with
      *                   the last element containing the rest of string. If the limit parameter is negative, all components
      *                   except the last -limit are returned.
-     * @return string[] Exploded values
+     * @return list<string> Exploded values
      */
     public static function trimExplode($delim, $string, $removeEmptyValues = false, $limit = 0): array
     {
