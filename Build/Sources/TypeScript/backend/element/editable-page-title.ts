@@ -30,6 +30,7 @@ class EditablePageTitle extends LitElement {
     }
 
     h1 {
+      display: block;
       font-weight: inherit;
       font-size: inherit;
       font-family: inherit;
@@ -66,6 +67,7 @@ class EditablePageTitle extends LitElement {
 
     .wrapper {
       position: relative;
+      margin: -1px 0;
     }
 
     div.wrapper {

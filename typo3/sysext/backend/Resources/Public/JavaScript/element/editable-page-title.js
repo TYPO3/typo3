@@ -37,6 +37,7 @@ var __decorate=function(t,e,i,o){var a,r=arguments.length,n=r<3?e:null===o?o=Obj
     }
 
     h1 {
+      display: block;
       font-weight: inherit;
       font-size: inherit;
       font-family: inherit;
@@ -73,6 +74,7 @@ var __decorate=function(t,e,i,o){var a,r=arguments.length,n=r<3?e:null===o?o=Obj
 
     .wrapper {
       position: relative;
+      margin: -1px 0;
     }
 
     div.wrapper {

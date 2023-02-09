@@ -33,7 +33,9 @@
         pageId="{pageId}"
         localizedPageId="{localizedPageId}"
         {isPageEditable ? 'editable' : ''}
-    ></typo3-backend-editable-page-title>
+    >
+        {localizedPageTitle}
+    </typo3-backend-editable-page-title>
 
     <f:format.raw>{eventContentHtmlTop}</f:format.raw>
 

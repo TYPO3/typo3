@@ -31,7 +31,9 @@
         pageTitle="{pageTitle}"
         pageId="{pageId}"
         {isPageEditable ? 'editable' : ''}
-    ></typo3-backend-editable-page-title>
+    >
+        {pageTitle}
+    </typo3-backend-editable-page-title>
 
     <f:format.raw>{additionalContentTop}</f:format.raw>
 
