@@ -3352,7 +3352,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         }
                     }
                     // out-tag
-                    if ($currentTag[0] === $tag[0] && isset($tag['out']) && $tag['out']) {
+                    if (isset($currentTag[0], $tag['out']) && $currentTag[0] === $tag[0] && $tag['out']) {
                         $theName = $conf['tags.'][$tag[0]];
                         $theConf = $conf['tags.'][$tag[0] . '.'];
                         // This flag indicates, that NL- (13-10-chars) should be stripped first and last.
