@@ -340,6 +340,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         $searchableFieldTypes = [
             'input',
             'text',
+            'json',
             'flex',
             'email',
             'link',

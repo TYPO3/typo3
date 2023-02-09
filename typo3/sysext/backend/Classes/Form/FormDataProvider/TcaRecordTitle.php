@@ -193,6 +193,9 @@ class TcaRecordTitle implements FormDataProviderInterface
                 break;
             case 'flex':
                 // @todo: Check if and how a label could be generated from flex field data
+                break;
+            case 'json':
+                // @todo: Check if and how a label could be generated from json field data
             default:
         }
 

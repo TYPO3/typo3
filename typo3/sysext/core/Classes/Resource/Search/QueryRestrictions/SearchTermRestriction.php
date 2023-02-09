@@ -108,6 +108,7 @@ class SearchTermRestriction implements QueryRestrictionInterface
                 // Assemble the search condition only if the field makes sense to be searched
                 if ($fieldType === 'text'
                     || $fieldType === 'flex'
+                    || $fieldType === 'json'
                     || $fieldType === 'email'
                     || $fieldType === 'link'
                     || $fieldType === 'color'

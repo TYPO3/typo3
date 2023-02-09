@@ -8,6 +8,14 @@ Feature: #99226 - Introduce dbType json for TCA type user
 
 See :issue:`99226`
 
+
+.. attention::
+
+    This TCA option is **no longer available**! It has been
+    :ref:`replaced <important-100088-1677950866>` by the dedicated
+    :ref:`json <feature-100088-1677965005>` TCA type. Do not use
+    this option in your installation, but use the new TCA type.
+
 Description
 ===========
 

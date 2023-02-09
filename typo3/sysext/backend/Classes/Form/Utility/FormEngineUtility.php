@@ -52,6 +52,7 @@ class FormEngineUtility
         'datetime' => ['size', 'readOnly'],
         'color' => ['size', 'readOnly'],
         'text' => ['cols', 'rows', 'wrap', 'max', 'readOnly'],
+        'json' => ['cols', 'rows', 'readOnly'],
         'check' => ['cols', 'readOnly'],
         'select' => ['size', 'autoSizeMax', 'maxitems', 'minitems', 'readOnly', 'treeConfig', 'fileFolderConfig'],
         'category' => ['size', 'maxitems', 'minitems', 'readOnly', 'treeConfig'],

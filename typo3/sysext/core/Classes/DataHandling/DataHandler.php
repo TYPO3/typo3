@@ -1502,6 +1502,7 @@ class DataHandler implements LoggerAwareInterface
             'slug' => $this->checkValueForSlug((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field, $additionalData['incomingFieldArray'] ?? []),
             'text' => $this->checkValueForText($value, $tcaFieldConf, $table, $realPid, $field),
             'group', 'folder', 'select' => $this->checkValueForGroupFolderSelect($res, $value, $tcaFieldConf, $table, $id, $status, $field),
+            'json' => $this->checkValueForJson($value, $tcaFieldConf),
             'passthrough', 'imageManipulation', 'user' => ['value' => $value],
             default => [],
         };
@@ -2266,6 +2267,42 @@ class DataHandler implements LoggerAwareInterface
         }
 
         return $res;
+    }
+
+    /**
+     * Evaluate "json" type values.
+     *
+     * @param array|string $value The value to set.
+     * @param array $tcaFieldConf Field configuration from TCA
+     * @return array The result array. The processed value (if any!) is set in the "value" key.
+     */
+    protected function checkValueForJson(array|string $value, array $tcaFieldConf): array
+    {
+        if (is_string($value)) {
+            if ($value === '') {
+                $value = [];
+            } else {
+                try {
+                    $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+                    if ($value === null) {
+                        // Unset value as it could not be decoded
+                        return [];
+                    }
+                } catch (\JsonException) {
+                    // Unset value as it is invalid
+                    return [];
+                }
+            }
+        }
+
+        if (!$this->validateValueForRequired($tcaFieldConf, $value)) {
+            // Unset value as it is required
+            return [];
+        }
+
+        return [
+            'value' => $value,
+        ];
     }
 
     /**
@@ -7701,13 +7738,10 @@ class DataHandler implements LoggerAwareInterface
                 // Traverse array of values that was inserted into the database and compare with the actually stored value:
                 $errors = [];
                 foreach ($fieldArray as $key => $value) {
-                    $tcaColumnConfig = $tcaTableColumns[$key]['config'] ?? [];
-                    $columnType = $tcaColumnConfig['type'] ?? '';
-                    $columnDbType = $tcaColumnConfig['dbType'] ?? '';
                     if (!$this->checkStoredRecords_loose || $value || $row[$key]) {
                         // @todo Check explicitly for one type is fishy. However needed to avoid array to string
                         //       conversion errors. Find a better way do handle this.
-                        if ($columnType === 'user' && $columnDbType === 'json') {
+                        if (($tcaTableColumns[$key]['config']['type'] ?? '') === 'json') {
                             // To ensure a proper comparison we need to sort the array structure based on array keys
                             // in a recursive manner. Otherwise, we would emit an error just because the ordering was
                             // different. This must be done for value and the value in the row to be safe.

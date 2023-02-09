@@ -19,6 +19,10 @@ return [
         'module' => JavaScriptModuleInstruction::create('@codemirror/lang-javascript', 'javascript')->invoke(),
         'extensions' => ['javascript'],
     ],
+    'json' => [
+        'module' => JavaScriptModuleInstruction::create('@codemirror/lang-json', 'json')->invoke(),
+        'extensions' => ['json'],
+    ],
     'php' => [
         'module' => JavaScriptModuleInstruction::create('@codemirror/lang-php', 'php')->invoke(),
         'extensions' => ['php', 'php5', 'php7', 'phps'],

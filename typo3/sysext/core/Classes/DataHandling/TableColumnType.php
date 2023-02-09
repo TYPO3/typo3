@@ -50,6 +50,7 @@ final class TableColumnType extends Enumeration
     public const COLOR = 'COLOR';
     public const NUMBER = 'NUMBER';
     public const FILE = 'FILE';
+    public const JSON = 'JSON';
 
     /**
      * @param mixed $type

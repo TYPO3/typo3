@@ -1544,17 +1544,6 @@ class BackendUtility
             GeneralUtility::callUserFunction($_funcRef, $theColConf, $referenceObject);
         }
 
-        // For database type "JSON" the value in decoded state is most likely an array. This is not compatible with
-        // the "human-readable" processing and returning promise of this method. Thus, we ensure to handle value for
-        // this field as json encoded string. This should be the best readable version of the value data.
-        if ((string)($theColConf['dbType'] ?? '') === 'json'
-            && ((is_string($value) && !str_starts_with($value, '{') && !str_starts_with($value, '['))
-                || !is_string($value))
-        ) {
-            // @todo Consider to pretty print the json value, as this would match the "human readable" goal.
-            $value = \json_encode($value);
-        }
-
         $l = '';
         $lang = static::getLanguageService();
         switch ((string)($theColConf['type'] ?? '')) {
@@ -1727,6 +1716,22 @@ class BackendUtility
                     }
                 }
                 break;
+            case 'json':
+                // For database type "JSON" the value in decoded state is most likely an array. This is not compatible with
+                // the "human-readable" processing and returning promise of this method. Thus, we ensure to handle value for
+                // this field as json encoded string. This should be the best readable version of the value data.
+                if (
+                    (
+                        is_string($value)
+                        && !str_starts_with($value, '{')
+                        && !str_starts_with($value, '[')
+                    )
+                    || !is_string($value)
+                ) {
+                    // @todo Consider to pretty print the json value, as this would match the "human readable" goal.
+                    $value = json_encode($value);
+                }
+                // no break intended.
             default:
                 if ($defaultPassthrough) {
                     $l = $value;
@@ -3461,17 +3466,14 @@ class BackendUtility
     public static function convertDatabaseRowValuesToPhp(string $table, array $row): array
     {
         $tableTca = $GLOBALS['TCA'][$table] ?? [];
-        if (!$tableTca) {
+        if (!is_array($tableTca) || $tableTca === []) {
             return $row;
         }
         $platform = static::getConnectionForTable($table)->getDatabasePlatform();
         foreach ($row as $field => $value) {
-            if (($tableTca['columns'][$field]['config']['type'] ?? '') === 'user') {
-                $dbType = $GLOBALS['TCA'][$table]['columns'][$field]['config']['dbType'] ?? '';
-                // @todo Only handle a specific dbType for now.
-                if ($dbType === 'json') {
-                    $row[$field] = Type::getType($dbType)->convertToPHPValue($value, $platform);
-                }
+            // @todo Only handle specific TCA type=json
+            if (($tableTca['columns'][$field]['config']['type'] ?? '') === 'json') {
+                $row[$field] = Type::getType('json')->convertToPHPValue($value, $platform);
             }
         }
         return $row;

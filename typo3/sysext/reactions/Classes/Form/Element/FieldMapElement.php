@@ -22,7 +22,7 @@ use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 /**
  * Creates a dynamic element to add values to table fields.
  *
- * This is rendered for config type=user, renderType=fieldMap
+ * This is rendered for config type=json, renderType=fieldMap
  *
  * @internal This is a specific hook implementation and is not considered part of the Public TYPO3 API.
  */

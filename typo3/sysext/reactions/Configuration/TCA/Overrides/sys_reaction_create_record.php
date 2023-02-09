@@ -18,10 +18,8 @@
             'description' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.fields.description',
             'displayCond' => 'FIELD:table_name:REQ:true',
             'config' => [
-                'type' => 'user',
+                'type' => 'json',
                 'renderType' => 'fieldMap',
-                'dbType' => 'json',
-                'default' => '{}',
             ],
         ],
     ]

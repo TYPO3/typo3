@@ -107,6 +107,7 @@ class NodeFactory
         'category' => Element\CategoryElement::class,
         'passthrough' => Element\PassThroughElement::class,
         'belayoutwizard' => Element\BackendLayoutWizardElement::class,
+        'json' => Element\JsonElement::class,
 
         // Default classes to enrich single elements
         'fieldControl' => NodeExpansion\FieldControl::class,

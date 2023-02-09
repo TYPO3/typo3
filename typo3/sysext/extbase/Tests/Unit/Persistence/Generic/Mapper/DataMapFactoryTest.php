@@ -463,6 +463,7 @@ class DataMapFactoryTest extends UnitTestCase
             [['type' => 'color'], TableColumnType::COLOR],
             [['type' => 'number'], TableColumnType::NUMBER],
             [['type' => 'file'], TableColumnType::FILE],
+            [['type' => 'json'], TableColumnType::JSON],
         ];
     }
 

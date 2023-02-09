@@ -2391,6 +2391,7 @@ class DatabaseRecordList
                     }
                 } elseif ($fieldType === 'input'
                     || $fieldType === 'text'
+                    || $fieldType === 'json'
                     || $fieldType === 'flex'
                     || $fieldType === 'email'
                     || $fieldType === 'link'
@@ -2435,6 +2436,7 @@ class DatabaseRecordList
                 }
                 if ($fieldType === 'input'
                     || $fieldType === 'text'
+                    || $fieldType === 'json'
                     || $fieldType === 'flex'
                     || $fieldType === 'email'
                     || $fieldType === 'link'

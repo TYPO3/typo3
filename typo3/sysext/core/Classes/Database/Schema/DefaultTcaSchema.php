@@ -422,87 +422,105 @@ class DefaultTcaSchema
                 $tables[$tablePosition]->addIndex(['t3ver_oid', 't3ver_wsid'], 't3ver_oid');
             }
 
-            // Add category fields for all tables, defining category columns (TCA type=category)
-            if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
-                foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                    if ((string)($fieldConfig['config']['type'] ?? '') !== 'category'
-                        || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                    ) {
-                        continue;
-                    }
+            // In the following, columns for TCA fields with a dedicated TCA type are
+            // added. In the unlikely case that no columns exist, we can skip the table.
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
 
-                    if (($fieldConfig['config']['relationship'] ?? '') === 'oneToMany') {
-                        $tables[$tablePosition]->addColumn(
-                            $this->quote($fieldName),
-                            'text',
-                            [
-                                'notnull' => false,
-                            ]
-                        );
-                    } else {
-                        $tables[$tablePosition]->addColumn(
-                            $this->quote($fieldName),
-                            'integer',
-                            [
-                                'default' => 0,
-                                'notnull' => true,
-                                'unsigned' => true,
-                            ]
-                        );
-                    }
+            // Add category fields for all tables, defining category columns (TCA type=category)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'category'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+
+                if (($fieldConfig['config']['relationship'] ?? '') === 'oneToMany') {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        'text',
+                        [
+                            'notnull' => false,
+                        ]
+                    );
+                } else {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        'integer',
+                        [
+                            'default' => 0,
+                            'notnull' => true,
+                            'unsigned' => true,
+                        ]
+                    );
                 }
             }
 
             // Add datetime fields for all tables, defining datetime columns (TCA type=datetime), except
             // those columns, which had already been added due to definition in "ctrl", e.g. "starttime".
-            if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
-                foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                    if ((string)($fieldConfig['config']['type'] ?? '') !== 'datetime'
-                        || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                    ) {
-                        continue;
-                    }
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'datetime'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
 
-                    if (in_array($fieldConfig['config']['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)) {
-                        $tables[$tablePosition]->addColumn(
-                            $this->quote($fieldName),
-                            $fieldConfig['config']['dbType'],
-                            [
-                                'notnull' => false,
-                            ]
-                        );
-                    } else {
-                        $tables[$tablePosition]->addColumn(
-                            $this->quote($fieldName),
-                            'integer',
-                            [
-                                'default' => 0,
-                                'notnull' => !($fieldConfig['config']['nullable'] ?? false),
-                                'unsigned' => false,
-                            ]
-                        );
-                    }
+                if (in_array($fieldConfig['config']['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)) {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        $fieldConfig['config']['dbType'],
+                        [
+                            'notnull' => false,
+                        ]
+                    );
+                } else {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        'integer',
+                        [
+                            'default' => 0,
+                            'notnull' => !($fieldConfig['config']['nullable'] ?? false),
+                            'unsigned' => false,
+                        ]
+                    );
                 }
             }
 
             // Add slug fields for all tables, defining slug columns (TCA type=slug)
-            if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
-                foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                    if ((string)($fieldConfig['config']['type'] ?? '') !== 'slug'
-                        || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                    ) {
-                        continue;
-                    }
-
-                    $tables[$tablePosition]->addColumn(
-                        $this->quote($fieldName),
-                        'string',
-                        [
-                            'length' => 2048,
-                            'notnull' => false,
-                        ]
-                    );
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'slug'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
                 }
+
+                $tables[$tablePosition]->addColumn(
+                    $this->quote($fieldName),
+                    'string',
+                    [
+                        'length' => 2048,
+                        'notnull' => false,
+                    ]
+                );
+            }
+
+            // Add json fields for all tables, defining json columns (TCA type=json)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'json'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+
+                $tables[$tablePosition]->addColumn(
+                    $this->quote($fieldName),
+                    'json',
+                    [
+                        'default' => '[]',
+                        'notnull' => true,
+                    ]
+                );
             }
         }
 

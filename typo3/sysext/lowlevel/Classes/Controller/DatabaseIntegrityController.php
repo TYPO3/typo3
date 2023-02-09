@@ -928,6 +928,7 @@ class DatabaseIntegrityController
                     case 'link':
                     case 'password':
                     case 'color':
+                    case 'json':
                     default:
                         $fields['type'] = 'text';
                 }
@@ -2264,6 +2265,7 @@ class DatabaseIntegrityController
                         case 'link':
                         case 'password':
                         case 'color':
+                        case 'json':
                         default:
                             $this->fields[$fieldName]['type'] = 'text';
                     }

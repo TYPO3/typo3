@@ -1059,6 +1059,42 @@ class DataHandlerTest extends UnitTestCase
         self::assertSame($expectedResult, $this->subject->_call('checkValueForInput', null, ['type' => 'input', 'max' => 40], 'tt_content', 'NEW55c0e67f8f4d32.04974534', 89, 'table_caption'));
     }
 
+    public function checkValueForJsonDataProvider(): \Generator
+    {
+        yield 'Converts empty string to array' => [
+            '',
+            ['value' => []],
+        ];
+        yield 'Handles invalid JSON' => [
+            '_-invalid-_',
+            [],
+        ];
+        yield 'Decodes JSON' => [
+            '{"foo":"bar"}',
+            ['value' => ['foo' => 'bar']],
+        ];
+        yield 'Array is not decoded' => [
+            ['foo' => 'bar'],
+            ['value' => ['foo' => 'bar']],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider checkValueForJsonDataProvider
+     */
+    public function checkValueForJson(string|array $input, array $expected): void
+    {
+        self::assertSame(
+            $expected,
+            $this->subject->_call(
+                'checkValueForJson',
+                $input,
+                ['type' => 'json']
+            )
+        );
+    }
+
     /**
      * @test
      * @dataProvider referenceValuesAreCastedDataProvider

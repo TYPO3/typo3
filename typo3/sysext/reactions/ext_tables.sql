@@ -9,7 +9,6 @@ CREATE TABLE sys_reaction (
 	impersonate_user int(11) unsigned DEFAULT '0' NOT NULL,
 	table_name varchar(255) DEFAULT '' NOT NULL,
 	storage_pid int(11) unsigned DEFAULT '0' NOT NULL,
-	fields json NOT NULL,
 
 	UNIQUE identifier_key (identifier),
 	KEY index_source (reaction_type(5))

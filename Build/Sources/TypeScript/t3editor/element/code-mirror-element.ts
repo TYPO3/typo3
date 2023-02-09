@@ -13,7 +13,16 @@
 
 import {LitElement, html, css} from 'lit';
 import {customElement, property, state} from 'lit/decorators';
-import {EditorView, ViewUpdate, lineNumbers, highlightSpecialChars, drawSelection, keymap, KeyBinding} from '@codemirror/view';
+import {
+  EditorView,
+  ViewUpdate,
+  lineNumbers,
+  highlightSpecialChars,
+  drawSelection,
+  keymap,
+  KeyBinding,
+  placeholder
+} from '@codemirror/view';
 import {Extension, EditorState} from '@codemirror/state';
 import {syntaxHighlighting, defaultHighlightStyle} from '@codemirror/language';
 import {defaultKeymap,  indentWithTab} from '@codemirror/commands';
@@ -47,6 +56,7 @@ export class CodeMirrorElement extends LitElement {
   @property({type: Boolean, reflect: true}) fullscreen: boolean = false;
 
   @property({type: String}) label: string;
+  @property({type: String}) placeholder: string;
   @property({type: String}) panel: string = 'bottom';
 
   @state() editorView: EditorView = null;
@@ -183,6 +193,10 @@ export class CodeMirrorElement extends LitElement {
 
     if (this.readonly) {
       extensions.push(EditorState.readOnly.of(true));
+    }
+
+    if (this.placeholder) {
+      extensions.push(placeholder(this.placeholder));
     }
 
     if (this.mode) {
