@@ -236,8 +236,8 @@ class RequestHandler implements RequestHandlerInterface
         }
         $htmlTagAttributes = [];
 
-        if ($siteLanguage->getDirection()) {
-            $htmlTagAttributes['dir'] = htmlspecialchars($siteLanguage->getDirection());
+        if ($siteLanguage->getLocale()->isRightToLeftLanguageDirection()) {
+            $htmlTagAttributes['dir'] = 'rtl';
         }
         $docType = $pageRenderer->getDocType();
         // Setting document type:

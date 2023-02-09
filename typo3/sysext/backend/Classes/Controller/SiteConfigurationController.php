@@ -831,6 +831,9 @@ class SiteConfigurationController
             if (isset($languageConfiguration['hreflang'])) {
                 $existingLanguagesWithLegacyProperties[$languageConfiguration['languageId']]['hreflang'] = $languageConfiguration['hreflang'];
             }
+            if (isset($languageConfiguration['direction'])) {
+                $existingLanguagesWithLegacyProperties[$languageConfiguration['languageId']]['direction'] = $languageConfiguration['direction'];
+            }
         }
         foreach ($newSysSiteData['languages'] ?? [] as $key => $languageConfiguration) {
             $languageId = $languageConfiguration['languageId'];

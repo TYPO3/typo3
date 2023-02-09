@@ -216,19 +216,6 @@ class RichTextElement extends AbstractFormElement
     }
 
     /**
-     * Determine the language direction
-     */
-    protected function getLanguageDirectionOfContent(): string
-    {
-        $currentLanguageUid = ($this->data['databaseRow']['sys_language_uid'] ?? 0);
-        if (is_array($currentLanguageUid)) {
-            $currentLanguageUid = $currentLanguageUid[0];
-        }
-        $contentLanguageUid = (int)max($currentLanguageUid, 0);
-        return $this->data['systemLanguageRows'][$contentLanguageUid]['direction'] ?? '';
-    }
-
-    /**
      * @return array{options: array, externalPlugins: array}
      */
     protected function resolveCkEditorConfiguration(): array
@@ -381,7 +368,6 @@ class RichTextElement extends AbstractFormElement
             ];
         }
         $configuration['language']['content'] = $this->getLanguageIsoCodeOfContent();
-        //$configuration['contentsLangDirection'] = $this->getLanguageDirectionOfContent();
 
         // Replace all label references
         $configuration = $this->replaceLanguageFileReferences($configuration);

@@ -127,7 +127,6 @@ trait SiteBasedTestTrait
             'navigationTitle' => $preset['title'],
             'base' => $base,
             'locale' => $preset['locale'],
-            'direction' => $preset['direction'] ?? '',
             'flag' => $preset['iso'] ?? '',
             'fallbackType' => $fallbackType ?? (empty($fallbackIdentifiers) ? 'strict' : 'fallback'),
         ];

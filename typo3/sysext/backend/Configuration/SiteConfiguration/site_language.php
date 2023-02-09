@@ -45,6 +45,7 @@ return [
                 'type' => 'input',
                 'required' => true,
                 'eval' => 'trim',
+                'size' => 15,
                 'default' => '/',
                 'placeholder' => '/',
             ],
@@ -79,19 +80,6 @@ return [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
                 'default' => 1,
-            ],
-        ],
-        'direction' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.direction',
-            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_language.direction',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.direction.none', '', ''],
-                    ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.direction.leftToRight', 'ltr', ''],
-                    ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.direction.rightToLeft', 'rtl', ''],
-                ],
             ],
         ],
         'flag' => [
@@ -407,12 +395,12 @@ return [
     ],
     'types' => [
         '1' => [
-            'showitem' => '--palette--;;default, locale, --palette--;;rendering-related, flag, --palette--;;languageIdPalette',
+            'showitem' => '--palette--;;default, --palette--;;rendering-related, flag, --palette--;;languageIdPalette',
         ],
     ],
     'palettes' => [
         'default' => [
-            'showitem' => 'title, enabled, --linebreak--, base',
+            'showitem' => 'title, enabled, --linebreak--, locale, base',
         ],
         'languageIdPalette' => [
             'showitem' => 'languageId',
@@ -420,7 +408,7 @@ return [
         ],
         'rendering-related' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.palette.frontend',
-            'showitem' => 'websiteTitle, --linebreak--, navigationTitle, direction, --linebreak--, fallbackType, --linebreak--, fallbacks',
+            'showitem' => 'websiteTitle, navigationTitle, --linebreak--, fallbackType, --linebreak--, fallbacks',
         ],
     ],
 ];

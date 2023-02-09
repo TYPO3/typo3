@@ -98,9 +98,6 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
                     if ($language->getNavigationTitle() !== '') {
                         $defaultDatabaseRow['navigationTitle'] = $language->getNavigationTitle();
                     }
-                    if ($language->getDirection() !== '') {
-                        $defaultDatabaseRow['direction'] = $language->getDirection();
-                    }
                     if (str_starts_with($language->getFlagIdentifier(), 'flags-')) {
                         $flagIdentifier = str_replace('flags-', '', $language->getFlagIdentifier());
                         $defaultDatabaseRow['flag'] = ($flagIdentifier === 'multiple') ? 'global' : $flagIdentifier;

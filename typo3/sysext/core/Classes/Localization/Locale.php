@@ -34,6 +34,25 @@ class Locale implements \Stringable
     protected ?string $countryCode = null;
     protected ?string $codeSet = null;
 
+    // taken from https://meta.wikimedia.org/wiki/Template:List_of_language_names_ordered_by_code
+    protected const RIGHT_TO_LEFT_LANGUAGE_CODES = [
+        'ar', // Arabic
+        'arc', // Aramaic
+        'arz', // Egyptian Arabic
+        'ckb', // Kurdish (Sorani)
+        'dv', // Divehi
+        'fa', // Persian
+        'ha', // Hausa
+        'he', // Hebrew
+        'khw', // Khowar
+        'ks', // Kashmiri
+        'ps', // Pashto
+        'sd', // Sindhi
+        'ur', // Urdu
+        'uz-AF', // Uzbeki Afghanistan
+        'yi', // Yiddish
+    ];
+
     /**
      * List of language dependencies for an actual language. This setting is used for local variants of a language
      * that depend on their "main" language, like Brazilian Portuguese or Canadian French.
@@ -84,6 +103,11 @@ class Locale implements \Stringable
     public function getLanguageCode(): string
     {
         return $this->languageCode;
+    }
+
+    public function isRightToLeftLanguageDirection(): bool
+    {
+        return in_array($this->languageCode, self::RIGHT_TO_LEFT_LANGUAGE_CODES, true) || in_array($this->locale, self::RIGHT_TO_LEFT_LANGUAGE_CODES, true);
     }
 
     public function getLanguageScriptCode(): ?string

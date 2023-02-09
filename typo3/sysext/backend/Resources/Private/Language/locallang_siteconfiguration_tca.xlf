@@ -81,18 +81,6 @@
 			<trans-unit id="site_language.enabled" resname="site_language.enabled">
 				<source>Visible in Frontend</source>
 			</trans-unit>
-			<trans-unit id="site_language.direction" resname="site_language.direction">
-				<source>Direction</source>
-			</trans-unit>
-			<trans-unit id="site_language.direction.none" resname="site_language.direction.none">
-				<source>None</source>
-			</trans-unit>
-			<trans-unit id="site_language.direction.leftToRight" resname="site_language.direction.leftToRight">
-				<source>Left to Right</source>
-			</trans-unit>
-			<trans-unit id="site_language.direction.rightToLeft" resname="site_language.direction.rightToLeft">
-				<source>Right to Left</source>
-			</trans-unit>
 			<trans-unit id="site_language.flag" resname="site_language.flag">
 				<source>Flag icon</source>
 			</trans-unit>

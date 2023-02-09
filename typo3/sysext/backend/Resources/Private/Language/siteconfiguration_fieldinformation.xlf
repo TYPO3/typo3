@@ -30,9 +30,6 @@
 			<trans-unit id="site_language.navigationTitle" resname="site_language.navigationTitle">
 				<source>Used within language-related menus</source>
 			</trans-unit>
-			<trans-unit id="site_language.direction" resname="site_language.direction">
-				<source>Language direction for "dir" attribute</source>
-			</trans-unit>
 			<trans-unit id="site_errorhandling.errorCode" resname="site_errorhandling.errorCode">
 				<source>Make sure to have at least 0 (not defined otherwise) configured in order to serve helpful error messages to your visitors.</source>
 			</trans-unit>

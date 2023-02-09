@@ -5505,4 +5505,11 @@ return [
             'Deprecation-99908-SiteLanguageHreflangSetting.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Site\Entity\SiteLanguage->getDirection' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-99916-SiteLanguageDirectionSetting.rst',
+        ],
+    ],
 ];

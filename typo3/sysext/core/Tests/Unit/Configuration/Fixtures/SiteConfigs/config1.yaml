@@ -16,7 +16,6 @@ languages:
     languageId: '0'
     base: /en
     locale: en_US.utf8
-    direction: ''
     flag: bv
     navigationTitle: English
   -
@@ -25,7 +24,6 @@ languages:
     languageId: '1'
     base: /da
     locale: da_DK.utf8
-    direction: ''
     flag: da
     navigationTitle: Dansk
 rootPageId: 1

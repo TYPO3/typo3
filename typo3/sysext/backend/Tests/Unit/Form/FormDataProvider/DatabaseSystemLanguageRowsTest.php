@@ -51,19 +51,19 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
             -1,
             '',
             new Uri('/'),
-            ['title' => 'All', 'flag' => 'flags-multiple', 'direction' => '']
+            ['title' => 'All', 'flag' => 'flags-multiple']
         );
         $siteLanguageZero = new SiteLanguage(
             0,
             'en',
             new Uri('/en/'),
-            ['title' => 'English', 'flag' => 'empty-empty', 'direction' => 'ltr']
+            ['title' => 'English', 'flag' => 'empty-empty']
         );
         $siteLanguageOne = new SiteLanguage(
             1,
             'nl_NL',
             new Uri('/nl/'),
-            ['title' => 'Dutch', 'flag' => 'flag-nl', 'direction' => 'rtl']
+            ['title' => 'Dutch', 'flag' => 'flag-nl']
         );
         $siteLanguages = [
             $siteLanguageMinusOne,
@@ -83,21 +83,18 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
                     'title' => 'All',
                     'iso' => 'DEF',
                     'flagIconIdentifier' => 'flags-multiple',
-                    'direction' => '',
                 ],
                 0 => [
                     'uid' => 0,
                     'title' => 'English',
                     'iso' => 'DEF',
                     'flagIconIdentifier' => 'empty-empty',
-                    'direction' => 'ltr',
                 ],
                 1 => [
                     'uid' => 1,
                     'title' => 'Dutch',
                     'iso' => 'nl',
                     'flagIconIdentifier' => 'flag-nl',
-                    'direction' => 'rtl',
                 ],
             ],
         ];

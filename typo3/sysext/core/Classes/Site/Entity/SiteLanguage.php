@@ -86,6 +86,7 @@ class SiteLanguage
 
     /**
      * The direction for this language
+     * @deprecated in favor of $this->locale->isRightToLeftLanguageDirection()
      * @var string
      */
     protected $direction = '';
@@ -193,7 +194,7 @@ class SiteLanguage
             // @deprecated will be removed in TYPO3 v13.0
             'twoLetterIsoCode' => $this->twoLetterIsoCode ?: $this->locale->getLanguageCode(),
             'hreflang' => $this->hreflang ?: $this->locale->getName(),
-            'direction' => $this->getDirection(),
+            'direction' => $this->direction ?: ($this->locale->isRightToLeftLanguageDirection() ? 'rtl' : ''),
             'typo3Language' => $this->getTypo3Language(),
             'flagIdentifier' => $this->getFlagIdentifier(),
             'fallbackType' => $this->getFallbackType(),
@@ -283,9 +284,11 @@ class SiteLanguage
 
     /**
      * Returns the language direction
+     * @deprecated in favor of $this->locale->isRightToLeftLanguageDirection()
      */
     public function getDirection(): string
     {
+        trigger_error('SiteLanguage->getDirection() will be removed in TYPO3 v13.0. Use SiteLanguage->getLocale()->isRightToLeftLanguageDirection() instead.', E_USER_DEPRECATED);
         return $this->direction;
     }
 

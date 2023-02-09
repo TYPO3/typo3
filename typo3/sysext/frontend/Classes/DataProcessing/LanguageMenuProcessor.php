@@ -489,6 +489,8 @@ class LanguageMenuProcessor implements DataProcessorInterface
                 default:
                     $contents = $localeObject->getName();
             }
+        } elseif ($fieldValue === 'direction') {
+            $contents = $languageObject->getLocale()->isRightToLeftLanguageDirection() ? 'rtl' : 'ltr';
         } elseif (isset($language[$fieldValue])) {
             $contents = $language[$fieldValue];
         } else {

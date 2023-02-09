@@ -59,7 +59,6 @@ class SlugServiceTest extends FunctionalTestCase
             'base' => '/en/',
             'locale' => 'en_US.UTF-8',
             'navigationTitle' => 'English',
-            'direction' => 'ltr',
             'flag' => 'us',
         ],
         [
@@ -69,7 +68,6 @@ class SlugServiceTest extends FunctionalTestCase
             'base' => 'https://de.example.com/',
             'locale' => 'de_DE.UTF-8',
             'navigationTitle' => 'German',
-            'direction' => 'ltr',
             'flag' => 'de',
         ],
         [
@@ -79,7 +77,6 @@ class SlugServiceTest extends FunctionalTestCase
             'base' => '/es/',
             'locale' => 'es_ES.UTF-8',
             'navigationTitle' => 'Spanish',
-            'direction' => 'ltr',
             'flag' => 'es',
         ],
     ];
