@@ -1074,7 +1074,7 @@ class GeneralUtility
             if ($firstChar === '"' || $firstChar === '\'') {
                 $reg = explode($firstChar, $tag_tmp, 3);
                 $value[] = $reg[1];
-                $tag_tmp = trim($reg[2]);
+                $tag_tmp = trim($reg[2] ?? '');
             } elseif ($firstChar === '=') {
                 $value[] = '=';
                 // Removes = chars.
