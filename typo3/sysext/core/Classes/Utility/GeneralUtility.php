@@ -746,7 +746,7 @@ class GeneralUtility
      * @param string $delimiter Delimiter string to explode with
      * @param string $string The string to explode
      * @param bool $removeEmptyValues If set, all empty values (='') will NOT be set in output
-     * @return array<int, int> Exploded values, all converted to integers
+     * @return list<int> Exploded values, all converted to integers
      */
     public static function intExplode(string $delimiter, string $string, bool $removeEmptyValues = false): array
     {
@@ -761,7 +761,7 @@ class GeneralUtility
         unset($value);
 
         /** @var array<int, int> $result */
-        return $result;
+        return array_values($result);
     }
 
     /**
