@@ -44,6 +44,7 @@ return [
         ],
         'moduleData' => [
             'clipBoard' => true,
+            'searchBox' => false,
             'collapsedTables' => [],
         ],
     ],

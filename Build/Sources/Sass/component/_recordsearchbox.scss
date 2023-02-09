@@ -1,0 +1,10 @@
+//
+// Record Search Box
+//
+.recordsearchbox-container {
+    margin-bottom: var(--typo3-spacing);
+
+    [data-recordsearchbox-levels] {
+        max-width: 140px;
+    }
+}

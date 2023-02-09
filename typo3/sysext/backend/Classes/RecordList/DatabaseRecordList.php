@@ -2592,7 +2592,7 @@ class DatabaseRecordList
 
     /**
      * Creates the URL to this script, including all relevant GPvars
-     * Fixed GPvars are id, table, returnUrl, search_field, and search_levels
+     * Fixed GPvars are id, table, returnUrl, searchTerm, and search_levels
      * The GPvars "sortField" and "sortRev" are also included UNLESS they are found in the $exclList variable.
      *
      * @param string $altId Alternative id value. Enter blank string for the current id ($this->id)
@@ -2616,8 +2616,8 @@ class DatabaseRecordList
         if ($this->returnUrl) {
             $urlParameters['returnUrl'] = $this->returnUrl;
         }
-        if ((!$exclList || !GeneralUtility::inList($exclList, 'search_field')) && $this->searchString) {
-            $urlParameters['search_field'] = $this->searchString;
+        if ((!$exclList || !GeneralUtility::inList($exclList, 'searchTerm')) && $this->searchString) {
+            $urlParameters['searchTerm'] = $this->searchString;
         }
         if ($this->searchLevels) {
             $urlParameters['search_levels'] = $this->searchLevels;

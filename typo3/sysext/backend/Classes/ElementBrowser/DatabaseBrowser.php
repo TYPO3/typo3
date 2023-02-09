@@ -200,7 +200,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         }
 
         $selectedTable = (string)($request->getParsedBody()['table'] ?? $request->getQueryParams()['table'] ?? '');
-        $searchWord = (string)($request->getParsedBody()['search_field'] ?? $request->getQueryParams()['search_field'] ?? '');
+        $searchWord = (string)($request->getParsedBody()['searchTerm'] ?? $request->getQueryParams()['searchTerm'] ?? '');
         $searchLevels = (int)($request->getParsedBody()['search_levels'] ?? $request->getQueryParams()['search_levels'] ?? 0);
         $pointer = (int)($request->getParsedBody()['pointer'] ?? $request->getQueryParams()['pointer'] ?? 0);
 
@@ -225,12 +225,11 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
 
     protected function renderSearchBox(ServerRequestInterface $request, ElementBrowserRecordList $dblist, string $searchWord, int $searchLevels): string
     {
-        $searchBox = GeneralUtility::makeInstance(RecordSearchBoxComponent::class)
+        return GeneralUtility::makeInstance(RecordSearchBoxComponent::class)
             ->setAllowedSearchLevels((array)($this->modTSconfig['searchLevel.']['items.'] ?? []))
             ->setSearchWord($searchWord)
             ->setSearchLevel($searchLevels)
-            ->render($request, $dblist->listURL('', '-1', 'pointer,search_field'));
-        return '<div class="pt-2">' . $searchBox . '</div>';
+            ->render($request, $dblist->listURL('', '-1', 'pointer,searchTerm'));
     }
 
     /**

@@ -36,31 +36,11 @@
     </typo3-backend-editable-page-title>
 
     <f:format.raw>{additionalContentTop}</f:format.raw>
-
-    <div class="row">
-        <f:format.raw>{languageSelectorHtml}</f:format.raw>
-        <f:format.raw>{searchBoxHtml}</f:format.raw>
-    </div>
-
+    <f:format.raw>{languageSelectorHtml}</f:format.raw>
+    <f:format.raw>{searchBoxHtml}</f:format.raw>
     <f:format.raw>{pageTranslationsHtml}</f:format.raw>
-
     <f:format.raw>{tableListHtml}</f:format.raw>
-
-    <f:if condition="{displayToggleClipboard}">
-        <div class="mb-3">
-            <div class="form-check form-switch">
-                <input type="checkbox" class="form-check-input" name="{toggleClipboardName}" value="1" data-global-event="change"
-                        data-action-navigate="$data=~s/$value/" data-empty-value="0" {toggleClipboardChecked} id="{toggleClipboardId}"
-                        data-navigate-value="{toggleClipboardFormUrl}"
-                >
-                <label class="form-check-label" for="{toggleClipboardId}">
-                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showClipBoard" />
-                </label>
-            </div>
-        </div>
-    </f:if>
     <f:format.raw>{clipboardHtml}</f:format.raw>
-
     <f:format.raw>{additionalContentBottom}</f:format.raw>
 </f:section>
 

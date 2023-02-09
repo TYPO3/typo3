@@ -15,7 +15,7 @@ import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 
 enum Selectors {
-  searchFieldSelector = '#search_field',
+  searchFieldSelector = '#recordsearchbox-searchterm',
 }
 
 /**

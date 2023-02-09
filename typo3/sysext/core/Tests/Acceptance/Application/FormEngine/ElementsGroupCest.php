@@ -139,12 +139,12 @@ final class ElementsGroupCest
         $I->switchToIFrame('modal_frame');
 
         $I->amGoingTo('search record foo in DB-Browser');
-        $I->fillField('#search_field', 'foo');
+        $I->fillField('#recordsearchbox-searchterm', 'foo');
         $I->click('button[name="search"]');
         $I->waitForElementNotVisible('.recordlist');
 
         $I->amGoingTo('search record admin in DB-Browser');
-        $I->fillField('#search_field', 'admin');
+        $I->fillField('#recordsearchbox-searchterm', 'admin');
         $I->click('button[name="search"]');
         $I->waitForElement('.recordlist');
         $I->see('admin', '.recordlist');

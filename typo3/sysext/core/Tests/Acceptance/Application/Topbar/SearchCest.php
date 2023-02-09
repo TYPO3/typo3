@@ -82,7 +82,7 @@ final class SearchCest
         $I->switchToContentFrame();
 
         // Search word is transferred to the recordlist search form
-        $I->seeInField('#search_field', 'fileadmin');
+        $I->seeInField('#recordsearchbox-searchterm', 'fileadmin');
 
         // Correct table and element is displayed
         $I->waitForElementVisible('form[name="list-table-form-sys_file_storage"]');

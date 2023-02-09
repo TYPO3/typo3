@@ -123,7 +123,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     {
         parent::initVariables();
         $this->expandFolder = $this->getRequest()->getParsedBody()['expandFolder'] ?? $this->getRequest()->getQueryParams()['expandFolder'] ?? null;
-        $this->searchWord = $this->getRequest()->getParsedBody()['search_field'] ?? $this->getRequest()->getQueryParams()['search_field'] ?? '';
+        $this->searchWord = $this->getRequest()->getParsedBody()['searchTerm'] ?? $this->getRequest()->getQueryParams()['searchTerm'] ?? '';
     }
 
     /**

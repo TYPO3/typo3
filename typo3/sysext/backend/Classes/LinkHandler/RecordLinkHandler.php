@@ -240,7 +240,7 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
         $permsClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
         $pageInfo = BackendUtility::readPageAccess($selectedPage, $permsClause);
         $selectedTable = (string)($request->getParsedBody()['table'] ?? $request->getQueryParams()['table'] ?? '');
-        $searchWord = (string)($request->getParsedBody()['search_field'] ?? $request->getQueryParams()['search_field'] ?? '');
+        $searchWord = (string)($request->getParsedBody()['searchTerm'] ?? $request->getQueryParams()['searchTerm'] ?? '');
         $pointer = (int)($request->getParsedBody()['pointer'] ?? $request->getQueryParams()['pointer'] ?? 0);
 
         // If table is 'pages', add a pre-entry to make selected page selectable directly.
@@ -272,11 +272,9 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
         $dbList->start($selectedPage, $selectedTable, MathUtility::forceIntegerInRange($pointer, 0, 100000), $searchWord);
         $dbList->setDispFields();
 
-        $searchBox = $this->recordSearchBoxComponent
+        $html[] = $this->recordSearchBoxComponent
             ->setSearchWord($searchWord)
-            ->render($request, $dbList->listURL('', '-1', 'pointer,search_field'));
-
-        $html[] = '<div class="pt-2">' . $searchBox . '</div>';
+            ->render($request, $dbList->listURL('', '-1', 'pointer,searchTerm'));
         $html[] = $dbList->generateList();
 
         return implode("\n", $html);

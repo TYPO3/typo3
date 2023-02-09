@@ -62,6 +62,6 @@ class RecordSearchBoxComponent
                 'selectedSearchLevel' => $this->searchLevel,
                 'searchString' => $this->searchWord,
             ])
-            ->render('Search');
+            ->render('RecordSearchBox');
     }
 }

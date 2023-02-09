@@ -190,6 +190,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.view.showClipboard" resname="labels.view.showClipboard">
 				<source>Show clipboard</source>
 			</trans-unit>
+			<trans-unit id="labels.view.showSearch" resname="labels.view.showSearch">
+				<source>Show search</source>
+			</trans-unit>
 			<trans-unit id="labels.view.selectColumns" resname="labels.view.selectColumns">
 				<source>Select columns</source>
 			</trans-unit>

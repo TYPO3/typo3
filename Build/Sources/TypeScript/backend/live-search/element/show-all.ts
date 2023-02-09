@@ -37,7 +37,7 @@ export class ResultItem extends LitElement {
     e.preventDefault();
 
     const searchField = (document.querySelector('typo3-backend-live-search').querySelector('input[type="search"]')) as HTMLInputElement;
-    TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=-1&search_field=' + encodeURIComponent(searchField.value));
+    TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=-1&searchTerm=' + encodeURIComponent(searchField.value));
 
     Modal.dismiss();
   }

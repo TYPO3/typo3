@@ -1,0 +1,40 @@
+<div class="recordsearchbox-container" data-recordsearchbox-container>
+    <form action="{formUrl}" method="post">
+        <div class="input-group">
+            <label for="recordsearchbox-searchterm" class="visually-hidden">
+                <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
+            </label>
+            <input
+                data-recordsearchbox-input
+                class="form-control"
+                type="search"
+                placeholder="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}"
+                title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchString')}"
+                name="searchTerm"
+                id="recordsearchbox-searchterm"
+                value="{searchString}"
+            />
+            <f:if condition="{availableSearchLevels -> f:count()} > 0">
+                <label for="search_levels" class="visually-hidden">
+                    <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.search_levels" />
+                </label>
+                <select
+                    data-recordsearchbox-levels
+                    class="form-select"
+                    name="search_levels"
+                    title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search_levels')}"
+                    id="search_levels"
+                >
+                    <f:for each="{availableSearchLevels}" as="searchLevel" key="level">
+                        <option {f:if(condition: '{level} == {selectedSearchLevel}', then: ' selected="selected"')} value="{level}">
+                        <f:translate id="LLL:{searchLevel}">{searchLevel}</f:translate>
+                        </option>
+                    </f:for>
+                </select>
+            </f:if>
+            <button data-recordsearchbox-submit class="btn btn-default" type="submit" name="search" title="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')}">
+                <core:icon identifier="actions-search" size="small" />
+            </button>
+        </div>
+    </form>
+</div>

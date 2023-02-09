@@ -780,7 +780,7 @@ class FileQueueItem {
    */
   public showFileInfo(fileInfo: UploadedFile): void {
     this.removeProgress();
-    if ((document.querySelector('#search_field') as HTMLInputElement)?.value) {
+    if ((document.querySelector('#filelist-searchterm') as HTMLInputElement)?.value) {
       // When search is active, the PATH column is always present so we add it
       $('<td />').text(fileInfo.path).appendTo(this.$row);
     }
