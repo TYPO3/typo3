@@ -10,9 +10,9 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import{html}from"lit";import LiveSearch from"@typo3/backend/toolbar/live-search.js";import"@typo3/backend/live-search/element/provider/page-provider-result-item.js";import windowManager from"@typo3/backend/window-manager.js";export function registerRenderer(e){LiveSearch.addRenderer(e,(e=>html`<typo3-backend-live-search-result-item-page-provider
-      .icon="${e.icon}"
-      .itemTitle="${e.itemTitle}"
-      .typeLabel="${e.typeLabel}"
-      .extraData="${e.extraData}">
-    </typo3-backend-live-search-result-item-page-provider>`)),LiveSearch.addInvokeHandler(e,"preview_page",((e,r)=>{windowManager.localOpen(r.url,!0)}))}
+import LiveSearchConfigurator from"@typo3/backend/live-search/live-search-configurator.js";import{html}from"lit";import windowManager from"@typo3/backend/window-manager.js";export function registerRenderer(e){LiveSearchConfigurator.addRenderer(e,"@typo3/backend/live-search/element/provider/page-provider-result-item.js",(e=>html`<typo3-backend-live-search-result-item-page-provider
+        .icon="${e.icon}"
+        .itemTitle="${e.itemTitle}"
+        .typeLabel="${e.typeLabel}"
+        .extraData="${e.extraData}">
+      </typo3-backend-live-search-result-item-page-provider>`)),LiveSearchConfigurator.addInvokeHandler(e,"preview_page",((e,r)=>{windowManager.localOpen(r.url,!0)}))}

@@ -45,8 +45,6 @@ interface SearchOption {
  * @exports @typo3/backend/toolbar/live-search
  */
 class LiveSearch {
-  private renderers: { [key: string]: Function } = {};
-  private invokeHandlers: { [key: string]: Function } = {};
   private searchTerm: string = '';
   private searchOptions: { [key: string]: string[] } = {};
 
@@ -54,14 +52,6 @@ class LiveSearch {
     DocumentService.ready().then((): void => {
       this.registerEvents();
     });
-  }
-
-  public addRenderer(type: string, callback: Function): void {
-    this.renderers[type] = callback;
-  }
-
-  public addInvokeHandler(type: string, action: string, callback: Function): void {
-    this.invokeHandlers[type + '_' + action] = callback;
   }
 
   private registerEvents(): void {
@@ -185,8 +175,6 @@ class LiveSearch {
     searchAllButton.parentElement.hidden = searchResults === null || searchResults.length === 0;
 
     const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container') as ResultContainer;
-    searchResultContainer.renderers = this.renderers;
-    searchResultContainer.invokeHandlers = this.invokeHandlers;
 
     searchResultContainer.results = searchResults;
     searchResultContainer.loading = false;

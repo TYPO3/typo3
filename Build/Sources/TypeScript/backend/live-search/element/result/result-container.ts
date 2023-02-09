@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import LiveSearchConfigurator from '@typo3/backend/live-search/live-search-configurator';
 import {customElement, property, query} from 'lit/decorators';
 import {html, LitElement, TemplateResult} from 'lit';
 import {lll} from '@typo3/core/lit-helper';
@@ -24,20 +25,20 @@ export const componentName = 'typo3-backend-live-search-result-container';
 
 @customElement(componentName)
 export class ResultContainer extends LitElement {
-  @property({type: Object, attribute: false}) results: ResultItemInterface[]|null = null;
+  @property({type: Object}) results: ResultItemInterface[]|null = null;
   @property({type: Boolean, attribute: false}) loading: boolean = false;
-  @property({type: Object, attribute: false}) renderers: { [key: string]: Function } = {};
-  @property({type: Object, attribute: false}) invokeHandlers: { [key: string]: Function } = {};
 
   @query('typo3-backend-live-search-result-item-container') itemContainer: ItemContainer;
   @query('typo3-backend-live-search-result-item-detail-container') resultDetailContainer: ResultDetailContainer;
 
   public connectedCallback() {
     super.connectedCallback();
+
     this.addEventListener('livesearch:request-actions', (e: CustomEvent): void => {
       this.resultDetailContainer.resultItem = e.detail.resultItem;
     })
     this.addEventListener('livesearch:invoke-action', (e: CustomEvent): void => {
+      const invokeHandlers = LiveSearchConfigurator.getInvokeHandlers();
       const resultItem = e.detail.resultItem;
       const action = e.detail.action;
 
@@ -45,8 +46,8 @@ export class ResultContainer extends LitElement {
         return;
       }
 
-      if (typeof this.invokeHandlers[resultItem.provider + '_' + action.identifier] === 'function') {
-        this.invokeHandlers[resultItem.provider + '_' + action.identifier](resultItem, action);
+      if (typeof invokeHandlers[resultItem.provider + '_' + action.identifier] === 'function') {
+        invokeHandlers[resultItem.provider + '_' + action.identifier](resultItem, action);
       } else {
         // Default handler to open the URL
         TYPO3.Backend.ContentContainer.setUrl(action.url);
@@ -76,7 +77,7 @@ export class ResultContainer extends LitElement {
     }
 
     return html`
-      <typo3-backend-live-search-result-item-container .results="${this.results}" .renderers="${this.renderers}"></typo3-backend-live-search-result-item-container>
+      <typo3-backend-live-search-result-item-container .results="${this.results}"></typo3-backend-live-search-result-item-container>
       <typo3-backend-live-search-result-item-detail-container></typo3-backend-live-search-result-item-detail-container>
     `;
   }

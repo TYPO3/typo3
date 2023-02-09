@@ -11,10 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {customElement, property} from 'lit/decorators';
+import '@typo3/backend/element/spinner-element';
+import LiveSearchConfigurator from '@typo3/backend/live-search/live-search-configurator';
 import {css, html, LitElement, TemplateResult} from 'lit';
-import './item';
+import {customElement, property} from 'lit/decorators';
+import {until} from 'lit/directives/until';
 import '../../provider/default-result-item';
+import './item';
 import {Item, ResultItemActionInterface, ResultItemInterface} from './item';
 
 type GroupedResultItems = { [key: string ]: ResultItemInterface[] };
@@ -24,7 +27,6 @@ export const componentName = 'typo3-backend-live-search-result-item-container';
 @customElement(componentName)
 export class ItemContainer extends LitElement {
   @property({type: Object, attribute: false}) results: ResultItemInterface[]|null = null;
-  @property({type: Object, attribute: false}) renderers: { [key: string]: Function } = {};
 
   public connectedCallback() {
     super.connectedCallback();
@@ -60,17 +62,22 @@ export class ItemContainer extends LitElement {
     const items = [];
     for (let [type, results] of Object.entries(groupedResults)) {
       items.push(html`<h6 class="livesearch-result-item-group-label">${type}</h6>`);
-      items.push(...results.map((result: ResultItemInterface) => this.renderResultItem(result)));
+      items.push(...results.map((result: ResultItemInterface) => html`${until(
+        this.renderResultItem(result),
+        html`<typo3-backend-spinner></typo3-backend-spinner>`
+      )}`));
     }
 
     return html`${items}`
   }
 
-  private renderResultItem(resultItem: ResultItemInterface): TemplateResult {
+  private async renderResultItem(resultItem: ResultItemInterface): Promise<TemplateResult> {
+    const renderers = LiveSearchConfigurator.getRenderers();
     let innerResultItemComponent;
 
-    if (typeof this.renderers[resultItem.provider] === 'function') {
-      innerResultItemComponent = this.renderers[resultItem.provider](resultItem);
+    if (renderers[resultItem.provider] !== undefined) {
+      await import(renderers[resultItem.provider].module);
+      innerResultItemComponent = renderers[resultItem.provider].callback(resultItem);
     } else {
       innerResultItemComponent = html`<typo3-backend-live-search-result-item-default
         title="${resultItem.typeLabel}: ${resultItem.itemTitle}"
