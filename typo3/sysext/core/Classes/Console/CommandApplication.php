@@ -91,6 +91,7 @@ class CommandApplication implements ApplicationInterface
             $commandRegistry = $container->get(CommandRegistry::class);
             $this->application->setDispatcher($eventDispatcher);
             $this->application->setCommandLoader($commandRegistry);
+            $this->application->setCatchExceptions(false);
             $this->context = $container->get(Context::class);
 
             $realName = $this->resolveShortcut($commandName, $commandRegistry);
