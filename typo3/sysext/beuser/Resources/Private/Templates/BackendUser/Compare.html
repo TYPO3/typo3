@@ -190,7 +190,7 @@
                 <tr>
                     <th>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig')}</th>
                     <f:for each="{compareUserList}" as="compareData">
-                        <td>
+                        <td class="align-top">
                             <f:render partial="Compare/Information" section="tsconfig" arguments="{tsconfig:compareData.tsconfig,id:compareData.user.uid}" />
                         </td>
                     </f:for>

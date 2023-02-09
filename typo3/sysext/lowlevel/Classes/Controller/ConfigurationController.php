@@ -20,11 +20,10 @@ namespace TYPO3\CMS\Lowlevel\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Backend\View\ArrayBrowser;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderInterface;
 use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderRegistry;
 
 /**
@@ -32,102 +31,130 @@ use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderRegistry;
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
-class ConfigurationController
+final class ConfigurationController
 {
     public function __construct(
-        protected readonly ProviderRegistry $configurationProviderRegistry,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory
+        private readonly ProviderRegistry $configurationProviderRegistry,
+        private readonly UriBuilder $uriBuilder,
+        private readonly ModuleTemplateFactory $moduleTemplateFactory
     ) {
     }
 
-    /**
-     * Main controller action determines get/post values, takes care of
-     * stored backend user settings for this module, determines tree
-     * and renders it.
-     */
-    public function handleRequest(ServerRequestInterface $request): ResponseInterface
+    public function indexAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->moduleTemplateFactory->create($request);
-        $backendUser = $this->getBackendUser();
-        $queryParams = $request->getQueryParams();
-        $postValues = $request->getParsedBody();
+        $languageService = $this->getLanguageService();
+
         $moduleData = $request->getAttribute('moduleData');
-
+        $providers = $this->configurationProviderRegistry->getProviders();
         // Validate requested "tree"
-        $moduleData->clean('tree', array_keys($this->configurationProviderRegistry->getProviders()));
+        $moduleData->clean('tree', array_keys($providers));
+        $selectedProviderIdentifier = $moduleData->get('tree');
+        $selectedProvider = $this->configurationProviderRegistry->getProvider($selectedProviderIdentifier);
+        $selectedProviderLabel = $selectedProvider->getLabel();
+        $selectedProviderLabelHash = hash('xxh3', $selectedProviderLabel);
+        $configurationArray = $selectedProvider->getConfiguration();
 
-        $configurationProviderIdentifier = $moduleData->get('tree');
-        $configurationProvider = $this->configurationProviderRegistry->getProvider($configurationProviderIdentifier);
-        $configurationArray = $configurationProvider->getConfiguration();
-
-        // Search string given or regex search enabled?
-        $searchString = trim((string)($postValues['searchString'] ?? ''));
-
-        // Prepare array renderer class, apply search and expand / collapse states
-        $arrayBrowser = GeneralUtility::makeInstance(ArrayBrowser::class, $request->getAttribute('route'));
-        $arrayBrowser->regexMode = (bool)$moduleData->get('regexSearch');
-        $node = $queryParams['node'] ?? null;
-        if ($searchString) {
-            $arrayBrowser->depthKeys = $arrayBrowser->getSearchKeys($configurationArray, '', $searchString, []);
-        } elseif (is_array($node)) {
-            $newExpandCollapse = $arrayBrowser->depthKeys($node, $moduleData->get('node_' . $configurationProviderIdentifier, []));
-            $arrayBrowser->depthKeys = $newExpandCollapse;
-            $moduleData->set('node_' . $configurationProviderIdentifier, $newExpandCollapse);
-        } else {
-            $arrayBrowser->depthKeys = $moduleData->get('node_' . $configurationProviderIdentifier, []);
-        }
-
-        // Store new moduleData state
-        $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
-
+        $view = $this->moduleTemplateFactory->create($request);
+        $view->setTitle($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang:module.configuration.title'), $selectedProviderLabel);
+        $this->addProviderDropDownToDocHeader($view, $providers, $selectedProvider);
+        $this->addShortcutButtonToDocHeader($view, $selectedProvider, $selectedProviderIdentifier);
         $view->assignMultiple([
-            'treeName' => $configurationProvider->getLabel(),
-            'searchString' => $searchString,
-            'regexSearch' => (bool)$moduleData->get('regexSearch'),
-            'tree' => $arrayBrowser->tree($configurationArray, ''),
+            'tree' => $this->renderTree($configurationArray, $selectedProviderLabelHash),
+            'treeName' => $selectedProviderLabel,
+            'treeLabelHash' => $selectedProviderLabelHash,
         ]);
-
-        // Shortcut in doc header
-        $shortcutButton = $view->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
-        $shortcutButton
-            ->setRouteIdentifier('system_config')
-            ->setDisplayName($configurationProvider->getLabel())
-            ->setArguments(['tree' => $configurationProviderIdentifier]);
-        $view->getDocHeaderComponent()->getButtonBar()->addButton($shortcutButton);
-
-        // Main drop down in doc header
-        $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-        $menu->setIdentifier('tree');
-
-        $context = '';
-        foreach ($this->configurationProviderRegistry->getProviders() as $provider) {
-            $menuItem = $menu->makeMenuItem();
-            $menuItem
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_config', ['tree' => $provider->getIdentifier()]))
-                ->setTitle($provider->getLabel());
-            if ($configurationProvider === $provider) {
-                $menuItem->setActive(true);
-                $context = $menuItem->getTitle();
-            }
-            $menu->addMenuItem($menuItem);
-        }
-
-        $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
-        $view->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod_configuration.xlf:mlang_tabs_tab'),
-            $context
-        );
 
         return $view->renderResponse('Configuration');
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    /**
+     * We're rendering the trees directly in PHP for two reasons:
+     * * Performance of Fluid is not good enough when dealing with large trees like TCA
+     * * It's a bit hard to deal with the object details in Fluid
+     */
+    private function renderTree(array|\ArrayObject $tree, string $labelHash, string $incomingIdentifier = ''): string
     {
-        return $GLOBALS['BE_USER'];
+        if (empty($incomingIdentifier)) {
+            $html = '<ul class="list-tree text-monospace">';
+        } else {
+            $html = '<ul' .
+                ' class="list-tree text-monospace collapse"' .
+                ' data-persist-collapse-state="true"' .
+                ' data-persist-collapse-state-suffix="lowlevel-configuration-' . $labelHash . '"' .
+                ' data-persist-collapse-state-if-state="shown"' .
+                ' data-persist-collapse-state-not-if-search="true"' .
+                ' id="collapse-list-' . $incomingIdentifier . '">';
+        }
+
+        foreach ($tree as $key => $value) {
+            if ($value instanceof \BackedEnum) {
+                $value = $value->value;
+            } elseif ($value instanceof \UnitEnum) {
+                $value = $value->name;
+            } elseif (is_object($value) && !$value instanceof \Traversable) {
+                $value = (array)$value;
+            }
+            $isValueIterable = is_iterable($value);
+
+            $html .= '<li>';
+            $html .= '<span class="list-tree-group">';
+            $newIdentifier = '';
+            if ($isValueIterable && !empty($value)) {
+                $newIdentifier = hash('xxh3', $incomingIdentifier . $key);
+                $html .= '<a class="list-tree-control collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-list-' . $newIdentifier . '" aria-expanded="false">' .
+                    '<typo3-backend-icon identifier="actions-caret-right"></typo3-backend-icon>' .
+                    '<typo3-backend-icon identifier="actions-caret-down"></typo3-backend-icon>' .
+                    '</a>';
+            }
+            $html .= '<span class="list-tree-label">' . htmlspecialchars((string)$key) . '</span>';
+            if (!$isValueIterable) {
+                $html .= ' = <span class="list-tree-value">' . htmlspecialchars((string)$value) . '</span>';
+            }
+            if ($isValueIterable && empty($value)) {
+                $html .= ' =';
+            }
+            $html .= '</span>';
+            if ($isValueIterable && !empty($value)) {
+                $html .= $this->renderTree($value, $labelHash, $newIdentifier);
+            }
+            $html .= '</li>';
+        }
+
+        $html .= '</ul>';
+
+        return $html;
     }
 
-    protected function getLanguageService(): LanguageService
+    /**
+     * @param ProviderInterface[] $providers
+     */
+    private function addProviderDropDownToDocHeader(ModuleTemplate $view, array $providers, ProviderInterface $selectedProvider): void
+    {
+        $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu->setIdentifier('tree');
+        foreach ($providers as $provider) {
+            $menuItem = $menu->makeMenuItem()
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_config', ['tree' => $provider->getIdentifier()]))
+                ->setTitle($provider->getLabel());
+            if ($provider === $selectedProvider) {
+                $menuItem->setActive(true);
+            }
+            $menu->addMenuItem($menuItem);
+        }
+        $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+    }
+
+    private function addShortcutButtonToDocHeader(ModuleTemplate $view, ProviderInterface $provider, string $providerIdentifier): void
+    {
+        $shortcutButton = $view->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
+        $shortcutButton
+            ->setRouteIdentifier('system_config')
+            ->setDisplayName($provider->getLabel())
+            ->setArguments(['tree' => $providerIdentifier]);
+        $view->getDocHeaderComponent()->getButtonBar()->addButton($shortcutButton);
+    }
+
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

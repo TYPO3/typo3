@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {Collapse as BootstrapCollapse} from 'bootstrap';
 import Client from '@typo3/backend/storage/client';
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
@@ -114,24 +113,38 @@ export class CollapseStatePersister {
       const storeHiddenState = (element.dataset.persistCollapseStateIfState ?? 'hidden') === 'hidden';
       const isExpanded = element.classList.contains('show');
       if (storeExpandedState === true) {
+        // We're not using BootstrapCollapse.getOrCreateInstance() since this is too slow when
+        // dealing with many elements like with System > Configuration with TCA tree.
         if (currentStates[id] === true) {
           if (!isExpanded) {
-            BootstrapCollapse.getOrCreateInstance(element, { toggle: false }).show();
+            const toggle: HTMLElement = document.querySelector('[data-bs-target="#' + id + '"]');
+            toggle.classList.remove('collapsed');
+            toggle.setAttribute('aria-expanded', 'true');
+            element.classList.add('show');
           }
         } else {
           if (isExpanded) {
-            BootstrapCollapse.getOrCreateInstance(element, { toggle: false }).hide();
+            const toggle: HTMLElement = document.querySelector('[data-bs-target="#' + id + '"]');
+            toggle.classList.add('collapsed');
+            toggle.setAttribute('aria-expanded', 'false');
+            element.classList.remove('show');
           }
         }
       }
       if (storeHiddenState === true) {
         if (currentStates[id] === false) {
           if (isExpanded) {
-            BootstrapCollapse.getOrCreateInstance(element, { toggle: false }).hide();
+            const toggle: HTMLElement = document.querySelector('[data-bs-target="#' + id + '"]');
+            toggle.classList.add('collapsed');
+            toggle.setAttribute('aria-expanded', 'false');
+            element.classList.remove('show');
           }
         } else {
           if (!isExpanded) {
-            BootstrapCollapse.getOrCreateInstance(element, { toggle: false }).show();
+            const toggle: HTMLElement = document.querySelector('[data-bs-target="#' + id + '"]');
+            toggle.classList.remove('collapsed');
+            toggle.setAttribute('aria-expanded', 'true');
+            element.classList.add('show');
           }
         }
       }

@@ -3,9 +3,19 @@
 	<file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel">
 		<header/>
 		<body>
-			<trans-unit id="configuration" resname="configuration">
+			<trans-unit id="module.configuration.title" resname="module.configuration.title">
 				<source>Configuration</source>
 			</trans-unit>
+			<trans-unit id="module.configuration.shortDescription" resname="module.configuration.shortDescription">
+				<source>View configuration from localconf.php and tables.php</source>
+			</trans-unit>
+			<trans-unit id="module.configuration.description" resname="module.configuration.description">
+				<source>Allows you to browse the values of the $TCA array (table configuration) and $TYPO3_CONF_VARS. You cannot set any values, only browse them.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+			</trans-unit>
+			<trans-unit id="module.configuration.numberOfSearchMatches" resname="module.configuration.numberOfSearchMatches">
+				<source>%s search match(es)</source>
+			</trans-unit>
+
 			<trans-unit id="typo3ConfVars" resname="typo3ConfVars">
 				<source>$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)</source>
 			</trans-unit>
@@ -63,32 +73,19 @@
 			<trans-unit id="pagesTypes" resname="pagesTypes">
 				<source>Table permissions per page type</source>
 			</trans-unit>
-			<trans-unit id="cropLines" resname="cropLines">
-				<source>Crop lines</source>
+
+			<trans-unit id="module.dbint.title" resname="module.dbint.title">
+				<source>DB Check</source>
 			</trans-unit>
-			<trans-unit id="variable" resname="variable">
-				<source>Variable</source>
+			<trans-unit id="module.dbint.shortDescription" resname="module.dbint.shortDescription">
+				<source>Database integrity check</source>
 			</trans-unit>
-			<trans-unit id="copyPaste" resname="copyPaste">
-				<source>(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)</source>
+			<trans-unit id="module.dbint.description" resname="module.dbint.description">
+				<source>Here you can check the integrity of the database tables configured by the $TCA. For instance all records must belong to a page record. You can also get a view of the total pagetree including deleted pages. Finally you've got access to a global database search facility.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
 			</trans-unit>
-			<trans-unit id="enterSearchPhrase" resname="enterSearchPhrase">
-				<source>Enter search phrase</source>
-			</trans-unit>
+
 			<trans-unit id="search" resname="search">
 				<source>Search</source>
-			</trans-unit>
-			<trans-unit id="useRegExp" resname="useRegExp">
-				<source>Use regular expression (phrase is surrounded by slashes automatically)</source>
-			</trans-unit>
-			<trans-unit id="writeValue" resname="writeValue">
-				<source>Write value to configuration file</source>
-			</trans-unit>
-			<trans-unit id="writeMessage" resname="writeMessage">
-				<source>Following line was added to configuration file (%s): %s%s</source>
-			</trans-unit>
-			<trans-unit id="writeMessageFailed" resname="writeMessageFailed">
-				<source>Write to configuration file failed (%s)!</source>
 			</trans-unit>
 			<trans-unit id="recordStatistics" resname="recordStatistics">
 				<source>Record Statistics</source>

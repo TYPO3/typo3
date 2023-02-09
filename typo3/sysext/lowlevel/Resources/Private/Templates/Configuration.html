@@ -10,67 +10,44 @@
 
     <f:be.pageRenderer
         includeJavaScriptModules="{
-            0: '@typo3/lowlevel/configuration-view.js'
+            0: '@typo3/backend/element/icon-element.js',
+            1: '@typo3/backend/utility/collapse-state-persister.js',
+            2: '@typo3/backend/utility/collapse-state-search.js'
+        }"
+        addJsInlineLabels="{
+            'collapse-state-search.numberOfSearchMatches': 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.configuration.numberOfSearchMatches'
         }"
     />
 
     <form action="" id="ConfigurationView" method="post">
-        <h1><f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:configuration" /></h1>
+        <h1><f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.configuration.title" /></h1>
 
         <h2>{treeName}</h2>
 
-        <div id="lowlevel-config" class="row mb-3">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <button class="btn btn-default" type="submit" title="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')}">
-                        <core:icon identifier="actions-search" />
-                    </button>
-
-                    <label for="lowlevel-searchString" class="visually-hidden">
-                        <f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:enterSearchPhrase"/>
-                    </label>
-                    <input class="form-control"
-                        type="search"
-                        id="lowlevel-searchString"
-                        name="searchString"
-                        value="{searchString}"
-                        placeholder="{f:translate(key: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:enterSearchPhrase')}"
-                    />
-
-                    <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                    <div class="dropdown-menu" data-popper-placement="bottom-start">
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <div class="form-check">
-                                    <input type="hidden" name="regexSearch" value="0" />
-                                    <input type="checkbox"
-                                        class="form-check-input"
-                                        name="regexSearch"
-                                        id="lowlevel-regexSearch"
-                                        value="1"
-                                        {f:if(condition:'{regexSearch}', then: ' checked')}
-                                    />
-                                    <label for="lowlevel-regexSearch" class="form-check-label">
-                                        <f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:useRegExp" />
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="input-group justify-content-end">
-                                    <button type="submit" class="text-end btn btn-default" title="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')}">
-                                        <core:icon identifier="actions-search" />
-                                        <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.search"/>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+        <div id="lowlevel-config" class="row row-cols-auto mb-3">
+            <div class="col">
+                <form action="#">
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            class="form-control t3js-collapse-search-term"
+                            name="searchValue"
+                            id="searchValue"
+                            data-persist-collapse-search-key="collapse-search-term-lowlevel-configuration-{treeLabelHash}"
+                            value=""
+                            minlength="3"
+                            placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}"
+                        />
+                        <button type="submit" class="btn btn-default disabled"><core:icon identifier="actions-search" /></button>
                     </div>
-
-                </div>
+                </form>
+            </div>
+            <div class="col d-flex align-items-center">
+                <span class="badge badge-success hidden t3js-collapse-states-search-numberOfSearchMatches"></span>
             </div>
         </div>
 
-        <div class="nowrap">
+        <div class="nowrap t3js-collapse-states-search-tree">
             <f:format.raw>{tree}</f:format.raw>
         </div>
     </form>

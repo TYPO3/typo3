@@ -49,39 +49,14 @@ final class ConfigurationModuleProviderCest
         $I->see('HTTP Middlewares (PSR-15)', 'h2');
 
         // Tree search can be applied
-        $I->fillField('#lowlevel-searchString', '\/authentication$');
-        $I->click('#lowlevel-config button.dropdown-toggle');
-        $I->waitForElementVisible('#lowlevel-config .dropdown-menu');
-        $I->checkOption('#lowlevel-regexSearch');
-        $I->click('#lowlevel-config button[type=submit]');
-
-        // Correct tree with search options present and active results is loaded
-        $I->waitForElementVisible('#ConfigurationView');
-        $I->see('HTTP Middlewares (PSR-15)', 'h2');
-        $I->seeElement('#lowlevel-searchString', ['value' => '\/authentication$']);
-        $I->seeCheckboxIsChecked('#lowlevel-regexSearch');
-        $I->seeElement('li.active');
-    }
-
-    public function canOpenTreeNodeAndScrollTo(ApplicationTester $I): void
-    {
-        $I->selectOption('select[name=tree]', '$GLOBALS[\'TYPO3_CONF_VARS\'] (Global Configuration)');
-        $I->click('.list-tree > li:first-child .list-tree-control');
-        $I->see('checkStoredRecordsLoose', '.list-tree-group');
-        $I->see('BE', '.active > .list-tree-group');
+        $I->fillField('#searchValue', 'authentication');
+        $I->waitForText('typo3/cms-frontend/authentication');
+        $I->see('typo3/cms-frontend/authentication');
     }
 
     public function seeAllPagesInDropDown(ApplicationTester $I): void
     {
-        foreach ($this->dropDownPagesDataProvider() as $item) {
-            $I->selectOption('select[name=tree]', $item);
-            $I->see($item, 'h2');
-        }
-    }
-
-    private function dropDownPagesDataProvider(): array
-    {
-        return [
+        $itemList = [
             '$GLOBALS[\'TYPO3_CONF_VARS\'] (Global Configuration)',
             '$GLOBALS[\'TCA\'] (Table configuration array)',
             '$GLOBALS[\'T3_SERVICES\'] (Registered Services)',
@@ -98,5 +73,9 @@ final class ConfigurationModuleProviderCest
             'Event Listeners (PSR-14)',
             'MFA providers',
         ];
+        foreach ($itemList as $item) {
+            $I->selectOption('select[name=tree]', $item);
+            $I->see($item, 'h2');
+        }
     }
 }

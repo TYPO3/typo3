@@ -239,7 +239,7 @@ class DatabaseIntegrityController
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->setUpDocHeader($moduleTemplate);
 
-        $title = $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab');
+        $title = $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.dbint.title');
         switch ($this->MOD_SETTINGS['function']) {
             case 'search':
                 $moduleTemplate->setTitle($title, $languageService->getLL('fullSearch'));

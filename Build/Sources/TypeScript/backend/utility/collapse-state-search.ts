@@ -12,7 +12,6 @@
  */
 
 import Client from '@typo3/backend/storage/client';
-import {Collapse as BootstrapCollapse} from 'bootstrap';
 import '@typo3/backend/input/clearable';
 import DocumentService from '@typo3/core/document-service';
 import DebounceEvent from '@typo3/core/event/debounce-event';
@@ -125,14 +124,23 @@ class CollapseStateSearch {
 
     const allNodes = Array.from(treeContainer.querySelectorAll('.collapse')) as HTMLElement[];
     for (let node of allNodes) {
-      const isExpanded = node.classList.contains('show');
-      if (matchingCollapsibleIds.has(node.id)) {
+      const isExpanded: boolean = node.classList.contains('show');
+      const id: string = node.id;
+      if (matchingCollapsibleIds.has(id)) {
+        // We're not using BootstrapCollapse.getOrCreateInstance() since this is too slow when
+        // dealing with many elements like with System > Configuration with TCA tree.
         if (!isExpanded) {
-          BootstrapCollapse.getOrCreateInstance(node, { toggle: false }).show();
+          const toggle: HTMLElement = document.querySelector('[data-bs-target="#' + id + '"]');
+          toggle.classList.remove('collapsed');
+          toggle.setAttribute('aria-expanded', 'true');
+          node.classList.add('show');
         }
       } else {
         if (isExpanded) {
-          BootstrapCollapse.getOrCreateInstance(node, { toggle: false }).hide();
+          const toggle: HTMLElement = document.querySelector('[data-bs-target="#' + id + '"]');
+          toggle.classList.add('collapsed');
+          toggle.setAttribute('aria-expanded', 'false');
+          node.classList.remove('show');
         }
       }
     }

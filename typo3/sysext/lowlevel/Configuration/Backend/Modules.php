@@ -13,7 +13,11 @@ return [
         'workspaces' => 'live',
         'path' => '/module/system/dbint',
         'iconIdentifier' => 'module-dbint',
-        'labels' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod.xlf',
+        'labels' => [
+            'title' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.dbint.title',
+            'shortDescription' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.dbint.shortDescription',
+            'description' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.dbint.description',
+        ],
         'routes' => [
             '_default' => [
                 'target' => DatabaseIntegrityController::class . '::handleRequest',
@@ -26,15 +30,18 @@ return [
         'workspaces' => 'live',
         'path' => '/module/system/config',
         'iconIdentifier' => 'module-config',
-        'labels' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod_configuration.xlf',
+        'labels' => [
+            'title' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.configuration.title',
+            'shortDescription' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.configuration.shortDescription',
+            'description' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.configuration.description',
+        ],
         'routes' => [
             '_default' => [
-                'target' => ConfigurationController::class . '::handleRequest',
+                'target' => ConfigurationController::class . '::indexAction',
             ],
         ],
         'moduleData' => [
             'tree' => '',
-            'regexSearch' => false,
         ],
     ],
 ];

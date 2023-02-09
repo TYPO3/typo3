@@ -1,4 +1,9 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" xmlns:bu="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:bu="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers"
+>
 
 <f:section name="languages">
     <table class="table table-sm table-hover">
@@ -273,11 +278,39 @@
             </div>
             <div id="tsconfig-{id}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tsconfig-{id}-heading">
                 <div class="panel-body">
-                    <be:arrayBrowser data="{tsconfig}" />
+                    <f:render
+                        section="userTsConfigTree"
+                        arguments="{
+                            treeArray: tsconfig
+                        }"
+                    />
                 </div>
             </div>
         </div>
     </f:if>
+</f:section>
+
+<f:section name="userTsConfigTree">
+    <ul class="list-tree text-monospace">
+        <f:for each="{treeArray}" key="key" as="value">
+            <li>
+                <span class="list-tree-group">
+                    <span class="list-tree-label">{key}</span>
+                    <f:if condition="!{bu:isArray(value: value)}">
+                        = <span class="list-tree-value">{value}</span>
+                    </f:if>
+                </span>
+                <f:if condition="{bu:isArray(value: value)}">
+                    <f:render
+                        section="userTsConfigTree"
+                        arguments="{
+                            treeArray: value
+                        }"
+                    />
+                </f:if>
+            </li>
+        </f:for>
+    </ul>
 </f:section>
 
 <f:section name="yesno">
