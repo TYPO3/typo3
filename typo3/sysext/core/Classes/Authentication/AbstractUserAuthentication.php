@@ -485,7 +485,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $securityAspect = SecurityAspect::provideIn($context);
             $requestToken = $securityAspect->getReceivedRequestToken();
 
-            $event = new BeforeRequestTokenProcessedEvent($this, $requestToken);
+            $event = new BeforeRequestTokenProcessedEvent($this, $request, $requestToken);
             GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
             $requestToken = $event->getRequestToken();
 

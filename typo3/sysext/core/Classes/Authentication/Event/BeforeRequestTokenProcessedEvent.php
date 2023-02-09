@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Authentication\Event;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Security\RequestToken;
 
@@ -27,6 +28,7 @@ final class BeforeRequestTokenProcessedEvent
 {
     public function __construct(
         private AbstractUserAuthentication $user,
+        private ServerRequestInterface $request,
         private RequestToken|false|null $requestToken
     ) {
     }
@@ -34,6 +36,11 @@ final class BeforeRequestTokenProcessedEvent
     public function getUser(): AbstractUserAuthentication
     {
         return $this->user;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 
     public function getRequestToken(): RequestToken|false|null
