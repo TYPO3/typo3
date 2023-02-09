@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ed35df0229ccc6cce814cd13a676075",
+    "content-hash": "876b632dd1054e9e9bb1e0d6d32b7eda",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -9161,16 +9161,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.16.6",
+            "version": "6.16.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "5b5cd686fdbbdb891930e74c8b70c4c06a785976"
+                "reference": "1bd9e2cfa2ae90f3e69bc1f03f50c615aecd619b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/5b5cd686fdbbdb891930e74c8b70c4c06a785976",
-                "reference": "5b5cd686fdbbdb891930e74c8b70c4c06a785976",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/1bd9e2cfa2ae90f3e69bc1f03f50c615aecd619b",
+                "reference": "1bd9e2cfa2ae90f3e69bc1f03f50c615aecd619b",
                 "shasum": ""
             },
             "require": {
@@ -9187,16 +9187,16 @@
                 "typo3/cms-frontend": "10.*.*@dev || 11.*.*@dev",
                 "typo3/cms-install": "10.*.*@dev || 11.*.*@dev",
                 "typo3/cms-recordlist": "10.*.*@dev || 11.*.*@dev",
-                "typo3fluid/fluid": "^2.5|^3"
+                "typo3fluid/fluid": "^2.5"
             },
             "conflict": {
                 "doctrine/dbal": "2.13.0 || 2.13.1"
             },
             "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.4.0",
                 "phpstan/phpstan": "^1.8.0",
                 "phpstan/phpstan-phpunit": "^1.1.1",
-                "typo3/cms-workspaces": "10.*.*@dev || 11.*.*@dev",
-                "typo3/coding-standards": "^0.5.3"
+                "typo3/cms-workspaces": "10.*.*@dev || 11.*.*@dev"
             },
             "type": "library",
             "autoload": {
@@ -9231,9 +9231,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/6.16.6"
+                "source": "https://github.com/TYPO3/testing-framework/tree/6.16.7"
             },
-            "time": "2022-07-26T17:30:58+00:00"
+            "time": "2023-02-09T19:06:13+00:00"
         }
     ],
     "aliases": [],
