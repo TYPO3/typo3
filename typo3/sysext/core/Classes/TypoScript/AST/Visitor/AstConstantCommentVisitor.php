@@ -222,6 +222,7 @@ final class AstConstantCommentVisitor implements AstVisitorInterface
     {
         $languageService = $this->getLanguageService();
         $parsedCommentArray = [];
+        $commentTokenStream->reset();
         $trimmedTokenStream = new TokenStream();
         while ($token = $commentTokenStream->getNext()) {
             if ($token->getType() !== TokenType::T_BLANK) {
