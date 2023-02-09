@@ -37,7 +37,23 @@ class LocaleTest extends UnitTestCase
         self::assertNull($subject->getLanguageScriptCode());
         self::assertNull($subject->getCountryCode());
         self::assertEquals('en', $subject->getLanguageCode());
+        self::assertEquals('C', $subject->getPosixCodeSet());
+        self::assertEquals('C', $subject->posixFormatted());
         self::assertEquals('en', (string)$subject);
+
+        $subject = new Locale('de_DE.UTF-8');
+        self::assertNull($subject->getLanguageScriptCode());
+        self::assertEquals('DE', $subject->getCountryCode());
+        self::assertEquals('de', $subject->getLanguageCode());
+        self::assertEquals('de-DE', (string)$subject);
+        self::assertEquals('de_DE.UTF-8', $subject->posixFormatted());
+
+        $subject = new Locale('de_DE@euro');
+        self::assertNull($subject->getLanguageScriptCode());
+        self::assertEquals('DE', $subject->getCountryCode());
+        self::assertEquals('de', $subject->getLanguageCode());
+        self::assertEquals('de-DE', (string)$subject);
+        self::assertEquals('de_DE@euro', $subject->posixFormatted());
 
         // Also with mixed case
         $subject = new Locale('eN');

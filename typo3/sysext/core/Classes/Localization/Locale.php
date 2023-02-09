@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Localization;
 /**
  * A representation of
  *    language key (based on ISO 639-1 / ISO 639-2)
- *   - the optional four-letter script code that can follow the language code according to the Unicode ISO 15924 Registry (e.g. HANS in zh_HANS)
+ *   - the optional four-letter script code that can follow the language code according to the Unicode ISO 15924 Registry (e.g. Hans in zh_Hans)
  *   - region / country (based on ISO 3166-1)
  * separated with a "-".
  *
@@ -33,6 +33,8 @@ class Locale implements \Stringable
     protected ?string $languageScript = null;
     protected ?string $countryCode = null;
     protected ?string $codeSet = null;
+    // see https://wiki.archlinux.org/title/locale#Generating_locales
+    protected ?string $charsetModifier = null;
 
     // taken from https://meta.wikimedia.org/wiki/Template:List_of_language_names_ordered_by_code
     protected const RIGHT_TO_LEFT_LANGUAGE_CODES = [
@@ -66,9 +68,13 @@ class Locale implements \Stringable
         array $dependencies = []
     ) {
         $locale = $this->normalize($locale);
+        if (str_contains($locale, '@')) {
+            [$locale, $this->charsetModifier] = explode('@', $locale);
+        }
         if (str_contains($locale, '.')) {
             [$locale, $this->codeSet] = explode('.', $locale);
-        } elseif (strtolower($locale) === 'c') {
+        }
+        if (strtolower($locale) === 'c') {
             $this->codeSet = 'C';
             $locale = 'en';
         } elseif (strtolower($locale) === 'posix') {
@@ -129,8 +135,9 @@ class Locale implements \Stringable
      */
     public function posixFormatted(): string
     {
+        $charsetModifier = $this->charsetModifier ? '@' . $this->charsetModifier : '';
         if ($this->codeSet === 'C' || $this->codeSet === 'POSIX') {
-            return $this->codeSet;
+            return $this->codeSet . $charsetModifier;
         }
         $formatted = $this->languageCode;
         if ($this->countryCode) {
@@ -139,7 +146,15 @@ class Locale implements \Stringable
         if ($this->codeSet) {
             $formatted .= '.' . $this->codeSet;
         }
-        return $formatted;
+        return $formatted . $charsetModifier;
+    }
+
+    /**
+     * @internal
+     */
+    public function getPosixCodeSet(): ?string
+    {
+        return $this->codeSet;
     }
 
     public function getDependencies(): array
