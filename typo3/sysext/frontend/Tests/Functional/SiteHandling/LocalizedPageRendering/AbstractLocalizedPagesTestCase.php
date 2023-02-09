@@ -27,9 +27,9 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
 {
     protected const LANGUAGE_PRESETS = [
-        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
-        'DE' => ['id' => 1, 'title' => 'German', 'locale' => 'de_DE.UTF8', 'iso' => 'de', 'hrefLang' => 'de-DE', 'direction' => ''],
-        'DE-CH' => ['id' => 2, 'title' => 'Swiss German', 'locale' => 'de_CH.UTF8', 'iso' => 'de', 'hrefLang' => 'de-CH', 'direction' => ''],
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+        'DE' => ['id' => 1, 'title' => 'German', 'locale' => 'de_DE.UTF8'],
+        'DE-CH' => ['id' => 2, 'title' => 'Swiss German', 'locale' => 'de_CH.UTF8'],
     ];
 
     protected function setUpDatabaseWithYamlPayload(string $pathToYamlFile): void

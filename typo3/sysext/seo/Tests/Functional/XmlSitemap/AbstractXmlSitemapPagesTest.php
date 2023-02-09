@@ -27,9 +27,9 @@ abstract class AbstractXmlSitemapPagesTest extends AbstractTestCase
      * @var array
      */
     protected const LANGUAGE_PRESETS = [
-        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
-        'FR' => ['id' => 1, 'title' => 'French', 'locale' => 'fr_FR.UTF8', 'iso' => 'fr', 'hrefLang' => 'fr-FR', 'direction' => ''],
-        'DE' => ['id' => 2, 'title' => 'German', 'locale' => 'de_DE.UTF8', 'iso' => 'de', 'hrefLang' => 'de-DE', 'direction' => ''],
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+        'FR' => ['id' => 1, 'title' => 'French', 'locale' => 'fr_FR.UTF8'],
+        'DE' => ['id' => 2, 'title' => 'German', 'locale' => 'de_DE.UTF8'],
     ];
 
     protected array $coreExtensionsToLoad = ['seo'];

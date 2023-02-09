@@ -30,7 +30,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
     use SiteBasedTestTrait;
 
     protected const LANGUAGE_PRESETS = [
-        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
     protected $backupGlobals = true;

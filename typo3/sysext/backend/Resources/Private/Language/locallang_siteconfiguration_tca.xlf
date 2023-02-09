@@ -78,9 +78,6 @@
 			<trans-unit id="site_language.locale" resname="site_language.locale">
 				<source>Locale</source>
 			</trans-unit>
-			<trans-unit id="site_language.hreflang" resname="site_language.hreflang">
-				<source>Language Tag defined by RFC 1766 / 3066</source>
-			</trans-unit>
 			<trans-unit id="site_language.enabled" resname="site_language.enabled">
 				<source>Visible in Frontend</source>
 			</trans-unit>

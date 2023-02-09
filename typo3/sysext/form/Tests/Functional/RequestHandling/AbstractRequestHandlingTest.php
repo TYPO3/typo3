@@ -34,7 +34,7 @@ abstract class AbstractRequestHandlingTest extends FunctionalTestCase
     protected const ROOT_PAGE_BASE_URI = 'http://localhost';
 
     protected const LANGUAGE_PRESETS = [
-        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_GB.UTF8', 'iso' => 'en', 'hrefLang' => 'en-GB', 'direction' => ''],
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_GB.UTF8'],
     ];
 
     protected const MAIL_SPOOL_FOLDER = 'typo3temp/var/transient/spool/';

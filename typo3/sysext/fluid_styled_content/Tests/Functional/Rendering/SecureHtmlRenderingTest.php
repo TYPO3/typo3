@@ -32,7 +32,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
     private const TYPE_PLAIN = 'plain';
     private const TYPE_DISABLE_HTML_SANITIZE = 'disable-htmlSanitize';
     protected const LANGUAGE_PRESETS = [
-        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
     protected array $coreExtensionsToLoad = ['fluid_styled_content'];

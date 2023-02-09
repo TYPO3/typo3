@@ -34,12 +34,12 @@ class HrefLangGeneratorTest extends FunctionalTestCase
      * @var array
      */
     protected const LANGUAGE_PRESETS = [
-        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
-        'DE' => ['id' => 1, 'title' => 'German', 'locale' => 'de_DE.UTF8', 'iso' => 'de', 'hrefLang' => 'de-DE', 'direction' => ''],
-        'DE-CH' => ['id' => 2, 'title' => 'Swiss German', 'locale' => 'de_CH.UTF8', 'iso' => 'de', 'hrefLang' => 'de-CH', 'direction' => ''],
-        'NL' => ['id' => 3, 'title' => 'Dutch', 'locale' => 'nl_NL.UTF8', 'iso' => 'nl', 'hrefLang' => '', 'direction' => ''],
-        'FR' => ['id' => 4, 'title' => 'French', 'locale' => 'fr_FR.UTF8', 'iso' => 'fr', 'hrefLang' => 'fr-FR', 'direction' => ''],
-        'DK' => ['id' => 5, 'title' => 'Danish', 'locale' => 'da_DK.UTF8', 'iso' => 'da', 'hrefLang' => 'da-DK', 'direction' => ''],
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+        'DE' => ['id' => 1, 'title' => 'German', 'locale' => 'de_DE.UTF8'],
+        'DE-CH' => ['id' => 2, 'title' => 'Swiss German', 'locale' => 'de_CH.UTF8'],
+        'NL' => ['id' => 3, 'title' => 'Dutch', 'locale' => 'nl_NL.UTF8'],
+        'FR' => ['id' => 4, 'title' => 'French', 'locale' => 'fr_FR.UTF8'],
+        'DK' => ['id' => 5, 'title' => 'Danish', 'locale' => 'da_DK.UTF8'],
     ];
 
     protected function setUp(): void

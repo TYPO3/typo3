@@ -139,7 +139,6 @@ class SiteConfigurationTest extends UnitTestCase
             'languageId' => '0',
             'base' => '/en',
             'locale' => 'en_US.utf8',
-            'hreflang' => '',
             'direction' => '',
             'flag' => 'en',
             'navigationTitle' => 'English',

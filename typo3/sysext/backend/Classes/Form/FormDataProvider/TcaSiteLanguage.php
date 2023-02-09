@@ -306,9 +306,6 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
                     if ($language->getNavigationTitle() !== '') {
                         $defaultDatabaseRow['navigationTitle'] = $language->getNavigationTitle();
                     }
-                    if ($language->getHreflang() !== '') {
-                        $defaultDatabaseRow['hreflang'] = $language->getHreflang();
-                    }
                     if ($language->getDirection() !== '') {
                         $defaultDatabaseRow['direction'] = $language->getDirection();
                     }

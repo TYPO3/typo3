@@ -98,7 +98,7 @@ class SiteLanguageTest extends UnitTestCase
             'title' => 'Default',
             'websiteTitle' => '',
             'twoLetterIsoCode' => 'de',
-            'hreflang' => '',
+            'hreflang' => 'de',
             'direction' => '',
             'typo3Language' => 'de',
             'flagIdentifier' => '',

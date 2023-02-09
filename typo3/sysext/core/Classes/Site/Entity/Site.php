@@ -98,7 +98,6 @@ class Site implements SiteInterface
                 'navigationTitle' => '',
                 'flag' => 'us',
                 'locale' => 'en_US.UTF-8',
-                'hreflang' => 'en-US',
                 'direction' => '',
             ],
         ];

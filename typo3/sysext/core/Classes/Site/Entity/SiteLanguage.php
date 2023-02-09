@@ -70,7 +70,7 @@ class SiteLanguage
 
     /**
      * The iso code for this language (two letter) ISO-639-1
-     * @deprecated in favor of $this->locale
+     * @deprecated in favor of $this->locale->getLanguageCode()
      * @var string
      */
     protected $twoLetterIsoCode = '';
@@ -80,6 +80,7 @@ class SiteLanguage
      * and "hreflang" attributes
      *
      * @var string
+     * @deprecated in favor of $this->locale->getName()
      */
     protected $hreflang = '';
 
@@ -191,7 +192,7 @@ class SiteLanguage
             'navigationTitle' => $this->getNavigationTitle(),
             // @deprecated will be removed in TYPO3 v13.0
             'twoLetterIsoCode' => $this->twoLetterIsoCode ?: $this->locale->getLanguageCode(),
-            'hreflang' => $this->getHreflang(),
+            'hreflang' => $this->hreflang ?: $this->locale->getName(),
             'direction' => $this->getDirection(),
             'typo3Language' => $this->getTypo3Language(),
             'flagIdentifier' => $this->getFlagIdentifier(),
@@ -264,16 +265,20 @@ class SiteLanguage
      */
     public function getTwoLetterIsoCode(): string
     {
-        trigger_error('SiteLanguage->getTwoLetterIsoCode() will be removed in TYPO3 v13.0. User SiteLanguage->getLocale()->getLanguageCode() instead.', E_USER_DEPRECATED);
+        trigger_error('SiteLanguage->getTwoLetterIsoCode() will be removed in TYPO3 v13.0. Use SiteLanguage->getLocale()->getLanguageCode() instead.', E_USER_DEPRECATED);
         return $this->twoLetterIsoCode ?: $this->locale->getLanguageCode();
     }
 
     /**
      * Returns the RFC 1766 / 3066 language tag
+     * @deprecated not needed anymore, use $siteLanguage->getLocale()->getName() instead.
      */
-    public function getHreflang(): string
+    public function getHreflang(bool $isInternalCall = false): string
     {
-        return $this->hreflang;
+        if (!$isInternalCall) {
+            trigger_error('SiteLanguage->getHreflang() will be removed in TYPO3 v13.0. Use SiteLanguage->getLocale()->getName() instead.', E_USER_DEPRECATED);
+        }
+        return $this->hreflang ?: $this->locale->getName();
     }
 
     /**

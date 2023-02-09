@@ -31,7 +31,7 @@ setting properly before TYPO3 v9.
 As a result, the amount of options in the User Interface for integrators is
 reduced.
 
-The PHP method :php:`SiteLanguage->getTwoLetterIsoCode()` serves now purpose
+The PHP method :php:`SiteLanguage->getTwoLetterIsoCode()` serves no purpose
 anymore and is deprecated.
 
 This also affects the TypoScript "getData" property :typoscript:`siteLanguage:twoLetterIsoCode`,

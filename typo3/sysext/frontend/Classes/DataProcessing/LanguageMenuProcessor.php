@@ -169,7 +169,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
                     'language.' => [
                         'data' => 'register:languageId',
                     ],
-                    'field' => 'twoLetterIsoCode',
+                    'field' => 'locale:languageCode',
                     'stdWrap.' => [
                         'wrap' => ',"twoLetterIsoCode":|',
                     ],
@@ -180,7 +180,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
                     'language.' => [
                         'data' => 'register:languageId',
                     ],
-                    'field' => 'hreflang',
+                    'field' => 'locale:full',
                     'stdWrap.' => [
                         'wrap' => ',"hreflang":|',
                     ],
@@ -462,23 +462,40 @@ class LanguageMenuProcessor implements DataProcessorInterface
         if ($conf['field'] === '') {
             throw new \InvalidArgumentException('Argument \'field\' must be supplied.', 1522959187);
         }
+        $fieldValue = $conf['field'];
 
         // Get and check current site
         $site = $this->getCurrentSite();
 
         // Throws InvalidArgumentException in case language is not found which is fine
-        $language = $site->getLanguageById((int)$conf['language']);
-        if ($language->enabled()) {
-            $language = $language->toArray();
+        $languageObject = $site->getLanguageById((int)$conf['language']);
+        if ($languageObject->enabled()) {
+            $language = $languageObject->toArray();
         } else {
             return $this->jsonEncode(null);
         }
 
-        // Check field for return exists
-        if ($language !== null && !isset($language[$conf['field']])) {
-            throw new \InvalidArgumentException('Invalid value \'' . $conf['field'] . '\' for argument \'field\' supplied.', 1524063160);
+        if (str_starts_with($fieldValue, 'locale:')) {
+            $keyParts = explode(':', $fieldValue, 2);
+            $localeObject = $languageObject->getLocale();
+            switch ($keyParts[1] ?? '') {
+                case 'languageCode':
+                    $contents = $localeObject->getLanguageCode();
+                    break;
+                case 'countryCode':
+                    $contents = $localeObject->getCountryCode();
+                    break;
+                case 'full':
+                default:
+                    $contents = $localeObject->getName();
+            }
+        } elseif (isset($language[$fieldValue])) {
+            $contents = $language[$fieldValue];
+        } else {
+            // Check field for return exists
+            throw new \InvalidArgumentException('Invalid value \'' . $fieldValue . '\' for argument \'field\' supplied.', 1524063160);
         }
 
-        return $this->jsonEncode($language[$conf['field']]);
+        return $this->jsonEncode($contents);
     }
 }

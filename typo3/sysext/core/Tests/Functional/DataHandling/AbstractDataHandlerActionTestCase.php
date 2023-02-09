@@ -122,7 +122,6 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
                 'base' => '/',
                 'locale' => 'en_US.UTF-8',
                 'navigationTitle' => '',
-                'hreflang' => '',
                 'direction' => '',
                 'flag' => 'us',
             ],

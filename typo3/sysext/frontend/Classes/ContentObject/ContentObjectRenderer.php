@@ -4142,6 +4142,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         if ($key === 'twoLetterIsoCode') {
                             $key = 'locale:languageCode';
                         }
+                        if ($key === 'hreflang') {
+                            $key = 'locale:full';
+                        }
                         // Special handling for the locale object
                         if (str_starts_with($key, 'locale')) {
                             $localeObject = $siteLanguage->getLocale();
@@ -4157,6 +4160,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                                     case 'countryCode':
                                         $retVal = $localeObject->getCountryCode();
                                         break;
+                                    case 'full':
                                     default:
                                         $retVal = $localeObject->getName();
                                 }

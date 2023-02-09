@@ -16,7 +16,6 @@ languages:
     languageId: '1'
     base: /da
     locale: da_DK.utf8
-    hreflang: ''
     direction: ''
     flag: da
     navigationTitle: Dansk

@@ -1578,6 +1578,8 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertEquals('German', $this->subject->getData('siteLanguage:navigationTitle'));
         self::assertEquals('de', $this->subject->getData('siteLanguage:twoLetterIsoCode'));
         self::assertEquals('de', $this->subject->getData('siteLanguage:locale:languageCode'));
+        self::assertEquals('de-DE', $this->subject->getData('siteLanguage:hreflang'));
+        self::assertEquals('de-DE', $this->subject->getData('siteLanguage:locale:full'));
     }
 
     /**

@@ -1049,7 +1049,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
                         'navigationTitle' => '',
                         'flag' => '',
                         'locale' => '',
-                        'hreflang' => '',
                         'direction' => '',
                     ],
                 ],

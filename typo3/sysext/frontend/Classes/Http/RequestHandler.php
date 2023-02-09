@@ -235,7 +235,6 @@ class RequestHandler implements RequestHandlerInterface
             $pageRenderer->addInlineComment("\t" . str_replace(LF, LF . "\t", $headerComment) . LF);
         }
         $htmlTagAttributes = [];
-        $htmlLang = $siteLanguage->getHreflang() ?: '';
 
         if ($siteLanguage->getDirection()) {
             $htmlTagAttributes['dir'] = htmlspecialchars($siteLanguage->getDirection());
@@ -269,9 +268,9 @@ class RequestHandler implements RequestHandlerInterface
         if (!empty($docTypeParts)) {
             $pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
         }
-        if ($htmlLang) {
+        if ($siteLanguage->getHreflang(true)) {
             // See https://www.w3.org/International/questions/qa-html-language-declarations.en.html#attributes
-            $htmlTagAttributes[$docType->isXmlCompliant() ? 'xml:lang' : 'lang'] = $htmlLang;
+            $htmlTagAttributes[$docType->isXmlCompliant() ? 'xml:lang' : 'lang'] = $siteLanguage->getHreflang(true);
         }
         if ($docType->isXmlCompliant() || $docType === DocType::html5 && $xmlDocument) {
             // We add this to HTML5 to achieve a slightly better backwards compatibility

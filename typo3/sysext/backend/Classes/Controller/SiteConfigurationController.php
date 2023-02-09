@@ -828,6 +828,9 @@ class SiteConfigurationController
             if (isset($languageConfiguration['iso-639-1'])) {
                 $existingLanguagesWithLegacyProperties[$languageConfiguration['languageId']]['iso-639-1'] = $languageConfiguration['iso-639-1'];
             }
+            if (isset($languageConfiguration['hreflang'])) {
+                $existingLanguagesWithLegacyProperties[$languageConfiguration['languageId']]['hreflang'] = $languageConfiguration['hreflang'];
+            }
         }
         foreach ($newSysSiteData['languages'] ?? [] as $key => $languageConfiguration) {
             $languageId = $languageConfiguration['languageId'];
