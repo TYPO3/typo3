@@ -841,7 +841,7 @@ class GeneralUtility
     {
         $result = explode($delimiter, $string);
         foreach ($result as $key => &$value) {
-            if ($removeEmptyValues && ($value === '' || trim($value) === '')) {
+            if ($removeEmptyValues && trim($value) === '') {
                 unset($result[$key]);
             } else {
                 $value = (int)$value;
