@@ -16,9 +16,10 @@
  * this JS code does the drag+drop logic for the Layout module (Web => Page)
  */
 import interact from 'interactjs';
-import {Interactable} from '@interactjs/core/Interactable';
-import {DragEvent} from '@interactjs/actions/drag/plugin';
-import {DropEvent} from '@interactjs/actions/drop/DropEvent';
+import { BaseEvent } from '@interactjs/core/BaseEvent';
+import { Interactable } from '@interactjs/core/Interactable';
+import { DragEvent } from '@interactjs/actions/drag/plugin';
+import { DropEvent } from '@interactjs/actions/drop/DropEvent';
 import DocumentService from '@typo3/core/document-service';
 import DataHandler from '../ajax-data-handler';
 import Icons from '../icons';
@@ -28,12 +29,13 @@ import RegularEvent from '@typo3/core/event/regular-event';
 interface Parameters {
   cmd?: { [key: string]: { [key: string]: any } };
   data?: { [key: string]: { [key: string]: any } };
-  CB?: { paste: string, update: { colPos: number | boolean, sys_language_uid: number }};
+  CB?: { paste: string, update: { colPos: number | boolean, sys_language_uid: number } };
 }
 
 class DragDrop {
   private static readonly contentIdentifier: string = '.t3js-page-ce';
   private static readonly draggableContentIdentifier: string = '.t3js-page-ce-sortable';
+  private static readonly draggableContentCloneIdentifier: string = '[data-dragdrop-clone]';
   private static readonly dropZoneIdentifier: string = '.t3js-page-ce-dropzone-available';
   private static readonly columnIdentifier: string = '.t3js-page-column';
   private static readonly validDropZoneClass: string = 'active';
@@ -56,7 +58,17 @@ class DragDrop {
       onstart: DragDrop.onDragStart,
       onmove: DragDrop.onDragMove,
       onend: DragDrop.onDragEnd,
-    });
+    })
+      .on('move', function (event: BaseEvent) {
+        const interaction = event.interaction;
+        const currentTarget = event.currentTarget as HTMLElement;
+        if (interaction.pointerIsDown && !interaction.interacting() && currentTarget.getAttribute('clone') != 'false') {
+          const clone = currentTarget.cloneNode(true) as HTMLElement;
+          clone.setAttribute('data-dragdrop-clone', 'true');
+          currentTarget.parentNode.insertBefore(clone, currentTarget.nextSibling);
+          interaction.start({ name: 'drag' }, event.interactable, currentTarget);
+        }
+      });
 
     interact(DragDrop.dropZoneIdentifier).dropzone({
       accept: this.draggableContentIdentifier,
@@ -153,6 +165,11 @@ class DragDrop {
       }
       element.classList.remove(DragDrop.validDropZoneClass);
     });
+
+    // Remove clones
+    document.querySelectorAll(DragDrop.draggableContentCloneIdentifier).forEach((element: HTMLElement): void => {
+      element.remove();
+    });
   }
 
   /**
@@ -167,7 +184,7 @@ class DragDrop {
     const newColumn = DragDrop.getColumnPositionForElement(dropContainer);
     const contentElementUid: number = parseInt(draggedElement.dataset.uid, 10);
 
-    if (typeof(contentElementUid) === 'number' && contentElementUid > 0) {
+    if (typeof (contentElementUid) === 'number' && contentElementUid > 0) {
       let parameters: Parameters = {};
       // add the information about a possible column position change
       const targetFound = (dropContainer.closest(DragDrop.contentIdentifier) as HTMLElement).dataset.uid;
@@ -239,7 +256,7 @@ class DragDrop {
   private static ajaxAction(dropContainer: HTMLElement, draggedElement: HTMLElement, parameters: Parameters, isCopyAction: boolean): Promise<any> {
     const table: string = Object.keys(parameters.cmd).shift();
     const uid: number = parseInt(Object.keys(parameters.cmd[table]).shift(), 10);
-    const eventData = {component: 'dragdrop', action: isCopyAction ? 'copy' : 'move', table, uid};
+    const eventData = { component: 'dragdrop', action: isCopyAction ? 'copy' : 'move', table, uid };
 
     return DataHandler.process(parameters, eventData).then((result: ResponseInterface): void => {
       if (result.hasErrors) {

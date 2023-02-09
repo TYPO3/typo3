@@ -135,6 +135,13 @@ html {
     &.active-drag {
         z-index: 4500;
     }
+
+    &[data-dragdrop-clone] {
+        .t3-page-ce-element {
+            user-select: none;
+            opacity: .25;
+        }
+    }
 }
 
 .t3-page-ce-element {
