@@ -175,8 +175,17 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.reload" resname="labels.reload">
 				<source>Reload</source>
 			</trans-unit>
+			<trans-unit id="labels.language" resname="labels.language">
+				<source>Language</source>
+			</trans-unit>
 			<trans-unit id="labels.view" resname="labels.view">
 				<source>View</source>
+			</trans-unit>
+			<trans-unit id="labels.view.layout" resname="labels.view.layout">
+				<source>Layout</source>
+			</trans-unit>
+			<trans-unit id="labels.view.language_comparison" resname="labels.view.language_comparison">
+				<source>Language Comparison</source>
 			</trans-unit>
 			<trans-unit id="labels.view.list" resname="labels.view.list">
 				<source>List</source>

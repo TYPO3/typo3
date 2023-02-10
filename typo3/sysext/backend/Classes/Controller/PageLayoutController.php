@@ -29,6 +29,8 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItemInterface;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -126,7 +128,6 @@ class PageLayoutController
         $this->menuConfig($request);
         $this->currentSelectedLanguage = (int)$this->moduleData->get('language');
         $this->addJavaScriptModuleInstructions();
-        $this->makeLanguageMenu($view);
         $this->makeActionMenu($view, $tsConfig);
         $this->makeButtons($view, $request, $tsConfig);
         $this->initializeClipboard($request);
@@ -186,8 +187,8 @@ class PageLayoutController
         // MENU-ITEMS:
         $this->MOD_MENU = [
             'function' => [
-                1 => $languageService->getLL('m_function_1'),
-                2 => $languageService->getLL('m_function_2'),
+                1 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.layout'),
+                2 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.language_comparison'),
             ],
             'language' => [
                 0 => isset($this->availableLanguages[0]) ? $this->availableLanguages[0]->getTitle() : $languageService->getLL('m_default'),
@@ -271,12 +272,12 @@ class PageLayoutController
     {
         $languageService = $this->getLanguageService();
         $actions = [
-            1 => $languageService->getLL('m_function_1'),
+            1 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.layout'),
         ];
         // Find if there are ANY languages at all (and if not, do not show the language option from function menu).
         // The second check is for an edge case: Only two languages in the site and the default is not allowed.
         if (count($this->availableLanguages) > 1 || (int)array_key_first($this->availableLanguages) > 0) {
-            $actions[2] = $languageService->getLL('m_function_2');
+            $actions[2] = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.language_comparison');
         }
         // Page / user TSconfig blinding of menu-items
         $blindActions = $tsConfig['mod.']['web_layout.']['menu.']['functions.'] ?? [];
@@ -505,6 +506,11 @@ class PageLayoutController
         $languageService = $this->getLanguageService();
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
+        // Language
+        if ($languageButton = $this->makeLanguageSwitchButton($buttonBar)) {
+            $buttonBar->addButton($languageButton, ButtonBar::BUTTON_POSITION_LEFT, 0);
+        }
+
         // View
         if ($viewButton = $this->makeViewButton($buttonBar, $tsConfig)) {
             $buttonBar->addButton($viewButton);
@@ -620,6 +626,58 @@ class PageLayoutController
             ->setTitle($this->getLanguageService()->getLL('editPageProperties'))
             ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
+    }
+
+    /**
+     * Language Switch
+     */
+    protected function makeLanguageSwitchButton(ButtonBar $buttonbar): ?ButtonInterface
+    {
+        // Early return if less than 2 languages are available
+        if (count($this->MOD_MENU['language']) < 2) {
+            return null;
+        }
+
+        $languageService = $this->getLanguageService();
+
+        $languageDropDownButton = $buttonbar->makeDropDownButton()
+            ->setLabel($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.language'))
+            ->setShowLabelText(true);
+
+        foreach ($this->MOD_MENU['language'] as $key => $language) {
+            $siteLanguage = $this->availableLanguages[$key] ?? null;
+            if (!$siteLanguage instanceof SiteLanguage) {
+                // Skip invalid language keys, e.g. "-1" for "all languages"
+                continue;
+            }
+            /** @var DropDownItemInterface $languageItem */
+            $languageItem = GeneralUtility::makeInstance(DropDownRadio::class)
+                ->setActive($this->currentSelectedLanguage === $siteLanguage->getLanguageId())
+                ->setIcon($this->iconFactory->getIcon($siteLanguage->getFlagIdentifier()))
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute('web_layout', [
+                    'id' => $this->id,
+                    'function' => (int)$this->moduleData->get('function'),
+                    'language' => $siteLanguage->getLanguageId(),
+                ]))
+                ->setLabel($siteLanguage->getTitle());
+            $languageDropDownButton->addItem($languageItem);
+        }
+
+        if ((int)$this->moduleData->get('function') !== 1) {
+            /** @var DropDownItemInterface $allLanguagesItem */
+            $allLanguagesItem = GeneralUtility::makeInstance(DropDownRadio::class)
+                ->setActive($this->currentSelectedLanguage === -1)
+                ->setIcon($this->iconFactory->getIcon('flags-multiple'))
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute('web_layout', [
+                    'id' => $this->id,
+                    'function' => (int)$this->moduleData->get('function'),
+                    'language' => -1,
+                ]))
+                ->setLabel($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages'));
+            $languageDropDownButton->addItem($allLanguagesItem);
+        }
+
+        return $languageDropDownButton;
     }
 
     /**
@@ -749,28 +807,6 @@ class PageLayoutController
             && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
             && $this->getBackendUser()->check('tables_modify', 'tt_content')
             && $this->getBackendUser()->checkLanguageAccess($languageId);
-    }
-
-    /**
-     * Make the LanguageMenu.
-     */
-    protected function makeLanguageMenu(ModuleTemplate $view): void
-    {
-        if (count($this->MOD_MENU['language']) > 1) {
-            $languageMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-            $languageMenu->setIdentifier('languageMenu');
-            foreach ($this->MOD_MENU['language'] as $key => $language) {
-                $menuItem = $languageMenu
-                    ->makeMenuItem()
-                    ->setTitle($language)
-                    ->setHref((string)$this->uriBuilder->buildUriFromRoute('web_layout', ['id' => $this->id, 'language' => $key]));
-                if ($this->currentSelectedLanguage === $key) {
-                    $menuItem->setActive(true);
-                }
-                $languageMenu->addMenuItem($menuItem);
-            }
-            $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($languageMenu);
-        }
     }
 
     /**
