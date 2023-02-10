@@ -2417,7 +2417,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected function setSysLastChanged()
     {
         // We only update the info if browsing the live workspace
-        if ($this->page['SYS_LASTCHANGED'] < (int)$this->register['SYS_LASTCHANGED'] && !$this->doWorkspacePreview()) {
+        if ($this->page['SYS_LASTCHANGED'] < (int)($this->register['SYS_LASTCHANGED'] ?? 0) && !$this->doWorkspacePreview()) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('pages');
             $pageId = $this->page['_PAGES_OVERLAY_UID'] ?? $this->id;
