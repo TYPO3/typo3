@@ -2,6 +2,9 @@
 // Group
 //
 .btn-group {
+    // Avoid cropping of dropdowns
+    position: static;
+
     & + .btn-group {
         margin-left: .5em;
     }
