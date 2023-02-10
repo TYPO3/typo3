@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Authentication\IpLocker;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\AssetRenderer;
@@ -163,7 +164,7 @@ class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString('<meta property="og:image" content="/path/to/image2.jpg" />', $renderedString);
 
         $stateBasedSubject = $this->createPageRenderer();
-        $stateBasedSubject->updateState(unserialize($state, ['allowed_classes' => false]));
+        $stateBasedSubject->updateState(unserialize($state, ['allowed_classes' => [Locale::class]]));
         $stateBasedRenderedString = $stateBasedSubject->render();
         self::assertStringContainsString($expectedPrologueString, $stateBasedRenderedString);
         self::assertStringContainsString($expectedTitleString, $stateBasedRenderedString);

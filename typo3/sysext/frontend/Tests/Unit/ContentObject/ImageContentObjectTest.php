@@ -358,6 +358,7 @@ class ImageContentObjectTest extends UnitTestCase
 
         $file = 'testImageName';
         $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
+        $pageRenderer->setLanguage('en');
         $pageRenderer->setDocType(DocType::createFromConfigurationKey($xhtmlDoctype));
         GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
 

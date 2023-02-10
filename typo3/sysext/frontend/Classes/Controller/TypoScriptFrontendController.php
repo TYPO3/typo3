@@ -45,6 +45,7 @@ use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Locking\ResourceMutex;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -2157,7 +2158,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (empty($this->config['INTincScript_ext']['pageRendererState'])) {
             $this->initPageRenderer();
         } else {
-            $pageRendererState = unserialize($this->config['INTincScript_ext']['pageRendererState'], ['allowed_classes' => false]);
+            $pageRendererState = unserialize($this->config['INTincScript_ext']['pageRendererState'], ['allowed_classes' => [Locale::class]]);
             $this->pageRenderer->updateState($pageRendererState);
         }
         if (!empty($this->config['INTincScript_ext']['assetCollectorState'])) {

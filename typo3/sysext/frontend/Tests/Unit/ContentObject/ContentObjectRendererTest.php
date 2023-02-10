@@ -4043,6 +4043,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_br(string $expected, string $input, ?string $xhtmlDoctype): void
     {
         $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
+        $pageRenderer->setLanguage('en');
         $pageRenderer->setDocType(DocType::createFromConfigurationKey($xhtmlDoctype));
         GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
         self::assertSame($expected, $this->subject->stdWrap_br($input));

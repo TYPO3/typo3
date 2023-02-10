@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\PackageInterface;
@@ -90,6 +91,11 @@ class PageRenderer implements SingletonInterface
      * @var string
      */
     protected $lang;
+
+    /**
+     * The locale, used for the <html> tag (depending on the DocType) and possible translation files.
+     */
+    protected Locale $locale;
 
     // Arrays containing associative array for the included files
     /**
@@ -410,8 +416,9 @@ class PageRenderer implements SingletonInterface
     /**
      * Reset all vars to initial values
      */
-    protected function reset()
+    protected function reset(): void
     {
+        $this->locale = new Locale();
         $this->setDocType(DocType::html5);
         $this->templateFile = 'EXT:core/Resources/Private/Templates/PageRenderer.html';
         $this->jsFiles = [];
@@ -490,14 +497,34 @@ class PageRenderer implements SingletonInterface
     /**
      * Sets language
      *
-     * @param string $lang Used language
+     * @param string|Locale $lang Used language
      */
     public function setLanguage($lang)
     {
-        $this->lang = $lang;
+        if ($lang instanceof Locale) {
+            $this->locale = $lang;
+            $this->lang = (string)$lang;
+        } else {
+            $this->lang = $lang;
+            $this->locale = new Locale($lang);
+        }
+        $this->setDefaultHtmlTag();
+    }
+
+    /**
+     * Internal method to set a basic <html> tag when in HTML5 with the proper language/locale and "dir"
+     * attributes.
+     */
+    protected function setDefaultHtmlTag(): void
+    {
         if ($this->docType === DocType::html5) {
-            $languageCode = $lang === 'default' ? 'en' : $lang;
-            $this->setHtmlTag('<html lang="' . htmlspecialchars($languageCode) . '">');
+            $attributes = [
+                'lang' => $this->locale->getName(),
+            ];
+            if ($this->locale->isRightToLeftLanguageDirection()) {
+                $attributes['dir'] = 'rtl';
+            }
+            $this->setHtmlTag('<html ' . GeneralUtility::implodeAttributes($attributes, true) . '>');
         }
     }
 
@@ -811,10 +838,7 @@ class PageRenderer implements SingletonInterface
         $this->renderXhtml = $docType->isXmlCompliant();
         $this->xmlPrologAndDocType = $docType->getDoctypeDeclaration();
         $this->metaCharsetTag = str_replace('utf-8', '|', $docType->getMetaCharsetTag());
-        if ($this->getLanguage()) {
-            $languageCode = $this->getLanguage() === 'default' ? 'en' : $this->getLanguage();
-            $this->setHtmlTag('<html lang="' . htmlspecialchars($languageCode) . '">');
-        }
+        $this->setDefaultHtmlTag();
 
         // Whenever HTML5 is used, remove the "text/javascript" type from the wrap
         // since this is not needed and may lead to validation errors in the future.
@@ -2486,7 +2510,7 @@ class PageRenderer implements SingletonInterface
      */
     protected function readLLfile(string $fileRef): array
     {
-        $languageService = $this->languageServiceFactory->create($this->lang);
+        $languageService = $this->languageServiceFactory->create($this->locale);
         return $languageService->getLabelsFromResource($fileRef);
     }
 
