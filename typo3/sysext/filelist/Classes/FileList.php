@@ -848,12 +848,12 @@ class FileList
             'paste' => $this->createControlPaste($resourceView),
         ];
 
-        // Remove empty actions
-        $actions = array_filter($actions, static fn ($action) => $action !== null && trim($action) !== '');
-
         $event = new ProcessFileListActionsEvent($resourceView->resource, $actions);
         $event = $this->eventDispatcher->dispatch($event);
         $actions = $event->getActionItems();
+
+        // Remove empty actions
+        $actions = array_filter($actions, static fn ($action) => $action !== null && trim($action) !== '');
 
         // Compile items into a dropdown
         $cellOutput = '';

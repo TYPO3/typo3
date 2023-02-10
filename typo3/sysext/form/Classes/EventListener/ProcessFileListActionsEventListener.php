@@ -41,7 +41,7 @@ class ProcessFileListActionsEventListener
         $actionItems = $event->getActionItems();
         foreach (self::DISABLED_ACTIONS as $disableIconName) {
             if (!empty($actionItems[$disableIconName])) {
-                $actionItems[$disableIconName] = null;
+                unset($actionItems[$disableIconName]);
             }
         }
         $event->setActionItems($actionItems);
