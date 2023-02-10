@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace ExtbaseTeam\BlogExample\Domain\Repository;
 
+use ExtbaseTeam\BlogExample\Domain\Model\Administrator;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * A repository for administrators
+ * @extends Repository<Administrator>
  */
 class AdministratorRepository extends Repository
 {

@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\TestIrreForeignfield\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
@@ -59,7 +59,7 @@ abstract class AbstractController extends ActionController
     }
 
     /**
-     * @param \Iterator|AbstractEntity[] $iterator
+     * @param \Iterator|DomainObjectInterface[]|DomainObjectInterface $iterator
      */
     protected function getStructure($iterator): array
     {

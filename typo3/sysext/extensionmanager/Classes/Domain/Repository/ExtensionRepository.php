@@ -29,6 +29,7 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 /**
  * A repository for extensions
  * @internal This class is a specific domain repository implementation and is not part of the Public TYPO3 API.
+ * @extends Repository<Extension>
  */
 class ExtensionRepository extends Repository
 {

@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Repository for accessing files
  * it also serves as the public API for the indexing part of files in general
+ * @extends AbstractRepository<File>
  */
 class FileRepository extends AbstractRepository
 {

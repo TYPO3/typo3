@@ -28,6 +28,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * Repository for \TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
+ * @extends Repository<\TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup>
  */
 class BackendUserGroupRepository extends Repository
 {
@@ -40,7 +41,7 @@ class BackendUserGroupRepository extends Repository
     /**
      * Overwrite createQuery to don't respect enable fields
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+     * @return QueryInterface
      */
     public function createQuery()
     {

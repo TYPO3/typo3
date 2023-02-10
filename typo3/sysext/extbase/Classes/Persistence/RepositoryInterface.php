@@ -19,6 +19,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 
 /**
  * Contract for a repository
+ * @template T of object
  */
 interface RepositoryInterface
 {
@@ -26,6 +27,7 @@ interface RepositoryInterface
      * Adds an object to this repository.
      *
      * @param object $object The object to add
+     * @phpstan-param T $object
      */
     public function add($object);
 
@@ -33,6 +35,7 @@ interface RepositoryInterface
      * Removes an object from this repository.
      *
      * @param object $object The object to remove
+     * @phpstan-param T $object
      */
     public function remove($object);
 
@@ -40,13 +43,15 @@ interface RepositoryInterface
      * Replaces an existing object with the same identifier by the given object
      *
      * @param object $modifiedObject The modified object
+     * @phpstan-param T $modifiedObject
      */
     public function update($modifiedObject);
 
     /**
      * Returns all objects of this repository.
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result
+     * @return iterable The iterable query result
+     * @phpstan-return iterable<T>
      */
     public function findAll();
 
@@ -68,6 +73,7 @@ interface RepositoryInterface
      *
      * @param int $uid The identifier of the object to find
      * @return object The matching object if found, otherwise NULL
+     * @phpstan-return T|null
      */
     public function findByUid($uid);
 
@@ -76,6 +82,7 @@ interface RepositoryInterface
      *
      * @param mixed $identifier The identifier of the object to find
      * @return object The matching object if found, otherwise NULL
+     * @phpstan-return T|null
      */
     public function findByIdentifier($identifier);
 

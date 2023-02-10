@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Beuser\Domain\Repository;
 
+use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * Repository for \TYPO3\CMS\Beuser\Domain\Model\BackendUser
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
+ * @extends Repository<BackendUser>
  */
 class BackendUserRepository extends Repository
 {

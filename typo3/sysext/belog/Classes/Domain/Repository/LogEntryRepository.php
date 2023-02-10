@@ -35,6 +35,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * Sys log entry repository
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
+ * @extends Repository<LogEntry>
  */
 class LogEntryRepository extends Repository
 {

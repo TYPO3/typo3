@@ -23,11 +23,13 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 
 /**
  * The base repository - will usually be extended by a more concrete repository.
+ * @template T of \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface
+ * @implements RepositoryInterface<T>
  */
 class Repository implements RepositoryInterface, SingletonInterface
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
+     * @var PersistenceManagerInterface
      */
     protected $persistenceManager;
 
@@ -45,7 +47,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * Override query settings created by extbase natively.
      * Be careful if using this, see the comment on `setDefaultQuerySettings()` for more insights.
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+     * @var QuerySettingsInterface
      */
     protected $defaultQuerySettings;
 
@@ -66,6 +68,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * Adds an object to this repository
      *
      * @param object $object The object to add
+     * @phpstan-param T $object
      * @throws Exception\IllegalObjectTypeException
      */
     public function add($object)
@@ -80,6 +83,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * Removes an object from this repository.
      *
      * @param object $object The object to remove
+     * @phpstan-param T $object
      * @throws Exception\IllegalObjectTypeException
      */
     public function remove($object)
@@ -93,7 +97,8 @@ class Repository implements RepositoryInterface, SingletonInterface
     /**
      * Replaces an existing object with the same identifier by the given object
      *
-     * @param object $modifiedObject The modified object
+     * @param T $modifiedObject The modified object
+     * @phpstan-param T $modifiedObject
      * @throws Exception\UnknownObjectException
      * @throws Exception\IllegalObjectTypeException
      */
@@ -109,6 +114,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * Returns all objects of this repository.
      *
      * @return QueryResultInterface|array
+     * @phpstan-return QueryResultInterface|iterable<T>
      */
     public function findAll()
     {
@@ -140,7 +146,8 @@ class Repository implements RepositoryInterface, SingletonInterface
      * Finds an object matching the given identifier.
      *
      * @param int $uid The identifier of the object to find
-     * @return object|null The matching object if found, otherwise NULL
+     * @return T|null The matching object if found, otherwise NULL
+     * @phpstan-return T|null
      */
     public function findByUid($uid)
     {
@@ -152,6 +159,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      *
      * @param mixed $identifier The identifier of the object to find
      * @return object|null The matching object if found, otherwise NULL
+     * @phpstan-return T|null
      */
     public function findByIdentifier($identifier)
     {
@@ -192,7 +200,7 @@ class Repository implements RepositoryInterface, SingletonInterface
     /**
      * Returns a query for objects of this repository
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+     * @return QueryInterface
      */
     public function createQuery()
     {
@@ -211,7 +219,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      *
      * @param non-empty-string $methodName The name of the magic method
      * @param array<int, mixed> $arguments The arguments of the magic method
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException
+     * @throws UnsupportedMethodException
      * @return mixed
      */
     public function __call($methodName, $arguments)

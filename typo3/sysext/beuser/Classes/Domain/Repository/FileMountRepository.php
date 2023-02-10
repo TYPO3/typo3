@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Beuser\Domain\Repository;
 
+use TYPO3\CMS\Beuser\Domain\Model\FileMount;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * Repository for \TYPO3\CMS\Extbase\Domain\Model\FileMount.
+ * @extends Repository<FileMount>
  */
 class FileMountRepository extends Repository
 {

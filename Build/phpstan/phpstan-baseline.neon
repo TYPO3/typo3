@@ -1276,11 +1276,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/RedisBackendTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$iterator of method TYPO3\\\\TestIrreForeignfield\\\\Controller\\\\AbstractController\\:\\:getStructure\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractEntity\\>&Iterator, TYPO3\\\\TestIrreForeignfield\\\\Domain\\\\Model\\\\Content given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Classes/Controller/ContentController.php
-
-		-
 			message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\:\\:\\$where_hid_del\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/FunctionalDeprecated/Domain/Repository/PageRepositoryTest.php
@@ -1436,7 +1431,7 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Index/ExtractorRegistryTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractRepository\\:\\:findByUid\\(\\) expects int, string given\\.$#"
+			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractRepository\\<object\\>\\:\\:findByUid\\(\\) expects int, string given\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Repository/AbstractRepositoryTest.php
 
@@ -1896,7 +1891,22 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\:\\:findByUid\\(\\) expects int, string given\\.$#"
+			message: "#^Parameter \\#1 \\$modifiedObject of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\>\\:\\:update\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface, stdClass given\\.$#"
+			count: 3
+			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$object of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\>\\:\\:add\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface, stdClass given\\.$#"
+			count: 2
+			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$object of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\>\\:\\:remove\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface, stdClass given\\.$#"
+			count: 2
+			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\>\\:\\:findByUid\\(\\) expects int, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
 

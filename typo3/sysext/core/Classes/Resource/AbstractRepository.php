@@ -27,6 +27,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Abstract repository implementing the basic repository methods
+ * @template T of object
+ * @implements RepositoryInterface<T>
  */
 abstract class AbstractRepository implements RepositoryInterface, SingletonInterface
 {
@@ -69,6 +71,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Adds an object to this repository.
      *
      * @param object $object The object to add
+     * @phpstan-param T $object
      */
     public function add($object)
     {
@@ -78,6 +81,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Removes an object from this repository.
      *
      * @param object $object The object to remove
+     * @phpstan-param T $object
      */
     public function remove($object)
     {
@@ -88,6 +92,8 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      *
      * @param object $existingObject The existing object
      * @param object $newObject The new object
+     * @phpstan-param T $existingObject
+     * @phpstan-param T $newObject
      */
     public function replace($existingObject, $newObject)
     {
@@ -97,6 +103,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Replaces an existing object with the same identifier by the given object
      *
      * @param object $modifiedObject The modified object
+     * @phpstan-param T $modifiedObject
      */
     public function update($modifiedObject)
     {
@@ -107,6 +114,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * the storage layer.
      *
      * @return array An array of objects
+     * @phpstan-return T[]
      * @internal
      */
     public function getAddedObjects()
@@ -119,6 +127,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * had been persisted to the storage layer before.
      *
      * @return array
+     * @phpstan-return T[]
      * @internal
      */
     public function getRemovedObjects()
@@ -130,6 +139,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Returns all objects of this repository.
      *
      * @return array An array of objects, empty if no objects found
+     * @phpstan-return iterable<T>
      */
     public function findAll()
     {
@@ -164,6 +174,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      *
      * @abstract
      * @return object
+     * @phpstan-return T
      */
     abstract protected function createDomainObject(array $databaseRow);
 
@@ -193,6 +204,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      * @return object The matching object
+     * @phpstan-return T
      */
     public function findByUid($uid)
     {
@@ -261,7 +273,10 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Finds an object matching the given identifier.
      *
      * @param mixed $identifier The identifier of the object to find
-     * @return object|null The matching object if found, otherwise NULL
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
+     * @return object The matching object if found
+     * @phpstan-return T
      */
     public function findByIdentifier($identifier)
     {

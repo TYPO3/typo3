@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace ExtbaseTeam\BlogExample\Domain\Repository;
 
+use ExtbaseTeam\BlogExample\Domain\Model\Blog;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * A repository for blogs
+ * @extends Repository<Blog>
  */
 class BlogRepository extends Repository
 {
