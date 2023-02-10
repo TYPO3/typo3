@@ -36,13 +36,6 @@ class InstallStatusReport implements StatusProviderInterface
     protected const WRAP_FLAT = 1;
     protected const WRAP_NESTED = 2;
 
-    protected bool $useMarkup;
-
-    public function __construct(bool $useMarkup = true)
-    {
-        $this->useMarkup = $useMarkup;
-    }
-
     /**
      * Compiles a collection of system status checks as a status report.
      *
@@ -310,9 +303,6 @@ class InstallStatusReport implements StatusProviderInterface
 
     protected function wrapList(array $items, int $style): string
     {
-        if (!$this->useMarkup) {
-            return implode(', ', $items);
-        }
         if ($style === self::WRAP_NESTED) {
             return sprintf(
                 '<ul>%s</ul>',
