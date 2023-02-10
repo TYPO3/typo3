@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -504,33 +505,14 @@ class PageLayoutController
         $languageService = $this->getLanguageService();
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
-        // View page
-        // Exclude sysfolders, spacers and recycler by default
-        $excludeDokTypes = [
-            PageRepository::DOKTYPE_RECYCLER,
-            PageRepository::DOKTYPE_SYSFOLDER,
-            PageRepository::DOKTYPE_SPACER,
-        ];
-        // Exclude sysfolders, spacers and recycler by default, but allow custom overrides via tsConfig
-        if (isset($tsConfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
-            $excludeDokTypes = GeneralUtility::intExplode(',', (string)($tsConfig['TCEMAIN.']['preview.']['disableButtonForDokType'] ?? ''), true);
-        }
-        if (
-            $this->currentSelectedLanguage !== -1
-            && !in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true)
-            && !VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
-        ) {
-            $previewDataAttributes = PreviewUriBuilder::create((int)$this->pageinfo['uid'])
-                ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
-                ->withLanguage($this->currentSelectedLanguage)
-                ->buildDispatcherDataAttributes();
-            $viewButton = $buttonBar->makeLinkButton()
-                ->setDataAttributes($previewDataAttributes ?? [])
-                ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
-                ->setShowLabelText(true)
-                ->setHref('#');
+        // View
+        if ($viewButton = $this->makeViewButton($buttonBar, $tsConfig)) {
             $buttonBar->addButton($viewButton);
+        }
+
+        // Edit
+        if ($editButton = $this->makeEditButton($buttonBar, $request)) {
+            $buttonBar->addButton($editButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         }
 
         // Shortcut
@@ -560,52 +542,84 @@ class PageLayoutController
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
             ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
+    }
 
-        // Edit page properties
-        if ($this->isPageEditable(0)) {
-            $url = (string)$this->uriBuilder->buildUriFromRoute(
-                'record_edit',
-                [
-                    'edit' => [
-                        'pages' => [
-                            $this->id => 'edit',
-                        ],
-                    ],
-                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
-                ]
-            );
-            $editPageButton = $buttonBar->makeLinkButton()
-                ->setHref($url)
-                ->setTitle($languageService->getLL('editPageProperties'))
-                ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
-            $buttonBar->addButton($editPageButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
-        }
-
-        // Edit page properties of page language overlay (Only when one specific language is selected)
-        if ((int)$this->moduleData->get('function') === 1
-            && $this->currentSelectedLanguage > 0
-            && $this->isPageEditable($this->currentSelectedLanguage)
+    /**
+     * View Button
+     */
+    protected function makeViewButton(ButtonBar $buttonBar, array $tsConfig): ?ButtonInterface
+    {
+        // Do not create a "View webpage" button if
+        // * "All languages" is selected
+        // * not in "Columns" view,
+        // * record is a placeholder
+        if (
+            $this->currentSelectedLanguage === -1
+            || (int)$this->moduleData->get('function') !== 1
+            || VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
         ) {
-            $overlayRecord = $this->pageRepository->getPageOverlay($this->id, $this->currentSelectedLanguage);
-            $url = (string)$this->uriBuilder->buildUriFromRoute(
-                'record_edit',
-                [
-                    'edit' => [
-                        'pages' => [
-                            $overlayRecord['_PAGES_OVERLAY_UID'] => 'edit',
-                        ],
-                    ],
-                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
-                ]
-            );
-            $editLanguageButton = $buttonBar->makeLinkButton()
-                ->setHref($url)
-                ->setShowLabelText(true)
-                ->setTitle($languageService->getLL('editPageLanguageOverlayProperties'))
-                ->setIcon($this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL));
-            $buttonBar->addButton($editLanguageButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+            return null;
         }
+
+        if (isset($tsConfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
+            // Exclude doktypes, set via tsConfig
+            $excludeDokTypes = GeneralUtility::intExplode(',', (string)($tsConfig['TCEMAIN.']['preview.']['disableButtonForDokType'] ?? ''), true);
+        } else {
+            // Exclude default doktypes: sysfolders, spacers and recycler
+            $excludeDokTypes = [
+                PageRepository::DOKTYPE_RECYCLER,
+                PageRepository::DOKTYPE_SYSFOLDER,
+                PageRepository::DOKTYPE_SPACER,
+            ];
+        }
+
+        if (in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true)) {
+            return null;
+        }
+
+        $previewDataAttributes = PreviewUriBuilder::create((int)$this->pageinfo['uid'])
+            ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
+            ->withLanguage($this->currentSelectedLanguage)
+            ->buildDispatcherDataAttributes();
+
+        return $buttonBar->makeLinkButton()
+            ->setDataAttributes($previewDataAttributes ?? [])
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+            ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
+            ->setShowLabelText(true)
+            ->setHref('#');
+    }
+
+    /**
+     * Edit Button
+     */
+    protected function makeEditButton(ButtonBar $buttonBar, ServerRequestInterface $request): ?ButtonInterface
+    {
+        if ((int)$this->moduleData->get('function') !== 1
+            || !$this->isPageEditable($this->currentSelectedLanguage)
+        ) {
+            return null;
+        }
+
+        $pageUid = $this->id;
+        if ($this->currentSelectedLanguage > 0) {
+            $overlayRecord = $this->pageRepository->getPageOverlay($this->id, $this->currentSelectedLanguage);
+            $pageUid = $overlayRecord['_PAGES_OVERLAY_UID'];
+        }
+        $params = [
+            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+            'edit' => [
+                'pages' => [
+                    $pageUid => 'edit',
+                ],
+            ],
+        ];
+
+        return $buttonBar->makeLinkButton()
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('record_edit', $params))
+            ->setTitle($this->getLanguageService()->getLL('editPageProperties'))
+            ->setShowLabelText(true)
+            ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
     }
 
     /**
