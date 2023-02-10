@@ -1095,7 +1095,8 @@ class UpgradeController extends AbstractController
         // ext_localconf, db and ext_tables must be loaded for the updates :(
         $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
         $identifier = $request->getParsedBody()['install']['identifier'];
-        $messages = $container->get(UpgradeWizardsService::class)->executeWizard($identifier);
+        $values = $request->getParsedBody()['install']['values'] ?? [];
+        $messages = $container->get(UpgradeWizardsService::class)->executeWizard($identifier, $values);
         $this->lateBootService->resetGlobalContainer();
         return new JsonResponse([
             'success' => true,

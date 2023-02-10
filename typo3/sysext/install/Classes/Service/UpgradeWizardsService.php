@@ -227,7 +227,7 @@ final class UpgradeWizardsService
      *
      * @throws \RuntimeException
      */
-    public function executeWizard(string $identifier): FlashMessageQueue
+    public function executeWizard(string $identifier, array $values): FlashMessageQueue
     {
         $performResult = false;
         $this->assertIdentifierIsValid($identifier);
@@ -239,13 +239,10 @@ final class UpgradeWizardsService
         }
         $messages = new FlashMessageQueue('install');
 
-        $requestParams = GeneralUtility::_GP('install');
         if ($wizard instanceof ConfirmableInterface) {
             // value is set in request but is empty
-            $isSetButEmpty = isset($requestParams['values'][$identifier]['install'])
-                && empty($requestParams['values'][$identifier]['install']);
-
-            $checkValue = (int)$requestParams['values'][$identifier]['install'];
+            $isSetButEmpty = isset($values[$identifier]['install']) && empty($values[$identifier]['install']);
+            $checkValue = (int)$values[$identifier]['install'];
 
             if ($checkValue === 1) {
                 // confirmation = yes, we do the update
