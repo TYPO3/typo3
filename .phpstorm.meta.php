@@ -3,13 +3,10 @@
 /**
  * Extend PhpStorms code completion capabilities by providing a meta file
  *
- * Kudos to Alexander Schnitzler's work, see https://github.com/alexanderschnitzler/phpstorm.meta.php-typo3
  * @link https://www.jetbrains.com/help/phpstorm/ide-advanced-metadata.html
  */
 
 namespace PHPSTORM_META {
-    // Contexts
-    // @see https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/9.4/Feature-85389-ContextAPIForConsistentDataHandling.html
     expectedArguments(
         \TYPO3\CMS\Core\Context\Context::getAspect(),
         0,
@@ -21,7 +18,6 @@ namespace PHPSTORM_META {
         'language',
         'typoscript'
     );
-
     override(\TYPO3\CMS\Core\Context\Context::getAspect(), map([
         'date' => \TYPO3\CMS\Core\Context\DateTimeAspect::class,
         'visibility' => \TYPO3\CMS\Core\Context\VisibilityAspect::class,
@@ -31,7 +27,6 @@ namespace PHPSTORM_META {
         'language' => \TYPO3\CMS\Core\Context\LanguageAspect::class,
         'typoscript' => \TYPO3\CMS\Core\Context\TypoScriptAspect::class,
     ]));
-
     expectedArguments(
         \TYPO3\CMS\Core\Context\DateTimeAspect::get(),
         0,
@@ -41,7 +36,6 @@ namespace PHPSTORM_META {
         'full',
         'accessTime'
     );
-
     expectedArguments(
         \TYPO3\CMS\Core\Context\VisibilityAspect::get(),
         0,
@@ -49,7 +43,6 @@ namespace PHPSTORM_META {
         'includeHiddenContent',
         'includeDeletedRecords'
     );
-
     expectedArguments(
         \TYPO3\CMS\Core\Context\UserAspect::get(),
         0,
@@ -60,7 +53,6 @@ namespace PHPSTORM_META {
         'groupIds',
         'groupNames'
     );
-
     expectedArguments(
         \TYPO3\CMS\Core\Context\WorkspaceAspect::get(),
         0,
@@ -68,7 +60,6 @@ namespace PHPSTORM_META {
         'isLive',
         'isOffline'
     );
-
     expectedArguments(
         \TYPO3\CMS\Core\Context\LanguageAspect::get(),
         0,
@@ -79,7 +70,6 @@ namespace PHPSTORM_META {
         'legacyLanguageMode',
         'legacyOverlayType'
     );
-
     expectedArguments(
         \TYPO3\CMS\Core\Context\TypoScriptAspect::get(),
         0,
@@ -99,7 +89,6 @@ namespace PHPSTORM_META {
         'frontend.controller',
         'frontend.typoscript',
     );
-
     override(\Psr\Http\Message\ServerRequestInterface::getAttribute(), map([
         'frontend.user' => \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class,
         'normalizedParams' => \TYPO3\CMS\Core\Http\NormalizedParams::class,
@@ -123,7 +112,6 @@ namespace PHPSTORM_META {
         'module',
         'moduleData'
     );
-
     override(\TYPO3\CMS\Core\Http\ServerRequest::getAttribute(), map([
         'frontend.user' => \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class,
         'normalizedParams' => \TYPO3\CMS\Core\Http\NormalizedParams::class,
@@ -144,4 +132,8 @@ namespace PHPSTORM_META {
         \TYPO3\CMS\Core\Routing\PageArguments::class,
         \TYPO3\CMS\Core\Routing\RouteResultInterface::class,
     ));
+
+    override(\Psr\Container\ContainerInterface::get(0), map([
+        '' => '@',
+    ]));
 }
