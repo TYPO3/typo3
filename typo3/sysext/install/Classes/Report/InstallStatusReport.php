@@ -31,10 +31,14 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
  * Provides an installation status report.
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class InstallStatusReport implements StatusProviderInterface
+final class InstallStatusReport implements StatusProviderInterface
 {
-    protected const WRAP_FLAT = 1;
-    protected const WRAP_NESTED = 2;
+    private const WRAP_FLAT = 1;
+    private const WRAP_NESTED = 2;
+
+    public function __construct(private readonly UpgradeWizardsService $upgradeWizardsService)
+    {
+    }
 
     /**
      * Compiles a collection of system status checks as a status report.
@@ -60,7 +64,7 @@ class InstallStatusReport implements StatusProviderInterface
      *
      * @return Status Indicates status of the file system
      */
-    protected function getFileSystemStatus()
+    private function getFileSystemStatus(): Status
     {
         $languageService = $this->getLanguageService();
         $value = $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_writable');
@@ -160,8 +164,7 @@ class InstallStatusReport implements StatusProviderInterface
      */
     protected function getIncompleteWizards(): array
     {
-        $upgradeWizardsService = GeneralUtility::makeInstance(UpgradeWizardsService::class);
-        $incompleteWizards = $upgradeWizardsService->getUpgradeWizardsList();
+        $incompleteWizards = $this->upgradeWizardsService->getUpgradeWizardsList();
         $incompleteWizards = array_filter(
             $incompleteWizards,
             static function ($wizard) {
@@ -176,7 +179,7 @@ class InstallStatusReport implements StatusProviderInterface
      *
      * @return Status Represents whether the installation is completely updated yet
      */
-    protected function getRemainingUpdatesStatus()
+    private function getRemainingUpdatesStatus(): Status
     {
         $languageService = $this->getLanguageService();
         $value = $languageService->getLL('status_updateComplete');
@@ -201,7 +204,7 @@ class InstallStatusReport implements StatusProviderInterface
      *
      * @return Status Represents whether there is a new version available online
      */
-    protected function getNewVersionStatus()
+    private function getNewVersionStatus(): Status
     {
         $typoVersion = GeneralUtility::makeInstance(Typo3Version::class);
         $languageService = $this->getLanguageService();
@@ -301,7 +304,7 @@ class InstallStatusReport implements StatusProviderInterface
         return GeneralUtility::makeInstance(Status::class, 'TYPO3', $typoVersion->getVersion(), $message, $status);
     }
 
-    protected function wrapList(array $items, int $style): string
+    private function wrapList(array $items, int $style): string
     {
         if ($style === self::WRAP_NESTED) {
             return sprintf(
@@ -315,7 +318,7 @@ class InstallStatusReport implements StatusProviderInterface
         );
     }
 
-    protected function wrapItems(array $items, string $before, string $after): array
+    private function wrapItems(array $items, string $before, string $after): array
     {
         return array_map(
             static function (string $item) use ($before, $after): string {
@@ -325,7 +328,7 @@ class InstallStatusReport implements StatusProviderInterface
         );
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

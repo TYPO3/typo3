@@ -32,18 +32,18 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 use TYPO3\CMS\Install\Updates\UpgradeWizardRegistry;
 
 /**
- * Service class helping managing upgrade wizards
+ * Service class helps to manage upgrade wizards.
+ *
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class UpgradeWizardsService
+final class UpgradeWizardsService
 {
-    /**
-     * @var StreamOutput
-     */
-    private $output;
+    private StreamOutput $output;
 
-    public function __construct(private readonly UpgradeWizardRegistry $upgradeWizardRegistry)
-    {
+    public function __construct(
+        private readonly UpgradeWizardRegistry $upgradeWizardRegistry,
+        private readonly Registry $registry,
+    ) {
         $fileName = 'php://temp';
         if (($stream = fopen($fileName, 'wb')) === false) {
             throw new \RuntimeException('Unable to open stream "' . $fileName . '"', 1598341765);
@@ -57,9 +57,8 @@ class UpgradeWizardsService
     public function listOfWizardsDone(): array
     {
         $wizardsDoneInRegistry = [];
-        $registry = GeneralUtility::makeInstance(Registry::class);
         foreach ($this->upgradeWizardRegistry->getUpgradeWizards() as $identifier => $serviceName) {
-            if ($registry->get('installUpdate', $serviceName, false)) {
+            if ($this->registry->get('installUpdate', $serviceName, false)) {
                 $wizardsDoneInRegistry[] = [
                     'class' => $serviceName,
                     'identifier' => $identifier,
@@ -77,11 +76,10 @@ class UpgradeWizardsService
      */
     public function listOfRowUpdatersDone(): array
     {
-        $registry = GeneralUtility::makeInstance(Registry::class);
-        $rowUpdatersDoneClassNames = $registry->get('installUpdateRows', 'rowUpdatersDone', []);
+        $rowUpdatersDoneClassNames = $this->registry->get('installUpdateRows', 'rowUpdatersDone', []);
         $rowUpdatersDone = [];
         foreach ($rowUpdatersDoneClassNames as $rowUpdaterClassName) {
-            // Silently skip non existing DatabaseRowsUpdateWizards
+            // Silently skip non-existing DatabaseRowsUpdateWizards
             if (!class_exists($rowUpdaterClassName)) {
                 continue;
             }
@@ -114,17 +112,16 @@ class UpgradeWizardsService
     {
         $this->assertIdentifierIsValid($identifier);
 
-        $registry = GeneralUtility::makeInstance(Registry::class);
         $aWizardHasBeenMarkedUndone = false;
         foreach ($this->listOfWizardsDone() as $wizard) {
             if ($wizard['identifier'] === $identifier) {
                 $aWizardHasBeenMarkedUndone = true;
-                $registry->set('installUpdate', $wizard['class'], 0);
+                $this->registry->set('installUpdate', $wizard['class'], 0);
             }
         }
         if (!$aWizardHasBeenMarkedUndone) {
             $rowUpdatersDoneList = $this->listOfRowUpdatersDone();
-            $registryArray = $registry->get('installUpdateRows', 'rowUpdatersDone', []);
+            $registryArray = $this->registry->get('installUpdateRows', 'rowUpdatersDone', []);
             foreach ($rowUpdatersDoneList as $rowUpdater) {
                 if ($rowUpdater['identifier'] === $identifier) {
                     $aWizardHasBeenMarkedUndone = true;
@@ -134,7 +131,7 @@ class UpgradeWizardsService
                             break;
                         }
                     }
-                    $registry->set('installUpdateRows', 'rowUpdatersDone', $registryArray);
+                    $this->registry->set('installUpdateRows', 'rowUpdatersDone', $registryArray);
                 }
             }
         }
@@ -300,7 +297,7 @@ class UpgradeWizardsService
      */
     public function markWizardAsDone(UpgradeWizardInterface $upgradeWizard): void
     {
-        GeneralUtility::makeInstance(Registry::class)->set('installUpdate', $upgradeWizard::class, 1);
+        $this->registry->set('installUpdate', $upgradeWizard::class, 1);
     }
 
     /**
@@ -313,7 +310,7 @@ class UpgradeWizardsService
     {
         $this->assertIdentifierIsValid($identifier);
 
-        return (bool)GeneralUtility::makeInstance(Registry::class)->get(
+        return (bool)$this->registry->get(
             'installUpdate',
             $this->upgradeWizardRegistry->getUpgradeWizard($identifier)::class,
             false
@@ -353,7 +350,7 @@ class UpgradeWizardsService
      *
      * @throws \RuntimeException
      */
-    protected function assertIdentifierIsValid(string $identifier): void
+    private function assertIdentifierIsValid(string $identifier): void
     {
         if ($identifier === '') {
             throw new \RuntimeException('Empty upgrade wizard identifier given', 1650579934);
