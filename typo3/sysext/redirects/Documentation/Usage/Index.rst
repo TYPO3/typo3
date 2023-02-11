@@ -309,7 +309,7 @@ Using a relative target is necessary if a redirect must work on multiple domains
 .. important::
 
     TYPO3 will not syntax check the redirect. Make sure you enter working
-    redirects enclosed in delimiters. Use tools like https://regex101.com/,
+    redirects enclosed in delimiters. Use tools like https://regex101.com/ or https://extendsclass.com/regex-tester.html,
     if necessary.
 
 Automatic redirects creation
