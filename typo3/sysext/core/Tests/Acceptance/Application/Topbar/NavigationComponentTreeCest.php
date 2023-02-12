@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Topbar;
 
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\WebDriverBy;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
 /**
@@ -54,6 +56,18 @@ final class NavigationComponentTreeCest
 
         $I->wantTo('check File Module for Expands And Collapse');
         $I->click('Filelist');
+
+        // Make sure 'fileadmin' is selected since FileClipboardCest clicks around on file tree, too.
+        // @todo: Working on file tree could be extracted like Helper/PageTree
+        $I->waitForText('fileadmin');
+        $context = $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
+            return $webdriver->findElement(WebDriverBy::cssSelector('#typo3-filestoragetree-tree'));
+        });
+        $context = $I->executeInSelenium(function () use ($context) {
+            return $context->findElement(WebDriverBy::xpath('//*[text()=\'fileadmin\']/..'));
+        });
+        $context->findElement(WebDriverBy::cssSelector('text.node-name'))->click();
+
         $I->waitForElement($treeArea);
         $I->see('fileadmin', $treeArea);
 
