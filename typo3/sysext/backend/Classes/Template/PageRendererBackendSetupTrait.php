@@ -55,9 +55,6 @@ trait PageRendererBackendSetupTrait
         $pageRenderer->setLanguage($languageService->lang);
         $pageRenderer->setMetaTag('name', 'viewport', 'width=device-width, initial-scale=1');
         $pageRenderer->setFavIcon($this->getBackendFavicon($extensionConfiguration, $request));
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
-            $pageRenderer->enableDebugMode();
-        }
         $this->loadStylesheets($pageRenderer);
     }
 

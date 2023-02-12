@@ -739,9 +739,14 @@ class PageRenderer implements SingletonInterface
     /**
      * Enables Debug Mode
      * This is a shortcut to switch off all compress/concatenate features to enable easier debug
+     * @deprecated since TYPO3 v12.3. Will be removed in TYPO3 v13.0
      */
     public function enableDebugMode()
     {
+        trigger_error(
+            'PageRenderer::enableDebugMode() will be removed in TYPO3 v13.0.',
+            E_USER_DEPRECATED
+        );
         $this->compressJavascript = false;
         $this->compressCss = false;
         $this->concatenateCss = false;

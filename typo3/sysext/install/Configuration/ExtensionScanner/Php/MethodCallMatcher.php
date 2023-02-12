@@ -5512,4 +5512,11 @@ return [
             'Deprecation-99916-SiteLanguageDirectionSetting.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Page\PageRenderer->enableDebugMode' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-99932-PageRendererEnableDebugMode.rst',
+        ],
+    ],
 ];
