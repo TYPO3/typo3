@@ -136,4 +136,8 @@ namespace PHPSTORM_META {
     override(\Psr\Container\ContainerInterface::get(0), map([
         '' => '@',
     ]));
+
+    override(\Psr\EventDispatcher\EventDispatcherInterface::dispatch(0), map([
+        '' => '@',
+    ]));
 }
