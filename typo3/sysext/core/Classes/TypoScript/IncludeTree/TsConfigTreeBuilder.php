@@ -147,11 +147,9 @@ final class TsConfigTreeBuilder
         }
 
         // @deprecated since TYPO3 v12, remove together with event class and set IncludeTree\Event\ModifyLoadedPageTsConfigEvent final in v13.
-        /** @var LegacyModifyLoadedPageTsConfigEvent $event */
         $event = $this->eventDispatcher->dispatch(new LegacyModifyLoadedPageTsConfigEvent($collectedPagesTsConfigArray, $rootLine));
         $collectedPagesTsConfigArray = $event->getTsConfig();
 
-        /** @var ModifyLoadedPageTsConfigEvent $event */
         $event = $this->eventDispatcher->dispatch(new ModifyLoadedPageTsConfigEvent($collectedPagesTsConfigArray, $rootLine));
         $collectedPagesTsConfigArray = $event->getTsConfig();
 

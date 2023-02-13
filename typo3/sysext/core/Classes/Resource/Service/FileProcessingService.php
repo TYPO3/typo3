@@ -95,7 +95,6 @@ class FileProcessingService
 
         // set the storage of the processed file
         // Pre-process the file
-        /** @var Resource\Event\BeforeFileProcessingEvent $event */
         $event = $this->eventDispatcher->dispatch(
             new BeforeFileProcessingEvent($this->driver, $processedFile, $fileObject, $taskType, $configuration)
         );
@@ -109,7 +108,6 @@ class FileProcessingService
         }
 
         // Post-process (enrich) the file
-        /** @var Resource\Event\AfterFileProcessingEvent $event */
         $event = $this->eventDispatcher->dispatch(
             new AfterFileProcessingEvent($this->driver, $processedFile, $fileObject, $taskType, $configuration)
         );

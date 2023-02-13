@@ -163,7 +163,6 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         }
 
         $queryBuilder->addOrderBy('uid', 'DESC');
-        /** @var ModifyQueryForLiveSearchEvent $event */
         $event = $this->eventDispatcher->dispatch(new ModifyQueryForLiveSearchEvent($queryBuilder, $tableName));
 
         $items = [];

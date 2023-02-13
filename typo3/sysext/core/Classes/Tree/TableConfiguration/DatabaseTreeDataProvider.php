@@ -257,7 +257,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         }
         $this->treeData = GeneralUtility::makeInstance(TreeNode::class);
         $this->loadTreeData();
-        /** @var ModifyTreeDataEvent $event */
         $event = $this->eventDispatcher->dispatch(new ModifyTreeDataEvent($this->treeData, $this));
         $this->treeData = $event->getTreeData();
     }

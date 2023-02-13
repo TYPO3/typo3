@@ -69,7 +69,6 @@ class SqlReader
             }
         }
 
-        /** @var AlterTableDefinitionStatementsEvent $event */
         $event = $this->eventDispatcher->dispatch(new AlterTableDefinitionStatementsEvent($sqlString));
         $sqlString = $event->getSqlData();
 

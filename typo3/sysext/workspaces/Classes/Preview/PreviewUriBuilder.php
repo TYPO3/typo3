@@ -151,7 +151,6 @@ class PreviewUriBuilder
             'liveRecord' => $liveRecord,
             'versionRecord' => $versionRecord,
         ]);
-        /** @var RetrievedPreviewUrlEvent $event */
         $event = $this->eventDispatcher->dispatch($event);
         $previewUri = (string)($event->getPreviewUri() ?? '');
         return $previewUri;

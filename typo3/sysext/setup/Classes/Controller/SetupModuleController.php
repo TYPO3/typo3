@@ -150,7 +150,6 @@ class SetupModuleController
     protected function processAdditionalJavaScriptModules(): void
     {
         $event = new AddJavaScriptModulesEvent();
-        /** @var AddJavaScriptModulesEvent $event */
         $event = $this->eventDispatcher->dispatch($event);
         foreach ($event->getJavaScriptModules() as $specifier) {
             $this->pageRenderer->loadJavaScriptModule($specifier);

@@ -148,7 +148,6 @@ final class PageRecordProvider implements SearchProviderInterface
         }
 
         $queryBuilder->addOrderBy('uid', 'DESC');
-        /** @var ModifyQueryForLiveSearchEvent $event */
         $event = $this->eventDispatcher->dispatch(new ModifyQueryForLiveSearchEvent($queryBuilder, 'pages'));
 
         $items = [];

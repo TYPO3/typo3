@@ -459,7 +459,6 @@ class PageRepository implements LoggerAwareInterface
         }
 
         $event = new AfterRecordLanguageOverlayEvent($table, $originalRow, $localizedRecord, $attempted, $languageAspect);
-        /** @var AfterRecordLanguageOverlayEvent $event */
         $event = $eventDispatcher->dispatch($event);
 
         // Return localized record or the original row, if no overlays were done
