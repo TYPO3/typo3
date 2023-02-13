@@ -79,9 +79,7 @@ class SysTemplateTreeBuilderTest extends FunctionalTestCase
                 'is_siteroot' => 0,
             ],
         ];
-        /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
-        /** @var SysTemplateTreeBuilder $subject */
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
         self::assertEquals($includeTree, unserialize(serialize($includeTree)));
@@ -103,9 +101,7 @@ class SysTemplateTreeBuilderTest extends FunctionalTestCase
                 'is_siteroot' => 0,
             ],
         ];
-        /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
-        /** @var SysTemplateTreeBuilder $subject */
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
         self::assertEquals($includeTree, unserialize(serialize($includeTree)));
@@ -127,11 +123,8 @@ class SysTemplateTreeBuilderTest extends FunctionalTestCase
                 'is_siteroot' => 0,
             ],
         ];
-        /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
-        /** @var SiteFinder $siteFinder */
         $siteFinder = $this->get(SiteFinder::class);
-        /** @var SysTemplateTreeBuilder $subject */
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite(
             'constants',
@@ -162,9 +155,7 @@ class SysTemplateTreeBuilderTest extends FunctionalTestCase
                 'is_siteroot' => 0,
             ],
         ];
-        /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
-        /** @var SysTemplateTreeBuilder $subject */
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
         self::assertEquals($includeTree, unserialize(serialize($includeTree)));
@@ -192,9 +183,7 @@ class SysTemplateTreeBuilderTest extends FunctionalTestCase
                 'is_siteroot' => 0,
             ],
         ];
-        /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
-        /** @var SysTemplateTreeBuilder $subject */
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
         self::assertEquals($includeTree, unserialize(serialize($includeTree)));
@@ -223,9 +212,7 @@ class SysTemplateTreeBuilderTest extends FunctionalTestCase
                 'is_siteroot' => 0,
             ],
         ];
-        /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
-        /** @var SysTemplateTreeBuilder $subject */
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
         self::assertEquals($includeTree, unserialize(serialize($includeTree)));
@@ -253,9 +240,7 @@ class SysTemplateTreeBuilderTest extends FunctionalTestCase
                 'is_siteroot' => 0,
             ],
         ];
-        /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
-        /** @var SysTemplateTreeBuilder $subject */
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
         self::assertEquals($includeTree, unserialize(serialize($includeTree)));
@@ -277,9 +262,7 @@ class SysTemplateTreeBuilderTest extends FunctionalTestCase
                 'is_siteroot' => 0,
             ],
         ];
-        /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
-        /** @var SysTemplateTreeBuilder $subject */
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
         self::assertEquals($includeTree, unserialize(serialize($includeTree)));
@@ -301,9 +284,7 @@ class SysTemplateTreeBuilderTest extends FunctionalTestCase
                 'is_siteroot' => 0,
             ],
         ];
-        /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
-        /** @var SysTemplateTreeBuilder $subject */
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
         self::assertEquals($includeTree, unserialize(serialize($includeTree)));
@@ -325,9 +306,7 @@ class SysTemplateTreeBuilderTest extends FunctionalTestCase
                 'is_siteroot' => 0,
             ],
         ];
-        /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
-        /** @var SysTemplateTreeBuilder $subject */
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
         self::assertEquals($includeTree, unserialize(serialize($includeTree)));
@@ -349,9 +328,7 @@ class SysTemplateTreeBuilderTest extends FunctionalTestCase
                 'is_siteroot' => 0,
             ],
         ];
-        /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
-        /** @var SysTemplateTreeBuilder $subject */
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
         self::assertEquals($includeTree, unserialize(serialize($includeTree)));
@@ -367,7 +344,6 @@ class SysTemplateTreeBuilderTest extends FunctionalTestCase
      */
     private function getAst(RootInclude $rootInclude): RootNode
     {
-        /** @var IncludeTreeAstBuilderVisitor $astBuilderVisitor */
         $astBuilderVisitor = $this->get(IncludeTreeAstBuilderVisitor::class);
         $traverser = new IncludeTreeTraverser();
         $traverser->addVisitor($astBuilderVisitor);

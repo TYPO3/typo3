@@ -67,7 +67,6 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendConfigurationManagerTestTypoScript.csv');
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
-        /** @var BackendConfigurationManager $subject */
         $subject = $this->get(BackendConfigurationManager::class);
         $expectedResult = [
             'settings' => [
@@ -107,7 +106,6 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendConfigurationManagerTestTypoScript.csv');
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
-        /** @var BackendConfigurationManager $subject */
         $subject = $this->get(BackendConfigurationManager::class);
         $expectedResult = [
             'settings' => [

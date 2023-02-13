@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Storage;
 
 use ExtbaseTeam\BlogExample\Domain\Model\Tag;
 use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
-use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -49,7 +48,6 @@ class Typo3DbBackendTest extends FunctionalTestCase
         $this->importCSVDataSet('typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags.csv');
         $domainObject = new Tag('Tag10');
 
-        /** @var Typo3DbBackend $typo3DbBackend */
         $typo3DbBackend = $this->get(Typo3DbBackend::class);
         $result = $typo3DbBackend->getUidOfAlreadyPersistedValueObject($domainObject);
 
@@ -68,7 +66,6 @@ class Typo3DbBackendTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
 
-        /** @var PostRepository $blogRepository */
         $blogRepository = $this->get(BlogRepository::class);
         $context = new Context([
             'workspace' => new WorkspaceAspect(1),
@@ -81,7 +78,6 @@ class Typo3DbBackendTest extends FunctionalTestCase
         $query->setQuerySettings($querySettings);
         $query->matching($query->equals('uid', 1));
 
-        /** @var Typo3DbBackend $typo3DbBackend */
         $typo3DbBackend = $this->get(Typo3DbBackend::class);
         $objectData = $typo3DbBackend->getObjectDataByQuery($query);
 

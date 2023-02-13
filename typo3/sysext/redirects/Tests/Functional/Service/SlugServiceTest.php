@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\SlugService;
@@ -111,7 +110,6 @@ class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSite();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.csv');
-        /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
         $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
@@ -155,7 +153,6 @@ class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSite();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test2.csv');
-        /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(1);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
         $this->subject->rebuildSlugsForSlugChange(1, $changeItem, $this->correlationId);
@@ -205,7 +202,6 @@ class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSiteInSubfolder();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.csv');
-        /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
         $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
@@ -249,7 +245,6 @@ class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSiteWithLanguages();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.csv');
-        /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(31);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
         $this->subject->rebuildSlugsForSlugChange(31, $changeItem, $this->correlationId);
@@ -293,7 +288,6 @@ class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSiteWithLanguagesInSubFolder();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.csv');
-        /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(31);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
         $this->subject->rebuildSlugsForSlugChange(31, $changeItem, $this->correlationId);
@@ -337,7 +331,6 @@ class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSiteWithLanguagesInSubFolder();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.csv');
-        /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(3);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
         $this->subject->rebuildSlugsForSlugChange(3, $changeItem, $this->correlationId);
@@ -382,7 +375,6 @@ class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSiteWithLanguages();
         $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test4.csv');
-        /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(5);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
         $this->subject->rebuildSlugsForSlugChange(5, $changeItem, $this->correlationId);

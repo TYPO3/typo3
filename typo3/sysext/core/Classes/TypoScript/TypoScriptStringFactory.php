@@ -50,18 +50,15 @@ final class TypoScriptStringFactory
      */
     public function parseFromStringWithIncludesAndConditions(string $name, string $typoScript, ConditionMatcherInterface $conditionMatcher): RootNode
     {
-        /** @var CacheManager $cacheManager */
         $cacheManager = $this->container->get(CacheManager::class);
         /** @var PhpFrontend $cache */
         $cache = $cacheManager->getCache('typoscript');
-        /** @var StringTreeBuilder $stringTreeBuilder */
         $stringTreeBuilder = $this->container->get(StringTreeBuilder::class);
         $includeTree = $stringTreeBuilder->getTreeFromString($name, $typoScript, $this->tokenizer, $cache);
         $conditionMatcherVisitor = new IncludeTreeConditionMatcherVisitor();
         $conditionMatcherVisitor->setConditionMatcher($conditionMatcher);
         $includeTreeTraverserConditionVerdictAware = new ConditionVerdictAwareIncludeTreeTraverser();
         $includeTreeTraverserConditionVerdictAware->addVisitor($conditionMatcherVisitor);
-        /** @var IncludeTreeAstBuilderVisitor $astBuilderVisitor */
         $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
         $includeTreeTraverserConditionVerdictAware->addVisitor($astBuilderVisitor);
         $includeTreeTraverserConditionVerdictAware->traverse($includeTree);

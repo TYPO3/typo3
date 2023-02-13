@@ -42,7 +42,6 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
     public function pageTsConfigLoadsDefaultsFromGlobals(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = 'loadedFromGlobals = loadedFromGlobals';
-        /** @var PageTsConfigFactory $subject */
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create([], new NullSite(), new ConditionMatcher());
         self::assertSame('loadedFromGlobals', $pageTsConfig->getPageTsConfigArray()['loadedFromGlobals']);
@@ -53,7 +52,6 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
      */
     public function pageTsConfigLoadsFromPagesTsconfigTestExtensionConfigurationFile(): void
     {
-        /** @var PageTsConfigFactory $subject */
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create([], new NullSite(), new ConditionMatcher());
         self::assertSame('loadedFromTestExtensionConfigurationPageTsConfig', $pageTsConfig->getPageTsConfigArray()['loadedFromTestExtensionConfigurationPageTsConfig']);
@@ -70,7 +68,6 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
                 'TSconfig' => 'loadedFromTsConfigField = loadedFromTsConfigField',
             ],
         ];
-        /** @var PageTsConfigFactory $subject */
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
         self::assertSame('loadedFromTsConfigField', $pageTsConfig->getPageTsConfigArray()['loadedFromTsConfigField']);
@@ -87,7 +84,6 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
                 'TSconfig' => '@import \'EXT:test_typoscript_pagetsconfigfactory/Configuration/TsConfig/*.tsconfig\'',
             ],
         ];
-        /** @var PageTsConfigFactory $subject */
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
         self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
@@ -104,7 +100,6 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
                 'TSconfig' => '@import \'EXT:test_typoscript_pagetsconfigfactory/Configuration/TsConfig/*.typoscript\'',
             ],
         ];
-        /** @var PageTsConfigFactory $subject */
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
         self::assertSame('loadedFromTsconfigIncludesWithTyposcriptSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTyposcriptSuffix']);
@@ -127,7 +122,6 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
                     . chr(10) . 'loadedFromTsConfigField2 = loadedFromTsConfigField2Override',
             ],
         ];
-        /** @var PageTsConfigFactory $subject */
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
         self::assertSame('loadedFromTsConfigField1', $pageTsConfig->getPageTsConfigArray()['loadedFromTsConfigField1']);
@@ -145,7 +139,6 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
                 'TSconfig' => 'siteSetting = {$aSiteSetting}',
             ],
         ];
-        /** @var PageTsConfigFactory $subject */
         $subject = $this->get(PageTsConfigFactory::class);
         $siteSettings = new SiteSettings(['aSiteSetting' => 'aSiteSettingValue']);
         $site = new Site('siteIdentifier', 1, [], $siteSettings);
@@ -170,7 +163,6 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
                     . chr(10) . '[end]',
             ],
         ];
-        /** @var PageTsConfigFactory $subject */
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
         self::assertSame('on', $pageTsConfig->getPageTsConfigArray()['isHttps']);
@@ -193,7 +185,6 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
                     . chr(10) . '  isHttps = off',
             ],
         ];
-        /** @var PageTsConfigFactory $subject */
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
         self::assertSame('off', $pageTsConfig->getPageTsConfigArray()['isHttps']);
@@ -216,7 +207,6 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
                     . chr(10) . '[end]',
             ],
         ];
-        /** @var PageTsConfigFactory $subject */
         $subject = $this->get(PageTsConfigFactory::class);
         $siteSettings = new SiteSettings(['aSiteSetting' => 'request.getNormalizedParams().isHttps()']);
         $site = new Site('siteIdentifier', 1, [], $siteSettings);
@@ -229,7 +219,6 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
      */
     public function pageTsConfigLoadsFromEvent(): void
     {
-        /** @var PageTsConfigFactory $subject */
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create([], new NullSite(), new ConditionMatcher());
         self::assertSame('loadedFromEvent', $pageTsConfig->getPageTsConfigArray()['loadedFromEvent']);
@@ -240,7 +229,6 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
      */
     public function pageTsConfigLoadsFromLegacyEvent(): void
     {
-        /** @var PageTsConfigFactory $subject */
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create([], new NullSite(), new ConditionMatcher());
         self::assertSame('loadedFromLegacyEvent', $pageTsConfig->getPageTsConfigArray()['loadedFromLegacyEvent']);
@@ -253,7 +241,6 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/pageTsConfigTestFixture.csv');
         $backendUser = $this->setUpBackendUser(1);
-        /** @var UserTsConfigFactory $userTsConfigFactory */
         $userTsConfigFactory = $this->get(UserTsConfigFactory::class);
         $userTsConfig = $userTsConfigFactory->create($backendUser);
         $rootLine = [
@@ -262,7 +249,6 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
                 'TSconfig' => 'valueOverriddenByUserTsConfig = base',
             ],
         ];
-        /** @var PageTsConfigFactory $subject */
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher(), $userTsConfig);
         self::assertSame('overridden', $pageTsConfig->getPageTsConfigArray()['valueOverriddenByUserTsConfig']);

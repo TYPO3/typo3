@@ -41,7 +41,6 @@ class TypoScriptStringFactoryTest extends FunctionalTestCase
         $barNode = new ChildNode('bar');
         $barNode->setValue('barValue');
         $expected->addChild($barNode);
-        /** @var TypoScriptStringFactory $subject */
         $subject = $this->get(TypoScriptStringFactory::class);
         $result = $subject->parseFromStringWithIncludesAndConditions(
             'testing',
@@ -60,7 +59,6 @@ class TypoScriptStringFactoryTest extends FunctionalTestCase
         $fooNode = new ChildNode('foo');
         $fooNode->setValue('bar');
         $expected->addChild($fooNode);
-        /** @var TypoScriptStringFactory $subject */
         $subject = $this->get(TypoScriptStringFactory::class);
         $result = $subject->parseFromString('foo = bar', new AstBuilder(new NoopEventDispatcher()));
         self::assertEquals($expected, $result);

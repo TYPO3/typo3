@@ -179,7 +179,6 @@ class DataMapperTest extends FunctionalTestCase
     public function mapMapsArrayToObject(): void
     {
         $rows = [['uid' => 1234]];
-        /** @var DataMapper $dataMapper */
         $dataMapper = $this->get(DataMapper::class);
 
         $mappedObjectArray = $dataMapper->map(Blog::class, $rows);
@@ -195,7 +194,6 @@ class DataMapperTest extends FunctionalTestCase
     {
         $rows1 = [['uid' => 1234, 'title' => 'From persistence']];
         $rows2 = [['uid' => 1234, 'title' => 'Already persisted']];
-        /** @var DataMapper $dataMapper */
         $dataMapper = $this->get(DataMapper::class);
 
         $dataMapper->map(Blog::class, $rows1);
@@ -224,7 +222,6 @@ class DataMapperTest extends FunctionalTestCase
                 'initialized_date_time_property' => 0,
             ],
         ];
-        /** @var DataMapper $dataMapper */
         $dataMapper = $this->get(DataMapper::class);
 
         $mappedObjectsArray = $dataMapper->map(Example::class, $rows);
@@ -255,7 +252,6 @@ class DataMapperTest extends FunctionalTestCase
             ],
         ];
 
-        /** @var DataMapper $dataMapper */
         $dataMapper = $this->get(DataMapper::class);
 
         $this->expectException(UnknownPropertyTypeException::class);
@@ -273,7 +269,6 @@ class DataMapperTest extends FunctionalTestCase
                 'blog' => '',
             ],
         ];
-        /** @var DataMapper $dataMapper */
         $dataMapper = $this->get(DataMapper::class);
         $mappedObjectsArray = $dataMapper->map(Post::class, $rows);
 
@@ -291,7 +286,6 @@ class DataMapperTest extends FunctionalTestCase
                 'posts' => 0,
             ],
         ];
-        /** @var DataMapper $dataMapper */
         $dataMapper = $this->get(DataMapper::class);
         $mappedObjectsArray = $dataMapper->map(Blog::class, $rows);
 
@@ -309,7 +303,6 @@ class DataMapperTest extends FunctionalTestCase
                 'posts' => 1,
             ],
         ];
-        /** @var DataMapper $dataMapper */
         $dataMapper = $this->get(DataMapper::class);
         $dataMapper->map(Blog::class, $blogRows);
         $postRows = [
@@ -355,14 +348,12 @@ class DataMapperTest extends FunctionalTestCase
                 'initialized_date_time_property' => $value,
             ],
         ];
-        /** @var DataMapper $dataMapper */
         $dataMapper = $this->get(DataMapper::class);
         $mappedObjectsArray = $dataMapper->map(Example::class, $rows);
 
         self::assertSame($expectedValue, $mappedObjectsArray[0]->getInitializedDateTimeProperty()?->format('c'));
 
         // Flush DataMapFactory cache on each run.
-        /** @var CacheManager $cacheManager */
         $cacheManager = $this->get(CacheManager::class);
         $cacheManager->getCache('extbase')->flush();
     }
@@ -396,7 +387,6 @@ class DataMapperTest extends FunctionalTestCase
                 'initialized_date_time_property' => $value,
             ],
         ];
-        /** @var DataMapper $dataMapper */
         $dataMapper = $this->get(DataMapper::class);
         $mappedObjectsArray = $dataMapper->map(Example::class, $rows);
 
@@ -404,7 +394,6 @@ class DataMapperTest extends FunctionalTestCase
         self::assertEquals($expectedValue, $mappedObjectsArray[0]->getInitializedDateTimeProperty());
 
         // Flush DataMapFactory cache on each run.
-        /** @var CacheManager $cacheManager */
         $cacheManager = $this->get(CacheManager::class);
         $cacheManager->getCache('extbase')->flush();
 
@@ -423,7 +412,6 @@ class DataMapperTest extends FunctionalTestCase
                 'custom_date_time' => '2013-01-01 01:02:03',
             ],
         ];
-        /** @var DataMapper $dataMapper */
         $dataMapper = $this->get(DataMapper::class);
         $mappedObjectsArray = $dataMapper->map(Example::class, $rows);
 
@@ -435,7 +423,6 @@ class DataMapperTest extends FunctionalTestCase
      */
     public function getPlainValueReturnsCorrectDateTimeFormat(): void
     {
-        /** @var DataMapper $dataMapper */
         $dataMapper = $this->get(DataMapper::class);
         $columnMapDateTime = new ColumnMap('column_name', 'propertyName');
         $columnMapDateTime->setDateTimeStorageFormat('datetime');
@@ -472,7 +459,6 @@ class DataMapperTest extends FunctionalTestCase
      */
     public function getPlainValueReturnsExpectedValues(string|int $expectedValue, mixed $input): void
     {
-        /** @var DataMapper $dataMapper */
         $dataMapper = $this->get(DataMapper::class);
 
         $plainValue = $dataMapper->getPlainValue($input);
@@ -486,7 +472,6 @@ class DataMapperTest extends FunctionalTestCase
     public function getPlainValueCallsGetRealInstanceOnInputIfInputIsInstanceOfLazyLoadingProxy(): void
     {
         $this->importCSVDataSet('typo3/sysext/extbase/Tests/Functional/Persistence/Generic/Mapper/Fixtures/administrators.csv');
-        /** @var DataMapper $dataMapper */
         $dataMapper = $this->get(DataMapper::class);
         $rowsBlog = [
             [

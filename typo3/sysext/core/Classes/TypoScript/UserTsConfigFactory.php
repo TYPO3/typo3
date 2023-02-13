@@ -54,7 +54,6 @@ final class UserTsConfigFactory
         $backendConditionMatcher = GeneralUtility::makeInstance(BackendConditionMatcher::class, GeneralUtility::makeInstance(Context::class));
         $conditionMatcherVisitor->setConditionMatcher($backendConditionMatcher);
         $includeTreeTraverserConditionVerdictAware->addVisitor($conditionMatcherVisitor);
-        /** @var IncludeTreeAstBuilderVisitor $astBuilderVisitor */
         $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
         $includeTreeTraverserConditionVerdictAware->addVisitor($astBuilderVisitor);
         $includeTreeTraverserConditionVerdictAware->traverse($userTsConfigTree);

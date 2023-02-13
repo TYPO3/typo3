@@ -117,7 +117,6 @@ final class PageTsConfigActiveController
             $siteSettingsNode->setLineStream((new LosslessTokenizer())->tokenize($siteConstants));
             $siteSettingsTreeRoot = new RootInclude();
             $siteSettingsTreeRoot->addChild($siteSettingsNode);
-            /** @var IncludeTreeAstBuilderVisitor $astBuilderVisitor */
             $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
             $includeTreeTraverser = new IncludeTreeTraverser();
             $includeTreeTraverser->addVisitor($astBuilderVisitor);
@@ -170,7 +169,6 @@ final class PageTsConfigActiveController
 
         // Create AST with constants from site and conditions
         $includeTreeTraverser = new ConditionVerdictAwareIncludeTreeTraverser();
-        /** @var IncludeTreeCommentAwareAstBuilderVisitor $astBuilderVisitor */
         $astBuilderVisitor = $this->container->get(IncludeTreeCommentAwareAstBuilderVisitor::class);
         $astBuilderVisitor->setFlatConstants($siteSettingsFlat);
         $includeTreeTraverser->addVisitor($astBuilderVisitor);

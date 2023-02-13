@@ -75,7 +75,6 @@ class CollectionValidatorTest extends FunctionalTestCase
         /** @var ContainerBuilder $container */
         $container = $this->getContainer();
         $container->set(ValidatorResolver::class, $mockValidatorResolver);
-        /** @var CollectionValidator $subject */
         $subject = $this->get(CollectionValidator::class);
         $subject->setOptions(['elementValidator' => 'EmailAddress']);
         $emailAddressValidator = new EmailAddressValidator();
@@ -119,7 +118,6 @@ class CollectionValidatorTest extends FunctionalTestCase
             ->getMock();
         $aValidator->setOptions([]);
 
-        /** @var CollectionValidator $subject */
         $subject = $this->get(CollectionValidator::class);
         $subject->setOptions(['elementValidator' => 'Integer']);
         $integerValidator = new IntegerValidator();
@@ -158,7 +156,6 @@ class CollectionValidatorTest extends FunctionalTestCase
             [$this->get(ReflectionService::class)]
         );
         $mockValidatorResolver->expects(self::never())->method('createValidator');
-        /** @var CollectionValidator $subject */
         $subject = $this->get(CollectionValidator::class);
         $subject->setOptions(['elementType' => $elementType]);
         $subject->validate($objectStorage);

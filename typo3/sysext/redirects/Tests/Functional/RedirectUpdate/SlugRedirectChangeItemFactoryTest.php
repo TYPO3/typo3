@@ -37,7 +37,6 @@ class SlugRedirectChangeItemFactoryTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysFolderAsRootPage.csv');
 
-        /** @var ?SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(1);
         self::assertNull($changeItem);
     }
@@ -57,7 +56,6 @@ class SlugRedirectChangeItemFactoryTest extends FunctionalTestCase
             ],
         ]);
 
-        /** @var ?SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(1);
         self::assertNull($changeItem);
     }
@@ -77,7 +75,6 @@ class SlugRedirectChangeItemFactoryTest extends FunctionalTestCase
             ],
         ]);
 
-        /** @var ?SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(1);
         self::assertInstanceOf(SlugRedirectChangeItem::class, $changeItem);
         self::assertSame(1, $changeItem->getPageId());
@@ -99,7 +96,6 @@ class SlugRedirectChangeItemFactoryTest extends FunctionalTestCase
             ],
         ]);
 
-        /** @var ?SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(1);
         self::assertInstanceOf(SlugRedirectChangeItem::class, $changeItem);
         self::assertSame(1, $changeItem->getPageId());

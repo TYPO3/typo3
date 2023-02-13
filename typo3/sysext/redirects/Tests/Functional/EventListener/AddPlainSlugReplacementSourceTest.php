@@ -41,7 +41,6 @@ class AddPlainSlugReplacementSourceTest extends FunctionalTestCase
         $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId(1);
         $siteLanguage = $site->getDefaultLanguage();
 
-        /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(EventDispatcherInterface::class)->dispatch(
             new SlugRedirectChangeItemCreatedEvent(
                 new SlugRedirectChangeItem(

@@ -42,7 +42,6 @@ class ExtendedFileUtilityTest extends FunctionalTestCase
      */
     public function folderHasFilesInUseReturnsTrueIfItHasFilesInUse(): void
     {
-        /** @var StorageRepository $storageRepository */
         $storageRepository = $this->get(StorageRepository::class);
         $resourceStorage = $storageRepository->getDefaultStorage();
         $folder = $resourceStorage->getFolder('FolderWithUsedFile');
@@ -58,7 +57,6 @@ class ExtendedFileUtilityTest extends FunctionalTestCase
      */
     public function folderHasFilesInUseReturnsFalseIfItHasNoFilesInUse(): void
     {
-        /** @var StorageRepository $storageRepository */
         $storageRepository = $this->get(StorageRepository::class);
         $resourceStorage = $storageRepository->getDefaultStorage();
         $folder = $resourceStorage->getFolder('FolderWithUnusedFile');
@@ -74,7 +72,6 @@ class ExtendedFileUtilityTest extends FunctionalTestCase
      */
     public function folderHasFilesInUseReturnsFalseIfItHasNoFiles(): void
     {
-        /** @var StorageRepository $storageRepository */
         $storageRepository = $this->get(StorageRepository::class);
         $resourceStorage = $storageRepository->getDefaultStorage();
         $folder = $resourceStorage->createFolder('EmptyFolder');

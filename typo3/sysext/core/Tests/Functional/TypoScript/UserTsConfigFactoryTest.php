@@ -41,7 +41,6 @@ class UserTsConfigFactoryTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = 'loadedFromGlobals = loadedFromGlobals';
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
         $backendUser = $this->setUpBackendUser(1);
-        /** @var UserTsConfigFactory $subject */
         $subject = $this->get(UserTsConfigFactory::class);
         $userTsConfig = $subject->create($backendUser);
         self::assertSame('loadedFromGlobals', $userTsConfig->getUserTsConfigArray()['loadedFromGlobals']);
@@ -54,7 +53,6 @@ class UserTsConfigFactoryTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
         $backendUser = $this->setUpBackendUser(2);
-        /** @var UserTsConfigFactory $subject */
         $subject = $this->get(UserTsConfigFactory::class);
         $userTsConfig = $subject->create($backendUser);
         self::assertSame('loadedFromUser', $userTsConfig->getUserTsConfigArray()['loadedFromUser']);
@@ -67,7 +65,6 @@ class UserTsConfigFactoryTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
         $backendUser = $this->setUpBackendUser(3);
-        /** @var UserTsConfigFactory $subject */
         $subject = $this->get(UserTsConfigFactory::class);
         $userTsConfig = $subject->create($backendUser);
         self::assertSame('loadedFromUserGroup', $userTsConfig->getUserTsConfigArray()['loadedFromUserGroup']);
@@ -80,7 +77,6 @@ class UserTsConfigFactoryTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
         $backendUser = $this->setUpBackendUser(4);
-        /** @var UserTsConfigFactory $subject */
         $subject = $this->get(UserTsConfigFactory::class);
         $userTsConfig = $subject->create($backendUser);
         self::assertSame('loadedFromUserGroupOverride', $userTsConfig->getUserTsConfigArray()['loadedFromUserGroup']);
@@ -100,7 +96,6 @@ class UserTsConfigFactoryTest extends FunctionalTestCase
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $backendUser = $this->authenticateBackendUser($backendUser, $request);
-        /** @var UserTsConfigFactory $subject */
         $subject = $this->get(UserTsConfigFactory::class);
         $userTsConfig = $subject->create($backendUser);
         self::assertSame('on', $userTsConfig->getUserTsConfigArray()['isHttps']);
@@ -120,7 +115,6 @@ class UserTsConfigFactoryTest extends FunctionalTestCase
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $backendUser = $this->authenticateBackendUser($backendUser, $request);
-        /** @var UserTsConfigFactory $subject */
         $subject = $this->get(UserTsConfigFactory::class);
         $userTsConfig = $subject->create($backendUser);
         self::assertSame('off', $userTsConfig->getUserTsConfigArray()['isHttps']);
@@ -133,7 +127,6 @@ class UserTsConfigFactoryTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
         $backendUser = $this->setUpBackendUser(7);
-        /** @var UserTsConfigFactory $subject */
         $subject = $this->get(UserTsConfigFactory::class);
         $userTsConfig = $subject->create($backendUser);
         self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $userTsConfig->getUserTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
@@ -146,7 +139,6 @@ class UserTsConfigFactoryTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
         $backendUser = $this->setUpBackendUser(8);
-        /** @var UserTsConfigFactory $subject */
         $subject = $this->get(UserTsConfigFactory::class);
         $userTsConfig = $subject->create($backendUser);
         self::assertSame('loadedFromTsconfigIncludesWithTyposcriptSuffix', $userTsConfig->getUserTsConfigArray()['loadedFromTsconfigIncludesWithTyposcriptSuffix']);

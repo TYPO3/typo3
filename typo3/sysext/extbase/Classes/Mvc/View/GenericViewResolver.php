@@ -47,8 +47,6 @@ class GenericViewResolver implements ViewResolverInterface
 
     public function resolve(string $controllerObjectName, string $actionName, string $format): ViewInterface
     {
-        /** @var ViewInterface $view */
-        $view = $this->container->get($this->defaultViewClass);
-        return $view;
+        return $this->container->get($this->defaultViewClass);
     }
 }

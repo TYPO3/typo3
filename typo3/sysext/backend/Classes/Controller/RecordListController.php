@@ -159,7 +159,6 @@ class RecordListController
         }
         $clipboard = $this->initializeClipboard($request, $this->allowClipboard && (bool)$this->moduleData->get('clipBoard'));
         $dbList->clipObj = $clipboard;
-        /** @var RenderAdditionalContentToRecordListEvent $additionalRecordListEvent */
         $additionalRecordListEvent = $this->eventDispatcher->dispatch(new RenderAdditionalContentToRecordListEvent($request));
 
         $view = $this->moduleTemplateFactory->create($request);

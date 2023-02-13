@@ -99,7 +99,6 @@ final class PageTsConfigFactory
                     $siteSettingsNode->setLineStream($this->tokenizer->tokenize($siteConstants));
                     $siteSettingsTreeRoot = new RootInclude();
                     $siteSettingsTreeRoot->addChild($siteSettingsNode);
-                    /** @var IncludeTreeAstBuilderVisitor $astBuilderVisitor */
                     $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
                     $includeTreeTraverserConditionVerdictAware->resetVisitors();
                     $includeTreeTraverserConditionVerdictAware->addVisitor($astBuilderVisitor);
@@ -120,7 +119,6 @@ final class PageTsConfigFactory
         $conditionMatcherVisitor = new IncludeTreeConditionMatcherVisitor();
         $conditionMatcherVisitor->setConditionMatcher($conditionMatcher);
         $includeTreeTraverserConditionVerdictAware->addVisitor($conditionMatcherVisitor);
-        /** @var IncludeTreeAstBuilderVisitor $astBuilderVisitor */
         $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
         $astBuilderVisitor->setFlatConstants($siteSettingsFlat);
         $includeTreeTraverserConditionVerdictAware->addVisitor($astBuilderVisitor);

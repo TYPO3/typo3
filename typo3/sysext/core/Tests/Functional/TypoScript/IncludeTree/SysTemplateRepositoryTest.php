@@ -35,7 +35,6 @@ class SysTemplateRepositoryTest extends FunctionalTestCase
                 'is_siteroot' => 0,
             ],
         ];
-        /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         $result = $sysTemplateRepository->getSysTemplateRowsByRootline($rootline);
         self::assertSame(1, $result[0]['uid']);
@@ -61,7 +60,6 @@ class SysTemplateRepositoryTest extends FunctionalTestCase
                 'is_siteroot' => 0,
             ],
         ];
-        /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         $result = $sysTemplateRepository->getSysTemplateRowsByRootline($rootline);
         self::assertSame(1, $result[0]['uid']);
@@ -84,7 +82,6 @@ class SysTemplateRepositoryTest extends FunctionalTestCase
                 'is_siteroot' => 0,
             ],
         ];
-        /** @var SysTemplateRepository $sysTemplateRepository */
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         $result = $sysTemplateRepository->getSysTemplateRowsByRootline($rootline);
         self::assertSame(1, $result[0]['uid']);

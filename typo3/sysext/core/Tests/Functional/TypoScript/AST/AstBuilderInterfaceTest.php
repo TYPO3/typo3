@@ -40,7 +40,6 @@ class AstBuilderInterfaceTest extends FunctionalTestCase
     public function notModifiedValueKeepsNullValue(): void
     {
         $tokens = (new LosslessTokenizer())->tokenize('foo := doesNotExistFunction()');
-        /** @var AstBuilder $astBuilder */
         $astBuilder = $this->get(AstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertNull($ast->getChildByName('foo')->getValue());
@@ -53,7 +52,6 @@ class AstBuilderInterfaceTest extends FunctionalTestCase
     public function notModifiedValueKeepsNullValueCommentAware(): void
     {
         $tokens = (new LosslessTokenizer())->tokenize('foo := doesNotExistFunction()');
-        /** @var CommentAwareAstBuilder $astBuilder */
         $astBuilder = $this->get(CommentAwareAstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertNull($ast->getChildByName('foo')->getValue());
@@ -69,7 +67,6 @@ class AstBuilderInterfaceTest extends FunctionalTestCase
             "foo = originalValue\n" .
             'foo := doesNotExistFunction()'
         );
-        /** @var AstBuilder $astBuilder */
         $astBuilder = $this->get(AstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertSame('originalValue', $ast->getChildByName('foo')->getValue());
@@ -85,7 +82,6 @@ class AstBuilderInterfaceTest extends FunctionalTestCase
             "foo = originalValue\n" .
             'foo := doesNotExistFunction()'
         );
-        /** @var CommentAwareAstBuilder $astBuilder */
         $astBuilder = $this->get(CommentAwareAstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertSame('originalValue', $ast->getChildByName('foo')->getValue());
@@ -101,7 +97,6 @@ class AstBuilderInterfaceTest extends FunctionalTestCase
             "foo = originalValue\n" .
             'foo := testFunction(modifierArgument)'
         );
-        /** @var AstBuilder $astBuilder */
         $astBuilder = $this->get(AstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertSame('originalValue modifierArgument', $ast->getChildByName('foo')->getValue());
@@ -117,7 +112,6 @@ class AstBuilderInterfaceTest extends FunctionalTestCase
             "foo = originalValue\n" .
             'foo := testFunction(modifierArgument)'
         );
-        /** @var CommentAwareAstBuilder $astBuilder */
         $astBuilder = $this->get(CommentAwareAstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertSame('originalValue modifierArgument', $ast->getChildByName('foo')->getValue());
