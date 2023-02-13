@@ -15,21 +15,12 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Search\LiveSearch;
+namespace TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand;
 
-use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\SearchDemand;
-
-/**
- * Interface to declare a search provider used for the backend search
- *
- * @internal Interface may change in further iterations, do not rely on it
- */
-interface SearchProviderInterface
+enum DemandPropertyName
 {
-    /**
-     * @return ResultItem[]
-     */
-    public function find(SearchDemand $searchDemand): array;
-
-    public function getFilterLabel(): string;
+    case query;
+    case limit;
+    case offset;
+    case searchProviders;
 }

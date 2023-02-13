@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Search\Event\BeforeSearchInDatabaseRecordProviderEvent;
 use TYPO3\CMS\Backend\Search\Event\ModifyQueryForLiveSearchEvent;
+use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\SearchDemand;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -85,9 +86,11 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         );
         $this->pageIdList = $event->getSearchPageIds();
         $searchDemand = $event->getSearchDemand();
+        $query = $searchDemand->getQuery();
+        $remainingItems = $searchDemand->getLimit();
 
-        if ($this->queryParser->isValidPageJump($searchDemand->getQuery())) {
-            $commandQuery = $this->queryParser->getCommandForPageJump($searchDemand->getQuery());
+        if ($this->queryParser->isValidPageJump($query)) {
+            $commandQuery = $this->queryParser->getCommandForPageJump($query);
             $extractedQueryString = $this->queryParser->getSearchQueryValue($commandQuery);
             $tableName = $this->queryParser->getTableNameFromCommand($commandQuery);
 
@@ -105,7 +108,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                 continue;
             }
 
-            $tableResult = $this->findByTable($searchDemand->getQuery(), $tableName, $remainingItems);
+            $tableResult = $this->findByTable($query, $tableName, $remainingItems);
             $remainingItems -= count($tableResult);
 
             $result[] = $tableResult;

@@ -17,12 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Search\Event;
 
-use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand;
+use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\SearchDemand;
 
 /**
  * PSR-14 event to modify the incoming input about which tables should be searched for within
  * the live search results. This allows adding additional DB tables to be excluded / ignored, to
- * further limit the search result on certain page IDs or to modify  the search query altogether.
+ * further limit the search result on certain page IDs or to modify the search query altogether.
  */
 final class BeforeSearchInDatabaseRecordProviderEvent
 {

@@ -22,7 +22,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Search\Event\ModifyResultItemInLiveSearchEvent;
-use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand;
+use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\DemandPropertyName;
+use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\MutableSearchDemand;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchProviderRegistry;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -49,12 +50,11 @@ class LiveSearchController
      */
     public function searchAction(ServerRequestInterface $request): ResponseInterface
     {
-        if (!isset($request->getParsedBody()['q'])) {
-            return new Response('', 400, [], 'Missing argument "q"');
+        if (!isset($request->getParsedBody()['query'])) {
+            return new Response('', 400, [], 'Missing argument "query"');
         }
 
-        $queryString = trim($request->getParsedBody()['q']);
-        $searchProviders = $request->getParsedBody()['options']['searchProviders'] ?? [];
+        $mutableSearchDemand = MutableSearchDemand::fromRequest($request);
         $searchResults = [];
         $remainingItems = self::LIMIT;
 
@@ -63,12 +63,12 @@ class LiveSearchController
                 break;
             }
 
-            if ($searchProviders !== [] && !in_array(get_class($provider), $searchProviders, true)) {
+            if ($mutableSearchDemand->getSearchProviders() !== [] && !in_array(get_class($provider), $mutableSearchDemand->getSearchProviders(), true)) {
                 continue;
             }
 
-            $searchDemand = new SearchDemand($queryString, $remainingItems, 0);
-            $providerResult = $provider->find($searchDemand);
+            $mutableSearchDemand->setProperty(DemandPropertyName::limit, $remainingItems);
+            $providerResult = $provider->find($mutableSearchDemand->freeze());
             foreach ($providerResult as $key => $resultItem) {
                 $modifyRecordEvent = $this->eventDispatcher->dispatch(new ModifyResultItemInLiveSearchEvent($resultItem));
                 $providerResult[$key] = $modifyRecordEvent->getResultItem();

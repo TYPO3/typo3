@@ -148,8 +148,8 @@ class LiveSearch {
       searchResultContainer.loading = true;
 
       const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.livesearch).post({
-        q: this.searchTerm,
-        options: this.searchOptions,
+        query: this.searchTerm,
+        ...this.searchOptions,
       });
 
       resultSet = await response.raw().json();
