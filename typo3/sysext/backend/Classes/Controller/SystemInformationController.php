@@ -31,12 +31,9 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 #[Controller]
 class SystemInformationController
 {
-    protected SystemInformationToolbarItem $systemInformationToolbarItem;
-
     public function __construct(
-        SystemInformationToolbarItem $systemInformationToolbarItem
+        private readonly SystemInformationToolbarItem $systemInformationToolbarItem,
     ) {
-        $this->systemInformationToolbarItem = $systemInformationToolbarItem;
     }
 
     /**

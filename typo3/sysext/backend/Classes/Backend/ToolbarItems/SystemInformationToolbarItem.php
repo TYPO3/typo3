@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
@@ -30,7 +29,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Routing\RouteNotFoundException;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -50,7 +48,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly Typo3Version $typo3Version,
-        private readonly UriBuilder $uriBuilder,
         private readonly BackendViewFactory $backendViewFactory,
     ) {
         $this->highestSeverity = InformationStatus::cast(InformationStatus::STATUS_INFO);
@@ -133,14 +130,8 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
             return '';
         }
         $this->collectInformation();
-        try {
-            $environmentToolUrl = (string)$this->uriBuilder->buildUriFromRoute('tools_toolsenvironment');
-        } catch (RouteNotFoundException $e) {
-            $environmentToolUrl = '';
-        }
         $view = $this->backendViewFactory->create($this->request);
         $view->assignMultiple([
-            'environmentToolUrl' => $environmentToolUrl,
             'messages' => $this->systemMessages,
             'count' => $this->systemMessageTotalCount > 99 ? '99+' : $this->systemMessageTotalCount,
             'severityBadgeClass' => $this->severityBadgeClass,

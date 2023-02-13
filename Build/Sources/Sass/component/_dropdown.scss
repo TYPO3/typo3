@@ -107,11 +107,15 @@ h4.dropdown-headline {
 .dropdown-item-text {
     margin-bottom: 0;
 
-    a:not([class]) {
-        color: var(--typo3-list-item-active-color);
-    }
+    a {
+        color: $primary;
+        text-decoration: underline;
 
-    @include link-reset();
+        &:hover {
+            color: shift-color($primary, 20%);
+            text-decoration: underline;
+        }
+    }
 }
 
 .dropdown-item-columns {

@@ -5,13 +5,12 @@
     data-severityclass="{severityBadgeClass}"></span>
 
 <h3 class="dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemInformation.header"/></h3>
-<f:if condition="{environmentToolUrl}">
-    <p class="dropdown-item-text typo3-module-menu-item submodule mod-tools_toolsenvironment" data-modulename="tools_toolsenvironment">
-        <f:format.raw>
-            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.intro" arguments="{0: environmentToolUrl}"/>
-        </f:format.raw>
-    </p>
-</f:if>
+<p class="dropdown-item-text">
+    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.intro.text"/>
+    <a class="t3js-modulemenu-action" id="tools_toolsenvironment" href="#">
+        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.intro.link"/>
+    </a>
+</p>
 
 <f:if condition="{systemInformation}">
     <table class="dropdown-table">

@@ -15,8 +15,11 @@
 			<trans-unit id="systemInformation.header" resname="systemInformation.header">
 				<source>System Information</source>
 			</trans-unit>
-			<trans-unit id="systemmessage.intro" resname="systemmessage.intro">
-				<source><![CDATA[This is a short system overview. For advanced information please head to the <a href="%s">Environment Module</a>.]]></source>
+			<trans-unit id="systemmessage.intro.text" resname="systemmessage.intro.text">
+				<source>This is a short system overview. For advanced information please head to: </source>
+			</trans-unit>
+			<trans-unit id="systemmessage.intro.link" resname="systemmessage.intro.link">
+				<source>Environment Module</source>
 			</trans-unit>
 			<trans-unit id="systemmessage.allgood" resname="systemmessage.allgood" xml:space="preserve">
 				<source>Your system is fully operational.
