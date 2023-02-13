@@ -82,31 +82,35 @@ class FluidEmail extends Email
             default:
                 throw new \InvalidArgumentException('Setting FluidEmail->format() must be either "html", "plain" or "both", no other formats are currently supported', 1580743847);
         }
+        $this->resetBody();
         return $this;
     }
 
     public function setTemplate(string $templateName)
     {
         $this->templateName = $templateName;
+        $this->resetBody();
         return $this;
     }
 
     public function assign($key, $value)
     {
         $this->view->assign($key, $value);
+        $this->resetBody();
         return $this;
     }
 
     public function assignMultiple(array $values)
     {
         $this->view->assignMultiple($values);
+        $this->resetBody();
         return $this;
     }
 
     /*
      * Shorthand setters
      */
-    public function setRequest(ServerRequestInterface $request): self
+    public function setRequest(ServerRequestInterface $request)
     {
         $this->view->assign('request', $request);
         if ($request->getAttribute('normalizedParams') instanceof NormalizedParams) {
@@ -114,6 +118,7 @@ class FluidEmail extends Email
         } else {
             $this->view->assign('normalizedParams', NormalizedParams::createFromServerParams($_SERVER));
         }
+        $this->resetBody();
         return $this;
     }
 
@@ -151,6 +156,8 @@ class FluidEmail extends Email
     {
         if ($forceBodyGeneration) {
             $this->generateTemplatedBody('html');
+        } elseif (parent::getHtmlBody() === null) {
+            $this->generateTemplatedBody();
         }
         return parent::getHtmlBody();
     }
@@ -162,6 +169,8 @@ class FluidEmail extends Email
     {
         if ($forceBodyGeneration) {
             $this->generateTemplatedBody('plain');
+        } elseif (parent::getTextBody() === null) {
+            $this->generateTemplatedBody();
         }
         return parent::getTextBody();
     }
@@ -172,6 +181,8 @@ class FluidEmail extends Email
      */
     public function getViewHelperVariableContainer(): ViewHelperVariableContainer
     {
+        // the variables are possibly modified in ext:form, so content must be rendered
+        $this->resetBody();
         return $this->view->getRenderingContext()->getViewHelperVariableContainer();
     }
 
@@ -180,23 +191,25 @@ class FluidEmail extends Email
         // Use a local variable to allow forcing a specific format
         $format = $forceFormat ? [$forceFormat] : $this->format;
 
-        if (!$this->view) {
-            $this->initializeView();
-        }
-        if (in_array(static::FORMAT_HTML, $format, true)) {
+        $tryToRenderSubjectSection = false;
+        if (in_array(static::FORMAT_HTML, $format, true) && ($forceFormat || parent::getHtmlBody() === null)) {
             $this->html($this->renderContent('html'));
+            $tryToRenderSubjectSection = true;
         }
-        if (in_array(static::FORMAT_PLAIN, $format, true)) {
+        if (in_array(static::FORMAT_PLAIN, $format, true) && ($forceFormat || parent::getTextBody() === null)) {
             $this->text(trim($this->renderContent('txt')));
+            $tryToRenderSubjectSection = true;
         }
 
-        $subjectFromTemplate = $this->view->renderSection(
-            'Subject',
-            $this->view->getRenderingContext()->getVariableProvider()->getAll(),
-            true
-        );
-        if (!empty($subjectFromTemplate)) {
-            $this->subject($subjectFromTemplate);
+        if ($tryToRenderSubjectSection) {
+            $subjectFromTemplate = $this->view->renderSection(
+                'Subject',
+                $this->view->getRenderingContext()->getVariableProvider()->getAll(),
+                true
+            );
+            if (!empty($subjectFromTemplate)) {
+                $this->subject($subjectFromTemplate);
+            }
         }
     }
 
@@ -205,5 +218,11 @@ class FluidEmail extends Email
         $this->view->setFormat($format);
         $this->view->setTemplate($this->templateName);
         return $this->view->render();
+    }
+
+    protected function resetBody(): void
+    {
+        $this->html(null);
+        $this->text(null);
     }
 }
