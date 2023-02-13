@@ -836,11 +836,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Localization/LanguageStore.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Mail/FluidEmail.php
-
-		-
 			message: "#^Cannot assign offset 'address' to string\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php

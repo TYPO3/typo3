@@ -92,7 +92,6 @@ final class FluidEmailTest extends FunctionalTestCase
     {
         $subject = new FluidEmail();
         $subject
-            ->format(FluidEmail::FORMAT_BOTH)
             ->setTemplate('Default')
             ->from('benniYYYY@typo3.org')
             ->assign('content', 'Plain content <strong>from</strong> Functional test')
@@ -112,6 +111,7 @@ final class FluidEmailTest extends FunctionalTestCase
         $subject = new FluidEmail();
         $subject
             ->setTemplate('WithSubject')
+            ->format(FluidEmail::FORMAT_HTML)
             ->from('benniYYYY@typo3.org')
             ->assign('content', 'Plain content <strong>from</strong> Functional test')
             ->to('some-recipient@example.com');
@@ -141,6 +141,7 @@ final class FluidEmailTest extends FunctionalTestCase
         $subject = new FluidEmail();
         $subject
             ->setTemplate('WithSubject')
+            ->format(FluidEmail::FORMAT_PLAIN)
             ->from('benniYYYY@typo3.org')
             ->subject('Will be overridden in the template')
             ->assign('content', 'Plain content from Functional test')
@@ -161,5 +162,332 @@ final class FluidEmailTest extends FunctionalTestCase
         // Check content
         self::assertStringNotContainsString('<!doctype html>', $result);
         self::assertStringContainsString('Plain content from Functional test', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function viewAssignValuesResetsGeneratedHtmlBody(): void
+    {
+        $subject = new FluidEmail();
+        $subject
+            ->setTemplate('WithSubject')
+            ->format(FluidEmail::FORMAT_HTML)
+            ->from('benniYYYY@typo3.org')
+            ->assign('content', 'Plain content <strong>from</strong> Functional test')
+            ->to('some-recipient@example.com');
+
+        // Generate html body with the force argument
+        $result = $subject->getHtmlBody(true);
+
+        // Pre-check, result is not NULL
+        self::assertNotNull($result);
+
+        // Assert text content was not created
+        self::assertNull($subject->getTextBody());
+
+        // Check that subject section is evaluated
+        self::assertEquals('FluidEmail subject', $subject->getSubject());
+
+        // assign new content
+        $subject->assign('content', 'Reassigned Plain content <strong>from</strong> Functional test');
+        $result2 = $subject->getHtmlBody();
+
+        // Check content
+        self::assertStringContainsString('<!doctype html>', $result2);
+        self::assertStringContainsString('&lt;strong&gt;from&lt;/strong&gt;', $result2);
+        self::assertStringContainsString('Reassigned Plain content ', $result2);
+    }
+
+    /**
+     * @test
+     */
+    public function viewAssignValuesResetsGeneratedTextBody(): void
+    {
+        $subject = new FluidEmail();
+        $subject
+            ->setTemplate('WithSubject')
+            ->format(FluidEmail::FORMAT_PLAIN)
+            ->from('benniYYYY@typo3.org')
+            ->assign('content', 'Plain content from Functional test')
+            ->to('some-recipient@example.com');
+
+        // Generate text body with the force argument
+        $result = $subject->getTextBody(true);
+
+        // Pre-check, result is not NULL
+        self::assertNotNull($result);
+
+        // Assert html content was not created
+        self::assertNull($subject->getHtmlBody());
+
+        // Check that subject section is evaluated
+        self::assertEquals('FluidEmail subject', $subject->getSubject());
+
+        // assign new content
+        $subject->assign('content', 'Reassigned Plain content from Functional test');
+        $result2 = $subject->getTextBody();
+
+        // Assert html content was not created
+        self::assertNull($subject->getHtmlBody());
+
+        // Check content
+        self::assertStringNotContainsString('<!doctype html>', $result2);
+        self::assertStringContainsString('Reassigned Plain content ', $result2);
+    }
+
+    /**
+     * @test
+     */
+    public function viewAssignMultiValuesResetsGeneratedHtmlBody(): void
+    {
+        $subject = new FluidEmail();
+        $subject
+            ->setTemplate('WithSubject')
+            ->format(FluidEmail::FORMAT_HTML)
+            ->from('benniYYYY@typo3.org')
+            ->assign('content', 'Plain content <strong>from</strong> Functional test')
+            ->to('some-recipient@example.com');
+
+        // Generate html body with the force argument
+        $result = $subject->getHtmlBody(true);
+
+        // Pre-check, result is not NULL
+        self::assertNotNull($result);
+
+        // Assert text content was not created
+        self::assertNull($subject->getTextBody());
+
+        // Check that subject section is evaluated
+        self::assertEquals('FluidEmail subject', $subject->getSubject());
+
+        // assign new content
+        $subject->assignMultiple(['content' => 'Reassigned Plain content <strong>from</strong> Functional test']);
+        $result2 = $subject->getHtmlBody();
+
+        // Assert text content was not created
+        self::assertNull($subject->getTextBody());
+
+        // Check content
+        self::assertStringContainsString('<!doctype html>', $result2);
+        self::assertStringContainsString('&lt;strong&gt;from&lt;/strong&gt;', $result2);
+        self::assertStringContainsString('Reassigned Plain content ', $result2);
+    }
+
+    /**
+     * @test
+     */
+    public function viewAssignMultiValuesResetsGeneratedTextBody(): void
+    {
+        $subject = new FluidEmail();
+        $subject
+            ->setTemplate('WithSubject')
+            ->format(FluidEmail::FORMAT_PLAIN)
+            ->from('benniYYYY@typo3.org')
+            ->assign('content', 'Plain content from Functional test')
+            ->to('some-recipient@example.com');
+
+        // Generate html body with the force argument
+        $result = $subject->getTextBody(true);
+
+        // Pre-check, result is not NULL
+        self::assertNotNull($result);
+
+        // Assert text content was not created
+        self::assertNull($subject->getHtmlBody());
+
+        // Check that subject section is evaluated
+        self::assertEquals('FluidEmail subject', $subject->getSubject());
+
+        // assign new content
+        $subject->assignMultiple(['content' => 'Reassigned Plain content from Functional test']);
+        $result2 = $subject->getTextBody();
+
+        // Check content
+        self::assertStringNotContainsString('<!doctype html>', $result2);
+        self::assertStringContainsString('Reassigned Plain content ', $result2);
+    }
+
+    /**
+     * @test
+     */
+    public function bodiesAreNotRecreatedOnMultipleEnsureValidityCalls(): void
+    {
+        $subject = new class () extends FluidEmail {
+            public int $countRenderContentCalled = 0;
+
+            protected function renderContent(string $format): string
+            {
+                $this->countRenderContentCalled++;
+                return parent::renderContent($format);
+            }
+        };
+        $subject
+            ->setTemplate('WithSubject')
+            ->format(FluidEmail::FORMAT_BOTH)
+            ->from('benniYYYY@typo3.org')
+            ->assign('content', 'Plain content from Functional test')
+            ->to('some-recipient@example.com');
+
+        $subject->ensureValidity();
+        self::assertEquals(2, $subject->countRenderContentCalled);
+
+        $subject->ensureValidity();
+        self::assertEquals(2, $subject->countRenderContentCalled);
+    }
+
+    /**
+     * @test
+     */
+    public function bodiesAreRecreatedOnMultipleEnsureValidityCallsWithAssignUsedInBetween(): void
+    {
+        $subject = new class () extends FluidEmail {
+            public int $countRenderContentCalled = 0;
+
+            protected function renderContent(string $format): string
+            {
+                $this->countRenderContentCalled++;
+                return parent::renderContent($format);
+            }
+        };
+        $subject
+            ->setTemplate('WithSubject')
+            ->format(FluidEmail::FORMAT_BOTH)
+            ->from('benniYYYY@typo3.org')
+            ->assign('content', 'Plain content from Functional test')
+            ->to('some-recipient@example.com');
+
+        $subject->ensureValidity();
+        self::assertEquals(2, $subject->countRenderContentCalled);
+
+        $subject->assign('content', 'Reassigned plain content from Functional test');
+
+        $subject->ensureValidity();
+        $resultPlain = $subject->getTextBody();
+        $resultHtml = $subject->getHtmlBody();
+
+        self::assertEquals(4, $subject->countRenderContentCalled);
+        self::assertNotNull($resultPlain);
+        self::assertNotNull($resultHtml);
+        self::assertStringContainsString('Reassigned plain content from Functional test', $resultPlain);
+        self::assertStringContainsString('<!doctype html>', $resultHtml);
+        self::assertStringContainsString('Reassigned plain content from Functional test', $resultHtml);
+    }
+
+    /**
+     * @test
+     */
+    public function bodiesAreRecreatedOnMultipleEnsureValidityCallsWithAssignMultipleUsedInBetween(): void
+    {
+        $subject = new class () extends FluidEmail {
+            public int $countRenderContentCalled = 0;
+
+            protected function renderContent(string $format): string
+            {
+                $this->countRenderContentCalled++;
+                return parent::renderContent($format);
+            }
+        };
+        $subject
+            ->setTemplate('WithSubject')
+            ->format(FluidEmail::FORMAT_BOTH)
+            ->from('benniYYYY@typo3.org')
+            ->assign('content', 'Plain content from Functional test')
+            ->to('some-recipient@example.com');
+
+        $subject->ensureValidity();
+        self::assertEquals(2, $subject->countRenderContentCalled);
+
+        $subject->assignMultiple(['content' => 'Reassigned plain content from Functional test']);
+
+        $subject->ensureValidity();
+        $resultPlain = $subject->getTextBody();
+        $resultHtml = $subject->getHtmlBody();
+
+        self::assertEquals(4, $subject->countRenderContentCalled);
+        self::assertNotNull($resultPlain);
+        self::assertNotNull($resultHtml);
+        self::assertStringContainsString('Reassigned plain content from Functional test', $resultPlain);
+        self::assertStringContainsString('<!doctype html>', $resultHtml);
+        self::assertStringContainsString('Reassigned plain content from Functional test', $resultHtml);
+    }
+
+    /**
+     * @test
+     */
+    public function bodiesAreNotRecreatedOnMultipleEnsureValidityCallsWithSetSubjectInBetween(): void
+    {
+        $subject = new class () extends FluidEmail {
+            public int $countRenderContentCalled = 0;
+
+            protected function renderContent(string $format): string
+            {
+                $this->countRenderContentCalled++;
+                return parent::renderContent($format);
+            }
+        };
+        $subject
+            ->format(FluidEmail::FORMAT_BOTH)
+            ->from('benniYYYY@typo3.org')
+            ->assign('content', 'Plain content from Functional test')
+            ->subject('Original subject')
+            ->to('some-recipient@example.com');
+
+        $subject->ensureValidity();
+        self::assertEquals(2, $subject->countRenderContentCalled);
+
+        $subject->subject('Overridden subject');
+
+        $subject->ensureValidity();
+        $resultPlain = $subject->getTextBody();
+        $resultHtml = $subject->getHtmlBody();
+
+        self::assertEquals(2, $subject->countRenderContentCalled);
+        self::assertNotNull($resultPlain);
+        self::assertNotNull($resultHtml);
+        self::assertEquals('Overridden subject', $subject->getSubject());
+    }
+
+    /**
+     * @test
+     */
+    public function bodiesAreNotRecreatedOnMultipleEnsureValidityCallsWithAssignedValuesButManualSetTextAndHtml(): void
+    {
+        $subject = new class () extends FluidEmail {
+            public int $countRenderContentCalled = 0;
+
+            protected function renderContent(string $format): string
+            {
+                $this->countRenderContentCalled++;
+                return parent::renderContent($format);
+            }
+        };
+        $subject
+            ->format(FluidEmail::FORMAT_BOTH)
+            ->from('benniYYYY@typo3.org')
+            ->assign('content', 'Plain content from Functional test')
+            ->subject('Original subject')
+            ->to('some-recipient@example.com');
+
+        $subject->ensureValidity();
+        self::assertEquals(2, $subject->countRenderContentCalled);
+        $text = $subject->getTextBody();
+        $html = $subject->getHtmlBody();
+        self::assertEquals(2, $subject->countRenderContentCalled);
+
+        $subject->assign('content', 'Reassigned plain content from Functional test');
+        $subject->text($text);
+        $subject->html($html);
+
+        $subject->ensureValidity();
+        $resultPlain = $subject->getTextBody();
+        $resultHtml = $subject->getHtmlBody();
+
+        self::assertEquals(2, $subject->countRenderContentCalled);
+        self::assertNotNull($resultPlain);
+        self::assertNotNull($resultHtml);
+        self::assertEquals($text, $resultPlain);
+        self::assertStringContainsString('<!doctype html>', $resultHtml);
+        self::assertEquals($html, $resultHtml);
     }
 }
