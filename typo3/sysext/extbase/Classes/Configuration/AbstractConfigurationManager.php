@@ -250,8 +250,8 @@ abstract class AbstractConfigurationManager implements SingletonInterface
         trigger_error(
             sprintf(
                 'Plugin "%s" of extension "%s" uses switchable controller actions which has been marked as deprecated as of version TYPO3 10 and will be removed in one of the next major versions of TYPO3, probably version 11.0 or 12.0',
-                $frameworkConfiguration['pluginName'],
-                $frameworkConfiguration['extensionName']
+                $frameworkConfiguration['pluginName'] ?? '',
+                $frameworkConfiguration['extensionName'] ?? ''
             ),
             E_USER_DEPRECATED
         );
