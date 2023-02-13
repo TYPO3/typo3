@@ -24,6 +24,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 
 /**
  * A persistence query interface
+ * @template T of object
  */
 interface QueryInterface
 {
@@ -110,6 +111,7 @@ interface QueryInterface
      *
      * @param bool $returnRawQueryResult avoids the object mapping by the persistence
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|object[] The query result object or an array if $returnRawQueryResult is TRUE
+     * @phpstan-return ($returnRawQueryResult is true ? list<T> : QueryResultInterface<int,T>)
      */
     public function execute($returnRawQueryResult = false);
 
@@ -122,6 +124,7 @@ interface QueryInterface
      *
      * @param array<string,string> $orderings The property names to order by
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+     * @phpstan-return QueryInterface<T>
      */
     public function setOrderings(array $orderings);
 
@@ -131,6 +134,7 @@ interface QueryInterface
      *
      * @param int $limit
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+     * @phpstan-return QueryInterface<T>
      */
     public function setLimit($limit);
 
@@ -140,6 +144,7 @@ interface QueryInterface
      *
      * @param int $offset
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+     * @phpstan-return QueryInterface<T>
      */
     public function setOffset($offset);
 
@@ -149,6 +154,7 @@ interface QueryInterface
      *
      * @param ConstraintInterface $constraint Some constraint, depending on the backend
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+     * @phpstan-return QueryInterface<T>
      */
     public function matching($constraint);
 
@@ -264,6 +270,7 @@ interface QueryInterface
 
     /**
      * Set the type this query cares for.
+     * @phpstan-param class-string<T> $type
      */
     public function setType(string $type): void;
 
@@ -271,6 +278,7 @@ interface QueryInterface
      * Returns the type this query cares for.
      *
      * @return string
+     * @phpstan-return class-string<T>
      */
     public function getType();
 

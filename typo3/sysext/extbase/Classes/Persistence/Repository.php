@@ -34,7 +34,8 @@ class Repository implements RepositoryInterface, SingletonInterface
     protected $persistenceManager;
 
     /**
-     * @var class-string
+     * @var string
+     * @phpstan-var class-string<T>
      */
     protected $objectType;
 
@@ -97,7 +98,7 @@ class Repository implements RepositoryInterface, SingletonInterface
     /**
      * Replaces an existing object with the same identifier by the given object
      *
-     * @param T $modifiedObject The modified object
+     * @param object $modifiedObject The modified object
      * @phpstan-param T $modifiedObject
      * @throws Exception\UnknownObjectException
      * @throws Exception\IllegalObjectTypeException
@@ -146,7 +147,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * Finds an object matching the given identifier.
      *
      * @param int $uid The identifier of the object to find
-     * @return T|null The matching object if found, otherwise NULL
+     * @return object|null The matching object if found, otherwise NULL
      * @phpstan-return T|null
      */
     public function findByUid($uid)
@@ -201,6 +202,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * Returns a query for objects of this repository
      *
      * @return QueryInterface
+     * @phpstan-return QueryInterface<T>
      */
     public function createQuery()
     {

@@ -25,6 +25,9 @@ interface QueryFactoryInterface
      *
      * @param string $className The class name
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+     * @template T of object
+     * @phpstan-param class-string<T> $className
+     * @phpstan-return \TYPO3\CMS\Extbase\Persistence\QueryInterface<T>
      */
     public function create($className);
 }

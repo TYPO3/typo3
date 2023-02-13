@@ -171,6 +171,9 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      * @param string $type
      * @return QueryInterface
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @template T of object
+     * @phpstan-param class-string<T> $type
+     * @phpstan-return QueryInterface<T>
      */
     public function createQueryForType($type)
     {

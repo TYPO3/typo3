@@ -25,6 +25,8 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  * A lazy result list that is returned by Query::execute()
  *
  * @todo v12: Candidate to declare final - Can be decorated or standalone class implementing the interface
+ * @template TValue of object
+ * @implements QueryResultInterface<mixed,TValue>
  */
 class QueryResult implements QueryResultInterface
 {
@@ -36,10 +38,14 @@ class QueryResult implements QueryResultInterface
      */
     protected $numberOfResults;
 
+    /**
+     * @phpstan-var QueryInterface<TValue>|null
+     */
     protected ?QueryInterface $query = null;
 
     /**
      * @var array|null
+     * @phpstan-var list<TValue>|null
      */
     protected $queryResult;
 
@@ -51,6 +57,9 @@ class QueryResult implements QueryResultInterface
         $this->persistenceManager = $persistenceManager;
     }
 
+    /**
+     * @phpstan-param QueryInterface<TValue> $query
+     */
     public function setQuery(QueryInterface $query): void
     {
         $this->query = $query;
@@ -71,6 +80,7 @@ class QueryResult implements QueryResultInterface
      * Returns a clone of the query object
      *
      * @return QueryInterface
+     * @phpstan-return QueryInterface<TValue>
      */
     public function getQuery()
     {
@@ -81,6 +91,7 @@ class QueryResult implements QueryResultInterface
      * Returns the first object in the result set
      *
      * @return object
+     * @phpstan-return TValue|null
      */
     public function getFirst()
     {
@@ -120,6 +131,7 @@ class QueryResult implements QueryResultInterface
      * Returns an array with the objects in the result set
      *
      * @return array
+     * @phpstan-return list<TValue>
      */
     public function toArray()
     {
@@ -142,6 +154,7 @@ class QueryResult implements QueryResultInterface
     /**
      * @param mixed $offset
      * @return mixed
+     * @phpstan-return TValue|null
      * @todo: Set return type to mixed in v13
      */
     #[\ReturnTypeWillChange]
@@ -156,6 +169,7 @@ class QueryResult implements QueryResultInterface
      *
      * @param mixed $offset
      * @param mixed $value
+     * @phpstan-param TValue $value
      */
     public function offsetSet($offset, $value): void
     {
@@ -180,6 +194,7 @@ class QueryResult implements QueryResultInterface
      * @return mixed
      * @see Iterator::current()
      * @todo: Set return type to mixed in v13
+     * @phpstan-return TValue|false
      */
     #[\ReturnTypeWillChange]
     public function current()
@@ -192,6 +207,7 @@ class QueryResult implements QueryResultInterface
      * @return mixed
      * @see Iterator::key()
      * @todo: Set return type to mixed in v13
+     * @phpstan-return int|null
      */
     #[\ReturnTypeWillChange]
     public function key()

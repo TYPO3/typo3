@@ -116,6 +116,9 @@ interface PersistenceManagerInterface
      *
      * @param string $type
      * @return QueryInterface
+     * @template T of object
+     * @phpstan-param class-string<T> $type
+     * @phpstan-return QueryInterface<T>
      */
     public function createQueryForType($type);
 }

@@ -109,6 +109,7 @@ interface RepositoryInterface
      * Returns a query for objects of this repository
      *
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+     * @phpstan-return QueryInterface<T>
      */
     public function createQuery();
 }

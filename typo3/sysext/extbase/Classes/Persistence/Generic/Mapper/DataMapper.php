@@ -89,6 +89,9 @@ class DataMapper
      * @param string $className The name of the class
      * @param array $rows An array of arrays with field_name => value pairs
      * @return array An array of objects of the given class
+     * @template T of DomainObjectInterface
+     * @phpstan-param class-string<T> $className
+     * @phpstan-return list<T>
      */
     public function map($className, array $rows)
     {
@@ -105,6 +108,8 @@ class DataMapper
      * @param string $className The name of the class
      * @param array $row A single array with field_name => value pairs
      * @return string The target type (a class name)
+     * @phpstan-param class-string $className
+     * @phpstan-return class-string
      */
     public function getTargetType($className, array $row)
     {
@@ -128,6 +133,9 @@ class DataMapper
      * @param string $className The name of the target class
      * @param array $row A single array with field_name => value pairs
      * @return object An object of the given class
+     * @template T of DomainObjectInterface
+     * @phpstan-param class-string<T> $className
+     * @phpstan-return T
      */
     protected function mapSingleRow($className, array $row)
     {
@@ -142,6 +150,11 @@ class DataMapper
             $this->thawProperties($object, $row);
             $event = new AfterObjectThawedEvent($object, $row);
             $this->eventDispatcher->dispatch($event);
+            // @todo: technically, we cannot be sure to have an object that supports _memorizeCleanState() here
+            //        because _memorizeCleanState() is a contract method of ObjectMonitoringInterface, and not of
+            //        DomainObjectInterface. The easiest solution would be to have DomainObjectInterface extend
+            //        ObjectMonitoringInterface. That way, ObjectMonitoringInterface can also be kept for use with
+            //        the ObjectStorage class.
             $object->_memorizeCleanState();
             $this->persistenceSession->registerReconstitutedEntity($object);
         }
@@ -154,6 +167,9 @@ class DataMapper
      * @param string $className Name of the class to create a skeleton for
      * @throws InvalidClassException
      * @return DomainObjectInterface The object skeleton
+     * @template T of DomainObjectInterface
+     * @phpstan-param class-string<T> $className
+     * @phpstan-return T
      */
     protected function createEmptyObject($className)
     {

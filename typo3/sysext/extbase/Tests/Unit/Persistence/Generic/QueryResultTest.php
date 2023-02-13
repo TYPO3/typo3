@@ -111,8 +111,8 @@ class QueryResultTest extends UnitTestCase
     public function offsetSetWorksAsExpected(): void
     {
         $this->queryResult->setQuery($this->mockQuery);
-        $this->queryResult->offsetSet(0, ['foo' => 'FooOverridden', 'bar' => 'BarOverridden']);
-        self::assertEquals(['foo' => 'FooOverridden', 'bar' => 'BarOverridden'], $this->queryResult->offsetGet(0));
+        $this->queryResult->offsetSet(0, new \stdClass());
+        self::assertInstanceOf(\stdClass::class, $this->queryResult->offsetGet(0));
     }
 
     /**

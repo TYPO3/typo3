@@ -34,6 +34,8 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
  * The Query class used to run queries against the database
  *
  * @todo v12: Candidate to declare final - Can be decorated or standalone class implementing the interface
+ * @template T of object
+ * @implements QueryInterface<T>
  */
 class Query implements QueryInterface
 {
@@ -59,6 +61,7 @@ class Query implements QueryInterface
 
     /**
      * @var string
+     * @phpstan-var class-string<T>
      */
     protected $type;
 
@@ -122,6 +125,9 @@ class Query implements QueryInterface
         $this->container = $container;
     }
 
+    /**
+     * @phpstan-param class-string<T> $type
+     */
     public function setType(string $type): void
     {
         $this->type = $type;
@@ -172,6 +178,7 @@ class Query implements QueryInterface
      * Returns the type this query cares for.
      *
      * @return string
+     * @phpstan-return class-string<T>
      */
     public function getType()
     {
@@ -219,12 +226,14 @@ class Query implements QueryInterface
      *
      * @param bool $returnRawQueryResult avoids the object mapping by the persistence
      * @return QueryResultInterface|array The query result object or an array if $returnRawQueryResult is TRUE
+     * @phpstan-return ($returnRawQueryResult is true ? list<T> : QueryResultInterface<int,T>)
      */
     public function execute($returnRawQueryResult = false)
     {
         if ($returnRawQueryResult) {
             return $this->persistenceManager->getObjectDataByQuery($this);
         }
+        /** @phpstan-var QueryResultInterface<int,T> $queryResult */
         $queryResult = $this->container->get(QueryResultInterface::class);
         $queryResult->setQuery($this);
         return $queryResult;
@@ -240,6 +249,7 @@ class Query implements QueryInterface
      *
      * @param array $orderings The property names to order by
      * @return QueryInterface
+     * @phpstan-return QueryInterface<T>
      */
     public function setOrderings(array $orderings)
     {
@@ -268,6 +278,7 @@ class Query implements QueryInterface
      * @param int $limit
      * @throws \InvalidArgumentException
      * @return QueryInterface
+     * @phpstan-return QueryInterface<T>
      */
     public function setLimit($limit)
     {
@@ -307,6 +318,7 @@ class Query implements QueryInterface
      * @param int $offset
      * @throws \InvalidArgumentException
      * @return QueryInterface
+     * @phpstan-return QueryInterface<T>
      */
     public function setOffset($offset)
     {
@@ -333,6 +345,7 @@ class Query implements QueryInterface
      *
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint
      * @return QueryInterface
+     * @phpstan-return QueryInterface<T>
      */
     public function matching($constraint)
     {

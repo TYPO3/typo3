@@ -73,7 +73,7 @@ class NodeVisitor extends NodeVisitorAbstract
                     // static code analysis
                     'template', 'implements', 'extends',
                     // phpstan specific annotations
-                    'phpstan-param', 'phpstan-return',
+                    'phpstan-var', 'phpstan-param', 'phpstan-return',
                 ];
                 // allow annotation only on class level
                 if (get_class($node) === Node\Stmt\Class_::class) {
