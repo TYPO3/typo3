@@ -121,8 +121,8 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
             $task->setExecuted(true);
             $imageDimensions = $this->getGraphicalFunctionsObject()->getImageDimensions($localProcessedFile);
             $properties = [
-                'width' => $imageDimensions[0],
-                'height' => $imageDimensions[1],
+                'width' => $imageDimensions[0] ?? 0,
+                'height' => $imageDimensions[1] ?? 0,
                 'size' => filesize($localProcessedFile),
                 'checksum' => $task->getConfigurationChecksum(),
             ];
