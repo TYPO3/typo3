@@ -23,7 +23,6 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {SearchOptionItem} from '@typo3/backend/live-search/element/search-option-item';
 import BrowserSession from '@typo3/backend/storage/browser-session';
 import {ResultContainer, componentName as resultContainerComponentName} from '@typo3/backend/live-search/element/result/result-container';
 import {ResultItemInterface} from '@typo3/backend/live-search/element/result/item/item';
@@ -45,9 +44,6 @@ interface SearchOption {
  * @exports @typo3/backend/toolbar/live-search
  */
 class LiveSearch {
-  private searchTerm: string = '';
-  private searchOptions: { [key: string]: string[] } = {};
-
   constructor() {
     DocumentService.ready().then((): void => {
       this.registerEvents();
@@ -69,32 +65,49 @@ class LiveSearch {
   }
 
   private openSearchModal(): void {
+    const url = new URL(TYPO3.settings.ajaxUrls.livesearch_form, window.location.origin);
+    url.searchParams.set('query', BrowserSession.get('livesearch-term') ?? '');
+
+    const persistedSearchOptions = Object.entries(BrowserSession.getByPrefix('livesearch-option-'))
+      .filter((item: [string, string]) => item[1] === '1')
+      .map((item: [string, string]): SearchOption => {
+        const trimmedKey = item[0].replace('livesearch-option-', '');
+        const [key, value] = trimmedKey.split('-', 2);
+        return {key, value}
+      });
+
+    const searchOptions = this.composeSearchOptions(persistedSearchOptions);
+    for (const [optionKey, optionValues] of Object.entries(searchOptions)) {
+      for (let optionValue of optionValues) {
+        url.searchParams.append(`${optionKey}[]`, optionValue);
+      }
+    }
+
     const modal = Modal.advanced({
       type: Modal.types.ajax,
-      content: TYPO3.settings.ajaxUrls.livesearch_form + '&q=' + (BrowserSession.get('livesearch-term') ?? ''),
+      content: url.toString(),
       title: lll('labels.search'),
       severity: SeverityEnum.notice,
       size: Modal.sizes.medium
     });
 
     modal.addEventListener('typo3-modal-shown', () => {
-      this.searchTerm = BrowserSession.get('livesearch-term') ?? '';
-
-      const searchOptions = Object.entries(BrowserSession.getByPrefix('livesearch-option-'))
-        .filter((item: [string, string]) => item[1] === '1')
-        .map((item: [string, string]): SearchOption => {
-          const trimmedKey = item[0].replace('livesearch-option-', '');
-          const [key, value] = trimmedKey.split('-', 2);
-          return {key, value}
-        });
-      this.composeSearchOptions(searchOptions);
-
       const searchField = modal.querySelector('input[type="search"]') as HTMLInputElement;
+      const searchForm = searchField.closest('form');
+
+      new RegularEvent('submit', (e: SubmitEvent): void => {
+        e.preventDefault();
+
+        const formData = new FormData(searchForm);
+        this.search(formData).then((): void => {
+          const query = formData.get('query').toString();
+          BrowserSession.set('livesearch-term', query);
+        });
+      }).bindTo(searchForm);
 
       searchField.clearable({
         onClear: (): void => {
-          this.searchTerm = '';
-          this.search();
+          searchForm.requestSubmit();
         },
       });
       searchField.focus();
@@ -106,51 +119,40 @@ class LiveSearch {
       }).bindTo(searchResultContainer);
 
       new RegularEvent('hide.bs.dropdown', (): void => {
-        const activeSearchOptions = Array.from(modal.querySelectorAll(Identifiers.searchOptionDropdown + ' typo3-backend-live-search-option-item'))
-          .filter((searchOptionItem: SearchOptionItem) => searchOptionItem.active)
-          .map((searchOptionItem: SearchOptionItem): SearchOption => ({
-            key: searchOptionItem.optionName,
-            value: searchOptionItem.optionId
-          }));
-        this.composeSearchOptions(activeSearchOptions);
-
-        this.search();
+        searchForm.requestSubmit();
       }).bindTo(modal.querySelector(Identifiers.searchOptionDropdownToggle));
 
-      new DebounceEvent('input', (e: InputEvent): void => {
-        this.searchTerm = (e.target as HTMLInputElement).value;
-        this.search();
+      new DebounceEvent('input', (): void => {
+        searchForm.requestSubmit();
       }).bindTo(searchField);
 
       new RegularEvent('keydown', this.handleKeyDown).bindTo(searchField);
 
-      this.search();
+      searchForm.requestSubmit();
     });
   }
 
-  private composeSearchOptions(searchOptions: SearchOption[]): void {
-    this.searchOptions = {};
-
+  private composeSearchOptions(searchOptions: SearchOption[]): { [key: string]: string[] } {
+    const composedSearchOptions: { [key: string]: string[] } = {};
     searchOptions.forEach((searchOption: SearchOption): void => {
-      if (this.searchOptions[searchOption.key] === undefined) {
-        this.searchOptions[searchOption.key] = [];
+      if (composedSearchOptions[searchOption.key] === undefined) {
+        composedSearchOptions[searchOption.key] = [];
       }
-      this.searchOptions[searchOption.key].push(searchOption.value);
+      composedSearchOptions[searchOption.key].push(searchOption.value);
     });
+
+    return composedSearchOptions;
   }
 
-  private search = async (): Promise<void> => {
-    BrowserSession.set('livesearch-term', this.searchTerm);
-
+  private search = async (formData: FormData): Promise<void> => {
+    const query = formData.get('query').toString();
     let resultSet: ResultItemInterface[]|null = null;
-    if (this.searchTerm !== '') {
+
+    if (query !== '') {
       const searchResultContainer = document.querySelector(resultContainerComponentName) as ResultContainer;
       searchResultContainer.loading = true;
 
-      const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.livesearch).post({
-        query: this.searchTerm,
-        ...this.searchOptions,
-      });
+      const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.livesearch).post(formData);
 
       resultSet = await response.raw().json();
     }

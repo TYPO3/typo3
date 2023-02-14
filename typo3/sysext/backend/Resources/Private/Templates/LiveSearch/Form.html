@@ -5,36 +5,43 @@
 >
 
 <typo3-backend-live-search>
-    <div class="sticky-form-actions">
-        <div class="row row-cols-auto justify-content-between">
-            <div class="col flex-grow-1">
-                <div class="input-group mb-3">
-                    <f:if condition="{searchProviders->f:count()} > 0">
-                        <div class="btn-group">
-                            <button class="btn btn-default t3js-search-provider-dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
-                                <core:icon identifier="actions-menu-alternative" size="small" />
-                            </button>
-                            <div class="dropdown-menu t3js-search-provider-dropdown">
-                                <h6 class="dropdown-header">Search records in</h6>
-                                <form class="dropdown-item-text">
-                                    <f:for each="{searchProviders}" as="searchProvider" key="searchProviderIdentifier">
-                                        <typo3-backend-live-search-option-item optionId="{searchProviderIdentifier}" optionName="searchProviders" optionLabel="{searchProvider.filterLabel}"></typo3-backend-live-search-option-item>
-                                    </f:for>
-                                </form>
+    <form>
+        <div class="sticky-form-actions">
+            <div class="row row-cols-auto justify-content-between">
+                <div class="col flex-grow-1">
+                    <div class="input-group mb-3">
+                        <f:if condition="{searchProviders->f:count()} > 0">
+                            <div class="btn-group">
+                                <button class="btn btn-default t3js-search-provider-dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
+                                    <core:icon identifier="actions-menu-alternative" size="small" />
+                                </button>
+                                <div class="dropdown-menu t3js-search-provider-dropdown">
+                                    <h6 class="dropdown-header">Search records in</h6>
+                                    <div class="dropdown-item-text">
+                                        <f:for each="{searchProviders}" as="searchProvider" key="searchProviderIdentifier">
+                                            <typo3-backend-live-search-option-item
+                                                optionId="{searchProviderIdentifier}"
+                                                optionName="searchProviders"
+                                                optionLabel="{searchProvider.instance.filterLabel}"
+                                                {searchProvider.isActive ? 'active' : ''}
+                                            ></typo3-backend-live-search-option-item>
+                                        </f:for>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </f:if>
-                    <input type="search" name="searchField" class="form-control" placeholder="Search" value="{query}" autocomplete="off">
+                        </f:if>
+                        <input type="search" name="query" class="form-control" placeholder="Search" value="{searchDemand.query}" autocomplete="off">
+                    </div>
+                    <div class="form-text mt-2">
+                        <core:icon identifier="actions-lightbulb-on" size="small" /> {f:translate(key: '{hint}')}
+                    </div>
                 </div>
-                <div class="form-text mt-2">
-                    <core:icon identifier="actions-lightbulb-on" size="small" /> {f:translate(key: '{hint}')}
+                <div class="col" hidden>
+                    <typo3-backend-live-search-show-all></typo3-backend-live-search-show-all>
                 </div>
-            </div>
-            <div class="col" hidden>
-                <typo3-backend-live-search-show-all></typo3-backend-live-search-show-all>
             </div>
         </div>
-    </div>
+    </form>
     <typo3-backend-live-search-result-container class="livesearch-results"></typo3-backend-live-search-result-container>
 </typo3-backend-live-search>
 </html>

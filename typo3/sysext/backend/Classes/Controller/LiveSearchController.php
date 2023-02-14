@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Search\Event\ModifyResultItemInLiveSearchEvent;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\DemandPropertyName;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\MutableSearchDemand;
+use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\SearchDemand;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchProviderRegistry;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -50,11 +51,11 @@ class LiveSearchController
      */
     public function searchAction(ServerRequestInterface $request): ResponseInterface
     {
-        if (!isset($request->getParsedBody()['query'])) {
-            return new Response('', 400, [], 'Missing argument "query"');
+        $mutableSearchDemand = MutableSearchDemand::fromRequest($request);
+        if ($mutableSearchDemand->getQuery() === '') {
+            return new Response('', 400, [], 'Argument "query" is missing or empty.');
         }
 
-        $mutableSearchDemand = MutableSearchDemand::fromRequest($request);
         $searchResults = [];
         $remainingItems = self::LIMIT;
 
@@ -92,12 +93,20 @@ class LiveSearchController
         ];
         $randomHintKey = array_rand($hints);
 
-        $query = $request->getQueryParams()['q'] ?? '';
+        $searchDemand = SearchDemand::fromRequest($request);
+        $searchProviders = [];
+        foreach ($this->searchProviderRegistry->getProviders() as $searchProviderClassName => $searchProvider) {
+            $searchProviders[$searchProviderClassName] = [
+                'instance' => $searchProvider,
+                'isActive' => in_array($searchProviderClassName, $searchDemand->getSearchProviders(), true),
+            ];
+        }
+
         $view = $this->backendViewFactory->create($request, ['typo3/cms-backend']);
         $view->assignMultiple([
-            'query' => $query,
+            'searchDemand' => $searchDemand,
             'hint' => $hints[$randomHintKey],
-            'searchProviders' => $this->searchProviderRegistry->getProviders(),
+            'searchProviders' => $searchProviders,
         ]);
 
         $response = new Response();

@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 final class SearchCest
 {
     private static string $toolbarItemSelector = '.t3js-toolbar-item-search';
-    private static string $searchField = 'input[type="search"][name="searchField"]';
+    private static string $searchField = 'input[type="search"][name="query"]';
     private static string $searchResultContainer = 'typo3-backend-live-search-result-container';
     private static string $searchResultItem = 'typo3-backend-live-search-result-item';
 

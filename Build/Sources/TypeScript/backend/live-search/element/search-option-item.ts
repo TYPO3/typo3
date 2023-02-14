@@ -18,7 +18,7 @@ import {ifDefined} from 'lit/directives/if-defined';
 
 @customElement('typo3-backend-live-search-option-item')
 export class SearchOptionItem extends LitElement {
-  @property({type: Boolean, attribute: false}) active: boolean = false;
+  @property({type: Boolean}) active: boolean = false;
   @property({type: String}) optionId: string;
   @property({type: String}) optionName: string;
   @property({type: String}) optionLabel: string;
@@ -29,11 +29,9 @@ export class SearchOptionItem extends LitElement {
   }
 
   protected render(): TemplateResult {
-    this.active = BrowserSession.get(this.getStorageKey()) === '1';
-
     return html`
       <div class="form-check">
-        <input type="checkbox" class="form-check-input" name="${this.optionName}" id="${this.optionId}" checked=${ifDefined(this.active ? 'checked' : undefined)} @input="${this.handleInput}">
+        <input type="checkbox" class="form-check-input" name="${this.optionName}[]" value="${this.optionId}" id="${this.optionId}" checked=${ifDefined(this.active ? 'checked' : undefined)} @input="${this.handleInput}">
         <label class="form-check-label" for="${this.optionId}">
           ${this.optionLabel}
         </label>
