@@ -944,7 +944,19 @@ class DataHandler implements LoggerAwareInterface
                                 $createNewVersion = true;
                             } else {
                                 $recordAccess = false;
-                                $this->log($table, 0, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Record could not be created in this workspace');
+                                $this->log(
+                                    $table,
+                                    0,
+                                    SystemLogDatabaseAction::VERSIONIZE,
+                                    0,
+                                    SystemLogErrorClassification::USER_ERROR,
+                                    'Attempt to insert version record "{table}:{uid}" to this workspace failed. "Live" edit permissions of records from tables without versioning required',
+                                    -1,
+                                    [
+                                        'table' => $table,
+                                        'uid' => $id,
+                                    ]
+                                );
                             }
                         }
                     }
@@ -1019,10 +1031,36 @@ class DataHandler implements LoggerAwareInterface
                                     $id = $this->autoVersionIdMap[$table][$id];
                                     $recordAccess = true;
                                 } else {
-                                    $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Could not be edited in offline workspace in the branch where found ({reason}). Auto-creation of version failed', -1, ['reason' => $errorCode]);
+                                    $this->log(
+                                        $table,
+                                        $id,
+                                        SystemLogDatabaseAction::VERSIONIZE,
+                                        0,
+                                        SystemLogErrorClassification::USER_ERROR,
+                                        'Attempt to version record "{table}:{uid}" failed [{reason}]',
+                                        -1,
+                                        [
+                                            'reason' => $errorCode,
+                                            'table' => $table,
+                                            'uid' => $id,
+                                        ]
+                                    );
                                 }
                             } else {
-                                $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Could not be edited in offline workspace in the branch where found ({reason}). Auto-creation of version not allowed in workspace', -1, ['reason' => $errorCode]);
+                                $this->log(
+                                    $table,
+                                    $id,
+                                    SystemLogDatabaseAction::VERSIONIZE,
+                                    0,
+                                    SystemLogErrorClassification::USER_ERROR,
+                                    'Attempt to version record "{table}:{uid}" failed [{reason}]. "Live" edit permissions of records from tables without versioning required',
+                                    -1,
+                                    [
+                                        'reason' => $errorCode,
+                                        'table' => $table,
+                                        'uid' => $id,
+                                    ]
+                                );
                             }
                         }
                     }
