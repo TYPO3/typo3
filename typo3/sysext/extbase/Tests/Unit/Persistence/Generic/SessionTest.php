@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\Session;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -28,7 +29,8 @@ class SessionTest extends UnitTestCase
      */
     public function objectRegisteredWithRegisterReconstitutedEntityCanBeRetrievedWithGetReconstitutedEntities(): void
     {
-        $someObject = new \ArrayObject([]);
+        $someObject = new class () extends AbstractDomainObject {
+        };
         $session = new Session();
         $session->registerReconstitutedEntity($someObject);
 
@@ -41,7 +43,8 @@ class SessionTest extends UnitTestCase
      */
     public function unregisterReconstitutedEntityRemovesObjectFromSession(): void
     {
-        $someObject = new \ArrayObject([]);
+        $someObject = new class () extends AbstractDomainObject {
+        };
         $session = new Session();
         $session->registerObject($someObject, 'fakeUuid');
         $session->registerReconstitutedEntity($someObject);
@@ -56,10 +59,12 @@ class SessionTest extends UnitTestCase
      */
     public function hasObjectReturnsTrueForRegisteredObject(): void
     {
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
+        $object1 = new class () extends AbstractDomainObject {
+        };
+        $object2 = new class () extends AbstractDomainObject {
+        };
         $session = new Session();
-        $session->registerObject($object1, 12345);
+        $session->registerObject($object1, '12345');
 
         self::assertTrue($session->hasObject($object1), 'Session claims it does not have registered object.');
         self::assertFalse($session->hasObject($object2), 'Session claims it does have unregistered object.');
@@ -70,11 +75,13 @@ class SessionTest extends UnitTestCase
      */
     public function hasIdentifierReturnsTrueForRegisteredObject(): void
     {
+        $object = new class () extends AbstractDomainObject {
+        };
         $session = new Session();
-        $session->registerObject(new \stdClass(), 12345);
+        $session->registerObject($object, '12345');
 
-        self::assertTrue($session->hasIdentifier('12345', \stdClass::class), 'Session claims it does not have registered object.');
-        self::assertFalse($session->hasIdentifier('67890', \stdClass::class), 'Session claims it does have unregistered object.');
+        self::assertTrue($session->hasIdentifier('12345', $object::class), 'Session claims it does not have registered object.');
+        self::assertFalse($session->hasIdentifier('67890', $object::class), 'Session claims it does have unregistered object.');
     }
 
     /**
@@ -82,11 +89,12 @@ class SessionTest extends UnitTestCase
      */
     public function getIdentifierByObjectReturnsRegisteredUUIDForObject(): void
     {
-        $object = new \stdClass();
+        $object = new class () extends AbstractDomainObject {
+        };
         $session = new Session();
-        $session->registerObject($object, 12345);
+        $session->registerObject($object, '12345');
 
-        self::assertEquals(12345, $session->getIdentifierByObject($object), 'Did not get UUID registered for object.');
+        self::assertEquals('12345', $session->getIdentifierByObject($object), 'Did not get UUID registered for object.');
     }
 
     /**
@@ -94,11 +102,12 @@ class SessionTest extends UnitTestCase
      */
     public function getObjectByIdentifierReturnsRegisteredObjectForUUID(): void
     {
-        $object = new \stdClass();
+        $object = new class () extends AbstractDomainObject {
+        };
         $session = new Session();
-        $session->registerObject($object, 12345);
+        $session->registerObject($object, '12345');
 
-        self::assertSame($session->getObjectByIdentifier('12345', \stdClass::class), $object, 'Did not get object registered for UUID.');
+        self::assertSame($session->getObjectByIdentifier('12345', $object::class), $object, 'Did not get object registered for UUID.');
     }
 
     /**
@@ -106,23 +115,25 @@ class SessionTest extends UnitTestCase
      */
     public function unregisterObjectRemovesRegisteredObject(): void
     {
-        $object1 = new \stdClass();
-        $object2 = new \stdClass();
+        $object1 = new class () extends AbstractDomainObject {
+        };
+        $object2 = new class () extends AbstractDomainObject {
+        };
         $session = new Session();
-        $session->registerObject($object1, 12345);
-        $session->registerObject($object2, 67890);
+        $session->registerObject($object1, '12345');
+        $session->registerObject($object2, '67890');
 
         self::assertTrue($session->hasObject($object1), 'Session claims it does not have registered object.');
-        self::assertTrue($session->hasIdentifier('12345', \stdClass::class), 'Session claims it does not have registered object.');
+        self::assertTrue($session->hasIdentifier('12345', $object1::class), 'Session claims it does not have registered object.');
         self::assertTrue($session->hasObject($object1), 'Session claims it does not have registered object.');
-        self::assertTrue($session->hasIdentifier('67890', \stdClass::class), 'Session claims it does not have registered object.');
+        self::assertTrue($session->hasIdentifier('67890', $object2::class), 'Session claims it does not have registered object.');
 
         $session->unregisterObject($object1);
 
         self::assertFalse($session->hasObject($object1), 'Session claims it does have unregistered object.');
-        self::assertFalse($session->hasIdentifier('12345', \stdClass::class), 'Session claims it does not have registered object.');
+        self::assertFalse($session->hasIdentifier('12345', $object1::class), 'Session claims it does not have registered object.');
         self::assertTrue($session->hasObject($object2), 'Session claims it does not have registered object.');
-        self::assertTrue($session->hasIdentifier('67890', \stdClass::class), 'Session claims it does not have registered object.');
+        self::assertTrue($session->hasIdentifier('67890', $object2::class), 'Session claims it does not have registered object.');
     }
 
     /**

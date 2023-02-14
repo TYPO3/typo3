@@ -136,6 +136,9 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      */
     public function getObjectByIdentifier($identifier, $objectType = null, $useLazyLoading = false)
     {
+        // @todo: change argument $objectType, must be a string, not nullable
+        $objectType ??= '';
+
         if (isset($this->newObjects[$identifier])) {
             return $this->newObjects[$identifier];
         }

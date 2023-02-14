@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,31 +17,21 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * The persistence session - acts as a Unit of Work for Extbase persistence framework.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class Session implements SingletonInterface
+class Session
 {
-    /**
-     * Reconstituted objects
-     *
-     * @var ObjectStorage
-     */
-    protected $reconstitutedEntities;
+    protected ObjectStorage $reconstitutedEntities;
+    protected ObjectStorage $objectMap;
 
     /**
-     * @var ObjectStorage
+     * @var array<non-empty-string, array<non-empty-string, object>>
      */
-    protected $objectMap;
-
-    /**
-     * @var array
-     */
-    protected $identifierMap = [];
+    protected array $identifierMap = [];
 
     /**
      * Constructs a new Session
@@ -55,20 +47,16 @@ class Session implements SingletonInterface
      *
      * $entityData format is described in
      * "Documentation/PersistenceFramework object data format.txt"
-     *
-     * @param object $entity
      */
-    public function registerReconstitutedEntity($entity)
+    public function registerReconstitutedEntity(object $entity): void
     {
         $this->reconstitutedEntities->attach($entity);
     }
 
     /**
      * Unregisters data for a reconstituted object
-     *
-     * @param object $entity
      */
-    public function unregisterReconstitutedEntity($entity)
+    public function unregisterReconstitutedEntity(object $entity): void
     {
         if ($this->reconstitutedEntities->contains($entity)) {
             $this->reconstitutedEntities->detach($entity);
@@ -77,10 +65,8 @@ class Session implements SingletonInterface
 
     /**
      * Returns all objects which have been registered as reconstituted
-     *
-     * @return ObjectStorage All reconstituted objects
      */
-    public function getReconstitutedEntities()
+    public function getReconstitutedEntities(): ObjectStorage
     {
         return $this->reconstitutedEntities;
     }
@@ -89,11 +75,8 @@ class Session implements SingletonInterface
 
     /**
      * Checks whether the given object is known to the identity map
-     *
-     * @param object $object
-     * @return bool
      */
-    public function hasObject($object)
+    public function hasObject(object $object): bool
     {
         return $this->objectMap->contains($object);
     }
@@ -101,11 +84,10 @@ class Session implements SingletonInterface
     /**
      * Checks whether the given identifier is known to the identity map
      *
-     * @param string $identifier
-     * @param string $className
-     * @return bool
+     * @param non-empty-string $identifier
+     * @param class-string $className
      */
-    public function hasIdentifier($identifier, $className)
+    public function hasIdentifier(string $identifier, string $className): bool
     {
         return isset($this->identifierMap[$this->getClassIdentifier($className)][$identifier]);
     }
@@ -113,11 +95,10 @@ class Session implements SingletonInterface
     /**
      * Returns the object for the given identifier
      *
-     * @param string $identifier
-     * @param string $className
-     * @return object
+     * @param non-empty-string $identifier
+     * @param class-string $className
      */
-    public function getObjectByIdentifier($identifier, $className)
+    public function getObjectByIdentifier(string $identifier, string $className): object
     {
         return $this->identifierMap[$this->getClassIdentifier($className)][$identifier];
     }
@@ -126,11 +107,9 @@ class Session implements SingletonInterface
      * Returns the identifier for the given object from
      * the session, if the object was registered.
      *
-     *
-     * @param object $object
-     * @return string
+     * @return non-empty-string|null
      */
-    public function getIdentifierByObject($object)
+    public function getIdentifierByObject(object $object): string|null
     {
         if ($this->hasObject($object)) {
             return $this->objectMap[$object];
@@ -141,10 +120,9 @@ class Session implements SingletonInterface
     /**
      * Register an identifier for an object
      *
-     * @param object $object
-     * @param string $identifier
+     * @param non-empty-string $identifier
      */
-    public function registerObject($object, $identifier)
+    public function registerObject(object $object, string $identifier): void
     {
         $this->objectMap[$object] = $identifier;
         $this->identifierMap[$this->getClassIdentifier(get_class($object))][$identifier] = $object;
@@ -152,10 +130,8 @@ class Session implements SingletonInterface
 
     /**
      * Unregister an object
-     *
-     * @param object $object
      */
-    public function unregisterObject($object)
+    public function unregisterObject(object $object): void
     {
         unset($this->identifierMap[$this->getClassIdentifier(get_class($object))][$this->objectMap[$object]]);
         $this->objectMap->detach($object);
@@ -165,7 +141,7 @@ class Session implements SingletonInterface
      * Destroy the state of the persistence session and reset
      * all internal data.
      */
-    public function destroy()
+    public function destroy(): void
     {
         $this->identifierMap = [];
         $this->objectMap = new ObjectStorage();
@@ -175,11 +151,12 @@ class Session implements SingletonInterface
     /**
      * Objects are stored in the cache with their implementation class name
      * to allow reusing instances of different classes that point to the same implementation
+     * Returns a unique class identifier respecting configured implementation class names
      *
-     * @param string $className
-     * @return string a unique class identifier respecting configured implementation class names
+     * @param class-string $className
+     * @return non-empty-string
      */
-    protected function getClassIdentifier($className): string
+    protected function getClassIdentifier(string $className): string
     {
         return strtolower($className);
     }

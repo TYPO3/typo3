@@ -1651,11 +1651,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Query.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Session\\:\\:getIdentifierByObject\\(\\) should return string but returns null\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Session.php
-
-		-
 			message: "#^Left side of && is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php
@@ -1876,11 +1871,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/PersistenceManagerTest.php
 
 		-
-			message: "#^Parameter \\#2 \\$identifier of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Session\\:\\:registerObject\\(\\) expects string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/PersistenceManagerTest.php
-
-		-
 			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:expects\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryFactoryTest.php
@@ -1914,11 +1904,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$offset of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Query\\<object\\>\\:\\:setOffset\\(\\) expects int, float given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryTest.php
-
-		-
-			message: "#^Parameter \\#2 \\$identifier of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Session\\:\\:registerObject\\(\\) expects string, int given\\.$#"
-			count: 6
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/SessionTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Session\\:\\:method\\(\\)\\.$#"

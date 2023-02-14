@@ -103,7 +103,7 @@ class PersistenceManagerTest extends UnitTestCase
         $object = new \stdClass();
 
         $mockSession = $this->createMock(Session::class);
-        $mockSession->expects(self::once())->method('hasIdentifier')->with($fakeUuid)->willReturn(true);
+        $mockSession->expects(self::once())->method('hasIdentifier')->with($fakeUuid, \stdClass::class)->willReturn(true);
         $mockSession->expects(self::once())->method('getObjectByIdentifier')->with($fakeUuid)->willReturn($object);
 
         $manager = new PersistenceManager(
@@ -112,7 +112,7 @@ class PersistenceManagerTest extends UnitTestCase
             $mockSession
         );
 
-        self::assertEquals($manager->getObjectByIdentifier($fakeUuid), $object);
+        self::assertEquals($manager->getObjectByIdentifier($fakeUuid, $object::class), $object);
     }
 
     /**
@@ -350,7 +350,7 @@ class PersistenceManagerTest extends UnitTestCase
         );
 
         $repository->_set('persistenceManager', $persistenceManager);
-        $session->registerObject($entity1, 42);
+        $session->registerObject($entity1, '42');
         $changedEntities->attach($entity1);
         $repository->update($entity1);
         $persistenceManager->persistAll();
