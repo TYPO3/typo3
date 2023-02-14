@@ -779,6 +779,20 @@ class DatabaseRecordList
             ';
         }
 
+        if (!(BackendUtility::isTableWorkspaceEnabled($table))) {
+            // In case the table is not editable in workspace inform the user about the missing actions
+            if ($backendUser->workspaceAllowsLiveEditingInTable($table)) {
+                $message = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editingLiveRecordsWarning');
+            } else {
+                $message = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.notEditableInWorkspace');
+            }
+            $tableActions .= '
+                <span class="badge badge-warning">
+                    ' . htmlspecialchars($message, ENT_QUOTES | ENT_HTML5) . '
+                </span>
+                ';
+        }
+
         $collapseClass = $tableCollapsed && !$this->table ? 'collapse' : 'collapse show';
         $dataState = $tableCollapsed && !$this->table ? 'collapsed' : 'expanded';
         return '
@@ -2092,7 +2106,8 @@ class DatabaseRecordList
         $backendUser = $this->getBackendUserAuthentication();
         return !($GLOBALS['TCA'][$table]['ctrl']['readOnly'] ?? false)
             && $this->editable
-            && ($backendUser->isAdmin() || $backendUser->check('tables_modify', $table));
+            && ($backendUser->isAdmin() || $backendUser->check('tables_modify', $table))
+            && (BackendUtility::isTableWorkspaceEnabled($table) || $backendUser->workspaceAllowsLiveEditingInTable($table));
     }
 
     /**
@@ -3178,7 +3193,7 @@ class DatabaseRecordList
     /**
      * Check whether the clipboard functionality is generally enabled.
      * In case a row is given, this checks if the record is neither
-     * a "delete placeholder", nor a translation.
+     * a "delete placeholder", nor a translation, nor a version
      */
     protected function isClipboardFunctionalityEnabled(string $table, array $row = []): bool
     {
@@ -3190,7 +3205,8 @@ class DatabaseRecordList
                     !$this->isRecordDeletePlaceholder($row)
                     && (int)($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null] ?? 0) === 0
                 )
-            );
+            )
+            && (BackendUtility::isTableWorkspaceEnabled($table) || $this->getBackendUserAuthentication()->workspaceAllowsLiveEditingInTable($table));
     }
 
     /**
