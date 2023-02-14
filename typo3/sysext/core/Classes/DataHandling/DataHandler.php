@@ -2399,98 +2399,66 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $field)
     {
-        if (is_array($value)) {
-            // This value is necessary for flex form processing to happen on flexform fields in page records when they are copied.
-            // Problem: when copying a page, flexform XML comes along in the array for the new record - but since $this->checkValue_currentRecord
-            // does not have a uid or pid for that sake, the FlexFormTools->getDataStructureIdentifier() function returns no good DS. For new
-            // records we do know the expected PID so therefore we send that with this special parameter. Only active when larger than zero.
-            $row = $this->checkValue_currentRecord;
-            if ($status === 'new') {
-                $row['pid'] = $realPid;
-            }
-
-            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-
-            // Get data structure. The methods may throw various exceptions, with some of them being
-            // ok in certain scenarios, for instance on new record rows. Those are ok to "eat" here
-            // and substitute with a dummy DS.
-            $dataStructureArray = ['sheets' => ['sDEF' => []]];
-            try {
-                $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
-                    ['config' => $tcaFieldConf],
-                    $table,
-                    $field,
-                    $row
-                );
-
-                $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
-            } catch (InvalidParentRowException|InvalidParentRowLoopException|InvalidParentRowRootException|InvalidPointerFieldValueException|InvalidIdentifierException $e) {
-            }
-
-            // Get current value array:
-            $currentValueArray = (string)$curValue !== '' ? GeneralUtility::xml2array($curValue) : [];
-            if (!is_array($currentValueArray)) {
-                $currentValueArray = [];
-            }
-            // Remove all old meta for languages...
-            // Evaluation of input values:
-            $value['data'] = $this->checkValue_flex_procInData($value['data'] ?? [], $currentValueArray['data'] ?? [], $dataStructureArray, [$table, $id, $curValue, $status, $realPid, $recFID, $tscPID]);
-            // Create XML from input value:
-            $xmlValue = $this->checkValue_flexArray2Xml($value, true);
-
-            // Here we convert the currently submitted values BACK to an array, then merge the two and then BACK to XML again. This is needed to ensure the charsets are the same
-            // (provided that the current value was already stored IN the charset that the new value is converted to).
-            $arrValue = GeneralUtility::xml2array($xmlValue);
-
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'] ?? [] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObject, 'checkFlexFormValue_beforeMerge')) {
-                    $hookObject->checkFlexFormValue_beforeMerge($this, $currentValueArray, $arrValue);
-                }
-            }
-
-            ArrayUtility::mergeRecursiveWithOverrule($currentValueArray, $arrValue);
-            $xmlValue = $this->checkValue_flexArray2Xml($currentValueArray, true);
-
-            // Action commands (sorting order and removals of elements) for flexform sections, see FormEngine for the use of this GP parameter.
-            // @todo: It is of course ugly DH fetches from POST here. The actions should be part of the
-            //        command array (?!) instead, which requires at least FormEngine + JS adaptions.
-            $actionCMDs = GeneralUtility::_GP('_ACTION_FLEX_FORMdata');
-            $relevantId = $id;
-            if ($status === 'update'
-                && BackendUtility::isTableWorkspaceEnabled($table)
-                && (int)($row['t3ver_wsid'] ?? 0) > 0
-                && (int)($row['t3ver_oid'] ?? 0) > 0
-                && !is_array($actionCMDs[$table][$id][$field] ?? false)
-                && is_array($actionCMDs[$table][(int)$row['t3ver_oid']][$field] ?? false)
-            ) {
-                // Scenario: A record with multiple container sections exists in live. The record has no workspace overlay, yet.
-                // It is then edited in workspaces and sections are resorted or deleted, which should create the version overlay
-                // plus the resorting or deleting of sections in the version overlay record.
-                // FormEngine creates this '_ACTION_FLEX_FORMdata' data array with the uid of the live record, since FormEngine
-                // does not know the uid of the overlay record, yet.
-                // DataHandler first creates the new overlay record via copyRecord_raw(), which calls this method. At this point,
-                // we leave the new version record untouched, sorting and deletions of flex sections are not applied.
-                // DataHandler then calls this method a second time to apply modifications to the just created overlay record. The
-                // incoming $row is now the version row, and $row['uid'] und incoming $id are the versione'd record uid.
-                // The '_ACTION_FLEX_FORMdata' POST data however is still the uid of the live record!
-                // Actions are then not applied since the uid lookups don't match.
-                // To solve this situation we check for this scenario in the above if conditions and use the live version
-                // uid (t3ver_oid) to access data from the '_ACTION_FLEX_FORMdata' array.
-                $relevantId = (int)$row['t3ver_oid'];
-            }
-            if (is_array($actionCMDs[$table][$relevantId][$field]['data'] ?? false)) {
-                $arrValue = GeneralUtility::xml2array($xmlValue);
-                $this->_ACTION_FLEX_FORMdata($arrValue['data'], $actionCMDs[$table][$relevantId][$field]['data']);
-                $xmlValue = $this->checkValue_flexArray2Xml($arrValue, true);
-            }
-            // Create the value XML:
-            $res['value'] = $xmlValue;
-        } else {
-            // Passthrough...:
+        if (!is_array($value)) {
             $res['value'] = $value;
+            return $res;
         }
 
+        // This value is necessary for flex form processing to happen on flexform fields in page records when they are copied.
+        // Problem: when copying a page, flexform XML comes along in the array for the new record - but since $this->checkValue_currentRecord
+        // does not have a uid or pid for that sake, the FlexFormTools->getDataStructureIdentifier() function returns no good DS. For new
+        // records we do know the expected PID, so we send that with this special parameter. Only active when larger than zero.
+        $row = $this->checkValue_currentRecord;
+        if ($status === 'new') {
+            $row['pid'] = $realPid;
+        }
+
+        // Get data structure. The methods may throw various exceptions, with some of them being
+        // ok in certain scenarios, for instance on new record rows. Those are ok to "eat" here
+        // and substitute with a dummy DS.
+        try {
+            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+            $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                ['config' => $tcaFieldConf],
+                $table,
+                $field,
+                $row
+            );
+            $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+        } catch (InvalidParentRowException|InvalidParentRowLoopException|InvalidParentRowRootException|InvalidPointerFieldValueException|InvalidIdentifierException) {
+            $dataStructureArray = ['sheets' => ['sDEF' => []]];
+        }
+
+        // Get current value array:
+        $currentValueArray = (string)$curValue !== '' ? GeneralUtility::xml2array($curValue) : [];
+        if (!is_array($currentValueArray)) {
+            $currentValueArray = [];
+        }
+        // Remove all old meta for languages...
+        // Evaluation of input values:
+        $value['data'] = $this->checkValue_flex_procInData($value['data'] ?? [], $currentValueArray['data'] ?? [], $dataStructureArray, [$table, $id, $curValue, $status, $realPid, $recFID, $tscPID]);
+        // Create XML from input value:
+        $xmlValue = $this->checkValue_flexArray2Xml($value);
+
+        // Here we convert the currently submitted values BACK to an array, then merge the two and then BACK to XML again. This is needed to ensure the charsets are the same
+        // (provided that the current value was already stored IN the charset that the new value is converted to).
+        $xmlAsArray = GeneralUtility::xml2array($xmlValue);
+
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObject, 'checkFlexFormValue_beforeMerge')) {
+                $hookObject->checkFlexFormValue_beforeMerge($this, $currentValueArray, $xmlAsArray);
+            }
+        }
+
+        ArrayUtility::mergeRecursiveWithOverrule($currentValueArray, $xmlAsArray);
+        $xmlValue = $this->checkValue_flexArray2Xml($currentValueArray);
+
+        $xmlAsArray = GeneralUtility::xml2array($xmlValue);
+        $xmlAsArray = $this->sortAndDeleteFlexSectionContainerElements($xmlAsArray, $dataStructureArray);
+        $xmlValue = $this->checkValue_flexArray2Xml($xmlAsArray);
+
+        $res['value'] = $xmlValue;
         return $res;
     }
 
@@ -2498,52 +2466,63 @@ class DataHandler implements LoggerAwareInterface
      * Converts an array to FlexForm XML
      *
      * @param array $array Array with FlexForm data
-     * @param bool $addPrologue If set, the XML prologue is returned as well.
      * @return string Input array converted to XML
      * @internal should only be used from within DataHandler
      */
-    public function checkValue_flexArray2Xml($array, $addPrologue = false): string
+    public function checkValue_flexArray2Xml($array): string
     {
         $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
-        return $flexObj->flexArray2Xml($array, $addPrologue);
+        return $flexObj->flexArray2Xml($array, true);
     }
 
     /**
-     * Actions for flex form element (move, delete)
-     * allows to remove and move flexform sections
+     * Delete and resort section container elements.
      *
-     * @param array $valueArray by reference
-     * @param array $actionCMDs
+     * @todo: It would be better if the magic _ACTION key would be a 'command array', not part of 'data array'
      */
-    protected function _ACTION_FLEX_FORMdata(&$valueArray, $actionCMDs)
+    private function sortAndDeleteFlexSectionContainerElements(array $valueArray, array $dataStructure): array
     {
-        if (!is_array($valueArray) || !is_array($actionCMDs)) {
-            return;
-        }
-
-        foreach ($actionCMDs as $key => $value) {
-            if ($key === '_ACTION') {
-                // First, check if there are "commands":
-                if (empty(array_filter($actionCMDs[$key]))) {
-                    continue;
-                }
-
-                asort($actionCMDs[$key]);
-                $newValueArray = [];
-                foreach ($actionCMDs[$key] as $idx => $order) {
-                    // Just one reflection here: It is clear that when removing elements from a flexform, then we will get lost
-                    // files unless we act on this delete operation by traversing and deleting files that were referred to.
-                    if ($order !== 'DELETE') {
-                        $newValueArray[$idx] = $valueArray[$idx];
+        foreach (($dataStructure['sheets'] ?? []) as $dataStructureSheetName => $dataStructureSheetDefinition) {
+            if (!isset($dataStructureSheetDefinition['ROOT']['el']) || !is_array($dataStructureSheetDefinition['ROOT']['el'])) {
+                continue;
+            }
+            $dataStructureFields = $dataStructureSheetDefinition['ROOT']['el'];
+            foreach ($dataStructureFields as $dataStructureFieldName => $dataStructureFieldDefinition) {
+                if (isset($dataStructureFieldDefinition['type']) && $dataStructureFieldDefinition['type'] === 'array'
+                    && isset($dataStructureFieldDefinition['section']) && (string)$dataStructureFieldDefinition['section'] === '1'
+                ) {
+                    // Found a possible section within flex form data structure definition
+                    if (!is_array($valueArray['data'][$dataStructureSheetName]['lDEF'][$dataStructureFieldName]['el'] ?? false)) {
+                        // No containers in data
+                        continue;
                     }
-                    unset($valueArray[$idx]);
+                    $newElements = [];
+                    $containerCounter = 0;
+                    foreach ($valueArray['data'][$dataStructureSheetName]['lDEF'][$dataStructureFieldName]['el'] as $sectionKey => $sectionValues) {
+                        // Remove to-delete containers
+                        $action = $sectionValues['_ACTION'] ?? '';
+                        if ($action === 'DELETE') {
+                            continue;
+                        }
+                        if (($sectionValues['_ACTION'] ?? '') === '') {
+                            $sectionValues['_ACTION'] = $containerCounter;
+                        }
+                        $newElements[$sectionKey] = $sectionValues;
+                        $containerCounter++;
+                    }
+                    // Resort by action key
+                    uasort($newElements, function ($a, $b) {
+                        return (int)$a['_ACTION'] - (int)$b['_ACTION'];
+                    });
+                    foreach ($newElements as &$element) {
+                        // Do not store action key
+                        unset($element['_ACTION']);
+                    }
+                    $valueArray['data'][$dataStructureSheetName]['lDEF'][$dataStructureFieldName]['el'] = $newElements;
                 }
-                $valueArray += $newValueArray;
-            } elseif (is_array($actionCMDs[$key]) && isset($valueArray[$key])) {
-                // @todo: This recursion is probably obsolete since containers can't be nested into sections again.
-                $this->_ACTION_FLEX_FORMdata($valueArray[$key], $actionCMDs[$key]);
             }
         }
+        return $valueArray;
     }
 
     /**
@@ -3152,8 +3131,9 @@ class DataHandler implements LoggerAwareInterface
                         if (!is_array($dataValues_current[$key]['el'] ?? false)) {
                             $dataValues_current[$key]['el'] = [];
                         }
+                        // @todo: Ugly! This relies on the fact that _TOGGLE and _ACTION are *below* the business fields!
                         $theKey = key($el);
-                        if (!is_array($dataValues[$key]['el'][$ik][$theKey]['el'])) {
+                        if (!is_array($dataValues[$key]['el'][$ik][$theKey]['el'] ?? false)) {
                             continue;
                         }
 
@@ -6423,7 +6403,7 @@ class DataHandler implements LoggerAwareInterface
                                         $currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], [], $dataStructureArray, [$table, $theUidToUpdate, $fieldName], 'remapListedDBRecords_flexFormCallBack');
                                         // The return value should be compiled back into XML, ready to insert directly in the field (as we call updateDB() directly later):
                                         if (is_array($currentValueArray['data'])) {
-                                            $newData[$fieldName] = $this->checkValue_flexArray2Xml($currentValueArray, true);
+                                            $newData[$fieldName] = $this->checkValue_flexArray2Xml($currentValueArray);
                                         }
                                     }
                                 }
@@ -6851,7 +6831,7 @@ class DataHandler implements LoggerAwareInterface
         if (is_array($valueStructure['data'])) {
             // The return value should be compiled back into XML
             $values = [
-                $field => $this->checkValue_flexArray2Xml($valueStructure, true),
+                $field => $this->checkValue_flexArray2Xml($valueStructure),
             ];
 
             $this->updateDB($table, $uid, $values);

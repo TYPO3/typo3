@@ -42,30 +42,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function deleteSection(): void
     {
-        $GLOBALS['_POST'] = [
-            '_ACTION_FLEX_FORMdata' => [
-                'tx_testflexsectioncontainer' => [
-                    1 => [
-                        'flex_1' => [
-                            'data' => [
-                                'sSection' => [
-                                    'lDEF' => [
-                                        'section_1' => [
-                                            'el' => [
-                                                '_ACTION' => [
-                                                    '62cd3f446f5bc303148445' => 'DELETE',
-                                                    '62cd3f480ef5e265844192' => '',
-                                                ],
-                                            ],
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
         $this->actionService->modifyRecord(
             self::TABLE_Element,
             self::VALUE_ElementIdFirst,
@@ -84,6 +60,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
                                                     ],
                                                 ],
                                             ],
+                                            '_ACTION' => 'DELETE',
                                         ],
                                         '62cd3f480ef5e265844192' => [
                                             'container_1' => [
@@ -93,6 +70,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
                                                     ],
                                                 ],
                                             ],
+                                            '_ACTION' => '',
                                         ],
                                     ],
                                 ],
@@ -102,35 +80,10 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
                 ],
             ],
         );
-        $GLOBALS['_POST'] = [];
     }
 
     public function changeSorting(): void
     {
-        $GLOBALS['_POST'] = [
-            '_ACTION_FLEX_FORMdata' => [
-                'tx_testflexsectioncontainer' => [
-                    1 => [
-                        'flex_1' => [
-                            'data' => [
-                                'sSection' => [
-                                    'lDEF' => [
-                                        'section_1' => [
-                                            'el' => [
-                                                '_ACTION' => [
-                                                    '62cd3f480ef5e265844192' => '0',
-                                                    '62cd3f446f5bc303148445' => '1',
-                                                ],
-                                            ],
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
         $this->actionService->modifyRecord(
             self::TABLE_Element,
             self::VALUE_ElementIdFirst,
@@ -149,6 +102,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
                                                     ],
                                                 ],
                                             ],
+                                            '_ACTION' => 1,
                                         ],
                                         '62cd3f480ef5e265844192' => [
                                             'container_1' => [
@@ -158,6 +112,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
                                                     ],
                                                 ],
                                             ],
+                                            '_ACTION' => 0,
                                         ],
                                     ],
                                 ],
@@ -167,6 +122,5 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
                 ],
             ],
         );
-        $GLOBALS['_POST'] = [];
     }
 }

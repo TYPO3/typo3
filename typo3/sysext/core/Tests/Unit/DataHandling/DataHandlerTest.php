@@ -18,11 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
-use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
@@ -31,7 +29,6 @@ use TYPO3\CMS\Core\SysLog;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\InvalidHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\UserOddNumberFilter;
-use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
@@ -591,40 +588,6 @@ class DataHandlerTest extends UnitTestCase
         $this->backendUserMock->workspaceRec = ['freeze' => true];
         $subject->BE_USER = $this->backendUserMock;
         self::assertFalse($subject->process_datamap());
-    }
-
-    /**
-     * @test
-     */
-    public function doesCheckFlexFormValueHookGetsCalled(): void
-    {
-        $hookClass = \stdClass::class;
-        $hookMock = $this->getMockBuilder($hookClass)
-            ->addMethods(['checkFlexFormValue_beforeMerge'])
-            ->getMock();
-        $hookMock->expects(self::once())->method('checkFlexFormValue_beforeMerge');
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = $hookClass;
-        GeneralUtility::addInstance($hookClass, $hookMock);
-
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-        $flexFormTools = new class ($eventDispatcher) extends FlexFormTools {
-            public function getDataStructureIdentifier(...$args): string
-            {
-                return 'anIdentifier';
-            }
-
-            public function parseDataStructureByIdentifier(string $identifier): array
-            {
-                return [];
-            }
-        };
-        // FlexFormTools gets called through GeneralUtility::makeInstance() twice, so we need
-        // to register it twice.
-        GeneralUtility::addInstance(FlexFormTools::class, $flexFormTools);
-        GeneralUtility::addInstance(FlexFormTools::class, $flexFormTools);
-
-        $this->subject->_call('checkValueForFlex', [], [], [], '', 0, '', '', 0, 0, 0, '');
     }
 
     public function checkValue_flex_procInData_travDSDataProvider(): iterable

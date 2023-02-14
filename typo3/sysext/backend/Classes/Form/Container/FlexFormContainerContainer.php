@@ -43,15 +43,13 @@ class FlexFormContainerContainer extends AbstractContainer
         $flexFormFormPrefix = $this->data['flexFormFormPrefix'];
         $flexFormContainerElementCollapsed = $this->data['flexFormContainerElementCollapsed'];
         $flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
-        $parameterArray = $this->data['parameterArray'];
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $flexFormContainerIdentifier = $this->data['flexFormContainerIdentifier'];
-        $actionFieldName = '_ACTION_FLEX_FORM'
-            . $parameterArray['itemFormElName']
-            . $this->data['flexFormFormPrefix']
-            . '[_ACTION]'
-            . '[' . $flexFormContainerIdentifier . ']';
+        $actionFieldName = 'data[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']'
+            . $flexFormFormPrefix
+            . '[' . $flexFormContainerIdentifier . ']'
+            . '[_ACTION]';
         $toggleFieldName = 'data[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']'
             . $flexFormFormPrefix
             . '[' . $flexFormContainerIdentifier . ']'
@@ -101,7 +99,6 @@ class FlexFormContainerContainer extends AbstractContainer
 
         $html = [];
         $html[] = '<div ' . GeneralUtility::implodeAttributes($containerAttributes, true) . '>';
-        $html[] =    '<input class="t3js-flex-control-action" type="hidden" name="' . htmlspecialchars($actionFieldName) . '" value="" />';
         $html[] =    '<div ' . GeneralUtility::implodeAttributes($panelHeaderAttributes, true) . '>';
         $html[] =        '<div class="form-irre-header ' . ($flexFormContainerElementCollapsed ? ' collapsed' : '') . '">';
         $html[] =            '<div class="form-irre-header-cell form-irre-header-icon">';
@@ -123,6 +120,7 @@ class FlexFormContainerContainer extends AbstractContainer
         $html[] =    '<div id="' . htmlspecialchars($flexFormDomContainerId) . '" class="panel-collapse collapse t3js-flex-section-content ' . ($flexFormContainerElementCollapsed ? '' : 'show') . '">';
         $html[] =        $containerContentResult['html'];
         $html[] =    '</div>';
+        $html[] =    '<input class="t3js-flex-control-action" type="hidden" name="' . htmlspecialchars($actionFieldName) . '" value="" />';
         $html[] =    '<input';
         $html[] =        'class="t3js-flex-control-toggle"';
         $html[] =        'type="hidden"';
