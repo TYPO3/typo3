@@ -118,10 +118,7 @@ class DataProviderContext implements SingletonInterface
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getPageTsConfig()
+    public function getPageTsConfig(): array
     {
         return $this->pageTsConfig;
     }
