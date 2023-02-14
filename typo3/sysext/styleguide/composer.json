@@ -47,9 +47,9 @@
         "codeception/module-webdriver": "^3.1",
         "phpstan/phpstan": "^1.4.8",
         "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "^0.0.1",
-        "typo3/cms-core": "~12.2@dev",
-        "typo3/cms-frontend": "~12.2@dev",
-        "typo3/cms-install": "~12.2@dev",
+        "typo3/cms-core": "~12.3@dev",
+        "typo3/cms-frontend": "~12.3@dev",
+        "typo3/cms-install": "~12.3@dev",
         "typo3/coding-standards": "^0.5.0",
         "typo3/testing-framework": "dev-main"
     },
