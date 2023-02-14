@@ -41,7 +41,7 @@ class LoginController extends AbstractController
     public function showEnableInstallToolFileAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView($request);
-        $path = str_replace(Environment::getPublicPath() . '/', '', EnableFileService::getBestLocationForInstallToolEnableFile());
+        $path = str_replace(Environment::getPublicPath() . '/', '', dirname(EnableFileService::getBestLocationForInstallToolEnableFile())) . '/';
         $view->assign('enableInstallToolPath', $path);
         return new JsonResponse([
             'success' => true,
