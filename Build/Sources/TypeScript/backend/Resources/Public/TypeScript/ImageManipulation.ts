@@ -446,12 +446,28 @@ class ImageManipulation {
       return;
     }
 
+    let minCroppedWidth = 15;
+    let minCroppedHeight = 15;
+    let width = e.detail.width;
+    let height = e.detail.height;
+
+    if (width < minCroppedWidth || height < minCroppedHeight) {
+      width = Math.max(minCroppedHeight, height)
+      height = Math.max(minCroppedWidth, width)
+
+      this.cropper.setData({
+        width: width,
+        height: height,
+      });
+    }
+
     this.currentCropVariant.cropArea = $.extend(true, this.currentCropVariant.cropArea, {
-      height: Math.floor(e.detail.height),
-      width: Math.floor(e.detail.width),
+      width: Math.floor(width),
+      height: Math.floor(height),
       x: Math.floor(e.detail.x),
       y: Math.floor(e.detail.y),
     });
+
     this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
     this.updateCropVariantData(this.currentCropVariant);
     const naturalWidth: number = Math.round(this.currentCropVariant.cropArea.width * this.imageOriginalSizeFactor);
