@@ -36,8 +36,13 @@
     </form>
 
     <f:if condition="{results}">
-        <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:result')}</h2>
-        <f:format.raw>{results}</f:format.raw>
+        <f:then>
+            <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:result')}</h2>
+            <f:format.raw>{results}</f:format.raw>
+        </f:then>
+        <f:else if="{sword} !== ''">
+            <f:be.infobox message="{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:no_results', arguments: {0: sword})}" />
+        </f:else>
     </f:if>
 
 </f:section>
