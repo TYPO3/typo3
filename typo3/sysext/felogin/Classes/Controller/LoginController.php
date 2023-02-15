@@ -31,6 +31,7 @@ use TYPO3\CMS\FrontendLogin\Event\LogoutConfirmedEvent;
 use TYPO3\CMS\FrontendLogin\Event\ModifyLoginFormViewEvent;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectHandler;
 use TYPO3\CMS\FrontendLogin\Service\UserService;
+use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
 
 /**
  * Used for plugin login
@@ -52,6 +53,7 @@ class LoginController extends AbstractLoginFormController
     public function __construct(
         protected RedirectHandler $redirectHandler,
         protected UserService $userService,
+        protected RedirectUrlValidator $redirectUrlValidator,
         protected Context $context
     ) {
         $this->userAspect = $context->getAspect('frontend.user');
@@ -107,7 +109,7 @@ class LoginController extends AbstractLoginFormController
                 'permaloginStatus' => $this->getPermaloginStatus(),
                 'redirectURL' => $this->redirectHandler->getLoginFormRedirectUrl($this->request, $this->configuration, $this->isRedirectDisabled()),
                 'redirectReferrer' => $this->request->hasArgument('redirectReferrer') ? (string)$this->request->getArgument('redirectReferrer') : '',
-                'referer' => (string)($this->request->getParsedBody()['referer'] ?? $this->request->getQueryParams()['referer'] ?? ''),
+                'referer' => $this->getRefererForLoginForm(),
                 'noRedirect' => $this->isRedirectDisabled(),
                 'requestToken' => RequestToken::create('core/user-auth/fe')
                     ->withMergedParams(['pid' => implode(',', $this->getStorageFolders())]),
@@ -166,6 +168,32 @@ class LoginController extends AbstractLoginFormController
         );
 
         return $this->htmlResponse();
+    }
+
+    /**
+     * Determines the `referer` variable used in the login form for loginMode=referer depending on the
+     * following evaluation order:
+     *
+     * - HTTP POST parameter `referer`
+     * - HTTP GET parameter `referer`
+     * - HTTP_REFERER
+     *
+     * The evaluated `referer` is only returned, if it is considered as valid.
+     */
+    protected function getRefererForLoginForm(): string
+    {
+        $referer = (string)(
+            $this->request->getParsedBody()['referer'] ??
+            $this->request->getQueryParams()['referer'] ??
+            $this->request->getServerParams()['HTTP_REFERER'] ??
+            ''
+        );
+
+        if ($this->redirectUrlValidator->isValid($this->request, $referer)) {
+            return $referer;
+        }
+
+        return '';
     }
 
     /**

@@ -186,9 +186,6 @@ class RedirectModeHandler
     {
         $referer = '';
         $requestReferer = (string)($request->getParsedBody()['referer'] ?? $request->getQueryParams()['referer'] ?? '');
-        if ($requestReferer === '') {
-            $requestReferer = $request->getServerParams()['HTTP_REFERER'] ?? '';
-        }
 
         if ($this->redirectUrlValidator->isValid($request, $requestReferer)) {
             $referer = $requestReferer;
