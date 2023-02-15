@@ -226,9 +226,6 @@ class RedirectModeHandler
     {
         $referer = '';
         $requestReferer = (string)$this->serverRequestHandler->getPropertyFromGetAndPost('referer');
-        if ($requestReferer === '') {
-            $requestReferer = $this->serverRequestHandler->getHttpReferer();
-        }
 
         if ($this->redirectUrlValidator->isValid($requestReferer)) {
             $referer = $requestReferer;
