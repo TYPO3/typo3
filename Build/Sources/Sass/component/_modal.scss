@@ -9,7 +9,7 @@
 //
 $modal-sidebar-sm: 250px;
 $modal-sidebar-md: 300px;
-
+$modal-sidebar-button-space: $padding-small-vertical;
 //
 // Component
 //
@@ -120,6 +120,7 @@ $modal-sidebar-md: 300px;
         padding: 0;
 
         @media (min-width: $screen-sm-min) {
+            display: flex;
             flex-direction: row;
         }
     }
@@ -184,6 +185,10 @@ $modal-sidebar-md: 300px;
 
     .panel-body {
         border-left: 2px solid $color-orange;
+
+        label {
+            margin-bottom: $modal-sidebar-button-space;
+        }
     }
 }
 

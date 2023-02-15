@@ -79,7 +79,8 @@ class ImageManipulation {
   private cropInfoSelector: string = '.t3js-cropper-info-crop';
   private focusAreaSelector: string = '#t3js-cropper-focus-area';
   private focusArea: any;
-  private cropBox: JQuery;
+  // Initialize an empty object to prevent undefined cropBox error on modal load.
+  private cropBox: JQuery = $();
   private cropper: Cropper;
   private currentCropVariant: CropVariant;
   private data: any;
