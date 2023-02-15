@@ -143,7 +143,10 @@
         <tfoot>
             <tr>
                 <td colspan="5">
-                    {totalAmountOfBackendUsers} <f:translate key="users" />
+                    <f:if condition="{totalAmountOfBackendUsers} > 1">
+                        <f:then>{totalAmountOfBackendUsers} <f:translate key="users" /></f:then>
+                        <f:else>{totalAmountOfBackendUsers} <f:translate key="user" /></f:else>
+                    </f:if>
                 </td>
             </tr>
         </tfoot>
@@ -151,5 +154,3 @@
 </div>
 
 <f:render partial="SimplePagination" arguments="{paginator:paginator, pagination:pagination}" />
-
-</html>

@@ -78,6 +78,17 @@
                     </f:for>
                 </f:for>
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5">
+                        <f:variable name="onlineUsersAndSessionsCount">{onlineUsersAndSessions -> f:count()}</f:variable>
+                        <f:if condition="{onlineUsersAndSessionsCount} > 1">
+                            <f:then>{onlineUsersAndSessionsCount} <f:translate key="users" /></f:then>
+                            <f:else>{onlineUsersAndSessionsCount} <f:translate key="user" /></f:else>
+                        </f:if>
+                    </td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 

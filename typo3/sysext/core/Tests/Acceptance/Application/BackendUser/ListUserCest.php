@@ -190,7 +190,7 @@ final class ListUserCest
         $I->canSeeNumberOfElements('#typo3-backend-user-list tbody tr', $countOfUsers);
         $I->wantToTest('If a number of users is shown in the footer row');
         $I->canSeeNumberOfElements('#typo3-backend-user-list tfoot tr', 1);
-        $I->see($countOfUsers . ' Users', '#typo3-backend-user-list tfoot tr');
+        $I->see($countOfUsers . ' User', '#typo3-backend-user-list tfoot tr');
     }
 
     private function openAndCloseTheEditForm(ApplicationTester $I, string $username): void
