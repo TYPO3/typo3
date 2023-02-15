@@ -22,24 +22,12 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class Resolver
+ * The main API endpoint to evaluate symfony expression language.
  */
 class Resolver
 {
-    /**
-     * @var ProviderInterface
-     */
-    protected $provider;
-
-    /**
-     * @var \Symfony\Component\ExpressionLanguage\ExpressionLanguage
-     */
-    protected $expressionLanguage;
-
-    /**
-     * @var array
-     */
-    public $expressionLanguageVariables = [];
+    private ExpressionLanguage $expressionLanguage;
+    private array $expressionLanguageVariables;
 
     public function __construct(string $context, array $variables)
     {
@@ -69,7 +57,7 @@ class Resolver
     /**
      * Evaluate an expression.
      *
-     * @param string $condition The expression to parse
+     * @param string $condition The expression to evaluate
      */
     public function evaluate(string $condition): bool
     {
