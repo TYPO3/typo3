@@ -186,21 +186,21 @@ class ColumnSelectorButton extends LitElement {
           text: this.ok,
           btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.info),
           name: 'update',
-          trigger: (e: Event, modal: ModalElement): void => this.proccessSelection(modal)
+          trigger: (e: Event, modal: ModalElement): void => this.processSelection(modal)
         }
       ],
       ajaxCallback: (): void => this.handleModalContentLoaded(modal)
     });
   }
 
-  private proccessSelection(currentModal: HTMLElement): void {
+  private processSelection(currentModal: HTMLElement): void {
     const form: HTMLFormElement = currentModal.querySelector('form') as HTMLFormElement;
     if (form === null) {
       this.abortSelection();
       return;
     }
     (new AjaxRequest(TYPO3.settings.ajaxUrls.show_columns))
-      .post('', {body: new FormData(form)})
+      .post(new FormData(form))
       .then(async (response: AjaxResponse): Promise<any> => {
         const data = await response.resolve();
         if (data.success === true) {

@@ -73,13 +73,13 @@ class AjaxRequest {
   /**
    * Executes a (by default uncached) POST request
    *
-   * @param {string | GenericKeyValue} data
+   * @param {string | FormData | GenericKeyValue} data
    * @param {RequestInit} init
    * @return {Promise<Response>}
    */
-  public async post(data: string | GenericKeyValue, init: RequestInit = {}): Promise<AjaxResponse> {
+  public async post(data: string | FormData | GenericKeyValue, init: RequestInit = {}): Promise<AjaxResponse> {
     const localDefaultOptions: RequestInit = {
-      body: typeof data === 'string' ? data : InputTransformer.byHeader(data, init?.headers),
+      body: typeof data === 'string' || data instanceof FormData ? data : InputTransformer.byHeader(data, init?.headers),
       cache: 'no-cache',
       method: 'POST',
     };
@@ -91,13 +91,13 @@ class AjaxRequest {
   /**
    * Executes a (by default uncached) PUT request
    *
-   * @param {string | GenericKeyValue} data
+   * @param {string | FormData | GenericKeyValue} data
    * @param {RequestInit} init
    * @return {Promise<Response>}
    */
-  public async put(data: string | GenericKeyValue, init: RequestInit = {}): Promise<AjaxResponse> {
+  public async put(data: string | FormData | GenericKeyValue, init: RequestInit = {}): Promise<AjaxResponse> {
     const localDefaultOptions: RequestInit = {
-      body: typeof data === 'string' ? data : InputTransformer.byHeader(data, init?.headers),
+      body: typeof data === 'string' || data instanceof FormData ? data : InputTransformer.byHeader(data, init?.headers),
       cache: 'no-cache',
       method: 'PUT',
     };
@@ -109,20 +109,20 @@ class AjaxRequest {
   /**
    * Executes a regular DELETE request
    *
-   * @param {string | GenericKeyValue} data
+   * @param {string | FormData | GenericKeyValue} data
    * @param {RequestInit} init
    * @return {Promise<Response>}
    */
-  public async delete(data: string | GenericKeyValue = {}, init: RequestInit = {}): Promise<AjaxResponse> {
+  public async delete(data: string | FormData | GenericKeyValue = {}, init: RequestInit = {}): Promise<AjaxResponse> {
     const localDefaultOptions: RequestInit = {
       cache: 'no-cache',
       method: 'DELETE',
     };
 
-    if (typeof data === 'object' && Object.keys(data).length > 0) {
-      localDefaultOptions.body = InputTransformer.byHeader(data, init?.headers);
-    } else if (typeof data === 'string' && data.length > 0) {
+    if ((typeof data === 'string' && data.length > 0) || data instanceof FormData) {
       localDefaultOptions.body = data;
+    } else if (typeof data === 'object' && Object.keys(data).length > 0) {
+      localDefaultOptions.body = InputTransformer.byHeader(data, init?.headers);
     }
 
     const response = await this.send({...localDefaultOptions, ...init});
