@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2012-07-16T10:11:32Z" product-name="beuser">
+	<file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2023-02-15T18:03:32Z" product-name="beuser">
 		<header/>
 		<body>
 			<trans-unit id="activeSessions" resname="activeSessions">
@@ -35,6 +35,9 @@
 			</trans-unit>
 			<trans-unit id="users" resname="users">
 				<source>Users</source>
+			</trans-unit>
+			<trans-unit id="user" resname="user">
+				<source>User</source>
 			</trans-unit>
 			<trans-unit id="yes" resname="yes">
 				<source>Yes</source>
@@ -213,6 +216,9 @@
 			<trans-unit id="groups" resname="groups">
 				<source>Groups</source>
 			</trans-unit>
+			<trans-unit id="group" resname="group">
+				<source>Group</source>
+			</trans-unit>
 			<trans-unit id="information.groups.direct" resname="information.groups.direct">
 				<source>Directly assigned</source>
 			</trans-unit>
@@ -339,10 +345,10 @@
 				<source>Storage</source>
 			</trans-unit>
 			<trans-unit id="filemount.amount.multiple" resname="filemount.amount.multiple">
-				<source>%s filemounts</source>
+				<source>%s Filemounts</source>
 			</trans-unit>
 			<trans-unit id="filemount.amount.singular" resname="filemount.amount.singular">
-				<source>1 filemount</source>
+				<source>1 Filemount</source>
 			</trans-unit>
 		</body>
 	</file>

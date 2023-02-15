@@ -110,7 +110,10 @@
         <tfoot>
             <tr>
                 <td colspan="4">
-                    {totalAmountOfBackendUserGroups} <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups" />
+                    <f:if condition="{totalAmountOfBackendUserGroups} > 1">
+                        <f:then>{totalAmountOfBackendUserGroups} <f:translate key="groups" /></f:then>
+                        <f:else>{totalAmountOfBackendUserGroups} <f:translate key="group" /></f:else>
+                    </f:if>
                 </td>
             </tr>
         </tfoot>
