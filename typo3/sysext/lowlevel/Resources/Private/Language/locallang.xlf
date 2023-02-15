@@ -83,7 +83,14 @@
 			<trans-unit id="module.dbint.description" resname="module.dbint.description">
 				<source>Here you can check the integrity of the database tables configured by the $TCA. For instance all records must belong to a page record. You can also get a view of the total pagetree including deleted pages. Finally you've got access to a global database search facility.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
 			</trans-unit>
-
+			<trans-unit id="search.placeholder" resname="search.placeholder">
+				<source>Search Word</source>
+				<note>Placeholder text for search in database input</note>
+			</trans-unit>
+			<trans-unit id="search.submit" resname="search.submit">
+				<source>Search All Records</source>
+				<note>Label of submit button to search within the database (raw search in all fields)</note>
+			</trans-unit>
 			<trans-unit id="search" resname="search">
 				<source>Search</source>
 			</trans-unit>
@@ -185,6 +192,10 @@
 			</trans-unit>
 			<trans-unit id="result" resname="result">
 				<source>Result</source>
+			</trans-unit>
+			<trans-unit id="no_results" resname="no_results">
+				<source>No results found for "%s".</source>
+				<note>Info text in case no results are found for a given search term</note>
 			</trans-unit>
 			<trans-unit id="tables" resname="tables">
 				<source>Tables</source>

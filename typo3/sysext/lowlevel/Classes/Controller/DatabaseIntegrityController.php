@@ -446,6 +446,7 @@ class DatabaseIntegrityController
                 break;
             case 'raw':
             default:
+                $view->assign('sword', (string)($this->MOD_SETTINGS['sword'] ?? ''));
                 $view->assign('searchOptions', $this->form());
                 $view->assign('results', $this->search($request));
         }
@@ -2542,12 +2543,13 @@ class DatabaseIntegrityController
 
     protected function form(): string
     {
+        $languageService = $this->getLanguageService();
         $markup = [];
         $markup[] = '<div class="form-group">';
-        $markup[] =   '<input placeholder="Search Word" class="form-control" type="search" name="SET[sword]" value="' . htmlspecialchars($this->MOD_SETTINGS['sword'] ?? '') . '">';
+        $markup[] =   '<input placeholder="' . htmlspecialchars($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search.placeholder')) . '" class="form-control" type="search" name="SET[sword]" value="' . htmlspecialchars($this->MOD_SETTINGS['sword'] ?? '') . '">';
         $markup[] = '</div>';
         $markup[] = '<div class="form-group">';
-        $markup[] =   '<input class="btn btn-default" type="submit" name="submit" value="Search All Records">';
+        $markup[] =   '<input class="btn btn-default" type="submit" name="submit" value="' . htmlspecialchars($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search.submit')) . '">';
         $markup[] = '</div>';
 
         return implode(LF, $markup);
