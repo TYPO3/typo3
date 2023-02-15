@@ -133,7 +133,7 @@ class RootlineUtility
      */
     public function __construct($uid, $mountPointParameter = '', $context = null)
     {
-        $this->mountPointParameter = $this->sanitizeMountPointParameter($mountPointParameter);
+        $this->mountPointParameter = $this->sanitizeMountPointParameter((string)$mountPointParameter);
         if (!($context instanceof Context)) {
             $context = GeneralUtility::makeInstance(Context::class);
         }
@@ -426,6 +426,10 @@ class RootlineUtility
      */
     protected function sanitizeMountPointParameter(string $mountPointParameter): string
     {
+        $mountPointParameter = trim($mountPointParameter);
+        if ($mountPointParameter === '') {
+            return '';
+        }
         $mountPoints = GeneralUtility::trimExplode(',', $mountPointParameter);
         foreach ($mountPoints as $key => $mP) {
             // If MP has incorrect format, discard it
