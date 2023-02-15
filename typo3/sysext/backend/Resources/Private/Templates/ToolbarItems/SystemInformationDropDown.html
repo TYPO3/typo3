@@ -1,8 +1,8 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
-<span
-    class="systeminformationtoolbaritem-container t3js-systeminformation-container"
-    data-count="{count}"
-    data-severityclass="{severityBadgeClass}"></span>
+<span data-systeminformation-data
+    data-systeminformation-data-count="{count}"
+    data-systeminformation-data-severitybadgeclass="{severityBadgeClass}"
+></span>
 
 <h3 class="dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemInformation.header"/></h3>
 <p class="dropdown-item-text">
@@ -41,30 +41,19 @@
 <f:if condition="{messages -> f:count()} > 0">
     <f:then>
         <f:for each="{messages}" as="message">
-            <div class="dropdown-row">
+            <div class="dropdown-row"
+                data-systeminformation-message-module="{message.module}"
+                data-systeminformation-message-params="{message.params}"
+                data-systeminformation-message-count="{message.count}"
+                data-systeminformation-message-status="{message.status}"
+            >
                 <div>
                     <span class="text-{message.status}">
                         <core:icon identifier="actions-exclamation-circle-alt" />
                     </span>
                 </div>
                 <div>
-                    <f:if condition="{message.module}">
-                        <f:then>
-                            <p
-                                id="systeminformation_{message.module}"
-                                class="mb-0 t3js-systeminformation-module typo3-module-menu-item submodule mod-{message.module}"
-                                data-modulename="{message.module}"
-                                data-moduleparams="{message.params}"
-                            >
-                                <f:format.raw>{message.text}</f:format.raw>
-                            </p>
-                        </f:then>
-                        <f:else>
-                            <p>
-                                <f:format.raw>{message.text}</f:format.raw>
-                            </p>
-                        </f:else>
-                    </f:if>
+                    <f:format.raw>{message.text}</f:format.raw>
                 </div>
             </div>
         </f:for>
@@ -77,9 +66,7 @@
                 </span>
             </div>
             <div>
-                <p>
-                    <f:format.nl2br><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.allgood" /></f:format.nl2br>
-                </p>
+                <f:format.nl2br><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.allgood" /></f:format.nl2br>
             </div>
         </div>
     </f:else>

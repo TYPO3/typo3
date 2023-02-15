@@ -66,19 +66,18 @@ final class SystemInformationController
 
         if ($count > 0) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $moduleIdentifier = 'system_BelogLog';
+            $moduleParams = ['constraint' => ['channel' => 'php']];
             $systemInformationToolbarItem->addSystemMessage(
                 sprintf(
                     $this->getLanguageService()->sL('LLL:EXT:belog/Resources/Private/Language/locallang.xlf:systemmessage.errorsInPeriod'),
                     $count,
-                    (string)$uriBuilder->buildUriFromRoute(
-                        'system_BelogLog',
-                        ['constraint' => ['channel' => 'php']]
-                    )
+                    (string)$uriBuilder->buildUriFromRoute($moduleIdentifier, $moduleParams)
                 ),
                 InformationStatus::STATUS_ERROR,
                 $count,
-                'system_BelogLog',
-                http_build_query(['constraint' => ['channel' => 'php']])
+                $moduleIdentifier,
+                http_build_query($moduleParams)
             );
         }
     }
