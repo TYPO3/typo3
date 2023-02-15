@@ -58,15 +58,17 @@ final class ToolbarItemProvider
 
         if (!$this->schedulerWasExecuted()) {
             // Display system message if the Scheduler has never yet run
+            $moduleIdentifier = 'system_txschedulerM1';
+            $moduleParams = ['subModule' => 'check'];
             $systemInformationToolbarItem->addSystemMessage(
                 sprintf(
                     $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:systemmessage.noLastRun'),
-                    (string)$uriBuilder->buildUriFromRoute('system_txschedulerM1', ['function' => 'check'])
+                    (string)$uriBuilder->buildUriFromRoute($moduleIdentifier, $moduleParams)
                 ),
                 InformationStatus::STATUS_WARNING,
-                0,
-                'system_txschedulerM1',
-                http_build_query(['function' => 'check'])
+                1,
+                $moduleIdentifier,
+                http_build_query($moduleParams)
             );
         } else {
             // Display information about the last Scheduler execution
