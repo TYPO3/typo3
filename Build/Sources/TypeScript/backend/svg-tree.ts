@@ -1418,7 +1418,6 @@ export class Toolbar extends LitElement {
         const el = evt.target as HTMLInputElement;
         this.tree.filter(el.value.trim());
       }, this.settings.filterTimeout).bindTo(inputEl);
-      inputEl.focus();
     }
   }
 
