@@ -31,7 +31,6 @@ class Router {
   private scaffoldSelector: string = '.t3js-scaffold';
   private scaffoldContentOverlaySelector: string = '.t3js-scaffold-content-overlay';
   private scaffoldMenuToggleSelector: string = '.t3js-topbar-button-modulemenu';
-  private scaffoldMenuActionSelector: string = '.t3js-modulemenu-action';
 
   private rootContainer: HTMLElement;
   private controller: string;
@@ -210,7 +209,7 @@ class Router {
             this.rootContainer.innerHTML = data.html;
             // Mark main module as active in standalone
             if (this.context !== 'backend') {
-              this.rootContainer.querySelector('.t3js-modulemenu-action[data-controller="' + this.controller + '"]').classList.add('modulemenu-action-active');
+              this.rootContainer.querySelector('[data-installroute-controller="' + this.controller + '"]').classList.add('modulemenu-action-active');
               this.registerScaffoldEvents();
             }
             this.loadCards();
@@ -427,7 +426,7 @@ class Router {
       event.preventDefault();
       this.toggleMenu(true);
     });
-    document.querySelectorAll(this.scaffoldMenuActionSelector).forEach((element: Element) => {
+    document.querySelectorAll('[data-installroute-controller]').forEach((element: Element) => {
       element.addEventListener('click', (event: MouseEvent) => {
         if (window.innerWidth < 768) {
           localStorage.setItem('typo3-install-modulesCollapsed', 'true');

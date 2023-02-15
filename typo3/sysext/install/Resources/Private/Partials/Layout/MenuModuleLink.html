@@ -5,13 +5,11 @@
 >
 <li data-level="1">
     <a
-        title="{label}"
-        class="modulemenu-action t3js-modulemenu-action"
-        role="menuitem"
-        id="{module.name}"
-        data-modulename="{module.name}"
-        data-controller="{controller}"
         href="{i:uri.action(controller: controller)}"
+        title="{label}"
+        class="modulemenu-action"
+        role="menuitem"
+        data-installroute-controller="{controller}"
     >
         <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="module-install-{controller}" size="medium" alternativeMarkupIdentifier="inline"/></span>
         <span class="modulemenu-name">{label}</span>
