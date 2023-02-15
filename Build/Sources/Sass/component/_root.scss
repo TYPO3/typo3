@@ -16,6 +16,8 @@
     // Component
     --typo3-component-bg: #{$white};
     --typo3-component-color: #{$body-color};
+    --typo3-component-link-color: #{$primary};
+    --typo3-component-link-hover-color: #{tint-color($primary, 10%)};
     --typo3-component-font-size: #{$font-size-base};
     --typo3-component-line-height: #{$line-height-base};
     --typo3-component-border-radius: 4px;
@@ -58,6 +60,8 @@
     :root {
         --typo3-component-bg: #{$gray-900};
         --typo3-component-color: #{$white};
+        --typo3-component-link-color: #{tint-color($primary, 40%)};
+        --typo3-component-link-hover-color: #{tint-color($primary, 50%)};
         --typo3-component-border-color: #{$gray-800};
         --typo3-component-hover-bg: #{$gray-800};
         --typo3-component-hover-border-color: #{$gray-700};
