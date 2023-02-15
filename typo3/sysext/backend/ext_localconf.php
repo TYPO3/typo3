@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use TYPO3\CMS\Backend\Backend\Avatar\DefaultAvatarProvider;
 use TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider;
-use TYPO3\CMS\Backend\Provider\PageTsBackendLayoutDataProvider;
 use TYPO3\CMS\Backend\Security\EmailLoginNotification;
 use TYPO3\CMS\Backend\Security\FailedLoginAttemptNotification;
+use TYPO3\CMS\Backend\View\BackendLayout\PageTsBackendLayoutDataProvider;
 
 defined('TYPO3') or die();
 

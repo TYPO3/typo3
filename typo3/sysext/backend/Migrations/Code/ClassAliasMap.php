@@ -21,6 +21,7 @@ return [
     'TYPO3\\CMS\\Backend\\Form\\Element\\InputLinkElement' => \TYPO3\CMS\Backend\Form\Element\LinkElement::class,
     'TYPO3\\CMS\\Backend\\Form\\Element\\InputDateTimeElement' => \TYPO3\CMS\Backend\Form\Element\DatetimeElement::class,
     'TYPO3\\CMS\\Backend\\Form\\Element\\InputColorPickerElement' => \TYPO3\CMS\Backend\Form\Element\ColorElement::class,
+    'TYPO3\\CMS\\Backend\\Provider\\PageTsBackendLayoutDataProvider' => \TYPO3\CMS\Backend\View\BackendLayout\PageTsBackendLayoutDataProvider::class,
     'TYPO3\\CMS\\Recordlist\\Browser\\AbstractElementBrowser' => \TYPO3\CMS\Backend\ElementBrowser\AbstractElementBrowser::class,
     'TYPO3\\CMS\\Recordlist\\Browser\\DatabaseBrowser' => \TYPO3\CMS\Backend\ElementBrowser\DatabaseBrowser::class,
     'TYPO3\\CMS\\Recordlist\\Browser\\ElementBrowserInterface' => \TYPO3\CMS\Backend\ElementBrowser\ElementBrowserInterface::class,

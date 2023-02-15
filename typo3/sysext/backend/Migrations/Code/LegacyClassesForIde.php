@@ -46,6 +46,15 @@ namespace TYPO3\CMS\Backend\Form\Element {
     }
 }
 
+namespace TYPO3\CMS\Backend\Provider {
+    /**
+     * @deprecated since TYPO3 v12, will be removed in TYPO3 v13
+     */
+    class PageTsBackendLayoutDataProvider extends \TYPO3\CMS\Backend\View\BackendLayout\PageTsBackendLayoutDataProvider
+    {
+    }
+}
+
 namespace TYPO3\CMS\Recordlist\Browser {
     /**
      * @deprecated since TYPO3 v12, will be removed in TYPO3 v13

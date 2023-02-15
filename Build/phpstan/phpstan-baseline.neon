@@ -96,11 +96,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Wizard/SuggestWizardDefaultReceiver.php
 
 		-
-			message: "#^Offset 'config\\.' on array on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Provider/PageTsBackendLayoutDataProvider.php
-
-		-
 			message: "#^Cannot assign offset 'currentValue' to string\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
