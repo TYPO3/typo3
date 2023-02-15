@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="showColumns" resname="showColumns">
-				<source>Show Columns</source>
+				<source>Show columns</source>
 			</trans-unit>
 			<trans-unit id="showColumnsSelection" resname="showColumnsSelection">
 				<source>Show columns for %s</source>
