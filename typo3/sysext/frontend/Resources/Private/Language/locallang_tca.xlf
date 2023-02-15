@@ -411,7 +411,7 @@
 			<trans-unit id="fe_users.usergroup" resname="fe_users.usergroup">
 				<source>Groups</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tabs.personelData" resname="fe_users.tabs.personelData">
+			<trans-unit id="fe_users.tabs.personalData" resname="fe_users.tabs.personalData">
 				<source>Personal Data</source>
 			</trans-unit>
 			<trans-unit id="fe_users.tabs.access" resname="fe_users.tabs.access">
