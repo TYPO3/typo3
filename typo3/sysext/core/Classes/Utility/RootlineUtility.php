@@ -373,6 +373,10 @@ class RootlineUtility
      */
     protected function sanitizeMountPointParameter(string $mountPointParameter): string
     {
+        $mountPointParameter = trim($mountPointParameter);
+        if ($mountPointParameter === '') {
+            return '';
+        }
         $mountPoints = GeneralUtility::trimExplode(',', $mountPointParameter);
         foreach ($mountPoints as $key => $mP) {
             // If MP has incorrect format, discard it
