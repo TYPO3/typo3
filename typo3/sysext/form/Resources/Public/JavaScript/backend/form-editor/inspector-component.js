@@ -507,6 +507,7 @@ function factory($, Helper, Icons, Notification, Modal, MessageUtility) {
       new Sortable(sortableDomElement.get(0), {
         draggable: getHelper().getDomElementClassName('collectionElement', true),
         filter: 'input,textarea,select',
+        preventOnFilter: false,
         animation: 200,
         fallbackTolerance: 200,
         swapThreshold: 0.6,
