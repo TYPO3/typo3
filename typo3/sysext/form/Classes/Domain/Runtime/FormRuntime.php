@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Form\Domain\Runtime;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
@@ -107,8 +106,8 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 {
     public const HONEYPOT_NAME_SESSION_IDENTIFIER = 'tx_form_honeypot_name_';
 
-    protected ?FormDefinition $formDefinition = null;
-    protected ?RequestInterface $request = null;
+    protected FormDefinition $formDefinition;
+    protected RequestInterface $request;
     protected ResponseInterface $response;
 
     /**
@@ -338,8 +337,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         $renderingOptions = $this->formDefinition->getRenderingOptions();
         if (!isset($renderingOptions['honeypot']['enable'])
             || $renderingOptions['honeypot']['enable'] === false
-            || (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-                && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend())
+            || ApplicationType::fromRequest($this->request)->isBackend()
         ) {
             return;
         }
@@ -370,8 +368,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         if (!isset($renderingOptions['honeypot']['enable'])
             || $this->currentPage === null
             || $renderingOptions['honeypot']['enable'] === false
-            || (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-                && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend())
+            || ApplicationType::fromRequest($this->request)->isBackend()
         ) {
             return;
         }
@@ -1028,11 +1025,8 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      */
     protected function initializeCurrentSiteLanguage(): void
     {
-        if (
-            $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
-            && $GLOBALS['TYPO3_REQUEST']->getAttribute('language') instanceof SiteLanguage
-        ) {
-            $this->currentSiteLanguage = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
+        if ($this->request->getAttribute('language') instanceof SiteLanguage) {
+            $this->currentSiteLanguage = $this->request->getAttribute('language');
         } else {
             $pageId = 0;
             $languageId = (int)GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', 0);
