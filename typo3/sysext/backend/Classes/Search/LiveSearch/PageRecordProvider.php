@@ -225,7 +225,7 @@ final class PageRecordProvider implements SearchProviderInterface
         $pageList = $mounts;
         $repository = GeneralUtility::makeInstance(PageTreeRepository::class);
         $repository->setAdditionalWhereClause($this->userPermissions);
-        $pages = $repository->getFlattenedPages([$mounts], self::RECURSIVE_PAGE_LEVEL);
+        $pages = $repository->getFlattenedPages($mounts, self::RECURSIVE_PAGE_LEVEL);
         foreach ($pages as $page) {
             $pageList[] = (int)$page['uid'];
         }

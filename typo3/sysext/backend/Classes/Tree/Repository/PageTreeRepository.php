@@ -200,6 +200,8 @@ class PageTreeRepository
     /**
      * Useful to get a list of pages, with a specific depth, e.g. to limit
      * a query to another table to a list of page IDs.
+     *
+     * @param int[] $entryPointIds
      */
     public function getFlattenedPages(array $entryPointIds, int $depth): array
     {
