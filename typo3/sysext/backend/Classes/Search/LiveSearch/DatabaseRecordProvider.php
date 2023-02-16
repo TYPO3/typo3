@@ -248,6 +248,14 @@ final class DatabaseRecordProvider implements SearchProviderInterface
             }
 
             $actions = [];
+            $showLink = $this->getShowLink($row);
+            if ($showLink !== '') {
+                $actions[] = (new ResultItemAction('open_page_details'))
+                    ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showList'))
+                    ->setIcon($this->iconFactory->getIcon('actions-list', IconSize::SMALL))
+                    ->setUrl($showLink);
+            }
+
             $editLink = $this->getEditLink($tableName, $row);
             if ($editLink !== '') {
                 $actions[] = (new ResultItemAction('edit_record'))
@@ -450,6 +458,30 @@ final class DatabaseRecordProvider implements SearchProviderInterface
     }
 
     /**
+     * Build a link to the record list based on given record.
+     *
+     * @param array $row Current record row from database.
+     * @return string Link to open an edit window for record.
+     */
+    protected function getShowLink(array $row): string
+    {
+        $backendUser = $this->getBackendUser();
+        $showLink = '';
+        $permissionSet = new Permission($this->getBackendUser()->calcPerms(BackendUtility::getRecord('pages', $row['pid']) ?? []));
+        // "View" link - Only with proper permissions
+        if ($backendUser->isAdmin()
+            || (
+                $permissionSet->showPagePermissionIsGranted()
+                && !($GLOBALS['TCA']['pages']['ctrl']['adminOnly'] ?? false)
+                && $backendUser->check('tables_select', 'pages')
+            )
+        ) {
+            $showLink = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $row['pid']]);
+        }
+        return $showLink;
+    }
+
+    /**
      * Build a backend edit link based on given record.
      *
      * @param string $tableName Record table name
@@ -461,14 +493,13 @@ final class DatabaseRecordProvider implements SearchProviderInterface
     {
         $backendUser = $this->getBackendUser();
         $editLink = '';
-        $calcPerms = new Permission($backendUser->calcPerms(BackendUtility::readPageAccess($row['pid'], $this->userPermissions) ?: []));
-        $permsEdit = $calcPerms->editContentPermissionIsGranted();
+        $permissionSet = new Permission($backendUser->calcPerms(BackendUtility::readPageAccess($row['pid'], $this->userPermissions) ?: []));
         // "Edit" link - Only with proper edit permissions
         if (!($GLOBALS['TCA'][$tableName]['ctrl']['readOnly'] ?? false)
             && (
                 $backendUser->isAdmin()
                 || (
-                    $permsEdit
+                    $permissionSet->editContentPermissionIsGranted()
                     && !($GLOBALS['TCA'][$tableName]['ctrl']['adminOnly'] ?? false)
                     && $backendUser->check('tables_modify', $tableName)
                     && $backendUser->recordEditAccessInternals($tableName, $row)

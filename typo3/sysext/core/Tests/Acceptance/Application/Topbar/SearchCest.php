@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Topbar;
 
+use Codeception\Util\Locator;
 use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
@@ -45,7 +46,8 @@ final class SearchCest
         $I->fillField(self::$searchField, 'adm');
 
         $I->canSee('admin', self::$searchResultItem);
-        $I->click(self::$searchResultItem . ' [title~="admin"]');
+        $I->click(self::$searchResultItem . ' [title~="admin"]+.livesearch-expand-action');
+        $I->click(Locator::contains('typo3-backend-live-search-result-item-action', 'Edit'));
 
         $I->switchToContentFrame();
         $I->waitForElementVisible('#EditDocumentController');

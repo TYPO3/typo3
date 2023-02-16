@@ -385,20 +385,20 @@ final class PageRecordProvider implements SearchProviderInterface
     }
 
     /**
-     * Build a backend edit link based on given record.
+     * Build a link to the record list based on given record.
      *
      * @param array $row Current record row from database.
      * @return string Link to open an edit window for record.
-     * @see \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess()
      */
     protected function getShowLink(array $row): string
     {
         $backendUser = $this->getBackendUser();
         $showLink = '';
+        $permissionSet = new Permission($this->getBackendUser()->calcPerms(BackendUtility::getRecord('pages', $row['pid']) ?? []));
         // "View" link - Only with proper permissions
         if ($backendUser->isAdmin()
             || (
-                $this->hasPermissionToView($row)
+                $permissionSet->showPagePermissionIsGranted()
                 && !($GLOBALS['TCA']['pages']['ctrl']['adminOnly'] ?? false)
                 && $backendUser->check('tables_select', 'pages')
             )
@@ -406,13 +406,6 @@ final class PageRecordProvider implements SearchProviderInterface
             $showLink = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $row['uid']]);
         }
         return $showLink;
-    }
-
-    protected function hasPermissionToView(array $row): bool
-    {
-        $localCalcPerms = new Permission($this->getBackendUser()->calcPerms(BackendUtility::getRecord('pages', $row['uid']) ?? []));
-
-        return $localCalcPerms->showPagePermissionIsGranted();
     }
 
     protected function getBackendUser(): BackendUserAuthentication
