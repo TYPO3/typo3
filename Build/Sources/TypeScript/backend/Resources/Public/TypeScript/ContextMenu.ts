@@ -125,10 +125,10 @@ class ContextMenu {
       parameters += 'table=' + encodeURIComponent(table);
     }
     if (typeof uid !== 'undefined') {
-      parameters += (parameters.length > 0 ? '&' : '') + 'uid=' + uid;
+      parameters += (parameters.length > 0 ? '&' : '') + 'uid=' + (typeof uid === 'number' ? uid : encodeURIComponent(uid));
     }
     if (typeof context !== 'undefined') {
-      parameters += (parameters.length > 0 ? '&' : '') + 'context=' + context;
+      parameters += (parameters.length > 0 ? '&' : '') + 'context=' + encodeURIComponent(context);
     }
     if (typeof enDisItems !== 'undefined') {
       parameters += (parameters.length > 0 ? '&' : '') + 'enDisItems=' + enDisItems;
