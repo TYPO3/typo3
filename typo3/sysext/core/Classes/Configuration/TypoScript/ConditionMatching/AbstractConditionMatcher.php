@@ -31,6 +31,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Used with the TypoScript parser.
  * Matches IP numbers etc. for use with templates
+ *
+ * @deprecated since v12, will be removed in v13 together with old TypoScript parser
  */
 abstract class AbstractConditionMatcher implements LoggerAwareInterface, ConditionMatcherInterface
 {

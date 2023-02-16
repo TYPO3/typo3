@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Backend\View;
 
-use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as BackendConditionMatcher;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
@@ -44,7 +43,6 @@ class BackendLayoutView implements SingletonInterface
     public function __construct(
         private readonly DataProviderCollection $dataProviderCollection,
         private readonly TypoScriptStringFactory $typoScriptStringFactory,
-        private readonly BackendConditionMatcher $conditionMatcher,
     ) {
         $this->dataProviderCollection->add('default', DefaultDataProvider::class);
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'])) {
@@ -339,11 +337,7 @@ class BackendLayoutView implements SingletonInterface
      */
     public function parseStructure(BackendLayout $backendLayout): array
     {
-        $typoScriptTree = $this->typoScriptStringFactory->parseFromStringWithIncludesAndConditions(
-            'backend-layout',
-            $backendLayout->getConfiguration(),
-            $this->conditionMatcher
-        );
+        $typoScriptTree = $this->typoScriptStringFactory->parseFromStringWithIncludes('backend-layout', $backendLayout->getConfiguration());
 
         $backendLayoutData = [];
         $backendLayoutData['config'] = $backendLayout->getConfiguration();

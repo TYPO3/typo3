@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\ExpressionLanguage;
 
-/**
- * Interface ProviderInterface
- */
 interface ProviderInterface
 {
     /**

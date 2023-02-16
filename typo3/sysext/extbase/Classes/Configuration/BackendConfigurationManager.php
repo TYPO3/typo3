@@ -21,7 +21,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -41,7 +40,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility;
-use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as FrontendConditionMatcher;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -100,7 +98,6 @@ class BackendConfigurationManager implements SingletonInterface
         private readonly SysTemplateTreeBuilder $treeBuilder,
         private readonly LossyTokenizer $lossyTokenizer,
         private readonly ConditionVerdictAwareIncludeTreeTraverser $includeTreeTraverserConditionVerdictAware,
-        private readonly Context $context,
     ) {
     }
 
@@ -221,6 +218,7 @@ class BackendConfigurationManager implements SingletonInterface
         if ($pageId > 0) {
             $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
             $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
+            ksort($rootLine);
         } else {
             $sysTemplateRows[] = [
                 'uid' => 0,
@@ -246,9 +244,15 @@ class BackendConfigurationManager implements SingletonInterface
         // That's a possible improvement to further speed up extbase backend modules, but a bit of
         // hassle. See the Frontend TypoScript calculation on how to do this.
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->lossyTokenizer, $site, $this->typoScriptCache);
-        $frontendConditionMatcher = GeneralUtility::makeInstance(FrontendConditionMatcher::class, $this->context, $pageId, $rootLine);
-        $conditionMatcherVisitor = new IncludeTreeConditionMatcherVisitor();
-        $conditionMatcherVisitor->setConditionMatcher($frontendConditionMatcher);
+        $expressionMatcherVariables = [
+            'request' => $request,
+            'pageId' => $pageId,
+            'page' => !empty($rootLine) ? $rootLine[array_key_first($rootLine)] : [],
+            'fullRootLine' => $rootLine,
+            'site' => $site,
+        ];
+        $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
+        $conditionMatcherVisitor->initializeExpressionMatcherWithVariables($expressionMatcherVariables);
         $this->includeTreeTraverserConditionVerdictAware->resetVisitors();
         $this->includeTreeTraverserConditionVerdictAware->addVisitor($conditionMatcherVisitor);
         $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
@@ -262,8 +266,8 @@ class BackendConfigurationManager implements SingletonInterface
         $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flatConstants);
         $this->includeTreeTraverserConditionVerdictAware->resetVisitors();
         $this->includeTreeTraverserConditionVerdictAware->addVisitor($setupConditionConstantSubstitutionVisitor);
-        $setupMatcherVisitor = new IncludeTreeConditionMatcherVisitor();
-        $setupMatcherVisitor->setConditionMatcher($frontendConditionMatcher);
+        $setupMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
+        $setupMatcherVisitor->initializeExpressionMatcherWithVariables($expressionMatcherVariables);
         $this->includeTreeTraverserConditionVerdictAware->addVisitor($setupMatcherVisitor);
         $setupAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
         $setupAstBuilderVisitor->setFlatConstants($flatConstants);

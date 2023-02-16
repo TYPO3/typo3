@@ -20,7 +20,6 @@ use Doctrine\DBAL\Types\Type;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
-use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as BackendConditionMatcher;
 use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -704,9 +703,9 @@ class BackendUtility
         }
 
         $pageUid = (int)$pageUid;
-        $rootLine = self::BEgetRootLine($pageUid, '', true);
+        $fullRootLine = self::BEgetRootLine($pageUid, '', true);
         // Order correctly
-        ksort($rootLine);
+        ksort($fullRootLine);
 
         try {
             $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageUid);
@@ -714,14 +713,8 @@ class BackendUtility
             $site = new NullSite();
         }
 
-        $conditionMatcher = GeneralUtility::makeInstance(BackendConditionMatcher::class, GeneralUtility::makeInstance(Context::class), $pageUid, $rootLine);
         $pageTsConfigFactory = GeneralUtility::makeInstance(PageTsConfigFactory::class);
-        $pageTsConfig = $pageTsConfigFactory->create(
-            $rootLine,
-            $site,
-            $conditionMatcher,
-            static::getBackendUserAuthentication()?->getUserTsConfig()
-        );
+        $pageTsConfig = $pageTsConfigFactory->create($fullRootLine, $site, static::getBackendUserAuthentication()?->getUserTsConfig());
 
         $runtimeCache->set('pageTsConfig-' . $pageUid, $pageTsConfig);
         return $pageTsConfig->getPageTsConfigArray();

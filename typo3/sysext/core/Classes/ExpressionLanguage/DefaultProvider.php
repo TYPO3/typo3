@@ -17,16 +17,35 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\ExpressionLanguage;
 
+use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\ExpressionLanguage\FunctionsProvider\DefaultFunctionsProvider;
+use TYPO3\CMS\Core\Information\Typo3Version;
 
 /**
- * Class DefaultProvider
+ * Prepare a couple of default variables and register some
+ * general functions that work with it.
+ *
  * @internal
  */
 class DefaultProvider extends AbstractProvider
 {
-    public function __construct()
-    {
+    public function __construct(
+        Typo3Version $typo3Version,
+        Context $context,
+        Features $features,
+    ) {
+        $typo3 = new \stdClass();
+        $typo3->version = $typo3Version->getVersion();
+        $typo3->branch = $typo3Version->getBranch();
+        $typo3->devIpMask = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] ?? '');
+        $this->expressionLanguageVariables = [
+            'applicationContext' => (string)Environment::getContext(),
+            'typo3' => $typo3,
+            'date' => $context->getAspect('date'),
+            'features' => $features,
+        ];
         $this->expressionLanguageProviders[] = DefaultFunctionsProvider::class;
     }
 }

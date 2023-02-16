@@ -27,6 +27,7 @@ use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -36,8 +37,10 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider;
 use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -1539,6 +1542,8 @@ class ContentObjectRendererTest extends UnitTestCase
             new NullFrontend('core'),
             'ExpressionLanguageProviders'
         ));
+        GeneralUtility::addInstance(DefaultProvider::class, new DefaultProvider(new Typo3Version(), new Context(), new Features()));
+
         putenv('LOCAL_DEVELOPMENT=1');
 
         $site = new Site('my-site', 123, [
@@ -2667,9 +2672,13 @@ class ContentObjectRendererTest extends UnitTestCase
             new NullFrontend('dummy')
         );
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
+        GeneralUtility::addInstance(ProviderConfigurationLoader::class, $this->createMock(ProviderConfigurationLoader::class));
+        GeneralUtility::addInstance(DefaultProvider::class, new DefaultProvider(new Typo3Version(), new Context(), new Features()));
         GeneralUtility::addInstance(LinkFactory::class, $this->getLinkFactory($siteConfiguration));
 
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
+        // This can vanish when the condition provider have been moved towards service provider setup
+        GeneralUtility::purgeInstances();
     }
 
     /**
@@ -3067,6 +3076,8 @@ class ContentObjectRendererTest extends UnitTestCase
             ['runtime', new NullFrontend('dummy')],
             ['core', new NullFrontend('runtime')],
         ]);
+        GeneralUtility::addInstance(ProviderConfigurationLoader::class, $this->createMock(ProviderConfigurationLoader::class));
+        GeneralUtility::addInstance(DefaultProvider::class, new DefaultProvider(new Typo3Version(), new Context(), new Features()));
         $linkFactory = $this->getLinkFactory($siteConfiguration);
         GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
         $linkText = 'Nice Text';
@@ -3090,6 +3101,8 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $expectedResult = '<a href="https://example.com" target="FEopenLink" data-window-url="https://example.com" data-window-target="FEopenLink" data-window-features="width=13,height=84" rel="noreferrer">Nice Text with default window name</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
+        // This can vanish when the condition provider have been moved towards service provider setup
+        GeneralUtility::purgeInstances();
     }
 
     /**
@@ -3149,6 +3162,8 @@ class ContentObjectRendererTest extends UnitTestCase
             },
             new NullFrontend('dummy')
         );
+        GeneralUtility::addInstance(ProviderConfigurationLoader::class, $this->createMock(ProviderConfigurationLoader::class));
+        GeneralUtility::addInstance(DefaultProvider::class, new DefaultProvider(new Typo3Version(), new Context(), new Features()));
         $linkFactory = $this->getLinkFactory($siteConfiguration);
         GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
 
@@ -3176,6 +3191,8 @@ class ContentObjectRendererTest extends UnitTestCase
             'title' => null,
             'linkText' => 'https://example.tld',
             'additionalAttributes' => [], ]), (string)$linkResult);
+        // This can vanish when the condition provider have been moved towards service provider setup
+        GeneralUtility::purgeInstances();
     }
 
     /**
@@ -3208,11 +3225,15 @@ class ContentObjectRendererTest extends UnitTestCase
             },
             new NullFrontend('dummy')
         );
+        GeneralUtility::addInstance(ProviderConfigurationLoader::class, $this->createMock(ProviderConfigurationLoader::class));
+        GeneralUtility::addInstance(DefaultProvider::class, new DefaultProvider(new Typo3Version(), new Context(), new Features()));
         $linkFactory = $this->getLinkFactory($siteConfiguration);
         GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
         self::assertEquals($expectedResult, (string)$this->subject->typoLink($linkText, $configuration));
+        // This can vanish when the condition provider have been moved towards service provider setup
+        GeneralUtility::purgeInstances();
     }
 
     public function typoLinkProperlyEncodesLinkResultDataProvider(): array

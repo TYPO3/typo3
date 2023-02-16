@@ -20,14 +20,15 @@ namespace TYPO3\CMS\Core\ExpressionLanguage\FunctionsProvider;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 use TYPO3\CMS\Core\Exception\MissingTsfeException;
-use TYPO3\CMS\Core\ExpressionLanguage\RequestWrapper;
-use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * Class TypoScriptConditionProvider
+ * Functions available in 'TypoScript' context. Note these rely on variables
+ * being hand over, see IncludeTreeConditionMatcherVisitor for more details.
+ *
  * @internal
  */
 class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInterface
@@ -35,7 +36,7 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
     /**
      * @return ExpressionFunction[] An array of Function instances
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             $this->getLoginUserFunction(),
@@ -49,65 +50,81 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
 
     protected function getLoginUserFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('loginUser', static function () {
-            // Not implemented, we only use the evaluator
-        }, static function ($arguments, $str) {
-            $user = $arguments['frontend']->user ?? $arguments['backend']->user;
-            if ($user->isLoggedIn) {
-                foreach (GeneralUtility::trimExplode(',', $str, true) as $test) {
-                    if ($test === '*' || (string)$user->userId === (string)$test) {
-                        return true;
+        // @todo: This function is problematic (even though its documented as such):
+        //        In FE context, it will use a FE user if logged in, but fall back to
+        //        a potentially logged in BE user. This may lead to unexpected results.
+        //        This should be deprecated, similar things should be possible on backend / frontend
+        //        variable directly.
+        return new ExpressionFunction(
+            'loginUser',
+            static fn () => null, // Not implemented, we only use the evaluator
+            static function ($arguments, $str) {
+                $user = $arguments['frontend']->user ?? $arguments['backend']->user;
+                if ($user->isLoggedIn) {
+                    foreach (GeneralUtility::trimExplode(',', $str, true) as $test) {
+                        if ($test === '*' || (string)$user->userId === (string)$test) {
+                            return true;
+                        }
                     }
                 }
+                return false;
             }
-            return false;
-        });
+        );
     }
 
     protected function getTSFEFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('getTSFE', static function () {
-            // Not implemented, we only use the evaluator
-        }, static function ($arguments) {
-            if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
-                return $GLOBALS['TSFE'];
+        // @todo: This should probably vanish mid-term: TSFE is shrinking and calling
+        //        properties on this object is risky and becomes more and more problematic.
+        return new ExpressionFunction(
+            'getTSFE',
+            static fn () => null, // Not implemented, we only use the evaluator
+            static function ($arguments) {
+                if (($arguments['tsfe'] ?? null) instanceof TypoScriptFrontendController) {
+                    return $arguments['tsfe'];
+                }
+                throw new MissingTsfeException('TSFE is not available in this context', 1578831632);
             }
-            throw new MissingTsfeException('TSFE is not available in this context', 1578831632);
-        });
+        );
     }
 
     protected function getUsergroupFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('usergroup', static function () {
-            // Not implemented, we only use the evaluator
-        }, static function ($arguments, $str) {
-            $user = $arguments['frontend']->user ?? $arguments['backend']->user;
-            $groupList = $user->userGroupList ?? '';
-            // '0,-1' is the default usergroups string when not logged in!
-            if ($groupList !== '0,-1' && $groupList !== '') {
-                foreach (GeneralUtility::trimExplode(',', $str, true) as $test) {
-                    if ($test === '*' || GeneralUtility::inList($groupList, $test)) {
-                        return true;
+        // @todo: This function is problematic (even though its documented as such):
+        //        In FE context, it will use a FE user if logged in, but fall back to
+        //        a potentially logged in BE user. This may lead to unexpected results.
+        //        This should be deprecated, similar things should be possible on backend / frontend
+        //        variable directly.
+        return new ExpressionFunction(
+            'usergroup',
+            static fn () => null, // Not implemented, we only use the evaluator
+            static function ($arguments, $str) {
+                $user = $arguments['frontend']->user ?? $arguments['backend']->user;
+                $groupList = $user->userGroupList ?? '';
+                // '0,-1' is the default usergroups string when not logged in!
+                if ($groupList !== '0,-1' && $groupList !== '') {
+                    foreach (GeneralUtility::trimExplode(',', $str, true) as $test) {
+                        if ($test === '*' || GeneralUtility::inList($groupList, $test)) {
+                            return true;
+                        }
                     }
                 }
+                return false;
             }
-            return false;
-        });
+        );
     }
 
     protected function getSessionFunction(): ExpressionFunction
     {
         return new ExpressionFunction(
             'session',
-            static function () {
-                // Not implemented, we only use the evaluator
-            },
+            static fn () => null, // Not implemented, we only use the evaluator
             static function ($arguments, $str) {
                 $retVal = null;
                 $keyParts = explode('|', $str);
                 $sessionKey = array_shift($keyParts);
-                // @todo fetch data from be session if available
-                $tsfe = $GLOBALS['TSFE'] ?? null;
+                // @todo: Provide session data differently and refrain from using TSFE.
+                $tsfe = $arguments['tsfe'] ?? null;
                 if ($tsfe && is_object($tsfe->fe_user)) {
                     $retVal = $tsfe->fe_user->getSessionData($sessionKey);
                     foreach ($keyParts as $keyPart) {
@@ -129,14 +146,10 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
     {
         return new ExpressionFunction(
             'site',
-            static function () {
-                // Not implemented, we only use the evaluator
-            },
+            static fn () => null, // Not implemented, we only use the evaluator
             static function ($arguments, $str) {
-                /** @var RequestWrapper $requestWrapper */
-                $requestWrapper = $arguments['request'];
-                $site = $requestWrapper->getSite();
-                if ($site instanceof Site) {
+                $site = $arguments['site'] ?? null;
+                if ($site instanceof SiteInterface) {
                     $methodName = 'get' . ucfirst(trim($str));
                     if (method_exists($site, $methodName)) {
                         return $site->$methodName();
@@ -151,13 +164,9 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
     {
         return new ExpressionFunction(
             'siteLanguage',
-            static function () {
-                // Not implemented, we only use the evaluator
-            },
+            static fn () => null, // Not implemented, we only use the evaluator
             static function ($arguments, $str) {
-                /** @var RequestWrapper $requestWrapper */
-                $requestWrapper = $arguments['request'];
-                $siteLanguage = $requestWrapper->getSiteLanguage();
+                $siteLanguage = $arguments['siteLanguage'] ?? null;
                 if ($siteLanguage instanceof SiteLanguage) {
                     $methodName = 'get' . ucfirst(trim($str));
                     if (method_exists($siteLanguage, $methodName)) {

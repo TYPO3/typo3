@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Tests\Functional\Configuration\TypoScript\ConditionMatching;
+namespace TYPO3\CMS\Backend\Tests\FunctionalDeprecated\Configuration\TypoScript\ConditionMatching;
 
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;

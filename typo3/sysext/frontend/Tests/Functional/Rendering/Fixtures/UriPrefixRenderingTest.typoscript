@@ -36,25 +36,25 @@ page {
   }
 }
 
-[request.getQueryParams()['testAbsRefPrefix'] == 'auto' || request.getParsedBody()['testAbsRefPrefix'] == 'auto']
+[traverse(request.getQueryParams(), 'testAbsRefPrefix') == 'auto' || traverse(request.getParsedBody(), 'testAbsRefPrefix') == 'auto']
   config.absRefPrefix = auto
-[request.getQueryParams()['testAbsRefPrefix'] == 'absolute-with-host' || request.getParsedBody()['testAbsRefPrefix'] == 'absolute-with-host']
+[traverse(request.getQueryParams(), 'testAbsRefPrefix') == 'absolute-with-host' || traverse(request.getParsedBody(), 'testAbsRefPrefix') == 'absolute-with-host']
   config.absRefPrefix = http://localhost/
-[request.getQueryParams()['testAbsRefPrefix'] == 'absolute-without-host' || request.getParsedBody()['testAbsRefPrefix'] == 'absolute-without-host']
+[traverse(request.getQueryParams(), 'testAbsRefPrefix') == 'absolute-without-host' || traverse(request.getParsedBody(), 'testAbsRefPrefix') == 'absolute-without-host']
   config.absRefPrefix = /
 [end]
 
-[request.getQueryParams()['testCompressor'] == 'concatenate' || request.getParsedBody()['testCompressor'] == 'concatenate']
+[traverse(request.getQueryParams(), 'testCompressor') == 'concatenate' || traverse(request.getParsedBody(), 'testCompressor') == 'concatenate']
   config {
     concatenateCss = 1
     concatenateJs = 1
   }
-[request.getQueryParams()['testCompressor'] == 'compress' || request.getParsedBody()['testCompressor'] == 'compress']
+[traverse(request.getQueryParams(), 'testCompressor') == 'compress' || traverse(request.getParsedBody(), 'testCompressor') == 'compress']
   config {
     compressCss = 1
     compressJs = 1
   }
-[request.getQueryParams()['testCompressor'] == 'concatenate-and-compress' || request.getParsedBody()['testCompressor'] == 'concatenate-and-compress']
+[traverse(request.getQueryParams(), 'testCompressor') == 'concatenate-and-compress' || traverse(request.getParsedBody(), 'testCompressor') == 'concatenate-and-compress']
   config {
     concatenateCss = 1
     concatenateJs = 1

@@ -19,10 +19,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\ExpressionLanguage;
 
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider;
 use TYPO3\CMS\Core\ExpressionLanguage\FunctionsProvider\DefaultFunctionsProvider;
 use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -45,7 +48,7 @@ class ResolverTest extends UnitTestCase
         parent::tearDown();
     }
 
-    public function basicExpressionsDataHandler(): array
+    public function basicExpressionsDataProvider(): array
     {
         return [
             '1+1' => ['1+1', true],
@@ -60,10 +63,12 @@ class ResolverTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider basicExpressionsDataHandler
+     * @dataProvider basicExpressionsDataProvider
      */
     public function basicExpressionHandlingResultsWorksAsExpected(string $expression, bool $expectedResult): void
     {
+        $defaultProvider = new DefaultProvider(new Typo3Version(), new Context(), new Features());
+        GeneralUtility::addInstance(DefaultProvider::class, $defaultProvider);
         $expressionLanguageResolver = new Resolver('default', []);
         self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
     }

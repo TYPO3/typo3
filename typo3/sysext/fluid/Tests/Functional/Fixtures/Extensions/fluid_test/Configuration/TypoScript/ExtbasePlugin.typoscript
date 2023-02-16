@@ -5,15 +5,15 @@ page.10 {
     pluginName = Pi
 }
 
-[request.getQueryParams()['pluginConfig'] == 'extensionKey' || request.getParsedBody()['pluginConfig'] == 'extensionKey']
+[traverse(request.getQueryParams(), 'pluginConfig') == 'extensionKey' || traverse(request.getParsedBody(), 'pluginConfig') == 'extensionKey']
     plugin.tx_fluidtest.view < lib.viewConfig
 [end]
 
-[request.getQueryParams()['pluginConfig'] == 'pluginName' || request.getParsedBody()['pluginConfig'] == 'pluginName']
+[traverse(request.getQueryParams(), 'pluginConfig') == 'pluginName' || traverse(request.getParsedBody(), 'pluginConfig') == 'pluginName']
     plugin.tx_fluidtest_pi.view < lib.viewConfig
 [end]
 
-[request.getQueryParams()['pluginConfig'] == 'incomplete' || request.getParsedBody()['pluginConfig'] == 'incomplete']
+[traverse(request.getQueryParams(), 'pluginConfig') == 'incomplete' || traverse(request.getParsedBody(), 'pluginConfig') == 'incomplete']
     plugin.tx_fluidtest_pi.view < lib.viewConfig
     plugin.tx_fluidtest_pi.view.partialRootPaths >
     plugin.tx_fluidtest_pi.view.layoutRootPaths >

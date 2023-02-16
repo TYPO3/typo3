@@ -29,7 +29,7 @@ class FormConditionFunctionsProvider implements ExpressionFunctionProviderInterf
     /**
      * @return ExpressionFunction[] An array of Function instances
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             $this->getFormValueFunction(),
@@ -44,9 +44,7 @@ class FormConditionFunctionsProvider implements ExpressionFunctionProviderInterf
     {
         return new ExpressionFunction(
             'getFormValue',
-            static function () {
-                // Not implemented, we only use the evaluator
-            },
+            static fn () => null, // Not implemented, we only use the evaluator
             static function ($arguments, $field) {
                 return $arguments['formValues'][$field] ?? null;
             }
@@ -57,14 +55,12 @@ class FormConditionFunctionsProvider implements ExpressionFunctionProviderInterf
     {
         return new ExpressionFunction(
             'getRootFormProperty',
-            static function () {
-                // Not implemented, we only use the evaluator
-            },
+            static fn () => null, // Not implemented, we only use the evaluator
             static function ($arguments, $property) {
                 $formDefinition = $arguments['formRuntime']->getFormDefinition();
                 try {
                     $value = ObjectAccess::getPropertyPath($formDefinition, $property);
-                } catch (\Exception $exception) {
+                } catch (\Exception) {
                     $value = null;
                 }
                 return $value;

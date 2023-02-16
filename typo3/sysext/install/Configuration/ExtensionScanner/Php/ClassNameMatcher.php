@@ -2238,4 +2238,24 @@ return [
             'Deprecation-97923-DeprecateUserFileMountService.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\ConditionMatcherInterface' => [
+        'restFiles' => [
+            'Deprecation-100047-DeprecatedConditionMatcherClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher' => [
+        'restFiles' => [
+            'Deprecation-100047-DeprecatedConditionMatcherClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher' => [
+        'restFiles' => [
+            'Deprecation-100047-DeprecatedConditionMatcherClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher' => [
+        'restFiles' => [
+            'Deprecation-100047-DeprecatedConditionMatcherClasses.rst',
+        ],
+    ],
 ];

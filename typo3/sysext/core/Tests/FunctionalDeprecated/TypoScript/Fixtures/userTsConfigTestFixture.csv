@@ -1,0 +1,29 @@
+"be_users"
+,"uid","pid","username","admin","usergroup","TSconfig"
+,1,0,"user1",0,,
+,2,0,"user2",0,,"loadedFromUser = loadedFromUser"
+,3,0,"user3",0,"1",
+,4,0,"user4",0,"1,2",
+,5,0,"user5",1,,"
+isHttps = off
+[request.getNormalizedParams().isHttps()]
+  isHttps = on
+[end]
+"
+,6,0,"user6",1,,"
+[request.getNormalizedParams().isHttps()]
+  isHttps = on
+[else]
+  isHttps = off
+[end]
+"
+,7,0,"user7",1,,"
+@import 'EXT:test_typoscript_usertsconfigfactory/Configuration/TsConfig/*.tsconfig'
+"
+,8,0,"user8",1,,"
+@import 'EXT:test_typoscript_usertsconfigfactory/Configuration/TsConfig/*.typoscript'
+"
+"be_groups"
+,"uid","pid","title","TSconfig"
+,1,0,"group1","loadedFromUserGroup = loadedFromUserGroup"
+,2,0,"group2","loadedFromUserGroup = loadedFromUserGroupOverride"

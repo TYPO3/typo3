@@ -18,23 +18,18 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\ExpressionLanguage;
 
 /**
- * Class AbstractProvider
+ * Provide functions and variables to symfony expression language.
+ *
+ * Note 'variables' should only rely on things that can be injected.
+ * Accessing for instance $GLOBALS['TYPO3_REQUEST'] and providing this
+ * as variable is a misuse - runtime related variables must be provided
+ * by the caller to the Resolver class directly.
  */
 abstract class AbstractProvider implements ProviderInterface
 {
-    /**
-     * @var array of class names which implements ExpressionFunctionProviderInterface
-     */
-    protected $expressionLanguageProviders = [];
+    protected array $expressionLanguageProviders = [];
+    protected array $expressionLanguageVariables = [];
 
-    /**
-     * @var array
-     */
-    protected $expressionLanguageVariables = [];
-
-    /**
-     * An array of class names which implements the ExpressionFunctionProviderInterface
-     */
     public function getExpressionLanguageProviders(): array
     {
         return $this->expressionLanguageProviders;

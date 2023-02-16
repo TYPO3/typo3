@@ -25,10 +25,10 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
+use TYPO3\CMS\Core\ExpressionLanguage\RequestWrapper;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -1093,8 +1093,10 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
                 'stepType' => $page->getType(),
                 'finisherIdentifier' => $finisherIdentifier,
                 'contentObject' => $contentObjectData,
-            ],
-            $GLOBALS['TYPO3_REQUEST'] ?? GeneralUtility::makeInstance(ServerRequest::class)
+                'request' => new RequestWrapper($this->getRequest()),
+                'site' => $this->getRequest()->getAttribute('site'),
+                'siteLanguage' => $this->getRequest()->getAttribute('language'),
+            ]
         );
     }
 

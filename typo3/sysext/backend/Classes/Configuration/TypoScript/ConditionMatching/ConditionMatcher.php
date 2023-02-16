@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\ExpressionLanguage\RequestWrapper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
 
@@ -26,6 +27,8 @@ use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
  *
  * Used with the TypoScript parser.
  * Matches browserinfo, IP numbers for use with templates
+ *
+ * @deprecated since v12, will be removed in v13 together with old TypoScript parser
  */
 class ConditionMatcher extends AbstractConditionMatcher
 {
@@ -40,6 +43,11 @@ class ConditionMatcher extends AbstractConditionMatcher
      */
     public function __construct(Context $context = null, int $pageId = null, array $rootLine = null)
     {
+        trigger_error(
+            'The BE condition matcher has been deprecated and will be removed with TYPO3 v13. This logic' .
+            ' has been integrated into the new TypoScript parser structure, see IncludeTreeConditionMatcherVisitor',
+            E_USER_DEPRECATED
+        );
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->pageId = $pageId ?? $this->determinePageId();
         if ($rootLine === null) {
@@ -83,6 +91,8 @@ class ConditionMatcher extends AbstractConditionMatcher
             'backend' => $backend,
             'workspace' => $workspace,
             'page' => $page,
+            'request' => new RequestWrapper($GLOBALS['TYPO3_REQUEST'] ?? null),
+            'date' => GeneralUtility::makeInstance(Context::class)->getAspect('date'),
         ];
     }
 

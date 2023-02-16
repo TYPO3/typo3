@@ -23,10 +23,15 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider;
+use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
@@ -252,6 +257,7 @@ class InstallUtilityTest extends UnitTestCase
 
     /**
      * @test
+     * @todo: At least this test should obviously turned into a functional test ...
      */
     public function siteConfigGetsMovedIntoPlace(): void
     {
@@ -308,6 +314,13 @@ class InstallUtilityTest extends UnitTestCase
 
         $subject->injectRegistry($registry);
 
+        $providerConfigurationLoader = $this->createMock(ProviderConfigurationLoader::class);
+        GeneralUtility::addInstance(ProviderConfigurationLoader::class, $providerConfigurationLoader);
+        GeneralUtility::addInstance(ProviderConfigurationLoader::class, $providerConfigurationLoader);
+        $defaultProvider = new DefaultProvider(new Typo3Version(), new Context(), new Features());
+        GeneralUtility::addInstance(DefaultProvider::class, $defaultProvider);
+        GeneralUtility::addInstance(DefaultProvider::class, $defaultProvider);
+
         // provide function result inside test output folder
         $environment = new Environment();
         $configDir = $absPath . 'Result/config';
@@ -330,10 +343,12 @@ class InstallUtilityTest extends UnitTestCase
         $siteConfigFile = $configDir . '/sites/' . $siteIdentifier . '/config.yaml';
         self::assertFileExists($siteConfigFile);
         self::assertStringEqualsFile($siteConfigFile, $config);
+        GeneralUtility::purgeInstances();
     }
 
     /**
      * @test
+     * @todo: At least this test should obviously turned into a functional test ...
      */
     public function siteConfigGetsNotOverriddenIfExistsAlready(): void
     {
@@ -394,6 +409,13 @@ class InstallUtilityTest extends UnitTestCase
         $registry->expects(self::atLeastOnce())->method('set')->with('extensionDataImport', self::anything());
         $subject->injectRegistry($registry);
 
+        $providerConfigurationLoader = $this->createMock(ProviderConfigurationLoader::class);
+        GeneralUtility::addInstance(ProviderConfigurationLoader::class, $providerConfigurationLoader);
+        GeneralUtility::addInstance(ProviderConfigurationLoader::class, $providerConfigurationLoader);
+        $defaultProvider = new DefaultProvider(new Typo3Version(), new Context(), new Features());
+        GeneralUtility::addInstance(DefaultProvider::class, $defaultProvider);
+        GeneralUtility::addInstance(DefaultProvider::class, $defaultProvider);
+
         $environment = new Environment();
 
         $environment::initialize(
@@ -412,5 +434,6 @@ class InstallUtilityTest extends UnitTestCase
         $siteConfigFile = $configDir . '/sites/' . $siteIdentifier . '/config.yaml';
         self::assertFileExists($siteConfigFile);
         self::assertStringEqualsFile($siteConfigFile, $config);
+        GeneralUtility::purgeInstances();
     }
 }

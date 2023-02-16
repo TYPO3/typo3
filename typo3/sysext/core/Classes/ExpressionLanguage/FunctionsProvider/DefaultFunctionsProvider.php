@@ -19,9 +19,7 @@ namespace TYPO3\CMS\Core\ExpressionLanguage\FunctionsProvider;
 
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
-use TYPO3\CMS\Core\Configuration\Features;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\ExpressionLanguage\RequestWrapper;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -29,7 +27,10 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
- * Class DefaultFunctionsProvider
+ * Default expression language functions. This is currently paired with
+ * DefaultProvider class, which provides appropriate variables that
+ * can be injected.
+ *
  * @internal
  */
 class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
@@ -37,7 +38,7 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
     /**
      * @return ExpressionFunction[] An array of Function instances
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             $this->getIpFunction(),
@@ -54,14 +55,24 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
     {
         return new ExpressionFunction(
             'ip',
-            static function () {
-                // Not implemented, we only use the evaluator
-            },
+            static fn () => null, // Not implemented, we only use the evaluator
             static function ($arguments, $str) {
                 if ($str === 'devIP') {
-                    $str = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] ?? '');
+                    $str = $arguments['typo3']->devIpMask;
                 }
-                return (bool)GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $str);
+                $request = $arguments['request'] ?? null;
+                if (!$request instanceof RequestWrapper) {
+                    // @deprecated: ip() without given request should stop working in v13. Throw an exception here.
+                    trigger_error(
+                        'Using expression language function "ip(' . $str . ')" in a context without request.' .
+                        ' A typical usage is UserTsConfig or PageTsConfig which can not provide a request object' .
+                        ' since especially the DataHandler can not provide one. The implementation uses a fallback' .
+                        ' for now, but will stop working in v13.',
+                        E_USER_DEPRECATED
+                    );
+                    return GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $str);
+                }
+                return GeneralUtility::cmpIP($request->getNormalizedParams()->getRemoteAddress(), $str);
             }
         );
     }
@@ -72,8 +83,7 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
             'compatVersion',
             static fn () => null, // Not implemented, we only use the evaluator
             static function ($arguments, mixed $str) {
-                $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
-                return VersionNumberUtility::convertVersionNumberToInteger($typo3Version->getBranch()) >=
+                return VersionNumberUtility::convertVersionNumberToInteger($arguments['typo3']->branch) >=
                    VersionNumberUtility::convertVersionNumberToInteger((string)$str);
             }
         );
@@ -81,12 +91,13 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
 
     protected function getLikeFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('like', static function () {
-            // Not implemented, we only use the evaluator
-        }, static function ($arguments, $haystack, $needle) {
-            $result = StringUtility::searchStringWildcard((string)$haystack, (string)$needle);
-            return $result;
-        });
+        return new ExpressionFunction(
+            'like',
+            static fn () => null, // Not implemented, we only use the evaluator
+            static function ($arguments, $haystack, $needle) {
+                return StringUtility::searchStringWildcard((string)$haystack, (string)$needle);
+            }
+        );
     }
 
     protected function getEnvFunction(): ExpressionFunction
@@ -96,37 +107,41 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
 
     protected function getDateFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('date', static function () {
-            // Not implemented, we only use the evaluator
-        }, static function ($arguments, $format) {
-            return GeneralUtility::makeInstance(Context::class)
-                ->getAspect('date')->getDateTime()->format($format);
-        });
+        return new ExpressionFunction(
+            'date',
+            static fn () => null, // Not implemented, we only use the evaluator
+            static function ($arguments, $format) {
+                return $arguments['date']->getDateTime()->format($format);
+            }
+        );
     }
 
     protected function getFeatureToggleFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('feature', static function () {
-            // Not implemented, we only use the evaluator
-        }, static function ($arguments, $featureName) {
-            return GeneralUtility::makeInstance(Features::class)
-                ->isFeatureEnabled($featureName);
-        });
+        return new ExpressionFunction(
+            'feature',
+            static fn () => null, // Not implemented, we only use the evaluator
+            static function ($arguments, $featureName) {
+                return $arguments['features']->isFeatureEnabled($featureName);
+            }
+        );
     }
 
-    public function getTraverseArrayFunction(): ExpressionFunction
+    protected function getTraverseArrayFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('traverse', static function () {
-            // Not implemented, we only use the evaluator
-        }, static function ($arguments, $array, $path) {
-            if (!is_array($array) || !is_string($path) || $path === '') {
-                return '';
+        return new ExpressionFunction(
+            'traverse',
+            static fn () => null, // Not implemented, we only use the evaluator
+            static function ($arguments, $array, $path) {
+                if (!is_array($array) || !is_string($path) || $path === '') {
+                    return '';
+                }
+                try {
+                    return ArrayUtility::getValueByPath($array, $path);
+                } catch (MissingArrayPathException) {
+                    return '';
+                }
             }
-            try {
-                return ArrayUtility::getValueByPath($array, $path);
-            } catch (MissingArrayPathException $e) {
-                return '';
-            }
-        });
+        );
     }
 }

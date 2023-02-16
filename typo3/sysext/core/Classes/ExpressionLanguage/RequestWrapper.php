@@ -25,21 +25,15 @@ use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /**
- * Class RequestWrapper
  * This class provides access to some methods of the ServerRequest object.
  * To prevent access to all methods of the ServerRequest object within conditions,
  * this class was introduced to control which methods are exposed.
  *
- * Additionally this class can be used to simulate a request for condition matching in case the condition matcher calls
- * should be simulated (for example simulating parsing of TypoScript on CLI)
  * @internal
  */
 class RequestWrapper
 {
-    /**
-     * @var ServerRequestInterface
-     */
-    protected $request;
+    protected ServerRequestInterface $request;
 
     public function __construct(?ServerRequestInterface $request)
     {
@@ -66,11 +60,17 @@ class RequestWrapper
         return $this->request->getCookieParams();
     }
 
+    /**
+     * @todo: Could be removed since 'site' variable is provided explicitly.
+     */
     public function getSite(): ?SiteInterface
     {
         return $this->request->getAttribute('site');
     }
 
+    /**
+     * @todo: Could be removed since 'siteLanguage' variable is provided explicitly.
+     */
     public function getSiteLanguage(): ?SiteLanguage
     {
         return $this->request->getAttribute('language');

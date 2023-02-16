@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript;
 
-use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
-use TYPO3\CMS\Core\Http\NormalizedParams;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteSettings;
@@ -43,7 +40,7 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = 'loadedFromGlobals = loadedFromGlobals';
         $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create([], new NullSite(), new ConditionMatcher());
+        $pageTsConfig = $subject->create([], new NullSite());
         self::assertSame('loadedFromGlobals', $pageTsConfig->getPageTsConfigArray()['loadedFromGlobals']);
     }
 
@@ -53,7 +50,7 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
     public function pageTsConfigLoadsFromPagesTsconfigTestExtensionConfigurationFile(): void
     {
         $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create([], new NullSite(), new ConditionMatcher());
+        $pageTsConfig = $subject->create([], new NullSite());
         self::assertSame('loadedFromTestExtensionConfigurationPageTsConfig', $pageTsConfig->getPageTsConfigArray()['loadedFromTestExtensionConfigurationPageTsConfig']);
     }
 
@@ -69,7 +66,7 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
             ],
         ];
         $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
+        $pageTsConfig = $subject->create($rootLine, new NullSite());
         self::assertSame('loadedFromTsConfigField', $pageTsConfig->getPageTsConfigArray()['loadedFromTsConfigField']);
     }
 
@@ -85,7 +82,7 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
             ],
         ];
         $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
+        $pageTsConfig = $subject->create($rootLine, new NullSite());
         self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
     }
 
@@ -101,7 +98,7 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
             ],
         ];
         $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
+        $pageTsConfig = $subject->create($rootLine, new NullSite());
         self::assertSame('loadedFromTsconfigIncludesWithTyposcriptSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTyposcriptSuffix']);
     }
 
@@ -123,7 +120,7 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
             ],
         ];
         $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
+        $pageTsConfig = $subject->create($rootLine, new NullSite());
         self::assertSame('loadedFromTsConfigField1', $pageTsConfig->getPageTsConfigArray()['loadedFromTsConfigField1']);
         self::assertSame('loadedFromTsConfigField2Override', $pageTsConfig->getPageTsConfigArray()['loadedFromTsConfigField2']);
     }
@@ -142,76 +139,8 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
         $subject = $this->get(PageTsConfigFactory::class);
         $siteSettings = new SiteSettings(['aSiteSetting' => 'aSiteSettingValue']);
         $site = new Site('siteIdentifier', 1, [], $siteSettings);
-        $pageTsConfig = $subject->create($rootLine, $site, new ConditionMatcher());
+        $pageTsConfig = $subject->create($rootLine, $site);
         self::assertSame('aSiteSettingValue', $pageTsConfig->getPageTsConfigArray()['siteSetting']);
-    }
-
-    /**
-     * @test
-     */
-    public function pageTsConfigMatchesRequestHttpsCondition(): void
-    {
-        $request = (new ServerRequest('https://www.example.com/', null, 'php://input', [], ['HTTPS' => 'ON']));
-        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-        $rootLine = [
-            [
-                'uid' => 1,
-                'TSconfig' => 'isHttps = off'
-                    . chr(10) . '[request.getNormalizedParams().isHttps()]'
-                    . chr(10) . '  isHttps = on'
-                    . chr(10) . '[end]',
-            ],
-        ];
-        $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
-        self::assertSame('on', $pageTsConfig->getPageTsConfigArray()['isHttps']);
-    }
-
-    /**
-     * @test
-     */
-    public function pageTsConfigMatchesRequestHttpsElseCondition(): void
-    {
-        $request = new ServerRequest('http://www.example.com/');
-        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-        $rootLine = [
-            [
-                'uid' => 1,
-                'TSconfig' => '[request.getNormalizedParams().isHttps()]'
-                    . chr(10) . '  isHttps = on'
-                    . chr(10) . '[else]'
-                    . chr(10) . '  isHttps = off',
-            ],
-        ];
-        $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher());
-        self::assertSame('off', $pageTsConfig->getPageTsConfigArray()['isHttps']);
-    }
-
-    /**
-     * @test
-     */
-    public function pageTsConfigMatchesRequestHttpsConditionUsingSiteConstant(): void
-    {
-        $request = (new ServerRequest('https://www.example.com/', null, 'php://input', [], ['HTTPS' => 'ON']));
-        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-        $rootLine = [
-            [
-                'uid' => 1,
-                'TSconfig' => 'isHttps = off'
-                    . chr(10) . '[{$aSiteSetting}]'
-                    . chr(10) . '  isHttps = on'
-                    . chr(10) . '[end]',
-            ],
-        ];
-        $subject = $this->get(PageTsConfigFactory::class);
-        $siteSettings = new SiteSettings(['aSiteSetting' => 'request.getNormalizedParams().isHttps()']);
-        $site = new Site('siteIdentifier', 1, [], $siteSettings);
-        $pageTsConfig = $subject->create($rootLine, $site, new ConditionMatcher());
-        self::assertSame('on', $pageTsConfig->getPageTsConfigArray()['isHttps']);
     }
 
     /**
@@ -220,7 +149,7 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
     public function pageTsConfigLoadsFromEvent(): void
     {
         $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create([], new NullSite(), new ConditionMatcher());
+        $pageTsConfig = $subject->create([], new NullSite());
         self::assertSame('loadedFromEvent', $pageTsConfig->getPageTsConfigArray()['loadedFromEvent']);
     }
 
@@ -230,7 +159,7 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
     public function pageTsConfigLoadsFromLegacyEvent(): void
     {
         $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create([], new NullSite(), new ConditionMatcher());
+        $pageTsConfig = $subject->create([], new NullSite());
         self::assertSame('loadedFromLegacyEvent', $pageTsConfig->getPageTsConfigArray()['loadedFromLegacyEvent']);
     }
 
@@ -250,7 +179,7 @@ class PageTsConfigFactoryTest extends FunctionalTestCase
             ],
         ];
         $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create($rootLine, new NullSite(), new ConditionMatcher(), $userTsConfig);
+        $pageTsConfig = $subject->create($rootLine, new NullSite(), $userTsConfig);
         self::assertSame('overridden', $pageTsConfig->getPageTsConfigArray()['valueOverriddenByUserTsConfig']);
     }
 }

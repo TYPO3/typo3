@@ -18,10 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\TypoScript;
 
 use Psr\Container\ContainerInterface;
-use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as BackendConditionMatcher;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\ExpressionLanguage\DeprecatingRequestWrapper;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\TsConfigTreeBuilder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
@@ -50,9 +49,15 @@ final class UserTsConfigFactory
     {
         $includeTreeTraverserConditionVerdictAware = new ConditionVerdictAwareIncludeTreeTraverser();
         $userTsConfigTree = $this->tsConfigTreeBuilder->getUserTsConfigTree($backendUser, $this->tokenizer, $this->cache);
-        $conditionMatcherVisitor = new IncludeTreeConditionMatcherVisitor();
-        $backendConditionMatcher = GeneralUtility::makeInstance(BackendConditionMatcher::class, GeneralUtility::makeInstance(Context::class));
-        $conditionMatcherVisitor->setConditionMatcher($backendConditionMatcher);
+        $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
+        // UserTsConfig is not within page context, that what PageTsConfig is for, so 'page', 'pageId',
+        // 'rootLine' and 'tree' can not be used in UserTsConfig conditions. There is no request, either.
+        $conditionMatcherVisitor->initializeExpressionMatcherWithVariables([
+            'page' => [],
+            'pageId' => 0,
+            // @deprecated since v12, will be removed in v13.
+            'request' => new DeprecatingRequestWrapper($GLOBALS['TYPO3_REQUEST'] ?? null),
+        ]);
         $includeTreeTraverserConditionVerdictAware->addVisitor($conditionMatcherVisitor);
         $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
         $includeTreeTraverserConditionVerdictAware->addVisitor($astBuilderVisitor);

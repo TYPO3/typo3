@@ -19,13 +19,11 @@ namespace TYPO3\CMS\Frontend\Typolink;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\TypoScript\PageTsConfig;
 use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as FrontendConditionMatcher;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -118,14 +116,11 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         if ($pageTsConfig instanceof PageTsConfig) {
             return $pageTsConfig->getPageTsConfigArray();
         }
-        $conditionMatcher = GeneralUtility::makeInstance(FrontendConditionMatcher::class, GeneralUtility::makeInstance(Context::class), $tsfe->id, $tsfe->rootLine);
+        $fullRootLine = $tsfe->rootLine;
+        ksort($fullRootLine);
         $site = $request->getAttribute('site') ?? new NullSite();
         $pageTsConfigFactory = GeneralUtility::makeInstance(PageTsConfigFactory::class);
-        $pageTsConfig = $pageTsConfigFactory->create(
-            $tsfe->rootLine,
-            $site,
-            $conditionMatcher
-        );
+        $pageTsConfig = $pageTsConfigFactory->create($fullRootLine, $site);
         $runtimeCache->set('pageTsConfig-' . $id, $pageTsConfig);
         return $pageTsConfig->getPageTsConfigArray();
     }

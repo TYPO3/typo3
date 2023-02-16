@@ -212,6 +212,9 @@ services:
         method: 'warmupCaches'
         event: TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent
 
+  TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider:
+    public: true
+
   TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader:
     public: true
     arguments:

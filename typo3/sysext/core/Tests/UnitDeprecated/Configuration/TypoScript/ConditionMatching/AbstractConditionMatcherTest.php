@@ -15,21 +15,26 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Configuration\TypoScript\ConditionMatching;
+namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Configuration\TypoScript\ConditionMatching;
 
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider;
 use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -72,6 +77,8 @@ class AbstractConditionMatcherTest extends UnitTestCase
         // test the abstract methods via the backend condition matcher
         $this->evaluateExpressionMethod = new \ReflectionMethod(AbstractConditionMatcher::class, 'evaluateExpression');
         $this->evaluateExpressionMethod->setAccessible(true);
+        $defaultProvider = new DefaultProvider(new Typo3Version(), new Context(), new Features());
+        GeneralUtility::addInstance(DefaultProvider::class, $defaultProvider);
         $this->conditionMatcher = new ConditionMatcher();
         $this->conditionMatcher->setLogger(new NullLogger());
     }
@@ -145,8 +152,8 @@ class AbstractConditionMatcherTest extends UnitTestCase
     public function checkConditionMatcherForDateFunction(string $format, int $expressionValue, bool $expected): void
     {
         $GLOBALS['SIM_EXEC_TIME'] = gmmktime(11, 4, 0, 1, 17, 1945);
-        GeneralUtility::makeInstance(Context::class)
-            ->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])));
+        GeneralUtility::makeInstance(Context::class)->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])));
+        $this->initConditionMatcher();
         self::assertSame(
             $expected,
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['date("' . $format . '") == ' . $expressionValue])
@@ -332,11 +339,22 @@ class AbstractConditionMatcherTest extends UnitTestCase
      */
     public function evaluateConditionCommonEvaluatesIpAddressesCorrectly($devIpMask, $actualIp, $expectedResult): void
     {
-        // Do not trigger proxy stuff of GeneralUtility::getIndPEnv
-        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP']);
-
-        GeneralUtility::setIndpEnv('REMOTE_ADDR', $actualIp);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = $devIpMask;
+
+        $request = new ServerRequest(
+            new Uri(''),
+            'GET',
+            'php://input',
+            [],
+            [
+                'REMOTE_ADDR' => $actualIp,
+            ]
+        );
+        $normalizedParams = NormalizedParams::createFromRequest($request);
+        $request = $request->withAttribute('normalizedParams', $normalizedParams);
+
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+
         $this->initConditionMatcher();
         $result = $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['ip("devIP")']);
         self::assertSame($expectedResult, $result);

@@ -17,11 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript;
 
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\NormalizedParams;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\TypoScript\UserTsConfigFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -80,44 +76,6 @@ class UserTsConfigFactoryTest extends FunctionalTestCase
         $subject = $this->get(UserTsConfigFactory::class);
         $userTsConfig = $subject->create($backendUser);
         self::assertSame('loadedFromUserGroupOverride', $userTsConfig->getUserTsConfigArray()['loadedFromUserGroup']);
-    }
-
-    /**
-     * @test
-     */
-    public function userTsConfigMatchesRequestHttpsCondition(): void
-    {
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
-        $userRow = $this->getBackendUserRecordFromDatabase(5);
-        $backendUser = GeneralUtility::makeInstance(BackendUserAuthentication::class);
-        $request = new ServerRequest('https://www.example.com/', null, 'php://input', [], ['HTTPS' => 'ON']);
-        $session = $backendUser->createUserSession($userRow);
-        $request = $request->withCookieParams(['be_typo_user' => $session->getJwt()]);
-        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-        $backendUser = $this->authenticateBackendUser($backendUser, $request);
-        $subject = $this->get(UserTsConfigFactory::class);
-        $userTsConfig = $subject->create($backendUser);
-        self::assertSame('on', $userTsConfig->getUserTsConfigArray()['isHttps']);
-    }
-
-    /**
-     * @test
-     */
-    public function userTsConfigMatchesRequestHttpsElseCondition(): void
-    {
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
-        $userRow = $this->getBackendUserRecordFromDatabase(6);
-        $backendUser = GeneralUtility::makeInstance(BackendUserAuthentication::class);
-        $request = new ServerRequest('http://www.example.com/');
-        $session = $backendUser->createUserSession($userRow);
-        $request = $request->withCookieParams(['be_typo_user' => $session->getJwt()]);
-        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-        $backendUser = $this->authenticateBackendUser($backendUser, $request);
-        $subject = $this->get(UserTsConfigFactory::class);
-        $userTsConfig = $subject->create($backendUser);
-        self::assertSame('off', $userTsConfig->getUserTsConfigArray()['isHttps']);
     }
 
     /**

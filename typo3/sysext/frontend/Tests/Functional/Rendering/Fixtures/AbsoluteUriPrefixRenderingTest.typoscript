@@ -38,21 +38,21 @@ page {
   }
 }
 
-[request.getQueryParams()['useAbsoluteUrls'] == '1']
+[traverse(request.getQueryParams(), 'useAbsoluteUrls') == '1']
   config.forceAbsoluteUrls = 1
 [GLOBAL]
 
-[request.getQueryParams()['testCompressor'] == 'concatenate' || request.getParsedBody()['testCompressor'] == 'concatenate']
+[traverse(request.getQueryParams(), 'testCompressor') == 'concatenate' || traverse(request.getParsedBody(), 'testCompressor') == 'concatenate']
   config {
     concatenateCss = 1
     concatenateJs = 1
   }
-[request.getQueryParams()['testCompressor'] == 'compress' || request.getParsedBody()['testCompressor'] == 'compress']
+[traverse(request.getQueryParams(), 'testCompressor') == 'compress' || traverse(request.getParsedBody(), 'testCompressor') == 'compress']
   config {
     compressCss = 1
     compressJs = 1
   }
-[request.getQueryParams()['testCompressor'] == 'concatenate-and-compress' || request.getParsedBody()['testCompressor'] == 'concatenate-and-compress']
+[traverse(request.getQueryParams(), 'testCompressor') == 'concatenate-and-compress' || traverse(request.getParsedBody(), 'testCompressor') == 'concatenate-and-compress']
   config {
     concatenateCss = 1
     concatenateJs = 1

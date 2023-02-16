@@ -20,13 +20,11 @@ namespace TYPO3\CMS\Core\TypoScript;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\ConditionMatcherInterface;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilderInterface;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\StringTreeBuilder;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionMatcherVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface;
 
 /**
@@ -48,17 +46,14 @@ final class TypoScriptStringFactory
      *
      * @param non-empty-string $name A name used as cache identifier, [a-z,A-Z,-] only
      */
-    public function parseFromStringWithIncludesAndConditions(string $name, string $typoScript, ConditionMatcherInterface $conditionMatcher): RootNode
+    public function parseFromStringWithIncludes(string $name, string $typoScript): RootNode
     {
         $cacheManager = $this->container->get(CacheManager::class);
         /** @var PhpFrontend $cache */
         $cache = $cacheManager->getCache('typoscript');
         $stringTreeBuilder = $this->container->get(StringTreeBuilder::class);
         $includeTree = $stringTreeBuilder->getTreeFromString($name, $typoScript, $this->tokenizer, $cache);
-        $conditionMatcherVisitor = new IncludeTreeConditionMatcherVisitor();
-        $conditionMatcherVisitor->setConditionMatcher($conditionMatcher);
-        $includeTreeTraverserConditionVerdictAware = new ConditionVerdictAwareIncludeTreeTraverser();
-        $includeTreeTraverserConditionVerdictAware->addVisitor($conditionMatcherVisitor);
+        $includeTreeTraverserConditionVerdictAware = new IncludeTreeTraverser();
         $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
         $includeTreeTraverserConditionVerdictAware->addVisitor($astBuilderVisitor);
         $includeTreeTraverserConditionVerdictAware->traverse($includeTree);

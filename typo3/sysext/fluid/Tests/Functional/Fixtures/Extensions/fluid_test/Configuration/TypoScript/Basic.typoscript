@@ -27,7 +27,7 @@ lib.viewConfig {
     }
 }
 
-[request.getQueryParams()['override'] == 'overrideAll' || request.getParsedBody()['override'] == 'overrideAll']
+[traverse(request.getQueryParams(), 'override') == 'overrideAll' || traverse(request.getParsedBody(), 'override') == 'overrideAll']
     lib.viewConfig {
         templateRootPaths {
             10 = EXT:fluid_test/Resources/Private/Override/Templates/
@@ -43,7 +43,7 @@ lib.viewConfig {
     }
 [end]
 
-[request.getQueryParams()['override'] == 'templateOverride' || request.getParsedBody()['override'] == 'templateOverride']
+[traverse(request.getQueryParams(), 'override') == 'templateOverride' || traverse(request.getParsedBody(), 'override') == 'templateOverride']
     lib.viewConfig {
         templateRootPaths {
             15 = EXT:fluid_test/Resources/Private/TemplateOverride/Templates/
@@ -52,7 +52,7 @@ lib.viewConfig {
     }
 [end]
 
-[request.getQueryParams()['override'] == 'templateOverrideManual' || request.getParsedBody()['override'] == 'templateOverrideManual']
+[traverse(request.getQueryParams(), 'override') == 'templateOverrideManual' || traverse(request.getParsedBody(), 'override') == 'templateOverrideManual']
     lib.viewConfig {
         templateRootPaths {
             10 = EXT:fluid_test/Resources/Private/Override/Templates/
@@ -61,7 +61,7 @@ lib.viewConfig {
     }
 [end]
 
-[request.getQueryParams()['override'] == 'partialOverride' || request.getParsedBody()['override'] == 'partialOverride']
+[traverse(request.getQueryParams(), 'override') == 'partialOverride' || traverse(request.getParsedBody(), 'override') == 'partialOverride']
     lib.viewConfig {
         partialRootPaths {
             15 = EXT:fluid_test/Resources/Private/PartialOverride/Partials/
@@ -70,7 +70,7 @@ lib.viewConfig {
     }
 [end]
 
-[request.getQueryParams()['override'] == 'partialOverrideManual' || request.getParsedBody()['override'] == 'partialOverrideManual']
+[traverse(request.getQueryParams(), 'override') == 'partialOverrideManual' || traverse(request.getParsedBody(), 'override') == 'partialOverrideManual']
     lib.viewConfig {
         partialRootPaths {
             10 = EXT:fluid_test/Resources/Private/Override/Partials/
@@ -79,7 +79,7 @@ lib.viewConfig {
     }
 [end]
 
-[request.getQueryParams()['override'] == 'layoutOverride' || request.getParsedBody()['override'] == 'layoutOverride']
+[traverse(request.getQueryParams(), 'override') == 'layoutOverride' || traverse(request.getParsedBody(), 'override') == 'layoutOverride']
     lib.viewConfig {
         layoutRootPaths {
             15 = EXT:fluid_test/Resources/Private/LayoutOverride/Layouts/
@@ -88,7 +88,7 @@ lib.viewConfig {
     }
 [end]
 
-[request.getQueryParams()['override'] == 'layoutOverrideManual' || request.getParsedBody()['override'] == 'layoutOverrideManual']
+[traverse(request.getQueryParams(), 'override') == 'layoutOverrideManual' || traverse(request.getParsedBody(), 'override') == 'layoutOverrideManual']
     lib.viewConfig {
         layoutRootPaths {
             10 = EXT:fluid_test/Resources/Private/Override/Layouts/
@@ -97,7 +97,7 @@ lib.viewConfig {
     }
 [end]
 
-<INCLUDE_TYPOSCRIPT: source="FILE: ./FluidTemplateContentObject.typoscript" condition="[request.getQueryParams()['mode'] == 'fluidTemplate' || request.getParsedBody()['mode'] == 'fluidTemplate']">
-<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbasePlugin.typoscript" condition="[request.getQueryParams()['mode'] == 'plugin' || request.getParsedBody()['mode'] == 'plugin']">
-<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbaseController.typoscript" condition="[request.getQueryParams()['mode'] == 'controller' || request.getParsedBody()['mode'] == 'controller']">
-<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbaseTwoPlugins.typoscript" condition="[request.getQueryParams()['mode'] == '2plugins' || request.getParsedBody()['mode'] == '2plugins']">
+<INCLUDE_TYPOSCRIPT: source="FILE: ./FluidTemplateContentObject.typoscript" condition="[traverse(request.getQueryParams(), 'mode') == 'fluidTemplate' || traverse(request.getParsedBody(), 'mode') == 'fluidTemplate']">
+<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbasePlugin.typoscript" condition="[traverse(request.getQueryParams(), 'mode') == 'plugin' || traverse(request.getParsedBody(), 'mode') == 'plugin']">
+<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbaseController.typoscript" condition="[traverse(request.getQueryParams(), 'mode') == 'controller' || traverse(request.getParsedBody(), 'mode') == 'controller']">
+<INCLUDE_TYPOSCRIPT: source="FILE: ./ExtbaseTwoPlugins.typoscript" condition="[traverse(request.getQueryParams(), 'mode') == '2plugins' || traverse(request.getParsedBody(), 'mode') == '2plugins']">

@@ -15,8 +15,10 @@
 
 namespace TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\ExpressionLanguage\RequestWrapper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
 
@@ -25,6 +27,8 @@ use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
  *
  * Used with the TypoScript parser. Matches browserinfo
  * and IP numbers for use with templates.
+ *
+ * @deprecated since v12, will be removed in v13 together with old TypoScript parser
  */
 class ConditionMatcher extends AbstractConditionMatcher
 {
@@ -51,6 +55,11 @@ class ConditionMatcher extends AbstractConditionMatcher
      */
     public function __construct(Context $context = null, int $pageId = null, array $rootLine = null, array $fullRootLine = null)
     {
+        trigger_error(
+            'The FE condition matcher has been deprecated and will be removed with TYPO3 v13. This logic' .
+            ' has been integrated into the new TypoScript parser structure, see IncludeTreeConditionMatcherVisitor',
+            E_USER_DEPRECATED
+        );
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->pageId = $pageId;
         // @todo: Accessing $GLOBALS['TSFE']->config['rootLine'] is rather useless here since it typically
@@ -62,7 +71,7 @@ class ConditionMatcher extends AbstractConditionMatcher
 
     protected function updateExpressionLanguageVariables(): void
     {
-        $page = $GLOBALS['TSFE']->page ?? [];
+        $page = $GLOBALS['TSFE']?->page ?? [];
 
         $tree = new \stdClass();
         $tree->level = $this->rootline ? count($this->rootline) - 1 : 0;
@@ -98,12 +107,24 @@ class ConditionMatcher extends AbstractConditionMatcher
         $workspace->isLive = $workspaceAspect->get('isLive');
         $workspace->isOffline = $workspaceAspect->get('isOffline');
 
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        $site = null;
+        $siteLanguage = null;
+        if ($request instanceof ServerRequestInterface) {
+            $site = $request->getAttribute('site');
+            $siteLanguage = $request->getAttribute('language');
+        }
         $this->expressionLanguageResolverVariables = [
             'tree' => $tree,
             'frontend' => $frontend,
             'backend' => $backend,
             'workspace' => $workspace,
             'page' => $page,
+            'request' => new RequestWrapper($request),
+            'date' => GeneralUtility::makeInstance(Context::class)->getAspect('date'),
+            'site' => $site,
+            'siteLanguage' => $siteLanguage,
+            'tsfe' => $GLOBALS['TSFE'] ?? null,
         ];
     }
 }

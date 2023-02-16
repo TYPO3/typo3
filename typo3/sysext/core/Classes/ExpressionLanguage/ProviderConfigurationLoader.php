@@ -22,27 +22,20 @@ use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Package\PackageManager;
 
 /**
- * Class ProviderConfigurationLoader
  * This class resolves the expression language provider configuration and store in a cache.
  */
 class ProviderConfigurationLoader
 {
-    protected PackageManager $packageManager;
-
-    protected PhpFrontend $cache;
-
-    protected string $cacheIdentifier;
-
-    public function __construct(PackageManager $packageManager, PhpFrontend $coreCache, string $cacheIdentifier)
-    {
-        $this->packageManager = $packageManager;
-        $this->cache = $coreCache;
-        $this->cacheIdentifier = $cacheIdentifier;
+    public function __construct(
+        private readonly PackageManager $packageManager,
+        private readonly PhpFrontend $coreCache,
+        private readonly string $cacheIdentifier,
+    ) {
     }
 
     public function getExpressionLanguageProviders(): array
     {
-        $providers = $this->cache->require($this->cacheIdentifier);
+        $providers = $this->coreCache->require($this->cacheIdentifier);
         if ($providers !== false) {
             return $providers;
         }
@@ -64,7 +57,7 @@ class ProviderConfigurationLoader
             }
         }
         $providers = count($providers) > 0 ? array_merge_recursive(...$providers) : $providers;
-        $this->cache->set($this->cacheIdentifier, 'return ' . var_export($providers, true) . ';');
+        $this->coreCache->set($this->cacheIdentifier, 'return ' . var_export($providers, true) . ';');
         return $providers;
     }
 

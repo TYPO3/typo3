@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\TypoScript;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\ConditionMatcherInterface;
+use TYPO3\CMS\Core\ExpressionLanguage\DeprecatingRequestWrapper;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionMatcherVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Calculate PageTsConfig. This does the heavy lifting additionally supported by
@@ -50,12 +51,11 @@ final class PageTsConfigFactory
     }
 
     public function create(
-        array $rootLine,
+        array $fullRootLine,
         SiteInterface $site,
-        ConditionMatcherInterface $conditionMatcher,
         ?UserTsConfig $userTsConfig = null
     ): PageTsConfig {
-        $pagesTsConfigTree = $this->tsConfigTreeBuilder->getPagesTsConfigTree($rootLine, $this->tokenizer, $this->cache);
+        $pagesTsConfigTree = $this->tsConfigTreeBuilder->getPagesTsConfigTree($fullRootLine, $this->tokenizer, $this->cache);
 
         // Overloading with userTsConfig if hand over
         if ($userTsConfig instanceof UserTsConfig) {
@@ -116,8 +116,22 @@ final class PageTsConfigFactory
             $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($siteSettingsFlat);
             $includeTreeTraverserConditionVerdictAware->addVisitor($setupConditionConstantSubstitutionVisitor);
         }
-        $conditionMatcherVisitor = new IncludeTreeConditionMatcherVisitor();
-        $conditionMatcherVisitor->setConditionMatcher($conditionMatcher);
+        $lastPage = [];
+        $pageId = 0;
+        if (!empty($fullRootLine)) {
+            $lastPage = $fullRootLine[array_key_last($fullRootLine)];
+            $pageId = $lastPage['uid'];
+        }
+        $conditionMatcherVariables = [
+            'fullRootLine' => $fullRootLine,
+            'site' => $site,
+            'page' => $lastPage,
+            'pageId' => $pageId,
+            // @deprecated since v12, will be removed in v13.
+            'request' => new DeprecatingRequestWrapper($GLOBALS['TYPO3_REQUEST'] ?? null),
+        ];
+        $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
+        $conditionMatcherVisitor->initializeExpressionMatcherWithVariables($conditionMatcherVariables);
         $includeTreeTraverserConditionVerdictAware->addVisitor($conditionMatcherVisitor);
         $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
         $astBuilderVisitor->setFlatConstants($siteSettingsFlat);

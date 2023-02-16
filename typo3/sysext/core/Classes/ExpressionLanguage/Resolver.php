@@ -23,6 +23,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The main API endpoint to evaluate symfony expression language.
+ *
+ * This Resolver can prepare common variables and functions for specific scopes,
+ * it is a "prepared" facade to symfony expression language that can load
+ * and provide things from Configuration.
  */
 class Resolver
 {
@@ -32,6 +36,13 @@ class Resolver
     public function __construct(string $context, array $variables)
     {
         $functionProviderInstances = [];
+        // @todo: The entire ProviderConfigurationLoader approach should fall and
+        //        substituted with a symfony service provider strategy in v13.
+        //        Also, the magic "DefaultProvider" approach should fall at this time,
+        //        default functions and variable providers should be provided explicitly
+        //        by config.
+        //        The entire construct should be reviewed at this point and most likely
+        //        declared final as well.
         $providers = GeneralUtility::makeInstance(ProviderConfigurationLoader::class)->getExpressionLanguageProviders()[$context] ?? [];
         // Always add default provider
         array_unshift($providers, DefaultProvider::class);
@@ -56,21 +67,18 @@ class Resolver
 
     /**
      * Evaluate an expression.
-     *
-     * @param string $condition The expression to evaluate
      */
-    public function evaluate(string $condition): bool
+    public function evaluate(string $expression): bool
     {
-        return (bool)$this->expressionLanguage->evaluate($condition, $this->expressionLanguageVariables);
+        return (bool)$this->expressionLanguage->evaluate($expression, $this->expressionLanguageVariables);
     }
 
     /**
-     * Compiles an expression source code.
-     *
-     * @param string $condition The expression to compile
+     * Compiles an expression to source code.
+     * Currently unused in core: We *may* add support for this later to speed up condition parsing?
      */
     public function compile(string $condition): string
     {
-        return (string)$this->expressionLanguage->compile($condition, array_keys($this->expressionLanguageVariables));
+        return $this->expressionLanguage->compile($condition, array_keys($this->expressionLanguageVariables));
     }
 }

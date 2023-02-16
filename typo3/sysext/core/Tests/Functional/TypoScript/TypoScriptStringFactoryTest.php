@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript;
 
-use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as BackendConditionMatcher;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
@@ -32,20 +31,16 @@ class TypoScriptStringFactoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function parseFromStringWithIncludesAndConditionsParsesImportAndMatchesCondition(): void
+    public function parseFromStringWithIncludesParsesImport(): void
     {
         $expected = new RootNode();
         $fooNode = new ChildNode('foo');
         $fooNode->setValue('fooValue');
         $expected->addChild($fooNode);
-        $barNode = new ChildNode('bar');
-        $barNode->setValue('barValue');
-        $expected->addChild($barNode);
         $subject = $this->get(TypoScriptStringFactory::class);
-        $result = $subject->parseFromStringWithIncludesAndConditions(
+        $result = $subject->parseFromStringWithIncludes(
             'testing',
-            '@import \'EXT:core/Tests/Functional/TypoScript/Fixtures/SimpleCondition.typoscript\'',
-            new BackendConditionMatcher()
+            '@import \'EXT:core/Tests/Functional/TypoScript/Fixtures/typoScriptStringTextFixture.typoscript\''
         );
         self::assertEquals($expected, $result);
     }

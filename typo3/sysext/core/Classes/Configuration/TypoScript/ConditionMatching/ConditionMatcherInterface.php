@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching;
 
 /**
  * Used for TypoScript Conditions to be evaluated.
+ *
+ * @deprecated since v12, will be removed in v13 together with old TypoScript parser
  */
 interface ConditionMatcherInterface
 {
