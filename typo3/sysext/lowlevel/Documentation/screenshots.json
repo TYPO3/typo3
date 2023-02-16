@@ -11,7 +11,7 @@
 					{"include": "_default"},
 					{"action": "goToModule", "module": "Configuration"},
 					{"action": "switchToMainFrame"},
-					{"action": "drawBadge", "selector": "#system_config", "label": "1", "position": "right"},
+					{"action": "drawBadge", "selector": "[data-modulemenu-identifier=\"system_config\"]", "label": "1", "position": "right"},
 					{"action": "switchToContentFrame"},
 					{"action": "drawBadge", "selector": ".t3-js-jumpMenuBox", "label": "2", "position": "right"},
 					{"action": "drawBadge", "selector": "#lowlevel-searchString", "label": "3", "position": "right"},
@@ -27,7 +27,7 @@
 					{"include": "_default"},
 					{"action": "goToModule", "module": "DB Check"},
 					{"action": "switchToMainFrame"},
-					{"action": "drawBadge", "selector": "#system_dbint", "label": "1", "position": "right"},
+					{"action": "drawBadge", "selector": "[data-modulemenu-identifier=\"system_dbint\"]", "label": "1", "position": "right"},
 					{"action": "switchToContentFrame"},
 					{
 						"action": "makeScreenshotOfWindow",

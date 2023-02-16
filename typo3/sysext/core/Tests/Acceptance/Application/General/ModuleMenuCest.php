@@ -32,32 +32,32 @@ final class ModuleMenuCest
     public function checkIfModuleMenuIsCollapsible(ApplicationTester $I): void
     {
         // A sub-element of web module is shown
-        $I->waitForElementVisible('#web + .modulemenu-group-container .modulemenu-action');
-        $I->seeElement('#web + .modulemenu-group-container .modulemenu-action');
+        $I->waitForElementVisible('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action');
+        $I->seeElement('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action');
 
         // Collapse web module and verify sub elements are hidden
         $I->wantTo('collapse the menu element');
-        $I->waitForElementVisible('#web');
-        $I->click('#web');
-        $I->waitForElementNotVisible('#web + .modulemenu-group-container .modulemenu-action');
-        $I->dontSeeElement('#web + .modulemenu-group-container .modulemenu-action');
+        $I->waitForElementVisible('[data-modulemenu-identifier="web"]');
+        $I->click('[data-modulemenu-identifier="web"]');
+        $I->waitForElementNotVisible('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action');
+        $I->dontSeeElement('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action');
 
         // Expand again and verify sub elements are shown
         $I->wantTo('expand the menu element again');
-        $I->click('#web');
-        $I->waitForElementVisible('#web + .modulemenu-group-container .modulemenu-action');
-        $I->seeElement('#web + .modulemenu-group-container .modulemenu-action');
+        $I->click('[data-modulemenu-identifier="web"]');
+        $I->waitForElementVisible('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action');
+        $I->seeElement('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action');
     }
 
     public function selectingAModuleDoesHighlightIt(ApplicationTester $I): void
     {
-        $I->seeNumberOfElements('#web + .modulemenu-group-container .modulemenu-action', [2, 20]);
+        $I->seeNumberOfElements('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action', [2, 20]);
 
         $I->wantTo('check that the second element has no "modulemenu-action-active" class\'');
-        $I->cantSeeElement('#web_list.modulemenu-action-active');
-        $I->click('#web_list');
+        $I->cantSeeElement('[data-modulemenu-identifier="web"].modulemenu-action-active');
+        $I->click('[data-modulemenu-identifier="web_list"]');
 
         $I->wantTo('see that the second element has an "modulemenu-action-active" class');
-        $I->canSeeElement('#web_list.modulemenu-action-active');
+        $I->canSeeElement('[data-modulemenu-identifier="web_list"].modulemenu-action-active');
     }
 }

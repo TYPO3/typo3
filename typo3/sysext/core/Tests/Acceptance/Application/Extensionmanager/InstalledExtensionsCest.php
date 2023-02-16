@@ -66,25 +66,25 @@ final class InstalledExtensionsCest
         $I->wantTo('Check if uninstalling and installing an extension with backend module removes and adds the module from the module menu.');
         $I->amGoingTo('uninstall extension belog');
         $I->switchToMainFrame();
-        $I->seeElement('#system_BelogLog');
+        $I->seeElement('[data-modulemenu-identifier="system_BelogLog"]');
 
         $I->switchToContentFrame();
         $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
         $I->click('a[title="Deactivate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
 
         $I->switchToMainFrame();
-        $I->cantSeeElement('#system_BelogLog');
+        $I->cantSeeElement('[data-modulemenu-identifier="system_BelogLog"]');
 
         $I->amGoingTo('install extension belog');
         $I->switchToMainFrame();
         $I->seeElement('.modulemenu-action');
-        $I->cantSeeElement('#system_BelogLog');
+        $I->cantSeeElement('[data-modulemenu-identifier="system_BelogLog"]');
 
         $I->switchToContentFrame();
         $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
         $I->click('a[title="Activate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
 
         $I->switchToMainFrame();
-        $I->seeElement('#system_BelogLog');
+        $I->seeElement('[data-modulemenu-identifier="system_BelogLog"]');
     }
 }

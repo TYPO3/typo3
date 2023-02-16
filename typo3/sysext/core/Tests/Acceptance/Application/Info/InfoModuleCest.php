@@ -29,7 +29,7 @@ final class InfoModuleCest
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
-        $I->click('#web_info');
+        $I->click('[data-modulemenu-identifier="web_info"]');
         $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();

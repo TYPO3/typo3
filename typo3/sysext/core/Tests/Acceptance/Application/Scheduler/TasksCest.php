@@ -28,9 +28,9 @@ final class TasksCest
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
-        $I->scrollTo('#system_txschedulerM1');
-        $I->see('Scheduler', '#system_txschedulerM1');
-        $I->click('#system_txschedulerM1');
+        $I->scrollTo('[data-modulemenu-identifier="system_txschedulerM1"]');
+        $I->see('Scheduler', '[data-modulemenu-identifier="system_txschedulerM1"]');
+        $I->click('[data-modulemenu-identifier="system_txschedulerM1"]');
         $I->switchToContentFrame();
     }
 

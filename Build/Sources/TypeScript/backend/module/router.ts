@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, css, LitElement, TemplateResult} from 'lit';
-import {customElement, property, query} from 'lit/decorators';
-import {getRecordFromName, Module, ModuleState} from '../module';
+import { html, css, LitElement, TemplateResult } from 'lit';
+import { customElement, property, query } from 'lit/decorators';
+import { ModuleState, ModuleUtility } from '@typo3/backend/module';
 
 const IFRAME_COMPONENT = '@typo3/backend/module/iframe';
 
@@ -32,15 +32,15 @@ const alwaysUpdate = (newVal: string, oldVal: string) => true;
 @customElement('typo3-backend-module-router')
 export class ModuleRouter extends LitElement {
 
-  @property({type: String, hasChanged: alwaysUpdate}) module: string = '';
+  @property({ type: String, hasChanged: alwaysUpdate }) module: string = '';
 
-  @property({type: String, hasChanged: alwaysUpdate}) endpoint: string = '';
+  @property({ type: String, hasChanged: alwaysUpdate }) endpoint: string = '';
 
-  @property({type: String, attribute: 'state-tracker'}) stateTrackerUrl: string;
+  @property({ type: String, attribute: 'state-tracker' }) stateTrackerUrl: string;
 
-  @property({type: String, attribute: 'sitename'}) sitename: string;
+  @property({ type: String, attribute: 'sitename' }) sitename: string;
 
-  @property({type: Boolean, attribute: 'sitename-first'}) sitenameFirst: boolean;
+  @property({ type: Boolean, attribute: 'sitename-first' }) sitenameFirst: boolean;
 
   @query('slot', true) slotElement: HTMLSlotElement;
 
@@ -61,16 +61,16 @@ export class ModuleRouter extends LitElement {
   constructor() {
     super();
 
-    this.addEventListener('typo3-module-load', ({target, detail}: CustomEvent<ModuleState>) => {
+    this.addEventListener('typo3-module-load', ({ target, detail }: CustomEvent<ModuleState>) => {
       const slotName = (target as HTMLElement).getAttribute('slot');
       this.pushState({ slotName, detail });
     });
 
-    this.addEventListener('typo3-module-loaded', ({detail}: CustomEvent<ModuleState>) => {
+    this.addEventListener('typo3-module-loaded', ({ detail }: CustomEvent<ModuleState>) => {
       this.updateBrowserState(detail);
     });
 
-    this.addEventListener('typo3-iframe-load', ({detail}: CustomEvent<ModuleState>) => {
+    this.addEventListener('typo3-iframe-load', ({ detail }: CustomEvent<ModuleState>) => {
       let state: DecoratedModuleState = {
         slotName: IFRAME_COMPONENT,
         detail: detail
@@ -116,7 +116,7 @@ export class ModuleRouter extends LitElement {
       }));
     });
 
-    this.addEventListener('typo3-iframe-loaded', ({detail}: CustomEvent<ModuleState>) => {
+    this.addEventListener('typo3-iframe-loaded', ({ detail }: CustomEvent<ModuleState>) => {
       this.updateBrowserState(detail);
       this.parentElement.dispatchEvent(new CustomEvent<ModuleState>('typo3-module-loaded', {
         bubbles: true,
@@ -127,20 +127,20 @@ export class ModuleRouter extends LitElement {
   }
 
   public render(): TemplateResult {
-    const moduleData = getRecordFromName(this.module);
+    const moduleData = ModuleUtility.getFromName(this.module);
     const jsModule = moduleData.component || IFRAME_COMPONENT;
 
     return html`<slot name="${jsModule}"></slot>`;
   }
 
   protected updated(): void {
-    const moduleData = getRecordFromName(this.module);
+    const moduleData = ModuleUtility.getFromName(this.module);
     const jsModule = moduleData.component || IFRAME_COMPONENT;
 
     this.markActive(jsModule, this.endpoint);
   }
 
-  private async markActive(jsModule: string, endpoint: string|null, forceEndpointReset: boolean = true): Promise<void> {
+  private async markActive(jsModule: string, endpoint: string | null, forceEndpointReset: boolean = true): Promise<void> {
     const element = await this.getModuleElement(jsModule);
     if (endpoint && (forceEndpointReset || element.getAttribute('endpoint') !== endpoint)) {
       element.setAttribute('endpoint', endpoint);
@@ -167,7 +167,7 @@ export class ModuleRouter extends LitElement {
       // @todo: Check if .componentName exists
       element = document.createElement(module.componentName);
     } catch (e) {
-      console.error({msg: `Error importing ${moduleName} as backend module`, err: e})
+      console.error({ msg: `Error importing ${moduleName} as backend module`, err: e })
       throw e;
     }
 
@@ -191,7 +191,7 @@ export class ModuleRouter extends LitElement {
     // update/reset document.title if state.title is not null
     // (state.title === null indicates "keep current title")
     if (title !== null) {
-      const titleComponents = [ this.sitename ];
+      const titleComponents = [this.sitename];
       if (title !== '') {
         titleComponents.unshift(title);
       }

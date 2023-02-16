@@ -27,9 +27,9 @@ final class ConfigurationModuleProviderCest
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
-        $I->scrollTo('#system_config');
-        $I->see('Configuration', '#system_config');
-        $I->click('#system_config');
+        $I->scrollTo('[data-modulemenu-identifier="system_config"]');
+        $I->see('Configuration', '[data-modulemenu-identifier="system_config"]');
+        $I->click('[data-modulemenu-identifier="system_config"]');
         $I->switchToContentFrame();
     }
 

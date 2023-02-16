@@ -5,15 +5,13 @@
     <nav class="t3js-helpmenu">
         <ul class="dropdown-list" role="menu" aria-labelledby="help-dropdown-headline">
             <f:for each="{modules}" as="module">
-                <li data-level="1">
+                <li>
                     <a
+                        href="{f:if(condition: module.path, then: '{f:be.uri(route: module.identifier)}', else: '#')}"
                         title="{f:translate(key: module.description, default: module.description)}"
-                        class="dropdown-item t3js-modulemenu-action"
+                        class="dropdown-item"
                         role="menuitem"
-                        id="{module.identifier}"
-                        data-modulename="{module.identifier}"
-                        {f:if(condition: module.path, then: 'href="{f:be.uri(route: module.identifier)}"')}
-                        {f:if(condition: module.navigationComponent, then: 'data-navigationcomponentid="{module.navigationComponent}"')}
+                        data-moduleroute-identifier="{module.identifier}"
                     >
                         <span class="dropdown-item-columns">
                             <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
@@ -26,7 +24,7 @@
                     </a>
                 </li>
             </f:for>
-            <li data-level="1">
+            <li>
                 <a
                     class="dropdown-item"
                     role="menuitem"

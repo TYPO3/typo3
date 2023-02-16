@@ -11,24 +11,24 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, LitElement, TemplateResult, PropertyValues} from 'lit';
-import {customElement, property, query} from 'lit/decorators';
-import {until} from 'lit/directives/until';
-import {lll} from '@typo3/core/lit-helper';
-import {PageTree} from './page-tree';
-import {TreeNode} from './../tree/tree-node';
+import { html, LitElement, TemplateResult, PropertyValues } from 'lit';
+import { customElement, property, query } from 'lit/decorators';
+import { until } from 'lit/directives/until';
+import { lll } from '@typo3/core/lit-helper';
+import { PageTree } from './page-tree';
+import { TreeNode } from './../tree/tree-node';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Persistent from '@typo3/backend/storage/persistent';
-import {getRecordFromName} from '../module';
+import { ModuleUtility } from '@typo3/backend/module';
 import ContextMenu from '../context-menu';
 import * as d3selection from 'd3-selection';
-import {KeyTypesEnum as KeyTypes} from '@typo3/backend/enum/key-types';
-import {TreeNodeSelection, TreeWrapperSelection, Toolbar, SvgTreeWrapper} from '../svg-tree';
-import {DragDrop, DragDropHandler, DraggablePositionEnum, DragDropTargetPosition} from '../tree/drag-drop';
+import { KeyTypesEnum as KeyTypes } from '@typo3/backend/enum/key-types';
+import { TreeNodeSelection, TreeWrapperSelection, Toolbar, SvgTreeWrapper } from '../svg-tree';
+import { DragDrop, DragDropHandler, DraggablePositionEnum, DragDropTargetPosition } from '../tree/drag-drop';
 import Modal from '../modal';
 import Severity from '../severity';
-import {ModuleStateStorage} from '../storage/module-state-storage';
+import { ModuleStateStorage } from '../storage/module-state-storage';
 
 /**
  * This module defines the Custom Element for rendering the navigation component for an editable page tree
@@ -177,7 +177,7 @@ export class EditablePageTree extends PageTree {
     this.nodesAddPlaceholder(node);
     return (new AjaxRequest(top.TYPO3.settings.ajaxUrls.record_process))
       .post(params, {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'},
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' },
       })
       .then((response) => {
         return response.resolve();
@@ -253,7 +253,7 @@ interface Configuration {
 
 @customElement(navigationComponentName)
 export class PageTreeNavigationComponent extends LitElement {
-  @property({type: String}) mountPointPath: string = null;
+  @property({ type: String }) mountPointPath: string = null;
 
   @query('.svg-tree-wrapper') tree: EditablePageTree;
   @query('typo3-backend-navigation-component-pagetree-toolbar') toolbar: PageTreeToolbar;
@@ -373,7 +373,7 @@ export class PageTreeNavigationComponent extends LitElement {
   private setTemporaryMountPoint(pid: number): void {
     (new AjaxRequest(this.configuration.setTemporaryMountPointUrl))
       .post('pid=' + pid, {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'},
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' },
       })
       .then((response) => response.resolve())
       .then((response) => {
@@ -411,7 +411,7 @@ export class PageTreeNavigationComponent extends LitElement {
 
     // Load the currently selected module with the updated URL
     const moduleMenu = top.TYPO3.ModuleMenu.App;
-    let contentUrl = getRecordFromName(moduleMenu.getCurrentModule()).link;
+    let contentUrl = ModuleUtility.getFromName(moduleMenu.getCurrentModule()).link;
     contentUrl += contentUrl.includes('?') ? '&' : '?';
     top.TYPO3.Backend.ContentContainer.setUrl(contentUrl + 'id=' + node.identifier);
   }
@@ -449,10 +449,9 @@ export class PageTreeNavigationComponent extends LitElement {
 
 @customElement('typo3-backend-navigation-component-pagetree-toolbar')
 class PageTreeToolbar extends Toolbar {
-  @property({type: EditablePageTree}) tree: EditablePageTree = null;
+  @property({ type: EditablePageTree }) tree: EditablePageTree = null;
 
-  public initializeDragDrop(dragDrop: PageTreeDragDrop): void
-  {
+  public initializeDragDrop(dragDrop: PageTreeDragDrop): void {
     if (this.tree?.settings?.doktypes?.length) {
       this.tree.settings.doktypes.forEach((item: any) => {
         if (item.icon) {
@@ -484,16 +483,16 @@ class PageTreeToolbar extends Toolbar {
         </div>
         <div class="svg-toolbar__submenu">
           ${this.tree?.settings?.doktypes?.length
-            ? this.tree.settings.doktypes.map((item: any) => {
-              return html`
+        ? this.tree.settings.doktypes.map((item: any) => {
+          return html`
                 <div class="svg-toolbar__menuitem svg-toolbar__drag-node" data-tree-icon="${item.icon}" data-node-type="${item.nodeType}"
                      title="${item.title}">
                   <typo3-backend-icon identifier="${item.icon}" size="small"></typo3-backend-icon>
                 </div>
               `;
-              })
-            : ''
-          }
+        })
+        : ''
+      }
           <a class="svg-toolbar__menuitem nav-link dropdown-toggle dropdown-toggle-no-chevron float-end" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><typo3-backend-icon identifier="actions-menu-alternative" size="small"></typo3-backend-icon></a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
@@ -556,7 +555,7 @@ interface NodePositionOptions {
  * Extends Drag&Drop functionality for Page Tree positioning when dropping
  */
 class PageTreeDragDrop extends DragDrop {
-  public getDropCommandDetails(droppedNode: TreeNode, command: string = '', draggingNode: TreeNode|null = null): null|NodePositionOptions {
+  public getDropCommandDetails(droppedNode: TreeNode, command: string = '', draggingNode: TreeNode | null = null): null | NodePositionOptions {
     const nodes = this.tree.nodes;
     const uid = draggingNode.identifier;
     let position = this.tree.settings.nodeDragPosition;
@@ -644,7 +643,7 @@ class PageTreeDragDrop extends DragDrop {
    * @param {number} index of node which is over mouse
    * @returns {Array} [position, target]
    */
-  public setNodePositionAndTarget(index: number): null|DragDropTargetPosition {
+  public setNodePositionAndTarget(index: number): null | DragDropTargetPosition {
     const nodes = this.tree.nodes;
     const nodeOver = nodes[index];
     const nodeOverDepth = nodeOver.depth;
@@ -656,15 +655,15 @@ class PageTreeDragDrop extends DragDrop {
     const target = this.tree.nodes[index];
 
     if (nodeBeforeDepth === nodeOverDepth) {
-      return {position: DraggablePositionEnum.AFTER, target};
+      return { position: DraggablePositionEnum.AFTER, target };
     } else if (nodeBeforeDepth < nodeOverDepth) {
-      return {position: DraggablePositionEnum.INSIDE, target};
+      return { position: DraggablePositionEnum.INSIDE, target };
     } else {
       for (let i = index; i >= 0; i--) {
         if (nodes[i].depth === nodeOverDepth) {
-          return {position: DraggablePositionEnum.AFTER, target: this.tree.nodes[i]};
+          return { position: DraggablePositionEnum.AFTER, target: this.tree.nodes[i] };
         } else if (nodes[i].depth < nodeOverDepth) {
-          return {position: DraggablePositionEnum.AFTER, target: nodes[i]};
+          return { position: DraggablePositionEnum.AFTER, target: nodes[i] };
         }
       }
     }
@@ -713,14 +712,14 @@ class ToolbarDragHandler implements DragDropHandler {
     this.dragDrop = dragDrop;
   }
 
-  public onDragStart(event: MouseEvent, draggingNode: TreeNode|null): boolean {
+  public onDragStart(event: MouseEvent, draggingNode: TreeNode | null): boolean {
     this.dragStarted = false;
     this.startPageX = event.pageX;
     this.startPageY = event.pageY;
     return true;
   }
 
-  public onDragOver(event: MouseEvent, draggingNode: TreeNode|null): boolean {
+  public onDragOver(event: MouseEvent, draggingNode: TreeNode | null): boolean {
     if (this.dragDrop.isDragNodeDistanceMore(event, this)) {
       this.dragStarted = true;
     } else {
@@ -737,7 +736,7 @@ class ToolbarDragHandler implements DragDropHandler {
     return true;
   }
 
-  public onDrop(event: MouseEvent, draggingNode: TreeNode|null): boolean {
+  public onDrop(event: MouseEvent, draggingNode: TreeNode | null): boolean {
     if (!this.dragStarted) {
       return false;
     }
@@ -888,7 +887,7 @@ class PageTreeNodeDragHandler implements DragDropHandler {
    *
    * @type {Selection}
    */
-  private dropZoneDelete: null|TreeWrapperSelection<SVGGElement>;
+  private dropZoneDelete: null | TreeWrapperSelection<SVGGElement>;
   private tree: any;
   private dragDrop: PageTreeDragDrop;
   private nodeIsOverDelete: boolean = false;
@@ -898,7 +897,7 @@ class PageTreeNodeDragHandler implements DragDropHandler {
     this.dragDrop = dragDrop;
   }
 
-  public onDragStart(event: MouseEvent, draggingNode: TreeNode|null): boolean {
+  public onDragStart(event: MouseEvent, draggingNode: TreeNode | null): boolean {
     if (this.tree.settings.allowDragMove !== true || draggingNode.depth === 0) {
       return false;
     }
@@ -926,7 +925,7 @@ class PageTreeNodeDragHandler implements DragDropHandler {
       this.dropZoneDelete.append('text')
         .text(TYPO3.lang.deleteItem)
         .attr('x', 5)
-        .attr('y', ((this.tree.settings.nodeHeight) / 2 ) + 4);
+        .attr('y', ((this.tree.settings.nodeHeight) / 2) + 4);
 
       this.dropZoneDelete.node().dataset.open = 'false';
       this.dropZoneDelete.node().style.transform = this.getDropZoneCloseTransform(draggingNode);
@@ -938,7 +937,7 @@ class PageTreeNodeDragHandler implements DragDropHandler {
     return true;
   };
 
-  public onDragOver(event: MouseEvent, draggingNode: TreeNode|null): boolean {
+  public onDragOver(event: MouseEvent, draggingNode: TreeNode | null): boolean {
     if (this.dragDrop.isDragNodeDistanceMore(event, this)) {
       this.dragStarted = true;
     } else {
@@ -978,7 +977,7 @@ class PageTreeNodeDragHandler implements DragDropHandler {
     return true;
   }
 
-  public onDrop(event: MouseEvent, draggingNode: TreeNode|null): boolean {
+  public onDrop(event: MouseEvent, draggingNode: TreeNode | null): boolean {
     if (this.dropZoneDelete && this.dropZoneDelete.node().dataset.open === 'true') {
       const dropZone = this.dropZoneDelete;
       this.animateDropZone('hide', this.dropZoneDelete.node(), draggingNode, () => {
@@ -1009,23 +1008,23 @@ class PageTreeNodeDragHandler implements DragDropHandler {
         TYPO3.lang.move_page,
         modalText,
         Severity.warning, [
-          {
-            text: TYPO3.lang['labels.cancel'] || 'Cancel',
-            active: true,
-            btnClass: 'btn-default',
-            name: 'cancel'
-          },
-          {
-            text: TYPO3.lang['cm.copy'] || 'Copy',
-            btnClass: 'btn-warning',
-            name: 'copy'
-          },
-          {
-            text: TYPO3.lang['labels.move'] || 'Move',
-            btnClass: 'btn-warning',
-            name: 'move'
-          }
-        ])
+        {
+          text: TYPO3.lang['labels.cancel'] || 'Cancel',
+          active: true,
+          btnClass: 'btn-default',
+          name: 'cancel'
+        },
+        {
+          text: TYPO3.lang['cm.copy'] || 'Copy',
+          btnClass: 'btn-warning',
+          name: 'copy'
+        },
+        {
+          text: TYPO3.lang['labels.move'] || 'Move',
+          btnClass: 'btn-warning',
+          name: 'move'
+        }
+      ])
       modal.addEventListener('button.clicked', (e: JQueryEventObject) => {
         const target = e.target as HTMLInputElement;
         if (target.name === 'move') {
@@ -1047,18 +1046,18 @@ class PageTreeNodeDragHandler implements DragDropHandler {
           TYPO3.lang['mess.delete.title'],
           TYPO3.lang['mess.delete'].replace('%s', options.node.name),
           Severity.warning, [
-            {
-              text: TYPO3.lang['labels.cancel'] || 'Cancel',
-              active: true,
-              btnClass: 'btn-default',
-              name: 'cancel'
-            },
-            {
-              text: TYPO3.lang.delete || 'Delete',
-              btnClass: 'btn-warning',
-              name: 'delete'
-            }
-          ]);
+          {
+            text: TYPO3.lang['labels.cancel'] || 'Cancel',
+            active: true,
+            btnClass: 'btn-default',
+            name: 'cancel'
+          },
+          {
+            text: TYPO3.lang.delete || 'Delete',
+            btnClass: 'btn-warning',
+            name: 'delete'
+          }
+        ]);
         modal.addEventListener('button.clicked', (e: Event) => {
           const target = e.target as HTMLInputElement;
           if (target.name === 'delete') {
@@ -1102,7 +1101,7 @@ class PageTreeNodeDragHandler implements DragDropHandler {
     if (action !== 'show') {
       keyframes = keyframes.reverse();
     }
-    const done = function() {
+    const done = function () {
       dropZone.style.transform = keyframes[1].transform;
       dropZone.classList.remove('animating');
       onfinish && onfinish();

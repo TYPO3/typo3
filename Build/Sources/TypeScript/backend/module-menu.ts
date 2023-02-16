@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {ScaffoldIdentifierEnum} from './enum/viewport/scaffold-identifier';
-import {getRecordFromName, Module, ModuleState} from './module';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { ScaffoldIdentifierEnum } from './enum/viewport/scaffold-identifier';
+import { Module, ModuleSelector, ModuleState, ModuleUtility } from '@typo3/backend/module';
 import $ from 'jquery';
 import PersistentStorage from './storage/persistent';
 import Viewport from './viewport';
@@ -22,7 +22,21 @@ import TriggerRequest from './event/trigger-request';
 import InteractionRequest from './event/interaction-request';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
-import {ModuleStateStorage} from './storage/module-state-storage';
+import { ModuleStateStorage } from './storage/module-state-storage';
+
+enum ModuleMenuSelector {
+  menu = '[data-modulemenu]',
+  item = '[data-modulemenu-identifier]',
+  collapsible = '[data-modulemenu-collapsible="true"]',
+}
+
+interface ModuleMenuItem {
+  identifier: string,
+  collapsible: boolean,
+  expanded: boolean,
+  level: number | null,
+  element: HTMLElement
+}
 
 /**
  * Class to render the module menu and handle the BE navigation
@@ -30,7 +44,18 @@ import {ModuleStateStorage} from './storage/module-state-storage';
  */
 class ModuleMenu {
   private loadedModule: string = null;
-  private spaceKeyPressedOnCollapsible: boolean = false;
+
+  private static getModuleMenuItemFromElement(element: HTMLElement): ModuleMenuItem {
+    const item: ModuleMenuItem = {
+      identifier: element.dataset.modulemenuIdentifier,
+      level: element.parentElement.dataset.modulemenuLevel ? parseInt(element.parentElement.dataset.modulemenuLevel, 10) : null,
+      collapsible: element.dataset.modulemenuCollapsible === 'true',
+      expanded: element.attributes.getNamedItem('aria-expanded')?.value === 'true',
+      element: element,
+    }
+
+    return item;
+  }
 
   /**
    * Fetches all module menu elements in the local storage that should be collapsed
@@ -92,9 +117,6 @@ class ModuleMenu {
     return params;
   }
 
-  /**
-   * @param {boolean} collapse
-   */
   private static toggleMenu(collapse?: boolean): void {
     const scaffold = document.querySelector(ScaffoldIdentifierEnum.scaffold);
     const expandedClass = 'scaffold-modulemenu-expanded';
@@ -117,100 +139,118 @@ class ModuleMenu {
     );
   }
 
-  /**
-   * @param {HTMLButtonElement} button
-   */
-  private static toggleModuleGroup(button: HTMLElement): void {
-    const moduleGroup = button.closest('.modulemenu-group');
+  private static toggleModuleGroup(element: HTMLElement): void {
+    const menuItem = ModuleMenu.getModuleMenuItemFromElement(element);
+    const moduleGroup = menuItem.element.closest('.modulemenu-group');
     const moduleGroupContainer = moduleGroup.querySelector('.modulemenu-group-container');
-    const ariaExpanded = button.attributes.getNamedItem('aria-expanded').value === 'true';
 
-    if (ariaExpanded) {
-      ModuleMenu.addCollapsedMainMenuItem(button.id);
+    if (menuItem.expanded) {
+      ModuleMenu.addCollapsedMainMenuItem(menuItem.identifier);
     } else {
-      ModuleMenu.removeCollapseMainMenuItem(button.id);
+      ModuleMenu.removeCollapseMainMenuItem(menuItem.identifier);
     }
 
-    moduleGroup.classList.toggle('modulemenu-group-collapsed', ariaExpanded);
-    moduleGroup.classList.toggle('modulemenu-group-expanded', !ariaExpanded);
+    moduleGroup.classList.toggle('modulemenu-group-collapsed', menuItem.expanded);
+    moduleGroup.classList.toggle('modulemenu-group-expanded', !menuItem.expanded);
 
-    button.attributes.getNamedItem('aria-expanded').value = (!ariaExpanded).toString();
+    element.setAttribute('aria-expanded', (!menuItem.expanded).toString());
 
     $(moduleGroupContainer).stop().slideToggle();
   }
 
-  /**
-   * @param {string} identifier
-   */
-  private static highlightModuleMenuItem(identifier: string): void {
-    document.querySelectorAll('[data-modulename].modulemenu-action-active, [data-modulename].active').forEach((element: Element) => {
-      element.classList.remove('active');
+  private static highlightModule(identifier: string): void {
+    // Handle modulemenu
+    const menu = document.querySelector(ModuleMenuSelector.menu);
+    menu.querySelectorAll(ModuleMenuSelector.item).forEach((element: Element) => {
       element.classList.remove('modulemenu-action-active');
       element.removeAttribute('aria-current');
     });
-    const module = getRecordFromName(identifier);
-    this.highlightModule(module);
+
+    // Handle toolbar
+    //
+    // This is a workaround, to ensure the toolbar module links are handled.
+    // There is no dedicated module rendering in the toolbar, so we rely on this
+    // workaround until this changes. Even the code matches the handling of
+    // module-menu-items we keep this separate to show the problem here.
+    const toolbar = document.querySelector('.t3js-scaffold-toolbar');
+    toolbar.querySelectorAll(ModuleSelector.link + '.dropdown-item').forEach((element: Element) => {
+      element.classList.remove('active');
+      element.removeAttribute('aria-current');
+    });
+
+    const module = ModuleUtility.getFromName(identifier);
+    this.highlightModuleMenuItem(module, true);
   }
 
-  /**
-   * @param {Module} module
-   * @param {boolean} current
-   */
-  private static highlightModule(module: Module, current: boolean = true): void {
-    const moduleElement = document.getElementById(module.name);
-    if (moduleElement) {
-      const activeClass = moduleElement.classList.contains('modulemenu-action') ? 'modulemenu-action-active' : 'active';
-      moduleElement.classList.add(activeClass);
+  private static highlightModuleMenuItem(module: Module, current: boolean = true): void {
+    // Handle modulemenu
+    const menu = document.querySelector(ModuleMenuSelector.menu);
+    const menuElements = menu.querySelectorAll(ModuleMenuSelector.item + '[data-modulemenu-identifier="' + module.name + '"]');
+    menuElements.forEach((element: HTMLElement) => {
+      element.classList.add('modulemenu-action-active');
       if (current) {
-        moduleElement.setAttribute('aria-current', 'location');
-        current = false;
+        element.setAttribute('aria-current', 'location');
       }
+    });
+
+    // Handle toolbar
+    //
+    // This is a workaround, to ensure the toolbar module links are handled.
+    // There is no dedicated module rendering in the toolbar, so we rely on this
+    // workaround until this changes. Even the code matches the handling of
+    // module-menu-items we keep this separate to show the problem here.
+    const toolbar = document.querySelector('.t3js-scaffold-toolbar');
+    const toolbarElements = toolbar.querySelectorAll(ModuleSelector.link + '[data-moduleroute-identifier="' + module.name + '"].dropdown-item');
+    toolbarElements.forEach((element: HTMLElement) => {
+      element.classList.add('active');
+      if (current) {
+        element.setAttribute('aria-current', 'location');
+      }
+    });
+
+    if (menuElements.length > 0 || toolbarElements.length > 0) {
+      current = false;
     }
 
     if (module.parent !== '') {
-      this.highlightModule(getRecordFromName(module.parent), current);
+      this.highlightModuleMenuItem(ModuleUtility.getFromName(module.parent), current);
     }
   }
 
-  private static getPreviousItem(item: HTMLButtonElement): HTMLButtonElement {
+  private static getPreviousItem(item: HTMLElement): HTMLElement {
     let previousParent = item.parentElement.previousElementSibling; // previous <li>
     if (previousParent === null) {
       return ModuleMenu.getLastItem(item);
     }
-    return previousParent.firstElementChild as HTMLButtonElement; // the <button>
+    return previousParent.firstElementChild as HTMLElement; // the <element>
   }
 
-  private static getNextItem(item: HTMLButtonElement): HTMLButtonElement {
+  private static getNextItem(item: HTMLElement): HTMLElement {
     let nextParent = item.parentElement.nextElementSibling; // next <li>
     if (nextParent === null) {
       return ModuleMenu.getFirstItem(item);
     }
-    return nextParent.firstElementChild as HTMLButtonElement; // the <button>
+    return nextParent.firstElementChild as HTMLElement; // the <element>
   }
 
-  private static getFirstItem(item: HTMLButtonElement): HTMLButtonElement {
-    // from <button> up to <ul> and down to <button> of first <li>
-    return item.parentElement.parentElement.firstElementChild.firstElementChild as HTMLButtonElement;
+  private static getFirstItem(item: HTMLElement): HTMLElement {
+    // from <element> up to <ul> and down to <element> of first <li>
+    return item.parentElement.parentElement.firstElementChild.firstElementChild as HTMLElement;
   }
 
-  private static getLastItem(item: HTMLButtonElement): HTMLButtonElement {
-    // from <button> up to <ul> and down to <button> of first <li>
-    return item.parentElement.parentElement.lastElementChild.firstElementChild as HTMLButtonElement;
+  private static getLastItem(item: HTMLElement): HTMLElement {
+    // from <element> up to <ul> and down to <element> of first <li>
+    return item.parentElement.parentElement.lastElementChild.firstElementChild as HTMLElement;
   }
 
-  private static getParentItem(item: HTMLButtonElement): HTMLButtonElement {
-    // from <button> up to <ul> and the <li> above and down down its <button>
-    return item.parentElement.parentElement.parentElement.firstElementChild as HTMLButtonElement;
+  private static getParentItem(item: HTMLElement): HTMLElement {
+    // from <element> up to <ul> and the <li> above and down down its <element>
+    return item.parentElement.parentElement.parentElement.firstElementChild as HTMLElement;
   }
 
-  private static getFirstChildItem(item: HTMLButtonElement): HTMLButtonElement {
-    // the first <li> of the <ul> following the <button>, then down down its <button>
-    return item.nextElementSibling.firstElementChild.firstElementChild as HTMLButtonElement;
-  }
-
-  private static getLastChildItem(item: HTMLButtonElement): HTMLButtonElement {
-    // the first <li> of the <ul> following the <button>, then down down its <button>
-    return item.nextElementSibling.lastElementChild.firstElementChild as HTMLButtonElement;
+  private static getFirstChildItem(item: HTMLElement): HTMLElement {
+    // the first <li> of the <ul> following the <element>, then down down its <element>
+    return item.nextElementSibling.firstElementChild.firstElementChild as HTMLElement;
   }
 
   constructor() {
@@ -228,12 +268,12 @@ class ModuleMenu {
       document.getElementById('modulemenu').outerHTML = result.menu;
       this.initializeModuleMenuEvents();
       if (this.loadedModule) {
-        ModuleMenu.highlightModuleMenuItem(this.loadedModule);
+        ModuleMenu.highlightModule(this.loadedModule);
       }
     });
   }
 
-  public getCurrentModule(): string|null {
+  public getCurrentModule(): string | null {
     return this.loadedModule;
   }
 
@@ -256,7 +296,7 @@ class ModuleMenu {
    */
   public showModule(name: string, params?: string, event: Event = null): JQueryDeferred<TriggerRequest> {
     params = params || '';
-    const moduleData = getRecordFromName(name);
+    const moduleData = ModuleUtility.getFromName(name);
     return this.loadModuleComponents(
       moduleData,
       params,
@@ -265,7 +305,7 @@ class ModuleMenu {
   }
 
   private initialize(): void {
-    if (document.querySelector('.t3js-modulemenu') === null) {
+    if (document.querySelector(ModuleMenuSelector.menu) === null) {
       return;
     }
 
@@ -277,7 +317,7 @@ class ModuleMenu {
       Viewport.Topbar.Toolbar.registerEvent(() => {
         // Only initialize top bar events when top bar exists.
         // E.g. install tool has no top bar
-        if(document.querySelector('.t3js-scaffold-toolbar')) {
+        if (document.querySelector('.t3js-scaffold-toolbar')) {
           this.initializeTopBarEvents()
         }
       });
@@ -287,73 +327,61 @@ class ModuleMenu {
   /**
    * Implement the complete keyboard navigation of the menus
    */
-  private keyboardNavigation(e: KeyboardEvent, target: HTMLButtonElement, trackSpaceKey: boolean = false): void {
-    const level = target.parentElement.attributes.getNamedItem('data-level').value;
+  private keyboardNavigation(event: KeyboardEvent, target: HTMLElement): void {
+    const menuItem = ModuleMenu.getModuleMenuItemFromElement(target);
     let item = null;
-    if (trackSpaceKey) {
-      this.spaceKeyPressedOnCollapsible = false; // only for tracking t3js-modulemenu!!!
-    }
 
-    switch (e.code) {
+    switch (event.code) {
       case 'ArrowUp':
-        item = ModuleMenu.getPreviousItem(target);
+        item = ModuleMenu.getPreviousItem(menuItem.element);
         break;
       case 'ArrowDown':
-        item = ModuleMenu.getNextItem(target);
+        item = ModuleMenu.getNextItem(menuItem.element);
         break;
       case 'ArrowLeft':
-        if (level === '1' && target.classList.contains('t3js-modulemenu-collapsible')) {
-          if (target.attributes.getNamedItem('aria-expanded').value === 'false') {
-            ModuleMenu.toggleModuleGroup(target);
-          }
-          item = ModuleMenu.getLastChildItem(target);
-        } else if (level === '2') {
-          item = ModuleMenu.getPreviousItem(ModuleMenu.getParentItem(target));
+        if (menuItem.level > 1) {
+          item = ModuleMenu.getParentItem(menuItem.element);
         }
         break;
       case 'ArrowRight':
-        if (level === '1' && target.classList.contains('t3js-modulemenu-collapsible')) {
-          if (target.attributes.getNamedItem('aria-expanded').value === 'false') {
-            ModuleMenu.toggleModuleGroup(target);
+        if (menuItem.collapsible) {
+          if (!menuItem.expanded) {
+            ModuleMenu.toggleModuleGroup(menuItem.element);
           }
-          item = ModuleMenu.getFirstChildItem(target);
-        } else if (level === '2') {
-          item = ModuleMenu.getNextItem(ModuleMenu.getParentItem(target));
+          item = ModuleMenu.getFirstChildItem(menuItem.element);
         }
         break;
       case 'Home':
-        if (e.ctrlKey && level === '2') {
-          item = ModuleMenu.getFirstItem(ModuleMenu.getParentItem(target));
-        } else {
-          item = ModuleMenu.getFirstItem(target);
+        if (event.ctrlKey && menuItem.level > 1) {
+          item = document.querySelector(ModuleMenuSelector.menu + ' ' + ModuleMenuSelector.item) as HTMLElement;
+          break;
         }
+        item = ModuleMenu.getFirstItem(menuItem.element);
         break;
       case 'End':
-        if (e.ctrlKey && level === '2') {
-          item = ModuleMenu.getLastItem(ModuleMenu.getParentItem(target));
+        if (event.ctrlKey && menuItem.level > 1) {
+          item = ModuleMenu.getLastItem(document.querySelector(ModuleMenuSelector.menu + ' ' + ModuleMenuSelector.item));
         } else {
-          item = ModuleMenu.getLastItem(target);
+          item = ModuleMenu.getLastItem(menuItem.element);
         }
         break;
       case 'Space':
       case 'Enter':
-        if (level === '1' && target.classList.contains('t3js-modulemenu-collapsible')) {
-          if (e.code === 'Enter') {
-            e.preventDefault(); // we do not want the click handler to run, need to prevent default immediately
-          }
-          ModuleMenu.toggleModuleGroup(target);
-          if (target.attributes.getNamedItem('aria-expanded').value === 'true') {
-            item = ModuleMenu.getFirstChildItem(target);
-            if (e.code === 'Space') {
-              this.spaceKeyPressedOnCollapsible = true; // focus shifts, so keyup will be sent to submodule
-            }
+        if (event.code === 'Space' || menuItem.collapsible) {
+          // we do not want the click handler to run, need to prevent default immediately
+          event.preventDefault();
+        }
+        if (menuItem.collapsible) {
+          ModuleMenu.toggleModuleGroup(menuItem.element);
+          if (menuItem.element.attributes.getNamedItem('aria-expanded').value === 'true') {
+            item = ModuleMenu.getFirstChildItem(menuItem.element);
           }
         }
         break;
       case 'Esc':
       case 'Escape':
-        if (level === '2') {
-          item = ModuleMenu.getParentItem(target);
+        if (menuItem.level > 1) {
+          item = ModuleMenu.getParentItem(menuItem.element);
           ModuleMenu.toggleModuleGroup(item);
         }
         break;
@@ -361,47 +389,26 @@ class ModuleMenu {
         item = null;
     }
     if (item !== null) {
-      if (!e.defaultPrevented) {
-        e.preventDefault();
-      }
       item.focus();
     }
   }
 
   private initializeModuleMenuEvents(): void {
-    const moduleMenu = document.querySelector('.t3js-modulemenu');
+    const moduleMenu = document.querySelector(ModuleMenuSelector.menu);
 
-    const preventSpace = function(this: ModuleMenu, e: KeyboardEvent): void {
-      if (e.code === 'Space') {
-        if (this.spaceKeyPressedOnCollapsible) { // keydown has been sent to module
-          e.preventDefault(); // we do not want the click handler to run
-          this.spaceKeyPressedOnCollapsible = false;
-        }
-      }
-    }.bind(this);
+    new RegularEvent('keydown', this.keyboardNavigation)
+      .delegateTo(moduleMenu, ModuleMenuSelector.item);
 
-    new RegularEvent('keydown', this.keyboardNavigation).delegateTo(moduleMenu, '.t3js-modulemenu-action');
+    new RegularEvent('click', (event: Event, target: HTMLElement): void => {
+      event.preventDefault();
+      const moduleRoute = ModuleUtility.getRouteFromElement(target);
+      this.showModule(moduleRoute.identifier, moduleRoute.params, event);
+    }).delegateTo(moduleMenu, ModuleSelector.link);
 
-    moduleMenu.querySelectorAll('[data-level="2"] a.t3js-modulemenu-action[href]').forEach( (item: Element): void => {
-      item.addEventListener('keyup', preventSpace);
-    });
-
-    new RegularEvent('keyup', (e: KeyboardEvent, target: HTMLButtonElement): void => {
-      if (e.code === 'Space') {
-        e.preventDefault(); // we do not want the click handler to run
-      }
-    }).delegateTo(moduleMenu, '.t3js-modulemenu-collapsible');
-
-    new RegularEvent('click', (e: Event, target: HTMLElement): void => {
-      e.preventDefault();
-      this.showModule(target.id, '', e);
-    }).delegateTo(moduleMenu, 'a.t3js-modulemenu-action[href]');
-
-
-    new RegularEvent('click', (e: Event, target: HTMLElement): void => {
-      e.preventDefault();
+    new RegularEvent('click', (event: Event, target: HTMLElement): void => {
+      event.preventDefault();
       ModuleMenu.toggleModuleGroup(target);
-    }).delegateTo(moduleMenu, '.t3js-modulemenu-collapsible');
+    }).delegateTo(moduleMenu, ModuleMenuSelector.collapsible);
   }
 
   /**
@@ -410,14 +417,11 @@ class ModuleMenu {
   private initializeTopBarEvents(): void {
     const toolbar = document.querySelector('.t3js-scaffold-toolbar');
 
-    new RegularEvent('keydown', (e: KeyboardEvent, target: HTMLButtonElement) => {
-      this.keyboardNavigation(e, target);
-    }).delegateTo(toolbar, '.t3js-modulemenu-action');
-
-    new RegularEvent('click', (e: Event, target: HTMLElement): void => {
-      e.preventDefault();
-      this.showModule(target.id, '', e);
-    }).delegateTo(toolbar, 'a.t3js-modulemenu-action[href]');
+    new RegularEvent('click', (event: Event, target: HTMLElement): void => {
+      event.preventDefault();
+      const moduleRoute = ModuleUtility.getRouteFromElement(target);
+      this.showModule(moduleRoute.identifier, moduleRoute.params, event);
+    }).delegateTo(toolbar, ModuleSelector.link);
 
     new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
@@ -434,16 +438,12 @@ class ModuleMenu {
       if (!moduleName || this.loadedModule === moduleName) {
         return;
       }
-      const moduleData = getRecordFromName(moduleName);
+      const moduleData = ModuleUtility.getFromName(moduleName);
       if (!moduleData.link) {
         return;
       }
 
-      ModuleMenu.highlightModuleMenuItem(moduleName);
-      const moduleElement = document.getElementById(moduleName);
-      if (moduleElement) {
-        moduleElement.focus();
-      }
+      ModuleMenu.highlightModule(moduleName);
       this.loadedModule = moduleName;
 
       // Synchronise navigation container if module is a standalone module (linked via ModuleMenu).
@@ -484,7 +484,7 @@ class ModuleMenu {
         Viewport.NavigationContainer.hide(true);
       }
 
-      ModuleMenu.highlightModuleMenuItem(moduleName);
+      ModuleMenu.highlightModule(moduleName);
       this.loadedModule = moduleName;
       params = ModuleMenu.includeId(moduleData, params);
       this.openInContentContainer(
@@ -507,7 +507,7 @@ class ModuleMenu {
    * @param {InteractionRequest} interactionRequest
    * @returns {JQueryDeferred<TriggerRequest>}
    */
-  private openInContentContainer(module: string, url: string, params: string, interactionRequest: InteractionRequest):  JQueryDeferred<TriggerRequest> {
+  private openInContentContainer(module: string, url: string, params: string, interactionRequest: InteractionRequest): JQueryDeferred<TriggerRequest> {
     const urlToLoad = url + (params ? (url.includes('?') ? '&' : '?') + params : '');
     return Viewport.ContentContainer.setUrl(
       urlToLoad,

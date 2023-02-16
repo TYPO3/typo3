@@ -4,9 +4,10 @@
 >
 
 <nav
-    class="modulemenu t3js-modulemenu"
+    class="modulemenu"
     data-role="modulemenu"
     id="modulemenu"
+    data-modulemenu
     aria-label="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:modulemenu.label')}"
 >
     <f:if condition="{modules}">
@@ -24,7 +25,7 @@
         <f:for each="{modules}" as="module" iteration="iterator">
             <li
                 role="presentation"
-                data-level="1"
+                data-modulemenu-level="1"
                 {f:if(condition: module.subModules, then: 'class="modulemenu-group modulemenu-group-{f:if(condition: module.collapsed, then: \'collapsed\', else: \'expanded\')}"')}
             >
                 <f:render section="Button" arguments="{module: module, showChildren: module.subModules, tabIndex: '{f:if(condition: iterator.isFirst, then: \'0\', else: \'-1\')}'}" />
@@ -44,7 +45,7 @@
         {f:if(condition: '{parent}', then: '{f:if(condition: parent.collapsed, then: \'style="display: none"\')}')}
     >
         <f:for each="{modules}" as="module">
-            <li role="presentation" data-level="2">
+            <li role="presentation" data-modulemenu-level="2">
                 <f:render section="Button" arguments="{module: module, tabIndex: '-1'}" />
             </li>
         </f:for>
@@ -61,15 +62,16 @@
         <f:variable name="buttonTitle" value="{f:translate(key: module.shortDescription, default: module.shortDescription)}" />
     </f:if>
     <{f:if(condition: module.shouldBeLinked, then: 'a', else: 'button')}
+        <f:if condition="{module.shouldBeLinked}">
+            href="{f:be.uri(route: module.identifier)}"
+            data-moduleroute-identifier="{module.identifier}"
+        </f:if>
         role="menuitem"
         title="{buttonTitle}"
-        class="modulemenu-action t3js-modulemenu-action {f:if(condition: showChildren, then: 't3js-modulemenu-collapsible')}"
+        class="modulemenu-action"
         tabindex="{tabIndex}"
-        id="{module.identifier}"
-        data-modulename="{module.identifier}"
-    <f:if condition="{module.shouldBeLinked}">href="{f:be.uri(route: module.identifier)}" </f:if>
-        {f:if(condition: module.component, then: 'data-component="{module.component}"')}
-        {f:if(condition: module.navigationComponent, then: 'data-navigationcomponentid="{module.navigationComponent}"')}
+        data-modulemenu-identifier="{module.identifier}"
+        data-modulemenu-collapsible="{f:if(condition: showChildren, then: 'true', else: 'false')}"
         {f:if(condition: showChildren, then: 'aria-haspopup="true" aria-expanded="{f:if(condition: module.collapsed, then: \'false\', else: \'true\')}"')}
     >
         <span class="modulemenu-icon" aria-hidden="true"><core:icon size="medium" identifier="{module.iconIdentifier}" alternativeMarkupIdentifier="inline" /></span>

@@ -31,7 +31,7 @@ final class IndexedSearchModuleCest
 
     public function checkExpectedTextOnIndexedSearchPages(ApplicationTester $I): void
     {
-        $I->click('#web_IndexedSearchIsearch');
+        $I->click('[data-modulemenu-identifier="web_IndexedSearchIsearch"]');
         $I->waitForElement('svg .nodes .node');
         // click on PID=0
         $I->clickWithLeftButton('#identifier-0_0 text.node-name');

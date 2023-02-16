@@ -17,7 +17,7 @@
 
 export interface ModuleState {
   url: string;
-  title?: string|null;
+  title?: string | null;
   module?: string;
 }
 
@@ -33,30 +33,55 @@ export interface Module {
 }
 
 /**
- * Gets the module properties from module information data attribute
- *
- * @param {string} name
- * @returns {Module}
  * @internal
  */
-export function getRecordFromName(name: string): Module {
-  const parsedRecord = getParsedRecordFromName(name);
-  if (parsedRecord === null) {
+export enum ModuleSelector {
+  link = '[data-moduleroute-identifier]'
+}
+
+/**
+ * @internal
+ */
+export interface ModuleRoute {
+  identifier: string;
+  params: string | null;
+}
+
+/**
+ * @internal
+ */
+export class ModuleUtility {
+  public static getRouteFromElement(element: HTMLElement): ModuleRoute {
+    const moduleRoute: ModuleRoute = {
+      identifier: element.dataset.modulerouteIdentifier,
+      params: element.dataset.modulerouteParams
+    };
+
+    return moduleRoute;
+  }
+
+  /**
+   * Gets the module properties from module information data attribute
+   */
+  public static getFromName(name: string): Module {
+    const parsedRecord = getParsedRecordFromName(name);
+    if (parsedRecord === null) {
+      return {
+        name: name,
+        component: '',
+        navigationComponentId: '',
+        parent: '',
+        link: ''
+      };
+    }
     return {
       name: name,
-      component: '',
-      navigationComponentId: '',
-      parent: '',
-      link: ''
+      component: parsedRecord.component || '',
+      navigationComponentId: parsedRecord.navigationComponentId || '',
+      parent: parsedRecord.parent || '',
+      link: parsedRecord.link || '',
     };
   }
-  return {
-    name: name,
-    component: parsedRecord.component || '',
-    navigationComponentId: parsedRecord.navigationComponentId || '',
-    parent: parsedRecord.parent || '',
-    link: parsedRecord.link || '',
-  };
 }
 
 interface ParsedInformation {
@@ -68,7 +93,7 @@ interface ParsedInformation {
  */
 let parsedInformation: ParsedInformation = null;
 
-function getParsedRecordFromName(name: string): Partial<Module>|null {
+function getParsedRecordFromName(name: string): Partial<Module> | null {
   if (parsedInformation === null) {
     const modulesInformation: string = String((document.querySelector('.t3js-scaffold-modulemenu') as HTMLElement)?.dataset.modulesInformation || '');
     if (modulesInformation !== '') {

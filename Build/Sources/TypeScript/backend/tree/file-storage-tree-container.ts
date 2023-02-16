@@ -11,22 +11,22 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {DragDropOperation, DragDropOperationCollection} from '@typo3/backend/drag-drop/drag-drop';
-import {html, LitElement, TemplateResult} from 'lit';
-import {customElement, query} from 'lit/decorators';
-import {FileStorageTree} from './file-storage-tree';
+import { DragDropOperation, DragDropOperationCollection } from '@typo3/backend/drag-drop/drag-drop';
+import { html, LitElement, TemplateResult } from 'lit';
+import { customElement, query } from 'lit/decorators';
+import { FileStorageTree } from './file-storage-tree';
 import '@typo3/backend/element/icon-element';
-import {TreeNode} from '@typo3/backend/tree/tree-node';
+import { TreeNode } from '@typo3/backend/tree/tree-node';
 import Persistent from '@typo3/backend/storage/persistent';
 import ContextMenu from '../context-menu';
-import {DragDropHandler, DragDrop, DraggablePositionEnum, DragDropTargetPosition} from './drag-drop';
+import { DragDropHandler, DragDrop, DraggablePositionEnum, DragDropTargetPosition } from './drag-drop';
 import Modal from '../modal';
 import Severity from '../severity';
 import Notification from '../notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {TreeNodeSelection, Toolbar} from '../svg-tree';
-import {ModuleStateStorage} from '../storage/module-state-storage';
-import {getRecordFromName} from '../module';
+import { TreeNodeSelection, Toolbar } from '../svg-tree';
+import { ModuleStateStorage } from '../storage/module-state-storage';
+import { ModuleUtility } from '@typo3/backend/module';
 
 export const navigationComponentName: string = 'typo3-backend-navigation-component-filestoragetree';
 
@@ -195,7 +195,7 @@ export class FileStorageTreeNavigationComponent extends LitElement {
   // event listener updating current tree state, this can be removed in TYPO3 v12
   private treeUpdateRequested = (evt: CustomEvent): void => {
     const identifier = encodeURIComponent(evt.detail.payload.identifier);
-    let nodeToSelect = this.tree.nodes.filter((node: TreeNode) => { return node.identifier === identifier})[0];
+    let nodeToSelect = this.tree.nodes.filter((node: TreeNode) => { return node.identifier === identifier })[0];
     if (nodeToSelect && this.tree.getSelectedNodes().filter((selectedNode: TreeNode) => { return selectedNode.identifier === nodeToSelect.identifier; }).length === 0) {
       this.tree.selectNode(nodeToSelect, false);
     }
@@ -223,7 +223,7 @@ export class FileStorageTreeNavigationComponent extends LitElement {
 
     // Load the currently selected module with the updated URL
     const moduleMenu = top.TYPO3.ModuleMenu.App;
-    let contentUrl = getRecordFromName(moduleMenu.getCurrentModule()).link;
+    let contentUrl = ModuleUtility.getFromName(moduleMenu.getCurrentModule()).link;
     contentUrl += contentUrl.includes('?') ? '&' : '?';
     top.TYPO3.Backend.ContentContainer.setUrl(contentUrl + 'id=' + node.identifier);
   }
@@ -286,7 +286,7 @@ class FileStorageTreeActions extends DragDrop {
    * Prepares all the details, which node is dropped on which other, if it is inside or before
    * the target node (= droppedNode).
    */
-  public getDropCommandDetails(droppedNode: TreeNode, draggingNode: TreeNode): null|NodePositionOptions {
+  public getDropCommandDetails(droppedNode: TreeNode, draggingNode: TreeNode): null | NodePositionOptions {
     const nodes = this.tree.nodes;
     const identifier = draggingNode.identifier;
     let position = this.tree.settings.nodeDragPosition;
@@ -317,7 +317,7 @@ class FileStorageTreeActions extends DragDrop {
   /**
    * Returns position and target node where it should be added
    */
-  public setNodePositionAndTarget(index: number): null|DragDropTargetPosition {
+  public setNodePositionAndTarget(index: number): null | DragDropTargetPosition {
     const nodes = this.tree.nodes;
     const nodeOver = nodes[index];
     const nodeOverDepth = nodeOver.depth;
@@ -329,15 +329,15 @@ class FileStorageTreeActions extends DragDrop {
     const target = this.tree.nodes[index];
 
     if (nodeBeforeDepth === nodeOverDepth) {
-      return {position: DraggablePositionEnum.AFTER, target};
+      return { position: DraggablePositionEnum.AFTER, target };
     } else if (nodeBeforeDepth < nodeOverDepth) {
-      return {position: DraggablePositionEnum.INSIDE, target};
+      return { position: DraggablePositionEnum.INSIDE, target };
     } else {
       for (let i = index; i >= 0; i--) {
         if (nodes[i].depth === nodeOverDepth) {
-          return {position: DraggablePositionEnum.AFTER, target: this.tree.nodes[i]};
+          return { position: DraggablePositionEnum.AFTER, target: this.tree.nodes[i] };
         } else if (nodes[i].depth < nodeOverDepth) {
-          return {position: DraggablePositionEnum.AFTER, target: nodes[i]};
+          return { position: DraggablePositionEnum.AFTER, target: nodes[i] };
         }
       }
     }
@@ -350,7 +350,7 @@ class FileStorageTreeActions extends DragDrop {
    *
    * @param draggingNode
    */
-  public updateStateOfHoveredNode(draggingNode: TreeNode|null): void {
+  public updateStateOfHoveredNode(draggingNode: TreeNode | null): void {
     this.tree.settings.nodeDragPosition = false;
     // Mouse is not on a node, deny
     if (!this.tree.hoveredNode) {
@@ -390,7 +390,7 @@ class FileStorageTreeActions extends DragDrop {
     return true;
   }
 
-  public initiateDropAction(dragDropOperationCollection: DragDropOperationCollection, callbackFn: Function|null = null): void {
+  public initiateDropAction(dragDropOperationCollection: DragDropOperationCollection, callbackFn: Function | null = null): void {
     let modalTitle;
     let modalText;
     if (dragDropOperationCollection.operations.length === 1) {
@@ -407,7 +407,8 @@ class FileStorageTreeActions extends DragDrop {
     const modal = Modal.confirm(
       modalTitle,
       modalText,
-      Severity.warning, [
+      Severity.warning,
+      [
         {
           text: TYPO3.lang['labels.cancel'] || 'Cancel',
           active: true,
@@ -440,7 +441,7 @@ class FileStorageTreeActions extends DragDrop {
   /**
    * Used when something a folder was drag+dropped.
    */
-  private sendChangeCommand(command: 'copy' | 'move', dragDropOperationCollection: DragDropOperationCollection, callbackFn: Function|null = null): void {
+  private sendChangeCommand(command: 'copy' | 'move', dragDropOperationCollection: DragDropOperationCollection, callbackFn: Function | null = null): void {
     const payload = dragDropOperationCollection.operations.map((dragDropOperation: DragDropOperation) => {
       return {
         data: decodeURIComponent(dragDropOperation.source.identifier),
@@ -487,7 +488,7 @@ class FileStorageTreeActions extends DragDrop {
         const response = await error.resolve();
         if (response && response.hasErrors) {
           this.tree.errorNotification(response.messages, true);
-        } else{
+        } else {
           this.tree.errorNotification(null, true);
         }
         if (callbackFn !== null) {
@@ -512,7 +513,7 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
     this.actionHandler = actionHandler;
   }
 
-  public onDragStart(event: MouseEvent, draggingNode: TreeNode|null): boolean {
+  public onDragStart(event: MouseEvent, draggingNode: TreeNode | null): boolean {
     if (draggingNode.depth === 0) {
       return false;
     }
@@ -522,7 +523,7 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
     return true;
   };
 
-  public onDragOver(event: MouseEvent, draggingNode: TreeNode|null): boolean {
+  public onDragOver(event: MouseEvent, draggingNode: TreeNode | null): boolean {
     if (this.actionHandler.isDragNodeDistanceMore(event, this)) {
       this.dragStarted = true;
     } else {

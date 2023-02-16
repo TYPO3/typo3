@@ -34,7 +34,7 @@ final class DashboardModuleCest
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
-        $I->click('#dashboard');
+        $I->click('[data-modulemenu-identifier="dashboard"]');
         $I->switchToContentFrame();
     }
 

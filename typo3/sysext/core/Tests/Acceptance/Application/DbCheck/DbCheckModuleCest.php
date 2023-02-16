@@ -33,7 +33,7 @@ final class DbCheckModuleCest
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
-        $I->click('#system_dbint');
+        $I->click('[data-modulemenu-identifier="system_dbint"]');
         $I->switchToContentFrame();
     }
 
