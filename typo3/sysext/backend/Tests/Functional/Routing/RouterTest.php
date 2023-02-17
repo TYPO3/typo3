@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Routing;
 
+use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -96,10 +97,37 @@ class RouterTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function matchResultReturnsRouteForBackendModuleWithMethodLimitation(): void
+    {
+        $subject = $this->get(Router::class);
+        $request = new ServerRequest('https://example.com/module/site/configuration/delete', 'POST');
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+        $result = $subject->matchResult($request);
+        self::assertEquals('/module/site/configuration/delete', $result->getRoute()->getPath());
+        self::assertInstanceOf(ModuleInterface::class, $result->getRoute()->getOption('module'));
+    }
+
+    /**
+     * @test
+     */
+    public function matchResultThrowsExceptionForWrongHttpMethod(): void
+    {
+        $this->expectException(MethodNotAllowedException::class);
+        $this->expectExceptionCode(1612649842);
+
+        $subject = $this->get(Router::class);
+        $request = new ServerRequest('https://example.com/module/site/configuration/delete', 'GET');
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+        $subject->matchResult($request);
+    }
+
+    /**
+     * @test
+     */
     public function matchResultReturnsRouteWithPlaceholderAndMethodLimitation(): void
     {
         $subject = $this->get(Router::class);
-        $subject->addRoute('custom-route', new Route('/my-path/{identifier}', []));
+        $subject->addRoute('custom-route', (new Route('/my-path/{identifier}', []))->setMethods(['POST']));
         $request = new ServerRequest('https://example.com/my-path/my-identifier', 'POST');
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $result = $subject->matchResult($request);

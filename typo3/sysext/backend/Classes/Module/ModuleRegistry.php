@@ -100,18 +100,22 @@ final class ModuleRegistry
             }
             $routeCollection = new RouteCollection();
             foreach ($module->getDefaultRouteOptions() as $routeIdentifier => $routeOptions) {
+                $path = (string)(($routeOptions['path'] ?? false) ?: ('/' . $routeIdentifier));
+                $methods = (array)($routeOptions['methods'] ?? []);
+                unset($routeOptions['path'], $routeOptions['methods']);
                 if ($routeIdentifier === '_default') {
                     // Add the first
-                    $router->addRoute(
-                        $module->getIdentifier(),
-                        new Route($module->getPath(), $routeOptions),
-                        $module->getAliases()
-                    );
+                    $route = new Route($module->getPath(), $routeOptions);
+                    if ($methods !== []) {
+                        $route->setMethods($methods);
+                    }
+                    $router->addRoute($module->getIdentifier(), $route, $module->getAliases());
                 } else {
-                    $routeCollection->add(
-                        $routeIdentifier,
-                        new Route(($routeOptions['path'] ?? false) ?: ('/' . $routeIdentifier), $routeOptions)
-                    );
+                    $route = new Route($path, $routeOptions);
+                    if ($methods !== []) {
+                        $route->setMethods($methods);
+                    }
+                    $routeCollection->add($routeIdentifier, $route);
                 }
             }
             $routeCollection->addNamePrefix($module->getIdentifier() . '.');

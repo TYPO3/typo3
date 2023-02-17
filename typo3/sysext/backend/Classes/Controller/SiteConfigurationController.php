@@ -638,7 +638,7 @@ class SiteConfigurationController
      */
     public function deleteAction(ServerRequestInterface $request): ResponseInterface
     {
-        $siteIdentifier = $request->getQueryParams()['site'] ?? '';
+        $siteIdentifier = $request->getParsedBody()['site'] ?? '';
         if (empty($siteIdentifier)) {
             throw new \RuntimeException('Not site identifier given', 1521565182);
         }
