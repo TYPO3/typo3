@@ -104,9 +104,6 @@ declare module 'taboverride' {
   const _exported: Taboverride;
   export default _exported;
 }
-declare module 'autosize' {
-  export default function (el: HTMLElement, options?: Object): HTMLElement;
-}
 
 interface JQueryTypedEvent<T extends Event> extends JQueryEventObject {
   originalEvent: T;

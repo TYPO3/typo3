@@ -636,7 +636,6 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          'autosize.js': 'autosize/dist/autosize.min.js',
           'broadcastchannel.js': 'broadcastchannel-polyfill/index.js',
           'flatpickr/flatpickr.min.js': 'flatpickr/dist/flatpickr.js',
           'flatpickr/locales.js': 'flatpickr/dist/l10n/index.js',
@@ -721,6 +720,7 @@ module.exports = function (grunt) {
           destPrefix: "<%= paths.core %>Public/JavaScript/Contrib"
         },
         files: {
+          'autosize.js': 'autosize/dist/autosize.esm.js',
           'require.js': 'requirejs/require.js',
           'cropperjs.js': 'cropperjs/dist/cropper.esm.js',
           'es-module-shims.js': 'es-module-shims/dist/es-module-shims.js',

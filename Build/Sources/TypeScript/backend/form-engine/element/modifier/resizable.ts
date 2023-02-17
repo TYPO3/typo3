@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import autosize from 'autosize';
+
 /**
  * Convert textarea so they grow when it is typed in.
  */
@@ -20,8 +22,6 @@ export class Resizable {
    * @param {HTMLTextAreaElement} textarea
    */
   public static enable(textarea: HTMLTextAreaElement): void {
-    import('autosize').then(({default: autosize}): void => {
-      autosize(textarea);
-    });
+    autosize(textarea);
   }
 }
