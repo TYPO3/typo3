@@ -74,7 +74,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
 
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $parameter = $arguments['parameter'];
+        $parameter = $arguments['parameter'] ?? '';
 
         $typoLinkCodec = GeneralUtility::makeInstance(TypoLinkCodecService::class);
         $typoLinkConfiguration = $typoLinkCodec->decode($parameter);

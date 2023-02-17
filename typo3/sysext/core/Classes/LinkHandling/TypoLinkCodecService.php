@@ -72,12 +72,13 @@ class TypoLinkCodecService
     /**
      * Decodes a TypoLink string into its parts
      *
-     * @param string $typoLink The properly encoded TypoLink string
+     * @param string|null $typoLink The properly encoded TypoLink string
      * @return array{url: string, target: string, class: string, title: string, additionalParams: string}
+     * @todo Remove the |null and make the signature strict typed in v13 as string
      */
     public function decode($typoLink)
     {
-        $typoLink = trim($typoLink);
+        $typoLink = trim((string)$typoLink);
         if ($typoLink !== '') {
             $parts = str_replace(['\\\\', '\\"'], ['\\', '"'], str_getcsv($typoLink, static::$partDelimiter));
         } else {

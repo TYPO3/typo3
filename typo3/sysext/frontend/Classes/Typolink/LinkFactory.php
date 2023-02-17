@@ -61,7 +61,7 @@ class LinkFactory implements LoggerAwareInterface
             $modifiedLinkParameterString = $contentObjectRenderer->stdWrap($linkParameterParts['url'], $linkConfiguration['parameter.']);
             // As the stdWrap result might contain target etc. as well again (".field = header_link")
             // the result is then taken from the stdWrap and overridden if the value is not empty.
-            $modifiedLinkParameterParts = $this->typoLinkCodecService->decode($modifiedLinkParameterString);
+            $modifiedLinkParameterParts = $this->typoLinkCodecService->decode($modifiedLinkParameterString ?? '');
             $linkParameterParts = array_replace($linkParameterParts, array_filter($modifiedLinkParameterParts, 'trim'));
             $linkParameter = $this->typoLinkCodecService->encode($linkParameterParts);
         } else {
