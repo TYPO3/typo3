@@ -14,7 +14,7 @@
 import ElementBrowser from '@typo3/backend/element-browser';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
-import { FileListActionResource, FileListActionEvent, FileListActionSelector, FileListActionResourceFromElement } from '@typo3/filelist/file-list-actions';
+import { FileListActionResource, FileListActionEvent, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
 import InfoWindow from '@typo3/backend/info-window';
 
 /**
@@ -69,7 +69,7 @@ class BrowseFolders {
     items.forEach((checkbox: HTMLInputElement) => {
       if (checkbox.checked) {
         const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
-        const resource = FileListActionResourceFromElement(element);
+        const resource = FileListActionUtility.getResourceForElement(element);
         if (resource.type === 'folder' && resource.identifier) {
           selectedItems.unshift(resource);
         }

@@ -17,7 +17,7 @@ import Notification from '@typo3/backend/notification';
 import InfoWindow from '@typo3/backend/info-window';
 import { BroadcastMessage } from '@typo3/backend/broadcast-message';
 import broadcastService from '@typo3/backend/broadcast-service';
-import { FileListActionEvent, FileListActionDetail, FileListActionSelector, FileListActionResourceFromElement, FileListActionResource } from '@typo3/filelist/file-list-actions';
+import { FileListActionEvent, FileListActionDetail, FileListActionSelector, FileListActionUtility, FileListActionResource } from '@typo3/filelist/file-list-actions';
 import NProgress from 'nprogress';
 import Icons from '@typo3/backend/icons';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -172,7 +172,7 @@ export default class Filelist {
       const detail: FileListActionDetail = event.detail;
       if (detail.resource.type === 'file') {
         window.location.href = top.TYPO3.settings.FormEngine.moduleUrl
-          + '&edit[sys_file_metadata][' + detail.resource.uid + ']=edit'
+          + '&edit[sys_file_metadata][' + detail.resource.metaUid + ']=edit'
           + '&returnUrl=' + Filelist.getReturnUrl('');
       }
       if (detail.resource.type === 'folder') {
@@ -232,13 +232,13 @@ export default class Filelist {
           checkedItems.forEach((checkbox: HTMLInputElement) => {
             if (checkbox.checked) {
               const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
-              const resource = FileListActionResourceFromElement(element);
+              const resource = FileListActionUtility.getResourceForElement(element);
               selectedItems.push(resource);
             }
           });
         } else {
           const element = target.closest(FileListActionSelector.elementSelector) as HTMLElement;
-          const resource = FileListActionResourceFromElement(element);
+          const resource = FileListActionUtility.getResourceForElement(element);
           selectedItems.push(resource);
         }
 
@@ -479,7 +479,7 @@ export default class Filelist {
     eventDetails.checkboxes.forEach((checkbox: HTMLInputElement) => {
       if (checkbox.checked) {
         const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
-        const resource = FileListActionResourceFromElement(element);
+        const resource = FileListActionUtility.getResourceForElement(element);
         filesAndFolders.unshift(resource.identifier);
       }
     });

@@ -11,13 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {lll} from '@typo3/core/lit-helper';
-import {SeverityEnum} from '@typo3/backend/enum/severity';
+import { lll } from '@typo3/core/lit-helper';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Notification from '@typo3/backend/notification';
 import Modal from '@typo3/backend/modal';
 import Md5 from '@typo3/backend/hashing/md5';
-import {fileListOpenElementBrowser} from '@typo3/filelist/file-list';
+import { fileListOpenElementBrowser } from '@typo3/filelist/file-list';
+import { FileListActionUtility } from './file-list-actions';
 
 /**
  * Module: @typo3/filelist/context-menu-actions
@@ -59,13 +60,13 @@ class ContextMenuActions {
   }
 
   public static editMetadata(table: string, uid: string, dataset: DOMStringMap): void {
-    const metadataUid: string = dataset.metadataUid;
-    if (!metadataUid) {
+    const resource = FileListActionUtility.createResourceFromContextDataset(dataset);
+    if (!resource.metaUid) {
       return;
     }
     top.TYPO3.Backend.ContentContainer.setUrl(
       top.TYPO3.settings.FormEngine.moduleUrl
-      + '&edit[sys_file_metadata][' + parseInt(metadataUid, 10) + ']=edit'
+      + '&edit[sys_file_metadata][' + resource.metaUid + ']=edit'
       + '&returnUrl=' + ContextMenuActions.getReturnUrl()
     );
   }
@@ -111,7 +112,7 @@ class ContextMenuActions {
     // Add notification about the download being prepared
     Notification.info(lll('file_download.prepare'), '', 2);
     const actionUrl: string = dataset.actionUrl;
-    (new AjaxRequest(actionUrl)).post({items: [uid]})
+    (new AjaxRequest(actionUrl)).post({ items: [uid] })
       .then(async (response): Promise<any> => {
         let fileName = response.response.headers.get('Content-Disposition');
         if (!fileName) {
@@ -125,7 +126,7 @@ class ContextMenuActions {
         }
         fileName = fileName.substring(fileName.indexOf(' filename=') + 10);
         const data = await response.raw().arrayBuffer();
-        const blob = new Blob([data], {type: response.raw().headers.get('Content-Type')});
+        const blob = new Blob([data], { type: response.raw().headers.get('Content-Type') });
         ContextMenuActions.triggerFileDownload(URL.createObjectURL(blob), fileName, true);
       })
       .catch(() => {
@@ -161,7 +162,8 @@ class ContextMenuActions {
     const modal = Modal.confirm(
       dataset.title,
       dataset.message,
-      SeverityEnum.warning, [
+      SeverityEnum.warning,
+      [
         {
           text: dataset.buttonCloseText || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
@@ -173,7 +175,8 @@ class ContextMenuActions {
           btnClass: 'btn-warning',
           name: 'delete',
         },
-      ]);
+      ]
+    );
 
     modal.addEventListener('button.clicked', (e: Event): void => {
       const element: HTMLInputElement = <HTMLInputElement>e.target;
@@ -261,7 +264,8 @@ class ContextMenuActions {
     const modal = Modal.confirm(
       dataset.title,
       dataset.message,
-      SeverityEnum.warning, [
+      SeverityEnum.warning,
+      [
         {
           text: dataset.buttonCloseText || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
@@ -273,7 +277,8 @@ class ContextMenuActions {
           btnClass: 'btn-warning',
           name: 'ok',
         },
-      ]);
+      ]
+    );
 
     modal.addEventListener('button.clicked', (e: Event): void => {
       const element: HTMLInputElement = <HTMLInputElement>e.target;

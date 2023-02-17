@@ -443,13 +443,11 @@ class FileList
                 'data-filelist-state-identifier' => $resourceView->getStateIdentifier(),
                 'data-filelist-name' => htmlspecialchars($resourceView->getName()),
                 'data-filelist-uid' => $resourceView->getUid(),
+                'data-filelist-meta-uid' => $resourceView->getMetaDataUid(),
                 'data-filelist-selectable' => $resourceView->isSelectable ? 'true' : 'false',
                 'data-multi-record-selection-element' => 'true',
                 'draggable' => $resourceView->canMove() ? 'true' : 'false',
             ];
-            if ($resourceView->getMetaDataUid()) {
-                $attributes['data-metadata-uid'] = (string)$resourceView->getMetaDataUid();
-            }
             foreach ($this->fieldArray as $field) {
                 switch ($field) {
                     case 'icon':

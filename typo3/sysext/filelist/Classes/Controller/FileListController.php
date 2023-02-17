@@ -354,7 +354,7 @@ class FileListController implements LoggerAwareInterface
             // Assign meta information for the multi record selection
             $this->view->assignMultiple([
                 'editActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
-                    'idField' => 'metadataUid',
+                    'idField' => 'filelistMetaUid',
                     'table' => 'sys_file_metadata',
                     'returnUrl' => $this->filelist->createModuleUri(),
                 ], true),

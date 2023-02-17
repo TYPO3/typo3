@@ -445,17 +445,20 @@ class FileProvider extends AbstractProvider
                 'data-button-ok-text' => htmlspecialchars($okText),
             ];
         }
-        if ($itemName === 'editMetadata') {
-            $attributes += [
-                'data-metadata-uid' => htmlspecialchars((string)$this->record->getMetaData()->offsetGet('uid')),
-            ];
-        }
         if ($itemName === 'downloadFile') {
             $attributes += [
                 'data-url' => htmlspecialchars((string)$this->record->getPublicUrl()),
                 'data-name' => htmlspecialchars($this->record->getName()),
             ];
         }
+
+        // Resource Settings
+        $attributes['data-filecontext-type'] = $this->record instanceof File ? 'file' : 'folder';
+        $attributes['data-filecontext-identifier'] = $this->getIdentifier();
+        $attributes['data-filecontext-stateIdentifier'] = $this->record->getStorage()->getUid() . '_' . GeneralUtility::md5int($this->record->getIdentifier());
+        $attributes['data-filecontext-name'] = $this->record->getName();
+        $attributes['data-filecontext-uid'] = $this->record instanceof File ? $this->record->getUid() : '';
+        $attributes['data-filecontext-meta-uid'] = $this->record instanceof File ? $this->record->getMetaData()->offsetGet('uid') : '';
 
         // Add action url for file operations
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);

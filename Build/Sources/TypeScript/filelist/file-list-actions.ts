@@ -20,6 +20,7 @@ export interface FileListActionResource {
   stateIdentifier: string;
   name: string;
   uid: number | null;
+  metaUid: number | null;
   origin: HTMLElement
 }
 
@@ -44,18 +45,35 @@ export enum FileListActionSelector {
   actionSelector = '[data-filelist-action]',
 }
 
-export function FileListActionResourceFromElement(element: HTMLElement): FileListActionResource
-{
-  const resource: FileListActionResource = {
-    type: element.dataset.filelistType,
-    identifier: element.dataset.filelistIdentifier,
-    stateIdentifier: element.dataset.filelistStateIdentifier,
-    name: element.dataset.filelistName,
-    uid: element.dataset.filelistUid ? parseInt(element.dataset.filelistUid, 10) : null,
-    origin: element
-  };
+export class FileListActionUtility {
+  public static createResourceFromContextDataset(dataset: DOMStringMap): FileListActionResource {
+    const resource: FileListActionResource = {
+      type: dataset.filecontextType,
+      identifier: dataset.filecontextIdentifier,
+      stateIdentifier: dataset.filecontextIdentifier,
+      name: dataset.filecontextName,
+      uid: dataset.filecontextUid ? parseInt(dataset.filecontextUid, 10) : null,
+      metaUid: dataset.filecontextMetaUid ? parseInt(dataset.filecontextMetaUid, 10) : null,
+      origin: null,
+    };
 
-  return resource;
+    return resource;
+  }
+
+  public static getResourceForElement(element: HTMLElement): FileListActionResource
+  {
+    const resource: FileListActionResource = {
+      type: element.dataset.filelistType,
+      identifier: element.dataset.filelistIdentifier,
+      stateIdentifier: element.dataset.filelistStateIdentifier,
+      name: element.dataset.filelistName,
+      uid: element.dataset.filelistUid ? parseInt(element.dataset.filelistUid, 10) : null,
+      metaUid: element.dataset.filelistMetaUid ? parseInt(element.dataset.filelistMetaUid, 10) : null,
+      origin: element
+    };
+
+    return resource;
+  }
 }
 
 class FileListActions {
@@ -105,7 +123,7 @@ class FileListActions {
       event: event,
       trigger: target,
       action: action,
-      resource: FileListActionResourceFromElement(element),
+      resource: FileListActionUtility.getResourceForElement(element),
       url: target.dataset.filelistActionUrl ?? null,
     }
     return detail;

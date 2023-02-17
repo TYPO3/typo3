@@ -17,7 +17,7 @@ import NProgress from 'nprogress';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Icons = TYPO3.Icons;
 import { ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
-import { FileListActionResource, FileListActionEvent, FileListActionSelector, FileListActionResourceFromElement } from '@typo3/filelist/file-list-actions';
+import { FileListActionResource, FileListActionEvent, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
 import InfoWindow from '@typo3/backend/info-window';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
@@ -95,7 +95,7 @@ class BrowseFiles {
     items.forEach((checkbox: HTMLInputElement) => {
       if (checkbox.checked) {
         const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
-        const resource = FileListActionResourceFromElement(element);
+        const resource = FileListActionUtility.getResourceForElement(element);
         if (resource.type === 'file' && resource.uid) {
           selectedItems.unshift(resource);
         }

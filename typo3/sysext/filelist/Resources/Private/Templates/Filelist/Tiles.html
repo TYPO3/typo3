@@ -47,12 +47,12 @@
         data-filelist-element="true"
         data-filelist-type="{resource.type}"
         data-filelist-identifier="{resource.identifier}"
+        data-filelist-state-identifier="{resource.stateIdentifier}"
         data-filelist-name="{resource.name}"
         data-filelist-uid="{resource.uid}"
+        data-filelist-meta-uid="{resource.metaDataUid}"
         data-filelist-selectable="{f:if(condition: resource.isSelectable, then: 'true', else: 'false')}"
-        data-filelist-state-identifier="{resource.stateIdentifier}"
         data-multi-record-selection-element="true"
-        {f:if(condition: resource.metaDataUid, then: 'data-metadata-uid="{resource.metaDataUid}"')}
         draggable="{resource.canMove ? 'true' : 'false'}"
     >
         <a title="{resource.name}" href="javascript:;" data-filelist-action="primary">

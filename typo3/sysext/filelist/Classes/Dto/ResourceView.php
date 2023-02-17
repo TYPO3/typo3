@@ -65,11 +65,7 @@ class ResourceView
      */
     public function getStateIdentifier(): string
     {
-        if ($this->resource instanceof Folder) {
-            return $this->resource->getStorage()->getUid() . '_' . GeneralUtility::md5int($this->resource->getIdentifier());
-        }
-
-        return '';
+        return $this->resource->getStorage()->getUid() . '_' . GeneralUtility::md5int($this->resource->getIdentifier());
     }
 
     public function getMetaDataUid(): ?int
