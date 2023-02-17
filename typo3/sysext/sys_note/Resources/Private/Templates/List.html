@@ -3,8 +3,8 @@
     xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
 >
 <f:if condition="{notes}">
+    <h2><f:translate key="LLL:EXT:sys_note/Resources/Private/Language/locallang.xlf:internal_note" /></h2>
     <div class="note-list">
-        <h2><f:translate key="LLL:EXT:sys_note/Resources/Private/Language/locallang.xlf:internal_note" /></h2>
         <f:for each="{notes}" as="note">
             <div class="note note-category-{note.category}">
                 <div class="note-header">
@@ -63,12 +63,15 @@
                     </div>
                 </div>
                 <div class="note-body">
-                    <h4><span>
-                        <f:if condition="{note.category}">
-                            <f:translate key="LLL:EXT:sys_note/Resources/Private/Language/locallang.xlf:category.{note.category}" />:
-                        </f:if>
-                    </span>{note.subject}</h4>
-                    <f:format.nl2br>{note.message}</f:format.nl2br>
+                    <h4>
+                        <span>
+                            <f:if condition="{note.category}">
+                                <f:translate key="LLL:EXT:sys_note/Resources/Private/Language/locallang.xlf:category.{note.category}" />:
+                            </f:if>
+                        </span>
+                        {note.subject}
+                    </h4>
+                    <p><f:format.nl2br>{note.message}</f:format.nl2br></p>
                 </div>
             </div>
         </f:for>

@@ -40,119 +40,123 @@
         <h3>
             <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_insidePagetree"/>
         </h3>
-        <table class="table table-striped table-hover t3js-impexp-preview">
-            <tbody>
-            <tr>
-                <th>
-                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_controls"/>
-                </th>
-                <th>
-                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_title"/>
-                </th>
-                <th>
-                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_message"/>
-                </th>
-                <f:if condition="{preview.update}">
+        <div class="table-fit">
+            <table class="table table-striped table-hover t3js-impexp-preview">
+                <tbody>
+                <tr>
                     <th>
-                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_updateMode"/>
+                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_controls"/>
                     </th>
                     <th>
-                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_currentPath"/>
+                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_title"/>
                     </th>
-                </f:if>
-                <f:if condition="{preview.showDiff}">
                     <th>
-                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_result"/>
+                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_message"/>
                     </th>
-                </f:if>
-            </tr>
-            <f:for each="{preview.insidePageTree}" as="line">
-                <tr data-active="{line.active}">
-                    <td>
-                        <f:format.raw>{line.controls}</f:format.raw>
-                    </td>
-                    <td class="col-nowrap">
-                        <f:format.raw>{line.preCode} {line.title}</f:format.raw>
-                    </td>
-                    <td class="col-nowrap">
-                        <f:format.raw>{line.message}</f:format.raw>
-                    </td>
                     <f:if condition="{preview.update}">
-                        <td class="col-nowrap">
-                            <f:format.raw>{line.updateMode}</f:format.raw>
-                        </td>
-                        <td class="col-nowrap">
-                            <f:format.raw>{line.updatePath}</f:format.raw>
-                        </td>
+                        <th>
+                            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_updateMode"/>
+                        </th>
+                        <th>
+                            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_currentPath"/>
+                        </th>
                     </f:if>
                     <f:if condition="{preview.showDiff}">
-                        <td>
-                            <f:format.raw>{line.showDiffContent}</f:format.raw>
-                        </td>
+                        <th>
+                            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_result"/>
+                        </th>
                     </f:if>
                 </tr>
-            </f:for>
-            </tbody>
-        </table>
+                <f:for each="{preview.insidePageTree}" as="line">
+                    <tr data-active="{line.active}">
+                        <td>
+                            <f:format.raw>{line.controls}</f:format.raw>
+                        </td>
+                        <td class="col-nowrap">
+                            <f:format.raw>{line.preCode} {line.title}</f:format.raw>
+                        </td>
+                        <td class="col-nowrap">
+                            <f:format.raw>{line.message}</f:format.raw>
+                        </td>
+                        <f:if condition="{preview.update}">
+                            <td class="col-nowrap">
+                                <f:format.raw>{line.updateMode}</f:format.raw>
+                            </td>
+                            <td class="col-nowrap">
+                                <f:format.raw>{line.updatePath}</f:format.raw>
+                            </td>
+                        </f:if>
+                        <f:if condition="{preview.showDiff}">
+                            <td>
+                                <f:format.raw>{line.showDiffContent}</f:format.raw>
+                            </td>
+                        </f:if>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
     </f:if>
     <f:if condition="{preview.outsidePageTree -> f:count()} > 0">
         <h3>
             <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_outsidePagetree"/>
         </h3>
-        <table class="table table-striped table-hover t3js-impexp-preview">
-            <tbody>
-            <tr data-active="{line.active}">
-                <th>
-                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_controls"/>
-                </th>
-                <th>
-                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_title"/>
-                </th>
-                <th>
-                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_message"/>
-                </th>
-                <f:if condition="{preview.update}">
+        <div class="table-fit">
+            <table class="table table-striped table-hover t3js-impexp-preview">
+                <tbody>
+                <tr data-active="{line.active}">
                     <th>
-                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_updateMode"/>
+                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_controls"/>
                     </th>
                     <th>
-                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_currentPath"/>
+                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_title"/>
                     </th>
-                </f:if>
-                <f:if condition="{preview.showDiff}">
                     <th>
-                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_result"/>
+                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_message"/>
                     </th>
-                </f:if>
-            </tr>
-            <f:for each="{preview.outsidePageTree}" as="line">
-                <tr>
-                    <td>
-                        <f:format.raw>{line.controls}</f:format.raw>
-                    </td>
-                    <td class="col-nowrap">
-                        <f:format.raw>{line.preCode} {line.title}</f:format.raw>
-                    </td>
-                    <td class="col-nowrap">
-                        <f:format.raw>{line.message}</f:format.raw>
-                    </td>
                     <f:if condition="{preview.update}">
-                        <td class="col-nowrap">
-                            <f:format.raw>{line.updateMode}</f:format.raw>
-                        </td>
-                        <td class="col-nowrap">
-                            <f:format.raw>{line.updatePath}</f:format.raw>
-                        </td>
+                        <th>
+                            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_updateMode"/>
+                        </th>
+                        <th>
+                            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_currentPath"/>
+                        </th>
                     </f:if>
                     <f:if condition="{preview.showDiff}">
-                        <td>
-                            <f:format.raw>{line.showDiffContent}</f:format.raw>
-                        </td>
+                        <th>
+                            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_displaycon_result"/>
+                        </th>
                     </f:if>
                 </tr>
-            </f:for>
-            </tbody>
-        </table>
+                <f:for each="{preview.outsidePageTree}" as="line">
+                    <tr>
+                        <td>
+                            <f:format.raw>{line.controls}</f:format.raw>
+                        </td>
+                        <td class="col-nowrap">
+                            <f:format.raw>{line.preCode} {line.title}</f:format.raw>
+                        </td>
+                        <td class="col-nowrap">
+                            <f:format.raw>{line.message}</f:format.raw>
+                        </td>
+                        <f:if condition="{preview.update}">
+                            <td class="col-nowrap">
+                                <f:format.raw>{line.updateMode}</f:format.raw>
+                            </td>
+                            <td class="col-nowrap">
+                                <f:format.raw>{line.updatePath}</f:format.raw>
+                            </td>
+                        </f:if>
+                        <f:if condition="{preview.showDiff}">
+                            <td>
+                                <f:format.raw>{line.showDiffContent}</f:format.raw>
+                            </td>
+                        </f:if>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
     </f:if>
 </div>
 

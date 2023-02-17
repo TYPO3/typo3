@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, css, LitElement, TemplateResult} from 'lit';
+import {html, LitElement, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators';
 import {until} from 'lit/directives/until';
 import {unsafeHTML} from 'lit/directives/unsafe-html';
@@ -69,8 +69,10 @@ export class ClipboardPanel extends LitElement {
 
   private static renderLoader(): TemplateResult {
     return html`
-      <div class="panel-loader">
-        <typo3-backend-spinner size="small" variant="dark"></typo3-backend-spinner>
+      <div class="panel panel-default">
+        <div class="panel-loader">
+          <typo3-backend-spinner size="small" variant="dark"></typo3-backend-spinner>
+        </div>
       </div>
     `;
   }
@@ -83,9 +85,7 @@ export class ClipboardPanel extends LitElement {
 
   public render(): TemplateResult {
     return html`
-      <div class="clipboard-panel">
-        ${until(this.renderPanel(), ClipboardPanel.renderLoader())}
-      </div>
+      ${until(this.renderPanel(), ClipboardPanel.renderLoader())}
     `;
   }
 
@@ -98,15 +98,17 @@ export class ClipboardPanel extends LitElement {
         if (resolvedBody.success === true && resolvedBody.data) {
           const clipboardData: ClipboardData = resolvedBody.data;
           return html`
-            <div class="panel panel-default">
+            <div class="panel panel-default" data-clipboard-panel>
               <div class="panel-heading">
                 ${clipboardData.labels.clipboard}
               </div>
-              <table class="table">
-                <tbody>
-                  ${clipboardData.tabs.map((tab: any): TemplateResult => this.renderTab(tab, clipboardData))}
-                </tbody>
-              </tabel>
+              <div class="table-fit">
+                <table class="table">
+                  <tbody>
+                    ${clipboardData.tabs.map((tab: any): TemplateResult => this.renderTab(tab, clipboardData))}
+                  </tbody>
+                </tabel>
+              </div>
             </div>
           `;
         } else {
@@ -126,7 +128,7 @@ export class ClipboardPanel extends LitElement {
     return html`
       <tr>
         <td colspan="2" class="nowrap">
-          <button type="button" class="btn btn-link p-0" title="${tab.description}" data-action="setP" @click="${(event: PointerEvent) => this.updateClipboard(event, {CB: {'setP': tab.identifier}})}">
+          <button type="button" class="btn btn-link" title="${tab.description}" data-action="setP" @click="${(event: PointerEvent) => this.updateClipboard(event, {CB: {'setP': tab.identifier}})}">
             ${clipboardData.current === tab.identifier ? html`
               <typo3-backend-icon identifier="actions-check-circle-alt" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
               ${tab.title}

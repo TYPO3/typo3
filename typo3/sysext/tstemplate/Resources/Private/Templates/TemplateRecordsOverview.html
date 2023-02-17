@@ -24,7 +24,7 @@
         <f:if condition="{pageTree}">
             <f:then>
                 <div class="table-fit">
-                    <table class="table table-striped table-hover mb-0" id="ts-overview">
+                    <table class="table table-striped table-hover" id="ts-overview">
                         <thead>
                             <tr>
                                 <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.table.column.pageTitle" /></th>
@@ -62,8 +62,7 @@
 
     <tr class="{f:if(condition: page.hidden, then: 'inactive')}">
         <td class="align-top nowrap">
-            <span style="width: 1px; height: 1px; display: inline-block; margin-left: {level * 20}px"></span>
-            <span title="id={page.uid}">
+            <span title="id={page.uid}" style="margin-left: {level * 20}px">
                 <core:IconForRecord table="pages" row="{page}" />
                 {page.title -> f:format.crop(maxCharacters: maxCharacters)}
             </span>

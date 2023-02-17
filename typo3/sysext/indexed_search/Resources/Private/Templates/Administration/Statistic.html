@@ -30,115 +30,117 @@
                     </div>
                 </div>
             </f:form>
-            <table class="table table-striped table-hover table-vertical-top">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>
-                            <a href="{f:uri.action(action:'deleteIndexedItem', arguments:'{itemId:\'ALL\', depth:depth, mode:mode}')}" title="{f:translate(key:'administration.removeAllEntries')}">
-                                <core:icon identifier="actions-edit-delete" />
-                            </a>
-                        </th>
-                        <th>
-                            <f:translate key="field.fileName" />
-                        </th>
-                        <f:switch expression="{mode}">
-                            <f:case value="content">
-                                <th>
-                                    <f:translate key="field.content" />
-                                </th>
-                                <f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
+            <div class="table-fit">
+                <table class="table table-striped table-hover table-vertical-top">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>
+                                <a href="{f:uri.action(action:'deleteIndexedItem', arguments:'{itemId:\'ALL\', depth:depth, mode:mode}')}" title="{f:translate(key:'administration.removeAllEntries')}">
+                                    <core:icon identifier="actions-edit-delete" />
+                                </a>
+                            </th>
+                            <th>
+                                <f:translate key="field.fileName" />
+                            </th>
+                            <f:switch expression="{mode}">
+                                <f:case value="content">
                                     <th>
-                                        <f:translate key="field.words" />
+                                        <f:translate key="field.content" />
                                     </th>
-                                </f:if>
-                            </f:case>
-                            <f:defaultCase>
-                                <f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
+                                    <f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
+                                        <th>
+                                            <f:translate key="field.words" />
+                                        </th>
+                                    </f:if>
+                                </f:case>
+                                <f:defaultCase>
+                                    <f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
+                                        <th>
+                                            <f:translate key="field.wordCount" />
+                                        </th>
+                                    </f:if>
                                     <th>
-                                        <f:translate key="field.wordCount" />
+                                        <f:translate key="field.fileSize" />
                                     </th>
-                                </f:if>
-                                <th>
-                                    <f:translate key="field.fileSize" />
-                                </th>
-                                <th>
-                                    <f:translate key="field.indexed" />
-                                </th>
-                            </f:defaultCase>
-                        </f:switch>
-                    </tr>
-                </thead>
-                <tbody>
-                    <f:for each="{tree}" as="line">
-                        <f:if condition="{line.lines}">
-                            <f:then>
-                                <f:for each="{line.lines}" as="l" iteration="i">
+                                    <th>
+                                        <f:translate key="field.indexed" />
+                                    </th>
+                                </f:defaultCase>
+                            </f:switch>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <f:for each="{tree}" as="line">
+                            <f:if condition="{line.lines}">
+                                <f:then>
+                                    <f:for each="{line.lines}" as="l" iteration="i">
+                                        <tr>
+                                            <td class="nowrap">
+                                                {line.HTML -> f:format.raw()}
+                                                <f:if condition="{i.index} == 0"> {line.row.title}</f:if>
+                                            </td>
+                                            <td>
+                                                <a href="{f:uri.action(action:'deleteIndexedItem',arguments:'{itemId:l.phash,depth:depth,mode:mode}')}" title="{f:translate(key:'administration.removeEntry')}">
+                                                    <core:icon identifier="actions-edit-delete" />
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <f:image src="{l.icon}" />
+                                                <f:link.action action="statisticDetails" arguments="{pageHash:l.phash}">{l.item_title}</f:link.action>
+                                            </td>
+                                            <f:switch expression="{mode}">
+                                                <f:case value="content">
+                                                    <td>
+                                                        {l.fulltextData.fulltextdata}
+                                                    </td>
+                                                    <f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
+                                                        <td>
+                                                            <f:for each="{l.allWords}" as="w">
+                                                                {w}
+                                                            </f:for>
+                                                            <br><br>
+                                                            <em>{f:translate(key:'administration.statistics.count')}: {f:count(subject:l.allWords)}</em>
+                                                        </td>
+                                                    </f:if>
+                                                </f:case>
+                                                <f:defaultCase>
+                                                    <f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
+                                                        <td>{l.wordCount}</td>
+                                                    </f:if>
+                                                    <td>
+                                                        <f:format.bytes decimals="1">{l.item_size}</f:format.bytes>
+                                                    </td>
+                                                    <td>
+                                                        <is:format.dateTime>{l.tstamp}</is:format.dateTime>
+                                                    </td>
+                                                </f:defaultCase>
+                                            </f:switch>
+                                        </tr>
+                                    </f:for>
+                                </f:then>
+                                <f:else>
                                     <tr>
-                                        <td class="nowrap">
-                                            {line.HTML -> f:format.raw()}
-                                            <f:if condition="{i.index} == 0"> {line.row.title}</f:if>
-                                        </td>
-                                        <td>
-                                            <a href="{f:uri.action(action:'deleteIndexedItem',arguments:'{itemId:l.phash,depth:depth,mode:mode}')}" title="{f:translate(key:'administration.removeEntry')}">
-                                                <core:icon identifier="actions-edit-delete" />
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <f:image src="{l.icon}" />
-                                            <f:link.action action="statisticDetails" arguments="{pageHash:l.phash}">{l.item_title}</f:link.action>
-                                        </td>
+                                        <td class="nowrap">{line.HTML -> f:format.raw()} {line.row.title}</td>
                                         <f:switch expression="{mode}">
                                             <f:case value="content">
-                                                <td>
-                                                    {l.fulltextData.fulltextdata}
+                                                <td colspan="5">
+                                                    <f:translate key="administration.notIndexed" />
                                                 </td>
-                                                <f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
-                                                    <td>
-                                                        <f:for each="{l.allWords}" as="w">
-                                                            {w}
-                                                        </f:for>
-                                                        <br><br>
-                                                        <em>{f:translate(key:'administration.statistics.count')}: {f:count(subject:l.allWords)}</em>
-                                                    </td>
-                                                </f:if>
                                             </f:case>
                                             <f:defaultCase>
-                                                <f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
-                                                    <td>{l.wordCount}</td>
-                                                </f:if>
-                                                <td>
-                                                    <f:format.bytes decimals="1">{l.item_size}</f:format.bytes>
-                                                </td>
-                                                <td>
-                                                    <is:format.dateTime>{l.tstamp}</is:format.dateTime>
+                                                <td colspan="5">
+                                                    <f:translate key="administration.notIndexed" />
                                                 </td>
                                             </f:defaultCase>
                                         </f:switch>
                                     </tr>
-                                </f:for>
-                            </f:then>
-                            <f:else>
-                                <tr>
-                                    <td class="nowrap">{line.HTML -> f:format.raw()} {line.row.title}</td>
-                                    <f:switch expression="{mode}">
-                                        <f:case value="content">
-                                            <td colspan="5">
-                                                <f:translate key="administration.notIndexed" />
-                                            </td>
-                                        </f:case>
-                                        <f:defaultCase>
-                                            <td colspan="5">
-                                                <f:translate key="administration.notIndexed" />
-                                            </td>
-                                        </f:defaultCase>
-                                    </f:switch>
-                                </tr>
-                            </f:else>
-                        </f:if>
-                    </f:for>
-                    </tbody>
-            </table>
+                                </f:else>
+                            </f:if>
+                        </f:for>
+                        </tbody>
+                </table>
+            </div>
         </f:then>
         <f:else>
             <h2><f:translate key="administration.noPageSelected" /></h2>

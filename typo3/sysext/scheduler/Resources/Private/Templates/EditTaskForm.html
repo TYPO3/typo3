@@ -14,28 +14,25 @@
             1: '@typo3/scheduler/scheduler.js'
         }"
     />
-    <form name="tx_scheduler_form" id="tx_scheduler_form" method="post">
+    <form class="form" name="tx_scheduler_form" id="tx_scheduler_form" method="post">
         <h1><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.edit" arguments="{0: currentData.taskName}"/></h1>
+        <input type="hidden" name="action" value="edit" />
+        <input type="hidden" name="tx_scheduler[uid]" value="{uid}" />
+        <input type="hidden" name="tx_scheduler[class]" id="task_class" value="{currentData.class}">
 
-        <div class="tx_scheduler_mod1">
-            <input type="hidden" name="action" value="edit" />
-            <input type="hidden" name="tx_scheduler[uid]" value="{uid}" />
-            <input type="hidden" name="tx_scheduler[class]" id="task_class" value="{currentData.class}">
+        <f:render partial="AddEditDisableField" arguments="{currentData: currentData}"/>
+        <f:render partial="AddEditTaskGroupField" arguments="{currentData: currentData, registeredTaskGroups: registeredTaskGroups, returnUrl: returnUrl}"/>
+        <f:render partial="AddEditTypeField" arguments="{currentData: currentData}"/>
+        <f:render partial="AddEditStartEndFields" arguments="{currentData: currentData}"/>
+        <f:render partial="AddEditFrequencyField" arguments="{currentData: currentData, frequencyOptions:frequencyOptions}"/>
+        <f:render partial="AddEditMultipleField" arguments="{currentData: currentData}"/>
+        <f:render partial="AddEditDescriptionField" arguments="{currentData: currentData}"/>
+        <f:render partial="AddEditAdditionalFields" arguments="{currentData: currentData, additionalFields: additionalFields}"/>
 
-            <f:render partial="AddEditDisableField" arguments="{currentData: currentData}"/>
-            <f:render partial="AddEditTaskGroupField" arguments="{currentData: currentData, registeredTaskGroups: registeredTaskGroups, returnUrl: returnUrl}"/>
-            <f:render partial="AddEditTypeField" arguments="{currentData: currentData}"/>
-            <f:render partial="AddEditStartEndFields" arguments="{currentData: currentData}"/>
-            <f:render partial="AddEditFrequencyField" arguments="{currentData: currentData, frequencyOptions:frequencyOptions}"/>
-            <f:render partial="AddEditMultipleField" arguments="{currentData: currentData}"/>
-            <f:render partial="AddEditDescriptionField" arguments="{currentData: currentData}"/>
-            <f:render partial="AddEditAdditionalFields" arguments="{currentData: currentData, additionalFields: additionalFields}"/>
-
-            <f:render partial="ServerTime" arguments="{dateFormat: dateFormat}" />
-        </div>
         <div id="extraFieldsSection"></div>
     </form>
     <div id="extraFieldsHidden"></div>
+    <f:render partial="ServerTime" arguments="{dateFormat: dateFormat}" />
 
 </f:section>
 

@@ -129,4 +129,8 @@
         max-width: 768px;
         margin: 0 auto;
     }
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
 }

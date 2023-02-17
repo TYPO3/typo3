@@ -57,9 +57,9 @@ final class FileClipboardCest
         $I->waitForText($fileName);
         $this->openActionDropdown($I, $fileName)->click();
         $I->click('Cut');
-        $I->see($fileName, '.clipboard-panel a');
-        $I->click('Remove item', '.clipboard-panel');
-        $I->dontSee($fileName, '.clipboard-panel a');
+        $I->see($fileName, '[data-clipboard-panel] a');
+        $I->click('Remove item', '[data-clipboard-panel]');
+        $I->dontSee($fileName, '[data-clipboard-panel] a');
     }
 
     public function seeAddRemoveMultipleRecords(ApplicationTester $I): void
@@ -77,14 +77,14 @@ final class FileClipboardCest
         $I->click('button[data-multi-record-selection-action="copyMarked"]');
 
         foreach ($expectedFiles as $file) {
-            $I->see($file, '.clipboard-panel');
+            $I->see($file, '[data-clipboard-panel]');
         }
 
         $I->amGoingTo('remove all elements from clipboard');
-        $I->click('Remove all', '.clipboard-panel');
+        $I->click('Remove all', '[data-clipboard-panel]');
 
         foreach ($expectedFiles as $file) {
-            $I->dontSee($file, '.clipboard-panel');
+            $I->dontSee($file, '[data-clipboard-panel]');
         }
     }
 

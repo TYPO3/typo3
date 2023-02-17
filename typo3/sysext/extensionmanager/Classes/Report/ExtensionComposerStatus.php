@@ -78,7 +78,7 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
                 $attributes = GeneralUtility::implodeAttributes([
                     'type' => 'button',
                     'title' => $title,
-                    'class' => 'btn btn-link p-0 text-decoration-underline',
+                    'class' => 'btn btn-link text-decoration-underline',
                     // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
                     'data-dispatch-action' => $dispatchAction,
                     'data-dispatch-args' => GeneralUtility::jsonEncodeForHtmlAttribute($dispatchArgs),

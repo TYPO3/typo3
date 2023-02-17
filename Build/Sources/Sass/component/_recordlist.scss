@@ -7,7 +7,7 @@
     box-shadow: var(--panel-box-shadow);
     border-radius: var(--panel-border-radius);
     border: var(--panel-border-width) solid var(--panel-default-border-color);
-    margin-bottom: var(--typo3-spacing);
+    margin-bottom: var(--panel-spacing);
 
     table tr {
         td.deletePlaceholder {
@@ -16,6 +16,8 @@
     }
 
     .table-fit {
+        box-shadow: none;
+        border-radius: 0;
         border-left: 0;
         border-right: 0;
         border-bottom: 0;

@@ -10,73 +10,75 @@
     <h1><f:translate key="administration.statistics" /></h1>
     <h2><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:pages"/></h2>
     <f:if condition="{records}">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th><f:translate key="field.id" />/<f:translate key="field.type" /></th>
-                    <th><f:translate key="field.title" /></th>
-                    <th><f:translate key="field.fileSize" /></th>
-                    <f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
-                        <th><f:translate key="field.wordCount" /></th>
-                    </f:if>
-                    <th><f:translate key="field.mtime" /></th>
-                    <th><f:translate key="field.indexed" /></th>
-                    <th><f:translate key="field.updated" /></th>
-                    <th><f:translate key="field.parseTime" /></th>
-                    <th><f:translate key="field.groups" /></th>
-                    <th><f:translate key="field.sub" /></th>
-                    <th><f:translate key="field.language" /></th>
-                    <th><f:translate key="field.staticPageArguments" /></th>
-                    <th><f:translate key="field.pHash" /></th>
-                </tr>
-            </thead>
-            <tbody>
-            <f:for each="{records}" as="data">
-                <tr>
-                    <td>
-                        {data.data_page_id}
-                        <f:if condition="{data.data_page_type}">/ {data.data_page_type}</f:if>
-                        {data.0}
-                    </td>
-                    <td>
-                        <f:format.crop maxCharacters="30">{data.item_title}</f:format.crop>
-                    </td>
-                    <td>
-                        <f:format.bytes decimals="1">{data.item_size}</f:format.bytes>
-                    </td>
-                    <f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
-                        <td>{data.numberOfWords}</td>
-                    </f:if>
-                    <td>
-                        <is:format.dateTime>{data.item_mtime}</is:format.dateTime>
-                    </td>
-                    <td>
-                        <is:format.dateTime>{data.crdate}</is:format.dateTime>
-                    </td>
-                    <td>
-                        <f:if condition="{date.tstamp}=={date.crdate}">
-                            <f:then></f:then>
-                            <f:else>
-                                <is:format.dateTime>{data.tstamp}</is:format.dateTime>
-                            </f:else>
+        <div class="table-fit">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th><f:translate key="field.id" />/<f:translate key="field.type" /></th>
+                        <th><f:translate key="field.title" /></th>
+                        <th><f:translate key="field.fileSize" /></th>
+                        <f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
+                            <th><f:translate key="field.wordCount" /></th>
                         </f:if>
-                    </td>
-                    <td>{data.parsetime}</td>
-                    <td>{data.numberOfSections}/{data.grList.0.pcount}/{data.numberOfFulltext}</td>
-                    <td>{data.pcount} / {is:format.groupList(groups:data.grList)}</td>
-                    <td>{data.sys_language_uid}</td>
-                    <td>
-                        <f:if condition="{data.static_page_arguments}">
-                            <f:for each="{data.static_page_arguments}" as="value" key="key">
-                                {key}={value}<br>
-                            </f:for>
+                        <th><f:translate key="field.mtime" /></th>
+                        <th><f:translate key="field.indexed" /></th>
+                        <th><f:translate key="field.updated" /></th>
+                        <th><f:translate key="field.parseTime" /></th>
+                        <th><f:translate key="field.groups" /></th>
+                        <th><f:translate key="field.sub" /></th>
+                        <th><f:translate key="field.language" /></th>
+                        <th><f:translate key="field.staticPageArguments" /></th>
+                        <th><f:translate key="field.pHash" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <f:for each="{records}" as="data">
+                    <tr>
+                        <td>
+                            {data.data_page_id}
+                            <f:if condition="{data.data_page_type}">/ {data.data_page_type}</f:if>
+                            {data.0}
+                        </td>
+                        <td>
+                            <f:format.crop maxCharacters="30">{data.item_title}</f:format.crop>
+                        </td>
+                        <td>
+                            <f:format.bytes decimals="1">{data.item_size}</f:format.bytes>
+                        </td>
+                        <f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
+                            <td>{data.numberOfWords}</td>
                         </f:if>
-                    </td>
-                    <td>{data.phash}</td>
-                </tr>
-            </f:for>
-            </tbody>
-        </table>
+                        <td>
+                            <is:format.dateTime>{data.item_mtime}</is:format.dateTime>
+                        </td>
+                        <td>
+                            <is:format.dateTime>{data.crdate}</is:format.dateTime>
+                        </td>
+                        <td>
+                            <f:if condition="{date.tstamp}=={date.crdate}">
+                                <f:then></f:then>
+                                <f:else>
+                                    <is:format.dateTime>{data.tstamp}</is:format.dateTime>
+                                </f:else>
+                            </f:if>
+                        </td>
+                        <td>{data.parsetime}</td>
+                        <td>{data.numberOfSections}/{data.grList.0.pcount}/{data.numberOfFulltext}</td>
+                        <td>{data.pcount} / {is:format.groupList(groups:data.grList)}</td>
+                        <td>{data.sys_language_uid}</td>
+                        <td>
+                            <f:if condition="{data.static_page_arguments}">
+                                <f:for each="{data.static_page_arguments}" as="value" key="key">
+                                    {key}={value}<br>
+                                </f:for>
+                            </f:if>
+                        </td>
+                        <td>{data.phash}</td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
     </f:if>
 </f:section>
 

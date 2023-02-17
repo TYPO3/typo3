@@ -11,32 +11,25 @@
     <p class="lead"><f:translate key="administration.document.description" /></p>
     <f:if condition="{phashRow}">
         <f:then>
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th colspan="2"><f:translate key="administration.phash.tableHeader" /></th>
-                    </tr>
-                </thead>
-                <f:for each="{phashRow}" as="value" key="key">
-                    <tr>
-                        <td><strong>{key}</strong></td>
-                        <td>{value}</td>
-                    </tr>
-                </f:for>
-            </table>
-            <div class="row">
-                <div class="col-md-12">
-                    <f:render section="wordlisting" arguments="{words:words,phash:phash,page:page,keywords:keywords,title:'words'}" />
-                </div>
+            <div class="table-fit">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th colspan="2"><f:translate key="administration.phash.tableHeader" /></th>
+                        </tr>
+                    </thead>
+                    <f:for each="{phashRow}" as="value" key="key">
+                        <tr>
+                            <td><strong>{key}</strong></td>
+                            <td>{value}</td>
+                        </tr>
+                    </f:for>
+                </table>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <f:render section="wordlisting" arguments="{words:topCount,phash:phash,title:'topCount'}" />
-                </div>
-                <div class="col-md-6">
-                    <f:render section="wordlisting" arguments="{words:topFrequency,phash:phash,title:'topFrequency'}" />
-                </div>
-            </div>
+            <f:render section="wordlisting" arguments="{words:words,phash:phash,page:page,keywords:keywords,title:'words'}" />
+            <f:render section="wordlisting" arguments="{words:topCount,phash:phash,title:'topCount'}" />
+            <f:render section="wordlisting" arguments="{words:topFrequency,phash:phash,title:'topFrequency'}" />
+
             <f:if condition="{debug}">
                 <h4>
                     <f:translate key="administration.statistics.debug" />
@@ -54,63 +47,67 @@
                 <h4>
                     <f:translate key="administration.statistics.metaphone" />
                 </h4>
-                <table class="table table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th>
-                            <f:translate key="field.metaphone" />
-                        </th>
-                        <th>
-                            <f:translate key="field.pHash" />
-                        </th>
-                        <th>
-                            <f:translate key="field.wordCount" />
-                        </th>
-                        <th>
-                            <f:translate key="field.words" />
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <f:for each="{metaphone}" as="row">
+                <div class="table-fit">
+                    <table class="table table-striped table-hover">
+                        <thead>
                         <tr>
-                            <td>{row.metaphone}</td>
-                            <td>{row.hash}</td>
-                            <td>{f:count(subject:row.words)}</td>
-                            <td><f:for each="{row.words}" as="word">
-                                {word},
-                            </f:for></td>
+                            <th>
+                                <f:translate key="field.metaphone" />
+                            </th>
+                            <th>
+                                <f:translate key="field.pHash" />
+                            </th>
+                            <th>
+                                <f:translate key="field.wordCount" />
+                            </th>
+                            <th>
+                                <f:translate key="field.words" />
+                            </th>
                         </tr>
-                    </f:for>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        <f:for each="{metaphone}" as="row">
+                            <tr>
+                                <td>{row.metaphone}</td>
+                                <td>{row.hash}</td>
+                                <td>{f:count(subject:row.words)}</td>
+                                <td><f:for each="{row.words}" as="word">
+                                    {word},
+                                </f:for></td>
+                            </tr>
+                        </f:for>
+                        </tbody>
+                    </table>
+                </div>
             </f:if>
             <f:if condition="{sections}">
                 <h4><f:translate key="administration.statistics.sectionRecords" /></h4>
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th><f:translate key="field.pHash" /></th>
-                            <th>rl0</th>
-                            <th>rl1</th>
-                            <th>rl2</th>
-                            <th><f:translate key="field.id" /></th>
-                            <th><f:translate key="field.uniqueId" /></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <f:for each="{sections}" as="row">
+                <div class="table-fit">
+                    <table class="table table-striped table-hover">
+                        <thead>
                             <tr>
-                                <td>{row.phash}</td>
-                                <td>{row.rl0}</td>
-                                <td>{row.rl1}</td>
-                                <td>{row.rl2}</td>
-                                <td>{row.page_id}</td>
-                                <td>{row.uniqueid}</td>
+                                <th><f:translate key="field.pHash" /></th>
+                                <th>rl0</th>
+                                <th>rl1</th>
+                                <th>rl2</th>
+                                <th><f:translate key="field.id" /></th>
+                                <th><f:translate key="field.uniqueId" /></th>
                             </tr>
-                        </f:for>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <f:for each="{sections}" as="row">
+                                <tr>
+                                    <td>{row.phash}</td>
+                                    <td>{row.rl0}</td>
+                                    <td>{row.rl1}</td>
+                                    <td>{row.rl2}</td>
+                                    <td>{row.page_id}</td>
+                                    <td>{row.uniqueid}</td>
+                                </tr>
+                            </f:for>
+                        </tbody>
+                    </table>
+                </div>
             </f:if>
         </f:then>
         <f:else>
@@ -120,57 +117,60 @@
 </f:section>
 
 <f:section name="wordlisting">
-    <h4><f:translate key="administration.document.{title}" />
-    <f:if condition="{title}=='words'">
-        ({f:count(subject:words)})
-    </f:if>
+    <h4>
+        <f:translate key="administration.document.{title}" />
+        <f:if condition="{title}=='words'">
+            ({f:count(subject:words)})
+        </f:if>
     </h4>
     <f:if condition="{words}">
-        <f:form method="post" action="saveStopwordsKeywords" name="stopwordskeywords" arguments="{pageHash:phash}">
+        <f:form class="form" method="post" action="saveStopwordsKeywords" name="stopwordskeywords" arguments="{pageHash:phash}">
             <f:form.hidden name="pageHash" value="{phash}" />
             <f:form.hidden name="pageId" value="{page.uid}" />
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th><f:translate key="administration.stopWords" /></th>
-                        <f:if condition="{title}=='words'">
-                            <f:if condition="{page}">
-                                <th><f:translate key="administration.keywords" /></th>
-                            </f:if>
-                        </f:if>
-                        <th><f:translate key="administration.statistics.word" /></th>
-                        <th><f:translate key="field.wordCount" /></th>
-                        <th><f:translate key="field.frequency" /></th>
-                        <th><f:translate key="field.flag" /></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <f:for each="{words}" as="word">
+            <div class="table-fit">
+                <table class="table table-striped table-hover">
+                    <thead>
                         <tr>
-                            <td>
-                                <f:form.checkbox name="stopwords[{word.wid}]" value="1" checked="{word.is_stopword}" />
-                            </td>
+                            <th><f:translate key="administration.stopWords" /></th>
                             <f:if condition="{title}=='words'">
                                 <f:if condition="{page}">
-                                    <td>
-                                        <f:form.checkbox name="keywords[{word.baseword}]" value="1" checked="{word.is_keyword}" />
-                                    </td>
+                                    <th><f:translate key="administration.keywords" /></th>
                                 </f:if>
                             </f:if>
-                            <td>
-                                <f:link.action action="wordDetail" arguments="{id:word.wid,pageHash:phash}">{word.baseword}</f:link.action>
-                            </td>
-                            <td>{word.count}</td>
-                            <td>{word.freq}</td>
-                            <td>
-                                <f:if condition="{word.flags} > 0">
-                                    {is:format.flagValue(flags:word.flags)} ({word.flags})
-                                </f:if>
-                            </td>
+                            <th><f:translate key="administration.statistics.word" /></th>
+                            <th><f:translate key="field.wordCount" /></th>
+                            <th><f:translate key="field.frequency" /></th>
+                            <th><f:translate key="field.flag" /></th>
                         </tr>
-                    </f:for>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <f:for each="{words}" as="word">
+                            <tr>
+                                <td>
+                                    <f:form.checkbox name="stopwords[{word.wid}]" value="1" checked="{word.is_stopword}" />
+                                </td>
+                                <f:if condition="{title}=='words'">
+                                    <f:if condition="{page}">
+                                        <td>
+                                            <f:form.checkbox name="keywords[{word.baseword}]" value="1" checked="{word.is_keyword}" />
+                                        </td>
+                                    </f:if>
+                                </f:if>
+                                <td>
+                                    <f:link.action action="wordDetail" arguments="{id:word.wid,pageHash:phash}">{word.baseword}</f:link.action>
+                                </td>
+                                <td>{word.count}</td>
+                                <td>{word.freq}</td>
+                                <td>
+                                    <f:if condition="{word.flags} > 0">
+                                        {is:format.flagValue(flags:word.flags)} ({word.flags})
+                                    </f:if>
+                                </td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
             <f:if condition="{title}=='words'">
                 <f:then>
                     <f:if condition="{keywords}">
@@ -181,10 +181,10 @@
                             </f:for>
                         </div>
                     </f:if>
-                    <f:form.submit value="{f:translate(key:'administration.stopWordsKeywords.save')}" />
+                    <f:form.submit class="btn btn-default" value="{f:translate(key:'administration.stopWordsKeywords.save')}" />
                 </f:then>
                 <f:else>
-                    <f:form.submit value="{f:translate(key:'administration.stopWords.save')}" />
+                    <f:form.submit class="btn btn-default" value="{f:translate(key:'administration.stopWords.save')}" />
                 </f:else>
             </f:if>
         </f:form>

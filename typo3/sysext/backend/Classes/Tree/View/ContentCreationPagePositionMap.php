@@ -92,7 +92,7 @@ class ContentCreationPagePositionMap extends AbstractContentPagePositionMap
         }
 
         return '
-            <button type="button"  class="btn btn-link p-0" data-target="' . htmlspecialchars($target) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:insertNewRecordHere')) . '">
+            <button type="button"  class="btn btn-link" data-target="' . htmlspecialchars($target) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:insertNewRecordHere')) . '">
                 ' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '
             </button>';
     }

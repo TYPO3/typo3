@@ -157,7 +157,9 @@ td.active {
 //
 .table-fit {
     width: 100%;
-    margin-bottom: 1.5em;
+    border-radius: var(--typo3-component-border-radius);
+    box-shadow: var(--typo3-component-box-shadow);
+    margin-bottom: var(--typo3-component-spacing);
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
@@ -165,7 +167,6 @@ td.active {
     border: 1px solid $table-border-color;
 
     > .table {
-        margin-top: 0;
         margin-bottom: 0;
 
         colgroup:first-child + tbody,
@@ -179,17 +180,6 @@ td.active {
         }
 
         tr {
-            > th,
-            > td {
-                white-space: nowrap;
-
-                &.col-word-break {
-                    @media (min-width: $screen-sm-min) {
-                        white-space: normal;
-                    }
-                }
-            }
-
             > th:first-child,
             > td:first-child {
                 border-left: 0;

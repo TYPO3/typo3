@@ -6,96 +6,92 @@
 >
 
 <h2>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:changes')}</h2>
-<div class="row">
-    <div class="col">
+
+<div class="table-fit">
     <table class="table table-striped table-hover table-vertical-top" id="typo3-history">
         <thead>
-        <tr>
-            <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback')}</th>
-            <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:time')}</th>
-            <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:age')}</th>
-            <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:user')}</th>
-            <f:if condition="{isUserInWorkspace}">
-                <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:workspace')}</th>
-            </f:if>
-            <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:tableUid')}</th>
-            <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:differences')}</th>
-        </tr>
+            <tr>
+                <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback')}</th>
+                <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:time')}</th>
+                <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:age')}</th>
+                <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:user')}</th>
+                <f:if condition="{isUserInWorkspace}">
+                    <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:workspace')}</th>
+                </f:if>
+                <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:tableUid')}</th>
+                <th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:differences')}</th>
+            </tr>
         </thead>
         <tbody>
-        <f:for each="{history}" as="historyRow">
-            <tr>
-                <td>
-                    <f:if condition="{isUserInWorkspace} !== true || {historyRow.isChangedInWorkspace}">
-                        <f:if condition="{editLock}">
-                            <f:then>
-                                <button class="btn btn-default disabled" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:editLockIsActive')}">
-                                    <core:icon identifier="actions-document-history-open" />
-                                </button>
-                            </f:then>
-                            <f:else>
-                                <a class="btn btn-default" href="{historyRow.diffUrl}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:sumUpChanges')}">
-                                    <core:icon identifier="actions-document-history-open" />
-                                </a>
-                            </f:else>
-                        </f:if>
-                    </f:if>
-                </td>
-                <td class="text-nowrap">{historyRow.time}</td>
-                <td class="text-nowrap">{historyRow.age}</td>
-                <td>
-                    <be:avatar backendUser="{historyRow.backendUserUid}"/>
-                    <f:if condition="{historyRow.backendUserUid}">
-                        <f:then>
-                            {f:if(condition: historyRow.backendUserName, then: historyRow.backendUserName, else: '{f:translate(key: \'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:userNotFound\')}')}
-                        </f:then>
-                        <f:else>
-                            {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:externalChange')}
-                        </f:else>
-                    </f:if>
-                    <f:if condition="{historyRow.originalBackendUserUid}">
-                        ({f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:viaUser')} {f:if(condition: historyRow.originalBackendUserName, then: historyRow.originalBackendUserName, else: '{f:translate(key: \'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:userNotFound\')}')})
-                    </f:if>
-                </td>
-                <f:if condition="{isUserInWorkspace}">
+            <f:for each="{history}" as="historyRow">
+                <tr>
                     <td>
-                        <f:if condition="{historyRow.isChangedInWorkspace}">
-                            <core:icon identifier="status-status-checked" />
+                        <f:if condition="{isUserInWorkspace} !== true || {historyRow.isChangedInWorkspace}">
+                            <f:if condition="{editLock}">
+                                <f:then>
+                                    <button class="btn btn-default disabled" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:editLockIsActive')}">
+                                        <core:icon identifier="actions-document-history-open" />
+                                    </button>
+                                </f:then>
+                                <f:else>
+                                    <a class="btn btn-default" href="{historyRow.diffUrl}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:sumUpChanges')}">
+                                        <core:icon identifier="actions-document-history-open" />
+                                    </a>
+                                </f:else>
+                            </f:if>
                         </f:if>
                     </td>
-                </f:if>
-                <td>
-                    <a href="{elementUrl}" title="{f:translate(id: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:linkRecordHistory')}">{historyRow.title -> f:format.raw()}</a>
-                </td>
-                <td>
-                    <f:switch expression="{historyRow.actiontype}">
-                        <f:case value="1">
-                            <strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:insert')}</strong>
-                        </f:case>
-                        <f:case value="4">
-                            <strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:delete')}</strong>
-                        </f:case>
-                        <f:case value="5">
-                            <strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:insert')}</strong>
-                        </f:case>
-                    </f:switch>
-                    <f:if condition="{historyRow.fieldNames}">
-                        {historyRow.fieldNames}
+                    <td class="text-nowrap">{historyRow.time}</td>
+                    <td class="text-nowrap">{historyRow.age}</td>
+                    <td>
+                        <be:avatar backendUser="{historyRow.backendUserUid}"/>
+                        <f:if condition="{historyRow.backendUserUid}">
+                            <f:then>
+                                {f:if(condition: historyRow.backendUserName, then: historyRow.backendUserName, else: '{f:translate(key: \'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:userNotFound\')}')}
+                            </f:then>
+                            <f:else>
+                                {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:externalChange')}
+                            </f:else>
+                        </f:if>
+                        <f:if condition="{historyRow.originalBackendUserUid}">
+                            ({f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:viaUser')} {f:if(condition: historyRow.originalBackendUserName, then: historyRow.originalBackendUserName, else: '{f:translate(key: \'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:userNotFound\')}')})
+                        </f:if>
+                    </td>
+                    <f:if condition="{isUserInWorkspace}">
+                        <td>
+                            <f:if condition="{historyRow.isChangedInWorkspace}">
+                                <core:icon identifier="status-status-checked" />
+                            </f:if>
+                        </td>
                     </f:if>
-                    <f:if condition="{historyRow.differences}">
-                        <f:render partial="RecordHistory/Diff" arguments="{differences: historyRow.differences}"/>
-                    </f:if>
-                </td>
-            </tr>
-        </f:for>
+                    <td>
+                        <a href="{elementUrl}" title="{f:translate(id: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:linkRecordHistory')}">{historyRow.title -> f:format.raw()}</a>
+                    </td>
+                    <td>
+                        <f:switch expression="{historyRow.actiontype}">
+                            <f:case value="1">
+                                <strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:insert')}</strong>
+                            </f:case>
+                            <f:case value="4">
+                                <strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:delete')}</strong>
+                            </f:case>
+                            <f:case value="5">
+                                <strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:insert')}</strong>
+                            </f:case>
+                        </f:switch>
+                        <f:if condition="{historyRow.fieldNames}">
+                            {historyRow.fieldNames}
+                        </f:if>
+                        <f:if condition="{historyRow.differences}">
+                            <f:render partial="RecordHistory/Diff" arguments="{differences: historyRow.differences}"/>
+                        </f:if>
+                    </td>
+                </tr>
+            </f:for>
         </tbody>
     </table>
-    </div>
 </div>
-<div class="row">
-    <div class="col">
-        <f:be.infobox state="-1">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:differenceMsg') -> f:format.raw()}</f:be.infobox>
-    </div>
-</div>
+
+<f:be.infobox state="-1">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:differenceMsg') -> f:format.raw()}</f:be.infobox>
 
 </html>

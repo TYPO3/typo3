@@ -11,7 +11,8 @@
 
     <f:be.pageRenderer
         includeJavaScriptModules="{
-            0: '@typo3/backend/modal.js'
+            0: '@typo3/backend/modal.js',
+            1: '@typo3/backend/context-menu.js'
         }"
     />
 
@@ -59,11 +60,11 @@
                 </f:be.infobox>
             </f:if>
 
-            <div class="table-fit{f:if(condition: '{unassignedSites}', then: ' mb-5')}">
+            <div class="table-fit">
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th class="nowrap align-top"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.site" /></th>
+                            <th colspan="2" class="nowrap align-top"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.site" /></th>
                             <th class="align-top"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.siteIdentifier" /></th>
                             <th class="align-top"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.language" /></th>
                             <th class="align-top"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.baseUrl" /></th>
@@ -72,24 +73,25 @@
                     </thead>
                     <tbody>
                         <f:for each="{pages}" as="page">
+                            <f:variable name="rootPage" value="{page}" />
+                            <f:for each="{page.rootline}" as="rootLinePage" iteration="rootLinePageIterator">
+                                <f:if condition="{rootLinePage.uid} == {page.uid}">
+                                    <f:variable name="rootPage" value="{rootLinePage}" />
+                                </f:if>
+                            </f:for>
                             <tr>
-                                <td class="align-top nowrap">
-                                    <f:for each="{page.rootline}" as="rootLinePage" iteration="rootLinePageIterator">
-                                        <f:if condition="{rootLinePage.uid} == {page.uid}">
-                                            <f:then>
-                                                <div class="{f:if(condition: '{rootLinePageIterator.isLast}', then: '', else: 'mb-3')}">
-                                                    <span style="width: 1px; height: 1px; display:inline-block; margin-left: {rootLinePage.margin}px"></span>
-                                                    <core:iconForRecord table="pages" row="{rootLinePage}" /> {rootLinePage.title} [ID: {page.uid}]
-                                                </div>
-                                            </f:then>
-                                            <f:else>
-                                                <div class="{f:if(condition: '{rootLinePageIterator.isLast}', then: '', else: 'mb-3')}">
-                                                    <span style="width: 1px; height: 1px; display:inline-block; margin-left: {rootLinePage.margin}px"></span>
-                                                    <core:iconForRecord table="pages" row="{rootLinePage}" /> {rootLinePage.title}
-                                                </div>
-                                            </f:else>
-                                        </f:if>
-                                    </f:for>
+                                <td class="col-icon align-top">
+                                    <a href="#"
+                                        data-contextmenu-trigger="click"
+                                        data-contextmenu-table="pages"
+                                        data-contextmenu-uid="{rootPage.uid}">
+                                        <span style="margin-left: {rootLinePage.margin}px">
+                                            <core:iconForRecord table="pages" row="{rootPage}" />
+                                        </span>
+                                    </a>
+                                </td>
+                                <td class="align-top">
+                                    {rootPage.title}
                                 </td>
                                 <td class="align-top">
                                     <f:if condition="{page.siteIdentifier}">
@@ -184,7 +186,7 @@
                     <f:for each="{unassignedSites}" as="unassignedSite">
                         <tr>
                             <td><code>{unassignedSite.identifier}</code></td>
-                            <td class="col-control nowrap">
+                            <td class="col-control">
                                 <div class="btn-group">
                                     <button
                                         type="submit"

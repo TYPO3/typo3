@@ -62,7 +62,7 @@ $panel-heading-bg-scale: -85%;
     --panel-padding: var(--typo3-component-padding-x);
     --panel-header-padding-x: var(--typo3-component-padding-x);
     --panel-header-padding-y: var(--typo3-component-padding-y);
-    --panel-spacing: var(--typo3-spacing);
+    --panel-spacing: var(--typo3-component-spacing);
     --panel-box-shadow: var(--typo3-component-box-shadow);
 
     @each $name, $value in $theme-colors {
@@ -124,15 +124,26 @@ $panel-heading-bg-scale: -85%;
     background-color: var(--panel-bg);
     border: var(--panel-border-width) solid var(--panel-border-color);
     border-radius: var(--panel-border-radius);
-    box-shadow: var(--typo3-component-box-shadow);
-    margin-bottom: var(--typo3-spacing);
+    box-shadow: var(--panel-box-shadow);
+    margin-bottom: var(--panel-spacing);
     transition: all .2s ease-in-out;
     transition-property: box-shadow, border, transform;
 
-    // @TODO NEED?
-    > .table-fit {
-        border: none;
+    .table-fit {
+        box-shadow: none;
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+        border-bottom: 0;
+        margin-bottom: 0;
     }
+}
+
+//
+// Loader
+//
+.panel-loader {
+    padding: var(--panel-padding);
 }
 
 //
@@ -340,16 +351,6 @@ $panel-heading-bg-scale: -85%;
         > li {
             margin-left: -1px;
         }
-    }
-
-    > .table,
-    > .table-responsive > .table,
-    > .table-fit,
-    > .table-responsive > .table-fit {
-        margin-bottom: 0;
-        border-left: 0;
-        border-right: 0;
-        border-bottom: 0;
     }
 
     label {

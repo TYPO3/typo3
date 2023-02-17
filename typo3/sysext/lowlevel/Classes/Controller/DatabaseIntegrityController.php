@@ -681,9 +681,9 @@ class DatabaseIntegrityController
                 }
                 if (!empty($rowArr)) {
                     $cPR['header'] = 'Result';
-                    $out .= '<table class="table table-striped table-hover">'
+                    $out .= '<div class="table-fit"><table class="table table-striped table-hover">'
                         . $this->resultRowTitles((array)$dataRow, $GLOBALS['TCA'][$table]) . implode(LF, $rowArr)
-                        . '</table>';
+                        . '</table></div>';
                 } else {
                     $this->renderNoResultsFoundMessage();
                 }
@@ -2596,10 +2596,12 @@ class DatabaseIntegrityController
                     $markup[] = '  <div class="panel-heading">';
                     $markup[] = htmlspecialchars($this->getLanguageService()->sL($conf['ctrl']['title'])) . ' (' . $count . ')';
                     $markup[] = '  </div>';
-                    $markup[] = '  <table class="table table-striped table-hover">';
+                    $markup[] = '  <div class="table-fit">';
+                    $markup[] = '    <table class="table table-striped table-hover">';
                     $markup[] = $this->resultRowTitles((array)$lastRow, $conf);
                     $markup[] = implode(LF, $rowArr);
-                    $markup[] = '  </table>';
+                    $markup[] = '    </table>';
+                    $markup[] = '  </div>';
                     $markup[] = '</div>';
 
                     $out .= implode(LF, $markup);

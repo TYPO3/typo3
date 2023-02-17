@@ -368,7 +368,7 @@ class FileList
         foreach ($this->fieldArray as $fieldName) {
             if (isset($data[$fieldName])) {
                 if ($lastField && isset($data[$lastField])) {
-                    $cssClass = $this->addElement_tdCssClass[$lastField] ?? '';
+                    $cssClass = $this->addElement_tdCssClass[$lastField] ?? 'col-nowrap';
                     $cols[] = '<' . $colType . ' class="' . $cssClass . '"' . $colspan . '>' . $data[$lastField] . '</' . $colType . '>';
                 }
                 $lastField = $fieldName;

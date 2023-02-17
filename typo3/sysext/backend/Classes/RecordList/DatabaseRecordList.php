@@ -783,7 +783,7 @@ class DatabaseRecordList
                     </div>
                     <div class="' . $collapseClass . '" data-state="' . $dataState . '" id="recordlist-' . htmlspecialchars($tableIdentifier) . '">
                         <div class="table-fit">
-                            <table data-table="' . htmlspecialchars($tableIdentifier) . '" class="table table-striped table-hover mb-0">
+                            <table data-table="' . htmlspecialchars($tableIdentifier) . '" class="table table-striped table-hover">
                                 <thead>
                                     ' . $columnsOutput . '
                                 </thead>

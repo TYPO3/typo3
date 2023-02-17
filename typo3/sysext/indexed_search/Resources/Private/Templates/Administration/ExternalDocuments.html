@@ -10,65 +10,67 @@
     <h1><f:translate key="administration.statistics" /></h1>
     <h2><f:translate key="administration.external.title" /></h2>
     <f:if condition="{records}">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th><f:translate key="field.fileName" /></th>
-                    <th><f:translate key="field.fileSize" /></th>
-                    <th><f:translate key="field.wordCount" /></th>
-                    <th><f:translate key="field.mtime" /></th>
-                    <th><f:translate key="field.indexed" /></th>
-                    <th><f:translate key="field.updated" /></th>
-                    <th><f:translate key="field.parseTime" /></th>
-                    <th><f:translate key="field.groups" /></th>
-                    <th><f:translate key="field.sub" /></th>
-                    <th><f:translate key="field.staticPageArguments" /></th>
-                    <th><f:translate key="field.pHash" /></th>
-                    <th><f:translate key="field.path" /></th>
-                </tr>
-            </thead>
-            <tbody>
-                <f:for each="{records}" as="data">
+        <div class="table-fit">
+            <table class="table table-striped table-hover">
+                <thead>
                     <tr>
-                        <td>
-                            <f:format.crop maxCharacters="30">{data.item_title}</f:format.crop>
-                        </td>
-                        <td>
-                            <f:format.bytes decimals="1">{data.item_size}</f:format.bytes>
-                        </td>
-                        <td>{data.numberOfWords}</td>
-                        <td>
-                            <is:format.dateTime>{data.item_mtime}</is:format.dateTime>
-                        </td>
-                        <td>
-                            <is:format.dateTime>{data.crdate}</is:format.dateTime>
-                        </td>
-                        <td>
-                            <f:if condition="{date.tstamp}=={date.crdate}">
-                                <f:then></f:then>
-                                <f:else>
-                                    <is:format.dateTime>{data.tstamp}</is:format.dateTime>
-                                </f:else>
-                            </f:if>
-                        </td>
-                        <td>{data.parsetime}</td>
-                        <td>{data.numberOfSections}/{data.grList.0.pcount}/{data.numberOfFulltext}</td>
-                        <td>{data.pcount}</td>
-                        <td>
-                            <f:if condition="{data.static_page_arguments}">
-                                <f:for each="{data.static_page_arguments}" as="value" key="key">
-                                    {key}={value}<br>
-                                </f:for>
-                            </f:if>
-                        </td>
-                        <td>{data.phash}</td>
-                        <td>
-                            <f:format.crop maxCharacters="100">{data.data_filename}</f:format.crop>
-                        </td>
+                        <th><f:translate key="field.fileName" /></th>
+                        <th><f:translate key="field.fileSize" /></th>
+                        <th><f:translate key="field.wordCount" /></th>
+                        <th><f:translate key="field.mtime" /></th>
+                        <th><f:translate key="field.indexed" /></th>
+                        <th><f:translate key="field.updated" /></th>
+                        <th><f:translate key="field.parseTime" /></th>
+                        <th><f:translate key="field.groups" /></th>
+                        <th><f:translate key="field.sub" /></th>
+                        <th><f:translate key="field.staticPageArguments" /></th>
+                        <th><f:translate key="field.pHash" /></th>
+                        <th><f:translate key="field.path" /></th>
                     </tr>
-                </f:for>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <f:for each="{records}" as="data">
+                        <tr>
+                            <td>
+                                <f:format.crop maxCharacters="30">{data.item_title}</f:format.crop>
+                            </td>
+                            <td>
+                                <f:format.bytes decimals="1">{data.item_size}</f:format.bytes>
+                            </td>
+                            <td>{data.numberOfWords}</td>
+                            <td>
+                                <is:format.dateTime>{data.item_mtime}</is:format.dateTime>
+                            </td>
+                            <td>
+                                <is:format.dateTime>{data.crdate}</is:format.dateTime>
+                            </td>
+                            <td>
+                                <f:if condition="{date.tstamp}=={date.crdate}">
+                                    <f:then></f:then>
+                                    <f:else>
+                                        <is:format.dateTime>{data.tstamp}</is:format.dateTime>
+                                    </f:else>
+                                </f:if>
+                            </td>
+                            <td>{data.parsetime}</td>
+                            <td>{data.numberOfSections}/{data.grList.0.pcount}/{data.numberOfFulltext}</td>
+                            <td>{data.pcount}</td>
+                            <td>
+                                <f:if condition="{data.static_page_arguments}">
+                                    <f:for each="{data.static_page_arguments}" as="value" key="key">
+                                        {key}={value}<br>
+                                    </f:for>
+                                </f:if>
+                            </td>
+                            <td>{data.phash}</td>
+                            <td>
+                                <f:format.crop maxCharacters="100">{data.data_filename}</f:format.crop>
+                            </td>
+                        </tr>
+                    </f:for>
+                </tbody>
+            </table>
+        </div>
     </f:if>
 </f:section>
 

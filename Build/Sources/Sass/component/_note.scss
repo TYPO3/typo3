@@ -67,17 +67,23 @@ $note-padding: 1rem;
 // Component
 //
 .note-list {
-    margin: 1rem 0;
+    display: grid;
+    gap: calc(var(--typo3-component-spacing) / 2);
+    margin-bottom: var(--typo3-component-spacing);
+
+    .note {
+        margin-bottom: 0;
+    }
 }
 
 .note {
-    border-radius: var(--typo3-component-border-radius);
-    margin-bottom: 1rem;
     overflow: hidden;
     position: relative;
     z-index: 1;
     color: var(--note-color);
     background-color: var(--note-bg);
+    border-radius: var(--typo3-component-border-radius);
+    margin-bottom: var(--typo3-component-spacing);
     box-shadow: var(--typo3-component-box-shadow);
 
     @include note-use-variant('default');

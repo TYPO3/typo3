@@ -12,41 +12,45 @@
     <div class="row">
         <div class="col-md-6">
             <h4><f:translate key="administration.statistics.header" /></h4>
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th><f:translate key="administration.statistics.name" /></th>
-                        <th><f:translate key="administration.statistics.count" /></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <f:for each="{records}" as="count" key="name">
+            <div class="table-fit">
+                <table class="table table-striped table-hover">
+                    <thead>
                         <tr>
-                            <td>{name}</td>
-                            <td>{count}</td>
+                            <th><f:translate key="administration.statistics.name" /></th>
+                            <th><f:translate key="administration.statistics.count" /></th>
                         </tr>
-                    </f:for>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <f:for each="{records}" as="count" key="name">
+                            <tr>
+                                <td>{name}</td>
+                                <td>{count}</td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="col-md-6">
             <h4><f:translate key="administration.statistics.headerTypes" /></h4>
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th><f:translate key="administration.statistics.name" /></th>
-                        <th><f:translate key="administration.statistics.count" /></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <f:for each="{phash}" as="data">
+            <div class="table-fit">
+                <table class="table table-striped table-hover">
+                    <thead>
                         <tr>
-                            <td>{data.name} ({data.type})</td>
-                            <td>{data.count} / {data.uniqueCount}</td>
+                            <th><f:translate key="administration.statistics.name" /></th>
+                            <th><f:translate key="administration.statistics.count" /></th>
                         </tr>
-                    </f:for>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <f:for each="{phash}" as="data">
+                            <tr>
+                                <td>{data.name} ({data.type})</td>
+                                <td>{data.count} / {data.uniqueCount}</td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <h3>
@@ -92,24 +96,26 @@
     </h4>
     <f:if condition="{statistic}">
         <f:then>
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th class="nowrap">&nbsp;</th>
-                        <th><f:translate key="administration.statistics.word" /></th>
-                        <th><f:translate key="administration.statistics.count" /></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <f:for each="{statistic}" as="line" iteration="i">
+            <div class="table-fit">
+                <table class="table table-striped table-hover">
+                    <thead>
                         <tr>
-                            <td class="nowrap"><strong>{i.cycle}.</strong></td>
-                            <td>{line.word}</td>
-                            <td>{line.c}</td>
+                            <th class="nowrap">&nbsp;</th>
+                            <th><f:translate key="administration.statistics.word" /></th>
+                            <th><f:translate key="administration.statistics.count" /></th>
                         </tr>
-                    </f:for>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <f:for each="{statistic}" as="line" iteration="i">
+                            <tr>
+                                <td class="nowrap"><strong>{i.cycle}.</strong></td>
+                                <td>{line.word}</td>
+                                <td>{line.c}</td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
         </f:then>
         <f:else>
             <f:be.infobox state="2">
