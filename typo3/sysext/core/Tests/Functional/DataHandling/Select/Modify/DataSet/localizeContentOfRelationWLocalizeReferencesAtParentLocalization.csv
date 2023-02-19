@@ -10,12 +10,12 @@
 ,298,89,512,0,0,0,0,0,0,0,0,"Regular Element #2","2,3"
 ,299,89,768,0,1,298,298,0,0,0,0,"[Translate to Dansk:] Regular Element #2","4,5"
 "tx_testdatahandler_element",,,,,,,,,,,,,
-,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title",
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","l10n_diffsource"
 ,1,89,256,0,0,0,0,0,0,0,0,"Element #1",
 ,2,89,512,0,0,0,0,0,0,0,0,"Element #2",
 ,3,89,768,0,0,0,0,0,0,0,0,"Element #3",
-,4,89,640,0,1,2,2,0,0,0,0,"[Translate to Dansk:] Element #2",
-,5,89,704,0,1,3,3,0,0,0,0,"[Translate to Dansk:] Element #3",
+,4,89,640,0,1,2,2,0,0,0,0,"[Translate to Dansk:] Element #2","{""l10n_parent"":""0"",""l10n_diffsource"":"""",""hidden"":""0"",""t3_origuid"":""0"",""sys_language_uid"":""0"",""title"":""Element #2""}"
+,5,89,704,0,1,3,3,0,0,0,0,"[Translate to Dansk:] Element #3","{""l10n_parent"":""0"",""l10n_diffsource"":"""",""hidden"":""0"",""t3_origuid"":""0"",""sys_language_uid"":""0"",""title"":""Element #3""}"
 "sys_refindex",,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",
 ,"d7065184b2d510f3fada875169bc8c57","tt_content",297,"tx_testdatahandler_select",,,,0,0,"tx_testdatahandler_element",1,,
