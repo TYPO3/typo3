@@ -163,7 +163,7 @@ class ExtensionScanner extends AbstractInteractableModule {
         install: {
           action: 'extensionScannerMarkFullyScannedRestFiles',
           token: this.getModuleContent().data('extension-scanner-mark-fully-scanned-rest-files-token'),
-          hashes: this.uniqueArray(this.listOfAffectedRestFileHashes),
+          hashes: Array.from(new Set(this.listOfAffectedRestFileHashes)),
         },
       }).then(
         async (response: AjaxResponse): Promise<any> => {
@@ -177,15 +177,6 @@ class ExtensionScanner extends AbstractInteractableModule {
         }
       );
     }
-  }
-
-  /**
-   * Helper method removing duplicate entries from an array
-   */
-  private uniqueArray(anArray: Array<any>): Array<any> {
-    return anArray.filter((value: any, index: number, self: any): boolean => {
-      return self.indexOf(value) === index;
-    });
   }
 
   /**
