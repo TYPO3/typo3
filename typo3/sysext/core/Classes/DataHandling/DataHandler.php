@@ -1203,8 +1203,9 @@ class DataHandler implements LoggerAwareInterface
         $originalLanguageRecord = null;
         $originalLanguage_diffStorage = null;
         $diffStorageFlag = false;
+        $isNewRecord = str_contains((string)$id, 'NEW');
         // Setting 'currentRecord' and 'checkValueRecord':
-        if (str_contains((string)$id, 'NEW')) {
+        if ($isNewRecord) {
             // Must have the 'current' array - not the values after processing below...
             $checkValueRecord = $fieldArray;
             // IF $incomingFieldArray is an array, overlay it.
@@ -1318,14 +1319,17 @@ class DataHandler implements LoggerAwareInterface
             $fieldArray['perms_everybody'] = $originalLanguageRecord['perms_everybody'];
         }
 
-        // Add diff-storage information:
+        // Add diff-storage information
         if ($diffStorageFlag
-            && !array_key_exists($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'], $fieldArray)
+            && (
+                !array_key_exists($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'], $fieldArray)
+                || ($isNewRecord && $originalLanguageRecord !== null)
+            )
         ) {
-            // If the field is set it would probably be because of an undo-operation - in which case we should not update the field of course...
+            // If the field is set it would probably be because of an undo-operation - in which case we should not
+            // update the field of course. On the other hand, e.g. for record localization, we need to update the field.
             $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']] = json_encode($originalLanguage_diffStorage);
         }
-        // Return fieldArray
         return $fieldArray;
     }
 
