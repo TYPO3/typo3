@@ -68,6 +68,7 @@ class FileLinktype extends AbstractLinktype
      *
      * @param array $errorParams All parameters needed for the rendering of the error message
      * @return string Validation error message
+     * @todo change input parameter type to array in TYPO3 v13
      */
     public function getErrorMessage($errorParams)
     {

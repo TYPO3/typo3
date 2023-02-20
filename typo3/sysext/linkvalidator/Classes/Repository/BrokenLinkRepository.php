@@ -315,12 +315,20 @@ class BrokenLinkRepository
         return $results;
     }
 
+    /**
+     * Add broken link to table tx_linkvalidator_link
+     *
+     * @param array $record
+     * @param bool $isValid
+     * @param array|null $errorParams
+     * @throws \InvalidArgumentException
+     * @throws \UnexpectedValueException
+     * @todo Make default value of $errorParams [] instead of null and add strict typing in v13
+     */
     public function addBrokenLink($record, bool $isValid, array $errorParams = null): void
     {
         $response = ['valid' => $isValid];
-        if ($errorParams) {
-            $response['errorParams'] = $errorParams;
-        }
+        $response['errorParams'] = $errorParams ?? [];
         $record['url_response'] = json_encode($response);
         GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable(self::TABLE)

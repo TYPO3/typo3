@@ -243,11 +243,16 @@ class ExternalLinktype extends AbstractLinktype
      *
      * @param array $errorParams All parameters needed for the rendering of the error message
      * @return string Validation error message
+     * @todo change input parameter type to array in TYPO3 v13
      */
     public function getErrorMessage($errorParams)
     {
         $lang = $this->getLanguageService();
         $errorType = $errorParams['errorType'] ?? '';
+        if ($errorType === '') {
+            return $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.noinformation');
+        }
+
         $errno = (int)($errorParams['errno'] ?? 0);
         $exception = $errorParams['exception'] ?? '';
         $message = '';

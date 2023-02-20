@@ -55,6 +55,7 @@ interface LinktypeInterface
      * Get the value of the private property errorParams.
      *
      * @return array All parameters needed for the rendering of the error message
+     * @todo change return type to array in TYPO3 v13
      */
     public function getErrorParams();
 
@@ -63,6 +64,7 @@ interface LinktypeInterface
      *
      * @param array $row Broken link record
      * @return string Parsed broken url
+     * @todo change input parameter type to array in TYPO3 v13
      */
     public function getBrokenUrl($row);
 

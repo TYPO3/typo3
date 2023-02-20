@@ -224,7 +224,7 @@ class LinkAnalyzer
 
                 // Broken link found
                 if (!$checkUrl) {
-                    $this->brokenLinkRepository->addBrokenLink($record, false, $hookObj->getErrorParams());
+                    $this->brokenLinkRepository->addBrokenLink($record, false, $hookObj->getErrorParams() ?: []);
                     $this->brokenLinkCounts[$table]++;
                 }
             }
