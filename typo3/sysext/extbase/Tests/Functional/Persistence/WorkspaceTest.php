@@ -83,7 +83,7 @@ final class WorkspaceTest extends FunctionalTestCase
 
         // In workspace all records need to be fetched, thus enableFields is ignored
         // This means we select even hidden (but not deleted) records for count()
-        self::assertSame(5, $query->execute()->count());
+        self::assertSame(6, $query->execute()->count());
     }
 
     /**
@@ -156,14 +156,15 @@ final class WorkspaceTest extends FunctionalTestCase
 
         $blogs = $query->execute()->toArray();
 
-        self::assertCount(3, $blogs);
+        self::assertCount(4, $blogs);
 
         // Check first blog was overlaid with workspace preview
         $firstBlog = array_shift($blogs);
         self::assertSame(1, $firstBlog->getUid());
         self::assertSame('WorkspaceOverlay Blog1', $firstBlog->getTitle());
 
-        // Check last blog was enabled in workspace preview
+        // Check second-last blog was enabled in workspace preview
+        array_pop($blogs);
         $lastBlog = array_pop($blogs);
         self::assertSame(6, $lastBlog->getUid());
         self::assertSame('WorkspaceOverlay Blog6Enabled', $lastBlog->getTitle());
