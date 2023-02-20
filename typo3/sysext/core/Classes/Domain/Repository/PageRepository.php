@@ -707,8 +707,8 @@ class PageRepository implements LoggerAwareInterface
             // @todo: Fix call stack to prevent this situation in the first place
             && (int)($row[$tableControl['languageField']] ?? 0) !== -1
             && !empty($tableControl['transOrigPointerField'])
-            && $row['uid'] > 0
-            && ($row['pid'] > 0 || in_array($tableControl['rootLevel'] ?? false, [true, 1, -1], true))
+            && ($row['uid'] ?? 0) > 0
+            && (($row['pid'] ?? 0) > 0 || in_array($tableControl['rootLevel'] ?? false, [true, 1, -1], true))
         ) {
             // Will try to overlay a record only if the sys_language_content value is larger than zero.
             if ($languageAspect->getContentId() > 0) {
