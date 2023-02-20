@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Middleware\NormalizedParamsAttribute as NormalizedParamsMiddleware;
 use TYPO3\CMS\Core\Middleware\ResponsePropagation as ResponsePropagationMiddleware;
 use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
@@ -67,6 +68,7 @@ class ServiceProvider extends AbstractServiceProvider
     public function getFactories(): array
     {
         return [
+            Authentication\AuthenticationService::class => [ static::class, 'getAuthenticationService' ],
             Http\Application::class => [ static::class, 'getApplication' ],
             Http\NotFoundRequestHandler::class => [ static::class, 'getNotFoundRequestHandler' ],
             Service\ClearCacheService::class => [ static::class, 'getClearCacheService' ],
@@ -96,6 +98,7 @@ class ServiceProvider extends AbstractServiceProvider
             Command\UpgradeWizardListCommand::class => [ static::class, 'getUpgradeWizardListCommand' ],
             Command\SetupCommand::class => [ static::class, 'getSetupCommand' ],
             Database\PermissionsCheck::class => [ static::class, 'getPermissionsCheck' ],
+            Mailer::class => [ static::class, 'getMailer' ],
         ];
     }
 
@@ -107,6 +110,13 @@ class ServiceProvider extends AbstractServiceProvider
             'icons' => [ static::class, 'configureIcons' ],
             CommandRegistry::class => [ static::class, 'configureCommands' ],
         ];
+    }
+
+    public static function getAuthenticationService(ContainerInterface $container): Authentication\AuthenticationService
+    {
+        return new Authentication\AuthenticationService(
+            $container->get(Mailer::class)
+        );
     }
 
     public static function getApplication(ContainerInterface $container): Http\Application
@@ -238,7 +248,8 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return new Controller\EnvironmentController(
             $container->get(Service\LateBootService::class),
-            $container->get(FormProtectionFactory::class)
+            $container->get(FormProtectionFactory::class),
+            $container->get(Mailer::class)
         );
     }
 
@@ -356,6 +367,14 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getPermissionsCheck(ContainerInterface $container): Database\PermissionsCheck
     {
         return new Database\PermissionsCheck();
+    }
+
+    public static function getMailer(ContainerInterface $container): Mailer
+    {
+        return self::new($container, Mailer::class, [
+            null,
+            $container->get(EventDispatcherInterface::class),
+        ]);
     }
 
     public static function configureCommands(ContainerInterface $container, CommandRegistry $commandRegistry): CommandRegistry

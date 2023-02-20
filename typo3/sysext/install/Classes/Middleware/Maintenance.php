@@ -160,8 +160,8 @@ class Maintenance implements MiddlewareInterface
             $this->checkSessionToken($request, $session);
             $this->checkSessionLifetime($request, $session);
             $password = $request->getParsedBody()['install']['password'] ?? null;
-            $authService = new AuthenticationService($session);
-            if ($authService->loginWithPassword($password, $request)) {
+            $authService = $this->container->get(AuthenticationService::class);
+            if ($authService->loginWithPassword($password, $request, $session)) {
                 $response = new JsonResponse([
                     'success' => true,
                 ]);

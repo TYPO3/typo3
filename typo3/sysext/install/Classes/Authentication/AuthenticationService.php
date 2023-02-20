@@ -37,19 +37,10 @@ use TYPO3\CMS\Install\Service\SessionService;
  */
 class AuthenticationService
 {
-    /**
-     * @var SessionService
-     */
-    protected $sessionService;
+    protected TemplatePaths $templatePaths;
 
-    /**
-     * @var TemplatePaths
-     */
-    protected $templatePaths;
-
-    public function __construct(SessionService $sessionService)
+    public function __construct(protected readonly MailerInterface $mailer)
     {
-        $this->sessionService = $sessionService;
         $templateConfiguration = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
         $templateConfiguration['templateRootPaths'][20] = 'EXT:install/Resources/Private/Templates/Email/';
         $this->templatePaths = new TemplatePaths($templateConfiguration);
@@ -62,7 +53,7 @@ class AuthenticationService
      * @param ServerRequestInterface $request
      * @return bool if authentication was successful, otherwise false
      */
-    public function loginWithPassword($password, ServerRequestInterface $request): bool
+    public function loginWithPassword($password, ServerRequestInterface $request, SessionService $session): bool
     {
         $validPassword = false;
         if ($password !== null && $password !== '') {
@@ -74,7 +65,7 @@ class AuthenticationService
             $validPassword = $hashInstance->checkPassword($password, $installToolPassword);
         }
         if ($validPassword) {
-            $this->sessionService->setAuthorized();
+            $session->setAuthorized();
             $this->sendLoginSuccessfulMail($request);
             return true;
         }
@@ -130,8 +121,7 @@ class AuthenticationService
     protected function sendEmail(RawMessage $email): void
     {
         try {
-            // TODO: DI should be used to inject the MailerInterface
-            GeneralUtility::makeInstance(MailerInterface::class)->send($email);
+            $this->mailer->send($email);
         } catch (TransportException $e) {
             $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
             $logger->warning('Could not send notification email to ' . $this->getSenderEmailAddress() . ' due to mailer settings error', [

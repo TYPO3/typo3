@@ -57,6 +57,7 @@ class EnvironmentController extends AbstractController
     public function __construct(
         private readonly LateBootService $lateBootService,
         private readonly FormProtectionFactory $formProtectionFactory,
+        private readonly MailerInterface $mailer,
     ) {
     }
 
@@ -257,8 +258,7 @@ class EnvironmentController extends AbstractController
                     ->setRequest($request)
                     ->assignMultiple($variables);
 
-                // TODO: DI should be used to inject the MailerInterface
-                GeneralUtility::makeInstance(MailerInterface::class)->send($mailMessage);
+                $this->mailer->send($mailMessage);
                 $messages->enqueue(new FlashMessage(
                     'Recipient: ' . $recipient,
                     'Test mail sent'
