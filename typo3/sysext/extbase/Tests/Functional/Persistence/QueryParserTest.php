@@ -20,7 +20,9 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Tests\BlogExample\Domain\Model\Blog;
 use TYPO3Tests\BlogExample\Domain\Repository\AdministratorRepository;
+use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
 use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
 
 final class QueryParserTest extends FunctionalTestCase
@@ -174,5 +176,20 @@ final class QueryParserTest extends FunctionalTestCase
         $query = $postRepository->createQuery();
         $post = $query->matching($query->equals('uid', 1))->execute()->current();
         self::assertCount(3, $post->getCategories());
+    }
+
+    /**
+     * @test
+     */
+    public function queryForBlogsAndPostsWithNoPostsShowsBlogRecord(): void
+    {
+        $blogRepository = $this->get(BlogRepository::class);
+        $query = $blogRepository->createQuery();
+        /** @var Blog $blog */
+        $blog = $query->matching($query->logicalOr(
+            $query->like('description', '%w/o%'),
+            $query->like('posts.title', '%w/o%'),
+        ))->execute()->current();
+        self::assertSame(7, $blog->getUid());
     }
 }

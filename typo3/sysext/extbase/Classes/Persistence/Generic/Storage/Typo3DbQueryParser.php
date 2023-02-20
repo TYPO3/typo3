@@ -341,14 +341,14 @@ class Typo3DbQueryParser
                 $relationTableName = (string)$columnMap->getRelationTableName();
                 $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
                 $queryBuilderForSubselect
-                        ->select($columnMap->getParentKeyFieldName())
-                        ->from($relationTableName)
-                        ->where(
-                            $queryBuilderForSubselect->expr()->eq(
-                                $columnMap->getChildKeyFieldName(),
-                                $this->queryBuilder->createNamedParameter($value)
-                            )
-                        );
+                    ->select($columnMap->getParentKeyFieldName())
+                    ->from($relationTableName)
+                    ->where(
+                        $queryBuilderForSubselect->expr()->eq(
+                            $columnMap->getChildKeyFieldName(),
+                            $this->queryBuilder->createNamedParameter($value)
+                        )
+                    );
                 $additionalWhereForMatchFields = $this->getAdditionalMatchFieldsStatement($queryBuilderForSubselect->expr(), $columnMap, $relationTableName, $relationTableName);
                 if ($additionalWhereForMatchFields) {
                     $queryBuilderForSubselect->andWhere($additionalWhereForMatchFields);
@@ -368,14 +368,14 @@ class Typo3DbQueryParser
                     // Build the SQL statement of the subselect
                     $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
                     $queryBuilderForSubselect
-                            ->select($parentKeyFieldName)
-                            ->from($childTableName)
-                            ->where(
-                                $queryBuilderForSubselect->expr()->eq(
-                                    'uid',
-                                    (int)$value
-                                )
-                            );
+                        ->select($parentKeyFieldName)
+                        ->from($childTableName)
+                        ->where(
+                            $queryBuilderForSubselect->expr()->eq(
+                                'uid',
+                                (int)$value
+                            )
+                        );
 
                     // Add it to the main query
                     return $this->queryBuilder->expr()->eq(
@@ -993,40 +993,41 @@ class Typo3DbQueryParser
         if ($columnMap->getTypeOfRelation() === Relation::HAS_ONE) {
             if (isset($parentKeyFieldName)) {
                 // @todo: no test for this part yet
-                $joinConditionExpression = $this->queryBuilder->expr()->eq(
+                $basicJoinCondition = $this->queryBuilder->expr()->eq(
                     $tableName . '.uid',
                     $this->queryBuilder->quoteIdentifier($childTableAlias . '.' . $parentKeyFieldName)
                 );
             } else {
-                $joinConditionExpression = $this->queryBuilder->expr()->eq(
+                $basicJoinCondition = $this->queryBuilder->expr()->eq(
                     $tableName . '.' . $columnName,
                     $this->queryBuilder->quoteIdentifier($childTableAlias . '.uid')
                 );
             }
-            $this->queryBuilder->leftJoin($tableName, $childTableName, $childTableAlias, $joinConditionExpression);
-            $this->unionTableAliasCache[] = $childTableAlias;
-            $this->queryBuilder->andWhere(
+            $joinConditionExpression = $this->queryBuilder->expr()->and(
+                $basicJoinCondition,
                 $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $childTableAlias, $realTableName)
             );
+            $this->queryBuilder->leftJoin($tableName, $childTableName, $childTableAlias, (string)$joinConditionExpression);
+            $this->unionTableAliasCache[] = $childTableAlias;
         } elseif ($columnMap->getTypeOfRelation() === Relation::HAS_MANY) {
-            // @todo: no tests for this part yet
             if (isset($parentKeyFieldName)) {
-                $joinConditionExpression = $this->queryBuilder->expr()->eq(
+                $basicJoinCondition = $this->queryBuilder->expr()->eq(
                     $tableName . '.uid',
                     $this->queryBuilder->quoteIdentifier($childTableAlias . '.' . $parentKeyFieldName)
                 );
             } else {
-                $joinConditionExpression = $this->queryBuilder->expr()->inSet(
+                $basicJoinCondition = $this->queryBuilder->expr()->inSet(
                     $tableName . '.' . $columnName,
                     $this->queryBuilder->quoteIdentifier($childTableAlias . '.uid'),
                     true
                 );
             }
-            $this->queryBuilder->leftJoin($tableName, $childTableName, $childTableAlias, $joinConditionExpression);
-            $this->unionTableAliasCache[] = $childTableAlias;
-            $this->queryBuilder->andWhere(
+            $joinConditionExpression = $this->queryBuilder->expr()->and(
+                $basicJoinCondition,
                 $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $childTableAlias, $realTableName)
             );
+            $this->queryBuilder->leftJoin($tableName, $childTableName, $childTableAlias, (string)$joinConditionExpression);
+            $this->unionTableAliasCache[] = $childTableAlias;
             $this->suggestDistinctQuery = true;
         } elseif ($columnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY) {
             $relationTableName = (string)$columnMap->getRelationTableName();
