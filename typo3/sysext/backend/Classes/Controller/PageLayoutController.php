@@ -539,8 +539,33 @@ class PageLayoutController
      */
     protected function getLocalizedPageTitle(): string
     {
-        $pageLocalizationRecord = $this->pageRepository->getPageOverlay($this->id, $this->current_sys_language);
-        return $this->current_sys_language <= 0 ? $this->pageinfo['title'] : ($pageLocalizationRecord['title'] ?? '');
+        if ($this->current_sys_language > 0) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                                          ->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getBackendUser()->workspace));
+            $localizedPage = $queryBuilder
+                ->select('*')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA']['pages']['ctrl']['languageField'],
+                        $queryBuilder->createNamedParameter($this->current_sys_language, Connection::PARAM_INT)
+                    )
+                )
+                ->setMaxResults(1)
+                ->executeQuery()
+                ->fetchAssociative();
+            BackendUtility::workspaceOL('pages', $localizedPage);
+            return $localizedPage['title'];
+        }
+        return $this->pageinfo['title'];
     }
 
     /**
@@ -828,13 +853,35 @@ class PageLayoutController
             && $this->current_sys_language > 0
             && $this->isPageEditable($this->current_sys_language)
         ) {
-            $overlayRecord = $this->pageRepository->getPageOverlay($this->id, $this->current_sys_language);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
+            $overlayRecord = $queryBuilder
+                ->select('uid')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA']['pages']['ctrl']['languageField'],
+                        $queryBuilder->createNamedParameter($this->current_sys_language, Connection::PARAM_INT)
+                    )
+                )
+                ->setMaxResults(1)
+                ->executeQuery()
+                ->fetchAssociative();
+            BackendUtility::workspaceOL('pages', $overlayRecord, $this->getBackendUser()->workspace);
+            // Edit button
             $url = (string)$this->uriBuilder->buildUriFromRoute(
                 'record_edit',
                 [
                     'edit' => [
                         'pages' => [
-                            $overlayRecord['_PAGES_OVERLAY_UID'] => 'edit',
+                            $overlayRecord['uid'] => 'edit',
                         ],
                     ],
                     'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
