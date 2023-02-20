@@ -1264,7 +1264,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $languageId = (int)$this->page[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
         $this->page = $this->sys_page->getPage($this->page[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']]);
         $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $languageId));
-        $this->id = $this->page['uid'];
+        $this->id = $this->page['uid'] ?? 0;
     }
 
     /**
