@@ -70,6 +70,7 @@ abstract class AbstractLinktype implements LinktypeInterface
      * Get the value of the private property errorParams
      *
      * @return array All parameters needed for the rendering of the error message
+     * @todo change return type to array in TYPO3 v13
      */
     public function getErrorParams()
     {
