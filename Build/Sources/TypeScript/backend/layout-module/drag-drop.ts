@@ -35,6 +35,7 @@ interface Parameters {
 class DragDrop {
   private static readonly contentIdentifier: string = '.t3js-page-ce';
   private static readonly draggableContentIdentifier: string = '.t3js-page-ce-sortable';
+  private static readonly draggableContentHandleIdentifier: string = '.t3js-page-ce-draghandle';
   private static readonly draggableContentCloneIdentifier: string = '[data-dragdrop-clone]';
   private static readonly dropZoneIdentifier: string = '.t3js-page-ce-dropzone-available';
   private static readonly columnIdentifier: string = '.t3js-page-column';
@@ -54,11 +55,16 @@ class DragDrop {
       moduleBody.scrollTop += e.deltaY;
     }).delegateTo(document, '.draggable-dragging');
 
-    interact(DragDrop.draggableContentIdentifier).draggable({
-      onstart: DragDrop.onDragStart,
-      onmove: DragDrop.onDragMove,
-      onend: DragDrop.onDragEnd,
-    })
+    interact(DragDrop.draggableContentIdentifier)
+      .draggable({
+        allowFrom: DragDrop.draggableContentHandleIdentifier,
+        onstart: DragDrop.onDragStart,
+        onmove: DragDrop.onDragMove,
+        onend: DragDrop.onDragEnd,
+      })
+      .pointerEvents({
+        allowFrom: DragDrop.draggableContentHandleIdentifier,
+      })
       .on('move', function (event: BaseEvent) {
         const interaction = event.interaction;
         const currentTarget = event.currentTarget as HTMLElement;
