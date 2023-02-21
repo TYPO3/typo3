@@ -2176,7 +2176,7 @@ class GraphicalFunctions
             if ($params) {
                 $info = $this->getImageDimensions($info[3]);
             }
-            if ($info[2] == $this->gifExtension && !$this->dontCompress) {
+            if ($info !== null && $info[2] === $this->gifExtension && !$this->dontCompress) {
                 self::gifCompress($info[3], '');
             }
             return $info;
@@ -2208,6 +2208,9 @@ class GraphicalFunctions
                         $imageFile,
                     ];
                     $this->cacheImageDimensions($returnArr);
+                } else {
+                    // Size could not be determined, return null instead of boolean
+                    $returnArr = null;
                 }
             }
         }
