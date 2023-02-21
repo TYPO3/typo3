@@ -249,6 +249,10 @@ class PageRouter implements RouterInterface
             $language = $this->site->getDefaultLanguage();
         }
 
+        // Whether scheduled records should be considered
+        $includeScheduledRecords = (bool)($parameters['_includeScheduledRecords'] ?? false);
+        unset($parameters['_includeScheduledRecords']);
+
         $pageId = 0;
         if ($route instanceof Page) {
             $pageId = $route->getPageId();
@@ -261,6 +265,7 @@ class PageRouter implements RouterInterface
         $context = clone $this->context;
         $context->setAspect('language', LanguageAspectFactory::createFromSiteLanguage($language));
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
+        $pageRepository->includeScheduledRecords = $includeScheduledRecords;
 
         if ($route instanceof Page) {
             $page = $route->toArray();

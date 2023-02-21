@@ -3692,6 +3692,12 @@ class BackendUtility
             $context->setAspect('date', $dateAspect);
             $simTime = '&ADMCMD_simTime=' . ($access['endtime'] - 1);
         }
+        if ($simTime !== '') {
+            // We set this special param in order to forward the information about scheduled records
+            // through PageRouter to the PageRepository, which would otherwise exclude scheduled records
+            // due to the applied FrontendRestrictionContainer in getPageOverlaysForLanguageUids().
+            $simTime .= '&_includeScheduledRecords=' . 1;
+        }
         return $simUser . $simTime;
     }
 

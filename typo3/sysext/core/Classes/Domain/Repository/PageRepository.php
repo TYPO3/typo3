@@ -70,6 +70,11 @@ class PageRepository implements LoggerAwareInterface
     public $where_groupAccess = '';
 
     /**
+     * @internal
+     */
+    public bool $includeScheduledRecords = false;
+
+    /**
      * Can be migrated away later to use context API directly.
      *
      * @var int
@@ -544,6 +549,15 @@ class PageRepository implements LoggerAwareInterface
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
             // Because "fe_group" is an exclude field, so it is synced between overlays, the group restriction is removed for language overlays of pages
             $queryBuilder->getRestrictions()->removeByType(FrontendGroupRestriction::class);
+
+            // In backend context, scheduled pages might be relevant, e.g. when building preview links (see #100008)
+            if ($this->includeScheduledRecords) {
+                $queryBuilder
+                    ->getRestrictions()
+                    ->removeByType(StartTimeRestriction::class)
+                    ->removeByType(EndTimeRestriction::class);
+            }
+
             $result = $queryBuilder->select('*')
                 ->from('pages')
                 ->where(
