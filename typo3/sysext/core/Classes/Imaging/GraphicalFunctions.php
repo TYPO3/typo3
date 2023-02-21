@@ -334,7 +334,7 @@ class GraphicalFunctions
         // Boolean. This is necessary if using ImageMagick 5+.
         // Effects in Imagemagick 5+ tends to render very slowly!!
         // - therefore must be disabled in order not to perform sharpen, blurring and such.
-        $this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . $this->jpegQuality;
+        $this->cmds['jpg'] = $this->cmds['jpeg'] = $this->cmds['webp'] = '-colorspace ' . $this->colorspace . ' -quality ' . $this->jpegQuality;
 
         // ... but if 'processor_effects' is set, enable effects
         if ($gfxConf['processor_effects']) {
