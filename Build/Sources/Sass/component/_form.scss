@@ -2,6 +2,7 @@
 // SelectIcons FieldWizard
 //
 .form-wizard-icon-list {
+    color: var(--typo3-component-color);
     background: var(--typo3-component-bg);
     border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
     border-radius: $input-border-radius;
@@ -16,6 +17,7 @@
     a {
         display: flex;
         height: 100%;
+        color: var(--typo3-component-color);
         border-radius: calc(var(--typo3-component-border-radius) / 2);
         padding: calc(var(--typo3-spacing) / 2);
         align-items: center;
