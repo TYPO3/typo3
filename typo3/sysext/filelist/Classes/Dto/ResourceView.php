@@ -34,7 +34,6 @@ class ResourceView
     public ?string $editContentUri;
     public ?string $editDataUri;
     public ?string $replaceUri;
-    public ?string $renameUri;
 
     public bool $isSelectable = true;
     public bool $isDownloadable = true;
@@ -251,6 +250,15 @@ class ResourceView
     {
         if ($this->resource instanceof File || $this->resource instanceof Folder) {
             return $this->resource->checkActionPermission('copy');
+        }
+
+        return null;
+    }
+
+    public function canRename(): ?bool
+    {
+        if ($this->resource instanceof File || $this->resource instanceof Folder) {
+            return $this->resource->checkActionPermission('rename');
         }
 
         return null;

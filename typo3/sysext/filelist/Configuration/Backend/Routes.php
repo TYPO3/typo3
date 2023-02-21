@@ -24,12 +24,6 @@ return [
         'target' => \TYPO3\CMS\Filelist\Controller\File\CreateFileController::class . '::mainAction',
     ],
 
-    // Rename a file
-    'file_rename' => [
-        'path' => '/file/rename',
-        'target' => \TYPO3\CMS\Filelist\Controller\File\RenameFileController::class . '::mainAction',
-    ],
-
     // Replace a file with a different one
     'file_replace' => [
         'path' => '/file/replace',

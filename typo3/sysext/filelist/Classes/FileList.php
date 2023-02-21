@@ -328,7 +328,6 @@ class FileList
             $resourceView->editDataUri = $this->createEditDataUriForResource($resource);
             $resourceView->editContentUri = $this->createEditContentUriForResource($resource);
             $resourceView->replaceUri = $this->createReplaceUriForResource($resource);
-            $resourceView->renameUri = $this->createRenameUriForResource($resource);
 
             $resourceView->isDownloadable = $this->resourceDownloadMatcher === null || $this->resourceDownloadMatcher->match($resource);
             $resourceView->isSelectable = $this->resourceSelectMatcher === null || $this->resourceSelectMatcher->match($resource);
@@ -1001,13 +1000,14 @@ class FileList
 
     protected function createControlRename(ResourceView $resourceView): ?ButtonInterface
     {
-        if (!$resourceView->renameUri) {
+        if (!$resourceView->canRename()) {
             return null;
         }
 
         $button = GeneralUtility::makeInstance(LinkButton::class);
         $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename'));
-        $button->setHref($resourceView->renameUri);
+        $button->setHref('javascript:;');
+        $button->setDataAttributes(['filelist-action' => 'rename']);
         $button->setIcon($this->iconFactory->getIcon('actions-edit-rename', Icon::SIZE_SMALL));
 
         return $button;
@@ -1505,21 +1505,6 @@ class FileList
             ];
             return (string)$this->uriBuilder->buildUriFromRoute('file_replace', $parameter);
         }
-        return null;
-    }
-
-    protected function createRenameUriForResource(ResourceInterface $resource): ?string
-    {
-        if (($resource instanceof File || $resource instanceof Folder)
-            && $resource->checkActionPermission('rename')
-        ) {
-            $parameter = [
-                'target' => $resource->getCombinedIdentifier(),
-                'returnUrl' => $this->createModuleUri(),
-            ];
-            return (string)$this->uriBuilder->buildUriFromRoute('file_rename', $parameter);
-        }
-
         return null;
     }
 

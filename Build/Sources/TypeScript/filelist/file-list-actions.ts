@@ -36,6 +36,7 @@ export enum FileListActionEvent {
   primary = 'typo3:filelist:resource:action:primary',
   primaryContextmenu = 'typo3:filelist:resource:action:primaryContextmenu',
   show = 'typo3:filelist:resource:action:show',
+  rename = 'typo3:filelist:resource:action:rename',
   select = 'typo3:filelist:resource:action:select',
   download = 'typo3:filelist:resource:action:download',
 }
@@ -104,6 +105,9 @@ class FileListActions {
             break;
           case 'select':
             document.dispatchEvent(new CustomEvent(FileListActionEvent.select, { detail: detail }));
+            break;
+          case 'rename':
+            document.dispatchEvent(new CustomEvent(FileListActionEvent.rename, { detail: detail }));
             break;
           case 'download':
             document.dispatchEvent(new CustomEvent(FileListActionEvent.download, { detail: detail }));

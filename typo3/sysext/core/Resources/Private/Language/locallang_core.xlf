@@ -751,6 +751,15 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_download.noFiles.message" resname="file_download.noFiles">
 				<source>Please check your selection, since there might be file extension limitations, defined by your administrator.</source>
 			</trans-unit>
+			<trans-unit id="file_rename.title" resname="file_rename.title">
+				<source>Rename</source>
+			</trans-unit>
+			<trans-unit id="file_rename.button.cancel" resname="file_rename.button.cancel">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="file_rename.button.rename" resname="file_rename.button.rename">
+				<source>Rename</source>
+			</trans-unit>
 			<trans-unit id="online_media.new_media" resname="online_media.new_media">
 				<source>Add new media asset</source>
 			</trans-unit>

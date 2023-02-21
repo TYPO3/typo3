@@ -1,0 +1,13 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+import{SeverityEnum}from"@typo3/backend/enum/severity.js";import Modal from"@typo3/backend/modal.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import RegularEvent from"@typo3/core/event/regular-event.js";import Notification from"@typo3/backend/notification.js";import Viewport from"@typo3/backend/viewport.js";import{FileListDragDropEvent}from"@typo3/filelist/file-list-dragdrop.js";var FileListTransferType;!function(e){e.move="move",e.copy="copy"}(FileListTransferType||(FileListTransferType={}));class FileListTransferHandler{constructor(){new RegularEvent(FileListDragDropEvent.transfer,(e=>{const t=e.detail,r=t.target,a=t.resources;let s,o;if(1===t.resources.length){const e=t.resources[0];s="folder"===e.type?TYPO3.lang.move_folder:TYPO3.lang.move_file,o=TYPO3.lang["mess.move_into"].replace("%s",e.name).replace("%s",r.name)}else s=TYPO3.lang.transfer_multiple,o=TYPO3.lang["mess.transfer_multiple"].replace("%d",a.length.toString(10)).replace("%s",r.name);const n=Modal.confirm(s,o,SeverityEnum.notice,[{text:TYPO3.lang["labels.cancel"]||"Cancel",active:!0,btnClass:"btn-default",name:"cancel",trigger:()=>{n.hideModal()}},{text:TYPO3.lang["labels.copy"]||"Copy",btnClass:"btn-primary",name:"copy",trigger:()=>{this.transfer(FileListTransferType.copy,a,r),n.hideModal()}},{text:TYPO3.lang["labels.move"]||"Move",btnClass:"btn-primary",name:"move",trigger:()=>{this.transfer(FileListTransferType.move,a,r),n.hideModal()}}])})).bindTo(top.document)}transfer(e,t,r){const a=[];t.forEach((e=>{const t={data:e.identifier,target:r.identifier};a.push(t)}));const s={data:{[e]:a}};new AjaxRequest(top.TYPO3.settings.ajaxUrls.file_process).post(s).then((async e=>{const t=await e.resolve();this.handleMessages(t.messages??[]),Viewport.ContentContainer.refresh(),top.document.dispatchEvent(new CustomEvent("typo3:filestoragetree:refresh"))})).catch((async e=>{const t=await e.resolve();this.handleMessages(t.messages??[]),Viewport.ContentContainer.refresh(),top.document.dispatchEvent(new CustomEvent("typo3:filestoragetree:refresh"))}))}handleMessages(e){e.forEach((e=>{Notification.showMessage(e.title||"",e.message||"",e.severity)}))}}export default new FileListTransferHandler;

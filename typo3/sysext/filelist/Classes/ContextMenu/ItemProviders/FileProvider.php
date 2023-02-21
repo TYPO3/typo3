@@ -466,9 +466,6 @@ class FileProvider extends AbstractProvider
             case 'downloadFolder':
                 $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_download'));
                 break;
-            case 'rename':
-                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_rename'));
-                break;
             case 'edit':
                 $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_edit'));
                 break;

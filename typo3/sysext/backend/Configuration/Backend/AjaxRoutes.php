@@ -11,6 +11,13 @@ use TYPO3\CMS\Backend\Controller;
  */
 return [
 
+    // Rename resource
+    'resource_rename' => [
+        'path' => '/resource/rename',
+        'methods' => ['POST'],
+        'target' => Controller\Resource\ResourceController::class . '::renameResourceAction',
+    ],
+
     // File processing
     'file_process' => [
         'path' => '/file/process',

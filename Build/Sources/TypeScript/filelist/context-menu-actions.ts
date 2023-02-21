@@ -18,7 +18,7 @@ import Notification from '@typo3/backend/notification';
 import Modal from '@typo3/backend/modal';
 import Md5 from '@typo3/backend/hashing/md5';
 import { fileListOpenElementBrowser } from '@typo3/filelist/file-list';
-import { FileListActionUtility } from './file-list-actions';
+import { FileListActionEvent, FileListActionDetail, FileListActionUtility } from './file-list-actions';
 
 /**
  * Module: @typo3/filelist/context-menu-actions
@@ -46,10 +46,18 @@ class ContextMenuActions {
   }
 
   public static renameFile(table: string, uid: string, dataset: DOMStringMap): void {
-    const actionUrl: string = dataset.actionUrl;
-    top.TYPO3.Backend.ContentContainer.setUrl(
-      actionUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl()
-    );
+    (async () => {
+      await import('@typo3/filelist/file-list-rename-handler');
+      const resource = FileListActionUtility.createResourceFromContextDataset(dataset);
+      const detail: FileListActionDetail = {
+        event: null,
+        trigger: null,
+        action: FileListActionEvent.rename,
+        resource: resource,
+        url: null
+      };
+      document.dispatchEvent(new CustomEvent(FileListActionEvent.rename, { detail: detail }));
+    })();
   }
 
   public static editFile(table: string, uid: string, dataset: DOMStringMap): void {

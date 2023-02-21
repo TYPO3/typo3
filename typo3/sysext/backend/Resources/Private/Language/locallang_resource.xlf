@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_resource.xlf" date="2023-02-21T00:00:00Z" product-name="cms">
+		<header/>
+		<body>
+
+			<trans-unit id="ajax.success" resname="ajax.success">
+				<source>Success</source>
+			</trans-unit>
+			<trans-unit id="ajax.success.message.renamed" resname="ajax.success.message.renamed">
+				<source>The resource "%s" has been renamed to "%s".</source>
+			</trans-unit>
+			<trans-unit id="ajax.error" resname="ajax.error">
+				<source>An error occurred</source>
+			</trans-unit>
+			<trans-unit id="ajax.error.message.resourceNotFileOrFolder" resname="ajax.error.message.resourceNotFileOrFolder">
+				<source>The resource must be a file oder a folder.</source>
+			</trans-unit>
+			<trans-unit id="ajax.error.message.resourceOutsideOfStorages" resname="ajax.error.message.resourceOutsideOfStorages">
+				<source>You are not allowed to access files outside your storages.</source>
+			</trans-unit>
+			<trans-unit id="ajax.error.message.resourceNoPermissionRename" resname="ajax.error.message.resourceNoPermissionRename">
+				<source>You are not allowed to rename the resource.</source>
+			</trans-unit>
+			<trans-unit id="ajax.error.message.resourceNameCannotBeEmpty" resname="ajax.error.message.resourceNameCannotBeEmpty">
+				<source>The resource name cannot be empty.</source>
+			</trans-unit>
+
+		</body>
+	</file>
+</xliff>

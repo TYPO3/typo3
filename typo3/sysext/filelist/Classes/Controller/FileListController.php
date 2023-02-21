@@ -191,6 +191,7 @@ class FileListController implements LoggerAwareInterface
             JavaScriptModuleInstruction::create('@typo3/filelist/file-list.js')->instance()
         );
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-list-actions.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-list-rename-handler.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-delete.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/clipboard-panel.js');
