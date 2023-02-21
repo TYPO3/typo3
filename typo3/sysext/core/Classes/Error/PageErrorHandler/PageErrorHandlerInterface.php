@@ -27,5 +27,8 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 interface PageErrorHandlerInterface
 {
+    /**
+     * @param array<string, mixed> $reasons
+     */
     public function handlePageError(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface;
 }
