@@ -74,11 +74,11 @@ formEditor
              modalCloseDialogMessage: formEditor.modals.close.dialogMessage
              modalCloseDialogTitle: formEditor.modals.close.dialogTitle
              modalCloseConfirmButton: formEditor.modals.close.confirmButton
-             modalCloseCancleButton: formEditor.modals.close.cancleButton
+             modalCloseCancelButton: formEditor.modals.close.cancelButton
              modalRemoveElementDialogTitle: formEditor.modals.removeElement.dialogTitle
              modalRemoveElementDialogMessage: formEditor.modals.removeElement.dialogMessage
              modalRemoveElementConfirmButton: formEditor.modals.removeElement.confirmButton
-             modalRemoveElementCancleButton: formEditor.modals.removeElement.cancleButton
+             modalRemoveElementCancelButton: formEditor.modals.removeElement.cancelButton
              modalRemoveElementLastAvailablePageFlashMessageTitle: formEditor.modals.removeElement.lastAvailablePageFlashMessageTitle
              modalRemoveElementLastAvailablePageFlashMessageMessage: formEditor.modals.removeElement.lastAvailablePageFlashMessageMessage
              inspectorEditorFormElementSelectorNoElements: formEditor.inspector.editor.formelement_selector.no_elements

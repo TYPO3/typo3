@@ -1,9 +1,9 @@
 .. include:: /Includes.rst.txt
-formEditor.modalCloseCancleButton
+formEditor.modalCloseCancelButton
 ---------------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalCloseCancleButton
+      prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.modalCloseCancelButton
 
 :aspect:`Data type`
       string
@@ -21,7 +21,7 @@ formEditor.modalCloseCancleButton
 
          Form:
            formEditor:
-             modalCloseCancleButton: formEditor.modals.close.cancleButton
+             modalCloseCancelButton: formEditor.modals.close.cancelButton
 
 :aspect:`Good to know`
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`

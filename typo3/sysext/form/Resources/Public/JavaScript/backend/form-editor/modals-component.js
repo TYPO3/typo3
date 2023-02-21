@@ -196,7 +196,7 @@ function factory($, Helper, Modal, Severity, Icons) {
       );
 
       modalButtons.push({
-        text: getFormElementDefinition(getRootFormElement(), 'modalRemoveElementCancleButton'),
+        text: getFormElementDefinition(getRootFormElement(), 'modalRemoveElementCancelButton'),
         active: true,
         btnClass: getHelper().getDomElementClassName('buttonDefault'),
         name: 'cancel',
@@ -420,7 +420,7 @@ function factory($, Helper, Modal, Severity, Icons) {
       var modalButtons = [];
 
       modalButtons.push({
-        text: getFormElementDefinition(getRootFormElement(), 'modalCloseCancleButton'),
+        text: getFormElementDefinition(getRootFormElement(), 'modalCloseCancelButton'),
         active: true,
         btnClass: getHelper().getDomElementClassName('buttonDefault'),
         name: 'cancel',

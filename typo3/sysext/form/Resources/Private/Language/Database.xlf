@@ -360,7 +360,7 @@
             <trans-unit id="formEditor.modals.removeElement.confirmButton" resname="formEditor.modals.removeElement.confirmButton" xml:space="preserve">
                 <source>Remove</source>
             </trans-unit>
-            <trans-unit id="formEditor.modals.removeElement.cancleButton" resname="formEditor.modals.removeElement.cancleButton" xml:space="preserve">
+            <trans-unit id="formEditor.modals.removeElement.cancelButton" resname="formEditor.modals.removeElement.cancelButton" xml:space="preserve">
                 <source>Cancel</source>
             </trans-unit>
             <trans-unit id="formEditor.modals.removeElement.lastAvailablePageFlashMessageTitle" resname="formEditor.modals.removeElement.lastAvailablePageFlashMessageTitle" xml:space="preserve">
@@ -379,7 +379,7 @@
             <trans-unit id="formEditor.modals.close.confirmButton" resname="formEditor.modals.close.confirmButton" xml:space="preserve">
                 <source>Yes, discard my changes</source>
             </trans-unit>
-            <trans-unit id="formEditor.modals.close.cancleButton" resname="formEditor.modals.close.cancleButton" xml:space="preserve">
+            <trans-unit id="formEditor.modals.close.cancelButton" resname="formEditor.modals.close.cancelButton" xml:space="preserve">
                 <source>No, I will continue editing</source>
             </trans-unit>
 

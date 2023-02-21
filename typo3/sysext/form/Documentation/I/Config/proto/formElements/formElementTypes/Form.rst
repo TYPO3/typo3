@@ -120,8 +120,8 @@ Properties
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.form.formeditor.modalcloseconfirmbutton:
 .. include:: Form/formEditor/modalCloseConfirmButton.rst
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.form.formeditor.modalclosecanclebutton:
-.. include:: Form/formEditor/modalCloseCancleButton.rst
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.form.formeditor.modalclosecancelbutton:
+.. include:: Form/formEditor/modalCloseCancelButton.rst
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.form.formeditor.modalremoveelementdialogtitle:
 .. include:: Form/formEditor/modalRemoveElementDialogTitle.rst
@@ -132,8 +132,8 @@ Properties
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.form.formeditor.modalremoveelementconfirmbutton:
 .. include:: Form/formEditor/modalRemoveElementConfirmButton.rst
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.form.formeditor.modalremoveelementcanclebutton:
-.. include:: Form/formEditor/modalRemoveElementCancleButton.rst
+.. _prototypes.<prototypeIdentifier>.formelementsdefinition.form.formeditor.modalremoveelementcancelbutton:
+.. include:: Form/formEditor/modalRemoveElementCancelButton.rst
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.form.formeditor.modalremoveelementlastavailablepageflashmessagetitle:
 .. include:: Form/formEditor/modalRemoveElementLastAvailablePageFlashMessageTitle.rst
