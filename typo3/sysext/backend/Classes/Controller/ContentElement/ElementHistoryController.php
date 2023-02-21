@@ -496,6 +496,11 @@ class ElementHistoryController
             return false;
         }
 
+        // Early return if $elementUid is zero
+        if ((int)$elementUid === 0) {
+            return !($GLOBALS['TCA'][$tableName]['ctrl']['security']['ignoreRootLevelRestriction'] ?? false);
+        }
+
         $record = BackendUtility::getRecord($tableName, $elementUid, '*', '', false);
         // we need the parent page record for the editlock info if element isn't a page
         if ($tableName !== 'pages') {

@@ -426,7 +426,7 @@ class RecordHistory
             $pageId = $uid;
         } else {
             $record = BackendUtility::getRecord($table, $uid, '*', '', false);
-            $pageId = $record['pid'];
+            $pageId = ($record['pid'] ?? 0);
         }
 
         if ($pageId === 0 && ($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction'] ?? false)) {
