@@ -17,7 +17,8 @@
     <f:for each="{tasks}" as="taskGroup" key="taskGroupId">
         <div class="panel panel-default" data-multi-record-selection-identifier="task-group-{taskGroupId}">
             <div class="panel-heading multi-record-selection-panel" data-task-group-id="{taskGroupId}">
-                <button type="button"
+                <button
+                    type="button"
                     title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group')}"
                     class="btn btn-link fw-bold pt-1 p-0"
                     data-bs-toggle="collapse"
@@ -26,19 +27,20 @@
                 >
                     <f:if condition="!{taskGroup.groupName}">
                         <f:then>
-                            <span>{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noGroup')}</span> (<span class="t3js-table-total-items" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noGroup.taskCount')}">{taskGroup.tasks -> f:count()}</span>)
+                            <span>{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noGroup')}</span> <span class="t3js-table-total-items" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noGroup.taskCount')}">({taskGroup.tasks -> f:count()})</span>
                         </f:then>
                         <f:else>
-                            <span>{taskGroup.groupName}</span> (<span class="t3js-table-total-items" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.taskCount')}">{taskGroup.tasks -> f:count()}</span>)
+                            <span>{taskGroup.groupName}</span> <span class="t3js-table-total-items" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.taskCount')}">({taskGroup.tasks -> f:count()})</span>
                             <f:if condition="{taskGroup.groupHidden}">
-                                <span class="badge badge-warning">
+                                <span class="badge badge-info">
                                     <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabled" />
                                 </span>
                             </f:if>
                         </f:else>
                     </f:if>
                 </button>
-                <button type="button"
+                <button
+                    type="button"
                     class="btn btn-default btn-sm float-end t3js-toggle-table"
                     data-bs-toggle="collapse"
                     data-bs-target="#scheduler-task-group-{taskGroupId}"
@@ -55,7 +57,7 @@
                     <table class="table table-striped table-hover" data-scheduler-table>
                         <thead>
                             <tr class="taskGroup_{taskGroupId}">
-                                <th data-sort-method="none">
+                                <th class="col-selector nowrap" data-sort-method="none">
                                     <div class="btn-group dropdown">
                                         <a href="javascript:;"
                                             class="dropdown-toggle t3js-multi-record-selection-check-actions-toggle"
@@ -121,26 +123,26 @@
                                     </div>
                                 </th>
                                 <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.id"/></th>
-                                <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:task"/></th>
-                                <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.status"/></th>
-                                <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.type"/></th>
-                                <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.frequency"/></th>
-                                <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.parallel"/></th>
-                                <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.lastExecution"/></th>
-                                <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.nextExecution"/></th>
+                                <th class="col-task col-word-break"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:task"/></th>
+                                <th class="col-min"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.status"/></th>
+                                <th class="col-state"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.type"/></th>
+                                <th class="col-state"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.frequency"/></th>
+                                <th class="col-min"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.parallel"/></th>
+                                <th class="col-min"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.lastExecution"/></th>
+                                <th class="col-min"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.nextExecution"/></th>
                                 <th data-sort-method="none"></th>
                             </tr>
                         </thead>
                         <tbody data-multi-record-selection-row-selection="true">
                             <f:for each="{taskGroup.tasks}" as="task">
                                 <tr class="{f:if(condition:'{task.disabled}', then: 'disabled')} taskGroup_{taskGroupId}" data-task-id="{task.uid}" data-multi-record-selection-element="true">
-                                    <td>
+                                    <td class="col-selector nowrap">
                                         <span class="form-check form-toggle">
                                             <input class="form-check-input t3js-multi-record-selection-check" type="checkbox">
                                         </span>
                                     </td>
-                                    <td class="right">{task.uid}</td>
-                                    <td class="nowrap-disabled">
+                                    <td class="align-top">{task.uid}</td>
+                                    <td class="align-top col-task col-word-break">
                                         <div class="name">
                                             <f:be.link route="scheduler_manage" parameters="{action: 'edit', 'uid': task.uid}">
                                                 <strong>{task.classTitle} ({task.classExtension})</strong>
@@ -158,7 +160,7 @@
                                             <div class="text-muted" style="margin-top: 0.5em;"><f:format.nl2br>{task.description}</f:format.nl2br></div>
                                         </f:if>
                                     </td>
-                                    <td>
+                                    <td class="align-top col-min">
                                         <f:if condition="{task.isRunning}">
                                             <span class="badge badge-success"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.running" /></span>
                                         </f:if>
@@ -171,10 +173,10 @@
                                             </span>
                                         </f:if>
                                         <f:if condition="{task.disabled} && !{task.isRunning}">
-                                            <span class="badge badge-warning"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabled" /></span>
+                                            <span class="badge badge-info"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabled" /></span>
                                         </f:if>
                                         <f:if condition="{taskGroup.groupHidden} && !{task.isRunning}">
-                                            <span class="badge badge-warning"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabledByGroup" /></span>
+                                            <span class="badge badge-info"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabledByGroup" /></span>
                                         </f:if>
                                         <f:if condition="{task.lastExecutionFailure}">
                                             <f:if condition="{task.lastExecutionFailureMessage}">
@@ -203,7 +205,7 @@
                                             <span class="badge badge-{label.class}" title="{label.description}">{label.text}</span>
                                         </f:for>
                                     </td>
-                                    <td>
+                                    <td class="align-top col-state">
                                         <f:if condition="{task.type} === 'single'">
                                             <f:then>
                                                 <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.type.single" />
@@ -213,13 +215,13 @@
                                             </f:else>
                                         </f:if>
                                     </td>
-                                    <td>
+                                    <td class="align-top col-state">
                                         <f:if condition="{task.type} === 'single'">
                                             <f:then>-</f:then>
                                             <f:else>{task.frequency}</f:else>
                                         </f:if>
                                     </td>
-                                    <td>
+                                    <td class="align-top col-min">
                                         <f:if condition="{task.multiple}">
                                             <f:then>
                                                 <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes" />
@@ -229,7 +231,7 @@
                                             </f:else>
                                         </f:if>
                                     </td>
-                                    <td>
+                                    <td class="align-top col-min">
                                         <f:if condition="{task.lastExecutionTime}">
                                             <f:then>
                                                 <f:format.date format="{dateFormat.day} {dateFormat.time}" date="{task.lastExecutionTime}" />
@@ -247,7 +249,7 @@
                                             <f:else>-</f:else>
                                         </f:if>
                                     </td>
-                                    <td>
+                                    <td class="align-top col-min">
                                         <f:if condition="{task.isRunning} || {task.disabled} || {taskGroup.groupHidden}">
                                             <f:then>-</f:then>
                                             <f:else>
@@ -262,18 +264,19 @@
                                             </f:else>
                                         </f:if>
                                     </td>
-                                    <td class="nowrap">
+                                    <td class="align-top col-control nowrap">
                                         <f:if condition="{task.isRunning}">
                                             <f:then>
                                                 <div class="btn-group" role="group">
                                                     <f:comment>@todo: Next one should be a button type="submit".</f:comment>
-                                                    <f:be.link route="scheduler_manage"
+                                                    <f:be.link
+                                                        route="scheduler_manage"
                                                         parameters="{action: {'stop': task.uid}}"
                                                         class="btn btn-default t3js-modal-trigger"
                                                         data="{
                                                             severity: 'warning',
                                                             button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}',
-                                                            bs-content='{f:translate(key: \'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stop\')}'
+                                                            bs-content: '{f:translate(key: \'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stop\')}'
                                                         }"
                                                         title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop')}"
                                                     >
@@ -283,7 +286,8 @@
                                             </f:then>
                                             <f:else>
                                                 <div class="btn-group" role="group">
-                                                    <f:be.link route="scheduler_manage"
+                                                    <f:be.link
+                                                        route="scheduler_manage"
                                                         parameters="{action: 'edit', 'uid': task.uid}"
                                                         class="btn btn-default"
                                                         title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}"
@@ -315,13 +319,14 @@
                                                         </f:else>
                                                     </f:if>
                                                     <f:comment>@todo: Next one should be a button type="submit", too. Similar to the "toggle" button above.</f:comment>
-                                                    <f:be.link route="scheduler_manage"
+                                                    <f:be.link
+                                                        route="scheduler_manage"
                                                         parameters="{action: {'delete': task.uid}}"
                                                         class="btn btn-default t3js-modal-trigger"
                                                         data="{
                                                             severity: 'warning',
                                                             button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}',
-                                                            bs-content='{f:translate(key: \'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.delete\')}'
+                                                            bs-content: '{f:translate(key: \'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.delete\')}'
                                                         }"
                                                         title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
                                                     >
@@ -329,7 +334,8 @@
                                                     </f:be.link>
                                                 </div>
                                                 <div class="btn-group" role="group">
-                                                    <button type="submit"
+                                                    <button
+                                                        type="submit"
                                                         class="btn btn-default"
                                                         name="scheduleCron"
                                                         value="{task.uid}"
@@ -337,7 +343,8 @@
                                                     >
                                                         <core:icon identifier="actions-clock"/>
                                                     </button>
-                                                    <button type="submit"
+                                                    <button
+                                                        type="submit"
                                                         class="btn btn-default"
                                                         name="execute"
                                                         value="{task.uid}"
@@ -361,16 +368,18 @@
     <f:if condition="{errorClasses}">
         <div class="panel panel-default">
             <div class="panel-heading taskGroup" data-task-group-id="missing">
-                <button type="button"
+                <button
+                    type="button"
                     title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.errorClass')}"
                     class="btn btn-link fw-bold pt-1 p-0"
                     data-bs-toggle="collapse"
                     data-bs-target="#scheduler-task-group-missing"
                     aria-expanded="{f:if(condition: errorClassesCollapsed, then: 'false', else: 'true')}"
                 >
-                    <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.errorClass"/> (<span class="t3js-table-total-items" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.errorClass.taskCount')}">{errorClasses -> f:count()}</span>)
+                    <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.errorClass"/> <span class="t3js-table-total-items" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.errorClass.taskCount')}">({errorClasses -> f:count()})</span>
                 </button>
-                <button type="button"
+                <button
+                    type="button"
                     class="btn btn-default btn-sm float-end t3js-toggle-table"
                     data-bs-toggle="collapse"
                     data-bs-target="#scheduler-task-group-missing"
@@ -385,43 +394,45 @@
                 <div class="table-fit">
                     <table class="table table-striped table-hover">
                         <tr class="taskGroup" data-task-group-id="0">
-                            <td class="nowrap-disabled"><span>{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClass') -> f:format.raw()}</span></td>
+                            <td class="align-top nowrap-disabled"><span>{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClass') -> f:format.raw()}</span></td>
                         </tr>
                     </table>
                     <table class="table table-striped table-hover" data-scheduler-table>
                         <thead>
-                        <tr>
-                            <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.id"/></th>
-                            <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:task"/></th>
-                            <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.errorMessage"/></th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <f:for each="{errorClasses}" as="errorClass">
                             <tr>
-                                <td class="right">{errorClass.uid}</td>
-                                <td>{errorClass.class}</td>
-                                <td>{errorClass.errorMessage}</td>
-                                <td class="nowrap">
-                                    <div class="btn-group" role="group">
-                                        <f:comment>@todo: Next one should be a button type="submit"</f:comment>
-                                        <f:be.link
-                                            route="scheduler_manage"
-                                            parameters="{action: {'delete': errorClass.uid}}"
-                                            class="btn btn-default t3js-modal-trigger"
-                                            data="{
-                                                severity: 'warning',
-                                                button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}',
-                                                bs-content='{f:translate(key: \'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.delete\')}'
-                                            }"
-                                            title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
-                                        >
-                                            <core:icon identifier="actions-edit-delete"/>
-                                        </f:be.link>
-                                    </div>
-                                </td>
+                                <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.id"/></th>
+                                <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:task"/></th>
+                                <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.errorMessage"/></th>
+                                <th></th>
                             </tr>
-                        </f:for>
+                        </thead>
+                        <tbody>
+                            <f:for each="{errorClasses}" as="errorClass">
+                                <tr>
+                                    <td class="align-top">{errorClass.uid}</td>
+                                    <td class="align-top">{errorClass.class}</td>
+                                    <td class="align-top">{errorClass.errorMessage}</td>
+                                    <td class="align-top col-control">
+                                        <div class="btn-group" role="group">
+                                            <f:comment>@todo: Next one should be a button type="submit"</f:comment>
+                                            <f:be.link
+                                                route="scheduler_manage"
+                                                parameters="{action: {'delete': errorClass.uid}}"
+                                                class="btn btn-default t3js-modal-trigger"
+                                                data="{
+                                                    severity: 'warning',
+                                                    button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}',
+                                                    bs-content: '{f:translate(key: \'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.delete\')}'
+                                                }"
+                                                title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
+                                            >
+                                                <core:icon identifier="actions-edit-delete"/>
+                                            </f:be.link>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </f:for>
+                        </tbody>
                     </table>
                 </div>
             </div>

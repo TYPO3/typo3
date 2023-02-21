@@ -69,8 +69,17 @@
         padding-right: 0;
     }
 
-    .col-title {
+    .col-title,
+    .col-task {
         width: 99%;
+    }
+
+    .col-state {
+        min-width: 120px;
+    }
+
+    .col-task {
+        min-width: 400px;
     }
 
     .col-nowrap,
