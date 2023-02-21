@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -56,6 +57,7 @@ class PreviewUriBuilder
     protected string $section = '';
     protected array $additionalQueryParameters = [];
     protected bool $moduleLoading = true;
+    protected Context $context;
 
     /**
      * @param int $pageId Page ID to be previewed
@@ -72,6 +74,11 @@ class PreviewUriBuilder
     public function __construct(int $pageId)
     {
         $this->pageId = $pageId;
+        $this->context = clone GeneralUtility::makeInstance(Context::class);
+        $this->context->setAspect(
+            'visibility',
+            GeneralUtility::makeInstance(VisibilityAspect::class, true, false, false, true)
+        );
     }
 
     /**
@@ -171,7 +178,7 @@ class PreviewUriBuilder
                 $this->rootLine,
                 $this->section,
                 $this->additionalQueryParameters,
-                $context ?? clone GeneralUtility::makeInstance(Context::class),
+                $context ?? $this->context,
                 $this->enrichOptions($options)
             );
             $eventDispatcher->dispatch($event);
