@@ -17,7 +17,7 @@ import Notification from '@typo3/backend/notification';
 import InfoWindow from '@typo3/backend/info-window';
 import { BroadcastMessage } from '@typo3/backend/broadcast-message';
 import broadcastService from '@typo3/backend/broadcast-service';
-import { FileListActionEvent, FileListActionDetail, FileListActionSelector, FileListActionUtility, FileListActionResource } from '@typo3/filelist/file-list-actions';
+import { FileListActionEvent, FileListActionDetail, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
 import NProgress from 'nprogress';
 import Icons from '@typo3/backend/icons';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -30,21 +30,8 @@ import { SeverityEnum } from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
 import ContextMenu from '@typo3/backend/context-menu';
-import {DragDropDataTransferItem} from '@typo3/backend/drag-drop/drag-drop';
 
-type QueryParameters = {[key: string]: string};
-
-type DragImageCanvasOperation = {
-  offsetX: number,
-  offsetY: number,
-  reference: HTMLImageElement,
-};
-
-interface DragImageCanvasConfiguration {
-  width: number,
-  height: number,
-  operations: DragImageCanvasOperation[],
-}
+type QueryParameters = { [key: string]: string };
 
 interface EditFileMetadataConfiguration extends ActionConfiguration {
   table: string;
@@ -210,7 +197,6 @@ export default class Filelist {
     }).bindTo(document);
 
     DocumentService.ready().then((): void => {
-
       new RegularEvent('click', (e: Event, trigger: HTMLAnchorElement): void => {
         e.preventDefault();
 
@@ -222,41 +208,6 @@ export default class Filelist {
           }
         }));
       }).delegateTo(document, '.t3js-element-browser');
-
-      new RegularEvent('dragstart', (event: DragEvent, target: HTMLElement): void => {
-        const dragCollection: DragDropDataTransferItem[] = [];
-        const selectedItems: FileListActionResource[] = [];
-
-        const checkedItems = document.querySelectorAll(MultiRecordSelectionSelectors.checkboxSelector + ':checked') as NodeListOf<HTMLInputElement>;
-        if (checkedItems.length) {
-          checkedItems.forEach((checkbox: HTMLInputElement) => {
-            if (checkbox.checked) {
-              const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
-              const resource = FileListActionUtility.getResourceForElement(element);
-              selectedItems.push(resource);
-            }
-          });
-        } else {
-          const element = target.closest(FileListActionSelector.elementSelector) as HTMLElement;
-          const resource = FileListActionUtility.getResourceForElement(element);
-          selectedItems.push(resource);
-        }
-
-        selectedItems.forEach((resource: FileListActionResource) => {
-          dragCollection.push({
-            type: resource.type,
-            identifier: resource.identifier,
-            name: resource.name,
-            extra: {
-              referencedElement: (resource.origin.querySelector('img') as HTMLImageElement|null),
-              stateIdentifier: resource.stateIdentifier,
-            }
-          });
-        });
-
-        this.drawDataTransferPreview(event.dataTransfer, dragCollection);
-        event.dataTransfer.setData('application/json', JSON.stringify(dragCollection));
-      }).delegateTo(document, '.t3-filelist-container [data-filelist-element="true"]');
     });
 
     // Respond to multi record selection action events
@@ -270,37 +221,6 @@ export default class Filelist {
       Filelist.submitClipboardFormWithCommand('removeMarked', event.target as HTMLButtonElement)
     }).bindTo(document);
 
-    new RegularEvent('multiRecordSelection:checkbox:state:changed', (event: CustomEvent): void => {
-      const checkbox = event.target as HTMLInputElement;
-      const checkboxContainer: HTMLElement = checkbox.closest(MultiRecordSelectionSelectors.elementSelector);
-      if (checkboxContainer !== null) {
-        checkboxContainer.draggable = checkbox.checked;
-      }
-
-      if (checkbox.checked) {
-        // Disable dragging for all unchecked items
-        const allUncheckedItems = document.querySelectorAll(MultiRecordSelectionSelectors.checkboxSelector + ':not(:checked)') as NodeListOf<HTMLInputElement>;
-        allUncheckedItems.forEach((checkboxElement: HTMLElement): void => {
-          const draggableElement = checkboxElement.closest(FileListActionSelector.elementSelector) as HTMLElement;
-          draggableElement.draggable = false;
-          draggableElement.querySelectorAll(FileListActionSelector.elementSelector).forEach((nestedDraggableElement: HTMLElement) => {
-            nestedDraggableElement.draggable = false;
-          })
-        });
-      } else {
-        // Check if all checkboxes are unchecked => set draggable to true again
-        const allCheckedItems = document.querySelectorAll(MultiRecordSelectionSelectors.checkboxSelector + ':checked') as NodeListOf<HTMLInputElement>;
-        if (allCheckedItems.length === 0) {
-          document.querySelectorAll(FileListActionSelector.elementSelector).forEach((draggableElement: HTMLElement): void => {
-            draggableElement.draggable = true;
-            draggableElement.querySelectorAll(FileListActionSelector.elementSelector).forEach((nestedDraggableElement: HTMLElement) => {
-              nestedDraggableElement.draggable = true;
-            })
-          });
-        }
-      }
-    }).bindTo(document);
-
     // Respond to browser related clearable event
     const activeSearch: boolean = (document.querySelector([Selectors.fileListFormSelector, Selectors.searchFieldSelector].join(' ')) as HTMLInputElement)?.value !== '';
     new RegularEvent('search', (event: Event): void => {
@@ -309,113 +229,6 @@ export default class Filelist {
         (searchField.closest(Selectors.fileListFormSelector) as HTMLFormElement)?.submit();
       }
     }).delegateTo(document, Selectors.searchFieldSelector);
-  }
-
-  /**
-   * Draws a new ghost image for the dataTransfer drag.
-   */
-  private drawDataTransferPreview(dataTransfer: DataTransfer|null, dragCollection: DragDropDataTransferItem[]): void {
-    if (dataTransfer === null || dragCollection.length === 0) {
-      return;
-    }
-
-    const canvasId = 'dragstart-canvas';
-    document.getElementById(canvasId)?.remove();
-
-    const canvas = document.createElement('canvas') as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d');
-
-    // Check if the collection contains references to non-HTMLImageElement elements.
-    // If so, do not draw a fancy ghost image, the Canvas API cannot consume plain SVG objects.
-    const collectionContainsNonImageReference = dragCollection.some((item: DragDropDataTransferItem): boolean => {
-      return !(item.extra.referencedElement instanceof HTMLImageElement);
-    });
-    if (!collectionContainsNonImageReference && dragCollection.length <= 5) {
-      const canvasOperations = this.calculateDrawImageCanvasConfiguration(dragCollection);
-      canvas.width = canvasOperations.width;
-      canvas.height = canvasOperations.height;
-
-      for (let op of canvasOperations.operations) {
-        ctx.drawImage(op.reference, op.offsetX, op.offsetY);
-      }
-    } else {
-      const strokeWidth = 1;
-      const ghostText = dragCollection.length.toString(10);
-
-      // Draw counter
-      ctx.font = '16px verdana, arial, sans-serif';
-      const textMeasurement = ctx.measureText(ghostText);
-
-      const width = Math.max(Math.ceil(textMeasurement.width)) + 32;
-      const height = 32;
-      canvas.width = width;
-      canvas.height = height;
-
-      // Draw rect
-      ctx.beginPath();
-      ctx.rect(0, 0, width, height)
-      ctx.fillStyle = '#f2f8fe';
-      ctx.fill();
-      ctx.lineWidth = strokeWidth;
-      ctx.strokeStyle = '#3393eb';
-      ctx.stroke();
-
-      // Draw counter;
-      ctx.fillStyle = '#313131'
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.font = '16px verdana, arial, sans-serif';
-      ctx.fillText(ghostText, width / 2, height / 2);
-    }
-
-    const img = document.createElement('img') as HTMLImageElement
-    img.id = canvasId;
-    img.src = canvas.toDataURL('data/png');
-    document.body.appendChild(img);
-
-    // @todo This is ugly right now, browsers draw this semi-transparent, being non-configurable - we probably need
-    //       something like https://stackoverflow.com/a/31177307/4828813 instead
-    dataTransfer.setDragImage(img, 0, 0);
-  }
-
-  private calculateDrawImageCanvasConfiguration(dragCollection: DragDropDataTransferItem[]): DragImageCanvasConfiguration {
-    let width = 0;
-    let height = 0;
-    let offsetX = 0;
-    let offsetY = 0;
-    let operations = [];
-
-    // Remove items with any non-image reference
-    dragCollection = dragCollection.filter((item: DragDropDataTransferItem): boolean => {
-      return item.extra.referencedElement instanceof HTMLImageElement;
-    });
-
-    for (let i = 0; i < dragCollection.length; ++i) {
-      const referencedElement = dragCollection[i].extra.referencedElement;
-      if (i > 0) {
-        offsetX += Math.max(20, Math.floor(referencedElement.width / 100 * 20));
-        offsetY += Math.max(20, Math.floor(referencedElement.height / 100 * 20));
-      }
-
-      if (referencedElement.width + offsetX > width) {
-        width = referencedElement.width + offsetX;
-      }
-      if (referencedElement.height + offsetY > height) {
-        height = referencedElement.height + offsetY;
-      }
-
-      operations.push({
-        offsetX,
-        offsetY,
-        reference: referencedElement
-      });
-    }
-
-    return {
-      width,
-      height,
-      operations
-    };
   }
 
   private deleteMultiple(e: CustomEvent): void {
@@ -491,17 +304,19 @@ export default class Filelist {
     }
   }
 
-  private triggerDownload(items: Array<string>, downloadUrl: string, button: HTMLElement): void {
+  private triggerDownload(items: Array<string>, downloadUrl: string, button: HTMLElement | null): void {
     // Add notification about the download being prepared
     Notification.info(lll('file_download.prepare'), '', 2);
     // Store the targets' (button) content and replace with a spinner
     // icon, while the download is being prepared. Also disable the
     // button for this time to prevent the user from triggering it again.
-    const targetContent: string = button.innerHTML;
-    button.setAttribute('disabled', 'disabled');
-    Icons.getIcon('spinner-circle-dark', Icons.sizes.small).then((spinner: string): void => {
-      button.innerHTML = spinner;
-    });
+    const targetContent: string | null = button?.innerHTML;
+    if (button) {
+      button.setAttribute('disabled', 'disabled');
+      Icons.getIcon('spinner-circle-dark', Icons.sizes.small).then((spinner: string): void => {
+        button.innerHTML = spinner;
+      });
+    }
     // Configure and start the progress bar, while preparing
     NProgress
       .configure({ parent: '#typo3-filelist', showSpinner: false })
@@ -538,8 +353,10 @@ export default class Filelist {
       .finally(() => {
         // Remove progress bar and restore target (button)
         NProgress.done();
-        button.removeAttribute('disabled');
-        button.innerHTML = targetContent;
+        if (button) {
+          button.removeAttribute('disabled');
+          button.innerHTML = targetContent;
+        }
       });
   }
 }

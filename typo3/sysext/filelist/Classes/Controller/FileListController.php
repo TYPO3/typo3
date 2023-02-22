@@ -190,6 +190,11 @@ class FileListController implements LoggerAwareInterface
         $javaScriptRenderer->addJavaScriptModuleInstruction(
             JavaScriptModuleInstruction::create('@typo3/filelist/file-list.js')->instance()
         );
+
+        $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-list-dragdrop.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-list-transfer-handler.js');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:filelist/Resources/Private/Language/locallang_transfer_handler.xlf');
+
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-list-actions.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-list-rename-handler.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-delete.js');
@@ -197,10 +202,8 @@ class FileListController implements LoggerAwareInterface
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/clipboard-panel.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/multi-record-selection.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/column-selector-button.js');
-        $this->pageRenderer->addInlineLanguageLabelFile(
-            'EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf',
-            'buttons'
-        );
+
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf', 'buttons');
 
         $this->initializeModule($request);
 

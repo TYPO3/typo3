@@ -13,13 +13,13 @@
 
 import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
-import {DateTime} from 'luxon';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {SeverityEnum} from './enum/severity';
-import {MessageUtility} from './utility/message-utility';
+import { DateTime } from 'luxon';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { SeverityEnum } from './enum/severity';
+import { MessageUtility } from './utility/message-utility';
 import NProgress from 'nprogress';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {default as Modal, ModalElement, Sizes as ModalSizes} from './modal';
+import { default as Modal, ModalElement, Sizes as ModalSizes } from './modal';
 import Notification from './notification';
 import ImmediateAction from '@typo3/backend/action-button/immediate-action';
 import Md5 from '@typo3/backend/hashing/md5';
@@ -171,8 +171,7 @@ class DragUploaderPlugin {
     this.$dropzoneMask.on('dragleave', this.fileOutOfDropzone);
     this.$dropzoneMask.on('drop', (ev: JQueryEventObject) => this.handleDrop(<JQueryTypedEvent<DragEvent>>ev));
 
-    this.$dropzone.prepend(
-      '<button type="button" class="dropzone-hint" aria-labelledby="dropzone-title">' +
+    this.$dropzone.prepend('<button type="button" class="dropzone-hint" aria-labelledby="dropzone-title">' +
       '<div class="dropzone-hint-media">' +
       '<div class="dropzone-hint-icon"></div>' +
       '</div>' +
@@ -199,7 +198,7 @@ class DragUploaderPlugin {
         .attr('id', 'typo3-filelist')
         .addClass('table table-striped table-hover upload-queue')
         .html('<tbody></tbody>');
-      let $tableContainer = $('<div/>', {'class': 'table-fit'}).hide()
+      let $tableContainer = $('<div/>', { 'class': 'table-fit' }).hide()
         .append(this.$fileList);
 
       if (this.dropZoneInsertBefore) {
@@ -314,7 +313,7 @@ class DragUploaderPlugin {
       const request = new AjaxRequest(TYPO3.settings.ajaxUrls.file_exists).withQueryArguments({
         fileName: file.name,
         fileTarget: this.target,
-      }).get({cache: 'no-cache'}).then(async (response: AjaxResponse): Promise<void> => {
+      }).get({ cache: 'no-cache' }).then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         const fileExists = typeof data.uid !== 'undefined';
         if (fileExists) {
@@ -393,7 +392,7 @@ class DragUploaderPlugin {
                 },
                 {
                   label: TYPO3.lang['file_upload.reload.filelist.actions.reload'],
-                  action: new ImmediateAction( (): void => {
+                  action: new ImmediateAction((): void => {
                     top.list_frame.document.location.href = this.reloadUrl
                   })
                 }
@@ -415,7 +414,7 @@ class DragUploaderPlugin {
     }
     const $modalContent = $('<div/>').append(
       $('<p/>').text(TYPO3.lang['file_upload.existingfiles.description']),
-      $('<table/>', {class: 'table'}).append(
+      $('<table/>', { class: 'table' }).append(
         $('<thead/>').append(
           $('<tr />').append(
             $('<th/>'),
@@ -430,7 +429,7 @@ class DragUploaderPlugin {
       const $record = $('<tr />').append(
         $('<td />').append(
           (this.askForOverride[i].original.thumbUrl !== ''
-            ? $('<img />', {src: this.askForOverride[i].original.thumbUrl, height: 40})
+            ? $('<img />', { src: this.askForOverride[i].original.thumbUrl, height: 40 })
             : $(this.askForOverride[i].original.icon)
           ),
         ),
@@ -444,13 +443,13 @@ class DragUploaderPlugin {
           DateTime.fromMillis(this.askForOverride[i].uploaded.lastModified).toLocaleString(DateTime.DATETIME_MED)
         ),
         $('<td />').append(
-          $('<select />', {class: 'form-select t3js-actions', 'data-override': i}).append(
+          $('<select />', { class: 'form-select t3js-actions', 'data-override': i }).append(
             (this.irreObjectUid ? $('<option/>').val(Action.USE_EXISTING).text(TYPO3.lang['file_upload.actions.use_existing']) : ''),
-            $('<option />', {'selected': this.defaultAction === Action.SKIP})
+            $('<option />', { 'selected': this.defaultAction === Action.SKIP })
               .val(Action.SKIP).text(TYPO3.lang['file_upload.actions.skip']),
-            $('<option />', {'selected': this.defaultAction === Action.RENAME})
+            $('<option />', { 'selected': this.defaultAction === Action.RENAME })
               .val(Action.RENAME).text(TYPO3.lang['file_upload.actions.rename']),
-            $('<option />', {'selected': this.defaultAction === Action.OVERRIDE})
+            $('<option />', { 'selected': this.defaultAction === Action.OVERRIDE })
               .val(Action.OVERRIDE).text(TYPO3.lang['file_upload.actions.override']),
           ),
         ),
@@ -481,14 +480,14 @@ class DragUploaderPlugin {
         $(modal).find('.modal-footer').prepend(
           $('<span/>').addClass('form-inline').append(
             $('<label/>').text(TYPO3.lang['file_upload.actions.all.label']),
-            $('<select/>', {class: 'form-select t3js-actions-all'}).append(
+            $('<select/>', { class: 'form-select t3js-actions-all' }).append(
               $('<option/>').val('').text(TYPO3.lang['file_upload.actions.all.empty']),
               (this.irreObjectUid ? $('<option/>').val(Action.USE_EXISTING).text(TYPO3.lang['file_upload.actions.all.use_existing']) : ''),
-              $('<option/>', {'selected': this.defaultAction === Action.SKIP})
+              $('<option/>', { 'selected': this.defaultAction === Action.SKIP })
                 .val(Action.SKIP).text(TYPO3.lang['file_upload.actions.all.skip']),
-              $('<option/>', {'selected': this.defaultAction === Action.RENAME})
+              $('<option/>', { 'selected': this.defaultAction === Action.RENAME })
                 .val(Action.RENAME).text(TYPO3.lang['file_upload.actions.all.rename']),
-              $('<option/>', {'selected': this.defaultAction === Action.OVERRIDE})
+              $('<option/>', { 'selected': this.defaultAction === Action.OVERRIDE })
                 .val(Action.OVERRIDE).text(TYPO3.lang['file_upload.actions.all.override']),
             ),
           ),
@@ -572,8 +571,8 @@ class FileQueueItem {
       // Add selector cell, if this is a real table (e.g. not in FormEngine)
       this.$selector = $('<td />').addClass('col-selector').appendTo(this.$row);
     }
-    this.$iconCol = $('<td />', {'class': 'col-icon'}).appendTo(this.$row);
-    this.$fileName = $('<td />', {'class': 'col-title col-responsive'}).text(file.name).appendTo(this.$row);
+    this.$iconCol = $('<td />', { 'class': 'col-icon' }).appendTo(this.$row);
+    this.$fileName = $('<td />', { 'class': 'col-title col-responsive' }).text(file.name).appendTo(this.$row);
     this.$progress = $('<td />').attr('colspan', this.dragUploader.fileListColumnCount - this.$row.find('td').length).appendTo(this.$row);
     this.$progressContainer = $('<div />').addClass('upload-queue-progress').appendTo(this.$progress);
     this.$progressBar = $('<div />').addClass('upload-queue-progress-bar').appendTo(this.$progressContainer);
@@ -785,7 +784,7 @@ class FileQueueItem {
       $('<td />').text(fileInfo.path).appendTo(this.$row);
     }
     // Controls column is deliberately empty
-    $('<td />', {'class': 'col-control'}).text('').appendTo(this.$row);
+    $('<td />', { 'class': 'col-control' }).text('').appendTo(this.$row);
     $('<td />').text(TYPO3.lang['type.file'] + ' (' + fileInfo.extension.toUpperCase() + ')').appendTo(this.$row);
     $('<td />').text(DragUploader.fileSizeAsString(fileInfo.size)).appendTo(this.$row);
     let permissions = '';
@@ -875,7 +874,7 @@ class DragUploader {
     const observer = new MutationObserver((): void => {
       $('.t3js-drag-uploader').dragUploader(opts);
     });
-    observer.observe(document, {childList: true, subtree: true});
+    observer.observe(document, { childList: true, subtree: true });
   }
 }
 

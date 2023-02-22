@@ -16,16 +16,18 @@ import {EventInterface, Listener} from './event-interface';
 class RegularEvent implements EventInterface {
   protected eventName: string;
   protected callback: Listener;
+  protected options: AddEventListenerOptions | boolean;
   private boundElement: EventTarget;
 
-  constructor(eventName: string, callback: Listener) {
+  constructor(eventName: string, callback: Listener, options: AddEventListenerOptions | boolean = false) {
     this.eventName = eventName;
     this.callback = callback;
+    this.options = options;
   }
 
   public bindTo(element: EventTarget): void {
     this.boundElement = element;
-    element.addEventListener(this.eventName, this.callback);
+    element.addEventListener(this.eventName, this.callback, this.options);
   }
 
   public delegateTo(element: EventTarget, selector: string): void {
@@ -37,7 +39,7 @@ class RegularEvent implements EventInterface {
           break;
         }
       }
-    }, false);
+    }, this.options);
   }
 
   public release(): void {

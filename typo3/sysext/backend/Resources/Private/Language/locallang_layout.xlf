@@ -39,12 +39,6 @@
 			<trans-unit id="move_page" resname="move_page">
 				<source>Move page</source>
 			</trans-unit>
-			<trans-unit id="move_folder" resname="move_folder">
-				<source>Move folder</source>
-			</trans-unit>
-			<trans-unit id="move_file" resname="move_file">
-				<source>Move file</source>
-			</trans-unit>
 			<trans-unit id="transfer_multiple" resname="transfer_multiple">
 				<source>Transfer multiple items</source>
 			</trans-unit>

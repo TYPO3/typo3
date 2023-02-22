@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -129,6 +130,18 @@ class ResourceView
         }
 
         return null;
+    }
+
+    public function getThumbnailUri(): ?string
+    {
+        $preview = $this->getPreview();
+        if (!$preview) {
+            return null;
+        }
+
+        return $preview
+            ->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, ['width' => '32c', 'height' => '32c'])
+            ->getPublicUrl() ?? null;
     }
 
     public function getIconSmall(): Icon

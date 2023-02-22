@@ -196,7 +196,7 @@ export class SvgTree extends LitElement {
     this.focusElement(this.getElementFromNode(node));
   }
 
-  public getNodeFromElement(element: SVGElement|HTMLElement): TreeNode|null
+  public getNodeFromElement(element: SVGElement|HTMLElement): TreeNode | null
   {
     if (element === null || !('stateId' in element.dataset)) {
       return null;

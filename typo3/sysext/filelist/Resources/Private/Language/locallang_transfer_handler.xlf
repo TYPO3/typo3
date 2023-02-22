@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_transfer_handler.xlf" date="2023-02-24T00:00:00Z" product-name="cms">
+		<header/>
+		<body>
+
+			<trans-unit id="message.transfer_resource.title" resname="message.transfer_resource.title">
+				<source>Transfer Resource</source>
+			</trans-unit>
+			<trans-unit id="message.transfer_resource.text" resname="message.transfer_resource.text">
+				<source>Transfer "%s" to "%s"?</source>
+			</trans-unit>
+
+			<trans-unit id="message.transfer_resources.title" resname="message.transfer_resources.title">
+				<source>Transfer Resources</source>
+			</trans-unit>
+			<trans-unit id="message.transfer_resources.text" resname="message.transfer_resources.text">
+				<source>Transfer %d resources to "%s"?</source>
+			</trans-unit>
+
+			<trans-unit id="message.button.cancel" resname="message.button.cancel">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="message.button.copy" resname="message.button.copy">
+				<source>Copy</source>
+			</trans-unit>
+			<trans-unit id="message.button.move" resname="message.button.move">
+				<source>Move</source>
+			</trans-unit>
+
+		</body>
+	</file>
+</xliff>

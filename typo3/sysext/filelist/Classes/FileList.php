@@ -441,6 +441,7 @@ class FileList
                 'data-filelist-identifier' => $resourceView->getIdentifier(),
                 'data-filelist-state-identifier' => $resourceView->getStateIdentifier(),
                 'data-filelist-name' => htmlspecialchars($resourceView->getName()),
+                'data-filelist-thumbnail' => $resourceView->getThumbnailUri(),
                 'data-filelist-uid' => $resourceView->getUid(),
                 'data-filelist-meta-uid' => $resourceView->getMetaDataUid(),
                 'data-filelist-selectable' => $resourceView->isSelectable ? 'true' : 'false',

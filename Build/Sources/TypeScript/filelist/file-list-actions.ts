@@ -13,22 +13,13 @@
 
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
-
-export interface FileListActionResource {
-  type: string;
-  identifier: string;
-  stateIdentifier: string;
-  name: string;
-  uid: number | null;
-  metaUid: number | null;
-  origin: HTMLElement
-}
+import { ResourceInterface } from '@typo3/backend/resource/resource';
 
 export interface FileListActionDetail {
   event: Event;
-  trigger: HTMLElement;
   action: string;
-  resource: FileListActionResource;
+  resource: ResourceInterface;
+  trigger: HTMLElement | null;
   url: string | null;
 }
 
@@ -47,30 +38,30 @@ export enum FileListActionSelector {
 }
 
 export class FileListActionUtility {
-  public static createResourceFromContextDataset(dataset: DOMStringMap): FileListActionResource {
-    const resource: FileListActionResource = {
+  public static createResourceFromContextDataset(dataset: DOMStringMap): ResourceInterface {
+    const resource: ResourceInterface = {
       type: dataset.filecontextType,
       identifier: dataset.filecontextIdentifier,
       stateIdentifier: dataset.filecontextIdentifier,
       name: dataset.filecontextName,
+      thumbnail: null,
       uid: dataset.filecontextUid ? parseInt(dataset.filecontextUid, 10) : null,
       metaUid: dataset.filecontextMetaUid ? parseInt(dataset.filecontextMetaUid, 10) : null,
-      origin: null,
     };
 
     return resource;
   }
 
-  public static getResourceForElement(element: HTMLElement): FileListActionResource
+  public static getResourceForElement(element: HTMLElement): ResourceInterface
   {
-    const resource: FileListActionResource = {
+    const resource: ResourceInterface = {
       type: element.dataset.filelistType,
       identifier: element.dataset.filelistIdentifier,
       stateIdentifier: element.dataset.filelistStateIdentifier,
       name: element.dataset.filelistName,
+      thumbnail: ('filelistThumbnail' in element.dataset && element.dataset.filelistThumbnail.trim() !== '') ? element.dataset.filelistThumbnail : null,
       uid: element.dataset.filelistUid ? parseInt(element.dataset.filelistUid, 10) : null,
       metaUid: element.dataset.filelistMetaUid ? parseInt(element.dataset.filelistMetaUid, 10) : null,
-      origin: element
     };
 
     return resource;

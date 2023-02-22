@@ -14,8 +14,9 @@
 import ElementBrowser from '@typo3/backend/element-browser';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
-import { FileListActionResource, FileListActionEvent, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
+import { FileListActionEvent, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
 import InfoWindow from '@typo3/backend/info-window';
+import { ResourceInterface } from '@typo3/backend/resource/resource';
 
 /**
  * Module: @typo3/backend/browse-folders
@@ -42,7 +43,7 @@ class BrowseFolders {
 
     new RegularEvent(FileListActionEvent.select, (event: CustomEvent): void => {
       event.preventDefault();
-      const resource = event.detail.resource as FileListActionResource;
+      const resource = event.detail.resource as ResourceInterface;
       if (resource.type === 'folder') {
         BrowseFolders.insertElement(resource.identifier, true);
       }
@@ -50,7 +51,7 @@ class BrowseFolders {
 
     new RegularEvent(FileListActionEvent.show, (event: CustomEvent): void => {
       event.preventDefault();
-      const resource = event.detail.resource as FileListActionResource;
+      const resource = event.detail.resource as ResourceInterface;
       InfoWindow.showItem('_' + resource.type.toUpperCase(), resource.identifier);
     }).bindTo(document);
 
@@ -65,7 +66,7 @@ class BrowseFolders {
     if (!items.length) {
       return;
     }
-    const selectedItems: FileListActionResource[] = [];
+    const selectedItems: ResourceInterface[] = [];
     items.forEach((checkbox: HTMLInputElement) => {
       if (checkbox.checked) {
         const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
@@ -78,7 +79,7 @@ class BrowseFolders {
     if (!selectedItems.length) {
       return;
     }
-    selectedItems.forEach(function (resource: FileListActionResource) {
+    selectedItems.forEach(function (resource: ResourceInterface) {
       BrowseFolders.insertElement(resource.identifier);
     });
     ElementBrowser.focusOpenerAndClose();

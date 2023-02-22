@@ -1,0 +1,35 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+export interface ResourceInterface {
+  type: string;
+  identifier: string;
+  stateIdentifier: string;
+  name: string;
+  thumbnail: string | null;
+  uid: number | null;
+  metaUid: number | null;
+}
+
+export class Resource implements ResourceInterface {
+  public constructor(
+    public readonly type: string,
+    public readonly identifier: string,
+    public readonly stateIdentifier: string,
+    public readonly name: string,
+    public readonly thumbnail: string | null = null,
+    public readonly uid: number | null = null,
+    public readonly metaUid: number | null = null,
+  ) {
+  }
+}

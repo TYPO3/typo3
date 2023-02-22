@@ -17,10 +17,11 @@ import NProgress from 'nprogress';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Icons = TYPO3.Icons;
 import { ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
-import { FileListActionResource, FileListActionEvent, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
+import { FileListActionEvent, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
 import InfoWindow from '@typo3/backend/info-window';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { ResourceInterface } from '@typo3/backend/resource/resource';
 
 class BrowseFiles {
   public static insertElement(fileName: string, fileUid: number, close?: boolean): boolean {
@@ -33,7 +34,7 @@ class BrowseFiles {
     );
   }
 
-  private static handleNext(items: FileListActionResource[]): void {
+  private static handleNext(items: ResourceInterface[]): void {
     if (items.length > 0) {
       const item = items.pop();
       BrowseFiles.insertElement(item.name, Number(item.uid));
@@ -49,7 +50,7 @@ class BrowseFiles {
 
     new RegularEvent(FileListActionEvent.select, (event: CustomEvent): void => {
       event.preventDefault();
-      const resource = event.detail.resource as FileListActionResource;
+      const resource = event.detail.resource as ResourceInterface;
       if (resource.type === 'file') {
         BrowseFiles.insertElement(resource.name, resource.uid, true);
       }
@@ -60,7 +61,7 @@ class BrowseFiles {
 
     new RegularEvent(FileListActionEvent.show, (event: CustomEvent): void => {
       event.preventDefault();
-      const resource = event.detail.resource as FileListActionResource;
+      const resource = event.detail.resource as ResourceInterface;
       InfoWindow.showItem('_' + resource.type.toUpperCase(), resource.identifier);
     }).bindTo(document);
 
@@ -69,7 +70,7 @@ class BrowseFiles {
 
   }
 
-  private loadContent(resource: FileListActionResource): void
+  private loadContent(resource: ResourceInterface): void
   {
     if (resource.type !== 'folder') {
       return;
@@ -91,7 +92,7 @@ class BrowseFiles {
       return;
     }
 
-    const selectedItems: FileListActionResource[] = [];
+    const selectedItems: ResourceInterface[] = [];
     items.forEach((checkbox: HTMLInputElement) => {
       if (checkbox.checked) {
         const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;

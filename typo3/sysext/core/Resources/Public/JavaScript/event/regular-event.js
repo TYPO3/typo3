@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-class RegularEvent{constructor(e,t){this.eventName=e,this.callback=t}bindTo(e){this.boundElement=e,e.addEventListener(this.eventName,this.callback)}delegateTo(e,t){this.boundElement=e,e.addEventListener(this.eventName,(e=>{for(let a=e.target;a&&a!==this.boundElement;a=a.parentNode)if(a.matches(t)){this.callback.call(a,e,a);break}}),!1)}release(){this.boundElement.removeEventListener(this.eventName,this.callback)}}export default RegularEvent;
+class RegularEvent{constructor(e,t,n=!1){this.eventName=e,this.callback=t,this.options=n}bindTo(e){this.boundElement=e,e.addEventListener(this.eventName,this.callback,this.options)}delegateTo(e,t){this.boundElement=e,e.addEventListener(this.eventName,(e=>{for(let n=e.target;n&&n!==this.boundElement;n=n.parentNode)if(n.matches(t)){this.callback.call(n,e,n);break}}),this.options)}release(){this.boundElement.removeEventListener(this.eventName,this.callback)}}export default RegularEvent;

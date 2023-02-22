@@ -21,6 +21,15 @@
     --resource-tile-active-color: var(--resource-tile-color);
     --resource-tile-active-bg: #{tint-color($primary, 95%)};
     --resource-tile-active-border-color: #{tint-color($primary, 20%)};
+    --resource-tile-success-color: var(--resource-tile-color);
+    --resource-tile-success-bg: #{tint-color($success, 95%)};
+    --resource-tile-success-border-color: #{tint-color($success, 20%)};
+    --resource-tile-danger-color: var(--resource-tile-color);
+    --resource-tile-danger-bg: #{tint-color($danger, 95%)};
+    --resource-tile-danger-border-color: #{tint-color($danger, 20%)};
+    --resource-tile-warning-color: var(--resource-tile-color);
+    --resource-tile-warning-bg: #{tint-color($warning, 95%)};
+    --resource-tile-warning-border-color: #{tint-color($warning, 20%)};
     display: grid;
     grid-template-columns: repeat(auto-fill, var(--resource-tiles-grid-width));
     gap: var(--resource-tiles-grid-spacing);
@@ -83,6 +92,24 @@
     --resource-tile-color: var(--resource-tile-active-color);
     --resource-tile-bg: var(--resource-tile-active-bg);
     --resource-tile-border-color: var(--resource-tile-active-border-color);
+}
+
+.resource-tile.success {
+    --resource-tile-color: var(--resource-tile-success-color);
+    --resource-tile-bg: var(--resource-tile-success-bg);
+    --resource-tile-border-color: var(--resource-tile-success-border-color);
+}
+
+.resource-tile.danger {
+    --resource-tile-color: var(--resource-tile-danger-color);
+    --resource-tile-bg: var(--resource-tile-danger-bg);
+    --resource-tile-border-color: var(--resource-tile-danger-border-color);
+}
+
+.resource-tile.warning {
+    --resource-tile-color: var(--resource-tile-warning-color);
+    --resource-tile-bg: var(--resource-tile-warning-bg);
+    --resource-tile-border-color: var(--resource-tile-warning-border-color);
 }
 
 .resource-tile.active,
@@ -186,4 +213,45 @@
     font-size: var(--resource-tile-checkbox-size);
     right: calc(var(--resource-tile-spacing) / 2);
     top: calc(var(--resource-tile-spacing) / 2);
+}
+
+//
+// Resource Draginfo
+//
+.resource-dragpreview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999999;
+    display: inline-flex;
+    gap: calc(var(--typo3-spacing) / 2);
+    padding: calc(var(--typo3-spacing) / 2);
+    color: var(--typo3-component-color);
+    background: var(--typo3-component-bg);
+    border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+    border-radius: var(--typo3-component-border-radius);
+    box-shadow: var(--typo3-component-box-shadow);
+
+    img {
+        display: block;
+    }
+}
+
+.resource-dragpreview-counter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+    min-width: 32px;
+}
+
+.resource-dragpreview-thumbnails {
+    display: flex;
+    gap: 2px;
+
+    img {
+        height: 32px;
+        width: 32px;
+        background-color: #fff;
+    }
 }

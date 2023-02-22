@@ -13,7 +13,8 @@
 
 import RegularEvent from '@typo3/core/event/regular-event';
 import { html, TemplateResult } from 'lit';
-import { FileListActionEvent, FileListActionDetail, FileListActionResource } from '@typo3/filelist/file-list-actions';
+import { ResourceInterface } from '@typo3/backend/resource/resource';
+import { FileListActionEvent, FileListActionDetail } from '@typo3/filelist/file-list-actions';
 import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
@@ -108,7 +109,7 @@ class FileListRenameHandler {
     }).bindTo(document);
   }
 
-  private composeEditForm(resource: FileListActionResource): TemplateResult {
+  private composeEditForm(resource: ResourceInterface): TemplateResult {
     return html`
       <form>
         <input name="name" class="form-control" value="${resource.name}" required>

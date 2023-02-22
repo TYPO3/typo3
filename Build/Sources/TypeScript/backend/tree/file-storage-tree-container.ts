@@ -11,22 +11,21 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { DragDropOperation, DragDropOperationCollection } from '@typo3/backend/drag-drop/drag-drop';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, query } from 'lit/decorators';
-import { FileStorageTree } from './file-storage-tree';
 import '@typo3/backend/element/icon-element';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
+import { TreeNodeSelection, Toolbar } from '@typo3/backend/svg-tree';
 import { TreeNode } from '@typo3/backend/tree/tree-node';
+import { FileStorageTree } from '@typo3/backend/tree/file-storage-tree';
+import { DragDropHandler, DragDrop, DraggablePositionEnum, DragDropTargetPosition } from '@typo3/backend/tree/drag-drop';
+import ContextMenu from '@typo3/backend/context-menu';
+import Notification from '@typo3/backend/notification';
 import Persistent from '@typo3/backend/storage/persistent';
-import ContextMenu from '../context-menu';
-import { DragDropHandler, DragDrop, DraggablePositionEnum, DragDropTargetPosition } from './drag-drop';
-import Modal from '../modal';
-import Severity from '../severity';
-import Notification from '../notification';
-import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { TreeNodeSelection, Toolbar } from '../svg-tree';
-import { ModuleStateStorage } from '../storage/module-state-storage';
+import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 import { ModuleUtility } from '@typo3/backend/module';
+import { FileListDragDropDetail, FileListDragDropEvent } from '@typo3/filelist/file-list-dragdrop';
+import { Resource, ResourceInterface } from '@typo3/backend/resource/resource';
 
 export const navigationComponentName: string = 'typo3-backend-navigation-component-filestoragetree';
 
@@ -78,41 +77,31 @@ class EditableFileStorageTree extends FileStorageTree {
     e.preventDefault();
   }
 
-  private handleDrop = (e: DragEvent): void => {
-    const target = e.target as Element;
+  private handleDrop = (event: DragEvent): void => {
+    const target = event.target as Element;
     const element = target.closest('[data-state-id]') as SVGElement;
     const node = this.getNodeFromElement(element);
+
     if (node) {
-      const dragDropOperationCollection = FileDragDropOperationCollection.fromDataTransfer(e.dataTransfer, { identifier: node.identifier, name: node.name });
-      // Check if drag-drop-operation can be fulfilled
-      for (let operation of dragDropOperationCollection.operations) {
-        if (this.dragDropCollectionConflictsWithNode(operation, node)) {
-          // User attempts to drag the parent node into one of its child nodes
-          // @todo: decision needed: filter out invalid operations or invalidate as whole
-          Notification.error(
+      const targetResource = FileResource.fromTreeNode(node);
+      const fileOperationCollection = FileOperationCollection.fromDataTransfer(event.dataTransfer, targetResource);
+      const operationConflicts = fileOperationCollection.getConflictingOperationsForTreeNode(node);
+      if (operationConflicts.length > 0) {
+        operationConflicts.forEach((operation: FileOperation) => {
+          Notification.showMessage(
             TYPO3.lang['drop.conflict'],
             TYPO3.lang['mess.drop.conflict']
-              .replace('%s', operation.source.name)
-              .replace('%s', decodeURIComponent(node.identifier))
+              .replace('%s', operation.resource.name)
+              .replace('%s', decodeURIComponent(node.identifier)),
+            SeverityEnum.error
           );
-          return;
-        }
+        });
+        return;
       }
 
-      this.actionHandler.initiateDropAction(dragDropOperationCollection, () => {
-        this.refreshTree();
-        this.selectNode(node);
-      });
+      this.actionHandler.initiateDropAction(fileOperationCollection);
     }
-    e.preventDefault();
-  }
-
-  private dragDropCollectionConflictsWithNode(dragDropOperation: DragDropOperation, node: TreeNode): boolean {
-    return dragDropOperation.type === 'folder' && (
-      node.stateIdentifier === dragDropOperation.extra.stateIdentifier
-      || node.parentsStateIdentifier[0] == dragDropOperation.extra.stateIdentifier
-      || node.parentsStateIdentifier.includes(dragDropOperation.extra.stateIdentifier)
-    );
+    event.preventDefault();
   }
 
   /**
@@ -390,111 +379,13 @@ class FileStorageTreeActions extends DragDrop {
     return true;
   }
 
-  public initiateDropAction(dragDropOperationCollection: DragDropOperationCollection, callbackFn: Function | null = null): void {
-    let modalTitle;
-    let modalText;
-    if (dragDropOperationCollection.operations.length === 1) {
-      const firstDragDropOperation = dragDropOperationCollection.operations.find(Boolean);
-      modalTitle = firstDragDropOperation.type === 'folder' ? TYPO3.lang.move_folder : TYPO3.lang.move_file;
-      modalText = TYPO3.lang['mess.move_into'].replace('%s', firstDragDropOperation.source.name).replace('%s', dragDropOperationCollection.target.name);
-    } else {
-      modalTitle = TYPO3.lang.transfer_multiple;
-      modalText = TYPO3.lang['mess.transfer_multiple']
-        .replace('%d', dragDropOperationCollection.operations.length.toString(10))
-        .replace('%s', dragDropOperationCollection.target.name);
-    }
-
-    const modal = Modal.confirm(
-      modalTitle,
-      modalText,
-      Severity.warning,
-      [
-        {
-          text: TYPO3.lang['labels.cancel'] || 'Cancel',
-          active: true,
-          btnClass: 'btn-default',
-          name: 'cancel'
-        },
-        {
-          text: TYPO3.lang['cm.copy'] || 'Copy',
-          btnClass: 'btn-warning',
-          name: 'copy'
-        },
-        {
-          text: TYPO3.lang['labels.move'] || 'Move',
-          btnClass: 'btn-warning',
-          name: 'move'
-        }
-      ]
-    );
-    modal.addEventListener('button.clicked', (e: Event) => {
-      const target = e.target as HTMLInputElement;
-      if (target.name === 'move') {
-        this.sendChangeCommand('move', dragDropOperationCollection, callbackFn);
-      } else if (target.name === 'copy') {
-        this.sendChangeCommand('copy', dragDropOperationCollection, callbackFn);
-      }
-      modal.hideModal();
-    });
-  }
-
-  /**
-   * Used when something a folder was drag+dropped.
-   */
-  private sendChangeCommand(command: 'copy' | 'move', dragDropOperationCollection: DragDropOperationCollection, callbackFn: Function | null = null): void {
-    const payload = dragDropOperationCollection.operations.map((dragDropOperation: DragDropOperation) => {
-      return {
-        data: decodeURIComponent(dragDropOperation.source.identifier),
-        target: decodeURIComponent(dragDropOperationCollection.target.identifier)
-      };
-    });
-
-    const params = {
-      data: {
-        [command]: payload
-      }
-    } as any;
-
-    this.tree.nodesAddPlaceholder();
-
-    (new AjaxRequest(top.TYPO3.settings.ajaxUrls.file_process))
-      .post(params)
-      .then((response) => {
-        return response.resolve();
-      })
-      .then((response) => {
-        if (response && response.hasErrors) {
-          this.tree.errorNotification(response.messages, false);
-          this.tree.nodesContainer.selectAll('.node').remove();
-          this.tree.updateVisibleNodes();
-          this.tree.nodesRemovePlaceholder();
-        } else {
-          if (response.messages) {
-            response.messages.forEach((message: any) => {
-              Notification.showMessage(
-                message.title || '',
-                message.message || '',
-                message.severity
-              );
-            });
-          }
-          this.tree.refreshOrFilterTree();
-          if (callbackFn !== null) {
-            callbackFn();
-          }
-        }
-      })
-      .catch(async (error) => {
-        const response = await error.resolve();
-        if (response && response.hasErrors) {
-          this.tree.errorNotification(response.messages, true);
-        } else {
-          this.tree.errorNotification(null, true);
-        }
-        if (callbackFn !== null) {
-          callbackFn();
-        }
-      });
+  public initiateDropAction(fileOperationCollection: FileOperationCollection): void {
+    const detail: FileListDragDropDetail = {
+      action: 'transfer',
+      resources: fileOperationCollection.getResources(),
+      target: fileOperationCollection.target,
+    };
+    top.document.dispatchEvent(new CustomEvent(FileListDragDropEvent.transfer, { detail: detail }));
   }
 }
 
@@ -558,10 +449,21 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
       if (options === null) {
         return false;
       }
-      const dragDropOperationCollection = FileDragDropOperationCollection.fromD3Node(options);
-      this.actionHandler.initiateDropAction(dragDropOperationCollection, () => {
-        this.tree.selectNode(options.target);
-      });
+      const fileOperationCollection = FileOperationCollection.fromNodePositionOptions(options);
+      const operationConflicts = fileOperationCollection.getConflictingOperationsForTreeNode(options.target);
+      if (operationConflicts.length > 0) {
+        operationConflicts.forEach((operation: FileOperation) => {
+          Notification.showMessage(
+            TYPO3.lang['drop.conflict'],
+            TYPO3.lang['mess.drop.conflict']
+              .replace('%s', operation.resource.name)
+              .replace('%s', decodeURIComponent(options.target.identifier)),
+            SeverityEnum.error
+          );
+        });
+        return false;
+      }
+      this.actionHandler.initiateDropAction(fileOperationCollection);
     }
     return true;
   }
@@ -570,23 +472,78 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
 /**
  * Internal helper class for drag&drop handling
  */
-class FileDragDropOperationCollection extends DragDropOperationCollection {
-  /**
-   * When something a folder was drag+dropped, this will send an AJAX request to the server.
-   * Builds a FileDragDropOperationCollection based on a d3 node
-   */
-  public static fromD3Node(options: NodePositionOptions): DragDropOperationCollection {
-    const operations: DragDropOperation[] = [
-      new DragDropOperation(
-        { identifier: options.node.identifier, name: options.node.name },
-        'folder',
+class FileOperation {
+  public constructor(
+    public readonly resource: ResourceInterface,
+    public readonly position: DraggablePositionEnum = DraggablePositionEnum.INSIDE
+  ) {
+  }
+
+  public hasConflictWithTreeNode(node: TreeNode): boolean {
+    return this.resource.type === 'folder' && (
+      node.stateIdentifier === this.resource.stateIdentifier
+      || node.parentsStateIdentifier[0] == this.resource.stateIdentifier
+      || node.parentsStateIdentifier.includes(this.resource.stateIdentifier)
+    );
+  }
+}
+
+class FileResource extends Resource {
+  public static fromTreeNode(node: TreeNode): ResourceInterface {
+    return new FileResource(
+      decodeURIComponent(node.type),
+      decodeURIComponent(node.identifier),
+      decodeURIComponent(node.stateIdentifier),
+      decodeURIComponent(node.name)
+    );
+  }
+}
+
+class FileOperationCollection {
+
+  public static fromDataTransfer(dataTransfer: DataTransfer, target: ResourceInterface): FileOperationCollection {
+    return FileOperationCollection.fromArray(JSON.parse(dataTransfer.getData('application/json')), target);
+  }
+
+  public static fromArray(items: ResourceInterface[], target: ResourceInterface): FileOperationCollection {
+    const operations: FileOperation[] = [];
+
+    for (let item of items) {
+      operations.push(new FileOperation(item, DraggablePositionEnum.INSIDE))
+    }
+
+    return new FileOperationCollection(operations, target);
+  }
+
+  public static fromNodePositionOptions(options: NodePositionOptions): FileOperationCollection {
+    const resource = FileResource.fromTreeNode(options.node);
+    const targetResource = FileResource.fromTreeNode(options.target);
+    const operations: FileOperation[] = [
+      new FileOperation(
+        resource,
         options.position
       )
     ];
 
-    return new DragDropOperationCollection(operations, {
-      identifier: options.target.identifier,
-      name: options.target.name
+    return new FileOperationCollection(operations, targetResource);
+  }
+
+  protected constructor(
+    public readonly operations: FileOperation[],
+    public readonly target: ResourceInterface,
+  ) {
+  }
+
+  public getConflictingOperationsForTreeNode(node: TreeNode): FileOperation[] {
+    return this.operations.filter((operation: FileOperation) => operation.hasConflictWithTreeNode(node));
+  }
+
+  public getResources(): ResourceInterface[] {
+    const resources: ResourceInterface[] = [];
+    this.operations.forEach((operation: FileOperation) => {
+      resources.push(operation.resource);
     });
+
+    return resources;
   }
 }
