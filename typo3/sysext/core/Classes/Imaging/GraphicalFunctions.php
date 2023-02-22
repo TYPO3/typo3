@@ -1260,7 +1260,7 @@ class GraphicalFunctions
         $wordsArray = is_array($wordsArray) ? $wordsArray : [];
         $wordsCount = count($wordsArray);
         for ($index = 0; $index < $wordsCount; $index += 2) {
-            $wordPairs[] = $wordsArray[$index] . $wordsArray[$index + 1];
+            $wordPairs[] = $wordsArray[$index] . ($wordsArray[$index + 1] ?? '');
         }
         return $wordPairs;
     }
