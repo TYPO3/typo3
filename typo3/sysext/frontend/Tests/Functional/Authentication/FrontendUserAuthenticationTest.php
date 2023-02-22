@@ -75,7 +75,7 @@ class FrontendUserAuthenticationTest extends FunctionalTestCase
                     '__RequestToken' => $requestToken,
                 ]
             )
-            ->withCookieParams(['typo3nonce_' . $nonce->getSigningIdentifier()->name => $nonce->toHashSignedJwt()]);
+            ->withCookieParams([123 => 'bogus', 'typo3nonce_' . $nonce->getSigningIdentifier()->name => $nonce->toHashSignedJwt()]);
 
         $response = $this->executeFrontendSubRequest($request);
 
