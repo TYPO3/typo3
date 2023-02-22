@@ -54,9 +54,9 @@ The corresponding event listener class:
     {
         public function __invoke(ModifyLinkHandlersEvent $event): void
         {
-            $handler = $event->getHandler('url.');
+            $handler = $event->getLinkHandler('url.');
             $handler['label'] = 'My custom label';
-            $event->setHandler('url.', $handler);
+            $event->setLinkHandler('url.', $handler);
         }
     }
 
