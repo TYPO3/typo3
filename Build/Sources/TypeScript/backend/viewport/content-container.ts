@@ -17,7 +17,6 @@ import $ from 'jquery';
 import ClientRequest from '../event/client-request';
 import InteractionRequest from '../event/interaction-request';
 import Loader from './loader';
-import Utility from '../utility';
 import TriggerRequest from '../event/trigger-request';
 
 class ContentContainer extends AbstractContainer {
@@ -95,8 +94,9 @@ class ContentContainer extends AbstractContainer {
   }
 
   public getIdFromUrl(): number {
-    if (this.getUrl) {
-      return parseInt(Utility.getParameterFromUrl(this.getUrl(), 'id'), 10);
+    if (this.getUrl()) {
+      const id = new URL(this.getUrl(), window.location.origin).searchParams.get('id') ?? '';
+      return parseInt(id, 10);
     }
     return 0;
   }

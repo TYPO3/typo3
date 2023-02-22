@@ -74,8 +74,14 @@ class Utility {
    * @param {string} url
    * @param {string} parameter
    * @returns {string}
+   * @deprecated will be removed in TYPO3 v13
    */
   public static getParameterFromUrl(url: string, parameter: string): string {
+    console.warn(
+      'The function `getParameterFromUrl()` of `@typo3/backend/utility` has been marked as deprecated and will ' +
+      'be removed in TYPO3 v13. Use `new URL(url, window.location.origin).searchParams.get(parameter)` instead.'
+    );
+
     if (typeof url.split !== 'function') {
       return '';
     }
