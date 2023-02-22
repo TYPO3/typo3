@@ -497,7 +497,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         if ($languageOfCurrentRecord > 0
             && $fetchLocalizedRecord
             && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-            && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
+            && ($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] ?? 0) > 0
         ) {
             $row = $pageRepository->getRawRecord(
                 $tableName,
@@ -523,7 +523,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                     $languageUid = $languageOfCurrentRecord;
                 }
                 if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-                    && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
+                    && ($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] ?? 0) > 0
                     && $languageOfCurrentRecord > 0
                 ) {
                     // Force overlay by faking default language record, as getRecordOverlay can only handle default language records
