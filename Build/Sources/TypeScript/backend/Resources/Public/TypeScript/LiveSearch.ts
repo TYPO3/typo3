@@ -16,7 +16,7 @@ import Viewport = require('./Viewport');
 import Icons = require('./Icons');
 import 'jquery/autocomplete';
 import './Input/Clearable';
-import {html, render, TemplateResult} from 'lit';
+import {html, TemplateResult} from 'lit';
 import {unsafeHTML} from 'lit/directives/unsafe-html';
 import {renderHTML} from 'TYPO3/CMS/Core/lit-helper';
 import {ModuleStateStorage} from 'TYPO3/CMS/Backend/Storage/ModuleStateStorage';
@@ -88,6 +88,7 @@ class LiveSearch {
       showNoSuggestionNotice: true,
       triggerSelectOnValidInput: false,
       preventBadQueries: false,
+      deferRequestBy: 250,
       noSuggestionNotice: '<h3 class="dropdown-headline">' + TYPO3.lang.liveSearch_listEmptyText + '</h3>'
       + '<p>' + TYPO3.lang.liveSearch_helpTitle + '</p>'
       + '<hr>'
