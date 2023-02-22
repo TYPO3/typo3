@@ -204,6 +204,8 @@ class Bootstrap
      * checks if config/system/settings.php or PackageStates.php is missing,
      * used to see if a redirect to the installer is needed
      *
+     * All file_exists checks are delayed as far as possible to avoid I/O impact
+     *
      * @return bool TRUE when the essential configuration is available, otherwise FALSE
      * @internal This is not a public API method, do not use in own extensions
      */
@@ -217,29 +219,32 @@ class Bootstrap
         }
 
         $systemConfigurationPath = $configurationManager->getSystemConfigurationFileLocation();
-        $legacyLocalConfigurationPath = $configurationManager->getLocalConfigurationFileLocation();
         $additionalConfigurationPath = $configurationManager->getAdditionalConfigurationFileLocation();
-        $legacyAdditionConfigurationPath = Environment::getLegacyConfigPath() . '/AdditionalConfiguration.php';
 
         $systemConfigurationFileExists = file_exists($systemConfigurationPath);
-        $legacySystemConfigurationFileExists = file_exists($legacyLocalConfigurationPath);
         $additionalConfigurationFileExists = file_exists($additionalConfigurationPath);
-        $legacyAdditionalConfigurationFileExists = file_exists($legacyAdditionConfigurationPath);
-
-        // Check if system configuration file exist. Additionally, check whether the additional configuration
-        // file does not yet exist, while the legacy one does -> can be migrated.
-        if ($systemConfigurationFileExists
-            && ($additionalConfigurationFileExists || !$legacyAdditionalConfigurationFileExists)
-        ) {
+        if ($systemConfigurationFileExists && $additionalConfigurationFileExists) {
+            // We have a complete configuration, off we go
             return true;
         }
 
+        // If system configuration file exists and no legacy additional configuration is present, we are good
+        $legacyAdditionConfigurationPath = Environment::getLegacyConfigPath() . '/AdditionalConfiguration.php';
+        $legacyAdditionalConfigurationFileExists = file_exists($legacyAdditionConfigurationPath);
+        if ($systemConfigurationFileExists && !$legacyAdditionalConfigurationFileExists) {
+            return true;
+        }
+
+        // @deprecated All code below is deprecated and can be removed with TYPO3 v14.0 and replaced with `return false;`
+
+        // All other cases will probably need some migration work
         $migrated = false;
 
         // In case no system configuration file exists at this point, check for the legacy "LocalConfiguration"
-        // file. If it exists, move it to the new location. Otherwise the system is not complete.
-        // @deprecated Fallback can be removed with TYPO3 v14.0
+        // file. If it exists, move it to the new location. Otherwise, the system is not complete.
         if (!$systemConfigurationFileExists) {
+            $legacyLocalConfigurationPath = $configurationManager->getLocalConfigurationFileLocation();
+            $legacySystemConfigurationFileExists = file_exists($legacyLocalConfigurationPath);
             if ($legacySystemConfigurationFileExists) {
                 mkdir(dirname($systemConfigurationPath), 02775, true);
                 rename($legacyLocalConfigurationPath, $systemConfigurationPath);
@@ -250,8 +255,7 @@ class Bootstrap
             }
         }
         // In case no additional configuration file exists at this point, check for the legacy
-        // "AdditionalConfiguration" file. If it exists, move it to the new location.
-        // @deprecated Fallback can be removed with TYPO3 v14.0
+        // "AdditionalConfiguration" file. If it exists, move it to the new location as well.
         if (!$additionalConfigurationFileExists && $legacyAdditionalConfigurationFileExists) {
             rename($legacyAdditionConfigurationPath, $additionalConfigurationPath);
             $migrated = true;
