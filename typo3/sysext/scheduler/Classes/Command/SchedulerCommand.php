@@ -31,11 +31,6 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 class SchedulerCommand extends Command
 {
     /**
-     * @var bool
-     */
-    protected $hasTask = true;
-
-    /**
      * @var Scheduler
      */
     protected $scheduler;
@@ -122,8 +117,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
 
         $this->forceExecution = (bool)$input->getOption('force');
         $this->stopTasks = $this->shouldStopTasks((bool)$input->getOption('stop'));
-        $this->loopTasks();
-        return 0;
+        return $this->loopTasks() ? 0 : 1;
     }
 
     /**
@@ -184,38 +178,37 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
     /**
      * Execute tasks in loop that are ready to execute
      */
-    protected function loopTasks()
+    protected function loopTasks(): bool
     {
+        $hasError = false;
         do {
+            $task = null;
             // Try getting the next task and execute it
             // If there are no more tasks to execute, an exception is thrown by \TYPO3\CMS\Scheduler\Scheduler::fetchTask()
             try {
                 $task = $this->fetchNextTask();
+                if ($task === null) {
+                    break;
+                }
                 try {
                     $this->executeOrStopTask($task);
                 } catch (\Exception $e) {
-                    if ($this->io->isVerbose()) {
-                        $this->io->warning($e->getMessage());
-                    }
+                    $this->io->getErrorStyle()->error($e->getMessage());
+                    $hasError = true;
                     // We ignore any exception that may have been thrown during execution,
                     // as this is a background process.
                     // The exception message has been recorded to the database anyway
                     continue;
                 }
-            } catch (\OutOfBoundsException $e) {
-                if ($this->io->isVeryVerbose()) {
-                    $this->io->writeln($e->getMessage());
-                }
-                $this->hasTask = !empty($this->overwrittenTaskList);
             } catch (\UnexpectedValueException $e) {
-                if ($this->io->isVerbose()) {
-                    $this->io->warning($e->getMessage());
-                }
+                $this->io->getErrorStyle()->error($e->getMessage());
+                $hasError = true;
                 continue;
             }
-        } while ($this->hasTask);
+        } while ($task !== null);
         // Record the run in the system registry
         $this->scheduler->recordLastRun();
+        return !$hasError;
     }
 
     /**
@@ -224,18 +217,16 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
      *
      * Without the --task option we ask the scheduler for the next task with pending execution.
      *
-     * @return AbstractTask
-     * @throws \OutOfBoundsException When there are no more tasks to execute.
      * @throws \UnexpectedValueException When no task is found by the provided UID or the task is not marked for execution.
      */
-    protected function fetchNextTask(): AbstractTask
+    protected function fetchNextTask(): ?AbstractTask
     {
         if ($this->overwrittenTaskList === null) {
             return $this->scheduler->fetchTask();
         }
 
         if (count($this->overwrittenTaskList) === 0) {
-            throw new \OutOfBoundsException('No more tasks to execute', 1547675594);
+            return null;
         }
 
         $taskUid = (int)array_shift($this->overwrittenTaskList);

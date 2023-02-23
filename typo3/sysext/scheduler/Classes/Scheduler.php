@@ -305,11 +305,11 @@ class Scheduler implements SingletonInterface
      * If there are no due tasks the method throws an exception.
      *
      * @param int $uid Primary key of a task
-     * @return Task\AbstractTask The fetched task object
+     * @return Task\AbstractTask|null The fetched task object
      * @throws \OutOfBoundsException
      * @throws \UnexpectedValueException
      */
-    public function fetchTask($uid = 0)
+    public function fetchTask($uid = 0): ?AbstractTask
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_scheduler_task');
@@ -352,7 +352,7 @@ class Scheduler implements SingletonInterface
         if (empty($row)) {
             if (empty($uid)) {
                 // No uid was passed and no overdue task was found
-                throw new \OutOfBoundsException('No (more) tasks available for execution', 1247827244);
+                return null;
             }
             // Although a uid was passed, no task with given was found
             throw new \OutOfBoundsException('No task with id ' . $uid . ' found', 1422044826);
