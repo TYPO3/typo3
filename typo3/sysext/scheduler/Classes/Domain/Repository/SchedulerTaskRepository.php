@@ -201,10 +201,9 @@ class SchedulerTaskRepository
      * next due task is returned. If there are no due tasks the method throws an exception.
      *
      * @return AbstractTask The fetched task object
-     * @throws \OutOfBoundsException
      * @throws \UnexpectedValueException
      */
-    public function findNextExecutableTask(): AbstractTask
+    public function findNextExecutableTask(): ?AbstractTask
     {
         // If no uid is given, take any non-disabled task which has a next execution time in the past
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -241,8 +240,7 @@ class SchedulerTaskRepository
 
         $row = $queryBuilder->executeQuery()->fetchAssociative();
         if (empty($row)) {
-            // No uid was passed and no overdue task was found
-            throw new \OutOfBoundsException('No (more) tasks available for execution', 1247827244);
+            return null;
         }
 
         return $this->createValidTaskObjectOrDisableTask($row);

@@ -256,12 +256,12 @@ class Scheduler implements SingletonInterface
      * If there are no due tasks the method throws an exception.
      *
      * @param int $uid Primary key of a task
-     * @return Task\AbstractTask The fetched task object
+     * @return Task\AbstractTask|null The fetched task object
      * @throws \OutOfBoundsException
      * @throws \UnexpectedValueException
      * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
      */
-    public function fetchTask($uid = 0): AbstractTask
+    public function fetchTask($uid = 0): ?AbstractTask
     {
         trigger_error('Scheduler->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
         if ($uid > 0) {
