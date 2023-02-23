@@ -97,7 +97,10 @@ class Mailer implements MailerInterface
                     $message->replyTo($replyTo);
                 }
             }
-            $message->getHeaders()->addTextHeader('X-Mailer', $this->mailerHeader);
+            // Only set X-Mailer header once, if message is re-used
+            if (!$message->getHeaders()->has('X-Mailer')) {
+                $message->getHeaders()->addTextHeader('X-Mailer', $this->mailerHeader);
+            }
         }
 
         // After static enrichment took place, allow listeners to further manipulate message and envelope
