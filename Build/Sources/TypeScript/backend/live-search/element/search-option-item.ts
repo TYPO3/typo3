@@ -23,6 +23,14 @@ export class SearchOptionItem extends LitElement {
   @property({type: String}) optionName: string;
   @property({type: String}) optionLabel: string;
 
+  private parentContainer: HTMLElement;
+
+  public connectedCallback() {
+    this.parentContainer = this.closest('typo3-backend-live-search');
+
+    super.connectedCallback();
+  }
+
   public createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
@@ -45,6 +53,11 @@ export class SearchOptionItem extends LitElement {
 
   private handleInput() {
     this.active = !this.active;
+    this.parentContainer.dispatchEvent(new CustomEvent('typo3:live-search:option-invoked', {
+      detail: {
+        active: this.active
+      }
+    }));
 
     BrowserSession.set(this.getStorageKey(), this.active ? '1' : '0');
   }

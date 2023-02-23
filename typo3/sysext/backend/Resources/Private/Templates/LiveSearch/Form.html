@@ -12,8 +12,12 @@
                     <div class="input-group mb-3">
                         <f:if condition="{searchProviders->f:count()} > 0">
                             <div class="btn-group">
-                                <button class="btn btn-default t3js-search-provider-dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
+                                <button class="btn btn-default t3js-search-provider-dropdown-toggle position-relative" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
                                     <core:icon identifier="actions-menu-alternative" size="small" />
+                                    <span class="search-option-badge badge badge-primary {activeOptions == 0 ? 'hidden' : ''}" data-active-options-counter="{activeOptions}">
+                                        <output>{activeOptions}</output>
+                                        <span class="visually-hidden">active filters</span>
+                                    </span>
                                 </button>
                                 <div class="dropdown-menu t3js-search-provider-dropdown">
                                     <h6 class="dropdown-header">Search records in</h6>

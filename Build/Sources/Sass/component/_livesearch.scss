@@ -9,6 +9,14 @@ typo3-backend-live-search {
     .sticky-form-actions {
         z-index: 50;
     }
+
+    .search-option-badge {
+        position: absolute !important;
+        transform: translate(-50%, -50%);
+        top: 0 !important;
+        left: 100%;
+        --bs-badge-border-radius: .65rem;
+    }
 }
 
 typo3-backend-live-search-result-item-container,

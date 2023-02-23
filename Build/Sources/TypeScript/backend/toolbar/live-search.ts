@@ -29,7 +29,6 @@ import {ResultItemInterface} from '@typo3/backend/live-search/element/result/ite
 
 enum Identifiers {
   toolbarItem = '.t3js-topbar-button-search',
-  searchOptionDropdown = '.t3js-search-provider-dropdown',
   searchOptionDropdownToggle = '.t3js-search-provider-dropdown-toggle',
 }
 
@@ -92,7 +91,8 @@ class LiveSearch {
     });
 
     modal.addEventListener('typo3-modal-shown', () => {
-      const searchField = modal.querySelector('input[type="search"]') as HTMLInputElement;
+      const liveSearchContainer = modal.querySelector('typo3-backend-live-search')
+      const searchField = liveSearchContainer.querySelector('input[type="search"]') as HTMLInputElement;
       const searchForm = searchField.closest('form');
 
       new RegularEvent('submit', (e: SubmitEvent): void => {
@@ -103,6 +103,10 @@ class LiveSearch {
           const query = formData.get('query').toString();
           BrowserSession.set('livesearch-term', query);
         });
+        const optionCounterElement = searchForm.querySelector('[data-active-options-counter]') as HTMLElement;
+        let count = parseInt(optionCounterElement.dataset.activeOptionsCounter, 10);
+        optionCounterElement.querySelector('output').textContent = count.toString(10);
+        optionCounterElement.classList.toggle('hidden', count === 0);
       }).bindTo(searchForm);
 
       searchField.clearable({
@@ -117,6 +121,15 @@ class LiveSearch {
       new RegularEvent('live-search:item-chosen', (): void => {
         Modal.dismiss();
       }).bindTo(searchResultContainer);
+
+      new RegularEvent('typo3:live-search:option-invoked', (e: CustomEvent): void => {
+        const optionCounterElement = searchForm.querySelector('[data-active-options-counter]') as HTMLElement;
+        let count = parseInt(optionCounterElement.dataset.activeOptionsCounter, 10);
+        count = e.detail.active ? count + 1 : count - 1;
+
+        // Update data attribute only, the visible text content is updated in the submit handler
+        optionCounterElement.dataset.activeOptionsCounter = count.toString(10);
+      }).bindTo(liveSearchContainer);
 
       new RegularEvent('hide.bs.dropdown', (): void => {
         searchForm.requestSubmit();
