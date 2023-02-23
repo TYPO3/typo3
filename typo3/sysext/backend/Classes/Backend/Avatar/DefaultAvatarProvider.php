@@ -50,12 +50,17 @@ class DefaultAvatarProvider implements AvatarProviderInterface
                 ['width' => $size . 'c', 'height' => $size . 'c']
             );
 
-            $image = GeneralUtility::makeInstance(
-                Image::class,
-                $processedImage->getPublicUrl(),
-                $processedImage->getProperty('width'),
-                $processedImage->getProperty('height')
-            );
+            $publicUrl = $processedImage->getPublicUrl();
+            if ($publicUrl) {
+                $image = GeneralUtility::makeInstance(
+                    Image::class,
+                    $publicUrl,
+                    $processedImage->getProperty('width'),
+                    $processedImage->getProperty('height')
+                );
+            } else {
+                $image = null;
+            }
         } catch (FileDoesNotExistException $e) {
             // No image found
             $image = null;
