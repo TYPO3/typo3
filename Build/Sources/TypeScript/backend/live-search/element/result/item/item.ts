@@ -38,7 +38,7 @@ export class Item extends LitElement {
   private parentContainer: HTMLElement;
   private resultItemContainer: HTMLElement;
 
-  public connectedCallback() {
+  public connectedCallback(): void {
     this.parentContainer = this.closest('typo3-backend-live-search-result-container');
     this.resultItemContainer = this.parentContainer.querySelector('typo3-backend-live-search-result-item-container');
 
@@ -48,11 +48,13 @@ export class Item extends LitElement {
       this.setAttribute('tabindex', '0');
     }
 
-    this.addEventListener('focus', (e: Event): void => {
-      const target = e.target as HTMLElement;
-      target.parentElement.querySelector('.active')?.classList.remove('active');
-      target.classList.add('active');
-    });
+    this.addEventListener('focus', this.onFocus);
+  }
+
+  public disconnectedCallback(): void {
+    this.removeEventListener('focus', this.onFocus);
+
+    super.disconnectedCallback();
   }
 
   public createRenderRoot(): HTMLElement | ShadowRoot {
@@ -62,5 +64,11 @@ export class Item extends LitElement {
 
   protected render(): TemplateResult {
     return html`<div class="livesearch-expand-action" @click="${(e: Event): void => { e.stopPropagation(); this.focus(); }}"><typo3-backend-icon identifier="actions-chevron-right" size="small"></typo3-backend-icon></div>`;
+  }
+
+  private onFocus(e: Event) {
+    const target = e.target as HTMLElement;
+    target.parentElement.querySelector('.active')?.classList.remove('active');
+    target.classList.add('active');
   }
 }

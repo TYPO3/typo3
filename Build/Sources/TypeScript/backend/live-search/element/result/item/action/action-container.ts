@@ -63,13 +63,20 @@ export class ActionList extends LitElement {
   private parentContainer: HTMLElement;
   private resultItemContainer: HTMLElement;
 
-  public connectedCallback() {
+  public connectedCallback(): void {
     this.parentContainer = this.closest('typo3-backend-live-search-result-container');
     this.resultItemContainer = this.parentContainer.querySelector('typo3-backend-live-search-result-item-container');
 
     super.connectedCallback();
     this.addEventListener('keydown', this.handleKeyDown);
     this.addEventListener('keyup', this.handleKeyUp);
+  }
+
+  public disconnectedCallback(): void {
+    this.removeEventListener('keydown', this.handleKeyDown);
+    this.removeEventListener('keyup', this.handleKeyUp);
+
+    super.disconnectedCallback();
   }
 
   protected render(): TemplateResult {

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, LitElement, TemplateResult} from 'lit';
+import {html, LitElement, nothing, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators';
 import {until} from 'lit/directives/until';
 import {unsafeHTML} from 'lit/directives/unsafe-html';
@@ -142,7 +142,7 @@ export class ClipboardPanel extends LitElement {
           </button>
         </td>
         <td class="col-control nowrap">
-          ${clipboardData.current !== tab.identifier ? html`` : html`
+          ${clipboardData.current !== tab.identifier ? nothing : html`
             <div class="btn-group">
               <input type="radio" class="btn-check" id="clipboard-copymode-copy" data-action="setCopyMode" ?checked=${clipboardData.copyMode === CopyMode.copy} @click="${(event: PointerEvent) => this.updateClipboard(event, {CB: {'setCopyMode': '1'}})}">
               <label class="btn btn-default btn-sm" for="clipboard-copymode-copy">
@@ -155,7 +155,7 @@ export class ClipboardPanel extends LitElement {
                 ${clipboardData.labels.moveElements}
               </label>
             </div>
-            ${!clipboardData.elementCount ? html`` : html`
+            ${!clipboardData.elementCount ? nothing : html`
               <button type="button" class="btn btn-default btn-sm" title="${clipboardData.labels.removeAll}" data-action="removeAll" @click="${(event: PointerEvent) => this.updateClipboard(event, {CB: {'removeAll': tab.identifier}})}">
                 <typo3-backend-icon identifier="actions-minus" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
                 ${clipboardData.labels.removeAll}
@@ -163,7 +163,7 @@ export class ClipboardPanel extends LitElement {
           `}
         </td>
       </tr>
-      ${clipboardData.current === tab.identifier && tab.items ? tab.items.map((tabItem: ClipboardTabItem): TemplateResult => this.renderTabItem(tabItem, tab.identifier, clipboardData)) : html``}
+      ${clipboardData.current === tab.identifier && tab.items ? tab.items.map((tabItem: ClipboardTabItem): TemplateResult => this.renderTabItem(tabItem, tab.identifier, clipboardData)) : nothing}
     `;
   }
 
@@ -175,19 +175,19 @@ export class ClipboardPanel extends LitElement {
         </td>
         <td class="nowrap" style="width: 95%">
           ${unsafeHTML(tabItem.title)}
-          ${tabIdentifier === 'normal' ? html`<strong>(${clipboardData.copyMode === CopyMode.copy ? html`${clipboardData.labels.copy}` : html`${clipboardData.labels.cut}`})</strong>` : html``}
-          ${tabItem.thumb ? html`<div class="d-block">${unsafeHTML(tabItem.thumb)}</div>` : html``}
+          ${tabIdentifier === 'normal' ? html`<strong>(${clipboardData.copyMode === CopyMode.copy ? html`${clipboardData.labels.copy}` : html`${clipboardData.labels.cut}`})</strong>` : nothing}
+          ${tabItem.thumb ? html`<div class="d-block">${unsafeHTML(tabItem.thumb)}</div>` : nothing}
         </td>
         <td class="col-control nowrap">
           <div class="btn-group">
-            ${!tabItem.infoDataDispatch ? html`` : html`
+            ${!tabItem.infoDataDispatch ? nothing : html`
               <button type="button" class="btn btn-default btn-sm" data-dispatch-action="${tabItem.infoDataDispatch.action}" data-dispatch-args="${tabItem.infoDataDispatch.args}" title="${clipboardData.labels.info}">
                 <span>
                   <typo3-backend-icon identifier="actions-document-info" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
                 </span>
               </button>
             `}
-            ${!tabItem.identifier ? html`` : html`
+            ${!tabItem.identifier ? nothing : html`
               <button type="button" class="btn btn-default btn-sm" title="${clipboardData.labels.removeItem}" data-action="remove" @click="${(event: PointerEvent) => this.updateClipboard(event,{CB: {'remove': tabItem.identifier}})}">
                 <span>
                     <typo3-backend-icon identifier="actions-minus" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>

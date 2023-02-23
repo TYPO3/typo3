@@ -43,13 +43,13 @@ class EditableFileStorageTree extends FileStorageTree {
     this.actionHandler = new FileStorageTreeActions(this);
   }
 
-  public connectedCallback() {
+  public connectedCallback(): void {
     super.connectedCallback();
     document.addEventListener('dragover', this.handleDragOver);
     document.addEventListener('drop', this.handleDrop);
   }
 
-  public disconnectedCallback() {
+  public disconnectedCallback(): void {
     super.disconnectedCallback();
     document.removeEventListener('dragover', this.handleDragOver);
     document.removeEventListener('drop', this.handleDrop);

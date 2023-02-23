@@ -13,7 +13,7 @@
 
 import LiveSearchConfigurator from '@typo3/backend/live-search/live-search-configurator';
 import {customElement, property, query} from 'lit/decorators';
-import {html, LitElement, TemplateResult} from 'lit';
+import {html, LitElement, nothing, TemplateResult} from 'lit';
 import {lll} from '@typo3/core/lit-helper';
 import './item/item-container';
 import './result-detail-container';
@@ -31,31 +31,18 @@ export class ResultContainer extends LitElement {
   @query('typo3-backend-live-search-result-item-container') itemContainer: ItemContainer;
   @query('typo3-backend-live-search-result-item-detail-container') resultDetailContainer: ResultDetailContainer;
 
-  public connectedCallback() {
+  public connectedCallback(): void {
     super.connectedCallback();
 
-    this.addEventListener('livesearch:request-actions', (e: CustomEvent): void => {
-      this.resultDetailContainer.resultItem = e.detail.resultItem;
-    })
-    this.addEventListener('livesearch:invoke-action', (e: CustomEvent): void => {
-      const invokeHandlers = LiveSearchConfigurator.getInvokeHandlers();
-      const resultItem = e.detail.resultItem;
-      const action = e.detail.action;
+    this.addEventListener('livesearch:request-actions', this.onActionsRequested);
+    this.addEventListener('livesearch:invoke-action', this.onActionInvoked);
+  }
 
-      if (action === undefined) {
-        return;
-      }
+  public disconnectedCallback(): void {
+    this.removeEventListener('livesearch:request-actions', this.onActionsRequested);
+    this.removeEventListener('livesearch:invoke-action', this.onActionInvoked);
 
-      if (typeof invokeHandlers[resultItem.provider + '_' + action.identifier] === 'function') {
-        invokeHandlers[resultItem.provider + '_' + action.identifier](resultItem, action);
-      } else {
-        // Default handler to open the URL
-        TYPO3.Backend.ContentContainer.setUrl(action.url);
-      }
-      this.dispatchEvent(new CustomEvent('live-search:item-chosen', {
-        detail: { resultItem }
-      }));
-    })
+    super.disconnectedCallback();
   }
 
   public createRenderRoot(): HTMLElement | ShadowRoot {
@@ -63,13 +50,13 @@ export class ResultContainer extends LitElement {
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected render(): TemplateResult | symbol {
     if (this.loading) {
       return html`<div class="d-flex flex-fill justify-content-center mt-2"><typo3-backend-spinner size="large"></typo3-backend-spinner></div>`;
     }
 
     if (this.results === null) {
-      return html``;
+      return nothing;
     }
 
     if (this.results.length === 0) {
@@ -80,5 +67,29 @@ export class ResultContainer extends LitElement {
       <typo3-backend-live-search-result-item-container .results="${this.results}"></typo3-backend-live-search-result-item-container>
       <typo3-backend-live-search-result-item-detail-container></typo3-backend-live-search-result-item-detail-container>
     `;
+  }
+
+  private onActionsRequested(e: CustomEvent): void {
+    this.resultDetailContainer.resultItem = e.detail.resultItem;
+  }
+
+  private onActionInvoked(e: CustomEvent): void {
+    const invokeHandlers = LiveSearchConfigurator.getInvokeHandlers();
+    const resultItem = e.detail.resultItem;
+    const action = e.detail.action;
+
+    if (action === undefined) {
+      return;
+    }
+
+    if (typeof invokeHandlers[resultItem.provider + '_' + action.identifier] === 'function') {
+      invokeHandlers[resultItem.provider + '_' + action.identifier](resultItem, action);
+    } else {
+      // Default handler to open the URL
+      TYPO3.Backend.ContentContainer.setUrl(action.url);
+    }
+    this.dispatchEvent(new CustomEvent('live-search:item-chosen', {
+      detail: { resultItem }
+    }));
   }
 }

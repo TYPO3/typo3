@@ -31,38 +31,20 @@ export class ResultItem extends LitElement {
   @property({type: String}) label: string;
   @property({type: String}) path: string;
 
-  public connectedCallback() {
+  public connectedCallback(): void {
     super.connectedCallback();
 
-    this.addEventListener('blur', (e: FocusEvent): void => {
-      let closeResultContainer = true;
-      const relatedElement = e.relatedTarget as HTMLElement|null;
-      const resultContainer = this.closest('typo3-backend-formengine-suggest-result-container') as HTMLElement;
+    this.addEventListener('blur', this.onBlur);
+    this.addEventListener('click', this.onClick);
+    this.addEventListener('keyup', this.onKeyUp);
+  }
 
-      if (relatedElement?.tagName.toLowerCase() === 'typo3-backend-formengine-suggest-result-item') {
-        closeResultContainer = false;
-      }
+  public disconnectedCallback(): void {
+    this.removeEventListener('blur', this.onBlur);
+    this.removeEventListener('click', this.onClick);
+    this.removeEventListener('keyup', this.onKeyUp);
 
-      if (relatedElement?.matches('input[type="search"]') && resultContainer.contains(relatedElement)) {
-        closeResultContainer = false;
-      }
-
-      resultContainer.hidden = closeResultContainer;
-    });
-
-    this.addEventListener('click', (e: PointerEvent): void => {
-      e.preventDefault();
-      this.dispatchItemChosenEvent(e.currentTarget as Element);
-    });
-
-    this.addEventListener('keyup', (e: KeyboardEvent): void => {
-      e.preventDefault();
-
-      // Trigger item selection when pressing ENTER or SPACE
-      if (['Enter', ' '].includes(e.key)) {
-        this.dispatchItemChosenEvent(document.activeElement);
-      }
-    });
+    super.disconnectedCallback();
   }
 
   public createRenderRoot(): HTMLElement | ShadowRoot {
@@ -79,6 +61,36 @@ export class ResultItem extends LitElement {
         ${this.label} <small>[${this.uid}] ${this.path}</small>
       </div>
     `;
+  }
+
+  private onBlur(e: FocusEvent): void {
+    let closeResultContainer = true;
+    const relatedElement = e.relatedTarget as HTMLElement|null;
+    const resultContainer = this.closest('typo3-backend-formengine-suggest-result-container') as HTMLElement;
+
+    if (relatedElement?.tagName.toLowerCase() === 'typo3-backend-formengine-suggest-result-item') {
+      closeResultContainer = false;
+    }
+
+    if (relatedElement?.matches('input[type="search"]') && resultContainer.contains(relatedElement)) {
+      closeResultContainer = false;
+    }
+
+    resultContainer.hidden = closeResultContainer;
+  }
+
+  private onClick(e: PointerEvent): void {
+    e.preventDefault();
+    this.dispatchItemChosenEvent(e.currentTarget as Element);
+  }
+
+  private onKeyUp(e: KeyboardEvent): void {
+    e.preventDefault();
+
+    // Trigger item selection when pressing ENTER or SPACE
+    if (['Enter', ' '].includes(e.key)) {
+      this.dispatchItemChosenEvent(document.activeElement);
+    }
   }
 
   private dispatchItemChosenEvent(selectedItem: Element): void {

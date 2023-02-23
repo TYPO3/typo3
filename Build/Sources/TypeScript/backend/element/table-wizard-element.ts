@@ -40,10 +40,9 @@ export class TableWizardElement extends LitElement {
 
   private table: string[][] = [];
 
-  constructor() {
-    super();
-    // Initialize selector so it can be used before property initialization
-    // and is able to load table data from textarea
+  public connectedCallback(): void {
+    super.connectedCallback();
+
     this.selectorData = this.getAttribute('selector');
     this.delimiter = this.getAttribute('delimiter');
     this.enclosure = this.getAttribute('enclosure') || '';

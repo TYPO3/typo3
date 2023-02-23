@@ -59,6 +59,8 @@
     "autoprefixer": "^9.8.6",
     "es-module-lexer": "^0.9.3",
     "eslint": "^8.19.0",
+    "eslint-plugin-lit": "^1.8.2",
+    "eslint-plugin-wc": "^1.4.0",
     "filesize": "^10.0.6",
     "flag-icons": "^6.6.6",
     "grunt": "^1.5.3",

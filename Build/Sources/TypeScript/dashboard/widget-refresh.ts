@@ -21,19 +21,27 @@ enum Selectors {
 @customElement('typo3-dashboard-widget-refresh')
 class WidgetRefresh extends LitElement {
 
-  public constructor() {
-    super();
-    this.addEventListener('click', (e: Event): void => {
-      e.preventDefault();
-      this.closest(Selectors.dashboardItem).dispatchEvent(
-        new Event('widgetRefresh', {bubbles: true})
-      );
-      this.querySelector('button').blur();
-    });
+  public connectedCallback(): void {
+    super.connectedCallback();
+
+    this.addEventListener('click', this.onRefresh);
+  }
+
+  public disconnectedCallback(): void {
+    this.removeEventListener('click', this.onRefresh);
+
+    super.disconnectedCallback();
   }
 
   protected render(): TemplateResult {
     return html`<slot></slot>`;
   }
 
+  private onRefresh(e: Event): void {
+    e.preventDefault();
+    this.closest(Selectors.dashboardItem).dispatchEvent(
+      new Event('widgetRefresh', {bubbles: true})
+    );
+    this.querySelector('button').blur();
+  }
 }

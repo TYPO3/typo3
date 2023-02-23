@@ -12,7 +12,7 @@
  */
 
 import {customElement, property} from 'lit/decorators';
-import {html, LitElement, TemplateResult} from 'lit';
+import {html, LitElement, nothing, TemplateResult} from 'lit';
 import './item/action/action-container';
 import {ResultItemInterface} from './item/item';
 
@@ -27,9 +27,9 @@ export class ResultDetailContainer extends LitElement {
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected render(): TemplateResult | symbol {
     if (this.resultItem === null) {
-      return html``;
+      return nothing;
     }
 
     return html`

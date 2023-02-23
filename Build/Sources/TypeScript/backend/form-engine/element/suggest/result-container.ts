@@ -21,9 +21,16 @@ import {ResultItemInterface} from './result-item';
 class ResultContainer extends LitElement {
   @property({type: Object}) results: ResultItemInterface[]|null = null;
 
-  public connectedCallback() {
+  public connectedCallback(): void {
     super.connectedCallback();
+
     this.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  public disconnectedCallback(): void {
+    this.removeEventListener('keydown', this.handleKeyDown);
+
+    super.disconnectedCallback();
   }
 
   public createRenderRoot(): HTMLElement | ShadowRoot {

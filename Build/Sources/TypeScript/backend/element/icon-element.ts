@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, css, unsafeCSS, LitElement, TemplateResult, CSSResult} from 'lit';
+import {html, css, unsafeCSS, LitElement, TemplateResult, CSSResult, nothing} from 'lit';
 import {customElement, property} from 'lit/decorators';
 import {unsafeHTML} from 'lit/directives/unsafe-html';
 import {until} from 'lit/directives/until';
@@ -152,13 +152,13 @@ export class IconElement extends LitElement {
     iconSize(unsafeCSS(Sizes.mega)),
   ];
 
-  public render(): TemplateResult {
+  public render(): TemplateResult | symbol {
     if (this.raw) {
       return html`${unsafeHTML(this.raw)}`;
     }
 
     if (!this.identifier) {
-      return html``;
+      return nothing;
     }
 
     const icon = Icons.getIcon(this.identifier, this.size, this.overlay, this.state, this.markup)

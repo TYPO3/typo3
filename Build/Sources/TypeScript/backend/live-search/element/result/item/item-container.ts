@@ -28,12 +28,12 @@ export const componentName = 'typo3-backend-live-search-result-item-container';
 export class ItemContainer extends LitElement {
   @property({type: Object, attribute: false}) results: ResultItemInterface[]|null = null;
 
-  public connectedCallback() {
+  public connectedCallback(): void {
     super.connectedCallback();
     this.addEventListener('scroll', this.onScroll);
   }
 
-  public disconnectedCallback() {
+  public disconnectedCallback(): void {
     this.removeEventListener('scroll', this.onScroll);
     super.disconnectedCallback();
   }
@@ -131,7 +131,7 @@ export class ResultList extends LitElement {
   private parentContainer: HTMLElement;
   private resultItemDetailContainer: HTMLElement;
 
-  public connectedCallback() {
+  public connectedCallback(): void {
     this.parentContainer = this.closest('typo3-backend-live-search-result-container');
     this.resultItemDetailContainer = this.parentContainer.querySelector('typo3-backend-live-search-result-item-detail-container');
 
@@ -140,7 +140,7 @@ export class ResultList extends LitElement {
     this.addEventListener('keyup', this.handleKeyUp);
   }
 
-  public disconnectedCallback() {
+  public disconnectedCallback(): void {
     this.removeEventListener('keydown', this.handleKeyDown);
     this.removeEventListener('keyup', this.handleKeyUp);
     super.disconnectedCallback();

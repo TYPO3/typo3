@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, TemplateResult, PropertyValues } from 'lit';
+import {html, LitElement, TemplateResult, PropertyValues, nothing} from 'lit';
 import { customElement, property, query } from 'lit/decorators';
 import { until } from 'lit/directives/until';
 import { lll } from '@typo3/core/lit-helper';
@@ -355,9 +355,9 @@ export class PageTreeNavigationComponent extends LitElement {
     });
   }
 
-  private renderMountPoint(): TemplateResult {
+  private renderMountPoint(): TemplateResult | symbol {
     if (this.mountPointPath === null) {
-      return html``;
+      return nothing;
     }
     return html`
       <div class="node-mount-point">

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, css, LitElement, TemplateResult} from 'lit';
+import {html, css, LitElement, TemplateResult, nothing} from 'lit';
 import {customElement, property, query} from 'lit/decorators';
 import {ModuleState} from '../module';
 import {lll} from '@typo3/core/lit-helper';
@@ -34,9 +34,9 @@ export class IframeModuleElement extends LitElement {
     return this;
   }
 
-  public render(): TemplateResult {
+  public render(): TemplateResult | symbol {
     if (!this.endpoint) {
-      return html``;
+      return nothing;
     }
 
     return html`

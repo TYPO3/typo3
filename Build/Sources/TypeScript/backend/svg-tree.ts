@@ -688,14 +688,19 @@ export class SvgTree extends LitElement {
 
   public connectedCallback(): void {
     super.connectedCallback();
-    this.addEventListener('resize', () => this.updateView());
-    this.addEventListener('scroll', () => this.updateView());
-    this.addEventListener('svg-tree:visible', () => this.updateView());
-    window.addEventListener('resize', () => {
-      if (this.getClientRects().length > 0) {
-        this.updateView();
-      }
-    });
+    this.addEventListener('resize', this.updateViewRequested);
+    this.addEventListener('scroll', this.updateViewRequested);
+    this.addEventListener('svg-tree:visible', this.updateViewRequested);
+    window.addEventListener('resize', this.windowResized);
+  }
+
+  public disconnectedCallback(): void {
+    this.removeEventListener('resize', this.updateViewRequested);
+    this.removeEventListener('scroll', this.updateViewRequested);
+    this.removeEventListener('svg-tree:visible', this.updateViewRequested);
+    window.removeEventListener('resize', this.windowResized);
+
+    super.disconnectedCallback();
   }
 
   /**
@@ -762,11 +767,21 @@ export class SvgTree extends LitElement {
     this.updateView();
   }
 
+  protected updateViewRequested(): void {
+    this.updateView();
+  }
+
   protected updateView(): void {
     this.updateScrollPosition();
     this.updateVisibleNodes();
     if (this.settings.actions && this.settings.actions.length) {
       this.nodesActionsContainer.attr('transform', 'translate(' + (this.querySelector('svg').clientWidth - 16 - ((16 * this.settings.actions.length))) + ',0)');
+    }
+  }
+
+  protected windowResized = (): void => {
+    if (this.getClientRects().length > 0) {
+      this.updateView();
     }
   }
 

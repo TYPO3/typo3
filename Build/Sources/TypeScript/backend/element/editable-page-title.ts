@@ -12,7 +12,7 @@
  */
 
 import {lll} from '@typo3/core/lit-helper';
-import {html, css, LitElement, TemplateResult} from 'lit';
+import {html, css, LitElement, TemplateResult, nothing} from 'lit';
 import {customElement, property, state} from 'lit/decorators';
 import './icon-element';
 import AjaxDataHandler from '../ajax-data-handler';
@@ -138,9 +138,9 @@ class EditablePageTitle extends LitElement {
     }
   }
 
-  protected render(): TemplateResult {
+  protected render(): TemplateResult | symbol {
     if (this.pageTitle === '') {
-      return html``;
+      return nothing;
     }
 
     if (!this.isEditable()) {

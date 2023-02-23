@@ -18,10 +18,16 @@ import Modal from '@typo3/backend/modal';
 
 @customElement('typo3-backend-live-search-show-all')
 export class ResultItem extends LitElement {
-  public connectedCallback() {
+  public connectedCallback(): void {
     super.connectedCallback();
 
     this.addEventListener('click', this.dispatchItemChosenEvent);
+  }
+
+  public disconnectedCallback(): void {
+    this.removeEventListener('click', this.dispatchItemChosenEvent);
+
+    super.disconnectedCallback();
   }
 
   public createRenderRoot(): HTMLElement | ShadowRoot {
