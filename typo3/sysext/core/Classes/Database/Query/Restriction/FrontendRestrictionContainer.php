@@ -98,6 +98,10 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
         if ($restrictionClass === WorkspaceRestriction::class) {
             return GeneralUtility::makeInstance($restrictionClass, (int)$this->context->getPropertyFromAspect('workspace', 'id', 0));
         }
+        if ($restrictionClass === FrontendGroupRestriction::class) {
+            return GeneralUtility::makeInstance($restrictionClass, $this->context->getPropertyFromAspect('frontend.user', 'groupIds', []));
+        }
+
         return parent::createRestriction($restrictionClass);
     }
 }
