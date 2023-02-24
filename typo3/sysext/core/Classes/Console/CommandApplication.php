@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Core\Console;
 
-use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -31,7 +30,6 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationInterface;
 use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 
@@ -68,11 +66,7 @@ class CommandApplication implements ApplicationInterface
         $this->languageServiceFactory = $languageServiceFactory;
 
         $this->checkEnvironmentOrDie();
-        $this->application = new Application('TYPO3 CMS', sprintf(
-            '%s (Application Context: <comment>%s</comment>)',
-            (new Typo3Version())->getVersion(),
-            Environment::getContext()
-        ));
+        $this->application = new Application('TYPO3 CMS', (new Typo3Version())->getVersion());
         $this->application->setAutoExit(false);
         $this->application->setDispatcher($eventDispatcher);
         $this->application->setCommandLoader($commandRegistry);
