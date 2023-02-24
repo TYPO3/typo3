@@ -696,7 +696,7 @@ class AbstractPlugin
         $pR1 = $pointer * $results_at_a_time + 1;
         $pR2 = $pointer * $results_at_a_time + $results_at_a_time;
         if ($showResultCount) {
-            if ($wrapper['showResultsNumbersWrap']) {
+            if ($wrapper['showResultsNumbersWrap'] ?? false) {
                 // This will render the resultcount in a more flexible way using markers (new in TYPO3 3.8.0).
                 // The formatting string is expected to hold template markers (see function header). Example: 'Displaying results ###FROM### to ###TO### out of ###OUT_OF###'
                 $markerArray['###FROM###'] = $this->cObj->wrap($this->internal['res_count'] > 0 ? $pR1 : 0, $wrapper['showResultsNumbersWrap']);
