@@ -61,7 +61,8 @@ export class ItemContainer extends LitElement {
   private renderGroupedResults(groupedResults: GroupedResultItems): TemplateResult {
     const items = [];
     for (let [type, results] of Object.entries(groupedResults)) {
-      items.push(html`<h6 class="livesearch-result-item-group-label">${type}</h6>`);
+      let countElements = results.length;
+      items.push(html`<h6 class="livesearch-result-item-group-label">${type} (${countElements})</h6>`);
       items.push(...results.map((result: ResultItemInterface) => html`${until(
         this.renderResultItem(result),
         html`<typo3-backend-spinner></typo3-backend-spinner>`

@@ -36,10 +36,14 @@ Example
 
     namespace MyVendor\MyExtension\Search\EventListener;
 
+    use TYPO3\CMS\Backend\Routing\UriBuilder;
     use TYPO3\CMS\Backend\Search\Event\ModifyResultItemInLiveSearchEvent;
     use TYPO3\CMS\Backend\Search\LiveSearch\DatabaseRecordProvider;
     use TYPO3\CMS\Backend\Search\LiveSearch\ResultItemAction;
+    use TYPO3\CMS\Core\Imaging\Icon;
     use TYPO3\CMS\Core\Imaging\IconFactory;
+    use TYPO3\CMS\Core\Localization\LanguageService;
+    use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 
     final class AddLiveSearchResultActionsListener
     {
