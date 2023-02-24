@@ -72,7 +72,7 @@ class LiveSearch {
       .map((item: [string, string]): SearchOption => {
         const trimmedKey = item[0].replace('livesearch-option-', '');
         const [key, value] = trimmedKey.split('-', 2);
-        return { key, value };
+        return { key, value }
       });
 
     const searchOptions = this.composeSearchOptions(persistedSearchOptions);
@@ -87,61 +87,83 @@ class LiveSearch {
       content: url.toString(),
       title: lll('labels.search'),
       severity: SeverityEnum.notice,
-      size: Modal.sizes.medium
+      size: Modal.sizes.medium,
+      ajaxCallback: (): void => {
+        const liveSearchContainer = modal.querySelector('typo3-backend-live-search')
+        const searchField = liveSearchContainer.querySelector('input[type="search"]') as HTMLInputElement;
+        const searchForm = searchField.closest('form');
+
+        new RegularEvent('submit', (e: SubmitEvent): void => {
+          e.preventDefault();
+
+          const formData = new FormData(searchForm);
+          this.search(formData).then((): void => {
+            const query = formData.get('query').toString();
+            BrowserSession.set('livesearch-term', query);
+          });
+          const optionCounterElement = searchForm.querySelector('[data-active-options-counter]') as HTMLElement;
+          const count = parseInt(optionCounterElement.dataset.activeOptionsCounter, 10);
+          optionCounterElement.querySelector('output').textContent = count.toString(10);
+          optionCounterElement.classList.toggle('hidden', count === 0);
+        }).bindTo(searchForm);
+
+        searchField.clearable({
+          onClear: (): void => {
+            searchForm.requestSubmit();
+          },
+        });
+
+        const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container') as ResultContainer;
+        new RegularEvent('live-search:item-chosen', (): void => {
+          Modal.dismiss();
+        }).bindTo(searchResultContainer);
+
+        new RegularEvent('typo3:live-search:option-invoked', (e: CustomEvent): void => {
+          const optionCounterElement = searchForm.querySelector('[data-active-options-counter]') as HTMLElement;
+          let count = parseInt(optionCounterElement.dataset.activeOptionsCounter, 10);
+          count = e.detail.active ? count + 1 : count - 1;
+
+          // Update data attribute only, the visible text content is updated in the submit handler
+          optionCounterElement.dataset.activeOptionsCounter = count.toString(10);
+        }).bindTo(liveSearchContainer);
+
+        new RegularEvent('hide.bs.dropdown', (): void => {
+          searchForm.requestSubmit();
+        }).bindTo(modal.querySelector(Identifiers.searchOptionDropdownToggle));
+
+        new DebounceEvent('input', (): void => {
+          searchForm.requestSubmit();
+        }).bindTo(searchField);
+
+        new RegularEvent('keydown', this.handleKeyDown).bindTo(searchField);
+
+        searchForm.requestSubmit();
+      }
     });
 
-    modal.addEventListener('typo3-modal-shown', () => {
-      const liveSearchContainer = modal.querySelector('typo3-backend-live-search');
-      const searchField = liveSearchContainer.querySelector('input[type="search"]') as HTMLInputElement;
-      const searchForm = searchField.closest('form');
-
-      new RegularEvent('submit', (e: SubmitEvent): void => {
-        e.preventDefault();
-
-        const formData = new FormData(searchForm);
-        this.search(formData).then((): void => {
-          const query = formData.get('query').toString();
-          BrowserSession.set('livesearch-term', query);
-        });
-        const optionCounterElement = searchForm.querySelector('[data-active-options-counter]') as HTMLElement;
-        const count = parseInt(optionCounterElement.dataset.activeOptionsCounter, 10);
-        optionCounterElement.querySelector('output').textContent = count.toString(10);
-        optionCounterElement.classList.toggle('hidden', count === 0);
-      }).bindTo(searchForm);
-
-      searchField.clearable({
-        onClear: (): void => {
-          searchForm.requestSubmit();
-        },
+    /**
+     * The events `modal-loaded` and `typo3-modal-shown` are dispatched in any order, therefore we have to listen to
+     * both events to handle search field focus. Unfortunately, there's currently a bug that makes it impossible using
+     * Promises  instead, which would be much better: https://forge.typo3.org/issues/100026
+     *
+     * Once the aforementioned issue is fixed, we may use this instead:
+     *
+     * ```
+     * Promise.all([
+     *   new Promise(res1 => modal.addEventListener('modal-loaded', res1)),
+     *   new Promise(res2 => modal.addEventListener('typo3-modal-shown', res2))
+     * ]).then((): void => {
+     *   // do stuff here
+     * });
+     */
+    ['modal-loaded', 'typo3-modal-shown'].forEach((eventToListenOn: string) => {
+      modal.addEventListener(eventToListenOn, () => {
+        const searchField = modal.querySelector('input[type="search"]') as HTMLInputElement|null;
+        if (searchField !== null) {
+          searchField.focus();
+          searchField.select();
+        }
       });
-      searchField.focus();
-      searchField.select();
-
-      const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container') as ResultContainer;
-      new RegularEvent('live-search:item-chosen', (): void => {
-        Modal.dismiss();
-      }).bindTo(searchResultContainer);
-
-      new RegularEvent('typo3:live-search:option-invoked', (e: CustomEvent): void => {
-        const optionCounterElement = searchForm.querySelector('[data-active-options-counter]') as HTMLElement;
-        let count = parseInt(optionCounterElement.dataset.activeOptionsCounter, 10);
-        count = e.detail.active ? count + 1 : count - 1;
-
-        // Update data attribute only, the visible text content is updated in the submit handler
-        optionCounterElement.dataset.activeOptionsCounter = count.toString(10);
-      }).bindTo(liveSearchContainer);
-
-      new RegularEvent('hide.bs.dropdown', (): void => {
-        searchForm.requestSubmit();
-      }).bindTo(modal.querySelector(Identifiers.searchOptionDropdownToggle));
-
-      new DebounceEvent('input', (): void => {
-        searchForm.requestSubmit();
-      }).bindTo(searchField);
-
-      new RegularEvent('keydown', this.handleKeyDown).bindTo(searchField);
-
-      searchForm.requestSubmit();
     });
   }
 
@@ -171,7 +193,7 @@ class LiveSearch {
     }
 
     this.updateSearchResults(resultSet);
-  };
+  }
 
   private handleKeyDown(e: KeyboardEvent): void {
     if (e.key !== 'ArrowDown') {
