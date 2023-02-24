@@ -91,4 +91,13 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
         }
         return $expressionBuilder->andX(...$constraints);
     }
+
+    protected function createRestriction($restrictionClass): QueryRestrictionInterface
+    {
+        if ($restrictionClass === FrontendGroupRestriction::class) {
+            return GeneralUtility::makeInstance($restrictionClass, $this->context->getPropertyFromAspect('frontend.user', 'groupIds', []));
+        }
+
+        return parent::createRestriction($restrictionClass);
+    }
 }
