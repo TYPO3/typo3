@@ -35,6 +35,12 @@ class AdditionalResponseHeaders implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
+
+        // Remove HSTS header, if [BE][lockSSL] is not configured to use SSL
+        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] === false) {
+            unset($GLOBALS['TYPO3_CONF_VARS']['BE']['HTTP']['Response']['Headers']['strictTransportSecurity']);
+        }
+
         foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['HTTP']['Response']['Headers'] ?? [] as $header) {
             [$headerName, $value] = explode(':', $header, 2);
             $response = $response->withAddedHeader($headerName, trim($value));
