@@ -64,9 +64,17 @@ trait PageRendererBackendSetupTrait
     protected function loadStylesheets(PageRenderer $pageRenderer): void
     {
         if (!empty($GLOBALS['TBE_STYLES']['stylesheet'])) {
+            trigger_error(
+                '$GLOBALS[\'TBE_STYLES\'][\'stylesheet\'] will be removed in TYPO3 v13.0. Use $GLOBALS[\'TBE_STYLES\'][\'skins\'] instead.',
+                E_USER_DEPRECATED
+            );
             $pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheet']);
         }
         if (!empty($GLOBALS['TBE_STYLES']['stylesheet2'])) {
+            trigger_error(
+                '$GLOBALS[\'TBE_STYLES\'][\'stylesheet2\'] will be removed in TYPO3 v13.0. Use $GLOBALS[\'TBE_STYLES\'][\'skins\'] instead.',
+                E_USER_DEPRECATED
+            );
             $pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheet2']);
         }
         // Add all *.css files of the directory $path to the stylesheets

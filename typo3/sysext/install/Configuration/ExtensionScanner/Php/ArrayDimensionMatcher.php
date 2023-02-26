@@ -967,4 +967,14 @@ return [
             'Feature-99717-NewPSR-14ModifyBlindedConfigurationOptionsEvent.rst',
         ],
     ],
+    '$GLOBALS[\'TBE_STYLES\'][\'stylesheet\']' => [
+        'restFiles' => [
+            'Deprecation-100033-TBE_STYLESStylesheetAndStylesheet2.rst',
+        ],
+    ],
+    '$GLOBALS[\'TBE_STYLES\'][\'stylesheet2\']' => [
+        'restFiles' => [
+            'Deprecation-100033-TBE_STYLESStylesheetAndStylesheet2.rst',
+        ],
+    ],
 ];
