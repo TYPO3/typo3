@@ -96,7 +96,7 @@ class WorkspacePreview implements MiddlewareInterface
             // A keyword was found in a query parameter or in a cookie
             // If the keyword is valid, activate a BE User and override any existing BE Users
             // (in case workspace ID was given and a corresponding site to be used was found)
-            $previewWorkspaceId = (int)$this->getWorkspaceIdFromRequest($request, $keyword);
+            $previewWorkspaceId = (int)$this->getWorkspaceIdFromRequest($keyword);
             if ($previewWorkspaceId > 0 && $routeResult instanceof RouteResultInterface) {
                 $previewUser = $this->initializePreviewUser($previewWorkspaceId);
                 if ($previewUser instanceof PreviewUserAuthentication) {
@@ -182,21 +182,18 @@ class WorkspacePreview implements MiddlewareInterface
      * restored from the database AND the backend user is loaded - only for that request.
      * The main point is that a special URL valid for a limited time,
      * eg. http://localhost/typo3site/index.php?ADMCMD_prev=035d9bf938bd23cb657735f68a8cedbf will
-     * open up for a preview that doesn't require login. Thus it's useful for sending in an email
+     * open up for a preview that doesn't require login. Thus, it's useful for sending in an email
      * to someone without backend account.
      *
      * @return int|null Workspace ID stored in the preview configuration array of a sys_preview record.
      * @throws \Exception
      */
-    protected function getWorkspaceIdFromRequest(ServerRequestInterface $request, string $inputCode): ?int
+    protected function getWorkspaceIdFromRequest(string $inputCode): ?int
     {
         $previewData = $this->getPreviewData($inputCode);
         if (!is_array($previewData)) {
             // ADMCMD command could not be executed! (No keyword configuration found)
             return null;
-        }
-        if ($request->getMethod() === 'POST') {
-            throw new \Exception('POST requests are incompatible with keyword preview.', 1294585191);
         }
         // Validate configuration
         $previewConfig = json_decode($previewData['config'] ?? '', true);
