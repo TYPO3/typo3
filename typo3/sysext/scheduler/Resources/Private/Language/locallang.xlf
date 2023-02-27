@@ -562,6 +562,15 @@
 			<trans-unit id="msg.group.notification.error.message" resname="group.notification.error.message">
 				<source>Could not create group</source>
 			</trans-unit>
+			<trans-unit id="scheduler.form.palettes.general" resname="scheduler.form.palettes.general">
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="scheduler.form.palettes.settings" resname="scheduler.form.palettes.settings">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="scheduler.form.palettes.timing" resname="scheduler.form.palettes.timing">
+				<source>Timing</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

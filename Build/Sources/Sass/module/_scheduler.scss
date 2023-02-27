@@ -14,3 +14,24 @@
 .scheduler-group-panel {
     overflow: unset;
 }
+
+.task-form .form-control-wrap {
+    margin: .5rem 0 !important;
+}
+
+.task-form .form-wizards-wrap {
+    margin-bottom: .5rem !important;
+}
+
+.task-form .form-group {
+    @media (min-width: $screen-md-min) {
+        width: 50%;
+    }
+}
+
+#task_start_col,
+#task_end_col {
+    @media (min-width: $screen-md-min) {
+        width: 25%;
+    }
+}

@@ -4188,6 +4188,17 @@ html{scroll-behavior:smooth}
 .draggable-dragging .draggable-copy-message{font-size:10.5px;position:absolute;top:-1.25rem}
 .tx_recycler_recycler tr.collapse{display:none}
 .tx_recycler_recycler tr.collapse.show{display:table-row}
+.scheduler-group-dragitem{cursor:move}
+.scheduler-group-dragitem [editable=true],.scheduler-group-dragitem a,.scheduler-group-dragitem button{cursor:initial}
+.scheduler-group-panel{overflow:unset}
+.task-form .form-control-wrap{margin:.5rem 0!important}
+.task-form .form-wizards-wrap{margin-bottom:.5rem!important}
+@media (min-width:992px){
+.task-form .form-group{width:50%}
+}
+@media (min-width:992px){
+#task_end_col,#task_start_col{width:25%}
+}
 .typo3-module-viewpage{background-color:#494949}
 .typo3-module-viewpage .module{background-color:transparent}
 .typo3-module-viewpage .module-body{text-align:center}
@@ -4217,6 +4228,3 @@ html{scroll-behavior:smooth}
 .workspace-legend{margin:5px;height:18px;color:#888}
 .workspace-legend dd,.workspace-legend dt{display:inline;overflow:hidden}
 .workspace-legend dd span{display:inline-block;padding:4px}
-.scheduler-group-dragitem{cursor:move}
-.scheduler-group-dragitem [editable=true],.scheduler-group-dragitem a,.scheduler-group-dragitem button{cursor:initial}
-.scheduler-group-panel{overflow:unset}

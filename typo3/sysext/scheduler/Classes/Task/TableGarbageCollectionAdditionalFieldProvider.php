@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Scheduler\Task;
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -82,9 +84,18 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
             $checked = '';
         }
 
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $fieldName = 'tx_scheduler[scheduler_tableGarbageCollection_allTables]';
         $fieldId = 'task_tableGarbageCollection_allTables';
-        $fieldHtml = '<div class="form-check"><input class="form-check-input" type="checkbox" ' . $checked . ' name="' . $fieldName . '" id="' . $fieldId . '"></div>';
+        $fieldHtml = '<div class="form-check form-check-type-icon-toggle"><input class="form-check-input"'
+            . ' type="checkbox" class="form-check-input" ' . $checked . ' name="' . $fieldName . '" id="' . $fieldId . '">'
+            . '<label class="form-check-label" for="' . $fieldId . '"><span class="form-check-label-icon">'
+            . '<span class="form-check-label-icon-checked">'
+            . $iconFactory->getIcon('actions-check', Icon::SIZE_SMALL)->render() . '</span>'
+            . '<span class="form-check-label-icon-unchecked">'
+            . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>'
+            . '</span></label>'
+            . '</div>';
         $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.allTables',
