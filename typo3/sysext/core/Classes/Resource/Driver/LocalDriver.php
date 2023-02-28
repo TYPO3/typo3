@@ -1351,12 +1351,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * processing resources and money) for large files.
      *
      * @param string $fileIdentifier
-     * @return string The file contents
+     * @return string The file contents if file exists and else empty string
      */
     public function getFileContents($fileIdentifier)
     {
         $filePath = $this->getAbsolutePath($fileIdentifier);
-        return file_get_contents($filePath);
+        return is_readable($filePath) ? (string)file_get_contents($filePath) : '';
     }
 
     /**
