@@ -58,7 +58,7 @@ final class FileClipboardCest
         $this->openActionDropdown($I, $fileName)->click();
         $I->click('Cut');
         $I->see($fileName, '[data-clipboard-panel] a');
-        $I->click('Remove item', '[data-clipboard-panel]');
+        $I->click('Remove element', '[data-clipboard-panel]');
         $I->dontSee($fileName, '[data-clipboard-panel] a');
     }
 
