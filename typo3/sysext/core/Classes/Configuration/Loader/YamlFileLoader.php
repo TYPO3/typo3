@@ -102,11 +102,11 @@ class YamlFileLoader implements LoggerAwareInterface
     /**
      * Put into a separate method to ease the pains with unit tests
      *
-     * @return string the contents
+     * @return string the contents or empty string if file_get_contents fails
      */
     protected function getFileContents(string $fileName): string
     {
-        return file_get_contents($fileName);
+        return is_readable($fileName) ? (string)file_get_contents($fileName) : '';
     }
 
     /**
