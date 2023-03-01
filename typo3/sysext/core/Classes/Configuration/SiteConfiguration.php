@@ -47,18 +47,14 @@ class SiteConfiguration implements SingletonInterface
 {
     protected PhpFrontend $cache;
 
-    /**
-     * @var string
-     */
-    protected $configPath;
+    protected string $configPath;
 
     /**
      * Config yaml file name.
      *
      * @internal
-     * @var string
      */
-    protected $configFileName = 'config.yaml';
+    protected string $configFileName = 'config.yaml';
 
     /**
      * YAML file name with all settings.
@@ -68,12 +64,18 @@ class SiteConfiguration implements SingletonInterface
     protected string $settingsFileName = 'settings.yaml';
 
     /**
+     * YAML file name with all settings related to Content-Security-Policies.
+     *
+     * @internal
+     */
+    protected string $contentSecurityFileName = 'csp.yaml';
+
+    /**
      * Identifier to store all configuration data in cache_core cache.
      *
      * @internal
-     * @var string
      */
-    protected $cacheIdentifier = 'sites-configuration';
+    protected string $cacheIdentifier = 'sites-configuration';
 
     /**
      * Cache stores all configuration as Site objects, as long as they haven't been changed.
@@ -150,9 +152,11 @@ class SiteConfiguration implements SingletonInterface
             // cast $identifier to string, as the identifier can potentially only consist of (int) digit numbers
             $identifier = (string)$identifier;
             $siteSettings = $this->getSiteSettings($identifier, $configuration);
+            $configuration['contentSecurityPolicies'] = $this->getContentSecurityPolicies($identifier);
+
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
-                $sites[$identifier] = GeneralUtility::makeInstance(Site::class, $identifier, $rootPageId, $configuration, $siteSettings);
+                $sites[$identifier] = new Site($identifier, $rootPageId, $configuration, $siteSettings);
             }
         }
         $this->firstLevelCache = $sites;
@@ -243,6 +247,16 @@ class SiteConfiguration implements SingletonInterface
             $settings = $siteConfiguration['settings'] ?? [];
         }
         return new SiteSettings($settings);
+    }
+
+    protected function getContentSecurityPolicies(string $siteIdentifier): array
+    {
+        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->contentSecurityFileName;
+        if (file_exists($fileName)) {
+            $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
+            return $loader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
+        }
+        return [];
     }
 
     public function writeSettings(string $siteIdentifier, array $settings): void

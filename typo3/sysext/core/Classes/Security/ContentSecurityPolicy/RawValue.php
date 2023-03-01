@@ -15,30 +15,22 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Core;
-
-use TYPO3\CMS\Core\Security\Nonce;
+namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
 /**
- * @internal
+ * Representation of a plain, raw string value that does not have
+ * a particular meaning in the terms of Content-Security-Policy.
+ *
+ * @internal Might be changed or removed at a later time
  */
-final class RequestId
+class RawValue implements \Stringable
 {
-    public readonly string $long;
-    public readonly string $short;
-    public readonly int $microtime;
-    public readonly Nonce $nonce;
-
-    public function __construct()
+    public function __construct(public readonly string $value)
     {
-        $this->long = bin2hex(random_bytes(20));
-        $this->short = substr($this->long, 0, 13);
-        $this->microtime = (int)(microtime(true) * 1000000);
-        $this->nonce = Nonce::create();
     }
 
     public function __toString(): string
     {
-        return $this->short;
+        return $this->value;
     }
 }

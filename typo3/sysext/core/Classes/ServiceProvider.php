@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 
 /**
@@ -105,6 +106,7 @@ class ServiceProvider extends AbstractServiceProvider
             'globalPageTsConfig' => [ static::class, 'getGlobalPageTsConfig' ],
             'icons' => [ static::class, 'getIcons' ],
             'middlewares' => [ static::class, 'getMiddlewares' ],
+            'content.security.policies' => [ static::class, 'getContentSecurityPolicies' ],
         ];
     }
 
@@ -566,6 +568,11 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getMiddlewares(ContainerInterface $container): ArrayObject
     {
         return new ArrayObject();
+    }
+
+    public static function getContentSecurityPolicies(ContainerInterface $container): Map
+    {
+        return new Map();
     }
 
     public static function provideFallbackEventDispatcher(

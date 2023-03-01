@@ -22,6 +22,11 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use TYPO3\CMS\Core\DependencyInjection\ServiceProviderInterface;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationOrigin;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationOriginType;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
+use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -53,6 +58,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             // @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
             'globalPageTsConfig' => [ static::class, 'configureGlobalPageTsConfig' ],
             'backend.modules' => [ static::class, 'configureBackendModules' ],
+            'content.security.policies' => [static::class, 'configureContentSecurityPolicies'],
             'icons' => [ static::class, 'configureIcons' ],
         ];
     }
@@ -153,6 +159,29 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             }
         }
         return $modules;
+    }
+
+    /**
+     * @param Map<Scope, Map<MutationOrigin, MutationCollection>> $mutations
+     * @return Map<Scope, Map<MutationOrigin, MutationCollection>>
+     */
+    public static function configureContentSecurityPolicies(ContainerInterface $container, Map $mutations, string $path = null, string $packageName = null): Map
+    {
+        $path = $path ?? static::getPackagePath();
+        $packageName = $packageName ?? static::getPackageName();
+        $fileName = $path . 'Configuration/ContentSecurityPolicies.php';
+        if (file_exists($fileName)) {
+            /** @var Map<Scope, MutationCollection> $mutationsInPackage */
+            $mutationsInPackage = require $fileName;
+            foreach ($mutationsInPackage as $scope => $mutation) {
+                if (!isset($mutations[$scope])) {
+                    $mutations[$scope] = new Map();
+                }
+                $origin = new MutationOrigin(MutationOriginType::package, $packageName);
+                $mutations[$scope][$origin] = $mutation;
+            }
+        }
+        return $mutations;
     }
 
     public static function configureIcons(ContainerInterface $container, ArrayObject $icons, string $path = null): ArrayObject

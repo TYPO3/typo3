@@ -521,6 +521,13 @@ services:
     alias: TYPO3\CMS\Core\Mail\Mailer
     public: true
 
+  # Content-Security-Policy Handlers
+
+  TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider:
+    public: true
+    arguments:
+      $mutations: '@content.security.policies'
+
   # External dependencies
 
   GuzzleHttp\Client:

@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
+use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\DocType;
@@ -327,6 +328,7 @@ class PageRenderer implements SingletonInterface
     protected $endingSlash = '';
 
     protected JavaScriptRenderer $javaScriptRenderer;
+    protected ?Nonce $nonce = null;
     protected DocType $docType = DocType::html5;
 
     public function __construct(
@@ -362,6 +364,7 @@ class PageRenderer implements SingletonInterface
                 case 'languageServiceFactory':
                 case 'responseFactory':
                 case 'streamFactory':
+                case 'nonce':
                     break;
                 case 'metaTagRegistry':
                     $this->metaTagRegistry->updateState($value);
@@ -393,6 +396,7 @@ class PageRenderer implements SingletonInterface
                 case 'languageServiceFactory':
                 case 'responseFactory':
                 case 'streamFactory':
+                case 'nonce':
                     break;
                 case 'metaTagRegistry':
                     $state[$var] = $this->metaTagRegistry->getState();
@@ -830,6 +834,11 @@ class PageRenderer implements SingletonInterface
     {
         trigger_error('PageRenderer->getRenderXhtml() will be removed in TYPO3 v13.0. Use PageRenderer->getDocType() instead.', E_USER_DEPRECATED);
         return $this->renderXhtml;
+    }
+
+    public function setNonce(Nonce $nonce): void
+    {
+        $this->nonce = $nonce;
     }
 
     public function setDocType(DocType $docType): void
@@ -2109,9 +2118,7 @@ class PageRenderer implements SingletonInterface
         $out .= $this->javaScriptRenderer->renderImportMap(
             // @todo hookup with PSR-7 request/response and
             GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'),
-            // @todo add CSP Management API for nonces
-            // (currently static for preparatory assertions in Acceptance Testing)
-            'rAnd0m'
+            $this->nonce?->b64
         );
 
         // Include RequireJS
@@ -2146,7 +2153,7 @@ class PageRenderer implements SingletonInterface
                 );
             }
         }
-        $out .= $this->javaScriptRenderer->render();
+        $out .= $this->javaScriptRenderer->render($this->nonce?->b64);
         return $out;
     }
 
@@ -2298,6 +2305,9 @@ class PageRenderer implements SingletonInterface
             if ($properties['title'] ?? false) {
                 $tagAttributes['title'] = $properties['title'];
             }
+            if ($properties['nonce'] ?? $this->nonce?->b64) {
+                $tagAttributes['nonce'] = $properties['nonce'] ?? $this->nonce?->b64;
+            }
             $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
             $tag = '<link ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . $this->endingSlash . '>';
         }
@@ -2363,6 +2373,9 @@ class PageRenderer implements SingletonInterface
                 if ($properties['crossorigin'] ?? false) {
                     $tagAttributes['crossorigin'] = $properties['crossorigin'];
                 }
+                if ($properties['nonce'] ?? $this->nonce?->b64) {
+                    $tagAttributes['nonce'] = $properties['nonce'] ?? $this->nonce?->b64;
+                }
                 $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
                 $tag = '<script ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . '></script>';
                 if ($properties['allWrap'] ?? false) {
@@ -2421,6 +2434,9 @@ class PageRenderer implements SingletonInterface
                 if ($properties['crossorigin'] ?? false) {
                     $tagAttributes['crossorigin'] = $properties['crossorigin'];
                 }
+                if ($properties['nonce'] ?? $this->nonce?->b64) {
+                    $tagAttributes['nonce'] = $properties['nonce'] ?? $this->nonce?->b64;
+                }
                 $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
                 $tag = '<script ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . '></script>';
                 if ($properties['allWrap'] ?? false) {
@@ -2449,7 +2465,7 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Render inline JavaScript
+     * Render inline JavaScript (must not apply `nonce="..."` if defined).
      *
      * @return array|string[] jsInline and jsFooterInline string
      */
@@ -2857,6 +2873,9 @@ class PageRenderer implements SingletonInterface
         }
         if ($properties['title'] ?? false) {
             $tagAttributes['title'] = $properties['title'];
+        }
+        if ($properties['nonce'] ?? $this->nonce?->b64) {
+            $tagAttributes['nonce'] = $properties['nonce'] ?? $this->nonce?->b64;
         }
         $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
         return '<style ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . '>' . LF

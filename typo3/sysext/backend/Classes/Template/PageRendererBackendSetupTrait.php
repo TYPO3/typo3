@@ -55,6 +55,10 @@ trait PageRendererBackendSetupTrait
         $pageRenderer->setLanguage($languageService->lang);
         $pageRenderer->setMetaTag('name', 'viewport', 'width=device-width, initial-scale=1');
         $pageRenderer->setFavIcon($this->getBackendFavicon($extensionConfiguration, $request));
+        $nonce = $request->getAttribute('nonce');
+        if ($nonce !== null) {
+            $pageRenderer->setNonce($nonce);
+        }
         $this->loadStylesheets($pageRenderer);
     }
 

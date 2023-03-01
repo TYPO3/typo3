@@ -1131,9 +1131,10 @@ class GeneralUtility
      * This is nice for indenting JS code with PHP code on the same level.
      *
      * @param string $string JavaScript code
+     * @param array<string, string> $attributes (optional) script tag HTML attributes
      * @return string The wrapped JS code, ready to put into a XHTML page
      */
-    public static function wrapJS($string)
+    public static function wrapJS(string $string, array $attributes = [])
     {
         if (trim($string)) {
             // remove nl from the beginning
@@ -1143,7 +1144,7 @@ class GeneralUtility
             if (preg_match('/^(\\t+)/', $string, $match)) {
                 $string = str_replace($match[1], "\t", $string);
             }
-            return '<script>
+            return '<script ' . GeneralUtility::implodeAttributes($attributes, true) . '>
 /*<![CDATA[*/
 ' . $string . '
 /*]]>*/

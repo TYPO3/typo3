@@ -27,7 +27,7 @@ class JavaScriptRenderer
     protected ImportMap $importMap;
     protected int $javaScriptModuleInstructionFlags = 0;
 
-    public static function create(string $uri = null): self
+    public static function create(?string $uri = null): self
     {
         $uri ??= PathUtility::getAbsoluteWebPath(
             GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/JavaScript/java-script-item-handler.js')
@@ -107,18 +107,25 @@ class JavaScriptRenderer
         return $this->items->toArray();
     }
 
-    public function render(): string
+    public function render(?string $nonce = null): string
     {
         if ($this->isEmpty()) {
             return '';
         }
-        return $this->createScriptElement([
+        $attributes = [
             'src' => $this->handlerUri,
             'async' => 'async',
-        ], $this->jsonEncode($this->toArray()));
+        ];
+        if ($nonce !== null) {
+            $attributes['nonce'] = $nonce;
+        }
+        return $this->createScriptElement(
+            $attributes,
+            $this->jsonEncode($this->toArray())
+        );
     }
 
-    public function renderImportMap(string $sitePath, string $nonce): string
+    public function renderImportMap(string $sitePath, ?string $nonce = null): string
     {
         if (!$this->isEmpty()) {
             $this->importMap->includeImportsFor('@typo3/core/java-script-item-handler.js');

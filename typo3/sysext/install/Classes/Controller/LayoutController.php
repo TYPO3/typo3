@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Page\ImportMap;
+use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\Exception\TemplateFileChangedException;
@@ -41,6 +42,8 @@ use TYPO3\CMS\Install\Service\SilentTemplateFileUpgradeService;
  */
 class LayoutController extends AbstractController
 {
+    use ControllerTrait;
+
     private FailsafePackageManager $packageManager;
     private SilentConfigurationUpgradeService $silentConfigurationUpgradeService;
     private SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService;
@@ -76,18 +79,20 @@ class LayoutController extends AbstractController
         $initModule = $sitePath . $importMap->resolveImport('@typo3/install/init-install.js');
 
         $view = $this->initializeView($request);
+        $nonce = Nonce::create();
         $view->assignMultiple([
             // time is used as cache bust for js and css resources
             'bust' => $bust,
             'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
             'initModule' => $initModule,
-            'importmap' => $importMap->render($sitePath, 'rAnd0m'),
+            'importmap' => $importMap->render($sitePath, $nonce->b64),
         ]);
         return new HtmlResponse(
             $view->render('Layout/Init'),
             200,
             [
                 'Cache-Control' => 'no-cache, must-revalidate',
+                'Content-Security-Policy' => (string)$this->createContentSecurityPolicy($nonce),
                 'Pragma' => 'no-cache',
             ]
         );

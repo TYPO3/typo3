@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Tests\Fixture\DummyClass;
+use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\DebuggerUtilityAccessibleProxy;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -200,5 +201,19 @@ class DebuggerUtilityTest extends UnitTestCase
 
         $result = DebuggerUtility::var_dump($class, null, 8, true, false, true);
         self::assertStringContainsString('test => protected uninitialized', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function varDumpUsesNonceValue(): void
+    {
+        DebuggerUtilityAccessibleProxy::setStylesheetEchoed(false);
+        $class = new class () {
+            protected \stdClass $test;
+        };
+        $result = DebuggerUtilityAccessibleProxy::var_dump($class, null, 8, false, false, true);
+        self::assertTrue(DebuggerUtilityAccessibleProxy::getStylesheetEchoed());
+        self::assertMatchesRegularExpression('#<style nonce="[^"]+">[^>]+</style>#m', $result);
     }
 }

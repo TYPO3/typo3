@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -64,6 +65,7 @@ class ReferrerEnforcer
         }
         $flags = $options['flags'] ?? [];
         $expiration = $options['expiration'] ?? 5;
+        $nonce = $this->request->getAttribute('nonce');
         // referrer is missing and route requested to refresh
         // (created HTML refresh to enforce having referrer)
         if (($this->request->getQueryParams()['referrer-refresh'] ?? 0) <= time()
@@ -82,16 +84,20 @@ class ReferrerEnforcer
             $scriptUri = $this->resolveAbsoluteWebPath(
                 'EXT:core/Resources/Public/JavaScript/ReferrerRefresh.js'
             );
+            $attributes = ['src' => $scriptUri];
+            if ($nonce instanceof Nonce) {
+                $attributes['nonce'] = $nonce->b64;
+            }
             // simulating navigate event by clicking anchor link
             // since meta-refresh won't change `document.referrer` in e.g. Firefox
             return new HtmlResponse(sprintf(
                 '<html>'
                 . '<head><link rel="icon" href="data:image/svg+xml,"></head>'
-                . '<body><a href="%1$s" id="referrer-refresh">&nbsp;</a>'
-                . '<script src="%2$s"></script></body>'
+                . '<body><a href="%s" id="referrer-refresh">&nbsp;</a>'
+                . '<script %s></script></body>'
                 . '</html>',
                 htmlspecialchars((string)$refreshUri),
-                htmlspecialchars($scriptUri)
+                GeneralUtility::implodeAttributes($attributes, true)
             ));
         }
         $subject = $options['subject'] ?? '';

@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Utility;
 
+use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
@@ -285,7 +287,7 @@ class DebuggerUtility
                 $dump .= '<span class="extbase-debug-filtered">filtered</span>';
             }
         } elseif (self::$renderedObjects->contains($object) && !$plainText) {
-            $dump = '<a href="javascript:;" onclick="document.location.hash=\'#' . spl_object_hash($object) . '\';" class="extbase-debug-seeabove">' . $dump . '<span class="extbase-debug-filtered">see above</span></a>';
+            $dump = '<a href="#' . spl_object_hash($object) . '" class="extbase-debug-seeabove">' . $dump . '<span class="extbase-debug-filtered">see above</span></a>';
         } elseif ($level >= self::$maxDepth && !$object instanceof \DateTimeInterface) {
             if ($plainText) {
                 $dump .= ' ' . self::ansiEscapeWrap('max depth', '47;30', $ansiColors);
@@ -521,8 +523,11 @@ class DebuggerUtility
         self::clearState();
         $css = '';
         if (!$plainText && self::$stylesheetEchoed === false) {
+            $attributes = GeneralUtility::implodeAttributes([
+                'nonce' => self::resolveNonceValue(),
+            ], true);
             $css = '
-				<style>
+				<style ' . $attributes . '>
 					.extbase-debugger-tree{position:relative}
 					.extbase-debugger-tree input{position:absolute !important;float: none !important;top:0;left:0;height:14px;width:14px;margin:0 !important;cursor:pointer;opacity:0;z-index:2}
 					.extbase-debugger-tree input~.extbase-debug-content{display:none}
@@ -571,5 +576,10 @@ class DebuggerUtility
         echo $css . $output;
 
         return '';
+    }
+
+    protected static function resolveNonceValue(): string
+    {
+        return GeneralUtility::makeInstance(RequestId::class)->nonce->b64;
     }
 }

@@ -78,10 +78,17 @@ return [
             ],
         ],
         /** internal: do not use or reference this middleware in your own code */
+        'typo3/cms-backend/csp-headers' => [
+            'target' => \TYPO3\CMS\Backend\Middleware\ContentSecurityPolicyHeaders::class,
+            'after' => [
+                'typo3/cms-backend/output-compression',
+            ],
+        ],
+        /** internal: do not use or reference this middleware in your own code */
         'typo3/cms-backend/response-headers' => [
             'target' => \TYPO3\CMS\Backend\Middleware\AdditionalResponseHeaders::class,
             'after' => [
-                'typo3/cms-backend/output-compression',
+                'typo3/cms-backend/csp-headers',
             ],
         ],
         /** internal: do not use or reference this middleware in your own code */

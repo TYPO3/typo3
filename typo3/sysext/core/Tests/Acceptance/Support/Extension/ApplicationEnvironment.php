@@ -79,19 +79,9 @@ final class ApplicationEnvironment extends BackendEnvironment
             'MAIL' => [
                 'transport' => NullTransport::class,
             ],
-            'BE' => [
-                'HTTP' => [
-                    'Response' => [
-                        'Headers' => [
-                            // Notes:
-                            //  * `script-src 'nonce-rAnd0m'` required for importmap
-                            //                                todo: this needs to be a proper random value, requires API.
-                            //  * `frame-src blob:` required for es-module-shims blob: URLs
-                            //  * `style-src 'unsafe-inline'` required for lit in safari and firefox to allow inline <style> tags
-                            //                (for browsers that do not support https://caniuse.com/mdn-api_shadowroot_adoptedstylesheets)
-                            'csp-report' => "Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'nonce-rAnd0m'; style-src 'self' 'unsafe-inline'; style-src-attr 'unsafe-inline'; style-src-elem 'self' 'unsafe-inline'; img-src 'self' data:; worker-src 'self' blob:; frame-src 'self' blob:;",
-                        ],
-                    ],
+            'SYS' => [
+                'features' => [
+                    'security.backend.enforceContentSecurityPolicy' => true,
                 ],
             ],
         ],

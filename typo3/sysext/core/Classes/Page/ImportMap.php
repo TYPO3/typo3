@@ -114,7 +114,7 @@ class ImportMap
 
     public function render(
         string $urlPrefix,
-        string $nonce,
+        ?string $nonce,
         bool $includePolyfill = true
     ): string {
         if (count($this->extensionsToLoad) === 0 || count($this->getImportMaps()) === 0) {
@@ -128,7 +128,8 @@ class ImportMap
             $importMap,
             JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_THROW_ON_ERROR
         );
-        $html[] = sprintf('<script nonce="%s" type="importmap">%s</script>', $nonce, $json);
+        $nonceAttr = $nonce !== null ? ' nonce="' . htmlspecialchars($nonce) . '"' : '';
+        $html[] = sprintf('<script type="importmap"%s>%s</script>', $nonceAttr, $json);
 
         if ($includePolyfill) {
             $importmapPolyfill = $urlPrefix . PathUtility::getPublicResourceWebPath(
@@ -137,8 +138,9 @@ class ImportMap
             );
 
             $html[] = sprintf(
-                '<script src="%s"></script>',
-                htmlspecialchars($importmapPolyfill)
+                '<script src="%s"%s></script>',
+                htmlspecialchars($importmapPolyfill),
+                $nonceAttr
             );
         }
 

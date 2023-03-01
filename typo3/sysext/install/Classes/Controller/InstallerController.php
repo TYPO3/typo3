@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Page\ImportMap;
+use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\FluidViewAdapter;
@@ -64,6 +65,8 @@ use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
  */
 final class InstallerController
 {
+    use ControllerTrait;
+
     public function __construct(
         private readonly LateBootService $lateBootService,
         private readonly SilentConfigurationUpgradeService $silentConfigurationUpgradeService,
@@ -97,12 +100,14 @@ final class InstallerController
         $view = $this->initializeView();
         $view->assign('bust', $bust);
         $view->assign('initModule', $initModule);
-        $view->assign('importmap', $importMap->render($sitePath, 'rAnd0m'));
+        $nonce = Nonce::create();
+        $view->assign('importmap', $importMap->render($sitePath, $nonce->b64));
 
         return new HtmlResponse(
             $view->render('Installer/Init'),
             200,
             [
+                'Content-Security-Policy' => (string)$this->createContentSecurityPolicy($nonce),
                 'Cache-Control' => 'no-cache, must-revalidate',
                 'Pragma' => 'no-cache',
             ]
