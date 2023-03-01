@@ -218,7 +218,7 @@ class GeneralUtility
      * @param string $list Is a comma-list of IP-addresses to match with. CIDR-notation should be used. For IPv4 addresses only, the *-wildcard is also allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168). If list is "*" no check is done and the function returns TRUE immediately. An empty list always returns FALSE.
      * @return bool TRUE if an IP-mask from $list matches $baseIP
      */
-    public static function cmpIP($baseIP, $list)
+    public static function cmpIP($baseIP, $list): bool
     {
         $list = trim($list);
         if ($list === '') {
@@ -240,7 +240,7 @@ class GeneralUtility
      * @param string $list Is a comma-list of IP-addresses to match with. CIDR-notation, *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.0.0/16 equals 192.168.*.* equals 192.168), could also contain IPv6 addresses
      * @return bool TRUE if an IP-mask from $list matches $baseIP
      */
-    public static function cmpIPv4($baseIP, $list)
+    public static function cmpIPv4($baseIP, $list): bool
     {
         $IPpartsReq = explode('.', $baseIP);
         if (count($IPpartsReq) === 4) {
@@ -289,7 +289,7 @@ class GeneralUtility
      *   must be specified in CIDR-notation, not with * wildcard, otherwise self::validIPv6() will fail.
      * @return bool TRUE If a baseIP matches any prefix
      */
-    public static function cmpIPv6($baseIP, $list)
+    public static function cmpIPv6($baseIP, $list): bool
     {
         // Policy default: Deny connection
         $success = false;
@@ -344,7 +344,7 @@ class GeneralUtility
      * @param string $address Given IPv6 address
      * @return string Normalized address
      */
-    public static function normalizeIPv6($address)
+    public static function normalizeIPv6($address): string
     {
         $normalizedAddress = '';
         // According to RFC lowercase-representation is recommended
@@ -408,7 +408,7 @@ class GeneralUtility
      * @param string $ip IP address to be tested
      * @return bool TRUE if $ip is either of IPv4 or IPv6 format.
      */
-    public static function validIP($ip)
+    public static function validIP($ip): bool
     {
         return filter_var($ip, FILTER_VALIDATE_IP) !== false;
     }
@@ -421,7 +421,7 @@ class GeneralUtility
      * @param string $ip IP address to be tested
      * @return bool TRUE if $ip is of IPv4 format.
      */
-    public static function validIPv4($ip)
+    public static function validIPv4($ip): bool
     {
         return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false;
     }
@@ -434,7 +434,7 @@ class GeneralUtility
      * @param string $ip IP address to be tested
      * @return bool TRUE if $ip is of IPv6 format.
      */
-    public static function validIPv6($ip)
+    public static function validIPv6($ip): bool
     {
         return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false;
     }
