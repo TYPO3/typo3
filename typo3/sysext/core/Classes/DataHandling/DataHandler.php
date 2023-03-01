@@ -1076,16 +1076,17 @@ class DataHandler implements LoggerAwareInterface
                     if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'] ?? false) {
                         $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']] = $this->userid;
                     }
-                } elseif ($this->checkSimilar) {
+                }
+                // Set stage to "Editing" to make sure we restart the workflow
+                if (BackendUtility::isTableWorkspaceEnabled($table)) {
+                    $fieldArray['t3ver_stage'] = 0;
+                }
+                if ($status !== 'new' && $this->checkSimilar) {
                     // Removing fields which are equal to the current value:
                     $fieldArray = $this->compareFieldArrayWithCurrentAndUnset($table, $id, $fieldArray);
                 }
                 if (($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? false) && !empty($fieldArray)) {
                     $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
-                }
-                // Set stage to "Editing" to make sure we restart the workflow
-                if (BackendUtility::isTableWorkspaceEnabled($table)) {
-                    $fieldArray['t3ver_stage'] = 0;
                 }
                 // Hook: processDatamap_postProcessFieldArray
                 foreach ($hookObjectsArr as $hookObj) {
