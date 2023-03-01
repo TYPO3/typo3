@@ -514,6 +514,9 @@ services:
   GuzzleHttp\ClientInterface:
     alias: GuzzleHttp\Client
     public: true
+  Symfony\Contracts\EventDispatcher\EventDispatcherInterface:
+      alias: TYPO3\CMS\Core\Adapter\EventDispatcherAdapter
+      public: true
   TYPO3\CMS\Core\Mail\MailerInterface:
     alias: TYPO3\CMS\Core\Mail\Mailer
     public: true
