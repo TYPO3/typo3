@@ -153,10 +153,6 @@ class TextElement extends AbstractFormElement
             }
         }
 
-        if ($config['nullable'] ?? false) {
-            $evalList[] = 'null';
-        }
-
         $attributes = array_merge(
             [
                 'id' => $fieldId,
