@@ -1464,4 +1464,11 @@ return [
             'Deprecation-99633-GeneralUtilityPOST.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::_GP' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-100053-GeneralUtility_GP.rst',
+        ],
+    ],
 ];

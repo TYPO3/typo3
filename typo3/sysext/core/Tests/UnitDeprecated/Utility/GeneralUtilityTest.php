@@ -75,4 +75,33 @@ class GeneralUtilityTest extends UnitTestCase
         $_POST = $post;
         self::assertSame($expected, GeneralUtility::_POST($key));
     }
+
+    public function gpDataProvider(): array
+    {
+        return [
+            'No key parameter' => [null, [], [], null],
+            'Key not found' => ['cake', [], [], null],
+            'Value only in GET' => ['cake', ['cake' => 'li\\e'], [], 'li\\e'],
+            'Value only in POST' => ['cake', [], ['cake' => 'l\\ie'], 'l\\ie'],
+            'Value from POST preferred over GET' => ['cake', ['cake' => 'is a'], ['cake' => '\\lie'], '\\lie'],
+            'Value can be an array' => [
+                'cake',
+                ['cake' => ['is a' => 'l\\ie']],
+                [],
+                ['is a' => 'l\\ie'],
+            ],
+            'Empty-ish key' => ['0', ['0' => 'zero'], ['0' => 'zero'], null],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider gpDataProvider
+     */
+    public function canRetrieveValueWithGP($key, $get, $post, $expected): void
+    {
+        $_GET = $get;
+        $_POST = $post;
+        self::assertSame($expected, GeneralUtility::_GP($key));
+    }
 }
