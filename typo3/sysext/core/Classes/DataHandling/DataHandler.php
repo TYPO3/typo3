@@ -118,15 +118,6 @@ class DataHandler implements LoggerAwareInterface
     public $reverseOrder = false;
 
     /**
-     * If TRUE, only fields which are different from the database values are saved! In fact, if a whole input array
-     * is similar, it's not saved then.
-     *
-     * @var bool
-     * @internal should only be used from within TYPO3 Core
-     */
-    public $checkSimilar = true;
-
-    /**
      * This will read the record after having updated or inserted it. If anything is not properly submitted an error
      * is written to the log. This feature consumes extra time by selecting records
      *
@@ -1071,7 +1062,7 @@ class DataHandler implements LoggerAwareInterface
                 if (BackendUtility::isTableWorkspaceEnabled($table)) {
                     $fieldArray['t3ver_stage'] = 0;
                 }
-                if ($status !== 'new' && $this->checkSimilar) {
+                if ($status !== 'new') {
                     // Removing fields which are equal to the current value:
                     $fieldArray = $this->compareFieldArrayWithCurrentAndUnset($table, $id, $fieldArray);
                 }
@@ -1110,8 +1101,8 @@ class DataHandler implements LoggerAwareInterface
                         }
                     } else {
                         if ($table === 'pages') {
-                            // only a certain number of fields needs to be checked for updates
-                            // if $this->checkSimilar is TRUE, fields with unchanged values are already removed here
+                            // Only a certain number of fields needs to be checked for updates,
+                            // fields with unchanged values are already removed here.
                             $fieldsToCheck = array_intersect($this->pagetreeRefreshFieldsFromPages, array_keys($fieldArray));
                             if (!empty($fieldsToCheck)) {
                                 $this->pagetreeNeedsRefresh = true;
