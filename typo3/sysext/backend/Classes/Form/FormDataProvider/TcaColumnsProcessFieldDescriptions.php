@@ -58,10 +58,13 @@ class TcaColumnsProcessFieldDescriptions implements FormDataProviderInterface
             if (!is_array($fieldTSconfig)) {
                 continue;
             }
-            $result['processedTca']['columns'][$fieldName]['description'] = $languageService->translateLabel(
+            $pageTsConfigDescription = $languageService->translateLabel(
                 $fieldTSconfig['description.'] ?? [],
                 $fieldTSconfig['description'] ?? ''
             );
+            if ($pageTsConfigDescription !== '') {
+                $result['processedTca']['columns'][$fieldName]['description'] = $pageTsConfigDescription;
+            }
         }
         return $result;
     }
