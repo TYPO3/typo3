@@ -61,7 +61,7 @@ Typical code:
     $getMergedWithPost = GeneralUtility::_GPmerged('tx_scheduler');
 
     // After
-    $getMergedWithPost = $request->getQueryString()['tx_scheduler'];
+    $getMergedWithPost = $request->getQueryParams()['tx_scheduler'];
     ArrayUtility::mergeRecursiveWithOverrule($getMergedWithPost, $request->getParsedBody()['tx_scheduler']);
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend
