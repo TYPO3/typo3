@@ -36,7 +36,7 @@ class ImageResourceContentObject extends AbstractContentObject
         if (!is_array($lastImgResourceInfo)) {
             return '';
         }
-        $imageResource = $lastImgResourceInfo[3];
+        $imageResource = $lastImgResourceInfo[3] ?? '';
         return isset($conf['stdWrap.']) ? $this->cObj->stdWrap($imageResource, $conf['stdWrap.']) : $imageResource;
     }
 }
