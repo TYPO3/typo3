@@ -137,11 +137,18 @@ class MvcPropertyMappingConfigurationService implements SingletonInterface
         }
 
         try {
-            $serializedTrustedProperties = $this->hashService->validateAndStripHmac($trustedPropertiesToken);
+            $encodedTrustedProperties = $this->hashService->validateAndStripHmac($trustedPropertiesToken);
         } catch (InvalidHashException | InvalidArgumentForHashGenerationException $e) {
             throw new BadRequestException('The HMAC of the form could not be validated.', 1581862822);
         }
-        $trustedProperties = json_decode($serializedTrustedProperties, true);
+        $trustedProperties = json_decode($encodedTrustedProperties, true);
+        if (!is_array($trustedProperties)) {
+            if (str_starts_with($encodedTrustedProperties, 'a:')) {
+                throw new BadRequestException('Trusted properties used outdated serialization format instead of json.', 1699604555);
+            }
+            throw new BadRequestException('The HMAC of the form could not be utilized.', 1691267306);
+        }
+
         foreach ($trustedProperties as $propertyName => $propertyConfiguration) {
             if (!$controllerArguments->hasArgument($propertyName)) {
                 continue;
