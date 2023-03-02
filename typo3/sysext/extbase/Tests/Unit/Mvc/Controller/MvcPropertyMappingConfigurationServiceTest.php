@@ -209,6 +209,50 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
+    public function initializePropertyMappingConfigurationWithNonDecodableTrustedPropertiesThrowsException(): void
+    {
+        $hashService = new HashService();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'bar';
+        $extbaseAttribute = (new ExtbaseRequestParameters())->setArgument('__trustedProperties', 'garbage' . $hashService->generateHmac('garbage'));
+        $coreRequest = (new ServerRequest())->withAttribute('extbase', $extbaseAttribute);
+        $extbaseRequest = (new Request($coreRequest));
+
+        $arguments = new Arguments();
+        $requestHashService = new MvcPropertyMappingConfigurationService();
+        $requestHashService->injectHashService($hashService);
+
+        $this->expectException(BadRequestException::class);
+        $this->expectExceptionMessage('The HMAC of the form could not be utilized.');
+        $this->expectExceptionCode(1691267306);
+
+        $requestHashService->initializePropertyMappingConfigurationFromRequest($extbaseRequest, $arguments);
+    }
+
+    /**
+     * @test
+     */
+    public function initializePropertyMappingConfigurationWithOutdatedTrustedPropertiesThrowsException(): void
+    {
+        $hashService = new HashService();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'bar';
+        $extbaseAttribute = (new ExtbaseRequestParameters())->setArgument('__trustedProperties', 'a:1:{s:3:"foo";s:3:"bar";}' . $hashService->generateHmac('a:1:{s:3:"foo";s:3:"bar";}'));
+        $coreRequest = (new ServerRequest())->withAttribute('extbase', $extbaseAttribute);
+        $extbaseRequest = (new Request($coreRequest));
+
+        $arguments = new Arguments();
+        $requestHashService = new MvcPropertyMappingConfigurationService();
+        $requestHashService->injectHashService($hashService);
+
+        $this->expectException(BadRequestException::class);
+        $this->expectExceptionMessage('Trusted properties used outdated serialization format instead json.');
+        $this->expectExceptionCode(1699604555);
+
+        $requestHashService->initializePropertyMappingConfigurationFromRequest($extbaseRequest, $arguments);
+    }
+
+    /**
+     * @test
+     */
     public function initializePropertyMappingConfigurationReturnsEarlyIfNoTrustedPropertiesAreSet(): void
     {
         $trustedProperties = [

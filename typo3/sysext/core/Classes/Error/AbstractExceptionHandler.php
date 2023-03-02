@@ -47,6 +47,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         1616175867, // Backend login request is rate limited
         1616175847, // Frontend login request is rate limited
         1436717275, // Request with unsupported HTTP method
+        1699604555, // Outdated __trustedProperties format in extbase property mapping
     ];
 
     public const IGNORED_HMAC_EXCEPTION_CODES = [
