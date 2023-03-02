@@ -138,7 +138,7 @@ class ServerResponseCheck implements CheckInterface
 
     protected function initializeFileDeclarations(string $fileName): array
     {
-        $cspClosure = function (ResponseInterface $response): ?StatusMessage {
+        $cspClosure = function (FileDeclaration $fileDeclaration, ResponseInterface $response): ?StatusMessage {
             $cspHeader = new ContentSecurityPolicyHeader(
                 $response->getHeaderLine('content-security-policy')
             );
@@ -148,7 +148,7 @@ class ServerResponseCheck implements CheckInterface
                     'missing Content-Security-Policy for this location'
                 );
             }
-            if (!$cspHeader->mitigatesCrossSiteScripting()) {
+            if (!$cspHeader->mitigatesCrossSiteScripting($fileDeclaration->getFileName())) {
                 return new StatusMessage(
                     'weak Content-Security-Policy for this location "%s"',
                     $response->getHeaderLine('content-security-policy')
