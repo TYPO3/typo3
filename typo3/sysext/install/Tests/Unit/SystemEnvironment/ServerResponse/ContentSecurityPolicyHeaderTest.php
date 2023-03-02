@@ -27,47 +27,68 @@ final class ContentSecurityPolicyHeaderTest extends TestCase
         return [
             '#1' => [
                 '',
+                null,
                 false,
             ],
             '#2' => [
                 "default-src 'none'",
+                null,
                 true,
             ],
             '#3' => [
                 "script-src 'none'",
+                null,
                 false,
             ],
             '#4' => [
                 "style-src 'none'",
+                null,
                 false,
             ],
             '#5' => [
                 "default-src 'none'; script-src 'none'",
+                null,
                 true,
             ],
             '#6' => [
                 "default-src 'none'; style-src 'none'",
+                null,
                 true,
             ],
             '#7' => [
                 "default-src 'none'; object-src 'none'",
+                null,
                 true,
             ],
             '#8' => [
                 "default-src 'none'; script-src 'self'; style-src 'self'; object-src 'self'",
+                null,
                 false,
             ],
             '#9' => [
                 "script-src 'none'; style-src 'none'; object-src 'none'",
+                null,
                 true,
             ],
             '#10' => [
                 "default-src 'none'; script-src 'unsafe-eval'; style-src 'none'; object-src 'none'",
+                null,
                 false,
             ],
             '#11' => [
                 "default-src 'none'; script-src 'unsafe-inline'; style-src 'none'; object-src 'none'",
+                null,
                 false,
+            ],
+            '#12' => [
+                "default-src 'self'; script-src 'none'; style-src 'unsafe-inline'; object-src 'none'",
+                null,
+                false,
+            ],
+            '#13' => [
+                "default-src 'self'; script-src 'none'; style-src 'unsafe-inline'; object-src 'none'",
+                'file.svg',
+                true,
             ],
         ];
     }
@@ -76,9 +97,9 @@ final class ContentSecurityPolicyHeaderTest extends TestCase
      * @test
      * @dataProvider mitigatesCrossSiteScriptingDataProvider
      */
-    public function mitigatesCrossSiteScripting(string $header, bool $expectation): void
+    public function mitigatesCrossSiteScripting(string $header, ?string $fileName, $expectation): void
     {
         $subject = new ContentSecurityPolicyHeader($header);
-        self::assertSame($expectation, $subject->mitigatesCrossSiteScripting());
+        self::assertSame($expectation, $subject->mitigatesCrossSiteScripting($fileName));
     }
 }

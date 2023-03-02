@@ -121,7 +121,7 @@ class FileDeclaration
     {
         $mismatches = [];
         if ($this->handler instanceof \Closure) {
-            $result = $this->handler->call($this, $response);
+            $result = $this->handler->call($this, $this, $response);
             if ($result !== null) {
                 $mismatches[] = $result;
             }
