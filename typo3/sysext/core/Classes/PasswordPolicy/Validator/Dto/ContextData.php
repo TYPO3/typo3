@@ -18,77 +18,69 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\PasswordPolicy\Validator\Dto;
 
 /**
- * Class with context data used in password validators
+ * Class with context data used in password validators. Uses internally an array with key/value pairs to store data.
+ * Extensions authors using this class should use `setData()` and `getData()` to write or read custom data used in
+ * custom password validators.
+ *
+ * @internal only to be used within ext:core, not part of TYPO3 Core API.
  */
 class ContextData
 {
+    protected array $data = [];
+
     public function __construct(
-        protected string $loginMode = 'BE',
-        protected string $currentPasswordHash = '',
-        protected string $newUsername = '',
-        protected string $newUserFirstName = '',
-        protected string $newUserLastName = '',
-        protected string $newUserFullName = '',
+        string $loginMode = 'BE',
+        string $currentPasswordHash = '',
+        string $newUsername = '',
+        string $newUserFirstName = '',
+        string $newUserLastName = '',
+        string $newUserFullName = '',
     ) {
+        $this->data['loginMode'] = $loginMode;
+        $this->data['currentPasswordHash'] = $currentPasswordHash;
+        $this->data['newUsername'] = $newUsername;
+        $this->data['newUserFirstName'] = $newUserFirstName;
+        $this->data['newUserLastName'] = $newUserLastName;
+        $this->data['newUserFullName'] = $newUserFullName;
     }
 
     public function getLoginMode(): string
     {
-        return $this->loginMode;
-    }
-
-    public function setLoginMode(string $loginMode): void
-    {
-        $this->loginMode = $loginMode;
+        return $this->getData('loginMode');
     }
 
     public function getCurrentPasswordHash(): string
     {
-        return $this->currentPasswordHash;
-    }
-
-    public function setCurrentPasswordHash(string $currentPasswordHash): void
-    {
-        $this->currentPasswordHash = $currentPasswordHash;
+        return $this->getData('currentPasswordHash');
     }
 
     public function getNewUsername(): string
     {
-        return $this->newUsername;
-    }
-
-    public function setNewUsername(string $newUsername): void
-    {
-        $this->newUsername = $newUsername;
+        return $this->getData('newUsername');
     }
 
     public function getNewUserFirstName(): string
     {
-        return $this->newUserFirstName;
-    }
-
-    public function setNewUserFirstName(string $newUserFirstName): void
-    {
-        $this->newUserFirstName = $newUserFirstName;
+        return $this->getData('newUserFirstName');
     }
 
     public function getNewUserLastName(): string
     {
-        return $this->newUserLastName;
-    }
-
-    public function setNewUserLastName(string $newUserLastName): void
-    {
-        $this->newUserLastName = $newUserLastName;
+        return $this->getData('newUserLastName');
     }
 
     public function getNewUserFullName(): string
     {
-        return $this->newUserFullName;
+        return $this->getData('newUserFullName');
     }
 
-    public function setNewUserFullName(string $newUserFullName): void
+    public function getData(string $key): string
     {
-        $this->newUserFullName = $newUserFullName;
+        return $this->data[$key] ?? '';
+    }
+
+    public function setData(string $key, string $value): void
+    {
+        $this->data[$key] = $value;
     }
 }
