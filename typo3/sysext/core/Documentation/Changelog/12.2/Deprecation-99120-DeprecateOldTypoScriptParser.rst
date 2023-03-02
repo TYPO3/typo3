@@ -56,16 +56,67 @@ Migration
 ------------------------------------------------------------------------
 
 This event is consumed by some extensions to modify calculated page TSconfig strings
-before parsing. The event moved its namespace from
-:php:`\TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent` to
-:php:`\TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent` in
-TYPO3 v12, but is kept as-is apart from that. The TYPO3 v12 Core triggers *both* the old
+before parsing. The old event :php:`\TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent`
+has been marked as deprecated and will be removed with TYPO3 v13, the new event
+:php:`\TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent` has been
+created with same signature. The TYPO3 v12 Core triggers *both* the old
 and the new event, and TYPO3 v13 will stop calling the old event.
 
-Extension that want to stay compatible with both TYPO3 v11 and v12 should continue to
-implement listen for the old event only. This will *not* raise a deprecation level log
-entry in v12, but it will stop working with TYPO3 v13.
-Extensions with compatibility for TYPO3 12 and above should switch to the new event.
+Extension that want to stay compatible with both TYPO3 v11 and v12 and prepare v13
+compatibility as much as possible should start listening for the new event as well,
+and suppress handling of the old event in TYPO3 v12 to not handle things twice.
+
+Example from b13/bolt extension:
+
+Register for both events in Services.yaml:
+
+.. code-block:: yaml
+
+  B13\Bolt\TsConfig\Loader:
+    public: true
+    tags:
+      # Remove when TYPO3 v11 compat is dropped
+      - name: event.listener
+        identifier: 'add-site-configuration-v11'
+        event: TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent
+        method: 'addSiteConfigurationCore11'
+      # TYPO3 v12 and above
+      - name: event.listener
+        identifier: 'add-site-configuration'
+        event: TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent
+        method: 'addSiteConfiguration'
+
+Handle old event in TYPO3 v11, but skip old event with TYPO3 v12:
+
+.. code-block:: php
+
+    use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent as LegacyModifyLoadedPageTsConfigEvent;
+    use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent;
+
+    class Loader
+    {
+        public function addSiteConfigurationCore11(LegacyModifyLoadedPageTsConfigEvent $event): void
+        {
+            if (class_exists(ModifyLoadedPageTsConfigEvent::class)) {
+                // TYPO3 v12 calls both old and new event. Check for class existence of new event to
+                // skip handling of old event in v12, but continue to work with < v12.
+                // Simplify this construct when v11 compat is dropped, clean up Services.yaml.
+                return;
+            }
+            $this->findAndAddConfiguration($event);
+        }
+
+        public function addSiteConfiguration(ModifyLoadedPageTsConfigEvent $event): void
+        {
+            $this->findAndAddConfiguration($event);
+        }
+
+        protected function findAndAddConfiguration($event): void
+        {
+            // Business code
+        }
+    }
+
 
 :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getPagesTSconfig()`
 --------------------------------------------------------------------------------------

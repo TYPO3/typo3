@@ -21,9 +21,31 @@ namespace TYPO3\CMS\Core\Configuration\Event;
  * Extensions can modify pageTSConfig entries that can be overridden or added, based on the root line
  *
  * @deprecated since v12, will be removed in v13. Switch to \TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent.
- *             When removing, delete the class, adapt test_typoscript_pagetsconfigfactory test extension, related test and
- *             set event \TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent final.
+ *             When removing, delete the class and adapt test_typoscript_pagetsconfigfactory test extension and related test.
  */
-final class ModifyLoadedPageTsConfigEvent extends \TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent
+final class ModifyLoadedPageTsConfigEvent
 {
+    public function __construct(private array $tsConfig, private readonly array $rootLine)
+    {
+    }
+
+    public function getTsConfig(): array
+    {
+        return $this->tsConfig;
+    }
+
+    public function addTsConfig(string $tsConfig): void
+    {
+        $this->tsConfig[] = $tsConfig;
+    }
+
+    public function setTsConfig(array $tsConfig): void
+    {
+        $this->tsConfig = $tsConfig;
+    }
+
+    public function getRootLine(): array
+    {
+        return $this->rootLine;
+    }
 }

@@ -19,10 +19,8 @@ namespace TYPO3\CMS\Core\TypoScript\IncludeTree\Event;
 
 /**
  * Extensions can modify pageTsConfig entries that can be overridden or added, based on the root line
- *
- * @todo: Set final in v13 when class \TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent is gone.
  */
-class ModifyLoadedPageTsConfigEvent
+final class ModifyLoadedPageTsConfigEvent
 {
     public function __construct(private array $tsConfig, private readonly array $rootLine)
     {
