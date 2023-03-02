@@ -48,8 +48,9 @@ class ContentSecurityPolicyHeader
         return empty($this->directives);
     }
 
-    public function mitigatesCrossSiteScripting(): bool
+    public function mitigatesCrossSiteScripting(string $fileName = null): bool
     {
+        $isSvg = str_ends_with($fileName ?? '', '.svg');
         $defaultSrc = isset($this->directives['default-src'])
             ? $this->directiveMitigatesCrossSiteScripting($this->directives['default-src'])
             : null;
@@ -58,6 +59,7 @@ class ContentSecurityPolicyHeader
             : null;
         $styleSrc = isset($this->directives['style-src'])
             ? $this->directiveMitigatesCrossSiteScripting($this->directives['style-src'])
+                || ($isSvg && $this->directives['style-src']->hasInstructions('unsafe-inline'))
             : null;
         $objectSrc = isset($this->directives['object-src'])
             ? $this->directiveMitigatesCrossSiteScripting($this->directives['object-src'])
