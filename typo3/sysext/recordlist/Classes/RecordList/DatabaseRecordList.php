@@ -2826,7 +2826,7 @@ class DatabaseRecordList
                 if ($table === 'pages') {
                     $code = '<a href="' . htmlspecialchars(
                         $this->listURL((string)$uid, '', 'pointer')
-                    ) . '>' . $code . '</a>';
+                    ) . '">' . $code . '</a>';
                 } else {
                     $code = $this->linkUrlMail($code, $origCode);
                 }
