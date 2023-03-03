@@ -229,67 +229,6 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function magicCallMethodAcceptsFindBySomethingCallsAndExecutesAQueryWithThatCriteria(): void
-    {
-        $mockQueryResult = $this->createMock(QueryResultInterface::class);
-        $mockQuery = $this->createMock(QueryInterface::class);
-        $mockQuery->expects(self::once())->method('equals')->with('foo', 'bar')->willReturn('matchCriteria');
-        $mockQuery->expects(self::once())->method('matching')->with('matchCriteria')->willReturn($mockQuery);
-        $mockQuery->expects(self::once())->method('execute')->with()->willReturn($mockQueryResult);
-
-        $repository = $this->getMockBuilder(Repository::class)
-            ->onlyMethods(['createQuery'])
-            ->getMock();
-        $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
-
-        self::assertSame($mockQueryResult, $repository->findByFoo('bar'));
-    }
-
-    /**
-     * @test
-     */
-    public function magicCallMethodAcceptsFindOneBySomethingCallsAndExecutesAQueryWithThatCriteria(): void
-    {
-        $object = new \stdClass();
-        $mockQueryResult = $this->createMock(QueryResultInterface::class);
-        $mockQueryResult->expects(self::once())->method('getFirst')->willReturn($object);
-        $mockQuery = $this->createMock(QueryInterface::class);
-        $mockQuery->expects(self::once())->method('equals')->with('foo', 'bar')->willReturn('matchCriteria');
-        $mockQuery->expects(self::once())->method('matching')->with('matchCriteria')->willReturn($mockQuery);
-        $mockQuery->expects(self::once())->method('setLimit')->willReturn($mockQuery);
-        $mockQuery->expects(self::once())->method('execute')->willReturn($mockQueryResult);
-
-        $repository = $this->getMockBuilder(Repository::class)
-            ->onlyMethods(['createQuery'])
-            ->getMock();
-        $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
-
-        self::assertSame($object, $repository->findOneByFoo('bar'));
-    }
-
-    /**
-     * @test
-     */
-    public function magicCallMethodAcceptsCountBySomethingCallsAndExecutesAQueryWithThatCriteria(): void
-    {
-        $mockQuery = $this->createMock(QueryInterface::class);
-        $mockQueryResult = $this->createMock(QueryResultInterface::class);
-        $mockQuery->expects(self::once())->method('equals')->with('foo', 'bar')->willReturn('matchCriteria');
-        $mockQuery->expects(self::once())->method('matching')->with('matchCriteria')->willReturn($mockQuery);
-        $mockQuery->expects(self::once())->method('execute')->willReturn($mockQueryResult);
-        $mockQueryResult->expects(self::once())->method('count')->willReturn(2);
-
-        $repository = $this->getMockBuilder(Repository::class)
-            ->onlyMethods(['createQuery'])
-            ->getMock();
-        $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
-
-        self::assertSame(2, $repository->countByFoo('bar'));
-    }
-
-    /**
-     * @test
-     */
     public function magicCallMethodTriggersAnErrorIfUnknownMethodsAreCalled(): void
     {
         $this->expectException(UnsupportedMethodException::class);
@@ -388,35 +327,5 @@ class RepositoryTest extends UnitTestCase
         $this->expectExceptionCode(1249479625);
         $this->repository->_set('objectType', 'Foo');
         $this->repository->update(new \stdClass());
-    }
-
-    /**
-     * @test
-     */
-    public function magicCallMethodReturnsFirstArrayKeyInFindOneBySomethingIfQueryReturnsRawResult(): void
-    {
-        $queryResultArray = [
-            0 => [
-                'foo' => 'bar',
-            ],
-        ];
-        $this->mockQuery->expects(self::once())->method('equals')->with('foo', 'bar')->willReturn('matchCriteria');
-        $this->mockQuery->expects(self::once())->method('matching')->with('matchCriteria')->willReturn($this->mockQuery);
-        $this->mockQuery->expects(self::once())->method('setLimit')->with(1)->willReturn($this->mockQuery);
-        $this->mockQuery->expects(self::once())->method('execute')->willReturn($queryResultArray);
-        self::assertSame(['foo' => 'bar'], $this->repository->findOneByFoo('bar'));
-    }
-
-    /**
-     * @test
-     */
-    public function magicCallMethodReturnsNullInFindOneBySomethingIfQueryReturnsEmptyRawResult(): void
-    {
-        $queryResultArray = [];
-        $this->mockQuery->expects(self::once())->method('equals')->with('foo', 'bar')->willReturn('matchCriteria');
-        $this->mockQuery->expects(self::once())->method('matching')->with('matchCriteria')->willReturn($this->mockQuery);
-        $this->mockQuery->expects(self::once())->method('setLimit')->with(1)->willReturn($this->mockQuery);
-        $this->mockQuery->expects(self::once())->method('execute')->willReturn($queryResultArray);
-        self::assertNull($this->repository->findOneByFoo('bar'));
     }
 }

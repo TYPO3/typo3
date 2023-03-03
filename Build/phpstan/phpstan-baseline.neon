@@ -1971,33 +1971,13 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/SessionTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:findOneByFoo\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\:\\:countByFoo\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\:\\:findByFoo\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\:\\:findOneByFoo\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Session\\:\\:method\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:expects\\(\\)\\.$#"
-			count: 10
+			count: 2
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
 
 		-
@@ -2121,6 +2101,31 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/ExtensionUtilityTest.php
 
 		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:findOneByFoo\\(\\)\\.$#"
+			count: 2
+			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Persistence/RepositoryTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\:\\:countByFoo\\(\\)\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Persistence/RepositoryTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\:\\:findByFoo\\(\\)\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Persistence/RepositoryTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\:\\:findOneByFoo\\(\\)\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Persistence/RepositoryTest.php
+
+		-
+			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:expects\\(\\)\\.$#"
+			count: 8
+			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Persistence/RepositoryTest.php
+
+		-
 			message: "#^Parameter \\#2 \\$messageTitle of method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\ActionController\\:\\:addFlashMessage\\(\\) expects string, int given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Classes/Controller/ListController.php
@@ -2149,11 +2154,6 @@ parameters:
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Classes/Service/ExtensionManagementService.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extensionmanager\\\\Domain\\\\Repository\\\\ExtensionRepository\\:\\:countByExtensionKey\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Classes/Utility/DependencyUtility.php
 
 		-
 			message: "#^Offset string does not exist on null\\.$#"

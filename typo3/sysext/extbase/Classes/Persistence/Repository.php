@@ -223,16 +223,27 @@ class Repository implements RepositoryInterface, SingletonInterface
      * @param array<int, mixed> $arguments The arguments of the magic method
      * @throws UnsupportedMethodException
      * @return mixed
+     * @deprecated since v12, will be removed in v14, use {@see findBy}, {@see findOneBy} and {@see count} instead
      */
     public function __call($methodName, $arguments)
     {
         if (str_starts_with($methodName, 'findBy') && strlen($methodName) > 7) {
+            // @todo Enable in version 13.0
+            // trigger_error(
+            //     'Usage of magic method ' . static::class . '->findBy[Property]() is deprecated, use method findBy() instead.',
+            //     E_USER_DEPRECATED
+            // );
             $propertyName = lcfirst(substr($methodName, 6));
             $query = $this->createQuery();
             $result = $query->matching($query->equals($propertyName, $arguments[0]))->execute();
             return $result;
         }
         if (str_starts_with($methodName, 'findOneBy') && strlen($methodName) > 10) {
+            // @todo Enable in version 13.0
+            // trigger_error(
+            //     'Usage of magic method ' . static::class . '->findOneBy[Property]() is deprecated, use method findOneBy() instead.',
+            //     E_USER_DEPRECATED
+            // );
             $propertyName = lcfirst(substr($methodName, 9));
             $query = $this->createQuery();
 
@@ -244,12 +255,73 @@ class Repository implements RepositoryInterface, SingletonInterface
                 return $result[0] ?? null;
             }
         } elseif (str_starts_with($methodName, 'countBy') && strlen($methodName) > 8) {
+            // @todo Enable in version 13.0
+            // trigger_error(
+            //     'Usage of magic method ' . static::class . '->countBy[Property]() is deprecated, use method count() instead.',
+            //     E_USER_DEPRECATED
+            // );
             $propertyName = lcfirst(substr($methodName, 7));
             $query = $this->createQuery();
             $result = $query->matching($query->equals($propertyName, $arguments[0]))->execute()->count();
             return $result;
         }
         throw new UnsupportedMethodException('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
+    }
+
+    /**
+     * @phpstan-param array<non-empty-string, mixed> $criteria
+     * @phpstan-param array<non-empty-string, QueryInterface::ORDER_*>|null $orderBy
+     * @phpstan-param 0|positive-int|null $limit
+     * @phpstan-param 0|positive-int|null $offset
+     * @phpstan-return QueryResultInterface<T>
+     * @return QueryResultInterface
+     */
+    public function findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null): QueryResultInterface
+    {
+        $query = $this->createQuery();
+        $constraints = [];
+        foreach ($criteria as $propertyName => $propertyValue) {
+            $constraints[] = $query->equals($propertyName, $propertyValue);
+        }
+
+        if (($numberOfConstraints = count($constraints)) === 1) {
+            $query->matching(...$constraints);
+        } elseif ($numberOfConstraints > 1) {
+            $query->matching($query->logicalAnd(...$constraints));
+        }
+
+        if (is_array($orderBy)) {
+            $query->setOrderings($orderBy);
+        }
+
+        if (is_int($limit)) {
+            $query->setLimit($limit);
+        }
+
+        if (is_int($offset)) {
+            $query->setOffset($offset);
+        }
+
+        return $query->execute();
+    }
+
+    /**
+     * @phpstan-param array<non-empty-string, mixed> $criteria
+     * @phpstan-param array<non-empty-string, QueryInterface::ORDER_*>|null $orderBy
+     * @phpstan-return T|null
+     */
+    public function findOneBy(array $criteria, array $orderBy = null): object|null
+    {
+        return $this->findBy($criteria, $orderBy, 1)->getFirst();
+    }
+
+    /**
+     * @phpstan-param array<non-empty-string, mixed> $criteria
+     * @phpstan-return 0|positive-int
+     */
+    public function count(array $criteria): int
+    {
+        return $this->findBy($criteria)->count();
     }
 
     /**

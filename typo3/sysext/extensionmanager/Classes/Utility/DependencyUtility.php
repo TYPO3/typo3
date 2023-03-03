@@ -400,7 +400,7 @@ class DependencyUtility implements SingletonInterface
      */
     protected function isExtensionDownloadableFromRemote(string $extensionKey): bool
     {
-        return $this->extensionRepository->countByExtensionKey($extensionKey) > 0;
+        return $this->extensionRepository->count(['extensionKey' => $extensionKey]) > 0;
     }
 
     /**
