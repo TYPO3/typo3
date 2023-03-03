@@ -2589,9 +2589,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Sets the cache-flag to 1. Could be called from user-included php-files in order to ensure that a page is not cached.
      *
      * @param string $reason An optional reason to be written to the log.
-     * @param bool $internal Whether the call is done from core itself (should only be used by core).
+     * @param bool $internalRequest Whether the request is internal or not (true should only be used by core calls).
      */
-    public function set_no_cache($reason = '', $internal = false)
+    public function set_no_cache($reason = '', $internalRequest = false)
     {
         $warning = '';
         $context = [];
@@ -2615,18 +2615,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
             $context['line'] = $trace[0]['line'];
         }
-        if (!$internal && $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter']) {
+        if (!$internalRequest && $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter']) {
             $warning .= ' However, $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set, so it will be ignored!';
-            $this->getTimeTracker()->setTSlogMessage($warning, LogLevel::WARNING);
+            $this->getTimeTracker()->setTSlogMessage($warning, LogLevel::NOTICE);
         } else {
             $warning .= ' Caching is disabled!';
             $this->disableCache();
         }
-        if ($internal) {
-            $this->logger->notice($warning, $context);
-        } else {
-            $this->logger->warning($warning, $context);
-        }
+        $this->logger->notice($warning, $context);
     }
 
     /**
