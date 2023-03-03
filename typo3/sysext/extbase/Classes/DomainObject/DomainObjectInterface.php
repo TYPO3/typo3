@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\DomainObject;
 
+use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
+
 /**
  * A Domain Object Interface. All domain objects which should be persisted need to implement the below interface.
  * Usually you will need to subclass \TYPO3\CMS\Extbase\DomainObject\AbstractEntity and \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
@@ -24,8 +26,10 @@ namespace TYPO3\CMS\Extbase\DomainObject;
  *
  * @see \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
  * @see \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
+ *
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-interface DomainObjectInterface
+interface DomainObjectInterface extends ObjectMonitoringInterface
 {
     /**
      * Getter for uid.
@@ -48,16 +52,18 @@ interface DomainObjectInterface
 
     /**
      * Returns TRUE if the object is new (the uid was not set, yet). Only for internal use
-     *
-     * @internal
      */
     public function _isNew(): bool;
+
+    /**
+     * @param non-empty-string $propertyName
+     */
+    public function _hasProperty(string $propertyName): bool;
 
     /**
      * Reconstitutes a property. Only for internal use.
      *
      * @param mixed $value
-     * @internal
      */
     public function _setProperty(string $propertyName, $value);
 
@@ -65,7 +71,6 @@ interface DomainObjectInterface
      * Returns the property value of the given property name. Only for internal use.
      *
      * @return mixed The propertyValue
-     * @internal
      */
     public function _getProperty(string $propertyName);
 
@@ -73,7 +78,6 @@ interface DomainObjectInterface
      * Returns a hash map of property names and property values
      *
      * @return array The properties
-     * @internal
      */
     public function _getProperties(): array;
 
@@ -83,7 +87,6 @@ interface DomainObjectInterface
      *
      * @param string $propertyName The name of the property to be memorized.
      * @return mixed The clean property value or NULL
-     * @internal
      */
     public function _getCleanProperty(string $propertyName);
 }

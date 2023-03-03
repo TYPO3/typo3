@@ -1641,39 +1641,9 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Request.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\:\\:_isDirty\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\:\\:_memorizeCleanState\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\ObjectMonitoringInterface\\:\\:_isDirty\\(\\) invoked with 1 parameter, 0 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\:\\:_memorizeCleanState\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/LazyObjectStorage.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Mapper\\\\ColumnMap\\:\\:\\$relationTableWhereStatement is unused\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/ColumnMap.php
-
-		-
-			message: "#^Call to an undefined method T of TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\:\\:_memorizeCleanState\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\:\\:_hasProperty\\(\\)\\.$#"
-			count: 3
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\JoinConditionInterface\\:\\:getProperty1Name\\(\\)\\.$#"

@@ -27,7 +27,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
  * All Model domain objects need to inherit from either AbstractEntity or AbstractValueObject, as this provides important framework information.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-abstract class AbstractDomainObject implements DomainObjectInterface, ObjectMonitoringInterface
+abstract class AbstractDomainObject implements DomainObjectInterface
 {
     public const PROPERTY_UID = 'uid';
     public const PROPERTY_PID = 'pid';
@@ -153,11 +153,11 @@ abstract class AbstractDomainObject implements DomainObjectInterface, ObjectMoni
     /**
      * Returns the property value of the given property name. Only for internal use.
      *
-     * @param string $propertyName
+     * @param non-empty-string $propertyName
      * @return bool TRUE bool true if the property exists, FALSE if it doesn't exist or NULL in case of an error.
      * @internal
      */
-    public function _hasProperty($propertyName)
+    public function _hasProperty(string $propertyName): bool
     {
         return property_exists($this, $propertyName);
     }
@@ -176,9 +176,9 @@ abstract class AbstractDomainObject implements DomainObjectInterface, ObjectMoni
      * Register an object's clean state, e.g. after it has been reconstituted
      * from the database.
      *
-     * @param string $propertyName The name of the property to be memorized. If omitted all persistable properties are memorized.
+     * @param non-empty-string|null $propertyName The name of the property to be memorized. If omitted all persistable properties are memorized.
      */
-    public function _memorizeCleanState($propertyName = null)
+    public function _memorizeCleanState(string|null $propertyName = null): void
     {
         if ($propertyName !== null) {
             $this->_memorizePropertyCleanState($propertyName);
@@ -246,11 +246,11 @@ abstract class AbstractDomainObject implements DomainObjectInterface, ObjectMoni
     /**
      * Returns TRUE if the properties were modified after reconstitution
      *
-     * @param string $propertyName An optional name of a property to be checked if its value is dirty
+     * @param non-empty-string|null $propertyName An optional name of a property to be checked if its value is dirty
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\TooDirtyException
      * @return bool
      */
-    public function _isDirty($propertyName = null)
+    public function _isDirty(string|null $propertyName = null): bool
     {
         if ($this->uid !== null && $this->_getCleanProperty(self::PROPERTY_UID) !== null && $this->uid != $this->_getCleanProperty(self::PROPERTY_UID)) {
             throw new TooDirtyException('The ' . self::PROPERTY_UID . ' "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);

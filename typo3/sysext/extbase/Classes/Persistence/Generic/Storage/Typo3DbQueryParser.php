@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException;
@@ -508,7 +509,7 @@ class Typo3DbQueryParser
      */
     protected function createTypedNamedParameter($value, int $forceType = null): string
     {
-        if ($value instanceof AbstractDomainObject
+        if ($value instanceof DomainObjectInterface
             && $value->_hasProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID)
             && $value->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) > 0
         ) {

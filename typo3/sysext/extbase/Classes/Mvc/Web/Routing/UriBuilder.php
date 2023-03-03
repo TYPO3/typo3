@@ -25,8 +25,8 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -743,7 +743,7 @@ class UriBuilder
             if ($argumentValue instanceof \Iterator) {
                 $argumentValue = $this->convertIteratorToArray($argumentValue);
             }
-            if ($argumentValue instanceof AbstractDomainObject) {
+            if ($argumentValue instanceof DomainObjectInterface) {
                 if ($argumentValue->getUid() !== null) {
                     $arguments[$argumentKey] = $argumentValue->getUid();
                 } elseif ($argumentValue instanceof AbstractValueObject) {
@@ -774,14 +774,14 @@ class UriBuilder
      * @todo Refactor this into convertDomainObjectsToIdentityArrays()
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertTransientObjectToArray(AbstractDomainObject $object): array
+    public function convertTransientObjectToArray(DomainObjectInterface $object): array
     {
         $result = [];
         foreach ($object->_getProperties() as $propertyName => $propertyValue) {
             if ($propertyValue instanceof \Iterator) {
                 $propertyValue = $this->convertIteratorToArray($propertyValue);
             }
-            if ($propertyValue instanceof AbstractDomainObject) {
+            if ($propertyValue instanceof DomainObjectInterface) {
                 if ($propertyValue->getUid() !== null) {
                     $result[$propertyName] = $propertyValue->getUid();
                 } else {

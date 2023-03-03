@@ -331,8 +331,10 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 
     /**
      * Register the storage's clean state, e.g., after it has been reconstituted from the database.
+     *
+     * @param non-empty-string|null $propertyName
      */
-    public function _memorizeCleanState()
+    public function _memorizeCleanState(string|null $propertyName = null): void
     {
         $this->isModified = false;
     }
@@ -340,9 +342,9 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Returns `true` if the storage was modified after reconstitution.
      *
-     * @return bool
+     * @param non-empty-string|null $propertyName
      */
-    public function _isDirty()
+    public function _isDirty(string|null $propertyName = null): bool
     {
         return $this->isModified;
     }

@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 
@@ -78,7 +77,7 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
         // this check safeguards against a proxy being activated multiple times
         // usually that does not happen, but if the proxy is held from outside
         // its parent ... the result would be weird.
-        if ($this->parentObject instanceof AbstractDomainObject
+        if ($this->parentObject instanceof DomainObjectInterface
             && $this->parentObject->_getProperty($this->propertyName) instanceof LazyLoadingProxy
             && $this->dataMapper
         ) {
@@ -133,7 +132,7 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
     {
         $realInstance = $this->_loadRealInstance();
 
-        if ($realInstance instanceof AbstractDomainObject) {
+        if ($realInstance instanceof DomainObjectInterface) {
             return $realInstance->_getProperty($propertyName);
         }
         return $realInstance->{$propertyName};

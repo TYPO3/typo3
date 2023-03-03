@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Utility;
 
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
@@ -253,7 +252,7 @@ class DebuggerUtility
             } else {
                 $dump .= '<span class="extbase-debug-scope">' . $scope . '</span>';
             }
-            if ($object instanceof AbstractDomainObject) {
+            if ($object instanceof DomainObjectInterface) {
                 if ($object->_isDirty()) {
                     $persistenceType = 'modified';
                 } elseif ($object->_isNew()) {
@@ -430,7 +429,7 @@ class DebuggerUtility
                         continue;
                     }
                     $dump .= self::renderDump($property->getValue($object), $level, $plainText, $ansiColors);
-                    if ($object instanceof AbstractDomainObject && !$object->_isNew() && $object->_isDirty($property->getName())) {
+                    if ($object instanceof DomainObjectInterface && !$object->_isNew() && $object->_isDirty($property->getName())) {
                         if ($plainText) {
                             $dump .= ' ' . self::ansiEscapeWrap('modified', '43;30', $ansiColors);
                         } else {

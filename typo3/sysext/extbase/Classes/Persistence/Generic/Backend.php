@@ -35,7 +35,6 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
-use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -314,8 +313,7 @@ class Backend implements BackendInterface, SingletonInterface
                         $queue[] = $containedObject;
                     }
                 }
-            } elseif ($propertyValue instanceof DomainObjectInterface
-                && $object instanceof ObjectMonitoringInterface) {
+            } elseif ($propertyValue instanceof DomainObjectInterface) {
                 if ($object->_isDirty($propertyName)) {
                     if ($propertyValue->_isNew()) {
                         $this->insertObject($propertyValue, $object, $propertyName);

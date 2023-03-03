@@ -150,11 +150,6 @@ class DataMapper
             $this->thawProperties($object, $row);
             $event = new AfterObjectThawedEvent($object, $row);
             $this->eventDispatcher->dispatch($event);
-            // @todo: technically, we cannot be sure to have an object that supports _memorizeCleanState() here
-            //        because _memorizeCleanState() is a contract method of ObjectMonitoringInterface, and not of
-            //        DomainObjectInterface. The easiest solution would be to have DomainObjectInterface extend
-            //        ObjectMonitoringInterface. That way, ObjectMonitoringInterface can also be kept for use with
-            //        the ObjectStorage class.
             $object->_memorizeCleanState();
             $this->persistenceSession->registerReconstitutedEntity($object);
         }

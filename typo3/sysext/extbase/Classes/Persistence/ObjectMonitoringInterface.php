@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -26,13 +28,15 @@ interface ObjectMonitoringInterface
     /**
      * Register an object's clean state, e.g. after it has been reconstituted
      * from the database
+     *
+     * @param non-empty-string|null $propertyName
      */
-    public function _memorizeCleanState();
+    public function _memorizeCleanState(string|null $propertyName = null): void;
 
     /**
      * Returns TRUE if the properties were modified after reconstitution
      *
-     * @return bool
+     * @param non-empty-string|null $propertyName
      */
-    public function _isDirty();
+    public function _isDirty(string|null $propertyName = null): bool;
 }
