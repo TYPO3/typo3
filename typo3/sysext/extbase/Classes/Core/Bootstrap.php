@@ -38,8 +38,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class Bootstrap
 {
-    public static array $persistenceClasses = [];
-
     /**
      * Set by UserContentObject (USER) via setContentObjectRenderer() in frontend
      */
