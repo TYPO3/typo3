@@ -44,7 +44,7 @@ class GraphicalFunctionsTest extends UnitTestCase
                     'origH' => 0,
                     'max' => 0,
                     0 => 150,
-                    1 => (float)120,
+                    1 => 120,
                 ],
             ],
             'Get image scale with a maximum width of 100px' => [
@@ -63,7 +63,7 @@ class GraphicalFunctionsTest extends UnitTestCase
                     'origH' => 0,
                     'max' => 1,
                     0 => 100,
-                    1 => (float)80,
+                    1 => 80,
                 ],
             ],
             'Get image scale with a minimum width of 200px' => [
@@ -82,7 +82,7 @@ class GraphicalFunctionsTest extends UnitTestCase
                     'origH' => 0,
                     'max' => 0,
                     0 => 200,
-                    1 => (float)136,
+                    1 => 136,
                 ],
             ],
             'No PHP warning for zero in input dimensions when scaling' => [
@@ -109,7 +109,7 @@ class GraphicalFunctionsTest extends UnitTestCase
     public function getScaleForImage($info, $width, $height, $options, $expected): void
     {
         $result = (new GraphicalFunctions())->getImageScale($info, $width, $height, $options);
-        self::assertEquals($result, $expected);
+        self::assertSame($result, $expected);
     }
 
     /**

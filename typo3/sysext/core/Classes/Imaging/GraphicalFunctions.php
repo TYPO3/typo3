@@ -2377,28 +2377,28 @@ class GraphicalFunctions
         // If scaling should be performed. Check that input "info" array will not cause division-by-zero
         if (($w || $h) && $info[0] && $info[1]) {
             if ($w && !$h) {
-                $info[1] = ceil($info[1] * ($w / $info[0]));
+                $info[1] = (int)ceil($info[1] * ($w / $info[0]));
                 $info[0] = $w;
             }
             if (!$w && $h) {
-                $info[0] = ceil($info[0] * ($h / $info[1]));
+                $info[0] = (int)ceil($info[0] * ($h / $info[1]));
                 $info[1] = $h;
             }
             if ($w && $h) {
                 if ($max) {
                     $ratio = $info[0] / $info[1];
                     if ($h * $ratio > $w) {
-                        $h = round($w / $ratio);
+                        $h = (int)round($w / $ratio);
                     } else {
-                        $w = round($h * $ratio);
+                        $w = (int)round($h * $ratio);
                     }
                 }
                 if ($crs) {
                     $ratio = $info[0] / $info[1];
                     if ($h * $ratio < $w) {
-                        $h = round($w / $ratio);
+                        $h = (int)round($w / $ratio);
                     } else {
-                        $w = round($h * $ratio);
+                        $w = (int)round($h * $ratio);
                     }
                 }
                 $info[0] = $w;
@@ -2410,13 +2410,13 @@ class GraphicalFunctions
         // Set minimum-measures!
         if (isset($options['minW']) && $out[0] < $options['minW']) {
             if (($max || $crs) && $out[0]) {
-                $out[1] = round($out[1] * $options['minW'] / $out[0]);
+                $out[1] = (int)round($out[1] * $options['minW'] / $out[0]);
             }
             $out[0] = $options['minW'];
         }
         if (isset($options['minH']) && $out[1] < $options['minH']) {
             if (($max || $crs) && $out[1]) {
-                $out[0] = round($out[0] * $options['minH'] / $out[1]);
+                $out[0] = (int)round($out[0] * $options['minH'] / $out[1]);
             }
             $out[1] = $options['minH'];
         }
