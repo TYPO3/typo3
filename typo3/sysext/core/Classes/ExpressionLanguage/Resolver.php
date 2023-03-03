@@ -68,9 +68,9 @@ class Resolver
     /**
      * Evaluate an expression.
      */
-    public function evaluate(string $expression): bool
+    public function evaluate(string $expression, array $contextVariables = []): mixed
     {
-        return (bool)$this->expressionLanguage->evaluate($expression, $this->expressionLanguageVariables);
+        return $this->expressionLanguage->evaluate($expression, array_replace($this->expressionLanguageVariables, $contextVariables));
     }
 
     /**

@@ -51,7 +51,7 @@ class ResolverTest extends UnitTestCase
     public function basicExpressionsDataProvider(): array
     {
         return [
-            '1+1' => ['1+1', true],
+            '1+1' => ['1+1', 2],
             '1 < 2' => ['1 < 2', true],
             '2 < 1' => ['2 < 1', false],
             'true' => ['true', true],
@@ -65,7 +65,7 @@ class ResolverTest extends UnitTestCase
      * @test
      * @dataProvider basicExpressionsDataProvider
      */
-    public function basicExpressionHandlingResultsWorksAsExpected(string $expression, bool $expectedResult): void
+    public function basicExpressionHandlingResultsWorksAsExpected(string $expression, mixed $expectedResult): void
     {
         $defaultProvider = new DefaultProvider(new Typo3Version(), new Context(), new Features());
         GeneralUtility::addInstance(DefaultProvider::class, $defaultProvider);
@@ -73,12 +73,13 @@ class ResolverTest extends UnitTestCase
         self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
     }
 
-    public function basicExpressionsWithVariablesDataHandler(): array
+    public function basicExpressionsWithVariablesDataProvider(): array
     {
         return [
-            'var1 + var2' => ['var1 + var2', true],
+            'var1 + var2' => ['var1 + var2', 3],
             'var1 < var2' => ['var1 < var2', true],
             'var2 < var1' => ['var2 < var1', false],
+            'varArray' => ['varArray', ['foo' => 'bar']],
             'varTrue' => ['varTrue', true],
             'varFalse' => ['varFalse', false],
             'varTrue != varFalse' => ['varTrue != varFalse', true],
@@ -88,9 +89,37 @@ class ResolverTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider basicExpressionsWithVariablesDataHandler
+     * @dataProvider basicExpressionsWithVariablesDataProvider
      */
-    public function basicExpressionHandlingWithCustomVariablesWorksAsExpected(string $expression, bool $expectedResult): void
+    public function basicExpressionHandlingWithCustomVariablesWorksAsExpected(string $expression, mixed $expectedResult): void
+    {
+        $contextMock = $this->createMock(DefaultProvider::class);
+        $contextMock->method('getExpressionLanguageProviders')->willReturn([]);
+        $contextMock->method('getExpressionLanguageVariables')->willReturn([
+            'var1' => '1',
+            'var2' => '2',
+            'varTrue' => true,
+            'varFalse' => false,
+            'varArray' => ['foo' => 'bar'],
+         ]);
+        GeneralUtility::addInstance(DefaultProvider::class, $contextMock);
+        $expressionLanguageResolver = new Resolver('default', []);
+        self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
+    }
+
+    public function basicExpressionHandlingWithContextVariablesDataProvider(): array
+    {
+        return [
+            'additional context variable can be provided' => ['var1 + var2 + contextVar3', ['contextVar3' => 1], 4],
+            'context variable can override default variable with same name' => ['var1 + var2', ['var2' => 41], 42],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider basicExpressionHandlingWithContextVariablesDataProvider
+     */
+    public function basicExpressionHandlingWithContextVariablesWorksAsExpected(string $expression, array $contextVariables, mixed $expectedResult): void
     {
         $contextMock = $this->createMock(DefaultProvider::class);
         $contextMock->method('getExpressionLanguageProviders')->willReturn([]);
@@ -102,10 +131,10 @@ class ResolverTest extends UnitTestCase
          ]);
         GeneralUtility::addInstance(DefaultProvider::class, $contextMock);
         $expressionLanguageResolver = new Resolver('default', []);
-        self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
+        self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression, $contextVariables));
     }
 
-    public function basicExpressionsWithVariablesAndExpressionLanguageProviderDataHandler(): array
+    public function basicExpressionsWithVariablesAndExpressionLanguageProviderDataProvider(): array
     {
         return [
             'testMeLowercase(var1) == var2' => ['testMeLowercase(var1) == var2', true],
@@ -117,10 +146,10 @@ class ResolverTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider basicExpressionsWithVariablesAndExpressionLanguageProviderDataHandler
+     * @dataProvider basicExpressionsWithVariablesAndExpressionLanguageProviderDataProvider
      * @param mixed $expectedResult
      */
-    public function basicExpressionHandlingWithCustomVariablesAndExpressionLanguageProviderWorksAsExpected(string $expression, $expectedResult): void
+    public function basicExpressionHandlingWithCustomVariablesAndExpressionLanguageProviderWorksAsExpected(string $expression, mixed $expectedResult): void
     {
         $expressionProviderMock = $this->createMock(DefaultFunctionsProvider::class);
         $expressionProviderMock->method('getFunctions')->willReturn([

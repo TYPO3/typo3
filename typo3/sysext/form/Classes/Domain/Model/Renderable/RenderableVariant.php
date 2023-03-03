@@ -91,7 +91,7 @@ class RenderableVariant implements RenderableVariantInterface
             return false;
         }
 
-        return $conditionResolver->evaluate($this->condition);
+        return (bool)$conditionResolver->evaluate($this->condition);
     }
 
     public function getIdentifier(): string

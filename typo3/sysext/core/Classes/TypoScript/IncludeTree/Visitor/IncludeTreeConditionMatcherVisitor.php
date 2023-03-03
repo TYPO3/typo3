@@ -161,7 +161,7 @@ final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInte
         }
         $conditionExpression = $include->getConditionToken()->getValue();
         try {
-            $verdict = $this->resolver->evaluate($conditionExpression);
+            $verdict = (bool)$this->resolver->evaluate($conditionExpression);
         } catch (MissingTsfeException) {
             // TSFE is not available in the current context (e.g. TSFE in BE context),
             // we set all conditions false for this case.

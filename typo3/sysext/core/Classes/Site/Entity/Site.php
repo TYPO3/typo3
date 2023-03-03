@@ -159,7 +159,7 @@ class Site implements SiteInterface
             );
             foreach ($baseVariants as $baseVariant) {
                 try {
-                    if ($expressionLanguageResolver->evaluate($baseVariant['condition'])) {
+                    if ((bool)$expressionLanguageResolver->evaluate($baseVariant['condition'])) {
                         $baseUrl = $baseVariant['base'];
                         break;
                     }

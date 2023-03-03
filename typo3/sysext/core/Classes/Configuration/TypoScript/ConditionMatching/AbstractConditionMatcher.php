@@ -202,7 +202,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface, Conditi
         }
 
         try {
-            return $this->expressionLanguageResolver->evaluate($expression);
+            return (bool)$this->expressionLanguageResolver->evaluate($expression);
         } catch (MissingTsfeException $e) {
             // TSFE is not available in the current context (e.g. TSFE in BE context),
             // we set all conditions false for this case.
