@@ -352,7 +352,7 @@
                                 <td valign="top" class="image" align="center" style="padding: 0px 36px; padding-bottom: 20px; color: #222222;text-align: center;">
                                     <f:if condition="{typo3.systemConfiguration.backend.loginLogo}">
                                         <f:then>
-                                            <img src="{typo3.systemConfiguration.backend.loginLogo -> core:normalizedUrl()}" alt="TYPO3 Logo" height="41" width="150" />
+                                            <img src="{typo3.systemConfiguration.backend.loginLogo -> core:normalizedUrl()}" alt="Logo" height="41" width="150" />
                                         </f:then>
                                         <f:else if="{typo3.systemConfiguration.backend.loginHighlightColor}">
                                             <img src="{normalizedParams.siteUrl}{f:uri.resource(path: 'EXT:core/Resources/Public/Images/typo3_black.svg')}" alt="TYPO3 Logo" height="41" width="150" />
