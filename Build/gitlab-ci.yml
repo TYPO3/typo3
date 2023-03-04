@@ -40,13 +40,18 @@ services:
   # Each job starts two containers: This dind container that starts a docker
   # daemon, plus a casual container that executes runTests.sh for single jobs
   # to start containers within the dind container.
-  - name: docker:20.10-dind
+  # @todo Using custom dind image meanwhile to mitigate gitlab-runner healthcheck issue:
+  #       See: https://gitlab.com/gitlab-org/gitlab-runner/-/issues/29130
+  #       Original: docker:20.10-dind
+  - name: typo3/core-testing-docker-dind:latest
     alias: docker
 
 # This is *never* overridden in single jobs. All jobs start a 'dind' service
 # so runTests.sh starts 'sub' containers within the dind container, and this
 # main entry point container executes runTests.sh to start containers.
-image: typo3/core-testing-docker:latest
+# @todo ^1.2 builds seems to be broken. This leads to endless pulls by not using the proxy registry and failing
+#       acceptance install tests. Pin it to latest working version and investigate later.
+image: typo3/core-testing-docker:1.1.0
 
 stages:
   # Stages for pre-merge
