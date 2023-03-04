@@ -42,9 +42,16 @@ class WindowManager {
       switchFocus = true;
     }
     const existingWindow = this.windows[windowName] ?? window.open('', windowName, windowFeatures);
-    // Note: `existingWindow instanceof Window` wouldn't work here as `existingWindow` is from a another browser context/window.
-    // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof#instanceof_and_multiple_contexts_e.g._frames_or_windows
-    const isInstanceOfWindow = existingWindow.constructor.name === 'Window';
+    let isInstanceOfWindow = false;
+    try {
+      // Note: `existingWindow instanceof Window` wouldn't work here as `existingWindow` is from another browser context/window.
+      // Note: this will still fail if `existingWindow` points to a cross-origin frame
+      // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof#instanceof_and_multiple_realms
+      isInstanceOfWindow = existingWindow.constructor.name === 'Window';
+    } catch (DOMException) {
+      // Intended fall-thru
+      // DOMException is thrown if existingWindow points to a cross-origin frame which we're not allowed to access
+    }
     const existingUri = isInstanceOfWindow && !existingWindow.closed ? existingWindow.location.href : null;
 
     if (Utility.urlsPointToSameServerSideResource(uri, existingUri)) {
