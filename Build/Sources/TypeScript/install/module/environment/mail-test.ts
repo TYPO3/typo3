@@ -52,10 +52,20 @@ class MailTest extends AbstractInteractableModule {
           const data = await response.resolve();
           if (data.success === true) {
             modalContent.empty().append(data.html);
-            Modal.setButtons(data.buttons);
+            const $outputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
+            if (data.messages && Array.isArray(data.messages)) {
+              data.messages.forEach((element: MessageInterface): void => {
+                const message = InfoBox.render(element.severity, element.title, element.message);
+                $outputContainer.append(message);
+              });
+            }
+            if (data.sendPossible) {
+              Modal.setButtons(data.buttons);
+            }
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
+
         },
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
@@ -69,6 +79,7 @@ class MailTest extends AbstractInteractableModule {
     const executeToken: string = this.getModuleContent().data('mail-test-token');
     const $outputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
     const message: JQuery = ProgressBar.render(Severity.loading, 'Loading...', '');
+
     $outputContainer.empty().append(message);
     (new AjaxRequest(Router.getUrl())).post({
       install: {

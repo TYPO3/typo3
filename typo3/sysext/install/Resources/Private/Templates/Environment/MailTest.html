@@ -17,22 +17,27 @@
         <code>$GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport_smtp_*']</code> is valid. Wrong data here results in faulty
         requests to the mail server. You can find the resulting messages in the mail server log.
     </li>
+    <li>
+        <code>$GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport']['defaultMailFromAddress']</code> must be a valid email
+        address.
+    </li>
 </ul>
 
 <div class="t3js-module-content" data-mail-test-token="{mailTestToken}">
     <div class="t3js-mailTest-output"></div>
 
-    <form id="t3js-mailTest-form" spellcheck="false">
-        <div class="form-group">
-            <label class="form-label" for="t3-install-checkmail">Email address:</label>
-            <input
-                id="t3-install-checkmail"
-                type="email"
-                class="t3-install-form-input-text form-control t3js-mailTest-email"
-                required
-            />
-        </div>
-    </form>
+    <f:if condition="{isSendPossible}">
+        <form id="t3js-mailTest-form" spellcheck="false">
+            <div class="form-group">
+                <label class="form-label" for="t3-install-checkmail">Email address:</label>
+                <input
+                    id="t3-install-checkmail"
+                    type="email"
+                    class="t3-install-form-input-text form-control t3js-mailTest-email"
+                    required
+                />
+            </div>
+        </form>
+    </f:if>
 </div>
-
 </html>
