@@ -22,24 +22,13 @@ namespace TYPO3\CMS\Backend\Controller\Event;
  */
 final class ModifyNewContentElementWizardItemsEvent
 {
-    private array $wizardItems;
-    private array $pageInfo;
-    private int|null $colPos;
-    private int $sys_language;
-    private int $uid_pid;
-
     public function __construct(
-        array $wizardItems,
-        array $pageInfo,
-        int|null $colPos,
-        int $sys_language,
-        int $uid_pid,
+        private array $wizardItems,
+        private readonly array $pageInfo,
+        private readonly int|null $colPos,
+        private readonly int $sys_language,
+        private readonly int $uid_pid,
     ) {
-        $this->wizardItems = $wizardItems;
-        $this->pageInfo = $pageInfo;
-        $this->colPos = $colPos;
-        $this->sys_language = $sys_language;
-        $this->uid_pid = $uid_pid;
     }
 
     public function getWizardItems(): array
