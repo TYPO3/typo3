@@ -561,8 +561,8 @@ class AbstractPlugin
         );*/
         // Initializing variables:
         $pointer = (int)($this->piVars[$pointerName] ?? 0);
-        $count = (int)$this->internal['res_count'];
-        $results_at_a_time = MathUtility::forceIntegerInRange($this->internal['results_at_a_time'], 1, 1000);
+        $count = (int)($this->internal['res_count'] ?? 0);
+        $results_at_a_time = MathUtility::forceIntegerInRange(($this->internal['results_at_a_time'] ?? 1), 1, 1000);
         $totalPages = (int)ceil($count / $results_at_a_time);
         $maxPages = MathUtility::forceIntegerInRange($this->internal['maxPages'], 1, 100);
         $pi_isOnlyFields = (bool)$this->pi_isOnlyFields($this->pi_isOnlyFields);
@@ -637,7 +637,7 @@ class AbstractPlugin
             }
             // Links to pages
             for ($a = $firstPage; $a < $lastPage; $a++) {
-                if ($this->internal['showRange']) {
+                if ($this->internal['showRange'] ?? false) {
                     $pageText = ($a * $results_at_a_time + 1) . '-' . min($count, ($a + 1) * $results_at_a_time);
                 } else {
                     $label = $this->pi_getLL('pi_list_browseresults_page', 'Page');
@@ -645,7 +645,7 @@ class AbstractPlugin
                 }
                 // Current page
                 if ($pointer == $a) {
-                    if ($this->internal['dontLinkActivePage']) {
+                    if ($this->internal['dontLinkActivePage'] ?? false) {
                         $links[] = $this->cObj->wrap($pageText, $wrapper['activeLinkWrap']);
                     } else {
                         $links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($pageText, [$pointerName => $a ?: ''], $pi_isOnlyFields), $wrapper['activeLinkWrap']);
@@ -684,10 +684,10 @@ class AbstractPlugin
             if ($wrapper['showResultsNumbersWrap'] ?? false) {
                 // This will render the resultcount in a more flexible way using markers (new in TYPO3 3.8.0).
                 // The formatting string is expected to hold template markers (see function header). Example: 'Displaying results ###FROM### to ###TO### out of ###OUT_OF###'
-                $markerArray['###FROM###'] = $this->cObj->wrap($this->internal['res_count'] > 0 ? $pR1 : 0, $wrapper['showResultsNumbersWrap']);
-                $markerArray['###TO###'] = $this->cObj->wrap(min($this->internal['res_count'], $pR2), $wrapper['showResultsNumbersWrap']);
-                $markerArray['###OUT_OF###'] = $this->cObj->wrap($this->internal['res_count'], $wrapper['showResultsNumbersWrap']);
-                $markerArray['###FROM_TO###'] = $this->cObj->wrap(($this->internal['res_count'] > 0 ? $pR1 : 0) . ' ' . $this->pi_getLL('pi_list_browseresults_to', 'to') . ' ' . min($this->internal['res_count'], $pR2), $wrapper['showResultsNumbersWrap']);
+                $markerArray['###FROM###'] = $this->cObj->wrap(($this->internal['res_count']  ?? 0) > 0 ? $pR1 : 0, $wrapper['showResultsNumbersWrap']);
+                $markerArray['###TO###'] = $this->cObj->wrap(min(($this->internal['res_count'] ?? 0), $pR2), $wrapper['showResultsNumbersWrap']);
+                $markerArray['###OUT_OF###'] = $this->cObj->wrap(($this->internal['res_count'] ?? 0), $wrapper['showResultsNumbersWrap']);
+                $markerArray['###FROM_TO###'] = $this->cObj->wrap((($this->internal['res_count']  ?? 0) > 0 ? $pR1 : 0) . ' ' . $this->pi_getLL('pi_list_browseresults_to', 'to') . ' ' . min($this->internal['res_count'] ?? 0, $pR2), $wrapper['showResultsNumbersWrap']);
                 $markerArray['###CURRENT_PAGE###'] = $this->cObj->wrap($pointer + 1, $wrapper['showResultsNumbersWrap']);
                 $markerArray['###TOTAL_PAGES###'] = $this->cObj->wrap($totalPages, $wrapper['showResultsNumbersWrap']);
                 // Substitute markers
@@ -1125,7 +1125,7 @@ class AbstractPlugin
             $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($addWhere));
         }
         // Search word:
-        if ($this->piVars['sword'] && $this->internal['searchFieldList']) {
+        if ($this->piVars['sword'] && ($this->internal['searchFieldList'] ?? false)) {
             $searchWhere = QueryHelper::stripLogicalOperatorPrefix(
                 $this->cObj->searchWhere($this->piVars['sword'], $this->internal['searchFieldList'], $table)
             );
@@ -1142,9 +1142,9 @@ class AbstractPlugin
             $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true));
 
             // Order by data:
-            if (!$orderBy && $this->internal['orderBy']) {
+            if (!$orderBy && ($this->internal['orderBy'] ?? false)) {
                 if (GeneralUtility::inList($this->internal['orderByList'], $this->internal['orderBy'])) {
-                    $sorting = $this->internal['descFlag'] ? ' DESC' : 'ASC';
+                    $sorting = ($this->internal['descFlag'] ?? false) ? ' DESC' : 'ASC';
                     $queryBuilder->orderBy($table . '.' . $this->internal['orderBy'], $sorting);
                 }
             } elseif ($orderBy) {
@@ -1156,7 +1156,7 @@ class AbstractPlugin
 
             // Limit data:
             $pointer = (int)$this->piVars['pointer'];
-            $results_at_a_time = MathUtility::forceIntegerInRange($this->internal['results_at_a_time'], 1, 1000);
+            $results_at_a_time = MathUtility::forceIntegerInRange(($this->internal['results_at_a_time'] ?? 1), 1, 1000);
             $queryBuilder->setFirstResult($pointer * $results_at_a_time)
                 ->setMaxResults($results_at_a_time);
 
