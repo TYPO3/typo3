@@ -21,10 +21,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Adminpanel\Log\DoctrineSqlLogger;
+use TYPO3\CMS\Adminpanel\Log\DoctrineSqlLoggingMiddleware;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Enable sql logging for the admin panel
@@ -45,7 +44,12 @@ class SqlLogging implements MiddlewareInterface
     {
         if (StateUtility::isActivatedForUser() && StateUtility::isOpen()) {
             $connection = $this->connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-            $connection->getConfiguration()->setSQLLogger(GeneralUtility::makeInstance(DoctrineSqlLogger::class));
+            foreach ($connection->getConfiguration()->getMiddlewares() as $middleware) {
+                if ($middleware instanceof DoctrineSqlLoggingMiddleware) {
+                    $middleware->enable();
+                    break;
+                }
+            }
         }
         return $handler->handle($request);
     }

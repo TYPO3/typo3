@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Adminpanel\Modules\Debug;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Adminpanel\Log\DoctrineSqlLogger;
+use TYPO3\CMS\Adminpanel\Log\DoctrineSqlLoggingMiddleware;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
@@ -56,10 +56,18 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        $logger = $connection->getConfiguration()->getSQLLogger();
+
+        $loggingMiddleware = null;
+        foreach ($connection->getConfiguration()->getMiddlewares() as $middleware) {
+            if ($middleware instanceof DoctrineSqlLoggingMiddleware) {
+                $loggingMiddleware = $middleware;
+                break;
+            }
+        }
+
         $data = [];
-        if ($logger instanceof DoctrineSqlLogger) {
-            $queries = $logger->getQueries();
+        if ($loggingMiddleware instanceof DoctrineSqlLoggingMiddleware) {
+            $queries = $loggingMiddleware->getQueries();
             $data['totalQueries'] = count($queries);
             $data['queries'] = $this->groupQueries($queries);
             $data['totalTime'] = array_sum(array_column($queries, 'executionMS')) * 1000;

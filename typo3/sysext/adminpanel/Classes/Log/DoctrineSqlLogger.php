@@ -17,24 +17,30 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Log;
 
-use Doctrine\DBAL\Logging\SQLLogger;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Adminpanel\Utility\MemoryUtility;
 
 /**
  * Doctrine SQL Logger implementation for recording queries for the admin panel
+ *
+ * @internal
  */
-class DoctrineSqlLogger implements SQLLogger, LoggerAwareInterface
+class DoctrineSqlLogger implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     /** Executed SQL queries. */
     protected array $queries = [];
     /** If Debug Stack is enabled (log queries) or not. */
-    protected bool $enabled = true;
+    protected bool $enabled = false;
     protected float $start;
     protected int $currentQuery = 0;
+
+    public function enable(): void
+    {
+        $this->enabled = true;
+    }
 
     public function startQuery($sql, array $params = null, array $types = null): void
     {
@@ -43,18 +49,18 @@ class DoctrineSqlLogger implements SQLLogger, LoggerAwareInterface
             $this->logger->warning('SQL Logging consumed too much memory, aborted. Not all queries have been recorded.');
         }
         if ($this->enabled) {
+            $visibleBacktraceLength = 4;
+            $removeFromBacktraceLength = 4;
+
             $this->start = microtime(true);
-            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 7);
-            // remove this method
-            array_shift($backtrace);
-            // remove doctrine execute query
-            array_shift($backtrace);
-            // remove queryBuilder execute
-            array_shift($backtrace);
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $visibleBacktraceLength + $removeFromBacktraceLength);
+            // remove internal doctrine and logging methods from the visible backtrace
+            array_splice($backtrace, 0, $removeFromBacktraceLength);
+
             $this->queries[++$this->currentQuery] = [
                 'sql' => $sql,
-                'params' => $params,
-                'types' => $types,
+                'params' => $params ?? [],
+                'types' => $types ?? [],
                 'executionMS' => 0,
                 'backtrace' => $backtrace,
             ];

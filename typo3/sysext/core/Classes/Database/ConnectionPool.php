@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database;
 
+use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\Driver\Middleware as DriverMiddleware;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Events;
 use Doctrine\DBAL\Types\Type;
@@ -174,6 +176,8 @@ class ConnectionPool
 
     /**
      * Map custom driver class for certain driver
+     *
+     * @internal
      */
     protected function mapCustomDriver(array $connectionParams): array
     {
@@ -183,6 +187,24 @@ class ConnectionPool
         }
 
         return $connectionParams;
+    }
+
+    /**
+     * Return any doctrine driver middlewares, that may have been set up in:
+     * $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driverMiddlewares']
+     */
+    protected function getDriverMiddlewares(array $connectionParams): array
+    {
+        $middlewares = [];
+
+        foreach ($connectionParams['driverMiddlewares'] ?? [] as $className) {
+            if (!in_array(DriverMiddleware::class, class_implements($className) ?: [], true)) {
+                throw new \UnexpectedValueException('Doctrine Driver Middleware must implement \Doctrine\DBAL\Driver\Middleware', 1677958727);
+            }
+            $middlewares[] = GeneralUtility::makeInstance($className);
+        }
+
+        return $middlewares;
     }
 
     /**
@@ -198,9 +220,11 @@ class ConnectionPool
         }
 
         $connectionParams = $this->mapCustomDriver($connectionParams);
+        $middlewares = $this->getDriverMiddlewares($connectionParams);
+        $configuration = $middlewares ? (new Configuration())->setMiddlewares($middlewares) : null;
 
         /** @var Connection $conn */
-        $conn = DriverManager::getConnection($connectionParams);
+        $conn = DriverManager::getConnection($connectionParams, $configuration);
         $conn->prepareConnection($connectionParams['initCommands'] ?? '');
 
         // Register all custom data types in the type mapping
