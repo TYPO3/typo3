@@ -147,6 +147,8 @@ class SiteConfiguration implements SingletonInterface
         $sites = [];
         $siteConfiguration = $this->getAllSiteConfigurationFromFiles($useCache);
         foreach ($siteConfiguration as $identifier => $configuration) {
+            // cast $identifier to string, as the identifier can potentially only consist of (int) digit numbers
+            $identifier = (string)$identifier;
             $siteSettings = $this->getSiteSettings($identifier, $configuration);
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
