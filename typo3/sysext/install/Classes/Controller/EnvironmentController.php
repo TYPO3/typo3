@@ -212,12 +212,39 @@ class EnvironmentController extends AbstractController
     {
         $view = $this->initializeView($request);
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
+        $isSendPossible = true;
+        $messages = new FlashMessageQueue('install');
+        $senderEmail = $this->getSenderEmailAddress();
+        if ($senderEmail === '') {
+            $messages->enqueue(new FlashMessage(
+                'Sender email address is not configured. Please configure $GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][\'defaultMailFromAddress\'].',
+                'Can not send mail',
+                ContextualFeedbackSeverity::ERROR
+            ));
+            $isSendPossible = false;
+        } elseif (!GeneralUtility::validEmail($senderEmail)) {
+            $messages->enqueue(new FlashMessage(
+                sprintf(
+                    'Sender email address <%s> is configured, but is not a valid email. Please use a valid email address in $GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][\'defaultMailFromAddress\'].',
+                    $senderEmail
+                ),
+                'Can not send mail',
+                ContextualFeedbackSeverity::ERROR
+            ));
+            $isSendPossible = false;
+        }
+
         $view->assignMultiple([
             'mailTestToken' => $formProtection->generateToken('installTool', 'mailTest'),
             'mailTestSenderAddress' => $this->getSenderEmailAddress(),
+            'isSendPossible' => $isSendPossible,
+            'queueIdentifier' => 'install',
         ]);
+
         return new JsonResponse([
             'success' => true,
+            'messages' => $messages,
+            'sendPossible' => $isSendPossible,
             'html' => $view->render('Environment/MailTest'),
             'buttons' => [
                 [
@@ -237,9 +264,10 @@ class EnvironmentController extends AbstractController
         $backup = $this->lateBootService->makeCurrent($container);
         $messages = new FlashMessageQueue('install');
         $recipient = $request->getParsedBody()['install']['email'];
+
         if (empty($recipient) || !GeneralUtility::validEmail($recipient)) {
             $messages->enqueue(new FlashMessage(
-                'Given address is not a valid email address.',
+                'Given recipient address is not a valid email address.',
                 'Mail not sent',
                 ContextualFeedbackSeverity::ERROR
             ));
@@ -1027,15 +1055,18 @@ class EnvironmentController extends AbstractController
     /**
      * Get sender address from configuration
      * ['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
-     * If this setting is empty fall back to 'no-reply@example.com'
+     * If this setting is empty, return an empty string.
+     *
+     * Email servers often reject mails with an invalid sender email address (or an address which does not correspondent
+     * to the email account). In any case, it is not good practice to send emails with arbitrary sender addresses.
+     * This is why a default like 'no-reply@example.com' is no longer being used here. The sender address should
+     * be configured explicitly via ['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'].
      *
      * @return string Returns an email address
      */
     protected function getSenderEmailAddress(): string
     {
-        return !empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'])
-            ? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
-            : 'no-reply@example.com';
+        return $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] ?? '';
     }
 
     /**
