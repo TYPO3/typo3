@@ -2925,54 +2925,6 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function makeInstanceWithNullClassNameThrowsException(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1288965219);
-
-        // @phpstan-ignore-next-line We're explicitly checking the behavior for a contract violation.
-        GeneralUtility::makeInstance(null);
-    }
-
-    /**
-     * @test
-     */
-    public function makeInstanceWithZeroStringClassNameThrowsException(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1288965219);
-
-        // @phpstan-ignore-next-line We're explicitly checking the behavior for a contract violation.
-        GeneralUtility::makeInstance(0);
-    }
-
-    /**
-     * @test
-     */
-    public function makeInstanceWithEmptyArrayThrowsException(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1288965219);
-
-        // @phpstan-ignore-next-line We're explicitly checking the behavior for a contract violation.
-        GeneralUtility::makeInstance([]);
-    }
-
-    /**
-     * @test
-     */
-    public function makeInstanceWithNonEmptyArrayThrowsException(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1288965219);
-
-        // @phpstan-ignore-next-line We're explicitly checking the behavior for a contract violation.
-        GeneralUtility::makeInstance(['foo']);
-    }
-
-    /**
-     * @test
-     */
     public function makeInstanceWithBeginningSlashInClassNameThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);

@@ -2911,18 +2911,17 @@ class GeneralUtility
      *
      * @template T of object
      * @param class-string<T> $className name of the class to instantiate, must not be empty and not start with a backslash
-     * @param mixed $constructorArguments Arguments for the constructor
      * @return T the created instance
      * @throws \InvalidArgumentException if $className is empty or starts with a backslash
      */
-    public static function makeInstance($className, ...$constructorArguments)
+    public static function makeInstance(string $className, mixed ...$constructorArguments): object
     {
         // PHPStan will complain about this check. That's okay as we're checking a contract violation here.
-        if (!is_string($className) || empty($className)) {
+        if ($className === '') {
             throw new \InvalidArgumentException('$className must be a non empty string.', 1288965219);
         }
         // Never instantiate with a beginning backslash, otherwise things like singletons won't work.
-        if ($className[0] === '\\') {
+        if (str_starts_with($className, '\\')) {
             throw new \InvalidArgumentException(
                 '$className "' . $className . '" must not start with a backslash.',
                 1420281366
