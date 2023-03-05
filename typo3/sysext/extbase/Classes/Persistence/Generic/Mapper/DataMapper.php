@@ -421,8 +421,8 @@ class DataMapper
         $query->getQuerySettings()->setLanguageAspect($languageAspect);
 
         if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
-            if ($columnMap->getChildSortByFieldName() !== null) {
-                $query->setOrderings([$columnMap->getChildSortByFieldName() => QueryInterface::ORDER_ASCENDING]);
+            if (null !== $orderings = $this->getOrderingsForColumnMap($columnMap)) {
+                $query->setOrderings($orderings);
             }
         } elseif ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
             $query->setSource($this->getSource($parentObject, $propertyName));
@@ -432,6 +432,46 @@ class DataMapper
         }
         $query->matching($this->getConstraint($query, $parentObject, $propertyName, $fieldValue, (array)$columnMap->getRelationTableMatchFields()));
         return $query;
+    }
+
+    /**
+     * Get orderings array for extbase query by columnMap
+     *
+     * @phpstan-return array<non-empty-string, QueryInterface::ORDER_*>|null
+     * @return array<string, string>|null
+     */
+    public function getOrderingsForColumnMap(ColumnMap $columnMap): array|null
+    {
+        if ($columnMap->getChildSortByFieldName() !== null) {
+            return [$columnMap->getChildSortByFieldName() => QueryInterface::ORDER_ASCENDING];
+        }
+
+        if ($columnMap->getChildTableDefaultSortings() === null) {
+            return null;
+        }
+
+        $orderings = [];
+        $fields = QueryHelper::parseOrderBy($columnMap->getChildTableDefaultSortings());
+        foreach ($fields as $field) {
+            $fieldName = $field[0] ?? null;
+            if ($fieldName === null) {
+                continue;
+            }
+
+            if (($fieldOrdering = $field[1] ?? null) === null) {
+                $orderings[$fieldName] = QueryInterface::ORDER_ASCENDING;
+                continue;
+            }
+
+            $fieldOrdering = strtoupper($fieldOrdering);
+            if (!in_array($fieldOrdering, [QueryInterface::ORDER_ASCENDING, QueryInterface::ORDER_DESCENDING], true)) {
+                $orderings[$fieldName] = QueryInterface::ORDER_ASCENDING;
+                continue;
+            }
+
+            $orderings[$fieldName] = $fieldOrdering;
+        }
+        return $orderings !== [] ? $orderings : null;
     }
 
     /**

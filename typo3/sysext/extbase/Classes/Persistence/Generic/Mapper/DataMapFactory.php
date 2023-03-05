@@ -369,7 +369,7 @@ class DataMapFactory implements SingletonInterface
      * @param ColumnMap $columnMap The column map
      * @param array|null $columnConfiguration The column configuration from $TCA
      */
-    protected function setOneToManyRelation(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
+    public function setOneToManyRelation(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
     {
         // todo: this method should only be called with proper arguments which means that the TCA integrity check should
         // todo: take place outside this method.
@@ -381,6 +381,7 @@ class DataMapFactory implements SingletonInterface
         }
         // todo: don't update column map if value(s) isn't/aren't set.
         $columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby'] ?? null);
+        $columnMap->setChildTableDefaultSortings($columnConfiguration['foreign_default_sortby'] ?? null);
         $columnMap->setParentKeyFieldName($columnConfiguration['foreign_field'] ?? null);
         $columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field'] ?? null);
         if (isset($columnConfiguration['foreign_match_fields']) && is_array($columnConfiguration['foreign_match_fields'])) {

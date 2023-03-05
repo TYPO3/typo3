@@ -82,6 +82,13 @@ class ColumnMap
     private $childTableName;
 
     /**
+     * The name of the fields with direction the results from the child's table are sorted by default
+     *
+     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/ForeignDefaultSortby.html
+     */
+    private ?string $childTableDefaultSortings = null;
+
+    /**
      * todo: Check if this property should support null. If not, set default value.
      * The name of the field the results from the child's table are sorted by
      *
@@ -222,6 +229,16 @@ class ColumnMap
     public function getChildTableName(): ?string
     {
         return $this->childTableName;
+    }
+
+    public function setChildTableDefaultSortings(?string $childTableDefaultSortings): void
+    {
+        $this->childTableDefaultSortings = $childTableDefaultSortings;
+    }
+
+    public function getChildTableDefaultSortings(): ?string
+    {
+        return $this->childTableDefaultSortings;
     }
 
     public function setChildSortByFieldName(?string $childSortByFieldName): void

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 
 use ExtbaseTeam\BlogExample\Domain\Model\Blog;
+use ExtbaseTeam\BlogExample\Domain\Model\Comment;
 use ExtbaseTeam\BlogExample\Domain\Model\DateExample;
 use ExtbaseTeam\BlogExample\Domain\Model\DateTimeImmutableExample;
 use ExtbaseTeam\BlogExample\Domain\Model\Post;
@@ -484,5 +485,29 @@ class DataMapperTest extends FunctionalTestCase
         $plainValue = $dataMapper->getPlainValue($mappedObjectArray[0]->getAdministrator());
 
         self::assertSame(1, $plainValue);
+    }
+
+    /**
+     * @test
+     */
+    public function fetchRelatedRespectsForeignDefaultSortByTCAConfiguration(): void
+    {
+        // Arrange
+        $this->importCSVDataSet('typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.csv');
+        $this->importCSVDataSet('typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/comments.csv');
+
+        $dataMapper = $this->get(DataMapper::class);
+
+        $post = new Post();
+        $post->_setProperty('uid', 1);
+
+        // Act
+        $comments = $dataMapper->fetchRelated($post, 'comments', '5', false)->toArray();
+
+        // Assert
+        self::assertSame(
+            [5, 4, 3, 2, 1], // foreign_default_sortby is set to uid desc, see
+            array_map(fn (Comment $comment) => $comment->getUid(), $comments)
+        );
     }
 }
