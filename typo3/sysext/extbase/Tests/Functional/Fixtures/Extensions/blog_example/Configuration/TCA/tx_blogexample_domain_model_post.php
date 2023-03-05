@@ -196,6 +196,7 @@ return [
                 'type' => 'inline',
                 'foreign_table' => 'tx_blogexample_domain_model_comment',
                 'foreign_field' => 'post',
+                'foreign_default_sortby' => 'uid desc',
                 'size' => 10,
                 'autoSizeMax' => 30,
                 'multiple' => 0,
