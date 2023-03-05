@@ -35,14 +35,8 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  */
 class SiteResolver implements MiddlewareInterface
 {
-    /**
-     * @var SiteMatcher
-     */
-    protected $matcher;
-
-    public function __construct(SiteMatcher $matcher)
+    public function __construct(protected readonly SiteMatcher $matcher)
     {
-        $this->matcher = $matcher;
     }
 
     /**

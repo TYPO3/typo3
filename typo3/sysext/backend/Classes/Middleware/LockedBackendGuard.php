@@ -74,10 +74,9 @@ class LockedBackendGuard implements MiddlewareInterface
     /**
      * Check adminOnly configuration variable and redirects to an URL in file typo3conf/LOCK_BACKEND
      *
-     * @return string|null
      * @throws BackendLockedException
      */
-    protected function checkLockedBackend()
+    protected function checkLockedBackend(): ?string
     {
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] < 0) {
             throw new BackendLockedException(

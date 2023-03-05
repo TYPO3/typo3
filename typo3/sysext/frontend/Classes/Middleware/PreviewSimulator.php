@@ -39,11 +39,8 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
  */
 class PreviewSimulator implements MiddlewareInterface
 {
-    private Context $context;
-
-    public function __construct(Context $context)
+    public function __construct(protected readonly Context $context)
     {
-        $this->context = $context;
     }
 
     /**

@@ -41,28 +41,14 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * The cHash Service class used for cHash related functionality
-     *
-     * @var CacheHashCalculator
-     */
-    protected $cacheHashCalculator;
-
-    /**
-     * @var TimeTracker
-     */
-    protected $timeTracker;
-
-    /**
      * @var bool will be used to set $TSFE->no_cache later-on
      */
-    protected $disableCache = false;
+    protected bool $disableCache = false;
 
     public function __construct(
-        CacheHashCalculator $cacheHashCalculator,
-        TimeTracker $timeTracker
+        protected readonly CacheHashCalculator $cacheHashCalculator,
+        protected readonly TimeTracker $timeTracker
     ) {
-        $this->cacheHashCalculator = $cacheHashCalculator;
-        $this->timeTracker = $timeTracker;
     }
 
     /**

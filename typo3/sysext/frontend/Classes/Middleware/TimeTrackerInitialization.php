@@ -31,14 +31,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class TimeTrackerInitialization implements MiddlewareInterface
 {
-    /**
-     * @var TimeTracker
-     */
-    protected $timeTracker;
-
-    public function __construct(TimeTracker $timeTracker)
+    public function __construct(protected readonly TimeTracker $timeTracker)
     {
-        $this->timeTracker = $timeTracker;
     }
 
     /**

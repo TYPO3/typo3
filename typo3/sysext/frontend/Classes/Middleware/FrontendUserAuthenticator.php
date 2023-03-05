@@ -39,16 +39,10 @@ class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInter
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var Context
-     */
-    protected $context;
-    protected RateLimiterFactory $rateLimiterFactory;
-
-    public function __construct(Context $context, RateLimiterFactory $rateLimiterFactory)
-    {
-        $this->context = $context;
-        $this->rateLimiterFactory = $rateLimiterFactory;
+    public function __construct(
+        protected readonly Context $context,
+        protected readonly RateLimiterFactory $rateLimiterFactory
+    ) {
     }
 
     /**

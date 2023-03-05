@@ -49,14 +49,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class BackendUserAuthenticator implements MiddlewareInterface
 {
-    /**
-     * @var Context
-     */
-    protected $context;
-
-    public function __construct(Context $context)
+    public function __construct(protected Context $context)
     {
-        $this->context = $context;
     }
 
     abstract public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface;

@@ -39,14 +39,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAuthenticator
 {
-    private LanguageServiceFactory $languageServiceFactory;
-
     public function __construct(
         Context $context,
-        LanguageServiceFactory $languageServiceFactory
+        protected readonly LanguageServiceFactory $languageServiceFactory
     ) {
         parent::__construct($context);
-        $this->languageServiceFactory = $languageServiceFactory;
     }
 
     /**
@@ -89,12 +86,9 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     }
 
     /**
-     * Creates the backend user object and returns it.
-     *
-     * @return FrontendBackendUserAuthentication|null the backend user object or null if there was no valid user found
-     * @throws \TYPO3\CMS\Core\Exception
+     * Creates the backend user object and returns it if a valid backend user is found.
      */
-    protected function initializeBackendUser(ServerRequestInterface $request)
+    protected function initializeBackendUser(ServerRequestInterface $request): ?FrontendBackendUserAuthentication
     {
         // New backend user object
         $backendUserObject = GeneralUtility::makeInstance(FrontendBackendUserAuthentication::class);
@@ -119,10 +113,9 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
 
     /**
      * Implementing the access checks that the TYPO3 CMS bootstrap script does before a user is ever logged in.
-     *
-     * @return bool Returns TRUE if access is OK
+     * Returns TRUE if access is OK
      */
-    protected function isAuthenticated(FrontendBackendUserAuthentication $user, NormalizedParams $normalizedParams)
+    protected function isAuthenticated(FrontendBackendUserAuthentication $user, NormalizedParams $normalizedParams): bool
     {
         // Check IP
         $ipMask = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'] ?? '');

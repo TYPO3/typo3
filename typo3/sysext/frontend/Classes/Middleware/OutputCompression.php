@@ -47,7 +47,7 @@ class OutputCompression implements MiddlewareInterface
     /**
      * Initialize output compression if configured
      */
-    protected function initializeOutputCompression()
+    protected function initializeOutputCompression(): void
     {
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] && extension_loaded('zlib')) {
             if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'])) {

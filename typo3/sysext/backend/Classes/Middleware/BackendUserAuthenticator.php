@@ -50,10 +50,8 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
 
     /**
      * List of requests that don't need a valid BE user
-     *
-     * @var array
      */
-    protected $publicRoutes = [
+    protected array $publicRoutes = [
         '/login',
         '/login/frame',
         '/login/password-reset/forget',

@@ -21,7 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\DispatcherInterface;
 use TYPO3\CMS\Core\Http\Response;
 
@@ -41,8 +40,6 @@ class EidHandler implements MiddlewareInterface
 
     /**
      * Dispatches the request to the corresponding eID class or eID script
-     *
-     * @throws Exception
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

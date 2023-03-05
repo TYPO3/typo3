@@ -35,22 +35,10 @@ use TYPO3\CMS\Core\Site\Entity\Site;
  */
 class StaticRouteResolver implements MiddlewareInterface
 {
-    /**
-     * @var RequestFactory
-     */
-    protected $requestFactory;
-
-    /**
-     * @var LinkService
-     */
-    protected $linkService;
-
     public function __construct(
-        RequestFactory $requestFactory,
-        LinkService $linkService
+        protected readonly RequestFactory $requestFactory,
+        protected readonly LinkService $linkService
     ) {
-        $this->requestFactory = $requestFactory;
-        $this->linkService = $linkService;
     }
 
     /**
@@ -58,7 +46,7 @@ class StaticRouteResolver implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (($site = $request->getAttribute('site', null)) instanceof Site &&
+        if (($site = $request->getAttribute('site')) instanceof Site &&
             ($configuration = $site->getConfiguration()['routes'] ?? null)
         ) {
             $path = ltrim($request->getUri()->getPath(), '/');
@@ -127,9 +115,6 @@ class StaticRouteResolver implements MiddlewareInterface
         return [$content, $contentType];
     }
 
-    /**
-     * @throws InvalidRouteArgumentsException
-     */
     protected function getPageUri(ServerRequestInterface $request, Site $site, array $urlParams): string
     {
         $parameters = [];
