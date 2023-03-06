@@ -768,12 +768,12 @@ class GifBuilder extends GraphicalFunctions
             } elseif ('[' . substr($theVal, 1, -1) . ']' == $theVal) {
                 $objParts = explode('.', substr($theVal, 1, -1));
                 $theVal = 0;
-                if (isset($this->objBB[$objParts[0]])) {
-                    if ($objParts[1] === 'w') {
+                if (isset($this->objBB[$objParts[0]], $objParts[1])) {
+                    if ($objParts[1] === 'w' && isset($this->objBB[$objParts[0]][0])) {
                         $theVal = $this->objBB[$objParts[0]][0];
-                    } elseif ($objParts[1] === 'h') {
+                    } elseif ($objParts[1] === 'h' && isset($this->objBB[$objParts[0]][1])) {
                         $theVal = $this->objBB[$objParts[0]][1];
-                    } elseif ($objParts[1] === 'lineHeight') {
+                    } elseif ($objParts[1] === 'lineHeight' && isset($this->objBB[$objParts[0]][2]['lineHeight'])) {
                         $theVal = $this->objBB[$objParts[0]][2]['lineHeight'];
                     }
                     $theVal = (int)$theVal;
