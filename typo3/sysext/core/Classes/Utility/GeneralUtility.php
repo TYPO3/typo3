@@ -2571,31 +2571,34 @@ class GeneralUtility
      */
     public static function getFileAbsFileName($filename)
     {
-        if ((string)$filename === '') {
+        $fileName = (string)$filename;
+        if ($fileName === '') {
             return '';
         }
-        // Extension
-        if (PathUtility::isExtensionPath($filename)) {
+        $checkForBackPath = fn (string $fileName): string => $fileName !== '' && static::validPathStr($fileName) ? $fileName : '';
+
+        // Extension "EXT:" path resolving.
+        if (PathUtility::isExtensionPath($fileName)) {
             try {
-                $filename = ExtensionManagementUtility::resolvePackagePath($filename);
-            } catch (PackageException $e) {
-                $filename = '';
+                $fileName = ExtensionManagementUtility::resolvePackagePath($fileName);
+            } catch (PackageException) {
+                $fileName = '';
             }
-        } elseif (!PathUtility::isAbsolutePath($filename)) {
-            // is relative. Prepended with the public web folder
-            $filename = Environment::getPublicPath() . '/' . $filename;
-        } elseif (!(
-            str_starts_with($filename, Environment::getProjectPath())
-                  || str_starts_with($filename, Environment::getPublicPath())
-        )) {
-            // absolute, but set to blank if not allowed
-            $filename = '';
+            return $checkForBackPath($fileName);
         }
-        if ((string)$filename !== '' && static::validPathStr($filename)) {
-            // checks backpath.
-            return $filename;
+
+        // Absolute path, but set to blank if not inside allowed directories.
+        if (PathUtility::isAbsolutePath($fileName)) {
+            if (str_starts_with($fileName, Environment::getProjectPath()) ||
+                str_starts_with($fileName, Environment::getPublicPath())) {
+                return $checkForBackPath($fileName);
+            }
+            return '';
         }
-        return '';
+
+        // Relative path. Prepend with the public web folder.
+        $fileName = Environment::getPublicPath() . '/' . $fileName;
+        return $checkForBackPath($fileName);
     }
 
     /**
