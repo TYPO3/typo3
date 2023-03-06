@@ -5,6 +5,18 @@ plugin.tx_felogin_login {
     layoutRootPaths.10 = {$plugin.tx_felogin_login.view.layoutRootPath}
   }
 
+  ignoreFlexFormSettingsIfEmpty = showForgotPassword
+  ignoreFlexFormSettingsIfEmpty := addToList(showPermaLogin)
+  ignoreFlexFormSettingsIfEmpty := addToList(showLogoutFormAfterLogin)
+  ignoreFlexFormSettingsIfEmpty := addToList(pages)
+  ignoreFlexFormSettingsIfEmpty := addToList(recursive)
+  ignoreFlexFormSettingsIfEmpty := addToList(redirectMode)
+  ignoreFlexFormSettingsIfEmpty := addToList(redirectFirstMethod)
+  ignoreFlexFormSettingsIfEmpty := addToList(redirectPageLogin)
+  ignoreFlexFormSettingsIfEmpty := addToList(redirectPageLoginError)
+  ignoreFlexFormSettingsIfEmpty := addToList(redirectPageLogout)
+  ignoreFlexFormSettingsIfEmpty := addToList(redirectDisable)
+
   settings {
     pages = {$styles.content.loginform.pid}
     recursive = {$styles.content.loginform.recursive}

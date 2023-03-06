@@ -19,11 +19,13 @@ namespace TYPO3\CMS\Extbase\Configuration;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Event\Configuration\BeforeFlexFormConfigurationOverrideEvent;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -70,7 +72,8 @@ class FrontendConfigurationManager implements SingletonInterface
     public function __construct(
         protected TypoScriptService $typoScriptService,
         protected FlexFormService $flexFormService,
-        protected PageRepository $pageRepository
+        protected PageRepository $pageRepository,
+        protected EventDispatcher $eventDispatcher
     ) {
     }
 
@@ -316,11 +319,29 @@ class FrontendConfigurationManager implements SingletonInterface
                 $flexFormConfiguration = [];
             }
         }
-        if (is_array($flexFormConfiguration) && !empty($flexFormConfiguration)) {
-            $frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'settings');
-            $frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'persistence');
-            $frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'view');
+
+        // Early return, if flexForm configuration is empty
+        if (!is_array($flexFormConfiguration) || empty($flexFormConfiguration)) {
+            return $frameworkConfiguration;
         }
+
+        // Remove flexForm settings if empty for fields defined in `ignoreFlexFormSettingsIfEmpty`
+        $originalFlexFormConfiguration = $flexFormConfiguration;
+        $ignoredSettingsConfig = (string)($frameworkConfiguration['ignoreFlexFormSettingsIfEmpty'] ?? '');
+        if ($ignoredSettingsConfig !== '') {
+            $ignoredSettings = GeneralUtility::trimExplode(',', $ignoredSettingsConfig, true);
+            $flexFormConfiguration = $this->removeIgnoredFlexFormSettingsIfEmpty($flexFormConfiguration, $ignoredSettings);
+        }
+
+        // PSR-14 event for extension authors to modify flexForm configuration before the merge process
+        $event = new BeforeFlexFormConfigurationOverrideEvent($frameworkConfiguration, $originalFlexFormConfiguration, $flexFormConfiguration);
+        $this->eventDispatcher->dispatch($event);
+        $flexFormConfiguration = $event->getFlexFormConfiguration();
+
+        $frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'settings');
+        $frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'persistence');
+        $frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'view');
+
         return $frameworkConfiguration;
     }
 
@@ -354,5 +375,22 @@ class FrontendConfigurationManager implements SingletonInterface
     protected function getRecursiveStoragePids(array $storagePids, int $recursionDepth = 0): array
     {
         return $this->pageRepository->getPageIdsRecursive($storagePids, $recursionDepth);
+    }
+
+    protected function removeIgnoredFlexFormSettingsIfEmpty(array $flexFormConfiguration, array $ignoredSettings): array
+    {
+        foreach ($ignoredSettings as $ignoredSetting) {
+            $ignoredSettingName = 'settings.' . $ignoredSetting;
+            if (!ArrayUtility::isValidPath($flexFormConfiguration, $ignoredSettingName, '.')) {
+                continue;
+            }
+
+            $fieldValue = ArrayUtility::getValueByPath($flexFormConfiguration, $ignoredSettingName, '.');
+            if ($fieldValue === '' || $fieldValue === '0') {
+                $flexFormConfiguration = ArrayUtility::removeByPath($flexFormConfiguration, $ignoredSettingName, '.');
+            }
+        }
+
+        return $flexFormConfiguration;
     }
 }

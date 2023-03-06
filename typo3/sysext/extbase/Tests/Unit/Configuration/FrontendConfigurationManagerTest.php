@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -114,6 +115,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $this->frontendConfigurationManager->_set('contentObject', $this->mockContentObject);
         $this->mockTypoScriptService = $this->getMockBuilder(TypoScriptService::class)->getMock();
         $this->frontendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
+        $this->frontendConfigurationManager->_set('eventDispatcher', $this->createMock(EventDispatcher::class));
     }
 
     /**
