@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -62,6 +63,8 @@ class RecordsOverview extends AbstractNode
                 $selectedItem['table'],
                 $selectedItem['uid']
             );
+            $pathToContainingPage = BackendUtility::getRecordPath($selectedItem['row']['pid'], $this->getBackendUserAuthentication()->getPagePermsClause(Permission::PAGE_SHOW), 0);
+
             $recordsOverviewHtml[] = '<tr>';
             $recordsOverviewHtml[] =    '<td class="col-icon">';
             $recordsOverviewHtml[] =        $linkedIcon;
@@ -70,6 +73,7 @@ class RecordsOverview extends AbstractNode
             $recordsOverviewHtml[] =        $linkedTitle;
             $recordsOverviewHtml[] =        '<span class="text-muted">';
             $recordsOverviewHtml[] =            ' [' . $selectedItem['uid'] . ']';
+            $recordsOverviewHtml[] =            ' ' . htmlspecialchars($pathToContainingPage);
             $recordsOverviewHtml[] =        '</span>';
             $recordsOverviewHtml[] =    '</td>';
             $recordsOverviewHtml[] = '</tr>';
