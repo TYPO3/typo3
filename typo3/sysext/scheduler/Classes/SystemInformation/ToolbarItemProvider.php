@@ -54,21 +54,19 @@ final class ToolbarItemProvider
             return;
         }
         $languageService = $this->getLanguageService();
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         if (!$this->schedulerWasExecuted()) {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             // Display system message if the Scheduler has never yet run
-            $moduleIdentifier = 'system_txschedulerM1';
-            $moduleParams = ['subModule' => 'check'];
+            $moduleIdentifier = 'scheduler_setupcheck';
             $systemInformationToolbarItem->addSystemMessage(
                 sprintf(
                     $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:systemmessage.noLastRun'),
-                    (string)$uriBuilder->buildUriFromRoute($moduleIdentifier, $moduleParams)
+                    (string)$uriBuilder->buildUriFromRoute($moduleIdentifier)
                 ),
                 InformationStatus::STATUS_WARNING,
                 1,
                 $moduleIdentifier,
-                http_build_query($moduleParams)
             );
         } else {
             // Display information about the last Scheduler execution

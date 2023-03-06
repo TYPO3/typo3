@@ -28,9 +28,9 @@ final class TasksCest
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
-        $I->scrollTo('[data-modulemenu-identifier="system_txschedulerM1"]');
-        $I->see('Scheduler', '[data-modulemenu-identifier="system_txschedulerM1"]');
-        $I->click('[data-modulemenu-identifier="system_txschedulerM1"]');
+        $I->scrollTo('[data-modulemenu-identifier="scheduler"]');
+        $I->see('Scheduler', '[data-modulemenu-identifier="scheduler"]');
+        $I->click('[data-modulemenu-identifier="scheduler"]');
         $I->switchToContentFrame();
     }
 
@@ -61,7 +61,7 @@ final class TasksCest
         // run the task
         $I->click('button[name="execute"]');
         $I->waitForText('Task "System Status Update (reports)" with uid "1" has been executed.');
-        $I->seeElement('[data-module-name="system_txschedulerM1"] .disabled');
+        $I->seeElement('[data-module-name="scheduler_manage"] .disabled');
         $I->see('disabled');
     }
 
@@ -86,7 +86,7 @@ final class TasksCest
     {
         $I->wantTo('See a enable button for a task');
         $I->click('//button[contains(@title, "Enable")]', '#tx_scheduler_form');
-        $I->dontSeeElement('[data-module-name="system_txschedulerM1"] .disabled');
+        $I->dontSeeElement('[data-module-name="scheduler_manage"] .disabled');
         $I->dontSee('disabled');
         $I->wantTo('See a disable button for a task');
         // Give tooltips some time to fully init
@@ -94,8 +94,8 @@ final class TasksCest
         $I->moveMouseOver('//button[contains(@title, "Disable")]');
         $I->wait(1);
         $I->click('//button[contains(@title, "Disable")]');
-        $I->waitForElementVisible('[data-module-name="system_txschedulerM1"]');
-        $I->seeElement('[data-module-name="system_txschedulerM1"] .disabled');
+        $I->waitForElementVisible('[data-module-name="scheduler_manage"]');
+        $I->seeElement('[data-module-name="scheduler_manage"] .disabled');
         $I->see('disabled');
     }
 
@@ -125,18 +125,18 @@ final class TasksCest
 
     public function canSwitchToSetupCheck(ApplicationTester $I): void
     {
-        $I->selectOption('select[name=SchedulerJumpMenu]', 'Scheduler setup check');
-        $I->waitForElementVisible('[data-module-name="system_txschedulerM1"]');
+        $I->selectOption('select[name=moduleMenu]', 'Scheduler setup check');
+        $I->waitForElementVisible('[data-module-name="scheduler_setupcheck"]');
         $I->see('Scheduler setup check');
         $I->see('This screen checks if the requisites for running the Scheduler as a cron job are fulfilled');
     }
 
     public function canSwitchToInformation(ApplicationTester $I): void
     {
-        $I->selectOption('select[name=SchedulerJumpMenu]', 'Available scheduler tasks');
-        $I->waitForElementVisible('[data-module-name="system_txschedulerM1"]');
+        $I->selectOption('select[name=moduleMenu]', 'Available scheduler tasks');
+        $I->waitForElementVisible('[data-module-name="scheduler_availabletasks"]');
         $I->see('Available scheduler tasks');
-        $I->canSeeNumberOfElements('[data-module-name="system_txschedulerM1"] table tbody tr', [1, 10000]);
+        $I->canSeeNumberOfElements('[data-module-name="scheduler_availabletasks"] table tbody tr', [1, 10000]);
     }
 
     public function canCreateNewTaskGroupFromEditForm(ApplicationTester $I): void
@@ -164,7 +164,7 @@ final class TasksCest
         $I->click('button[value="save"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->click('a[title="Close"]');
-        $I->waitForElementVisible('[data-module-name="system_txschedulerM1"]');
+        $I->waitForElementVisible('[data-module-name="scheduler_manage"]');
 
         $I->canSee('new task group', '.panel-heading');
     }

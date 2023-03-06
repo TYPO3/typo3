@@ -142,7 +142,7 @@
                                     <td class="right">{task.uid}</td>
                                     <td class="nowrap-disabled">
                                         <div class="name">
-                                            <f:be.link route="system_txschedulerM1" parameters="{action: 'edit', 'uid': task.uid}">
+                                            <f:be.link route="scheduler_manage" parameters="{action: 'edit', 'uid': task.uid}">
                                                 <strong>{task.classTitle} ({task.classExtension})</strong>
                                                 <f:if condition="{task.progress}">
                                                     <div class="progress">
@@ -267,7 +267,7 @@
                                             <f:then>
                                                 <div class="btn-group" role="group">
                                                     <f:comment>@todo: Next one should be a button type="submit".</f:comment>
-                                                    <f:be.link route="system_txschedulerM1"
+                                                    <f:be.link route="scheduler_manage"
                                                         parameters="{action: {'stop': task.uid}}"
                                                         class="btn btn-default t3js-modal-trigger"
                                                         data="{
@@ -283,7 +283,7 @@
                                             </f:then>
                                             <f:else>
                                                 <div class="btn-group" role="group">
-                                                    <f:be.link route="system_txschedulerM1"
+                                                    <f:be.link route="scheduler_manage"
                                                         parameters="{action: 'edit', 'uid': task.uid}"
                                                         class="btn btn-default"
                                                         title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}"
@@ -315,7 +315,7 @@
                                                         </f:else>
                                                     </f:if>
                                                     <f:comment>@todo: Next one should be a button type="submit", too. Similar to the "toggle" button above.</f:comment>
-                                                    <f:be.link route="system_txschedulerM1"
+                                                    <f:be.link route="scheduler_manage"
                                                         parameters="{action: {'delete': task.uid}}"
                                                         class="btn btn-default t3js-modal-trigger"
                                                         data="{
@@ -406,7 +406,7 @@
                                     <div class="btn-group" role="group">
                                         <f:comment>@todo: Next one should be a button type="submit"</f:comment>
                                         <f:be.link
-                                            route="system_txschedulerM1"
+                                            route="scheduler_manage"
                                             parameters="{action: {'delete': errorClass.uid}}"
                                             class="btn btn-default t3js-modal-trigger"
                                             data="{

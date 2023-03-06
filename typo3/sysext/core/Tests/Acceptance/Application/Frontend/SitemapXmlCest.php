@@ -35,18 +35,11 @@ final class SitemapXmlCest
         $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
-        $I->click('.t3js-module-docheader-bar a[title="View webpage"]');
-        $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
-            $handles = $webdriver->getWindowHandles();
-            $lastWindow = end($handles);
-            $webdriver->switchTo()->window($lastWindow);
-        });
-
-        // Get current url
-        $url = $this->getCurrentURL($I);
-
+        $I->waitForElementNotVisible('#nprogress');
+        $dataDispatchArgs = $I->grabAttributeFrom('.module-docheader-bar-column-left a:first-child', 'data-dispatch-args');
+        $url = json_decode($dataDispatchArgs, false, 512, JSON_THROW_ON_ERROR);
         // Add Sitemap parameter to URL
-        $I->amOnUrl($url . '?type=1533906435');
+        $I->amOnPage(str_replace('/typo3temp/var/tests/acceptance', '', $url[0]) . '?type=1533906435');
     }
 
     private function sitemapDataProvider(): array
@@ -95,24 +88,6 @@ final class SitemapXmlCest
         $I->see($testData['slug']);
         $priority = $this->getTableColumn($I, $testData['slug'])->getText();
         $I->assertIsNumeric($priority);
-    }
-
-    private function getCurrentURL(ApplicationTester $I, int $attempt = 1): string
-    {
-        $url = $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
-            return $webdriver->getCurrentURL();
-        });
-
-        if ($attempt > 4) {
-            return $url ?? '';
-        }
-
-        if (!$url || str_contains($url, 'about:blank')) {
-            $I->wait(0.5);
-            $url = $this->getCurrentURL($I, $attempt + 1);
-        }
-
-        return $url;
     }
 
     /**

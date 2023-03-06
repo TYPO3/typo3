@@ -7,9 +7,6 @@ services:
   TYPO3\CMS\Scheduler\:
     resource: '../Classes/*'
 
-  TYPO3\CMS\Scheduler\Controller\SchedulerModuleController:
-    tags: [ 'backend.controller' ]
-
   TYPO3\CMS\Scheduler\Command\SchedulerCommand:
     tags:
       - name: 'console.command'

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Scheduler\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller as BackendController;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -26,19 +27,16 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\SysLog\Action\Database as SystemLogDatabaseAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
 use TYPO3\CMS\Scheduler\Exception\InvalidDateException;
@@ -54,6 +52,7 @@ use TYPO3\CMS\Scheduler\Task\TaskSerializer;
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[BackendController]
 class SchedulerModuleController
 {
     protected Action $currentAction;
@@ -71,10 +70,9 @@ class SchedulerModuleController
     /**
      * Entry dispatcher method.
      *
-     * There are three arguments involved regarding main module routing:
-     * * 'submodule': Third level module selection - "scheduler" (list, add, edit), "info", "check"
-     * * 'action': Sub module "scheduler" only: add, edit, delete, toggleHidden, ...
-     * * 'CMD': Sub module "scheduler" only. "save", "close", "new" when adding / editing a task.
+     * There are two arguments involved regarding main module routing:
+     * * 'action': add, edit, delete, toggleHidden, ...
+     * * 'CMD': "save", "close", "new" when adding / editing a task.
      *          A better naming would be "nextAction", but the split button ModuleTemplate and
      *          DocumentSaveActions.ts can not cope with a renaming here and need "CMD".
      */
@@ -89,21 +87,8 @@ class SchedulerModuleController
             'time' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] ?? 'H:i',
         ]);
 
-        // See if action from main module drop down is given, else fetch from user data and update if needed.
         $backendUser = $this->getBackendUser();
         $moduleData = $request->getAttribute('moduleData');
-        if ($moduleData->clean('subModule', ['scheduler', 'info', 'check'])) {
-            $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
-        }
-        $requestedSubModule = (string)$moduleData->get('subModule');
-
-        // 'info' and 'check' submodules have no other action and can be rendered directly.
-        if ($requestedSubModule === 'info') {
-            return $this->renderInfoView($view);
-        }
-        if ($requestedSubModule === 'check') {
-            return $this->renderCheckView($view);
-        }
 
         // Simple actions from list view.
         if (!empty($parsedBody['action']['toggleHidden'])) {
@@ -191,87 +176,6 @@ class SchedulerModuleController
     public function getCurrentAction(): Action
     {
         return $this->currentAction;
-    }
-
-    /**
-     * Render 'Setup Check' view.
-     */
-    protected function renderCheckView(ModuleTemplate $view): ResponseInterface
-    {
-        $languageService = $this->getLanguageService();
-
-        // Display information about last automated run, as stored in the system registry.
-        $registry = GeneralUtility::makeInstance(Registry::class);
-        $lastRun = $registry->get('tx_scheduler', 'lastRun');
-        $lastRunMessageLabel = 'msg.noLastRun';
-        $lastRunMessageLabelArguments = [];
-        $lastRunSeverity = InfoboxViewHelper::STATE_WARNING;
-        if (is_array($lastRun)) {
-            if (empty($lastRun['end']) || empty($lastRun['start']) || empty($lastRun['type'])) {
-                $lastRunMessageLabel = 'msg.incompleteLastRun';
-                $lastRunSeverity = InfoboxViewHelper::STATE_WARNING;
-            } else {
-                $lastRunMessageLabelArguments = [
-                    $lastRun['type'] === 'manual'
-                        ? $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.manually')
-                        : $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.automatically'),
-                    date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $lastRun['start']),
-                    date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $lastRun['start']),
-                    date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $lastRun['end']),
-                    date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $lastRun['end']),
-                ];
-                $lastRunMessageLabel = 'msg.lastRun';
-                $lastRunSeverity = InfoboxViewHelper::STATE_INFO;
-            }
-        }
-
-        // Information about cli script.
-        $script = $this->determineExecutablePath();
-        $isExecutableMessageLabel = 'msg.cliScriptNotExecutable';
-        $isExecutableSeverity = InfoboxViewHelper::STATE_ERROR;
-        $composerMode = !$script && Environment::isComposerMode();
-        if (!$composerMode) {
-            // Check if CLI script is executable or not. Skip this check if running Windows since executable detection
-            // is not reliable on this platform, the script will always appear as *not* executable.
-            $isExecutable = Environment::isWindows() ? true : ($script && is_executable($script));
-            if ($isExecutable) {
-                $isExecutableMessageLabel = 'msg.cliScriptExecutable';
-                $isExecutableSeverity = InfoboxViewHelper::STATE_OK;
-            }
-        }
-
-        $view->assignMultiple([
-            'composerMode' => $composerMode,
-            'script' => $script,
-            'lastRunMessageLabel' => $lastRunMessageLabel,
-            'lastRunMessageLabelArguments' => $lastRunMessageLabelArguments,
-            'lastRunSeverity' => $lastRunSeverity,
-            'isExecutableMessageLabel' => $isExecutableMessageLabel,
-            'isExecutableSeverity' => $isExecutableSeverity,
-        ]);
-        $view->setTitle(
-            $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
-            $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check')
-        );
-        $this->addDocHeaderModuleDropDown($view, 'check');
-        $this->addDocHeaderShortcutButton($view, 'check', $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check'));
-        return $view->renderResponse('CheckScreen');
-    }
-
-    /**
-     * Render information about available task classes.
-     */
-    protected function renderInfoView(ModuleTemplate $view): ResponseInterface
-    {
-        $languageService = $this->getLanguageService();
-        $view->assign('registeredClasses', $this->getRegisteredClasses());
-        $view->setTitle(
-            $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
-            $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.info')
-        );
-        $this->addDocHeaderModuleDropDown($view, 'info');
-        $this->addDocHeaderShortcutButton($view, 'info', $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.info'));
-        return $view->renderResponse('InfoScreen');
     }
 
     /**
@@ -445,13 +349,13 @@ class SchedulerModuleController
             // Adding a group in edit view switches to formEngine. returnUrl is needed to go back to edit view on group record close.
             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
         ]);
-        $this->addDocHeaderModuleDropDown($view, 'scheduler');
+        $view->makeDocHeaderModuleMenu();
         $this->addDocHeaderCloseAndSaveButtons($view);
         $view->setTitle(
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')
         );
-        $this->addDocHeaderShortcutButton($view, 'scheduler', $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add'), 'add');
+        $this->addDocHeaderShortcutButton($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add'), 'add');
         return $view->renderResponse('AddTaskForm');
     }
 
@@ -544,7 +448,7 @@ class SchedulerModuleController
             // Adding a group in edit view switches to formEngine. returnUrl is needed to go back to edit view on group record close.
             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
         ]);
-        $this->addDocHeaderModuleDropDown($view, 'scheduler');
+        $view->makeDocHeaderModuleMenu();
         $this->addDocHeaderCloseAndSaveButtons($view);
         $view->setTitle(
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
@@ -554,7 +458,6 @@ class SchedulerModuleController
         $this->addDocHeaderDeleteButton($view, $taskUid);
         $this->addDocHeaderShortcutButton(
             $view,
-            'scheduler',
             sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.edit'), $taskName),
             'edit',
             $taskUid
@@ -740,12 +643,12 @@ class SchedulerModuleController
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler')
         );
-        $this->addDocHeaderModuleDropDown($view, 'scheduler');
+        $view->makeDocHeaderModuleMenu();
         $this->addDocHeaderReloadButton($view);
         if (!empty($registeredClasses)) {
             $this->addDocHeaderAddButton($view);
         }
-        $this->addDocHeaderShortcutButton($view, 'scheduler', $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler'));
+        $this->addDocHeaderShortcutButton($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler'));
         return $view->renderResponse('ListTasks');
     }
 
@@ -983,23 +886,6 @@ class SchedulerModuleController
         return $currentAdditionalFields;
     }
 
-    protected function addDocHeaderModuleDropDown(ModuleTemplate $moduleTemplate, string $activeEntry): void
-    {
-        $languageService = $this->getLanguageService();
-        $menu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-        $menu->setIdentifier('SchedulerJumpMenu');
-        foreach (['scheduler', 'check', 'info'] as $entry) {
-            $item = $menu->makeMenuItem()
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_txschedulerM1', ['subModule' => $entry]))
-                ->setTitle($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.' . $entry));
-            if ($entry === $activeEntry) {
-                $item->setActive(true);
-            }
-            $menu->addMenuItem($item);
-        }
-        $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
-    }
-
     protected function addDocHeaderReloadButton(ModuleTemplate $moduleTemplate): void
     {
         $languageService = $this->getLanguageService();
@@ -1007,7 +893,7 @@ class SchedulerModuleController
         $reloadButton = $buttonBar->makeLinkButton()
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
             ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL))
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_txschedulerM1'));
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('scheduler_manage'));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
     }
 
@@ -1019,7 +905,7 @@ class SchedulerModuleController
             ->setTitle($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add'))
             ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL))
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_txschedulerM1', ['action' => 'add']));
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('scheduler_manage', ['action' => 'add']));
         $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
     }
 
@@ -1031,7 +917,7 @@ class SchedulerModuleController
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:close'))
             ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL))
             ->setShowLabelText(true)
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_txschedulerM1'));
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('scheduler_manage'));
         $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         $saveAndCloseButton = $buttonBar->makeInputButton()
             ->setName('CMD')
@@ -1070,7 +956,7 @@ class SchedulerModuleController
         $languageService = $this->getLanguageService();
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $deleteButton = $buttonBar->makeLinkButton()
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_txschedulerM1', ['action' => ['delete' => $taskUid]]))
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('scheduler_manage', ['action' => ['delete' => $taskUid]]))
             ->setClasses('t3js-modal-trigger')
             ->setDataAttributes([
                 'severity' => 'warning',
@@ -1084,10 +970,10 @@ class SchedulerModuleController
         $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 6);
     }
 
-    protected function addDocHeaderShortcutButton(ModuleTemplate $moduleTemplate, string $moduleMenuIdentifier, string $name, string $action = '', int $taskUid = 0): void
+    protected function addDocHeaderShortcutButton(ModuleTemplate $moduleTemplate, string $name, string $action = '', int $taskUid = 0): void
     {
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $shortcutArguments = ['subModule' => $moduleMenuIdentifier];
+        $shortcutArguments = [];
         if ($action) {
             $shortcutArguments['action'] = $action;
         }
@@ -1095,28 +981,10 @@ class SchedulerModuleController
             $shortcutArguments['uid'] = $taskUid;
         }
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('system_txschedulerM1')
+            ->setRouteIdentifier('scheduler_manage')
             ->setDisplayName($name)
             ->setArguments($shortcutArguments);
         $buttonBar->addButton($shortcutButton);
-    }
-
-    private function determineExecutablePath(): ?string
-    {
-        if (!Environment::isComposerMode()) {
-            return GeneralUtility::getFileAbsFileName('EXT:core/bin/typo3');
-        }
-        $composerJsonFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/composer.json';
-        if (!file_exists($composerJsonFile) || !($jsonContent = file_get_contents($composerJsonFile))) {
-            return null;
-        }
-        $jsonConfig = @json_decode($jsonContent, true);
-        if (empty($jsonConfig) || !is_array($jsonConfig)) {
-            return null;
-        }
-        $vendorDir = trim($jsonConfig['config']['vendor-dir'] ?? 'vendor', '/');
-        $binDir = trim($jsonConfig['config']['bin-dir'] ?? $vendorDir . '/bin', '/');
-        return sprintf('%s/%s/typo3', getenv('TYPO3_PATH_COMPOSER_ROOT'), $binDir);
     }
 
     protected function getHumanReadableTaskName(AbstractTask $task): string
