@@ -81,7 +81,8 @@ class ViewModuleController
             return $view->renderResponse('Empty');
         }
 
-        if ($moduleData->clean('language', array_keys($this->getPreviewLanguages($pageId)))) {
+        $previewLanguages = $this->getPreviewLanguages($pageId);
+        if ($previewLanguages !== [] && $moduleData->clean('language', array_keys($previewLanguages))) {
             $this->getBackendUser()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
         }
         $languageId = (int)$moduleData->get('language');
