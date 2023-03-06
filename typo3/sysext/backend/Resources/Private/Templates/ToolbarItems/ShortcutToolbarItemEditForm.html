@@ -5,16 +5,17 @@
     <hr class="dropdown-divider" aria-hidden="true">
     <div class="dropdown-item-text">
         <div class="form-group">
-            <input type="text" class="form-control" name="shortcut-title" value="{selectedShortcut.label}"/>
+            <input type="text" class="form-control" name="shortcutTitle" value="{selectedShortcut.label}"/>
         </div>
         <div class="form-group">
-            <select class="form-select" name="shortcut-group">
+            <select class="form-select" name="shortcutGroup">
                 <f:for each="{shortcutGroups}" key="shortcutGroupId" as="shortcutGroupTitle">
                     <option value="{shortcutGroupId}" {f:if(condition: '{selectedShortcutGroupId} == {shortcutGroupId}', then: 'selected="selected"')}>{shortcutGroupTitle}</option>
                 </f:for>
             </select>
         </div>
-        <input type="button" class="btn btn-default t3js-shortcut-form-cancel" value="Cancel"/>
-        <input type="button" class="btn btn-success t3js-shortcut-form-save" value="Save"/>
+        <input type="hidden" name="shortcutId" value="{selectedShortcutId}" />
+        <input type="reset" class="btn btn-default" value="Cancel"/>
+        <input type="submit" class="btn btn-success" value="Save"/>
     </div>
 </form>

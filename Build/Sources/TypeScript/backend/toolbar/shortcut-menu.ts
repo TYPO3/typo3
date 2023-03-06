@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Icons from '../icons';
@@ -22,6 +21,7 @@ import SecurityUtility from '@typo3/core/security-utility';
 import {ModuleStateStorage} from '@typo3/backend/storage/module-state-storage';
 import '@typo3/backend/element/spinner-element';
 import {Sizes} from '../enum/icon-types';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 enum Identifiers {
   containerSelector = '#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem',
@@ -33,10 +33,6 @@ enum Identifiers {
   shortcutDeleteSelector = '.t3js-shortcut-delete',
   shortcutEditSelector = '.t3js-shortcut-edit',
 
-  shortcutFormTitleSelector = 'input[name="shortcut-title"]',
-  shortcutFormGroupSelector = 'select[name="shortcut-group"]',
-  shortcutFormSaveSelector = '.t3js-shortcut-form-save',
-  shortcutFormCancelSelector = '.t3js-shortcut-form-cancel',
   shortcutFormSelector = '.t3js-shortcut-form',
 }
 
@@ -88,55 +84,64 @@ class ShortcutMenu {
         return;
       }
 
-      const isDropdownItem = $(shortcutButton).hasClass('dropdown-item');
+      const isDropdownItem = shortcutButton.classList.contains('dropdown-item');
       const securityUtility = new SecurityUtility();
       Icons.getIcon('actions-system-shortcut-active', Icons.sizes.small).then((icon: string): void => {
-        $(shortcutButton).html(icon + (isDropdownItem ? ' ' + securityUtility.encodeHtml(TYPO3.lang['labels.alreadyBookmarked']) : ''));
+        shortcutButton.innerHTML = icon + (isDropdownItem ? ' ' + securityUtility.encodeHtml(TYPO3.lang['labels.alreadyBookmarked']) : '');
       });
-      $(shortcutButton).addClass(isDropdownItem ? 'disabled' : 'active');
+      shortcutButton.classList.add(isDropdownItem ? 'disabled' : 'active');
       // @todo using plain `disabled` HTML attr would have been better, since it disables events, mouse cursor, etc.
       //       (however, it might make things more complicated in Bootstrap's `button-variant` mixin)
-      $(shortcutButton).attr('data-dispatch-disabled', 'disabled');
-      $(shortcutButton).attr('title', TYPO3.lang['labels.alreadyBookmarked']);
+      shortcutButton.dataset.dispatchDisabled = 'disabled';
+      shortcutButton.title = securityUtility.encodeHtml(TYPO3.lang['labels.alreadyBookmarked']);
     }).catch((): void => {
       Notification.error(TYPO3.lang['bookmark.failedTitle'], TYPO3.lang['bookmark.failedMessage']);
     });
   }
 
   private initializeEvents = (): void => {
-    $(Identifiers.containerSelector).on('click', Identifiers.shortcutDeleteSelector, (evt: JQueryEventObject): void => {
+    const containerSelector = document.querySelector(Identifiers.containerSelector);
+    new RegularEvent('click', (evt: Event, target: HTMLElement): void => {
       evt.preventDefault();
       evt.stopImmediatePropagation();
-      this.deleteShortcut($(evt.currentTarget).closest(Identifiers.shortcutItemSelector).data('shortcutid'));
-    }).on('click', Identifiers.shortcutFormGroupSelector, (evt: JQueryEventObject): void => {
+
+      const shortcutItem = target.closest(Identifiers.shortcutItemSelector) as HTMLElement;
+      this.deleteShortcut(parseInt(shortcutItem.dataset.shortcutid, 10));
+    }).delegateTo(containerSelector, Identifiers.shortcutDeleteSelector);
+
+    new RegularEvent('click', (evt: Event, target: HTMLElement): void => {
       evt.preventDefault();
       evt.stopImmediatePropagation();
-    }).on('click', Identifiers.shortcutEditSelector, (evt: JQueryEventObject): void => {
+
+      const shortcutItem = target.closest(Identifiers.shortcutItemSelector) as HTMLElement;
+      this.editShortcut(parseInt(shortcutItem.dataset.shortcutid, 10), shortcutItem.dataset.shortcutgroup);
+    }).delegateTo(containerSelector, Identifiers.shortcutEditSelector);
+
+    new RegularEvent('submit', (evt: Event, target: HTMLFormElement): void => {
       evt.preventDefault();
       evt.stopImmediatePropagation();
-      this.editShortcut($(evt.currentTarget).closest(Identifiers.shortcutItemSelector));
-    }).on('click', Identifiers.shortcutFormSaveSelector, (evt: JQueryEventObject): void => {
+
+      this.saveShortcutForm(target);
+    }).delegateTo(containerSelector, Identifiers.shortcutFormSelector);
+
+    new RegularEvent('reset', (evt: Event): void => {
       evt.preventDefault();
       evt.stopImmediatePropagation();
-      this.saveShortcutForm($(evt.currentTarget).closest(Identifiers.shortcutFormSelector));
-    }).on('submit', Identifiers.shortcutFormSelector, (evt: JQueryEventObject): void => {
-      evt.preventDefault();
-      evt.stopImmediatePropagation();
-      this.saveShortcutForm($(evt.currentTarget).closest(Identifiers.shortcutFormSelector));
-    }).on('click', Identifiers.shortcutFormCancelSelector, (evt: JQueryEventObject): void => {
-      evt.preventDefault();
-      evt.stopImmediatePropagation();
+
       this.refreshMenu();
-    }).on('click', Identifiers.shortcutJumpSelector, (evt: JQueryEventObject): void => {
+    }).delegateTo(containerSelector, Identifiers.shortcutFormSelector);
+
+    new RegularEvent('click', (evt: Event, target: HTMLAnchorElement): void => {
       evt.preventDefault();
-      const pageId = $(evt.currentTarget).data('pageid');
+
+      const pageId = target.dataset.pageId;
       if (pageId) {
         ModuleStateStorage.updateWithCurrentMount('web', pageId, true);
       }
       const router = document.querySelector('typo3-backend-module-router');
-      router.setAttribute('endpoint', $(evt.currentTarget).attr('href'))
-      router.setAttribute('module', $(evt.currentTarget).data('module'));
-    });
+      router.setAttribute('endpoint', target.href)
+      router.setAttribute('module', target.dataset.module);
+    }).delegateTo(containerSelector, Identifiers.shortcutJumpSelector);
   }
 
   /**
@@ -164,30 +169,22 @@ class ShortcutMenu {
 
   /**
    * Build the in-place-editor for a shortcut
-   *
-   * @param {JQuery} $shortcutRecord
    */
-  private editShortcut($shortcutRecord: JQuery): void {
+  private editShortcut(shortcutId: number, shortcutGroup: string): void {
     // load the form
     (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_editform)).withQueryArguments({
-      shortcutId: $shortcutRecord.data('shortcutid'),
-      shortcutGroup: $shortcutRecord.data('shortcutgroup'),
+      shortcutId,
+      shortcutGroup,
     }).get({cache: 'no-cache'}).then(async (response: AjaxResponse): Promise<any> => {
-      $(Identifiers.containerSelector).find(Identifiers.toolbarMenuSelector).html(await response.resolve());
+      document.querySelector(Identifiers.containerSelector + ' ' + Identifiers.toolbarMenuSelector).innerHTML = await response.resolve();
     });
   }
 
   /**
    * Save the data from the in-place-editor for a shortcut
-   *
-   * @param {JQuery} $shortcutForm
    */
-  private saveShortcutForm($shortcutForm: JQuery): void {
-    (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_saveform)).post({
-      shortcutId: $shortcutForm.data('shortcutid'),
-      shortcutTitle: $shortcutForm.find(Identifiers.shortcutFormTitleSelector).val(),
-      shortcutGroup: $shortcutForm.find(Identifiers.shortcutFormGroupSelector).val(),
-    }).then((): void => {
+  private saveShortcutForm(shortcutForm: HTMLFormElement): void {
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_saveform)).post(new FormData(shortcutForm)).then((): void => {
       Notification.success(TYPO3.lang['bookmark.savedTitle'], TYPO3.lang['bookmark.savedMessage']);
       this.refreshMenu();
     });
@@ -197,17 +194,17 @@ class ShortcutMenu {
    * Reloads the menu after an update
    */
   private refreshMenu(): void {
-    const $toolbarItemIcon = $(Identifiers.toolbarIconSelector, Identifiers.containerSelector);
-    const $existingIcon = $toolbarItemIcon.clone();
+    const toolbarItemIcon = document.querySelector(Identifiers.containerSelector + ' ' + Identifiers.toolbarIconSelector);
+    const existingIcon = toolbarItemIcon.cloneNode(true);
 
     const spinner = document.createElement('typo3-backend-spinner');
     spinner.setAttribute('size', Sizes.small);
-    $toolbarItemIcon.replaceWith(spinner);
+    toolbarItemIcon.replaceWith(spinner);
 
     (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_list)).get({cache: 'no-cache'}).then(async (response: AjaxResponse): Promise<any> => {
-      $(Identifiers.toolbarMenuSelector, Identifiers.containerSelector).html(await response.resolve());
+      document.querySelector(Identifiers.containerSelector + ' ' + Identifiers.toolbarMenuSelector).innerHTML = await response.resolve();
     }).finally((): void => {
-      $('typo3-backend-spinner', Identifiers.containerSelector).replaceWith($existingIcon);
+      document.querySelector(Identifiers.containerSelector + ' typo3-backend-spinner').replaceWith(existingIcon);
     });
   }
 }
