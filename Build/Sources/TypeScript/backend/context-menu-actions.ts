@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {SeverityEnum} from './enum/severity';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { SeverityEnum } from './enum/severity';
 import AjaxDataHandler from './ajax-data-handler';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import InfoWindow from './info-window';
@@ -20,8 +20,8 @@ import Modal from './modal';
 import ModuleMenu from './module-menu';
 import Notification from '@typo3/backend/notification';
 import Viewport from './viewport';
-import {ModuleStateStorage} from './storage/module-state-storage';
-import {NewContentElementWizard} from '@typo3/backend/new-content-element-wizard';
+import { ModuleStateStorage } from './storage/module-state-storage';
+import '@typo3/backend/new-content-element-wizard';
 
 /**
  * @exports @typo3/backend/context-menu-actions
@@ -45,9 +45,9 @@ class ContextMenuActions {
 
     Viewport.ContentContainer.setUrl(
       top.TYPO3.settings.FormEngine.moduleUrl
-        + '&edit[' + table + '][' + uid + ']=edit'
-        + overrideVals
-        + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
+      + '&edit[' + table + '][' + uid + ']=edit'
+      + overrideVals
+      + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
@@ -85,17 +85,12 @@ class ContextMenuActions {
     let wizardUrl = dataset.newWizardUrl;
     if (wizardUrl) {
       wizardUrl += '&returnUrl=' + ContextMenuActions.getReturnUrl();
-      const modal = Modal.advanced({
+      Modal.advanced({
         title: dataset.title,
         type: Modal.types.ajax,
-        size: Modal.sizes.medium,
+        size: Modal.sizes.large,
         content: wizardUrl,
         severity: SeverityEnum.notice,
-        ajaxCallback: (): void => {
-          if (modal.querySelector('.t3-new-content-element-wizard-inner')) {
-            new NewContentElementWizard(modal);
-          }
-        }
       });
     }
   }
@@ -184,11 +179,12 @@ class ContextMenuActions {
           btnClass: 'btn-warning',
           name: 'delete',
         },
-      ]);
+      ]
+    );
 
     modal.addEventListener('button.clicked', (e: Event): void => {
       if ((e.target as HTMLInputElement).getAttribute('name') === 'delete') {
-        const eventData = {component: 'contextmenu', action: 'delete', table, uid};
+        const eventData = { component: 'contextmenu', action: 'delete', table, uid };
         AjaxDataHandler.process('cmd[' + table + '][' + uid + '][delete]=1', eventData).then((): void => {
           if (table === 'pages') {
             // base on the assumption that the last selected node, is the one that got deleted
@@ -244,7 +240,7 @@ class ContextMenuActions {
    * Clear cache for given page uid
    */
   public static clearCache(table: string, uid: number): void {
-    (new AjaxRequest(TYPO3.settings.ajaxUrls.web_list_clearpagecache)).withQueryArguments({id: uid}).get({cache: 'no-cache'}).then(
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.web_list_clearpagecache)).withQueryArguments({ id: uid }).get({ cache: 'no-cache' }).then(
       async (response: AjaxResponse): Promise<any> => {
         const data = await response.resolve();
         if (data.success === true) {
@@ -308,7 +304,8 @@ class ContextMenuActions {
           btnClass: 'btn-warning',
           name: 'ok',
         },
-      ]);
+      ]
+    );
 
     modal.addEventListener('button.clicked', (e: Event): void => {
       if ((e.target as HTMLInputElement).getAttribute('name') === 'ok') {

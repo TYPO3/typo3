@@ -2123,6 +2123,7 @@ class PageRenderer implements SingletonInterface
         if ($this->getApplicationType() === 'BE') {
             $noBackendUserLoggedIn = empty($GLOBALS['BE_USER']->user['uid']);
             $this->addAjaxUrlsToInlineSettings($noBackendUserLoggedIn);
+            $this->addGlobalCSSUrlsToInlineSettings();
         }
         $assignments = array_filter([
             'settings' => $this->inlineSettings,
@@ -2225,6 +2226,13 @@ class PageRenderer implements SingletonInterface
         }
 
         $this->inlineSettings['ajaxUrls'] = $ajaxUrls;
+    }
+
+    protected function addGlobalCSSUrlsToInlineSettings()
+    {
+        $this->inlineSettings['cssUrls'] = [
+            'backend' => $this->getStreamlinedFileName('EXT:backend/Resources/Public/Css/backend.css'),
+        ];
     }
 
     /**

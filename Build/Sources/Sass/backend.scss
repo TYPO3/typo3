@@ -63,6 +63,7 @@
 // Elements
 //
 @import "element/typo3-backend-editable-page-title";
+@import "element/typo3-backend-new-content-element-wizard";
 
 //
 // TYPO3 Backend Components
@@ -85,7 +86,6 @@
 @import "typo3/main_content";
 @import "typo3/main_backend_layout_wizard";
 @import "typo3/main_form";
-@import "typo3/main_new_content_element_wizard";
 @import "typo3/wizard_localization";
 @import "typo3/structure/module_file_filelist";
 @import "typo3/visual/element_typoscript";

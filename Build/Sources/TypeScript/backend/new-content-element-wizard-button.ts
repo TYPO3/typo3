@@ -11,11 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {customElement, property} from 'lit/decorators';
-import {html, css, LitElement, TemplateResult} from 'lit';
+import { customElement, property } from 'lit/decorators';
+import { html, css, LitElement, TemplateResult } from 'lit';
 import Modal from '@typo3/backend/modal';
-import {SeverityEnum} from '@typo3/backend/enum/severity';
-import {NewContentElementWizard} from '@typo3/backend/new-content-element-wizard';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
+import '@typo3/backend/new-content-element-wizard';
 
 /**
  * Module: @typo3/backend/new-content-element-wizard-button
@@ -26,17 +26,8 @@ import {NewContentElementWizard} from '@typo3/backend/new-content-element-wizard
 @customElement('typo3-backend-new-content-element-wizard-button')
 export class NewContentElementWizardButton extends LitElement {
   static styles = [css`:host { cursor: pointer; appearance: button; }`];
-  @property({type: String}) url: string;
-  @property({type: String}) title: string;
-
-  private static handleModalContentLoaded(currentModal: HTMLElement): void {
-    if (!currentModal || !currentModal.querySelector('.t3-new-content-element-wizard-inner')) {
-      // Return in case modal is not defined or we deal with a custom wizard (mod.newContentElementWizard.override)
-      return;
-    }
-    // Initialize the wizard functions
-    new NewContentElementWizard(currentModal);
-  }
+  @property({ type: String }) url: string;
+  @property({ type: String }) title: string;
 
   public constructor() {
     super();
@@ -65,20 +56,18 @@ export class NewContentElementWizardButton extends LitElement {
     return html`<slot></slot>`;
   }
 
-  private renderWizard(): void
-  {
+  private renderWizard(): void {
     if (!this.url) {
       // Return in case no url is defined
       return;
     }
 
-    const modal = Modal.advanced({
+    Modal.advanced({
       content: this.url,
       title: this.title,
       severity: SeverityEnum.notice,
-      size: Modal.sizes.medium,
-      type: Modal.types.ajax,
-      ajaxCallback: (): void => NewContentElementWizardButton.handleModalContentLoaded(modal)
+      size: Modal.sizes.large,
+      type: Modal.types.ajax
     });
   }
 }

@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Position map class for moving content elements
@@ -74,7 +73,7 @@ class ContentMovingPagePositionMap extends AbstractContentPagePositionMap
             ]);
         }
         return '
-            <a href="' . htmlspecialchars($location) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:insertNewRecordHere')) . '">
+            <a class="btn btn-link" href="' . htmlspecialchars($location) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:moveElementToHere')) . '">
                 ' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '
             </a>';
     }
@@ -87,18 +86,12 @@ class ContentMovingPagePositionMap extends AbstractContentPagePositionMap
      */
     protected function getRecordHeader(array $row): string
     {
-        $linkContent = '
-            <span ' . BackendUtility::getRecordToolTip($row, 'tt_content') . '>
-                ' . $this->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render() . '
-            </span>' . BackendUtility::getRecordTitle('tt_content', $row, true);
-
-        if ($this->moveUid === (int)$row['uid']) {
-            $linkContent = '<strong>' . $linkContent . '</strong>';
-        }
-
         return '
-            <a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['uid' => (int)$row['uid'], 'moveUid' => ''])) . '">
-                ' . $linkContent . '
-            </a>';
+            <span class="py-2" ' . BackendUtility::getRecordToolTip($row, 'tt_content') . '>
+                ' . $this->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render() . '
+                ' . ($this->moveUid === (int)$row['uid'] ? '<strong>' : '') . '
+                ' . BackendUtility::getRecordTitle('tt_content', $row, true) . '
+                ' . ($this->moveUid === (int)$row['uid'] ? '</strong>' : '') . '
+            </span>';
     }
 }

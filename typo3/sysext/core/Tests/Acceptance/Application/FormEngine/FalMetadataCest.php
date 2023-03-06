@@ -51,7 +51,7 @@ final class FalMetadataCest
         $I->waitForElement('.t3js-modal.show');
         $I->wait(3);
         $I->waitForElementNotVisible('div#nprogess');
-        $I->click('Text & Images');
+        $I->executeJS("document.querySelector('typo3-backend-new-content-element-wizard').shadowRoot.querySelector('button[data-identifier=\"common_textpic\"]').click()");
         $I->switchToContentFrame();
         $I->waitForText('Create new Page Content on page');
         $I->fillField('//input[contains(@data-formengine-input-name, "data[tt_content]") and contains(@data-formengine-input-name, "[header]")]', 'tt_content with image');
@@ -141,7 +141,7 @@ final class FalMetadataCest
         $I->waitForElement('.t3js-modal.show');
         $I->wait(3);
         $I->waitForElementNotVisible('div#nprogess');
-        $I->click('Text & Images');
+        $I->executeJS("document.querySelector('typo3-backend-new-content-element-wizard').shadowRoot.querySelector('button[data-identifier=\"common_textpic\"]').click()");
         $I->switchToContentFrame();
         $I->waitForText('Create new Page Content on page');
         $I->fillField('//input[contains(@data-formengine-input-name, "data[tt_content]") and contains(@data-formengine-input-name, "[header]")]', 'tt_content with image with filled metadata');

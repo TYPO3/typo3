@@ -204,6 +204,9 @@
 			<trans-unit id="movePageToHere" resname="movePageToHere">
 				<source>Move page to this position</source>
 			</trans-unit>
+			<trans-unit id="moveElementToHere" resname="moveElementToHere">
+				<source>Move element to this position</source>
+			</trans-unit>
 			<trans-unit id="moveElement" resname="moveElement">
 				<source>Move element</source>
 			</trans-unit>

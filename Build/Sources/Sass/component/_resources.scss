@@ -39,9 +39,6 @@
 
 // Container queries are currently not supported by clean-css and stylelint,
 // to avoid invalid removals we are ignoring the following lines for now.
-//
-// Container queries are expected to be stable by the end of 2022:
-// Edge, Chrome, Firefox, Safari
 
 /* clean-css ignore:start */
 .resource-tiles-container {

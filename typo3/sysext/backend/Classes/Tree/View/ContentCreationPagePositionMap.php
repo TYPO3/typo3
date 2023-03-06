@@ -103,8 +103,9 @@ class ContentCreationPagePositionMap extends AbstractContentPagePositionMap
     protected function getRecordHeader(array $row): string
     {
         return '
-            <span ' . BackendUtility::getRecordToolTip($row, 'tt_content') . '>
+            <span class="py-2" ' . BackendUtility::getRecordToolTip($row, 'tt_content') . '>
                 ' . $this->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render() . '
-            </span>' . BackendUtility::getRecordTitle('tt_content', $row, true);
+                ' . BackendUtility::getRecordTitle('tt_content', $row, true) . '
+            </span>';
     }
 }

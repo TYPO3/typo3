@@ -148,6 +148,7 @@ export class IconElement extends LitElement {
     `,
     iconSize(unsafeCSS(Sizes.small)),
     iconSize(unsafeCSS(Sizes.default)),
+    iconSize(unsafeCSS(Sizes.medium)),
     iconSize(unsafeCSS(Sizes.large)),
     iconSize(unsafeCSS(Sizes.mega)),
   ];

@@ -214,7 +214,7 @@ abstract class AbstractContentPagePositionMap
                         $cellContent = '<p>' . $columnTitle . '</p>';
                         if (!empty($lines[$columnKey])) {
                             $cellContent .= '
-                                <ul class="list-unstyled">
+                                <ul class="list-unstyled m-0">
                                     ' . implode(LF, array_map(static fn (string $line): string => '<li>' . $line . '</li>', $lines[$columnKey])) . '
                                 </ul>';
                         }
@@ -271,7 +271,7 @@ abstract class AbstractContentPagePositionMap
         // Return the record map (table)
         return '
             <div class="table-fit">
-                <table class="table table-sm table-bordered table-vertical-top">
+                <table class="table table-bordered table-vertical-top">
                     ' . $tableContent . '
                 </table>
             </div>';

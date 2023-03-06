@@ -13,31 +13,69 @@
     // Header
     --typo3-header-font-family: "Source Sans 3", sans-serif;
 
+    // Light
+    --typo3-light-color: #{$body-color};
+    --typo3-light-bg: #{$white};
+    --typo3-light-border-color: #{$gray-300};
+    --typo3-light-link-color: #{$primary};
+    --typo3-light-link-hover-color: #{tint-color($primary, 10%)};
+    --typo3-light-hover-color: var(--typo3-light-color);
+    --typo3-light-hover-bg: #{tint-color($primary, 95%)};
+    --typo3-light-hover-border-color: #{tint-color($primary, 85%)};
+    --typo3-light-focus-color: var(--typo3-light-color);
+    --typo3-light-focus-bg: #{tint-color($primary, 95%)};
+    --typo3-light-focus-border-color: #{tint-color($primary, 20%)};
+    --typo3-light-active-color: #{$white};
+    --typo3-light-active-bg: #{tint-color($primary, 20%)};
+    --typo3-light-active-border-color: #{tint-color($primary, 20%)};
+    --typo3-light-disabled-color: #{$gray-600};
+    --typo3-light-disabled-bg: transparent;
+    --typo3-light-disabled-border-color: transparent;
+
+    // Dark
+    --typo3-dark-color: #{$white};
+    --typo3-dark-bg: #{$gray-900};
+    --typo3-dark-border-color: #{$gray-800};
+    --typo3-dark-link-color: #{tint-color($primary, 40%)};
+    --typo3-dark-link-hover-color: #{tint-color($primary, 50%)};
+    --typo3-dark-hover-color: var(--typo3-dark-color);
+    --typo3-dark-hover-bg: #{$gray-800};
+    --typo3-dark-hover-border-color: #{$gray-700};
+    --typo3-dark-focus-color: var(--typo3-dark-color);
+    --typo3-dark-focus-bg: #{shade-color($primary, 50%)};
+    --typo3-dark-focus-border-color: #{shade-color($primary, 40%)};
+    --typo3-dark-active-color: #{$white};
+    --typo3-dark-active-bg: #{shade-color($primary, 15%)};
+    --typo3-dark-active-border-color: #{shade-color($primary, 20%)};
+    --typo3-dark-disabled-color: #{$gray-600};
+    --typo3-dark-disabled-bg: transparent;
+    --typo3-dark-disabled-border-color: transparent;
+
     // Component
-    --typo3-component-bg: #{$white};
-    --typo3-component-color: #{$body-color};
-    --typo3-component-link-color: #{$primary};
-    --typo3-component-link-hover-color: #{tint-color($primary, 10%)};
+    --typo3-component-color: var(--typo3-light-color);
+    --typo3-component-bg: var(--typo3-light-bg);
+    --typo3-component-link-color: var(--typo3-light-link-color);
+    --typo3-component-link-hover-color: var(--typo3-light-link-hover-color);
     --typo3-component-font-size: #{$font-size-base};
     --typo3-component-line-height: #{$line-height-base};
     --typo3-component-border-radius: 4px;
     --typo3-component-border-width: 1px;
-    --typo3-component-border-color: #{$gray-300};
+    --typo3-component-border-color: var(--typo3-light-border-color);
     --typo3-component-padding-y: .75rem;
     --typo3-component-padding-x: 1rem;
     --typo3-component-box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
-    --typo3-component-hover-color: var(--typo3-component-color);
-    --typo3-component-hover-bg: #{tint-color($primary, 95%)};
-    --typo3-component-hover-border-color: #{tint-color($primary, 85%)};
-    --typo3-component-focus-color: var(--typo3-component-color);
-    --typo3-component-focus-bg: #{tint-color($primary, 95%)};
-    --typo3-component-focus-border-color: #{tint-color($primary, 20%)};
-    --typo3-component-active-color: #{$white};
-    --typo3-component-active-bg: #{tint-color($primary, 20%)};
-    --typo3-component-active-border-color: #{tint-color($primary, 20%)};
-    --typo3-component-disabled-color: #{$gray-600};
-    --typo3-component-disabled-bg: transparent;
-    --typo3-component-disabled-border-color: transparent;
+    --typo3-component-hover-color: var(--typo3-light-hover-color);
+    --typo3-component-hover-bg: var(--typo3-light-hover-bg);
+    --typo3-component-hover-border-color: var(--typo3-light-hover-border-color);
+    --typo3-component-focus-color: var(--typo3-light-focus-color);
+    --typo3-component-focus-bg: var(--typo3-light-focus-bg);
+    --typo3-component-focus-border-color: var(--typo3-light-focus-border-color);
+    --typo3-component-active-color: var(--typo3-light-active-color);
+    --typo3-component-active-bg: var(--typo3-light-active-bg);
+    --typo3-component-active-border-color: var(--typo3-light-active-border-color);
+    --typo3-component-disabled-color: var(--typo3-light-disabled-color);
+    --typo3-component-disabled-bg: var(--typo3-light-disabled-bg);
+    --typo3-component-disabled-border-color: var(--typo3-light-disabled-border-color);
     --typo3-component-spacing: 1.5rem;
 
     // List
@@ -57,18 +95,48 @@
     --typo3-list-item-disabled-border-color: var(--typo3-component-disabled-border-color);
 }
 
+@mixin lightmode {
+    --typo3-component-color: var(--typo3-light-color);
+    --typo3-component-bg: var(--typo3-light-bg);
+    --typo3-component-border-color: var(--typo3-light-border-color);
+    --typo3-component-link-color: var(--typo3-light-link-color);
+    --typo3-component-link-hover-color: var(--typo3-light-link-hover-color);
+    --typo3-component-hover-color: var(--typo3-light-hover-color);
+    --typo3-component-hover-bg: var(--typo3-light-hover-bg);
+    --typo3-component-hover-border-color: var(--typo3-light-hover-border-color);
+    --typo3-component-focus-color: var(--typo3-light-focus-color);
+    --typo3-component-focus-bg: var(--typo3-light-focus-bg);
+    --typo3-component-focus-border-color: var(--typo3-light-focus-border-color);
+    --typo3-component-active-color: var(--typo3-light-active-color);
+    --typo3-component-active-bg: var(--typo3-light-active-bg);
+    --typo3-component-active-border-color: var(--typo3-light-active-border-color);
+    --typo3-component-disabled-color: var(--typo3-light-disabled-color);
+    --typo3-component-disabled-bg: var(--typo3-light-disabled-bg);
+    --typo3-component-disabled-border-color: var(--typo3-light-disabled-border-color);
+}
+
+@mixin darkmode {
+    --typo3-component-color: var(--typo3-dark-color);
+    --typo3-component-bg: var(--typo3-dark-bg);
+    --typo3-component-border-color: var(--typo3-dark-border-color);
+    --typo3-component-link-color: var(--typo3-dark-link-color);
+    --typo3-component-link-hover-color: var(--typo3-dark-link-hover-color);
+    --typo3-component-hover-color: var(--typo3-dark-hover-color);
+    --typo3-component-hover-bg: var(--typo3-dark-hover-bg);
+    --typo3-component-hover-border-color: var(--typo3-dark-hover-border-color);
+    --typo3-component-focus-color: var(--typo3-dark-focus-color);
+    --typo3-component-focus-bg: var(--typo3-dark-focus-bg);
+    --typo3-component-focus-border-color: var(--typo3-dark-focus-border-color);
+    --typo3-component-active-color: var(--typo3-dark-active-color);
+    --typo3-component-active-bg: var(--typo3-dark-active-bg);
+    --typo3-component-active-border-color: var(--typo3-dark-active-border-color);
+    --typo3-component-disabled-color: var(--typo3-dark-disabled-color);
+    --typo3-component-disabled-bg: var(--typo3-dark-disabled-bg);
+    --typo3-component-disabled-border-color: var(--typo3-dark-disabled-border-color);
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
-        --typo3-component-bg: #{$gray-900};
-        --typo3-component-color: #{$white};
-        --typo3-component-link-color: #{tint-color($primary, 40%)};
-        --typo3-component-link-hover-color: #{tint-color($primary, 50%)};
-        --typo3-component-border-color: #{$gray-800};
-        --typo3-component-hover-bg: #{$gray-800};
-        --typo3-component-hover-border-color: #{$gray-700};
-        --typo3-component-focus-bg: #{shade-color($primary, 50%)};
-        --typo3-component-focus-border-color: #{shade-color($primary, 40%)};
-        --typo3-component-active-bg: #{shade-color($primary, 20%)};
-        --typo3-component-active-border-color: #{shade-color($primary, 20%)};
+        @include darkmode;
     }
 }

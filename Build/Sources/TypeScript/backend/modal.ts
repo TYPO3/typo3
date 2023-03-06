@@ -113,6 +113,10 @@ export class ModalElement extends LitElement {
   public ajaxCallback: ModalCallbackFunction = null;
   public userData: { [key: string]: any } = {};
 
+  public setContent(content: TemplateResult | JQuery | Element | DocumentFragment): void {
+    this.templateResultContent = content;
+  }
+
   public hideModal(): void {
     if (this.bootstrapModal) {
       this.bootstrapModal.hide();
@@ -129,6 +133,12 @@ export class ModalElement extends LitElement {
     this.bootstrapModal.show();
     if (this.callback) {
       this.callback(this);
+    }
+  }
+
+  protected updated(changedProperties: Map<string, any>) {
+    if (changedProperties.has('templateResultContent')) {
+      this.dispatchEvent(new CustomEvent('modal-updated', {bubbles: true}));
     }
   }
 

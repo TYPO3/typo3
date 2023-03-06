@@ -12,8 +12,9 @@
  */
 
 export enum Sizes {
-  small = 'small',
   default = 'default',
+  small = 'small',
+  medium = 'medium',
   large = 'large',
   mega = 'mega',
   overlay = 'overlay',

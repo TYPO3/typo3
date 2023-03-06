@@ -28,8 +28,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -59,7 +57,6 @@ class NewContentElementController
     protected int|null $colPos = null;
 
     public function __construct(
-        protected readonly IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
         protected readonly BackendViewFactory $backendViewFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
@@ -118,30 +115,33 @@ class NewContentElementController
             )
         )->getWizardItems();
 
-        $key = 0;
-        $menuItems = [];
+        $key = 'common';
+        $categories = [];
         foreach ($wizardItems as $wizardKey => $wizardItem) {
             // An item is either a header or an item rendered with title/description and icon:
             if (isset($wizardItem['header'])) {
-                $menuItems[] = [
+                $key = $wizardKey;
+                $categories[$key] = [
+                    'identifier' => $key,
                     'label' => $wizardItem['header'] ?: '-',
-                    'contentItems' => [],
+                    'items' => [],
                 ];
-                $key = count($menuItems) - 1;
             } else {
                 // Initialize the view variables for the item
-                $viewVariables = [
-                    'wizardInformation' => $wizardItem,
-                    'wizardKey' => $wizardKey,
-                    'icon' => $this->iconFactory->getIcon(($wizardItem['iconIdentifier'] ?? ''), Icon::SIZE_MEDIUM, ($wizardItem['iconOverlay'] ?? ''))->render(),
+                $item = [
+                    'identifier' => $wizardKey,
+                    'icon' => $wizardItem['iconIdentifier'] ?? '',
+                    'label' => $wizardItem['title'] ?? '',
+                    'description' => $wizardItem['description'] ?? '',
                 ];
+
                 // Get default values for the wizard item
                 $defVals = (array)($wizardItem['tt_content_defValues'] ?? []);
                 if (!$positionSelection) {
                     // In case no position has to be selected, we can just add the target
                     if (($wizardItem['saveAndClose'] ?? false)) {
                         // Go to DataHandler directly instead of FormEngine
-                        $viewVariables['target'] = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
+                        $item['url'] = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
                             'data' => [
                                 'tt_content' => [
                                     StringUtility::getUniqueId('NEW') => array_replace($defVals, [
@@ -154,7 +154,7 @@ class NewContentElementController
                             'redirect' => $this->returnUrl,
                         ]);
                     } else {
-                        $viewVariables['target'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
+                        $item['url'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                             'edit' => [
                                 'tt_content' => [
                                     $this->uid_pid => 'new',
@@ -170,26 +170,28 @@ class NewContentElementController
                         ]);
                     }
                 } else {
-                    $viewVariables['positionMapArguments'] = GeneralUtility::jsonEncodeForHtmlAttribute([
-                        'url' => (string)$this->uriBuilder->buildUriFromRoute('new_content_element_wizard', [
-                            'action' => 'positionMap',
-                            'id' => $this->id,
-                            'sys_language_uid' => $this->sys_language,
-                            'returnUrl' => $this->returnUrl,
-                        ]),
-                        'defVals' => $defVals,
-                        'saveAndClose' => (bool)($wizardItem['saveAndClose'] ?? false),
-                    ], true);
+                    $item['url'] = (string)$this->uriBuilder
+                        ->buildUriFromRoute(
+                            'new_content_element_wizard',
+                            [
+                                'action' => 'positionMap',
+                                'id' => $this->id,
+                                'sys_language_uid' => $this->sys_language,
+                                'returnUrl' => $this->returnUrl,
+                            ]
+                        );
+                    $item['requestType'] = 'ajax';
+                    $item['defaultValues'] = $defVals;
+                    $item['saveAndClose'] = (bool)($wizardItem['saveAndClose'] ?? false);
                 }
-                $menuItems[$key]['contentItems'][] = $viewVariables;
+                $categories[$key]['items'][] = $item;
             }
         }
 
         $view = $this->backendViewFactory->create($request);
         $view->assignMultiple([
             'positionSelection' => $positionSelection,
-            'tabsMenuItems' => $menuItems,
-            'tabsMenuId' => 'DTM-a31afc8fb616dc290e6626a9f3c9c433', // Just a unique id starting with DTM-
+            'categoriesJson' => GeneralUtility::jsonEncodeForHtmlAttribute($categories, false),
         ]);
         return new HtmlResponse($view->render('NewContentElement/Wizard'));
     }
