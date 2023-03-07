@@ -517,7 +517,6 @@ class DefaultTcaSchema
                     $this->quote($fieldName),
                     'json',
                     [
-                        'default' => '[]',
                         'notnull' => true,
                     ]
                 );
