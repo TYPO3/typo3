@@ -84,6 +84,7 @@ class LiveSearch {
       showNoSuggestionNotice: true,
       triggerSelectOnValidInput: false,
       preventBadQueries: false,
+      deferRequestBy: 250,
       noSuggestionNotice: '<h3 class="dropdown-headline">' + TYPO3.lang.liveSearch_listEmptyText + '</h3>'
       + '<p>' + TYPO3.lang.liveSearch_helpTitle + '</p>'
       + '<hr>'
