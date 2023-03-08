@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Tests\Functional\Authentication\Fixtures\AnyUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -80,7 +81,7 @@ class AbstractUserAuthenticationTest extends FunctionalTestCase
         $this->subject->user_table = 'be_users';
         $this->subject->checkPid_value = null;
 
-        $authInfoArray = $this->subject->getAuthInfoArray();
+        $authInfoArray = $this->subject->getAuthInfoArray(new ServerRequest('https://example.com'));
 
         $enableClause = $authInfoArray['db_user']['enable_clause'];
         self::assertInstanceOf(CompositeExpression::class, $enableClause);

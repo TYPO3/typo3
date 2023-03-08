@@ -254,6 +254,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public function start(ServerRequestInterface $request)
     {
         $this->logger->debug('## Beginning of auth logging.');
+
         // Make certain that NO user is set initially
         $this->user = null;
 
@@ -502,7 +503,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         }
 
         // Fetch users from the database (or somewhere else)
-        $possibleUsers = $this->fetchPossibleUsers($loginData, $activeLogin, $isExistingSession, $authenticatedUserFromSession);
+        $possibleUsers = $this->fetchPossibleUsers($loginData, $activeLogin, $isExistingSession, $authenticatedUserFromSession, $request);
 
         // If no new user was set we use the already found user session
         if (empty($possibleUsers) && $isExistingSession && !$anonymousSession) {
@@ -534,7 +535,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 $subType = 'authUser' . $this->loginType;
 
                 /** @var AuthenticationService $serviceObj */
-                foreach ($this->getAuthServices($subType, $loginData, $authenticatedUserFromSession) as $serviceObj) {
+                foreach ($this->getAuthServices($subType, $loginData, $authenticatedUserFromSession, $request) as $serviceObj) {
                     if (($ret = (int)$serviceObj->authUser($userRecordCandidate)) > 0) {
                         // If the service returns >=200 then no more checking is needed - useful for IP checking without password
                         if ($ret >= 200) {
@@ -561,7 +562,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         // @link https://cwe.mitre.org/data/definitions/208.html
         } elseif ($activeLogin) {
             $subType = 'authUser' . $this->loginType;
-            foreach ($this->getAuthServices($subType, $loginData, $authenticatedUserFromSession) as $serviceObj) {
+            foreach ($this->getAuthServices($subType, $loginData, $authenticatedUserFromSession, $request) as $serviceObj) {
                 if ($serviceObj instanceof MimicServiceInterface && $serviceObj->mimicAuthUser() === false) {
                     break;
                 }
@@ -647,7 +648,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      *
      * @param array|null $authenticatedUserFromSession if we have a user from an existing session, this is set here, otherwise null
      */
-    protected function fetchPossibleUsers(array $loginData, bool $activeLogin, bool $isExistingSession, ?array $authenticatedUserFromSession): array
+    protected function fetchPossibleUsers(array $loginData, bool $activeLogin, bool $isExistingSession, ?array $authenticatedUserFromSession, ServerRequestInterface $request): array
     {
         $possibleUsers = [];
         $authConfiguration = $this->getAuthServiceConfiguration();
@@ -662,7 +663,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             // First found user will be used
             $subType = 'getUser' . $this->loginType;
             /** @var AuthenticationService $serviceObj */
-            foreach ($this->getAuthServices($subType, $loginData, $authenticatedUserFromSession) as $serviceObj) {
+            foreach ($this->getAuthServices($subType, $loginData, $authenticatedUserFromSession, $request) as $serviceObj) {
                 $row = $serviceObj->getUser();
                 if (is_array($row)) {
                     $possibleUsers[] = $row;
@@ -742,11 +743,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @param array|null $authenticatedUserFromSession the user which was loaded from the session, or null if none was found
      * @return \Traversable A generator of service objects
      */
-    protected function getAuthServices(string $subType, array $loginData, ?array $authenticatedUserFromSession): \Traversable
+    protected function getAuthServices(string $subType, array $loginData, ?array $authenticatedUserFromSession, ServerRequestInterface $request): \Traversable
     {
         $serviceChain = [];
         // The info array provide additional information for auth services
-        $authInfo = $this->getAuthInfoArray();
+        $authInfo = $this->getAuthInfoArray($request);
         if ($authenticatedUserFromSession !== null) {
             $authInfo['user'] = $authenticatedUserFromSession;
         }
@@ -1118,7 +1119,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         ];
         // Only process the login data if a login is requested
         if ($loginData['status'] === LoginType::LOGIN) {
-            $loginData = $this->processLoginData($loginData);
+            $loginData = $this->processLoginData($loginData, $request);
         }
         return $loginData;
     }
@@ -1136,14 +1137,14 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @return array
      * @internal
      */
-    public function processLoginData($loginData)
+    public function processLoginData(array $loginData, ServerRequestInterface $request): array
     {
         $this->logger->debug('Login data before processing', $this->removeSensitiveLoginDataForLoggingInfo($loginData));
         $subType = 'processLoginData' . $this->loginType;
         $isLoginDataProcessed = false;
         $processedLoginData = $loginData;
         /** @var AuthenticationService $serviceObject */
-        foreach ($this->getAuthServices($subType, $loginData, null) as $serviceObject) {
+        foreach ($this->getAuthServices($subType, $loginData, null, $request) as $serviceObject) {
             $serviceResult = $serviceObject->processLoginData($processedLoginData, 'normal');
             if (!empty($serviceResult)) {
                 $isLoginDataProcessed = true;
@@ -1194,12 +1195,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @return array
      * @internal
      */
-    public function getAuthInfoArray()
+    public function getAuthInfoArray(ServerRequestInterface $request)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->user_table);
         $expressionBuilder = $queryBuilder->expr();
         $authInfo = [];
         $authInfo['loginType'] = $this->loginType;
+        $authInfo['request'] = $request;
         $authInfo['refInfo'] = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
         $authInfo['HTTP_HOST'] = GeneralUtility::getIndpEnv('HTTP_HOST');
         $authInfo['REMOTE_ADDR'] = GeneralUtility::getIndpEnv('REMOTE_ADDR');

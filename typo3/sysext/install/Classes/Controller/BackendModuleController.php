@@ -226,8 +226,8 @@ class BackendModuleController
         ];
         // currently there is no dedicated API to perform authentication
         // that's why this process partially has to be simulated here
-        $loginData = $backendUser->processLoginData($loginData);
-        $authInfo = $backendUser->getAuthInfoArray();
+        $loginData = $backendUser->processLoginData($loginData, $request);
+        $authInfo = $backendUser->getAuthInfoArray($request);
 
         $authenticated = false;
         /** @var AbstractAuthenticationService $service or any other service (sic!) */
