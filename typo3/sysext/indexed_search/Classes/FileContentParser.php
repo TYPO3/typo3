@@ -585,10 +585,10 @@ class FileContentParser
                     unset($res);
                     $metaContent = GeneralUtility::xml2tree($meta_xml);
                     if (is_array($metaContent)) {
-                        $contentArr['title'] .= ' ' . $metaContent['cp:coreProperties'][0]['ch']['dc:title'][0]['values'][0];
-                        $contentArr['description'] = $metaContent['cp:coreProperties'][0]['ch']['dc:subject'][0]['values'][0];
-                        $contentArr['description'] .= ' ' . $metaContent['cp:coreProperties'][0]['ch']['dc:description'][0]['values'][0];
-                        $contentArr['keywords'] = $metaContent['cp:coreProperties'][0]['ch']['cp:keywords'][0]['values'][0];
+                        $contentArr['title'] .= ' ' . ($metaContent['cp:coreProperties'][0]['ch']['dc:title'][0]['values'][0] ?? '');
+                        $contentArr['description'] = ($metaContent['cp:coreProperties'][0]['ch']['dc:subject'][0]['values'][0] ?? '');
+                        $contentArr['description'] .= ' ' . ($metaContent['cp:coreProperties'][0]['ch']['dc:description'][0]['values'][0] ?? '');
+                        $contentArr['keywords'] = ($metaContent['cp:coreProperties'][0]['ch']['cp:keywords'][0]['values'][0] ?? '');
                     }
                     $this->setLocaleForServerFileSystem(true);
                 }
