@@ -33,7 +33,7 @@ class LogEntry extends AbstractEntity
     /**
      * Storage page ID of the log entry
      *
-     * @var int
+     * @var int<0, max>|null
      */
     protected $pid = 0;
 

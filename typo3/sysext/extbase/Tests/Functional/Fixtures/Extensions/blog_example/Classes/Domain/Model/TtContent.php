@@ -28,12 +28,12 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class TtContent extends AbstractEntity
 {
     /**
-     * @var int|null
+     * @var int<1, max>|null
      */
     protected $uid;
 
     /**
-     * @var int|null
+     * @var int<0, max>|null
      */
     protected $pid;
 

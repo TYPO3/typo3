@@ -36,48 +36,59 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     public const PROPERTY_VERSIONED_UID = '_versionedUid';
 
     /**
-     * @var int The uid of the record. The uid is only unique in the context of the database table.
+     * @var int<1, max>|null The uid of the record. The uid is only unique in the context of the database table.
+     * @todo introduce type declarations in 13.0 (possibly breaking)
      */
     protected $uid;
 
     /**
-     * @var int The uid of the localized record. Holds the uid of the record in default language (the translationOrigin).
+     * @var int<0, max>|null The uid of the localized record. Holds the uid of the record in default language (the translationOrigin).
+     *
+     * @internal
+     * @todo make private in 13.0 and expose value via getter
      */
-    protected $_localizedUid;
+    protected int|null $_localizedUid = null;
 
     /**
-     * @var int The uid of the language of the object. This is the id of the corresponding sing language.
+     * @var int<-1, max>|null The uid of the language of the object. This is the id of the corresponding sing language.
+     *
+     * @internal
+     * @todo make private in 13.0 and expose value via getter
      */
-    protected $_languageUid;
+    protected int|null $_languageUid = null;
 
     /**
-     * @var int The uid of the versioned record.
+     * The uid of the versioned record.
+     *
+     * @internal
+     * @todo make private in 13.0 and expose value via getter
      */
-    protected $_versionedUid;
+    protected int|null $_versionedUid = null;
 
     /**
-     * @var int The id of the page the record is "stored".
+     * @var int<0, max>|null The id of the page the record is "stored".
+     * @todo introduce type declarations in 13.0 (possibly breaking)
      */
     protected $pid;
 
     /**
      * TRUE if the object is a clone
      *
-     * @var bool
+     * @internal
      */
-    private $_isClone = false;
+    private bool $_isClone = false;
 
     /**
-     * @var array An array holding the clean property values. Set right after reconstitution of the object
-     */
-    private $_cleanProperties = [];
-
-    /**
-     * Getter for uid.
+     * @var array<non-empty-string, mixed>
      *
-     * @return int|null The uid or NULL if none set yet.
+     * @internal
      */
-    public function getUid(): ?int
+    private array $_cleanProperties = [];
+
+    /**
+     * @return int<1, max>|null
+     */
+    public function getUid(): int|null
     {
         if ($this->uid !== null) {
             return (int)$this->uid;
@@ -86,7 +97,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     }
 
     /**
-     * Setter for the pid.
+     * @param int<0, max> $pid
      */
     public function setPid(int $pid): void
     {
@@ -94,11 +105,9 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     }
 
     /**
-     * Getter for the pid.
-     *
-     * @return int|null The pid or NULL if none set yet.
+     * @return int<0, max>|null
      */
-    public function getPid(): ?int
+    public function getPid(): int|null
     {
         if ($this->pid === null) {
             return null;
@@ -107,13 +116,9 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     }
 
     /**
-     * Reconstitutes a property. Only for internal use.
-     *
-     * @param mixed $propertyValue
-     * @return bool
      * @internal
      */
-    public function _setProperty(string $propertyName, $propertyValue)
+    public function _setProperty(string $propertyName, mixed $propertyValue): bool
     {
         if ($this->_hasProperty($propertyName)) {
             $this->{$propertyName} = $propertyValue;
@@ -123,27 +128,25 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     }
 
     /**
-     * Returns the property value of the given property name. Only for internal use.
-     *
-     * @return mixed The propertyValue
      * @internal
      */
-    public function _getProperty(string $propertyName)
+    public function _getProperty(string $propertyName): mixed
     {
-        return $this->{$propertyName};
+        return $this->_hasProperty($propertyName) && isset($this->{$propertyName})
+            ? $this->{$propertyName}
+            : null;
     }
 
     /**
-     * Returns a hash map of property names and property values. Only for internal use.
+     * @return array<non-empty-string, mixed> a hash map of property names and property values.
      *
-     * @return array The properties
      * @internal
      */
     public function _getProperties(): array
     {
         $properties = get_object_vars($this);
         foreach ($properties as $propertyName => $propertyValue) {
-            if ($propertyName[0] === '_') {
+            if (str_starts_with($propertyName, '_')) {
                 unset($properties[$propertyName]);
             }
         }
@@ -151,10 +154,8 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     }
 
     /**
-     * Returns the property value of the given property name. Only for internal use.
-     *
      * @param non-empty-string $propertyName
-     * @return bool TRUE bool true if the property exists, FALSE if it doesn't exist or NULL in case of an error.
+     *
      * @internal
      */
     public function _hasProperty(string $propertyName): bool
@@ -163,7 +164,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     }
 
     /**
-     * Returns TRUE if the object is new (the uid was not set, yet). Only for internal use
+     * Returns TRUE if the object is new (the uid was not set, yet)
      *
      * @internal
      */
@@ -184,37 +185,34 @@ abstract class AbstractDomainObject implements DomainObjectInterface
             $this->_memorizePropertyCleanState($propertyName);
         } else {
             $this->_cleanProperties = [];
-            $properties = get_object_vars($this);
-            foreach ($properties as $propertyName => $propertyValue) {
-                if ($propertyName[0] === '_') {
-                    continue;
-                }
-                // Do not memorize "internal" properties
+            foreach ($this->_getProperties() as $propertyName => $propertyValue) {
                 $this->_memorizePropertyCleanState($propertyName);
             }
         }
     }
 
     /**
-     * Register a properties's clean state, e.g. after it has been reconstituted
+     * Register a property's clean state, e.g. after it has been reconstituted
      * from the database.
      *
-     * @param string $propertyName The name of the property to be memorized. If omitted all persistable properties are memorized.
+     * @param non-empty-string $propertyName The name of the property to be memorized. If omitted all persistable properties are memorized.
      */
-    public function _memorizePropertyCleanState($propertyName)
+    public function _memorizePropertyCleanState(string $propertyName): void
     {
-        $propertyValue = $this->{$propertyName};
+        $propertyValue = $this->_getProperty($propertyName);
         if (is_object($propertyValue)) {
-            $this->_cleanProperties[$propertyName] = clone $propertyValue;
+            $propertyValueClone = clone $propertyValue;
             // We need to make sure the clone and the original object
             // are identical when compared with == (see _isDirty()).
             // After the cloning, the Domain Object will have the property
             // "isClone" set to TRUE, so we manually have to set it to FALSE
             // again. Possible fix: Somehow get rid of the "isClone" property,
             // which is currently needed in Fluid.
-            if ($propertyValue instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) {
-                $this->_cleanProperties[$propertyName]->_setClone(false);
+            if ($propertyValueClone instanceof AbstractDomainObject) {
+                $propertyValueClone->_setClone(false);
             }
+
+            $this->_cleanProperties[$propertyName] = $propertyValueClone;
         } else {
             $this->_cleanProperties[$propertyName] = $propertyValue;
         }
@@ -223,9 +221,9 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     /**
      * Returns a hash map of clean properties and $values.
      *
-     * @return array
+     * @return array<non-empty-string, mixed>
      */
-    public function _getCleanProperties()
+    public function _getCleanProperties(): array
     {
         return $this->_cleanProperties;
     }
@@ -234,11 +232,11 @@ abstract class AbstractDomainObject implements DomainObjectInterface
      * Returns the clean value of the given property. The returned value will be NULL if the clean state was not memorized before, or
      * if the clean value is NULL.
      *
-     * @param string $propertyName The name of the property to be memorized.
-     * @return mixed The clean property value or NULL
+     * @param non-empty-string $propertyName The name of the property to be memorized.
+     *
      * @internal
      */
-    public function _getCleanProperty(string $propertyName)
+    public function _getCleanProperty(string $propertyName): mixed
     {
         return $this->_cleanProperties[$propertyName] ?? null;
     }
@@ -247,8 +245,8 @@ abstract class AbstractDomainObject implements DomainObjectInterface
      * Returns TRUE if the properties were modified after reconstitution
      *
      * @param non-empty-string|null $propertyName An optional name of a property to be checked if its value is dirty
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\TooDirtyException
-     * @return bool
+     *
+     * @throws TooDirtyException
      */
     public function _isDirty(string|null $propertyName = null): bool
     {
@@ -258,26 +256,24 @@ abstract class AbstractDomainObject implements DomainObjectInterface
 
         if ($propertyName === null) {
             foreach ($this->_getCleanProperties() as $propertyName => $cleanPropertyValue) {
-                if ($this->isPropertyDirty($cleanPropertyValue, $this->{$propertyName}) === true) {
+                if ($this->isPropertyDirty($cleanPropertyValue, $this->_getProperty($propertyName)) === true) {
                     return true;
                 }
             }
-        } else {
-            if ($this->isPropertyDirty($this->_getCleanProperty($propertyName), $this->{$propertyName}) === true) {
-                return true;
-            }
+            return false;
         }
+
+        if ($this->isPropertyDirty($this->_getCleanProperty($propertyName), $this->_getProperty($propertyName)) === true) {
+            return true;
+        }
+
         return false;
     }
 
     /**
      * Checks the $value against the $cleanState.
-     *
-     * @param mixed $previousValue
-     * @param mixed $currentValue
-     * @return bool
      */
-    protected function isPropertyDirty($previousValue, $currentValue)
+    protected function isPropertyDirty(mixed $previousValue, mixed $currentValue): bool
     {
         // In case it is an object and it implements the ObjectMonitoringInterface, we call _isDirty() instead of a simple comparison of objects.
         // We do this, because if the object itself contains a lazy loaded property, the comparison of the objects might fail even if the object didn't change
@@ -286,7 +282,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface
             if ($currentValue instanceof LazyLoadingProxy) {
                 $currentTypeString = $currentValue->_getTypeAndUidString();
             } elseif ($currentValue instanceof DomainObjectInterface) {
-                $currentTypeString = get_class($currentValue) . ':' . $currentValue->getUid();
+                $currentTypeString = $currentValue::class . ':' . $currentValue->getUid();
             }
 
             if ($currentTypeString !== null) {
@@ -294,12 +290,12 @@ abstract class AbstractDomainObject implements DomainObjectInterface
                 if ($previousValue instanceof LazyLoadingProxy) {
                     $previousTypeString = $previousValue->_getTypeAndUidString();
                 } elseif ($previousValue instanceof DomainObjectInterface) {
-                    $previousTypeString = get_class($previousValue) . ':' . $previousValue->getUid();
+                    $previousTypeString = $previousValue::class . ':' . $previousValue->getUid();
                 }
 
                 $result = $currentTypeString !== $previousTypeString;
             } elseif ($currentValue instanceof ObjectMonitoringInterface) {
-                $result = !is_object($previousValue) || $currentValue->_isDirty() || get_class($previousValue) !== get_class($currentValue);
+                $result = !is_object($previousValue) || $currentValue->_isDirty() || $previousValue::class !== $currentValue::class;
             } else {
                 // For all other objects we do only a simple comparison (!=) as we want cloned objects to return the same values.
                 $result = $previousValue != $currentValue;
@@ -310,12 +306,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface
         return $result;
     }
 
-    /**
-     * Returns TRUE if the object has been cloned, FALSE otherwise.
-     *
-     * @return bool TRUE if the object has been cloned
-     */
-    public function _isClone()
+    public function _isClone(): bool
     {
         return $this->_isClone;
     }
@@ -326,27 +317,19 @@ abstract class AbstractDomainObject implements DomainObjectInterface
      * _isDirty check inside AbstractEntity work, but it is just a work-
      * around right now.
      *
-     * @param bool $clone
+     * @internal
      */
-    public function _setClone($clone)
+    public function _setClone(bool $clone)
     {
-        $this->_isClone = (bool)$clone;
+        $this->_isClone = $clone;
     }
 
-    /**
-     * Clone method. Sets the _isClone property.
-     */
     public function __clone()
     {
         $this->_isClone = true;
     }
 
-    /**
-     * Returns the class name and the uid of the object as string
-     *
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return static::class . ':' . (string)$this->uid;
     }

@@ -31,23 +31,10 @@ use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
  */
 interface DomainObjectInterface extends ObjectMonitoringInterface
 {
-    /**
-     * Getter for uid.
-     *
-     * @return int The uid or NULL if none set yet.
-     */
     public function getUid(): ?int;
 
-    /**
-     * Setter for the pid.
-     */
     public function setPid(int $pid);
 
-    /**
-     * Getter for the pid.
-     *
-     * @return int The pid or NULL if none set yet.
-     */
     public function getPid(): ?int;
 
     /**
@@ -61,23 +48,17 @@ interface DomainObjectInterface extends ObjectMonitoringInterface
     public function _hasProperty(string $propertyName): bool;
 
     /**
-     * Reconstitutes a property. Only for internal use.
-     *
-     * @param mixed $value
+     * @param non-empty-string $propertyName
      */
-    public function _setProperty(string $propertyName, $value);
+    public function _setProperty(string $propertyName, mixed $value);
 
     /**
-     * Returns the property value of the given property name. Only for internal use.
-     *
-     * @return mixed The propertyValue
+     * @param non-empty-string $propertyName
      */
-    public function _getProperty(string $propertyName);
+    public function _getProperty(string $propertyName): mixed;
 
     /**
-     * Returns a hash map of property names and property values
-     *
-     * @return array The properties
+     * @return array<non-empty-string, mixed>
      */
     public function _getProperties(): array;
 
@@ -85,8 +66,8 @@ interface DomainObjectInterface extends ObjectMonitoringInterface
      * Returns the clean value of the given property. The returned value will be NULL if the clean state was not memorized before, or
      * if the clean value is NULL.
      *
-     * @param string $propertyName The name of the property to be memorized.
+     * @param non-empty-string $propertyName
      * @return mixed The clean property value or NULL
      */
-    public function _getCleanProperty(string $propertyName);
+    public function _getCleanProperty(string $propertyName): mixed;
 }

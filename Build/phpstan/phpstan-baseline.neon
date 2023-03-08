@@ -1771,16 +1771,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/ContentController.php
 
 		-
-			message: "#^PHPDoc type int\\|null of property ExtbaseTeam\\\\BlogExample\\\\Domain\\\\Model\\\\TtContent\\:\\:\\$pid is not covariant with PHPDoc type int of overridden property TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractDomainObject\\:\\:\\$pid\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/TtContent.php
-
-		-
-			message: "#^PHPDoc type int\\|null of property ExtbaseTeam\\\\BlogExample\\\\Domain\\\\Model\\\\TtContent\\:\\:\\$uid is not covariant with PHPDoc type int of overridden property TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractDomainObject\\:\\:\\$uid\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/TtContent.php
-
-		-
 			message: "#^Variable \\$expectations on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerArgumentTest.php
