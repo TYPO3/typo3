@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
+use Doctrine\Instantiator\InstantiatorInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PropertyInfo\Type;
 use TYPO3\CMS\Core\Context\Context;
@@ -53,32 +54,20 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
  */
 class DataMapper
 {
-    protected ReflectionService $reflectionService;
-    protected QueryObjectModelFactory $qomFactory;
-    protected Session $persistenceSession;
-    protected DataMapFactory $dataMapFactory;
-    protected QueryFactoryInterface $queryFactory;
-    protected EventDispatcherInterface $eventDispatcher;
-
     /**
      * @var QueryInterface|null
      */
     protected $query;
 
     public function __construct(
-        ReflectionService $reflectionService,
-        QueryObjectModelFactory $qomFactory,
-        Session $persistenceSession,
-        DataMapFactory $dataMapFactory,
-        QueryFactoryInterface $queryFactory,
-        EventDispatcherInterface $eventDispatcher
+        private readonly ReflectionService $reflectionService,
+        private readonly QueryObjectModelFactory $qomFactory,
+        private readonly Session $persistenceSession,
+        private readonly DataMapFactory $dataMapFactory,
+        private readonly QueryFactoryInterface $queryFactory,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly InstantiatorInterface $instantiator,
     ) {
-        $this->reflectionService = $reflectionService;
-        $this->qomFactory = $qomFactory;
-        $this->persistenceSession = $persistenceSession;
-        $this->dataMapFactory = $dataMapFactory;
-        $this->queryFactory = $queryFactory;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function setQuery(QueryInterface $query): void
@@ -160,16 +149,18 @@ class DataMapper
     }
 
     /**
-     * Creates a skeleton of the specified object
+     * Creates a skeleton of the specified object. This is
+     * designed to *not* call class constructor when hydrating,
+     * but *do call* initializeObject() if exists and obey
+     * eventually registered implementation overrides ("xclass").
      *
-     * @param string $className Name of the class to create a skeleton for
+     * @param class-string $className Name of the class to create a skeleton for
      * @throws InvalidClassException
-     * @return DomainObjectInterface The object skeleton
      * @template T of DomainObjectInterface
      * @phpstan-param class-string<T> $className
      * @phpstan-return T
      */
-    protected function createEmptyObject($className)
+    protected function createEmptyObject(string $className): DomainObjectInterface
     {
         // Note: The class_implements() function also invokes autoload to assure that the interfaces
         // and the class are loaded. Would end up with __PHP_Incomplete_Class without it.
@@ -177,7 +168,12 @@ class DataMapper
             throw new InvalidClassException('Cannot create empty instance of the class "' . $className
                 . '" because it does not implement the TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface.', 1234386924);
         }
-        return GeneralUtility::makeInstance($className);
+        // Use GU::getClassName() to obey class implementation overrides.
+        $object = $this->instantiator->instantiate(GeneralUtility::getClassName($className));
+        if (is_callable($callable = [$object, 'initializeObject'])) {
+            $callable();
+        }
+        return $object;
     }
 
     /**

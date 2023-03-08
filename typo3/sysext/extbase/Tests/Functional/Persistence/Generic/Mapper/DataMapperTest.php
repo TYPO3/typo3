@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception\UnknownPropertyTypeException;
@@ -509,5 +510,31 @@ class DataMapperTest extends FunctionalTestCase
             [5, 4, 3, 2, 1], // foreign_default_sortby is set to uid desc, see
             array_map(static fn (Comment $comment): int => $comment->getUid(), $comments)
         );
+    }
+
+    /**
+     * @test
+     */
+    public function createEmptyObjectThrowsInvalidClassExceptionIfClassNameDoesNotImplementDomainObjectInterface(): void
+    {
+        self::expectException(InvalidClassException::class);
+        self::expectExceptionCode(1234386924);
+        $subject = $this->get(DataMapper::class);
+        // Reflection since the method is protected
+        $subjectReflection = new \ReflectionObject($subject);
+        $subjectReflection->getMethod('createEmptyObject')->invoke($subject, \stdClass::class);
+    }
+
+    /**
+     * @test
+     */
+    public function createEmptyObjectInstantiatesWithoutCallingTheConstructorButCallsInitializeObject(): void
+    {
+        self::expectException(\RuntimeException::class);
+        // 1680071491 is thrown, but not 1680071490!
+        self::expectExceptionCode(1680071491);
+        $subject = $this->get(DataMapper::class);
+        $subjectReflection = new \ReflectionObject($subject);
+        $subjectReflection->getMethod('createEmptyObject')->invoke($subject, Fixtures\HydrationFixtureEntity::class);
     }
 }

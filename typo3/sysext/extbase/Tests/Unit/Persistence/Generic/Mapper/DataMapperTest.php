@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
 
+use Doctrine\Instantiator\InstantiatorInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
@@ -66,6 +67,7 @@ class DataMapperTest extends UnitTestCase
             $dataMapFactory,
             $this->createMock(QueryFactory::class),
             $this->createMock(EventDispatcherInterface::class),
+            $this->createMock(InstantiatorInterface::class),
         );
     }
 

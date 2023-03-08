@@ -2995,8 +2995,10 @@ class GeneralUtility
      *
      * @param class-string $className Base class name to evaluate
      * @return class-string Final class name to instantiate with `new [classname]`
+     * @internal This is not a public API method, do not use in own extensions.
+     *           Public to be accessible by extbase hydration.
      */
-    protected static function getClassName($className)
+    public static function getClassName($className)
     {
         if (class_exists($className)) {
             while (static::classHasImplementation($className)) {

@@ -19,6 +19,7 @@
 		"sort-packages": true
 	},
 	"require": {
+		"doctrine/instantiator": "^2.0",
 		"phpdocumentor/reflection-docblock": "^5.2",
 		"phpdocumentor/type-resolver": "^1.4",
 		"symfony/dependency-injection": "^6.2",

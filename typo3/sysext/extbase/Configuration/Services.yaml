@@ -196,3 +196,6 @@ services:
         priority: 10
         target: TYPO3\CMS\Extbase\Domain\Model\Folder
         sources: string
+
+  Doctrine\Instantiator\InstantiatorInterface:
+    class: \Doctrine\Instantiator\Instantiator
