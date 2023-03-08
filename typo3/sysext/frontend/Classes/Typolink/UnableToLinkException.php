@@ -26,6 +26,7 @@ class UnableToLinkException extends Exception
 {
     /**
      * @var string the text which should have gone inside the
+     * @todo Make $linkText strictly typed in TYPO3 v13
      */
     protected $linkText;
 
@@ -36,6 +37,7 @@ class UnableToLinkException extends Exception
      * @param int $code [optional] The Exception code.
      * @param \Throwable $previous [optional] The previous throwable used for the exception chaining.
      * @param string $linkText [optional]
+     * @todo Make the signature strictly typed in TYPO3 v13
      */
     public function __construct($message = '', $code = 0, \Throwable $previous = null, $linkText = '')
     {
