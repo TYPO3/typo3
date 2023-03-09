@@ -19,6 +19,7 @@
 nbproject
 *.idea
 *.project
+*.vscode
 .buildpath
 .settings
 .TemporaryItems
