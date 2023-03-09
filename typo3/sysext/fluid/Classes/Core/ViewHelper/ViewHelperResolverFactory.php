@@ -35,12 +35,8 @@ use Psr\Container\ContainerInterface;
  */
 final class ViewHelperResolverFactory implements ViewHelperResolverFactoryInterface
 {
-    private ContainerInterface $container;
-
-    public function __construct(
-        ContainerInterface $container
-    ) {
-        $this->container = $container;
+    public function __construct(private readonly ContainerInterface $container)
+    {
     }
 
     public function create(): ViewHelperResolver

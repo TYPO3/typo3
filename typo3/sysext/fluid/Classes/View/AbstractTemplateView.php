@@ -29,10 +29,9 @@ use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView
 {
     /**
-     * @param RenderingContextInterface|null $context
      * @internal
      */
-    public function __construct(RenderingContextInterface $context = null)
+    public function __construct(?RenderingContextInterface $context = null)
     {
         if (!$context) {
             $context = GeneralUtility::makeInstance(RenderingContextFactory::class)->create();
@@ -41,10 +40,9 @@ abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView
     }
 
     /**
-     * @param string $templateName
      * @internal
      */
-    public function setTemplate($templateName)
+    public function setTemplate(string $templateName): void
     {
         $this->baseRenderingContext->setControllerAction($templateName);
     }

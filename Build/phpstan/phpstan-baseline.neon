@@ -2131,11 +2131,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/View/StandaloneView.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Fluid\\\\View\\\\TemplatePaths\\:\\:ensureAbsolutePath\\(\\) should return string but returns array\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/View/TemplatePaths.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Fluid\\\\ViewHelpers\\\\Be\\\\Menus\\\\ActionMenuViewHelper\\:\\:compile\\(\\) should return string but returns null\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Be/Menus/ActionMenuViewHelper.php

@@ -45,11 +45,7 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
      */
     protected $templatePathAndFilename;
 
-    /**
-     * @param string $extensionKey
-     * @return string|null
-     */
-    protected function getExtensionPrivateResourcesPath($extensionKey)
+    protected function getExtensionPrivateResourcesPath(string $extensionKey): ?string
     {
         $extensionKey = trim($extensionKey);
         if ($extensionKey && ExtensionManagementUtility::isLoaded($extensionKey)) {
@@ -58,19 +54,12 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
         return null;
     }
 
-    /**
-     * @return ConfigurationManager
-     */
-    protected function getConfigurationManager()
+    protected function getConfigurationManager(): ConfigurationManagerInterface
     {
         return GeneralUtility::makeInstance(ConfigurationManager::class);
     }
 
-    /**
-     * @param string $extensionKey
-     * @return array
-     */
-    protected function getContextSpecificViewConfiguration($extensionKey)
+    protected function getContextSpecificViewConfiguration(string $extensionKey): array
     {
         if (empty($extensionKey)) {
             return [];
@@ -123,7 +112,7 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
      *
      * @param string $packageName
      */
-    public function fillDefaultsByPackageName($packageName)
+    public function fillDefaultsByPackageName($packageName): void
     {
         $this->fillFromConfigurationArray($this->getContextSpecificViewConfiguration($packageName));
     }
@@ -131,7 +120,7 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
     /**
      * Overridden setter with enforced sorting behavior
      */
-    public function setTemplateRootPaths(array $templateRootPaths)
+    public function setTemplateRootPaths(array $templateRootPaths): void
     {
         parent::setTemplateRootPaths(
             ArrayUtility::sortArrayWithIntegerKeys($templateRootPaths)
@@ -141,7 +130,7 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
     /**
      * Overridden setter with enforced sorting behavior
      */
-    public function setLayoutRootPaths(array $layoutRootPaths)
+    public function setLayoutRootPaths(array $layoutRootPaths): void
     {
         parent::setLayoutRootPaths(
             ArrayUtility::sortArrayWithIntegerKeys($layoutRootPaths)
@@ -151,7 +140,7 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
     /**
      * Overridden setter with enforced sorting behavior
      */
-    public function setPartialRootPaths(array $partialRootPaths)
+    public function setPartialRootPaths(array $partialRootPaths): void
     {
         parent::setPartialRootPaths(
             ArrayUtility::sortArrayWithIntegerKeys($partialRootPaths)
@@ -163,7 +152,7 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
      *
      * @return string Returns the absolute path to a Fluid template file
      */
-    public function getTemplatePathAndFilename()
+    public function getTemplatePathAndFilename(): string
     {
         return $this->templatePathAndFilename;
     }
@@ -174,10 +163,9 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
      * relative path or a FILE: or EXT: reference
      * but cannot be a FAL resource identifier.
      *
-     * @param mixed $reference
-     * @return string
+     * @param string|array $reference
      */
-    protected function ensureAbsolutePath($reference)
+    protected function ensureAbsolutePath($reference): array|string
     {
         if (!is_array($reference)) {
             return PathUtility::isAbsolutePath($reference) ? $reference : GeneralUtility::getFileAbsFileName($reference);

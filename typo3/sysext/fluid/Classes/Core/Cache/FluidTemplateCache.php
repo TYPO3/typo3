@@ -34,16 +34,15 @@ class FluidTemplateCache extends PhpFrontend implements FluidCacheInterface
     /**
      * @param null $name
      */
-    public function flush($name = null)
+    public function flush($name = null): void
     {
         parent::flush();
     }
 
     /**
      * @param string $entryIdentifier
-     * @return mixed
      */
-    public function get($entryIdentifier)
+    public function get($entryIdentifier): mixed
     {
         return $this->requireOnce($entryIdentifier);
     }
@@ -54,7 +53,7 @@ class FluidTemplateCache extends PhpFrontend implements FluidCacheInterface
      * @param int $lifetime
      * @throws InvalidDataException
      */
-    public function set($entryIdentifier, $sourceCode, array $tags = [], $lifetime = null)
+    public function set($entryIdentifier, $sourceCode, array $tags = [], $lifetime = null): void
     {
         if (str_starts_with($sourceCode, '<?php')) {
             // Remove opening PHP tag; it is added by the cache backend to which
@@ -64,10 +63,7 @@ class FluidTemplateCache extends PhpFrontend implements FluidCacheInterface
         parent::set($entryIdentifier, $sourceCode, $tags, time() + 86400);
     }
 
-    /**
-     * @return FluidCacheWarmerInterface
-     */
-    public function getCacheWarmer()
+    public function getCacheWarmer(): FluidCacheWarmerInterface
     {
         return new StandardCacheWarmer();
     }
