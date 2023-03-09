@@ -2910,7 +2910,7 @@ class GeneralUtility
      *
      * @template T of object
      * @param class-string<T> $className name of the class to instantiate, must not be empty and not start with a backslash
-     * @param array<int, mixed> $constructorArguments Arguments for the constructor
+     * @param mixed $constructorArguments Arguments for the constructor
      * @return T the created instance
      * @throws \InvalidArgumentException if $className is empty or starts with a backslash
      */
