@@ -12,10 +12,11 @@
  */
 
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInlineModule} from '../abstract-inline-module';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInlineModule } from '../abstract-inline-module';
 import Notification from '@typo3/backend/notification';
 import Router from '../../router';
+import MessageInterface from '@typo3/install/message-interface';
 
 /**
  * Module: @typo3/install/module/reset-backend-user-uc
@@ -25,13 +26,13 @@ class ResetBackendUserUc extends AbstractInlineModule {
     this.setButtonState($trigger, false);
 
     (new AjaxRequest(Router.getUrl('resetBackendUserUc')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true && Array.isArray(data.status)) {
             if (data.status.length > 0) {
-              data.status.forEach((element: any): void => {
+              data.status.forEach((element: MessageInterface): void => {
                 Notification.success(element.title, element.message);
               });
             }

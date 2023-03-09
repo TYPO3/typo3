@@ -26,7 +26,7 @@ export default abstract class AbstractClientStorage {
     return this.storage.getItem(this.keyPrefix + key);
   }
 
-  public getByPrefix(prefix: string): { [key: string]: string } {
+  public getByPrefix(prefix: string): Record<string, string> {
     if (this.storage === null) {
       return {};
     }

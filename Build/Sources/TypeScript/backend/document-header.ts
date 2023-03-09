@@ -16,7 +16,7 @@ import ThrottleEvent from '@typo3/core/event/throttle-event';
 
 /**
  * Module: @typo3/backend/document-header
- * Folds docHeader when scrolling down, and reveals when scrollup up
+ * Folds docHeader when scrolling down, and reveals when scrolling up
  */
 class DocumentHeader {
   private documentHeader: HTMLElement = null;
@@ -26,7 +26,7 @@ class DocumentHeader {
   private lastPosition: number = 0;
   private currentPosition: number = 0;
   private changedPosition: number = 0;
-  private settings: any = {
+  private readonly settings = {
     margin: 24,
     offset: 100,
     selectors: {
@@ -72,7 +72,7 @@ class DocumentHeader {
       this.documentHeader.classList.add('module-docheader-folded');
     }
     this.lastPosition = this.currentPosition;
-  }
+  };
 }
 
 export default new DocumentHeader();

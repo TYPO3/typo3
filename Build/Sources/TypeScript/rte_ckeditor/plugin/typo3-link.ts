@@ -258,6 +258,7 @@ export class Typo3LinkActionsView extends LinkActionsView {
     const textView = new Typo3TextView(this.locale);
     const t = this.t;
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     textView.bind('text').to(this, 'href', href => {
       return href || t('This link has no URL');
@@ -451,19 +452,19 @@ export class Typo3LinkUI extends Core.Plugin {
     this.listenTo(this.balloon, 'change:visibleView', update);
   }
 
-  private areActionsInPanel(): Boolean {
+  private areActionsInPanel(): boolean {
     return this.balloon.hasView(this.actionsView);
   }
 
-  private areActionsVisible(): Boolean {
+  private areActionsVisible(): boolean {
     return this.balloon.visibleView === this.actionsView;
   }
 
-  private isUIInPanel(): Boolean {
+  private isUIInPanel(): boolean {
     return this.areActionsInPanel();
   }
 
-  private isUIVisible(): Boolean {
+  private isUIVisible(): boolean {
     return this.areActionsVisible();
   }
 

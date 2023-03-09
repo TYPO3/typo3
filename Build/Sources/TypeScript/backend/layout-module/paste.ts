@@ -21,10 +21,10 @@ import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import ResponseInterface from '../ajax-data-handler/response-interface';
 import DataHandler from '../ajax-data-handler';
-import {default as Modal, ModalElement, Button} from '@typo3/backend/modal';
+import { default as Modal, ModalElement, Button } from '@typo3/backend/modal';
 import Severity from '../severity';
 import '@typo3/backend/element/icon-element';
-import {SeverityEnum} from '../enum/severity';
+import { SeverityEnum } from '../enum/severity';
 
 class Paste {
   private readonly itemOnClipboardUid: number = 0;
@@ -33,19 +33,6 @@ class Paste {
   private elementIdentifier: string = '.t3js-page-ce';
   private pasteAfterLinkTemplate: string = '';
   private pasteIntoLinkTemplate: string = '';
-
-  /**
-   * @param {JQuery} $element
-   * @return number
-   */
-  private static determineColumn($element: JQuery): number {
-    const $columnContainer = $element.closest('[data-colpos]');
-    if ($columnContainer.length && $columnContainer.data('colpos') !== 'undefined') {
-      return $columnContainer.data('colpos');
-    }
-
-    return 0;
-  }
 
   /**
    * initializes paste icons for all content elements on the page
@@ -62,6 +49,19 @@ class Paste {
         this.initializeEvents();
       }
     });
+  }
+
+  /**
+   * @param {JQuery} $element
+   * @return number
+   */
+  private static determineColumn($element: JQuery): number {
+    const $columnContainer = $element.closest('[data-colpos]');
+    if ($columnContainer.length && $columnContainer.data('colpos') !== 'undefined') {
+      return $columnContainer.data('colpos');
+    }
+
+    return 0;
   }
 
   private initializeEvents(): void
@@ -97,7 +97,7 @@ class Paste {
   private activatePasteIcons(): void {
     if (this.pasteAfterLinkTemplate && this.pasteIntoLinkTemplate) {
       document.querySelectorAll('.t3js-page-new-ce').forEach((el: HTMLElement): void => {
-        let template = el.parentElement.dataset.page ? this.pasteIntoLinkTemplate : this.pasteAfterLinkTemplate;
+        const template = el.parentElement.dataset.page ? this.pasteIntoLinkTemplate : this.pasteAfterLinkTemplate;
         el.append(document.createRange().createContextualFragment(template));
       });
     }

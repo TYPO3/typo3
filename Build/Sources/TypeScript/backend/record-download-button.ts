@@ -11,12 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, css, TemplateResult, LitElement} from 'lit';
-import {customElement, property} from 'lit/decorators';
-import {SeverityEnum} from '@typo3/backend/enum/severity';
+import { html, css, TemplateResult, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
 import Modal from '@typo3/backend/modal';
-import {lll} from '@typo3/core/lit-helper';
+import { lll } from '@typo3/core/lit-helper';
 
 enum Selectors {
   formatSelector = '.t3js-record-download-format-selector',
@@ -32,12 +32,12 @@ enum Selectors {
  * </typo3-recordlist-record-download-button>
  */
 @customElement('typo3-recordlist-record-download-button')
-class RecordDownloadButton extends LitElement {
+export class RecordDownloadButton extends LitElement {
   static styles = [css`:host { cursor: pointer; appearance: button; }`];
-  @property({type: String}) url: string;
-  @property({type: String}) title: string;
-  @property({type: String}) ok: string;
-  @property({type: String}) close: string;
+  @property({ type: String }) url: string;
+  @property({ type: String }) title: string;
+  @property({ type: String }) ok: string;
+  @property({ type: String }) close: string;
 
   public constructor() {
     super();
@@ -50,7 +50,7 @@ class RecordDownloadButton extends LitElement {
         e.preventDefault();
         this.showDownloadConfigurationModal();
       }
-    })
+    });
   }
 
   public connectedCallback(): void {

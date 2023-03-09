@@ -40,7 +40,7 @@ export class NewContentElementWizardButton extends LitElement {
         e.preventDefault();
         this.renderWizard();
       }
-    })
+    });
   }
 
   public connectedCallback(): void {

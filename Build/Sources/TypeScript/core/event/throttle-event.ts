@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
 */
 
-import {Listener} from './event-interface';
+import { Listener } from './event-interface';
 import RegularEvent from './regular-event';
 
 /**
@@ -26,7 +26,7 @@ class ThrottleEvent extends RegularEvent {
   private throttle(callback: Listener, limit: number): Listener {
     let wait: boolean = false;
 
-    return function (this: Node, ...args: any[]): void {
+    return function (this: Node, ...args: unknown[]): void {
       if (wait) {
         return;
       }

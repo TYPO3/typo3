@@ -11,13 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, LitElement, nothing, TemplateResult} from 'lit';
-import {customElement, property} from 'lit/decorators';
-import {until} from 'lit/directives/until';
-import {unsafeHTML} from 'lit/directives/unsafe-html';
-import {classMap} from 'lit/directives/class-map';
+import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { customElement, property } from 'lit/decorators';
+import { until } from 'lit/directives/until';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { classMap } from 'lit/directives/class-map';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';
 import '@typo3/backend/element/spinner-element';
 import '@typo3/backend/element/icon-element';
@@ -32,7 +32,7 @@ interface ClipboardData {
   copyMode: CopyMode;
   elementCount: number;
   tabs: Array<ClipboardTab>;
-  labels: any;
+  labels: Record<string, string>;
 }
 
 interface ClipboardTab {
@@ -64,8 +64,8 @@ interface DispatchArgs {
  */
 @customElement('typo3-backend-clipboard-panel')
 export class ClipboardPanel extends LitElement {
-  @property({type: String, attribute: 'return-url'}) returnUrl: string = '';
-  @property({type: String}) table: string = '';
+  @property({ type: String, attribute: 'return-url' }) returnUrl: string = '';
+  @property({ type: String }) table: string = '';
 
   private static renderLoader(): TemplateResult {
     return html`
@@ -91,8 +91,8 @@ export class ClipboardPanel extends LitElement {
 
   private renderPanel(): Promise<TemplateResult> {
     return (new AjaxRequest(top.TYPO3.settings.Clipboard.moduleUrl))
-      .withQueryArguments({action: 'getClipboardData'})
-      .post({table: this.table})
+      .withQueryArguments({ action: 'getClipboardData' })
+      .post({ table: this.table })
       .then(async (response: AjaxResponse): Promise<TemplateResult> => {
         const resolvedBody = await response.resolve();
         if (resolvedBody.success === true && resolvedBody.data) {
@@ -105,7 +105,7 @@ export class ClipboardPanel extends LitElement {
               <div class="table-fit">
                 <table class="table">
                   <tbody>
-                    ${clipboardData.tabs.map((tab: any): TemplateResult => this.renderTab(tab, clipboardData))}
+                    ${clipboardData.tabs.map((tab: ClipboardTab): TemplateResult => this.renderTab(tab, clipboardData))}
                   </tbody>
                 </tabel>
               </div>
@@ -128,7 +128,7 @@ export class ClipboardPanel extends LitElement {
     return html`
       <tr>
         <td colspan="2" class="nowrap">
-          <button type="button" class="btn btn-link" title="${tab.description}" data-action="setP" @click="${(event: PointerEvent) => this.updateClipboard(event, {CB: {'setP': tab.identifier}})}">
+          <button type="button" class="btn btn-link" title="${tab.description}" data-action="setP" @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'setP': tab.identifier } })}">
             ${clipboardData.current === tab.identifier ? html`
               <typo3-backend-icon identifier="actions-check-circle-alt" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
               ${tab.title}
@@ -144,19 +144,19 @@ export class ClipboardPanel extends LitElement {
         <td class="col-control nowrap">
           ${clipboardData.current !== tab.identifier ? nothing : html`
             <div class="btn-group">
-              <input type="radio" class="btn-check" id="clipboard-copymode-copy" data-action="setCopyMode" ?checked=${clipboardData.copyMode === CopyMode.copy} @click="${(event: PointerEvent) => this.updateClipboard(event, {CB: {'setCopyMode': '1'}})}">
+              <input type="radio" class="btn-check" id="clipboard-copymode-copy" data-action="setCopyMode" ?checked=${clipboardData.copyMode === CopyMode.copy} @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'setCopyMode': '1' } })}">
               <label class="btn btn-default btn-sm" for="clipboard-copymode-copy">
                 <typo3-backend-icon identifier="actions-edit-copy" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
                 ${clipboardData.labels.copyElements}
               </label>
-              <input type="radio" class="btn-check" id="clipboard-copymode-move" data-action="setCopyMode" ?checked=${clipboardData.copyMode !== CopyMode.copy} @click="${(event: PointerEvent) => this.updateClipboard(event, {CB: {'setCopyMode': '0'}})}">
+              <input type="radio" class="btn-check" id="clipboard-copymode-move" data-action="setCopyMode" ?checked=${clipboardData.copyMode !== CopyMode.copy} @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'setCopyMode': '0' } })}">
               <label class="btn btn-default btn-sm" for="clipboard-copymode-move">
                 <typo3-backend-icon identifier="actions-cut" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
                 ${clipboardData.labels.moveElements}
               </label>
             </div>
             ${!clipboardData.elementCount ? nothing : html`
-              <button type="button" class="btn btn-default btn-sm" title="${clipboardData.labels.removeAll}" data-action="removeAll" @click="${(event: PointerEvent) => this.updateClipboard(event, {CB: {'removeAll': tab.identifier}})}">
+              <button type="button" class="btn btn-default btn-sm" title="${clipboardData.labels.removeAll}" data-action="removeAll" @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'removeAll': tab.identifier } })}">
                 <typo3-backend-icon identifier="actions-minus" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
                 ${clipboardData.labels.removeAll}
               </button>`}
@@ -170,7 +170,7 @@ export class ClipboardPanel extends LitElement {
   private renderTabItem(tabItem: ClipboardTabItem, tabIdentifier: string, clipboardData: ClipboardData): TemplateResult {
     return html`
       <tr>
-        <td class="col-icon nowrap ${classMap({'ps-4': !tabItem.identifier})}">
+        <td class="col-icon nowrap ${classMap({ 'ps-4': !tabItem.identifier })}">
           ${unsafeHTML(tabItem.icon)}
         </td>
         <td class="nowrap" style="width: 95%">
@@ -188,7 +188,7 @@ export class ClipboardPanel extends LitElement {
               </button>
             `}
             ${!tabItem.identifier ? nothing : html`
-              <button type="button" class="btn btn-default btn-sm" title="${clipboardData.labels.removeItem}" data-action="remove" @click="${(event: PointerEvent) => this.updateClipboard(event,{CB: {'remove': tabItem.identifier}})}">
+              <button type="button" class="btn btn-default btn-sm" title="${clipboardData.labels.removeItem}" data-action="remove" @click="${(event: PointerEvent) => this.updateClipboard(event,{ CB: { 'remove': tabItem.identifier } })}">
                 <span>
                     <typo3-backend-icon identifier="actions-minus" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
                     ${clipboardData.labels.removeItem}
@@ -212,7 +212,7 @@ export class ClipboardPanel extends LitElement {
           // other components react on the updated clipboard state.
           if (target.dataset.action) {
             target.dispatchEvent(new CustomEvent('typo3:clipboard:' + target.dataset.action, {
-              detail: {payload: payload, response: resolvedBody},
+              detail: { payload: payload, response: resolvedBody },
               bubbles: true,
               cancelable: false
             }));
@@ -230,7 +230,7 @@ export class ClipboardPanel extends LitElement {
 
   private reloadModule (): void {
     if (this.returnUrl) {
-      this.ownerDocument.location.href = this.returnUrl
+      this.ownerDocument.location.href = this.returnUrl;
     } else {
       this.ownerDocument.location.reload();
     }

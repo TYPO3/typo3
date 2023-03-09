@@ -11,16 +11,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {customElement, property} from 'lit/decorators';
-import {html, LitElement, nothing, TemplateResult} from 'lit';
+import { customElement, property } from 'lit/decorators';
+import { html, LitElement, nothing, TemplateResult } from 'lit';
 import './item/action/action-container';
-import {ResultItemInterface} from './item/item';
+import { ResultItemInterface } from './item/item';
 
 export const componentName = 'typo3-backend-live-search-result-item-detail-container';
 
 @customElement(componentName)
 export class ResultDetailContainer extends LitElement {
-  @property({type: Object, attribute: false}) resultItem: ResultItemInterface|null = null;
+  @property({ type: Object, attribute: false }) resultItem: ResultItemInterface|null = null;
 
   public createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {MessageUtility} from '@typo3/backend/utility/message-utility';
+import { MessageUtility } from '@typo3/backend/utility/message-utility';
 import DocumentService from '@typo3/core/document-service';
 import Modal from '@typo3/backend/modal';
 
@@ -149,7 +149,7 @@ class ElementBrowser {
     }
     Modal.dismiss();
     close();
-  }
+  };
 
 
   private addElement(label: string, value: string, close: boolean): void {

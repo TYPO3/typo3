@@ -12,7 +12,7 @@
 */
 
 import Modal from '@typo3/backend/modal';
-import {SeverityEnum} from '@typo3/backend/enum/severity';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
 import RegularEvent from '@typo3/core/event/regular-event';
 
 class DashboardDelete {

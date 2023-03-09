@@ -11,14 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {lll} from '@typo3/core/lit-helper';
-import {html, css, LitElement, TemplateResult, nothing} from 'lit';
-import {customElement, property, state} from 'lit/decorators';
+import { lll } from '@typo3/core/lit-helper';
+import { html, css, LitElement, TemplateResult, nothing } from 'lit';
+import { customElement, property, state } from 'lit/decorators';
 import './icon-element';
 import AjaxDataHandler from '../ajax-data-handler';
 
 @customElement('typo3-backend-editable-page-title')
-class EditablePageTitle extends LitElement {
+export class EditablePageTitle extends LitElement {
   static styles = css`
     :host {
       display: block;
@@ -123,10 +123,10 @@ class EditablePageTitle extends LitElement {
       right: 0;
     }
     `;
-  @property({type: String}) pageTitle: string = '';
-  @property({type: Number}) pageId: number = 0;
-  @property({type: Number}) localizedPageId: number = 0;
-  @property({type: Boolean}) editable: boolean = false;
+  @property({ type: String }) pageTitle: string = '';
+  @property({ type: Number }) pageId: number = 0;
+  @property({ type: Number }) localizedPageId: number = 0;
+  @property({ type: Boolean }) editable: boolean = false;
   @state() _isEditing: boolean = false;
   @state() _isSubmitting: boolean = false;
 
@@ -186,21 +186,21 @@ class EditablePageTitle extends LitElement {
 
     this._isSubmitting = true;
 
-    let parameters: { [k: string]: any } = {};
-    let recordUid;
+    let recordUid = this.pageId;
     if (this.localizedPageId > 0) {
       recordUid = this.localizedPageId;
-    } else {
-      recordUid = this.pageId;
     }
 
-    parameters.data = {
-      pages: {
-        [recordUid]: {
-          title: newPageTitle
+    const parameters = {
+      data: {
+        pages: {
+          [recordUid]: {
+            title: newPageTitle
+          }
         }
       }
     };
+
     AjaxDataHandler.process(parameters).then((): void => {
       this.pageTitle = newPageTitle;
       top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));

@@ -1,0 +1,87 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": true
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "lit",
+    "wc"
+  ],
+  "settings": {
+    "wc": {
+      "elementBaseClasses": [
+        "LitElement"
+      ]
+    }
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:wc/recommended",
+    "plugin:lit/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/no-inferrable-types": "off", // we want to keep explicit type casting
+    "@typescript-eslint/ban-types": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-this-alias": "warn",
+    "@typescript-eslint/member-ordering": "error",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "class",
+        "format": ["PascalCase"]
+      },
+      {
+        "selector": "typeLike",
+        "format": ["PascalCase"]
+      }
+    ],
+    "curly": "error",
+    "default-case": "error",
+    "dot-notation": "error",
+    "eol-last": "error",
+    "guard-for-in": "error",
+    "lit/no-duplicate-template-bindings": "error",
+    "lit/no-native-attributes": "warn",
+    "lit/no-invalid-escape-sequences": "error",
+    "lit/no-legacy-imports": "error",
+    "lit/no-useless-template-literals": "error",
+    "lit/prefer-nothing": "error",
+    "no-bitwise": "off",
+    "no-caller": "error",
+    "no-debugger": "error",
+    "no-empty": "error",
+    "no-empty-function": ["error", {
+        "allow": ["constructors"]
+    }],
+    "no-eval": "error",
+    "no-fallthrough": "error",
+    "no-new-wrappers": "error",
+    "no-unused-labels": "error",
+    "no-multi-spaces": "error",
+    "no-var": "error",
+    "no-case-declarations": "off",
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "radix": "error",
+    "semi": "off",
+    "space-infix-ops": "error",
+    "wc/no-constructor-params": "error",
+    "wc/no-typos": "error",
+    "wc/require-listener-teardown": "error"
+  }
+}

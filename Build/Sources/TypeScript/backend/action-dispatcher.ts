@@ -36,6 +36,11 @@ declare type ActionDispatchArgument = string | HTMLElement | Event;
 class ActionDispatcher {
   private delegates: {[key: string]: Function} = {};
 
+  public constructor() {
+    this.createDelegates();
+    documentService.ready().then((): void => this.registerEvents());
+  }
+
   private static resolveArguments(element: HTMLElement): null | string[] {
     if (element.dataset.dispatchArgs) {
       // `&quot;` is the only literal of a PHP `json_encode` that needs to be substituted
@@ -50,24 +55,7 @@ class ActionDispatcher {
     return null;
   }
 
-  private static enrichItems(items: any[], evt: Event, target: HTMLElement): any[] {
-    return items.map((item: any) => {
-      if (!(item instanceof Object) || !item.$event) {
-        return item;
-      }
-      if (item.$target) {
-        return target;
-      }
-      if (item.$event) {
-        return evt;
-      }
-    });
-  }
 
-  public constructor() {
-    this.createDelegates();
-    documentService.ready().then((): void => this.registerEvents());
-  }
 
   private createDelegates(): void {
     this.delegates = {

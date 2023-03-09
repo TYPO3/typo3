@@ -26,17 +26,6 @@ class SelectCheckBoxElement {
   private checkedBoxes: NodeListOf<HTMLInputElement> = null;
 
   /**
-   * Determines whether all available checkboxes are checked
-   *
-   * @param {NodeListOf<HTMLInputElement>} checkBoxes
-   * @return {boolean}
-   */
-  private static allCheckBoxesAreChecked(checkBoxes: NodeListOf<HTMLInputElement>): boolean {
-    const checkboxArray = Array.from(checkBoxes);
-    return checkBoxes.length === checkboxArray.filter((checkBox: HTMLInputElement) => checkBox.checked).length;
-  }
-
-  /**
    * @param {string} checkBoxId
    */
   constructor(checkBoxId: string) {
@@ -48,6 +37,17 @@ class SelectCheckBoxElement {
       this.enableTriggerCheckBox();
       this.registerEventHandler();
     });
+  }
+
+  /**
+   * Determines whether all available checkboxes are checked
+   *
+   * @param {NodeListOf<HTMLInputElement>} checkBoxes
+   * @return {boolean}
+   */
+  private static allCheckBoxesAreChecked(checkBoxes: NodeListOf<HTMLInputElement>): boolean {
+    const checkboxArray = Array.from(checkBoxes);
+    return checkBoxes.length === checkboxArray.filter((checkBox: HTMLInputElement) => checkBox.checked).length;
   }
 
   /**

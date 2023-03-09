@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractSortableSelectItems} from '@typo3/backend/form-engine/element/abstract-sortable-select-items';
+import { AbstractSortableSelectItems } from '@typo3/backend/form-engine/element/abstract-sortable-select-items';
 
 class FolderSortableSelectItems extends AbstractSortableSelectItems {
   public registerEventHandler(element: HTMLSelectElement): void {

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {Popover as BootstrapPopover} from 'bootstrap';
+import { Popover as BootstrapPopover } from 'bootstrap';
 
 /**
  * Module: @typo3/backend/popover
@@ -73,13 +73,13 @@ class Popover {
     delete options.content;
 
     const popover = BootstrapPopover.getInstance(element);
-    // @ts-ignore
     popover.setContent({
       '.popover-header': title,
       '.popover-body': content
     });
 
     for (const [optionName, optionValue] of Object.entries(options)) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore: using internal _config attribute
       popover._config[optionName] = optionValue;
     }

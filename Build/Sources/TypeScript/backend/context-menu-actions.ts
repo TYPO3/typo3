@@ -35,8 +35,8 @@ class ContextMenuActions {
   }
 
   public static editRecord(table: string, uid: number, dataset: DOMStringMap): void {
-    let overrideVals = '',
-      pageLanguageId = dataset.pagesLanguageUid;
+    const pageLanguageId = dataset.pagesLanguageUid;
+    let overrideVals = '';
 
     if (pageLanguageId) {
       // Disallow manual adjustment of the language field for pages
@@ -241,7 +241,7 @@ class ContextMenuActions {
    */
   public static clearCache(table: string, uid: number): void {
     (new AjaxRequest(TYPO3.settings.ajaxUrls.web_list_clearpagecache)).withQueryArguments({ id: uid }).get({ cache: 'no-cache' }).then(
-      async (response: AjaxResponse): Promise<any> => {
+      async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           Notification.success(data.title, data.message, 1);

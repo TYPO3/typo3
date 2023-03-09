@@ -75,7 +75,7 @@ class EditableFileStorageTree extends FileStorageTree {
     }
 
     e.preventDefault();
-  }
+  };
 
   private handleDrop = (event: DragEvent): void => {
     const target = event.target as Element;
@@ -102,7 +102,7 @@ class EditableFileStorageTree extends FileStorageTree {
       this.actionHandler.initiateDropAction(fileOperationCollection);
     }
     event.preventDefault();
-  }
+  };
 
   /**
    * Initializes a drag&drop when called on the tree.
@@ -172,30 +172,30 @@ export class FileStorageTreeNavigationComponent extends LitElement {
 
   private refresh = (): void => {
     this.tree.refreshOrFilterTree();
-  }
+  };
 
   private selectFirstNode = (): void => {
     const node = this.tree.nodes[0];
     if (node) {
       this.tree.selectNode(node, true);
     }
-  }
+  };
 
   // event listener updating current tree state, this can be removed in TYPO3 v12
   private treeUpdateRequested = (evt: CustomEvent): void => {
     const identifier = encodeURIComponent(evt.detail.payload.identifier);
-    let nodeToSelect = this.tree.nodes.filter((node: TreeNode) => { return node.identifier === identifier })[0];
+    const nodeToSelect = this.tree.nodes.filter((node: TreeNode) => { return node.identifier === identifier; })[0];
     if (nodeToSelect && this.tree.getSelectedNodes().filter((selectedNode: TreeNode) => { return selectedNode.identifier === nodeToSelect.identifier; }).length === 0) {
       this.tree.selectNode(nodeToSelect, false);
     }
-  }
+  };
 
   private toggleExpandState = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
     if (node) {
       Persistent.set('BackendComponents.States.FileStorageTree.stateHash.' + node.stateIdentifier, (node.expanded ? '1' : '0'));
     }
-  }
+  };
 
   private loadContent = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
@@ -215,7 +215,7 @@ export class FileStorageTreeNavigationComponent extends LitElement {
     let contentUrl = ModuleUtility.getFromName(moduleMenu.getCurrentModule()).link;
     contentUrl += contentUrl.includes('?') ? '&' : '?';
     top.TYPO3.Backend.ContentContainer.setUrl(contentUrl + 'id=' + node.identifier);
-  }
+  };
 
   private showContextMenu = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
@@ -230,7 +230,7 @@ export class FileStorageTreeNavigationComponent extends LitElement {
       '',
       this.tree.getElementFromNode(node)
     );
-  }
+  };
 
   /**
    * Event listener called for each loaded node,
@@ -238,14 +238,14 @@ export class FileStorageTreeNavigationComponent extends LitElement {
    */
   private selectActiveNode = (evt: CustomEvent): void => {
     const selectedNodeIdentifier = ModuleStateStorage.current('file').selection;
-    let nodes = evt.detail.nodes as Array<TreeNode>;
+    const nodes = evt.detail.nodes as Array<TreeNode>;
     evt.detail.nodes = nodes.map((node: TreeNode) => {
       if (node.identifier === selectedNodeIdentifier) {
         node.checked = true;
       }
       return node;
     });
-  }
+  };
 }
 
 interface NodePositionOptions {
@@ -300,7 +300,7 @@ class FileStorageTreeActions extends DragDrop {
       identifier: identifier, // dragged node id
       target: target, // hovered node
       position: position // before, in, after
-    }
+    };
   }
 
   /**
@@ -412,7 +412,7 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
     this.startPageY = event.pageY;
     this.dragStarted = false;
     return true;
-  };
+  }
 
   public onDragOver(event: MouseEvent, draggingNode: TreeNode | null): boolean {
     if (this.actionHandler.isDragNodeDistanceMore(event, this)) {
@@ -445,7 +445,7 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
 
     this.actionHandler.cleanupDrop();
     if (this.actionHandler.isDropAllowed(this.tree.hoveredNode, draggingNode)) {
-      let options = this.actionHandler.getDropCommandDetails(this.tree.hoveredNode, draggingNode);
+      const options = this.actionHandler.getDropCommandDetails(this.tree.hoveredNode, draggingNode);
       if (options === null) {
         return false;
       }
@@ -500,6 +500,11 @@ class FileResource extends Resource {
 }
 
 class FileOperationCollection {
+  protected constructor(
+    public readonly operations: FileOperation[],
+    public readonly target: ResourceInterface,
+  ) {
+  }
 
   public static fromDataTransfer(dataTransfer: DataTransfer, target: ResourceInterface): FileOperationCollection {
     return FileOperationCollection.fromArray(JSON.parse(dataTransfer.getData('application/json')), target);
@@ -508,8 +513,8 @@ class FileOperationCollection {
   public static fromArray(items: ResourceInterface[], target: ResourceInterface): FileOperationCollection {
     const operations: FileOperation[] = [];
 
-    for (let item of items) {
-      operations.push(new FileOperation(item, DraggablePositionEnum.INSIDE))
+    for (const item of items) {
+      operations.push(new FileOperation(item, DraggablePositionEnum.INSIDE));
     }
 
     return new FileOperationCollection(operations, target);
@@ -526,12 +531,6 @@ class FileOperationCollection {
     ];
 
     return new FileOperationCollection(operations, targetResource);
-  }
-
-  protected constructor(
-    public readonly operations: FileOperation[],
-    public readonly target: ResourceInterface,
-  ) {
   }
 
   public getConflictingOperationsForTreeNode(node: TreeNode): FileOperation[] {

@@ -14,7 +14,7 @@
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
 import ImmediateAction from '@typo3/backend/action-button/immediate-action';
 import Notification from '@typo3/backend/notification';
-import type {LitElement} from 'lit';
+import type { LitElement } from 'lit';
 import Icons from '@typo3/backend/icons';
 
 describe('TYPO3/CMS/Backend/Notification:', () => {
@@ -26,7 +26,7 @@ describe('TYPO3/CMS/Backend/Notification:', () => {
 
     spyOn(Icons, 'getIcon').and.callFake((): Promise<string> => {
       return Promise.resolve('X');
-    })
+    });
   });
 
   describe('can render notifications with dismiss after 1000ms', () => {
@@ -72,7 +72,7 @@ describe('TYPO3/CMS/Backend/Notification:', () => {
       ];
     }
 
-    for (let dataSet of notificationProvider()) {
+    for (const dataSet of notificationProvider()) {
       it('can render a notification of type ' + dataSet.class, async () => {
         dataSet.method(dataSet.title, dataSet.message, 1);
 
@@ -97,13 +97,13 @@ describe('TYPO3/CMS/Backend/Notification:', () => {
       [
         {
           label: 'My action',
-          action: new ImmediateAction((promise: Promise<any>): Promise<any> => {
+          action: new ImmediateAction((promise: Promise<void>): Promise<void> => {
             return promise;
           }),
         },
         {
           label: 'My other action',
-          action: new DeferredAction((promise: Promise<any>): Promise<any> => {
+          action: new DeferredAction((promise: Promise<void>): Promise<void> => {
             return promise;
           }),
         },

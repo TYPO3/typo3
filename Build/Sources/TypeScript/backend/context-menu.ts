@@ -12,7 +12,7 @@
  */
 
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ContextMenuActions from './context-menu-actions';
 import DebounceEvent from '@typo3/core/event/debounce-event';
@@ -33,7 +33,7 @@ interface MenuItem {
   type: string;
   icon: string;
   label: string;
-  additionalAttributes?: { [key: string]: string };
+  additionalAttributes?: Record<string, string>;
   childItems?: MenuItems;
   callbackAction?: string;
 }
@@ -47,16 +47,29 @@ interface MenuItems {
  * Container used to load the context menu via AJAX to render the result in a layer next to the mouse cursor
  */
 class ContextMenu {
-  private mousePos: MousePosition = {X: null, Y: null};
-  private record: ActiveRecord = {uid: null, table: null};
+  private mousePos: MousePosition = { X: null, Y: null };
+  private record: ActiveRecord = { uid: null, table: null };
   private eventSources: Element[] = [];
+
+  constructor() {
+    document.addEventListener('click', (event: PointerEvent) => {
+      this.handleTriggerEvent(event);
+    });
+
+    document.addEventListener('contextmenu', (event: PointerEvent) => {
+      this.handleTriggerEvent(event);
+    });
+
+    // register mouse movement inside the document
+    new ThrottleEvent('mousemove', this.storeMousePositionEvent.bind(this), 50).bindTo(document);
+  }
 
   /**
    * @param {MenuItem} item
    * @returns {string}
    */
   private static drawActionItem(item: MenuItem): string {
-    const attributes: { [key: string]: string } = item.additionalAttributes || {};
+    const attributes: Record<string, string> = item.additionalAttributes || {};
     let attributesString = '';
     for (const attribute of Object.entries(attributes)) {
       const [k, v] = attribute;
@@ -78,19 +91,6 @@ class ContextMenu {
     return isInXBoundary && isInYBoundary;
   }
 
-  constructor() {
-    document.addEventListener('click', (event: PointerEvent) => {
-      this.handleTriggerEvent(event);
-    });
-
-    document.addEventListener('contextmenu', (event: PointerEvent) => {
-      this.handleTriggerEvent(event);
-    });
-
-    // register mouse movement inside the document
-    new ThrottleEvent('mousemove', this.storeMousePositionEvent.bind(this), 50).bindTo(document);
-  }
-
   /**
    * Main function, called from most context menu links
    *
@@ -104,7 +104,7 @@ class ContextMenu {
   public show(table: string, uid: number|string, context: string, unusedParam1: string, unusedParam2: string, eventSource: Element = null): void {
     this.hideAll();
 
-    this.record = {table: table, uid: uid};
+    this.record = { table: table, uid: uid };
     // fix: [tabindex=-1] is not focusable!!!
     const focusableSource = eventSource.matches('a, button, [tabindex]') ? eventSource : eventSource.closest('a, button, [tabindex]');
     this.eventSources.push(focusableSource);
@@ -134,13 +134,12 @@ class ContextMenu {
 
       document.querySelectorAll('.context-menu').forEach((contextMenu: Element): void => {
         // Explicitly update cursor position if element is entered to avoid timing issues
-        new RegularEvent('mouseenter', (e: MouseEvent): void => {
-          const target: HTMLElement = e.target as HTMLElement;
-          this.storeMousePositionEvent(e);
+        new RegularEvent('mouseenter', (event: MouseEvent): void => {
+          this.storeMousePositionEvent(event);
         }).bindTo(contextMenu);
 
-        new DebounceEvent('mouseleave', (e: MouseEvent) => {
-          const target: HTMLElement = e.target as HTMLElement;
+        new DebounceEvent('mouseleave', (event: MouseEvent) => {
+          const target: HTMLElement = event.target as HTMLElement;
           const childMenu: HTMLElement | null = document.querySelector('[data-parent="#' + target.id + '"]');
 
           const hideThisMenu =
@@ -191,7 +190,7 @@ class ContextMenu {
 
   private handleContextMenuEvent(event: PointerEvent, element: HTMLElement): void
   {
-    const contextTrigger: String = element.dataset.contextmenuTrigger;
+    const contextTrigger: string = element.dataset.contextmenuTrigger;
     if (contextTrigger === 'click' || contextTrigger === event.type) {
       event.preventDefault();
       this.show(
@@ -234,7 +233,7 @@ class ContextMenu {
    */
   private fetch(parameters: string): void {
     const url = TYPO3.settings.ajaxUrls.contextmenu;
-    (new AjaxRequest(url)).withQueryArguments(parameters).get().then(async (response: AjaxResponse): Promise<any> => {
+    (new AjaxRequest(url)).withQueryArguments(parameters).get().then(async (response: AjaxResponse): Promise<void> => {
       const data: MenuItems = await response.resolve();
       if (typeof response !== 'undefined' && Object.keys(response).length > 0) {
         this.populateData(data, 0);
@@ -285,13 +284,13 @@ class ContextMenu {
           },
         });
         if (me.dataset.callbackModule) {
-          import(callbackModule + '.js').then(({default: callbackModuleCallback}: {default: any}): void => {
+          import(callbackModule + '.js').then(({ default: callbackModuleCallback }: {default: any}): void => {
             callbackModuleCallback[callbackAction].bind(thisProxy)(this.record.table, this.record.uid, dataAttributesToPass);
           });
         } else if (ContextMenuActions && typeof (ContextMenuActions as any)[callbackAction] === 'function') {
           (ContextMenuActions as any)[callbackAction].bind(thisProxy)(this.record.table, this.record.uid, dataAttributesToPass);
         } else {
-          console.log('action: ' + callbackAction + ' not found');
+          console.error('action: ' + callbackAction + ' not found');
         }
         this.hideAll();
       });
@@ -362,14 +361,14 @@ class ContextMenu {
   }
 
   private setFocusToFirstItem(currentItem: HTMLElement): void {
-    let firstItem = this.getFirstItem(currentItem);
+    const firstItem = this.getFirstItem(currentItem);
     if (firstItem) {
       firstItem.focus();
     }
   }
 
   private setFocusToLastItem(currentItem: HTMLElement): void {
-    let lastItem = this.getLastItem(currentItem);
+    const lastItem = this.getLastItem(currentItem);
     if (lastItem) {
       lastItem.focus();
     }
@@ -465,7 +464,7 @@ class ContextMenu {
       }
     }
 
-    return {left: x + 'px', top: y + 'px'};
+    return { left: x + 'px', top: y + 'px' };
   }
 
   /**
@@ -505,8 +504,8 @@ class ContextMenu {
    * in the context menu object
    */
   private storeMousePositionEvent = (event: MouseEvent): void => {
-    this.mousePos = {X: event.pageX, Y: event.pageY};
-  }
+    this.mousePos = { X: event.pageX, Y: event.pageY };
+  };
 
   /**
    * @param {string} obj

@@ -13,13 +13,14 @@
 
 import 'bootstrap';
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import '../../renderable/clearable';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
+import MessageInterface from '@typo3/install/message-interface';
 
 /**
  * Module: @typo3/install/module/local-configuration
@@ -49,8 +50,8 @@ class LocalConfiguration extends AbstractInteractableModule {
     });
 
     // Make jquerys "contains" work case-insensitive
-    $.expr[':'].contains = $.expr.createPseudo((arg: any): Function => {
-      return (elem: any): boolean => {
+    $.expr[':'].contains = $.expr.createPseudo((arg: string): Function => {
+      return (elem: JQuery): boolean => {
         return $(elem).text().toUpperCase().includes(arg.toUpperCase());
       };
     });
@@ -82,8 +83,8 @@ class LocalConfiguration extends AbstractInteractableModule {
     });
   }
 
-  private search(typedQuery: String): void {
-    this.currentModal.find(this.selectorItem).each((index: number, element: any): void => {
+  private search(typedQuery: string): void {
+    this.currentModal.find(this.selectorItem).each((index: number, element: Element): void => {
       const $item = $(element);
       if ($(':contains(' + typedQuery + ')', $item).length > 0 || $('input[value*="' + typedQuery + '"]', $item).length > 0) {
         $item.removeClass('hidden').addClass('searchhit');
@@ -97,9 +98,9 @@ class LocalConfiguration extends AbstractInteractableModule {
   private getContent(): void {
     const modalContent = this.getModalBody();
     (new AjaxRequest(Router.getUrl('localConfigurationGetContent')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             modalContent.html(data.html);
@@ -119,8 +120,8 @@ class LocalConfiguration extends AbstractInteractableModule {
 
     const modalContent: JQuery = this.getModalBody();
     const executeToken: JQuery = this.getModuleContent().data('local-configuration-write-token');
-    const configurationValues: any = {};
-    this.findInModal('.t3js-localConfiguration-pathValue').each((i: number, element: any): void => {
+    const configurationValues: Record<string, string> = {};
+    this.findInModal('.t3js-localConfiguration-pathValue').each((i: number, element: HTMLInputElement): void => {
       const $element: JQuery = $(element);
       if ($element.attr('type') === 'checkbox') {
         if (element.checked) {
@@ -138,10 +139,10 @@ class LocalConfiguration extends AbstractInteractableModule {
         token: executeToken,
         configurationValues: configurationValues,
       },
-    }).then(async (response: AjaxResponse): Promise<any> => {
+    }).then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
       if (data.success === true && Array.isArray(data.status)) {
-        data.status.forEach((element: any): void => {
+        data.status.forEach((element: MessageInterface): void => {
           Notification.showMessage(element.title, element.message, element.severity);
         });
       } else {

@@ -30,7 +30,7 @@ class ReferenceIndex {
 
   private registerActionButtonEvents(): void {
     new RegularEvent('click', (e: Event, target: HTMLButtonElement): void => {
-      NProgress.configure({showSpinner: false});
+      NProgress.configure({ showSpinner: false });
       NProgress.start();
       // Disable all action buttons to avoid duplicate execution
       Array.from(target.parentNode.querySelectorAll('button')).forEach((button: HTMLButtonElement) => {

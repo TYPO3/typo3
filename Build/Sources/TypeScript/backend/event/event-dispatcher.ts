@@ -16,7 +16,7 @@
  */
 export class EventDispatcher {
   static dispatchCustomEvent(name: string, detail: any = null, useTop: boolean = false): void {
-    const event = new CustomEvent(name, {detail: detail});
+    const event = new CustomEvent(name, { detail: detail });
     if (!useTop) {
       document.dispatchEvent(event);
     } else if (typeof top !== 'undefined') {

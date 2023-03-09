@@ -18,7 +18,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import Modal from '@typo3/backend/modal';
 import Icons from '@typo3/backend/icons';
 import { MessageUtility } from '@typo3/backend/utility/message-utility';
-import {ActionEventDetails} from '@typo3/backend/multi-record-selection-action';
+import { ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
 import PersistentStorage from '@typo3/backend/storage/persistent';
 import DateTimePicker from '@typo3/backend/date-time-picker';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
@@ -32,6 +32,19 @@ interface TableNumberMapping {
  * @exports @typo3/scheduler/scheduler
  */
 class Scheduler {
+  constructor() {
+    this.initializeEvents();
+    this.initializeDefaultStates();
+
+    DocumentSaveActions.getInstance().addPreSubmitCallback((): void => {
+      let taskClass = $('#task_class').val();
+      taskClass = taskClass.toLowerCase().replace(/\\/g, '-');
+
+      $('.extraFields').appendTo($('#extraFieldsHidden'));
+      $('.extra_fields_' + taskClass).appendTo($('#extraFieldsSection'));
+    });
+  }
+
   private static updateElementBrowserTriggers(): void {
     const triggers = document.querySelectorAll('.t3js-element-browser');
 
@@ -46,7 +59,7 @@ class Scheduler {
     if (element === null || typeof element.dataset.defaultNumberOfDays === 'undefined') {
       return null;
     }
-    return JSON.parse(element.dataset.defaultNumberOfDays) as TableNumberMapping
+    return JSON.parse(element.dataset.defaultNumberOfDays) as TableNumberMapping;
   }
 
   /**
@@ -59,24 +72,11 @@ class Scheduler {
       storedModuleData = PersistentStorage.get('moduleData.scheduler_manage');
     }
 
-    const collapseConfig: any = {};
+    const collapseConfig: Record<string, number> = {};
     collapseConfig[table] = isCollapsed ? 1 : 0;
 
     $.extend(storedModuleData, collapseConfig);
     PersistentStorage.set('moduleData.scheduler_manage', storedModuleData);
-  }
-
-  constructor() {
-    this.initializeEvents();
-    this.initializeDefaultStates();
-
-    DocumentSaveActions.getInstance().addPreSubmitCallback((): void => {
-      let taskClass = $('#task_class').val();
-      taskClass = taskClass.toLowerCase().replace(/\\/g, '-');
-
-      $('.extraFields').appendTo($('#extraFieldsHidden'));
-      $('.extra_fields_' + taskClass).appendTo($('#extraFieldsSection'));
-    });
   }
 
   /**
@@ -104,8 +104,8 @@ class Scheduler {
    * This method reacts on field changes of all table field for table garbage collection task
    */
   public actOnChangeSchedulerTableGarbageCollectionAllTables(theCheckbox: JQuery): void {
-    let $numberOfDays = $('#task_tableGarbageCollection_numberOfDays');
-    let $taskTableGarbageCollectionTable = $('#task_tableGarbageCollection_table');
+    const $numberOfDays = $('#task_tableGarbageCollection_numberOfDays');
+    const $taskTableGarbageCollectionTable = $('#task_tableGarbageCollection_table');
     if (theCheckbox.prop('checked')) {
       $taskTableGarbageCollectionTable.prop('disabled', true);
       $numberOfDays.prop('disabled', true);
@@ -113,7 +113,7 @@ class Scheduler {
       // Get number of days for selected table
       let numberOfDays = parseInt($numberOfDays.val(), 10);
       if (numberOfDays < 1) {
-        let selectedTable = $taskTableGarbageCollectionTable.val();
+        const selectedTable = $taskTableGarbageCollectionTable.val();
         const defaultNumberOfDays = Scheduler.resolveDefaultNumberOfDays();
         if (defaultNumberOfDays !== null) {
           numberOfDays = defaultNumberOfDays[selectedTable];
@@ -132,7 +132,7 @@ class Scheduler {
    * of the selected table
    */
   public actOnChangeSchedulerTableGarbageCollectionTable(theSelector: JQuery): void {
-    let $numberOfDays = $('#task_tableGarbageCollection_numberOfDays');
+    const $numberOfDays = $('#task_tableGarbageCollection_numberOfDays');
     const defaultNumberOfDays = Scheduler.resolveDefaultNumberOfDays();
     if (defaultNumberOfDays !== null && defaultNumberOfDays[theSelector.val()] > 0) {
       $numberOfDays.prop('disabled', false);
@@ -210,11 +210,11 @@ class Scheduler {
    * Initialize default states
    */
   public initializeDefaultStates(): void {
-    let $taskType = $('#task_type');
+    const $taskType = $('#task_type');
     if ($taskType.length) {
       this.toggleFieldsByTaskType($taskType.val());
     }
-    let $taskClass = $('#task_class');
+    const $taskClass = $('#task_class');
     if ($taskClass.length) {
       this.actOnChangedTaskClass($taskClass);
       Scheduler.updateElementBrowserTriggers();

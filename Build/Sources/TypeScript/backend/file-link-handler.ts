@@ -27,7 +27,7 @@ class FileLinkHandler {
     }).delegateTo(document, 'a.t3js-fileLink');
 
     // Link to current page
-    new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
+    new RegularEvent('click', (evt: MouseEvent): void => {
       evt.preventDefault();
       LinkBrowser.finalizeFunction(document.body.dataset.currentLink);
     }).delegateTo(document, 'input.t3js-linkCurrent');

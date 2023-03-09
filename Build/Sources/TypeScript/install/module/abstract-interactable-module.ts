@@ -37,7 +37,7 @@ export abstract class AbstractInteractableModule {
 
   protected setModalButtonsState(interactable: boolean): void {
     this.getModalFooter().find('button').each((_: number, elem: Element): void => {
-      this.setModalButtonState($(elem), interactable)
+      this.setModalButtonState($(elem), interactable);
     });
   }
 

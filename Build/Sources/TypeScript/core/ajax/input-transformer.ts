@@ -21,7 +21,7 @@ export class InputTransformer {
    * @param headers
    */
   public static byHeader(data: GenericKeyValue, headers: GenericKeyValue = {}): FormData | string {
-    if (headers.hasOwnProperty('Content-Type') && headers['Content-Type'].includes('application/json')) {
+    if ('Content-Type' in headers && headers['Content-Type'].includes('application/json')) {
       return JSON.stringify(data);
     }
 
@@ -73,9 +73,9 @@ export class InputTransformer {
       const objPrefix = prefix.length ? prefix + '[' : '';
       const objSuffix = prefix.length ? ']' : '';
       if (typeof obj[currentValue] === 'object') {
-        Object.assign(accumulator, InputTransformer.flattenObject(obj[currentValue], objPrefix + currentValue + objSuffix))
+        Object.assign(accumulator, InputTransformer.flattenObject(obj[currentValue], objPrefix + currentValue + objSuffix));
       } else {
-        accumulator[objPrefix + currentValue + objSuffix] = obj[currentValue]
+        accumulator[objPrefix + currentValue + objSuffix] = obj[currentValue];
       }
       return accumulator;
     }, {});

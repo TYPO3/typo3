@@ -11,17 +11,17 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {customElement, property} from 'lit/decorators';
-import {html, LitElement, TemplateResult} from 'lit';
+import { customElement, property } from 'lit/decorators';
+import { html, LitElement, TemplateResult } from 'lit';
 import BrowserSession from '@typo3/backend/storage/browser-session';
-import {ifDefined} from 'lit/directives/if-defined';
+import { ifDefined } from 'lit/directives/if-defined';
 
 @customElement('typo3-backend-live-search-option-item')
 export class SearchOptionItem extends LitElement {
-  @property({type: Boolean}) active: boolean = false;
-  @property({type: String}) optionId: string;
-  @property({type: String}) optionName: string;
-  @property({type: String}) optionLabel: string;
+  @property({ type: Boolean }) active: boolean = false;
+  @property({ type: String }) optionId: string;
+  @property({ type: String }) optionName: string;
+  @property({ type: String }) optionLabel: string;
 
   private parentContainer: HTMLElement;
 

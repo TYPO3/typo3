@@ -11,7 +11,7 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import {ScaffoldIdentifierEnum} from '../enum/viewport/scaffold-identifier';
+import { ScaffoldIdentifierEnum } from '../enum/viewport/scaffold-identifier';
 import $ from 'jquery';
 
 class Toolbar {

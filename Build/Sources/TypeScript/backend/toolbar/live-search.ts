@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {lll} from '@typo3/core/lit-helper';
+import { lll } from '@typo3/core/lit-helper';
 import Modal from '../modal';
 import '@typo3/backend/element/icon-element';
 import '@typo3/backend/input/clearable';
@@ -21,11 +21,11 @@ import '../live-search/live-search-shortcut';
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DebounceEvent from '@typo3/core/event/debounce-event';
-import {SeverityEnum} from '@typo3/backend/enum/severity';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import BrowserSession from '@typo3/backend/storage/browser-session';
-import {ResultContainer, componentName as resultContainerComponentName} from '@typo3/backend/live-search/element/result/result-container';
-import {ResultItemInterface} from '@typo3/backend/live-search/element/result/item/item';
+import { ResultContainer, componentName as resultContainerComponentName } from '@typo3/backend/live-search/element/result/result-container';
+import { ResultItemInterface } from '@typo3/backend/live-search/element/result/item/item';
 
 enum Identifiers {
   toolbarItem = '.t3js-topbar-button-search',
@@ -72,12 +72,12 @@ class LiveSearch {
       .map((item: [string, string]): SearchOption => {
         const trimmedKey = item[0].replace('livesearch-option-', '');
         const [key, value] = trimmedKey.split('-', 2);
-        return {key, value}
+        return { key, value };
       });
 
     const searchOptions = this.composeSearchOptions(persistedSearchOptions);
     for (const [optionKey, optionValues] of Object.entries(searchOptions)) {
-      for (let optionValue of optionValues) {
+      for (const optionValue of optionValues) {
         url.searchParams.append(`${optionKey}[]`, optionValue);
       }
     }
@@ -91,7 +91,7 @@ class LiveSearch {
     });
 
     modal.addEventListener('typo3-modal-shown', () => {
-      const liveSearchContainer = modal.querySelector('typo3-backend-live-search')
+      const liveSearchContainer = modal.querySelector('typo3-backend-live-search');
       const searchField = liveSearchContainer.querySelector('input[type="search"]') as HTMLInputElement;
       const searchForm = searchField.closest('form');
 
@@ -104,7 +104,7 @@ class LiveSearch {
           BrowserSession.set('livesearch-term', query);
         });
         const optionCounterElement = searchForm.querySelector('[data-active-options-counter]') as HTMLElement;
-        let count = parseInt(optionCounterElement.dataset.activeOptionsCounter, 10);
+        const count = parseInt(optionCounterElement.dataset.activeOptionsCounter, 10);
         optionCounterElement.querySelector('output').textContent = count.toString(10);
         optionCounterElement.classList.toggle('hidden', count === 0);
       }).bindTo(searchForm);
@@ -171,7 +171,7 @@ class LiveSearch {
     }
 
     this.updateSearchResults(resultSet);
-  }
+  };
 
   private handleKeyDown(e: KeyboardEvent): void {
     if (e.key !== 'ArrowDown') {

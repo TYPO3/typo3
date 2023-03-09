@@ -11,16 +11,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Icons from '../icons';
 import Modal from '../modal';
 import Notification from '../notification';
 import Viewport from '../viewport';
 import SecurityUtility from '@typo3/core/security-utility';
-import {ModuleStateStorage} from '@typo3/backend/storage/module-state-storage';
+import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 import '@typo3/backend/element/spinner-element';
-import {Sizes} from '../enum/icon-types';
+import { Sizes } from '../enum/icon-types';
 import RegularEvent from '@typo3/core/event/regular-event';
 
 enum Identifiers {
@@ -139,10 +139,10 @@ class ShortcutMenu {
         ModuleStateStorage.updateWithCurrentMount('web', pageId, true);
       }
       const router = document.querySelector('typo3-backend-module-router');
-      router.setAttribute('endpoint', target.href)
+      router.setAttribute('endpoint', target.href);
       router.setAttribute('module', target.dataset.module);
     }).delegateTo(containerSelector, Identifiers.shortcutJumpSelector);
-  }
+  };
 
   /**
    * Removes an existing short by sending an AJAX call
@@ -150,7 +150,7 @@ class ShortcutMenu {
    * @param shortcutId number
    */
   private deleteShortcut(shortcutId: number): void {
-    const modal = Modal.confirm(TYPO3.lang['bookmark.delete'], TYPO3.lang['bookmark.confirmDelete'])
+    const modal = Modal.confirm(TYPO3.lang['bookmark.delete'], TYPO3.lang['bookmark.confirmDelete']);
     modal.addEventListener('confirm.button.ok', (): void => {
       (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_remove)).post({
         shortcutId,
@@ -175,7 +175,7 @@ class ShortcutMenu {
     (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_editform)).withQueryArguments({
       shortcutId,
       shortcutGroup,
-    }).get({cache: 'no-cache'}).then(async (response: AjaxResponse): Promise<any> => {
+    }).get({ cache: 'no-cache' }).then(async (response: AjaxResponse): Promise<void> => {
       document.querySelector(Identifiers.containerSelector + ' ' + Identifiers.toolbarMenuSelector).innerHTML = await response.resolve();
     });
   }
@@ -201,7 +201,7 @@ class ShortcutMenu {
     spinner.setAttribute('size', Sizes.small);
     toolbarItemIcon.replaceWith(spinner);
 
-    (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_list)).get({cache: 'no-cache'}).then(async (response: AjaxResponse): Promise<any> => {
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_list)).get({ cache: 'no-cache' }).then(async (response: AjaxResponse): Promise<void> => {
       document.querySelector(Identifiers.containerSelector + ' ' + Identifiers.toolbarMenuSelector).innerHTML = await response.resolve();
     }).finally((): void => {
       document.querySelector(Identifiers.containerSelector + ' typo3-backend-spinner').replaceWith(existingIcon);

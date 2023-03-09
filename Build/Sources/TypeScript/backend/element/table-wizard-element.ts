@@ -33,12 +33,15 @@ import { SeverityEnum } from '@typo3/backend/enum/severity';
 export class TableWizardElement extends LitElement {
   @property({ type: String }) type: string = 'textarea';
   @property({ type: String }) selectorData: string = '';
-  @property({ type: String}) delimiter: string = '|';
-  @property({ type: String}) enclosure: string = '';
+  @property({ type: String }) delimiter: string = '|';
+  @property({ type: String }) enclosure: string = '';
   @property({ type: Number, attribute: 'append-rows' }) appendRows: number = 1;
-  @property({ type: Object }) l10n: any = {};
 
   private table: string[][] = [];
+
+  private get firstRow(): string[] {
+    return this.table[0] || [];
+  }
 
   public connectedCallback(): void {
     super.connectedCallback();
@@ -47,10 +50,6 @@ export class TableWizardElement extends LitElement {
     this.delimiter = this.getAttribute('delimiter');
     this.enclosure = this.getAttribute('enclosure') || '';
     this.readTableFromTextarea();
-  }
-
-  private get firstRow(): string[] {
-    return this.table[0] || [];
   }
 
   public createRenderRoot(): HTMLElement | ShadowRoot {
@@ -73,8 +72,8 @@ export class TableWizardElement extends LitElement {
   }
 
   private readTableFromTextarea(): void {
-    let textarea: HTMLTextAreaElement = document.querySelector(this.selectorData);
-    let table: string[][] = [];
+    const textarea: HTMLTextAreaElement = document.querySelector(this.selectorData);
+    const table: string[][] = [];
 
     textarea.value.split('\n').forEach((row: string) => {
       if (row !== '') {
@@ -82,8 +81,8 @@ export class TableWizardElement extends LitElement {
           row = row.replace(new RegExp(this.enclosure, 'g'), '');
         }
 
-        let cols = row.split(this.delimiter)
-        table.push(cols)
+        const cols = row.split(this.delimiter);
+        table.push(cols);
       }
     });
 
@@ -91,19 +90,19 @@ export class TableWizardElement extends LitElement {
   }
 
   private writeTableSyntaxToTextarea(): void {
-    let textarea: HTMLTextAreaElement = document.querySelector(this.selectorData);
+    const textarea: HTMLTextAreaElement = document.querySelector(this.selectorData);
     let text = '';
     this.table.forEach((row) => {
-      let count = row.length;
+      const count = row.length;
       text += row.reduce((result, word, index) => {
         // Do not add delimiter at the end of each row
-        let delimiter = (count - 1) === index ? '' : this.delimiter;
+        const delimiter = (count - 1) === index ? '' : this.delimiter;
 
         return result + this.enclosure + word + this.enclosure + delimiter;
       }, '') + '\n';
     });
     textarea.value = text;
-    textarea.dispatchEvent(new CustomEvent('change', {bubbles: true}));
+    textarea.dispatchEvent(new CustomEvent('change', { bubbles: true }));
   }
 
   private modifyTable(evt: Event, rowIndex: number, colIndex: number): void {
@@ -113,11 +112,11 @@ export class TableWizardElement extends LitElement {
     this.requestUpdate();
   }
 
-  private toggleType(evt: Event): void {
+  private toggleType(): void {
     this.type = this.type === 'input' ? 'textarea' : 'input';
   }
 
-  private moveColumn(evt: Event, col: number, target: number): void {
+  private moveColumn(col: number, target: number): void {
     this.table = this.table.map((row: string[]): string[] => {
       const temp = row.splice(col, 1);
       row.splice(target, 0, ...temp);
@@ -153,8 +152,8 @@ export class TableWizardElement extends LitElement {
   }
 
   private appendRow(evt: Event, row: number): void {
-    let columns = this.firstRow.concat().fill('');
-    let rows = (new Array(this.appendRows)).fill(columns);
+    const columns = this.firstRow.concat().fill('');
+    const rows = (new Array(this.appendRows)).fill(columns);
     this.table.splice(row + 1, 0, ...rows);
     this.writeTableSyntaxToTextarea();
     this.requestUpdate();
@@ -220,7 +219,7 @@ export class TableWizardElement extends LitElement {
     return html`
       <span class="btn-group">
         <button class="btn btn-default" type="button" title="${lll('table_smallFields')}"
-                @click="${(evt: Event) => this.toggleType(evt)}">
+                @click="${() => this.toggleType()}">
           <typo3-backend-icon identifier="${this.type === 'input' ? 'actions-chevron-expand' : 'actions-chevron-contract'}" size="small"></typo3-backend-icon>
         </button>
         <button class="btn btn-default" type="button" title="${lll('table_setCount')}"
@@ -228,7 +227,7 @@ export class TableWizardElement extends LitElement {
           <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
         </button>
         <button class="btn btn-default" type="button" title="${lll('table_showCode')}"
-                @click="${(evt: Event) => this.showTableSyntax(evt)}">
+                @click="${() => this.showTableSyntax()}">
           <typo3-backend-icon identifier="actions-code" size="small"></typo3-backend-icon>
         </button>
       </span>
@@ -249,11 +248,11 @@ export class TableWizardElement extends LitElement {
     return html`
       <span class="btn-group">
         <button class="btn btn-default" type="button" title="${leftButton.title}"
-                @click="${(evt: Event) => this.moveColumn(evt, col, leftButton.target)}">
+                @click="${() => this.moveColumn(col, leftButton.target)}">
           <typo3-backend-icon identifier="actions-chevron-${leftButton.class}" size="small"></typo3-backend-icon>
         </button>
         <button class="btn btn-default" type="button" title="${rightButton.title}"
-                @click="${(evt: Event) => this.moveColumn(evt, col, rightButton.target)}">
+                @click="${() => this.moveColumn(col, rightButton.target)}">
           <typo3-backend-icon identifier="actions-chevron-${rightButton.class}" size="small"></typo3-backend-icon>
         </button>
         <button class="btn btn-default" type="button" title="${lll('table_removeColumn')}"
@@ -362,7 +361,7 @@ export class TableWizardElement extends LitElement {
     });
   }
 
-  private showTableSyntax(evt: Event): void {
+  private showTableSyntax(): void {
 
     const modal = Modal.advanced({
       content: '', // Callback is used to fill in content
@@ -383,7 +382,7 @@ export class TableWizardElement extends LitElement {
           name: 'apply',
           trigger: (): void => {
             // Apply table changes
-            let textarea: HTMLTextAreaElement = document.querySelector(this.selectorData);
+            const textarea: HTMLTextAreaElement = document.querySelector(this.selectorData);
             textarea.value = modal.querySelector('textarea').value;
             this.readTableFromTextarea();
             this.requestUpdate();
@@ -393,7 +392,7 @@ export class TableWizardElement extends LitElement {
         }
       ],
       callback: (currentModal: HTMLElement): void => {
-        let textarea: HTMLTextAreaElement = document.querySelector(this.selectorData);
+        const textarea: HTMLTextAreaElement = document.querySelector(this.selectorData);
 
         render(
           html`<textarea style="width: 100%;">${textarea.value}</textarea>`,

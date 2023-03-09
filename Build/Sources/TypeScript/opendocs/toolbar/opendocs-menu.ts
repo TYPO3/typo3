@@ -12,11 +12,11 @@
  */
 
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Icons from '@typo3/backend/icons';
 import Viewport from '@typo3/backend/viewport';
-import {ModuleStateStorage} from '@typo3/backend/storage/module-state-storage';
+import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 
 enum Selectors {
   containerSelector = '#typo3-cms-opendocs-backend-toolbaritems-opendocstoolbaritem',
@@ -37,6 +37,14 @@ enum Selectors {
 class OpendocsMenu {
   private readonly hashDataAttributeName: string = 'opendocsidentifier';
 
+  constructor() {
+    document.addEventListener('typo3:opendocs:updateRequested', () => this.updateMenu());
+    Viewport.Topbar.Toolbar.registerEvent((): void => {
+      this.initializeEvents();
+      this.updateMenu();
+    });
+  }
+
   /**
    * Updates the number of open documents in the toolbar according to the
    * number of items in the menu bar.
@@ -46,29 +54,18 @@ class OpendocsMenu {
     $(Selectors.counterSelector).text(num).toggle(num > 0);
   }
 
-  constructor() {
-    document.addEventListener(
-      'typo3:opendocs:updateRequested',
-      (evt: CustomEvent) => this.updateMenu(),
-    );
-    Viewport.Topbar.Toolbar.registerEvent((): void => {
-      this.initializeEvents();
-      this.updateMenu();
-    });
-  }
-
   /**
    * Displays the menu and does the AJAX call to the TYPO3 backend
    */
   public updateMenu(): void {
-    let $toolbarItemIcon = $(Selectors.toolbarIconSelector, Selectors.containerSelector);
-    let $existingIcon = $toolbarItemIcon.clone();
+    const $toolbarItemIcon = $(Selectors.toolbarIconSelector, Selectors.containerSelector);
+    const $existingIcon = $toolbarItemIcon.clone();
 
     Icons.getIcon('spinner-circle-light', Icons.sizes.small).then((spinner: string): void => {
       $toolbarItemIcon.replaceWith(spinner);
     });
 
-    (new AjaxRequest(TYPO3.settings.ajaxUrls.opendocs_menu)).get().then(async (response: AjaxResponse): Promise<any> => {
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.opendocs_menu)).get().then(async (response: AjaxResponse): Promise<void> => {
       $(Selectors.containerSelector).find(Selectors.menuContainerSelector).html(await response.resolve());
       OpendocsMenu.updateNumberOfDocs();
     }).finally((): void => {
@@ -91,7 +88,7 @@ class OpendocsMenu {
 
       ModuleStateStorage.updateWithCurrentMount('web', $entry.data('pid'), true);
       const router = document.querySelector('typo3-backend-module-router');
-      router.setAttribute('endpoint', $entry.attr('href'))
+      router.setAttribute('endpoint', $entry.attr('href'));
     });
   }
 
@@ -103,7 +100,7 @@ class OpendocsMenu {
     if (md5sum) {
       payload.md5sum = md5sum;
     }
-    (new AjaxRequest(TYPO3.settings.ajaxUrls.opendocs_closedoc)).post(payload).then(async (response: AjaxResponse): Promise<any> => {
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.opendocs_closedoc)).post(payload).then(async (response: AjaxResponse): Promise<void> => {
       $(Selectors.menuContainerSelector, Selectors.containerSelector).html(await response.resolve());
       OpendocsMenu.updateNumberOfDocs();
       // Re-open the menu after closing a document
@@ -117,11 +114,10 @@ class OpendocsMenu {
   private toggleMenu = (): void => {
     $('.scaffold').removeClass('scaffold-toolbar-expanded');
     $(Selectors.containerSelector).toggleClass('open');
-  }
+  };
 }
 
-let opendocsMenuObject: OpendocsMenu;
-opendocsMenuObject = new OpendocsMenu();
+const opendocsMenuObject = new OpendocsMenu();
 
 if (typeof TYPO3 !== 'undefined') {
   TYPO3.OpendocsMenu = opendocsMenuObject;

@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {LitElement} from 'lit';
-import {customElement, property} from 'lit/decorators';
+import { LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators';
 import FormEngine from '@typo3/backend/form-engine';
 
 enum UpdateMode {
@@ -27,21 +27,21 @@ const selectorConverter = {
 };
 
 @customElement('typo3-formengine-updater')
-class RequestUpdate extends LitElement {
-  @property({type: String, attribute: 'mode'}) mode: String = UpdateMode.ask;
+export class RequestUpdate extends LitElement {
+  @property({ type: String, attribute: 'mode' }) mode: string = UpdateMode.ask;
 
-  @property({attribute: 'field', converter: selectorConverter}) fields: NodeList;
+  @property({ attribute: 'field', converter: selectorConverter }) fields: NodeList;
 
   public connectedCallback(): void {
     super.connectedCallback();
-    for (let field of this.fields) {
+    for (const field of this.fields) {
       field.addEventListener('change', this.requestFormEngineUpdate);
     }
   }
 
   public disconnectedCallback(): void {
     super.disconnectedCallback();
-    for (let field of this.fields) {
+    for (const field of this.fields) {
       field.removeEventListener('change', this.requestFormEngineUpdate);
     }
   }
@@ -49,5 +49,5 @@ class RequestUpdate extends LitElement {
   private requestFormEngineUpdate = (): void => {
     const askForUpdate = this.mode === UpdateMode.ask;
     FormEngine.requestFormEngineUpdate(askForUpdate);
-  }
+  };
 }

@@ -11,17 +11,17 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {customElement, property} from 'lit/decorators';
-import {css, html, LitElement, TemplateResult} from 'lit';
+import { customElement, property } from 'lit/decorators';
+import { css, html, LitElement, TemplateResult } from 'lit';
 import './action';
-import {ResultItemActionInterface, ResultItemInterface} from '../item';
-import {Action} from './action';
+import { ResultItemActionInterface, ResultItemInterface } from '../item';
+import { Action } from './action';
 
 export const componentName = 'typo3-backend-live-search-result-item-action-container';
 
 @customElement(componentName)
 export class ActionContainer extends LitElement {
-  @property({type: Object, attribute: false}) resultItem: ResultItemInterface|null = null;
+  @property({ type: Object, attribute: false }) resultItem: ResultItemInterface|null = null;
 
   public createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
@@ -95,7 +95,7 @@ export class ActionList extends LitElement {
 
     let focusableCandidate;
     if (e.key === 'ArrowDown') {
-      focusableCandidate = document.activeElement.nextElementSibling
+      focusableCandidate = document.activeElement.nextElementSibling;
     } else if (e.key === 'ArrowUp') {
       focusableCandidate = document.activeElement.previousElementSibling;
     } else if (e.key === 'ArrowLeft') {

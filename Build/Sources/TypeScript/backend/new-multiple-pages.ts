@@ -73,7 +73,7 @@ class NewMultiplePages {
   }
 
   private actOnTypeSelectChange(this: HTMLSelectElement): void {
-    for (let option of this.options) {
+    for (const option of this.options) {
       option.removeAttribute('selected');
     }
     const optionElement: HTMLOptionElement = this.options[this.selectedIndex];

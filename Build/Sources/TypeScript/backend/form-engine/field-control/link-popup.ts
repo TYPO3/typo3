@@ -44,7 +44,7 @@ class LinkPopup {
       content: url,
       size: Modal.sizes.large,
     });
-  }
+  };
 }
 
 export default LinkPopup;

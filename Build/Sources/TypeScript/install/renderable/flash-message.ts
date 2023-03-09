@@ -21,7 +21,7 @@ class FlashMessage {
   private template: JQuery = $('<div class="t3js-message typo3-message alert"><h4></h4><p class="messageText"></p></div>');
 
   public render(severity: number, title: string, message?: string): JQuery {
-    let flashMessage = this.template.clone();
+    const flashMessage = this.template.clone();
     flashMessage.addClass('alert-' + Severity.getCssClass(severity));
     if (title) {
       flashMessage.find('h4').text(title);

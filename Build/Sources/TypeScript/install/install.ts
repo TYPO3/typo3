@@ -12,7 +12,6 @@
  */
 
 import DocumentService from '@typo3/core/document-service';
-import $ from 'jquery';
 import Router from './router';
 
 class Install {

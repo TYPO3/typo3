@@ -14,12 +14,13 @@
 import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import PasswordStrength from './module/password-strength';
 import InfoBox from './renderable/info-box';
 import ProgressBar from './renderable/progress-bar';
 import Severity from './renderable/severity';
 import '@typo3/backend/element/icon-element';
+import MessageInterface from '@typo3/install/message-interface';
 
 /**
  * Walk through the installation process of TYPO3
@@ -85,7 +86,7 @@ class Installer {
 
     // Database connect db driver selection
     $(document).on('change', '#t3js-connect-database-driver', (e: JQueryEventObject): void => {
-      let driver: string = $(e.currentTarget).val();
+      const driver: string = $(e.currentTarget).val();
       $('.t3-install-driver-data').hide();
       $('.t3-install-driver-data input').attr('disabled', 'disabled');
       $('#' + driver + ' input').attr('disabled', null);
@@ -108,7 +109,7 @@ class Installer {
   }
 
   private setProgress(done: number): void {
-    let $progressBar: JQuery = $(this.selectorProgressBar);
+    const $progressBar: JQuery = $(this.selectorProgressBar);
     let percent: number = 0;
     if (done !== 0) {
       percent = (done / 5) * 100;
@@ -122,8 +123,8 @@ class Installer {
 
   private getMainLayout(): void {
     (new AjaxRequest(this.getUrl('mainLayout')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         $(this.selectorBody).empty().append(data.html);
         this.checkInstallerAvailable();
@@ -132,8 +133,8 @@ class Installer {
 
   private checkInstallerAvailable(): void {
     (new AjaxRequest(this.getUrl('checkInstallerAvailable')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         data.success
           ? this.checkEnvironmentAndFolders()
@@ -142,10 +143,10 @@ class Installer {
   }
 
   private showInstallerNotAvailable(): void {
-    let $outputContainer: JQuery = $(this.selectorMainContent);
+    const $outputContainer: JQuery = $(this.selectorMainContent);
     (new AjaxRequest(this.getUrl('showInstallerNotAvailable')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           $outputContainer.empty().append(data.html);
@@ -156,8 +157,8 @@ class Installer {
   private checkEnvironmentAndFolders(): void {
     this.setProgress(1);
     (new AjaxRequest(this.getUrl('checkEnvironmentAndFolders')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           this.checkTrustedHostsPattern();
@@ -168,33 +169,33 @@ class Installer {
   }
 
   private showEnvironmentAndFolders(): void {
-    let $outputContainer: JQuery = $(this.selectorMainContent);
+    const $outputContainer: JQuery = $(this.selectorMainContent);
     (new AjaxRequest(this.getUrl('showEnvironmentAndFolders')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           $outputContainer.empty().html(data.html);
-          let $detailContainer: JQuery = $('.t3js-installer-environment-details');
+          const $detailContainer: JQuery = $('.t3js-installer-environment-details');
           let hasMessage: boolean = false;
           if (Array.isArray(data.environmentStatusErrors)) {
             data.environmentStatusErrors.forEach((element: any): void => {
               hasMessage = true;
-              let message: any = InfoBox.render(element.severity, element.title, element.message);
+              const message = InfoBox.render(element.severity, element.title, element.message);
               $detailContainer.append(message);
             });
           }
           if (Array.isArray(data.environmentStatusWarnings)) {
             data.environmentStatusWarnings.forEach((element: any): void => {
               hasMessage = true;
-              let message: any = InfoBox.render(element.severity, element.title, element.message);
+              const message = InfoBox.render(element.severity, element.title, element.message);
               $detailContainer.append(message);
             });
           }
           if (Array.isArray(data.structureErrors)) {
             data.structureErrors.forEach((element: any): void => {
               hasMessage = true;
-              let message: any = InfoBox.render(element.severity, element.title, element.message);
+              const message = InfoBox.render(element.severity, element.title, element.message);
               $detailContainer.append(message);
             });
           }
@@ -210,8 +211,8 @@ class Installer {
 
   private executeEnvironmentAndFolders(): void {
     (new AjaxRequest(this.getUrl('executeEnvironmentAndFolders')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           this.checkTrustedHostsPattern();
@@ -223,8 +224,8 @@ class Installer {
 
   private checkTrustedHostsPattern(): void {
     (new AjaxRequest(this.getUrl('checkTrustedHostsPattern')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           this.executeSilentConfigurationUpdate();
@@ -236,7 +237,7 @@ class Installer {
 
   private executeAdjustTrustedHostsPattern(): void {
     (new AjaxRequest(this.getUrl('executeAdjustTrustedHostsPattern')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then((): void => {
         this.executeSilentConfigurationUpdate();
       });
@@ -244,8 +245,8 @@ class Installer {
 
   private executeSilentConfigurationUpdate(): void {
     (new AjaxRequest(this.getUrl('executeSilentConfigurationUpdate')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           this.executeSilentTemplateFileUpdate();
@@ -257,8 +258,8 @@ class Installer {
 
   private executeSilentTemplateFileUpdate(): void {
     (new AjaxRequest(this.getUrl('executeSilentTemplateFileUpdate')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           this.checkDatabaseConnect();
@@ -271,8 +272,8 @@ class Installer {
   private checkDatabaseConnect(): void {
     this.setProgress(2);
     (new AjaxRequest(this.getUrl('checkDatabaseConnect')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           this.checkDatabaseSelect();
@@ -283,10 +284,10 @@ class Installer {
   }
 
   private showDatabaseConnect(): void {
-    let $outputContainer: JQuery = $(this.selectorMainContent);
+    const $outputContainer: JQuery = $(this.selectorMainContent);
     (new AjaxRequest(this.getUrl('showDatabaseConnect')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           $outputContainer.empty().html(data.html);
@@ -296,25 +297,25 @@ class Installer {
   }
 
   private executeDatabaseConnect(): void {
-    let $outputContainer: JQuery = $(this.selectorDatabaseConnectOutput);
-    let postData: any = {
+    const $outputContainer: JQuery = $(this.selectorDatabaseConnectOutput);
+    const postData: Record<string, string> = {
       'install[action]': 'executeDatabaseConnect',
       'install[token]': $(this.selectorModuleContent).data('installer-database-connect-execute-token'),
     };
-    for (let element of $(this.selectorBody + ' form').serializeArray()) {
+    for (const element of $(this.selectorBody + ' form').serializeArray()) {
       postData[element.name] = element.value;
     }
     (new AjaxRequest(this.getUrl()))
       .post(postData)
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           this.checkDatabaseSelect();
         } else {
           if (Array.isArray(data.status)) {
             $outputContainer.empty();
-            data.status.forEach((element: any): void => {
-              let message: any = InfoBox.render(element.severity, element.title, element.message);
+            data.status.forEach((element: MessageInterface): void => {
+              const message = InfoBox.render(element.severity, element.title, element.message);
               $outputContainer.append(message);
             });
           }
@@ -325,8 +326,8 @@ class Installer {
   private checkDatabaseSelect(): void {
     this.setProgress(3);
     (new AjaxRequest(this.getUrl('checkDatabaseSelect')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           this.checkDatabaseData();
@@ -337,10 +338,10 @@ class Installer {
   }
 
   private showDatabaseSelect(): void {
-    let $outputContainer: JQuery = $(this.selectorMainContent);
+    const $outputContainer: JQuery = $(this.selectorMainContent);
     (new AjaxRequest(this.getUrl('showDatabaseSelect')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           $outputContainer.empty().html(data.html);
@@ -349,24 +350,24 @@ class Installer {
   }
 
   private executeDatabaseSelect(): void {
-    let $outputContainer: JQuery = $(this.selectorDatabaseSelectOutput);
-    let postData: { [id: string]: string } = {
+    const $outputContainer: JQuery = $(this.selectorDatabaseSelectOutput);
+    const postData: { [id: string]: string } = {
       'install[action]': 'executeDatabaseSelect',
       'install[token]': $(this.selectorModuleContent).data('installer-database-select-execute-token'),
     };
-    for (let element of $(this.selectorBody + ' form').serializeArray()) {
+    for (const element of $(this.selectorBody + ' form').serializeArray()) {
       postData[element.name] = element.value;
     }
     (new AjaxRequest(this.getUrl()))
       .post(postData)
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           this.checkDatabaseRequirements();
         } else {
           if (Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
-              let message: any = InfoBox.render(element.severity, element.title, element.message);
+            data.status.forEach((element: MessageInterface): void => {
+              const message = InfoBox.render(element.severity, element.title, element.message);
               $outputContainer.empty().append(message);
             });
           }
@@ -375,25 +376,25 @@ class Installer {
   }
 
   private checkDatabaseRequirements(): void {
-    let $outputContainer: JQuery = $(this.selectorDatabaseSelectOutput);
-    let postData: any = {
+    const $outputContainer: JQuery = $(this.selectorDatabaseSelectOutput);
+    const postData: Record<string, string> = {
       'install[action]': 'checkDatabaseRequirements',
       'install[token]': $(this.selectorModuleContent).data('installer-database-check-requirements-execute-token'),
     };
-    for (let element of $(this.selectorBody + ' form').serializeArray()) {
+    for (const element of $(this.selectorBody + ' form').serializeArray()) {
       postData[element.name] = element.value;
     }
     (new AjaxRequest(this.getUrl()))
       .post(postData)
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           this.checkDatabaseData();
         } else {
           if (Array.isArray(data.status)) {
             $outputContainer.empty();
-            data.status.forEach((element: any): void => {
-              let message: any = InfoBox.render(element.severity, element.title, element.message);
+            data.status.forEach((element: MessageInterface): void => {
+              const message = InfoBox.render(element.severity, element.title, element.message);
               $outputContainer.append(message);
             });
           }
@@ -404,8 +405,8 @@ class Installer {
   private checkDatabaseData(): void {
     this.setProgress(4);
     (new AjaxRequest(this.getUrl('checkDatabaseData')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           this.showDefaultConfiguration();
@@ -416,10 +417,10 @@ class Installer {
   }
 
   private showDatabaseData(): void {
-    let $outputContainer: JQuery = $(this.selectorMainContent);
+    const $outputContainer: JQuery = $(this.selectorMainContent);
     (new AjaxRequest(this.getUrl('showDatabaseData')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           $outputContainer.empty().html(data.html);
@@ -428,28 +429,28 @@ class Installer {
   }
 
   private executeDatabaseData(): void {
-    let $outputContainer: JQuery = $(this.selectorDatabaseDataOutput);
-    let postData: any = {
+    const $outputContainer: JQuery = $(this.selectorDatabaseDataOutput);
+    const postData: Record<string, string> = {
       'install[action]': 'executeDatabaseData',
       'install[token]': $(this.selectorModuleContent).data('installer-database-data-execute-token'),
     };
-    for (let element of $(this.selectorBody + ' form').serializeArray()) {
+    for (const element of $(this.selectorBody + ' form').serializeArray()) {
       postData[element.name] = element.value;
     }
-    let message: any = ProgressBar.render(Severity.loading, 'Loading...', '');
-    $outputContainer.empty().html(message);
+    const message: JQuery = ProgressBar.render(Severity.loading, 'Loading...', '');
+    $outputContainer.empty().append(message);
     (new AjaxRequest(this.getUrl()))
       .post(postData)
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           this.showDefaultConfiguration();
         } else {
           if (Array.isArray(data.status)) {
             $outputContainer.empty();
-            data.status.forEach((element: any): void => {
-              let m: any = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.append(m);
+            data.status.forEach((element: MessageInterface): void => {
+              const message = InfoBox.render(element.severity, element.title, element.message);
+              $outputContainer.append(message);
             });
           }
         }
@@ -457,11 +458,11 @@ class Installer {
   }
 
   private showDefaultConfiguration(): void {
-    let $outputContainer: JQuery = $(this.selectorMainContent);
+    const $outputContainer: JQuery = $(this.selectorMainContent);
     this.setProgress(5);
     (new AjaxRequest(this.getUrl('showDefaultConfiguration')))
-      .get({cache: 'no-cache'})
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .get({ cache: 'no-cache' })
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           $outputContainer.empty().html(data.html);
@@ -470,16 +471,16 @@ class Installer {
   }
 
   private executeDefaultConfiguration(): void {
-    let postData: any = {
+    const postData: Record<string, string> = {
       'install[action]': 'executeDefaultConfiguration',
       'install[token]': $(this.selectorModuleContent).data('installer-default-configuration-execute-token'),
     };
-    for (let element of $(this.selectorBody + ' form').serializeArray()) {
+    for (const element of $(this.selectorBody + ' form').serializeArray()) {
       postData[element.name] = element.value;
     }
     (new AjaxRequest(this.getUrl()))
       .post(postData)
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         top.location.href = data.redirect;
       });

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {GridEditor} from '@typo3/backend/grid-editor';
+import { GridEditor } from '@typo3/backend/grid-editor';
 
 describe('TYPO3/CMS/Backend/GridEditorTest:', () => {
 

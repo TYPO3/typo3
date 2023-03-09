@@ -11,19 +11,19 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {Modal as BootstrapModal} from 'bootstrap';
-import {html, nothing, LitElement, TemplateResult} from 'lit';
-import {customElement, property, state} from 'lit/decorators';
-import {unsafeHTML} from 'lit/directives/unsafe-html';
-import {classMap, ClassInfo} from 'lit/directives/class-map';
-import {styleMap, StyleInfo} from 'lit/directives/style-map';
-import {ifDefined} from 'lit/directives/if-defined';
-import {classesArrayToClassInfo} from '@typo3/core/lit-helper';
+import { Modal as BootstrapModal } from 'bootstrap';
+import { html, nothing, LitElement, TemplateResult, PropertyValues } from 'lit';
+import { customElement, property, state } from 'lit/decorators';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { classMap, ClassInfo } from 'lit/directives/class-map';
+import { styleMap, StyleInfo } from 'lit/directives/style-map';
+import { ifDefined } from 'lit/directives/if-defined';
+import { classesArrayToClassInfo } from '@typo3/core/lit-helper';
 import RegularEvent from '@typo3/core/event/regular-event';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractAction} from './action-button/abstract-action';
-import {ModalResponseEvent} from '@typo3/backend/modal-interface';
-import {SeverityEnum} from './enum/severity';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractAction } from './action-button/abstract-action';
+import { ModalResponseEvent } from '@typo3/backend/modal-interface';
+import { SeverityEnum } from './enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Severity from './severity';
 import '@typo3/backend/element/icon-element';
@@ -60,11 +60,6 @@ export enum Types {
 
 type ModalCallbackFunction = (modal: ModalElement) => void;
 
-export enum PostActionModalBehavior {
-  KEEP_OPEN,
-  CLOSE
-}
-
 export interface Button {
   text: string;
   active?: boolean;
@@ -94,16 +89,16 @@ type PartialConfiguration = Partial<Omit<Configuration, 'buttons'> & { buttons: 
 
 @customElement('typo3-backend-modal')
 export class ModalElement extends LitElement {
-  @property({type: String, reflect: true}) modalTitle: string = '';
-  @property({type: String, reflect: true}) content: string = '';
-  @property({type: String, reflect: true}) type: Types = Types.default;
-  @property({type: String, reflect: true}) severity: SeverityEnum = SeverityEnum.notice;
-  @property({type: String, reflect: true}) variant: Styles = Styles.default;
-  @property({type: String, reflect: true}) size: Sizes = Sizes.default;
-  @property({type: Number, reflect: true}) zindex: Number = 5000;
-  @property({type: Boolean}) staticBackdrop: boolean = false;
-  @property({type: Array}) additionalCssClasses: Array<string> = [];
-  @property({type: Array, attribute: false}) buttons: Array<Button> = [];
+  @property({ type: String, reflect: true }) modalTitle: string = '';
+  @property({ type: String, reflect: true }) content: string = '';
+  @property({ type: String, reflect: true }) type: Types = Types.default;
+  @property({ type: String, reflect: true }) severity: SeverityEnum = SeverityEnum.notice;
+  @property({ type: String, reflect: true }) variant: Styles = Styles.default;
+  @property({ type: String, reflect: true }) size: Sizes = Sizes.default;
+  @property({ type: Number, reflect: true }) zindex: number = 5000;
+  @property({ type: Boolean }) staticBackdrop: boolean = false;
+  @property({ type: Array }) additionalCssClasses: Array<string> = [];
+  @property({ type: Array, attribute: false }) buttons: Array<Button> = [];
 
   @state() templateResultContent: TemplateResult | JQuery | Element | DocumentFragment = null;
   @state() activeButton: Button = null;
@@ -111,6 +106,7 @@ export class ModalElement extends LitElement {
   public bootstrapModal: BootstrapModal = null;
   public callback: ModalCallbackFunction = null;
   public ajaxCallback: ModalCallbackFunction = null;
+
   public userData: { [key: string]: any } = {};
 
   public setContent(content: TemplateResult | JQuery | Element | DocumentFragment): void {
@@ -136,9 +132,9 @@ export class ModalElement extends LitElement {
     }
   }
 
-  protected updated(changedProperties: Map<string, any>) {
+  protected updated(changedProperties: PropertyValues) {
     if (changedProperties.has('templateResultContent')) {
-      this.dispatchEvent(new CustomEvent('modal-updated', {bubbles: true}));
+      this.dispatchEvent(new CustomEvent('modal-updated', { bubbles: true }));
     }
   }
 
@@ -191,23 +187,11 @@ export class ModalElement extends LitElement {
     const buttonElement = event.currentTarget as HTMLButtonElement;
     if (button.action) {
       this.activeButton = button;
-      button.action.execute(buttonElement).then((postActionBehavior: PostActionModalBehavior = PostActionModalBehavior.CLOSE): void => {
-        this.activeButton = null;
-
-        // Safety-net if 3rd party code doesn't provide a valid PostActionModalBehavior
-        const isValidEnumValue = Object.values(PostActionModalBehavior).includes(postActionBehavior as unknown as string);
-        if (!isValidEnumValue) {
-          console.warn(`postActionBehavior ${postActionBehavior} provided but expected any of ${Object.values(PostActionModalBehavior).join(',')}. Falling back to PostActionModalBehavior.CLOSE`);
-          postActionBehavior = PostActionModalBehavior.CLOSE;
-        }
-        if (postActionBehavior === PostActionModalBehavior.CLOSE) {
-          this.bootstrapModal.hide();
-        }
-      });
+      button.action.execute(buttonElement).then((): void => this.bootstrapModal.hide());
     } else if (button.trigger) {
       button.trigger(event, this);
     }
-    buttonElement.dispatchEvent(new CustomEvent('button.clicked', {bubbles: true}));
+    buttonElement.dispatchEvent(new CustomEvent('button.clicked', { bubbles: true }));
   }
 
   private renderAjaxBody(): TemplateResult {
@@ -280,7 +264,7 @@ export class ModalElement extends LitElement {
   }
 
   private trigger(event: string): void {
-    this.dispatchEvent(new CustomEvent(event, {bubbles: true, composed: true}));
+    this.dispatchEvent(new CustomEvent(event, { bubbles: true, composed: true }));
   }
 }
 
@@ -290,9 +274,9 @@ export class ModalElement extends LitElement {
  */
 class Modal {
   // @todo: drop? available as named exports
-  public readonly sizes: any = Sizes;
-  public readonly styles: any = Styles;
-  public readonly types: any = Types;
+  public readonly sizes: typeof Sizes = Sizes;
+  public readonly styles: typeof Styles = Styles;
+  public readonly types: typeof Types = Types;
 
   // @todo: currentModal could be a getter method for the last element in this.instances
   public currentModal: ModalElement = null;
@@ -312,6 +296,10 @@ class Modal {
     staticBackdrop: false
   };
 
+  constructor() {
+    this.initializeMarkupTrigger(document);
+  }
+
   private static createModalResponseEventFromElement(element: HTMLElement, result: boolean): ModalResponseEvent | null {
     if (!element.dataset.eventName) {
       return null;
@@ -321,10 +309,6 @@ class Modal {
         bubbles: true,
         detail: { result, payload: element.dataset.eventPayload || null }
       });
-  }
-
-  constructor() {
-    this.initializeMarkupTrigger(document);
   }
 
   /**
@@ -384,9 +368,9 @@ class Modal {
     modal.addEventListener('button.clicked', (e: Event): void => {
       const button = e.target as HTMLButtonElement;
       if (button.getAttribute('name') === 'cancel') {
-        button.dispatchEvent(new CustomEvent('confirm.button.cancel', {bubbles: true}));
+        button.dispatchEvent(new CustomEvent('confirm.button.cancel', { bubbles: true }));
       } else if (button.getAttribute('name') === 'ok') {
-        button.dispatchEvent(new CustomEvent('confirm.button.ok', {bubbles: true}));
+        button.dispatchEvent(new CustomEvent('confirm.button.ok', { bubbles: true }));
       }
     });
 
@@ -493,20 +477,20 @@ class Modal {
    *
    * @param {HTMLDocument} theDocument
    */
-  private initializeMarkupTrigger(theDocument: HTMLDocument): void {
+  private initializeMarkupTrigger(theDocument: Document): void {
     const modalTrigger = (evt: Event, triggerElement: HTMLElement): void => {
       evt.preventDefault();
       const content = triggerElement.dataset.bsContent || TYPO3.lang['message.confirmation'] || 'Are you sure?';
       let severity = SeverityEnum.info;
-      if (<any>triggerElement.dataset.severity in SeverityEnum) {
-        const severityKey: keyof typeof SeverityEnum = <any>triggerElement.dataset.severity;
+      if (triggerElement.dataset.severity in SeverityEnum) {
+        const severityKey = triggerElement.dataset.severity as keyof typeof SeverityEnum;
         severity = SeverityEnum[severityKey];
       }
       let url = triggerElement.dataset.url || null;
       if (url !== null) {
         const separator = url.includes('?') ? '&' : '?';
         const params = new URLSearchParams(triggerElement.dataset).toString();
-        url = url + separator + params
+        url = url + separator + params;
       }
       this.advanced({
         type: url !== null ? Types.ajax : Types.default,
@@ -536,7 +520,7 @@ class Modal {
               if (event !== null) {
                 triggerElement.dispatchEvent(event);
               }
-              let targetLocation = triggerElement.dataset.uri || triggerElement.dataset.href || triggerElement.getAttribute('href');
+              const targetLocation = triggerElement.dataset.uri || triggerElement.dataset.href || triggerElement.getAttribute('href');
               if (targetLocation && targetLocation !== '#') {
                 triggerElement.ownerDocument.location.href = targetLocation;
               }
@@ -613,7 +597,7 @@ class Modal {
       }
     });
 
-    currentModal.addEventListener('typo3-modal-hidden', (e: Event): void => {
+    currentModal.addEventListener('typo3-modal-hidden', (): void => {
       currentModal.remove();
       // Keep class modal-open on body tag as long as open modals exist
       if (this.instances.length > 0) {

@@ -11,11 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, TemplateResult} from 'lit';
-import {renderNodes} from '@typo3/core/lit-helper';
+import { html, TemplateResult } from 'lit';
+import { renderNodes } from '@typo3/core/lit-helper';
 import * as d3drag from 'd3-drag';
-import {SvgTree} from '../svg-tree';
-import {TreeNode} from '@typo3/backend/tree/tree-node';
+import { SvgTree } from '../svg-tree';
+import { TreeNode } from '@typo3/backend/tree/tree-node';
 
 /**
  * Contains basic types for allowing dragging + dropping in trees
@@ -69,16 +69,16 @@ export class DragDrop {
   private timeout: any = {};
   private minimalDistance: number = 10;
 
+  constructor(svgTree: SvgTree) {
+    this.tree = svgTree;
+  }
+
   public static setDragStart(): void {
     document.querySelectorAll('iframe').forEach((htmlElement: HTMLIFrameElement) => htmlElement.style.pointerEvents = 'none' );
   }
 
   public static setDragEnd(): void {
     document.querySelectorAll('iframe').forEach((htmlElement: HTMLIFrameElement) => htmlElement.style.pointerEvents = '' );
-  }
-
-  constructor(svgTree: SvgTree) {
-    this.tree = svgTree;
   }
 
   /**
@@ -92,7 +92,7 @@ export class DragDrop {
       .clickDistance(5)
       .on('start', function(evt: d3drag.D3DragEvent<any, any, any>) { dragHandler.onDragStart(evt.sourceEvent, evt.subject) && DragDrop.setDragStart(); })
       .on('drag', function(evt: d3drag.D3DragEvent<any, any, any>) { dragHandler.onDragOver(evt.sourceEvent, evt.subject); })
-      .on('end', function(evt: d3drag.D3DragEvent<any, any, any>) { DragDrop.setDragEnd(); dragHandler.onDrop(evt.sourceEvent, evt.subject); })
+      .on('end', function(evt: d3drag.D3DragEvent<any, any, any>) { DragDrop.setDragEnd(); dragHandler.onDrop(evt.sourceEvent, evt.subject); });
   }
 
   /**
@@ -100,7 +100,7 @@ export class DragDrop {
    */
   public createDraggable(icon: string, name: string)
   {
-    let svg = this.tree.svg.node() as SVGElement;
+    const svg = this.tree.svg.node() as SVGElement;
     const draggable = renderNodes(DraggableTemplate.get(icon, name));
     svg.after(...draggable);
     this.tree.svg.node().querySelector('.nodes-wrapper')?.classList.add('nodes-wrapper--dragging');
@@ -122,7 +122,7 @@ export class DragDrop {
    */
   public getDraggable(): HTMLElement|null
   {
-    let draggable = this.tree.svg.node().parentNode.querySelector('.node-dd') as HTMLElement;
+    const draggable = this.tree.svg.node().parentNode.querySelector('.node-dd') as HTMLElement;
     return draggable || null;
   }
 
@@ -194,7 +194,7 @@ export class DragDrop {
    */
   public createPositioningLine(): void
   {
-    let nodeBgBorder = this.tree.nodesBgContainer.selectAll('.node-bg__border');
+    const nodeBgBorder = this.tree.nodesBgContainer.selectAll('.node-bg__border');
     if (nodeBgBorder.empty()) {
       this.tree.nodesBgContainer
         .append('rect')

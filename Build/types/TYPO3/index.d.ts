@@ -69,15 +69,8 @@ declare module '@typo3/ckeditor5-bundle' {
 // type definition for global namespace object
 interface Window {
   TYPO3: any;
-  $: any; // only required in ImageManipulation.ts
   require: Function;
   list_frame: Window;
-  jump: Function;
-
-  // required for Paste.ts
-  // TODO these should be passed as data attributes
-  pasteAfterLinkTemplate: string;
-  pasteIntoLinkTemplate: string;
 }
 
 /**
@@ -102,20 +95,4 @@ interface Taboverride {
 declare module 'taboverride' {
   const _exported: Taboverride;
   export default _exported;
-}
-
-interface JQueryTypedEvent<T extends Event> extends JQueryEventObject {
-  originalEvent: T;
-}
-
-/**
- * Required to make jQuery plugins "available" in TypeScript
- */
-interface JQuery {
-  dragUploader(options?: any): JQuery;
-  disablePagingAction(): void;
-}
-
-interface JQueryStatic {
-  escapeSelector(selector: string): string;
 }

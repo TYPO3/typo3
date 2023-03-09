@@ -12,7 +12,7 @@
  */
 
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Icons from '../icons';
 import PersistentStorage from '../storage/persistent';
@@ -50,8 +50,14 @@ interface SystemInformationMessageData {
 class SystemInformationMenu {
   private timer: number = null;
 
+  constructor() {
+    new RegularEvent('click', this.handleMessageLinkClick)
+      .delegateTo(document, SystemInformationSelector.messageLink);
+    Viewport.Topbar.Toolbar.registerEvent(this.updateMenu);
+  }
+
   private static getData(): SystemInformationData {
-    const element = document.querySelector(SystemInformationSelector.data) as HTMLElement
+    const element = document.querySelector(SystemInformationSelector.data) as HTMLElement;
     const data: DOMStringMap = element.dataset;
     return {
       count: data.systeminformationDataCount ? parseInt(data.systeminformationDataCount, 10) : 0,
@@ -86,12 +92,6 @@ class SystemInformationMenu {
     element.classList.toggle('hidden', !(data.count > 0));
   }
 
-  constructor() {
-    new RegularEvent('click', this.handleMessageLinkClick)
-      .delegateTo(document, SystemInformationSelector.messageLink);
-    Viewport.Topbar.Toolbar.registerEvent(this.updateMenu);
-  }
-
   private updateMenu = (): void => {
     const toolbarItemIcon = document.querySelector(SystemInformationSelector.icon);
     const currentIcon = toolbarItemIcon.cloneNode(true);
@@ -105,7 +105,7 @@ class SystemInformationMenu {
       toolbarItemIcon.replaceWith(document.createRange().createContextualFragment(spinner));
     });
 
-    (new AjaxRequest(TYPO3.settings.ajaxUrls.systeminformation_render)).get().then(async (response: AjaxResponse): Promise<any> => {
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.systeminformation_render)).get().then(async (response: AjaxResponse): Promise<void> => {
       document.querySelector(SystemInformationSelector.menu).innerHTML = await response.resolve();
       SystemInformationMenu.updateBadge();
     }).finally((): void => {
@@ -113,7 +113,7 @@ class SystemInformationMenu {
       // reload error data every five minutes
       this.timer = setTimeout(this.updateMenu, 1000 * 300);
     });
-  }
+  };
 
   /**
    * Updates the UC and opens the linked module

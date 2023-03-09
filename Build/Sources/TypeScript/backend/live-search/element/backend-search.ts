@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {customElement} from 'lit/decorators';
-import {html, LitElement} from 'lit';
+import { customElement } from 'lit/decorators';
+import { LitElement } from 'lit';
 
 /**
  * Module: @typo3/backend/live-search/element/backend-search

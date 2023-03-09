@@ -12,8 +12,8 @@
  */
 
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import FlashMessage from '../../renderable/flash-message';
@@ -21,6 +21,7 @@ import InfoBox from '../../renderable/info-box';
 import ProgressBar from '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
+import MessageInterface from '@typo3/install/message-interface';
 
 /**
  * Module: @typo3/install/module/tca-migrations-check
@@ -43,25 +44,25 @@ class TcaMigrationsCheck extends AbstractInteractableModule {
 
     const $outputContainer: JQuery = $(this.selectorOutputContainer);
     const modalContent: JQuery = this.getModalBody();
-    const message: any = ProgressBar.render(Severity.loading, 'Loading...', '');
-    $outputContainer.empty().html(message);
+    const message: JQuery = ProgressBar.render(Severity.loading, 'Loading...', '');
+    $outputContainer.empty().append(message);
     (new AjaxRequest(Router.getUrl('tcaMigrationsCheck')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           modalContent.empty().append(data.html);
           Modal.setButtons(data.buttons);
           if (data.success === true && Array.isArray(data.status)) {
             if (data.status.length > 0) {
-              const m: any = InfoBox.render(
+              const m = InfoBox.render(
                 Severity.warning,
                 'TCA migrations need to be applied',
                 'Check the following list and apply needed changes.',
               );
               modalContent.find(this.selectorOutputContainer).empty();
               modalContent.find(this.selectorOutputContainer).append(m);
-              data.status.forEach((element: any): void => {
+              data.status.forEach((element: MessageInterface): void => {
                 const m2 = InfoBox.render(element.severity, element.title, element.message);
                 modalContent.find(this.selectorOutputContainer).append(m2);
               });

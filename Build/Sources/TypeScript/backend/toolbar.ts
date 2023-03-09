@@ -34,7 +34,7 @@ class Toolbar {
     new RegularEvent('click', (): void => {
       const scaffold = document.querySelector('.scaffold');
       scaffold.classList.remove('scaffold-modulemenu-expanded', 'scaffold-toolbar-expanded');
-    }).bindTo(document.querySelector('.t3js-topbar-button-search'))
+    }).bindTo(document.querySelector('.t3js-topbar-button-search'));
   }
 }
 

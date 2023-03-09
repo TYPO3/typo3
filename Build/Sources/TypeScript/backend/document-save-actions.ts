@@ -19,18 +19,18 @@ class DocumentSaveActions {
   private static instance: DocumentSaveActions = null;
   private preSubmitCallbacks: Array<Function> = [];
 
+  private constructor() {
+    DocumentService.ready().then((): void => {
+      this.initializeSaveHandling();
+    });
+  }
+
   public static getInstance(): DocumentSaveActions {
     if (DocumentSaveActions.instance === null) {
       DocumentSaveActions.instance = new DocumentSaveActions();
     }
 
     return DocumentSaveActions.instance;
-  }
-
-  private constructor() {
-    DocumentService.ready().then((): void => {
-      this.initializeSaveHandling();
-    });
   }
 
   /**
@@ -72,7 +72,7 @@ class DocumentSaveActions {
         const $elem = $('<input />').attr('type', 'hidden').attr('name', name).attr('value', value);
 
         // Run any preSubmit callbacks
-        for (let callback of this.preSubmitCallbacks) {
+        for (const callback of this.preSubmitCallbacks) {
           callback(e);
 
           if (e.isPropagationStopped()) {
@@ -101,7 +101,7 @@ class DocumentSaveActions {
 
           Icons.getIcon('spinner-circle-dark', Icons.sizes.small).then((markup: string): void => {
             $affectedButton.find('.t3js-icon').replaceWith(markup);
-          }).catch((e) => {
+          }).catch(() => {
             // Catch error in case the promise was not resolved
             // e.g. loading a new page
           });

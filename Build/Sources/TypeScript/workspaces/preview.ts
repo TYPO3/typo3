@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {SeverityEnum} from '@typo3/backend/enum/severity';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
 import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import Modal from '@typo3/backend/modal';
@@ -42,6 +42,16 @@ class Preview extends Workspaces {
   private currentSlidePosition: number = 100;
   private elements: { [key: string]: JQuery } = {};
 
+  constructor() {
+    super();
+
+    DocumentService.ready().then((): void => {
+      this.getElements();
+      this.resizeViews();
+      this.registerEvents();
+    });
+  }
+
   /**
    * Calculate the available space based on the viewport height
    *
@@ -52,16 +62,6 @@ class Preview extends Workspaces {
     const $topbarHeight = $(Identifiers.topbar).outerHeight();
 
     return $viewportHeight - $topbarHeight;
-  }
-
-  constructor() {
-    super();
-
-    DocumentService.ready().then((): void => {
-      this.getElements();
-      this.resizeViews();
-      this.registerEvents();
-    });
   }
 
   /**
@@ -117,7 +117,7 @@ class Preview extends Workspaces {
   private updateSlidePosition = (e: Event): void => {
     this.currentSlidePosition = parseInt((e.target as HTMLInputElement).value, 10);
     this.resizeViews();
-  }
+  };
 
   /**
    * Resize the views based on the current viewport height and slider position
@@ -173,7 +173,7 @@ class Preview extends Workspaces {
         });
       }
     });
-  }
+  };
 
   /**
    * Renders the "send page to stage" window
@@ -215,7 +215,7 @@ class Preview extends Workspaces {
         }
       });
     });
-  }
+  };
 
   /**
    * Changes the preview mode
@@ -246,7 +246,7 @@ class Preview extends Workspaces {
         this.elements.$liveView.height('50%');
       }
     }
-  }
+  };
 }
 
 export default new Preview();

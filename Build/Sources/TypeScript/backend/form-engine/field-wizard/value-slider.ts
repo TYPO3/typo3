@@ -43,7 +43,7 @@ export class ValueSlider extends HTMLElement {
     const target = e.target as HTMLInputElement;
     this.updateValue(target);
     this.updateTooltipValue(target);
-  }
+  };
 
   /**
    * Update value of slider element
@@ -53,7 +53,7 @@ export class ValueSlider extends HTMLElement {
   private updateValue(element: HTMLInputElement): void {
     const foreignField = document.querySelector(this.getAttribute('linked-field')) as HTMLInputElement;
     foreignField.value = element.value;
-    foreignField.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
+    foreignField.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
   }
 
   /**

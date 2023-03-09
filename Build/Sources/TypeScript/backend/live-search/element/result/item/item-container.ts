@@ -13,12 +13,12 @@
 
 import '@typo3/backend/element/spinner-element';
 import LiveSearchConfigurator from '@typo3/backend/live-search/live-search-configurator';
-import {css, html, LitElement, TemplateResult} from 'lit';
-import {customElement, property} from 'lit/decorators';
-import {until} from 'lit/directives/until';
+import { css, html, LitElement, TemplateResult } from 'lit';
+import { customElement, property } from 'lit/decorators';
+import { until } from 'lit/directives/until';
 import '../../provider/default-result-item';
 import './item';
-import {Item, ResultItemActionInterface, ResultItemInterface} from './item';
+import { Item, ResultItemActionInterface, ResultItemInterface } from './item';
 
 type GroupedResultItems = { [key: string ]: ResultItemInterface[] };
 
@@ -26,7 +26,7 @@ export const componentName = 'typo3-backend-live-search-result-item-container';
 
 @customElement(componentName)
 export class ItemContainer extends LitElement {
-  @property({type: Object, attribute: false}) results: ResultItemInterface[]|null = null;
+  @property({ type: Object, attribute: false }) results: ResultItemInterface[]|null = null;
 
   public connectedCallback(): void {
     super.connectedCallback();
@@ -60,8 +60,8 @@ export class ItemContainer extends LitElement {
 
   private renderGroupedResults(groupedResults: GroupedResultItems): TemplateResult {
     const items = [];
-    for (let [type, results] of Object.entries(groupedResults)) {
-      let countElements = results.length;
+    for (const [type, results] of Object.entries(groupedResults)) {
+      const countElements = results.length;
       items.push(html`<h6 class="livesearch-result-item-group-label">${type} (${countElements})</h6>`);
       items.push(...results.map((result: ResultItemInterface) => html`${until(
         this.renderResultItem(result),
@@ -69,7 +69,7 @@ export class ItemContainer extends LitElement {
       )}`));
     }
 
-    return html`${items}`
+    return html`${items}`;
   }
 
   private async renderResultItem(resultItem: ResultItemInterface): Promise<TemplateResult> {

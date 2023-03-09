@@ -38,8 +38,8 @@ class DatetimeElement extends HTMLElement {
     }
 
     this.registerEventHandler();
-    import('../../date-time-picker').then(({default: DateTimePicker}): void => {
-      DateTimePicker.initialize(this.element)
+    import('../../date-time-picker').then(({ default: DateTimePicker }): void => {
+      DateTimePicker.initialize(this.element);
     });
   }
 

@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {ScaffoldIdentifierEnum} from '../enum/viewport/scaffold-identifier';
-import {AbstractContainer} from './abstract-container';
+import { ScaffoldIdentifierEnum } from '../enum/viewport/scaffold-identifier';
+import { AbstractContainer } from './abstract-container';
 import $ from 'jquery';
 import ClientRequest from '../event/client-request';
 import InteractionRequest from '../event/interaction-request';

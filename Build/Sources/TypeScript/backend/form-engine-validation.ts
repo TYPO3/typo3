@@ -17,7 +17,7 @@
  * @internal
  */
 import $ from 'jquery';
-import {DateTime} from 'luxon';
+import { DateTime } from 'luxon';
 import Md5 from '@typo3/backend/hashing/md5';
 import DocumentSaveActions from '@typo3/backend/document-save-actions';
 import Modal from '@typo3/backend/modal';
@@ -136,15 +136,10 @@ export default (function() {
     if (!customEvaluations.has(name)) {
       customEvaluations.set(name, handler);
     }
-  }
+  };
 
   /**
    * Format field value
-   *
-   * @param {String} type
-   * @param {String|Number} value
-   * @param {Object} config
-   * @returns {String}
    */
   FormEngineValidation.formatValue = function(type: string, value: string|number, config: Object): string {
     let theString = '';
@@ -154,11 +149,10 @@ export default (function() {
       case 'date':
         // poor man’s ISO-8601 detection: if we have a "-" in it, it apparently is not an integer.
         if (value.toString().indexOf('-') > 0) {
-          const date = DateTime.fromISO(value.toString(), {zone: 'utc'});
+          const date = DateTime.fromISO(value.toString(), { zone: 'utc' });
           theString = date.toFormat('dd-MM-yyyy');
         } else {
-          // @ts-ignore
-          parsedInt = value * 1;
+          parsedInt = parseInt(value.toString(), 10);
           if (!parsedInt) {
             return '';
           }
@@ -180,14 +174,14 @@ export default (function() {
       case 'timesec':
         let dateValue;
         if (value.toString().indexOf('-') > 0) {
-          dateValue = DateTime.fromISO(value.toString(), {zone: 'utc'});
+          dateValue = DateTime.fromISO(value.toString(), { zone: 'utc' });
         } else {
           // eslint-disable-next-line radix
           parsedInt = typeof value === 'number' ? value : parseInt(value);
           if (!parsedInt && value.toString() !== '0') {
             return '';
           }
-          dateValue = DateTime.fromSeconds(parsedInt, {zone: 'utc'});
+          dateValue = DateTime.fromSeconds(parsedInt, { zone: 'utc' });
         }
         if (type === 'timesec') {
           theString = dateValue.toFormat('HH:mm:ss');
@@ -199,8 +193,7 @@ export default (function() {
         theString = (value) ? FormEngineValidation.passwordDummy : '';
         break;
       default:
-        // @ts-ignore
-        theString = value;
+        theString = value.toString();
     }
     return theString;
   };
@@ -249,7 +242,7 @@ export default (function() {
    */
   FormEngineValidation.validateField = function(_field: HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement|JQuery, value?: string): string {
 
-    const field = <HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>(_field instanceof $ ? (<JQuery>_field).get(0) : _field)
+    const field = <HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>(_field instanceof $ ? (<JQuery>_field).get(0) : _field);
 
     value = value || field.value || '';
 
@@ -261,7 +254,7 @@ export default (function() {
     let markParent = false;
     let selected = 0;
     // keep the original value, validateField should not alter it
-    let returnValue: string = value;
+    const returnValue: string = value;
     let $relatedField: JQuery;
     let minItems: number;
     let maxItems: number;
@@ -270,7 +263,7 @@ export default (function() {
       value = value.trimStart();
     }
 
-    for (let rule of rules) {
+    for (const rule of rules) {
       if (markParent) {
         // abort any further validation as validating the field already failed
         break;
@@ -289,8 +282,7 @@ export default (function() {
               if ($relatedField.length) {
                 selected = FormEngineValidation.trimExplode(',', $relatedField.val()).length;
               } else {
-                // @ts-ignore
-                selected = field.value;
+                selected = parseInt(field.value, 10);
               }
               if (typeof rule.minItems !== 'undefined') {
                 minItems = rule.minItems * 1;
@@ -307,15 +299,13 @@ export default (function() {
             }
             if (typeof rule.lower !== 'undefined') {
               const minValue = rule.lower * 1;
-              // @ts-ignore
-              if (!isNaN(minValue) && value < minValue) {
+              if (!isNaN(minValue) && parseInt(value, 10) < minValue) {
                 markParent = true;
               }
             }
             if (typeof rule.upper !== 'undefined') {
               const maxValue = rule.upper * 1;
-              // @ts-ignore
-              if (!isNaN(maxValue) && value > maxValue) {
+              if (!isNaN(maxValue) && parseInt(value, 10) > maxValue) {
                 markParent = true;
               }
             }
@@ -421,7 +411,6 @@ export default (function() {
   FormEngineValidation.processValue = function(command: string, value: string, config: {is_in: string}): string {
     let newString = '';
     let theValue = '';
-    let theCmd = '';
     let a = 0;
     let returnValue = value;
     switch (command) {
@@ -462,8 +451,7 @@ export default (function() {
         if (config.is_in) {
           theValue = '' + value;
           // Escape special characters, see https://stackoverflow.com/a/6969486/4828813
-          // eslint-disable-next-line @typescript-eslint/quotes
-          config.is_in = config.is_in.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+          config.is_in = config.is_in.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
           const re = new RegExp('[^' + config.is_in + ']+', 'g');
           newString = theValue.replace(re, '');
         } else {
@@ -500,26 +488,22 @@ export default (function() {
         break;
       case 'datetime':
         if (value !== '') {
-          theCmd = value.substr(0, 1);
           returnValue = FormEngineValidation.parseDateTime(value);
         }
         break;
       case 'date':
         if (value !== '') {
-          theCmd = value.substr(0, 1);
           returnValue = FormEngineValidation.parseDate(value);
         }
         break;
       case 'time':
       case 'timesec':
         if (value !== '') {
-          theCmd = value.substr(0, 1);
           returnValue = FormEngineValidation.parseTime(value, command);
         }
         break;
       case 'year':
         if (value !== '') {
-          theCmd = value.substr(0, 1);
           returnValue = FormEngineValidation.parseYear(value);
         }
         break;
@@ -550,7 +534,7 @@ export default (function() {
     }
 
     const sectionElement = section || document;
-    for (let field of sectionElement.querySelectorAll(FormEngineValidation.rulesSelector)) {
+    for (const field of sectionElement.querySelectorAll(FormEngineValidation.rulesSelector)) {
       const $field = $(field);
 
       if (!$field.closest('.t3js-flex-section-deleted, .t3js-inline-record-deleted, .t3js-file-reference-deleted').length) {
@@ -624,13 +608,12 @@ export default (function() {
    */
   FormEngineValidation.parseInt = function(value: number|string|boolean): number {
     const theVal = '' + value;
-    let returnValue;
 
     if (!value) {
       return 0;
     }
 
-    returnValue = parseInt(theVal, 10);
+    const returnValue = parseInt(theVal, 10);
     if (isNaN(returnValue)) {
       return 0;
     }
@@ -646,7 +629,7 @@ export default (function() {
    */
   FormEngineValidation.parseDouble = function(value: number|string|boolean, precision: number = 2): string {
     let theVal = '' + value;
-    theVal = theVal.replace(/[^0-9,\.-]/g, '');
+    theVal = theVal.replace(/[^0-9,.-]/g, '');
     const negative = theVal.substring(0, 1) === '-';
     theVal = theVal.replace(/-/g, '');
     theVal = theVal.replace(/,/g, '.');
@@ -689,7 +672,7 @@ export default (function() {
    * @returns {*}
    */
   FormEngineValidation.parseDate = function(value: string): number {
-    FormEngineValidation.lastDate = DateTime.fromFormat(value, 'dd-MM-yyyy', {zone: 'utc'}).toUnixInteger();
+    FormEngineValidation.lastDate = DateTime.fromFormat(value, 'dd-MM-yyyy', { zone: 'utc' }).toUnixInteger();
 
     return FormEngineValidation.lastDate;
   };
@@ -703,7 +686,7 @@ export default (function() {
    */
   FormEngineValidation.parseTime = function(value: string, type: string): number {
     const format = type === 'timesec' ? 'HH:mm:ss' : 'HH:mm';
-    FormEngineValidation.lastTime = DateTime.fromFormat(value, format, {zone: 'utc'}).set({
+    FormEngineValidation.lastTime = DateTime.fromFormat(value, format, { zone: 'utc' }).set({
       year: 1970,
       month: 1,
       day: 1
@@ -847,7 +830,7 @@ export default (function() {
         e.stopImmediatePropagation();
       }
     });
-  }
+  };
 
   return FormEngineValidation;
 })();

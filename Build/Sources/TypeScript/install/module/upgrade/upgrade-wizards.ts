@@ -13,8 +13,8 @@
 
 import 'bootstrap';
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import SecurityUtility from '@typo3/core/security-utility';
@@ -23,6 +23,39 @@ import InfoBox from '../../renderable/info-box';
 import ProgressBar from '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
+import MessageInterface from '@typo3/install/message-interface';
+
+type UpgradeWizardsBlockingDatabaseAddsResponse = {
+  success: boolean;
+  needsUpdate: boolean;
+  adds: {
+    tables?: {
+      table: string;
+    }[],
+    columns?: {
+      table: string;
+      field: string;
+    }[]
+    indexes?: {
+      table: string;
+      index: string;
+    }[]
+  }
+};
+
+type UpgradeWizard = {
+  class: string;
+  identifier: string;
+  title: string;
+  shouldRenderWizard: boolean;
+  explanation: string;
+};
+
+type UpgradeWizardDone = {
+  class: string;
+  identifier: string;
+  title: string;
+};
 
 /**
  * Module: @typo3/install/module/upgrade-wizards
@@ -54,17 +87,17 @@ class UpgradeWizards extends AbstractInteractableModule {
   private selectorWizardsInputAbort: string = '.t3js-upgradeWizards-input-abort';
   private securityUtility: SecurityUtility;
 
+  constructor() {
+    super();
+    this.securityUtility = new SecurityUtility();
+  }
+
   private static removeLoadingMessage($container: JQuery): void {
     $container.find('.alert-loading').remove();
   }
 
-  private static renderProgressBar(title: string): any {
+  private static renderProgressBar(title: string): JQuery {
     return ProgressBar.render(Severity.loading, title, '');
-  }
-
-  constructor() {
-    super();
-    this.securityUtility = new SecurityUtility();
   }
 
   public initialize(currentModal: JQuery): void {
@@ -100,19 +133,19 @@ class UpgradeWizards extends AbstractInteractableModule {
     });
 
     // Abort upgrade wizard
-    currentModal.on('click', this.selectorWizardsInputAbort, (e: JQueryEventObject): void => {
+    currentModal.on('click', this.selectorWizardsInputAbort, (): void => {
       this.findInModal(this.selectorOutputWizardsContainer).empty();
       this.wizardsList();
     });
   }
 
-  private getData(): Promise<any> {
+  private getData(): Promise<void> {
     const modalContent = this.getModalBody();
     const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
     return (new AjaxRequest(Router.getUrl('upgradeWizardsGetData')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             modalContent.empty().append(data.html);
@@ -130,11 +163,11 @@ class UpgradeWizards extends AbstractInteractableModule {
   private blockingUpgradesDatabaseCharsetTest(): void {
     const modalContent = this.getModalBody();
     const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
-    $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Checking database charset...'));
+    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Checking database charset...'));
     (new AjaxRequest(Router.getUrl('upgradeWizardsBlockingDatabaseCharsetTest')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           UpgradeWizards.removeLoadingMessage($outputContainer);
           if (data.success === true) {
@@ -154,17 +187,17 @@ class UpgradeWizards extends AbstractInteractableModule {
 
   private blockingUpgradesDatabaseCharsetFix(): void {
     const $outputContainer = $(this.selectorOutputWizardsContainer);
-    $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Setting database charset to UTF-8...'));
+    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Setting database charset to UTF-8...'));
     (new AjaxRequest(Router.getUrl('upgradeWizardsBlockingDatabaseCharsetFix')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           UpgradeWizards.removeLoadingMessage($outputContainer);
           if (data.success === true) {
             if (Array.isArray(data.status) && data.status.length > 0) {
-              data.status.forEach((element: any): void => {
-                const message: any = InfoBox.render(element.severity, element.title, element.message);
+              data.status.forEach((element: MessageInterface): void => {
+                const message = InfoBox.render(element.severity, element.title, element.message);
                 $outputContainer.append(message);
               });
             }
@@ -183,31 +216,31 @@ class UpgradeWizards extends AbstractInteractableModule {
   private blockingUpgradesDatabaseAdds(): void {
     const modalContent = this.getModalBody();
     const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
-    $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Check for missing mandatory database tables and fields...'));
+    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Check for missing mandatory database tables and fields...'));
     (new AjaxRequest(Router.getUrl('upgradeWizardsBlockingDatabaseAdds')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
-          const data = await response.resolve();
+        async (response: AjaxResponse): Promise<void> => {
+          const data: UpgradeWizardsBlockingDatabaseAddsResponse = await response.resolve();
           UpgradeWizards.removeLoadingMessage($outputContainer);
           if (data.success === true) {
             if (data.needsUpdate === true) {
               const adds = modalContent.find(this.selectorWizardsBlockingAddsTemplate).clone();
               if (typeof (data.adds.tables) === 'object') {
-                data.adds.tables.forEach((element: any): void => {
+                data.adds.tables.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table);
                   adds.find(this.selectorWizardsBlockingAddsRows).append(title, '<br>');
                 });
               }
               if (typeof (data.adds.columns) === 'object') {
-                data.adds.columns.forEach((element: any): void => {
+                data.adds.columns.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table)
                     + ', Field: ' + this.securityUtility.encodeHtml(element.field);
                   adds.find(this.selectorWizardsBlockingAddsRows).append(title, '<br>');
                 });
               }
               if (typeof (data.adds.indexes) === 'object') {
-                data.adds.indexes.forEach((element: any): void => {
+                data.adds.indexes.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table)
                     + ', Index: ' + this.securityUtility.encodeHtml(element.index);
                   adds.find(this.selectorWizardsBlockingAddsRows).append(title, '<br>');
@@ -229,15 +262,15 @@ class UpgradeWizards extends AbstractInteractableModule {
 
   private blockingUpgradesDatabaseAddsExecute(): void {
     const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
-    $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Adding database tables and fields...'));
+    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Adding database tables and fields...'));
     (new AjaxRequest(Router.getUrl('upgradeWizardsBlockingDatabaseExecute')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           UpgradeWizards.removeLoadingMessage($outputContainer);
           if (Array.isArray(data.status) && data.status.length > 0) {
-            data.status.forEach((element: any): void => {
+            data.status.forEach((element: MessageInterface): void => {
               const message = InfoBox.render(element.severity, element.title, element.message);
               $outputContainer.append(message);
             });
@@ -274,9 +307,9 @@ class UpgradeWizards extends AbstractInteractableModule {
     const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
     $outputContainer.append(UpgradeWizards.renderProgressBar('Loading upgrade wizards...'));
     (new AjaxRequest(Router.getUrl('upgradeWizardsList')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           UpgradeWizards.removeLoadingMessage($outputContainer);
           const list = modalContent.find(this.selectorWizardsListTemplate).clone();
@@ -286,7 +319,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             let numberOfWizards = 0;
             if (Array.isArray(data.wizards) && data.wizards.length > 0) {
               numberOfWizards = data.wizards.length;
-              data.wizards.forEach((element: any): void => {
+              data.wizards.forEach((element: UpgradeWizard): void => {
                 if (element.shouldRenderWizard === true) {
                   const aRow = modalContent.find(this.selectorWizardsListRowTemplate).clone();
                   numberOfWizardsTodo = numberOfWizardsTodo + 1;
@@ -330,7 +363,7 @@ class UpgradeWizards extends AbstractInteractableModule {
     const executeToken = this.getModuleContent().data('upgrade-wizards-input-token');
     const modalContent = this.getModalBody();
     const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
-    $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Loading "' + title + '"...'));
+    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Loading "' + title + '"...'));
 
     modalContent.animate(
       {
@@ -348,14 +381,14 @@ class UpgradeWizards extends AbstractInteractableModule {
         },
       })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           $outputContainer.empty();
           const input = modalContent.find(this.selectorWizardsInputTemplate).clone();
           input.removeClass('t3js-upgradeWizards-input');
           if (data.success === true) {
             if (Array.isArray(data.status)) {
-              data.status.forEach((element: any): void => {
+              data.status.forEach((element: MessageInterface): void => {
                 const message = FlashMessage.render(element.severity, element.title, element.message);
                 $outputContainer.append(message);
               });
@@ -380,27 +413,27 @@ class UpgradeWizards extends AbstractInteractableModule {
   private wizardExecute(identifier: string, title: string): void {
     const executeToken = this.getModuleContent().data('upgrade-wizards-execute-token');
     const modalContent = this.getModalBody();
-    const postData: any = {
+    const postData: Record<string, string> = {
       'install[action]': 'upgradeWizardsExecute',
       'install[token]': executeToken,
       'install[identifier]': identifier,
     };
-    for (let element of this.findInModal(this.selectorOutputWizardsContainer + ' form').serializeArray()) {
+    for (const element of this.findInModal(this.selectorOutputWizardsContainer + ' form').serializeArray()) {
       postData[element.name] = element.value;
     }
     const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
     // modalContent.find(this.selectorOutputWizardsContainer).empty();
-    $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Executing "' + title + '"...'));
+    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Executing "' + title + '"...'));
     this.findInModal(this.selectorWizardsDoneRowMarkUndone).prop('disabled', true);
     (new AjaxRequest(Router.getUrl()))
       .post(postData)
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           $outputContainer.empty();
           if (data.success === true) {
             if (Array.isArray(data.status)) {
-              data.status.forEach((element: any): void => {
+              data.status.forEach((element: MessageInterface): void => {
                 const message = InfoBox.render(element.severity, element.title, element.message);
                 $outputContainer.append(message);
               });
@@ -421,16 +454,16 @@ class UpgradeWizards extends AbstractInteractableModule {
   private doneUpgrades(): void {
     const modalContent = this.getModalBody();
     const $outputContainer = modalContent.find(this.selectorOutputDoneContainer);
-    $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Loading executed upgrade wizards...'));
+    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Loading executed upgrade wizards...'));
     (new AjaxRequest(Router.getUrl('upgradeWizardsDoneUpgrades')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           UpgradeWizards.removeLoadingMessage($outputContainer);
           if (data.success === true) {
             if (Array.isArray(data.status) && data.status.length > 0) {
-              data.status.forEach((element: any): void => {
+              data.status.forEach((element: MessageInterface): void => {
                 const message = InfoBox.render(element.severity, element.title, element.message);
                 $outputContainer.append(message);
               });
@@ -439,7 +472,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             const $wizardsDoneContainer = body.find(this.selectorWizardsDoneRows);
             let hasBodyContent: boolean = false;
             if (Array.isArray(data.wizardsDone) && data.wizardsDone.length > 0) {
-              data.wizardsDone.forEach((element: any): void => {
+              data.wizardsDone.forEach((element: UpgradeWizardDone): void => {
                 hasBodyContent = true;
                 const aRow = modalContent.find(this.selectorWizardsDoneRowTemplate).clone();
                 aRow.find(this.selectorWizardsDoneRowMarkUndone).attr('data-identifier', element.identifier);
@@ -448,7 +481,7 @@ class UpgradeWizards extends AbstractInteractableModule {
               });
             }
             if (Array.isArray(data.rowUpdatersDone) && data.rowUpdatersDone.length > 0) {
-              data.rowUpdatersDone.forEach((element: any): void => {
+              data.rowUpdatersDone.forEach((element: UpgradeWizardDone): void => {
                 hasBodyContent = true;
                 const aRow = modalContent.find(this.selectorWizardsDoneRowTemplate).clone();
                 aRow.find(this.selectorWizardsDoneRowMarkUndone).attr('data-identifier', element.identifier);
@@ -474,7 +507,7 @@ class UpgradeWizards extends AbstractInteractableModule {
     const executeToken = this.getModuleContent().data('upgrade-wizards-mark-undone-token');
     const modalContent = this.getModalBody();
     const $outputContainer = this.findInModal(this.selectorOutputDoneContainer);
-    $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Marking upgrade wizard as undone...'));
+    $outputContainer.empty().append(UpgradeWizards.renderProgressBar('Marking upgrade wizard as undone...'));
     (new AjaxRequest(Router.getUrl()))
       .post({
         install: {
@@ -484,12 +517,12 @@ class UpgradeWizards extends AbstractInteractableModule {
         },
       })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           $outputContainer.empty();
           modalContent.find(this.selectorOutputDoneContainer).empty();
           if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
+            data.status.forEach((element: MessageInterface): void => {
               Notification.success(element.title, element.message);
               this.doneUpgrades();
               this.blockingUpgradesDatabaseCharsetTest();

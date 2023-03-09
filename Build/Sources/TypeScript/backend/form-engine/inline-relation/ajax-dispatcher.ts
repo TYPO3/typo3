@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {JavaScriptItemProcessor} from '@typo3/core/java-script-item-processor';
+import { JavaScriptItemProcessor } from '@typo3/core/java-script-item-processor';
 import Notification from '../../notification';
 import Utility from '../../utility';
 
@@ -58,8 +58,8 @@ export class AjaxDispatcher {
     throw 'Undefined endpoint for route "' + routeName + '"';
   }
 
-  public send(request: AjaxRequest, params: Array<string>): Promise<any> {
-    const sentRequest = request.post(this.createRequestBody(params)).then(async (response: AjaxResponse): Promise<any> => {
+  public send(request: AjaxRequest, params: Array<string>): Promise<AjaxDispatcherResponse> {
+    const sentRequest = request.post(this.createRequestBody(params)).then(async (response: AjaxResponse): Promise<AjaxDispatcherResponse> => {
       return this.processResponse(await response.resolve());
     });
     sentRequest.catch((reason: Error): void => {
@@ -69,8 +69,8 @@ export class AjaxDispatcher {
     return sentRequest;
   }
 
-  private createRequestBody(input: Array<string>): { [key: string]: string } {
-    const body: { [key: string]: string } = {};
+  private createRequestBody(input: Array<string>): Record<string, string> {
+    const body: Record<string, string> = {};
     for (let i = 0; i < input.length; i++) {
       body['ajax[' + i + ']'] = input[i];
     }

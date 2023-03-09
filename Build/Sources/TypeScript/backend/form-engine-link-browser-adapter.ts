@@ -15,10 +15,10 @@
  * Module: @typo3/backend/form-engine-link-browser-adapter
  * LinkBrowser communication with parent window
  */
-import LinkBrowser from '@typo3/backend/link-browser'
+import LinkBrowser from '@typo3/backend/link-browser';
 import Modal from '@typo3/backend/modal';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 interface OnFieldChangeItem {
   name: string;
@@ -76,11 +76,11 @@ export default (function() {
       (new AjaxRequest(TYPO3.settings.ajaxUrls.link_browser_encodetypolink))
         .withQueryArguments(attributeValues)
         .get()
-        .then(async (response: AjaxResponse): Promise<any> => {
+        .then(async (response: AjaxResponse): Promise<void> => {
           const data: Response = await response.resolve();
           if (data.typoLink) {
             field.value = data.typoLink;
-            field.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
+            field.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
 
             if (FormEngineLinkBrowserAdapter.onFieldChangeItems instanceof Array) {
               // @todo us `CustomEvent` or broadcast channel as alternative

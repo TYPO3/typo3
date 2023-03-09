@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, css, LitElement, TemplateResult } from 'lit';
+import { html, css, HasChanged, LitElement, TemplateResult } from 'lit';
 import { customElement, property, query } from 'lit/decorators';
 import { ModuleState, ModuleUtility } from '@typo3/backend/module';
 
@@ -24,26 +24,13 @@ interface DecoratedModuleState {
 
 // Trigger a render cycle, even if property has been reset to
 // the current value (this is to trigger a module refresh).
-const alwaysUpdate = (newVal: string, oldVal: string) => true;
+const alwaysUpdate: HasChanged = () => true;
 
 /**
  * Module: @typo3/backend/module/router
  */
 @customElement('typo3-backend-module-router')
 export class ModuleRouter extends LitElement {
-
-  @property({ type: String, hasChanged: alwaysUpdate }) module: string = '';
-
-  @property({ type: String, hasChanged: alwaysUpdate }) endpoint: string = '';
-
-  @property({ type: String, attribute: 'state-tracker' }) stateTrackerUrl: string;
-
-  @property({ type: String, attribute: 'sitename' }) sitename: string;
-
-  @property({ type: Boolean, attribute: 'sitename-first' }) sitenameFirst: boolean;
-
-  @query('slot', true) slotElement: HTMLSlotElement;
-
   public static styles = css`
     :host {
       width: 100%;
@@ -57,6 +44,13 @@ export class ModuleRouter extends LitElement {
       width: 100%;
     }
   `;
+
+  @property({ type: String, hasChanged: alwaysUpdate }) module: string = '';
+  @property({ type: String, hasChanged: alwaysUpdate }) endpoint: string = '';
+  @property({ type: String, attribute: 'state-tracker' }) stateTrackerUrl: string;
+  @property({ type: String, attribute: 'sitename' }) sitename: string;
+  @property({ type: Boolean, attribute: 'sitename-first' }) sitenameFirst: boolean;
+  @query('slot', true) slotElement: HTMLSlotElement;
 
   constructor() {
     super();
@@ -92,7 +86,7 @@ export class ModuleRouter extends LitElement {
         // The "name" attribute of <slot> gets of out sync
         // due to browser history backwards or forward navigation.
         // Synchronize to the state as advertised by the iframe event.
-        this.slotElement.setAttribute('name', state.slotName)
+        this.slotElement.setAttribute('name', state.slotName);
       }
 
       // Mark active and sync endpoint attribute for modules.
@@ -167,7 +161,7 @@ export class ModuleRouter extends LitElement {
       // @todo: Check if .componentName exists
       element = document.createElement(module.componentName);
     } catch (e) {
-      console.error({ msg: `Error importing ${moduleName} as backend module`, err: e })
+      console.error({ msg: `Error importing ${moduleName} as backend module`, err: e });
       throw e;
     }
 

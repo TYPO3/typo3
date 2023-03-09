@@ -11,14 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import '@typo3/backend/element/icon-element';
-import {SeverityEnum} from '@typo3/backend/enum/severity';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
 import '@typo3/backend/input/clearable';
 import Workspaces from './workspaces';
-import {default as Modal, ModalElement} from '@typo3/backend/modal';
+import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import Persistent from '@typo3/backend/storage/persistent';
 import Utility from '@typo3/backend/utility';
 import Wizard from '@typo3/backend/wizard';
@@ -44,6 +44,22 @@ enum Identifiers {
   pagination = '#workspace-pagination',
 }
 
+type Diff = { field: string, label: string, content: string, html: string };
+type Comment = {
+  user_comment: string;
+  previous_stage_title: string;
+  stage_title: string;
+  tstamp: number;
+  user_username: string;
+  user_avatar: string
+}
+type History = {
+  differences: string | Diff[];
+  datetime: string;
+  user: string;
+  user_avatar: string;
+}
+
 /**
  * Backend workspace module. Loaded only in Backend context, not in
  * workspace preview. Contains all JavaScript of the main BE module.
@@ -61,14 +77,34 @@ class Backend extends Workspaces {
     start: 0,
     filterTxt: '',
   };
-  private paging: { [key: string]: number } = {
+  private paging: Record<string, number> = {
     currentPage: 1,
     totalPages: 1,
     totalItems: 0,
   };
   private latestPath: string = '';
-  private markedRecordsForMassAction: Array<any> = [];
+  private markedRecordsForMassAction: string[] = [];
   private indentationPadding: number = 26;
+
+  constructor() {
+    super();
+
+    DocumentService.ready().then((): void => {
+      this.getElements();
+      this.registerEvents();
+      this.notifyWorkspaceSwitchAction();
+
+      // Set the depth from the main element
+      this.settings.depth = this.elements.$depthSelector.val();
+      this.settings.language = this.elements.$languageSelector.val();
+      this.settings.stage = this.elements.$stagesSelector.val();
+
+      // Fetch workspace info (listing) if workspace is accessible
+      if (this.elements.$container.length) {
+        this.getWorkspaceInfos();
+      }
+    });
+  }
 
   /**
    * Reloads the page tree
@@ -83,14 +119,14 @@ class Backend extends Workspaces {
    * @param {Object} diff
    * @return {$}
    */
-  private static generateDiffView(diff: Array<any>): JQuery {
-    const $diff = $('<div />', {class: 'diff'});
+  private static generateDiffView(diff: Diff[]): JQuery {
+    const $diff = $('<div />', { class: 'diff' });
 
-    for (let currentDiff of diff) {
+    for (const currentDiff of diff) {
       $diff.append(
-        $('<div />', {class: 'diff-item'}).append(
-          $('<div />', {class: 'diff-item-title'}).text(currentDiff.label),
-          $('<div />', {class: 'diff-item-result diff-item-result-inline'}).html(currentDiff.content),
+        $('<div />', { class: 'diff-item' }).append(
+          $('<div />', { class: 'diff-item-title' }).text(currentDiff.label),
+          $('<div />', { class: 'diff-item-result diff-item-result-inline' }).html(currentDiff.content),
         ),
       );
     }
@@ -103,31 +139,31 @@ class Backend extends Workspaces {
    * @param {Object} comments
    * @return {$}
    */
-  private static generateCommentView(comments: Array<any>): JQuery {
+  private static generateCommentView(comments: Comment[]): JQuery {
     const $comments = $('<div />');
 
-    for (let comment of comments) {
-      const $panel = $('<div />', {class: 'panel panel-default'});
+    for (const comment of comments) {
+      const $panel = $('<div />', { class: 'panel panel-default' });
 
       if (comment.user_comment.length > 0) {
         $panel.append(
-          $('<div />', {class: 'panel-body'}).html(comment.user_comment),
+          $('<div />', { class: 'panel-body' }).html(comment.user_comment),
         );
       }
 
       $panel.append(
-        $('<div />', {class: 'panel-footer'}).append(
-          $('<span />', {class: 'badge badge-success me-2'}).text(comment.previous_stage_title + ' > ' + comment.stage_title),
-          $('<span />', {class: 'badge badge-info'}).text(comment.tstamp),
+        $('<div />', { class: 'panel-footer' }).append(
+          $('<span />', { class: 'badge badge-success me-2' }).text(comment.previous_stage_title + ' > ' + comment.stage_title),
+          $('<span />', { class: 'badge badge-info' }).text(comment.tstamp),
         ),
       );
 
       $comments.append(
-        $('<div />', {class: 'media'}).append(
-          $('<div />', {class: 'media-left text-center'}).text(comment.user_username).prepend(
+        $('<div />', { class: 'media' }).append(
+          $('<div />', { class: 'media-left text-center' }).text(comment.user_username).prepend(
             $('<div />').html(comment.user_avatar),
           ),
-          $('<div />', {class: 'media-body'}).append($panel),
+          $('<div />', { class: 'media-body' }).append($panel),
         ),
       );
     }
@@ -141,11 +177,11 @@ class Backend extends Workspaces {
    * @param {Object} data
    * @return {JQuery}
    */
-  private static generateHistoryView(data: Array<any>): JQuery {
+  private static generateHistoryView(data: History[]): JQuery {
     const $history = $('<div />');
 
-    for (let currentData of data) {
-      const $panel = $('<div />', {class: 'panel panel-default'});
+    for (const currentData of data) {
+      const $panel = $('<div />', { class: 'panel panel-default' });
       let $diff;
 
       if (typeof currentData.differences === 'object') {
@@ -153,13 +189,13 @@ class Backend extends Workspaces {
           // Somehow here are no differences. What a pity, skip that record
           continue;
         }
-        $diff = $('<div />', {class: 'diff'});
+        $diff = $('<div />', { class: 'diff' });
 
         for (let j = 0; j < currentData.differences.length; ++j) {
           $diff.append(
-            $('<div />', {class: 'diff-item'}).append(
-              $('<div />', {class: 'diff-item-title'}).text(currentData.differences[j].label),
-              $('<div />', {class: 'diff-item-result diff-item-result-inline'}).html(currentData.differences[j].html),
+            $('<div />', { class: 'diff-item' }).append(
+              $('<div />', { class: 'diff-item-title' }).text(currentData.differences[j].label),
+              $('<div />', { class: 'diff-item-result diff-item-result-inline' }).html(currentData.differences[j].html),
             ),
           );
         }
@@ -169,21 +205,21 @@ class Backend extends Workspaces {
         );
       } else {
         $panel.append(
-          $('<div />', {class: 'panel-body'}).text(currentData.differences),
+          $('<div />', { class: 'panel-body' }).text(currentData.differences),
         );
       }
       $panel.append(
-        $('<div />', {class: 'panel-footer'}).append(
-          $('<span />', {class: 'badge badge-info'}).text(currentData.datetime),
+        $('<div />', { class: 'panel-footer' }).append(
+          $('<span />', { class: 'badge badge-info' }).text(currentData.datetime),
         ),
       );
 
       $history.append(
-        $('<div />', {class: 'media'}).append(
-          $('<div />', {class: 'media-left text-center'}).text(currentData.user).prepend(
+        $('<div />', { class: 'media' }).append(
+          $('<div />', { class: 'media-left text-center' }).text(currentData.user).prepend(
             $('<div />').html(currentData.user_avatar),
           ),
-          $('<div />', {class: 'media-body'}).append($panel),
+          $('<div />', { class: 'media-body' }).append($panel),
         ),
       );
     }
@@ -207,7 +243,7 @@ class Backend extends Workspaces {
     if (parent !== null && parent.checked !== check) {
       parent.checked = check;
       parent.dataset.manuallyChanged = 'true';
-      parent.dispatchEvent(new CustomEvent('multiRecordSelection:checkbox:state:changed', {bubbles: true, cancelable: false}));
+      parent.dispatchEvent(new CustomEvent('multiRecordSelection:checkbox:state:changed', { bubbles: true, cancelable: false }));
     }
   }
 
@@ -230,30 +266,10 @@ class Backend extends Workspaces {
         if (checkbox.checked !== check) {
           checkbox.checked = check;
           checkbox.dataset.manuallyChanged = 'true';
-          checkbox.dispatchEvent(new CustomEvent('multiRecordSelection:checkbox:state:changed', {bubbles: true, cancelable: false}));
+          checkbox.dispatchEvent(new CustomEvent('multiRecordSelection:checkbox:state:changed', { bubbles: true, cancelable: false }));
         }
-      })
+      });
     }
-  }
-
-  constructor() {
-    super();
-
-    DocumentService.ready().then((): void => {
-      this.getElements();
-      this.registerEvents();
-      this.notifyWorkspaceSwitchAction();
-
-      // Set the depth from the main element
-      this.settings.depth = this.elements.$depthSelector.val();
-      this.settings.language = this.elements.$languageSelector.val();
-      this.settings.stage = this.elements.$stagesSelector.val();
-
-      // Fetch workspace info (listing) if workspace is accessible
-      if (this.elements.$container.length) {
-        this.getWorkspaceInfos();
-      }
-    });
   }
 
   private notifyWorkspaceSwitchAction(): void {
@@ -349,7 +365,7 @@ class Backend extends Workspaces {
       .on('click', '[data-action="preview"]', this.openPreview.bind(this))
       .on('click', '[data-action="open"]', (e: JQueryEventObject): void => {
         const row = <HTMLTableRowElement>e.currentTarget.closest('tr');
-        let newUrl = TYPO3.settings.FormEngine.moduleUrl
+        const newUrl = TYPO3.settings.FormEngine.moduleUrl
           + '&returnUrl=' + encodeURIComponent(document.location.href)
           + '&id=' + TYPO3.settings.Workspaces.id + '&edit[' + row.dataset.table + '][' + row.dataset.uid + ']=edit';
 
@@ -512,7 +528,7 @@ class Backend extends Workspaces {
     }
 
     this.elements.$chooseMassAction.prop('disabled', this.markedRecordsForMassAction.length > 0);
-  }
+  };
 
   /**
    * Sends a record to a stage
@@ -604,9 +620,9 @@ class Backend extends Workspaces {
 
     for (let i = 0; i < result.data.length; ++i) {
       const item = result.data[i];
-      const $actions = $('<div />', {class: 'btn-group'});
+      const $actions = $('<div />', { class: 'btn-group' });
       let $integrityIcon: JQuery;
-      let hasSubitems = item.Workspaces_CollectionChildren > 0 && item.Workspaces_CollectionCurrent !== '';
+      const hasSubitems = item.Workspaces_CollectionChildren > 0 && item.Workspaces_CollectionCurrent !== '';
       $actions.append(
         this.getAction(
           hasSubitems,
@@ -659,17 +675,17 @@ class Backend extends Workspaces {
         this.elements.$tableBody.append(
           $('<tr />').append(
             $('<th />'),
-            $('<th />', {colspan: 6}).html(
+            $('<th />', { colspan: 6 }).html(
               '<span title="' + item.path_Workspace + '">' + item.path_Workspace_crop + '</span>'
             ),
           ),
         );
       }
-      const $checkbox = $('<span />', {class: 'form-check form-toggle'}).append(
-        $('<input />', {type: 'checkbox', class: 'form-check-input t3js-multi-record-selection-check'})
+      const $checkbox = $('<span />', { class: 'form-check form-toggle' }).append(
+        $('<input />', { type: 'checkbox', class: 'form-check-input t3js-multi-record-selection-check' })
       );
 
-      const rowConfiguration: { [key: string]: any } = {
+      const rowConfiguration: Record<string, string> = {
         'data-uid': item.uid,
         'data-pid': item.livepid,
         'data-t3ver_oid': item.t3ver_oid,
@@ -683,14 +699,14 @@ class Backend extends Workspaces {
 
       if (item.Workspaces_CollectionParent !== '') {
         // fetch parent and see if this one is expanded
-        let parentItem = result.data.find((element: any) => {
+        const parentItem = result.data.find((element: any) => {
           return element.Workspaces_CollectionCurrent === item.Workspaces_CollectionParent;
         });
         rowConfiguration['data-collection'] = item.Workspaces_CollectionParent;
-        rowConfiguration.class = 'collapse' + (parentItem.expanded ? ' show' :  '');
+        rowConfiguration.class = 'collapse' + (parentItem.expanded ? ' show' : '');
       } else if (item.Workspaces_CollectionCurrent !== '') {
         // Set CollectionCurrent attribute for parent records
-        rowConfiguration['data-collection-current'] = item.Workspaces_CollectionCurrent
+        rowConfiguration['data-collection-current'] = item.Workspaces_CollectionCurrent;
       }
 
       this.elements.$tableBody.append(
@@ -708,7 +724,7 @@ class Backend extends Workspaces {
             + '<span class="workspace-state-' + item.state_Workspace + '" title="' + item.label_Workspace + '">' + item.label_Workspace_crop + '</span>'
             + '</a>',
           ),
-          $('<td />', {class: 't3js-title-live'}).html(
+          $('<td />', { class: 't3js-title-live' }).html(
             '<span class="icon icon-size-small">' + this.getIcon(item.icon_Live) + '</span>'
             + '&nbsp;'
             + '<span class"workspace-live-title title="' + item.label_Live + '">' + item.label_Live_crop + '</span>'
@@ -716,7 +732,7 @@ class Backend extends Workspaces {
           $('<td />').text(item.label_Stage),
           $('<td />').empty().append($integrityIcon),
           $('<td />').html(this.getIcon(item.language.icon)),
-          $('<td />', {class: 'text-end nowrap'}).append($actions),
+          $('<td />', { class: 'text-end nowrap' }).append($actions),
         ),
       );
     }
@@ -742,16 +758,16 @@ class Backend extends Workspaces {
       return;
     }
 
-    const $ul = $('<ul />', {class: 'pagination'});
+    const $ul = $('<ul />', { class: 'pagination' });
     const liElements: Array<JQuery> = [];
-    const $controlFirstPage = $('<li />', {class: 'page-item'}).append(
-        $('<button />', {class: 'page-link', type: 'button', 'data-action': 'previous'}).append(
-          $('<typo3-backend-icon />', {'identifier': 'actions-arrow-left-alt', 'size': 'small'}),
+    const $controlFirstPage = $('<li />', { class: 'page-item' }).append(
+        $('<button />', { class: 'page-link', type: 'button', 'data-action': 'previous' }).append(
+          $('<typo3-backend-icon />', { 'identifier': 'actions-arrow-left-alt', 'size': 'small' }),
         ),
       ),
-      $controlLastPage = $('<li />', {class: 'page-item'}).append(
-        $('<button />', {class: 'page-link', type: 'button', 'data-action': 'next'}).append(
-          $('<typo3-backend-icon />', {'identifier': 'actions-arrow-right-alt', 'size': 'small'}),
+      $controlLastPage = $('<li />', { class: 'page-item' }).append(
+        $('<button />', { class: 'page-link', type: 'button', 'data-action': 'next' }).append(
+          $('<typo3-backend-icon />', { 'identifier': 'actions-arrow-right-alt', 'size': 'small' }),
         ),
       );
 
@@ -764,9 +780,9 @@ class Backend extends Workspaces {
     }
 
     for (let i = 1; i <= this.paging.totalPages; i++) {
-      const $li = $('<li />', {class: 'page-item' + (this.paging.currentPage === i ? ' active' : '')});
+      const $li = $('<li />', { class: 'page-item' + (this.paging.currentPage === i ? ' active' : '') });
       $li.append(
-        $('<button />', {class: 'page-link', type: 'button',  'data-action': 'page', 'data-page': i}).append(
+        $('<button />', { class: 'page-link', type: 'button', 'data-action': 'page', 'data-page': i }).append(
           $('<span />').text(i),
         ),
       );
@@ -797,8 +813,8 @@ class Backend extends Workspaces {
     ).then(async (response: AjaxResponse): Promise<void> => {
       const item = (await response.resolve())[0].result.data[0];
       const $content = $('<div />');
-      const $tabsNav = $('<ul />', {class: 'nav nav-tabs', role: 'tablist'});
-      const $tabsContent = $('<div />', {class: 'tab-content'});
+      const $tabsNav = $('<ul />', { class: 'nav nav-tabs', role: 'tablist' });
+      const $tabsContent = $('<div />', { class: 'tab-content' });
       const modalButtons = [];
 
       $content.append(
@@ -812,7 +828,7 @@ class Backend extends Workspaces {
 
       if (item.diff.length > 0) {
         $tabsNav.append(
-          $('<li />', {role: 'presentation', class: 'nav-item'}).append(
+          $('<li />', { role: 'presentation', class: 'nav-item' }).append(
             $('<a />', {
               class: 'nav-link',
               href: '#workspace-changes',
@@ -823,8 +839,8 @@ class Backend extends Workspaces {
           ),
         );
         $tabsContent.append(
-          $('<div />', {role: 'tabpanel', class: 'tab-pane', id: 'workspace-changes'}).append(
-            $('<div />', {class: 'form-section'}).append(
+          $('<div />', { role: 'tabpanel', class: 'tab-pane', id: 'workspace-changes' }).append(
+            $('<div />', { class: 'form-section' }).append(
               Backend.generateDiffView(item.diff),
             ),
           ),
@@ -833,7 +849,7 @@ class Backend extends Workspaces {
 
       if (item.comments.length > 0) {
         $tabsNav.append(
-          $('<li />', {role: 'presentation', class: 'nav-item'}).append(
+          $('<li />', { role: 'presentation', class: 'nav-item' }).append(
             $('<a />', {
               class: 'nav-link',
               href: '#workspace-comments',
@@ -841,13 +857,13 @@ class Backend extends Workspaces {
               role: 'tab',
               'data-bs-toggle': 'tab',
             }).html(TYPO3.lang['window.recordChanges.tabs.comments'] + '&nbsp;').append(
-              $('<span />', {class: 'badge'}).text(item.comments.length),
+              $('<span />', { class: 'badge' }).text(item.comments.length),
             ),
           ),
         );
         $tabsContent.append(
-          $('<div />', {role: 'tabpanel', class: 'tab-pane', id: 'workspace-comments'}).append(
-            $('<div />', {class: 'form-section'}).append(
+          $('<div />', { role: 'tabpanel', class: 'tab-pane', id: 'workspace-comments' }).append(
+            $('<div />', { class: 'form-section' }).append(
               Backend.generateCommentView(item.comments),
             ),
           ),
@@ -856,7 +872,7 @@ class Backend extends Workspaces {
 
       if (item.history.total > 0) {
         $tabsNav.append(
-          $('<li />', {role: 'presentation', class: 'nav-item'}).append(
+          $('<li />', { role: 'presentation', class: 'nav-item' }).append(
             $('<a />', {
               class: 'nav-link',
               href: '#workspace-history',
@@ -868,8 +884,8 @@ class Backend extends Workspaces {
         );
 
         $tabsContent.append(
-          $('<div />', {role: 'tabpanel', class: 'tab-pane', id: 'workspace-history'}).append(
-            $('<div />', {class: 'form-section'}).append(
+          $('<div />', { role: 'tabpanel', class: 'tab-pane', id: 'workspace-history' }).append(
+            $('<div />', { class: 'form-section' }).append(
               Backend.generateHistoryView(item.history.data),
             ),
           ),
@@ -930,7 +946,7 @@ class Backend extends Workspaces {
         size: Modal.sizes.medium,
       });
     });
-  }
+  };
 
   /**
    * Opens a record in a preview window
@@ -992,7 +1008,7 @@ class Backend extends Workspaces {
         });
       }
     });
-  }
+  };
 
   /**
    * Runs a mass action
@@ -1033,7 +1049,7 @@ class Backend extends Workspaces {
         this.renderSelectionActionWizard(selectedAction, affectedRecords);
       });
     }
-  }
+  };
 
   /**
    * Adds a slide to the wizard concerning an integrity check warning.
@@ -1045,7 +1061,7 @@ class Backend extends Workspaces {
       TYPO3.lang['integrity.hasIssuesDescription'] + '<br>' + TYPO3.lang['integrity.hasIssuesQuestion'],
       SeverityEnum.warning,
     );
-  }
+  };
 
   /**
    * Renders the wizard for selection actions
@@ -1112,7 +1128,7 @@ class Backend extends Workspaces {
         this.renderMassActionWizard(selectedAction);
       });
     }
-  }
+  };
 
   /**
    * Renders the wizard for mass actions
@@ -1222,7 +1238,7 @@ class Backend extends Workspaces {
         this.elements.$chooseStageAction.val('');
       });
     });
-  }
+  };
 
   /**
    * Renders the action button based on the user's permission.
@@ -1239,7 +1255,7 @@ class Backend extends Workspaces {
         'data-action': action,
       }).append(this.getIcon(iconIdentifier));
     }
-    return $('<span />', {class: 'btn btn-default disabled'}).append(this.getIcon('empty-empty'));
+    return $('<span />', { class: 'btn btn-default disabled' }).append(this.getIcon('empty-empty'));
   }
 
   /**
@@ -1251,14 +1267,14 @@ class Backend extends Workspaces {
         this.settings.id,
       ]),
     ).then(async (response: AjaxResponse): Promise<void> => {
-      const result: { [key: string]: string } = (await response.resolve())[0].result;
+      const result: Record<string, string> = (await response.resolve())[0].result;
       const $list = $('<dl />');
 
-      for (let [language, url] of Object.entries(result)) {
+      for (const [language, url] of Object.entries(result)) {
         $list.append(
           $('<dt />').text(language),
           $('<dd />').append(
-            $('<a />', {href: url, target: '_blank'}).text(url),
+            $('<a />', { href: url, target: '_blank' }).text(url),
           ),
         );
       }
@@ -1277,7 +1293,7 @@ class Backend extends Workspaces {
         ['modal-inner-scroll'],
       );
     });
-  }
+  };
 
   /**
    * Gets a specific icon. A specific "switch" is added due to the integrity

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
 */
 
-import {Listener} from './event-interface';
+import { Listener } from './event-interface';
 import RegularEvent from './regular-event';
 
 /**
@@ -26,17 +26,14 @@ class RequestAnimationFrameEvent extends RegularEvent {
   private req(callback: Listener): Listener {
     let timeout: number = null;
 
-    return () => {
-      const context: any = this;
-      const args = arguments;
-
+    return (...args: unknown[]) => {
       if (timeout) {
         window.cancelAnimationFrame(timeout);
       }
 
-      timeout = window.requestAnimationFrame(function () {
+      timeout = window.requestAnimationFrame(() => {
         // Run our scroll functions
-        callback.apply(context, args);
+        callback.apply(this, args);
       });
     };
   }

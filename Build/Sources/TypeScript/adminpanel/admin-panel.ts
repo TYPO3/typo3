@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace TYPO3 {
   export const AdminPanelSelectors = {
     adminPanelRole: 'form[data-typo3-role=typo3-adminPanel]',
@@ -130,7 +131,7 @@ namespace TYPO3 {
       this
         .querySelectorAll('.typo3-adminPanel-table th, .typo3-adminPanel-table td')
         .forEach((elm: HTMLElement) => {
-          elm.addEventListener('click', ()  => {
+          elm.addEventListener('click', () => {
             elm.focus();
             try {
               document.execCommand('copy');
@@ -197,7 +198,7 @@ namespace TYPO3 {
      * reloaded
      */
     private getCleanReloadUrl(): string {
-      let urlParams: string[] = [];
+      const urlParams: string[] = [];
       location.search.substr(1).split('&').forEach((item: string): void => {
         if (item && !item.includes('ADMCMD_')) {
           urlParams.push(item);
@@ -210,7 +211,7 @@ namespace TYPO3 {
 
     private addBackdropListener(): void {
       this.querySelectorAll('.' + AdminPanelClasses.backdrop)
-        .forEach((elm: HTMLElement) =>  {
+        .forEach((elm: HTMLElement) => {
           elm.addEventListener('click', () => {
             this.removeBackdrop();
             this

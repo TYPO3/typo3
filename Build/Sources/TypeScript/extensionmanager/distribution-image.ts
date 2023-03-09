@@ -35,17 +35,17 @@ export class DistributionImage extends HTMLElement {
       return;
     }
 
-    this.attachShadow({mode: 'open'});
+    this.attachShadow({ mode: 'open' });
     this.imageElement = document.createElement('img');
 
     const alt: string = this.getAttribute('alt') || '';
     if (alt.length) {
-      this.imageElement.setAttribute('alt', alt)
+      this.imageElement.setAttribute('alt', alt);
     }
 
     const title: string = this.getAttribute('title') || '';
     if (title.length) {
-      this.imageElement.setAttribute('title', title)
+      this.imageElement.setAttribute('title', title);
     }
 
     if (this.welcomeImage.length) {
@@ -82,7 +82,7 @@ export class DistributionImage extends HTMLElement {
     } else if (this.fallback.length) {
       this.imageElement.setAttribute('src', this.fallback);
     }
-  }
+  };
 }
 
 window.customElements.define('typo3-extensionmanager-distribution-image', DistributionImage);

@@ -12,9 +12,9 @@
  */
 
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {MessageUtility} from '../../utility/message-utility';
-import {AjaxDispatcher} from './../inline-relation/ajax-dispatcher';
-import {InlineResponseInterface} from './../inline-relation/inline-response-interface';
+import { MessageUtility } from '../../utility/message-utility';
+import { AjaxDispatcher } from './../inline-relation/ajax-dispatcher';
+import { InlineResponseInterface } from './../inline-relation/inline-response-interface';
 import DocumentService from '@typo3/core/document-service';
 import NProgress from 'nprogress';
 import Sortable from 'sortablejs';
@@ -76,7 +76,7 @@ interface UniqueDefinition {
   elTable: string;
   field: string;
   max: number;
-  possible: { [key: string]: string };
+  possible: Record<string, string>;
   selector: string;
   table: string;
   type: string;
@@ -99,6 +99,18 @@ class InlineControlContainer {
   private requestQueue: RequestQueue = {};
   private progessQueue: ProgressQueue = {};
   private noTitleString: string = (TYPO3.lang ? TYPO3.lang['FormEngine.noRecordTitle'] : '[No title]');
+
+  /**
+   * @param {string} elementId
+   */
+  constructor(elementId: string) {
+    DocumentService.ready().then((document: Document): void => {
+      this.container = <HTMLElement>document.getElementById(elementId);
+      this.ajaxDispatcher = new AjaxDispatcher(this.container.dataset.objectGroup);
+
+      this.registerEvents();
+    });
+  }
 
   /**
    * @param {string} objectId
@@ -212,7 +224,7 @@ class InlineControlContainer {
     const options: NodeListOf<HTMLOptionElement> = selectElement.querySelectorAll('option');
     let index: number = -1;
 
-    for (let possibleValue of Object.keys(unique.possible)) {
+    for (const possibleValue of Object.keys(unique.possible)) {
       if (possibleValue === value) {
         break;
       }
@@ -237,18 +249,6 @@ class InlineControlContainer {
     readdOption.value = value;
     // add the <option> at the right position
     selectElement.insertBefore(readdOption, selectElement.options[index]);
-  }
-
-  /**
-   * @param {string} elementId
-   */
-  constructor(elementId: string) {
-    DocumentService.ready().then((document: Document): void => {
-      this.container = <HTMLElement>document.getElementById(elementId);
-      this.ajaxDispatcher = new AjaxDispatcher(this.container.dataset.objectGroup);
-
-      this.registerEvents();
-    });
   }
 
   private registerEvents(): void {
@@ -367,7 +367,7 @@ class InlineControlContainer {
         }
       });
     }
-  }
+  };
 
   /**
    * @param {string} uid
@@ -498,15 +498,15 @@ class InlineControlContainer {
       me.ajaxDispatcher.send(
         me.ajaxDispatcher.newRequest(me.ajaxDispatcher.getEndpoint('record_inline_synchronizelocalize')),
         [me.container.dataset.objectGroup, this.dataset.type],
-      ).then(async (response: InlineResponseInterface): Promise<any> => {
+      ).then(async (response: InlineResponseInterface): Promise<void> => {
         document.getElementById(me.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', response.data);
 
         const objectIdPrefix = me.container.dataset.objectGroup + Separators.structureSeparator;
-        for (let itemUid of response.compilerInput.delete) {
+        for (const itemUid of response.compilerInput.delete) {
           me.deleteRecord(objectIdPrefix + itemUid, true);
         }
 
-        for (let item of Object.values(response.compilerInput.localize)) {
+        for (const item of Object.values(response.compilerInput.localize)) {
           if (typeof item.remove !== 'undefined') {
             const removableRecordContainer = InlineControlContainer.getInlineRecordContainer(objectIdPrefix + item.remove);
             removableRecordContainer.parentElement.removeChild(removableRecordContainer);
@@ -565,7 +565,7 @@ class InlineControlContainer {
         const ajaxRequest = this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('record_inline_details'));
         const request = this.ajaxDispatcher.send(ajaxRequest, [objectId]);
 
-        request.then(async (response: InlineResponseInterface): Promise<any> => {
+        request.then(async (response: InlineResponseInterface): Promise<void> => {
           delete this.requestQueue[objectId];
           delete this.progessQueue[objectId];
 
@@ -687,7 +687,7 @@ class InlineControlContainer {
       return [];
     }
 
-    let records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
+    const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
     const indexOfRemoveUid = records.indexOf(objectUid);
     if (indexOfRemoveUid > -1) {
       delete records[indexOfRemoveUid];
@@ -711,7 +711,7 @@ class InlineControlContainer {
     const recordUid = currentRecordContainer.dataset.objectUid;
     const recordListContainer = <HTMLDivElement>document.getElementById(this.container.getAttribute('id') + '_records');
     const records = Array.from(recordListContainer.children).map((child: HTMLElement) => child.dataset.objectUid);
-    let position = records.indexOf(recordUid);
+    const position = records.indexOf(recordUid);
     let isChanged = false;
 
     if (direction === SortDirections.UP && position > 0) {
@@ -798,7 +798,7 @@ class InlineControlContainer {
       return;
     }
     controlContainer.forEach((container: HTMLElement): void => {
-      let controlContainerButtons = container.querySelectorAll('button, a');
+      const controlContainerButtons = container.querySelectorAll('button, a');
       controlContainerButtons.forEach((button: HTMLElement): void => {
         button.style.display = visible ? null : 'none';
       });
@@ -817,7 +817,7 @@ class InlineControlContainer {
       progress = this.progessQueue[objectId];
     } else {
       progress = NProgress;
-      progress.configure({parent: headerIdentifier, showSpinner: false});
+      progress.configure({ parent: headerIdentifier, showSpinner: false });
       this.progessQueue[objectId] = progress;
     }
 
@@ -833,7 +833,7 @@ class InlineControlContainer {
 
     if (formField !== null) {
       const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
-      for (let recordUid of records) {
+      for (const recordUid of records) {
         if (recordUid === excludeUid) {
           continue;
         }
@@ -987,14 +987,14 @@ class InlineControlContainer {
       return;
     }
 
-    let uniqueValueField = <HTMLSelectElement>recordContainer.querySelector(
+    const uniqueValueField = <HTMLSelectElement>recordContainer.querySelector(
       '[name="data[' + unique.table + '][' + recordContainer.dataset.objectUid + '][' + unique.field + ']"]',
     );
     const values = InlineControlContainer.getValuesFromHashMap(unique.used);
 
     if (uniqueValueField !== null) {
       const selectedValue = uniqueValueField.options[uniqueValueField.selectedIndex].value;
-      for (let value of values) {
+      for (const value of values) {
         if (value !== selectedValue) {
           InlineControlContainer.removeSelectOptionByValue(uniqueValueField, value);
         }
@@ -1026,7 +1026,7 @@ class InlineControlContainer {
         if (selectorElement !== null) {
           // remove all items from the new select-item which are already used in other children
           if (uniqueValueField !== null) {
-            for (let value of values) {
+            for (const value of values) {
               InlineControlContainer.removeSelectOptionByValue(uniqueValueField, value);
             }
             // set the selected item automatically to the first of the remaining items if no selector is used
@@ -1037,7 +1037,7 @@ class InlineControlContainer {
               this.handleChangedField(uniqueValueField, this.container.dataset.objectGroup + '[' + recordUid + ']');
             }
           }
-          for (let value of values) {
+          for (const value of values) {
             InlineControlContainer.removeSelectOptionByValue(uniqueValueField, value);
           }
           if (typeof unique.used.length !== 'undefined') {
@@ -1051,7 +1051,7 @@ class InlineControlContainer {
         // remove the newly used item from each select-field of the child records
         if (formField !== null && InlineControlContainer.selectOptionValueExists(selectorElement, selectedValue)) {
           const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
-          for (let record of records) {
+          for (const record of records) {
             uniqueValueField = <HTMLSelectElement>document.querySelector(
               '[name="data[' + unique.table + '][' + record + '][' + unique.field + ']"]',
             );
@@ -1111,7 +1111,7 @@ class InlineControlContainer {
 
     const records = Utility.trimExplode(',', formField.value);
     let uniqueValueField;
-    for (let record of records) {
+    for (const record of records) {
       uniqueValueField = <HTMLSelectElement>document.querySelector(
         '[name="data[' + unique.table + '][' + record + '][' + unique.field + ']"]',
       );
@@ -1137,7 +1137,7 @@ class InlineControlContainer {
     const recordObjectId = this.container.dataset.objectGroup + Separators.structureSeparator + recordUid;
     const recordContainer = InlineControlContainer.getInlineRecordContainer(recordObjectId);
 
-    let uniqueValueField = <HTMLSelectElement>recordContainer.querySelector(
+    const uniqueValueField = <HTMLSelectElement>recordContainer.querySelector(
       '[name="data[' + unique.table + '][' + recordContainer.dataset.objectUid + '][' + unique.field + ']"]',
     );
     if (unique.type === 'select') {

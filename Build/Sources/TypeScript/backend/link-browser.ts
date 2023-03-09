@@ -30,7 +30,7 @@ class LinkBrowser {
   constructor() {
     DocumentService.ready().then((): void => {
       this.urlParameters = JSON.parse(document.body.dataset.urlParameters || '{}');
-      this.parameters =  JSON.parse(document.body.dataset.parameters || '{}');
+      this.parameters = JSON.parse(document.body.dataset.parameters || '{}');
       this.linkAttributeFields = JSON.parse(document.body.dataset.linkAttributeFields || '{}');
 
       new RegularEvent('change', this.loadTarget)
@@ -60,15 +60,6 @@ class LinkBrowser {
     }
   }
 
-  /**
-   * Stores the final link
-   *
-   * This method MUST be overridden in the actual implementation of the link browser.
-   * The function is responsible for encoding the link (and possible link attributes) and
-   * returning it to the caller (e.g. FormEngine, RTE, etc)
-   *
-   * @param {String} link The select element or anything else which identifies the link (e.g. "page:<pageUid>" or "file:<uid>")
-   */
   public finalizeFunction(link: string): void {
     throw 'The link browser requires the finalizeFunction to be set. Seems like you discovered a major bug.';
   }

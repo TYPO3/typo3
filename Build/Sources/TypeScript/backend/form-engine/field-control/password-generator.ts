@@ -15,7 +15,7 @@ import DocumentService from '@typo3/core/document-service';
 import SecurityUtility from '@typo3/core/security-utility';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';
 
 interface PasswordRules {
@@ -61,7 +61,7 @@ class PasswordGenerator {
           if (clearableContainer) {
             clearableContainer.classList.remove('form-control-clearable');
             const closeButton = <HTMLButtonElement>clearableContainer.querySelector('button.close');
-            closeButton && clearableContainer.removeChild(closeButton)
+            closeButton && clearableContainer.removeChild(closeButton);
           }
         }
       }
@@ -97,7 +97,7 @@ class PasswordGenerator {
       })
       .catch(() => {
         Notification.error('Password could not be generated');
-      })
+      });
   }
 }
 

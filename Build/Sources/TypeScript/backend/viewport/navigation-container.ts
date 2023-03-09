@@ -11,13 +11,18 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {ScaffoldIdentifierEnum} from '../enum/viewport/scaffold-identifier';
-import {AbstractContainer} from './abstract-container';
+import { ScaffoldIdentifierEnum } from '../enum/viewport/scaffold-identifier';
+import { AbstractContainer } from './abstract-container';
 import TriggerRequest from '../event/trigger-request';
 import InteractionRequest from '../event/interaction-request';
 
 class NavigationContainer extends AbstractContainer {
   private activeComponentId: string = '';
+
+  public constructor(consumerScope: any)
+  {
+    super(consumerScope);
+  }
 
   private get parent(): HTMLElement
   {
@@ -34,11 +39,6 @@ class NavigationContainer extends AbstractContainer {
     return document.querySelector(ScaffoldIdentifierEnum.contentNavigationSwitcher);
   }
 
-  public constructor(consumerScope: any)
-  {
-    super(consumerScope);
-  }
-
   /**
    * Renders registered (non-iframe) navigation component e.g. a page tree
    *
@@ -52,7 +52,7 @@ class NavigationContainer extends AbstractContainer {
       return;
     }
     if (this.activeComponentId !== '') {
-      let activeComponentElement = container.querySelector('#navigationComponent-' + this.activeComponentId.replace(/[/@]/g, '_')) as HTMLElement;
+      const activeComponentElement = container.querySelector('#navigationComponent-' + this.activeComponentId.replace(/[/@]/g, '_')) as HTMLElement;
       if (activeComponentElement) {
         activeComponentElement.style.display = 'none';
       }
@@ -84,9 +84,7 @@ class NavigationContainer extends AbstractContainer {
         );
 
         // manual static initialize method, unused but kept for backwards-compatibility until TYPO3 v12
-        // @ts-ignore
         const navigationComponent = Object.values(__esModule)[0] as any;
-        // @ts-ignore
         navigationComponent.initialize('#' + navigationComponentElement);
       }
       this.show(navigationComponentId);

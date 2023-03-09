@@ -13,8 +13,8 @@
 
 import 'bootstrap';
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -22,6 +22,7 @@ import InfoBox from '../../renderable/info-box';
 import ProgressBar from '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
+import MessageInterface from '@typo3/install/message-interface';
 
 interface BrokenExtension {
   name: string;
@@ -60,9 +61,9 @@ class ExtensionCompatTester extends AbstractInteractableModule {
     }
 
     (new AjaxRequest(Router.getUrl('extensionCompatTesterLoadedExtensionList')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           modalContent.empty().append(data.html);
           Modal.setButtons(data.buttons);
@@ -83,7 +84,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
                 this.renderFailureMessages('ext_tables.php', (await error.response.json()).brokenExtensions, $innerOutputContainer);
               }).finally((): void => {
                 this.unlockModal();
-              })
+              });
             }, async (error: AjaxResponse): Promise<void> => {
               this.renderFailureMessages('ext_localconf.php', (await error.response.json()).brokenExtensions, $innerOutputContainer);
               $innerOutputContainer.append(
@@ -107,10 +108,10 @@ class ExtensionCompatTester extends AbstractInteractableModule {
   }
 
   private renderFailureMessages(scope: string, brokenExtensions: Array<BrokenExtension>, $outputContainer: JQuery): void {
-    for (let extension of brokenExtensions) {
+    for (const extension of brokenExtensions) {
       let uninstallAction;
       if (!extension.isProtected) {
-        uninstallAction = $('<button />', {'class': 'btn btn-danger t3js-extensionCompatTester-uninstall'})
+        uninstallAction = $('<button />', { 'class': 'btn btn-danger t3js-extensionCompatTester-uninstall' })
           .attr('data-extension', extension.name)
           .text('Uninstall extension "' + extension.name + '"');
       }
@@ -167,11 +168,11 @@ class ExtensionCompatTester extends AbstractInteractableModule {
         },
       })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success) {
             if (Array.isArray(data.status)) {
-              data.status.forEach((element: any): void => {
+              data.status.forEach((element: MessageInterface): void => {
                 const aMessage = InfoBox.render(element.severity, element.title, element.message);
                 modalContent.find(this.selectorOutputContainer).empty().append(aMessage);
               });

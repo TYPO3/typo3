@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 
 declare function using(values: Function|Array<Object>|Object, func: Function): void;
@@ -313,7 +312,7 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
       const baseTime = new Date(2013, 9, 23);
       jasmine.clock().mockDate(baseTime);
       expect(FormEngineValidation.getYear(baseTime)).toBe(2013);
-    })
+    });
   });
 
   /**
@@ -329,6 +328,6 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
       const baseTime = new Date(2013, 9, 23, 13, 13, 13);
       jasmine.clock().mockDate(baseTime);
       expect(FormEngineValidation.getDate(baseTime)).toBe(1382479200);
-    })
+    });
   });
 });

@@ -19,12 +19,12 @@
 if (document.currentScript) {
   const scriptElement = document.currentScript;
   // extracts JSON payload from `/* [JSON] */` content
-  const textContent = scriptElement.textContent.replace(/^\s*\/\*\s*|\s*\*\/\s*/g, '')
+  const textContent = scriptElement.textContent.replace(/^\s*\/\*\s*|\s*\*\/\s*/g, '');
   const items = JSON.parse(textContent);
 
   const moduleImporter = (moduleName: string) => import(moduleName).catch(() => (window as any).importShim(moduleName));
 
-  moduleImporter('@typo3/core/java-script-item-processor.js').then(({JavaScriptItemProcessor}) => {
+  moduleImporter('@typo3/core/java-script-item-processor.js').then(({ JavaScriptItemProcessor }) => {
     const processor = new JavaScriptItemProcessor();
     processor.processItems(items);
   });

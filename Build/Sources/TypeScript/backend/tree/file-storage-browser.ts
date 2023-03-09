@@ -11,17 +11,17 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, LitElement, TemplateResult} from 'lit';
-import {customElement, query} from 'lit/decorators';
+import { html, LitElement, TemplateResult } from 'lit';
+import { customElement, query } from 'lit/decorators';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {TreeNode} from './tree-node';
-import {Toolbar, TreeNodeSelection} from '../svg-tree';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { TreeNode } from './tree-node';
+import { Toolbar, TreeNodeSelection } from '../svg-tree';
 import ElementBrowser from '@typo3/backend/element-browser';
 import LinkBrowser from '@typo3/backend/link-browser';
 import '@typo3/backend/element/icon-element';
 import Persistent from '@typo3/backend/storage/persistent';
-import {FileStorageTree} from './file-storage-tree';
+import { FileStorageTree } from './file-storage-tree';
 
 const componentName: string = 'typo3-backend-component-filestorage-browser';
 
@@ -79,7 +79,7 @@ class FileStorageBrowserTree extends FileStorageTree {
 export class FileStorageBrowser extends LitElement {
   @query('.svg-tree-wrapper') tree: FileStorageBrowserTree;
 
-  private activeFolder: String = '';
+  private activeFolder: string = '';
   private actions: Array<string> = [];
 
   public connectedCallback(): void {
@@ -103,7 +103,7 @@ export class FileStorageBrowser extends LitElement {
 
   protected triggerRender = (): void => {
     this.tree.dispatchEvent(new Event('svg-tree:visible'));
-  }
+  };
 
   protected render(): TemplateResult {
     if (this.hasAttribute('tree-actions') && this.getAttribute('tree-actions').length) {
@@ -124,7 +124,7 @@ export class FileStorageBrowser extends LitElement {
       // set up toolbar now with updated properties
       const toolbar = this.querySelector('typo3-backend-tree-toolbar') as Toolbar;
       toolbar.tree = this.tree;
-    }
+    };
 
     return html`
       <div class="svg-tree">
@@ -143,21 +143,21 @@ export class FileStorageBrowser extends LitElement {
 
   private selectActiveNode = (evt: CustomEvent): void => {
     // Activate the current node
-    let nodes = evt.detail.nodes as Array<TreeNode>;
+    const nodes = evt.detail.nodes as Array<TreeNode>;
     evt.detail.nodes = nodes.map((node: TreeNode) => {
       if (decodeURIComponent(node.identifier) === this.activeFolder) {
         node.checked = true;
       }
       return node;
     });
-  }
+  };
 
   private toggleExpandState = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
     if (node) {
       Persistent.set('BackendComponents.States.FileStorageTree.stateHash.' + node.stateIdentifier, (node.expanded ? '1' : '0'));
     }
-  }
+  };
 
   /**
    * If a page is clicked, the content area needs to be updated
@@ -167,12 +167,12 @@ export class FileStorageBrowser extends LitElement {
     if (!node.checked) {
       return;
     }
-    let contentsUrl = document.location.href + '&contentOnly=1&expandFolder=' + node.identifier;
+    const contentsUrl = document.location.href + '&contentOnly=1&expandFolder=' + node.identifier;
     (new AjaxRequest(contentsUrl)).get()
       .then((response: AjaxResponse) => response.resolve())
       .then((response) => {
         const contentContainer = document.querySelector('.element-browser-main-content .element-browser-body') as HTMLElement;
         contentContainer.innerHTML = response;
       });
-  }
+  };
 }

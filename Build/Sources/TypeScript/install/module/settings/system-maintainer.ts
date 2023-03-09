@@ -13,13 +13,29 @@
 
 import 'bootstrap';
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
-import {topLevelModuleImport} from '@typo3/backend/utility/top-level-module-import';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
+import MessageInterface from '@typo3/install/message-interface';
+
+type SystemMaintainerListResponse = {
+  success: boolean;
+  users: {
+    uid: number;
+    username: string;
+    disable: boolean;
+    isSystemMaintainer: boolean;
+  }[];
+  html: string;
+  buttons: {
+    btnClass: string;
+    text: string
+  }[]
+}
 
 /**
  * Module: @typo3/install/module/system-maintainer
@@ -51,27 +67,27 @@ class SystemMaintainer extends AbstractInteractableModule {
   private getList(): void {
     const modalContent = this.getModalBody();
     (new AjaxRequest(Router.getUrl('systemMaintainerGetList')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
-          const data = await response.resolve();
+        async (response: AjaxResponse): Promise<void> => {
+          const data: SystemMaintainerListResponse = await response.resolve();
           if (data.success === true) {
             modalContent.html(data.html);
             Modal.setButtons(data.buttons);
             if (Array.isArray(data.users)) {
-              data.users.forEach((element: any): void => {
+              data.users.forEach((element): void => {
                 let name = element.username;
                 if (element.disable) {
                   name = '[DISABLED] ' + name;
                 }
-                const $option = $('<option>', {'value': element.uid}).text(name);
+                const $option = $('<option>', { 'value': element.uid }).text(name);
                 if (element.isSystemMaintainer) {
                   $option.attr('selected', 'selected');
                 }
                 modalContent.find(this.selectorChosenField).append($option);
               });
             }
-            const config: any = {
+            const config: { [key: string]: Record<string, string> } = {
               '.t3js-systemMaintainer-chosen-select': {
                 width: '100%',
                 placeholder_text_multiple: 'users',
@@ -79,7 +95,7 @@ class SystemMaintainer extends AbstractInteractableModule {
             };
 
             for (const selector in config) {
-              if (config.hasOwnProperty(selector)) {
+              if (selector in config) {
                 modalContent.find(selector).chosen(config[selector]);
               }
             }
@@ -105,11 +121,11 @@ class SystemMaintainer extends AbstractInteractableModule {
         token: executeToken,
         action: 'systemMaintainerWrite',
       },
-    }).then(async (response: AjaxResponse): Promise<any> => {
+    }).then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
       if (data.success === true) {
         if (Array.isArray(data.status)) {
-          data.status.forEach((element: any): void => {
+          data.status.forEach((element: MessageInterface): void => {
             Notification.success(element.title, element.message);
           });
         }

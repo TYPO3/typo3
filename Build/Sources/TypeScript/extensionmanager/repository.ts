@@ -18,7 +18,7 @@ import Notification from '@typo3/backend/notification';
 import Severity from '@typo3/backend/severity';
 import Tablesort from 'tablesort';
 import '@typo3/backend/input/clearable';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
 
@@ -40,7 +40,7 @@ class Repository {
   public downloadPath: string = '';
 
   public initDom(): void {
-    NProgress.configure({parent: '.module-loading-indicator', showSpinner: false});
+    NProgress.configure({ parent: '.module-loading-indicator', showSpinner: false });
 
     const terVersionTable = document.getElementById('terVersionTable');
     const terSearchTable = document.getElementById('terSearchTable');
@@ -57,16 +57,14 @@ class Repository {
   }
 
   private bindDownload(): void {
-    const me = this;
-    new RegularEvent('click', function (this: HTMLInputElement, e: Event): void {
+    new RegularEvent('click', (e: Event, target: HTMLInputElement): void => {
       e.preventDefault();
 
-      const form = this.closest('form');
+      const form = target.closest('form');
       const url = form.dataset.href;
-      me.downloadPath = (form.querySelector('input.downloadPath:checked') as HTMLInputElement).value;
+      this.downloadPath = (form.querySelector('input.downloadPath:checked') as HTMLInputElement).value;
       NProgress.start();
-      new AjaxRequest(url).get().then(me.getDependencies);
-
+      new AjaxRequest(url).get().then(this.getDependencies);
     }).delegateTo(document, '.downloadFromTer form.download button[type=submit]');
   }
 
@@ -101,7 +99,7 @@ class Repository {
           + '&downloadPath=' + this.downloadPath);
       }
     }
-  }
+  };
 
   private getResolveDependenciesAndInstallResult(url: string): void {
     NProgress.start();
@@ -144,9 +142,9 @@ class Repository {
         + data.installationTypeLanguageKey].replace(/\{0\}/g, data.extension);
 
         successMessage += '\n' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.header'] + ': ';
-        for (let [index, value] of Object.entries(data.result)) {
+        for (const [index, value] of Object.entries(data.result)) {
           successMessage += '\n\n' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.item'] + ' ' + index + ': ';
-          for (let extkey of value) {
+          for (const extkey of value) {
             successMessage += '\n* ' + extkey;
           }
         }
@@ -159,7 +157,7 @@ class Repository {
         top.TYPO3.ModuleMenu.App.refreshMenu();
       }
     }).finally((): void => {
-      NProgress.done()
+      NProgress.done();
     });
   }
 

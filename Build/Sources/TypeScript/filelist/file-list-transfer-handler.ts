@@ -103,10 +103,10 @@ class FileListTransferHandler {
       const operation: FileListTransferOperation = {
         data: resource.identifier,
         target: target.identifier,
-      }
+      };
       payload.push(operation);
     });
-    const params = { data: { [type]: payload } } as any;
+    const params = { data: { [type]: payload } };
 
     (new AjaxRequest(top.TYPO3.settings.ajaxUrls.file_process))
       .post(params)

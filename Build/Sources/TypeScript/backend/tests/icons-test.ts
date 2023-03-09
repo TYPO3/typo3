@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import Icons from '@typo3/backend/icons';
 
 describe('TYPO3/CMS/Backend/IconsTest:', () => {
@@ -62,4 +61,4 @@ describe('TYPO3/CMS/Backend/IconsTest:', () => {
     });
   });
 });
-;
+

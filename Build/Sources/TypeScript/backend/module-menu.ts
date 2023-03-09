@@ -45,6 +45,12 @@ interface ModuleMenuItem {
 class ModuleMenu {
   private loadedModule: string = null;
 
+  constructor() {
+    // @todo: DocumentService.ready() doesn't work here as it apparently is too fast or whatever.
+    //        It keeps breaking acceptance tests. Bonkers.
+    $((): void => this.initialize());
+  }
+
   private static getModuleMenuItemFromElement(element: HTMLElement): ModuleMenuItem {
     const item: ModuleMenuItem = {
       identifier: element.dataset.modulemenuIdentifier,
@@ -52,7 +58,7 @@ class ModuleMenu {
       collapsible: element.dataset.modulemenuCollapsible === 'true',
       expanded: element.attributes.getNamedItem('aria-expanded')?.value === 'true',
       element: element,
-    }
+    };
 
     return item;
   }
@@ -218,7 +224,7 @@ class ModuleMenu {
   }
 
   private static getPreviousItem(item: HTMLElement): HTMLElement {
-    let previousParent = item.parentElement.previousElementSibling; // previous <li>
+    const previousParent = item.parentElement.previousElementSibling; // previous <li>
     if (previousParent === null) {
       return ModuleMenu.getLastItem(item);
     }
@@ -226,7 +232,7 @@ class ModuleMenu {
   }
 
   private static getNextItem(item: HTMLElement): HTMLElement {
-    let nextParent = item.parentElement.nextElementSibling; // next <li>
+    const nextParent = item.parentElement.nextElementSibling; // next <li>
     if (nextParent === null) {
       return ModuleMenu.getFirstItem(item);
     }
@@ -251,12 +257,6 @@ class ModuleMenu {
   private static getFirstChildItem(item: HTMLElement): HTMLElement {
     // the first <li> of the <ul> following the <element>, then down down its <element>
     return item.nextElementSibling.firstElementChild.firstElementChild as HTMLElement;
-  }
-
-  constructor() {
-    // @todo: DocumentService.ready() doesn't work here as it apparently is too fast or whatever.
-    //        It keeps breaking acceptance tests. Bonkers.
-    $((): void => this.initialize());
   }
 
   /**
@@ -309,7 +309,7 @@ class ModuleMenu {
       return;
     }
 
-    let deferred = $.Deferred();
+    const deferred = $.Deferred();
     deferred.resolve();
 
     deferred.then((): void => {
@@ -318,7 +318,7 @@ class ModuleMenu {
         // Only initialize top bar events when top bar exists.
         // E.g. install tool has no top bar
         if (document.querySelector('.t3js-scaffold-toolbar')) {
-          this.initializeTopBarEvents()
+          this.initializeTopBarEvents();
         }
       });
     });

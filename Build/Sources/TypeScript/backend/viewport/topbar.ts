@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {ScaffoldIdentifierEnum} from '../enum/viewport/scaffold-identifier';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { ScaffoldIdentifierEnum } from '../enum/viewport/scaffold-identifier';
 import Toolbar from './toolbar';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 

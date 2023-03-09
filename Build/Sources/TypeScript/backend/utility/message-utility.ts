@@ -12,8 +12,8 @@
  */
 
 interface Message {
-  actionName: string;
   [key: string]: any;
+  actionName: string;
 }
 
 export class MessageUtility {

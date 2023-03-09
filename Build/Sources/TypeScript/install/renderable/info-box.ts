@@ -26,7 +26,7 @@ class InfoBox {
   );
 
   public render(severity: number, title: string, message?: string): JQuery {
-    let infoBox: JQuery = this.template.clone();
+    const infoBox: JQuery = this.template.clone();
     infoBox.addClass('callout-' + Severity.getCssClass(severity));
     if (title) {
       infoBox.find('h4').text(title);

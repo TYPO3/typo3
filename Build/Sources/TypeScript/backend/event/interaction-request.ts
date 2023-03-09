@@ -17,17 +17,18 @@ class InteractionRequest {
   protected processed: boolean = false;
   protected processedData: any = null;
 
+  constructor(type: string, parentRequest: InteractionRequest = null) {
+    this.type = type;
+    this.parentRequest = parentRequest;
+  }
+
   public get outerMostRequest(): InteractionRequest {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     let request: InteractionRequest = this;
     while (request.parentRequest instanceof InteractionRequest) {
       request = request.parentRequest;
     }
     return request;
-  }
-
-  constructor(type: string, parentRequest: InteractionRequest = null) {
-    this.type = type;
-    this.parentRequest = parentRequest;
   }
 
   public isProcessed(): boolean {

@@ -11,11 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, css, unsafeCSS, LitElement, TemplateResult, CSSResult, nothing} from 'lit';
-import {customElement, property} from 'lit/decorators';
-import {unsafeHTML} from 'lit/directives/unsafe-html';
-import {until} from 'lit/directives/until';
-import {Sizes, States, MarkupIdentifiers} from '../enum/icon-types';
+import { html, css, unsafeCSS, LitElement, TemplateResult, CSSResult, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { until } from 'lit/directives/until';
+import { Sizes, States, MarkupIdentifiers } from '../enum/icon-types';
 import Icons from '../icons';
 import '@typo3/backend/element/spinner-element';
 
@@ -44,24 +44,6 @@ const iconSize = (identifier: CSSResult) => css`
  */
 @customElement('typo3-backend-icon')
 export class IconElement extends LitElement {
-  @property({type: String}) identifier: string;
-  @property({type: String, reflect: true}) size: Sizes = null;
-  @property({type: String}) state: States = States.default;
-  @property({type: String}) overlay: string = null;
-  @property({type: String}) markup: MarkupIdentifiers = MarkupIdentifiers.inline;
-
-  /**
-   * @internal Usage of `raw` attribute is discouraged due to security implications.
-   *
-   * The `raw` attribute value will be rendered unescaped into DOM as raw html (.innerHTML = raw).
-   * That means it is the responsibility of the callee to ensure the HTML string does not contain
-   * user supplied strings.
-   * This attribute should therefore only be used to preserve backwards compatibility,
-   * and must not be used in new code or with user supplied strings.
-   * Use `identifier` attribute if ever possible instead.
-   */
-  @property({type: String}) raw?: string = null;
-
   // @todo the css of the @typo3/icons should be included instead
   static styles = [
     css`
@@ -152,6 +134,24 @@ export class IconElement extends LitElement {
     iconSize(unsafeCSS(Sizes.large)),
     iconSize(unsafeCSS(Sizes.mega)),
   ];
+
+  @property({ type: String }) identifier: string;
+  @property({ type: String, reflect: true }) size: Sizes = null;
+  @property({ type: String }) state: States = States.default;
+  @property({ type: String }) overlay: string = null;
+  @property({ type: String }) markup: MarkupIdentifiers = MarkupIdentifiers.inline;
+
+  /**
+   * @internal Usage of `raw` attribute is discouraged due to security implications.
+   *
+   * The `raw` attribute value will be rendered unescaped into DOM as raw html (.innerHTML = raw).
+   * That means it is the responsibility of the callee to ensure the HTML string does not contain
+   * user supplied strings.
+   * This attribute should therefore only be used to preserve backwards compatibility,
+   * and must not be used in new code or with user supplied strings.
+   * Use `identifier` attribute if ever possible instead.
+   */
+  @property({ type: String }) raw?: string = null;
 
   public render(): TemplateResult | symbol {
     if (this.raw) {

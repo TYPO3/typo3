@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ClientStorage from './storage/client';
-import {Sizes, States, MarkupIdentifiers} from './enum/icon-types';
+import { Sizes, States, MarkupIdentifiers } from './enum/icon-types';
 
 interface PromiseCache {
   [key: string]: Promise<string>;
@@ -25,9 +25,9 @@ interface PromiseCache {
  * Uses the icon API of the core to fetch icons via AJAX.
  */
 class Icons {
-  public readonly sizes: any = Sizes;
-  public readonly states: any = States;
-  public readonly markupIdentifiers: any = MarkupIdentifiers;
+  public readonly sizes: typeof Sizes = Sizes;
+  public readonly states: typeof States = States;
+  public readonly markupIdentifiers: typeof MarkupIdentifiers = MarkupIdentifiers;
   private readonly promiseCache: PromiseCache = {};
 
   /**
@@ -64,7 +64,7 @@ class Icons {
     const describedIcon = [identifier, size, overlayIdentifier, state, markupIdentifier];
     const cacheIdentifier = describedIcon.join('_');
 
-    return this.getIconRegistryCache().then((registryCacheIdentifier: string): any => {
+    return this.getIconRegistryCache().then((registryCacheIdentifier: string): Promise<string> => {
       if (!ClientStorage.isset('icon_registry_cache_identifier')
         || ClientStorage.get('icon_registry_cache_identifier') !== registryCacheIdentifier
       ) {
@@ -72,7 +72,7 @@ class Icons {
         ClientStorage.set('icon_registry_cache_identifier', registryCacheIdentifier);
       }
 
-      return this.fetchFromLocal(cacheIdentifier).then(null, (): any => {
+      return this.fetchFromLocal(cacheIdentifier).then(null, (): Promise<string> => {
         return this.fetchFromRemote(describedIcon, cacheIdentifier);
       });
     });
@@ -86,7 +86,7 @@ class Icons {
         promiseCacheIdentifier,
         (new AjaxRequest(TYPO3.settings.ajaxUrls.icons_cache)).get()
           .then(async (response: AjaxResponse): Promise<string> => {
-            return await response.resolve()
+            return await response.resolve();
           })
       );
     }

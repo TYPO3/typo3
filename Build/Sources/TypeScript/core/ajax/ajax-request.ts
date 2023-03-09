@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from './ajax-response';
-import {GenericKeyValue, InputTransformer} from './input-transformer';
+import { AjaxResponse } from './ajax-response';
+import { GenericKeyValue, InputTransformer } from './input-transformer';
 
 /**
  * @example send data as `Content-Type: multipart/form-data` (default)
@@ -66,7 +66,7 @@ class AjaxRequest {
       method: 'GET',
     };
 
-    const response = await this.send({...localDefaultOptions, ...init});
+    const response = await this.send({ ...localDefaultOptions, ...init });
     return new AjaxResponse(response);
   }
 
@@ -84,7 +84,7 @@ class AjaxRequest {
       method: 'POST',
     };
 
-    const response = await this.send({...localDefaultOptions, ...init});
+    const response = await this.send({ ...localDefaultOptions, ...init });
     return new AjaxResponse(response);
   }
 
@@ -102,7 +102,7 @@ class AjaxRequest {
       method: 'PUT',
     };
 
-    const response = await this.send({...localDefaultOptions, ...init});
+    const response = await this.send({ ...localDefaultOptions, ...init });
     return new AjaxResponse(response);
   }
 
@@ -125,7 +125,7 @@ class AjaxRequest {
       localDefaultOptions.body = InputTransformer.byHeader(data, init?.headers);
     }
 
-    const response = await this.send({...localDefaultOptions, ...init});
+    const response = await this.send({ ...localDefaultOptions, ...init });
     return new AjaxResponse(response);
   }
 
@@ -182,7 +182,7 @@ class AjaxRequest {
    * @return {RequestInit}
    */
   private getMergedOptions(init: RequestInit): RequestInit {
-    return {...AjaxRequest.defaultOptions, ...init, signal: this.abortController.signal};
+    return { ...AjaxRequest.defaultOptions, ...init, signal: this.abortController.signal };
   }
 }
 

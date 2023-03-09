@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {customElement} from 'lit/decorators';
-import {html, LitElement, TemplateResult} from 'lit';
-import {lll} from '@typo3/core/lit-helper';
+import { customElement } from 'lit/decorators';
+import { html, LitElement, TemplateResult } from 'lit';
+import { lll } from '@typo3/core/lit-helper';
 import Modal from '@typo3/backend/modal';
 
 @customElement('typo3-backend-live-search-show-all')

@@ -27,7 +27,7 @@ export interface JavaScriptInstruction {
   type: string;
   assignments?: object;
   method?: string;
-  args: Array<any>;
+  args: unknown[];
 }
 
 export interface JavaScriptItemPayload {
@@ -50,13 +50,13 @@ let useShim = false;
 
 const moduleImporter = (moduleName: string): Promise<any> => {
   if (useShim) {
-    return (window as any).importShim(moduleName)
+    return (window as any).importShim(moduleName);
   } else {
     return import(moduleName).catch(() => {
       // Consider that importmaps are not supported and use shim from now on
       useShim = true;
-      return moduleImporter(moduleName)
-    })
+      return moduleImporter(moduleName);
+    });
   }
 };
 
@@ -94,7 +94,7 @@ export function loadModule(payload: JavaScriptItemPayload): Promise<any> {
     });
   }
 
-  throw new Error('Unknown JavaScript module type')
+  throw new Error('Unknown JavaScript module type');
 }
 
 export function resolveSubjectRef(__esModule: any, payload: JavaScriptItemPayload): any {
@@ -128,7 +128,7 @@ export function executeJavaScriptModuleInstruction(json: JavaScriptItemPayload):
         return (__esModule: any): any => {
           const subjectRef = resolveSubjectRef(__esModule, json);
           if ('method' in item && item.method) {
-            return subjectRef[item.method].apply(subjectRef, item.args);
+            return subjectRef[item.method](...item.args);
           } else {
             return subjectRef(...item.args);
           }
@@ -139,12 +139,12 @@ export function executeJavaScriptModuleInstruction(json: JavaScriptItemPayload):
           // which will be reset when invoking `new`
           const args = [null].concat(item.args);
           const subjectRef = resolveSubjectRef(__esModule, json);
-          return new (subjectRef.bind.apply(subjectRef, args));
-        }
+          return new (subjectRef.bind(...args));
+        };
       } else {
-        return (__esModule: any) => {
+        return (): void => {
           return;
-        }
+        };
       }
     });
 
@@ -163,7 +163,7 @@ function mergeRecursive(target: { [key: string]: any }, source: { [key: string]:
       throw new Error('Property ' + property + ' is not allowed');
     }
     if (!isObjectInstance(source[property]) || typeof target[property] === 'undefined') {
-      Object.assign(target, {[property]:source[property]});
+      Object.assign(target, { [property]:source[property] });
     } else {
       mergeRecursive(target[property], source[property]);
     }

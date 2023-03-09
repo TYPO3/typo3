@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {Resizable} from './modifier/resizable';
-import {Tabbable} from './modifier/tabbable';
+import { Resizable } from './modifier/resizable';
+import { Tabbable } from './modifier/tabbable';
 
 /**
  * Module: @typo3/backend/form-engine/element/json-element

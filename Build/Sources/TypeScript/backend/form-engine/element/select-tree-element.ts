@@ -11,12 +11,12 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import type {SelectTree} from './select-tree';
-import type {SelectTreeToolbar} from './select-tree-toolbar';
+import type { SelectTree } from './select-tree';
+import type { SelectTreeToolbar } from './select-tree-toolbar';
 import './select-tree';
 import './select-tree-toolbar';
 import '@typo3/backend/element/icon-element';
-import {TreeNode} from '@typo3/backend/tree/tree-node';
+import { TreeNode } from '@typo3/backend/tree/tree-node';
 import FormEngine from '@typo3/backend/form-engine';
 import OnFieldChangeItem = TYPO3.CMS.Backend.OnFieldChangeItem;
 
@@ -37,7 +37,7 @@ export class SelectTreeElement {
     this.tree.addEventListener('typo3:svg-tree:node-selected', this.selectNode);
 
     if (onFieldChangeItems instanceof Array) {
-      this.tree.addEventListener('typo3:svg-tree:node-selected', () => { FormEngine.processOnFieldChange(onFieldChangeItems) } );
+      this.tree.addEventListener('typo3:svg-tree:node-selected', () => { FormEngine.processOnFieldChange(onFieldChangeItems); } );
     }
 
     const settings = {
@@ -69,9 +69,9 @@ export class SelectTreeElement {
   private listenForVisibleTree(): void {
     if (!this.tree.offsetParent) {
       // Search for the parents that are tab containers
-      let idOfTabContainer = this.tree.closest('.tab-pane').getAttribute('id');
+      const idOfTabContainer = this.tree.closest('.tab-pane').getAttribute('id');
       if (idOfTabContainer) {
-        let btn = document.querySelector('[aria-controls="' + idOfTabContainer + '"]');
+        const btn = document.querySelector('[aria-controls="' + idOfTabContainer + '"]');
         btn.addEventListener('shown.bs.tab', () => { this.tree.dispatchEvent(new Event('svg-tree:visible')); });
       }
     }
@@ -103,8 +103,8 @@ export class SelectTreeElement {
     // check all nodes again, to ensure correct display of indeterminate state
     this.calculateIndeterminate(this.tree.nodes);
     this.saveCheckboxes();
-    this.tree.setup.input.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
-  }
+    this.tree.setup.input.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+  };
 
   /**
    * Resets the node.indeterminate for the whole tree.
@@ -117,7 +117,7 @@ export class SelectTreeElement {
       return node;
     });
     this.calculateIndeterminate(this.tree.nodes);
-  }
+  };
 
   /**
    * Sets a comma-separated list of selected nodes identifiers to configured input
@@ -127,7 +127,7 @@ export class SelectTreeElement {
       return;
     }
     this.recordField.value = this.tree.getSelectedNodes().map((node: TreeNode): string => node.identifier).join(',');
-  }
+  };
 
   /**
    * Updates the indeterminate state for ancestors of the current node

@@ -11,11 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {BroadcastMessage} from '@typo3/backend/broadcast-message';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { BroadcastMessage } from '@typo3/backend/broadcast-message';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import DocumentService from '@typo3/core/document-service';
-import {SeverityEnum} from './enum/severity';
+import { SeverityEnum } from './enum/severity';
 import ResponseInterface from './ajax-data-handler/response-interface';
 import $ from 'jquery';
 import BroadcastService from '@typo3/backend/broadcast-service';
@@ -42,6 +42,12 @@ interface AfterProcessEventDict {
  * through \TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->processAjaxRequest (record_process route)
  */
 class AjaxDataHandler {
+  constructor() {
+    DocumentService.ready().then((): void => {
+      this.initialize();
+    });
+  }
+
   /**
    * Refresh the page tree
    */
@@ -54,17 +60,11 @@ class AjaxDataHandler {
    * returns a jQuery Promise to work with
    *
    * @param {string | object} params
-   * @returns {Promise<any>}
+   * @returns {Promise<ResponseInterface>}
    */
   private static call(params: string | object): Promise<ResponseInterface> {
     return (new AjaxRequest(TYPO3.settings.ajaxUrls.record_process)).withQueryArguments(params).get().then(async (response: AjaxResponse): Promise<ResponseInterface> => {
       return await response.resolve();
-    });
-  }
-
-  constructor() {
-    DocumentService.ready().then((): void => {
-      this.initialize();
     });
   }
 
@@ -73,9 +73,9 @@ class AjaxDataHandler {
    *
    * @param {string | object} parameters
    * @param {AfterProcessEventDict} eventDict Dictionary used as event detail. This is private API yet.
-   * @returns {Promise<any>}
+   * @returns {Promise<ResponseInterface>}
    */
-  public process(parameters: string | object, eventDict?: AfterProcessEventDict): Promise<any> {
+  public process(parameters: string | object, eventDict?: AfterProcessEventDict): Promise<ResponseInterface> {
     const promise = AjaxDataHandler.call(parameters);
     return promise.then((result: ResponseInterface): ResponseInterface => {
       if (result.hasErrors) {
@@ -83,7 +83,7 @@ class AjaxDataHandler {
       }
 
       if (eventDict) {
-        const payload = {...eventDict, hasErrors: result.hasErrors};
+        const payload = { ...eventDict, hasErrors: result.hasErrors };
         const message = new BroadcastMessage(
           'datahandler',
           'process',
@@ -219,7 +219,7 @@ class AjaxDataHandler {
     const uid = $rowElements.data('uid');
 
     // make the AJAX call to toggle the visibility
-    const eventData = {component: 'datahandler', action: 'delete', table, uid};
+    const eventData = { component: 'datahandler', action: 'delete', table, uid };
     this.process(params, eventData).then((result: ResponseInterface): void => {
       // revert to the old class
       Icons.getIcon('actions-edit-delete', Icons.sizes.small).then((icon: string): void => {
@@ -258,7 +258,7 @@ class AjaxDataHandler {
    * @param {Object} result
    */
   private handleErrors(result: ResponseInterface): void {
-    for (let message of result.messages) {
+    for (const message of result.messages) {
       Notification.error(message.title, message.message);
     }
   }

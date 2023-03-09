@@ -11,15 +11,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, LitElement, nothing, TemplateResult} from 'lit';
-import {customElement, property, query} from 'lit/decorators';
-import {until} from 'lit/directives/until';
-import {lll} from '@typo3/core/lit-helper';
-import {PageTree} from '../page-tree/page-tree';
+import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { customElement, property, query } from 'lit/decorators';
+import { until } from 'lit/directives/until';
+import { lll } from '@typo3/core/lit-helper';
+import { PageTree } from '../page-tree/page-tree';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {TreeNode} from './tree-node';
-import {TreeNodeSelection, Toolbar} from '../svg-tree';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { TreeNode } from './tree-node';
+import { TreeNodeSelection, Toolbar } from '../svg-tree';
 import ElementBrowser from '@typo3/backend/element-browser';
 import LinkBrowser from '@typo3/backend/link-browser';
 import '@typo3/backend/element/icon-element';
@@ -61,7 +61,7 @@ class PageBrowserTree extends PageTree {
       const linkAction = this.nodesActionsContainer.selectAll('.node-action')
         .append('g')
         .attr('visibility', (node: TreeNode) => {
-          return this.isLinkable(node) ? 'visible' : 'hidden'
+          return this.isLinkable(node) ? 'visible' : 'hidden';
         })
         .on('click', (evt: MouseEvent, node: TreeNode) => {
           this.linkItem(node);
@@ -116,7 +116,7 @@ class PageBrowserTree extends PageTree {
  */
 @customElement(componentName)
 export class PageBrowser extends LitElement {
-  @property({type: String}) mountPointPath: string = null;
+  @property({ type: String }) mountPointPath: string = null;
   @query('.svg-tree-wrapper') tree: PageBrowserTree;
 
   private activePageId: number = 0;
@@ -148,7 +148,7 @@ export class PageBrowser extends LitElement {
 
   protected triggerRender = (): void => {
     this.tree.dispatchEvent(new Event('svg-tree:visible'));
-  }
+  };
 
   protected getConfiguration(): Promise<Configuration> {
     if (this.configuration !== null) {
@@ -159,7 +159,7 @@ export class PageBrowser extends LitElement {
     const alternativeEntryPoints = this.hasAttribute('alternative-entry-points') ? JSON.parse(this.getAttribute('alternative-entry-points')) : [];
     let request = new AjaxRequest(configurationUrl);
     if (alternativeEntryPoints.length) {
-      request = request.withQueryArguments('alternativeEntryPoints=' + encodeURIComponent(alternativeEntryPoints))
+      request = request.withQueryArguments('alternativeEntryPoints=' + encodeURIComponent(alternativeEntryPoints));
     }
     return request.get()
       .then(async (response: AjaxResponse): Promise<Configuration> => {
@@ -190,7 +190,7 @@ export class PageBrowser extends LitElement {
           // set up toolbar now with updated properties
           const toolbar = this.querySelector('typo3-backend-tree-toolbar') as Toolbar;
           toolbar.tree = this.tree;
-        }
+        };
 
         return html`
           <div>
@@ -215,21 +215,21 @@ export class PageBrowser extends LitElement {
 
   private selectActivePageInTree = (evt: CustomEvent): void => {
     // Activate the current node
-    let nodes = evt.detail.nodes as Array<TreeNode>;
+    const nodes = evt.detail.nodes as Array<TreeNode>;
     evt.detail.nodes = nodes.map((node: TreeNode) => {
       if (parseInt(node.identifier, 10) === this.activePageId) {
         node.checked = true;
       }
       return node;
     });
-  }
+  };
 
   private toggleExpandState = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
     if (node) {
       Persistent.set('BackendComponents.States.Pagetree.stateHash.' + node.stateIdentifier, (node.expanded ? '1' : '0'));
     }
-  }
+  };
   /**
    * If a page is clicked, the content area needs to be updated
    */
@@ -238,19 +238,19 @@ export class PageBrowser extends LitElement {
     if (!node.checked) {
       return;
     }
-    let contentsUrl = document.location.href + '&contentOnly=1&expandPage=' + node.identifier;
+    const contentsUrl = document.location.href + '&contentOnly=1&expandPage=' + node.identifier;
     (new AjaxRequest(contentsUrl)).get()
       .then((response: AjaxResponse) => response.resolve())
       .then((response) => {
         const contentContainer = document.querySelector('.element-browser-main-content .element-browser-body') as HTMLElement;
         contentContainer.innerHTML = response;
       });
-  }
+  };
 
 
   private setMountPoint = (e: CustomEvent): void => {
     this.setTemporaryMountPoint(e.detail.pageId as number);
-  }
+  };
 
   private unsetTemporaryMountPoint() {
     this.mountPointPath = null;
@@ -277,7 +277,7 @@ export class PageBrowser extends LitElement {
   private setTemporaryMountPoint(pid: number): void {
     (new AjaxRequest(this.configuration.setTemporaryMountPointUrl))
       .post('pid=' + pid, {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'},
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' },
       })
       .then((response) => response.resolve())
       .then((response) => {

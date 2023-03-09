@@ -11,15 +11,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {customElement, property} from 'lit/decorators';
-import {css, html, LitElement, TemplateResult} from 'lit';
-import {lll} from '@typo3/core/lit-helper';
+import { customElement, property } from 'lit/decorators';
+import { css, html, LitElement, TemplateResult } from 'lit';
+import { lll } from '@typo3/core/lit-helper';
 import './result-item';
-import {ResultItemInterface} from './result-item';
+import { ResultItemInterface } from './result-item';
 
 @customElement('typo3-backend-formengine-suggest-result-container')
-class ResultContainer extends LitElement {
-  @property({type: Object}) results: ResultItemInterface[]|null = null;
+export class ResultContainer extends LitElement {
+  @property({ type: Object }) results: ResultItemInterface[]|null = null;
 
   public connectedCallback(): void {
     super.connectedCallback();
@@ -82,7 +82,7 @@ class ResultContainer extends LitElement {
 
     let focusableCandidate;
     if (e.key === 'ArrowDown') {
-      focusableCandidate = document.activeElement.nextElementSibling
+      focusableCandidate = document.activeElement.nextElementSibling;
     } else {
       focusableCandidate = document.activeElement.previousElementSibling;
       if (focusableCandidate === null) {

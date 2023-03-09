@@ -12,13 +12,15 @@
  */
 
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+
 
 interface Payload {
   url: string;
   method?: string;
   data?: { [key: string]: any},
-  onfulfilled: Function;
-  onrejected: Function;
+  onfulfilled: (value: AjaxResponse) => Promise<void>;
+  onrejected: (reason: string) => void;
   finally?: Function;
 }
 
@@ -54,7 +56,7 @@ class AjaxQueue {
 
   private async sendRequest(payload: Payload): Promise<void> {
     const request = new AjaxRequest(payload.url);
-    let response: any;
+    let response: Promise<AjaxResponse>;
     if (typeof payload.method !== 'undefined' && payload.method.toUpperCase() === 'POST') {
       response = request.post(payload.data);
     } else {

@@ -12,7 +12,7 @@
  */
 
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Notification from '@typo3/backend/notification';
 
@@ -69,7 +69,7 @@ class LoginRefresh {
       return;
     }
     // set interval to 60 seconds
-    let interval: number = this.intervalTime * 1000;
+    const interval: number = this.intervalTime * 1000;
     this.intervalId = setInterval(this.checkActiveSession, interval);
   }
 
@@ -200,14 +200,14 @@ class LoginRefresh {
     this.$timeoutModal.find('.modal-header h4').text(TYPO3.lang['mess.login_about_to_expire_title']);
     this.$timeoutModal.find('.modal-body').append(
       $('<p />').text(TYPO3.lang['mess.login_about_to_expire']),
-      $('<div />', {class: 'progress'}).append(
+      $('<div />', { class: 'progress' }).append(
         $('<div />', {
           class: 'progress-bar progress-bar-warning progress-bar-striped progress-bar-animated',
           role: 'progressbar',
           'aria-valuemin': '0',
           'aria-valuemax': '100',
         }).append(
-          $('<span />', {class: 'visually-hidden'}),
+          $('<span />', { class: 'visually-hidden' }),
         ),
       ),
     );
@@ -247,7 +247,7 @@ class LoginRefresh {
 
     this.$loginForm = this.generateModal(MarkupIdentifiers.loginFormModal);
     this.$loginForm.addClass('modal-notice');
-    let refresh_login_title = String(TYPO3.lang['mess.refresh_login_title']).replace('%s', TYPO3.configuration.username);
+    const refresh_login_title = String(TYPO3.lang['mess.refresh_login_title']).replace('%s', TYPO3.configuration.username);
     this.$loginForm.find('.modal-header h4').text(refresh_login_title);
     this.$loginForm.find('.modal-body').append(
       $('<p />').text(TYPO3.lang['mess.login_expired']),
@@ -257,10 +257,10 @@ class LoginRefresh {
         action: TYPO3.settings.ajaxUrls.login,
       }).append(
         $('<div />').append(
-          $('<input />', {type: 'text', name: 'username', class: 'd-none', value: TYPO3.configuration.username}),
-          $('<input />', {type: 'hidden', name: 'userident', id: 't3-loginrefresh-userident'})
+          $('<input />', { type: 'text', name: 'username', class: 'd-none', value: TYPO3.configuration.username }),
+          $('<input />', { type: 'hidden', name: 'userident', id: 't3-loginrefresh-userident' })
         ),
-        $('<div />', {class: 'form-group'}).append(
+        $('<div />', { class: 'form-group' }).append(
           $('<input />', {
             type: 'password',
             name: 'p_field',
@@ -279,7 +279,7 @@ class LoginRefresh {
         href: this.logoutUrl,
         class: 'btn btn-default',
       }).text(TYPO3.lang['mess.refresh_exit_button']),
-      $('<button />', {type: 'submit', class: 'btn btn-primary', 'data-action': 'refreshSession', form: 'beLoginRefresh'})
+      $('<button />', { type: 'submit', class: 'btn btn-primary', 'data-action': 'refreshSession', form: 'beLoginRefresh' })
         .text(TYPO3.lang['mess.refresh_login_button'])
         .on('click', () => {
           this.$loginForm.find('form').trigger('submit');
@@ -300,13 +300,13 @@ class LoginRefresh {
       id: identifier,
       class: 't3js-modal ' + identifier + ' modal modal-type-default modal-severity-notice modal-style-light modal-size-small fade',
     }).append(
-      $('<div />', {class: 'modal-dialog'}).append(
-        $('<div />', {class: 'modal-content'}).append(
-          $('<div />', {class: 'modal-header'}).append(
-            $('<h4 />', {class: 'modal-title'}),
+      $('<div />', { class: 'modal-dialog' }).append(
+        $('<div />', { class: 'modal-content' }).append(
+          $('<div />', { class: 'modal-header' }).append(
+            $('<h4 />', { class: 'modal-title' }),
           ),
-          $('<div />', {class: 'modal-body'}),
-          $('<div />', {class: 'modal-footer'}),
+          $('<div />', { class: 'modal-body' }),
+          $('<div />', { class: 'modal-footer' }),
         ),
       ),
     );
@@ -345,7 +345,7 @@ class LoginRefresh {
       const percentText = (current) + '%';
       $progressBar.css('width', percentText);
       $srText.text(percentText);
-    },                           300);
+    }, 300);
   }
 
   /**
@@ -376,7 +376,7 @@ class LoginRefresh {
     const postData: any = {
       login_status: 'login',
     };
-    for (let field of $form.serializeArray()) {
+    for (const field of $form.serializeArray()) {
       postData[field.name] = field.value;
     }
     new AjaxRequest($form.attr('action')).post(postData).then(async (response: AjaxResponse): Promise<void> => {
@@ -389,7 +389,7 @@ class LoginRefresh {
         $passwordField.focus();
       }
     });
-  }
+  };
 
   /**
    * Registers the (shown|hidden).bs.modal events.
@@ -444,7 +444,7 @@ class LoginRefresh {
         }
       }
     });
-  }
+  };
 
   private applyOptions(options: LoginRefreshOptions): void {
     if (options.intervalTime !== undefined) {

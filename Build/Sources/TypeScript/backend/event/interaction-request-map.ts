@@ -20,7 +20,7 @@ class InteractionRequestMap {
   public attachFor(request: InteractionRequest, deferred: any): void {
     let targetAssignment = this.getFor(request);
     if (targetAssignment === null) {
-      targetAssignment = {request, deferreds: []} as InteractionRequestAssignment;
+      targetAssignment = { request, deferreds: [] } as InteractionRequestAssignment;
       this.assignments.push(targetAssignment);
     }
     targetAssignment.deferreds.push(deferred);

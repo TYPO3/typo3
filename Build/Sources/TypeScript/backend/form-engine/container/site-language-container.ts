@@ -12,13 +12,13 @@
  */
 
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {MessageUtility} from '../../utility/message-utility';
-import {AjaxDispatcher} from './../inline-relation/ajax-dispatcher';
-import {InlineResponseInterface} from './../inline-relation/inline-response-interface';
+import { MessageUtility } from '../../utility/message-utility';
+import { AjaxDispatcher } from './../inline-relation/ajax-dispatcher';
+import { InlineResponseInterface } from './../inline-relation/inline-response-interface';
 import NProgress from 'nprogress';
 import FormEngine from '@typo3/backend/form-engine';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
-import {default as Modal, ModalElement} from '@typo3/backend/modal';
+import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import Notification from '../../notification';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Severity from '../../severity';
@@ -55,7 +55,7 @@ interface UniqueDefinition {
   elTable: string;
   field: string;
   max: number;
-  possible: { [key: string]: string };
+  possible: Record<string, string>;
   table: string;
   used: UniqueDefinitionCollection;
 }
@@ -115,7 +115,7 @@ class SiteLanguageContainer extends HTMLElement {
     const options: NodeListOf<HTMLOptionElement> = selectElement.querySelectorAll('option');
     let index: number = -1;
 
-    for (let possibleValue of Object.keys(unique.possible)) {
+    for (const possibleValue of Object.keys(unique.possible)) {
       if (possibleValue === value) {
         break;
       }
@@ -273,7 +273,7 @@ class SiteLanguageContainer extends HTMLElement {
         }
       });
     }
-  }
+  };
 
   private createRecord(uid: string, markup: string, afterUid: string = null, selectedValue: string = null): void {
     let objectId = this.container.dataset.objectGroup;
@@ -314,7 +314,7 @@ class SiteLanguageContainer extends HTMLElement {
         const ajaxRequest = this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('site_configuration_inline_details'));
         const request = this.ajaxDispatcher.send(ajaxRequest, [objectId]);
 
-        request.then(async (response: InlineResponseInterface): Promise<any> => {
+        request.then(async (response: InlineResponseInterface): Promise<void> => {
           delete this.requestQueue[objectId];
           delete this.progessQueue[objectId];
 
@@ -386,7 +386,7 @@ class SiteLanguageContainer extends HTMLElement {
       return [];
     }
 
-    let records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
+    const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
     const indexOfRemoveUid = records.indexOf(objectUid);
     if (indexOfRemoveUid > -1) {
       delete records[indexOfRemoveUid];
@@ -431,7 +431,7 @@ class SiteLanguageContainer extends HTMLElement {
       progress = this.progessQueue[objectId];
     } else {
       progress = NProgress;
-      progress.configure({parent: headerIdentifier, showSpinner: false});
+      progress.configure({ parent: headerIdentifier, showSpinner: false });
       this.progessQueue[objectId] = progress;
     }
 
@@ -456,13 +456,13 @@ class SiteLanguageContainer extends HTMLElement {
     const unique: UniqueDefinition = TYPO3.settings.FormEngineInline.unique[this.container.dataset.objectGroup];
     const values = SiteLanguageContainer.getValuesFromHashMap(unique.used);
 
-    let uniqueValueField = <HTMLSelectElement>recordContainer.querySelector(
+    const uniqueValueField = <HTMLSelectElement>recordContainer.querySelector(
       '[name="data[' + unique.table + '][' + recordContainer.dataset.objectUid + '][' + unique.field + ']"]',
     );
 
     if (uniqueValueField !== null) {
       const selectedValue = uniqueValueField.options[uniqueValueField.selectedIndex].value;
-      for (let value of values) {
+      for (const value of values) {
         if (value !== selectedValue) {
           SiteLanguageContainer.removeSelectOptionByValue(uniqueValueField, value);
         }
@@ -486,11 +486,11 @@ class SiteLanguageContainer extends HTMLElement {
       if (selectorElement !== null) {
         // remove all items from the new select-item which are already used in other children
         if (uniqueValueField !== null) {
-          for (let value of values) {
+          for (const value of values) {
             SiteLanguageContainer.removeSelectOptionByValue(uniqueValueField, value);
           }
         }
-        for (let value of values) {
+        for (const value of values) {
           SiteLanguageContainer.removeSelectOptionByValue(uniqueValueField, value);
         }
         if (typeof unique.used.length !== 'undefined') {
@@ -504,7 +504,7 @@ class SiteLanguageContainer extends HTMLElement {
       // remove the newly used item from each select-field of the child records
       if (formField !== null && SiteLanguageContainer.selectOptionValueExists(selectorElement, selectedValue)) {
         const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
-        for (let record of records) {
+        for (const record of records) {
           uniqueValueField = <HTMLSelectElement>document.querySelector(
             '[name="data[' + unique.table + '][' + record + '][' + unique.field + ']"]',
           );
@@ -530,7 +530,7 @@ class SiteLanguageContainer extends HTMLElement {
     const recordObjectId = this.container.dataset.objectGroup + Separators.structureSeparator + recordUid;
     const recordContainer = SiteLanguageContainer.getInlineRecordContainer(recordObjectId);
 
-    let uniqueValueField = <HTMLSelectElement>recordContainer.querySelector(
+    const uniqueValueField = <HTMLSelectElement>recordContainer.querySelector(
       '[name="data[' + unique.table + '][' + recordContainer.dataset.objectUid + '][' + unique.field + ']"]',
     );
     let uniqueValue;
@@ -544,7 +544,7 @@ class SiteLanguageContainer extends HTMLElement {
 
     // 9223372036854775807 is the PHP_INT_MAX placeholder, used to allow creation of new records.
     // This option however should never be displayed in the selector box at is therefore checked.
-    if (!isNaN(parseInt(uniqueValue, 10)) && parseInt(uniqueValue, 10) !== 9223372036854775807) {
+    if (uniqueValue !== '9223372036854775807') {
       const selectorElement: HTMLSelectElement = <HTMLSelectElement>document.getElementById(
         this.container.dataset.objectGroup + '_selector',
       );

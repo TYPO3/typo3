@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, css, LitElement, TemplateResult, nothing} from 'lit';
-import {customElement, property, query} from 'lit/decorators';
-import {ModuleState} from '../module';
-import {lll} from '@typo3/core/lit-helper';
+import { html, LitElement, TemplateResult, nothing } from 'lit';
+import { customElement, property, query } from 'lit/decorators';
+import { ModuleState } from '../module';
+import { lll } from '@typo3/core/lit-helper';
 
 /**
  * Module: @typo3/backend/module/iframe
@@ -24,7 +24,7 @@ export const componentName = 'typo3-iframe-module';
 @customElement(componentName)
 export class IframeModuleElement extends LitElement {
 
-  @property({type: String}) endpoint: string = '';
+  @property({ type: String }) endpoint: string = '';
 
   @query('iframe', true) iframe: HTMLIFrameElement;
 
@@ -71,7 +71,7 @@ export class IframeModuleElement extends LitElement {
 
   private registerUnloadHandler(iframe: HTMLIFrameElement): void {
     try {
-      iframe.contentWindow.addEventListener('unload', (e: Event) => this._unload(e, iframe), { once: true});
+      iframe.contentWindow.addEventListener('unload', (e: Event) => this._unload(e, iframe), { once: true });
     } catch (e) {
       console.error('Failed to access contentWindow of module iframe – using a foreign origin?');
       throw e;
@@ -91,7 +91,7 @@ export class IframeModuleElement extends LitElement {
     }
   }
 
-  private _loaded({target}: Event) {
+  private _loaded({ target }: Event) {
     const iframe = <HTMLIFrameElement> target;
 
     // The event handler for the "unload" event needs to be attached

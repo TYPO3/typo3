@@ -12,7 +12,7 @@
 */
 
 // @todo: offload import and registration of components into separated widgets in TYPO3 v13
-import {Chart,
+import { Chart,
   ArcElement,
   LineElement,
   BarElement,
@@ -36,7 +36,7 @@ import {Chart,
   Legend,
   Title,
   Tooltip,
-  SubTitle} from '@typo3/dashboard/contrib/chartjs';
+  SubTitle } from '@typo3/dashboard/contrib/chartjs';
 import RegularEvent from '@typo3/core/event/regular-event';
 
 class ChartInitializer {
@@ -84,7 +84,7 @@ class ChartInitializer {
         return;
       }
 
-      let _canvas: any = this.querySelector('canvas');
+      const _canvas: any = this.querySelector('canvas');
       let context;
 
       if (_canvas !== null) {
@@ -95,8 +95,8 @@ class ChartInitializer {
         return;
       }
 
-      new Chart(context, config.graphConfig)
-    }).delegateTo(document, this.selector)
+      new Chart(context, config.graphConfig);
+    }).delegateTo(document, this.selector);
   }
 }
 

@@ -49,7 +49,7 @@ class PageActions {
     me.hidden = true;
     me.insertAdjacentElement('afterend', spinner);
 
-    for (let hiddenElement of hiddenElements) {
+    for (const hiddenElement of hiddenElements) {
       hiddenElement.style.display = 'block';
       const scrollHeight = hiddenElement.scrollHeight;
       hiddenElement.style.display = '';

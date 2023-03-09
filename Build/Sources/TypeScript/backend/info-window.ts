@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {SeverityEnum} from './enum/severity';
+import { SeverityEnum } from './enum/severity';
 import Modal from './modal';
 
 /**

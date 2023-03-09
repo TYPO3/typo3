@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace TYPO3 {
   export class Preview {
     private readonly dateField: HTMLInputElement = null;
@@ -24,36 +25,36 @@ namespace TYPO3 {
         this.timeField.valueAsDate = initialDate;
       }
 
-      this.toggleField.addEventListener('change', this.toggleDisplay)
+      this.toggleField.addEventListener('change', this.toggleDisplay);
       this.dateField.addEventListener('change', this.updateDateField);
       this.timeField.addEventListener('change', this.updateDateField);
     }
 
     private toggleDisplay = (): void => {
-      let toggleVal = this.toggleField.checked;
-      let groupElement = <HTMLDivElement>document.getElementById('typo3-adminPanel-preview_simulateDate');
+      const toggleVal = this.toggleField.checked;
+      const groupElement = <HTMLDivElement>document.getElementById('typo3-adminPanel-preview_simulateDate');
       if (toggleVal) {
-        groupElement.classList.remove('typo3-adminPanel-group-disable')
-        this.dateField.disabled = false
-        this.timeField.disabled = false
-        this.updateDateField()
+        groupElement.classList.remove('typo3-adminPanel-group-disable');
+        this.dateField.disabled = false;
+        this.timeField.disabled = false;
+        this.updateDateField();
       } else {
-        groupElement.classList.add('typo3-adminPanel-group-disable')
-        this.dateField.disabled = true
-        this.timeField.disabled = true
-        this.targetField.value = ''
+        groupElement.classList.add('typo3-adminPanel-group-disable');
+        this.dateField.disabled = true;
+        this.timeField.disabled = true;
+        this.targetField.value = '';
       }
-    }
+    };
 
     private updateDateField = (): void => {
       let dateVal = this.dateField.value;
       let timeVal = this.timeField.value;
       if (!dateVal && timeVal) {
-        let tempDate = new Date();
+        const tempDate = new Date();
         dateVal = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
       }
       if (dateVal && !timeVal) {
-        timeVal =  '00:00';
+        timeVal = '00:00';
       }
 
       if (!dateVal && !timeVal) {
@@ -64,7 +65,7 @@ namespace TYPO3 {
 
         this.targetField.value = (date.valueOf() / 1000).toString();
       }
-    }
+    };
   }
 }
 

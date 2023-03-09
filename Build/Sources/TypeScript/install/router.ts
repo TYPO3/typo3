@@ -12,17 +12,18 @@
  */
 
 import $ from 'jquery';
-import {html} from 'lit';
+import { html } from 'lit';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInteractableModule} from './module/abstract-interactable-module';
-import {AbstractInlineModule} from './module/abstract-inline-module';
-import {default as Modal, ModalElement} from '@typo3/backend/modal';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInteractableModule } from './module/abstract-interactable-module';
+import { AbstractInlineModule } from './module/abstract-inline-module';
+import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import InfoBox from './renderable/info-box';
 import ProgressBar from './renderable/progress-bar';
 import Severity from './renderable/severity';
-import {topLevelModuleImport} from '@typo3/backend/utility/top-level-module-import';
+import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import '@typo3/backend/element/spinner-element';
+import MessageInterface from '@typo3/install/message-interface';
 
 class Router {
   private rootSelector: string = '.t3js-body';
@@ -38,7 +39,7 @@ class Router {
 
   public setContent(content: string): void
   {
-    let container = this.rootContainer.querySelector(this.contentSelector) as HTMLElement
+    const container = this.rootContainer.querySelector(this.contentSelector) as HTMLElement;
     container.innerHTML = content;
   }
 
@@ -72,13 +73,13 @@ class Router {
       const inlineState = $me.data('inline');
       const isInline = typeof inlineState !== 'undefined' && parseInt(inlineState, 10) === 1;
       if (isInline) {
-        import(importModule).then(({default: aModule}: {default: AbstractInlineModule}): void => {
+        import(importModule).then(({ default: aModule }: {default: AbstractInlineModule}): void => {
           aModule.initialize($me);
         });
       } else {
         const modalTitle = $me.closest('.card').find('.card-title').html();
         const modalSize = $me.data('modalSize') || Modal.sizes.large;
-        const modal = Modal.advanced({
+        Modal.advanced({
           type: Modal.types.default,
           title: modalTitle,
           size: modalSize,
@@ -86,11 +87,11 @@ class Router {
           additionalCssClasses: ['install-tool-modal'],
           staticBackdrop: true,
           callback: (currentModal: ModalElement): void => {
-            import(importModule).then(({default: aModule}: {default: AbstractInteractableModule}): void => {
+            import(importModule).then(({ default: aModule }: {default: AbstractInteractableModule}): void => {
               const isInIframe = window.location !== window.parent.location;
               // @todo: Rework AbstractInteractableModule to avoid JQuery usage and pass ModalElement
               if (isInIframe) {
-                topLevelModuleImport('jquery').then(({default: topLevelJQuery}: {default: JQueryStatic}): void => {
+                topLevelModuleImport('jquery').then(({ default: topLevelJQuery }: {default: JQueryStatic}): void => {
                   aModule.initialize(topLevelJQuery(currentModal));
                 });
               } else {
@@ -140,9 +141,9 @@ class Router {
   public executeSilentConfigurationUpdate(): void {
     this.updateLoadingInfo('Checking session and executing silent configuration update');
     (new AjaxRequest(this.getUrl('executeSilentConfigurationUpdate', 'layout')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             this.executeSilentTemplateFileUpdate();
@@ -151,7 +152,7 @@ class Router {
           }
         },
         (error: AjaxResponse): void => {
-          this.handleAjaxError(error)
+          this.handleAjaxError(error);
         }
       );
   }
@@ -159,9 +160,9 @@ class Router {
   public executeSilentTemplateFileUpdate(): void {
     this.updateLoadingInfo('Checking session and executing silent template file update');
     (new AjaxRequest(this.getUrl('executeSilentTemplateFileUpdate', 'layout')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             this.executeSilentExtensionConfigurationSynchronization();
@@ -170,7 +171,7 @@ class Router {
           }
         },
         (error: AjaxResponse): void => {
-          this.handleAjaxError(error)
+          this.handleAjaxError(error);
         }
       );
   }
@@ -182,9 +183,9 @@ class Router {
   public executeSilentExtensionConfigurationSynchronization(): void {
     this.updateLoadingInfo('Executing silent extension configuration synchronization');
     (new AjaxRequest(this.getUrl('executeSilentExtensionConfigurationSynchronization', 'layout')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             this.loadMainLayout();
@@ -193,7 +194,7 @@ class Router {
           }
         },
         (error: AjaxResponse): void => {
-          this.handleAjaxError(error)
+          this.handleAjaxError(error);
         }
       );
   }
@@ -201,9 +202,9 @@ class Router {
   public loadMainLayout(): void {
     this.updateLoadingInfo('Loading main layout');
     (new AjaxRequest(this.getUrl('mainLayout', 'layout', 'install[module]=' + this.controller)))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
             this.rootContainer.innerHTML = data.html;
@@ -218,13 +219,12 @@ class Router {
           }
         },
         (error: AjaxResponse): void => {
-          this.handleAjaxError(error)
+          this.handleAjaxError(error);
         }
       );
   }
 
-  public async handleAjaxError(error: AjaxResponse, $outputContainer?: JQuery): Promise<any> {
-    let $message: any;
+  public async handleAjaxError(error: AjaxResponse, $outputContainer?: JQuery): Promise<void> {
     if (error.response.status === 403) {
       // Install tool session expired - depending on context render error message or login
       if (this.context === 'backend') {
@@ -283,9 +283,9 @@ class Router {
 
   public checkEnableInstallToolFile(): void {
     (new AjaxRequest(this.getUrl('checkEnableInstallToolFile')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             this.checkLogin();
@@ -294,32 +294,32 @@ class Router {
           }
         },
         (error: AjaxResponse): void => {
-          this.handleAjaxError(error)
+          this.handleAjaxError(error);
         }
       );
   }
 
   public showEnableInstallTool(): void {
     (new AjaxRequest(this.getUrl('showEnableInstallToolFile')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             this.rootContainer.innerHTML = data.html;
           }
         },
         (error: AjaxResponse): void => {
-          this.handleAjaxError(error)
+          this.handleAjaxError(error);
         }
       );
   }
 
   public checkLogin(): void {
     (new AjaxRequest(this.getUrl('checkLogin')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             this.loadMainLayout();
@@ -328,31 +328,31 @@ class Router {
           }
         },
         (error: AjaxResponse): void => {
-          this.handleAjaxError(error)
+          this.handleAjaxError(error);
         }
       );
   }
 
   public showLogin(): void {
     (new AjaxRequest(this.getUrl('showLogin')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             this.rootContainer.innerHTML = data.html;
           }
         },
         (error: AjaxResponse): void => {
-          this.handleAjaxError(error)
+          this.handleAjaxError(error);
         }
       );
   }
 
   public login(): void {
     const $outputContainer: JQuery = $('.t3js-login-output');
-    const message: any = ProgressBar.render(Severity.loading, 'Loading...', '');
-    $outputContainer.empty().html(message);
+    const message: JQuery = ProgressBar.render(Severity.loading, 'Loading...', '');
+    $outputContainer.empty().append(message);
     (new AjaxRequest(this.getUrl()))
       .post({
         install: {
@@ -362,44 +362,44 @@ class Router {
         },
       })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             this.executeSilentConfigurationUpdate();
           } else {
-            data.status.forEach((element: any): void => {
-              const m: any = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.empty().html(m);
+            data.status.forEach((element: MessageInterface): void => {
+              const message = InfoBox.render(element.severity, element.title, element.message);
+              $outputContainer.empty().append(message);
             });
           }
         },
         (error: AjaxResponse): void => {
-          this.handleAjaxError(error)
+          this.handleAjaxError(error);
         }
       );
   }
 
   public logout(): void {
     (new AjaxRequest(this.getUrl('logout')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             this.showEnableInstallTool();
           }
         },
         (error: AjaxResponse): void => {
-          this.handleAjaxError(error)
+          this.handleAjaxError(error);
         }
       );
   }
 
   public loadCards(): void {
     (new AjaxRequest(this.getUrl('cards')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
             this.setContent(data.html);
@@ -408,7 +408,7 @@ class Router {
           }
         },
         (error: AjaxResponse): void => {
-          this.handleAjaxError(error)
+          this.handleAjaxError(error);
         }
       );
   }
@@ -427,7 +427,7 @@ class Router {
       this.toggleMenu(true);
     });
     document.querySelectorAll('[data-installroute-controller]').forEach((element: Element) => {
-      element.addEventListener('click', (event: MouseEvent) => {
+      element.addEventListener('click', () => {
         if (window.innerWidth < 768) {
           localStorage.setItem('typo3-install-modulesCollapsed', 'true');
         }
@@ -455,9 +455,9 @@ class Router {
   private preAccessCheck(): void {
     this.updateLoadingInfo('Execute pre access check');
     (new AjaxRequest(this.getUrl('preAccessCheck', 'layout')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.installToolLocked) {
             this.checkEnableInstallToolFile();
@@ -468,7 +468,7 @@ class Router {
           }
         },
         (error: AjaxResponse): void => {
-          this.handleAjaxError(error)
+          this.handleAjaxError(error);
         }
       );
   }

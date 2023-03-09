@@ -12,8 +12,8 @@
  */
 
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -21,6 +21,7 @@ import InfoBox from '../../renderable/info-box';
 import ProgressBar from '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
+import MessageInterface from '@typo3/install/message-interface';
 
 /**
  * Module: @typo3/install/module/database-analyzer
@@ -55,9 +56,9 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
   private getData(): void {
     const modalContent = this.getModalBody();
     (new AjaxRequest(Router.getUrl('databaseAnalyzer')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             modalContent.empty().append(data.html);
@@ -89,14 +90,14 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
     });
 
     (new AjaxRequest(Router.getUrl('databaseAnalyzerAnalyze')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             if (Array.isArray(data.status)) {
               outputContainer.find('.alert-loading').remove();
-              data.status.forEach((element: any): void => {
+              data.status.forEach((element: MessageInterface): void => {
                 const message = InfoBox.render(element.severity, element.title, element.message);
                 outputContainer.append(message);
               });
@@ -158,8 +159,8 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
     const executeToken = this.getModuleContent().data('database-analyzer-execute-token');
     const outputContainer = modalContent.find(this.selectorOutputContainer);
 
-    const selectedHashes: Array<any> = [];
-    outputContainer.find('.t3js-databaseAnalyzer-suggestion-line input:checked').each((index: number, element: any): void => {
+    const selectedHashes: string[] = [];
+    outputContainer.find('.t3js-databaseAnalyzer-suggestion-line input:checked').each((index: number, element: Element): void => {
       selectedHashes.push($(element).data('hash'));
     });
     outputContainer.empty().append(ProgressBar.render(Severity.loading, 'Executing database updates...', ''));
@@ -173,10 +174,10 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
         },
       })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
+            data.status.forEach((element: MessageInterface): void => {
               Notification.showMessage(element.title, element.message, element.severity);
             });
           }

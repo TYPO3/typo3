@@ -11,13 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Notification from '@typo3/backend/notification';
 import Modal from '@typo3/backend/modal';
-import {SeverityEnum} from '@typo3/backend/enum/severity';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
 
 interface FieldOptions {
   userId: number,
@@ -115,7 +115,7 @@ class MfaInfoElement {
       provider: provider,
       userId: this.options.userId,
       tableName: this.options.tableName
-    }).then(async (response: AjaxResponse): Promise<any> => {
+    }).then(async (response: AjaxResponse): Promise<void> => {
       const data: Response = await response.resolve();
       if (data.status.length > 0) {
         data.status.forEach((status: Status): void => {

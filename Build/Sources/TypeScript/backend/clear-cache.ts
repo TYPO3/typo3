@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';
 import Icons from '@typo3/backend/icons';
 import RegularEvent from '@typo3/core/event/regular-event';
@@ -26,6 +26,10 @@ enum Identifiers {
  * Module: @typo3/backend/clear-cache
  */
 class ClearCache {
+  constructor() {
+    this.registerClickHandler();
+  }
+
   private static setDisabled(element: HTMLButtonElement, isDisabled: boolean): void {
     element.disabled = isDisabled;
     element.classList.toggle('disabled', isDisabled);
@@ -38,7 +42,7 @@ class ClearCache {
    * @return Promise<AjaxResponse>
    */
   private static sendClearCacheRequest(pageId: number): Promise<AjaxResponse> {
-    const request = new AjaxRequest(TYPO3.settings.ajaxUrls.web_list_clearpagecache).withQueryArguments({id: pageId}).get({cache: 'no-cache'});
+    const request = new AjaxRequest(TYPO3.settings.ajaxUrls.web_list_clearpagecache).withQueryArguments({ id: pageId }).get({ cache: 'no-cache' });
     request.then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
       if (data.success === true) {
@@ -53,10 +57,6 @@ class ClearCache {
     });
 
     return request;
-  }
-
-  constructor() {
-    this.registerClickHandler();
   }
 
   private registerClickHandler(): void {
@@ -79,7 +79,7 @@ class ClearCache {
             me.querySelector(Identifiers.icon).outerHTML = icon;
           });
           ClearCache.setDisabled(me, false);
-        })
+        });
       }).bindTo(trigger);
     }
   }

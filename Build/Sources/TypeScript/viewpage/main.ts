@@ -13,10 +13,10 @@
 
 import interact from 'interactjs';
 import DocumentService from '@typo3/core/document-service';
-import PersistentStorage from '@typo3/backend/storage/persistent';
+import PersistentStorage, { UC } from '@typo3/backend/storage/persistent';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DebounceEvent from '@typo3/core/event/debounce-event';
-import {ResizeEvent} from '@interactjs/actions/resize/plugin';
+import { ResizeEvent } from '@interactjs/actions/resize/plugin';
 
 enum Selectors {
   resizableContainerIdentifier = '.t3js-viewpage-resizeable',
@@ -52,7 +52,7 @@ class ViewPage {
   private currentLabelElement: HTMLElement;
   private resizableContainer: HTMLElement;
 
-  private queueDelayTimer: any;
+  private queueDelayTimer: number;
 
   constructor() {
     DocumentService.ready().then((): void => {
@@ -88,7 +88,7 @@ class ViewPage {
     return this.currentLabelElement.textContent;
   }
 
-  private persistChanges(storageIdentifier: string, data: any): void {
+  private persistChanges(storageIdentifier: string, data: string | UC): void {
     PersistentStorage.set(storageIdentifier, data);
   }
 
@@ -115,7 +115,7 @@ class ViewPage {
   }
 
   private persistCurrentPreset(): void {
-    let data = {
+    const data = {
       width: this.getCurrentWidth(),
       height: this.getCurrentHeight(),
       label: this.getCurrentLabel(),
@@ -124,7 +124,7 @@ class ViewPage {
   }
 
   private persistCustomPreset(): void {
-    let data = {
+    const data = {
       width: this.getCurrentWidth(),
       height: this.getCurrentHeight(),
     };
@@ -196,7 +196,7 @@ class ViewPage {
           Object.assign(event.target.style, {
             width: `${event.rect.width}px`,
             height: `${event.rect.height}px`,
-          })
+          });
 
           this.inputCustomWidth.valueAsNumber = event.rect.width;
           this.inputCustomHeight.valueAsNumber = event.rect.height;

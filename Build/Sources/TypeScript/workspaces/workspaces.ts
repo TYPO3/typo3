@@ -11,12 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {SeverityEnum} from '@typo3/backend/enum/severity';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
 import $ from 'jquery';
 import NProgress from 'nprogress';
-import {default as Modal, ModalElement} from '@typo3/backend/modal';
+import { default as Modal, ModalElement } from '@typo3/backend/modal';
 
 export default class Workspaces {
   private tid: number = 0;
@@ -32,10 +32,10 @@ export default class Workspaces {
 
     if (typeof result.sendMailTo !== 'undefined' && result.sendMailTo.length > 0) {
       $form.append(
-        $('<label />', {class: 'control-label'}).text(TYPO3.lang['window.sendToNextStageWindow.itemsWillBeSentTo']),
+        $('<label />', { class: 'control-label' }).text(TYPO3.lang['window.sendToNextStageWindow.itemsWillBeSentTo']),
       );
       $form.append(
-        $('<div />', {class: 'form-group'}).append(
+        $('<div />', { class: 'form-group' }).append(
           $('<button type="button" class="btn btn-default btn-xs t3js-workspace-recipients-selectall" />')
             .text(TYPO3.lang['window.sendToNextStageWindow.selectAll']),
           '&nbsp;',
@@ -46,7 +46,7 @@ export default class Workspaces {
 
       for (const recipient of result.sendMailTo) {
         $form.append(
-          $('<div />', {class: 'form-check'}).append(
+          $('<div />', { class: 'form-check' }).append(
             $('<input />', {
               type: 'checkbox',
               name: 'recipients',
@@ -65,7 +65,7 @@ export default class Workspaces {
 
     if (typeof result.additional !== 'undefined') {
       $form.append(
-        $('<div />', {class: 'form-group'}).append(
+        $('<div />', { class: 'form-group' }).append(
           $('<label />', {
             class: 'control-label',
             'for': 'additional',
@@ -75,13 +75,13 @@ export default class Workspaces {
             name: 'additional',
             id: 'additional',
           }).text(result.additional.value),
-          $('<span />', {class: 'help-block'}).text(TYPO3.lang['window.sendToNextStageWindow.additionalRecipients.hint']),
+          $('<span />', { class: 'help-block' }).text(TYPO3.lang['window.sendToNextStageWindow.additionalRecipients.hint']),
         ),
       );
     }
 
     $form.append(
-      $('<div />', {class: 'form-group'}).append(
+      $('<div />', { class: 'form-group' }).append(
         $('<label />', {
           class: 'control-label',
           'for': 'comments',

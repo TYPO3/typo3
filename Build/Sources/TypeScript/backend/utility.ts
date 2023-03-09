@@ -215,7 +215,7 @@ class Utility {
    */
   private static isValidUrl(url: null|string): boolean {
     try {
-      new URL(url)
+      new URL(url);
       return true;
     } catch (e) {
       return false;

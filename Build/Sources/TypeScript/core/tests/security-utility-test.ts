@@ -20,7 +20,7 @@ describe('@typo3/core/security-utility', (): void => {
       yield 20;
       yield 39;
     }
-    for (let validLength of validLengthDataProvider()) {
+    for (const validLength of validLengthDataProvider()) {
       const randomHexValue = (new SecurityUtility()).getRandomHexValue(validLength);
       expect(randomHexValue.length).toBe(validLength);
     }
@@ -32,7 +32,7 @@ describe('@typo3/core/security-utility', (): void => {
       yield -90;
       yield 10.3; // length is "ceiled", 10.3 => 11, 10 != 11
     }
-    for (let invalidLength of invalidLengthDataProvider()) {
+    for (const invalidLength of invalidLengthDataProvider()) {
       expect(() => (new SecurityUtility()).getRandomHexValue(invalidLength)).toThrowError(SyntaxError);
     }
   });

@@ -31,7 +31,7 @@ import Severity from '@typo3/backend/severity';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
 import ContextMenu from '@typo3/backend/context-menu';
 
-type QueryParameters = { [key: string]: string };
+type QueryParameters = Record<string, string>;
 
 interface EditFileMetadataConfiguration extends ActionConfiguration {
   table: string;
@@ -64,75 +64,6 @@ export const fileListOpenElementBrowser = 'typo3:filelist:openElementBrowser';
  * @exports @typo3/filelist/filelist
  */
 export default class Filelist {
-  public static submitClipboardFormWithCommand(cmd: string, target: HTMLButtonElement): void {
-    const fileListForm: HTMLFormElement = target.closest(Selectors.fileListFormSelector);
-    if (!fileListForm) {
-      return;
-    }
-    const commandField: HTMLInputElement = fileListForm.querySelector(Selectors.commandSelector);
-    if (!commandField) {
-      return;
-    }
-    commandField.value = cmd;
-    // In case we just change elements on the clipboard, we try to fetch a possible pointer from the query
-    // parameters, so after the form submit, we get to the same view as before. This is not done for delete
-    // commands, since this may lead to empty sites, in case all elements from the current site are deleted.
-    if (cmd === 'copyMarked' || cmd === 'removeMarked') {
-      const pointerField: HTMLInputElement = fileListForm.querySelector(Selectors.pointerFieldSelector);
-      const pointerValue: string = Filelist.parseQueryParameters(document.location).pointer;
-      if (pointerField && pointerValue) {
-        pointerField.value = pointerValue;
-      }
-    }
-    fileListForm.submit();
-  }
-
-  protected static openInfoPopup(type: string, identifier: string): void {
-    InfoWindow.showItem(type, identifier);
-  }
-
-  private static processTriggers(): void {
-    const mainElement: HTMLElement = document.querySelector('.filelist-main');
-    if (mainElement === null) {
-      return
-    }
-    // update ModuleStateStorage to the current folder identifier
-    const id = encodeURIComponent(mainElement.dataset.filelistCurrentIdentifier);
-    ModuleStateStorage.update('file', id, true, undefined);
-    // emit event for currently shown folder so the folder tree gets updated
-    Filelist.emitTreeUpdateRequest(
-      mainElement.dataset.filelistCurrentIdentifier
-    );
-  }
-
-  private static emitTreeUpdateRequest(identifier: string): void {
-    const message = new BroadcastMessage(
-      'filelist',
-      'treeUpdateRequested',
-      { type: 'folder', identifier: identifier }
-    );
-    broadcastService.post(message);
-  }
-
-  private static parseQueryParameters(location: Location): QueryParameters {
-    let queryParameters: QueryParameters = {};
-    if (location && Object.prototype.hasOwnProperty.call(location, 'search')) {
-      let parameters = location.search.substr(1).split('&');
-      for (let i = 0; i < parameters.length; i++) {
-        const parameter = parameters[i].split('=');
-        queryParameters[decodeURIComponent(parameter[0])] = decodeURIComponent(parameter[1]);
-      }
-    }
-    return queryParameters;
-  }
-
-  private static getReturnUrl(returnUrl: string): string {
-    if (returnUrl === '') {
-      returnUrl = top.list_frame.document.location.pathname + top.list_frame.document.location.search;
-    }
-    return encodeURIComponent(returnUrl);
-  }
-
   constructor() {
     Filelist.processTriggers();
 
@@ -163,14 +94,14 @@ export default class Filelist {
           + '&returnUrl=' + Filelist.getReturnUrl('');
       }
       if (detail.resource.type === 'folder') {
-        let parameters = Filelist.parseQueryParameters(document.location)
-        parameters.id = detail.resource.identifier
+        const parameters = Filelist.parseQueryParameters(document.location);
+        parameters.id = detail.resource.identifier;
         let parameterString = '';
         Object.keys(parameters).forEach(key => {
           if (parameters[key] === '') { return; }
           parameterString = parameterString + '&' + key + '=' + parameters[key];
         });
-        window.location.href = window.location.pathname + '?' + parameterString.substring(1)
+        window.location.href = window.location.pathname + '?' + parameterString.substring(1);
       }
     }).bindTo(document);
 
@@ -215,10 +146,10 @@ export default class Filelist {
     new RegularEvent('multiRecordSelection:action:delete', this.deleteMultiple).bindTo(document);
     new RegularEvent('multiRecordSelection:action:download', this.downloadFilesAndFolders).bindTo(document);
     new RegularEvent('multiRecordSelection:action:copyMarked', (event: CustomEvent): void => {
-      Filelist.submitClipboardFormWithCommand('copyMarked', event.target as HTMLButtonElement)
+      Filelist.submitClipboardFormWithCommand('copyMarked', event.target as HTMLButtonElement);
     }).bindTo(document);
     new RegularEvent('multiRecordSelection:action:removeMarked', (event: CustomEvent): void => {
-      Filelist.submitClipboardFormWithCommand('removeMarked', event.target as HTMLButtonElement)
+      Filelist.submitClipboardFormWithCommand('removeMarked', event.target as HTMLButtonElement);
     }).bindTo(document);
 
     // Respond to browser related clearable event
@@ -229,6 +160,75 @@ export default class Filelist {
         (searchField.closest(Selectors.fileListFormSelector) as HTMLFormElement)?.submit();
       }
     }).delegateTo(document, Selectors.searchFieldSelector);
+  }
+
+  public static submitClipboardFormWithCommand(cmd: string, target: HTMLButtonElement): void {
+    const fileListForm: HTMLFormElement = target.closest(Selectors.fileListFormSelector);
+    if (!fileListForm) {
+      return;
+    }
+    const commandField: HTMLInputElement = fileListForm.querySelector(Selectors.commandSelector);
+    if (!commandField) {
+      return;
+    }
+    commandField.value = cmd;
+    // In case we just change elements on the clipboard, we try to fetch a possible pointer from the query
+    // parameters, so after the form submit, we get to the same view as before. This is not done for delete
+    // commands, since this may lead to empty sites, in case all elements from the current site are deleted.
+    if (cmd === 'copyMarked' || cmd === 'removeMarked') {
+      const pointerField: HTMLInputElement = fileListForm.querySelector(Selectors.pointerFieldSelector);
+      const pointerValue: string = Filelist.parseQueryParameters(document.location).pointer;
+      if (pointerField && pointerValue) {
+        pointerField.value = pointerValue;
+      }
+    }
+    fileListForm.submit();
+  }
+
+  protected static openInfoPopup(type: string, identifier: string): void {
+    InfoWindow.showItem(type, identifier);
+  }
+
+  private static processTriggers(): void {
+    const mainElement: HTMLElement = document.querySelector('.filelist-main');
+    if (mainElement === null) {
+      return;
+    }
+    // update ModuleStateStorage to the current folder identifier
+    const id = encodeURIComponent(mainElement.dataset.filelistCurrentIdentifier);
+    ModuleStateStorage.update('file', id, true, undefined);
+    // emit event for currently shown folder so the folder tree gets updated
+    Filelist.emitTreeUpdateRequest(
+      mainElement.dataset.filelistCurrentIdentifier
+    );
+  }
+
+  private static emitTreeUpdateRequest(identifier: string): void {
+    const message = new BroadcastMessage(
+      'filelist',
+      'treeUpdateRequested',
+      { type: 'folder', identifier: identifier }
+    );
+    broadcastService.post(message);
+  }
+
+  private static parseQueryParameters(location: Location): QueryParameters {
+    const queryParameters: QueryParameters = {};
+    if (location && Object.prototype.hasOwnProperty.call(location, 'search')) {
+      const parameters = location.search.substr(1).split('&');
+      for (let i = 0; i < parameters.length; i++) {
+        const parameter = parameters[i].split('=');
+        queryParameters[decodeURIComponent(parameter[0])] = decodeURIComponent(parameter[1]);
+      }
+    }
+    return queryParameters;
+  }
+
+  private static getReturnUrl(returnUrl: string): string {
+    if (returnUrl === '') {
+      returnUrl = top.list_frame.document.location.pathname + top.list_frame.document.location.search;
+    }
+    return encodeURIComponent(returnUrl);
   }
 
   private deleteMultiple(e: CustomEvent): void {
@@ -250,7 +250,7 @@ export default class Filelist {
           text: configuration.ok || TYPO3.lang['button.ok'] || 'OK',
           btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.warning),
           trigger: (modalEvent: Event, modal: ModalElement) => {
-            Filelist.submitClipboardFormWithCommand('delete', e.target as HTMLButtonElement)
+            Filelist.submitClipboardFormWithCommand('delete', e.target as HTMLButtonElement);
             modal.hideModal();
           }
         }
@@ -302,7 +302,7 @@ export default class Filelist {
     } else {
       Notification.warning(lll('file_download.invalidSelection'));
     }
-  }
+  };
 
   private triggerDownload(items: Array<string>, downloadUrl: string, button: HTMLElement | null): void {
     // Add notification about the download being prepared
@@ -322,7 +322,7 @@ export default class Filelist {
       .configure({ parent: '#typo3-filelist', showSpinner: false })
       .start();
     (new AjaxRequest(downloadUrl)).post({ items: items })
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .then(async (response: AjaxResponse): Promise<void> => {
         let fileName = response.response.headers.get('Content-Disposition');
         if (!fileName) {
           const data = await response.resolve();

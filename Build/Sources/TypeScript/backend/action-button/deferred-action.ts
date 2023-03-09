@@ -11,16 +11,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractAction} from './abstract-action';
+import { AbstractAction } from './abstract-action';
 import Icons from '../icons';
 
 /**
  * Action used when an operation execution time is unknown.
  */
 class DeferredAction extends AbstractAction {
-  protected callback: () => Promise<any>;
+  protected callback: () => Promise<void>;
 
-  public async execute(el: HTMLAnchorElement|HTMLButtonElement): Promise<any> {
+  public async execute(el: HTMLAnchorElement|HTMLButtonElement): Promise<void> {
     el.dataset.actionLabel = el.innerText;
     el.classList.add('disabled');
 
@@ -30,7 +30,7 @@ class DeferredAction extends AbstractAction {
     return await this.executeCallback(el);
   }
 
-  private async executeCallback(el: HTMLElement): Promise<any> {
+  private async executeCallback(el: HTMLElement): Promise<void> {
     return await Promise.resolve(this.callback()).finally(() => {
       el.innerText = el.dataset.actionLabel;
       el.classList.remove('disabled');

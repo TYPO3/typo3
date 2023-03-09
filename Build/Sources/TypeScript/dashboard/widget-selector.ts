@@ -11,8 +11,8 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import {default as Modal, ModalElement} from '@typo3/backend/modal';
-import {SeverityEnum} from '@typo3/backend/enum/severity';
+import { default as Modal, ModalElement } from '@typo3/backend/modal';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
 import RegularEvent from '@typo3/core/event/regular-event';
 
 class WidgetSelector {
@@ -47,7 +47,7 @@ class WidgetSelector {
     // Display button only if all initialized
     document.querySelectorAll(this.selector).forEach((item) => {
       item.classList.remove('hide');
-    })
+    });
   }
 }
 

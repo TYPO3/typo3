@@ -15,7 +15,6 @@
 
 class Md5 {
   public static hash(value: string): string {
-    let x;
     let k;
     let AA;
     let BB;
@@ -43,7 +42,7 @@ class Md5 {
     const S44 = 21;
 
     value = Md5.utf8Encode(value);
-    x = Md5.convertToWordArray(value);
+    const x = Md5.convertToWordArray(value);
 
     a = 0x67452301;
     b = 0xEFCDAB89;
@@ -125,7 +124,7 @@ class Md5 {
       d = Md5.addUnsigned(d, DD);
     }
 
-    let temp = Md5.wordToHex(a) + Md5.wordToHex(b) + Md5.wordToHex(c) + Md5.wordToHex(d);
+    const temp = Md5.wordToHex(a) + Md5.wordToHex(b) + Md5.wordToHex(c) + Md5.wordToHex(d);
 
     return temp.toLowerCase();
   }
@@ -135,11 +134,11 @@ class Md5 {
   }
 
   private static addUnsigned(lX: number, lY: number): number {
-    let lX8 = (lX & 0x80000000);
-    let lY8 = (lY & 0x80000000);
-    let lX4 = (lX & 0x40000000);
-    let lY4 = (lY & 0x40000000);
-    let lResult = (lX & 0x3FFFFFFF) + (lY & 0x3FFFFFFF);
+    const lX8 = (lX & 0x80000000);
+    const lY8 = (lY & 0x80000000);
+    const lX4 = (lX & 0x40000000);
+    const lY4 = (lY & 0x40000000);
+    const lResult = (lX & 0x3FFFFFFF) + (lY & 0x3FFFFFFF);
     if (lX4 & lY4) {
       return (lResult ^ 0x80000000 ^ lX8 ^ lY8);
     }
@@ -192,11 +191,11 @@ class Md5 {
 
   private static convertToWordArray(string: string): Array<number> {
     let lWordCount;
-    let lMessageLength = string.length;
-    let lNumberOfWords_temp1 = lMessageLength + 8;
-    let lNumberOfWords_temp2 = (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64;
-    let lNumberOfWords = (lNumberOfWords_temp2 + 1) * 16;
-    let lWordArray = Array(lNumberOfWords - 1);
+    const lMessageLength = string.length;
+    const lNumberOfWords_temp1 = lMessageLength + 8;
+    const lNumberOfWords_temp2 = (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64;
+    const lNumberOfWords = (lNumberOfWords_temp2 + 1) * 16;
+    const lWordArray = Array(lNumberOfWords - 1);
     let lBytePosition = 0;
     let lByteCount = 0;
     while (lByteCount < lMessageLength) {
@@ -231,7 +230,7 @@ class Md5 {
     let utftext = '';
 
     for (let n = 0; n < string.length; n++) {
-      let c = string.charCodeAt(n);
+      const c = string.charCodeAt(n);
 
       if (c < 128) {
         utftext += String.fromCharCode(c);

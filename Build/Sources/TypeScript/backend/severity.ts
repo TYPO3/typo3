@@ -11,13 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {SeverityEnum} from './enum/severity';
+import { SeverityEnum } from './enum/severity';
 
 /**
  * Module: @typo3/backend/severity
  * Severity for the TYPO3 backend
  */
-class Severity {
+export default class Severity {
   public static notice: number = SeverityEnum.notice;
   public static info: number = SeverityEnum.info;
   public static ok: number = SeverityEnum.ok;
@@ -55,7 +55,7 @@ class Severity {
   }
 }
 
-let severityObject: any;
+let severityObject: Severity;
 try {
   // fetch from opening window
   if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.Severity) {
@@ -86,5 +86,3 @@ if (!severityObject) {
     TYPO3.Severity = severityObject;
   }
 }
-
-export default severityObject;

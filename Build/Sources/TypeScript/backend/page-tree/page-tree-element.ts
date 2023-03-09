@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, LitElement, TemplateResult, PropertyValues, nothing} from 'lit';
+import { html, LitElement, TemplateResult, PropertyValues, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators';
 import { until } from 'lit/directives/until';
 import { lll } from '@typo3/core/lit-helper';
@@ -24,7 +24,7 @@ import { ModuleUtility } from '@typo3/backend/module';
 import ContextMenu from '../context-menu';
 import * as d3selection from 'd3-selection';
 import { KeyTypesEnum as KeyTypes } from '@typo3/backend/enum/key-types';
-import { TreeNodeSelection, TreeWrapperSelection, Toolbar, SvgTreeWrapper } from '../svg-tree';
+import { TreeNodeSelection, TreeWrapperSelection, Toolbar } from '../svg-tree';
 import { DragDrop, DragDropHandler, DraggablePositionEnum, DragDropTargetPosition } from '../tree/drag-drop';
 import Modal from '../modal';
 import Severity from '../severity';
@@ -118,7 +118,7 @@ export class EditablePageTree extends PageTree {
    * Initializes a drag&drop when called on the page tree. Should be moved somewhere else at some point
    */
   public initializeDragForNode() {
-    return this.dragDrop.connectDragHandler(new PageTreeNodeDragHandler(this, this.dragDrop))
+    return this.dragDrop.connectDragHandler(new PageTreeNodeDragHandler(this, this.dragDrop));
   }
 
   public removeEditedText() {
@@ -193,7 +193,7 @@ export class EditablePageTree extends PageTree {
     }
 
     this.disableFocusedNodes();
-    node.focused = true
+    node.focused = true;
     this.updateVisibleNodes();
 
     this.removeEditedText();
@@ -313,7 +313,7 @@ export class PageTreeNavigationComponent extends LitElement {
           this.tree.addEventListener('typo3:svg-tree:node-selected', this.loadContent);
           this.tree.addEventListener('typo3:svg-tree:node-context', this.showContextMenu);
           this.tree.addEventListener('typo3:svg-tree:nodes-prepared', this.selectActiveNode);
-        }
+        };
 
         return html`
           <div>
@@ -338,15 +338,15 @@ export class PageTreeNavigationComponent extends LitElement {
 
   private refresh = (): void => {
     this.tree.refreshOrFilterTree();
-  }
+  };
 
   private setMountPoint = (e: CustomEvent): void => {
     this.setTemporaryMountPoint(e.detail.pageId as number);
-  }
+  };
 
   private selectFirstNode = (): void => {
     this.tree.selectFirstNode();
-  }
+  };
 
   private unsetTemporaryMountPoint() {
     this.mountPointPath = null;
@@ -395,7 +395,7 @@ export class PageTreeNavigationComponent extends LitElement {
     if (node) {
       Persistent.set('BackendComponents.States.Pagetree.stateHash.' + node.stateIdentifier, (node.expanded ? '1' : '0'));
     }
-  }
+  };
 
   private loadContent = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
@@ -414,7 +414,7 @@ export class PageTreeNavigationComponent extends LitElement {
     let contentUrl = ModuleUtility.getFromName(moduleMenu.getCurrentModule()).link;
     contentUrl += contentUrl.includes('?') ? '&' : '?';
     top.TYPO3.Backend.ContentContainer.setUrl(contentUrl + 'id=' + node.identifier);
-  }
+  };
 
   private showContextMenu = (evt: CustomEvent): void => {
     const node = evt.detail.node as TreeNode;
@@ -429,7 +429,7 @@ export class PageTreeNavigationComponent extends LitElement {
       '',
       this.tree.getElementFromNode(node)
     );
-  }
+  };
 
   /**
    * Event listener called for each loaded node,
@@ -437,14 +437,14 @@ export class PageTreeNavigationComponent extends LitElement {
    */
   private selectActiveNode = (evt: CustomEvent): void => {
     const selectedNodeIdentifier = ModuleStateStorage.current('web').selection;
-    let nodes = evt.detail.nodes as Array<TreeNode>;
+    const nodes = evt.detail.nodes as Array<TreeNode>;
     evt.detail.nodes = nodes.map((node: TreeNode) => {
       if (node.stateIdentifier === selectedNodeIdentifier) {
         node.checked = true;
       }
       return node;
     });
-  }
+  };
 }
 
 @customElement('typo3-backend-navigation-component-pagetree-toolbar')
@@ -581,7 +581,7 @@ class PageTreeDragDrop extends DragDrop {
       target: target, // hovered node
       position: position, // before, in, after
       command: command // element is copied or moved
-    }
+    };
   }
 
   /**
@@ -598,7 +598,7 @@ class PageTreeDragDrop extends DragDrop {
       // Calculate the Y-axis pixel WITHIN the bg node container to find out if the mouse is on the top
       // of the node or on the bottom
       const coordinates = d3selection.pointer(event, elementNodeBg.node());
-      let y = coordinates[1];
+      const y = coordinates[1];
 
       if (y < 3) {
         this.updatePositioningLine(this.tree.hoveredNode);
@@ -676,10 +676,10 @@ class PageTreeDragDrop extends DragDrop {
       return false;
     }
     if (!this.tree.isOverSvg) {
-      return false
+      return false;
     }
     if (!this.tree.hoveredNode) {
-      return false
+      return false;
     }
     if (draggingNode.isOver) {
       return false;
@@ -712,14 +712,14 @@ class ToolbarDragHandler implements DragDropHandler {
     this.dragDrop = dragDrop;
   }
 
-  public onDragStart(event: MouseEvent, draggingNode: TreeNode | null): boolean {
+  public onDragStart(event: MouseEvent): boolean {
     this.dragStarted = false;
     this.startPageX = event.pageX;
     this.startPageY = event.pageY;
     return true;
   }
 
-  public onDragOver(event: MouseEvent, draggingNode: TreeNode | null): boolean {
+  public onDragOver(event: MouseEvent): boolean {
     if (this.dragDrop.isDragNodeDistanceMore(event, this)) {
       this.dragStarted = true;
     } else {
@@ -767,7 +767,7 @@ class ToolbarDragHandler implements DragDropHandler {
     const newNode = {} as TreeNode;
 
     this.tree.disableFocusedNodes();
-    newNode.focused = true
+    newNode.focused = true;
     this.tree.updateVisibleNodes();
 
     newNode.command = 'new';
@@ -860,7 +860,7 @@ class ToolbarDragHandler implements DragDropHandler {
   }
 
   private removeNode(newNode: TreeNode) {
-    let index = this.tree.nodes.indexOf(newNode);
+    const index = this.tree.nodes.indexOf(newNode);
     // if newNode is only one child
     if (this.tree.nodes[index - 1].depth != newNode.depth
       && (!this.tree.nodes[index + 1] || this.tree.nodes[index + 1].depth != newNode.depth)) {
@@ -871,7 +871,7 @@ class ToolbarDragHandler implements DragDropHandler {
     this.tree.prepareDataForVisibleNodes();
     this.tree.updateVisibleNodes();
     this.tree.removeEditedText();
-  };
+  }
 }
 
 /**
@@ -935,7 +935,7 @@ class PageTreeNodeDragHandler implements DragDropHandler {
     this.startPageY = event.pageY;
     this.dragStarted = false;
     return true;
-  };
+  }
 
   public onDragOver(event: MouseEvent, draggingNode: TreeNode | null): boolean {
     if (this.dragDrop.isDragNodeDistanceMore(event, this)) {
@@ -1024,7 +1024,7 @@ class PageTreeNodeDragHandler implements DragDropHandler {
           btnClass: 'btn-warning',
           name: 'move'
         }
-      ])
+      ]);
       modal.addEventListener('button.clicked', (e: JQueryEventObject) => {
         const target = e.target as HTMLInputElement;
         if (target.name === 'move') {

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {Collapse} from 'bootstrap';
+import { Collapse } from 'bootstrap';
 import SecurityUtility from '@typo3/core/security-utility';
 import FlexFormSectionContainer from './flex-form-section-container';
 import Modal from '@typo3/backend/modal';
@@ -44,10 +44,6 @@ class FlexFormContainerContainer {
   private readonly panelButton: HTMLElement;
   private readonly toggleField: HTMLInputElement;
 
-  private static getCollapseInstance(container: HTMLElement): Collapse {
-    return Collapse.getInstance(container) ?? new Collapse(container, {toggle: false})
-  }
-
   constructor(parentContainer: FlexFormSectionContainer, container: HTMLElement) {
     this.securityUtility = new SecurityUtility();
     this.parentContainer = parentContainer;
@@ -63,11 +59,15 @@ class FlexFormContainerContainer {
     this.generatePreview();
   }
 
+  private static getCollapseInstance(container: HTMLElement): Collapse {
+    return Collapse.getInstance(container) ?? new Collapse(container, { toggle: false });
+  }
+
   public getStatus(): ContainerStatus {
     return {
       id: this.containerId,
       collapsed: this.panelButton.getAttribute('aria-expanded') === 'false',
-    }
+    };
   }
 
   private registerEvents(): void {
@@ -144,7 +144,7 @@ class FlexFormContainerContainer {
     let previewContent = '';
     if (this.getStatus().collapsed) {
       const formFields: NodeListOf<HTMLInputElement|HTMLTextAreaElement> = this.containerContent.querySelectorAll('input[type="text"], textarea');
-      for (let field of formFields) {
+      for (const field of formFields) {
         let content = this.securityUtility.stripHtml(field.value);
         if (content.length > 50) {
           content = content.substring(0, 50) + '...';

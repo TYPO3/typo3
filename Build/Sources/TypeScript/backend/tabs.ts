@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {Tab} from 'bootstrap';
+import { Tab } from 'bootstrap';
 import BrowserSession from './storage/browser-session';
 import Client from './storage/client';
 import DocumentService from '@typo3/core/document-service';
@@ -21,26 +21,6 @@ import DocumentService from '@typo3/core/document-service';
  * @exports @typo3/backend/tabs
  */
 class Tabs {
-  /**
-   * Receive active tab from storage
-   *
-   * @param {string} id
-   * @returns {string}
-   */
-  private static receiveActiveTab(id: string): string {
-    return BrowserSession.get(id) || '';
-  }
-
-  /**
-   * Set active tab to storage
-   *
-   * @param {string} id
-   * @param {string} target
-   */
-  private static storeActiveTab(id: string, target: string): void {
-    BrowserSession.set(id, target);
-  }
-
   constructor() {
     DocumentService.ready().then((): void => {
       const tabContainers = document.querySelectorAll('.t3js-tabs');
@@ -63,6 +43,26 @@ class Tabs {
 
     // Remove legacy values from localStorage
     Client.unsetByPrefix('tabs-');
+  }
+
+  /**
+   * Receive active tab from storage
+   *
+   * @param {string} id
+   * @returns {string}
+   */
+  private static receiveActiveTab(id: string): string {
+    return BrowserSession.get(id) || '';
+  }
+
+  /**
+   * Set active tab to storage
+   *
+   * @param {string} id
+   * @param {string} target
+   */
+  private static storeActiveTab(id: string, target: string): void {
+    BrowserSession.set(id, target);
   }
 }
 

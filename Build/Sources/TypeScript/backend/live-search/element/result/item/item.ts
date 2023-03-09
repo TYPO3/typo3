@@ -11,14 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {customElement, property} from 'lit/decorators';
-import {html, LitElement, TemplateResult} from 'lit';
+import { customElement, property } from 'lit/decorators';
+import { html, LitElement, TemplateResult } from 'lit';
 import '@typo3/backend/element/icon-element';
 
 export interface ResultItemInterface {
   provider: string;
   actions: ResultItemActionInterface[];
-  icon: { [key: string]: string };
+  icon: Record<string, string>;
   itemTitle: string;
   typeLabel: string;
   extraData: { [key: string]: any }
@@ -26,14 +26,14 @@ export interface ResultItemInterface {
 
 export interface ResultItemActionInterface {
   identifier: string;
-  icon: { [key: string]: string };
+  icon: Record<string, string>;
   label: string;
   url: string;
 }
 
 @customElement('typo3-backend-live-search-result-item')
 export class Item extends LitElement {
-  @property({type: Object, attribute: false}) resultItem: ResultItemInterface;
+  @property({ type: Object, attribute: false }) resultItem: ResultItemInterface;
 
   private parentContainer: HTMLElement;
   private resultItemContainer: HTMLElement;

@@ -11,20 +11,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, TemplateResult, LitElement} from 'lit';
-import {customElement, property} from 'lit/decorators';
+import { html, TemplateResult, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators';
 import Modal from '@typo3/backend/modal';
 
-enum Selectors {
-  modalBody = '.t3js-modal-body'
-}
-
 @customElement('typo3-mfa-totp-url-info-button')
-class MfaTotpUrlButton extends LitElement {
-  @property({type: String}) url: string;
-  @property({type: String}) title: string;
-  @property({type: String}) description: string;
-  @property({type: String}) ok: string;
+export class MfaTotpUrlButton extends LitElement {
+  @property({ type: String }) url: string;
+  @property({ type: String }) title: string;
+  @property({ type: String }) description: string;
+  @property({ type: String }) ok: string;
 
   public constructor() {
     super();

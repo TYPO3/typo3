@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import $ from"jquery";import Severity from"@typo3/install/renderable/severity.js";class FlashMessage{constructor(){this.template=$('<div class="t3js-message typo3-message alert"><h4></h4><p class="messageText"></p></div>')}render(e,s,t){let a=this.template.clone();return a.addClass("alert-"+Severity.getCssClass(e)),s&&a.find("h4").text(s),t?a.find(".messageText").text(t):a.find(".messageText").remove(),a}}export default new FlashMessage;
+import $ from"jquery";import Severity from"@typo3/install/renderable/severity.js";class FlashMessage{constructor(){this.template=$('<div class="t3js-message typo3-message alert"><h4></h4><p class="messageText"></p></div>')}render(e,s,t){const a=this.template.clone();return a.addClass("alert-"+Severity.getCssClass(e)),s&&a.find("h4").text(s),t?a.find(".messageText").text(t):a.find(".messageText").remove(),a}}export default new FlashMessage;

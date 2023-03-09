@@ -15,7 +15,7 @@ import { MessageUtility } from '@typo3/backend/utility/message-utility';
 import ElementBrowser from '@typo3/backend/element-browser';
 import NProgress from 'nprogress';
 import RegularEvent from '@typo3/core/event/regular-event';
-import Icons = TYPO3.Icons;
+import Icons from '@typo3/backend/icons';
 import { ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
 import { FileListActionEvent, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
 import InfoWindow from '@typo3/backend/info-window';
@@ -24,23 +24,6 @@ import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { ResourceInterface } from '@typo3/backend/resource/resource';
 
 class BrowseFiles {
-  public static insertElement(fileName: string, fileUid: number, close?: boolean): boolean {
-    return ElementBrowser.insertElement(
-      'sys_file',
-      String(fileUid),
-      fileName,
-      String(fileUid),
-      close,
-    );
-  }
-
-  private static handleNext(items: ResourceInterface[]): void {
-    if (items.length > 0) {
-      const item = items.pop();
-      BrowseFiles.insertElement(item.name, Number(item.uid));
-    }
-  }
-
   constructor() {
 
     new RegularEvent(FileListActionEvent.primary, (event: CustomEvent): void => {
@@ -70,12 +53,29 @@ class BrowseFiles {
 
   }
 
+  public static insertElement(fileName: string, fileUid: number, close?: boolean): boolean {
+    return ElementBrowser.insertElement(
+      'sys_file',
+      String(fileUid),
+      fileName,
+      String(fileUid),
+      close,
+    );
+  }
+
+  private static handleNext(items: ResourceInterface[]): void {
+    if (items.length > 0) {
+      const item = items.pop();
+      BrowseFiles.insertElement(item.name, Number(item.uid));
+    }
+  }
+
   private loadContent(resource: ResourceInterface): void
   {
     if (resource.type !== 'folder') {
       return;
     }
-    let contentsUrl = document.location.href + '&contentOnly=1&expandFolder=' + resource.identifier;
+    const contentsUrl = document.location.href + '&contentOnly=1&expandFolder=' + resource.identifier;
     (new AjaxRequest(contentsUrl)).get()
       .then((response: AjaxResponse) => response.resolve())
       .then((response) => {
@@ -130,7 +130,7 @@ class BrowseFiles {
         }
       }
     }).bindTo(window);
-  }
+  };
 }
 
 export default new BrowseFiles();

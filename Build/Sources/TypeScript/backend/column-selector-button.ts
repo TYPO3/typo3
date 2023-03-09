@@ -11,14 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, css, TemplateResult, LitElement} from 'lit';
-import {customElement, property} from 'lit/decorators';
-import {SeverityEnum} from '@typo3/backend/enum/severity';
+import { html, css, TemplateResult, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
-import {default as Modal, ModalElement} from '@typo3/backend/modal';
-import {lll} from '@typo3/core/lit-helper';
+import { default as Modal, ModalElement } from '@typo3/backend/modal';
+import { lll } from '@typo3/core/lit-helper';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';
 
 enum Selectors {
@@ -51,15 +51,29 @@ enum SelectorActions {
  * </typo3-backend-column-selector-button>
  */
 @customElement('typo3-backend-column-selector-button')
-class ColumnSelectorButton extends LitElement {
+export class ColumnSelectorButton extends LitElement {
   static styles = [css`:host { cursor: pointer; appearance: button; }`];
 
-  @property({type: String}) url: string;
-  @property({type: String}) target: string;
-  @property({type: String}) title: string = 'Show columns';
-  @property({type: String}) ok: string = lll('button.ok') || 'Update';
-  @property({type: String}) close: string = lll('button.close') || 'Close';
-  @property({type: String}) error: string = 'Could not update columns';
+  @property({ type: String }) url: string;
+  @property({ type: String }) target: string;
+  @property({ type: String }) title: string = 'Show columns';
+  @property({ type: String }) ok: string = lll('button.ok') || 'Update';
+  @property({ type: String }) close: string = lll('button.close') || 'Close';
+  @property({ type: String }) error: string = 'Could not update columns';
+
+  public constructor() {
+    super();
+    this.addEventListener('click', (e: Event): void => {
+      e.preventDefault();
+      this.showColumnSelectorModal();
+    });
+    this.addEventListener('keydown', (e: KeyboardEvent): void => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        this.showColumnSelectorModal();
+      }
+    });
+  }
 
   /**
    * Toggle selector actions state (enabled or disabled) depending
@@ -78,23 +92,23 @@ class ColumnSelectorButton extends LitElement {
     selectNone: HTMLButtonElement,
     initialize: boolean = false
   ) {
-    selectAll.classList.add('disabled')
-    for (let i=0; i < columns.length; i++) {
+    selectAll.classList.add('disabled');
+    for (let i = 0; i < columns.length; i++) {
       if (!columns[i].disabled
         && !columns[i].checked
         && (initialize || !ColumnSelectorButton.isColumnHidden(columns[i]))
       ) {
-        selectAll.classList.remove('disabled')
+        selectAll.classList.remove('disabled');
         break;
       }
     }
-    selectNone.classList.add('disabled')
-    for (let i=0; i < columns.length; i++) {
+    selectNone.classList.add('disabled');
+    for (let i = 0; i < columns.length; i++) {
       if (!columns[i].disabled
         && columns[i].checked
         && (initialize || !ColumnSelectorButton.isColumnHidden(columns[i]))
       ) {
-        selectNone.classList.remove('disabled')
+        selectNone.classList.remove('disabled');
         break;
       }
     }
@@ -133,20 +147,6 @@ class ColumnSelectorButton extends LitElement {
         }
       }
     });
-  }
-
-  public constructor() {
-    super();
-    this.addEventListener('click', (e: Event): void => {
-      e.preventDefault();
-      this.showColumnSelectorModal();
-    });
-    this.addEventListener('keydown', (e: KeyboardEvent): void => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        this.showColumnSelectorModal();
-      }
-    })
   }
 
   public connectedCallback(): void {
@@ -201,11 +201,11 @@ class ColumnSelectorButton extends LitElement {
     }
     (new AjaxRequest(TYPO3.settings.ajaxUrls.show_columns))
       .post(new FormData(form))
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           // @todo This does not jump to the anchor (#t3-table-some_table) after the reload!!!
-          this.ownerDocument.location.href = this.target
+          this.ownerDocument.location.href = this.target;
           this.ownerDocument.location.reload();
         } else {
           Notification.error(data.message || 'No update was performed');
@@ -214,7 +214,7 @@ class ColumnSelectorButton extends LitElement {
       })
       .catch(() => {
         this.abortSelection();
-      })
+      });
   }
 
   private handleModalContentLoaded(currentModal: HTMLElement): void {
@@ -224,7 +224,7 @@ class ColumnSelectorButton extends LitElement {
       return;
     }
     // Prevent the form from being submitted as the form data will be send via an ajax request
-    form.addEventListener('submit', (e: Event): void => { e.preventDefault() });
+    form.addEventListener('submit', (e: Event): void => { e.preventDefault(); });
 
     const columns: NodeListOf<HTMLInputElement> = currentModal.querySelectorAll(Selectors.columnsSelector);
     const columnsFilter: HTMLInputElement = currentModal.querySelector(Selectors.columnsFilterSelector);

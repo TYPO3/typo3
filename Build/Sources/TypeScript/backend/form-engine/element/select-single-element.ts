@@ -32,7 +32,7 @@ class SelectSingleElement {
   }
 
   public initialize = (selector: string, options: SelectSingleElementOptions): void => {
-    let selectElement: HTMLSelectElement = document.querySelector(selector);
+    const selectElement: HTMLSelectElement = document.querySelector(selector);
     options = options || {};
 
     new RegularEvent('change', (e: Event): void => {
@@ -52,7 +52,7 @@ class SelectSingleElement {
         }
 
         const selectionIcon = selectIcons.querySelector('[data-select-index="' + target.selectedIndex + '"]');
-        if (selectionIcon !== null)  {
+        if (selectionIcon !== null) {
           selectionIcon.closest('.form-wizard-icon-list-item a').classList.add('active');
         }
       }
@@ -73,7 +73,7 @@ class SelectSingleElement {
       selectElement.dispatchEvent(new Event('change'));
       target.closest('.form-wizard-icon-list-item a').classList.add('active');
     }).delegateTo(selectElement.closest('.form-control-wrap'), '.t3js-forms-select-single-icons .form-wizard-icon-list-item a:not(.active)');
-  }
+  };
 }
 
 export default new SelectSingleElement();

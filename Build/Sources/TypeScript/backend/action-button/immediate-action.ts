@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractAction} from './abstract-action';
+import { AbstractAction } from './abstract-action';
 
 /**
  * Action used when an operation is executed immediately.
@@ -19,11 +19,11 @@ import {AbstractAction} from './abstract-action';
 class ImmediateAction extends AbstractAction {
   protected callback: () => void;
 
-  public execute(): Promise<any> {
+  public execute(): Promise<void> {
     return this.executeCallback();
   }
 
-  private async executeCallback(): Promise<any> {
+  private async executeCallback(): Promise<void> {
     return Promise.resolve(this.callback());
   }
 }

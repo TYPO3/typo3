@@ -27,13 +27,13 @@ class PageLinkHandler {
     }).delegateTo(document, 'a.t3js-pageLink');
 
     // Link to current page
-    new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
+    new RegularEvent('click', (evt: MouseEvent): void => {
       evt.preventDefault();
       LinkBrowser.finalizeFunction(document.body.dataset.currentLink);
     }).delegateTo(document, 'input.t3js-linkCurrent');
 
     // Input field
-    new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
+    new RegularEvent('click', (evt: MouseEvent): void => {
       evt.preventDefault();
       this.linkPageByTextfield();
     }).delegateTo(document, 'input.t3js-pageLink');
@@ -51,7 +51,7 @@ class PageLinkHandler {
       value = 't3://page?uid=' + valueAsNumber;
     }
     LinkBrowser.finalizeFunction(value);
-  }
+  };
 }
 
 export default new PageLinkHandler();

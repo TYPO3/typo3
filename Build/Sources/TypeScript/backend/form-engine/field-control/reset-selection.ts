@@ -39,10 +39,10 @@ class ResetSelection {
     const field = (<HTMLSelectElement>document.forms.namedItem('editform').querySelector('[name="' + itemName + '[]"]'));
 
     field.selectedIndex = -1;
-    for (let i of selectedIndices) {
+    for (const i of selectedIndices) {
       field.options[i].selected = true;
     }
-  }
+  };
 }
 
 export default ResetSelection;

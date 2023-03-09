@@ -27,6 +27,12 @@ class SelectBoxFilter {
   private filterText: string = '';
   private availableOptions: NodeListOf<HTMLOptionElement> = null;
 
+  constructor(selectElement: HTMLSelectElement) {
+    this.selectElement = selectElement;
+
+    this.initializeEvents();
+  }
+
   private static toggleOptGroup(option: HTMLOptionElement): void {
     const optGroup = <HTMLOptGroupElement>option.parentElement;
     if (!(optGroup instanceof HTMLOptGroupElement)) {
@@ -39,12 +45,6 @@ class SelectBoxFilter {
       optGroup.disabled = false;
       optGroup.classList.remove('hidden');
     }
-  }
-
-  constructor(selectElement: HTMLSelectElement) {
-    this.selectElement = selectElement;
-
-    this.initializeEvents();
   }
 
   private initializeEvents(): void {

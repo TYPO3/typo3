@@ -14,7 +14,7 @@
 import Notification from '@typo3/backend/notification';
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
-import {ActionConfiguration, ActionEventDetails} from '@typo3/backend/multi-record-selection-action';
+import { ActionConfiguration, ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
 
 export enum MultiRecordSelectionSelectors {
   actionsSelector = '.t3js-multi-record-selection-actions',
@@ -49,12 +49,26 @@ class MultiRecordSelection {
   static disabledClass: string = 'disabled';
   private lastChecked: HTMLInputElement = null;
 
+  constructor() {
+    DocumentService.ready().then((): void => {
+      MultiRecordSelection.restoreTemporaryState();
+      this.registerActions();
+      this.registerActionsEventHandlers();
+      this.registerCheckboxActions();
+      this.registerCheckboxKeyboardActions();
+      this.registerCheckboxTableRowSelectionAction();
+      this.registerToggleCheckboxActions();
+      this.registerDispatchCheckboxStateChangedEvent();
+      this.registerCheckboxStateChangedEventHandler();
+    });
+  }
+
   private static getCheckboxes(state: CheckboxState = CheckboxState.any, identifier: string = ''): NodeListOf<HTMLInputElement> {
     return document.querySelectorAll(MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.checkboxSelector + state, identifier));
   }
 
   private static getCombinedSelector(selector: string, identifier: string): string {
-    return identifier !== '' ? ['[data-multi-record-selection-identifier="' + identifier + '"]',  selector].join (' ') : selector;
+    return identifier !== '' ? ['[data-multi-record-selection-identifier="' + identifier + '"]', selector].join (' ') : selector;
   }
 
   private static getIdentifier(element: HTMLElement): string {
@@ -88,7 +102,7 @@ class MultiRecordSelection {
     // perform this for every checked checkbox. Therefore we store the identifiers,
     // which were already evaluated and do not call the evaluation for them again.
     let actionsToggled: boolean = false;
-    let identifiers: Array<string> = [];
+    const identifiers: Array<string> = [];
     checked.forEach((checkbox: HTMLInputElement) => {
       (checkbox.closest(MultiRecordSelectionSelectors.elementSelector) as HTMLElement)?.classList.add(MultiRecordSelection.activeClass);
       const identifier: string = MultiRecordSelection.getIdentifier(checkbox);
@@ -150,7 +164,7 @@ class MultiRecordSelection {
       action.classList.add(this.disabledClass);
       // Get all currently checked elements
       const checked: NodeListOf<HTMLInputElement> = MultiRecordSelection.getCheckboxes(CheckboxState.checked, identifier);
-      for (let i=0; i < checked.length; i++) {
+      for (let i = 0; i < checked.length; i++) {
         // Evaluate each checked element if it contains the specified idField
         if ((checked[i].closest(MultiRecordSelectionSelectors.elementSelector) as HTMLElement)?.dataset[configuration.idField]) {
           // If a checked element contains the idField, remove the "disabled"
@@ -175,12 +189,12 @@ class MultiRecordSelection {
     const panelElements: HTMLCollection = container.closest('.multi-record-selection-panel')?.children;
     if (visible) {
       if (panelElements) {
-        for (let i=0; i < panelElements.length; i++) { panelElements[i].classList.add('hidden') }
+        for (let i = 0; i < panelElements.length; i++) { panelElements[i].classList.add('hidden'); }
       }
       container.classList.remove('hidden');
     } else {
       if (panelElements) {
-        for (let i=0; i < panelElements.length; i++) { panelElements[i].classList.remove('hidden') }
+        for (let i = 0; i < panelElements.length; i++) { panelElements[i].classList.remove('hidden'); }
       }
       container.classList.add('hidden');
     }
@@ -198,20 +212,6 @@ class MultiRecordSelection {
   private static unsetManuallyChangedAttribute(identifier: string): void {
     MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).forEach((checkbox: HTMLInputElement): void => {
       checkbox.removeAttribute('data-manually-changed');
-    });
-  }
-
-  constructor() {
-    DocumentService.ready().then((): void => {
-      MultiRecordSelection.restoreTemporaryState();
-      this.registerActions();
-      this.registerActionsEventHandlers();
-      this.registerCheckboxActions();
-      this.registerCheckboxKeyboardActions();
-      this.registerCheckboxTableRowSelectionAction();
-      this.registerToggleCheckboxActions();
-      this.registerDispatchCheckboxStateChangedEvent();
-      this.registerCheckboxStateChangedEventHandler();
     });
   }
 
@@ -335,7 +335,7 @@ class MultiRecordSelection {
       // should be performed as well. We also prevent the keyboard actions from unsetting
       // any state, e.g. the "manually changed flag", as this might have been set by any
       // component triggered by the above checkbox state change operation.
-      this.handleCheckboxKeyboardActions(e, checkbox, false)
+      this.handleCheckboxKeyboardActions(e, checkbox, false);
     }).delegateTo(document, MultiRecordSelectionSelectors.elementSelector);
 
     // In case row selection is enabled and a keyboard "shortcut" is used, prevent text selection on the rows
@@ -377,7 +377,7 @@ class MultiRecordSelection {
       ].join(' '));
 
       if (checkAll !== null) {
-        checkAll.classList.toggle('disabled', !MultiRecordSelection.getCheckboxes(CheckboxState.unchecked, identifier).length)
+        checkAll.classList.toggle('disabled', !MultiRecordSelection.getCheckboxes(CheckboxState.unchecked, identifier).length);
       }
 
       const checkNone: HTMLButtonElement = document.querySelector([
@@ -451,7 +451,7 @@ class MultiRecordSelection {
         if (checkbox !== target) {
           MultiRecordSelection.changeCheckboxState(checkbox, !checkbox.checked);
         }
-      })
+      });
     }
 
     // To prevent possible side effects we simply clean up and unset the attribute here again

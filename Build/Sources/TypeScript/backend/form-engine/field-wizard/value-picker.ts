@@ -49,7 +49,7 @@ export class ValuePicker extends HTMLElement {
     this.setValue();
     this.valuePicker.selectedIndex = 0;
     this.valuePicker.blur();
-  }
+  };
 
   private setValue (): void {
     const selectedValue = this.valuePicker.options[this.valuePicker.selectedIndex].value;
@@ -63,7 +63,7 @@ export class ValuePicker extends HTMLElement {
     } else {
       linkedField.value = selectedValue;
     }
-    linkedField.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
+    linkedField.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
   }
 }
 

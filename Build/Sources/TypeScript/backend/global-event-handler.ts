@@ -54,7 +54,7 @@ class GlobalEventHandler {
 
   constructor() {
     documentService.ready().then((): void => this.registerEvents());
-  };
+  }
 
   private registerEvents(): void {
     new RegularEvent('change', this.handleChangeEvent.bind(this))

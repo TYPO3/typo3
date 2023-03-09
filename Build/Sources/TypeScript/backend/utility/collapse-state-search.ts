@@ -47,7 +47,7 @@ class CollapseStateSearch {
       this.numberOfSearchMatchesContainer = document.querySelectorAll('.t3js-collapse-states-search-numberOfSearchMatches');
       this.searchField = document.querySelector(this.searchValueSelector);
       this.searchForm = this.searchField.closest('form');
-      this.searchSessionKey = this.searchField.dataset.persistCollapseSearchKey
+      this.searchSessionKey = this.searchField.dataset.persistCollapseSearchKey;
       this.searchValue = Client.get(this.searchSessionKey) ?? '';
 
       this.registerEvents();
@@ -117,13 +117,13 @@ class CollapseStateSearch {
       }
 
       const parentElements = this.parents(match, '.collapse');
-      for (let parentEl of parentElements) {
+      for (const parentEl of parentElements) {
         matchingCollapsibleIds.add(parentEl.id);
       }
     });
 
     const allNodes = Array.from(treeContainer.querySelectorAll('.collapse')) as HTMLElement[];
-    for (let node of allNodes) {
+    for (const node of allNodes) {
       const isExpanded: boolean = node.classList.contains('show');
       const id: string = node.id;
       if (matchingCollapsibleIds.has(id)) {

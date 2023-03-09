@@ -11,12 +11,12 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import type {SelectTree} from './select-tree';
-import type {SelectTreeToolbar} from './select-tree-toolbar';
+import type { SelectTree } from './select-tree';
+import type { SelectTreeToolbar } from './select-tree-toolbar';
 import './select-tree';
 import './select-tree-toolbar';
 import '@typo3/backend/element/icon-element';
-import {TreeNode} from '@typo3/backend/tree/tree-node';
+import { TreeNode } from '@typo3/backend/tree/tree-node';
 
 /**
  * Module: @typo3/backend/form-engine/element/category-element
@@ -113,8 +113,8 @@ class CategoryElement extends HTMLElement{
     // check all nodes again, to ensure correct display of indeterminate state
     this.calculateIndeterminate(this.tree.nodes);
     this.saveCheckboxes();
-    this.tree.setup.input.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
-  }
+    this.tree.setup.input.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+  };
 
   /**
    * Resets the node.indeterminate for the whole tree.
@@ -127,14 +127,14 @@ class CategoryElement extends HTMLElement{
       return node;
     });
     this.calculateIndeterminate(this.tree.nodes);
-  }
+  };
 
   /**
    * Sets a comma-separated list of selected nodes identifiers to configured input
    */
   private saveCheckboxes = (): void => {
     this.recordField.value = this.tree.getSelectedNodes().map((node: TreeNode): string => node.identifier).join(',');
-  }
+  };
 
   /**
    * Updates the indeterminate state for ancestors of the current node

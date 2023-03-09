@@ -25,6 +25,17 @@ import RegularEvent from '@typo3/core/event/regular-event';
 class Item {
   public visible: boolean = true;
 
+  public constructor(
+    public readonly identifier: string,
+    public readonly label: string,
+    public readonly description: string,
+    public readonly icon: string,
+    public readonly url: string,
+    public readonly requestType: string,
+    public readonly defaultValues: Array<any>,
+    public readonly saveAndClose: boolean
+  ) { }
+
   public static fromData(data: DataItemInterface) {
     return new Item(
       data.identifier,
@@ -37,16 +48,6 @@ class Item {
       data.saveAndClose ?? false,
     );
   }
-  public constructor(
-    public readonly identifier: string,
-    public readonly label: string,
-    public readonly description: string,
-    public readonly icon: string,
-    public readonly url: string,
-    public readonly requestType: string,
-    public readonly defaultValues: Array<any>,
-    public readonly saveAndClose: boolean
-  ) { }
 
   public reset(): void
   {
@@ -57,6 +58,12 @@ class Item {
 class Category {
   public disabled: boolean = false;
 
+  public constructor(
+    public readonly identifier: string,
+    public readonly label: string,
+    public readonly items: Item[],
+  ) { }
+
   public static fromData(data: DataCategoryInterface) {
     return new Category(
       data.identifier,
@@ -64,11 +71,6 @@ class Category {
       data.items.map((item: DataItemInterface) => Item.fromData(item))
     );
   }
-  public constructor(
-    public readonly identifier: string,
-    public readonly label: string,
-    public readonly items: Item[],
-  ) { }
 
   public reset(): void
   {
@@ -82,14 +84,15 @@ class Category {
 }
 
 class Categories {
+  public constructor(
+    public readonly items: Category[],
+  ) { }
+
   public static fromData(data: DataCategoriesInterface) {
     return new Categories(
       Object.values(data).map((item: DataCategoryInterface) => Category.fromData(item))
     );
   }
-  public constructor(
-    public readonly items: Category[],
-  ) { }
 
   public reset(): void
   {
@@ -339,7 +342,7 @@ export class NewContentElementWizard extends LitElement {
 
   protected firstUpdated(): void {
     // Load shared css file
-    let link = document.createElement('link');
+    const link = document.createElement('link');
     link.setAttribute('rel', 'stylesheet');
     link.setAttribute('href', TYPO3.settings.cssUrls.backend);
     this.shadowRoot.appendChild(link);
@@ -431,7 +434,7 @@ export class NewContentElementWizard extends LitElement {
     return html`
         <button
           class="navigation-toggle btn btn-light"
-          @click="${() => { this.toggleMenu = !this.toggleMenu }}"
+          @click="${() => { this.toggleMenu = !this.toggleMenu; }}"
         >
           ${this.selectedCategory.label}
           <typo3-backend-icon identifier="actions-chevron-${(this.toggleMenu === true) ? 'up' : 'down'}" size="small"></typo3-backend-icon>
@@ -514,7 +517,7 @@ export class NewContentElementWizard extends LitElement {
       (new AjaxRequest(item.url)).post({
         defVals: item.defaultValues,
         saveAndClose: item.saveAndClose ? '1' : '0'
-      }).then(async (response: AjaxResponse): Promise<any> => {
+      }).then(async (response: AjaxResponse): Promise<void> => {
         const result = document.createRange().createContextualFragment(await response.resolve());
 
         // Handle buttons with data-target

@@ -23,18 +23,18 @@ enum Selectors {
  * Module: @typo3/linkvalidator/linkvalidator
  */
 class Linkvalidator {
+  constructor() {
+    this.initializeEvents();
+    document.querySelectorAll(Selectors.settingsContainerSelector).forEach((container: HTMLElement): void => {
+      Linkvalidator.toggleActionButtons(container);
+    });
+  }
+
   private static toggleActionButtons(settingsContainer: HTMLElement): void {
     settingsContainer.querySelector(Selectors.actionButtonSelector)?.toggleAttribute(
       'disabled',
       !settingsContainer.querySelectorAll('input[type="checkbox"]:checked').length
     );
-  }
-
-  constructor() {
-    this.initializeEvents();
-    document.querySelectorAll(Selectors.settingsContainerSelector).forEach((container: HTMLElement): void => {
-      Linkvalidator.toggleActionButtons(container);
-    })
   }
 
   private initializeEvents(): void {

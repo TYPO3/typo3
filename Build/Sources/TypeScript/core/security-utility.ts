@@ -47,7 +47,7 @@ class SecurityUtility {
    * @return {string}
    */
   public encodeHtml(value: string, doubleEncode: boolean = true): string {
-    let anvil: HTMLSpanElement = this.createAnvil();
+    const anvil: HTMLSpanElement = this.createAnvil();
     if (!doubleEncode) {
       // decode HTML entities step-by-step
       // but NEVER(!) as a whole, since that would allow XSS

@@ -15,7 +15,7 @@ import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import BrowserSession from '@typo3/backend/storage/browser-session';
 import NProgress from 'nprogress';
-import {default as Modal, ModalElement} from '@typo3/backend/modal';
+import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import Severity from '@typo3/backend/severity';
 import SecurityUtility from '@typo3/core/security-utility';
 import ExtensionManagerRepository from './repository';
@@ -24,7 +24,7 @@ import ExtensionManagerUploadForm from './upload-form';
 import Tablesort from 'tablesort';
 import 'tablesort.dotsep';
 import '@typo3/backend/input/clearable';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import RegularEvent from '@typo3/core/event/regular-event';
@@ -37,7 +37,7 @@ enum ExtensionManagerIdentifier {
 }
 
 interface UpdateInformation {
-  updateComments: { [key: string]: string },
+  updateComments: Record<string, string>,
   url: string
 }
 
@@ -56,7 +56,6 @@ class ExtensionManager {
   private readonly searchFilterSessionKey: string = 'tx-extensionmanager-local-filter';
 
   constructor() {
-    const me = this;
     DocumentService.ready().then((): void => {
       this.Update = new ExtensionManagerUpdate();
       this.UploadForm = new ExtensionManagerUploadForm();
@@ -66,7 +65,7 @@ class ExtensionManager {
       if (extensionList !== null) {
         new Tablesort(extensionList);
 
-        new RegularEvent('click', function (this: HTMLAnchorElement, e: Event): void {
+        new RegularEvent('click', (e: Event, target: HTMLAnchorElement): void => {
           e.preventDefault();
 
           Modal.confirm(
@@ -85,7 +84,7 @@ class ExtensionManager {
                 text: TYPO3.lang['button.remove'],
                 btnClass: 'btn-danger',
                 trigger: (): void => {
-                  me.removeExtensionFromDisk(this);
+                  this.removeExtensionFromDisk(target);
                   Modal.dismiss();
                 },
               },
@@ -171,8 +170,8 @@ class ExtensionManager {
     let i = 0;
     const data: UpdateInformation = await response.resolve();
     const $form = $('<form>');
-    for (let [version, comment] of Object.entries(data.updateComments)) {
-      const $input = $('<input>').attr({type: 'radio', name: 'version'}).val(version);
+    for (const [version, comment] of Object.entries(data.updateComments)) {
+      const $input = $('<input>').attr({ type: 'radio', name: 'version' }).val(version);
       if (i === 0) {
         $input.attr('checked', 'checked');
       }
@@ -229,7 +228,7 @@ class ExtensionManager {
   }
 }
 
-let extensionManagerObject = new ExtensionManager();
+const extensionManagerObject = new ExtensionManager();
 
 if (typeof TYPO3.ExtensionManager === 'undefined') {
   TYPO3.ExtensionManager = extensionManagerObject;

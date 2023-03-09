@@ -34,7 +34,7 @@ class TableWizard {
     e.preventDefault();
 
     FormEngine.preventFollowLinkIfNotSaved(this.controlElement.getAttribute('href'));
-  }
+  };
 }
 
 export default TableWizard;

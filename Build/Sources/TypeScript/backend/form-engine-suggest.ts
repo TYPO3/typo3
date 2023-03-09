@@ -17,7 +17,7 @@ import FormEngine from '@typo3/backend/form-engine';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 class FormEngineSuggest {
   private readonly element: HTMLInputElement;
@@ -124,7 +124,7 @@ class FormEngineSuggest {
 
       this.resultContainer.hidden = true;
     }
-  }
+  };
 }
 
 export default FormEngineSuggest;

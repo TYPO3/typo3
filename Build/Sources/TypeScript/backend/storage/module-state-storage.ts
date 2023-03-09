@@ -48,7 +48,7 @@ export class ModuleStateStorage {
       throw new SyntaxError('mount must be of type string');
     }
     const state = ModuleStateStorage.assignProperties(
-      {mount, identifier, selected} as StateChange,
+      { mount, identifier, selected } as StateChange,
       ModuleStateStorage.fetch(module)
     );
     ModuleStateStorage.commit(module, state);
@@ -61,7 +61,7 @@ export class ModuleStateStorage {
       identifier,
       selected,
       ModuleStateStorage.current(module).mount
-    )
+    );
   }
 
   public static current(module: string): CurrentState {
@@ -89,7 +89,7 @@ export class ModuleStateStorage {
 
   private static assignProperties(change: StateChange, state: CurrentState|null): CurrentState
   {
-    let target = Object.assign(ModuleStateStorage.createCurrentState(), state) as CurrentState;
+    const target = Object.assign(ModuleStateStorage.createCurrentState(), state) as CurrentState;
     if (change.mount) {
       target.mount = change.mount;
     }
@@ -104,7 +104,7 @@ export class ModuleStateStorage {
 
   private static createCurrentState(): CurrentState
   {
-    return {mount: null, identifier: '', selection: null} as CurrentState;
+    return { mount: null, identifier: '', selection: null } as CurrentState;
   }
 }
 

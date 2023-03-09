@@ -11,11 +11,11 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import type {SelectTree} from './select-tree';
-import {html, LitElement, TemplateResult} from 'lit';
-import {customElement} from 'lit/decorators';
-import {lll} from '@typo3/core/lit-helper';
-import {TreeNode} from '../../tree/tree-node';
+import type { SelectTree } from './select-tree';
+import { html, LitElement, TemplateResult } from 'lit';
+import { customElement } from 'lit/decorators';
+import { lll } from '@typo3/core/lit-helper';
+import { TreeNode } from '../../tree/tree-node';
 
 @customElement('typo3-backend-form-selecttree-toolbar')
 export class SelectTreeToolbar extends LitElement {

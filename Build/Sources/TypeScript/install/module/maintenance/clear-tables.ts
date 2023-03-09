@@ -12,12 +12,13 @@
  */
 
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
+import MessageInterface from '@typo3/install/message-interface';
 
 /**
  * Module: @typo3/install/module/clear-tables
@@ -32,7 +33,7 @@ class ClearTables extends AbstractInteractableModule {
   private selectorStatRows: string = '.t3js-clearTables-stat-rows';
   private selectorStatName: string = '.t3js-clearTables-stat-name';
 
-  public initialize(currentModal: any): void {
+  public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
     this.getStats();
 
@@ -54,9 +55,9 @@ class ClearTables extends AbstractInteractableModule {
 
     const modalContent: JQuery = this.getModalBody();
     (new AjaxRequest(Router.getUrl('clearTablesStats')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             modalContent.empty().append(data.html);
@@ -95,10 +96,10 @@ class ClearTables extends AbstractInteractableModule {
         },
       })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
+            data.status.forEach((element: MessageInterface): void => {
               Notification.success(element.title, element.message);
             });
           } else {

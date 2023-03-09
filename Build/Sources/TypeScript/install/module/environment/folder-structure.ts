@@ -13,8 +13,8 @@
 
 import 'bootstrap';
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -60,9 +60,9 @@ class FolderStructure extends AbstractInteractableModule {
       ProgressBar.render(Severity.loading, 'Loading...', ''),
     );
     (new AjaxRequest(Router.getUrl('folderStructureGetStatus')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           modalContent.empty().append(data.html);
           Modal.setButtons(data.buttons);
@@ -74,8 +74,8 @@ class FolderStructure extends AbstractInteractableModule {
               data.errorStatus.forEach(((aElement: any): void => {
                 errorCount++;
                 $errorBadge.text(errorCount).show();
-                const aMessage = InfoBox.render(aElement.severity, aElement.title, aElement.message);
-                modalContent.find(this.selectorErrorList).append(aMessage);
+                const message = InfoBox.render(aElement.severity, aElement.title, aElement.message);
+                modalContent.find(this.selectorErrorList).append(message);
               }));
             } else {
               modalContent.find(this.selectorErrorContainer).hide();
@@ -86,8 +86,8 @@ class FolderStructure extends AbstractInteractableModule {
               modalContent.find(this.selectorOkContainer).show();
               modalContent.find(this.selectorOkList).empty();
               data.okStatus.forEach(((aElement: any): void => {
-                const aMessage = InfoBox.render(aElement.severity, aElement.title, aElement.message);
-                modalContent.find(this.selectorOkList).append(aMessage);
+                const message = InfoBox.render(aElement.severity, aElement.title, aElement.message);
+                modalContent.find(this.selectorOkList).append(message);
               }));
             } else {
               modalContent.find(this.selectorOkContainer).hide();
@@ -113,12 +113,12 @@ class FolderStructure extends AbstractInteractableModule {
 
     const modalContent: JQuery = this.getModalBody();
     const $outputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
-    const message: any = ProgressBar.render(Severity.loading, 'Loading...', '');
-    $outputContainer.empty().html(message);
+    const message = ProgressBar.render(Severity.loading, 'Loading...', '');
+    $outputContainer.empty().append(message);
     (new AjaxRequest(Router.getUrl('folderStructureFix')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           FolderStructure.removeLoadingMessage($outputContainer);
           if (data.success === true && Array.isArray(data.fixedStatus)) {

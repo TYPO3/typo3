@@ -96,6 +96,7 @@ final class RecyclerModuleCest
 
         // Close all notifications to avoid click interceptions
         $I->click('#alert-container .close');
+
         $I->switchToContentFrame();
         $I->click('a[title="Edit page properties"]');
         $I->click('a[title="Delete"]');

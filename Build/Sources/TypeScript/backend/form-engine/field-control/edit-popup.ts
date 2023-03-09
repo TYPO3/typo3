@@ -38,7 +38,7 @@ class EditPopup {
 
   private registerChangeHandler = (): void => {
     this.controlElement.classList.toggle('disabled', this.assignedFormField.options.selectedIndex === -1);
-  }
+  };
 
   /**
    * @param {Event} e
@@ -48,7 +48,7 @@ class EditPopup {
 
     const values: Array<string> = [];
     for (let i = 0; i < this.assignedFormField.selectedOptions.length; ++i) {
-      const option  = this.assignedFormField.selectedOptions.item(i);
+      const option = this.assignedFormField.selectedOptions.item(i);
       values.push(option.value);
     }
 
@@ -58,7 +58,7 @@ class EditPopup {
     ;
     const popupWindow = window.open(url, '', this.controlElement.dataset.windowParameters);
     popupWindow.focus();
-  }
+  };
 }
 
 export default EditPopup;

@@ -12,7 +12,7 @@
  */
 
 import * as d3selection from 'd3-selection';
-import {DraggablePositionEnum} from './drag-drop';
+import { DraggablePositionEnum } from './drag-drop';
 
 /**
  * Represents a single node in the SVG tree that is rendered.

@@ -12,11 +12,11 @@
  */
 
 export abstract class AbstractAction {
-  protected callback: (promise?: Promise<any>) => void|Promise<any>;
+  protected callback: (promise?: Promise<void>) => void|Promise<void>;
 
-  constructor(callback: (promise?: Promise<any>) => void|Promise<any>) {
+  constructor(callback: (promise?: Promise<void>) => void|Promise<void>) {
     this.callback = callback;
   }
 
-  public abstract execute(el: HTMLElement): Promise<any>;
+  public abstract execute(el: HTMLElement): Promise<void>;
 }

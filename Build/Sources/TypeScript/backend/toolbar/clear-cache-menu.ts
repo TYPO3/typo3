@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Icons from '../icons';
 import Notification from '../notification';
@@ -42,12 +42,12 @@ class ClearCacheMenu {
     const toolbarItemContainer = document.querySelector(Identifiers.containerSelector);
 
     new RegularEvent('click', (e: Event, menuItem: HTMLAnchorElement): void => {
-      e.preventDefault()
+      e.preventDefault();
       if (menuItem.href) {
         this.clearCache(menuItem.href);
       }
     }).delegateTo(toolbarItemContainer, Identifiers.menuItemSelector);
-  }
+  };
 
   /**
    * Calls TYPO3 to clear a cache, then changes the topbar icon
@@ -68,7 +68,7 @@ class ClearCacheMenu {
     });
 
     (new AjaxRequest(ajaxUrl)).post({}).then(
-      async (response: AjaxResponse): Promise<any> => {
+      async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           Notification.success(data.title, data.message);

@@ -11,10 +11,22 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import NotificationService from '@typo3/backend/notification';
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
+import { AbstractAction } from '@typo3/backend/action-button/abstract-action';
+
+type Correlation = {
+  correlationIdSlugUpdate: string;
+  correlationIdRedirectCreation: string;
+}
+
+type SlugChangeDetail = {
+  correlations: Correlation;
+  autoUpdateSlugs: boolean;
+  autoCreateRedirects: boolean;
+}
 
 /**
  * Module: @typo3/redirects/event-handler
@@ -29,29 +41,33 @@ class EventHandler {
   }
 
   public dispatchCustomEvent(name: string, detail: any = null): void {
-    const event = new CustomEvent(name, {detail: detail});
+    const event = new CustomEvent(name, { detail: detail });
     document.dispatchEvent(event);
   }
 
-  public onSlugChanged(detail: any): void {
-    let actions: any = [];
+  public onSlugChanged(detail: SlugChangeDetail): void {
+    const actions: { label: string; action: AbstractAction }[] = [];
     const correlations = detail.correlations;
 
     if (detail.autoUpdateSlugs) {
       actions.push({
         label: TYPO3.lang['notification.redirects.button.revert_update'],
-        action: new DeferredAction(() => this.revert([
-          correlations.correlationIdSlugUpdate,
-          correlations.correlationIdRedirectCreation,
-        ])),
+        action: new DeferredAction(async () => {
+          await this.revert([
+            correlations.correlationIdSlugUpdate,
+            correlations.correlationIdRedirectCreation,
+          ]);
+        }),
       });
     }
     if (detail.autoCreateRedirects) {
       actions.push({
         label: TYPO3.lang['notification.redirects.button.revert_redirect'],
-        action: new DeferredAction(() => this.revert([
-          correlations.correlationIdRedirectCreation,
-        ])),
+        action: new DeferredAction(async () => {
+          await this.revert([
+            correlations.correlationIdRedirectCreation,
+          ]);
+        }),
       });
     }
 

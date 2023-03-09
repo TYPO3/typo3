@@ -11,15 +11,15 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import {html, LitElement, TemplateResult} from 'lit';
-import {customElement} from 'lit/decorators';
+import { html, LitElement, TemplateResult } from 'lit';
+import { customElement } from 'lit/decorators';
 
 enum Selectors {
   dashboardItem = '.dashboard-item'
 }
 
 @customElement('typo3-dashboard-widget-refresh')
-class WidgetRefresh extends LitElement {
+export class WidgetRefresh extends LitElement {
 
   public connectedCallback(): void {
     super.connectedCallback();
@@ -40,7 +40,7 @@ class WidgetRefresh extends LitElement {
   private onRefresh(e: Event): void {
     e.preventDefault();
     this.closest(Selectors.dashboardItem).dispatchEvent(
-      new Event('widgetRefresh', {bubbles: true})
+      new Event('widgetRefresh', { bubbles: true })
     );
     this.querySelector('button').blur();
   }

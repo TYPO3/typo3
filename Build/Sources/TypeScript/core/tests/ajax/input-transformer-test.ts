@@ -11,11 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {GenericKeyValue, InputTransformer} from '@typo3/core/ajax/input-transformer';
+import { GenericKeyValue, InputTransformer } from '@typo3/core/ajax/input-transformer';
 
 describe('@typo3/core/ajax/input-transformer', (): void => {
   it('converts object to FormData', (): void => {
-    const input: GenericKeyValue = {foo: 'bar', bar: 'baz', nested: {works: 'yes'}};
+    const input: GenericKeyValue = { foo: 'bar', bar: 'baz', nested: { works: 'yes' } };
     const expected = new FormData();
     expected.set('foo', 'bar');
     expected.set('bar', 'baz');
@@ -25,7 +25,7 @@ describe('@typo3/core/ajax/input-transformer', (): void => {
   });
 
   it('undefined values are removed in FormData', (): void => {
-    const input: GenericKeyValue = {foo: 'bar', bar: 'baz', removeme: undefined};
+    const input: GenericKeyValue = { foo: 'bar', bar: 'baz', removeme: undefined };
     const expected = new FormData();
     expected.set('foo', 'bar');
     expected.set('bar', 'baz');
@@ -34,7 +34,7 @@ describe('@typo3/core/ajax/input-transformer', (): void => {
   });
 
   it('converts object to SearchParams', (): void => {
-    const input: GenericKeyValue = {foo: 'bar', bar: 'baz', nested: {works: 'yes'}};
+    const input: GenericKeyValue = { foo: 'bar', bar: 'baz', nested: { works: 'yes' } };
     const expected = 'foo=bar&bar=baz&nested[works]=yes';
 
     expect(InputTransformer.toSearchParams(input)).toEqual(expected);
@@ -55,7 +55,7 @@ describe('@typo3/core/ajax/input-transformer', (): void => {
   });
 
   it('undefined values are removed in SearchParams', (): void => {
-    const input: GenericKeyValue = {foo: 'bar', bar: 'baz', removeme: undefined};
+    const input: GenericKeyValue = { foo: 'bar', bar: 'baz', removeme: undefined };
     const expected = 'foo=bar&bar=baz';
     expect(InputTransformer.toSearchParams(input)).toEqual(expected);
   });

@@ -89,7 +89,7 @@ class FileListDragDrop {
       const preview = this.rootDocument.getElementById(this.dragPreviewId);
       const calculatedPosition = this.determinePreviewPosition(event);
 
-      let currentPosition = preview.getBoundingClientRect();
+      const currentPosition = preview.getBoundingClientRect();
       if (calculatedPosition.left === currentPosition.left && calculatedPosition.top === currentPosition.top) {
         return;
       }

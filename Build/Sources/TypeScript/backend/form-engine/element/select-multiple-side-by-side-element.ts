@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractSortableSelectItems} from './abstract-sortable-select-items';
+import { AbstractSortableSelectItems } from './abstract-sortable-select-items';
 import DocumentService from '@typo3/core/document-service';
 import FormEngine from '@typo3/backend/form-engine';
 import SelectBoxFilter from './extra/select-box-filter';

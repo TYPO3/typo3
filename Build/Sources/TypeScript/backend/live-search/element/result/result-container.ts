@@ -12,21 +12,21 @@
  */
 
 import LiveSearchConfigurator from '@typo3/backend/live-search/live-search-configurator';
-import {customElement, property, query} from 'lit/decorators';
-import {html, LitElement, nothing, TemplateResult} from 'lit';
-import {lll} from '@typo3/core/lit-helper';
+import { customElement, property, query } from 'lit/decorators';
+import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { lll } from '@typo3/core/lit-helper';
 import './item/item-container';
 import './result-detail-container';
-import {ResultItemInterface} from './item/item';
-import {ItemContainer} from './item/item-container';
-import {ResultDetailContainer} from './result-detail-container';
+import { ResultItemInterface } from './item/item';
+import { ItemContainer } from './item/item-container';
+import { ResultDetailContainer } from './result-detail-container';
 
 export const componentName = 'typo3-backend-live-search-result-container';
 
 @customElement(componentName)
 export class ResultContainer extends LitElement {
-  @property({type: Object}) results: ResultItemInterface[]|null = null;
-  @property({type: Boolean, attribute: false}) loading: boolean = false;
+  @property({ type: Object }) results: ResultItemInterface[]|null = null;
+  @property({ type: Boolean, attribute: false }) loading: boolean = false;
 
   @query('typo3-backend-live-search-result-item-container') itemContainer: ItemContainer;
   @query('typo3-backend-live-search-result-item-detail-container') resultDetailContainer: ResultDetailContainer;

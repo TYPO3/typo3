@@ -12,15 +12,15 @@
  */
 
 import $ from 'jquery';
-import {html} from 'lit';
-import {unsafeHTML} from 'lit/directives/unsafe-html';
+import { html } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
 import 'jquery-ui/draggable';
 import 'jquery-ui/resizable';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Cropper from 'cropperjs';
-import {default as Modal, ModalElement} from './modal';
+import { default as Modal, ModalElement } from './modal';
 import '@typo3/backend/element/spinner-element';
 
 interface Area {
@@ -308,7 +308,7 @@ class ImageManipulation {
       this.setAspectRatio(ratio);
       // set data explicitly or setAspectRatio upscales the crop
       this.setCropArea(temp.cropArea);
-      this.currentCropVariant = $.extend(true, {}, temp, {selectedRatio: ratioId});
+      this.currentCropVariant = $.extend(true, {}, temp, { selectedRatio: ratioId });
       this.update(this.currentCropVariant);
     });
 
@@ -350,7 +350,7 @@ class ImageManipulation {
       }
       const resetCropVariant: CropVariant = JSON.parse(resetCropVariantString);
       const absoluteCropArea: Area = this.convertRelativeToAbsoluteCropArea(resetCropVariant.cropArea, imageData);
-      this.currentCropVariant = $.extend(true, {}, resetCropVariant, {cropArea: absoluteCropArea});
+      this.currentCropVariant = $.extend(true, {}, resetCropVariant, { cropArea: absoluteCropArea });
       this.update(this.currentCropVariant);
     });
 
@@ -400,7 +400,7 @@ class ImageManipulation {
         this.data[cropVariantId].cropArea,
         imageData,
       );
-      const variant: CropVariant = $.extend(true, {}, this.data[cropVariantId], {cropArea});
+      const variant: CropVariant = $.extend(true, {}, this.data[cropVariantId], { cropArea });
       this.updatePreviewThumbnail(variant, $(elem));
     });
 
@@ -433,7 +433,7 @@ class ImageManipulation {
       // set data explicitly or setAspectRatio up-scales the crop
       $(this.currentModal).find(`[data-bs-option='${this.currentCropVariant.selectedRatio}']`).addClass('active');
     }
-  }
+  };
 
   /**
    * @method cropMoveHandler
@@ -445,14 +445,14 @@ class ImageManipulation {
       return;
     }
 
-    let minCroppedWidth = 15;
-    let minCroppedHeight = 15;
+    const minCroppedWidth = 15;
+    const minCroppedHeight = 15;
     let width = e.detail.width;
     let height = e.detail.height;
 
     if (width < minCroppedWidth || height < minCroppedHeight) {
-      width = Math.max(minCroppedHeight, height)
-      height = Math.max(minCroppedWidth, width)
+      width = Math.max(minCroppedHeight, height);
+      height = Math.max(minCroppedWidth, width);
 
       this.cropper.setData({
         width: width,
@@ -472,7 +472,7 @@ class ImageManipulation {
     const naturalWidth: number = Math.round(this.currentCropVariant.cropArea.width * this.imageOriginalSizeFactor);
     const naturalHeight: number = Math.round(this.currentCropVariant.cropArea.height * this.imageOriginalSizeFactor);
     this.cropInfo.text(`${naturalWidth}×${naturalHeight} px`);
-  }
+  };
 
   /**
    * @method cropStartHandler
@@ -484,7 +484,7 @@ class ImageManipulation {
       this.focusArea.draggable('option', 'disabled', true);
       this.focusArea.resizable('option', 'disabled', true);
     }
-  }
+  };
 
   /**
    * @method cropEndHandler
@@ -496,7 +496,7 @@ class ImageManipulation {
       this.focusArea.draggable('option', 'disabled', false);
       this.focusArea.resizable('option', 'disabled', false);
     }
-  }
+  };
 
   /**
    * @method update
@@ -575,9 +575,9 @@ class ImageManipulation {
           this.scaleAndMoveFocusArea(this.currentCropVariant.focusArea);
         },
         drag: (): void => {
-          const {left, top}: Offset = container.offset();
-          const {left: fLeft, top: fTop}: Offset = this.focusArea.offset();
-          const {focusArea, coverAreas}: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
+          const { left, top }: Offset = container.offset();
+          const { left: fLeft, top: fTop }: Offset = this.focusArea.offset();
+          const { focusArea, coverAreas }: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
 
           focusArea.x = (fLeft - left) / container.width();
           focusArea.y = (fTop - top) / container.height();
@@ -590,9 +590,9 @@ class ImageManipulation {
         },
         revert: (): boolean => {
           const revertDelay = 250;
-          const {left, top}: Offset = container.offset();
-          const {left: fLeft, top: fTop}: Offset = this.focusArea.offset();
-          const {focusArea, coverAreas}: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
+          const { left, top }: Offset = container.offset();
+          const { left: fLeft, top: fTop }: Offset = this.focusArea.offset();
+          const { focusArea, coverAreas }: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
 
           if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
             this.focusArea.removeClass('has-nodrop');
@@ -607,9 +607,9 @@ class ImageManipulation {
         },
         revertDuration: 200,
         stop: (): void => {
-          const {left, top}: Offset = container.offset();
-          const {left: fLeft, top: fTop}: Offset = this.focusArea.offset();
-          const {focusArea}: {focusArea?: Area} = this.currentCropVariant;
+          const { left, top }: Offset = container.offset();
+          const { left: fLeft, top: fTop }: Offset = this.focusArea.offset();
+          const { focusArea }: {focusArea?: Area} = this.currentCropVariant;
 
           focusArea.x = (fLeft - left) / container.width();
           focusArea.y = (fTop - top) / container.height();
@@ -621,9 +621,9 @@ class ImageManipulation {
         containment: container,
         handles: 'all',
         resize: (): void => {
-          const {left, top}: Offset = container.offset();
-          const {left: fLeft, top: fTop}: Offset = this.focusArea.offset();
-          const {focusArea, coverAreas}: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
+          const { left, top }: Offset = container.offset();
+          const { left: fLeft, top: fTop }: Offset = this.focusArea.offset();
+          const { focusArea, coverAreas }: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
 
           focusArea.height = this.focusArea.height() / container.height();
           focusArea.width = this.focusArea.width() / container.width();
@@ -640,9 +640,9 @@ class ImageManipulation {
         },
         stop: (event: any, ui: any): void => {
           const revertDelay = 250;
-          const {left, top}: Offset = container.offset();
-          const {left: fLeft, top: fTop}: Offset = this.focusArea.offset();
-          const {focusArea, coverAreas}: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
+          const { left, top }: Offset = container.offset();
+          const { left: fLeft, top: fTop }: Offset = this.focusArea.offset();
+          const { focusArea, coverAreas }: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
 
           if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
             ui.element.animate($.extend(ui.originalPosition, ui.originalSize), revertDelay, (): void => {
@@ -689,7 +689,6 @@ class ImageManipulation {
    * @private
    */
   private updatePreviewThumbnail(cropVariant: CropVariant, cropVariantTrigger: JQuery): void {
-    let styles: any;
     const cropperPreviewThumbnailCrop: JQuery =
       cropVariantTrigger.find('.t3js-cropper-preview-thumbnail-crop-area');
     const cropperPreviewThumbnailImage: JQuery =
@@ -717,7 +716,7 @@ class ImageManipulation {
     }
 
     // destruct the preview container's CSS properties
-    styles = cropperPreviewThumbnailCrop.css([
+    const styles = cropperPreviewThumbnailCrop.css([
       'width', 'height', 'left', 'top',
     ]);
 
@@ -759,7 +758,7 @@ class ImageManipulation {
   private updateCropVariantData(currentCropVariant: CropVariant): void {
     const imageData: Cropper.ImageData = this.cropper.getImageData();
     const absoluteCropArea: Area = this.convertAbsoluteToRelativeCropArea(currentCropVariant.cropArea, imageData);
-    this.data[currentCropVariant.id] = $.extend(true, {}, currentCropVariant, {cropArea: absoluteCropArea});
+    this.data[currentCropVariant.id] = $.extend(true, {}, currentCropVariant, { cropArea: absoluteCropArea });
   }
 
   /**
@@ -826,7 +825,7 @@ class ImageManipulation {
    * @return {Area}
    */
   private convertAbsoluteToRelativeCropArea(cropArea: Area, imageData: Cropper.ImageData): Area {
-    const {height, width, x, y}: Area = cropArea;
+    const { height, width, x, y }: Area = cropArea;
     return {
       height: height / imageData.naturalHeight,
       width: width / imageData.naturalWidth,
@@ -843,7 +842,7 @@ class ImageManipulation {
    * @return {{height: number, width: number, x: number, y: number}}
    */
   private convertRelativeToAbsoluteCropArea(cropArea: Area, imageData: Cropper.ImageData): Area {
-    const {height, width, x, y}: Area = cropArea;
+    const { height, width, x, y }: Area = cropArea;
     return {
       height: height * imageData.naturalHeight,
       width: width * imageData.naturalWidth,
@@ -858,7 +857,8 @@ class ImageManipulation {
    * @param {Object} data - The internal crop variants state
    */
   private setPreviewImages(data: {[key: string]: CropVariant}): void {
-    // @ts-ignore .image is not declared
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const image: HTMLImageElement = this.cropper.image;
     const imageData: Cropper.ImageData = this.cropper.getImageData();
 

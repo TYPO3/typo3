@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {LitElement, html, css} from 'lit';
-import {customElement, property, state} from 'lit/decorators';
+import { LitElement, html, css } from 'lit';
+import { customElement, property, state } from 'lit/decorators';
 import {
   EditorView,
   ViewUpdate,
@@ -23,21 +23,12 @@ import {
   KeyBinding,
   placeholder
 } from '@codemirror/view';
-import {Extension, EditorState} from '@codemirror/state';
-import {syntaxHighlighting, defaultHighlightStyle} from '@codemirror/language';
-import {defaultKeymap,  indentWithTab} from '@codemirror/commands';
-import {oneDark} from '@codemirror/theme-one-dark';
-import {executeJavaScriptModuleInstruction, loadModule, resolveSubjectRef, JavaScriptItemPayload} from '@typo3/core/java-script-item-processor';
-import '@typo3/backend/element/spinner-element'
-
-interface MarkTextPosition {
-  line: number;
-  ch: number;
-}
-interface MarkText {
-  to: MarkTextPosition;
-  from: MarkTextPosition;
-}
+import { Extension, EditorState } from '@codemirror/state';
+import { syntaxHighlighting, defaultHighlightStyle } from '@codemirror/language';
+import { defaultKeymap, indentWithTab } from '@codemirror/commands';
+import { oneDark } from '@codemirror/theme-one-dark';
+import { executeJavaScriptModuleInstruction, loadModule, resolveSubjectRef, JavaScriptItemPayload } from '@typo3/core/java-script-item-processor';
+import '@typo3/backend/element/spinner-element';
 
 /**
  * Module: @typo3/t3editor/element/code-mirror-element
@@ -45,22 +36,6 @@ interface MarkText {
  */
 @customElement('typo3-t3editor-codemirror')
 export class CodeMirrorElement extends LitElement {
-  @property({type: Object}) mode: JavaScriptItemPayload = null;
-  @property({type: Array}) addons: JavaScriptItemPayload[] = [];
-  @property({type: Array}) keymaps: JavaScriptItemPayload[] = [];
-
-  @property({type: Number}) lineDigits: number = 0;
-  @property({type: Boolean, reflect: true}) autoheight: boolean = false;
-  @property({type: Boolean}) nolazyload: boolean = false;
-  @property({type: Boolean}) readonly: boolean = false;
-  @property({type: Boolean, reflect: true}) fullscreen: boolean = false;
-
-  @property({type: String}) label: string;
-  @property({type: String}) placeholder: string;
-  @property({type: String}) panel: string = 'bottom';
-
-  @state() editorView: EditorView = null;
-
   static styles = css`
     :host {
       display: flex;
@@ -126,6 +101,22 @@ export class CodeMirrorElement extends LitElement {
     }
   `;
 
+  @property({ type: Object }) mode: JavaScriptItemPayload = null;
+  @property({ type: Array }) addons: JavaScriptItemPayload[] = [];
+  @property({ type: Array }) keymaps: JavaScriptItemPayload[] = [];
+
+  @property({ type: Number }) lineDigits: number = 0;
+  @property({ type: Boolean, reflect: true }) autoheight: boolean = false;
+  @property({ type: Boolean }) nolazyload: boolean = false;
+  @property({ type: Boolean }) readonly: boolean = false;
+  @property({ type: Boolean, reflect: true }) fullscreen: boolean = false;
+
+  @property({ type: String }) label: string;
+  @property({ type: String }) placeholder: string;
+  @property({ type: String }) panel: string = 'bottom';
+
+  @state() editorView: EditorView = null;
+
   render() {
     return html`
       <div id="codemirror-parent" @keydown=${(e: KeyboardEvent) => this.onKeydown(e)}></div>
@@ -142,7 +133,7 @@ export class CodeMirrorElement extends LitElement {
     const observerOptions = {
       root: document.body
     };
-    let observer = new IntersectionObserver((entries: IntersectionObserverEntry[]): void => {
+    const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]): void => {
       entries.forEach((entry: IntersectionObserverEntry): void => {
         if (entry.intersectionRatio > 0) {
           observer.unobserve(entry.target);
@@ -171,7 +162,7 @@ export class CodeMirrorElement extends LitElement {
     const updateListener = EditorView.updateListener.of((v: ViewUpdate) => {
       if (v.docChanged) {
         textarea.value = v.state.doc.toString();
-        textarea.dispatchEvent(new CustomEvent('change', {bubbles: true}));
+        textarea.dispatchEvent(new CustomEvent('change', { bubbles: true }));
       }
     });
 
@@ -188,7 +179,7 @@ export class CodeMirrorElement extends LitElement {
       highlightSpecialChars(),
       drawSelection(),
       EditorState.allowMultipleSelections.of(true),
-      syntaxHighlighting(defaultHighlightStyle, {fallback: true}),
+      syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
     ];
 
     if (this.readonly) {
@@ -225,6 +216,6 @@ export class CodeMirrorElement extends LitElement {
       }),
       parent: this.renderRoot.querySelector('#codemirror-parent'),
       root: this.renderRoot as ShadowRoot
-    })
+    });
   }
 }

@@ -43,6 +43,12 @@ class DragDrop {
   private static readonly dropPossibleHoverClass: string = 't3-page-ce-dropzone-possible';
   private static readonly addContentIdentifier: string = '.t3js-page-new-ce';
 
+  constructor() {
+    DocumentService.ready().then((): void => {
+      DragDrop.initialize();
+    });
+  }
+
   /**
    * initializes Drag+Drop for all content elements on the page
    */
@@ -89,7 +95,7 @@ class DragDrop {
         const dropzoneRect = dropElement.getBoundingClientRect();
 
         return (event.pageX >= dropzoneRect.left && event.pageX <= dropzoneRect.left + dropzoneRect.width) // is cursor in boundaries of x-axis
-          && (event.pageY >= dropzoneRect.top && event.pageY <= dropzoneRect.top + dropzoneRect.height)  // is cursor in boundaries of y-axis;
+          && (event.pageY >= dropzoneRect.top && event.pageY <= dropzoneRect.top + dropzoneRect.height); // is cursor in boundaries of y-axis;
       }
     }).on('dragenter', (e: DropEvent): void => {
       e.target.classList.add(DragDrop.dropPossibleHoverClass);
@@ -191,7 +197,7 @@ class DragDrop {
     const contentElementUid: number = parseInt(draggedElement.dataset.uid, 10);
 
     if (typeof (contentElementUid) === 'number' && contentElementUid > 0) {
-      let parameters: Parameters = {};
+      const parameters: Parameters = {};
       // add the information about a possible column position change
       const targetFound = (dropContainer.closest(DragDrop.contentIdentifier) as HTMLElement).dataset.uid;
       // the item was moved to the top of the colPos, so the page ID is used here
@@ -259,7 +265,7 @@ class DragDrop {
    * @param {boolean} isCopyAction
    * @private
    */
-  private static ajaxAction(dropContainer: HTMLElement, draggedElement: HTMLElement, parameters: Parameters, isCopyAction: boolean): Promise<any> {
+  private static ajaxAction(dropContainer: HTMLElement, draggedElement: HTMLElement, parameters: Parameters, isCopyAction: boolean): Promise<void> {
     const table: string = Object.keys(parameters.cmd).shift();
     const uid: number = parseInt(Object.keys(parameters.cmd[table]).shift(), 10);
     const eventData = { component: 'dragdrop', action: isCopyAction ? 'copy' : 'move', table, uid };
@@ -292,12 +298,6 @@ class DragDrop {
       return parseInt(columnContainer.dataset.colpos, 10);
     }
     return false;
-  }
-
-  constructor() {
-    DocumentService.ready().then((): void => {
-      DragDrop.initialize();
-    });
   }
 }
 

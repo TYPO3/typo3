@@ -14,8 +14,8 @@
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {default as Modal} from '@typo3/backend/modal';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { default as Modal } from '@typo3/backend/modal';
 
 /**
  * Module: @typo3/filelist/create-folder

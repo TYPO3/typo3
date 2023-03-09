@@ -13,8 +13,8 @@
 
 import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {SeverityEnum} from './enum/severity';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { SeverityEnum } from './enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Icons from './icons';
 import Wizard from './wizard';
@@ -166,7 +166,7 @@ class Localization {
                     Wizard.unlockNextStep();
                   });
 
-                  const $languageButtons = $('<div />', {class: 'row'});
+                  const $languageButtons = $('<div />', { class: 'row' });
 
                   for (const languageObject of result) {
                     const id: string = 'language' + languageObject.uid;
@@ -178,12 +178,12 @@ class Localization {
                       style: 'display: none;',
                       class: 'btn-check'
                     });
-                    const $label: JQuery = $('<label />', {class: 'btn btn-default d-block t3js-language-option option', 'for': id})
+                    const $label: JQuery = $('<label />', { class: 'btn btn-default d-block t3js-language-option option', 'for': id })
                       .text(' ' + languageObject.title)
                       .prepend(languageObject.flagIcon);
 
                     $languageButtons.append(
-                      $('<div />', {class: 'col-sm-4'})
+                      $('<div />', { class: 'col-sm-4' })
                         .append($input)
                         .append($label),
                     );
@@ -218,16 +218,16 @@ class Localization {
                   }
 
                   const column = columns[colPos];
-                  const $row = $('<div />', {class: 'row'});
+                  const $row = $('<div />', { class: 'row' });
 
                   result.records[colPos].forEach((record: SummaryColPosRecord): void => {
                     const label = ' (' + record.uid + ') ' + record.title;
                     this.records.push(record.uid);
 
                     $row.append(
-                      $('<div />', {'class': 'col-sm-6'}).append(
-                        $('<div />', {'class': 'input-group'}).append(
-                          $('<span />', {'class': 'input-group-addon'}).append(
+                      $('<div />', { 'class': 'col-sm-6' }).append(
+                        $('<div />', { 'class': 'input-group' }).append(
+                          $('<span />', { 'class': 'input-group-addon' }).append(
                             $('<input />', {
                               type: 'checkbox',
                               'class': 't3js-localization-toggle-record',

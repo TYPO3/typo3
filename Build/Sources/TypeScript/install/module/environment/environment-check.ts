@@ -13,8 +13,8 @@
 
 import 'bootstrap';
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -67,25 +67,25 @@ class EnvironmentCheck extends AbstractInteractableModule {
     modalContent.find(this.selectorOutputContainer).empty().append(message);
 
     (new AjaxRequest(Router.getUrl('environmentCheckGetStatus')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data: EnvironmentCheckResponse = await response.resolve();
           modalContent.empty().append(data.html);
           Modal.setButtons(data.buttons);
           let warningCount = 0;
           let errorCount = 0;
           if (data.success === true && typeof (data.status) === 'object') {
-            for (let messages of Object.values(data.status)) {
-              for (let status of messages) {
+            for (const messages of Object.values(data.status)) {
+              for (const status of messages) {
                 if (status.severity === 1) {
                   warningCount++;
                 }
                 if (status.severity === 2) {
                   errorCount++;
                 }
-                const aMessage = InfoBox.render(status.severity, status.title, status.message);
-                modalContent.find(this.selectorOutputContainer).append(aMessage);
+                const message = InfoBox.render(status.severity, status.title, status.message);
+                modalContent.find(this.selectorOutputContainer).append(message);
               }
             }
             if (errorCount > 0) {

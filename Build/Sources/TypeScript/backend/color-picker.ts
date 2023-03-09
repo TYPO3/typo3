@@ -40,7 +40,7 @@ class ColorPicker {
     }
 
     // Initialize color picker
-    ($(element) as any).minicolors({
+    $(element).minicolors({
       format: 'hex',
       position: 'bottom left',
       theme: 'bootstrap',

@@ -13,14 +13,15 @@
 
 import 'bootstrap';
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import '../../renderable/clearable';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 import ModuleMenu from '@typo3/backend/module-menu';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
-import {topLevelModuleImport} from '@typo3/backend/utility/top-level-module-import';
+import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
+import MessageInterface from '@typo3/install/message-interface';
 
 /**
  * Module: @typo3/install/module/extension-configuration
@@ -53,7 +54,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
     currentModal.on('keyup', this.selectorSearchInput, (e: JQueryEventObject): void => {
       const typedQuery = $(e.target).val();
       const $searchInput = currentModal.find(this.selectorSearchInput);
-      currentModal.find('.search-item').each((index: number, element: any): void => {
+      currentModal.find('.search-item').each((index: number, element: Element): void => {
         const $item = $(element);
         if ($(':contains(' + typedQuery + ')', $item).length > 0 || $('input[value*="' + typedQuery + '"]', $item).length > 0) {
           $item.removeClass('hidden').addClass('searchhit');
@@ -77,9 +78,9 @@ class ExtensionConfiguration extends AbstractInteractableModule {
   private getContent(): void {
     const modalContent = this.getModalBody();
     (new AjaxRequest(Router.getUrl('extensionConfigurationGetContent')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             modalContent.html(data.html);
@@ -96,11 +97,11 @@ class ExtensionConfiguration extends AbstractInteractableModule {
   private initializeColorPicker(): void {
     const isInIframe = window.location !== window.parent.location;
     if (isInIframe) {
-      topLevelModuleImport('@typo3/backend/color-picker.js').then(({default: ColorPicker}: typeof import('@typo3/backend/color-picker')): void => {
+      topLevelModuleImport('@typo3/backend/color-picker.js').then(({ default: ColorPicker }: typeof import('@typo3/backend/color-picker')): void => {
         parent.document.querySelectorAll('.t3js-color-input').forEach((element: HTMLInputElement) => ColorPicker.initialize(element));
       });
     } else {
-      import('@typo3/backend/color-picker').then(({default: ColorPicker}): void => {
+      import('@typo3/backend/color-picker').then(({ default: ColorPicker }): void => {
         document.querySelectorAll('.t3js-color-input').forEach((element: HTMLInputElement) => ColorPicker.initialize(element));
       });
     }
@@ -114,8 +115,8 @@ class ExtensionConfiguration extends AbstractInteractableModule {
   private write($form: JQuery): void {
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().data('extension-configuration-write-token');
-    const extensionConfiguration: any = {};
-    for (let element of $form.serializeArray()) {
+    const extensionConfiguration: Record<string, string> = {};
+    for (const element of $form.serializeArray()) {
       extensionConfiguration[element.name] = element.value;
     }
 
@@ -129,10 +130,10 @@ class ExtensionConfiguration extends AbstractInteractableModule {
         },
       })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
+            data.status.forEach((element: MessageInterface): void => {
               Notification.showMessage(element.title, element.message, element.severity);
             });
             if ($('body').data('context') === 'backend') {
@@ -152,7 +153,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
    * configuration properties
    */
   private initializeWrap(): void {
-    this.findInModal('.t3js-emconf-offset').each((index: number, element: any): void => {
+    this.findInModal('.t3js-emconf-offset').each((index: number, element: Element): void => {
       const $me = $(element);
       const $parent = $me.parent();
       const id = $me.attr('id');
@@ -164,9 +165,9 @@ class ExtensionConfiguration extends AbstractInteractableModule {
         .attr('data-offsetfield-y', '#' + id + '_offset_y')
         .wrap('<div class="hidden"></div>');
 
-      const elementX = $('<div>', {'class': 'form-multigroup-item'}).append(
-        $('<div>', {'class': 'input-group'}).append(
-          $('<div>', {'class': 'input-group-addon'}).text('x'),
+      const elementX = $('<div>', { 'class': 'form-multigroup-item' }).append(
+        $('<div>', { 'class': 'input-group' }).append(
+          $('<div>', { 'class': 'input-group-addon' }).text('x'),
           $('<input>', {
             'id': id + '_offset_x',
             'class': 'form-control t3js-emconf-offsetfield',
@@ -175,9 +176,9 @@ class ExtensionConfiguration extends AbstractInteractableModule {
           }),
         ),
       );
-      const elementY = $('<div>', {'class': 'form-multigroup-item'}).append(
-        $('<div>', {'class': 'input-group'}).append(
-          $('<div>', {'class': 'input-group-addon'}).text('y'),
+      const elementY = $('<div>', { 'class': 'form-multigroup-item' }).append(
+        $('<div>', { 'class': 'input-group' }).append(
+          $('<div>', { 'class': 'input-group-addon' }).text('y'),
           $('<input>', {
             'id': id + '_offset_y',
             'class': 'form-control t3js-emconf-offsetfield',
@@ -187,7 +188,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
         ),
       );
 
-      const offsetGroup = $('<div>', {'class': 'form-multigroup-wrap'}).append(elementX, elementY);
+      const offsetGroup = $('<div>', { 'class': 'form-multigroup-wrap' }).append(elementX, elementY);
       $parent.append(offsetGroup);
       $parent.find('.t3js-emconf-offsetfield').on('keyup', (evt: JQueryEventObject): void => {
         const $target = $parent.find($(evt.currentTarget).data('target'));
@@ -195,7 +196,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
       });
     });
 
-    this.findInModal('.t3js-emconf-wrap').each((index: number, element: any): void => {
+    this.findInModal('.t3js-emconf-wrap').each((index: number, element: Element): void => {
       const $me = $(element);
       const $parent = $me.parent();
       const id = $me.attr('id');
@@ -206,8 +207,8 @@ class ExtensionConfiguration extends AbstractInteractableModule {
         .attr('data-wrapfield-end', '#' + id + '_wrap_end')
         .wrap('<div class="hidden"></div>');
 
-      const wrapGroup = $('<div>', {'class': 'form-multigroup-wrap'}).append(
-        $('<div>', {'class': 'form-multigroup-item'}).append(
+      const wrapGroup = $('<div>', { 'class': 'form-multigroup-wrap' }).append(
+        $('<div>', { 'class': 'form-multigroup-item' }).append(
           $('<input>', {
             'id': id + '_wrap_start',
             'class': 'form-control t3js-emconf-wrapfield',
@@ -215,7 +216,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
             'value': valArr[0]?.trim(),
           }),
         ),
-        $('<div>', {'class': 'form-multigroup-item'}).append(
+        $('<div>', { 'class': 'form-multigroup-item' }).append(
           $('<input>', {
             'id': id + '_wrap_end',
             'class': 'form-control t3js-emconf-wrapfield',

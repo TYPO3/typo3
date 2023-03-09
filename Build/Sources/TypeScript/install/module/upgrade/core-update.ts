@@ -12,8 +12,8 @@
  */
 
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -77,7 +77,7 @@ class CoreUpdate extends AbstractInteractableModule {
   /**
    * Clone of a DOM object acts as button template
    */
-  private buttonTemplate: any = null;
+  private buttonTemplate: JQuery = null;
 
   /**
    * Fetching the templates out of the DOM
@@ -111,12 +111,12 @@ class CoreUpdate extends AbstractInteractableModule {
     });
   }
 
-  private getData(): Promise<any> {
+  private getData(): Promise<void> {
     const modalContent = this.getModalBody();
     return (new AjaxRequest(Router.getUrl('coreUpdateGetData')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             modalContent.empty().append(data.html);
@@ -161,9 +161,9 @@ class CoreUpdate extends AbstractInteractableModule {
     this.addLoadingMessage(this.actionQueue[actionName].loadingMessage);
     (new AjaxRequest(Router.getUrl()))
       .withQueryArguments(data)
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const result = await response.resolve();
           const canContinue = this.handleResult(result, this.actionQueue[actionName].finishMessage);
           if (canContinue === true && (this.actionQueue[actionName].nextActionName !== undefined)) {
@@ -218,7 +218,7 @@ class CoreUpdate extends AbstractInteractableModule {
    * @param messages
    */
   private showStatusMessages(messages: MessageInterface[]): void {
-    for (let element of messages) {
+    for (const element of messages) {
       this.addMessage(element.severity, element.title ?? '', element.message ?? '');
     }
   }
@@ -229,20 +229,12 @@ class CoreUpdate extends AbstractInteractableModule {
    * @param button
    */
   private showActionButton(button: any): void {
-    let title = false;
-    let action = false;
-    if (button.title) {
-      title = button.title;
-    }
-    if (button.action) {
-      action = button.action;
-    }
     const domButton = this.buttonTemplate;
-    if (action) {
-      domButton.attr('data-action', action);
+    if (button.action) {
+      domButton.attr('data-action', button.action);
     }
-    if (title) {
-      domButton.text(title);
+    if (button.title) {
+      domButton.text(button.title);
     }
     this.findInModal(this.updateButton).replaceWith(domButton);
   }

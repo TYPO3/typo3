@@ -24,7 +24,7 @@ import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import Icons from '@typo3/backend/icons';
-import {default as Modal, ModalElement} from '@typo3/backend/modal';
+import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import * as MessageUtility from '@typo3/backend/utility/message-utility';
 import Severity from '@typo3/backend/severity';
 import * as BackendExceptionModule from '@typo3/backend/backend-exception';
@@ -54,7 +54,7 @@ export default (function() {
   const onFieldChangeHandlers: Map<string, Function> = new Map();
 
   // @see \TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange
-  onFieldChangeHandlers.set('typo3-backend-form-update-value', (data: {elementName: string}, evt: Event) => {
+  onFieldChangeHandlers.set('typo3-backend-form-update-value', (data: {elementName: string}) => {
     const valueField = document.querySelector('[name="' + CSS.escape(data.elementName) + '"]');
     const humanReadableField = document.querySelector('[data-formengine-input-name="' + CSS.escape(data.elementName) + '"]');
     FormEngineValidation.updateInputField(data.elementName);
@@ -67,7 +67,7 @@ export default (function() {
     }
   });
   // @see \TYPO3\CMS\Backend\Form\Behavior\ReloadOnFieldChange
-  onFieldChangeHandlers.set('typo3-backend-form-reload', (data: {confirmation: boolean}, evt: Event) => {
+  onFieldChangeHandlers.set('typo3-backend-form-reload', (data: {confirmation: boolean}) => {
     if (!data.confirmation) {
       FormEngine.saveDocument();
       return;
@@ -104,7 +104,7 @@ export default (function() {
     const mask = Math.pow(2, data.position);
     const unmask = Math.pow(2, data.total) - mask - 1;
     elementRef.value = active ? (elementRef.value | mask) : (elementRef.value & unmask);
-    elementRef.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
+    elementRef.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
   });
 
   /**
@@ -162,13 +162,12 @@ export default (function() {
     let
       fieldEl,
       $fieldEl,
-      originalFieldEl,
       isMultiple = false,
       isList = false;
 
     $fieldEl = FormEngine.getFieldElement(fieldName);
     fieldEl = $fieldEl.get(0);
-    originalFieldEl = $fieldEl.get(0);
+    const originalFieldEl = $fieldEl.get(0);
 
     if (originalFieldEl === null || value === '--div--' || originalFieldEl instanceof HTMLOptGroupElement) {
       return;
@@ -190,7 +189,7 @@ export default (function() {
 
       // If multiple values are not allowed, clear anything that is in the control already
       if (!isMultiple) {
-        for (let el of fieldEl.querySelectorAll('option') as NodeListOf<HTMLOptionElement>) {
+        for (const el of fieldEl.querySelectorAll('option') as NodeListOf<HTMLOptionElement>) {
           const $option = $availableFieldEl.find('option[value="' + $.escapeSelector($(el).attr('value')) + '"]');
           if ($option.length) {
             $option.removeClass('hidden').prop('disabled', false);
@@ -233,7 +232,7 @@ export default (function() {
       // check if there is a "_mul" field (a field on the right) and if the field was already added
       const $multipleFieldEl = FormEngine.getFieldElement(fieldName, '_mul', true);
       if ($multipleFieldEl.length == 0 || $multipleFieldEl.val() == 0) {
-        for (let optionEl of fieldEl.querySelectorAll('option') as NodeListOf<HTMLOptionElement>) {
+        for (const optionEl of fieldEl.querySelectorAll('option') as NodeListOf<HTMLOptionElement>) {
           if (optionEl.value == value) {
             addNewValue = false;
             break;
@@ -258,7 +257,7 @@ export default (function() {
       if (addNewValue) {
         // finally add the option
         const $option = $('<option></option>');
-        $option.attr({value: value, title: title}).text(label);
+        $option.attr({ value: value, title: title }).text(label);
         $option.appendTo($fieldEl);
 
         // set the hidden field
@@ -302,7 +301,7 @@ export default (function() {
     // make a comma separated list, if it is a multi-select
     // set the values to the final hidden field
     originalFieldEl.value = selectedValues.join(',');
-    originalFieldEl.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
+    originalFieldEl.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
   };
 
   /**
@@ -416,7 +415,7 @@ export default (function() {
     }).on('change', '.t3js-form-field-eval-null-placeholder-checkbox input[type="checkbox"]', (e: JQueryEventObject) => {
       FormEngine.toggleCheckboxField($(e.currentTarget));
       FormEngineValidation.markFieldAsChanged($(e.currentTarget));
-    }).on('change', function(event: Event) {
+    }).on('change', () => {
       $('.module-docheader-bar .btn').removeClass('disabled').prop('disabled', false);
     }).on('click', '.t3js-element-browser', function(e: Event) {
       e.preventDefault();
@@ -488,7 +487,7 @@ export default (function() {
       } else if (FormEngine.hasChange()) {
         FormEngine.preventExitIfNotSaved(function(response: boolean) {
           outerMostRequest.setProcessedData(
-            {response: response}
+            { response: response }
           );
           handleConsumeResponse(outerMostRequest, response);
         });
@@ -540,8 +539,8 @@ export default (function() {
         $wrapper.addClass('t3js-charcounter-wrapper');
         $parent.append($wrapper);
       }
-      $wrapper.append($('<div />', {'class': 't3js-charcounter'}).append(
-        $('<span />', {'class': maxlengthProperties.labelClass}).text(TYPO3.lang['FormEngine.remainingCharacters'].replace('{0}', maxlengthProperties.remainingCharacters))
+      $wrapper.append($('<div />', { 'class': 't3js-charcounter' }).append(
+        $('<span />', { 'class': maxlengthProperties.labelClass }).text(TYPO3.lang['FormEngine.remainingCharacters'].replace('{0}', maxlengthProperties.remainingCharacters))
       ));
     }).on('blur', (event: JQueryEventObject) => {
       const $field = $(event.currentTarget),
@@ -553,7 +552,7 @@ export default (function() {
         maxlengthProperties = FormEngine.getCharacterCounterProperties($field);
 
       // change class and value
-      $parent.find('.t3js-charcounter span').removeClass().addClass(maxlengthProperties.labelClass).text(TYPO3.lang['FormEngine.remainingCharacters'].replace('{0}', maxlengthProperties.remainingCharacters))
+      $parent.find('.t3js-charcounter span').removeClass().addClass(maxlengthProperties.labelClass).text(TYPO3.lang['FormEngine.remainingCharacters'].replace('{0}', maxlengthProperties.remainingCharacters));
     });
     $maxlengthElements.addClass('t3js-charcounter-initialized');
   };
@@ -566,10 +565,9 @@ export default (function() {
    */
   FormEngine.getCharacterCounterProperties = function($field: JQuery): {remainingCharacters: number, labelClass: string} {
     const fieldText = $field.val(),
-      maxlength = $field.attr('maxlength'),
+      maxlength = parseInt($field.attr('maxlength'), 10),
       currentFieldLength = fieldText.length,
       numberOfLineBreaks = (fieldText.match(/\n/g) || []).length, // count line breaks
-      // @ts-ignore
       remainingCharacters = maxlength - currentFieldLength - numberOfLineBreaks,
       threshold = 15; // hard limit of remaining characters when the label class changes
     let labelClass = '';
@@ -761,7 +759,7 @@ export default (function() {
   /**
    * @param {boolean} response
    */
-  FormEngine.preventExitIfNotSavedCallback = function(response: boolean): void {
+  FormEngine.preventExitIfNotSavedCallback = (): void => {
     FormEngine.closeDocument();
   };
 
@@ -910,7 +908,7 @@ export default (function() {
       console.warn('Handler for onFieldChange name `' + name + '` has been overridden.');
     }
     onFieldChangeHandlers.set(name, handler);
-  }
+  };
 
   FormEngine.closeModalsRecursive = function() {
     if (typeof Modal.currentModal !== 'undefined' && Modal.currentModal !== null) {
@@ -919,7 +917,7 @@ export default (function() {
       });
       Modal.currentModal.hideModal();
     }
-  }
+  };
 
   /**
    * Preview action
@@ -935,7 +933,7 @@ export default (function() {
     callback = callback || FormEngine.previewActionCallback;
 
     const previewUrl = (event.currentTarget as HTMLAnchorElement).href;
-    const isNew = (event.target as HTMLAnchorElement).dataset.hasOwnProperty('isNew');
+    const isNew = ('isNew' in (event.target as HTMLAnchorElement).dataset);
     const $actionElement = $('<input />').attr('type', 'hidden').attr('name', '_savedokview').attr('value', '1');
     if (FormEngine.hasChange()) {
       FormEngine.showPreviewModal(previewUrl, isNew, $actionElement, callback);
@@ -1020,7 +1018,7 @@ export default (function() {
       content = (
         TYPO3.lang['label.confirm.view_record_changed.content']
         || 'You currently have unsaved changes. You can either discard these changes or save and view them.'
-      )
+      );
     }
     const modal = Modal.confirm(title, content, Severity.info, modalButtons);
     modal.addEventListener('button.clicked', function (event: Event) {
@@ -1042,7 +1040,7 @@ export default (function() {
     callback = callback || FormEngine.newActionCallback;
 
     const $actionElement = $('<input />').attr('type', 'hidden').attr('name', '_savedoknew').attr('value', '1');
-    const isNew = (event.target as HTMLElement).dataset.hasOwnProperty('isNew');
+    const isNew = ('isNew' in (event.target as HTMLElement).dataset);
     if (FormEngine.hasChange()) {
       FormEngine.showNewModal(isNew, $actionElement, callback);
     } else {
@@ -1136,7 +1134,7 @@ export default (function() {
     callback = callback || FormEngine.duplicateActionCallback;
 
     const $actionElement = $('<input />').attr('type', 'hidden').attr('name', '_duplicatedoc').attr('value', '1');
-    const isNew = (event.target as HTMLElement).dataset.hasOwnProperty('isNew');
+    const isNew = ('isNew' in (event.target as HTMLElement).dataset);
     if (FormEngine.hasChange()) {
       FormEngine.showDuplicateModal(isNew, $actionElement, callback);
     } else {
@@ -1293,7 +1291,7 @@ export default (function() {
       optGroup.disabled = false;
       optGroup.classList.remove('hidden');
     }
-  }
+  };
 
   /**
    * Close current open document
@@ -1345,7 +1343,7 @@ export default (function() {
 
   // load required modules to hook in the post initialize function
   if (undefined !== TYPO3.settings.RequireJS && undefined !== TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/FormEngine']) {
-    for (let moduleName of TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/FormEngine']) {
+    for (const moduleName of TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/FormEngine']) {
       window.require([moduleName]);
     }
   }

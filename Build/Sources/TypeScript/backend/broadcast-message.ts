@@ -19,17 +19,6 @@ export class BroadcastMessage {
   readonly eventName: string;
   readonly payload: any;
 
-  public static fromData(data: any): BroadcastMessage {
-    let payload = Object.assign({}, data);
-    delete payload.componentName;
-    delete payload.eventName;
-    return new BroadcastMessage(
-      data.componentName,
-      data.eventName,
-      payload,
-    );
-  }
-
   constructor(componentName: string, eventName: string, payload: any) {
     if (!componentName || !eventName) {
       throw new Error('Properties componentName and eventName have to be defined');
@@ -37,6 +26,17 @@ export class BroadcastMessage {
     this.componentName = componentName;
     this.eventName = eventName;
     this.payload = payload || {};
+  }
+
+  public static fromData(data: any): BroadcastMessage {
+    const payload = Object.assign({}, data);
+    delete payload.componentName;
+    delete payload.eventName;
+    return new BroadcastMessage(
+      data.componentName,
+      data.eventName,
+      payload,
+    );
   }
 
   public createCustomEvent(scope: string = 'typo3'): CustomEvent {

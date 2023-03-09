@@ -14,14 +14,14 @@
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 
 /**
  * Module: @typo3/install/module/system-information
  */
 class SystemInformation extends AbstractInteractableModule {
-  public initialize(currentModal: any): void {
+  public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
     this.getData();
   }
@@ -29,9 +29,9 @@ class SystemInformation extends AbstractInteractableModule {
   private getData(): void {
     const modalContent = this.getModalBody();
     (new AjaxRequest(Router.getUrl('systemInformationGetData')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             modalContent.empty().append(data.html);

@@ -12,9 +12,9 @@
  */
 
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
-type UC = { [key: string]: string | number | boolean | null | UC };
+export type UC = { [key: string]: string | number | boolean | null | UC };
 
 /**
  * Module: @typo3/backend/storage/persistent
@@ -116,7 +116,7 @@ class Persistent {
    *
    * @param {UC} data
    */
-  public load(data: UC): any {
+  public load(data: UC): void {
     this.data = data;
   }
 

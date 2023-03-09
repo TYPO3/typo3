@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {Tooltip as BootstrapTooltip} from 'bootstrap';
+import { Tooltip as BootstrapTooltip } from 'bootstrap';
 import DocumentService from '@typo3/core/document-service';
 
 /**
@@ -22,17 +22,17 @@ import DocumentService from '@typo3/core/document-service';
  * @deprecated bootstrap tooltip has been deprecated since TYPO3 v12 and will be removed with v13.
  */
 class Tooltip {
-  private static applyAttributes(attributes: { [key: string]: string }, node: HTMLElement): void {
-    for (const [attribute, value] of Object.entries(attributes)) {
-      node.setAttribute(attribute, value);
-    }
-  }
-
   constructor() {
     DocumentService.ready().then((): void => {
       console.warn('Tooltip has been deprecated since TYPO3 v12 and will be removed with v13. Rely on browser title instead.');
       this.initialize('[data-bs-toggle="tooltip"]');
     });
+  }
+
+  private static applyAttributes(attributes: Record<string, string>, node: HTMLElement): void {
+    for (const [attribute, value] of Object.entries(attributes)) {
+      node.setAttribute(attribute, value);
+    }
   }
 
   public initialize(selector: string, options: Partial<BootstrapTooltip.Options> = {}): void {
@@ -44,7 +44,7 @@ class Tooltip {
           show: 500,
           hide: 100
         }
-      }
+      };
     }
     const elements = document.querySelectorAll(selector);
     for (const element of elements) {

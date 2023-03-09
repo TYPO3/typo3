@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, css, LitElement, TemplateResult} from 'lit';
-import {customElement, property} from 'lit/decorators';
-import {Sizes} from '../enum/icon-types';
+import { html, css, LitElement, TemplateResult } from 'lit';
+import { customElement, property } from 'lit/decorators';
+import { Sizes } from '../enum/icon-types';
 
 enum Variant {
   light = 'light',
@@ -29,9 +29,6 @@ enum Variant {
  */
 @customElement('typo3-backend-spinner')
 export class SpinnerElement extends LitElement {
-  @property({type: String}) size: Sizes = Sizes.default;
-  @property({type: String}) variant: Variant = Variant.dark;
-
   static styles = css`
     :host {
       display: flex;
@@ -77,6 +74,8 @@ export class SpinnerElement extends LitElement {
       font-size: 64px;
     }
   `;
+  @property({ type: String }) size: Sizes = Sizes.default;
+  @property({ type: String }) variant: Variant = Variant.dark;
 
   public render(): TemplateResult {
     return html`

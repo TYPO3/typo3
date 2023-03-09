@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {SeverityEnum} from './enum/severity';
+import { SeverityEnum } from './enum/severity';
 import $ from 'jquery';
 import Modal from './modal';
 import Severity from './severity';
@@ -112,7 +112,7 @@ class MultiStepWizard {
     }
 
     return Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then((markup: string) => {
-      let $processingSlide = $('<div />', {class: 'text-center'}).append(markup);
+      const $processingSlide = $('<div />', { class: 'text-center' }).append(markup);
       this.addSlide(
         'final-processing-slide', top.TYPO3.lang['wizard.processing.title'],
         $processingSlide[0].outerHTML,
@@ -127,10 +127,10 @@ class MultiStepWizard {
    * Create wizard with modal, buttons, progress bar and carousel
    */
   public show(): void {
-    let $slides = this.generateSlides();
-    let firstSlide = this.setup.slides[0];
+    const $slides = this.generateSlides();
+    const firstSlide = this.setup.slides[0];
 
-    const modal = Modal.advanced({
+    Modal.advanced({
       title: firstSlide.title,
       content: $slides,
       severity: firstSlide.severity,
@@ -153,7 +153,7 @@ class MultiStepWizard {
         name: 'next',
       }],
       additionalCssClasses: ['modal-multi-step-wizard'],
-      callback: (): void  => {
+      callback: (): void => {
         this.addButtonContainer();
         this.addProgressBar();
         this.initializeEvents();
@@ -190,7 +190,7 @@ class MultiStepWizard {
    * @returns {JQuery}
    */
   public lockNextStep(): JQuery {
-    let $button = this.setup.$carousel.closest('.modal').find('button[name="next"]');
+    const $button = this.setup.$carousel.closest('.modal').find('button[name="next"]');
     $button.prop('disabled', true);
     return $button;
   }
@@ -201,7 +201,7 @@ class MultiStepWizard {
    * @returns {JQuery}
    */
   public unlockNextStep(): JQuery {
-    let $button = this.setup.$carousel.closest('.modal').find('button[name="next"]');
+    const $button = this.setup.$carousel.closest('.modal').find('button[name="next"]');
     $button.prop('disabled', false);
     return $button;
   }
@@ -212,7 +212,7 @@ class MultiStepWizard {
    * @returns {JQuery}
    */
   public lockPrevStep(): JQuery {
-    let $button = this.setup.$carousel.closest('.modal').find('button[name="prev"]');
+    const $button = this.setup.$carousel.closest('.modal').find('button[name="prev"]');
     $button.prop('disabled', true);
     return $button;
   }
@@ -223,7 +223,7 @@ class MultiStepWizard {
    * @returns {JQuery}
    */
   public unlockPrevStep(): JQuery {
-    let $button = this.setup.$carousel.closest('.modal').find('button[name="prev"]');
+    const $button = this.setup.$carousel.closest('.modal').find('button[name="prev"]');
     $button.prop('disabled', false);
     return $button;
   }
@@ -235,7 +235,7 @@ class MultiStepWizard {
    * @returns {JQuery}
    */
   public triggerStepButton(direction: string): JQuery {
-    let $button = this.setup.$carousel.closest('.modal').find('button[name="' + direction + '"]');
+    const $button = this.setup.$carousel.closest('.modal').find('button[name="' + direction + '"]');
     if ($button.length > 0 && $button.prop('disabled') !== true) {
       $button.trigger('click');
     }
@@ -248,7 +248,7 @@ class MultiStepWizard {
    * @returns {JQuery}
    */
   public blurCancelStep(): JQuery {
-    let $button = this.setup.$carousel.closest('.modal').find('button[name="cancel"]');
+    const $button = this.setup.$carousel.closest('.modal').find('button[name="cancel"]');
     $button.trigger('blur');
     return $button;
   }
@@ -259,7 +259,7 @@ class MultiStepWizard {
    * @private
    */
   private initializeEvents(): void {
-    let $modal = this.setup.$carousel.closest('.modal');
+    const $modal = this.setup.$carousel.closest('.modal');
     this.initializeSlideNextEvent($modal);
     this.initializeSlidePrevEvent($modal);
 
@@ -273,8 +273,8 @@ class MultiStepWizard {
     })
       // Event is fired when the carousel has completed its slide transition
       .on('slid.bs.carousel', (evt: JQueryEventObject): void => {
-        let currentIndex = this.setup.$carousel.data('currentIndex');
-        let slide = this.setup.slides[currentIndex];
+        const currentIndex = this.setup.$carousel.data('currentIndex');
+        const slide = this.setup.slides[currentIndex];
 
         this.runSlideCallback(slide, $(evt.relatedTarget));
 
@@ -284,7 +284,7 @@ class MultiStepWizard {
       });
 
     // Custom event, closes the wizard
-    let cmp = this.getComponent();
+    const cmp = this.getComponent();
     cmp.on('wizard-dismiss', this.dismiss);
 
     Modal.currentModal.addEventListener('typo3-modal-hidden', (): void => {
@@ -296,16 +296,16 @@ class MultiStepWizard {
   }
 
   private initializeSlideNextEvent($modal: JQuery) {
-    let $modalFooter = $modal.find('.modal-footer');
-    let $nextButton = $modalFooter.find('button[name="next"]');
+    const $modalFooter = $modal.find('.modal-footer');
+    const $nextButton = $modalFooter.find('button[name="next"]');
     $nextButton.off().on('click', (): void => {
       this.setup.$carousel.carousel('next');
     });
   }
 
   private initializeSlidePrevEvent($modal: JQuery) {
-    let $modalFooter = $modal.find('.modal-footer');
-    let $prevButton = $modalFooter.find('button[name="prev"]');
+    const $modalFooter = $modal.find('.modal-footer');
+    const $prevButton = $modalFooter.find('button[name="prev"]');
     $prevButton.off().on('click', (): void => {
       this.setup.$carousel.carousel('prev');
     });
@@ -453,13 +453,11 @@ class MultiStepWizard {
    * @private
    */
   private addProgressBar(): void {
-    let realSlideCount = this.setup.$carousel.find('.carousel-item').length;
-    let slideCount = Math.max(1, realSlideCount);
-    let initialStep;
-    let $modal = this.setup.$carousel.closest('.modal');
-    let $modalFooter = $modal.find('.modal-footer');
-
-    initialStep = Math.round(100 / slideCount);
+    const realSlideCount = this.setup.$carousel.find('.carousel-item').length;
+    const slideCount = Math.max(1, realSlideCount);
+    const initialStep = Math.round(100 / slideCount);
+    const $modal = this.setup.$carousel.closest('.modal');
+    const $modalFooter = $modal.find('.modal-footer');
 
     this.setup.$carousel
       .data('initialStep', initialStep)
@@ -470,7 +468,7 @@ class MultiStepWizard {
 
     // Append progress bar to modal footer
     if (slideCount > 1) {
-      $modalFooter.prepend($('<div />', {class: 'progress'}));
+      $modalFooter.prepend($('<div />', { class: 'progress' }));
       for (let i = 0; i < this.setup.slides.length; ++i) {
         let classes;
         if (i === 0) {
@@ -502,8 +500,8 @@ class MultiStepWizard {
    * @private
    */
   private addButtonContainer(): void {
-    let $modal = this.setup.$carousel.closest('.modal');
-    let $modalFooterButtons = $modal.find('.modal-footer .btn');
+    const $modal = this.setup.$carousel.closest('.modal');
+    const $modalFooterButtons = $modal.find('.modal-footer .btn');
 
     $modalFooterButtons.wrapAll('<div class="modal-btn-group" />');
   }
@@ -524,7 +522,7 @@ class MultiStepWizard {
       + '<div class="carousel-inner" role="listbox">';
 
     for (let i = 0; i < this.setup.slides.length; ++i) {
-      let currentSlide: Slide = this.setup.slides[i];
+      const currentSlide: Slide = this.setup.slides[i];
       let slideContent = currentSlide.content;
 
       if (typeof slideContent === 'object') {

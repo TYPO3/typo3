@@ -29,7 +29,7 @@ class ConstantEditor {
     DocumentService.ready().then((document: Document): void => {
       const colorInputElements: NodeListOf<HTMLInputElement> = document.querySelectorAll(Selectors.colorInputSelector);
       if (colorInputElements.length) {
-        import('@typo3/backend/color-picker').then(({default: ColorPicker}): void => {
+        import('@typo3/backend/color-picker').then(({ default: ColorPicker }): void => {
           colorInputElements.forEach((element: HTMLInputElement): void => {
             ColorPicker.initialize(element);
           });
@@ -58,7 +58,7 @@ class ConstantEditor {
     if (toggleState === 'edit') {
       defaultDiv.style.display = 'none';
       userDiv.style.removeProperty('display');
-      userDiv.querySelectorAll('input').forEach((element: HTMLInputElement): void => {element.style.background = '#fdf8bd'});
+      userDiv.querySelectorAll('input').forEach((element: HTMLInputElement): void => {element.style.background = '#fdf8bd';});
       checkBox.removeAttribute('disabled');
     } else if (toggleState === 'undo') {
       userDiv.style.display = 'none';

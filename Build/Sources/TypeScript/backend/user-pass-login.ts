@@ -20,39 +20,7 @@ import Login from './login';
  * @exports @typo3/backend/user-pass-login
  */
 class UserPassLogin {
-
   protected options: any;
-
-  /**
-   * Checks whether capslock is enabled (returns TRUE if enabled, false otherwise)
-   * thanks to http://24ways.org/2007/capturing-caps-lock
-   *
-   * @param {Event} e
-   * @returns {boolean}
-   */
-  public static isCapslockEnabled(e: any): boolean {
-    const ev = e ? e : window.event;
-    if (!ev) {
-      return false;
-    }
-    // get key pressed
-    let pressedKeyAsciiCode = -1;
-    if (ev.which) {
-      pressedKeyAsciiCode = ev.which;
-    } else if (ev.keyCode) {
-      pressedKeyAsciiCode = ev.keyCode;
-    }
-    // get shift status
-    let shiftPressed = false;
-    if (ev.shiftKey) {
-      shiftPressed = ev.shiftKey;
-    } else if (ev.modifiers) {
-      /* tslint:disable:no-bitwise */
-      shiftPressed = !!(ev.modifiers & 4);
-    }
-    return (pressedKeyAsciiCode >= 65 && pressedKeyAsciiCode <= 90 && !shiftPressed)
-      || (pressedKeyAsciiCode >= 97 && pressedKeyAsciiCode <= 122 && shiftPressed);
-  }
 
   constructor() {
     this.options = {
@@ -93,6 +61,38 @@ class UserPassLogin {
     }
   }
 
+
+  /**
+   * Checks whether capslock is enabled (returns TRUE if enabled, false otherwise)
+   * thanks to http://24ways.org/2007/capturing-caps-lock
+   *
+   * @param {Event} e
+   * @returns {boolean}
+   */
+  public static isCapslockEnabled(e: any): boolean {
+    const ev = e ? e : window.event;
+    if (!ev) {
+      return false;
+    }
+    // get key pressed
+    let pressedKeyAsciiCode = -1;
+    if (ev.which) {
+      pressedKeyAsciiCode = ev.which;
+    } else if (ev.keyCode) {
+      pressedKeyAsciiCode = ev.keyCode;
+    }
+    // get shift status
+    let shiftPressed = false;
+    if (ev.shiftKey) {
+      shiftPressed = ev.shiftKey;
+    } else if (ev.modifiers) {
+      /* tslint:disable:no-bitwise */
+      shiftPressed = !!(ev.modifiers & 4);
+    }
+    return (pressedKeyAsciiCode >= 65 && pressedKeyAsciiCode <= 90 && !shiftPressed)
+      || (pressedKeyAsciiCode >= 97 && pressedKeyAsciiCode <= 122 && shiftPressed);
+  }
+
   /**
    * Reset user password field to prevent it from being submitted
    */
@@ -102,7 +102,7 @@ class UserPassLogin {
       $(Login.options.useridentField).val($passwordField.val());
       $passwordField.val('');
     }
-  }
+  };
 
   public showCapsLockWarning = (event: Event): void => {
     $(event.target)
@@ -110,13 +110,13 @@ class UserPassLogin {
       .parent()
       .find('.t3js-login-alert-capslock')
       .toggleClass('hidden', !UserPassLogin.isCapslockEnabled(event));
-  }
+  };
 
   public toggleCopyright = (event: KeyboardEvent): void => {
     if (event.key === ' ') {
       (<HTMLLinkElement>(event.target)).click();
     }
-  }
+  };
 }
 
 export default new UserPassLogin();

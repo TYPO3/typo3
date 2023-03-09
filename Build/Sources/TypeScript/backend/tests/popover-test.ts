@@ -1,4 +1,4 @@
-import {Popover as BootstrapPopover} from 'bootstrap';
+import { Popover as BootstrapPopover } from 'bootstrap';
 import Popover from '@typo3/backend/popover';
 
 describe('TYPO3/CMS/Backend/PopoverTest:', () => {
@@ -34,7 +34,7 @@ describe('TYPO3/CMS/Backend/PopoverTest:', () => {
     });
 
     const element4 = document.createElement('div');
-    element4.classList.add('t3js-popover')
+    element4.classList.add('t3js-popover');
     document.body.append(element4);
     it('works with custom selector', () => {
       Popover.initialize('.t3js-popover');

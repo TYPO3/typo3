@@ -19,10 +19,10 @@ import '@typo3/backend/element/icon-element';
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
-import {SeverityEnum} from '@typo3/backend/enum/severity';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
 import RegularEvent from '@typo3/core/event/regular-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 enum RecyclerIdentifiers {
   searchForm = '#recycler-form',
@@ -39,31 +39,40 @@ enum RecyclerIdentifiers {
   massDelete = 'button[data-multi-record-selection-action=massdelete]',
 }
 
+interface RecyclerPagingConfig {
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+  itemsPerPage: number;
+}
+
+type RecordToDelete = string;
+
 /**
  * Module: @typo3/recycler/recycler
  * RequireJS module for Recycler
  */
 class Recycler {
-  public elements: any = {}; // filled in getElements()
-  public paging: any = {
+  public elements: { [key: string]: JQuery } = {}; // filled in getElements()
+  public paging: RecyclerPagingConfig = {
     currentPage: 1,
     totalPages: 1,
     totalItems: 0,
-    itemsPerPage: TYPO3.settings.Recycler.pagingSize,
+    itemsPerPage: parseInt(TYPO3.settings.Recycler.pagingSize, 10),
   };
-  public markedRecordsForMassAction: Array<string> = [];
+  public markedRecordsForMassAction: RecordToDelete[] = [];
+
+  constructor() {
+    DocumentService.ready().then((): void => {
+      this.initialize();
+    });
+  }
 
   /**
    * Reloads the page tree
    */
   public static refreshPageTree(): void {
     top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
-  }
-
-  constructor() {
-    DocumentService.ready().then((): void => {
-      this.initialize();
-    });
   }
 
   /**
@@ -99,7 +108,7 @@ class Recycler {
 
     // changing the search field
     this.elements.$searchTextField.on('keyup', (e: JQueryEventObject): void => {
-      let $me = $(e.currentTarget);
+      const $me = $(e.currentTarget);
 
       if ($me.val() !== '') {
         this.elements.$searchSubmitBtn.removeClass('disabled');
@@ -108,7 +117,7 @@ class Recycler {
         this.loadDeletedElements();
       }
     });
-    this.elements.$searchTextField.get(0).clearable(
+    (this.elements.$searchTextField.get(0) as HTMLInputElement).clearable(
       {
         onClear: () => {
           this.elements.$searchSubmitBtn.addClass('disabled');
@@ -191,7 +200,7 @@ class Recycler {
    * Initialize the recycler module
    */
   private initialize(): void {
-    NProgress.configure({parent: '.module-loading-indicator', showSpinner: false});
+    NProgress.configure({ parent: '.module-loading-indicator', showSpinner: false });
 
     this.getElements();
     this.registerEvents();
@@ -226,15 +235,15 @@ class Recycler {
 
     if (this.markedRecordsForMassAction.length > 0) {
       this.elements.$massUndo.find('span.text').text(
-        this.createMessage(TYPO3.lang['button.undoselected'], [this.markedRecordsForMassAction.length])
+        this.createMessage(TYPO3.lang['button.undoselected'], [this.markedRecordsForMassAction.length.toString(10)])
       );
       this.elements.$massDelete.find('span.text').text(
-        this.createMessage(TYPO3.lang['button.deleteselected'], [this.markedRecordsForMassAction.length])
+        this.createMessage(TYPO3.lang['button.deleteselected'], [this.markedRecordsForMassAction.length.toString(10)])
       );
     } else {
       this.resetMassActionButtons();
     }
-  }
+  };
 
   /**
    * Resets the mass action state
@@ -263,7 +272,7 @@ class Recycler {
       const tables: Array<JQuery> = [];
 
       this.elements.$tableSelector.children().remove();
-      for (let value of data) {
+      for (const value of data) {
         const tableName = value[0];
         const deletedRecords = value[1];
         const tableDescription = value[2] ? value[2] : TYPO3.lang.label_allrecordtypes;
@@ -349,7 +358,7 @@ class Recycler {
         },
       ]
     });
-  }
+  };
 
   private undoRecord = (e: Event): void => {
     const $tr = $(e.target).parents('tr');
@@ -381,7 +390,7 @@ class Recycler {
     if (recoverPages) {
       $message = $('<div />').append(
         $('<p />').text(messageText),
-        $('<div />', {class: 'form-check'}).append(
+        $('<div />', { class: 'form-check' }).append(
           $('<input />', {
             type: 'checkbox',
             id: 'undo-recursive',
@@ -423,16 +432,10 @@ class Recycler {
         },
       ]
     });
-  }
+  };
 
-  /**
-   * @param {string} action
-   * @param {Object} records
-   * @param {boolean} isMassAction
-   * @param {boolean} recursive
-   */
-  private callAjaxAction(action: string, records: Object, isMassAction: boolean, recursive: boolean = false): Promise<AjaxResponse>|null {
-    let data: any = {
+  private callAjaxAction(action: string, records: RecordToDelete[], isMassAction: boolean, recursive: boolean = false): Promise<AjaxResponse>|null {
+    const data: { records: RecordToDelete[], action: string, recursive?: number } = {
       records: records,
       action: '',
     };
@@ -478,14 +481,14 @@ class Recycler {
   /**
    * Replaces the placeholders with actual values
    */
-  private createMessage(message: string, placeholders: Array<any>): string {
+  private createMessage(message: string, placeholders: string[]): string {
     if (typeof message === 'undefined') {
       return '';
     }
 
     return message.replace(
       /\{([0-9]+)\}/g,
-      function(_: string, index: any): string {
+      function(_: string, index: number): string {
         return placeholders[index];
       },
     );
@@ -510,16 +513,16 @@ class Recycler {
       return;
     }
 
-    const $ul = $('<ul />', {class: 'pagination'}),
+    const $ul = $('<ul />', { class: 'pagination' }),
       liElements = [],
-      $controlFirstPage = $('<li />', {class: 'page-item'}).append(
-        $('<button />', {class: 'page-link', type: 'button', 'data-action': 'previous'}).append(
-          $('<typo3-backend-icon />', {'identifier': 'actions-arrow-left-alt', 'size': 'small'}),
+      $controlFirstPage = $('<li />', { class: 'page-item' }).append(
+        $('<button />', { class: 'page-link', type: 'button', 'data-action': 'previous' }).append(
+          $('<typo3-backend-icon />', { 'identifier': 'actions-arrow-left-alt', 'size': 'small' }),
         ),
       ),
-      $controlLastPage = $('<li />', {class: 'page-item'}).append(
-        $('<button />', {class: 'page-link', type: 'button', 'data-action': 'next'}).append(
-          $('<typo3-backend-icon />', {'identifier': 'actions-arrow-right-alt', 'size': 'small'}),
+      $controlLastPage = $('<li />', { class: 'page-item' }).append(
+        $('<button />', { class: 'page-link', type: 'button', 'data-action': 'next' }).append(
+          $('<typo3-backend-icon />', { 'identifier': 'actions-arrow-right-alt', 'size': 'small' }),
         ),
       );
 
@@ -532,9 +535,9 @@ class Recycler {
     }
 
     for (let i = 1; i <= this.paging.totalPages; i++) {
-      const $li = $('<li />', {class: 'page-item' + (this.paging.currentPage === i ? ' active' : '')});
+      const $li = $('<li />', { class: 'page-item' + (this.paging.currentPage === i ? ' active' : '') });
       $li.append(
-        $('<button />', {class: 'page-link', type: 'button', 'data-action': 'page'}).append(
+        $('<button />', { class: 'page-link', type: 'button', 'data-action': 'page' }).append(
           $('<span />').text(i),
         ),
       );
@@ -542,7 +545,7 @@ class Recycler {
     }
 
     $ul.append($controlFirstPage, liElements, $controlLastPage);
-    this.elements.$paginator.html($ul);
+    this.elements.$paginator.empty().append($ul);
   }
 }
 

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
 */
 
-import {Listener} from './event-interface';
+import { Listener } from './event-interface';
 import RegularEvent from './regular-event';
 
 /**
@@ -27,7 +27,7 @@ class DebounceEvent extends RegularEvent {
   private debounce(callback: Listener, wait: number, immediate: boolean): Listener {
     let timeout: number = null;
 
-    return function (this: Node, ...args: any[]): void {
+    return function (this: Node, ...args: unknown[]): void {
       const callNow = immediate && !timeout;
 
       // Reset timeout handler to make sure the callback is executed once

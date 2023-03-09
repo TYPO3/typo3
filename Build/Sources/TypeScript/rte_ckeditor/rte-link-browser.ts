@@ -27,10 +27,7 @@ class RteLinkBrowser {
   protected selectionStartPosition: Position = null;
   protected selectionEndPosition: Position = null;
 
-  /**
-   * @param {String} editorId Id of CKEditor
-   */
-  public initialize(editorId: string): void {
+  public initialize(): void {
     this.editor = Modal.currentModal.userData.editor;
     this.selectionStartPosition = Modal.currentModal.userData.selectionStartPosition;
     this.selectionEndPosition = Modal.currentModal.userData.selectionEndPosition;
@@ -52,7 +49,7 @@ class RteLinkBrowser {
    * @param {String} link The select element or anything else which identifies the link (e.g. "page:<pageUid>" or "file:<uid>")
    */
   public finalizeFunction(link: string): void {
-    const attributes: { [key: string]: string } = LinkBrowser.getLinkAttributeValues();
+    const attributes: Record<string, string> = LinkBrowser.getLinkAttributeValues();
     const queryParams = attributes.params ? attributes.params : '';
     delete attributes.params;
 
@@ -73,7 +70,7 @@ class RteLinkBrowser {
   }
 
   private convertAttributes(attributes: Record<string, string>, text?: string): Typo3LinkDict {
-    const linkAttr: any = { attrs: {} };
+    const linkAttr: { attrs: { [key: string]: string}, linkText?: string} = { attrs: {} };
     for (const [attribute, value] of Object.entries(attributes)) {
       if (LINK_ALLOWED_ATTRIBUTES.includes(attribute)) {
         linkAttr.attrs[addLinkPrefix(attribute)] = value;
@@ -88,13 +85,13 @@ class RteLinkBrowser {
   private sanitizeLink(link: string, queryParams: string): string {
     // @todo taken from previous code - enhance generation
     // Make sure, parameters and anchor are in correct order
-    const linkMatch = link.match(/^([a-z0-9]+:\/\/[^:\/?#]+(?:\/?[^?#]*)?)(\??[^#]*)(#?.*)$/)
+    const linkMatch = link.match(/^([a-z0-9]+:\/\/[^:/?#]+(?:\/?[^?#]*)?)(\??[^#]*)(#?.*)$/);
     if (linkMatch && linkMatch.length > 0) {
       link = linkMatch[1] + linkMatch[2];
       const paramsPrefix = linkMatch[2].length > 0 ? '&' : '?';
       if (queryParams.length > 0) {
         if (queryParams[0] === '&') {
-          queryParams = queryParams.substr(1)
+          queryParams = queryParams.substr(1);
         }
         // If params is set, append it
         if (queryParams.length > 0) {
@@ -108,6 +105,6 @@ class RteLinkBrowser {
 }
 
 // @todo check whether this is still required - if, document why/where
-let rteLinkBrowser = new RteLinkBrowser();
+const rteLinkBrowser = new RteLinkBrowser();
 export default rteLinkBrowser;
 LinkBrowser.finalizeFunction = (link: string): void => { rteLinkBrowser.finalizeFunction(link); };

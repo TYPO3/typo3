@@ -11,7 +11,7 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
 
@@ -27,11 +27,10 @@ class WidgetContentCollector {
     this.registerEvents();
     const items = document.querySelectorAll(this.selector);
     items.forEach((triggerElement: HTMLElement): void => {
-      let event: Event;
       const eventInitDict: EventInit = {
         bubbles: true,
       };
-      event = new Event('widgetRefresh', eventInitDict);
+      const event = new Event('widgetRefresh', eventInitDict);
       triggerElement.dispatchEvent(event);
     });
   }
@@ -57,7 +56,7 @@ class WidgetContentCollector {
         widget: element.dataset.widgetKey,
       })
       .get()
-      .then(async (response: AjaxResponse): Promise<any> => {
+      .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (widgetContentElement !== null) {
           widgetContentElement.innerHTML = data.content;
@@ -72,7 +71,7 @@ class WidgetContentCollector {
           bubbles: true,
         };
         if (Object.keys(data.eventdata).length > 0) {
-          event = new CustomEvent('widgetContentRendered', {...eventInitDict, detail: data.eventdata});
+          event = new CustomEvent('widgetContentRendered', { ...eventInitDict, detail: data.eventdata });
         } else {
           event = new Event('widgetContentRendered', eventInitDict);
         }

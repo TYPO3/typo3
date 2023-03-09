@@ -11,16 +11,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {customElement, property} from 'lit/decorators';
-import {html, LitElement, TemplateResult} from 'lit';
+import { customElement, property } from 'lit/decorators';
+import { html, LitElement, TemplateResult } from 'lit';
 import '@typo3/backend/element/icon-element';
 
 @customElement('typo3-backend-live-search-result-item-page-provider')
 export default class PageProviderResultItem extends LitElement {
-  @property({type: Object, attribute: false}) icon: { [key: string]: string };
-  @property({type: String, attribute: false}) itemTitle: string;
-  @property({type: String, attribute: false}) typeLabel: string;
-  @property({type: Object, attribute: false}) extraData: { [key: string]: any };
+  @property({ type: Object, attribute: false }) icon: Record<string, string>;
+  @property({ type: String, attribute: false }) itemTitle: string;
+  @property({ type: String, attribute: false }) typeLabel: string;
+  @property({ type: Object, attribute: false }) extraData: { [key: string]: any };
 
   public createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied

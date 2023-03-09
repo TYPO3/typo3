@@ -11,12 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {LitElement, html} from 'lit';
-import {customElement, property, state} from 'lit/decorators';
-import {classMap} from 'lit/directives/class-map';
-import {ifDefined} from 'lit/directives/if-defined';
-import {AbstractAction} from './action-button/abstract-action';
-import {SeverityEnum} from './enum/severity';
+import { LitElement, html } from 'lit';
+import { customElement, property, state } from 'lit/decorators';
+import { classMap } from 'lit/directives/class-map';
+import { ifDefined } from 'lit/directives/if-defined';
+import { AbstractAction } from './action-button/abstract-action';
+import { SeverityEnum } from './enum/severity';
 import Severity from './severity';
 import '@typo3/backend/element/icon-element';
 
@@ -135,9 +135,9 @@ class NotificationMessage extends LitElement {
   @property() notificationId: string;
   @property() title: string;
   @property() message: string;
-  @property({type: Number}) severity: SeverityEnum = SeverityEnum.info;
+  @property({ type: Number }) severity: SeverityEnum = SeverityEnum.info;
   @property() duration: number = 0;
-  @property({type: Array, attribute: false}) actions: Array<Action> = [];
+  @property({ type: Array, attribute: false }) actions: Array<Action> = [];
 
   @state() visible: boolean = false;
   @state() executingAction: number = -1;
@@ -207,7 +207,7 @@ class NotificationMessage extends LitElement {
         id="${ifDefined(this.notificationId || undefined)}"
         class="${'alert alert-' + className + ' alert-dismissible fade' + (this.visible ? ' in' : '')}"
         role="alert">
-        <button type="button" class="close" @click="${async (e: Event) => this.close()}">
+        <button type="button" class="close" @click="${async () => this.close()}">
           <span aria-hidden="true"><typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon></span>
           <span class="visually-hidden">Close</span>
         </button>
@@ -227,12 +227,12 @@ class NotificationMessage extends LitElement {
             ${this.actions.map((action, index) => html`
               <a href="#"
                  title="${action.label}"
-                 @click="${async (e: any) => {
-                   e.preventDefault()
+                 @click="${async (event: PointerEvent) => {
+                   event.preventDefault();
                    this.executingAction = index;
                    await this.updateComplete;
                    if ('action' in action) {
-                     await action.action.execute(e.currentTarget);
+                     await action.action.execute(event.currentTarget as HTMLAnchorElement);
                    }
                    this.close();
                  }}"
@@ -250,7 +250,7 @@ class NotificationMessage extends LitElement {
   }
 }
 
-let notificationObject: any;
+let notificationObject: typeof Notification;
 
 try {
   // fetch from parent

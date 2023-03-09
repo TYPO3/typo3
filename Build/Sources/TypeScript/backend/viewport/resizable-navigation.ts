@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, LitElement, TemplateResult} from 'lit';
-import {customElement, property, state} from 'lit/decorators';
-import {lll} from '@typo3/core/lit-helper';
+import { html, LitElement, TemplateResult } from 'lit';
+import { customElement, property, state } from 'lit/decorators';
+import { lll } from '@typo3/core/lit-helper';
 import Persistent from '../storage/persistent';
 import '@typo3/backend/element/icon-element';
 
@@ -24,13 +24,13 @@ const selectorConverter = {
 };
 
 @customElement('typo3-backend-navigation-switcher')
-class ResizableNavigation extends LitElement {
-  @property({type: Number, attribute: 'minimum-width'}) minimumWidth: number = 250;
-  @property({type: Number, attribute: 'initial-width'}) initialWidth: number;
-  @property({type: String, attribute: 'persistence-identifier'}) persistenceIdentifier: string;
+export class ResizableNavigation extends LitElement {
+  @property({ type: Number, attribute: 'minimum-width' }) minimumWidth: number = 250;
+  @property({ type: Number, attribute: 'initial-width' }) initialWidth: number;
+  @property({ type: String, attribute: 'persistence-identifier' }) persistenceIdentifier: string;
 
-  @property({attribute: 'parent', converter: selectorConverter}) parentContainer: HTMLElement;
-  @property({attribute: 'navigation', converter: selectorConverter}) navigationContainer: HTMLElement;
+  @property({ attribute: 'parent', converter: selectorConverter }) parentContainer: HTMLElement;
+  @property({ attribute: 'navigation', converter: selectorConverter }) navigationContainer: HTMLElement;
 
   @state() resizing: boolean = false;
 
@@ -38,7 +38,7 @@ class ResizableNavigation extends LitElement {
     super.connectedCallback();
     const initialWidth = this.initialWidth || parseInt(Persistent.get(this.persistenceIdentifier), 10);
     this.setNavigationWidth(initialWidth);
-    window.addEventListener('resize', this.fallbackNavigationSizeIfNeeded, {passive: true});
+    window.addEventListener('resize', this.fallbackNavigationSizeIfNeeded, { passive: true });
   }
 
   public disconnectedCallback(): void {
@@ -56,8 +56,8 @@ class ResizableNavigation extends LitElement {
     await new Promise((r) => setTimeout(r, 0));
     // needed to avoid any issues related to browsers, as lit-decorators (eventOptions) do not work yet
     // properly https://lit-element.polymer-project.org/guide/events - @touchstart would throw warnings in browser console without passive=true
-    this.querySelector('.scaffold-content-navigation-switcher-btn').addEventListener('touchstart', this.toggleNavigation, {passive: true});
-    this.querySelector('.scaffold-content-navigation-drag').addEventListener('touchstart', this.startResizeNavigation, {passive: true});
+    this.querySelector('.scaffold-content-navigation-switcher-btn').addEventListener('touchstart', this.toggleNavigation, { passive: true });
+    this.querySelector('.scaffold-content-navigation-drag').addEventListener('touchstart', this.startResizeNavigation, { passive: true });
   }
 
   protected render(): TemplateResult {
@@ -80,30 +80,30 @@ class ResizableNavigation extends LitElement {
     }
     event.stopPropagation();
     this.parentContainer.classList.toggle('scaffold-content-navigation-expanded');
-  }
+  };
 
   private fallbackNavigationSizeIfNeeded = (event: UIEvent) => {
-    let window = <Window>event.currentTarget;
+    const window = <Window>event.currentTarget;
     if (this.getNavigationWidth() === 0) {
       return;
     }
     if (window.outerWidth < this.getNavigationWidth() + this.getNavigationPosition().left + this.minimumWidth) {
       this.autoNavigationWidth();
     }
-  }
+  };
 
   private handleMouseMove = (event: MouseEvent) => {
     this.resizeNavigation(<number>event.clientX);
-  }
+  };
 
   private handleTouchMove = (event: TouchEvent) => {
     this.resizeNavigation(<number>event.changedTouches[0].clientX);
-  }
+  };
 
   private resizeNavigation = (position: number) => {
-    let width = Math.round(position) - Math.round(this.getNavigationPosition().left);
+    const width = Math.round(position) - Math.round(this.getNavigationPosition().left);
     this.setNavigationWidth(width);
-  }
+  };
 
   private startResizeNavigation = (event: MouseEvent | TouchEvent) => {
     if (event instanceof MouseEvent && event.button === 2) {
@@ -115,7 +115,7 @@ class ResizableNavigation extends LitElement {
     document.addEventListener('mouseup', this.stopResizeNavigation, false);
     document.addEventListener('touchmove', this.handleTouchMove, false);
     document.addEventListener('touchend', this.stopResizeNavigation, false);
-  }
+  };
 
   private stopResizeNavigation = () => {
     this.resizing = false;
@@ -125,7 +125,7 @@ class ResizableNavigation extends LitElement {
     document.removeEventListener('touchend', this.stopResizeNavigation, false);
     Persistent.set(this.persistenceIdentifier, <string><unknown>this.getNavigationWidth());
     document.dispatchEvent(new CustomEvent('typo3:navigation:resized'));
-  }
+  };
 
   private getNavigationPosition(): DOMRect {
     return this.navigationContainer.getBoundingClientRect();

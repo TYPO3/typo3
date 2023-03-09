@@ -121,7 +121,7 @@ class ContextMenuActions {
     Notification.info(lll('file_download.prepare'), '', 2);
     const actionUrl: string = dataset.actionUrl;
     (new AjaxRequest(actionUrl)).post({ items: [uid] })
-      .then(async (response): Promise<any> => {
+      .then(async (response): Promise<void> => {
         let fileName = response.response.headers.get('Content-Disposition');
         if (!fileName) {
           const data = await response.resolve();

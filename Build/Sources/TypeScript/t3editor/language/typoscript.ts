@@ -1,9 +1,9 @@
-import {StreamLanguage, LanguageSupport} from '@codemirror/language';
-import {CompletionContext, CompletionResult} from '@codemirror/autocomplete';
-import {typoScriptStreamParser} from '@typo3/t3editor/stream-parser/typoscript';
+import { StreamLanguage, LanguageSupport } from '@codemirror/language';
+import { CompletionContext, CompletionResult } from '@codemirror/autocomplete';
+import { typoScriptStreamParser } from '@typo3/t3editor/stream-parser/typoscript';
 import TsCodeCompletion from '@typo3/t3editor/autocomplete/ts-code-completion';
-import {syntaxTree} from '@codemirror/language';
-import type {SyntaxNodeRef} from '@lezer/common';
+import { syntaxTree } from '@codemirror/language';
+import type { SyntaxNodeRef } from '@lezer/common';
 
 interface Token {
   type: string;
@@ -36,14 +36,12 @@ export function typoscript() {
 
   const completion = language.data.of({
     autocomplete: complete
-  })
+  });
 
   return new LanguageSupport(language, [completion]);
 }
 
 export function complete (context: CompletionContext): Promise<CompletionResult | null> | CompletionResult | null {
-  let word = context.matchBefore(/\w*/)
-
   if (!context.explicit) {
     return null;
   }
@@ -82,18 +80,18 @@ export function complete (context: CompletionContext): Promise<CompletionResult 
   return {
     from: completionStart,
     options: completions.map((result: string) => {
-      return { label: result, type: 'keyword' }
+      return { label: result, type: 'keyword' };
     })
   };
 
   return null;
-};
+}
 
 function parseCodeMirror5CompatibleCompletionState(context: CompletionContext): CodeMirror5CompatibleCompletionState {
   const lineCount = context.state.sliceDoc().split(context.state.lineBreak).length;
   const currentLineNumber = context.state.sliceDoc(0, context.pos).split(context.state.lineBreak).length;
-  const currentLine = context.state.sliceDoc().split(context.state.lineBreak)[currentLineNumber-1];
-  const lastChar = context.state.sliceDoc(context.pos-1, context.pos);
+  const currentLine = context.state.sliceDoc().split(context.state.lineBreak)[currentLineNumber - 1];
+  const lastChar = context.state.sliceDoc(context.pos - 1, context.pos);
   const completingAfterDot = lastChar === '.';
   const lineTokens = extractCodemirror5StyleLineTokens(lineCount, context);
 
@@ -103,7 +101,7 @@ function parseCodeMirror5CompatibleCompletionState(context: CompletionContext): 
     currentLine,
     lineCount,
     completingAfterDot
-  }
+  };
 }
 
 function extractCodemirror5StyleLineTokens(lineCount: number, context: CompletionContext): Token[][] {
@@ -124,7 +122,7 @@ function extractCodemirror5StyleLineTokens(lineCount: number, context: Completio
     if (lastToken < start) {
       context.state.sliceDoc(lastToken, start).split(context.state.lineBreak).forEach((part: string) => {
         if (part) {
-          lineTokens[Math.min(lineNumber - 1, lineCount - 1)].push({ type: null, string: part, start: lastToken, end: lastToken + part.length});
+          lineTokens[Math.min(lineNumber - 1, lineCount - 1)].push({ type: null, string: part, start: lastToken, end: lastToken + part.length });
           lineNumber++;
           lastToken += part.length;
         }
@@ -132,11 +130,11 @@ function extractCodemirror5StyleLineTokens(lineCount: number, context: Completio
     }
     const string = context.state.sliceDoc(node.from, node.to);
     lineNumber = context.state.sliceDoc(0, node.from).split(context.state.lineBreak).length;
-    lineTokens[lineNumber-1].push({ type, string, start, end });
+    lineTokens[lineNumber - 1].push({ type, string, start, end });
     lastToken = end;
   });
   if (lastToken < context.state.doc.length) {
-    lineTokens[lineNumber-1].push({ type: null, string: context.state.sliceDoc(lastToken), start: lastToken, end: context.state.doc.length});
+    lineTokens[lineNumber - 1].push({ type: null, string: context.state.sliceDoc(lastToken), start: lastToken, end: context.state.doc.length });
   }
 
   return lineTokens;
@@ -161,7 +159,7 @@ function getCompletions(token: string, keywords: string[]) {
     if (str.lastIndexOf(token, 0) === 0 && !found.has(str)) {
       found.add(str);
     }
-  }
+  };
 
   for (let i = 0, e = keywords.length; i < e; ++i) {
     maybeAdd(keywords[i]);

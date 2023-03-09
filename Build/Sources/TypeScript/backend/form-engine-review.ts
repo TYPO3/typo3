@@ -17,7 +17,7 @@ import $ from 'jquery';
 import FormEngine from '@typo3/backend/form-engine';
 import '@typo3/backend/element/icon-element';
 import Popover from './popover';
-import {Popover as BootstrapPopover} from 'bootstrap';
+import { Popover as BootstrapPopover } from 'bootstrap';
 
 /**
  * Module: @typo3/backend/form-engine-review
@@ -35,6 +35,13 @@ class FormEngineReview {
    * Class of FormEngine labels
    */
   private readonly labelSelector: string = '.t3js-formengine-label';
+
+  /**
+   * The constructor, set the class properties default values
+   */
+  constructor() {
+    this.initialize();
+  }
 
   /**
    * Fetches all fields that have a failed validation
@@ -68,13 +75,6 @@ class FormEngineReview {
   }
 
   /**
-   * The constructor, set the class properties default values
-   */
-  constructor() {
-    this.initialize();
-  }
-
-  /**
    * Initialize the events
    */
   public initialize(): void {
@@ -99,7 +99,7 @@ class FormEngineReview {
     }
 
     if ($invalidFields.length > 0) {
-      const $list: any = $('<div />', {class: 'list-group'});
+      const $list: any = $('<div />', { class: 'list-group' });
 
       $invalidFields.each(function(this: Element): void {
         const $field: any = $(this);
@@ -123,7 +123,7 @@ class FormEngineReview {
       toggleButton.classList.add('hidden');
       Popover.hide(toggleButton);
     }
-  }
+  };
 
   /**
    * Finds the field in the form and focuses it
@@ -133,15 +133,13 @@ class FormEngineReview {
   public switchToField = (e: Event, $referenceField: JQuery): void => {
     e.preventDefault();
 
-    const listItem: HTMLElement = e.currentTarget as HTMLElement;
-
     // iterate possibly nested tab panels
     $referenceField.parents('[id][role="tabpanel"]').each(function(this: Element): void {
       $('[aria-controls="' + $(this).attr('id') + '"]').tab('show');
     });
 
     $referenceField.focus();
-  }
+  };
 }
 
 // create an instance and return it

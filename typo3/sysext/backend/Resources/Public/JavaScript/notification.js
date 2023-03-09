@@ -15,7 +15,7 @@ var __decorate=function(t,e,i,o){var s,a=arguments.length,n=a<3?e:null===o?o=Obj
         id="${ifDefined(this.notificationId||void 0)}"
         class="${"alert alert-"+t+" alert-dismissible fade"+(this.visible?" in":"")}"
         role="alert">
-        <button type="button" class="close" @click="${async t=>this.close()}">
+        <button type="button" class="close" @click="${async()=>this.close()}">
           <span aria-hidden="true"><typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon></span>
           <span class="visually-hidden">Close</span>
         </button>

@@ -12,7 +12,7 @@
 */
 
 import Muuri from 'muuri';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
 
@@ -74,7 +74,7 @@ class Grid {
   }
 
   public saveItems(dashboard: any): void {
-    let widgets = dashboard.getItems().map(function (item: any) {
+    const widgets = dashboard.getItems().map(function (item: any) {
       return [
         item.getElement().getAttribute('data-widget-key'),
         item.getElement().getAttribute('data-widget-hash')
@@ -83,7 +83,7 @@ class Grid {
 
     (new AjaxRequest(TYPO3.settings.ajaxUrls.dashboard_save_widget_positions)).post({
       widgets: widgets
-    }).then(async (response: AjaxResponse): Promise<any> => {
+    }).then(async (response: AjaxResponse): Promise<void> => {
       await response.resolve();
     });
   }

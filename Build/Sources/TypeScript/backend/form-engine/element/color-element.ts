@@ -38,8 +38,8 @@ class ColorElement extends HTMLElement {
     }
 
     this.registerEventHandler();
-    import('@typo3/backend/color-picker').then(({default: ColorPicker}): void => {
-      ColorPicker.initialize(this.element)
+    import('@typo3/backend/color-picker').then(({ default: ColorPicker }): void => {
+      ColorPicker.initialize(this.element);
     });
   }
 

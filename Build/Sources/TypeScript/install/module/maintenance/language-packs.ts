@@ -13,8 +13,8 @@
 
 import 'bootstrap';
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import SecurityUtility from '@typo3/core/security-utility';
 import FlashMessage from '../../renderable/flash-message';
@@ -22,6 +22,7 @@ import InfoBox from '../../renderable/info-box';
 import ProgressBar from '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
+import MessageInterface from '@typo3/install/message-interface';
 
 /**
  * Module: @typo3/install/module/language-packs
@@ -39,8 +40,8 @@ class LanguagePacks extends AbstractInteractableModule {
   private selectorLanguageUpdateIcon: string = '#t3js-languagePacks-languageUpdate-icon';
   private selectorNotifications: string = '.t3js-languagePacks-notifications';
 
-  private activeLanguages: Array<any> = [];
-  private activeExtensions: Array<any> = [];
+  private activeLanguages: string[] = [];
+  private activeExtensions: string[] = [];
 
   private packsUpdateDetails: { [id: string]: number } = {
     toHandle: 0,
@@ -51,7 +52,7 @@ class LanguagePacks extends AbstractInteractableModule {
     skipped: 0,
   };
 
-  private notifications: Array<any> = [];
+  private notifications: JQuery[] = [];
 
   private static pluralize(count: number, word: string = 'pack', suffix: string = 's', additionalCount: number = 0): string {
     return count !== 1 && additionalCount !== 1 ? word + suffix : word;
@@ -90,9 +91,9 @@ class LanguagePacks extends AbstractInteractableModule {
   private getData(): void {
     const modalContent = this.getModalBody();
     (new AjaxRequest(Router.getUrl('languagePacksGetData')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             this.activeLanguages = data.activeLanguages;
@@ -131,17 +132,17 @@ class LanguagePacks extends AbstractInteractableModule {
         },
       })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           $outputContainer.empty();
           if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
-              const m: any = InfoBox.render(element.severity, element.title, element.message);
-              this.addNotification(m);
+            data.status.forEach((element: MessageInterface): void => {
+              const message = InfoBox.render(element.severity, element.title, element.message);
+              this.addNotification(message);
             });
           } else {
-            const m2: any = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            this.addNotification(m2);
+            const message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+            this.addNotification(message);
           }
           this.getData();
         },
@@ -166,17 +167,17 @@ class LanguagePacks extends AbstractInteractableModule {
         },
       })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           $outputContainer.empty();
           if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
-              const m: any = InfoBox.render(element.severity, element.title, element.message);
-              this.addNotification(m);
+            data.status.forEach((element: MessageInterface): void => {
+              const message = InfoBox.render(element.severity, element.title, element.message);
+              this.addNotification(message);
             });
           } else {
-            const m2: any = FlashMessage.render(Severity.error, 'Something went wrong', '');
-            this.addNotification(m2);
+            const message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+            this.addNotification(message);
           }
           this.getData();
         },
@@ -207,7 +208,7 @@ class LanguagePacks extends AbstractInteractableModule {
     };
 
     $outputContainer.empty().append(
-      $('<div>', {'class': 'progress'}).append(
+      $('<div>', { 'class': 'progress' }).append(
         $('<div>', {
           'class': 'progress-bar progress-bar-info',
           'role': 'progressbar',
@@ -218,7 +219,7 @@ class LanguagePacks extends AbstractInteractableModule {
         }).append(
           $(
             '<span>',
-            {'class': 'text-nowrap'}).text('0 of ' + this.packsUpdateDetails.toHandle + ' language ' +
+            { 'class': 'text-nowrap' }).text('0 of ' + this.packsUpdateDetails.toHandle + ' language ' +
             LanguagePacks.pluralize(this.packsUpdateDetails.toHandle) + ' updated'
           ),
         ),
@@ -239,7 +240,7 @@ class LanguagePacks extends AbstractInteractableModule {
             },
           })
           .then(
-            async (response: AjaxResponse): Promise<any> => {
+            async (response: AjaxResponse): Promise<void> => {
               const data = await response.resolve();
               if (data.success === true) {
                 this.packsUpdateDetails.handled++;
@@ -269,7 +270,7 @@ class LanguagePacks extends AbstractInteractableModule {
     });
   }
 
-  private packUpdateDone(updateIsoTimes: boolean, isos: Array<any>): void {
+  private packUpdateDone(updateIsoTimes: boolean, isos: string[]): void {
     const modalContent = this.getModalBody();
     const $outputContainer = this.findInModal(this.selectorOutputContainer);
     if (this.packsUpdateDetails.handled === this.packsUpdateDetails.toHandle) {
@@ -293,12 +294,12 @@ class LanguagePacks extends AbstractInteractableModule {
             },
           })
           .then(
-            async (response: AjaxResponse): Promise<any> => {
+            async (response: AjaxResponse): Promise<void> => {
               const data = await response.resolve();
               if (data.success === true) {
                 this.getData();
               } else {
-                const m: any = FlashMessage.render(Severity.error, 'Something went wrong', '');
+                const m = FlashMessage.render(Severity.error, 'Something went wrong', '');
                 this.addNotification(m);
               }
             },
@@ -337,7 +338,7 @@ class LanguagePacks extends AbstractInteractableModule {
         $tbody.append(
           $tr.append(
             $('<td>').text(' ' + language.name).prepend(
-              $('<div />', {class: 'btn-group'}).append(
+              $('<div />', { class: 'btn-group' }).append(
                 $('<a>', {
                   'class': 'btn btn-default t3js-languagePacks-deactivateLanguage',
                   'data-iso': language.iso,
@@ -354,9 +355,9 @@ class LanguagePacks extends AbstractInteractableModule {
         );
       } else {
         $tbody.append(
-          $tr.addClass('t3-languagePacks-inactive t3js-languagePacks-inactive').css({'display': 'none'}).append(
+          $tr.addClass('t3-languagePacks-inactive t3js-languagePacks-inactive').css({ 'display': 'none' }).append(
             $('<td>').text(' ' + language.name).prepend(
-              $('<div />', {class: 'btn-group'}).append(
+              $('<div />', { class: 'btn-group' }).append(
                 $('<a>', {
                   'class': 'btn btn-default t3js-languagePacks-activateLanguage',
                   'data-iso': language.iso,
@@ -377,11 +378,11 @@ class LanguagePacks extends AbstractInteractableModule {
     });
     $markupContainer.append(
       $('<h3>').text('Active languages'),
-      $('<table>', {'class': 'table table-striped table-bordered'}).append(
+      $('<table>', { 'class': 'table table-striped table-bordered' }).append(
         $('<thead>').append(
           $('<tr>').append(
             $('<th>').append(
-              $('<div />', {class: 'btn-group'}).append(
+              $('<div />', { class: 'btn-group' }).append(
                 $('<button>', {
                   'class': 'btn btn-default t3js-languagePacks-addLanguage-toggle',
                   'type': 'button'
@@ -389,7 +390,7 @@ class LanguagePacks extends AbstractInteractableModule {
                   $('<span>').append(activateIcon),
                   ' Add language',
                 ),
-                $('<button>', {'class': 'btn btn-default disabled update-all t3js-languagePacks-update', 'type': 'button', 'disabled': 'disabled'}).append(
+                $('<button>', { 'class': 'btn btn-default disabled update-all t3js-languagePacks-update', 'type': 'button', 'disabled': 'disabled' }).append(
                   $('<span>').append(updateIcon),
                   ' Update all',
                 ),
@@ -502,7 +503,7 @@ class LanguagePacks extends AbstractInteractableModule {
 
     $markupContainer.append(
       $('<h3>').text('Translation status'),
-      $('<table>', {'class': 'table table-striped table-bordered'}).append(
+      $('<table>', { 'class': 'table table-striped table-bordered' }).append(
         $('<thead>').append($headerRow),
         $tbody,
       ),
@@ -521,13 +522,13 @@ class LanguagePacks extends AbstractInteractableModule {
     return this.findInModal(this.selectorNotifications);
   }
 
-  private addNotification(notification: any): void {
+  private addNotification(notification: JQuery): void {
     this.notifications.push(notification);
   }
 
   private renderNotifications(): void {
     const $notificationBox: JQuery = this.getNotificationBox();
-    for (let notification of this.notifications) {
+    for (const notification of this.notifications) {
       $notificationBox.append(notification);
     }
     this.notifications = [];

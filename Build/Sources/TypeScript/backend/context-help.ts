@@ -12,7 +12,7 @@
  */
 
 import 'bootstrap';
-import {Popover as BootstrapPopover} from 'bootstrap';
+import { Popover as BootstrapPopover } from 'bootstrap';
 import Popover from './popover';
 import RegularEvent from '@typo3/core/event/regular-event';
 
@@ -44,7 +44,7 @@ class ContextHelp {
       const me = e.target as HTMLElement;
       const description = me.dataset.description;
 
-      if (!!description) {
+      if (description) {
         const options = <BootstrapPopover.Options>{
           title: me.dataset.title || '',
           content: description,

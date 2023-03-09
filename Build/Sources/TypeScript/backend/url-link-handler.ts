@@ -24,7 +24,7 @@ class UrlLinkHandler {
     new RegularEvent('submit', (evt: MouseEvent, targetEl: HTMLElement): void => {
       evt.preventDefault();
       const inputField = targetEl.querySelector('[name="lurl"]') as HTMLInputElement;
-      let value = inputField.value.trim();
+      const value = inputField.value.trim();
       if (value === '') {
         return;
       }

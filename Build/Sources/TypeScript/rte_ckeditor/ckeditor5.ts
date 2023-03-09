@@ -1,8 +1,8 @@
-import {html, LitElement, TemplateResult} from 'lit';
-import {customElement, property, query} from 'lit/decorators';
-import {CKEditor5, Core} from '@typo3/ckeditor5-bundle';
-import type {PluginInterface} from '@ckeditor/ckeditor5-core/src/plugin';
-import type {EditorWithUI} from '@ckeditor/ckeditor5-core/src/editor/editorwithui';
+import { html, LitElement, TemplateResult } from 'lit';
+import { customElement, property, query } from 'lit/decorators';
+import { CKEditor5, Core } from '@typo3/ckeditor5-bundle';
+import type { PluginInterface } from '@ckeditor/ckeditor5-core/src/plugin';
+import type { EditorWithUI } from '@ckeditor/ckeditor5-core/src/editor/editorwithui';
 
 interface CKEditor5Config {
   // in TYPO3 always `items` property is used, skipping `string[]`
@@ -48,8 +48,8 @@ type Typo3Plugin = PluginInterface & {overrides?: Typo3Plugin[]};
  */
 @customElement('typo3-rte-ckeditor-ckeditor5')
 export class CKEditor5Element extends LitElement {
-  @property({type: Object}) options?: CKEditor5Config = {};
-  @property({type: Object, attribute: 'form-engine'}) formEngine?: FormEngineConfig = {};
+  @property({ type: Object }) options?: CKEditor5Config = {};
+  @property({ type: Object, attribute: 'form-engine' }) formEngine?: FormEngineConfig = {};
 
   @query('textarea') target: HTMLElement;
 
@@ -101,7 +101,7 @@ export class CKEditor5Element extends LitElement {
 
         const toolbar = this.options.toolbar;
 
-        let config = {
+        const config = {
           // link.defaultProtocol: 'https://'
           // @todo use complete `config` later - currently step-by-step only
           toolbar,

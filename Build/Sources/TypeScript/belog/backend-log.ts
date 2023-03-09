@@ -15,7 +15,7 @@ import Modal from '@typo3/backend/modal';
 import DocumentService from '@typo3/core/document-service';
 import DateTimePicker from '@typo3/backend/date-time-picker';
 import '@typo3/backend/input/clearable';
-import {MessageUtility} from '@typo3/backend/utility/message-utility';
+import { MessageUtility } from '@typo3/backend/utility/message-utility';
 
 /**
  * Module: @typo3/belog/backend-log
@@ -25,7 +25,7 @@ import {MessageUtility} from '@typo3/backend/utility/message-utility';
 class BackendLog {
   private clearableElements: NodeListOf<HTMLInputElement> = null;
   private dateTimePickerElements: NodeListOf<HTMLInputElement> = null;
-  private elementBrowserElements: NodeListOf<HTMLAnchorElement> = null
+  private elementBrowserElements: NodeListOf<HTMLAnchorElement> = null;
 
   constructor() {
     DocumentService.ready().then((): void => {

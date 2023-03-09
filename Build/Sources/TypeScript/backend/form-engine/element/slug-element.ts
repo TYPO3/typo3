@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import DocumentService from '@typo3/core/document-service';
 import DebounceEvent from '@typo3/core/event/debounce-event';
@@ -23,7 +23,7 @@ interface FieldOptions {
   tableName: string;
   fieldName: string;
   config: { [key: string]: any };
-  listenerFieldNames: { [key: string]: string };
+  listenerFieldNames: Record<string, string>;
   language: number;
   originalValue: string;
   signature: string;
@@ -71,7 +71,7 @@ class SlugElement {
   private inputField: HTMLInputElement = null;
   private hiddenField: HTMLInputElement = null;
   private request: AjaxRequest = null;
-  private readonly fieldsToListenOn: { [key: string]: string } = {};
+  private readonly fieldsToListenOn: Record<string, string> = {};
 
   constructor(selector: string, options: FieldOptions) {
     this.options = options;
@@ -156,7 +156,7 @@ class SlugElement {
    * @param {ProposalModes} mode
    */
   private sendSlugProposal(mode: ProposalModes): void {
-    const input: { [key: string]: string } = {};
+    const input: Record<string, string> = {};
     if (mode === ProposalModes.AUTO || mode === ProposalModes.RECREATE) {
       Object.entries(this.getAvailableFieldsForProposalGeneration()).forEach((entry: [fieldName: string, field: HTMLInputElement|HTMLSelectElement]) => {
         input[entry[0]] = entry[1].value;
@@ -182,7 +182,7 @@ class SlugElement {
       fieldName: this.options.fieldName,
       command: this.options.command,
       signature: this.options.signature,
-    }).then(async (response: AjaxResponse): Promise<any> => {
+    }).then(async (response: AjaxResponse): Promise<void> => {
       const data: Response = await response.resolve();
       const visualProposal = '/' + data.proposal.replace(/^\//, '');
       const acceptedProposalField: HTMLElement = this.fullElement.querySelector('.t3js-form-proposal-accepted');
@@ -195,7 +195,7 @@ class SlugElement {
       const isChanged = this.hiddenField.value !== data.proposal;
       if (isChanged) {
         this.fullElement.querySelector('input[data-formengine-input-name]')
-          .dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
+          .dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
       }
       if (mode === ProposalModes.AUTO || mode === ProposalModes.RECREATE) {
         this.readOnlyField.value = data.proposal;
@@ -212,7 +212,7 @@ class SlugElement {
   /**
    * Gets a list of all available fields that can be used for slug generation
    *
-   * @return { [key: string]: string }
+   * @return Record<string, string>
    */
   private getAvailableFieldsForProposalGeneration(): { [key: string]: HTMLElement } {
     const availableFields: { [key: string]: HTMLElement } = {};

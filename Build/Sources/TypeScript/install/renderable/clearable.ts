@@ -12,6 +12,14 @@
  */
 
 class Clearable {
+  constructor() {
+    if (typeof HTMLInputElement.prototype.clearable === 'function') {
+      return;
+    }
+
+    this.registerClearable();
+  }
+
   private static createCloseButton(): HTMLButtonElement {
     // The inlined markup represents the current generated markup from the
     // icon api for the icon actions-close that can be found in the official
@@ -49,14 +57,6 @@ class Clearable {
     return closeButton;
   }
 
-  constructor() {
-    if (typeof HTMLInputElement.prototype.clearable === 'function') {
-      return;
-    }
-
-    this.registerClearable();
-  }
-
   private registerClearable(): void {
     HTMLInputElement.prototype.clearable = function(options: Options = {}): void {
       if (this.dataset.clearable) {
@@ -87,7 +87,7 @@ class Clearable {
           options.onClear(this);
         }
 
-        this.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
+        this.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
         toggleClearButtonVisibility();
       });
       wrap.appendChild(clearButton);

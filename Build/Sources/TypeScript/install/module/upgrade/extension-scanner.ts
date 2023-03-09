@@ -14,8 +14,8 @@
 import 'bootstrap';
 import $ from 'jquery';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxQueue from '../../ajax/ajax-queue';
@@ -49,7 +49,7 @@ interface RestFile {
 }
 
 class ExtensionScanner extends AbstractInteractableModule {
-  private listOfAffectedRestFileHashes: Array<any> = [];
+  private listOfAffectedRestFileHashes: string[] = [];
   private selectorExtensionContainer: string = '.t3js-extensionScanner-extension';
   private selectorNumberOfFiles: string = '.t3js-extensionScanner-number-of-files';
   private selectorScanSingleTrigger: string = '.t3js-extensionScanner-scan-single';
@@ -86,7 +86,7 @@ class ExtensionScanner extends AbstractInteractableModule {
   private getData(): void {
     const modalContent = this.getModalBody();
     (new AjaxRequest(Router.getUrl('extensionScannerGetData'))).get().then(
-      async (response: AjaxResponse): Promise<any> => {
+      async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           modalContent.empty().append(data.html);
@@ -114,7 +114,7 @@ class ExtensionScanner extends AbstractInteractableModule {
       .find('span')
       .text('0%');
     this.setProgressForAll();
-    $extensions.each((index: number, element: any): void => {
+    $extensions.each((index: number, element: Element): void => {
       const $me: JQuery = $(element);
       const extension = $me.data('extension');
       this.scanSingleExtension(extension);
@@ -166,7 +166,7 @@ class ExtensionScanner extends AbstractInteractableModule {
           hashes: Array.from(new Set(this.listOfAffectedRestFileHashes)),
         },
       }).then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true) {
             Notification.success('Marked not affected files', 'Marked ' + data.markedAsNotAffected + ' ReST files as not affected.');
@@ -204,7 +204,7 @@ class ExtensionScanner extends AbstractInteractableModule {
         extension: extension,
       },
     }).then(
-      async (response: AjaxResponse): Promise<any> => {
+      async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true && Array.isArray(data.files)) {
           const numberOfFiles = data.files.length;
@@ -237,7 +237,7 @@ class ExtensionScanner extends AbstractInteractableModule {
                 if (fileData.success && Array.isArray(fileData.matches)) {
                   fileData.matches.forEach((match: Match): void => {
                     hitFound = true;
-                    const aMatch: any = modalContent.find(hitTemplate).find('.panel').clone();
+                    const aMatch: JQuery = modalContent.find(hitTemplate).find('.panel').clone();
                     aMatch.find('.t3js-extensionScanner-hit-file-panel-head').attr('href', '#collapse' + match.uniqueId);
                     aMatch.find('.t3js-extensionScanner-hit-file-panel-body').attr('id', 'collapse' + match.uniqueId);
                     aMatch.find('.t3js-extensionScanner-hit-filename').text(file);
@@ -270,7 +270,7 @@ class ExtensionScanner extends AbstractInteractableModule {
                       });
                     }
                     const panelClass =
-                      aMatch.find('.panel-breaking', '.t3js-extensionScanner-hit-file-rest-container').length > 0
+                      aMatch.find('.panel-breaking, .t3js-extensionScanner-hit-file-rest-container').length > 0
                         ? 'panel-danger'
                         : 'panel-warning';
                     aMatch.addClass(panelClass);

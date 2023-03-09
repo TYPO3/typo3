@@ -48,7 +48,7 @@ export abstract class AbstractSortableSelectItems {
   private static moveOptionUp(fieldElement: HTMLSelectElement): void {
     const allChildren = Array.from(fieldElement.children);
     const selectedOptions = Array.from(fieldElement.querySelectorAll(':checked'));
-    for (let optionEl of selectedOptions) {
+    for (const optionEl of selectedOptions) {
       if (allChildren.indexOf(optionEl) === 0 && optionEl.previousElementSibling === null) {
         break;
       }
@@ -66,7 +66,7 @@ export abstract class AbstractSortableSelectItems {
   private static moveOptionDown(fieldElement: HTMLSelectElement): void {
     const allChildren = Array.from(fieldElement.children).reverse();
     const selectedOptions = Array.from(fieldElement.querySelectorAll(':checked')).reverse();
-    for (let optionEl of selectedOptions) {
+    for (const optionEl of selectedOptions) {
       if (allChildren.indexOf(optionEl) === 0 && optionEl.nextElementSibling === null) {
         break;
       }
@@ -140,5 +140,5 @@ export abstract class AbstractSortableSelectItems {
       FormEngineValidation.markFieldAsChanged(relatedAvailableValuesField);
       FormEngineValidation.validateField(relatedAvailableValuesField);
     });
-  }
+  };
 }

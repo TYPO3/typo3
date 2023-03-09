@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {SeverityEnum} from './enum/severity';
+import { SeverityEnum } from './enum/severity';
 import $ from 'jquery';
-import {default as Modal, ModalElement} from './modal';
+import { default as Modal, ModalElement } from './modal';
 import Severity from './severity';
 import Icons from './icons';
 
@@ -86,7 +86,7 @@ class Wizard {
     }
 
     return Icons.getIcon('spinner-circle-dark', Icons.sizes.large, null, null).then((markup: string) => {
-      let $processingSlide = $('<div />', {class: 'text-center'}).append(markup);
+      const $processingSlide = $('<div />', { class: 'text-center' }).append(markup);
       this.addSlide(
         'final-processing-slide', top.TYPO3.lang['wizard.processing.title'],
         $processingSlide[0].outerHTML,
@@ -97,8 +97,8 @@ class Wizard {
   }
 
   public show(): void {
-    let $slides = this.generateSlides();
-    let firstSlide = this.setup.slides[0];
+    const $slides = this.generateSlides();
+    const firstSlide = this.setup.slides[0];
 
     const modal = Modal.advanced({
       title: firstSlide.title,
@@ -147,13 +147,13 @@ class Wizard {
   }
 
   public lockNextStep(): JQuery {
-    let $button = this.setup.$carousel.closest('.modal').find('button[name="next"]');
+    const $button = this.setup.$carousel.closest('.modal').find('button[name="next"]');
     $button.prop('disabled', true);
     return $button;
   }
 
   public unlockNextStep(): JQuery {
-    let $button = this.setup.$carousel.closest('.modal').find('button[name="next"]');
+    const $button = this.setup.$carousel.closest('.modal').find('button[name="next"]');
     $button.prop('disabled', false);
     return $button;
   }
@@ -163,18 +163,18 @@ class Wizard {
   }
 
   private initializeEvents(modal: ModalElement): void {
-    let $modal = this.setup.$carousel.closest('.modal');
-    let $modalTitle = $modal.find('.modal-title');
-    let $modalFooter = $modal.find('.modal-footer');
-    let $nextButton = $modalFooter.find('button[name="next"]');
+    const $modal = this.setup.$carousel.closest('.modal');
+    const $modalTitle = $modal.find('.modal-title');
+    const $modalFooter = $modal.find('.modal-footer');
+    const $nextButton = $modalFooter.find('button[name="next"]');
 
     $nextButton.on('click', (): void => {
       this.setup.$carousel.carousel('next');
     });
 
     this.setup.$carousel.on('slide.bs.carousel', (): void => {
-      let nextSlideNumber = this.setup.$carousel.data('currentSlide') + 1;
-      let currentIndex = this.setup.$carousel.data('currentIndex') + 1;
+      const nextSlideNumber = this.setup.$carousel.data('currentSlide') + 1;
+      const currentIndex = this.setup.$carousel.data('currentIndex') + 1;
 
       $modalTitle.text(this.setup.slides[currentIndex].title);
 
@@ -201,8 +201,8 @@ class Wizard {
         .removeClass('modal-severity-' + Severity.getCssClass(this.setup.slides[currentIndex - 1].severity))
         .addClass('modal-severity-' + Severity.getCssClass(this.setup.slides[currentIndex].severity));
     }).on('slid.bs.carousel', (evt: JQueryEventObject): void => {
-      let currentIndex = this.setup.$carousel.data('currentIndex');
-      let slide = this.setup.slides[currentIndex];
+      const currentIndex = this.setup.$carousel.data('currentIndex');
+      const slide = this.setup.slides[currentIndex];
 
       this.runSlideCallback(slide, $(evt.relatedTarget));
 
@@ -214,7 +214,7 @@ class Wizard {
     /**
      * Custom event, closes the wizard
      */
-    let cmp = this.getComponent();
+    const cmp = this.getComponent();
     cmp.on('wizard-dismiss', this.dismiss);
 
     modal.addEventListener('typo3-modal-hidden', (): void => {
@@ -232,13 +232,11 @@ class Wizard {
   }
 
   private addProgressBar(): void {
-    let realSlideCount = this.setup.$carousel.find('.carousel-item').length;
-    let slideCount = Math.max(1, realSlideCount);
-    let initialStep;
-    let $modal = this.setup.$carousel.closest('.modal');
-    let $modalFooter = $modal.find('.modal-footer');
-
-    initialStep = Math.round(100 / slideCount);
+    const realSlideCount = this.setup.$carousel.find('.carousel-item').length;
+    const slideCount = Math.max(1, realSlideCount);
+    const initialStep = Math.round(100 / slideCount);
+    const $modal = this.setup.$carousel.closest('.modal');
+    const $modalFooter = $modal.find('.modal-footer');
 
     this.setup.$carousel
       .data('initialStep', initialStep)
@@ -250,7 +248,7 @@ class Wizard {
     // Append progress bar to modal footer
     if (slideCount > 1) {
       $modalFooter.prepend(
-        $('<div />', {class: 'progress'}).append(
+        $('<div />', { class: 'progress' }).append(
           $('<div />', {
             role: 'progressbar',
             class: 'progress-bar',
@@ -276,7 +274,7 @@ class Wizard {
     let slides = '<div class="carousel slide" data-bs-ride="false">'
       + '<div class="carousel-inner" role="listbox">';
 
-    for (let currentSlide of Object.values(this.setup.slides)) {
+    for (const currentSlide of Object.values(this.setup.slides)) {
       let slideContent = currentSlide.content;
 
       if (typeof slideContent === 'object') {

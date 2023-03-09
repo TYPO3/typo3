@@ -11,16 +11,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {customElement, property} from 'lit/decorators';
-import {ifDefined} from 'lit/directives/if-defined';
-import {html, LitElement, TemplateResult} from 'lit';
+import { customElement, property } from 'lit/decorators';
+import { ifDefined } from 'lit/directives/if-defined';
+import { html, LitElement, TemplateResult } from 'lit';
 import '@typo3/backend/element/icon-element';
-import {ResultItemActionInterface, ResultItemInterface} from '../item';
+import { ResultItemActionInterface, ResultItemInterface } from '../item';
 
 @customElement('typo3-backend-live-search-result-item-action')
 export class Action extends LitElement {
-  @property({type: Object, attribute: false}) resultItem: ResultItemInterface;
-  @property({type: Object, attribute: false}) resultItemAction: ResultItemActionInterface;
+  @property({ type: Object, attribute: false }) resultItem: ResultItemInterface;
+  @property({ type: Object, attribute: false }) resultItemAction: ResultItemActionInterface;
 
   public connectedCallback(): void {
     super.connectedCallback();

@@ -12,16 +12,16 @@
  */
 
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {MessageUtility} from '../../utility/message-utility';
-import {AjaxDispatcher} from './../inline-relation/ajax-dispatcher';
-import {InlineResponseInterface} from './../inline-relation/inline-response-interface';
+import { MessageUtility } from '../../utility/message-utility';
+import { AjaxDispatcher } from './../inline-relation/ajax-dispatcher';
+import { InlineResponseInterface } from './../inline-relation/inline-response-interface';
 import NProgress from 'nprogress';
 import Sortable from 'sortablejs';
 import FormEngine from '@typo3/backend/form-engine';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import Icons from '../../icons';
 import InfoWindow from '../../info-window';
-import Modal, {ModalElement} from '../../modal';
+import Modal, { ModalElement } from '../../modal';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Severity from '../../severity';
 import Utility from '../../utility';
@@ -220,9 +220,9 @@ class FilesControlContainer extends HTMLElement {
         }
       });
     }
-  }
+  };
 
-  private createRecord(uid: string, markup: string, afterUid: string = null, selectedValue: string = null): void {
+  private createRecord(uid: string, markup: string, afterUid: string = null): void {
     let objectId = this.container.dataset.objectGroup;
     if (afterUid !== null) {
       objectId += Separators.structureSeparator + afterUid;
@@ -230,10 +230,10 @@ class FilesControlContainer extends HTMLElement {
 
     if (afterUid !== null) {
       FilesControlContainer.getFileReferenceContainer(objectId).insertAdjacentHTML('afterend', markup);
-      this.memorizeAddRecord(uid, afterUid, selectedValue);
+      this.memorizeAddRecord(uid, afterUid);
     } else {
       document.getElementById(this.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', markup);
-      this.memorizeAddRecord(uid, null, selectedValue);
+      this.memorizeAddRecord(uid, null);
     }
   }
 
@@ -246,8 +246,7 @@ class FilesControlContainer extends HTMLElement {
         this.createRecord(
           response.compilerInput.uid,
           response.data,
-          typeof afterUid !== 'undefined' ? afterUid : null,
-          typeof response.compilerInput.childChildUid !== 'undefined' ? response.compilerInput.childChildUid : null,
+          typeof afterUid !== 'undefined' ? afterUid : null
         );
       }
     });
@@ -335,21 +334,21 @@ class FilesControlContainer extends HTMLElement {
       me.ajaxDispatcher.send(
         me.ajaxDispatcher.newRequest(me.ajaxDispatcher.getEndpoint('file_reference_synchronizelocalize')),
         [me.container.dataset.objectGroup, this.dataset.type],
-      ).then(async (response: InlineResponseInterface): Promise<any> => {
+      ).then(async (response: InlineResponseInterface): Promise<void> => {
         document.getElementById(me.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', response.data);
 
         const objectIdPrefix = me.container.dataset.objectGroup + Separators.structureSeparator;
-        for (let itemUid of response.compilerInput.delete) {
+        for (const itemUid of response.compilerInput.delete) {
           me.deleteRecord(objectIdPrefix + itemUid, true);
         }
 
-        for (let item of Object.values(response.compilerInput.localize)) {
+        for (const item of Object.values(response.compilerInput.localize)) {
           if (typeof item.remove !== 'undefined') {
             const removableRecordContainer = FilesControlContainer.getFileReferenceContainer(objectIdPrefix + item.remove);
             removableRecordContainer.parentElement.removeChild(removableRecordContainer);
           }
 
-          me.memorizeAddRecord(item.uid, null, item.selectedValue);
+          me.memorizeAddRecord(item.uid, null);
         }
       });
     }).delegateTo(this.container, Selectors.synchronizeLocalizeRecordButtonSelector);
@@ -368,7 +367,7 @@ class FilesControlContainer extends HTMLElement {
         const ajaxRequest = this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('file_reference_details'));
         const request = this.ajaxDispatcher.send(ajaxRequest, [objectId]);
 
-        request.then(async (response: InlineResponseInterface): Promise<any> => {
+        request.then(async (response: InlineResponseInterface): Promise<void> => {
           delete this.requestQueue[objectId];
           delete this.progessQueue[objectId];
 
@@ -426,7 +425,7 @@ class FilesControlContainer extends HTMLElement {
     );
   }
 
-  private memorizeAddRecord(newUid: string, afterUid: string = null, selectedValue: string = null): void {
+  private memorizeAddRecord(newUid: string, afterUid: string = null): void {
     const formField = this.getFormFieldForElements();
     if (formField === null) {
       return;
@@ -469,7 +468,7 @@ class FilesControlContainer extends HTMLElement {
       return [];
     }
 
-    let records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
+    const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
     const indexOfRemoveUid = records.indexOf(objectUid);
     if (indexOfRemoveUid > -1) {
       delete records[indexOfRemoveUid];
@@ -489,7 +488,7 @@ class FilesControlContainer extends HTMLElement {
     const objectUid = fileReferenceContainer.dataset.objectUid;
     const recordListContainer = <HTMLDivElement>document.getElementById(this.container.getAttribute('id') + '_records');
     const records = Array.from(recordListContainer.children).map((child: HTMLElement) => child.dataset.objectUid);
-    let position = records.indexOf(objectUid);
+    const position = records.indexOf(objectUid);
     let isChanged = false;
 
     if (direction === SortDirections.UP && position > 0) {
@@ -578,7 +577,7 @@ class FilesControlContainer extends HTMLElement {
       progress = this.progessQueue[objectId];
     } else {
       progress = NProgress;
-      progress.configure({parent: headerIdentifier, showSpinner: false});
+      progress.configure({ parent: headerIdentifier, showSpinner: false });
       this.progessQueue[objectId] = progress;
     }
 
@@ -591,7 +590,7 @@ class FilesControlContainer extends HTMLElement {
 
     if (formField !== null) {
       const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
-      for (let recordUid of records) {
+      for (const recordUid of records) {
         if (recordUid === excludeUid) {
           continue;
         }

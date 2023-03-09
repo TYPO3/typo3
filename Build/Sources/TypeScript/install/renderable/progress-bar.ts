@@ -26,7 +26,7 @@ class ProgressBar {
     '</div>');
 
   public render(severity: number, title: string, progress: string): JQuery {
-    let progressBar = this.template.clone();
+    const progressBar = this.template.clone();
     progressBar.addClass('progress-bar-' + Severity.getCssClass(severity));
     if (progress) {
       progressBar.css('width', progress + '%');

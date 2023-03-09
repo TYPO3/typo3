@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {SeverityEnum} from '@typo3/backend/enum/severity';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Modal from '@typo3/backend/modal';
 import DocumentService from '@typo3/core/document-service';
@@ -33,7 +33,7 @@ class RenameFile {
   public initialize(): void {
     const submitButton = document.querySelector('.t3js-submit-file-rename');
     if (submitButton !== null) {
-      submitButton.addEventListener('click', this.checkForDuplicate)
+      submitButton.addEventListener('click', this.checkForDuplicate);
     }
   }
 
@@ -45,7 +45,7 @@ class RenameFile {
     const destinationField = form.querySelector('input[name="data[rename][0][destination]"]') as HTMLInputElement;
     const conflictModeField = form.querySelector('input[name="data[rename][0][conflictMode]"]') as HTMLInputElement;
 
-    const data: any = {
+    const data: Record<string, string> = {
       fileName: fileNameField.value
     };
     // destination is not set if we deal with a folder
@@ -53,7 +53,7 @@ class RenameFile {
       data.fileTarget = destinationField.value;
     }
 
-    new AjaxRequest(TYPO3.settings.ajaxUrls.file_exists).withQueryArguments(data).get({cache: 'no-cache'}).then(async (response: AjaxResponse): Promise<void> => {
+    new AjaxRequest(TYPO3.settings.ajaxUrls.file_exists).withQueryArguments(data).get({ cache: 'no-cache' }).then(async (response: AjaxResponse): Promise<void> => {
       const result = await response.resolve();
 
       const fileExists: boolean = typeof result.uid !== 'undefined';

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import RegularEvent from"@typo3/core/event/regular-event.js";class RequestAnimationFrameEvent extends RegularEvent{constructor(e,t){super(e,t),this.callback=this.req(this.callback)}req(e){let t=null;return()=>{const n=this,a=arguments;t&&window.cancelAnimationFrame(t),t=window.requestAnimationFrame((function(){e.apply(n,a)}))}}}export default RequestAnimationFrameEvent;
+import RegularEvent from"@typo3/core/event/regular-event.js";class RequestAnimationFrameEvent extends RegularEvent{constructor(e,t){super(e,t),this.callback=this.req(this.callback)}req(e){let t=null;return(...n)=>{t&&window.cancelAnimationFrame(t),t=window.requestAnimationFrame((()=>{e.apply(this,n)}))}}}export default RequestAnimationFrameEvent;

@@ -11,12 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ModuleMenu from '@typo3/backend/module-menu';
 import Viewport from '@typo3/backend/viewport';
 import RegularEvent from '@typo3/core/event/regular-event';
-import {ModuleStateStorage} from '@typo3/backend/storage/module-state-storage';
+import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 
 enum Identifiers {
   topbarHeaderSelector = '.t3js-topbar-header',
@@ -44,6 +44,19 @@ interface WorkspaceState {
  * and jump to the workspaces module
  */
 class WorkspacesMenu {
+  constructor() {
+    Viewport.Topbar.Toolbar.registerEvent((): void => {
+      this.initializeEvents();
+      WorkspacesMenu.updateBackendContext();
+    });
+
+    new RegularEvent('typo3:datahandler:process', (e: CustomEvent): void => {
+      const payload = e.detail.payload;
+      if (payload.table === 'sys_workspace' && payload.action === 'delete' && payload.hasErrors === false) {
+        Viewport.Topbar.refresh();
+      }
+    }).bindTo(document);
+  }
 
   /**
    * Refresh the page tree
@@ -67,7 +80,7 @@ class WorkspacesMenu {
       id: workspaceId,
       title: selectedWorkspaceLink.innerText.trim(),
       inWorkspace: workspaceId !== 0
-    }
+    };
   }
 
   /**
@@ -110,20 +123,6 @@ class WorkspacesMenu {
     WorkspacesMenu.updateTopBar(workspaceState);
   }
 
-  constructor() {
-    Viewport.Topbar.Toolbar.registerEvent((): void => {
-      this.initializeEvents();
-      WorkspacesMenu.updateBackendContext();
-    });
-
-    new RegularEvent('typo3:datahandler:process', (e: CustomEvent): void => {
-      const payload = e.detail.payload;
-      if (payload.table === 'sys_workspace' && payload.action === 'delete' && payload.hasErrors === false) {
-        Viewport.Topbar.refresh();
-      }
-    }).bindTo(document);
-  }
-
   /**
    * Changes the data in the module menu and the updates the backend context
    * This method is also used in the workspaces backend module.
@@ -140,7 +139,7 @@ class WorkspacesMenu {
     toolbarItemContainer.querySelector(Identifiers.menuItemLinkSelector + '[data-workspaceid="' + id + '"]')?.classList.add('active');
 
     // Initiate backend context update
-    WorkspacesMenu.updateBackendContext({id: id, title: title, inWorkspace: id !== 0});
+    WorkspacesMenu.updateBackendContext({ id: id, title: title, inWorkspace: id !== 0 });
   }
 
   private initializeEvents(): void {
@@ -161,7 +160,7 @@ class WorkspacesMenu {
     (new AjaxRequest(TYPO3.settings.ajaxUrls.workspace_switch)).post({
       workspaceId: workspaceId,
       pageId: ModuleStateStorage.current('web').identifier
-    }).then(async (response: AjaxResponse): Promise<any> => {
+    }).then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
       if (!data.workspaceId) {
         data.workspaceId = 0;

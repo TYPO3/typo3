@@ -13,9 +13,9 @@
 
 import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
-import {MessageUtility} from '@typo3/backend/utility/message-utility';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {KeyTypesEnum} from './enum/key-types';
+import { MessageUtility } from '@typo3/backend/utility/message-utility';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { KeyTypesEnum } from './enum/key-types';
 import NProgress from 'nprogress';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import SecurityUtility from '@typo3/core/security-utility';
@@ -82,7 +82,7 @@ class OnlineMedia {
             name: 'ok',
             active: true,
           }],
-        )
+        );
         modal.addEventListener('confirm.button.ok', (): void => {
           modal.hideModal();
         });

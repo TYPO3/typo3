@@ -12,9 +12,9 @@
  */
 
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {SvgTree, TreeNodeSelection} from '../svg-tree';
-import {TreeNode} from '../tree/tree-node';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { SvgTree, TreeNodeSelection } from '../svg-tree';
+import { TreeNode } from '../tree/tree-node';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 /**
  * A Tree based on SVG for pages, which has a AJAX-based loading of the tree
@@ -56,7 +56,7 @@ export class PageTree extends SvgTree
     nodes = super.nodesUpdate(nodes);
 
     // append the stop element
-    let nodeStop = nodes
+    const nodeStop = nodes
       .append('svg')
       .attr('class', 'node-stop')
       .attr('y', (super.settings.icon.size / 2 * -1))
@@ -65,7 +65,7 @@ export class PageTree extends SvgTree
       .attr('width', super.settings.icon.size)
       .attr('visibility', (node: TreeNode) => node.stopPageTree && node.depth !== 0 ? 'visible' : 'hidden')
       .on('click', (evt: MouseEvent, node: TreeNode) => {
-        document.dispatchEvent(new CustomEvent('typo3:pagetree:mountPoint', {detail: {pageId: parseInt(node.identifier, 10)}}));
+        document.dispatchEvent(new CustomEvent('typo3:pagetree:mountPoint', { detail: { pageId: parseInt(node.identifier, 10) } }));
       });
     nodeStop.append('rect')
       .attr('height', super.settings.icon.size)
@@ -96,10 +96,10 @@ export class PageTree extends SvgTree
 
     this.nodesAddPlaceholder();
     (new AjaxRequest(this.settings.dataUrl + '&pid=' + parentNode.identifier + '&mount=' + parentNode.mountPoint + '&pidDepth=' + parentNode.depth))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then((response: AjaxResponse) => response.resolve())
       .then((json: any) => {
-        let nodes = Array.isArray(json) ? json : [];
+        const nodes = Array.isArray(json) ? json : [];
         // first element is a parent
         nodes.shift();
         const index = this.nodes.indexOf(parentNode) + 1;
@@ -117,7 +117,7 @@ export class PageTree extends SvgTree
         this.focusNode(parentNode);
       })
       .catch((error: any) => {
-        this.errorNotification(error, false)
+        this.errorNotification(error, false);
         this.nodesRemovePlaceholder();
         throw error;
       });

@@ -16,9 +16,9 @@ import Icons from '@typo3/backend/icons';
 import PersistentStorage from '@typo3/backend/storage/persistent';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DocumentService from '@typo3/core/document-service';
-import {ActionConfiguration, ActionEventDetails} from '@typo3/backend/multi-record-selection-action';
-import {default as Modal, ModalElement} from '@typo3/backend/modal';
-import {SeverityEnum} from '@typo3/backend/enum/severity';
+import { ActionConfiguration, ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
+import { default as Modal, ModalElement } from '@typo3/backend/modal';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
 
@@ -66,6 +66,26 @@ class Recordlist {
     },
   };
 
+  constructor() {
+    new RegularEvent('click', this.toggleClick).delegateTo(document, this.identifier.toggle);
+    $(document).on('click', this.identifier.icons.editMultiple, this.onEditMultiple);
+    $(document).on('click', this.identifier.localize, this.disableButton);
+    DocumentService.ready().then((): void => {
+      this.registerPaginationEvents();
+    });
+    new RegularEvent('typo3:datahandler:process', this.handleDataHandlerResult.bind(this)).bindTo(document);
+
+    // multi record selection events
+    new RegularEvent('multiRecordSelection:action:edit', this.onEditMultiple).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:delete', this.deleteMultiple).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:copyMarked', (event: CustomEvent): void => {
+      Recordlist.submitClipboardFormWithCommand('copyMarked', event.target as HTMLButtonElement);
+    }).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:removeMarked', (event: CustomEvent): void => {
+      Recordlist.submitClipboardFormWithCommand('removeMarked', event.target as HTMLButtonElement);
+    }).bindTo(document);
+  }
+
   private static submitClipboardFormWithCommand(cmd: string, target: HTMLButtonElement) {
     const clipboardForm = <HTMLFormElement>target.closest('form');
     if (!clipboardForm) {
@@ -84,26 +104,6 @@ class Recordlist {
       returnUrl = top.list_frame.document.location.pathname + top.list_frame.document.location.search;
     }
     return encodeURIComponent(returnUrl);
-  }
-
-  constructor() {
-    new RegularEvent('click', this.toggleClick).delegateTo(document, this.identifier.toggle);
-    $(document).on('click', this.identifier.icons.editMultiple, this.onEditMultiple);
-    $(document).on('click', this.identifier.localize, this.disableButton);
-    DocumentService.ready().then((): void => {
-      this.registerPaginationEvents();
-    });
-    new RegularEvent('typo3:datahandler:process', this.handleDataHandlerResult.bind(this)).bindTo(document);
-
-    // multi record selection events
-    new RegularEvent('multiRecordSelection:action:edit', this.onEditMultiple).bindTo(document);
-    new RegularEvent('multiRecordSelection:action:delete', this.deleteMultiple).bindTo(document);
-    new RegularEvent('multiRecordSelection:action:copyMarked', (event: CustomEvent): void => {
-      Recordlist.submitClipboardFormWithCommand('copyMarked', event.target as HTMLButtonElement)
-    }).bindTo(document);
-    new RegularEvent('multiRecordSelection:action:removeMarked', (event: CustomEvent): void => {
-      Recordlist.submitClipboardFormWithCommand('removeMarked', event.target as HTMLButtonElement)
-    }).bindTo(document);
   }
 
   public toggleClick = (e: MouseEvent, targetEl: HTMLElement): void => {
@@ -127,14 +127,14 @@ class Recordlist {
       storedModuleDataList = PersistentStorage.get('moduleData.web_list.collapsedTables');
     }
 
-    const collapseConfig: any = {};
+    const collapseConfig: Record<string, number> = {};
     collapseConfig[table] = isExpanded ? 1 : 0;
 
     $.extend(storedModuleDataList, collapseConfig);
     PersistentStorage.set('moduleData.web_list.collapsedTables', storedModuleDataList).then((): void => {
       $target.data('state', isExpanded ? 'collapsed' : 'expanded');
     });
-  }
+  };
 
   /**
    * Handles editing multiple records.
@@ -144,7 +144,7 @@ class Recordlist {
     let tableName: string = '';
     let returnUrl: string = '';
     let columnsOnly: string = '';
-    let entityIdentifiers: Array<string> = [];
+    const entityIdentifiers: Array<string> = [];
 
     if (event.type === 'multiRecordSelection:action:edit') {
       // In case the request is triggerd by the multi record selection event, handling
@@ -184,7 +184,7 @@ class Recordlist {
         // If there are selected records, only those are added to the list
         selection.forEach((entity: HTMLInputElement): void => {
           entityIdentifiers.push((entity.closest(this.identifier.entity + '[data-uid][data-table="' + tableName + '"]') as HTMLElement).dataset.uid);
-        })
+        });
       } else {
         // Get all records for the current table and add their uid to the list
         const entities: NodeListOf<HTMLElement> = tableContainer.querySelectorAll(this.identifier.entity + '[data-uid][data-table="' + tableName + '"]');
@@ -211,13 +211,13 @@ class Recordlist {
     }
 
     window.location.href = editUrl;
-  }
+  };
 
   private disableButton = (event: JQueryEventObject): void => {
     const $me = $(event.currentTarget);
 
     $me.prop('disable', true).addClass('disabled');
-  }
+  };
 
   private handleDataHandlerResult(e: CustomEvent): void {
     const payload = e.detail.payload;
@@ -234,7 +234,7 @@ class Recordlist {
     if (payload.action === 'delete') {
       this.deleteRow(payload);
     }
-  };
+  }
 
   private deleteRow = (payload: DataHandlerEventPayload): void => {
     const $tableElement = $(`table[data-table="${payload.table}"]`);
@@ -260,7 +260,7 @@ class Recordlist {
     if (payload.table === 'pages') {
       top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
     }
-  }
+  };
 
   private deleteMultiple (event: CustomEvent): void {
     event.preventDefault();
@@ -282,7 +282,7 @@ class Recordlist {
           btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.warning),
           trigger: (e: Event, modal: ModalElement) => {
             modal.hideModal();
-            Recordlist.submitClipboardFormWithCommand('delete', event.target as HTMLButtonElement)
+            Recordlist.submitClipboardFormWithCommand('delete', event.target as HTMLButtonElement);
           }
         }
       ]
@@ -305,7 +305,7 @@ class Recordlist {
         }
       });
     });
-  }
+  };
 }
 
 export default new Recordlist();

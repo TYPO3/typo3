@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {ImmediateActionElement} from '@typo3/backend/element/immediate-action-element';
+import { ImmediateActionElement } from '@typo3/backend/element/immediate-action-element';
 import moduleMenuApp from '@typo3/backend/module-menu';
 import viewportObject from '@typo3/backend/viewport';
 
@@ -42,7 +42,7 @@ describe('TYPO3/CMS/Backend/Element/ImmediateActionElement:', () => {
     expect(observer.refresh).not.toHaveBeenCalled();
     root.appendChild(element);
     await import('@typo3/backend/viewport');
-    await new Promise((resolve) => setTimeout(resolve, 100))
+    await new Promise((resolve) => setTimeout(resolve, 100));
     expect(observer.refresh).toHaveBeenCalled();
     (viewportObject as any).Topbar = backup;
   });
@@ -61,7 +61,7 @@ describe('TYPO3/CMS/Backend/Element/ImmediateActionElement:', () => {
     expect(observer.refresh).not.toHaveBeenCalled();
     root.appendChild(element);
     await import('@typo3/backend/viewport');
-    await new Promise((resolve) => setTimeout(resolve, 100))
+    await new Promise((resolve) => setTimeout(resolve, 100));
     expect(observer.refresh).toHaveBeenCalled();
     (viewportObject as any).Topbar = backup;
   });
@@ -79,7 +79,7 @@ describe('TYPO3/CMS/Backend/Element/ImmediateActionElement:', () => {
     expect(observer.refreshMenu).not.toHaveBeenCalled();
     root.appendChild(element);
     await import('@typo3/backend/module-menu');
-    await new Promise((resolve) => setTimeout(resolve, 100))
+    await new Promise((resolve) => setTimeout(resolve, 100));
     expect(observer.refreshMenu).toHaveBeenCalled();
     (viewportObject as any).App = backup;
   });
@@ -95,7 +95,7 @@ describe('TYPO3/CMS/Backend/Element/ImmediateActionElement:', () => {
     (moduleMenuApp as any).App = observer;
     root.innerHTML = '<typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>';
     await import('@typo3/backend/module-menu');
-    await new Promise((resolve) => setTimeout(resolve, 100))
+    await new Promise((resolve) => setTimeout(resolve, 100));
     expect(observer.refreshMenu).toHaveBeenCalled();
     (moduleMenuApp as any).App = backup;
   });

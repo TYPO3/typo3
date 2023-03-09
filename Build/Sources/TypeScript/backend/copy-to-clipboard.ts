@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, css, TemplateResult, LitElement} from 'lit';
-import {customElement, property} from 'lit/decorators';
+import { html, css, TemplateResult, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators';
 import Notification from '@typo3/backend/notification';
-import {lll} from '@typo3/core/lit-helper';
+import { lll } from '@typo3/core/lit-helper';
 
 /**
  * Module: @typo3/backend/copy-to-clipboard
@@ -28,22 +28,22 @@ import {lll} from '@typo3/core/lit-helper';
  * </typo3-copy-to-clipboard>
  */
 @customElement('typo3-copy-to-clipboard')
-class CopyToClipboard extends LitElement {
+export class CopyToClipboard extends LitElement {
   static styles = [css`:host { cursor: pointer; appearance: button; }`];
-  @property({type: String}) text: string;
+  @property({ type: String }) text: string;
 
   public constructor() {
     super();
     this.addEventListener('click', (e: Event): void => {
       e.preventDefault();
-      this.copyToClipboard()
+      this.copyToClipboard();
     });
     this.addEventListener('keydown', (e: KeyboardEvent): void => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        this.copyToClipboard()
+        this.copyToClipboard();
       }
-    })
+    });
   }
 
   public connectedCallback(): void {
@@ -61,7 +61,7 @@ class CopyToClipboard extends LitElement {
 
   private copyToClipboard(): void {
     if (typeof this.text !== 'string' || !this.text.length) {
-      console.warn('No text for copy to clipboard given.')
+      console.warn('No text for copy to clipboard given.');
       Notification.error(lll('copyToClipboard.error'));
       return;
     }

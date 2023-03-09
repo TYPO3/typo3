@@ -11,12 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {customElement, property} from 'lit/decorators';
-import {html, LitElement, TemplateResult} from 'lit';
+import { customElement, property } from 'lit/decorators';
+import { html, LitElement, TemplateResult } from 'lit';
 import '@typo3/backend/element/icon-element';
 
 export interface ResultItemInterface {
-  icon: { [key: string]: string };
+  icon: Record<string, string>;
   uid: number;
   table: string;
   label: string;
@@ -25,11 +25,11 @@ export interface ResultItemInterface {
 
 @customElement('typo3-backend-formengine-suggest-result-item')
 export class ResultItem extends LitElement {
-  @property({type: Object}) icon: { [key: string]: string };
-  @property({type: Number}) uid: number;
-  @property({type: String}) table: string;
-  @property({type: String}) label: string;
-  @property({type: String}) path: string;
+  @property({ type: Object }) icon: Record<string, string>;
+  @property({ type: Number }) uid: number;
+  @property({ type: String }) table: string;
+  @property({ type: String }) label: string;
+  @property({ type: String }) path: string;
 
   public connectedCallback(): void {
     super.connectedCallback();

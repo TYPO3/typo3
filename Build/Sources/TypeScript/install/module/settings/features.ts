@@ -11,13 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
+import MessageInterface from '@typo3/install/message-interface';
 
 /**
  * Module: @typo3/install/module/features
@@ -25,7 +25,7 @@ import Router from '../../router';
 class Features extends AbstractInteractableModule {
   private selectorSaveTrigger: string = '.t3js-features-save';
 
-  public initialize(currentModal: any): void {
+  public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
     this.getContent();
 
@@ -38,9 +38,9 @@ class Features extends AbstractInteractableModule {
   private getContent(): void {
     const modalContent = this.getModalBody();
     (new AjaxRequest(Router.getUrl('featuresGetContent')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
             modalContent.empty().append(data.html);
@@ -60,8 +60,8 @@ class Features extends AbstractInteractableModule {
 
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().data('features-save-token');
-    const postData: any = {};
-    for (let element of this.findInModal('form').serializeArray()) {
+    const postData: Record<string, string> = {};
+    for (const element of this.findInModal('form').serializeArray()) {
       postData[element.name] = element.value;
     }
     postData['install[action]'] = 'featuresSave';
@@ -69,10 +69,10 @@ class Features extends AbstractInteractableModule {
     (new AjaxRequest(Router.getUrl()))
       .post(postData)
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true && Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
+            data.status.forEach((element: MessageInterface): void => {
               Notification.showMessage(element.title, element.message, element.severity);
             });
             this.getContent();

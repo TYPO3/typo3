@@ -13,12 +13,12 @@
 
 import 'bootstrap';
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import '../../renderable/clearable';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {topLevelModuleImport} from '@typo3/backend/utility/top-level-module-import';
+import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import Router from '../../router';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import '@typo3/backend/element/icon-element';
@@ -58,8 +58,8 @@ class UpgradeDocs extends AbstractInteractableModule {
     });
 
     // Make jquerys "contains" work case-insensitive
-    $.expr[':'].contains = $.expr.createPseudo((arg: any): Function => {
-      return (elem: any): boolean => {
+    $.expr[':'].contains = $.expr.createPseudo((arg: string): Function => {
+      return (elem: JQuery): boolean => {
         return $(elem).text().toUpperCase().includes(arg.toUpperCase());
       };
     });
@@ -69,9 +69,9 @@ class UpgradeDocs extends AbstractInteractableModule {
     const modalContent = this.getModalBody();
 
     (new AjaxRequest(Router.getUrl('upgradeDocsGetContent')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
             modalContent.empty().append(data.html);
@@ -88,18 +88,18 @@ class UpgradeDocs extends AbstractInteractableModule {
   }
 
   private loadChangelogs(): void {
-    const promises: Array<Promise<AjaxRequest>> = [];
+    const promises: Array<Promise<void>> = [];
     const modalContent = this.getModalBody();
-    this.findInModal(this.selectorChangeLogsForVersionContainer).each((index: number, el: any): void => {
+    this.findInModal(this.selectorChangeLogsForVersionContainer).each((index: number, el: HTMLElement): void => {
       const request = (new AjaxRequest(Router.getUrl('upgradeDocsGetChangelogForVersion')))
         .withQueryArguments({
           install: {
             version: el.dataset.version,
           },
         })
-        .get({cache: 'no-cache'})
+        .get({ cache: 'no-cache' })
         .then(
-          async (response: AjaxResponse): Promise<any> => {
+          async (response: AjaxResponse): Promise<void> => {
             const data = await response.resolve();
             if (data.success === true) {
               const $panelGroup = $(el);
@@ -145,15 +145,15 @@ class UpgradeDocs extends AbstractInteractableModule {
   private initializeChosenSelector(): void {
     this.chosenField = this.getModalBody().find(this.selectorChosenField);
 
-    const config: any = {
-      '.chosen-select': {width: '100%', placeholder_text_multiple: 'tags'},
-      '.chosen-select-deselect': {allow_single_deselect: true},
-      '.chosen-select-no-single': {disable_search_threshold: 10},
-      '.chosen-select-no-results': {no_results_text: 'Oops, nothing found!'},
-      '.chosen-select-width': {width: '100%'},
+    const config: { [key: string]: { [key: string]: string|number|boolean } } = {
+      '.chosen-select': { width: '100%', placeholder_text_multiple: 'tags' },
+      '.chosen-select-deselect': { allow_single_deselect: true },
+      '.chosen-select-no-single': { disable_search_threshold: 10 },
+      '.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
+      '.chosen-select-width': { width: '100%' },
     };
     for (const selector in config) {
-      if (config.hasOwnProperty(selector)) {
+      if (selector in config) {
         this.findInModal(selector).chosen(config[selector]);
       }
     }
@@ -173,10 +173,10 @@ class UpgradeDocs extends AbstractInteractableModule {
    */
   private appendItemsToChosenSelector(): void {
     let tagString = '';
-    $(this.findInModal(this.selectorUpgradeDoc)).each((index: number, element: any): void => {
+    $(this.findInModal(this.selectorUpgradeDoc)).each((index: number, element: Element): void => {
       tagString += $(element).data('item-tags') + ',';
     });
-    let tagSet = new Set(tagString.slice(0, -1).split(','));
+    const tagSet = new Set(tagString.slice(0, -1).split(','));
     const uniqueTags = [...tagSet.values()].reduce((tagList: string[], tag: string): string[] => {
       const normalizedTag = tag.toLowerCase();
       if (tagList.every(otherElement => otherElement.toLowerCase() !== normalizedTag)) {
@@ -190,7 +190,7 @@ class UpgradeDocs extends AbstractInteractableModule {
     });
 
     this.chosenField.prop('disabled', false);
-    for (let tag of uniqueTags) {
+    for (const tag of uniqueTags) {
       this.chosenField.append($('<option>').text(tag));
     }
     this.chosenField.trigger('chosen:updated');
@@ -231,7 +231,7 @@ class UpgradeDocs extends AbstractInteractableModule {
     }
     // apply fulltext search
     const typedQuery = this.fulltextSearchField.val();
-    modalContent.find('.filterhit').each((index: number, element: any): void => {
+    modalContent.find('.filterhit').each((index: number, element: Element): void => {
       const $item = $(element);
       if ($(':contains(' + typedQuery + ')', $item).length > 0 || $('input[value*="' + typedQuery + '"]', $item).length > 0) {
         $item.removeClass('hidden').addClass('searchhit');
@@ -244,13 +244,13 @@ class UpgradeDocs extends AbstractInteractableModule {
       // This is a workaround to improve the browser performance as the panels are not expanded at once
       window.setTimeout((): void => {
         $(item).collapse('show');
-      }, 20)
+      }, 20);
     });
 
     // Check for empty panels
-    modalContent.find('.panel-version').each((index: number, element: any): void => {
-      const $element: any = $(element);
-      if ($element.find('.searchhit', '.filterhit').length < 1) {
+    modalContent.find('.panel-version').each((index: number, element: Element): void => {
+      const $element: JQuery = $(element);
+      if ($element.find('.searchhit, .filterhit').length < 1) {
         $element.find(' > .panel-collapse').collapse('hide');
       }
     });
@@ -264,7 +264,7 @@ class UpgradeDocs extends AbstractInteractableModule {
     $container.find('[data-item-state="notAffected"]').appendTo(this.findInModal('.panel-body-not-affected'));
   }
 
-  private markRead(element: any): void {
+  private markRead(element: Element): void {
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().data('upgrade-docs-mark-read-token');
     const $button = $(element).closest('button');
@@ -284,7 +284,7 @@ class UpgradeDocs extends AbstractInteractableModule {
       });
   }
 
-  private unmarkRead(element: any): void {
+  private unmarkRead(element: Element): void {
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().data('upgrade-docs-unmark-read-token');
     const $button = $(element).closest('button');

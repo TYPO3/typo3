@@ -120,7 +120,7 @@ class FileListActions {
       action: action,
       resource: FileListActionUtility.getResourceForElement(element),
       url: target.dataset.filelistActionUrl ?? null,
-    }
+    };
     return detail;
   }
 }

@@ -53,7 +53,7 @@ class QueryGenerator {
     });
     this.form.on('change', '[data-assign-store-control-title]', (evt: JQueryEventObject): void => {
       const $currentTarget = $(evt.currentTarget);
-      const $titleField = this.form.find('[name="storeControl\[title\]"]');
+      const $titleField = this.form.find('[name="storeControl[title]"]');
       if ($currentTarget.val() !== '0') {
         $titleField.val($currentTarget.find('option:selected').text());
       } else {

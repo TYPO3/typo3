@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace TYPO3 {
   export class Cache {
     private buttons: NodeList;
@@ -7,8 +8,8 @@ namespace TYPO3 {
 
       this.buttons.forEach((element: HTMLElement): void => {
         element.addEventListener('click', (): void => {
-          let url = element.dataset.typo3AjaxUrl;
-          let request = new XMLHttpRequest();
+          const url = element.dataset.typo3AjaxUrl;
+          const request = new XMLHttpRequest();
           request.open('GET', url);
           request.send();
           request.onload = (): void => {

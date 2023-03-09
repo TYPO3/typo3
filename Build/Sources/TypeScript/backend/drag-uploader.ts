@@ -159,7 +159,7 @@ class DragUploaderPlugin {
       return;
     }
 
-    this.$body.on('dragstart', (e: JQueryEventObject): void => {
+    this.$body.on('dragstart', (): void => {
       this.dragStartedInDocument = true;
     });
     this.$body.on('dragover', this.dragFileIntoDocument);
@@ -198,7 +198,7 @@ class DragUploaderPlugin {
         .attr('id', 'typo3-filelist')
         .addClass('table table-striped table-hover upload-queue')
         .html('<tbody></tbody>');
-      let $tableContainer = $('<div/>', { 'class': 'table-fit' }).hide()
+      const $tableContainer = $('<div/>', { 'class': 'table-fit' }).hide()
         .append(this.$fileList);
 
       if (this.dropZoneInsertBefore) {
@@ -212,7 +212,7 @@ class DragUploaderPlugin {
 
     this.fileInput.addEventListener('change', (event: Event) => {
       this.hideDropzone(event);
-      this.processFiles(Array.apply(null, this.fileInput.files));
+      this.processFiles(this.fileInput.files);
     });
 
     // Allow the user to hide the dropzone with the "Escape" key
@@ -240,7 +240,7 @@ class DragUploaderPlugin {
     this.$dropzone.removeClass('drop-status-ok');
     // User manually hides the dropzone, so we can reset the flag
     this.manuallyTriggered = false;
-  }
+  };
 
   /**
    * @param {Event} event
@@ -260,7 +260,7 @@ class DragUploaderPlugin {
       this.showDropzone();
     }
     return false;
-  }
+  };
 
   /**
    *
@@ -273,7 +273,7 @@ class DragUploaderPlugin {
     $(event.currentTarget).removeClass('drop-in-progress');
     this.dragStartedInDocument = false;
     return false;
-  }
+  };
 
   public ignoreDrop = (event: Event): boolean => {
     // stops the browser from redirecting.
@@ -281,13 +281,13 @@ class DragUploaderPlugin {
     event.preventDefault();
     this.dragAborted(event);
     return false;
-  }
+  };
 
   public handleDrop = (event: JQueryTypedEvent<DragEvent>): void => {
     this.ignoreDrop(event);
     this.hideDropzone(event);
     this.processFiles(event.originalEvent.dataTransfer.files);
-  }
+  };
 
   /**
    * @param {FileList} files
@@ -340,7 +340,7 @@ class DragUploaderPlugin {
 
   public fileInDropzone = (): void => {
     this.$dropzone.addClass('drop-status-ok');
-  }
+  };
 
   public fileOutOfDropzone = (): void => {
     this.$dropzone.removeClass('drop-status-ok');
@@ -348,7 +348,7 @@ class DragUploaderPlugin {
     if (!this.manuallyTriggered) {
       this.$dropzone.hide();
     }
-  }
+  };
 
   /**
    * Bind file picker to default upload button
@@ -374,7 +374,7 @@ class DragUploaderPlugin {
       if (this.queueLength === 0) {
         const timeout: number = messages && messages.length ? 5000 : 0;
         if (timeout) {
-          for (let flashMessage of messages) {
+          for (const flashMessage of messages) {
             Notification.showMessage(flashMessage.title, flashMessage.message, flashMessage.severity);
           }
         }
@@ -393,12 +393,12 @@ class DragUploaderPlugin {
                 {
                   label: TYPO3.lang['file_upload.reload.filelist.actions.reload'],
                   action: new ImmediateAction((): void => {
-                    top.list_frame.document.location.href = this.reloadUrl
+                    top.list_frame.document.location.href = this.reloadUrl;
                   })
                 }
               ]
             );
-          }, timeout)
+          }, timeout);
         }
       }
     }
@@ -495,48 +495,47 @@ class DragUploaderPlugin {
       }
     });
 
-    const uploader = this;
     const $modal = $(modal);
-    $modal.on('change', '.t3js-actions-all', function (this: HTMLInputElement): void {
-      const $this = $(this),
+    $modal.on('change', '.t3js-actions-all', (e: JQueryEventObject): void => {
+      const $this = $(e.currentTarget),
         value = $this.val();
 
       if (value !== '') {
         // mass action was selected, apply action to every file
-        for (let select of modal.querySelectorAll('.t3js-actions') as NodeListOf<HTMLSelectElement>) {
+        for (const select of modal.querySelectorAll('.t3js-actions') as NodeListOf<HTMLSelectElement>) {
           const index = parseInt(select.dataset.override, 10);
           select.value = value;
           select.disabled = true;
-          uploader.askForOverride[index].action = <Action>select.value;
+          this.askForOverride[index].action = <Action>select.value;
         }
       } else {
         $modal.find('.t3js-actions').removeProp('disabled');
       }
     });
 
-    $modal.on('change', '.t3js-actions', function (this: HTMLInputElement): void {
-      const $this = $(this),
+    $modal.on('change', '.t3js-actions', (e: JQueryEventObject): void => {
+      const $this = $(e.currentTarget),
         index = parseInt($this.data('override'), 10);
-      uploader.askForOverride[index].action = <Action>$this.val();
+      this.askForOverride[index].action = <Action>$this.val();
     });
 
-    modal.addEventListener('button.clicked', function (e: Event): void {
+    modal.addEventListener('button.clicked', (e: Event): void => {
       const button = e.target as HTMLButtonElement;
       if (button.name === 'cancel') {
-        uploader.askForOverride = [];
+        this.askForOverride = [];
         Modal.dismiss();
       } else if (button.name === 'continue') {
-        for (let fileInfo of uploader.askForOverride) {
+        for (const fileInfo of this.askForOverride) {
           if (fileInfo.action === Action.USE_EXISTING) {
             DragUploader.addFileToIrre(
-              uploader.irreObjectUid,
+              this.irreObjectUid,
               fileInfo.original,
             );
           } else if (fileInfo.action !== Action.SKIP) {
-            new FileQueueItem(uploader, fileInfo.uploaded, fileInfo.action);
+            new FileQueueItem(this, fileInfo.uploaded, fileInfo.action);
           }
         }
-        uploader.askForOverride = [];
+        this.askForOverride = [];
         modal.hideModal();
       }
     });
@@ -689,7 +688,7 @@ class FileQueueItem {
       const messages = jsonResponse.messages as FlashMessage[];
       this.$progressPercentage.text('');
       if (messages && messages.length) {
-        for (let flashMessage of messages) {
+        for (const flashMessage of messages) {
           Notification.showMessage(flashMessage.title, flashMessage.message, flashMessage.severity, 10);
         }
       }
@@ -734,7 +733,7 @@ class FileQueueItem {
         if (checkbox) {
           checkbox.removeAttribute('disabled');
           checkbox.setAttribute('name', 'CBC[_FILE|' + Md5.hash(combinedIdentifier) + ']');
-          checkbox.setAttribute('value', combinedIdentifier)
+          checkbox.setAttribute('value', combinedIdentifier);
         }
       }
 
@@ -815,10 +814,10 @@ class FileQueueItem {
 }
 
 class DragUploader {
+  private static options: DragUploaderOptions;
   public fileListColumnCount: number;
   public filesExtensionsAllowed: string;
   public fileDenyPattern: string;
-  private static options: DragUploaderOptions;
 
   public static fileSizeAsString(size: number): string {
     const sizeKB: number = size / 1024;
@@ -847,17 +846,16 @@ class DragUploader {
   }
 
   public static init(): void {
-    const me = this;
-    const opts = me.options;
+    const options = this.options;
 
     // register the jQuery plugin "DragUploaderPlugin"
     $.fn.extend({
       dragUploader: function (options?: DragUploaderOptions | string): JQuery {
-        return this.each((index: number, elem: HTMLElement): void => {
-          const $this = $(elem);
-          let data = $this.data('DragUploaderPlugin');
+        return this.each((index: number, element: HTMLElement): void => {
+          const $element = $(element);
+          let data = $element.data('DragUploaderPlugin');
           if (!data) {
-            $this.data('DragUploaderPlugin', (data = new DragUploaderPlugin(elem)));
+            $element.data('DragUploaderPlugin', (data = new DragUploaderPlugin(element)));
           }
           if (typeof options === 'string') {
             data[options]();
@@ -867,28 +865,15 @@ class DragUploader {
     });
 
     DocumentService.ready().then((): void => {
-      $('.t3js-drag-uploader').dragUploader(opts);
+      $('.t3js-drag-uploader').dragUploader(options);
     });
 
     // @todo Refactor the FormEngine integration of the uploader to instance new uploaders via event handlers
     const observer = new MutationObserver((): void => {
-      $('.t3js-drag-uploader').dragUploader(opts);
+      $('.t3js-drag-uploader').dragUploader(options);
     });
     observer.observe(document, { childList: true, subtree: true });
   }
-}
-
-/**
- * Function to apply the example plugin to the selected elements of a jQuery result.
- */
-interface DragUploaderFunction {
-  /**
-   * Apply the example plugin to the elements selected in the jQuery result.
-   *
-   * @param options Options to use for this application of the example plugin.
-   * @returns jQuery result.
-   */
-  (options: DragUploaderOptions): JQuery;
 }
 
 export const initialize = function (): void {
@@ -901,7 +886,7 @@ export const initialize = function (): void {
     && 'undefined' !== typeof TYPO3.settings.RequireJS.PostInitializationModules
     && 'undefined' !== typeof TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader']
   ) {
-    for (let moduleName of TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader']) {
+    for (const moduleName of TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader']) {
       window.require([moduleName]);
     }
   }

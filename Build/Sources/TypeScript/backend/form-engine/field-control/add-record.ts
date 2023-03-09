@@ -34,7 +34,7 @@ class AddRecord {
     e.preventDefault();
 
     FormEngine.preventFollowLinkIfNotSaved(this.controlElement.getAttribute('href'));
-  }
+  };
 }
 
 export default AddRecord;

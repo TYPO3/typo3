@@ -12,7 +12,7 @@
  */
 
 import flatpickr from 'flatpickr/flatpickr.min';
-import {DateTime} from 'luxon';
+import { DateTime } from 'luxon';
 import PersistentStorage from './storage/persistent';
 import ThrottleEvent from '@typo3/core/event/throttle-event';
 
@@ -46,7 +46,7 @@ class DateTimePicker {
         day: 1
       });
     }
-    return date.toISO({suppressMilliseconds: true});
+    return date.toISO({ suppressMilliseconds: true });
   }
 
   /**
@@ -85,7 +85,7 @@ class DateTimePicker {
     options.locale = locale;
     options.onOpen = [
       (): void => {
-        scrollEvent.bindTo(document.querySelector('.t3js-module-body'))
+        scrollEvent.bindTo(document.querySelector('.t3js-module-body'));
       }
     ];
     options.onClose = (): void => {
@@ -97,9 +97,9 @@ class DateTimePicker {
 
     inputElement.addEventListener('input', (): void => {
       // Update selected date in picker
-      const value = dateTimePicker._input.value
-      const parsedDate = dateTimePicker.parseDate(value)
-      const formattedDate = dateTimePicker.formatDate(parsedDate, dateTimePicker.config.dateFormat)
+      const value = dateTimePicker._input.value;
+      const parsedDate = dateTimePicker.parseDate(value);
+      const formattedDate = dateTimePicker.formatDate(parsedDate, dateTimePicker.config.dateFormat);
 
       if (value === formattedDate) {
         dateTimePicker.setDate(value);
@@ -120,11 +120,11 @@ class DateTimePicker {
 
       if (target.value !== '') {
         const type = target.dataset.dateType;
-        const date = DateTime.fromFormat(target.value, target._flatpickr.config.dateFormat, {zone: 'utc'});
+        const date = DateTime.fromFormat(target.value, target._flatpickr.config.dateFormat, { zone: 'utc' });
         if (date.isValid) {
           hiddenField.value = DateTimePicker.formatDateForHiddenField(date, type);
         } else {
-          target.value = DateTimePicker.formatDateForHiddenField(DateTime.fromISO(hiddenField.value, {zone: 'utc'}), type);
+          target.value = DateTimePicker.formatDateForHiddenField(DateTime.fromISO(hiddenField.value, { zone: 'utc' }), type);
         }
       } else {
         hiddenField.value = '';
@@ -150,7 +150,7 @@ class DateTimePicker {
       const bounds = activeFlatpickrElement.getBoundingClientRect();
       const additionalOffset = 2;
       const calendarHeight = activeFlatpickrElement._flatpickr.calendarContainer.offsetHeight;
-      const distanceFromBottom = window.innerHeight - bounds.bottom
+      const distanceFromBottom = window.innerHeight - bounds.bottom;
       const showOnTop = distanceFromBottom < calendarHeight && bounds.top > calendarHeight;
 
       let newPosition;

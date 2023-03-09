@@ -25,7 +25,7 @@ class RecordLinkHandler {
       const data = targetEl.closest('span').dataset;
       LinkBrowser.finalizeFunction(document.body.dataset.identifier + data.uid);
     }).delegateTo(document, '[data-close]');
-    new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
+    new RegularEvent('click', (evt: MouseEvent): void => {
       evt.preventDefault();
       LinkBrowser.finalizeFunction(document.body.dataset.currentLink);
     }).delegateTo(document, 'input.t3js-linkCurrent');

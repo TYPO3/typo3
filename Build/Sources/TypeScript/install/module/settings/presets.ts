@@ -13,12 +13,13 @@
 
 import 'bootstrap';
 import $ from 'jquery';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
-import {AbstractInteractableModule} from '../abstract-interactable-module';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AbstractInteractableModule } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
+import MessageInterface from '@typo3/install/message-interface';
 
 /**
  * Module: @typo3/install/module/presets
@@ -53,9 +54,9 @@ class Presets extends AbstractInteractableModule {
   private getContent(): void {
     const modalContent = this.getModalBody();
     (new AjaxRequest(Router.getUrl('presetsGetContent')))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
             modalContent.empty().append(data.html);
@@ -86,7 +87,7 @@ class Presets extends AbstractInteractableModule {
         },
       })
       .then(
-        async (response: AjaxResponse): Promise<any> => {
+        async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
             modalContent.empty().append(data.html);
@@ -105,17 +106,17 @@ class Presets extends AbstractInteractableModule {
 
     const modalContent: JQuery = this.getModalBody();
     const executeToken: string = this.getModuleContent().data('presets-activate-token');
-    const postData: any = {};
-    for (let element of this.findInModal('form').serializeArray()) {
+    const postData: Record<string, string> = {};
+    for (const element of this.findInModal('form').serializeArray()) {
       postData[element.name] = element.value;
     }
     postData['install[action]'] = 'presetsActivate';
     postData['install[token]'] = executeToken;
     (new AjaxRequest(Router.getUrl())).post(postData).then(
-      async (response: AjaxResponse): Promise<any> => {
+      async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true && Array.isArray(data.status)) {
-          data.status.forEach((element: any): void => {
+          data.status.forEach((element: MessageInterface): void => {
             Notification.showMessage(element.title, element.message, element.severity);
           });
         } else {

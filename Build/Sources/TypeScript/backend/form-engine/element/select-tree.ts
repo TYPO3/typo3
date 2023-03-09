@@ -12,9 +12,9 @@
  */
 
 import * as d3selection from 'd3-selection';
-import {SvgTree, SvgTreeSettings, TreeNodeSelection} from '../../svg-tree';
-import {TreeNode} from '../../tree/tree-node';
-import {customElement} from 'lit/decorators';
+import { SvgTree, SvgTreeSettings, TreeNodeSelection } from '../../svg-tree';
+import { TreeNode } from '../../tree/tree-node';
+import { customElement } from 'lit/decorators';
 
 interface SelectTreeSettings extends SvgTreeSettings {
   exclusiveNodesIdentifiers: '';
@@ -87,7 +87,7 @@ export class SelectTree extends SvgTree
 
     node.checked = !checked;
 
-    this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-selected', {detail: {node: node, propagate: propagate}}));
+    this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-selected', { detail: { node: node, propagate: propagate } }));
     this.updateVisibleNodes();
   }
 
@@ -138,7 +138,7 @@ export class SelectTree extends SvgTree
     const position = Math.floor(Math.max(this.scrollTop - (this.settings.nodeHeight * 2), 0) / this.settings.nodeHeight);
 
     const visibleNodes = this.data.nodes.slice(position, position + visibleRows);
-    let nodes = this.nodesContainer.selectAll('.node')
+    const nodes = this.nodesContainer.selectAll('.node')
       .data(visibleNodes, (node: TreeNode) => node.stateIdentifier);
     nodes
       .selectAll('.tree-check use')
@@ -165,12 +165,13 @@ export class SelectTree extends SvgTree
   protected isNodeSelectable(node: TreeNode): boolean {
     return !this.settings.readOnlyMode && this.settings.unselectableElements.indexOf(node.identifier) === -1;
   }
+
   /**
    * Add checkbox before the text element
    */
   protected appendTextElement(nodes: TreeNodeSelection): TreeNodeSelection {
     this.renderCheckbox(nodes);
-    return super.appendTextElement(nodes)
+    return super.appendTextElement(nodes);
   }
 
   /**
@@ -218,7 +219,7 @@ export class SelectTree extends SvgTree
    * create stateIdentifier if doesn't exist (for category tree)
    */
   private prepareLoadedNodes(evt: CustomEvent): void {
-    let nodes = evt.detail.nodes as Array<TreeNode>;
+    const nodes = evt.detail.nodes as Array<TreeNode>;
     evt.detail.nodes = nodes.map((node: TreeNode) => {
       if (!node.stateIdentifier) {
         const parentId = (node.parents.length) ? node.parents[node.parents.length - 1] : node.identifier;
@@ -272,6 +273,6 @@ export class SelectTree extends SvgTree
         identifier: 'indeterminate',
         icon: '<g width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect height="16" width="16" fill="transparent"></rect><path transform="scale(0.01)" d="M1344 800v64q0 14-9 23t-23 9h-832q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h832q14 0 23 9t9 23zm128 448v-832q0-66-47-113t-113-47h-832q-66 0-113 47t-47 113v832q0 66 47 113t113 47h832q66 0 113-47t47-113zm128-832v832q0 119-84.5 203.5t-203.5 84.5h-832q-119 0-203.5-84.5t-84.5-203.5v-832q0-119 84.5-203.5t203.5-84.5h832q119 0 203.5 84.5t84.5 203.5z"></path></g>'
       }
-    }
+    };
   }
 }

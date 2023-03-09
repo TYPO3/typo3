@@ -11,15 +11,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {Collapse} from 'bootstrap';
+import { Collapse } from 'bootstrap';
 import Sortable from 'sortablejs';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import DocumentService from '@typo3/core/document-service';
 import FlexFormContainerContainer from './flex-form-container-container';
 import FormEngine from '@typo3/backend/form-engine';
 import RegularEvent from '@typo3/core/event/regular-event';
-import {JavaScriptItemProcessor} from '@typo3/core/java-script-item-processor';
+import { JavaScriptItemProcessor } from '@typo3/core/java-script-item-processor';
 
 enum Selectors {
   toggleAllSelector = '.t3-form-flexsection-toggle',
@@ -37,10 +37,6 @@ class FlexFormSectionContainer {
   private allowRestructure: boolean = false;
   private flexformContainerContainers: FlexFormContainerContainer[] = [];
 
-  private static getCollapseInstance(container: HTMLElement): Collapse {
-    return Collapse.getInstance(container) ?? new Collapse(container, {toggle: false})
-  }
-
   /**
    * @param {string} elementId
    */
@@ -55,6 +51,10 @@ class FlexFormSectionContainer {
       this.registerEvents();
       this.registerContainers();
     });
+  }
+
+  private static getCollapseInstance(container: HTMLElement): Collapse {
+    return Collapse.getInstance(container) ?? new Collapse(container, { toggle: false });
   }
 
   public getContainer(): HTMLElement {
@@ -78,7 +78,7 @@ class FlexFormSectionContainer {
 
   private registerContainers(): void {
     const sectionContainerContainers: NodeListOf<HTMLElement> = this.container.querySelectorAll(Selectors.sectionContainerSelector);
-    for (let sectionContainerContainer of sectionContainerContainers) {
+    for (const sectionContainerContainer of sectionContainerContainers) {
       this.flexformContainerContainers.push(new FlexFormContainerContainer(this, sectionContainerContainer));
     }
 
@@ -106,7 +106,7 @@ class FlexFormSectionContainer {
     this.updateToggleAllState();
     this.flexformContainerContainers.splice(e.newIndex, 0, this.flexformContainerContainers.splice(e.oldIndex, 1)[0]);
     document.dispatchEvent(new Event('formengine:flexform:sorting-changed'));
-  }
+  };
 
   private registerToggleAll(): void {
     new RegularEvent('click', (e: Event): void => {
@@ -114,7 +114,7 @@ class FlexFormSectionContainer {
       const showAll = trigger.dataset.expandAll === 'true';
       const collapsibles: NodeListOf<HTMLElement> = this.container.querySelectorAll(Selectors.sectionContentContainerSelector);
 
-      for (let collapsible of collapsibles) {
+      for (const collapsible of collapsibles) {
         if (showAll) {
           FlexFormSectionContainer.getCollapseInstance(collapsible).show();
         } else {
@@ -143,7 +143,7 @@ class FlexFormSectionContainer {
       flexFormSheetName: dataset.flexformsheetname,
       flexFormFieldName: dataset.flexformfieldname,
       flexFormContainerName: dataset.flexformcontainername,
-    }).then(async (response: AjaxResponse): Promise<any> => {
+    }).then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
       const createdContainer = new DOMParser().parseFromString(data.html, 'text/html').body.firstElementChild as HTMLElement;
 
@@ -159,14 +159,14 @@ class FlexFormSectionContainer {
 
       // @todo deprecate or remove with TYPO3 v12.0
       if (data.scriptCall && data.scriptCall.length > 0) {
-        for (let value of data.scriptCall) {
+        for (const value of data.scriptCall) {
           // eslint-disable-next-line no-eval
           eval(value);
         }
       }
       if (data.stylesheetFiles && data.stylesheetFiles.length > 0) {
-        for (let stylesheetFile of data.stylesheetFiles) {
-          let element = document.createElement('link');
+        for (const stylesheetFile of data.stylesheetFiles) {
+          const element = document.createElement('link');
           element.rel = 'stylesheet';
           element.type = 'text/css';
           element.href = stylesheetFile;
@@ -207,7 +207,7 @@ class FlexFormSectionContainer {
   private updateToggleAllState(): void {
     if (this.flexformContainerContainers.length > 0) {
       const firstContainer = this.flexformContainerContainers.find(Boolean);
-      this.getToggleAllButton().dataset.expandAll = firstContainer.getStatus().collapsed === true ? 'true' : 'false'
+      this.getToggleAllButton().dataset.expandAll = firstContainer.getStatus().collapsed === true ? 'true' : 'false';
     }
   }
 }

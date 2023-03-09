@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {ModalResponseEvent} from '@typo3/backend/modal-interface';
-import {MessageUtility} from '@typo3/backend/utility/message-utility';
+import { ModalResponseEvent } from '@typo3/backend/modal-interface';
+import { MessageUtility } from '@typo3/backend/utility/message-utility';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Modal from '@typo3/backend/modal';
 
@@ -23,18 +23,6 @@ import Modal from '@typo3/backend/modal';
 class SetupModule {
   private avatarWindowRef: Window;
 
-  private static handleConfirmationResponse(evt: ModalResponseEvent): void {
-    if (evt.detail.result && evt.detail.payload === 'resetConfiguration') {
-      const input: HTMLInputElement = document.querySelector('#setValuesToDefault');
-      input.value = '1';
-      input.form.submit();
-    }
-  }
-
-  private static hideElement(element: HTMLElement): void {
-    element.style.display = 'none';
-  }
-
   constructor() {
     new RegularEvent('setup:confirmation:response', SetupModule.handleConfirmationResponse)
       .delegateTo(document, '[data-event-name="setup:confirmation:response"]');
@@ -42,7 +30,7 @@ class SetupModule {
       const clickEvent = new CustomEvent(
         element.dataset.eventName, {
           bubbles: true,
-          detail: {payload: element.dataset.eventPayload}
+          detail: { payload: element.dataset.eventPayload }
         });
       element.dispatchEvent(clickEvent);
     }).delegateTo(document, '[data-event="click"][data-event-name]');
@@ -58,6 +46,18 @@ class SetupModule {
     if (document.querySelector('[data-setup-avatar-field]') !== null) {
       this.initializeMessageListener();
     }
+  }
+
+  private static handleConfirmationResponse(evt: ModalResponseEvent): void {
+    if (evt.detail.result && evt.detail.payload === 'resetConfiguration') {
+      const input: HTMLInputElement = document.querySelector('#setValuesToDefault');
+      input.value = '1';
+      input.form.submit();
+    }
+  }
+
+  private static hideElement(element: HTMLElement): void {
+    element.style.display = 'none';
   }
 
   private initializeMessageListener(): void {

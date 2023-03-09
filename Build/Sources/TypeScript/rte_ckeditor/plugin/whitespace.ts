@@ -57,7 +57,7 @@ export default class Whitespace extends Core.Plugin {
         const viewWriter = conversionApi.writer;
         const chunks = data.item.data
           .split(/([\u00AD,\u00A0])/)
-          .filter((value: String) => value !== '');
+          .filter((value: string) => value !== '');
         let currentPosition = data.range.start;
 
         chunks.forEach((chunk) => {

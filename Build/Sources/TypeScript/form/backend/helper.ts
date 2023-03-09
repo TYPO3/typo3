@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {loadModule, JavaScriptItemPayload} from '@typo3/core/java-script-item-processor';
+import { loadModule, JavaScriptItemPayload } from '@typo3/core/java-script-item-processor';
 
 interface ModuleRequirements {
   app: JavaScriptItemPayload;
@@ -29,9 +29,11 @@ interface FormManagerLike {
   run(): FormEditorLike;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface MediatorLike {
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ViewModelLike {
 }
 

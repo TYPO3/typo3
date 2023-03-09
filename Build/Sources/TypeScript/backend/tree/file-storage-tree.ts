@@ -12,9 +12,9 @@
  */
 
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import {SvgTree} from '../svg-tree';
-import {TreeNode} from '../tree/tree-node';
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { SvgTree } from '../svg-tree';
+import { TreeNode } from '../tree/tree-node';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 /**
  * A tree for folders / storages
@@ -61,10 +61,10 @@ export class FileStorageTree extends SvgTree {
     this.nodesAddPlaceholder();
 
     (new AjaxRequest(this.settings.dataUrl + '&parent=' + parentNode.identifier + '&currentDepth=' + parentNode.depth))
-      .get({cache: 'no-cache'})
+      .get({ cache: 'no-cache' })
       .then((response: AjaxResponse) => response.resolve())
       .then((json: any) => {
-        let nodes = Array.isArray(json) ? json : [];
+        const nodes = Array.isArray(json) ? json : [];
         const index = this.nodes.indexOf(parentNode) + 1;
         //adding fetched node after parent
         nodes.forEach((node: TreeNode, offset: number) => {

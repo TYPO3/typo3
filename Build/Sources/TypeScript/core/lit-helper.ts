@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {render, TemplateResult} from 'lit';
-import {ClassInfo} from 'lit/directives/class-map';
+import { render, TemplateResult } from 'lit';
+import { ClassInfo } from 'lit/directives/class-map';
 
 /**
  * @internal
@@ -30,7 +30,7 @@ export const renderHTML = (result: TemplateResult): string => {
   const anvil = document.createElement('div');
   render(result, anvil);
   return anvil.innerHTML;
-}
+};
 
 /**
  * @internal
@@ -52,4 +52,4 @@ export const classesArrayToClassInfo = (classes: Array<string>): ClassInfo => {
     },
     {} as Writeable<ClassInfo>
   );
-}
+};

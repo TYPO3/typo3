@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {SeverityEnum} from './enum/severity';
+import { SeverityEnum } from './enum/severity';
 import 'bootstrap';
 import $ from 'jquery';
-import {default as Modal, ModalElement} from '@typo3/backend/modal';
+import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import SecurityUtility from '@typo3/core/security-utility';
 import Icons from './icons';
 
@@ -26,17 +26,7 @@ interface GridEditorConfigurationInterface {
   columnLabel: string;
 }
 
-/**
- * CellInterface
- */
-interface CellInterface {
-  spanned: number;
-  rowspan: number;
-  colspan: number;
-  column: number;
-  name: string;
-  colpos: string;
-}
+type Cell = { spanned: number, rowspan: number, colspan: number, name: string, colpos: string, column: number }
 
 /**
  * Module: @typo3/backend/grid-editor
@@ -52,7 +42,7 @@ export class GridEditor {
   protected nameLabel: string = 'name';
   protected columnLabel: string = 'column label';
   protected targetElement: JQuery;
-  protected defaultCell: object = {spanned: 0, rowspan: 1, colspan: 1, name: '', colpos: '', column: undefined};
+  protected defaultCell: Cell = { spanned: 0, rowspan: 1, colspan: 1, name: '', colpos: '', column: undefined };
   protected selectorEditor: string = '.t3js-grideditor';
   protected selectorAddColumn: string = '.t3js-grideditor-addcolumn';
   protected selectorRemoveColumn: string = '.t3js-grideditor-removecolumn';
@@ -68,17 +58,6 @@ export class GridEditor {
   protected selectorConfigPreview: string = '.t3js-grideditor-preview-config';
   protected selectorPreviewArea: string = '.t3js-tsconfig-preview-area';
   protected selectorCodeMirror: string = '.t3js-grideditor-preview-config .CodeMirror';
-
-  /**
-   * Remove all markup
-   *
-   * @param {String} input
-   * @returns {string}
-   */
-  public static stripMarkup(input: string): string {
-    const securityUtility = new SecurityUtility();
-    return securityUtility.stripHtml(input);
-  }
 
   /**
    *
@@ -99,6 +78,17 @@ export class GridEditor {
     this.addVisibilityObserver($element.get(0));
     this.drawTable();
     this.writeConfig(this.export2LayoutRecord());
+  }
+
+  /**
+   * Remove all markup
+   *
+   * @param {String} input
+   * @returns {string}
+   */
+  public static stripMarkup(input: string): string {
+    const securityUtility = new SecurityUtility();
+    return securityUtility.stripHtml(input);
   }
 
   /**
@@ -127,7 +117,7 @@ export class GridEditor {
    * @param {Event} e
    */
   protected modalButtonClickHandler = (e: Event) => {
-    const button: any = e.target;
+    const button = e.target as HTMLButtonElement;
     const modal: ModalElement = e.currentTarget as ModalElement;
     if (button.name === 'cancel') {
       modal.hideModal();
@@ -146,7 +136,7 @@ export class GridEditor {
       this.writeConfig(this.export2LayoutRecord());
       modal.hideModal();
     }
-  }
+  };
 
   /**
    *
@@ -157,7 +147,7 @@ export class GridEditor {
     this.addColumn();
     this.drawTable();
     this.writeConfig(this.export2LayoutRecord());
-  }
+  };
 
   /**
    *
@@ -168,7 +158,7 @@ export class GridEditor {
     this.removeColumn();
     this.drawTable();
     this.writeConfig(this.export2LayoutRecord());
-  }
+  };
 
   /**
    *
@@ -179,7 +169,7 @@ export class GridEditor {
     this.addRowTop();
     this.drawTable();
     this.writeConfig(this.export2LayoutRecord());
-  }
+  };
 
   /**
    *
@@ -190,7 +180,7 @@ export class GridEditor {
     this.addRowBottom();
     this.drawTable();
     this.writeConfig(this.export2LayoutRecord());
-  }
+  };
 
   /**
    *
@@ -201,7 +191,7 @@ export class GridEditor {
     this.removeRowTop();
     this.drawTable();
     this.writeConfig(this.export2LayoutRecord());
-  }
+  };
 
   /**
    *
@@ -212,7 +202,7 @@ export class GridEditor {
     this.removeRowBottom();
     this.drawTable();
     this.writeConfig(this.export2LayoutRecord());
-  }
+  };
 
   /**
    *
@@ -222,7 +212,7 @@ export class GridEditor {
     e.preventDefault();
     const $element = $(e.currentTarget);
     this.showOptions($element.data('col'), $element.data('row'));
-  }
+  };
 
   /**
    *
@@ -234,7 +224,7 @@ export class GridEditor {
     this.addColspan($element.data('col'), $element.data('row'));
     this.drawTable();
     this.writeConfig(this.export2LayoutRecord());
-  }
+  };
 
   /**
    *
@@ -246,7 +236,7 @@ export class GridEditor {
     this.removeColspan($element.data('col'), $element.data('row'));
     this.drawTable();
     this.writeConfig(this.export2LayoutRecord());
-  }
+  };
 
   /**
    *
@@ -258,7 +248,7 @@ export class GridEditor {
     this.addRowspan($element.data('col'), $element.data('row'));
     this.drawTable();
     this.writeConfig(this.export2LayoutRecord());
-  }
+  };
 
   /**
    *
@@ -270,13 +260,13 @@ export class GridEditor {
     this.removeRowspan($element.data('col'), $element.data('row'));
     this.drawTable();
     this.writeConfig(this.export2LayoutRecord());
-  }
+  };
 
   /**
    * Create a new cell from defaultCell
    * @returns {Object}
    */
-  protected getNewCell(): any {
+  protected getNewCell(): Cell {
     return $.extend({}, this.defaultCell);
   }
 
@@ -285,7 +275,7 @@ export class GridEditor {
    *
    * @param data
    */
-  protected writeConfig(data: any): void {
+  protected writeConfig(data: string): void {
     this.field.val(data);
     const configLines = data.split('\n');
     let config = '';
@@ -295,12 +285,12 @@ export class GridEditor {
       }
     }
 
-    let content = 'mod.web_layout.BackendLayouts {\n' +
+    const content = 'mod.web_layout.BackendLayouts {\n' +
       '  exampleKey {\n' +
       '    title = Example\n' +
       '    icon = EXT:example_extension/Resources/Public/Images/BackendLayouts/default.gif\n' +
       '    config {\n' +
-      config.replace(new RegExp('\t', 'g'), '  ') +
+      config.replace(new RegExp('\\t', 'g'), '  ') +
       '    }\n' +
       '  }\n' +
       '}\n';
@@ -312,7 +302,7 @@ export class GridEditor {
     // Update CodeMirror content if instantiated
     const codemirror: any = document.querySelector(this.selectorCodeMirror);
     if (codemirror) {
-      codemirror.CodeMirror.setValue(content)
+      codemirror.CodeMirror.setValue(content);
     }
   }
 
@@ -704,7 +694,7 @@ export class GridEditor {
    * @param {number} col
    * @param {number} row
    */
-  protected getCell(col: number, row: number): any {
+  protected getCell(col: number, row: number): Cell|false|null {
     if (col > this.colCount - 1) {
       return false;
     }
@@ -732,6 +722,10 @@ export class GridEditor {
     }
 
     const cell = this.getCell(col, row);
+    if (!cell) {
+      return false;
+    }
+
     let checkCell;
     if (cell.rowspan > 1) {
       for (let rowIndex = row; rowIndex < row + cell.rowspan; rowIndex++) {
@@ -764,6 +758,10 @@ export class GridEditor {
     }
 
     const cell = this.getCell(col, row);
+    if (!cell) {
+      return false;
+    }
+
     let checkCell;
     if (cell.colspan > 1) {
       // we have to check all cells on the right side for the complete colspan
@@ -941,7 +939,7 @@ export class GridEditor {
       // In case the editor is already visible, we don't have to add the observer
       return;
     }
-    new IntersectionObserver((entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+    new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
         const codemirror: any = document.querySelector(this.selectorCodeMirror);
         if (entry.intersectionRatio > 0 && codemirror) {

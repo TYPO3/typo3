@@ -12,14 +12,18 @@
  */
 
 import 'broadcastchannel';
-import {BroadcastMessage} from '@typo3/backend/broadcast-message';
-import {MessageUtility} from '@typo3/backend/utility/message-utility';
+import { BroadcastMessage } from '@typo3/backend/broadcast-message';
+import { MessageUtility } from '@typo3/backend/utility/message-utility';
 
 /**
  * @module @typo3/backend/broadcast-service
  */
 class BroadcastService {
   private readonly channel: BroadcastChannel;
+
+  public constructor() {
+    this.channel = new BroadcastChannel('typo3');
+  }
 
   public get isListening(): boolean {
     return typeof this.channel.onmessage === 'function';
@@ -31,10 +35,6 @@ class BroadcastService {
     }
     const message = BroadcastMessage.fromData(evt.data);
     document.dispatchEvent(message.createCustomEvent('typo3'));
-  }
-
-  public constructor() {
-    this.channel = new BroadcastChannel('typo3');
   }
 
   public listen(): void {

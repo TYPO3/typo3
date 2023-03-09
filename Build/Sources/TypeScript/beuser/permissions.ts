@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import RegularEvent from '@typo3/core/event/regular-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 
@@ -27,12 +27,17 @@ class Permissions {
 
   private ajaxUrl: string = TYPO3.settings.ajaxUrls.user_access_permissions;
 
+  constructor() {
+    this.initializeCheckboxGroups();
+    this.initializeEvents();
+  }
+
   /**
    * Changes the value of the permissions in the form
    */
   private static setPermissionCheckboxes(checknames: string, permissionValue: number): void {
     const permissionCheckboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(`input[type="checkbox"][name^="${checknames}"]`);
-    for (let permissionCheckbox of permissionCheckboxes) {
+    for (const permissionCheckbox of permissionCheckboxes) {
       const value = parseInt(permissionCheckbox.value, 10);
       permissionCheckbox.checked = (permissionValue & value) === value;
     }
@@ -44,23 +49,18 @@ class Permissions {
   private static updatePermissionValue(checknames: string, varname: string): void {
     let permissionValue = 0;
     const checkedPermissionCheckboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(`input[type="checkbox"][name^="${checknames}"]:checked`);
-    for (let permissionCheckbox of checkedPermissionCheckboxes) {
+    for (const permissionCheckbox of checkedPermissionCheckboxes) {
       permissionValue |= parseInt(permissionCheckbox.value, 10);
     }
     document.forms.namedItem('editform')[varname].value = permissionValue | (checknames === 'check[perms_user]' ? 1 : 0);
-  }
-
-  constructor() {
-    this.initializeCheckboxGroups();
-    this.initializeEvents();
   }
 
   /**
    * Changes permissions by sending an AJAX request to the server
    */
   private setPermissions(element: HTMLElement): void {
-    let page = element.dataset.page;
-    let who = element.dataset.who;
+    const page = element.dataset.page;
+    const who = element.dataset.who;
 
     (new AjaxRequest(this.ajaxUrl)).post({
       page: page,
@@ -80,7 +80,7 @@ class Permissions {
    * changes the flag to lock the editing on a page by sending an AJAX request
    */
   private toggleEditLock(element: HTMLElement): void {
-    let page = element.dataset.page;
+    const page = element.dataset.page;
     (new AjaxRequest(this.ajaxUrl)).post({
       action: 'toggle_edit_lock',
       page: page,
@@ -95,7 +95,7 @@ class Permissions {
    * Owner-related: Set the new owner of a page by executing an ajax call
    */
   private changeOwner(element: HTMLElement): void {
-    let page = element.dataset.page;
+    const page = element.dataset.page;
     const container: HTMLElement = document.getElementById('o_' + page);
 
     (new AjaxRequest(this.ajaxUrl)).post({
@@ -114,7 +114,7 @@ class Permissions {
    * the owner of a page by executing an ajax call
    */
   private showChangeOwnerSelector(element: HTMLElement): void {
-    let page = element.dataset.page;
+    const page = element.dataset.page;
 
     (new AjaxRequest(this.ajaxUrl)).post({
       action: 'show_change_owner_selector',
@@ -177,7 +177,7 @@ class Permissions {
    * Group-related: Set the new group by executing an ajax call
    */
   private changeGroup(element: HTMLElement): void {
-    let page = element.dataset.page;
+    const page = element.dataset.page;
     const container: HTMLElement = document.getElementById('g_' + page);
 
     (new AjaxRequest(this.ajaxUrl)).post({
@@ -195,7 +195,7 @@ class Permissions {
    * Group-related: Load the selector by executing an ajax call
    */
   private showChangeGroupSelector(element: HTMLElement): void {
-    let page = element.dataset.page;
+    const page = element.dataset.page;
     (new AjaxRequest(this.ajaxUrl)).post({
       action: 'show_change_group_selector',
       page: page,

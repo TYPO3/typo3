@@ -24,16 +24,6 @@ import { ResourceInterface } from '@typo3/backend/resource/resource';
  * @exports @typo3/backend/browse-folders
  */
 class BrowseFolders {
-  public static insertElement(identifier: string, close?: boolean): boolean {
-    return ElementBrowser.insertElement(
-      '',
-      identifier,
-      identifier,
-      identifier,
-      close,
-    );
-  }
-
   constructor() {
 
     new RegularEvent(FileListActionEvent.primary, (event: CustomEvent): void => {
@@ -60,6 +50,16 @@ class BrowseFolders {
 
   }
 
+  public static insertElement(identifier: string, close?: boolean): boolean {
+    return ElementBrowser.insertElement(
+      '',
+      identifier,
+      identifier,
+      identifier,
+      close,
+    );
+  }
+
   private importSelection = (event: CustomEvent): void => {
     event.preventDefault();
     const items: NodeListOf<HTMLInputElement> = (event.detail as ActionEventDetails).checkboxes;
@@ -83,7 +83,7 @@ class BrowseFolders {
       BrowseFolders.insertElement(resource.identifier);
     });
     ElementBrowser.focusOpenerAndClose();
-  }
+  };
 }
 
 export default new BrowseFolders();

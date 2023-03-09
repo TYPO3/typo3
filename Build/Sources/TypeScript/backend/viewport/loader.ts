@@ -11,12 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {ScaffoldIdentifierEnum} from '../enum/viewport/scaffold-identifier';
+import { ScaffoldIdentifierEnum } from '../enum/viewport/scaffold-identifier';
 import NProgress from 'nprogress';
 
 class Loader {
   public static start(): void {
-    NProgress.configure({parent: ScaffoldIdentifierEnum.contentModule, showSpinner: false});
+    NProgress.configure({ parent: ScaffoldIdentifierEnum.contentModule, showSpinner: false });
     NProgress.start();
   }
 

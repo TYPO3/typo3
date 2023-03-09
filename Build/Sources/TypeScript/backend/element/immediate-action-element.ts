@@ -12,7 +12,7 @@
  */
 
 import Utility from '@typo3/backend/utility';
-import {EventDispatcher} from '@typo3/backend/event/event-dispatcher';
+import { EventDispatcher } from '@typo3/backend/event/event-dispatcher';
 
 /**
  * Module: @typo3/backend/element/immediate-action-element
@@ -27,16 +27,23 @@ export class ImmediateActionElement extends HTMLElement {
   private action: string;
   private args: any[] = [];
 
+  /**
+   * Observed attributes handled by `attributeChangedCallback`.
+   */
+  public static get observedAttributes(): string[] {
+    return ['action', 'args', 'args-list'];
+  }
+
   private static async getDelegate(action: string): Promise<Function> {
     switch (action) {
       case 'TYPO3.ModuleMenu.App.refreshMenu':
-        const {default: moduleMenuApp} = await import('@typo3/backend/module-menu');
+        const { default: moduleMenuApp } = await import('@typo3/backend/module-menu');
         return moduleMenuApp.App.refreshMenu.bind(moduleMenuApp.App);
       case 'TYPO3.Backend.Topbar.refresh':
-        const {default: viewportObject} = await import('@typo3/backend/viewport');
+        const { default: viewportObject } = await import('@typo3/backend/viewport');
         return viewportObject.Topbar.refresh.bind(viewportObject.Topbar);
       case 'TYPO3.WindowManager.localOpen':
-        const {default: windowManager} = await import('@typo3/backend/window-manager');
+        const { default: windowManager } = await import('@typo3/backend/window-manager');
         return windowManager.localOpen.bind(windowManager);
       case 'TYPO3.Backend.Storage.ModuleStateStorage.update':
         return (await import('@typo3/backend/storage/module-state-storage')).ModuleStateStorage.update;
@@ -47,13 +54,6 @@ export class ImmediateActionElement extends HTMLElement {
       default:
         throw Error('Unknown action "' + action + '"');
     }
-  }
-
-  /**
-   * Observed attributes handled by `attributeChangedCallback`.
-   */
-  public static get observedAttributes(): string[] {
-    return ['action', 'args', 'args-list'];
   }
 
   /**
@@ -82,7 +82,7 @@ export class ImmediateActionElement extends HTMLElement {
     if (!this.action) {
       throw new Error('Missing mandatory action attribute');
     }
-    ImmediateActionElement.getDelegate(this.action).then((callback: Function): void => callback.apply(null, this.args));
+    ImmediateActionElement.getDelegate(this.action).then((callback: Function): void => callback(...this.args));
   }
 }
 
