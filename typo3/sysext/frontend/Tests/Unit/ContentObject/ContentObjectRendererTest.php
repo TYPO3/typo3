@@ -103,15 +103,9 @@ class ContentObjectRendererTest extends UnitTestCase
 
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var MockObject|AccessibleObjectInterface|ContentObjectRenderer
-     */
-    protected MockObject $subject;
+    protected ContentObjectRenderer&MockObject&AccessibleObjectInterface $subject;
 
-    /**
-     * @var MockObject|TypoScriptFrontendController|AccessibleObjectInterface
-     */
-    protected MockObject $frontendControllerMock;
+    protected TypoScriptFrontendController&MockObject&AccessibleObjectInterface $frontendControllerMock;
 
     /**
      * Default content object name -> class name map, shipped with TYPO3 CMS
@@ -1828,10 +1822,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->subject->render($contentObjectFixture, $configuration);
     }
 
-    /**
-     * @return MockObject|AbstractContentObject
-     */
-    protected function createContentObjectThrowingExceptionFixture(bool $addProductionExceptionHandlerInstance = true)
+    protected function createContentObjectThrowingExceptionFixture(bool $addProductionExceptionHandlerInstance = true): AbstractContentObject&MockObject
     {
         $contentObjectFixture = $this->getMockBuilder(AbstractContentObject::class)
             ->getMock();

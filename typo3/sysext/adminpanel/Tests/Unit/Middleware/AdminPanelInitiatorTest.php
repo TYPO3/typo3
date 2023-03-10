@@ -114,8 +114,7 @@ class AdminPanelInitiatorTest extends UnitTestCase
         $adminPanelInitiator = new AdminPanelInitiator();
         $adminPanelInitiator->process($request, $handler);
 
-        /** @var MainController&MockObject $controller */
-        $controller = GeneralUtility::makeInstance(MainController::class);
+        GeneralUtility::makeInstance(MainController::class);
     }
 
     protected function getHandlerMock(): RequestHandlerInterface&MockObject

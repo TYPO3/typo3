@@ -28,10 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class VimeoHelperTest extends UnitTestCase
 {
-    /**
-     * @var VimeoHelper|MockObject
-     */
-    protected $subject;
+    protected VimeoHelper&MockObject $subject;
 
     protected ?string $extension;
 

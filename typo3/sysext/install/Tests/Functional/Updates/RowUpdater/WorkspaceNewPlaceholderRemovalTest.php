@@ -21,6 +21,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard;
 use TYPO3\CMS\Install\Updates\RowUpdater\WorkspaceNewPlaceholderRemovalMigration;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -33,10 +34,7 @@ class WorkspaceNewPlaceholderRemovalTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
     ];
 
-    /**
-     * @var MockObject|DatabaseRowsUpdateWizard|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
-     */
-    protected $subject;
+    protected DatabaseRowsUpdateWizard&MockObject&AccessibleObjectInterface $subject;
 
     protected ActionService $actionService;
 

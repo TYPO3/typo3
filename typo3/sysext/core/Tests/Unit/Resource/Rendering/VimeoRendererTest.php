@@ -29,10 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class VimeoRendererTest extends UnitTestCase
 {
-    /**
-     * @var VimeoRenderer|MockObject
-     */
-    protected $subject;
+    protected VimeoRenderer&MockObject $subject;
 
     protected function setUp(): void
     {

@@ -27,10 +27,7 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
 {
-    /**
-     * @var LocalizationController|MockObject|AccessibleObjectInterface
-     */
-    protected $subject;
+    protected LocalizationController&MockObject&AccessibleObjectInterface $subject;
 
     protected BackendUserAuthentication $backendUser;
 

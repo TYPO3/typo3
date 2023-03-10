@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AbstractTypolinkBuilderTest extends UnitTestCase
@@ -37,7 +36,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
 
     protected bool $backupEnvironment = true;
 
-    protected MockObject|TypoScriptFrontendController|AccessibleObjectInterface $frontendControllerMock;
+    protected TypoScriptFrontendController&MockObject $frontendControllerMock;
 
     protected function setUp(): void
     {

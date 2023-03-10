@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class IntrospectionProcessorTest extends UnitTestCase
 {
-    /**
-     * @var MockObject|IntrospectionProcessor
-     */
-    protected $processor;
+    protected IntrospectionProcessor&MockObject $processor;
 
     /**
      * A dummy result for the debug_backtrace function

@@ -33,15 +33,9 @@ class ProcessedFileTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var MockObject|Folder
-     */
-    protected $folderMock;
+    protected Folder&MockObject $folderMock;
 
-    /**
-     * @var MockObject|ResourceStorage
-     */
-    protected $storageMock;
+    protected ResourceStorage&MockObject $storageMock;
 
     protected array $databaseRow = [];
 

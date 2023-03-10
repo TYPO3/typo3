@@ -17,17 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FlashMessageServiceTest extends UnitTestCase
 {
-    /**
-     * @var FlashMessageService|MockObject|AccessibleObjectInterface
-     */
-    protected $flashMessageService;
+    protected FlashMessageService $flashMessageService;
 
     protected function setUp(): void
     {

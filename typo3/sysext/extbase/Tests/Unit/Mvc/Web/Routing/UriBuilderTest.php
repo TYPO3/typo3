@@ -58,25 +58,13 @@ class UriBuilderTest extends UnitTestCase
      */
     protected $mockConfigurationManager;
 
-    /**
-     * @var ContentObjectRenderer|MockObject
-     */
-    protected $mockContentObject;
+    protected ContentObjectRenderer&MockObject $mockContentObject;
 
-    /**
-     * @var Request|MockObject
-     */
-    protected $mockRequest;
+    protected Request&MockObject $mockRequest;
 
-    /**
-     * @var ExtensionService|MockObject
-     */
-    protected $mockExtensionService;
+    protected ExtensionService&MockObject $mockExtensionService;
 
-    /**
-     * @var UriBuilder|MockObject|AccessibleObjectInterface
-     */
-    protected $uriBuilder;
+    protected UriBuilder&MockObject&AccessibleObjectInterface $uriBuilder;
 
     /**
      * @throws \InvalidArgumentException

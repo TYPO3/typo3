@@ -23,10 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DatabasePageLanguageOverlayRowsTest extends UnitTestCase
 {
-    /**
-     * @var DatabasePageLanguageOverlayRows|MockObject
-     */
-    protected MockObject $subject;
+    protected DatabasePageLanguageOverlayRows&MockObject $subject;
 
     protected function setUp(): void
     {

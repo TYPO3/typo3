@@ -36,7 +36,7 @@ class ImageContentObjectTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected ImageContentObject|MockObject|AccessibleObjectInterface $subject;
+    protected ImageContentObject&MockObject&AccessibleObjectInterface $subject;
 
     protected function setUp(): void
     {

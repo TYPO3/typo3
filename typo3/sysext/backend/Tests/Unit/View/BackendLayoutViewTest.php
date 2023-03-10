@@ -24,10 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class BackendLayoutViewTest extends UnitTestCase
 {
-    /**
-     * @var BackendLayoutView|MockObject|AccessibleObjectInterface
-     */
-    protected $backendLayoutView;
+    protected BackendLayoutView&MockObject&AccessibleObjectInterface $backendLayoutView;
 
     /**
      * Sets up this test case.

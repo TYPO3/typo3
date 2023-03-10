@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Error;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use TYPO3\CMS\Core\Error\DebugExceptionHandler;
@@ -28,10 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DebugExceptionHandlerTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Core\Error\DebugExceptionHandler|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $subject;
+    protected DebugExceptionHandler&MockObject $subject;
 
     /**
      * Sets up this test case.

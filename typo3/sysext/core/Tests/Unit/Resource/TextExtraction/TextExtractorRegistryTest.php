@@ -30,10 +30,8 @@ class TextExtractorRegistryTest extends UnitTestCase
 {
     /**
      * Initialize a TextExtractorRegistry and mock createTextExtractorInstance()
-     *
-     * @return MockObject|TextExtractorRegistry
      */
-    protected function getTextExtractorRegistry(array $createsTextExtractorInstances = [])
+    protected function getTextExtractorRegistry(array $createsTextExtractorInstances = []): TextExtractorRegistry&MockObject
     {
         $textExtractorRegistry = $this->getMockBuilder(TextExtractorRegistry::class)
             ->onlyMethods(['createTextExtractorInstance'])

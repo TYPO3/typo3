@@ -1421,11 +1421,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Messaging\\\\FlashMessageServiceTest\\:\\:\\$flashMessageService \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessageService&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessageService\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Messaging/FlashMessageServiceTest.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Migrations\\\\TcaMigrationTest\\:\\:evalEmailMigratedToTypeDataProvider\\(\\) is unused\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Migrations/TcaMigrationTest.php
@@ -1804,11 +1799,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$optionKey of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfiguration\\:\\:setTypeConverterOption\\(\\) expects string, int given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/PersistentObjectConverterTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Configuration\\\\FrontendConfigurationManagerTest\\:\\:\\$mockTypoScriptService \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/FrontendConfigurationManagerTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$error of method TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Result\\:\\:addError\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Error, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"

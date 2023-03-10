@@ -52,10 +52,7 @@ class CleanerFieldProviderTest extends UnitTestCase
         $this->subject->method('getLanguageService')->willReturn($languageServiceMock);
     }
 
-    /**
-     * @return MockObject|SchedulerModuleController
-     */
-    protected function getScheduleModuleControllerMock(array $mockedMethods = [])
+    protected function getScheduleModuleControllerMock(array $mockedMethods = []): SchedulerModuleController&MockObject
     {
         $languageServiceMock = $this->getMockBuilder(LanguageService::class)
             ->onlyMethods(['sL'])

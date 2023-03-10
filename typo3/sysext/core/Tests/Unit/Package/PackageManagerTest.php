@@ -40,10 +40,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class PackageManagerTest extends UnitTestCase
 {
-    /**
-     * @var PackageManager|MockObject|AccessibleObjectInterface $packageManager
-     */
-    protected $packageManager;
+    protected PackageManager&MockObject&AccessibleObjectInterface $packageManager;
 
     protected string $testRoot;
 

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Index;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -205,10 +206,8 @@ class ExtractorRegistryTest extends UnitTestCase
 
     /**
      * Initialize an ExtractorRegistry and mock createExtractorInstance()
-     *
-     * @return \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry
      */
-    protected function getMockExtractorRegistry(array $createsExtractorInstances = [])
+    protected function getMockExtractorRegistry(array $createsExtractorInstances = []): ExtractorRegistry&MockObject
     {
         $extractorRegistry = $this->getMockBuilder(ExtractorRegistry::class)
             ->onlyMethods(['createExtractorInstance'])

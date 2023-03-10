@@ -31,7 +31,7 @@ class RemoteServerTest extends UnitTestCase
     protected bool $resetSingletonInstances = true;
 
     /**
-     * @var array<string, MockObject&FileReference>
+     * @var array<non-empty-string, FileReference&MockObject>
      */
     protected array $fileReferenceMocks;
 
@@ -120,7 +120,7 @@ class RemoteServerTest extends UnitTestCase
 
     /**
      * @param string $idList List of ids
-     * @return array<string, MockObject&FileReference>
+     * @return array<non-empty-string, FileReference&MockObject>
      */
     protected function getFileReferenceMocks(string $idList): array
     {
@@ -134,7 +134,10 @@ class RemoteServerTest extends UnitTestCase
         return $fileReferenceMocks;
     }
 
-    protected function getFileReferenceMock(string $id): MockObject&FileReference
+    /**
+     * @param non-empty-string $id
+     */
+    protected function getFileReferenceMock(string $id): FileReference&MockObject
     {
         if (isset($this->fileReferenceMocks[$id])) {
             return $this->fileReferenceMocks[$id];

@@ -32,10 +32,7 @@ class ImportExportTest extends AbstractImportExportTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mnattributesimple',
     ];
 
-    /**
-     * @var Export|MockObject|AccessibleObjectInterface
-     */
-    protected $exportMock;
+    protected Export&MockObject&AccessibleObjectInterface $exportMock;
 
     protected function setUp(): void
     {

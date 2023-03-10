@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Core;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -26,10 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SystemEnvironmentBuilderTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
-     */
-    protected $subject;
+    protected SystemEnvironmentBuilder&MockObject&AccessibleObjectInterface $subject;
 
     protected function setUp(): void
     {

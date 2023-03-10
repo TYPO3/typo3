@@ -28,10 +28,7 @@ class ExportTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var Export|MockObject|AccessibleObjectInterface
-     */
-    protected $exportMock;
+    protected Export&MockObject&AccessibleObjectInterface $exportMock;
 
     protected function setUp(): void
     {

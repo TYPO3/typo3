@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard;
 use TYPO3\CMS\Install\Updates\RowUpdater\SysRedirectRootPageMoveMigration;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -33,10 +34,7 @@ class SysRedirectRootPageMoveMigrationTest extends FunctionalTestCase
 
     protected array $coreExtensionsToLoad = ['redirects'];
 
-    /**
-     * @var MockObject|DatabaseRowsUpdateWizard|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
-     */
-    protected $subject;
+    protected DatabaseRowsUpdateWizard&MockObject&AccessibleObjectInterface $subject;
 
     protected ActionService $actionService;
 

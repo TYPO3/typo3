@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\View;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\View\AbstractTemplateView;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
@@ -25,20 +26,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 class AbstractTemplateViewTest extends UnitTestCase
 {
-    /**
-     * @var AbstractTemplateView|AccessibleObjectInterface
-     */
-    protected $view;
+    protected AbstractTemplateView&MockObject&AccessibleObjectInterface $view;
 
-    /**
-     * @var RenderingContext|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $renderingContext;
+    protected RenderingContext&MockObject $renderingContext;
 
-    /**
-     * @var ViewHelperVariableContainer|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $viewHelperVariableContainer;
+    protected ViewHelperVariableContainer&MockObject $viewHelperVariableContainer;
 
     /**
      * Sets up this test case

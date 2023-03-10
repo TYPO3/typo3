@@ -34,10 +34,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RepositoryTest extends UnitTestCase
 {
-    /**
-     * @var Repository|MockObject|AccessibleObjectInterface
-     */
-    protected $repository;
+    protected Repository&MockObject&AccessibleObjectInterface $repository;
 
     /**
      * @var QueryFactory

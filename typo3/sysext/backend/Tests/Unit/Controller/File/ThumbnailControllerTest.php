@@ -29,10 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ThumbnailControllerTest extends UnitTestCase
 {
-    /**
-     * @var ThumbnailController|MockObject
-     */
-    protected MockObject $subject;
+    protected ThumbnailController&MockObject $subject;
 
     protected static array $parameters = [
         'fileId' => 123,

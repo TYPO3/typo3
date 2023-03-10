@@ -22,6 +22,7 @@ use Doctrine\DBAL\Driver\AbstractMySQLDriver;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Result;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -31,10 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ConnectionTest extends UnitTestCase
 {
-    /**
-     * @var Connection|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $connection;
+    protected Connection&MockObject $connection;
 
     protected ?AbstractPlatform $platform;
     protected string $testTable = 'testTable';

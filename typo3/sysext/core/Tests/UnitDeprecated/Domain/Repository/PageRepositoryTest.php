@@ -17,19 +17,18 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Domain\Repository;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PageRepositoryTest extends UnitTestCase
 {
-    /**
-     * @var PageRepository|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
-     */
-    protected $pageSelectObject;
+    protected PageRepository&MockObject&AccessibleObjectInterface $pageSelectObject;
 
     protected array $defaultTcaForPages = [
         'ctrl' => [

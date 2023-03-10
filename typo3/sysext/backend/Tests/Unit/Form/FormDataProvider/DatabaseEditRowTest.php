@@ -29,10 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DatabaseEditRowTest extends UnitTestCase
 {
-    /**
-     * @var DatabaseEditRow|MockObject
-     */
-    protected MockObject $subject;
+    protected DatabaseEditRow&MockObject $subject;
 
     protected function setUp(): void
     {

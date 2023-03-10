@@ -33,10 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class LockFactoryTest extends UnitTestCase
 {
-    /**
-     * @var LockFactory|MockObject|AccessibleObjectInterface
-     */
-    protected $mockFactory;
+    protected LockFactory&MockObject&AccessibleObjectInterface $mockFactory;
 
     /**
      * @var array

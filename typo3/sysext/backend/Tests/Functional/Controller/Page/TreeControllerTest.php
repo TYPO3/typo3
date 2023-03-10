@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
 use TYPO3\CMS\Backend\Controller\Page\TreeController;
@@ -44,10 +45,7 @@ class TreeControllerTest extends FunctionalTestCase
 
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    /**
-     * @var TreeController|AccessibleObjectInterface
-     */
-    private $subject;
+    private TreeController&MockObject&AccessibleObjectInterface $subject;
 
     private BackendUserAuthentication $backendUser;
 

@@ -36,10 +36,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SilentConfigurationUpgradeServiceTest extends UnitTestCase
 {
-    /**
-     * @var ConfigurationManager|MockObject
-     */
-    protected $configurationManager;
+    protected ConfigurationManager&MockObject $configurationManager;
 
     /**
      * @var UnitTestPackageManager A backup of unit test package manager

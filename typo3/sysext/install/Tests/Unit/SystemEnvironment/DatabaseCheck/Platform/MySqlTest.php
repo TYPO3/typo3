@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Install\Tests\Unit\SystemEnvironment\DatabaseCheck\Platform;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -90,7 +89,6 @@ class MySqlTest extends UnitTestCase
         ContextualFeedbackSeverity $expectedSeverity,
         string $expectedTitle
     ): void {
-        /** @var Connection&MockObject $connectionMock */
         $connectionMock = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
         $connectionMock->method('getServerVersion')->willReturn($serverVersionString);
         $connectionMock->method('getDatabasePlatform')->willReturn($platform);

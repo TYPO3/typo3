@@ -33,20 +33,11 @@ class FrontendConfigurationManagerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var ContentObjectRenderer|MockObject
-     */
-    protected $mockContentObject;
+    protected ContentObjectRenderer&MockObject $mockContentObject;
 
-    /**
-     * @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface
-     */
-    protected $frontendConfigurationManager;
+    protected FrontendConfigurationManager&MockObject&AccessibleObjectInterface $frontendConfigurationManager;
 
-    /**
-     * @var TypoScriptService|MockObject|AccessibleObjectInterface
-     */
-    protected $mockTypoScriptService;
+    protected TypoScriptService&MockObject $mockTypoScriptService;
 
     protected array $testTypoScriptSetup = [
         'foo.' => [

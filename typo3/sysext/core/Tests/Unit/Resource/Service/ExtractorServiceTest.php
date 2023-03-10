@@ -227,7 +227,6 @@ class ExtractorServiceTest extends UnitTestCase
         $storageMock = $this->createMock(ResourceStorage::class);
         $storageMock->method('getDriverType')->willReturn('Local');
 
-        /** @var ExtractorService|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(ExtractorService::class)
             ->setMethods(['getExtractorRegistry'])
             ->getMock()
@@ -268,7 +267,6 @@ class ExtractorServiceTest extends UnitTestCase
             'baz' => 'second',
         ]);
 
-        /** @var ExtractorRegistry|\PHPUnit\Framework\MockObject\MockObject $extractorRegistryMock */
         $extractorRegistryMock = $this->getMockBuilder(ExtractorRegistry::class)
             ->setMethods(['createExtractorInstance'])
             ->getMock();

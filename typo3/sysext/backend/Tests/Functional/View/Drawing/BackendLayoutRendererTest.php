@@ -67,7 +67,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    protected function getPageLayoutContext(int $pageId, array $configuration): PageLayoutContext|MockObject
+    protected function getPageLayoutContext(int $pageId, array $configuration): PageLayoutContext&MockObject
     {
         $backendLayout = new BackendLayout('layout1', 'Layout 1', $configuration);
         return $this->createConfiguredMock(

@@ -29,10 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class YouTubeRendererTest extends UnitTestCase
 {
-    /**
-     * @var YouTubeRenderer|MockObject
-     */
-    protected $subject;
+    protected YouTubeRenderer&MockObject $subject;
 
     protected function setUp(): void
     {

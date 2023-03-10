@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\TypoScript\Parser;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
@@ -28,10 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TypoScriptParserTest extends UnitTestCase
 {
-    /**
-     * @var TypoScriptParser|AccessibleObjectInterface
-     */
-    protected $typoScriptParser;
+    protected TypoScriptParser&MockObject&AccessibleObjectInterface $typoScriptParser;
 
     protected function setUp(): void
     {

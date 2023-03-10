@@ -31,10 +31,7 @@ class ExportTest extends AbstractImportExportTestCase
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
     ];
 
-    /**
-     * @var Export|MockObject|AccessibleObjectInterface
-     */
-    protected $exportMock;
+    protected Export&MockObject&AccessibleObjectInterface $exportMock;
 
     protected array $recordTypesIncludeFields =
         [

@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -26,10 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class InstallToolFormProtectionTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
-     */
-    protected $subject;
+    protected InstallToolFormProtection&MockObject&AccessibleObjectInterface $subject;
 
     protected function setUp(): void
     {

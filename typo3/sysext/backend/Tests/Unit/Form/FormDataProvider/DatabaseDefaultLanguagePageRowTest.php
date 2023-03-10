@@ -27,10 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
 {
-    /**
-     * @var DatabaseDefaultLanguagePageRow|MockObject
-     */
-    protected MockObject $subject;
+    protected DatabaseDefaultLanguagePageRow&MockObject $subject;
 
     protected function setUp(): void
     {
