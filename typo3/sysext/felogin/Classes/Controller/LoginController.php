@@ -48,7 +48,6 @@ class LoginController extends AbstractLoginFormController
     protected string $redirectUrl = '';
     protected RedirectConfiguration $configuration;
     protected UserAspect $userAspect;
-    protected bool $showCookieWarning = false;
 
     public function __construct(
         protected RedirectHandler $redirectHandler,
@@ -68,11 +67,6 @@ class LoginController extends AbstractLoginFormController
         $this->configuration = RedirectConfiguration::fromSettings($this->settings);
 
         if ($this->isLoginOrLogoutInProgress() && !$this->isRedirectDisabled()) {
-            if ($this->userAspect->isLoggedIn() && $this->userService->cookieWarningRequired()) {
-                $this->showCookieWarning = true;
-                return;
-            }
-
             $this->redirectUrl = $this->redirectHandler->processRedirect(
                 $this->request,
                 $this->loginType,
@@ -104,7 +98,6 @@ class LoginController extends AbstractLoginFormController
 
         $this->view->assignMultiple(
             [
-                'cookieWarning' => $this->showCookieWarning,
                 'messageKey' => $this->getStatusMessageKey(),
                 'permaloginStatus' => $this->getPermaloginStatus(),
                 'redirectURL' => $this->redirectHandler->getLoginFormRedirectUrl($this->request, $this->configuration, $this->isRedirectDisabled()),
@@ -135,7 +128,6 @@ class LoginController extends AbstractLoginFormController
 
         $this->view->assignMultiple(
             [
-                'cookieWarning' => $this->showCookieWarning,
                 'user' => $this->userService->getFeUserData(),
                 'showLoginMessage' => $showLoginMessage,
             ]
@@ -155,7 +147,6 @@ class LoginController extends AbstractLoginFormController
 
         $this->view->assignMultiple(
             [
-                'cookieWarning' => $this->showCookieWarning,
                 'user' => $this->userService->getFeUserData(),
                 'noRedirect' => $this->isRedirectDisabled(),
                 'actionUri' => $this->redirectHandler->getLogoutFormRedirectUrl(

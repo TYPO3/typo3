@@ -39,14 +39,6 @@ class UserService
         return $this->feUser->user;
     }
 
-    /**
-     * Should return true if a cookie warning is needed to be displayed
-     */
-    public function cookieWarningRequired(): bool
-    {
-        return !$this->feUser->isCookieSet();
-    }
-
     public function getFeUserGroupData(): array
     {
         return $this->feUser->userGroups;
