@@ -29,7 +29,7 @@ class AudioTagRenderer implements FileRendererInterface
      *
      * @var array
      */
-    protected $possibleMimeTypes = ['audio/mpeg', 'audio/wav', 'audio/ogg'];
+    protected $possibleMimeTypes = ['audio/mpeg', 'audio/wav', 'audio/x-wav', 'audio/ogg'];
 
     /**
      * Returns the priority of the renderer
