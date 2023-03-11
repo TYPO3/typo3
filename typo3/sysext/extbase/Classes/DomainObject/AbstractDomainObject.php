@@ -329,6 +329,9 @@ abstract class AbstractDomainObject implements DomainObjectInterface
         $this->_isClone = true;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function __toString(): string
     {
         return static::class . ':' . (string)$this->uid;

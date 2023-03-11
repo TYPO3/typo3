@@ -25,9 +25,9 @@ abstract class AbstractValueObject extends AbstractDomainObject
     /**
      * Returns the value of the Value Object. Must be overwritten by a concrete value object.
      *
-     * @return string
+     * @return non-empty-string
      */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->__toString();
     }
