@@ -42,8 +42,8 @@ use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Exception\InvalidDateException;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
-use TYPO3\CMS\Scheduler\ProgressProviderInterface;
 use TYPO3\CMS\Scheduler\Scheduler;
+use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
@@ -67,6 +67,7 @@ class SchedulerModuleController
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly Context $context,
+        protected readonly TaskService $taskService,
     ) {
     }
 
@@ -316,7 +317,7 @@ class SchedulerModuleController
     protected function renderAddTaskFormView(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-        $registeredClasses = $this->getRegisteredClasses();
+        $registeredClasses = $this->taskService->getAvailableTaskTypes();
         // Class selection can be GET - link and + button in info screen.
         $queryParams = $request->getQueryParams()['tx_scheduler'] ?? [];
         $parsedBody = $request->getParsedBody()['tx_scheduler'] ?? [];
@@ -393,7 +394,7 @@ class SchedulerModuleController
     protected function renderEditTaskFormView(ModuleTemplate $view, ServerRequestInterface $request, ?int $taskUid = null): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-        $registeredClasses = $this->getRegisteredClasses();
+        $registeredClasses = $this->taskService->getAvailableTaskTypes();
         $parsedBody = $request->getParsedBody()['tx_scheduler'] ?? [];
         $moduleData = $request->getAttribute('moduleData');
         $taskUid = (int)($taskUid ?? $request->getQueryParams()['uid'] ?? $parsedBody['uid'] ?? 0);
@@ -561,113 +562,18 @@ class SchedulerModuleController
     protected function renderListTasksView(ModuleTemplate $view, ModuleData $moduleData): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-        $registeredClasses = $this->getRegisteredClasses();
+        $tasks = $this->taskRepository->getGroupedTasks();
+        $registeredClasses = $this->taskService->getAvailableTaskTypes();
 
-        // Get all registered tasks
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task');
-        $queryBuilder->getRestrictions()->removeAll();
-        $result = $queryBuilder->select('t.*')
-            ->addSelect(
-                'g.groupName AS taskGroupName',
-                'g.uid AS taskGroupId',
-                'g.deleted AS isTaskGroupDeleted',
-                'g.hidden AS isTaskGroupHidden',
-            )
-            ->from('tx_scheduler_task', 't')
-            ->leftJoin(
-                't',
-                'tx_scheduler_task_group',
-                'g',
-                $queryBuilder->expr()->eq('t.task_group', $queryBuilder->quoteIdentifier('g.uid'))
-            )
-            ->where(
-                $queryBuilder->expr()->eq('t.deleted', 0)
-            )
-            ->orderBy('g.sorting')
-            ->executeQuery();
-
-        $taskGroupsWithTasks = [];
-        $errorClasses = [];
-        while ($row = $result->fetchAssociative()) {
-            $taskData = [
-                'uid' => (int)$row['uid'],
-                'lastExecutionTime' => (int)$row['lastexecution_time'],
-                'lastExecutionContext' => $row['lastexecution_context'],
-                'errorMessage' => '',
-            ];
-
-            try {
-                $taskObject = $this->taskSerializer->deserialize($row['serialized_task_object']);
-            } catch (InvalidTaskException $e) {
-                $taskData['errorMessage'] = $e->getMessage();
-                $taskData['class'] = $this->taskSerializer->extractClassName($row['serialized_task_object']);
-                $errorClasses[] = $taskData;
-                continue;
-            }
-
-            $taskClass = $this->taskSerializer->resolveClassName($taskObject);
-            $taskData['class'] = $taskClass;
-
-            if (!(new TaskValidator())->isValid($taskObject)) {
-                $taskData['errorMessage'] = 'The class ' . $taskClass . ' is not a valid task';
-                $errorClasses[] = $taskData;
-                continue;
-            }
-
-            if (!isset($registeredClasses[$taskClass])) {
-                $taskData['errorMessage'] = 'The class ' . $taskClass . ' is not a registered task';
-                $errorClasses[] = $taskData;
-                continue;
-            }
-
-            if ($taskObject instanceof ProgressProviderInterface) {
-                $taskData['progress'] = round((float)$taskObject->getProgress(), 2);
-            }
-            $taskData['classTitle'] = $registeredClasses[$taskClass]['title'];
-            $taskData['classExtension'] = $registeredClasses[$taskClass]['extension'];
-            $taskData['additionalInformation'] = $taskObject->getAdditionalInformation();
-            $taskData['disabled'] = (bool)$row['disable'];
-            $taskData['isRunning'] = !empty($row['serialized_executions']);
-            $taskData['nextExecution'] = (int)$row['nextexecution'];
-            $taskData['type'] = 'single';
-            $taskData['frequency'] = '';
-            if ($taskObject->getType() === AbstractTask::TYPE_RECURRING) {
-                $taskData['type'] = 'recurring';
-                $taskData['frequency'] = $taskObject->getExecution()->getCronCmd() ?: $taskObject->getExecution()->getInterval();
-            }
-            $taskData['multiple'] = (bool)$taskObject->getExecution()->getMultiple();
-            $taskData['lastExecutionFailure'] = false;
-            if (!empty($row['lastexecution_failure'])) {
-                $taskData['lastExecutionFailure'] = true;
-                $exceptionArray = @unserialize($row['lastexecution_failure']);
-                $taskData['lastExecutionFailureCode'] = '';
-                $taskData['lastExecutionFailureMessage'] = '';
-                if (is_array($exceptionArray)) {
-                    $taskData['lastExecutionFailureCode'] = $exceptionArray['code'];
-                    $taskData['lastExecutionFailureMessage'] = $exceptionArray['message'];
-                }
-            }
-
-            // If a group is deleted or no group is set it needs to go into "not assigned groups"
-            $groupIndex = $row['isTaskGroupDeleted'] === 1 || $row['isTaskGroupDeleted'] === null ? 0 : (int)$row['task_group'];
-            if (!isset($taskGroupsWithTasks[$groupIndex])) {
-                $taskGroupsWithTasks[$groupIndex] = [
-                    'tasks' => [],
-                    'groupName' => $row['taskGroupName'],
-                    'groupUid' => $row['taskGroupId'],
-                    'groupHidden' => $row['isTaskGroupHidden'],
-                    'taskGroupCollapsed' => (bool)($moduleData->get('task-group-' . ($row['taskGroupId'] ?? 0), false)),
-                ];
-            }
-
-            $taskGroupsWithTasks[$groupIndex]['tasks'][] = $taskData;
+        foreach ($tasks['taskGroupsWithTasks'] as $key => $group) {
+            $group['taskGroupCollapsed'] = (bool)($moduleData->get('task-group-' . ($key ?? 0), false));
         }
 
         $view->assignMultiple([
-            'tasks' => $taskGroupsWithTasks,
-            'groupsWithoutTasks' => $this->getGroupsWithoutTasks($taskGroupsWithTasks),
+            'tasks' => $tasks['taskGroupsWithTasks'],
+            'groupsWithoutTasks' => $this->getGroupsWithoutTasks($tasks['taskGroupsWithTasks']),
             'now' => $this->context->getAspect('date')->get('timestamp'),
-            'errorClasses' => $errorClasses,
+            'errorClasses' => $tasks['errorClasses'],
             'errorClassesCollapsed' => (bool)($moduleData->get('task-group-missing', false)),
         ]);
         $view->setTitle(
@@ -855,34 +761,6 @@ class SchedulerModuleController
     }
 
     /**
-     * This method fetches a list of all classes that have been registered with the Scheduler
-     * For each item the following information is provided, as an associative array:
-     *
-     * ['extension'] => Key of the extension which provides the class
-     * ['filename'] => Path to the file containing the class
-     * ['title'] => String (possibly localized) containing a human-readable name for the class
-     * ['provider'] => Name of class that implements the interface for additional fields, if necessary
-     *
-     * The name of the class itself is used as the key of the list array
-     */
-    protected function getRegisteredClasses(): array
-    {
-        $languageService = $this->getLanguageService();
-        $list = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'] ?? [] as $class => $registrationInformation) {
-            $title = isset($registrationInformation['title']) ? $languageService->sL($registrationInformation['title']) : '';
-            $description = isset($registrationInformation['description']) ? $languageService->sL($registrationInformation['description']) : '';
-            $list[$class] = [
-                'extension' => $registrationInformation['extension'],
-                'title' => $title,
-                'description' => $description,
-                'provider' => $registrationInformation['additionalFields'] ?? '',
-            ];
-        }
-        return $list;
-    }
-
-    /**
      * Fetch list of all task groups.
      */
     protected function getRegisteredTaskGroups(): array
@@ -1028,7 +906,7 @@ class SchedulerModuleController
     protected function getHumanReadableTaskName(AbstractTask $task): string
     {
         $class = get_class($task);
-        $registeredClasses = $this->getRegisteredClasses();
+        $registeredClasses = $this->taskService->getAvailableTaskTypes();
         if (!array_key_exists($class, $registeredClasses)) {
             throw new \RuntimeException('Class ' . $class . ' not found in list of registered task classes', 1641658569);
         }

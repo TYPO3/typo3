@@ -17,6 +17,20 @@ services:
         description: 'Start the TYPO3 Scheduler from the command line.'
         schedulable: false
 
+  TYPO3\CMS\Scheduler\Command\SchedulerListCommand:
+    tags:
+      - name: 'console.command'
+        command: 'scheduler:list'
+        description: 'List all Scheduler tasks.'
+        schedulable: false
+
+  TYPO3\CMS\Scheduler\Command\SchedulerExecuteCommand:
+    tags:
+      - name: 'console.command'
+        command: 'scheduler:execute'
+        description: 'Execute given Scheduler tasks.'
+        schedulable: false
+
   TYPO3\CMS\Scheduler\SystemInformation\ToolbarItemProvider:
     tags:
       - name: event.listener

@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
 
 /**
@@ -38,6 +39,7 @@ final class AvailableSchedulerTasksController
     public function __construct(
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly CommandRegistry $commandRegistry,
+        private readonly TaskService $taskService,
     ) {
     }
 
@@ -45,7 +47,7 @@ final class AvailableSchedulerTasksController
     {
         $languageService = $this->getLanguageService();
 
-        $tasks = $this->getRegisteredClasses();
+        $tasks = $this->taskService->getAvailableTaskTypes();
         $commands = $this->getRegisteredCommands($tasks);
 
         $view = $this->moduleTemplateFactory->create($request);
@@ -73,35 +75,6 @@ final class AvailableSchedulerTasksController
             ->setRouteIdentifier('scheduler_availabletasks')
             ->setDisplayName($name);
         $buttonBar->addButton($shortcutButton);
-    }
-
-    /**
-     * This method fetches a list of all classes that have been registered with the Scheduler
-     * For each item the following information is provided, as an associative array:
-     *
-     * ['extension'] => Key of the extension which provides the class
-     * ['filename'] => Path to the file containing the class
-     * ['title'] => String (possibly localized) containing a human-readable name for the class
-     * ['provider'] => Name of class that implements the interface for additional fields, if necessary
-     *
-     * The name of the class itself is used as the key of the list array
-     */
-    private function getRegisteredClasses(): array
-    {
-        $languageService = $this->getLanguageService();
-        $list = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'] ?? [] as $class => $registrationInformation) {
-            $title = isset($registrationInformation['title']) ? $languageService->sL($registrationInformation['title']) : '';
-            $description = isset($registrationInformation['description']) ? $languageService->sL($registrationInformation['description']) : '';
-            $list[$class] = [
-                'extension' => $registrationInformation['extension'],
-                'title' => $title,
-                'description' => $description,
-                'provider' => $registrationInformation['additionalFields'] ?? '',
-            ];
-        }
-        ksort($list);
-        return $list;
     }
 
     /**

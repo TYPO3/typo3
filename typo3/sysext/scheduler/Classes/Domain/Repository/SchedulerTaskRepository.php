@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
+use TYPO3\CMS\Scheduler\ProgressProviderInterface;
+use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
@@ -244,6 +246,120 @@ class SchedulerTaskRepository
         }
 
         return $this->createValidTaskObjectOrDisableTask($row);
+    }
+
+    /**
+     * @internal This will get split up into errored classes
+     */
+    public function getGroupedTasks(): array
+    {
+        $registeredClasses = GeneralUtility::makeInstance(TaskService::class)->getAvailableTaskTypes();
+
+        // Get all registered tasks
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE_NAME);
+        $queryBuilder->getRestrictions()->removeAll();
+        $result = $queryBuilder->select('t.*')
+            ->addSelect(
+                'g.groupName AS taskGroupName',
+                'g.description AS taskGroupDescription',
+                'g.uid AS taskGroupId',
+                'g.deleted AS isTaskGroupDeleted',
+                'g.hidden AS isTaskGroupHidden',
+            )
+            ->from(self::TABLE_NAME, 't')
+            ->leftJoin(
+                't',
+                'tx_scheduler_task_group',
+                'g',
+                $queryBuilder->expr()->eq('t.task_group', $queryBuilder->quoteIdentifier('g.uid'))
+            )
+            ->where(
+                $queryBuilder->expr()->eq('t.deleted', 0)
+            )
+            ->orderBy('g.sorting')
+            ->executeQuery();
+
+        $taskGroupsWithTasks = [];
+        $errorClasses = [];
+        while ($row = $result->fetchAssociative()) {
+            $taskData = [
+                'uid' => (int)$row['uid'],
+                'lastExecutionTime' => (int)$row['lastexecution_time'],
+                'lastExecutionContext' => $row['lastexecution_context'],
+                'errorMessage' => '',
+                'description' => $row['description'],
+            ];
+
+            try {
+                $taskObject = $this->taskSerializer->deserialize($row['serialized_task_object']);
+            } catch (InvalidTaskException $e) {
+                $taskData['errorMessage'] = $e->getMessage();
+                $taskData['class'] = $this->taskSerializer->extractClassName($row['serialized_task_object']);
+                $errorClasses[] = $taskData;
+                continue;
+            }
+
+            $taskClass = $this->taskSerializer->resolveClassName($taskObject);
+            $taskData['class'] = $taskClass;
+
+            if (!$this->isValidTaskObject($taskObject)) {
+                $taskData['errorMessage'] = 'The class ' . $taskClass . ' is not a valid task';
+                $errorClasses[] = $taskData;
+                continue;
+            }
+
+            if (!isset($registeredClasses[$taskClass])) {
+                $taskData['errorMessage'] = 'The class ' . $taskClass . ' is not a registered task';
+                $errorClasses[] = $taskData;
+                continue;
+            }
+
+            if ($taskObject instanceof ProgressProviderInterface) {
+                $taskData['progress'] = round((float)$taskObject->getProgress(), 2);
+            }
+            $taskData['classTitle'] = $registeredClasses[$taskClass]['title'];
+            $taskData['classExtension'] = $registeredClasses[$taskClass]['extension'];
+            $taskData['additionalInformation'] = $taskObject->getAdditionalInformation();
+            $taskData['disabled'] = (bool)$row['disable'];
+            $taskData['isRunning'] = !empty($row['serialized_executions']);
+            $taskData['nextExecution'] = (int)$row['nextexecution'];
+            $taskData['type'] = 'single';
+            $taskData['frequency'] = '';
+            if ($taskObject->getType() === AbstractTask::TYPE_RECURRING) {
+                $taskData['type'] = 'recurring';
+                $taskData['frequency'] = $taskObject->getExecution()->getCronCmd() ?: $taskObject->getExecution()->getInterval();
+            }
+            $taskData['multiple'] = (bool)$taskObject->getExecution()->getMultiple();
+            $taskData['lastExecutionFailure'] = false;
+            if (!empty($row['lastexecution_failure'])) {
+                $taskData['lastExecutionFailure'] = true;
+                $exceptionArray = @unserialize($row['lastexecution_failure']);
+                $taskData['lastExecutionFailureCode'] = '';
+                $taskData['lastExecutionFailureMessage'] = '';
+                if (is_array($exceptionArray)) {
+                    $taskData['lastExecutionFailureCode'] = $exceptionArray['code'];
+                    $taskData['lastExecutionFailureMessage'] = $exceptionArray['message'];
+                }
+            }
+
+            // If a group is deleted or no group is set it needs to go into "not assigned groups"
+            $groupIndex = $row['isTaskGroupDeleted'] === 1 || $row['isTaskGroupDeleted'] === null ? 0 : (int)$row['task_group'];
+            if (!isset($taskGroupsWithTasks[$groupIndex])) {
+                $taskGroupsWithTasks[$groupIndex] = [
+                    'tasks' => [],
+                    'groupName' => $row['taskGroupName'],
+                    'groupUid' => $row['taskGroupId'],
+                    'groupDescription' => $row['taskGroupDescription'],
+                    'groupHidden' => $row['isTaskGroupHidden'],
+                ];
+            }
+            $taskGroupsWithTasks[$groupIndex]['tasks'][] = $taskData;
+        }
+
+        return [
+            'taskGroupsWithTasks' => $taskGroupsWithTasks,
+            'errorClasses' => $errorClasses,
+        ];
     }
 
     protected function createValidTaskObjectOrDisableTask(array $row): AbstractTask
