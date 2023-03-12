@@ -65,10 +65,10 @@ final class OptionViewHelper extends AbstractFormFieldViewHelper
     {
         $selectedValue = $this->renderingContext->getViewHelperVariableContainer()->get(SelectViewHelper::class, 'selectedValue');
         if (is_array($selectedValue)) {
-            return in_array($value, array_map('strval', $selectedValue), true);
+            return in_array($value, array_map(strval(...), $selectedValue), true);
         }
         if ($selectedValue instanceof \Iterator) {
-            return in_array($value, array_map('strval', iterator_to_array($selectedValue)), true);
+            return in_array($value, array_map(strval(...), iterator_to_array($selectedValue)), true);
         }
         return $value === (string)$selectedValue;
     }

@@ -109,7 +109,7 @@ final class CheckboxViewHelper extends AbstractFormFieldViewHelper
             $propertyValue = iterator_to_array($propertyValue);
         }
         if (is_array($propertyValue)) {
-            $propertyValue = array_map([$this, 'convertToPlainValue'], $propertyValue);
+            $propertyValue = array_map($this->convertToPlainValue(...), $propertyValue);
             if ($checked === null) {
                 $checked = in_array($valueAttribute, $propertyValue);
             }
