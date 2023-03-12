@@ -893,7 +893,7 @@ class GeneralUtility
             return [$string];
         }
         $explodedValues = explode($delimiter, strrev($string), $limit);
-        $explodedValues = array_map('strrev', $explodedValues);
+        $explodedValues = array_map(strrev(...), $explodedValues);
         return array_reverse($explodedValues);
     }
 
@@ -918,17 +918,17 @@ class GeneralUtility
         $result = explode($delim, (string)$string);
         if ($removeEmptyValues) {
             // Remove items that are just whitespace, but leave whitespace intact for the rest.
-            $result = array_values(array_filter($result, static fn ($item) => trim($item) !== ''));
+            $result = array_values(array_filter($result, static fn (string $item): bool => trim($item) !== ''));
         }
 
         if ($limit === 0) {
             // Return everything.
-            return array_map('trim', $result);
+            return array_map(trim(...), $result);
         }
 
         if ($limit < 0) {
             // Trim and return just the first $limit elements and ignore the rest.
-            return array_map('trim', array_slice($result, 0, $limit));
+            return array_map(trim(...), array_slice($result, 0, $limit));
         }
 
         // Fold the last length - $limit elements into a single trailing item, then trim and return the result.
@@ -937,7 +937,7 @@ class GeneralUtility
         if ($tail) {
             $result[] = implode($delim, $tail);
         }
-        return array_map('trim', $result);
+        return array_map(trim(...), $result);
     }
 
     /**
@@ -2426,7 +2426,7 @@ class GeneralUtility
                 // Use rawurldecode to reverse the result of self::encodeFileSystemPathComponentForUrlPath()
                 // which has been applied to getIndpEnv(SCRIPT_NAME) for web URI usage.
                 // We compare with a file system path (SCRIPT_FILENAME) in here and therefore need to undo the encoding.
-                $SN_A = array_map('rawurldecode', explode('/', strrev(self::getIndpEnv('SCRIPT_NAME'))));
+                $SN_A = array_map(rawurldecode(...), explode('/', strrev(self::getIndpEnv('SCRIPT_NAME'))));
                 $SFN_A = explode('/', strrev($SFN));
                 $acc = [];
                 foreach ($SN_A as $kk => $vv) {
@@ -2553,7 +2553,7 @@ class GeneralUtility
 
     protected static function encodeFileSystemPathComponentForUrlPath(string $path): string
     {
-        return implode('/', array_map('rawurlencode', explode('/', $path)));
+        return implode('/', array_map(rawurlencode(...), explode('/', $path)));
     }
 
     /*************************
