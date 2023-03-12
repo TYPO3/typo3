@@ -31,15 +31,10 @@ use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
  */
 class OpenDocumentController
 {
-    protected OpenDocumentService $documents;
-    protected OpendocsToolbarItem $toolbarItem;
-
     public function __construct(
-        OpenDocumentService $documents,
-        OpendocsToolbarItem $toolbarItem
+        protected readonly OpenDocumentService $documents,
+        protected readonly OpendocsToolbarItem $toolbarItem
     ) {
-        $this->documents = $documents;
-        $this->toolbarItem = $toolbarItem;
     }
 
     /**
