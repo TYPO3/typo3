@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
-use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -26,15 +25,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Mutation implements \JsonSerializable
 {
     /**
-     * @var list<SourceKeyword|SourceScheme|Nonce|UriValue|RawValue>
+     * @var list<SourceInterface>
      */
     public readonly array $sources;
 
     public function __construct(
         public readonly MutationMode $mode,
         public readonly Directive $directive,
-        SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources
+        SourceInterface ...$sources,
     ) {
+        // @todo continue with source collecting internally?
         if ($sources !== [] && $this->mode === MutationMode::Remove) {
             throw new \LogicException(
                 'Cannot remove and declare sources at the same time',

@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
  *
  * @internal Might be changed or removed at a later time
  */
-class RawValue implements \Stringable
+class RawValue implements \Stringable, SourceInterface
 {
     public function __construct(public readonly string $value)
     {

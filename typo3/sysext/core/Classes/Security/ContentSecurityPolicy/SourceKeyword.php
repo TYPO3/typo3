@@ -23,12 +23,14 @@ use TYPO3\CMS\Core\Security\Nonce;
  * Representation of Content-Security-Policy source keywords
  * see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/Sources#sources
  */
-enum SourceKeyword: string
+enum SourceKeyword: string implements SourceInterface
 {
     case none = 'none';
     case self = 'self';
     case unsafeInline = 'unsafe-inline';
     case unsafeEval = 'unsafe-eval';
+    // see https://www.w3.org/TR/CSP3/#unsafe-hashes-usage
+    case unsafeHashes = 'unsafe-hashes';
     case wasmUnsafeEval = 'wasm-unsafe-eval';
     case reportSample = 'report-sample';
     case strictDynamic = 'strict-dynamic';

@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Http\Uri;
  * Bridge to UriInterface to be used in Content-Security-Policy models,
  * which e.g. supports wildcard domains, like `*.typo3.org` or `https://*.typo3.org`.
  */
-final class UriValue extends Uri implements \Stringable, EqualityInterface, CoveringInterface
+final class UriValue extends Uri implements \Stringable, EqualityInterface, CoveringInterface, SourceInterface
 {
     private string $domainName = '';
     private bool $domainWildcard = false;

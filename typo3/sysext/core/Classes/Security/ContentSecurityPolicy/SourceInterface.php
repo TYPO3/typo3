@@ -18,13 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
 /**
- * Representation of Content-Security-Policy source schemes
- * see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/Sources#sources
+ * Semantic interface for anything that can be used as "source" in the terms
+ * of Content-Security-Policy - it includes `enum` objects, as well as real
+ * object instances that would be using `SourceValueInterface` instead.
+ *
+ * @internal This implementation might still change
  */
-enum SourceScheme: string implements SourceInterface
+interface SourceInterface
 {
-    case blob = 'blob';
-    case data = 'data';
-    case http = 'http';
-    case https = 'https';
 }

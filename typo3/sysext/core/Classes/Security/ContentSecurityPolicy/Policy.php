@@ -35,11 +35,10 @@ class Policy
     protected Map $directives;
 
     /**
-     * @param SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources (optional) default-src sources
+     * @param SourceCollection|SourceInterface ...$sources (optional) default-src sources
      */
-    public function __construct(
-        SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources
-    ) {
+    public function __construct(SourceCollection|SourceInterface ...$sources)
+    {
         $this->directives = new Map();
         $collection = $this->asMergedSourceCollection(...$sources);
         if (!$collection->isEmpty()) {
@@ -77,7 +76,7 @@ class Policy
     /**
      * Sets (overrides) the 'default-src' directive, which is also the fall-back for other more specific directives.
      */
-    public function default(SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources): self
+    public function default(SourceCollection|SourceInterface ...$sources): self
     {
         return $this->set(Directive::DefaultSrc, ...$sources);
     }
@@ -85,10 +84,8 @@ class Policy
     /**
      * Extends a specific directive, either by appending sources or by inheriting from an ancestor directive.
      */
-    public function extend(
-        Directive $directive,
-        SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources
-    ): self {
+    public function extend(Directive $directive, SourceCollection|SourceInterface ...$sources): self
+    {
         $collection = $this->asMergedSourceCollection(...$sources);
         if ($collection->isEmpty()) {
             return $this;
@@ -107,10 +104,8 @@ class Policy
         return $this->changeDirectiveSources($directive, $targetCollection);
     }
 
-    public function reduce(
-        Directive $directive,
-        SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources
-    ): self {
+    public function reduce(Directive $directive, SourceCollection|SourceInterface ...$sources): self
+    {
         if (!$this->has($directive)) {
             return $this;
         }
@@ -122,10 +117,8 @@ class Policy
     /**
      * Sets (overrides) a specific directive.
      */
-    public function set(
-        Directive $directive,
-        SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources
-    ): self {
+    public function set(Directive $directive, SourceCollection|SourceInterface ...$sources): self
+    {
         $collection = $this->asMergedSourceCollection(...$sources);
         return $this->changeDirectiveSources($directive, $collection);
     }
@@ -218,13 +211,13 @@ class Policy
         return implode('; ', $policyParts);
     }
 
-    public function containsDirective(Directive $directive, SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources): bool
+    public function containsDirective(Directive $directive, SourceCollection|SourceInterface ...$sources): bool
     {
         $sources = $this->asMergedSourceCollection(...$sources);
         return (bool)$this->directives[$directive]?->contains(...$sources->sources);
     }
 
-    public function coversDirective(Directive $directive, SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources): bool
+    public function coversDirective(Directive $directive, SourceCollection|SourceInterface ...$sources): bool
     {
         $sources = $this->asMergedSourceCollection(...$sources);
         return (bool)$this->directives[$directive]?->covers(...$sources->sources);
@@ -262,10 +255,8 @@ class Policy
         return true;
     }
 
-    protected function compareSources(
-        SourceKeyword|SourceScheme|Nonce|UriValue|RawValue $a,
-        SourceKeyword|SourceScheme|Nonce|UriValue|RawValue $b
-    ): int {
+    protected function compareSources(SourceInterface $a, SourceInterface $b): int
+    {
         $service = GeneralUtility::makeInstance(ModelService::class);
         return $service->serializeSource($a) <=> $service->serializeSource($b);
     }
@@ -280,7 +271,7 @@ class Policy
         return $target;
     }
 
-    protected function asMergedSourceCollection(SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$subjects): SourceCollection
+    protected function asMergedSourceCollection(SourceCollection|SourceInterface ...$subjects): SourceCollection
     {
         $collections = array_filter($subjects, static fn ($source) => $source instanceof SourceCollection);
         $sources = array_filter($subjects, static fn ($source) => !$source instanceof SourceCollection);

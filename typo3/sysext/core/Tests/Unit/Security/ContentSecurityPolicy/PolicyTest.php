@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Security\ContentSecurityPolicy;
 
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\HashValue;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Policy;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceKeyword;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceScheme;
@@ -116,6 +117,17 @@ class PolicyTest extends UnitTestCase
     /**
      * @test
      */
+    public function hashValueIsCompiled(): void
+    {
+        $hash = hash('sha256', 'test', true);
+        $hashB64 = base64_encode($hash);
+        $policy = (new Policy())->extend(Directive::ScriptSrc, HashValue::create($hash));
+        self::assertSame("script-src 'sha256-{$hashB64}'", $policy->compile($this->nonce));
+    }
+
+    /**
+     * @test
+     */
     public function directiveIsRemoved(): void
     {
         $policy = (new Policy(SourceKeyword::self))
@@ -138,7 +150,6 @@ class PolicyTest extends UnitTestCase
      */
     public function backendPolicyIsCompiled(): void
     {
-        $nonce = Nonce::create();
         $policy = (new Policy())
             ->default(SourceKeyword::self)
             ->extend(Directive::ScriptSrc, SourceKeyword::nonceProxy)
@@ -148,10 +159,10 @@ class PolicyTest extends UnitTestCase
             ->set(Directive::WorkerSrc, SourceKeyword::self, SourceScheme::blob)
             ->extend(Directive::FrameSrc, SourceScheme::blob);
         self::assertSame(
-            "default-src 'self'; script-src 'self' 'nonce-{$nonce->b64}'; "
+            "default-src 'self'; script-src 'self' 'nonce-{$this->nonce->b64}'; "
             . "style-src 'self' 'unsafe-inline'; style-src-attr 'unsafe-inline'; "
             . "img-src 'self' data:; worker-src 'self' blob:; frame-src 'self' blob:",
-            $policy->compile($nonce)
+            $policy->compile($this->nonce)
         );
     }
 

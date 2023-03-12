@@ -26,6 +26,11 @@ use TYPO3\CMS\Core\Security\Nonce;
  */
 class ModelService
 {
+    private const SOURCE_PARSING_PRIORITIES = [
+        HashProxy::class => 50,
+        HashType::class => 50,
+    ];
+
     public function buildMutationSuggestionFromArray(array $array): MutationSuggestion
     {
         return new MutationSuggestion(
@@ -70,7 +75,7 @@ class ModelService
         return $sources;
     }
 
-    public function buildSourceFromString(string $string): null|SourceKeyword|SourceScheme|UriValue|RawValue
+    public function buildSourceFromString(string $string): ?SourceInterface
     {
         if (str_starts_with($string, "'nonce-") && $string[-1] === "'") {
             // use a proxy instead of a real Nonce instance
@@ -87,10 +92,17 @@ class ModelService
         } catch (\InvalidArgumentException) {
             // no handling here
         }
+        /** @var SourceValueInterface $sourceInterface */
+        foreach ($this->resolvePrioritizedSourceInterfaces() as $sourceInterface) {
+            if ($sourceInterface::knows($string)) {
+                return $sourceInterface::parse($string);
+            }
+        }
         return new RawValue($string);
     }
 
-    public function serializeSources(SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources): array
+    // @todo use SourceCollection instead?
+    public function serializeSources(SourceInterface ...$sources): array
     {
         $serialized = [];
         foreach ($sources as $source) {
@@ -109,7 +121,11 @@ class ModelService
             if ($source instanceof SourceKeyword && $source->vetoes()) {
                 $compiled = [];
             }
-            $compiled[] = $this->serializeSource($source, $nonce);
+            if ($source instanceof SourceValueInterface) {
+                $compiled[] = $source->compile();
+            } else {
+                $compiled[] = $this->serializeSource($source, $nonce);
+            }
         }
         return $compiled;
     }
@@ -117,7 +133,7 @@ class ModelService
     /**
      * @param Nonce|null $nonce used to substitute `SourceKeyword::nonceProxy` items during compilation
      */
-    public function serializeSource(SourceKeyword|SourceScheme|Nonce|UriValue|RawValue $source, Nonce $nonce = null): string
+    public function serializeSource(SourceInterface $source, Nonce $nonce = null): string
     {
         if ($source instanceof Nonce) {
             return "'nonce-" . $source->b64 . "'";
@@ -131,6 +147,23 @@ class ModelService
         if ($source instanceof SourceScheme) {
             return $source->value . ':';
         }
-        return (string)$source;
+        if ($source instanceof SourceValueInterface) {
+            return $source->serialize();
+        }
+        if ($source instanceof \Stringable) {
+            return (string)$source;
+        }
+        return '';
+    }
+
+    /**
+     * Resolves reverse sorted `SourceInterface` classes (higher priorities first).
+     * @return list<class-string<SourceValueInterface>>
+     */
+    private function resolvePrioritizedSourceInterfaces(): array
+    {
+        $interfaces = self::SOURCE_PARSING_PRIORITIES;
+        rsort($interfaces);
+        return array_keys($interfaces);
     }
 }

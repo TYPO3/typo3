@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
 use TYPO3\CMS\Core\Domain\EqualityInterface;
-use TYPO3\CMS\Core\Security\Nonce;
 
 /**
  * A collection of sources (sic!).
@@ -27,11 +26,11 @@ use TYPO3\CMS\Core\Security\Nonce;
 final class SourceCollection
 {
     /**
-     * @var list<SourceKeyword|SourceScheme|Nonce|UriValue|RawValue>
+     * @var list<SourceInterface>
      */
     public readonly array $sources;
 
-    public function __construct(SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources)
+    public function __construct(SourceInterface ...$sources)
     {
         $this->sources = $sources;
     }
@@ -51,7 +50,7 @@ final class SourceCollection
         return $this->without(...$other->sources);
     }
 
-    public function with(SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$subjects): self
+    public function with(SourceInterface ...$subjects): self
     {
         $subjects = array_filter(
             $subjects,
@@ -63,7 +62,7 @@ final class SourceCollection
         return new self(...array_merge($this->sources, $subjects));
     }
 
-    public function without(SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$subjects): self
+    public function without(SourceInterface ...$subjects): self
     {
         $sources = array_filter(
             $this->sources,
@@ -93,7 +92,7 @@ final class SourceCollection
     /**
      * Determines whether all sources are contained (in terms of instances and values, but without inference).
      */
-    public function contains(SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$subjects): bool
+    public function contains(SourceInterface ...$subjects): bool
     {
         if ($subjects === []) {
             return false;
@@ -113,7 +112,7 @@ final class SourceCollection
     /**
      * Determines whether all sources are covered (in terms of CSP inference, considering wildcards and similar).
      */
-    public function covers(SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$subjects): bool
+    public function covers(SourceInterface ...$subjects): bool
     {
         if ($subjects === []) {
             return false;
@@ -167,7 +166,7 @@ final class SourceCollection
     /**
      * @param class-string ...$types
      */
-    private function isSourceOfTypes(SourceKeyword|SourceScheme|Nonce|UriValue|RawValue $source, string ...$types): bool
+    private function isSourceOfTypes(SourceInterface $source, string ...$types): bool
     {
         foreach ($types as $type) {
             if (is_a($source, $type)) {
