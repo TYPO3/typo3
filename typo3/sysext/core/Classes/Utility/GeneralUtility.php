@@ -875,23 +875,24 @@ class GeneralUtility
      *
      * @param string $delimiter Delimiter string to explode with
      * @param string $string The string to explode
-     * @param int $count Number of array entries
+     * @param int $limit Number of array entries
+     *
      * @return list<string> Exploded values
      */
-    public static function revExplode($delimiter, $string, $count = 0)
+    public static function revExplode($delimiter, $string, $limit = 0)
     {
-        // 2 is the (currently, as of 2014-02) most-used value for $count in the core, therefore we check it first
-        if ($count === 2) {
+        // 2 is the (currently, as of 2014-02) most-used value for `$limit` in the core, therefore we check it first
+        if ($limit === 2) {
             $position = strrpos($string, strrev($delimiter));
             if ($position !== false) {
                 return [substr($string, 0, $position), substr($string, $position + strlen($delimiter))];
             }
             return [$string];
         }
-        if ($count <= 1) {
+        if ($limit <= 1) {
             return [$string];
         }
-        $explodedValues = explode($delimiter, strrev($string), $count);
+        $explodedValues = explode($delimiter, strrev($string), $limit);
         $explodedValues = array_map('strrev', $explodedValues);
         return array_reverse($explodedValues);
     }
