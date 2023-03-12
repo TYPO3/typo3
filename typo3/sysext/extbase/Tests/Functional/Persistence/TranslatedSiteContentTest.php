@@ -230,9 +230,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
         );
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
         $responseSections = $responseStructure->getSection('Extbase:list()');
-        $visibleHeaders = array_map(static function ($element) {
-            return $element['header'];
-        }, $visibleRecords);
+        $visibleHeaders = array_map(static fn (array $element): string => $element['header'], $visibleRecords);
 
         self::assertThat(
             $responseSections,

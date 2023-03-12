@@ -87,7 +87,10 @@ class RepositoryTest extends FunctionalTestCase
             ['title' => QueryInterface::ORDER_DESCENDING]
         )->toArray();
 
-        $titles = array_map(fn (Post $post) => $post->getTitle(), $posts);
+        $titles = array_map(
+            static fn (Post $post): string => $post->getTitle(),
+            $posts
+        );
 
         self::assertSame([
             'Post9',
@@ -168,7 +171,10 @@ class RepositoryTest extends FunctionalTestCase
                     'post.title' => 'post with tag',
                 ],
             ],
-            array_map(fn (Post $post) => ['blog.uid' => $post->getBlog()->getUid(), 'post.title' => $post->getTitle()], $posts)
+            array_map(
+                static fn (Post $post): array => ['blog.uid' => $post->getBlog()->getUid(), 'post.title' => $post->getTitle()],
+                $posts
+            )
         );
     }
 
@@ -183,7 +189,10 @@ class RepositoryTest extends FunctionalTestCase
             3
         )->toArray();
 
-        $titles = array_map(fn (Post $post) => ['uid' => $post->getUid(), 'title' => $post->getTitle()], $posts);
+        $titles = array_map(
+            static fn (Post $post): array => ['uid' => $post->getUid(), 'title' => $post->getTitle()],
+            $posts
+        );
 
         self::assertSame([
             [
@@ -213,7 +222,10 @@ class RepositoryTest extends FunctionalTestCase
             1
         )->toArray();
 
-        $titles = array_map(fn (Post $post) => ['uid' => $post->getUid(), 'title' => $post->getTitle()], $posts);
+        $titles = array_map(
+            static fn (Post $post): array => ['uid' => $post->getUid(), 'title' => $post->getTitle()],
+            $posts
+        );
 
         self::assertSame([
             [

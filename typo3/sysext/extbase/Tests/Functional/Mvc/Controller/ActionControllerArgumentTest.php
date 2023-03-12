@@ -162,7 +162,7 @@ class ActionControllerArgumentTest extends FunctionalTestCase
     {
         $inflatedFormValues = [];
         $normalizedFormPaths = array_map(
-            function (string $formName) {
+            function (string $formName): string {
                 $formName = substr($formName, strlen($this->pluginNamespacePrefix));
                 $formName = str_replace('][', '/', trim($formName, '[]'));
                 return $formName;

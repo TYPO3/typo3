@@ -211,9 +211,10 @@ class ObjectAccess
 
         $accessor = self::createAccessor();
         $propertyNames = array_keys($classSchema->getProperties());
-        $accessiblePropertyNames = array_filter($propertyNames, static function ($propertyName) use ($accessor, $object) {
-            return $accessor->isReadable($object, $propertyName);
-        });
+        $accessiblePropertyNames = array_filter(
+            $propertyNames,
+            static fn (string $propertyName): bool => $accessor->isReadable($object, $propertyName)
+        );
 
         foreach ($classSchema->getMethods() as $methodName => $methodDefinition) {
             if (!$methodDefinition->isPublic()) {
@@ -267,13 +268,15 @@ class ObjectAccess
         } else {
             $classSchema = GeneralUtility::makeInstance(ReflectionService::class)->getClassSchema($object);
 
-            $propertyNames = array_filter(array_keys($classSchema->getProperties()), static function ($methodName) use ($accessor, $object) {
-                return $accessor->isWritable($object, $methodName);
-            });
+            $propertyNames = array_filter(
+                array_keys($classSchema->getProperties()),
+                static fn (string $propertyName): bool => $accessor->isWritable($object, $propertyName)
+            );
 
-            $setters = array_filter(array_keys($classSchema->getMethods()), static function ($methodName) use ($object) {
-                return str_starts_with($methodName, 'set') && is_callable([$object, $methodName]);
-            });
+            $setters = array_filter(
+                array_keys($classSchema->getMethods()),
+                static fn (string $methodName): bool => str_starts_with($methodName, 'set') && is_callable([$object, $methodName])
+            );
 
             foreach ($setters as $setter) {
                 $propertyNames[] = lcfirst(substr($setter, 3));
@@ -376,9 +379,7 @@ class ObjectAccess
 
     private static function convertToArrayPropertyPath(PropertyPath $propertyPath): PropertyPath
     {
-        $segments = array_map(static function ($segment) {
-            return static::wrap($segment);
-        }, $propertyPath->getElements());
+        $segments = array_map(static fn (string $segment): string => static::wrap($segment), $propertyPath->getElements());
 
         return new PropertyPath(implode('.', $segments));
     }

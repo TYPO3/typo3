@@ -1275,9 +1275,7 @@ class RelationTest extends FunctionalTestCase
     protected function resolveEntityIds(array $entities): array
     {
         return array_map(
-            static function (AbstractEntity $entity) {
-                return $entity->getUid();
-            },
+            static fn (AbstractEntity $entity): int => $entity->getUid(),
             $entities
         );
     }

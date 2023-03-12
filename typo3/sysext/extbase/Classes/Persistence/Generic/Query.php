@@ -393,7 +393,7 @@ class Query implements QueryInterface
      */
     public function logicalAnd(ConstraintInterface ...$constraints): AndInterface
     {
-        $constraints = array_filter($constraints, fn ($constraint) => $constraint instanceof ConstraintInterface);
+        $constraints = array_filter($constraints, fn (mixed $constraint): bool => $constraint instanceof ConstraintInterface);
         switch (count($constraints)) {
             case 0:
                 $alwaysTrue = $this->greaterThan('uid', 0);
@@ -416,7 +416,7 @@ class Query implements QueryInterface
      */
     public function logicalOr(ConstraintInterface ...$constraints): OrInterface
     {
-        $constraints = array_filter($constraints, fn ($constraint) => $constraint instanceof ConstraintInterface);
+        $constraints = array_filter($constraints, fn (mixed $constraint): bool => $constraint instanceof ConstraintInterface);
         switch (count($constraints)) {
             case 0:
                 $alwaysFalse = $this->equals('uid', 0);

@@ -507,7 +507,7 @@ class DataMapperTest extends FunctionalTestCase
         // Assert
         self::assertSame(
             [5, 4, 3, 2, 1], // foreign_default_sortby is set to uid desc, see
-            array_map(fn (Comment $comment) => $comment->getUid(), $comments)
+            array_map(static fn (Comment $comment): int => $comment->getUid(), $comments)
         );
     }
 }

@@ -867,7 +867,7 @@ class Typo3DbQueryParser
             default:
                 return '';
         }
-        $storagePageIds = array_map('intval', $storagePageIds);
+        $storagePageIds = array_map(intval(...), $storagePageIds);
         if (count($storagePageIds) === 1) {
             return $this->queryBuilder->expr()->eq($tableAlias . '.pid', reset($storagePageIds));
         }

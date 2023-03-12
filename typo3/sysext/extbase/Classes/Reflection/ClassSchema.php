@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Reflection;
 use Doctrine\Common\Annotations\AnnotationReader;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlockFactory;
+use ReflectionAttribute;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
@@ -238,10 +239,11 @@ class ClassSchema
 
             $annotations = $annotationReader->getPropertyAnnotations($reflectionProperty);
 
-            /** @var array|Validate[] $validateAnnotations */
-            $validateAnnotations = array_filter($annotations, static function ($annotation) {
-                return $annotation instanceof Validate;
-            });
+            /** @var array<int, Validate> $validateAnnotations */
+            $validateAnnotations = array_filter(
+                $annotations,
+                static fn (object $annotation): bool => $annotation instanceof Validate
+            );
 
             if (count($validateAnnotations) > 0) {
                 foreach ($validateAnnotations as $validateAnnotation) {
@@ -322,10 +324,11 @@ class ClassSchema
 
             $annotations = $annotationReader->getMethodAnnotations($reflectionMethod);
 
-            /** @var array|Validate[] $validateAnnotations */
-            $validateAnnotations = array_filter($annotations, static function ($annotation) {
-                return $annotation instanceof Validate;
-            });
+            /** @var array<int<0, max>, Validate> $validateAnnotations */
+            $validateAnnotations = array_filter(
+                $annotations,
+                static fn (object $annotation): bool => $annotation instanceof Validate
+            );
 
             if ($this->methods[$methodName]['isAction']
                 && $this->bitSet->get(self::BIT_CLASS_IS_CONTROLLER)
@@ -365,13 +368,16 @@ class ClassSchema
             foreach ($reflectionMethod->getParameters() as $parameterPosition => $reflectionParameter) {
                 $parameterName = $reflectionParameter->getName();
 
-                $ignoreValidationParameters = array_filter($annotations, static function ($annotation) use ($parameterName) {
-                    return $annotation instanceof IgnoreValidation && $annotation->argumentName === $parameterName;
-                });
+                $ignoreValidationParameters = array_filter(
+                    $annotations,
+                    static fn (object $annotation): bool => $annotation instanceof IgnoreValidation && $annotation->argumentName === $parameterName
+                );
 
-                $ignoreValidationParametersFromAttribute = array_filter($reflectionAttributes, static function ($attribute) use ($parameterName) {
-                    return $attribute->getName() === IgnoreValidation::class && $attribute->newInstance()->argumentName === $parameterName;
-                });
+                $ignoreValidationParametersFromAttribute = array_filter(
+                    $reflectionAttributes,
+                    static fn (ReflectionAttribute $attribute): bool
+                        => $attribute->getName() === IgnoreValidation::class && $attribute->newInstance()->argumentName === $parameterName
+                );
 
                 $reflectionType = $reflectionParameter->getType();
 
@@ -554,7 +560,7 @@ MESSAGE;
     {
         return array_filter(
             $this->getProperties(),
-            fn (Property $property) => !str_starts_with($property->getName(), '_')
+            static fn (Property $property): bool => !str_starts_with($property->getName(), '_')
         );
     }
 
@@ -671,10 +677,7 @@ MESSAGE;
      */
     public function getInjectMethods(): array
     {
-        return array_filter($this->buildMethodObjects(), static function ($method) {
-            /** @var Method $method */
-            return $method->isInjectMethod();
-        });
+        return array_filter($this->buildMethodObjects(), static fn (Method $method): bool => $method->isInjectMethod());
     }
 
     /**

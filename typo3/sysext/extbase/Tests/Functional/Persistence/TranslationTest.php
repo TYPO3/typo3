@@ -271,7 +271,7 @@ class TranslationTest extends FunctionalTestCase
         // empty result set. This will be fixed with https://review.typo3.org/c/Packages/TYPO3.CMS/+/67893
         self::assertCount(0, $posts);
         // self::assertCount(count($expectedTitles), $posts);
-        // self::assertEqualsCanonicalizing($expectedTitles, array_map(static function(Post $post) { return $post->getTitle(); }, $posts));
+        // self::assertEqualsCanonicalizing($expectedTitles, array_map(static fn(Post $post): string => $post->getTitle(), $posts));
     }
 
     /**
@@ -302,7 +302,7 @@ class TranslationTest extends FunctionalTestCase
         // empty result set. This will be fixed with https://review.typo3.org/c/Packages/TYPO3.CMS/+/67893
         self::assertCount(0, $posts);
         // self::assertCount(count($expectedTitles), $posts);
-        // self::assertEqualsCanonicalizing($expectedTitles, array_map(static function(Post $post) { return $post->getTitle(); }, $posts));
+        // self::assertEqualsCanonicalizing($expectedTitles, array_map(static fn(Post $post): string => $post->getTitle(), $posts));
     }
 
     /**

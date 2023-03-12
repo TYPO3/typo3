@@ -89,9 +89,7 @@ class OperatorTest extends FunctionalTestCase
         );
 
         $result = array_map(
-            static function ($row) {
-                return $row['uid'];
-            },
+            static fn (array $row): int => $row['uid'],
             $query->execute(true)
         );
         self::assertEquals([3, 4, 5], $result);

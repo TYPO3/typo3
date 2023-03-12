@@ -104,9 +104,7 @@ class DebuggerUtility
                 $dump = self::ansiEscapeWrap('"' . implode(PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level + 1), str_split($croppedValue, 76)) . '"', '33', $ansiColors) . ' (' . strlen($value) . ' chars)';
             } else {
                 $lines = str_split($croppedValue, 76);
-                $lines = array_map(static function (string $line): string {
-                    return htmlspecialchars($line, ENT_COMPAT);
-                }, $lines);
+                $lines = array_map(static fn (string $line): string => htmlspecialchars($line, ENT_COMPAT), $lines);
                 $dump = sprintf('\'<span class="extbase-debug-string">%s</span>\' (%s chars)', implode('<br />' . str_repeat(self::HTML_INDENT, $level + 1), $lines), strlen($value));
             }
         } elseif (is_numeric($value)) {
