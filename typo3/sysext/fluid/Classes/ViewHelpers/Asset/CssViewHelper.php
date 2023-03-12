@@ -33,8 +33,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  *    <f:asset.css identifier="identifier123">
  *       .foo { color: black; }
  *    </f:asset.css>
- *
- * See also :ref:`changelog-Feature-90522-IntroduceAssetCollector`
  */
 class CssViewHelper extends AbstractTagBasedViewHelper
 {
