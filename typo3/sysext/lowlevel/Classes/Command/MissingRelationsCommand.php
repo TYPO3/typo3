@@ -43,16 +43,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MissingRelationsCommand extends Command
 {
-    /**
-     * @var ConnectionPool
-     */
-    private $connectionPool;
-
-    public function __construct(ConnectionPool $connectionPool)
+    public function __construct(private readonly ConnectionPool $connectionPool)
     {
-        $this->connectionPool = $connectionPool;
         parent::__construct();
     }
+
     /**
      * Configure the command by defining the name, options and arguments
      */
@@ -113,7 +108,7 @@ If you want to get more detailed information, use the --verbose option.')
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());
 
-        $dryRun = $input->hasOption('dry-run') && $input->getOption('dry-run') != false ? true : false;
+        $dryRun = $input->hasOption('dry-run') && (bool)$input->getOption('dry-run') !== false;
 
         // Update the reference index
         $this->updateReferenceIndex($input, $io);
@@ -190,11 +185,8 @@ If you want to get more detailed information, use the --verbose option.')
      * - if the option --update-refindex is set, do it
      * - otherwise, if in interactive mode (not having -n set), ask the user
      * - otherwise assume everything is fine
-     *
-     * @param InputInterface $input holds information about entered parameters
-     * @param SymfonyStyle $io necessary for outputting information
      */
-    protected function updateReferenceIndex(InputInterface $input, SymfonyStyle $io)
+    protected function updateReferenceIndex(InputInterface $input, SymfonyStyle $io): void
     {
         // Check for reference index to update
         $io->note('Finding missing records referenced by TYPO3 requires a clean reference index (sys_refindex)');
@@ -219,8 +211,6 @@ If you want to get more detailed information, use the --verbose option.')
 
     /**
      * Find relations pointing to non-existing records (in managed references or soft-references)
-     *
-     * @return array an array of records within sys_refindex
      */
     protected function findRelationsToNonExistingRecords(): array
     {
@@ -340,7 +330,7 @@ If you want to get more detailed information, use the --verbose option.')
         array $nonExistingRecords,
         bool $dryRun,
         SymfonyStyle $io
-    ) {
+    ): void {
         // Remove references to offline records
         foreach ($offlineVersionRecords as $fileName => $references) {
             if ($io->isVeryVerbose()) {

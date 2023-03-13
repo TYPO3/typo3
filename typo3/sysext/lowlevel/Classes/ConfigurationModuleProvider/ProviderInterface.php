@@ -29,7 +29,6 @@ interface ProviderInterface
      * Note: We use __invoke so provider implementations are still
      * able to use dependency injection via constructor arguments.
      *
-     * @param array $attributes
      * @return $this
      */
     public function __invoke(array $attributes): self;

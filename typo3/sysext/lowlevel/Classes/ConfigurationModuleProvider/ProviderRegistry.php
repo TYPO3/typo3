@@ -32,9 +32,9 @@ final class ProviderRegistry
         $this->providers[$attributes['identifier']] = $provider($attributes);
     }
 
-    public function hasProvider(string $identifer): bool
+    public function hasProvider(string $identifier): bool
     {
-        return isset($this->providers[$identifer]);
+        return isset($this->providers[$identifier]);
     }
 
     public function getProvider(string $identifier): ProviderInterface

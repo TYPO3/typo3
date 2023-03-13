@@ -35,14 +35,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class DeletedRecordsCommand extends Command
 {
-    /**
-     * @var ConnectionPool
-     */
-    private $connectionPool;
-
-    public function __construct(ConnectionPool $connectionPool)
+    public function __construct(private readonly ConnectionPool $connectionPool)
     {
-        $this->connectionPool = $connectionPool;
         parent::__construct();
     }
 
@@ -111,8 +105,7 @@ class DeletedRecordsCommand extends Command
             $io->section('Searching the database now for deleted records.');
         }
 
-        // type unsafe comparison and explicit boolean setting on purpose
-        $dryRun = $input->hasOption('dry-run') && $input->getOption('dry-run') != false ? true : false;
+        $dryRun = $input->hasOption('dry-run') && (bool)$input->getOption('dry-run') !== false;
 
         // find all records that should be deleted
         $deletedRecords = $this->findAllFlaggedRecordsInPage($startingPoint, $depth, $maximumTimestamp);
@@ -284,10 +277,7 @@ class DeletedRecordsCommand extends Command
     }
 
     /**
-     * Fetches all tables registered in the TCA with a $flag
-     * and that are not pages (which are handled separately)
-     *
-     * @return array an associative array with the table as key and the
+     * Fetches all tables registered in the TCA with a $flag and that are not pages (which are handled separately).
      */
     protected function getTablesWithFlag(string $flag): array
     {
@@ -307,7 +297,7 @@ class DeletedRecordsCommand extends Command
      * @param array $deletedRecords two level array with tables and uids
      * @param bool $dryRun check if the records should NOT be deleted (use --dry-run to avoid)
      */
-    protected function deleteRecords(array $deletedRecords, bool $dryRun, SymfonyStyle $io)
+    protected function deleteRecords(array $deletedRecords, bool $dryRun, SymfonyStyle $io): void
     {
         // Putting "pages" table in the bottom
         if (isset($deletedRecords['pages'])) {

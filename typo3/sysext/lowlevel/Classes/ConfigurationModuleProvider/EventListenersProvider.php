@@ -21,11 +21,8 @@ use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 
 class EventListenersProvider extends AbstractProvider
 {
-    protected ListenerProvider $listenerProvider;
-
-    public function __construct(ListenerProvider $listenerProvider)
+    public function __construct(protected readonly ListenerProvider $listenerProvider)
     {
-        $this->listenerProvider = $listenerProvider;
     }
 
     public function getConfiguration(): array

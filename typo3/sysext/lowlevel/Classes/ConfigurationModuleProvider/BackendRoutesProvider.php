@@ -24,11 +24,8 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 class BackendRoutesProvider extends AbstractProvider
 {
-    protected Router $router;
-
-    public function __construct(Router $router)
+    public function __construct(protected readonly Router $router)
     {
-        $this->router = $router;
     }
 
     public function getConfiguration(): array

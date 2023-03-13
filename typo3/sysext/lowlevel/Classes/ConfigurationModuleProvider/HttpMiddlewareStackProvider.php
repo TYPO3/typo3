@@ -21,11 +21,8 @@ use Psr\Container\ContainerInterface;
 
 class HttpMiddlewareStackProvider extends AbstractProvider
 {
-    protected ContainerInterface $container;
-
-    public function __construct(ContainerInterface $container)
+    public function __construct(protected readonly ContainerInterface $container)
     {
-        $this->container = $container;
     }
 
     public function getConfiguration(): array

@@ -71,10 +71,6 @@ class DatabaseIntegrityController
      */
     protected array $MOD_SETTINGS = [];
 
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     protected string $formName = '';
     protected string $moduleName = '';
 
@@ -220,13 +216,10 @@ class DatabaseIntegrityController
     ];
 
     public function __construct(
-        IconFactory $iconFactory,
-        UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->moduleName = 'system_dbint';
     }
 
@@ -620,7 +613,7 @@ class DatabaseIntegrityController
         if ($id < 0) {
             $id = abs($id);
         }
-        if ($begin == 0) {
+        if ($begin === 0) {
             $theList = (string)$id;
         } else {
             $theList = '';
@@ -749,7 +742,7 @@ class DatabaseIntegrityController
     /**
      * @param array|null $row Table columns
      */
-    protected function resultRowTitles($row, array $conf): string
+    protected function resultRowTitles(?array $row, array $conf): string
     {
         $languageService = $this->getLanguageService();
         $tableHeader = [];
@@ -1061,7 +1054,7 @@ class DatabaseIntegrityController
             $tablePrefix = '';
             $labelFieldSelect = [];
             foreach ($from_table_Arr as $from_table) {
-                if ($useTablePrefix && !$dontPrefixFirstTable && $counter != 1 || $counter == 1) {
+                if ($useTablePrefix && !$dontPrefixFirstTable && $counter !== 1 || $counter === 1) {
                     $tablePrefix = $from_table . '_';
                 }
                 $counter = 1;
@@ -1298,10 +1291,8 @@ class DatabaseIntegrityController
 
     /**
      * Checks if the given value is of the ISO 8601 format.
-     *
-     * @param mixed $date
      */
-    protected function isDateOfIso8601Format($date): bool
+    protected function isDateOfIso8601Format(mixed $date): bool
     {
         if (!is_int($date) && !is_string($date)) {
             return false;
@@ -1807,7 +1798,7 @@ class DatabaseIntegrityController
             foreach ($from_table_Arr as $from_table) {
                 $useSelectLabels = false;
                 $useAltSelectLabels = false;
-                if ($useTablePrefix && !$dontPrefixFirstTable && $counter != 1 || $counter === 1) {
+                if ($useTablePrefix && !$dontPrefixFirstTable && $counter !== 1 || $counter === 1) {
                     $tablePrefix = $from_table . '_';
                 }
                 $counter = 1;

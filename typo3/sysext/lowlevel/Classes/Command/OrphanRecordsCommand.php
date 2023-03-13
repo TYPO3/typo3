@@ -34,16 +34,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class OrphanRecordsCommand extends Command
 {
-    /**
-     * @var ConnectionPool
-     */
-    private $connectionPool;
-
-    public function __construct(ConnectionPool $connectionPool)
+    public function __construct(private readonly ConnectionPool $connectionPool)
     {
-        $this->connectionPool = $connectionPool;
         parent::__construct();
     }
+
     /**
      * Configure the command by defining the name, options and arguments
      */
@@ -86,8 +81,7 @@ Manual repair suggestions:
             $io->section('Searching the database now for orphaned records.');
         }
 
-        // type unsafe comparison and explicit boolean setting on purpose
-        $dryRun = $input->hasOption('dry-run') && $input->getOption('dry-run') != false ? true : false;
+        $dryRun = $input->hasOption('dry-run') && (bool)$input->getOption('dry-run') !== false;
 
         // find all records that should be deleted
         $allRecords = $this->findAllConnectedRecordsInPage(0, 10000);
@@ -240,7 +234,7 @@ Manual repair suggestions:
      * @param array $orphanedRecords two level array with tables and uids
      * @param bool $dryRun check if the records should NOT be deleted (use --dry-run to avoid)
      */
-    protected function deleteRecords(array $orphanedRecords, bool $dryRun, SymfonyStyle $io)
+    protected function deleteRecords(array $orphanedRecords, bool $dryRun, SymfonyStyle $io): void
     {
         // Putting "pages" table in the bottom
         if (isset($orphanedRecords['pages'])) {

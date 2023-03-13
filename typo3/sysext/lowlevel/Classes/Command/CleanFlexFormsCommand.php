@@ -36,14 +36,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class CleanFlexFormsCommand extends Command
 {
-    /**
-     * @var ConnectionPool
-     */
-    private $connectionPool;
-
-    public function __construct(ConnectionPool $connectionPool)
+    public function __construct(private readonly ConnectionPool $connectionPool)
     {
-        $this->connectionPool = $connectionPool;
         parent::__construct();
     }
 
@@ -99,8 +93,7 @@ class CleanFlexFormsCommand extends Command
             $io->section('Searching the database now for records with FlexForms that need to be updated.');
         }
 
-        // Type unsafe comparison and explicit boolean setting on purpose
-        $dryRun = $input->hasOption('dry-run') && $input->getOption('dry-run') != false ? true : false;
+        $dryRun = $input->hasOption('dry-run') && (bool)$input->getOption('dry-run') !== false;
 
         // Find all records that should be updated
         $recordsToUpdate = $this->findAllDirtyFlexformsInPage($startingPoint, $depth);
@@ -124,10 +117,6 @@ class CleanFlexFormsCommand extends Command
 
     /**
      * Recursive traversal of page tree
-     *
-     * @param int $pageId Page root id
-     * @param int $depth Depth
-     * @param array $dirtyFlexFormFields the list of all previously found flexform fields
      */
     protected function findAllDirtyFlexformsInPage(int $pageId, int $depth, array $dirtyFlexFormFields = []): array
     {

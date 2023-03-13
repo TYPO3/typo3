@@ -21,11 +21,8 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 
 class MfaProvidersProvider extends AbstractProvider
 {
-    protected MfaProviderRegistry $mfaProviderRegistry;
-
-    public function __construct(MfaProviderRegistry $mfaProviderRegistry)
+    public function __construct(protected MfaProviderRegistry $mfaProviderRegistry)
     {
-        $this->mfaProviderRegistry = $mfaProviderRegistry;
     }
 
     public function getConfiguration(): array
