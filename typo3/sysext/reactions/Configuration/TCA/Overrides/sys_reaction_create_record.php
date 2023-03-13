@@ -20,6 +20,7 @@
             'config' => [
                 'type' => 'json',
                 'renderType' => 'fieldMap',
+                'default' => '{}',
             ],
         ],
     ]
