@@ -244,4 +244,34 @@ class DateViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:format.date date="' . $date . '" format="Y-m-d H:i"/>');
         self::assertEquals($expected, (new TemplateView($context))->render());
     }
+
+    public function viewHelperUsesIcuBasedPatternDataProvider(): \Generator
+    {
+        yield 'default value in english' => [
+            '10:55:36 on a Tuesday',
+            'HH:mm:ss \'on a\' cccc',
+            'en-US',
+        ];
+        yield 'quarter of the year in french' => [
+            '4e trimestre',
+            'QQQQ',
+            'fr',
+        ];
+        yield 'quarter of the year - no locale' => [
+            '4th quarter of 2000',
+            'QQQQ \'of\' yyyy',
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider viewHelperUsesIcuBasedPatternDataProvider
+     */
+    public function viewHelperUsesIcuBasedPattern(string $expected, string|int $pattern, ?string $locale = null): void
+    {
+        $date = '03/Oct/2000:14:55:36 +0400';
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:format.date date="' . $date . '" pattern="' . $pattern . '" locale="' . $locale . '"/>');
+        self::assertEquals($expected, (new TemplateView($context))->render());
+    }
 }

@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
@@ -3699,7 +3700,7 @@ class ContentObjectRendererTest extends UnitTestCase
             }
         }
         self::assertSame(1, $notCallable);
-        self::assertSame(81, $callable);
+        self::assertSame(82, $callable);
     }
 
     /**
@@ -3750,7 +3751,7 @@ class ContentObjectRendererTest extends UnitTestCase
             }
         }
         self::assertSame($expectExceptions, $exceptions);
-        self::assertSame(81, $count);
+        self::assertSame(82, $count);
     }
 
     /***************************************************************************
@@ -4629,6 +4630,90 @@ class ContentObjectRendererTest extends UnitTestCase
             $return,
             $subject->stdWrap_cropHTML($content, $conf)
         );
+    }
+
+    protected function stdWrap_formattedDateProvider(): \Generator
+    {
+        yield 'regular formatting - no locale' => [
+            '2023.02.02 AD at 13:05:00 UTC',
+            "yyyy.MM.dd G 'at' HH:mm:ss zzz",
+        ];
+        yield 'full - no locale' => [
+            'Thursday, February 2, 2023 at 13:05:00 Coordinated Universal Time',
+            'FULL',
+        ];
+        yield 'long - no locale' => [
+            'February 2, 2023 at 13:05:00 UTC',
+            'LONG',
+        ];
+        yield 'medium - no locale' => [
+            'Feb 2, 2023, 13:05:00',
+            'MEDIUM',
+        ];
+        yield 'medium with int - no locale' => [
+            'Feb 2, 2023, 13:05:00',
+            \IntlDateFormatter::MEDIUM,
+        ];
+        yield 'short - no locale' => [
+            '2/2/23, 13:05',
+            'SHORT',
+        ];
+        yield 'regular formatting - german locale' => [
+            '2023.02.02 n. Chr. um 13:05:00 UTC',
+            "yyyy.MM.dd G 'um' HH:mm:ss zzz",
+            'de-DE',
+        ];
+        yield 'full - german locale' => [
+            'Donnerstag, 2. Februar 2023 um 13:05:00 Koordinierte Weltzeit',
+            'FULL',
+            'de-DE',
+        ];
+        yield 'long - german locale' => [
+            '2. Februar 2023 um 13:05:00 UTC',
+            'LONG',
+            'de-DE',
+        ];
+        yield 'medium - german locale' => [
+            '02.02.2023, 13:05:00',
+            'MEDIUM',
+            'de-DE',
+        ];
+        yield 'short - german locale' => [
+            '02.02.23, 13:05',
+            'SHORT',
+            'de-DE',
+        ];
+        yield 'custom date only - german locale' => [
+            '02. Februar 2023',
+            'dd. MMMM yyyy',
+            'de-DE',
+        ];
+        yield 'custom time only - german locale' => [
+            '13:05:00',
+            'HH:mm:ss',
+            'de-DE',
+        ];
+        yield 'given date and time - german locale' => [
+            'Freitag, 20. Februar 1998 um 03:00:00 Koordinierte Weltzeit',
+            'FULL',
+            'de-DE',
+            '1998-02-20 3:00:00',
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider stdWrap_formattedDateProvider
+     */
+    public function stdWrap_formattedDate(string $expected, mixed $pattern, string $locale = null, string $givenDate = null): void
+    {
+        $this->frontendControllerMock->getContext()->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('2023-02-02 13:05:00')));
+        $subject = new ContentObjectRenderer($this->frontendControllerMock);
+        $conf = ['formattedDate' => $pattern];
+        if ($locale !== null) {
+            $conf['formattedDate.']['locale'] = $locale;
+        }
+        self::assertEquals($expected, $subject->stdWrap_formattedDate((string)$givenDate, $conf));
     }
 
     /**

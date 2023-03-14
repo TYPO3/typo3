@@ -17,9 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Localization\DateFormatter;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -84,6 +90,26 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * ``13. Dezember 1980``
  * Depending on the current date and defined locale. In the example you see the 1980-12-13 in a german locale.
  *
+ * Localized dates using ICU-based date and time formatting
+ * --------------------------------------------------------
+ *
+ * ::
+ *
+ *    <f:format.date pattern="dd. MMMM yyyy" locale="de-DE">{dateObject}</f:format.date>
+ *
+ * ``13. Dezember 1980``
+ * Depending on the current date. In the example you see the 1980-12-13 in a german locale.
+ *
+ * Localized dates using default formatting patterns
+ * -------------------------------------------------
+ *
+ * ::
+ *
+ *    <f:format.date pattern="FULL" locale="fr-FR">{dateObject}</f:format.date>
+ *
+ * ``jeudi 9 mars 2023 à 21:40:49 temps universel coordonné``
+ * Depending on the current date and operating system setting. In the example you see the 2023-03-09 in a french locale.
+ *
  * Inline notation
  * ---------------
  *
@@ -119,6 +145,8 @@ final class DateViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('date', 'mixed', 'Either an object implementing DateTimeInterface or a string that is accepted by DateTime constructor');
         $this->registerArgument('format', 'string', 'Format String which is taken to format the Date/Time', false, '');
+        $this->registerArgument('pattern', 'string', 'Format date based on unicode ICO format pattern given see https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax. If both "pattern" and "format" arguments are given, pattern will be used.');
+        $this->registerArgument('locale', 'string', 'A locale format such as "nl-NL" to format the date in a specific locale, if none given, uses the current locale of the current request. Only works when pattern argument is given');
         $this->registerArgument('base', 'mixed', 'A base time (an object implementing DateTimeInterface or a string) used if $date is a relative date specification. Defaults to current time.');
     }
 
@@ -128,6 +156,7 @@ final class DateViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $format = $arguments['format'] ?? '';
+        $pattern = $arguments['pattern'] ?? null;
         $base = $arguments['base'] ?? GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
         if (is_string($base)) {
             $base = trim($base);
@@ -161,6 +190,10 @@ final class DateViewHelper extends AbstractViewHelper
             }
         }
 
+        if ($pattern !== null) {
+            $locale = $arguments['locale'] ?? self::resolveLocale($renderingContext);
+            return (new DateFormatter())->format($date, $pattern, $locale);
+        }
         if (str_contains($format, '%')) {
             // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
             return @strftime($format, (int)$date->format('U'));
@@ -174,5 +207,28 @@ final class DateViewHelper extends AbstractViewHelper
     public function resolveContentArgumentName(): string
     {
         return 'date';
+    }
+
+    private static function resolveLocale(RenderingContextInterface $renderingContext): Locale
+    {
+        $request = null;
+        if ($renderingContext instanceof RenderingContext) {
+            $request = $renderingContext->getRequest();
+        } elseif (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
+            $request = $GLOBALS['TYPO3_REQUEST'];
+        }
+        if ($request && ApplicationType::fromRequest($request)->isFrontend()) {
+            // Frontend application
+            $siteLanguage = $request->getAttribute('language');
+
+            // Get values from site language
+            if ($siteLanguage !== null) {
+                return $siteLanguage->getLocale();
+            }
+        } elseif (($GLOBALS['BE_USER'] ?? null) instanceof BackendUserAuthentication
+            && !empty($GLOBALS['BE_USER']->user['lang'])) {
+            return new Locale($GLOBALS['BE_USER']->user['lang']);
+        }
+        return new Locale();
     }
 }

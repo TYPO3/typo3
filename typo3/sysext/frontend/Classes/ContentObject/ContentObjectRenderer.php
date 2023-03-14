@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Html\SanitizerInitiator;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
+use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -102,7 +103,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @see stdWrap()
      * @var string[]
      */
-    public $stdWrapOrder = [
+    public array $stdWrapOrder = [
         'stdWrapPreProcess' => 'hook',
         // this is a placeholder for the first Hook
         'cacheRead' => 'hook',
@@ -177,6 +178,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
         'strtotime.' => 'array',
         'strftime' => 'strftimeconf',
         'strftime.' => 'array',
+        'formattedDate' => 'formattedDateconf',
+        'formattedDate.' => 'array',
         'age' => 'boolean',
         'age.' => 'array',
         'case' => 'case',
@@ -1898,6 +1901,32 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $content .= ' ' . $conf['strtotime'];
         }
         return strtotime($content, $GLOBALS['EXEC_TIME']);
+    }
+
+    /**
+     * php-intl dateformatted
+     * Will return a timestamp based on configuration given according to PHP-intl DateFormatter->format()
+     * see https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax
+     *
+     * @param string $content Input value undergoing processing in this function.
+     * @param array $conf stdWrap properties for formattedDate.
+     * @return string The processed input value
+     */
+    public function stdWrap_formattedDate(string $content, array $conf): string
+    {
+        $pattern = $conf['formattedDate'] ?? 'LONG';
+        $locale = $conf['formattedDate.']['locale'] ?? $this->getTypoScriptFrontendController()->getLanguage()->getLocale();
+
+        if ($content === '' || $content === '0') {
+            $content = $this->getTypoScriptFrontendController()->getContext()->getAspect('date')->getDateTime();
+        } else {
+            // format this to a timestamp now
+            $content = strtotime((MathUtility::canBeInterpretedAsInteger($content) ? '@' : '') . $content);
+            if ($content === false) {
+                $content = $this->getTypoScriptFrontendController()->getContext()->getAspect('date')->getDateTime();
+            }
+        }
+        return (new DateFormatter())->format($content, $pattern, $locale);
     }
 
     /**
