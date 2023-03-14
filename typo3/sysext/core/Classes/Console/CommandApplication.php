@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Console;
 
+use Symfony\Component\Console\Application as SymfonyConsoleApplication;
 use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -49,7 +50,7 @@ class CommandApplication implements ApplicationInterface
 
     protected LanguageServiceFactory $languageServiceFactory;
 
-    protected Application $application;
+    protected SymfonyConsoleApplication $application;
 
     public function __construct(
         Context $context,
