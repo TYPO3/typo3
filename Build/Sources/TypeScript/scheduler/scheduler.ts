@@ -12,7 +12,7 @@
  */
 
 import $ from 'jquery';
-import Tablesort from 'tablesort';
+import SortableTable from '@typo3/backend/sortable-table';
 import DocumentSaveActions from '@typo3/backend/document-save-actions';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Modal from '@typo3/backend/modal';
@@ -178,10 +178,9 @@ class Scheduler {
       $target.val($target.attr('value')).trigger('blur');
     });
 
-    const taskGroupTable = document.querySelector('table.taskGroup-table');
-    if (taskGroupTable !== null) {
-      new Tablesort(taskGroupTable);
-    }
+    document.querySelectorAll('[data-scheduler-table]').forEach((table: HTMLTableElement) => {
+      new SortableTable(table);
+    });
 
     (<NodeListOf<HTMLInputElement>>document.querySelectorAll('#tx_scheduler_form .t3js-datetimepicker')).forEach(
       (dateTimePickerElement: HTMLInputElement) => DateTimePicker.initialize(dateTimePickerElement)

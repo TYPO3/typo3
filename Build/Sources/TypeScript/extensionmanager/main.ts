@@ -21,13 +21,12 @@ import SecurityUtility from '@typo3/core/security-utility';
 import ExtensionManagerRepository from './repository';
 import ExtensionManagerUpdate from './update';
 import ExtensionManagerUploadForm from './upload-form';
-import Tablesort from 'tablesort';
-import 'tablesort.dotsep';
 import '@typo3/backend/input/clearable';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import RegularEvent from '@typo3/core/event/regular-event';
+import SortableTable from '@typo3/backend/sortable-table';
 
 const securityUtility = new SecurityUtility();
 
@@ -63,7 +62,10 @@ class ExtensionManager {
 
       const extensionList = document.getElementById(ExtensionManagerIdentifier.extensionlist);
       if (extensionList !== null) {
-        new Tablesort(extensionList);
+
+        if (extensionList instanceof HTMLTableElement) {
+          new SortableTable(extensionList);
+        }
 
         new RegularEvent('click', (e: Event, target: HTMLAnchorElement): void => {
           e.preventDefault();

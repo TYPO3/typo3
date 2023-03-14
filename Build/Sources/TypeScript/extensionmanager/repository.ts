@@ -16,7 +16,7 @@ import NProgress from 'nprogress';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import Severity from '@typo3/backend/severity';
-import Tablesort from 'tablesort';
+import SortableTable from '@typo3/backend/sortable-table';
 import '@typo3/backend/input/clearable';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -45,11 +45,11 @@ class Repository {
     const terVersionTable = document.getElementById('terVersionTable');
     const terSearchTable = document.getElementById('terSearchTable');
 
-    if (terVersionTable !== null) {
-      new Tablesort(terVersionTable);
+    if (terVersionTable instanceof HTMLTableElement) {
+      new SortableTable(terVersionTable);
     }
-    if (terSearchTable !== null) {
-      new Tablesort(terSearchTable);
+    if (terSearchTable instanceof HTMLTableElement) {
+      new SortableTable(terSearchTable);
     }
 
     this.bindDownload();

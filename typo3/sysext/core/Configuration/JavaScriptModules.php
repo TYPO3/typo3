@@ -34,6 +34,7 @@ return [
         'nprogress' => 'EXT:core/Resources/Public/JavaScript/Contrib/nprogress.js',
         'sortablejs' => 'EXT:core/Resources/Public/JavaScript/Contrib/sortablejs.js',
         'tablesort.dotsep.js' => 'EXT:core/Resources/Public/JavaScript/Contrib/tablesort.dotsep.js',
+        'tablesort.number.js' => 'EXT:core/Resources/Public/JavaScript/Contrib/tablesort.number.js',
         'tablesort' => 'EXT:core/Resources/Public/JavaScript/Contrib/tablesort.js',
         'taboverride' => 'EXT:core/Resources/Public/JavaScript/Contrib/taboverride.js',
     ],

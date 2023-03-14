@@ -1,3 +1,6 @@
+/* eslint-env node, commonjs */
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,8 +23,7 @@ module.exports = function (grunt) {
    * Grunt stylefmt task
    */
   grunt.registerMultiTask('formatsass', 'Grunt task for stylefmt', function () {
-    var options = this.options(),
-      done = this.async(),
+    let done = this.async(),
       stylefmt = require('@ronilaukkarinen/stylefmt'),
       postcss = require('postcss'),
       scss = require('postcss-scss'),
@@ -31,8 +33,8 @@ module.exports = function (grunt) {
       counter = 0;
     this.files.forEach(function (file) {
       file.src.filter(function (filepath) {
-        var content = grunt.file.read(filepath);
-        var settings = {
+        let content = grunt.file.read(filepath);
+        let settings = {
           from: filepath,
           syntax: scss
         };
@@ -40,7 +42,9 @@ module.exports = function (grunt) {
           grunt.file.write(file.dest, result.css);
           grunt.log.success('Source file "' + filepath + '" was processed.');
           counter++;
-          if (counter >= files.length) done(true);
+          if (counter >= files.length) {
+            done(true);
+          }
         });
       });
     });
@@ -50,8 +54,7 @@ module.exports = function (grunt) {
    * Grunt flag tasks
    */
   grunt.registerMultiTask('flags', 'Grunt task rendering the flags', function () {
-    var options = this.options(),
-      done = this.async(),
+    let done = this.async(),
       path = require('path'),
       sharp = require('sharp'),
       filesize = require('filesize'),
@@ -76,7 +79,9 @@ module.exports = function (grunt) {
           .then(data => {
             grunt.log.ok(`File ${targetFilename} created. ${filesize.filesize(data.size)}`)
             counter++;
-            if (counter >= files.length) done(true);
+            if (counter >= files.length) {
+              done(true);
+            }
           }).catch(function (err) {
             grunt.log.error('File "' + targetFilename + '" was not processed.');
             console.log(err)
@@ -165,37 +170,37 @@ module.exports = function (grunt) {
       },
       backend: {
         files: {
-          "<%= paths.backend %>Public/Css/backend.css": "<%= paths.sass %>backend.scss"
+          '<%= paths.backend %>Public/Css/backend.css': '<%= paths.sass %>backend.scss'
         }
       },
       form: {
         files: {
-          "<%= paths.form %>Public/Css/form.css": "<%= paths.sass %>form.scss"
+          '<%= paths.form %>Public/Css/form.css': '<%= paths.sass %>form.scss'
         }
       },
       dashboard: {
         files: {
-          "<%= paths.dashboard %>Public/Css/dashboard.css": "<%= paths.sass %>dashboard.scss"
+          '<%= paths.dashboard %>Public/Css/dashboard.css': '<%= paths.sass %>dashboard.scss'
         }
       },
       dashboard_modal: {
         files: {
-          "<%= paths.dashboard %>Public/Css/Modal/style.css": "<%= paths.sass %>dashboard_modal.scss"
+          '<%= paths.dashboard %>Public/Css/Modal/style.css': '<%= paths.sass %>dashboard_modal.scss'
         }
       },
       adminpanel: {
         files: {
-          "<%= paths.adminpanel %>Public/Css/adminpanel.css": "<%= paths.sass %>adminpanel.scss"
+          '<%= paths.adminpanel %>Public/Css/adminpanel.css': '<%= paths.sass %>adminpanel.scss'
         }
       },
       webfonts: {
         files: {
-          "<%= paths.backend %>Public/Css/webfonts.css": "<%= paths.sass %>webfonts.scss"
+          '<%= paths.backend %>Public/Css/webfonts.css': '<%= paths.sass %>webfonts.scss'
         }
       },
       workspaces: {
         files: {
-          "<%= paths.workspaces %>Public/Css/preview.css": "<%= paths.sass %>workspace.scss"
+          '<%= paths.workspaces %>Public/Css/preview.css': '<%= paths.sass %>workspace.scss'
         }
       }
     },
@@ -295,7 +300,7 @@ module.exports = function (grunt) {
       ts_files: {
         options: {
           process: (source, srcpath) => {
-            const [imports, exports] = esModuleLexer.parse(source, srcpath);
+            const [imports] = esModuleLexer.parse(source, srcpath);
 
             source = require('./util/map-import.js').mapImports(source, srcpath, imports);
 
@@ -395,7 +400,7 @@ module.exports = function (grunt) {
       },
       lit: {
         options: {
-          process: (content, srcpath) => content.replace(/\/\/# sourceMappingURL=[^ ]+/, '')
+          process: (content) => content.replace(/\/\/# sourceMappingURL=[^ ]+/, '')
         },
         files: [{
           expand: true,
@@ -571,11 +576,11 @@ module.exports = function (grunt) {
       options: {
         clean: false,
         report: false,
-        srcPrefix: "node_modules/"
+        srcPrefix: 'node_modules/'
       },
       backend: {
         options: {
-          destPrefix: "<%= paths.backend %>Public",
+          destPrefix: '<%= paths.backend %>Public',
           copyOptions: {
             process: (source, srcpath) => {
               if (srcpath.match(/.*\.js$/)) {
@@ -592,7 +597,7 @@ module.exports = function (grunt) {
       },
       dashboardToEs6: {
         options: {
-          destPrefix: "<%= paths.dashboard %>Public",
+          destPrefix: '<%= paths.dashboard %>Public',
           copyOptions: {
             process: (source, srcpath) => {
               if (srcpath.match(/.*\.js$/)) {
@@ -609,7 +614,7 @@ module.exports = function (grunt) {
       },
       dashboard: {
         options: {
-          destPrefix: "<%= paths.dashboard %>Public",
+          destPrefix: '<%= paths.dashboard %>Public',
         },
         files: {
           'JavaScript/Contrib/chartjs.js': 'chart.js/dist/chart.js',
@@ -618,7 +623,7 @@ module.exports = function (grunt) {
       },
       umdToEs6: {
         options: {
-          destPrefix: "<%= paths.core %>Public/JavaScript/Contrib",
+          destPrefix: '<%= paths.core %>Public/JavaScript/Contrib',
           copyOptions: {
             process: (source, srcpath) => {
               let imports = [], prefix = '';
@@ -628,6 +633,10 @@ module.exports = function (grunt) {
               }
 
               if (srcpath === 'node_modules/tablesort/dist/sorts/tablesort.dotsep.min.js') {
+                prefix = 'import Tablesort from "tablesort";';
+              }
+
+              if (srcpath === 'node_modules/tablesort/dist/sorts/tablesort.number.min.js') {
                 prefix = 'import Tablesort from "tablesort";';
               }
 
@@ -646,12 +655,13 @@ module.exports = function (grunt) {
           'sortablejs.js': 'sortablejs/dist/sortable.umd.js',
           'tablesort.js': 'tablesort/dist/tablesort.min.js',
           'tablesort.dotsep.js': 'tablesort/dist/sorts/tablesort.dotsep.min.js',
+          'tablesort.number.js': 'tablesort/dist/sorts/tablesort.number.min.js',
           'taboverride.js': 'taboverride/build/output/taboverride.js',
         }
       },
       install: {
         options: {
-          destPrefix: "<%= paths.install %>Public/JavaScript",
+          destPrefix: '<%= paths.install %>Public/JavaScript',
           copyOptions: {
             process: (source, srcpath) => {
               if (srcpath === 'node_modules/chosen-js/chosen.jquery.js') {
@@ -668,7 +678,7 @@ module.exports = function (grunt) {
       },
       jqueryUi: {
         options: {
-          destPrefix: "<%= paths.core %>Public/JavaScript/Contrib",
+          destPrefix: '<%= paths.core %>Public/JavaScript/Contrib',
           copyOptions: {
             process: (source, srcpath) => {
 
@@ -717,7 +727,7 @@ module.exports = function (grunt) {
       },
       all: {
         options: {
-          destPrefix: "<%= paths.core %>Public/JavaScript/Contrib"
+          destPrefix: '<%= paths.core %>Public/JavaScript/Contrib'
         },
         files: {
           'autosize.js': 'autosize/dist/autosize.esm.js',
@@ -737,27 +747,27 @@ module.exports = function (grunt) {
       },
       thirdparty: {
         files: {
-          "<%= paths.core %>Public/JavaScript/Contrib/es-module-shims.js": ["<%= paths.core %>Public/JavaScript/Contrib/es-module-shims.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel.js": ["<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js": ["<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js": ["<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js": ["<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/luxon.js": ["<%= paths.core %>Public/JavaScript/Contrib/luxon.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/require.js": ["<%= paths.core %>Public/JavaScript/Contrib/require.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/nprogress.js": ["<%= paths.core %>Public/JavaScript/Contrib/nprogress.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/taboverride.js": ["<%= paths.core %>Public/JavaScript/Contrib/taboverride.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/draggable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/draggable.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/droppable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/droppable.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/mouse.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/mouse.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/position.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/position.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js"],
-          "<%= paths.dashboard %>Public/JavaScript/Contrib/chartjs.js": ["<%= paths.dashboard %>Public/JavaScript/Contrib/chartjs.js"],
-          "<%= paths.dashboard %>Public/JavaScript/Contrib/chunks/helpers.segment.js": ["<%= paths.dashboard %>Public/JavaScript/Contrib/chunks/helpers.segment.js"],
-          "<%= paths.install %>Public/JavaScript/chosen.jquery.min.js": ["<%= paths.install %>Public/JavaScript/chosen.jquery.min.js"]
+          '<%= paths.core %>Public/JavaScript/Contrib/es-module-shims.js': ['<%= paths.core %>Public/JavaScript/Contrib/es-module-shims.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel.js': ['<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js': ['<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js': ['<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js': ['<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/luxon.js': ['<%= paths.core %>Public/JavaScript/Contrib/luxon.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/require.js': ['<%= paths.core %>Public/JavaScript/Contrib/require.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/nprogress.js': ['<%= paths.core %>Public/JavaScript/Contrib/nprogress.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/taboverride.js': ['<%= paths.core %>Public/JavaScript/Contrib/taboverride.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/draggable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/draggable.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/droppable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/droppable.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/mouse.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/mouse.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/position.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/position.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js': ['<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js'],
+          '<%= paths.dashboard %>Public/JavaScript/Contrib/chartjs.js': ['<%= paths.dashboard %>Public/JavaScript/Contrib/chartjs.js'],
+          '<%= paths.dashboard %>Public/JavaScript/Contrib/chunks/helpers.segment.js': ['<%= paths.dashboard %>Public/JavaScript/Contrib/chunks/helpers.segment.js'],
+          '<%= paths.install %>Public/JavaScript/chosen.jquery.min.js': ['<%= paths.install %>Public/JavaScript/chosen.jquery.min.js']
         }
       },
       t3editor: {
@@ -909,11 +919,11 @@ module.exports = function (grunt) {
    * this task updates the tsconfig.json file with modules paths for all sysexts
    */
   grunt.task.registerTask('tsconfig', function () {
-    const config = grunt.file.readJSON("tsconfig.json");
+    const config = grunt.file.readJSON('tsconfig.json');
     const typescriptPath = grunt.config.get('paths.typescript');
     config.compilerOptions.paths = {};
     grunt.file.expand(typescriptPath + '*/').map(dir => dir.replace(typescriptPath, '')).forEach((path) => {
-      const extname = path.match(/^([^\/]+?)\//)[1].replace(/_/g, '-')
+      const extname = path.match(/^([^/]+?)\//)[1].replace(/_/g, '-')
       config.compilerOptions.paths['@typo3/' + extname + '/*'] = [path + '*'];
     });
 

@@ -52,7 +52,7 @@
             </div>
             <div class="panel-collapse collapse {f:if(condition: '!{taskGroup.taskGroupCollapsed}', then: 'show')}" id="scheduler-task-group-{taskGroupId}" data-table="task-group-{taskGroupId}">
                 <div class="table-fit">
-                    <table class="table table-striped table-hover taskGroup-table">
+                    <table class="table table-striped table-hover" data-scheduler-table>
                         <thead>
                             <tr class="taskGroup_{taskGroupId}">
                                 <th data-sort-method="none">
@@ -388,7 +388,7 @@
                             <td class="nowrap-disabled"><span>{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClass') -> f:format.raw()}</span></td>
                         </tr>
                     </table>
-                    <table class="table table-striped table-hover taskGroup-table">
+                    <table class="table table-striped table-hover" data-scheduler-table>
                         <thead>
                         <tr>
                             <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.id"/></th>
