@@ -465,6 +465,16 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
             $expectedTree,
         ];
 
+        $atImportStatement = '@import "EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/NotExistingDirectory/*.typoscript"';
+        $atImportLineStream = (new LosslessTokenizer())->tokenize($atImportStatement);
+        $expectedTree = new FileInclude();
+        $expectedTree->setLineStream($atImportLineStream);
+        $expectedTree->setSplit();
+        yield 'atImport with *.typoscript on not existing directory does not crash' => [
+            $atImportLineStream,
+            $expectedTree,
+        ];
+
         $atImportStatement = '@import "EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario1/*.typoscript"';
         $atImportLineStream = (new LosslessTokenizer())->tokenize($atImportStatement);
         $atImportLine = iterator_to_array($atImportLineStream->getNextLine())[0];

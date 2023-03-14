@@ -95,7 +95,7 @@ final class TreeFromLineStreamBuilder
      * a given source stream of lines exactly once, but creates a two-level
      * include node structure from it:
      *
-     * For instance, when a condition is encountered, it created a node for the
+     * For instance, when a condition is encountered, it creates a node for the
      * condition, and the "body" lines of the condition are child nodes of the
      * condition node. The $previousNode <-> $node juggling handles this: When
      * the condition body ends (new condition, or [end] or similar), the
@@ -296,9 +296,14 @@ final class TreeFromLineStreamBuilder
         } elseif (str_contains($absoluteFileName, '*')) {
             // Something with * in file part
             $directory = rtrim(dirname($absoluteFileName) . '/');
-            if (!is_dir($directory) && str_starts_with($atImportValue, './') && !$tryRelative) {
+            $directoryExists = is_dir($directory);
+            if (!$directoryExists && str_starts_with($atImportValue, './') && !$tryRelative) {
                 // See if we can import some relative wildcard like "./Setup/*" or "./Setup/*.typoscript"
                 $this->processAtImport($fileSuffix, $node, $atImportValueToken, $atImportLine, true);
+                return;
+            }
+            if (!$directoryExists) {
+                // Absolute directory. There is nothing to import if the directory does not exist.
                 return;
             }
             $filePattern = basename($absoluteFileName);
