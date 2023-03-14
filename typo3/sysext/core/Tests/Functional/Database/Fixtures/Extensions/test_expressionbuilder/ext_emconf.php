@@ -6,13 +6,13 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'ExpressionBuilder Test',
     'description' => 'ExpressionBuilder Test',
     'category' => 'example',
-    'version' => '11.5.25',
+    'version' => '11.5.26',
     'state' => 'beta',
     'author' => 'Christian Kuhn',
     'author_email' => 'lolli@schwarzbu.ch',
     'constraints' => [
         'depends' => [
-            'typo3' => '11.5.25',
+            'typo3' => '11.5.26',
         ],
         'conflicts' => [],
         'suggests' => [],

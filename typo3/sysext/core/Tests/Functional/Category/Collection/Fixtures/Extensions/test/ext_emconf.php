@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'test extension',
     'description' => '',
     'category' => '',
-    'version' => '11.5.25',
+    'version' => '11.5.26',
     'state' => 'beta',
     'author' => 'Christian Kuhn',
     'author_email' => 'lolli@schwarzbu.ch',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '11.5.25',
+            'typo3' => '11.5.26',
         ],
         'conflicts' => [],
         'suggests' => [],
