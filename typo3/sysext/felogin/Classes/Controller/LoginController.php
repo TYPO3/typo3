@@ -251,8 +251,11 @@ class LoginController extends AbstractLoginFormController
     protected function handleRedirect(): void
     {
         if ($this->redirectUrl !== '') {
-            $this->eventDispatcher->dispatch(new BeforeRedirectEvent($this->loginType, $this->redirectUrl));
-            $this->redirectToUri($this->redirectUrl);
+            $event = new BeforeRedirectEvent($this->loginType, $this->redirectUrl, $this->request);
+            $this->eventDispatcher->dispatch($event);
+            if ($event->getRedirectUrl() !== '') {
+                $this->redirectToUri($event->getRedirectUrl());
+            }
         }
     }
 
