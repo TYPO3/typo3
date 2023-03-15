@@ -469,7 +469,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @todo Ticket: #63642 Should be refactored to a request/response model later
      * @internal Should only be used by TYPO3 core for now
      */
-    protected string $contentType = 'text/html';
+    protected string $contentType = 'text/html; charset=utf-8';
 
     /**
      * Doctype to use
@@ -2327,8 +2327,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function applyHttpHeadersToResponse(ResponseInterface $response): ResponseInterface
     {
-        // Set header for content-type + charset-encoding
-        $response = $response->withHeader('Content-Type', $this->contentType . '; charset=utf-8');
+        $response = $response->withHeader('Content-Type', $this->contentType);
         // Set header for content language unless disabled
         $contentLanguage = (string)$this->language->getLocale();
         if (empty($this->config['config']['disableLanguageHeader'])) {
