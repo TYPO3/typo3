@@ -197,6 +197,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
         if ($processedFile->isPersisted()) {
             $uid = (int)$processedFile->getUid();
             $updateFields = $this->cleanUnavailableColumns($processedFile->toArray());
+            unset($updateFields['uid']);
             $updateFields['tstamp'] = time();
 
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
