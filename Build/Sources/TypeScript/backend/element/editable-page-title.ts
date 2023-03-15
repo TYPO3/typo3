@@ -220,7 +220,7 @@ export class EditablePageTitle extends LitElement {
   private composeEditForm(): TemplateResult {
     return html`
       <form class="wrapper" @submit="${ this.updatePageTitle }">
-        <input autocomplete="off" name="newPageTitle" ?disabled="${this._isSubmitting}" value="${this.pageTitle}" @keydown="${(e: KeyboardEvent): void => { if (e.key === 'Escape') { this.endEditing(); } }}">
+        <input autocomplete="off" required name="newPageTitle" ?disabled="${this._isSubmitting}" value="${this.pageTitle}" @keydown="${(e: KeyboardEvent): void => { if (e.key === 'Escape') { this.endEditing(); } }}">
         <button data-action="save" type="submit" ?disabled="${this._isSubmitting}">
           <typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>
         </button>

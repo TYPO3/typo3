@@ -19,7 +19,7 @@ var __decorate=function(t,e,i,o){var a,r=arguments.length,n=r<3?e:null===o?o=Obj
         <typo3-backend-icon identifier="actions-open" size="small"></typo3-backend-icon>
       </button>`}composeEditForm(){return html`
       <form class="wrapper" @submit="${this.updatePageTitle}">
-        <input autocomplete="off" name="newPageTitle" ?disabled="${this._isSubmitting}" value="${this.pageTitle}" @keydown="${t=>{"Escape"===t.key&&this.endEditing()}}">
+        <input autocomplete="off" required name="newPageTitle" ?disabled="${this._isSubmitting}" value="${this.pageTitle}" @keydown="${t=>{"Escape"===t.key&&this.endEditing()}}">
         <button data-action="save" type="submit" ?disabled="${this._isSubmitting}">
           <typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>
         </button>
