@@ -16,23 +16,22 @@
 			<trans-unit id="module.pagetsconfig.noAccess" resname="module.pagetsconfig.noAccess">
 				<source>Access to this module denied.</source>
 			</trans-unit>
-
-			<trans-unit id="module.pagetsconfig_records" resname="module.pagetsconfig_records">
-				<source>Page TSconfig Records</source>
+			<trans-unit id="module.pagetsconfig_pages" resname="module.pagetsconfig_pages">
+				<source>Pages containing PageTsConfig</source>
 			</trans-unit>
-			<trans-unit id="module.pagetsconfig_records.headline" resname="module.pagetsconfig_records.headline">
-				<source>Page TSconfig Records</source>
+			<trans-unit id="module.pagetsconfig_pages.headline" resname="module.pagetsconfig_pages.headline">
+				<source>Pages containing PageTsConfig</source>
 			</trans-unit>
-			<trans-unit id="module.pagetsconfig_records.description" resname="module.pagetsconfig_records.description">
-				<source>Global overview of all pages in the database containing custom Page TSconfig.</source>
+			<trans-unit id="module.pagetsconfig_pages.description" resname="module.pagetsconfig_pages.description">
+				<source>Global overview of all pages in the database containing Page TSconfig.</source>
 			</trans-unit>
-			<trans-unit id="module.pagetsconfig_records.noRecords" resname="module.pagetsconfig_records.noRecords">
-				<source>There are no pages containing custom Page TSconfig settings in the page configuration.</source>
+			<trans-unit id="module.pagetsconfig_pages.noRecords" resname="module.pagetsconfig_pages.noRecords">
+				<source>There are no pages containing Page TSconfig settings in the page configuration.</source>
 			</trans-unit>
-			<trans-unit id="module.pagetsconfig_records.pagename" resname="module.pagetsconfig_records.pagename">
+			<trans-unit id="module.pagetsconfig_pages.pagename" resname="module.pagetsconfig_pages.pagename">
 				<source>Page name</source>
 			</trans-unit>
-			<trans-unit id="module.pagetsconfig_records.written_tsconfig_lines" resname="module.pagetsconfig_records.written_tsconfig_lines">
+			<trans-unit id="module.pagetsconfig_pages.written_tsconfig_lines" resname="module.pagetsconfig_pages.written_tsconfig_lines">
 				<source>Lines</source>
 			</trans-unit>
 

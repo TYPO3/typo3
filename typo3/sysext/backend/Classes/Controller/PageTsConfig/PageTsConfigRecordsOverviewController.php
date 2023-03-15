@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * PageTsConfig > PageTsConfig Records
+ * PageTsConfig > PageTsConfig Configuration
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */

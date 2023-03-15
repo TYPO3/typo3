@@ -104,7 +104,7 @@ return [
         'path' => '/module/pagetsconfig/records',
         'iconIdentifier' => 'module-tstemplate',
         'labels' => [
-            'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_records',
+            'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_pages',
         ],
         'routes' => [
             '_default' => [
