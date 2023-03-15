@@ -56,7 +56,7 @@ namespace TYPO3\CMS\Core\Compatibility;
  *      * This is my method.
  *      *
  *      * @deprecated (if deprecated)
- *      * @private (if switched to private)
+ *      * @internal (if switched to private)
  *      /
  *     protected function myMethod($arg1, $arg2);
  * }

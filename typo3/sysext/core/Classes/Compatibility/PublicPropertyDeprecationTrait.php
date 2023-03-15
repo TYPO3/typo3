@@ -53,7 +53,7 @@ namespace TYPO3\CMS\Core\Compatibility;
  *      *
  *      * @var bool
  *      * @deprecated (if deprecated)
- *      * @private (if switched to private)
+ *      * @internal (if switched to private)
  *      /
  *     protected $myProperty = true;
  * }

@@ -189,20 +189,23 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     /**
      * Form field with login-name
      * @var string
+     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
      */
-    public $formfield_uname = 'username';
+    protected $formfield_uname = 'username';
 
     /**
      * Form field with password
      * @var string
+     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
      */
-    public $formfield_uident = 'userident';
+    protected $formfield_uident = 'userident';
 
     /**
      * Form field with status: *'login', 'logout'
      * @var string
+     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
      */
-    public $formfield_status = 'login_status';
+    protected $formfield_status = 'login_status';
 
     /**
      * Decides if the writelog() function is called at login and logout

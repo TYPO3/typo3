@@ -5666,4 +5666,39 @@ return [
             'Deprecation-100454-LegacyTreeImplementations.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isSetSessionCookie' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isRefreshTimeBasedCookie' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->removeCookie' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isCookieSet' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->unpack_uc' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-100173-VariousMethodsAndPropertiesInUserAuthenticationClassesNowInternal.rst',
+        ],
+    ],
 ];

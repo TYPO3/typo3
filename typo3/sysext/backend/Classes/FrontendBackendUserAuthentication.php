@@ -34,23 +34,26 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      * Form field with login name.
      *
      * @var string
+     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
      */
-    public $formfield_uname = '';
+    protected $formfield_uname = '';
 
     /**
      * Form field with password.
      *
      * @var string
+     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
      */
-    public $formfield_uident = '';
+    protected $formfield_uident = '';
 
     /**
      * Formfield_status should be set to "". The value this->formfield_status is set to empty in order to
      * disable login-attempts to the backend account through this script
      *
      * @var string
+     * @internal since TYPO3 v12. This is not considered public API anymore, as this property should be defined in another place in the future.
      */
-    public $formfield_status = '';
+    protected $formfield_status = '';
 
     /**
      * Decides if the writelog() function is called at login and logout.
