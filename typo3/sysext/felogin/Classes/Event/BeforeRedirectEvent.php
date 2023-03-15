@@ -17,14 +17,19 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Event;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
- * Notification before a redirect is made.
+ * Notification before a redirect is made, which also allows to modify
+ * the actual redirect URL. Setting the redirect to an empty string
+ * will avoid triggering a redirect.
  */
 final class BeforeRedirectEvent
 {
     public function __construct(
         private readonly string $loginType,
-        private readonly string $redirectUrl
+        private string $redirectUrl,
+        private readonly ServerRequestInterface $request,
     ) {
     }
 
@@ -36,5 +41,15 @@ final class BeforeRedirectEvent
     public function getRedirectUrl(): string
     {
         return $this->redirectUrl;
+    }
+
+    public function setRedirectUrl(string $redirectUrl): void
+    {
+        $this->redirectUrl = $redirectUrl;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 }
