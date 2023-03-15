@@ -77,4 +77,24 @@ class ApplicationTypeTest extends UnitTestCase
                 ->isBackend()
         );
     }
+
+    /**
+     * @test
+     */
+    public function isFrontendEnumResolved(): void
+    {
+        $type = ApplicationType::FRONTEND;
+        self::assertSame('frontend', $type->value);
+        self::assertSame('FE', $type->abbreviate());
+    }
+
+    /**
+     * @test
+     */
+    public function isBackendEnumResolved(): void
+    {
+        $type = ApplicationType::BACKEND;
+        self::assertSame('backend', $type->value);
+        self::assertSame('BE', $type->abbreviate());
+    }
 }

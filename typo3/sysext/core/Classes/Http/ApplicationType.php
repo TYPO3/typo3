@@ -52,9 +52,12 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
  * can NOT be answered in the TYPO3 bootstrap related extension files ext_localconf.php,
  * ext_tables.php and Configuration/TCA/* files.
  */
-final class ApplicationType
+enum ApplicationType: string
 {
-    private int $type;
+    // SystemEnvironmentBuilder::REQUESTTYPE_BE
+    case BACKEND = 'backend';
+    // SystemEnvironmentBuilder::REQUESTTYPE_FE
+    case FRONTEND = 'frontend';
 
     /**
      * Create an ApplicationType object from a given PSR-7 request.
@@ -70,21 +73,35 @@ final class ApplicationType
             // This is bogus, we throw a generic RuntimeException that should not be caught.
             throw new RuntimeException('No valid attribute "applicationType" found in request object.', 1606222812);
         }
-        return new self($type);
+        if (($type & SystemEnvironmentBuilder::REQUESTTYPE_FE) === SystemEnvironmentBuilder::REQUESTTYPE_FE) {
+            return self::FRONTEND;
+        }
+        if (($type & SystemEnvironmentBuilder::REQUESTTYPE_BE) === SystemEnvironmentBuilder::REQUESTTYPE_BE) {
+            return self::BACKEND;
+        }
+        throw new \LogicException('Could not resolve application type to either frontend or backend', 1678875015);
     }
 
-    private function __construct(int $type)
+    public function abbreviate(): ?string
     {
-        $this->type = $type;
+        return self::abbreviations()[$this] ?? null;
     }
 
     public function isFrontend(): bool
     {
-        return (bool)($this->type & SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        return $this === self::FRONTEND;
     }
 
     public function isBackend(): bool
     {
-        return (bool)($this->type & SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        return $this === self::BACKEND;
+    }
+
+    private static function abbreviations(): \WeakMap
+    {
+        $map = new \WeakMap();
+        $map[self::FRONTEND] = 'FE';
+        $map[self::BACKEND] = 'BE';
+        return $map;
     }
 }
