@@ -76,7 +76,7 @@ class TranslateViewHelperTest extends FunctionalTestCase
                 'myDefault',
             ],
             'id and underscored extensionName given' => [
-                '<f:translate key="form.legend" extensionName="indexed_search" />',
+                '<f:translate id="form.legend" extensionName="indexed_search" />',
                 'Search form',
             ],
             'key and underscored extensionName given' => [
@@ -84,7 +84,7 @@ class TranslateViewHelperTest extends FunctionalTestCase
                 'Search form',
             ],
             'id and CamelCased extensionName given' => [
-                '<f:translate key="form.legend" extensionName="IndexedSearch" />',
+                '<f:translate id="form.legend" extensionName="IndexedSearch" />',
                 'Search form',
             ],
             'key and CamelCased extensionName given' => [
