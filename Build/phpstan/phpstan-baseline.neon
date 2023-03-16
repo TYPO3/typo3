@@ -951,7 +951,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/QueryGenerator.php
 
 		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
+			message: "#^Offset 'queryConfig' on array on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/QueryGenerator.php
 
@@ -966,7 +966,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/QueryGenerator.php
 
 		-
-			message: "#^Offset 0 on \\*NEVER\\* in isset\\(\\) always exists and is always null\\.$#"
+			message: "#^Offset 0 on array\\{\\} in isset\\(\\) does not exist\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/QueryGenerator.php
 

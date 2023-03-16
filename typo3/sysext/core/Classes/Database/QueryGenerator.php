@@ -285,41 +285,41 @@ class QueryGenerator
      */
     public function init($name, $table, $fieldList = '', array $settings = [])
     {
-        // Analysing the fields in the table.
-        if (is_array($GLOBALS['TCA'][$table])) {
+        // Analyzing the fields in the table.
+        if (is_array($GLOBALS['TCA'][$table] ?? false)) {
             $this->name = $name;
             $this->table = $table;
             $this->fieldList = $fieldList ?: $this->makeFieldList();
             $this->settings = $settings;
             $fieldArr = GeneralUtility::trimExplode(',', $this->fieldList, true);
             foreach ($fieldArr as $fieldName) {
-                $fC = $GLOBALS['TCA'][$this->table]['columns'][$fieldName];
-                $this->fields[$fieldName] = $fC['config'];
-                $this->fields[$fieldName]['exclude'] = $fC['exclude'];
-                if ($this->fields[$fieldName]['type'] === 'user' && !isset($this->fields[$fieldName]['type']['userFunc'])
-                    || $this->fields[$fieldName]['type'] === 'none'
+                $fC = $GLOBALS['TCA'][$this->table]['columns'][$fieldName] ?? [];
+                $this->fields[$fieldName] = $fC['config'] ?? [];
+                $this->fields[$fieldName]['exclude'] = $fC['exclude'] ?? '';
+                if (($this->fields[$fieldName]['type'] ?? '') === 'user' && !isset($this->fields[$fieldName]['type']['userFunc'])
+                    || ($this->fields[$fieldName]['type'] ?? '') === 'none'
                 ) {
                     // Do not list type=none "virtual" fields or query them from db,
                     // and if type is user without defined userFunc
                     unset($this->fields[$fieldName]);
                     continue;
                 }
-                if (is_array($fC) && $fC['label']) {
+                if (is_array($fC) && ($fC['label'] ?? false)) {
                     $this->fields[$fieldName]['label'] = rtrim(trim($this->getLanguageService()->sL($fC['label'])), ':');
                     switch ($this->fields[$fieldName]['type']) {
                         case 'input':
-                            if (preg_match('/int|year/i', $this->fields[$fieldName]['eval'])) {
+                            if (preg_match('/int|year/i', ($this->fields[$fieldName]['eval'] ?? ''))) {
                                 $this->fields[$fieldName]['type'] = 'number';
-                            } elseif (preg_match('/time/i', $this->fields[$fieldName]['eval'])) {
+                            } elseif (preg_match('/time/i', ($this->fields[$fieldName]['eval'] ?? ''))) {
                                 $this->fields[$fieldName]['type'] = 'time';
-                            } elseif (preg_match('/date/i', $this->fields[$fieldName]['eval'])) {
+                            } elseif (preg_match('/date/i', ($this->fields[$fieldName]['eval'] ?? ''))) {
                                 $this->fields[$fieldName]['type'] = 'date';
                             } else {
                                 $this->fields[$fieldName]['type'] = 'text';
                             }
                             break;
                         case 'check':
-                            if (!$this->fields[$fieldName]['items'] || count($this->fields[$fieldName]['items']) <= 1) {
+                            if (count($this->fields[$fieldName]['items'] ?? []) <= 1) {
                                 $this->fields[$fieldName]['type'] = 'boolean';
                             } else {
                                 $this->fields[$fieldName]['type'] = 'binary';
@@ -331,10 +331,10 @@ class QueryGenerator
                         case 'select':
                         case 'category':
                             $this->fields[$fieldName]['type'] = 'multiple';
-                            if ($this->fields[$fieldName]['foreign_table']) {
+                            if ($this->fields[$fieldName]['foreign_table'] ?? false) {
                                 $this->fields[$fieldName]['type'] = 'relation';
                             }
-                            if ($this->fields[$fieldName]['special']) {
+                            if ($this->fields[$fieldName]['special'] ?? false) {
                                 $this->fields[$fieldName]['type'] = 'text';
                             }
                             break;
@@ -425,7 +425,7 @@ class QueryGenerator
         $fields = array_unique(GeneralUtility::trimExplode(',', $list . ',' . $force, true));
         $reList = [];
         foreach ($fields as $fieldName) {
-            if ($this->fields[$fieldName]) {
+            if (isset($this->fields[$fieldName])) {
                 $reList[] = $fieldName;
             }
         }
@@ -442,7 +442,7 @@ class QueryGenerator
         $this->queryConfig = $qC;
         $POST = GeneralUtility::_POST();
         // If delete...
-        if ($POST['qG_del']) {
+        if ($POST['qG_del'] ?? false) {
             // Initialize array to work on, save special parameters
             $ssArr = $this->getSubscript($POST['qG_del']);
             $workArr = &$this->queryConfig;
@@ -453,14 +453,14 @@ class QueryGenerator
             }
             // Delete the entry and move the other entries
             unset($workArr[$ssArr[$i]]);
-            $workArrSize = count($workArr);
+            $workArrSize = count((array)$workArr);
             for ($j = $ssArr[$i]; $j < $workArrSize; $j++) {
                 $workArr[$j] = $workArr[$j + 1];
                 unset($workArr[$j + 1]);
             }
         }
         // If insert...
-        if ($POST['qG_ins']) {
+        if ($POST['qG_ins'] ?? false) {
             // Initialize array to work on, save special parameters
             $ssArr = $this->getSubscript($POST['qG_ins']);
             $workArr = &$this->queryConfig;
@@ -470,7 +470,7 @@ class QueryGenerator
                 $workArr = &$workArr[$ssArr[$i]];
             }
             // Move all entries above position where new entry is to be inserted
-            $workArrSize = count($workArr);
+            $workArrSize = count((array)$workArr);
             for ($j = $workArrSize; $j > $ssArr[$i]; $j--) {
                 $workArr[$j] = $workArr[$j - 1];
             }
@@ -479,7 +479,7 @@ class QueryGenerator
             $workArr[$ssArr[$i] + 1]['type'] = 'FIELD_';
         }
         // If move up...
-        if ($POST['qG_up']) {
+        if ($POST['qG_up'] ?? false) {
             // Initialize array to work on
             $ssArr = $this->getSubscript($POST['qG_up']);
             $workArr = &$this->queryConfig;
@@ -494,7 +494,7 @@ class QueryGenerator
             $workArr[$ssArr[$i] - 1] = $qG_tmp;
         }
         // If new level...
-        if ($POST['qG_nl']) {
+        if ($POST['qG_nl'] ?? false) {
             // Initialize array to work on
             $ssArr = $this->getSubscript($POST['qG_nl']);
             $workArr = &$this->queryConfig;
@@ -516,7 +516,7 @@ class QueryGenerator
             }
         }
         // If collapse level...
-        if ($POST['qG_remnl']) {
+        if ($POST['qG_remnl'] ?? false) {
             // Initialize array to work on
             $ssArr = $this->getSubscript($POST['qG_remnl']);
             $workArr = &$this->queryConfig;
@@ -528,7 +528,7 @@ class QueryGenerator
             // Do stuff:
             $tempEl = $workArr[$ssArr[$i]];
             if (is_array($tempEl)) {
-                if ($tempEl['type'] === 'newlevel') {
+                if ($tempEl['type'] === 'newlevel' && is_array($workArr)) {
                     $a1 = array_slice($workArr, 0, $ssArr[$i]);
                     $a2 = array_slice($workArr, $ssArr[$i]);
                     array_shift($a2);
@@ -549,7 +549,7 @@ class QueryGenerator
     public function cleanUpQueryConfig($queryConfig)
     {
         // Since we don't traverse the array using numeric keys in the upcoming while-loop make sure it's fresh and clean before displaying
-        if (is_array($queryConfig)) {
+        if (!empty($queryConfig) && is_array($queryConfig)) {
             ksort($queryConfig);
         } else {
             // queryConfig should never be empty!
@@ -562,10 +562,10 @@ class QueryGenerator
         // Traverse:
         foreach ($queryConfig as $key => $conf) {
             $fieldName = '';
-            if (strpos($conf['type'], 'FIELD_') === 0) {
+            if (str_starts_with(($conf['type'] ?? ''), 'FIELD_')) {
                 $fieldName = substr($conf['type'], 6);
-                $fieldType = $this->fields[$fieldName]['type'];
-            } elseif ($conf['type'] === 'newlevel') {
+                $fieldType = $this->fields[$fieldName]['type'] ?? '';
+            } elseif (($conf['type'] ?? '') === 'newlevel') {
                 $fieldType = $conf['type'];
             } else {
                 $fieldType = 'ignore';
@@ -578,16 +578,15 @@ class QueryGenerator
                     $queryConfig[$key]['nl'] = $this->cleanUpQueryConfig($queryConfig[$key]['nl']);
                     break;
                 case 'userdef':
-                    $queryConfig[$key] = $this->userDefCleanUp($queryConfig[$key]);
                     break;
                 case 'ignore':
                 default:
                     $verifiedName = $this->verifyType($fieldName);
                     $queryConfig[$key]['type'] = 'FIELD_' . $this->verifyType($verifiedName);
-                    if ($this->comp_offsets[$fieldType] != $conf['comparison'] >> 5) {
-                        $conf['comparison'] = $this->comp_offsets[$fieldType] << 5;
+                    if ((int)($conf['comparison'] ?? 0) >> 5 !== (int)($this->comp_offsets[$fieldType] ?? 0)) {
+                        $conf['comparison'] = (int)($this->comp_offsets[$fieldType] ?? 0) << 5;
                     }
-                    $queryConfig[$key]['comparison'] = $this->verifyComparison($conf['comparison'], $conf['negate'] ? 1 : 0);
+                    $queryConfig[$key]['comparison'] = $this->verifyComparison($conf['comparison'] ?? '0', ($conf['negate'] ?? null) ? 1 : 0);
                     $queryConfig[$key]['inputValue'] = $this->cleanInputVal($queryConfig[$key]);
                     $queryConfig[$key]['inputValue1'] = $this->cleanInputVal($queryConfig[$key], '1');
             }
@@ -616,19 +615,19 @@ class QueryGenerator
             $fieldName = '';
             $subscript = $parent . '[' . $key . ']';
             $lineHTML = [];
-            $lineHTML[] = $this->mkOperatorSelect($this->name . $subscript, $conf['operator'], $c > 0, $conf['type'] !== 'FIELD_');
-            if (strpos($conf['type'], 'FIELD_') === 0) {
+            $lineHTML[] = $this->mkOperatorSelect($this->name . $subscript, ($conf['operator'] ?? ''), (bool)$c, ($conf['type'] ?? '') !== 'FIELD_');
+            if (str_starts_with(($conf['type'] ?? ''), 'FIELD_')) {
                 $fieldName = substr($conf['type'], 6);
                 $this->fieldName = $fieldName;
-                $fieldType = $this->fields[$fieldName]['type'];
-                if ($this->comp_offsets[$fieldType] != $conf['comparison'] >> 5) {
-                    $conf['comparison'] = $this->comp_offsets[$fieldType] << 5;
+                $fieldType = $this->fields[$fieldName]['type'] ?? '';
+                if ((int)($conf['comparison'] ?? 0) >> 5 !== (int)($this->comp_offsets[$fieldType] ?? 0)) {
+                    $conf['comparison'] = (int)($this->comp_offsets[$fieldType] ?? 0) << 5;
                 }
                 //nasty nasty...
                 //make sure queryConfig contains _actual_ comparevalue.
                 //mkCompSelect don't care, but getQuery does.
                 $queryConfig[$key]['comparison'] += isset($conf['negate']) - $conf['comparison'] % 2;
-            } elseif ($conf['type'] === 'newlevel') {
+            } elseif (($conf['type'] ?? '') === 'newlevel') {
                 $fieldType = $conf['type'];
             } else {
                 $fieldType = 'ignore';
@@ -645,7 +644,7 @@ class QueryGenerator
                     $codeArr[$arrCount]['sub'] = $this->getFormElements($subLevel + 1, $queryConfig[$key]['nl'], $subscript . '[nl]');
                     break;
                 case 'userdef':
-                    $lineHTML[] = $this->userDef($fieldPrefix, $conf, $fieldName, $fieldType);
+                    $lineHTML[] = '';
                     break;
                 case 'date':
                     $lineHTML[] = '<div class="form-inline">';
@@ -682,7 +681,7 @@ class QueryGenerator
                         if (is_array($conf['inputValue'])) {
                             $conf['inputValue'] = implode(',', $conf['inputValue']);
                         }
-                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]">';
+                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
                     } elseif ($conf['comparison'] === 64) {
                         if (is_array($conf['inputValue'])) {
                             $conf['inputValue'] = $conf['inputValue'][0];
@@ -708,10 +707,10 @@ class QueryGenerator
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
                     if ($conf['comparison'] === 37 || $conf['comparison'] === 36) {
                         // between:
-                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]">';
-                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $fieldPrefix . '[inputValue1]">';
+                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
+                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue1'] ?? '') . '" name="' . $fieldPrefix . '[inputValue1]">';
                     } else {
-                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]">';
+                        $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
                     }
                     $lineHTML[] = '</div>';
             }
@@ -756,9 +755,9 @@ class QueryGenerator
         $lineHTML = [];
         $lineHTML[] = $this->mkTypeSelect($fieldPrefix . '[type]', $fieldName);
         $lineHTML[] = '	<div class="input-group">';
-        $lineHTML[] = $this->mkCompSelect($fieldPrefix . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+        $lineHTML[] = $this->mkCompSelect($fieldPrefix . '[comparison]', $conf['comparison'], ($conf['negate'] ?? null) ? 1 : 0);
         $lineHTML[] = '	<div class="input-group-addon">';
-        $lineHTML[] = '		<input type="checkbox" class="checkbox t3js-submit-click"' . ($conf['negate'] ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
+        $lineHTML[] = '		<input type="checkbox" class="checkbox t3js-submit-click"' . (($conf['negate'] ?? null) ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
         $lineHTML[] = '	</div>';
         $lineHTML[] = '	</div>';
         return implode(LF, $lineHTML);
@@ -780,7 +779,7 @@ class QueryGenerator
         $languageService = $this->getLanguageService();
         if ($fieldSetup['type'] === 'multiple') {
             $optGroupOpen = false;
-            foreach ($fieldSetup['items'] as $val) {
+            foreach (($fieldSetup['items'] ?? []) as $val) {
                 if (strpos($val[0], 'LLL:') === 0) {
                     $value = $languageService->sL($val[0]);
                 } else {
@@ -804,7 +803,7 @@ class QueryGenerator
             }
         }
         if ($fieldSetup['type'] === 'binary') {
-            foreach ($fieldSetup['items'] as $key => $val) {
+            foreach (($fieldSetup['items'] ?? []) as $key => $val) {
                 if (strpos($val[0], 'LLL:') === 0) {
                     $value = $languageService->sL($val[0]);
                 } else {
@@ -821,23 +820,22 @@ class QueryGenerator
         if ($fieldSetup['type'] === 'relation') {
             $useTablePrefix = 0;
             $dontPrefixFirstTable = 0;
-            if ($fieldSetup['items']) {
-                foreach ($fieldSetup['items'] as $val) {
-                    if (strpos($val[0], 'LLL:') === 0) {
-                        $value = $languageService->sL($val[0]);
-                    } else {
-                        $value = $val[0];
-                    }
-                    $outputValue = (string)($val[1] ?? '');
-                    if ($outputValue && GeneralUtility::inList($conf['inputValue'], $outputValue)) {
-                        $out[] = '<option value="' . htmlspecialchars($outputValue) . '" selected>' . htmlspecialchars($value) . '</option>';
-                    } else {
-                        $out[] = '<option value="' . htmlspecialchars($outputValue) . '">' . htmlspecialchars($value) . '</option>';
-                    }
+            foreach (($fieldSetup['items'] ?? []) as $val) {
+                if (strpos($val[0], 'LLL:') === 0) {
+                    $value = $languageService->sL($val[0]);
+                } else {
+                    $value = $val[0];
+                }
+                $outputValue = (string)($val[1] ?? '');
+                if (GeneralUtility::inList($conf['inputValue'], $outputValue)) {
+                    $out[] = '<option value="' . htmlspecialchars($outputValue) . '" selected>' . htmlspecialchars($value) . '</option>';
+                } else {
+                    $out[] = '<option value="' . htmlspecialchars($outputValue) . '">' . htmlspecialchars($value) . '</option>';
                 }
             }
-            if (str_contains($fieldSetup['allowed'], ',')) {
-                $from_table_Arr = explode(',', $fieldSetup['allowed']);
+            $allowedFields = $fieldSetup['allowed'] ?? '';
+            if (str_contains($allowedFields, ',')) {
+                $from_table_Arr = explode(',', $allowedFields);
                 $useTablePrefix = 1;
                 if (!$fieldSetup['prepend_tname']) {
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
@@ -862,12 +860,12 @@ class QueryGenerator
                     }
                 }
             } else {
-                $from_table_Arr[0] = $fieldSetup['allowed'];
+                $from_table_Arr[0] = $allowedFields;
             }
-            if ($fieldSetup['prepend_tname']) {
+            if (!empty($fieldSetup['prepend_tname'])) {
                 $useTablePrefix = 1;
             }
-            if ($fieldSetup['foreign_table']) {
+            if (!empty($fieldSetup['foreign_table'])) {
                 $from_table_Arr[0] = $fieldSetup['foreign_table'];
             }
             $counter = 0;
@@ -883,9 +881,9 @@ class QueryGenerator
                 }
                 $counter = 1;
                 if (is_array($GLOBALS['TCA'][$from_table])) {
-                    $labelField = $GLOBALS['TCA'][$from_table]['ctrl']['label'];
-                    $altLabelField = $GLOBALS['TCA'][$from_table]['ctrl']['label_alt'];
-                    if ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items']) {
+                    $labelField = $GLOBALS['TCA'][$from_table]['ctrl']['label'] ?? '';
+                    $altLabelField = $GLOBALS['TCA'][$from_table]['ctrl']['label_alt'] ?? '';
+                    if ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items'] ?? false) {
                         foreach ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items'] as $labelArray) {
                             if (strpos($labelArray[0], 'LLL:') === 0) {
                                 $labelFieldSelect[$labelArray[1]] = $languageService->sL($labelArray[0]);
@@ -896,7 +894,7 @@ class QueryGenerator
                         $useSelectLabels = true;
                     }
                     $altLabelFieldSelect = [];
-                    if ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items']) {
+                    if ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'] ?? false) {
                         foreach ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'] as $altLabelArray) {
                             if (strpos($altLabelArray[0], 'LLL:') === 0) {
                                 $altLabelFieldSelect[$altLabelArray[1]] = $languageService->sL($altLabelArray[0]);
@@ -907,12 +905,11 @@ class QueryGenerator
                         $useAltSelectLabels = true;
                     }
 
-                    if (!$this->tableArray[$from_table]) {
+                    if (!($this->tableArray[$from_table] ?? false)) {
                         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($from_table);
-                        if (isset($this->settings['show_deleted']) && $this->settings['show_deleted']) {
-                            $queryBuilder->getRestrictions()->removeAll();
-                        } else {
-                            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                        $queryBuilder->getRestrictions()->removeAll();
+                        if (empty($this->settings['show_deleted'])) {
+                            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                         }
                         $selectFields = ['uid', $labelField];
                         if ($altLabelField) {
@@ -963,7 +960,7 @@ class QueryGenerator
                         }
                     }
 
-                    foreach ($this->tableArray[$from_table] as $key => $val) {
+                    foreach (($this->tableArray[$from_table] ?? []) as $val) {
                         if ($useSelectLabels) {
                             $outArray[$tablePrefix . $val['uid']] = htmlspecialchars($labelFieldSelect[$val[$labelField]]);
                         } elseif ($val[$labelField]) {
@@ -1011,7 +1008,7 @@ class QueryGenerator
                 $out[] = htmlspecialchars($v['query']);
                 $out[] = '</pre>';
             }
-            if (is_array($v['sub'])) {
+            if (is_array($v['sub'] ?? false)) {
                 $out[] = '<div>';
                 $out[] = $this->printCodeArray($v['sub'], $recursionLevel + 1);
                 $out[] = '</div>';
@@ -1061,8 +1058,8 @@ class QueryGenerator
         $out[] = '<select class="form-select t3js-submit-change" name="' . htmlspecialchars($name) . '">';
         $out[] = '<option value=""></option>';
         foreach ($this->fields as $key => $value) {
-            if (!$value['exclude'] || $this->getBackendUserAuthentication()->check('non_exclude_fields', $this->table . ':' . $key)) {
-                $label = $this->fields[$key]['label'];
+            if (!($value['exclude'] ?? false) || $this->getBackendUserAuthentication()->check('non_exclude_fields', $this->table . ':' . $key)) {
+                $label = $this->fields[$key]['label'] ?? '[' . $key . ']';
                 $out[] = '<option value="' . htmlspecialchars($prepend . $key) . '"' . ($key === $fieldName ? ' selected' : '') . '>' . htmlspecialchars($label) . '</option>';
             }
         }
@@ -1175,7 +1172,7 @@ class QueryGenerator
         $out = [];
         $out[] = '<select class="form-select t3js-submit-change" name="' . $name . '">';
         for ($i = 32 * $compOffSet + $neg; $i < 32 * ($compOffSet + 1); $i += 2) {
-            if ($this->lang['comparison'][$i . '_']) {
+            if ($this->lang['comparison'][$i . '_'] ?? false) {
                 $out[] = '<option value="' . $i . '"' . ($i >> 1 === $comparison >> 1 ? ' selected' : '') . '>' . htmlspecialchars($this->lang['comparison'][$i . '_']) . '</option>';
             }
         }
@@ -1279,9 +1276,9 @@ class QueryGenerator
      */
     protected function convertIso8601DatetimeStringToUnixTimestamp(array $conf): array
     {
-        if ($this->isDateOfIso8601Format($conf['inputValue'])) {
+        if ($this->isDateOfIso8601Format($conf['inputValue'] ?? '')) {
             $conf['inputValue'] = strtotime($conf['inputValue']);
-            if ($this->isDateOfIso8601Format($conf['inputValue1'])) {
+            if ($this->isDateOfIso8601Format($conf['inputValue1'] ?? '')) {
                 $conf['inputValue1'] = strtotime($conf['inputValue1']);
             }
         }
@@ -1314,28 +1311,29 @@ class QueryGenerator
      */
     public function getQuerySingle($conf, $first)
     {
+        $comparison = (int)($conf['comparison'] ?? 0);
         $qs = '';
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
         $prefix = $this->enablePrefix ? $this->table . '.' : '';
         if (!$first) {
             // Is it OK to insert the AND operator if none is set?
-            $operator = strtoupper(trim($conf['operator']));
+            $operator = strtoupper(trim($conf['operator'] ?? ''));
             if (!in_array($operator, ['AND', 'OR'], true)) {
                 $operator = 'AND';
             }
             $qs .= $operator . ' ';
         }
-        $qsTmp = str_replace('#FIELD#', $prefix . trim(substr($conf['type'], 6)), $this->compSQL[$conf['comparison']]);
+        $qsTmp = str_replace('#FIELD#', $prefix . trim(substr($conf['type'], 6)), $this->compSQL[$comparison] ?? '');
         $inputVal = $this->cleanInputVal($conf);
-        if ($conf['comparison'] === 68 || $conf['comparison'] === 69) {
-            $inputVal = explode(',', $inputVal);
+        if ($comparison === 68 || $comparison === 69) {
+            $inputVal = explode(',', (string)$inputVal);
             foreach ($inputVal as $key => $fileName) {
                 $inputVal[$key] = $queryBuilder->quote($fileName);
             }
             $inputVal = implode(',', $inputVal);
             $qsTmp = str_replace('#VALUE#', $inputVal, $qsTmp);
-        } elseif ($conf['comparison'] === 162 || $conf['comparison'] === 163) {
-            $inputValArray = explode(',', $inputVal);
+        } elseif ($comparison === 162 || $comparison === 163) {
+            $inputValArray = explode(',', (string)$inputVal);
             $inputVal = 0;
             foreach ($inputValArray as $fileName) {
                 $inputVal += (int)$fileName;
@@ -1345,12 +1343,12 @@ class QueryGenerator
             if (is_array($inputVal)) {
                 $inputVal = $inputVal[0];
             }
-            $qsTmp = str_replace('#VALUE#', trim($queryBuilder->quote($inputVal), '\''), $qsTmp);
+            $qsTmp = str_replace('#VALUE#', trim($queryBuilder->quote((string)$inputVal), '\''), $qsTmp);
         }
-        if ($conf['comparison'] === 37 || $conf['comparison'] === 36 || $conf['comparison'] === 66 || $conf['comparison'] === 67 || $conf['comparison'] === 100 || $conf['comparison'] === 101) {
+        if ($comparison === 37 || $comparison === 36 || $comparison === 66 || $comparison === 67 || $comparison === 100 || $comparison === 101) {
             // between:
             $inputVal = $this->cleanInputVal($conf, '1');
-            $qsTmp = str_replace('#VALUE1#', trim($queryBuilder->quote($inputVal), '\''), $qsTmp);
+            $qsTmp = str_replace('#VALUE1#', trim($queryBuilder->quote((string)$inputVal), '\''), $qsTmp);
         }
         $qs .= trim((string)$qsTmp);
         return $qs;
@@ -1365,28 +1363,29 @@ class QueryGenerator
      */
     public function cleanInputVal($conf, $suffix = '')
     {
-        if ($conf['comparison'] >> 5 === 0 || ($conf['comparison'] === 32 || $conf['comparison'] === 33 || $conf['comparison'] === 64 || $conf['comparison'] === 65 || $conf['comparison'] === 66 || $conf['comparison'] === 67 || $conf['comparison'] === 96 || $conf['comparison'] === 97)) {
-            $inputVal = $conf['inputValue' . $suffix];
-        } elseif ($conf['comparison'] === 39 || $conf['comparison'] === 38) {
+        $comparison = (int)($conf['comparison'] ?? 0);
+        if ($comparison >> 5 === 0 || ($comparison === 32 || $comparison === 33 || $comparison === 64 || $comparison === 65 || $comparison === 66 || $comparison === 67 || $comparison === 96 || $comparison === 97)) {
+            $inputVal = $conf['inputValue' . $suffix] ?? null;
+        } elseif ($comparison === 39 || $comparison === 38) {
             // in list:
-            $inputVal = implode(',', GeneralUtility::intExplode(',', $conf['inputValue' . $suffix]));
-        } elseif ($conf['comparison'] === 68 || $conf['comparison'] === 69 || $conf['comparison'] === 162 || $conf['comparison'] === 163) {
+            $inputVal = implode(',', GeneralUtility::intExplode(',', ($conf['inputValue' . $suffix] ?? '')));
+        } elseif ($comparison === 68 || $comparison === 69 || $comparison === 162 || $comparison === 163) {
             // in list:
-            if (is_array($conf['inputValue' . $suffix])) {
+            if (is_array($conf['inputValue' . $suffix] ?? false)) {
                 $inputVal = implode(',', $conf['inputValue' . $suffix]);
-            } elseif ($conf['inputValue' . $suffix]) {
+            } elseif ($conf['inputValue' . $suffix] ?? false) {
                 $inputVal = $conf['inputValue' . $suffix];
             } else {
                 $inputVal = 0;
             }
-        } elseif (!is_array($conf['inputValue' . $suffix]) && strtotime($conf['inputValue' . $suffix])) {
+        } elseif (!is_array($conf['inputValue' . $suffix] ?? null) && strtotime($conf['inputValue' . $suffix] ?? '')) {
             $inputVal = $conf['inputValue' . $suffix];
-        } elseif (!is_array($conf['inputValue' . $suffix]) && MathUtility::canBeInterpretedAsInteger($conf['inputValue' . $suffix])) {
+        } elseif (!is_array($conf['inputValue' . $suffix] ?? null) && MathUtility::canBeInterpretedAsInteger($conf['inputValue' . $suffix] ?? null)) {
             $inputVal = (int)$conf['inputValue' . $suffix];
         } else {
             // TODO: Six eyes looked at this code and nobody understood completely what is going on here and why we
             // fallback to float casting, the whole class smells like it needs a refactoring.
-            $inputVal = (float)$conf['inputValue' . $suffix];
+            $inputVal = (float)($conf['inputValue' . $suffix] ?? 0.0);
         }
         return $inputVal;
     }
@@ -1435,7 +1434,7 @@ class QueryGenerator
         $userTsConfig = $this->getBackendUserAuthentication()->getTSConfig();
 
         // Make output
-        if (in_array('table', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableSelectATable']) {
+        if (in_array('table', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableSelectATable'] ?? false)) {
             $out[] = '<div class="form-group">';
             $out[] = '	<label for="SET[queryTable]">Select a table:</label>';
             $out[] =    $this->mkTableSelect('SET[queryTable]', $this->table);
@@ -1443,25 +1442,25 @@ class QueryGenerator
         }
         if ($this->table) {
             // Init fields:
-            $this->setAndCleanUpExternalLists('queryFields', $modSettings['queryFields'], 'uid,' . $this->getLabelCol());
-            $this->setAndCleanUpExternalLists('queryGroup', $modSettings['queryGroup']);
-            $this->setAndCleanUpExternalLists('queryOrder', $modSettings['queryOrder'] . ',' . $modSettings['queryOrder2']);
+            $this->setAndCleanUpExternalLists('queryFields', $modSettings['queryFields'] ?? '', 'uid,' . $this->getLabelCol());
+            $this->setAndCleanUpExternalLists('queryGroup', $modSettings['queryGroup'] ?? '');
+            $this->setAndCleanUpExternalLists('queryOrder', ($modSettings['queryOrder'] ?? '') . ',' . ($modSettings['queryOrder2'] ?? ''));
             // Limit:
-            $this->extFieldLists['queryLimit'] = $modSettings['queryLimit'];
+            $this->extFieldLists['queryLimit'] = $modSettings['queryLimit'] ?? '';
             if (!$this->extFieldLists['queryLimit']) {
                 $this->extFieldLists['queryLimit'] = 100;
             }
             $parts = GeneralUtility::intExplode(',', $this->extFieldLists['queryLimit']);
             $limitBegin = 0;
             $limitLength = (int)($this->extFieldLists['queryLimit'] ?? 0);
-            if ($parts[1]) {
+            if ($parts[1] ?? false) {
                 $limitBegin = (int)$parts[0];
                 $limitLength = (int)$parts[1];
             }
             $this->extFieldLists['queryLimit'] = implode(',', array_slice($parts, 0, 2));
             // Insert Descending parts
-            if ($this->extFieldLists['queryOrder']) {
-                $descParts = explode(',', $modSettings['queryOrderDesc'] . ',' . $modSettings['queryOrder2Desc']);
+            if ($this->extFieldLists['queryOrder'] ?? false) {
+                $descParts = explode(',', ($modSettings['queryOrderDesc'] ?? '') . ',' . ($modSettings['queryOrder2Desc'] ?? ''));
                 $orderParts = explode(',', $this->extFieldLists['queryOrder']);
                 $reList = [];
                 foreach ($orderParts as $kk => $vv) {
@@ -1470,30 +1469,30 @@ class QueryGenerator
                 $this->extFieldLists['queryOrder_SQL'] = implode(',', $reList);
             }
             // Query Generator:
-            $this->procesData($modSettings['queryConfig'] ? unserialize($modSettings['queryConfig'], ['allowed_classes' => false]) : []);
+            $this->procesData(($modSettings['queryConfig'] ?? false) ? unserialize($modSettings['queryConfig'] ?? '', ['allowed_classes' => false]) : []);
             $this->queryConfig = $this->cleanUpQueryConfig($this->queryConfig);
-            $this->enableQueryParts = (bool)$modSettings['search_query_smallparts'];
+            $this->enableQueryParts = (bool)($modSettings['search_query_smallparts'] ?? false);
             $codeArr = $this->getFormElements();
             $queryCode = $this->printCodeArray($codeArr);
-            if (in_array('fields', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableSelectFields']) {
+            if (in_array('fields', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableSelectFields'] ?? false)) {
                 $out[] = '<div class="form-group form-group-with-button-addon">';
                 $out[] = '	<label for="SET[queryFields]">Select fields:</label>';
                 $out[] =    $this->mkFieldToInputSelect('SET[queryFields]', $this->extFieldLists['queryFields']);
                 $out[] = '</div>';
             }
-            if (in_array('query', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableMakeQuery']) {
+            if (in_array('query', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableMakeQuery'] ?? false)) {
                 $out[] = '<div class="form-group">';
                 $out[] = '	<label>Make Query:</label>';
                 $out[] =    $queryCode;
                 $out[] = '</div>';
             }
-            if (in_array('group', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableGroupBy']) {
+            if (in_array('group', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableGroupBy'] ?? false)) {
                 $out[] = '<div class="form-group form-inline">';
                 $out[] = '	<label for="SET[queryGroup]">Group By:</label>';
                 $out[] =     $this->mkTypeSelect('SET[queryGroup]', $this->extFieldLists['queryGroup'], '');
                 $out[] = '</div>';
             }
-            if (in_array('order', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableOrderBy']) {
+            if (in_array('order', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableOrderBy'] ?? false)) {
                 $orderByArr = explode(',', $this->extFieldLists['queryOrder']);
                 $orderBy = [];
                 $orderBy[] = $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '');
@@ -1507,7 +1506,7 @@ class QueryGenerator
                 if ($orderByArr[0]) {
                     $orderBy[] = $this->mkTypeSelect('SET[queryOrder2]', $orderByArr[1], '');
                     $orderBy[] = '<div class="form-check">';
-                    $orderBy[] = BackendUtility::getFuncCheck(0, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'], '', '', 'id="checkQueryOrder2Desc"');
+                    $orderBy[] = BackendUtility::getFuncCheck(0, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'] ?? false, '', '', 'id="checkQueryOrder2Desc"');
                     $orderBy[] = '	<label class="form-check-label" for="checkQueryOrder2Desc">';
                     $orderBy[] =        'Descending';
                     $orderBy[] = '	</label>';
@@ -1518,7 +1517,7 @@ class QueryGenerator
                 $out[] =     implode(LF, $orderBy);
                 $out[] = '</div>';
             }
-            if (in_array('limit', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableLimit']) {
+            if (in_array('limit', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableLimit'] ?? false)) {
                 $limit = [];
                 $limit[] = '<div class="input-group">';
                 $limit[] = '	<span class="input-group-btn">';
@@ -1584,8 +1583,8 @@ class QueryGenerator
         if ($id < 0) {
             $id = abs($id);
         }
-        if ($begin === 0) {
-            $theList = $id;
+        if ($begin == 0) {
+            $theList = (string)$id;
         } else {
             $theList = '';
         }
@@ -1629,30 +1628,30 @@ class QueryGenerator
     {
         $backendUserAuthentication = $this->getBackendUserAuthentication();
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
-        if (isset($this->settings['show_deleted']) && $this->settings['show_deleted']) {
-            $queryBuilder->getRestrictions()->removeAll();
-        } else {
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder->getRestrictions()->removeAll();
+        if (empty($this->settings['show_deleted'])) {
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         }
+        $deleteField = $GLOBALS['TCA'][$this->table]['ctrl']['delete'] ?? '';
         $fieldList = GeneralUtility::trimExplode(
             ',',
             $this->extFieldLists['queryFields']
             . ',pid'
-            . ($GLOBALS['TCA'][$this->table]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$this->table]['ctrl']['delete'] : '')
+            . ($deleteField ? ',' . $deleteField : '')
         );
         $queryBuilder->select(...$fieldList)
             ->from($this->table);
 
-        if ($this->extFieldLists['queryGroup']) {
+        if ($this->extFieldLists['queryGroup'] ?? false) {
             $queryBuilder->groupBy(...QueryHelper::parseGroupBy($this->extFieldLists['queryGroup']));
         }
-        if ($this->extFieldLists['queryOrder']) {
+        if ($this->extFieldLists['queryOrder'] ?? false) {
             foreach (QueryHelper::parseOrderBy($this->extFieldLists['queryOrder_SQL']) as $orderPair) {
                 [$fieldName, $order] = $orderPair;
                 $queryBuilder->addOrderBy($fieldName, $order);
             }
         }
-        if ($this->extFieldLists['queryLimit']) {
+        if ($this->extFieldLists['queryLimit'] ?? false) {
             // Explode queryLimit to fetch the limit and a possible offset
             $parts = GeneralUtility::intExplode(',', $this->extFieldLists['queryLimit']);
             if ($parts[1] ?? null) {
