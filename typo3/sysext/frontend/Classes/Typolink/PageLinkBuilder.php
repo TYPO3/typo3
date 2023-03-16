@@ -379,7 +379,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         if (isset($configuration['page']) && $configuration['page'] instanceof Page) {
             $page = $configuration['page']->getTranslationSource()?->toArray() ?? $configuration['page']->toArray();
-        } else {
+        }
+        // A page with doktype external and ?showModal=1 in url field leads to recursion in HMENU/Sitemap.
+        // In the second call of this function $linkDetails['pageuid'] is different (=current page) to uid of Page
+        // object and it need to be fetched again.
+        if (($page['uid'] ?? false) !== $linkDetails['pageuid']) {
             $page = $pageRepository->getPage($linkDetails['pageuid'], $disableGroupAccessCheck);
         }
 

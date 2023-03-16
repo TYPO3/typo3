@@ -711,6 +711,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                             ],
                         ],
                     ['title' => 'What is a blog on Wikipedia', 'link' => 'https://en.wikipedia.org/wiki/Blog', 'target' => 'a_new_tab'],
+                    ['title' => 'Link to a query parameter', 'link' => '/authors?showOption=1&cHash=3ba1e68f3a2f76b865952c40b7c82c8b', 'target' => ''],
                     // target is empty because no fluid_styled_content typoscript with config.extTarget is active
                     ['title' => 'What is Wikipedia in a separate window', 'link' => 'https://en.wikipedia.org/', 'target' => ''],
                     ['title' => 'ACME Inc', 'link' => 'https://acme.us/welcome', 'target' => ''],
