@@ -179,10 +179,15 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
             ],
         ];
         $this->beUserMock->method('isAdmin')->willReturn(false);
-        $this->beUserMock->method('check')->withConsecutive(
-            ['tables_modify', $input['tableName']],
-            ['pagetypes_select', $input['databaseRow']['doktype']]
-        )->willReturnOnConsecutiveCalls([true, false]);
+        $series = [
+            [['tables_modify', $input['tableName']], true],
+            [['pagetypes_select', $input['databaseRow']['doktype']], false],
+        ];
+        $this->beUserMock->method('check')->willReturnCallback(function (string|int ...$args) use (&$series): bool {
+            [$expectedArgs, $return] = array_shift($series);
+            self::assertSame($expectedArgs, $args);
+            return $return;
+        });
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
         $this->beUserMock->method('calcPerms')->with($input['databaseRow'])->willReturn(Permission::ALL);
 
@@ -216,10 +221,14 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
             ],
         ];
         $this->beUserMock->method('isAdmin')->willReturn(false);
-        $this->beUserMock->method('check')->withConsecutive(
+        $series = [
             ['tables_modify', $input['tableName']],
-            ['pagetypes_select', $input['databaseRow']['doktype']]
-        )->willReturn(true);
+            ['pagetypes_select', $input['databaseRow']['doktype']],
+        ];
+        $this->beUserMock->method('check')->willReturnCallback(function (string|int ...$args) use (&$series): bool {
+            self::assertSame(array_shift($series), $args);
+            return true;
+        });
         $this->beUserMock->method('calcPerms')->with($input['databaseRow'])->willReturn(Permission::PAGE_EDIT);
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
 

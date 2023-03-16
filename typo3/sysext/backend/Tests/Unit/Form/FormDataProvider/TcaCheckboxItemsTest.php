@@ -717,7 +717,14 @@ class TcaCheckboxItemsTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->expects(self::atLeastOnce())->method('sL')->withConsecutive(['aLabel'], ['labelOverride'])->willReturnArgument(0);
+        $series = [
+            ['aLabel'],
+            ['labelOverride'],
+        ];
+        $languageService->method('sL')->willReturnCallback(function (string ...$args) use (&$series): string {
+            self::assertSame(array_shift($series), $args);
+            return $args[0];
+        });
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'labelOverride';

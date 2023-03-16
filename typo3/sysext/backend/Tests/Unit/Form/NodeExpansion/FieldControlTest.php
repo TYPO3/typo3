@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\NodeExpansion;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldControl;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Backend\Form\NodeInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -90,8 +91,15 @@ class FieldControlTest extends UnitTestCase
         $anotherControlNodeFactoryInput['renderData']['fieldControlOptions'] = [];
         $anotherControlNodeFactoryInput['renderType'] = 'anotherControl';
 
-        $nodeFactoryMock->method('create')->withConsecutive([$aControlNodeFactoryInput], [$anotherControlNodeFactoryInput])
-            ->willReturnOnConsecutiveCalls($aControlMock, $anotherControlMock);
+        $series = [
+            [[$aControlNodeFactoryInput], $aControlMock],
+            [[$anotherControlNodeFactoryInput], $anotherControlMock],
+        ];
+        $nodeFactoryMock->method('create')->willReturnCallback(function (array ...$args) use (&$series): NodeInterface {
+            [$expectedArgs, $return] = array_shift($series);
+            self::assertSame($expectedArgs, $args);
+            return $return;
+        });
 
         $expected = [
             'additionalJavaScriptPost' => [

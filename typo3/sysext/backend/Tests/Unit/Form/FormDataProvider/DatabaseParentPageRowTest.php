@@ -48,10 +48,15 @@ class DatabaseParentPageRowTest extends UnitTestCase
             'pid' => 321,
         ];
 
-        $this->subject->expects(self::exactly(2))
-            ->method('getDatabaseRow')
-            ->withConsecutive([$input['tableName'], 10], ['pages', 123])
-            ->willReturnOnConsecutiveCalls(['pid' => 123], $parentPageRow);
+        $series = [
+            [[$input['tableName'], 10], ['pid' => 123]],
+            [['pages', 123], $parentPageRow],
+        ];
+        $this->subject->expects(self::exactly(2))->method('getDatabaseRow')->willReturnCallback(function (string|int ...$args) use (&$series): array {
+            [$expectedArgs, $return] = array_shift($series);
+            self::assertSame($expectedArgs, $args);
+            return $return;
+        });
 
         $result = $this->subject->addData($input);
 
@@ -76,10 +81,16 @@ class DatabaseParentPageRowTest extends UnitTestCase
             'uid' => 123,
             'pid' => 321,
         ];
-        $this->subject->expects(self::exactly(2))
-            ->method('getDatabaseRow')
-            ->withConsecutive([$input['tableName'], 10], ['pages', 321])
-            ->willReturnOnConsecutiveCalls($neighborRow, $parentPageRow);
+
+        $series = [
+            [[$input['tableName'], 10], $neighborRow],
+            [['pages', 321], $parentPageRow],
+        ];
+        $this->subject->expects(self::exactly(2))->method('getDatabaseRow')->willReturnCallback(function (string|int ...$args) use (&$series): array {
+            [$expectedArgs, $return] = array_shift($series);
+            self::assertSame($expectedArgs, $args);
+            return $return;
+        });
 
         $result = $this->subject->addData($input);
 

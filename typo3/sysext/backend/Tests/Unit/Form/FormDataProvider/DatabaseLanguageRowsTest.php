@@ -237,10 +237,17 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             ->with('tt_content', 23, 3)->willReturn($translationResult);
 
         // The second call is the real check: The "additional overlay" should be fetched
+        $series = [
+            [['tt_content', 23], $defaultLanguageRow],
+            [['tt_content', 43], $recordWsolResult],
+        ];
         $this->subject->expects(self::exactly(2))
             ->method('getRecordWorkspaceOverlay')
-            ->withConsecutive(['tt_content', 23], ['tt_content', 43])
-            ->willReturnOnConsecutiveCalls($defaultLanguageRow, $recordWsolResult);
+            ->willReturnCallback(function (string|int ...$args) use (&$series): array {
+                [$expectedArgs, $return] = array_shift($series);
+                self::assertSame($expectedArgs, $args);
+                return $return;
+            });
 
         $expected = $input;
         $expected['defaultLanguageRow'] = $defaultLanguageRow;
@@ -328,10 +335,17 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             ->willReturn($translationResult);
 
         // The second call is the real check: The "additional overlay" should be fetched
+        $series = [
+            [['tt_content', 23], $defaultLanguageRow],
+            [['tt_content', 43], $recordWsolResult],
+        ];
         $this->subject->expects(self::exactly(2))
             ->method('getRecordWorkspaceOverlay')
-            ->withConsecutive(['tt_content', 23], ['tt_content', 43])
-            ->willReturnOnConsecutiveCalls($defaultLanguageRow, $recordWsolResult);
+            ->willReturnCallback(function (string|int ...$args) use (&$series): array {
+                [$expectedArgs, $return] = array_shift($series);
+                self::assertSame($expectedArgs, $args);
+                return $return;
+            });
 
         $expected = $input;
         $expected['defaultLanguageRow'] = $defaultLanguageRow;
@@ -403,10 +417,18 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             'text' => 'default language text',
             'sys_language_uid' => 0,
         ];
+
+        $series = [
+            [['tt_content', 23], $defaultLanguageRow],
+            [['tt_content', 24], $sourceLanguageRow],
+        ];
         $this->subject->expects(self::exactly(2))
             ->method('getRecordWorkspaceOverlay')
-            ->withConsecutive(['tt_content', 23], ['tt_content', 24])
-            ->willReturn($defaultLanguageRow, $sourceLanguageRow);
+            ->willReturnCallback(function (string|int ...$args) use (&$series): array {
+                [$expectedArgs, $return] = array_shift($series);
+                self::assertSame($expectedArgs, $args);
+                return $return;
+            });
 
         $expected = $input;
         $expected['defaultLanguageRow'] = $defaultLanguageRow;

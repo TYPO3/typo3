@@ -70,7 +70,14 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $backendUserAuthentication;
 
         // Expect translation call to the label reference and empty description
-        $languageService->method('sL')->withConsecutive([$labelReference], [''])->willReturnArgument(0);
+        $series = [
+            [$labelReference],
+            [''],
+        ];
+        $languageService->method('sL')->willReturnCallback(function (string ...$args) use (&$series): string {
+            self::assertSame(array_shift($series), $args);
+            return $args[0];
+        });
 
         $expectedChildDataArray = $input;
         $expectedChildDataArray['renderType'] = 'singleFieldContainer';
@@ -129,7 +136,14 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $backendUserAuthentication;
 
         // Expect translation call to the label and description references
-        $languageService->method('sL')->withConsecutive([$labelReference], [$descriptionReference])->willReturnArgument(0);
+        $series = [
+            [$labelReference],
+            [$descriptionReference],
+        ];
+        $languageService->method('sL')->willReturnCallback(function (string ...$args) use (&$series): string {
+            self::assertSame(array_shift($series), $args);
+            return $args[0];
+        });
 
         $expectedChildDataArray = $input;
         $expectedChildDataArray['renderType'] = 'singleFieldContainer';
@@ -190,10 +204,14 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $backendUserAuthentication;
 
         // Expect translation call to the label and description references
-        $languageService->method('sL')->withConsecutive(
+        $series = [
             [$labelReferenceFieldArray],
-            [$descriptionReferencePaletteArray]
-        )->willReturnArgument(0);
+            [$descriptionReferencePaletteArray],
+        ];
+        $languageService->method('sL')->willReturnCallback(function (string ...$args) use (&$series): string {
+            self::assertSame(array_shift($series), $args);
+            return $args[0];
+        });
 
         $expectedChildDataArray = $input;
         $expectedChildDataArray['renderType'] = 'singleFieldContainer';

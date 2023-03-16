@@ -122,7 +122,7 @@ class FormDataCompilerTest extends UnitTestCase
      */
     public function compileReturnsResultArrayWithAdditionalDataFormFormDataGroup(): void
     {
-        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnCallback(static function ($arguments) {
+        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnCallback(static function (array $arguments): array {
             $result = $arguments;
             $result['databaseRow'] = 'newData';
             return $result;
@@ -160,7 +160,7 @@ class FormDataCompilerTest extends UnitTestCase
      */
     public function compileThrowsExceptionIfFormDataGroupRemovedKeysFromResultArray(): void
     {
-        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnCallback(static function ($arguments) {
+        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnCallback(static function (array $arguments): array {
             $result = $arguments;
             unset($result['tableName']);
             return $result;
@@ -175,7 +175,7 @@ class FormDataCompilerTest extends UnitTestCase
      */
     public function compileThrowsExceptionIfFormDataGroupAddedKeysToResultArray(): void
     {
-        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnCallback(static function ($arguments) {
+        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnCallback(static function (array $arguments): array {
             $result = $arguments;
             $result['newKey'] = 'newData';
             return $result;
