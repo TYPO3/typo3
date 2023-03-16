@@ -82,11 +82,11 @@ final class IncludeTreeAstBuilderVisitor implements IncludeTreeVisitorInterface
      */
     public function visit(IncludeInterface $include, int $currentDepth): void
     {
-        $tokenStream = $include->getLineStream();
-        if ($tokenStream && !$include->isSplit()) {
+        $lineStream = $include->getLineStream();
+        if ($lineStream && !$include->isSplit()) {
             // A "split" include means that the entire TypoScript is split into child includes. The
             // TokenStream of the split include itself must not be parsed, so it's excluded here.
-            $this->ast = $this->astBuilder->build($tokenStream, $this->ast, $this->flatConstants);
+            $this->ast = $this->astBuilder->build($lineStream, $this->ast, $this->flatConstants);
         }
     }
 }
