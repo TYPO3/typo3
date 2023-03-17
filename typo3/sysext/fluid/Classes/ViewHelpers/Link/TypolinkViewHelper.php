@@ -178,7 +178,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
         $extraAttributes = [];
         $additionalAttributes = $arguments['additionalAttributes'] ?? [];
         foreach ($additionalAttributes as $attributeName => $attributeValue) {
-            $extraAttributes[] = $attributeName . '="' . htmlspecialchars($attributeValue) . '"';
+            $extraAttributes[] = $attributeName . '="' . htmlspecialchars((string)$attributeValue) . '"';
         }
         return implode(' ', $extraAttributes);
     }
