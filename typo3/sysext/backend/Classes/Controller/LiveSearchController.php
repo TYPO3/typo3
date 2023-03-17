@@ -17,15 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
-use TYPO3\CMS\Backend\Search\Event\ModifyResultItemInLiveSearchEvent;
-use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\DemandPropertyName;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\MutableSearchDemand;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\SearchDemand;
-use TYPO3\CMS\Backend\Search\LiveSearch\SearchProviderRegistry;
+use TYPO3\CMS\Backend\Search\LiveSearch\SearchRepository;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Response;
@@ -37,12 +34,9 @@ use TYPO3\CMS\Core\Http\Response;
 #[Controller]
 class LiveSearchController
 {
-    private const LIMIT = 50;
-
     public function __construct(
-        protected readonly SearchProviderRegistry $searchProviderRegistry,
         protected readonly BackendViewFactory $backendViewFactory,
-        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly SearchRepository $searchService,
     ) {
     }
 
@@ -56,32 +50,8 @@ class LiveSearchController
             return new Response('', 400, [], 'Argument "query" is missing or empty.');
         }
 
-        $searchResults = [];
-        $remainingItems = self::LIMIT;
-
-        foreach ($this->searchProviderRegistry->getProviders() as $provider) {
-            if ($remainingItems < 1) {
-                break;
-            }
-
-            if ($mutableSearchDemand->getSearchProviders() !== [] && !in_array(get_class($provider), $mutableSearchDemand->getSearchProviders(), true)) {
-                continue;
-            }
-
-            $mutableSearchDemand->setProperty(DemandPropertyName::limit, $remainingItems);
-            $providerResult = $provider->find($mutableSearchDemand->freeze());
-            foreach ($providerResult as $key => $resultItem) {
-                $modifyRecordEvent = $this->eventDispatcher->dispatch(new ModifyResultItemInLiveSearchEvent($resultItem));
-                $providerResult[$key] = $modifyRecordEvent->getResultItem();
-            }
-            $remainingItems -= count($providerResult);
-
-            $searchResults[] = $providerResult;
-        }
-
-        $flattenedSearchResults = array_merge([], ...$searchResults);
-
-        return new JsonResponse($flattenedSearchResults);
+        $searchResults = $this->searchService->find($mutableSearchDemand);
+        return new JsonResponse($searchResults);
     }
 
     public function formAction(ServerRequestInterface $request): ResponseInterface
@@ -94,13 +64,7 @@ class LiveSearchController
         $randomHintKey = array_rand($hints);
 
         $searchDemand = SearchDemand::fromRequest($request);
-        $searchProviders = [];
-        foreach ($this->searchProviderRegistry->getProviders() as $searchProviderClassName => $searchProvider) {
-            $searchProviders[$searchProviderClassName] = [
-                'instance' => $searchProvider,
-                'isActive' => in_array($searchProviderClassName, $searchDemand->getSearchProviders(), true),
-            ];
-        }
+        $searchProviders = $this->searchService->getSearchProviderState($searchDemand);
 
         $activeOptions = 0;
         $activeOptions += count(array_filter($searchProviders, fn (array $searchProviderOption) => $searchProviderOption['isActive']));
