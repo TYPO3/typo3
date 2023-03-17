@@ -146,7 +146,7 @@ class GenericMetaTagManagerTest extends UnitTestCase
 
         self::assertEquals([['content' => 'Description 1', 'subProperties' => []]], $manager->getProperty('description', 'property'));
 
-        $manager->removeProperty('description', 'property');
+        $manager->removeProperty('Description', 'Property');
         self::assertEquals([], $manager->getProperty('description', 'property'));
         self::assertEquals(
             [

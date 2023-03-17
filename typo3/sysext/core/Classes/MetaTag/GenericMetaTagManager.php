@@ -143,6 +143,9 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
      */
     public function removeProperty(string $property, string $type = '')
     {
+        $property = strtolower($property);
+        $type = strtolower($type);
+
         if (!empty($type)) {
             unset($this->properties[$property][$type]);
         } else {
