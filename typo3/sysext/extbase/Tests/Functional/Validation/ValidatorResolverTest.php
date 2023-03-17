@@ -62,11 +62,7 @@ class ValidatorResolverTest extends FunctionalTestCase
             [$this->get(ReflectionService::class)]
         );
 
-        $subject->_call(
-            'buildBaseValidatorConjunction',
-            Model::class,
-            Model::class
-        );
+        $subject->getBaseValidatorConjunction(Model::class);
 
         /** @var array $baseValidatorConjunctions */
         $baseValidatorConjunctions = $subject->_get('baseValidatorConjunctions');

@@ -24,6 +24,12 @@ use TYPO3\CMS\Extbase\Error\Result;
  */
 final class ConjunctionValidator extends AbstractCompositeValidator
 {
+    public function __construct()
+    {
+        $this->validators = new \SplObjectStorage();
+        $this->validatedInstancesContainer = new \SplObjectStorage();
+    }
+
     /**
      * Checks if the given value is valid according to the validators of the conjunction.
      * Every validator has to be valid, to make the whole conjunction valid.
