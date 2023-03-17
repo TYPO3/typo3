@@ -66,7 +66,7 @@
     "stylefmt": "^6.0.3",
     "stylelint": "^13.12.0",
     "terser": "^5.3.2",
-    "typescript": "~4.9.0"
+    "typescript": "~5.0.0"
   },
   "scripts": {
     "build-css": "./node_modules/.bin/grunt css",
