@@ -1057,7 +1057,14 @@ export class SvgTree extends LitElement {
    * @param {number} nodeHeight
    */
   protected getNodeActionTransform(node: TreeNode, indentWidth: number, nodeHeight: number): string {
-    return 'translate(' + (indentWidth / 2 * -1) + ', ' + ((node.y || 0) - (nodeHeight / 2)) + ')';
+    const positionX = (indentWidth / 2 * -1);
+    let positionY = (node.y || 0) - (nodeHeight / 2);
+    // Adjust startingpoint to match getNodeBackgroundTransform
+    positionY = positionY + 0.5;
+    // Center action icon
+    positionY = positionY + ((nodeHeight - this.settings.icon.containerSize) / 2);
+
+    return 'translate(' + positionX + ', ' + positionY + ')';
   }
 
 
