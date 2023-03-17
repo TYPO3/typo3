@@ -24,4 +24,11 @@ use TYPO3\CMS\Extbase\Exception as ExtbaseException;
  */
 class Exception extends ExtbaseException
 {
+    /**
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     */
+    public static function fromPrevious(\Throwable $e): self
+    {
+        return new self($e->getMessage(), $e->getCode(), $e);
+    }
 }
