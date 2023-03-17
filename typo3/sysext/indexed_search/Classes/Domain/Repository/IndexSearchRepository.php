@@ -612,11 +612,9 @@ class IndexSearchRepository
      * Search for a word
      *
      * @param string $sWord the search word
-     * @param int $wildcard Bit-field of Utility\LikeWildcard
      */
-    protected function searchWord(string $sWord, int $wildcard): Result
+    protected function searchWord(string $sWord, LikeWildcard $likeWildcard): Result
     {
-        $likeWildcard = LikeWildcard::cast($wildcard);
         $wSel = $likeWildcard->getLikeQueryPart(
             'index_words',
             'IW.baseword',
@@ -649,7 +647,7 @@ class IndexSearchRepository
     protected function searchSentence(string $sWord): Result
     {
         $this->wSelClauses[] = '1=1';
-        $likeWildcard = LikeWildcard::cast(LikeWildcard::BOTH);
+        $likeWildcard = LikeWildcard::BOTH;
         $likePart = $likeWildcard->getLikeQueryPart(
             'index_fulltext',
             'IFT.fulltextdata',

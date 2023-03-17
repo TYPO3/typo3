@@ -24,19 +24,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * This class contains unit tests for the LikeQueryUtility
- */
 class LikeWildcardTest extends FunctionalTestCase
 {
     /**
      * @test
      * @dataProvider getLikeQueryPartDataProvider
      */
-    public function getLikeQueryPart(string $tableName, string $fieldName, string $likeValue, int $wildcard, string $expected): void
+    public function getLikeQueryPart(string $tableName, string $fieldName, string $likeValue, LikeWildcard $subject, string $expected): void
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
-        $subject = LikeWildcard::cast($wildcard);
         if ($connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
             $expected = str_replace('LIKE', 'ILIKE', $expected);
         }

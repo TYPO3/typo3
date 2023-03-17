@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,28 +18,25 @@
 namespace TYPO3\CMS\IndexedSearch\Utility;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Type\Enumeration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Enumeration object for LikeWildcard
  * @internal
  */
-final class LikeWildcard extends Enumeration
+enum LikeWildcard: int
 {
-    public const __default = self::BOTH;
+    /** Do not use any wildcard */
+    case NONE = 0;
 
-    /** @var int Do not use any wildcard */
-    public const NONE = 0;
+    /** Use wildcard on left side */
+    case LEFT = 1;
 
-    /** @var int Use wildcard on left side */
-    public const LEFT = 1;
+    /** Use wildcard on right side */
+    case RIGHT = 2;
 
-    /** @var int Use wildcard on right side */
-    public const RIGHT = 2;
-
-    /** @var int Use wildcard on both sides */
-    public const BOTH = 3;
+    /** Use wildcard on both sides */
+    case BOTH = 3;
 
     /**
      * Returns a LIKE clause for sql queries.
@@ -47,14 +46,14 @@ final class LikeWildcard extends Enumeration
      * @param string $likeValue The value for the LIKE clause operation.
      * @return string
      */
-    public function getLikeQueryPart($tableName, $fieldName, $likeValue)
+    public function getLikeQueryPart(string $tableName, string $fieldName, string $likeValue): string
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($tableName);
 
-        $string = ($this->value & self::LEFT ? '%' : '')
+        $string = ($this->value & self::LEFT->value ? '%' : '')
             . $queryBuilder->escapeLikeWildcards($likeValue)
-            . ($this->value & self::RIGHT ? '%' : '');
+            . ($this->value & self::RIGHT->value ? '%' : '');
 
         return $queryBuilder->expr()->like($fieldName, $queryBuilder->quote($string));
     }
