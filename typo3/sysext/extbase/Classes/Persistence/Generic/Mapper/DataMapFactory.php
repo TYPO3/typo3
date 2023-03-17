@@ -301,34 +301,45 @@ class DataMapFactory implements SingletonInterface
      */
     protected function setRelations(ColumnMap $columnMap, ?array $columnConfiguration, ?string $type, ?string $elementType): ColumnMap
     {
-        if (isset($columnConfiguration)) {
-            if (isset($columnConfiguration['MM'])) {
-                $columnMap = $this->setManyToManyRelation($columnMap, $columnConfiguration);
-            } elseif ($elementType !== null) {
-                $columnMap = $this->setOneToManyRelation($columnMap, $columnConfiguration);
-            } elseif ($type !== null && strpbrk($type, '_\\') !== false) {
-                // @todo: check the strpbrk function call. Seems to be a check for Tx_Foo_Bar style class names
-                $columnMap = $this->setOneToOneRelation($columnMap, $columnConfiguration);
-            } elseif (
-                isset($columnConfiguration['type'], $columnConfiguration['renderType'])
-                && $columnConfiguration['type'] === 'select'
-                && (
-                    $columnConfiguration['renderType'] !== 'selectSingle'
-                    || (isset($columnConfiguration['maxitems']) && $columnConfiguration['maxitems'] > 1)
-                )
-            ) {
-                $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
-            } elseif (
-                isset($columnConfiguration['type']) && ($columnConfiguration['type'] === 'group' || $columnConfiguration['type'] === 'folder')
-                && (!isset($columnConfiguration['maxitems']) || $columnConfiguration['maxitems'] > 1)
-            ) {
-                $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
-            } else {
-                $columnMap->setTypeOfRelation(ColumnMap::RELATION_NONE);
-            }
-        } else {
+        if (!isset($columnConfiguration)) {
             $columnMap->setTypeOfRelation(ColumnMap::RELATION_NONE);
+            return $columnMap;
         }
+
+        if (isset($columnConfiguration['MM'])) {
+            return $this->setManyToManyRelation($columnMap, $columnConfiguration);
+        }
+
+        if ($elementType !== null) {
+            return $this->setOneToManyRelation($columnMap, $columnConfiguration);
+        }
+
+        if ($type !== null && strpbrk($type, '_\\') !== false) {
+            // @todo: check the strpbrk function call. Seems to be a check for Tx_Foo_Bar style class names
+            return $this->setOneToOneRelation($columnMap, $columnConfiguration);
+        }
+
+        if (
+            isset($columnConfiguration['type'], $columnConfiguration['renderType'])
+            && $columnConfiguration['type'] === 'select'
+            && (
+                $columnConfiguration['renderType'] !== 'selectSingle'
+                || (isset($columnConfiguration['maxitems']) && $columnConfiguration['maxitems'] > 1)
+            )
+        ) {
+            $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
+            return $columnMap;
+        }
+
+        if (
+            isset($columnConfiguration['type']) && ($columnConfiguration['type'] === 'group' || $columnConfiguration['type'] === 'folder')
+            && (!isset($columnConfiguration['maxitems']) || $columnConfiguration['maxitems'] > 1)
+        ) {
+            $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
+            return $columnMap;
+        }
+
+        $columnMap->setTypeOfRelation(ColumnMap::RELATION_NONE);
         return $columnMap;
     }
 
