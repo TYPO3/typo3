@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reactions\Pagination\DemandedArrayPaginator;
 use TYPO3\CMS\Reactions\ReactionRegistry;
 use TYPO3\CMS\Reactions\Repository\ReactionDemand;
@@ -61,12 +62,26 @@ class ManagementController
         $paginator = new DemandedArrayPaginator($reactionRecords, $demand->getPage(), $demand->getLimit(), $this->reactionRepository->countAll());
         $pagination = new SimplePagination($paginator);
 
+        $languageService = $this->getLanguageService();
+
         return $view->assignMultiple([
             'demand' => $demand,
             'reactionTypes' => iterator_to_array($this->reactionRegistry->getAvailableReactionTypes()),
             'paginator' => $paginator,
             'pagination' => $pagination,
             'reactionRecords' => $reactionRecords,
+            'editActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
+                'idField' => 'uid',
+                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+            ]),
+            'deleteActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
+                'idField' => 'uid',
+                'title' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:labels.delete.title'),
+                'content' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:labels.delete.message'),
+                'ok' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
+                'cancel' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
+                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+            ]),
         ])->renderResponse('Management/Overview');
     }
 

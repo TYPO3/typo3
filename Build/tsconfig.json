@@ -63,6 +63,9 @@
             "@typo3/opendocs/*": [
                 "opendocs/*"
             ],
+            "@typo3/reactions/*": [
+                "reactions/*"
+            ],
             "@typo3/recycler/*": [
                 "recycler/*"
             ],

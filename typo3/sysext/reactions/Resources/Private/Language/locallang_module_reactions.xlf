@@ -78,6 +78,13 @@
             <trans-unit id="pagination.refresh" resname="pagination.refresh">
                 <source>Refresh</source>
             </trans-unit>
+
+            <trans-unit id="labels.delete.title" resname="labels.delete.title">
+                <source>Delete reactions</source>
+            </trans-unit>
+            <trans-unit id="labels.delete.message" resname="labels.delete.message">
+                <source>Are you sure you want to delete all marked reactions?</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

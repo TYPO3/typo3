@@ -1,0 +1,13 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+import RegularEvent from"@typo3/core/event/regular-event.js";import Modal from"@typo3/backend/modal.js";import{SeverityEnum}from"@typo3/backend/enum/severity.js";import{MultiRecordSelectionSelectors}from"@typo3/backend/multi-record-selection.js";import AjaxDataHandler from"@typo3/backend/ajax-data-handler.js";import Severity from"@typo3/backend/severity.js";import Notification from"@typo3/backend/notification.js";class ManagementOverview{constructor(){this.registerEvents()}registerEvents(){new RegularEvent("multiRecordSelection:action:edit",this.editMultiple.bind(this)).bindTo(document),new RegularEvent("multiRecordSelection:action:delete",this.deleteMultiple.bind(this)).bindTo(document)}editMultiple(e){e.preventDefault();const t=e.detail,n=t.configuration.returnUrl||"",o=this.getEntityIdentifiers(t);o.length&&(window.location.href=top.TYPO3.settings.FormEngine.moduleUrl+"&edit[sys_reaction]["+o.join(",")+"]=edit&returnUrl="+encodeURIComponent(n))}deleteMultiple(e){e.preventDefault();const t=e.detail,n=t.configuration.returnUrl||"",o=this.getEntityIdentifiers(t);o.length&&Modal.advanced({title:t.configuration.title||"Delete",content:t.configuration.content||"Are you sure you want to delete those records?",severity:SeverityEnum.warning,buttons:[{text:t.configuration.cancel||TYPO3.lang["button.cancel"]||"Cancel",active:!0,btnClass:"btn-default",name:"cancel",trigger:(e,t)=>t.hideModal()},{text:t.configuration.ok||TYPO3.lang["button.delete"]||"OK",btnClass:"btn-"+Severity.getCssClass(SeverityEnum.warning),name:"delete",trigger:(e,t)=>{t.hideModal(),AjaxDataHandler.process("cmd[sys_reaction]["+o.join(",")+"][delete]=1").then((e=>{if(e.hasErrors)throw e.messages;""!==n?window.location.href=n:t.ownerDocument.location.reload()})).catch((()=>{Notification.error("Could not delete reactions")}))}}]})}getEntityIdentifiers(e){const t=[];return e.checkboxes.forEach((n=>{const o=n.closest(MultiRecordSelectionSelectors.elementSelector);null!==o&&o.dataset[e.configuration.idField]&&t.push(o.dataset[e.configuration.idField])})),t}}export default new ManagementOverview;
