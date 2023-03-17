@@ -1092,7 +1092,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $includeHiddenPages = $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages') || $this->isBackendUserLoggedIn();
                 if (!empty($hiddenField) && !$includeHiddenPages) {
                     // Page is "hidden" => 404 (deliberately done in default language, as this cascades to language overlays)
-                    $rawPageRecord = $this->sys_page->getPage_noCheck($this->id);
+                    $rawPageRecord = $this->sys_page->getPage($this->id);
 
                     // If page record could not be resolved throw exception
                     if ($rawPageRecord === []) {
