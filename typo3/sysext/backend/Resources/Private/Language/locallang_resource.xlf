@@ -14,7 +14,7 @@
 				<source>An error occurred</source>
 			</trans-unit>
 			<trans-unit id="ajax.error.message.resourceNotFileOrFolder" resname="ajax.error.message.resourceNotFileOrFolder">
-				<source>The resource must be a file oder a folder.</source>
+				<source>The resource must be a file or a folder.</source>
 			</trans-unit>
 			<trans-unit id="ajax.error.message.resourceOutsideOfStorages" resname="ajax.error.message.resourceOutsideOfStorages">
 				<source>You are not allowed to access files outside your storages.</source>
