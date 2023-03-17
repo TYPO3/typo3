@@ -448,7 +448,7 @@ class FileListController implements LoggerAwareInterface
             ->setHref($this->filelist->createModuleUri(['viewMode' => ViewMode::LIST->value]))
             ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.list'))
             ->setIcon($this->iconFactory->getIcon('actions-viewmode-list'));
-        $viewModeItems[] = GeneralUtility::makeInstance(DropdownDivider::class);
+        $viewModeItems[] = GeneralUtility::makeInstance(DropDownDivider::class);
         if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'selectable') {
             $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
                 ->setActive((bool)$this->moduleData->get('displayThumbs'))
