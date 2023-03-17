@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import{Core}from"@typo3/ckeditor5-bundle.js";import Whitespace from"@typo3/rte-ckeditor/plugin/whitespace.js";export default class SoftHyphen extends Core.Plugin{init(){console.warn("The TYPO3 CKEditor5 SoftHyphen plugin is deprecated and will be removed with v13. Please use the Whitespace plugin instead.")}}SoftHyphen.pluginName="SoftHyphen",SoftHyphen.requires=[Whitespace];
+import{Core}from"@typo3/ckeditor5-bundle.js";import Whitespace from"@typo3/rte-ckeditor/plugin/whitespace.js";class SoftHyphen extends Core.Plugin{init(){console.warn("The TYPO3 CKEditor5 SoftHyphen plugin is deprecated and will be removed with v13. Please use the Whitespace plugin instead.")}}SoftHyphen.pluginName="SoftHyphen",SoftHyphen.requires=[Whitespace];export default SoftHyphen;
