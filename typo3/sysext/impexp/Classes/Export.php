@@ -29,6 +29,9 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Localization\DateFormatter;
+use TYPO3\CMS\Core\Localization\Locale;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -314,6 +317,12 @@ class Export extends ImportExport
      */
     protected function setMetaData(): void
     {
+        $user = $this->getBackendUser();
+        if ($user->user['lang'] ?? false) {
+            $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($user->user['lang']);
+        } else {
+            $locale = new Locale();
+        }
         $this->dat['header']['meta'] = [
             'title' => $this->title,
             'description' => $this->description,
@@ -322,8 +331,7 @@ class Export extends ImportExport
             'packager_name' => $this->getBackendUser()->user['realName'],
             'packager_email' => $this->getBackendUser()->user['email'],
             'TYPO3_version' => (string)GeneralUtility::makeInstance(Typo3Version::class),
-            // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
-            'created' => @strftime('%A %e. %B %Y', $GLOBALS['EXEC_TIME']),
+            'created' => (new DateFormatter())->format($GLOBALS['EXEC_TIME'], 'EEE d. MMMM y', $locale),
         ];
     }
 

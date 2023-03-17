@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AbstractFormElementTest extends UnitTestCase
@@ -270,6 +271,7 @@ class AbstractFormElementTest extends UnitTestCase
      */
     public function formatValueWithGivenConfiguration(array $config, ?string $itemValue, string $expectedResult): void
     {
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $subject = $this->getAccessibleMock(AbstractFormElement::class, ['render'], [], '', false);
         $timezoneBackup = date_default_timezone_get();
         date_default_timezone_set('UTC');

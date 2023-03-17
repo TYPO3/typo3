@@ -555,8 +555,7 @@ class RelationTest extends FunctionalTestCase
         $tags = clone $post->getTags();
         $post->setTags(new ObjectStorage());
 
-        // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
-        $newTag = new Tag('INSERTED TAG at position 6 : ' . @strftime(''));
+        $newTag = new Tag('INSERTED TAG at position 6 : ');
 
         $counter = 1;
         foreach ($tags as $tag) {

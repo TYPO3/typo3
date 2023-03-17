@@ -38,7 +38,10 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\Locale;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -861,6 +864,12 @@ class DatabaseIntegrityController
     {
         $out = '';
         $fields = [];
+        $user = $this->getBackendUserAuthentication();
+        if ($user->user['lang'] ?? false) {
+            $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($user->user['lang']);
+        } else {
+            $locale = new Locale();
+        }
         // Analysing the fields in the table.
         if (is_array($GLOBALS['TCA'][$table] ?? null)) {
             $fC = $GLOBALS['TCA'][$table]['columns'][$fieldName] ?? null;
@@ -945,18 +954,17 @@ class DatabaseIntegrityController
         switch ($fields['type']) {
             case 'date':
                 if ($fieldValue != -1) {
-                    // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
-                    $out = (string)@strftime('%d-%m-%Y', (int)$fieldValue);
+                    $formatter = new DateFormatter();
+                    $out = $formatter->format((int)$fieldValue, 'SHORTDATE', $locale);
                 }
                 break;
             case 'time':
                 if ($fieldValue != -1) {
+                    $formatter = new DateFormatter();
                     if ($splitString === '<br />') {
-                        // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
-                        $out = (string)@strftime('%H:%M' . $splitString . '%d-%m-%Y', (int)$fieldValue);
+                        $out = $formatter->format((int)$fieldValue, 'HH:mm\'' . $splitString . '\'dd-MM-yyyy', $locale);
                     } else {
-                        // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
-                        $out = (string)@strftime('%H:%M %d-%m-%Y', (int)$fieldValue);
+                        $out = $formatter->format((int)$fieldValue, 'HH:mm dd-MM-yyyy', $locale);
                     }
                 }
                 break;

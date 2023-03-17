@@ -22,7 +22,10 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\Locale;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -195,8 +198,13 @@ abstract class AbstractFormElement extends AbstractNode
                     $option = isset($formatOptions['option']) ? trim($formatOptions['option']) : '';
                     if ($option) {
                         if (isset($formatOptions['strftime']) && $formatOptions['strftime']) {
-                            // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
-                            $value = @strftime($option, (int)$itemValue);
+                            $user = $this->getBackendUser();
+                            if ($user->user['lang'] ?? false) {
+                                $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($user->user['lang']);
+                            } else {
+                                $locale = new Locale();
+                            }
+                            $value = (new DateFormatter())->strftime($option, (int)$itemValue, $locale);
                         } else {
                             $value = date($option, (int)$itemValue);
                         }

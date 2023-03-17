@@ -195,8 +195,9 @@ final class DateViewHelper extends AbstractViewHelper
             return (new DateFormatter())->format($date, $pattern, $locale);
         }
         if (str_contains($format, '%')) {
-            // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
-            return @strftime($format, (int)$date->format('U'));
+            // @todo: deprecate this syntax in TYPO3 v13.
+            $locale = $arguments['locale'] ?? self::resolveLocale($renderingContext);
+            return (new DateFormatter())->format($date, $format, $locale);
         }
         return $date->format($format);
     }
