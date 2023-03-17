@@ -29,7 +29,7 @@ Registration of the event listener:
 ..  code-block:: yaml
     :caption: EXT:my_extension/Configuration/Services.yaml
 
-    MyVendor\MyExtension\Backend\MyEventListener:
+    MyVendor\MyExtension\Redirects\MyEventListener:
       tags:
         - name: event.listener
           identifier: 'my-extension/after-auto-create-redirect-has-been-persisted'
@@ -37,9 +37,9 @@ Registration of the event listener:
 The corresponding event listener class:
 
 ..  code-block:: php
-    :caption: EXT:my_extension/Classes/Backend/MyEventListener.php
+    :caption: EXT:my_extension/Classes/Redirects/MyEventListener.php
 
-    namespace MyVendor\MyExtension\Backend;
+    namespace MyVendor\MyExtension\Redirects;
 
     use TYPO3\CMS\Redirects\Event\AfterAutoCreateRedirectHasBeenPersistedEvent;
     use TYPO3\CMS\Redirects\RedirectUpdate\PlainSlugReplacementRedirectSource;

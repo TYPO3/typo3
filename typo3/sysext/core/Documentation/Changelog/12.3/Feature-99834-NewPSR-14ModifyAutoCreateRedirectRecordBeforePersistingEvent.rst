@@ -30,17 +30,17 @@ Example:
 ..  code-block:: yaml
     :caption: my_extension/Configuration/Services.yaml
 
-    MyVendor\MyExtension\Backend\MyEventListener:
+    MyVendor\MyExtension\Redirects\MyEventListener:
       tags:
         - name: event.listener
-          identifier: 'my-extension/after-auto-create-redirect-has-been-persisted'
+          identifier: 'my-extension/modify-auto-create-redirect-record-before-persisting'
 
 The corresponding event listener class:
 
 ..  code-block:: php
-    :caption: my_extension/Classes/Backend/MyEventListener.php
+    :caption: my_extension/Classes/Redirects/MyEventListener.php
 
-    namespace MyVendor\MyExtension\Backend;
+    namespace MyVendor\MyExtension\Redirects;
 
     use TYPO3\CMS\Redirects\Event\ModifyAutoCreateRedirectRecordBeforePersistingEvent;
     use TYPO3\CMS\Redirects\RedirectUpdate\PlainSlugReplacementRedirectSource;
@@ -66,7 +66,7 @@ The corresponding event listener class:
             // Set value to a field extended by a custom extension, to persist
             // additional data to the redirect record.
             $record['custom_field_added_by_a_extension']
-                = 'page_' . $event->getSlugRedirectChangeItem()->getPageUid();
+                = 'page_' . $event->getSlugRedirectChangeItem()->getPageId();
 
             // Update changed record in event to ensure changed values are saved.
             $event->setRedirectRecord($record);
