@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
 
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -74,6 +75,48 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
         self::assertStringContainsString('userIntContent', $body);
         self::assertStringContainsString('headerDataFromUserInt', $body);
         self::assertStringContainsString('footerDataFromUserInt', $body);
+    }
+
+    /**
+     * @test
+     */
+    public function jsIncludesWithUserIntIsRendered(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
+        $this->setUpFrontendRootPage(
+            2,
+        );
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(2, 'https://website.local/'),
+            [$this->buildDefaultLanguageConfiguration('EN', '/en/')]
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest('https://website.local/en/'))
+                ->withPageId(2)
+                ->withInstructions([
+                    (new TypoScriptInstruction())
+                        ->withTypoScript([
+                            'page' => 'PAGE',
+                            'page.' => [
+                                'jsInline.' => [
+                                    '10' => 'COA_INT',
+                                    '10.' => [
+                                        '10' => 'TEXT',
+                                        '10.' => [
+                                            'value' => 'alert(yes);',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ]),
+                ]),
+        );
+
+        $body = (string)$response->getBody();
+        self::assertStringContainsString('/*TS_inlineJSint*/
+alert(yes);', $body);
     }
 
     /**
