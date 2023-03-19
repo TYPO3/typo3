@@ -31,6 +31,7 @@ use TYPO3\CMS\FrontendLogin\Event\LoginErrorOccurredEvent;
 use TYPO3\CMS\FrontendLogin\Event\LogoutConfirmedEvent;
 use TYPO3\CMS\FrontendLogin\Event\ModifyLoginFormViewEvent;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectHandler;
+use TYPO3\CMS\FrontendLogin\Redirect\RedirectMode;
 use TYPO3\CMS\FrontendLogin\Redirect\ServerRequestHandler;
 use TYPO3\CMS\FrontendLogin\Service\UserService;
 use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
@@ -231,6 +232,11 @@ class LoginController extends AbstractLoginFormController
      */
     protected function getRefererForLoginForm(): string
     {
+        // Early return, if redirectMode is not configured to respect the referer
+        if (!$this->isRefererRedirectEnabled()) {
+            return '';
+        }
+
         $referer = (string)(
             $this->request->getParsedBody()['referer'] ??
             $this->request->getQueryParams()['referer'] ??
@@ -291,6 +297,16 @@ class LoginController extends AbstractLoginFormController
         return $permaLogin > 1
                || (int)($this->settings['showPermaLogin'] ?? 0) === 0
                || $GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] === 0;
+    }
+
+    /**
+     * Returns, if redirect based on the referer is enabled
+     */
+    protected function isRefererRedirectEnabled(): bool
+    {
+        $refererRedirectModes = [RedirectMode::REFERER, RedirectMode::REFERER_DOMAINS];
+        $configuredRedirectModes = GeneralUtility::trimExplode(',', $this->settings['redirectMode'] ?? '');
+        return count(array_intersect($configuredRedirectModes, $refererRedirectModes)) > 0;
     }
 
     /**
