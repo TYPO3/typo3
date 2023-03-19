@@ -180,10 +180,9 @@ class Bootstrap
         if (($typoScriptFrontendController = ($GLOBALS['TSFE'] ?? null)) instanceof TypoScriptFrontendController
             && $response->hasHeader('Content-Type')
         ) {
-            [$contentType] = explode(';', $response->getHeaderLine('Content-Type'));
+            $typoScriptFrontendController->setContentType($response->getHeaderLine('Content-Type'));
             // Do not send the header directly (see below)
             $response = $response->withoutHeader('Content-Type');
-            $typoScriptFrontendController->setContentType($contentType);
         }
 
         if (headers_sent() === false) {
