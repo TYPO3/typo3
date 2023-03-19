@@ -1,0 +1,11 @@
+"pages"
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","slug","l10n_state"
+,1,0,256,0,0,0,0,0,0,0,0,"Pre page without template","","{}"
+,2,1,256,0,0,0,0,0,0,0,0,"Root page having template with root flag set by tests","/","{}"
+,88,2,256,0,0,0,0,0,0,0,0,"Sub page 1","/subpage1/","{}"
+,89,88,256,0,0,0,0,0,0,0,0,"Sub sub page 1","/subpage1/sub1/","{}"
+,98,2,256,0,0,0,0,0,0,0,0,"Sub page 2 having template with root flag","/subpage2/","{}"
+,99,98,256,0,0,0,0,0,0,0,0,"Sub sub page 2","/subpage2/sub2/","{}"
+"sys_template"
+,"uid","pid","sorting","deleted","hidden","starttime","endtime","t3_origuid","root","clear","include_static_file","constants","config","basedOn","includeStaticAfterBasedOn","static_file_mode"
+,1,98,256,0,0,0,0,0,1,0,"","","","",0,0

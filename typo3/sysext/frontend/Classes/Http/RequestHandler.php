@@ -715,13 +715,16 @@ class RequestHandler implements RequestHandlerInterface
             $controller->cObj
         );
 
-        $controller->INTincScript_loadJSCode();
-
         // Javascript inline code
         $inlineJS = $controller->cObj->cObjGet($controller->pSetup['jsInline.'] ?? null, 'jsInline.');
         // Javascript inline code for Footer
         $inlineFooterJs = $controller->cObj->cObjGet($controller->pSetup['jsFooterInline.'] ?? null, 'jsFooterInline.');
         $compressJs = (bool)($controller->config['config']['compressJs'] ?? false);
+
+        // Needs to be called after call cObjGet() calls in order to get all headerData and footerData and replacements
+        // see #100216
+        $controller->INTincScript_loadJSCode();
+
         if (($controller->config['config']['removeDefaultJS'] ?? '') === 'external') {
             /*
              * This keeps inlineJS from *_INT Objects from being moved to external files.

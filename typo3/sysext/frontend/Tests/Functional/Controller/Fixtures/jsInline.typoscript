@@ -1,0 +1,10 @@
+page = PAGE
+page {
+  jsInline {
+    10 = COA_INT
+    10 {
+      10 = TEXT
+      10.value = alert(yes);
+    }
+  }
+}
