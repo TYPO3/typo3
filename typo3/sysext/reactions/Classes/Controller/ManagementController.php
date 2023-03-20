@@ -72,10 +72,12 @@ class ManagementController
             'reactionRecords' => $reactionRecords,
             'editActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
                 'idField' => 'uid',
+                'tableName' => 'sys_reaction',
                 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
             ]),
             'deleteActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
                 'idField' => 'uid',
+                'tableName' => 'sys_reaction',
                 'title' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:labels.delete.title'),
                 'content' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:labels.delete.message'),
                 'ok' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
