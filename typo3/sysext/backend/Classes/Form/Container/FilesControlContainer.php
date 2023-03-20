@@ -312,22 +312,23 @@ class FilesControlContainer extends AbstractContainer
         $controls = [];
         if ($inlineConfiguration['appearance']['elementBrowserEnabled'] ?? true) {
             if ($inlineConfiguration['appearance']['createNewRelationLinkTitle'] ?? false) {
-                $createNewRelationLinkTitle = $languageService->sL($inlineConfiguration['appearance']['createNewRelationLinkTitle']);
+                $buttonText = $inlineConfiguration['appearance']['createNewRelationLinkTitle'];
             } else {
-                $createNewRelationLinkTitle = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.createNewRelation');
+                $buttonText = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.createNewRelation';
             }
+            $buttonText = $languageService->sL($buttonText);
             $attributes = [
                 'type' => 'button',
                 'class' => 'btn btn-default t3js-element-browser',
                 'style' => !($inlineConfiguration['inline']['showCreateNewRelationButton'] ?? true) ? 'display: none;' : '',
-                'title' => $createNewRelationLinkTitle,
+                'title' => $buttonText,
                 'data-mode' => 'file',
                 'data-params' => '|||' . implode(',', $allowedFileTypes) . '|' . $objectPrefix,
             ];
             $controls[] = '
                 <button ' . GeneralUtility::implodeAttributes($attributes, true) . '>
 				    ' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)->render() . '
-				    ' . htmlspecialchars($createNewRelationLinkTitle) . '
+				    ' . htmlspecialchars($buttonText) . '
 			    </button>';
         }
 
@@ -350,9 +351,17 @@ class FilesControlContainer extends AbstractContainer
                 && $folder->getStorage()->checkUserActionPermission('add', 'File')
             ) {
                 if ($showUpload) {
+                    if ($inlineConfiguration['appearance']['uploadFilesLinkTitle'] ?? false) {
+                        $buttonText = $inlineConfiguration['appearance']['uploadFilesLinkTitle'];
+                    } else {
+                        $buttonText = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.select-and-submit';
+                    }
+                    $buttonText = $languageService->sL($buttonText);
+
                     $attributes = [
                         'type' => 'button',
                         'class' => 'btn btn-default t3js-drag-uploader',
+                        'title' => $buttonText,
                         'style' => !($inlineConfiguration['inline']['showCreateNewRelationButton'] ?? true) ? 'display: none;' : '',
                         'data-dropzone-target' => '#' . StringUtility::escapeCssSelector($currentStructureDomObjectIdPrefix),
                         'data-insert-dropzone-before' => '1',
@@ -364,13 +373,18 @@ class FilesControlContainer extends AbstractContainer
                     $controls[] = '
                         <button ' . GeneralUtility::implodeAttributes($attributes, true) . '>
 					        ' . $this->iconFactory->getIcon('actions-upload', Icon::SIZE_SMALL)->render() . '
-                            ' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.select-and-submit')) . '
+                            ' . htmlspecialchars($buttonText) . '
                         </button>';
 
                     $this->javaScriptModules[] = JavaScriptModuleInstruction::create('@typo3/backend/drag-uploader.js');
                 }
                 if ($showByUrl) {
-                    $buttonText = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.button');
+                    if ($inlineConfiguration['appearance']['addMediaLinkTitle'] ?? false) {
+                        $buttonText = $inlineConfiguration['appearance']['addMediaLinkTitle'];
+                    } else {
+                        $buttonText = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.button';
+                    }
+                    $buttonText = $languageService->sL($buttonText);
                     $attributes = [
                         'type' => 'button',
                         'class' => 'btn btn-default t3js-online-media-add-btn',
