@@ -153,6 +153,9 @@
 			<trans-unit id="notification.record_saved.message" resname="notification.record_saved.message">
 				<source>Record "%s" has been successfully saved.</source>
 			</trans-unit>
+			<trans-unit id="notification.mass_saving.message" resname="notification.mass_saving.message">
+				<source>%s records have been successfully saved.</source>
+			</trans-unit>
 			<trans-unit id="search.find_record" resname="search.find_record">
 				<source>Find records</source>
 			</trans-unit>
