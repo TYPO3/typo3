@@ -684,6 +684,9 @@ class EditDocumentController
                 if (count($messages) === 1) {
                     $label = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:notification.record_saved.title.singular');
                 }
+                if (count($messages) > 10) {
+                    $messages = [sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:notification.mass_saving.message'), count($messages))];
+                }
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                 $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier(FlashMessageQueue::NOTIFICATION_QUEUE);
                 $flashMessage = GeneralUtility::makeInstance(
