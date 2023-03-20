@@ -70,4 +70,9 @@ return [
             'Feature-98487-TCAOptionCtrlsecurityignorePageTypeRestriction.rst',
         ],
     ],
+    '$GLOBALS[\'TBE_STYLES\']' => [
+        'restFiles' => [
+            'Deprecation-100232-TBE_STYLESSkinningFunctionality.rst',
+        ],
+    ],
 ];

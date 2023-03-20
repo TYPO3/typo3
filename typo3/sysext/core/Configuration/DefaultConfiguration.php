@@ -1369,6 +1369,9 @@ return [
             'options' => [],
         ],
         'passwordPolicy' => 'default',
+        'stylesheets' => [
+            'backend' => 'EXT:backend/Resources/Public/Css',
+        ],
     ],
     'FE' => [ // Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
         'addAllowedPaths' => '',

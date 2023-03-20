@@ -977,4 +977,14 @@ return [
             'Deprecation-100033-TBE_STYLESStylesheetAndStylesheet2.rst',
         ],
     ],
+    '$GLOBALS[\'TBE_STYLES\'][\'skins\']' => [
+        'restFiles' => [
+            'Deprecation-100232-TBE_STYLESSkinningFunctionality.rst',
+        ],
+    ],
+    '$GLOBALS[\'TBE_STYLES\'][\'admPanel\']' => [
+        'restFiles' => [
+            'Deprecation-100232-TBE_STYLESSkinningFunctionality.rst',
+        ],
+    ],
 ];

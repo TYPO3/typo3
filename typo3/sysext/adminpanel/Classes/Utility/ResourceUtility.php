@@ -74,11 +74,16 @@ class ResourceUtility
     /**
      * Returns a link tag with the admin panel stylesheet
      * defined using TBE_STYLES
+     * @deprecated will be removed in TYPO3 v13.0.
      */
     protected static function getAdminPanelStylesheet(): string
     {
         $result = '';
         if (!empty($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) {
+            trigger_error(
+                '$GLOBALS[\'TBE_STYLES\'][\'stylesheets\'][\'admPanel\'] will be removed in TYPO3 v13.0. Use Admin Panel Module API ModuleInterface->getCssFiles() instead.',
+                E_USER_DEPRECATED
+            );
             $stylesheet = GeneralUtility::locationHeaderUrl($GLOBALS['TBE_STYLES']['stylesheets']['admPanel']);
             $result = '<link rel="stylesheet" href="' .
                       htmlspecialchars($stylesheet, ENT_QUOTES | ENT_HTML5) . '" />';

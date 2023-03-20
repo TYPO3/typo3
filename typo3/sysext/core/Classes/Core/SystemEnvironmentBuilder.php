@@ -171,6 +171,15 @@ class SystemEnvironmentBuilder
     {
         // Unset variable(s) in global scope (security issue #13959)
         $GLOBALS['T3_SERVICES'] = [];
+        /**
+         * $TBE_STYLES configures backend styles and colors; Basically this contains
+         * all the values that can be used to create new skins for TYPO3.
+         * For information about making skins to TYPO3 you should consult the
+         * documentation found at https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/Configuration/GlobalVariables.html#confval-TBE_STYLES
+         * However, $TBE_STYLES should be avoided in favor of $GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets'] since TYPO3 v12.3, as
+         * $TBE_STYLES will be removed in TYPO3 v13.0.
+         */
+        $GLOBALS['TBE_STYLES'] = [];
     }
 
     /**

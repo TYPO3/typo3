@@ -43,18 +43,18 @@ as "weak" matches.
 Migration
 =========
 
-Extensions should use :php:`$GLOBALS['TBE_STYLES']['skins']['my_extension']['stylesheetDirectories'][]`
+Extensions should use :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets']['my_extension']`
 where :php:`'my_extension'` is the extension key.
 
 Example
 -------
 
 ..  code-block:: php
-    :caption: EXT:my_extension/ext_tables.php
+    :caption: EXT:my_extension/ext_localconf.php
 
-    $GLOBALS['TBE_STYLES']['skins']['my_extension']['stylesheetDirectories'][] = 'EXT:my_extension/Resources/Public/Css/';
+    $GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets']['my_extension'] = 'EXT:my_extension/Resources/Public/Css';
 
 In the example above, all CSS files in the configured directory will be loaded
-in TYPO3 backend.
+in TYPO3 Backend.
 
 .. index:: Backend, FullyScanned, ext:backend
