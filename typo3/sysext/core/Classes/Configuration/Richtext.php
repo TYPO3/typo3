@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Configuration;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -96,11 +97,18 @@ class Richtext
     {
         $configuration = [];
         if (!empty($presetName) && isset($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$presetName])) {
-            $fileLoader = GeneralUtility::makeInstance(YamlFileLoader::class);
-            $configuration = $fileLoader->load($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$presetName]);
-            // For future versions, you should however rely on the "processing" key and not the "proc" key.
-            if (is_array($configuration['processing'] ?? null)) {
-                $configuration['proc.'] = $this->convertPlainArrayToTypoScriptArray($configuration['processing']);
+            $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
+            $identifier = 'richtext_' . $presetName;
+            $configuration = $runtimeCache->get($identifier);
+
+            if ($configuration === false) {
+                $fileLoader = GeneralUtility::makeInstance(YamlFileLoader::class);
+                $configuration = $fileLoader->load($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$presetName]);
+                // For future versions, you should however rely on the "processing" key and not the "proc" key.
+                if (is_array($configuration['processing'] ?? null)) {
+                    $configuration['proc.'] = $this->convertPlainArrayToTypoScriptArray($configuration['processing']);
+                }
+                $runtimeCache->set($identifier, $configuration);
             }
         }
         return $configuration;
