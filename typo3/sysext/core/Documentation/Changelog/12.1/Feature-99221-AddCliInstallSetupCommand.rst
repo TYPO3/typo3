@@ -45,7 +45,7 @@ Automated setup:
     TYPO3_PROJECT_NAME="Automated Setup" \
     ./bin/typo3 setup --force
 
-.. warning::
+..  warning::
     Variable `TYPO3_DB_PASSWORD` (option `--password`) can be used to provide a
     password for the database and `TYPO3_SETUP_ADMIN_PASSWORD`
     (option `--admin-user-password`) for the admin user password.
