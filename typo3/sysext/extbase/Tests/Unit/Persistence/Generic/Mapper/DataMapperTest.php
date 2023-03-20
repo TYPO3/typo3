@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfiguration;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory;
@@ -33,8 +34,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DataMapperTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     protected ColumnMap $columnMap;
-    protected DataMapFactory $dataMapFactory;
+    protected ColumnMapFactory $columnMapFactory;
     protected DataMapper $dataMapper;
 
     protected function setUp(): void
@@ -43,11 +46,16 @@ class DataMapperTest extends UnitTestCase
 
         $this->columnMap = new ColumnMap('foo', 'foo');
 
-        $this->dataMapFactory = new DataMapFactory(
+        $this->columnMapFactory = new ColumnMapFactory(
+            $this->createMock(ReflectionService::class)
+        );
+
+        $dataMapFactory = new DataMapFactory(
             $this->createMock(ReflectionService::class),
             $this->createMock(ConfigurationManager::class),
             $this->createMock(CacheManager::class),
             $this->createMock(ClassesConfiguration::class),
+            $this->columnMapFactory,
             'foo'
         );
 
@@ -55,7 +63,7 @@ class DataMapperTest extends UnitTestCase
             $this->createMock(ReflectionService::class),
             $this->createMock(QueryObjectModelFactory::class),
             $this->createMock(Session::class),
-            $this->dataMapFactory,
+            $dataMapFactory,
             $this->createMock(QueryFactory::class),
             $this->createMock(EventDispatcherInterface::class),
         );
@@ -67,7 +75,7 @@ class DataMapperTest extends UnitTestCase
     public function getOrderingsForColumnMapReturnsNullIfNeitherForeignSortByNorForeignDefaultSortByAreSet(): void
     {
         // Arrange
-        $this->dataMapFactory->setOneToManyRelation(
+        $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
             [
                 'foreign_table' => 'tx_myextension_bar',
@@ -87,7 +95,7 @@ class DataMapperTest extends UnitTestCase
     public function getOrderingsForColumnMapReturnsNullIfForeignDefaultSortByIsEmpty(): void
     {
         // Arrange
-        $this->dataMapFactory->setOneToManyRelation(
+        $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
             [
                 'foreign_table' => 'tx_myextension_bar',
@@ -108,7 +116,7 @@ class DataMapperTest extends UnitTestCase
     public function getOrderingsForColumnMapFallBackToAscendingOrdering(): void
     {
         // Arrange
-        $this->dataMapFactory->setOneToManyRelation(
+        $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
             [
                 'foreign_table' => 'tx_myextension_bar',
@@ -132,7 +140,7 @@ class DataMapperTest extends UnitTestCase
     public function setOneToManyRelationDetectsForeignSortBy(): void
     {
         // Arrange
-        $this->dataMapFactory->setOneToManyRelation(
+        $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
             [
                 'foreign_table' => 'tx_myextension_bar',
@@ -156,7 +164,7 @@ class DataMapperTest extends UnitTestCase
     public function setOneToManyRelationDetectsForeignSortByWithForeignDefaultSortBy(): void
     {
         // Arrange
-        $this->dataMapFactory->setOneToManyRelation(
+        $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
             [
                 'foreign_table' => 'tx_myextension_bar',
@@ -181,7 +189,7 @@ class DataMapperTest extends UnitTestCase
     public function setOneToManyRelationDetectsForeignDefaultSortByWithoutDirection(): void
     {
         // Arrange
-        $this->dataMapFactory->setOneToManyRelation(
+        $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
             [
                 'foreign_table' => 'tx_myextension_bar',
@@ -205,7 +213,7 @@ class DataMapperTest extends UnitTestCase
     public function setOneToManyRelationDetectsForeignDefaultSortByWithDirection(): void
     {
         // Arrange
-        $this->dataMapFactory->setOneToManyRelation(
+        $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
             [
                 'foreign_table' => 'tx_myextension_bar',
@@ -229,7 +237,7 @@ class DataMapperTest extends UnitTestCase
     public function setOneToManyRelationDetectsMultipleForeignDefaultSortByWithAndWithoutDirection(): void
     {
         // Arrange
-        $this->dataMapFactory->setOneToManyRelation(
+        $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
             [
                 'foreign_table' => 'tx_myextension_bar',
