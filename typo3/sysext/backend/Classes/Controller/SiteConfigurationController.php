@@ -38,7 +38,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -69,7 +68,8 @@ class SiteConfigurationController
         protected readonly SiteFinder $siteFinder,
         protected readonly IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly SiteConfiguration $siteConfiguration,
     ) {
     }
 
@@ -125,6 +125,7 @@ class SiteConfigurationController
         // forcing uncached sites will re-initialize `SiteFinder`
         // which is used later by FormEngine (implicit behavior)
         $allSites = $this->siteFinder->getAllSites(false);
+
         // Put site and friends TCA into global TCA
         // @todo: We might be able to get rid of that later
         $GLOBALS['TCA'] = array_merge($GLOBALS['TCA'], GeneralUtility::makeInstance(SiteTcaConfiguration::class)->getTca());
@@ -194,11 +195,16 @@ class SiteConfigurationController
      */
     public function saveAction(ServerRequestInterface $request): ResponseInterface
     {
-        // forcing uncached sites will re-initialize `SiteFinder`
-        // which is used later by FormEngine (implicit behavior)
-        $this->siteFinder->getAllSites(false);
+        // loading uncached site configurations without settings.yaml
+        /** @var array<int, Site> $mappingRootPageToSite */
+        $mappingRootPageToSite = [];
+        $allSites = $this->siteConfiguration->resolveAllExistingSitesRaw();
+        foreach ($allSites as $site) {
+            $mappingRootPageToSite[$site->getRootPageId()] = $site;
+        }
+
         // Put site and friends TCA into global TCA
-        // @todo: We might be able to get rid of that later
+        // @todo We might be able to get rid of that later
         $GLOBALS['TCA'] = array_merge($GLOBALS['TCA'], GeneralUtility::makeInstance(SiteTcaConfiguration::class)->getTca());
 
         $siteTca = GeneralUtility::makeInstance(SiteTcaConfiguration::class)->getTca();
@@ -227,11 +233,11 @@ class SiteConfigurationController
 
         $isNewConfiguration = false;
         $currentIdentifier = '';
-        try {
-            $currentSite = $this->siteFinder->getSiteByRootPageId($pageId);
+        if (isset($mappingRootPageToSite[$pageId])) {
+            $currentSite = $mappingRootPageToSite[$pageId];
             $currentSiteConfiguration = $currentSite->getConfiguration();
             $currentIdentifier = $currentSite->getIdentifier();
-        } catch (SiteNotFoundException $e) {
+        } else {
             $currentSiteConfiguration = [];
             $isNewConfiguration = true;
             $pageId = (int)$parsedBody['rootPageId'];
@@ -242,7 +248,7 @@ class SiteConfigurationController
         }
 
         // Validate site identifier and do not store or further process it
-        $siteIdentifier = $this->validateAndProcessIdentifier($isNewConfiguration, $siteIdentifier, $pageId);
+        $siteIdentifier = $this->validateAndProcessIdentifier($isNewConfiguration, $siteIdentifier, $pageId, $allSites, $mappingRootPageToSite);
         unset($sysSiteRow['identifier']);
 
         try {
@@ -429,9 +435,11 @@ class SiteConfigurationController
      * @param bool $isNew If true, we're dealing with a new record
      * @param string $identifier Given identifier to validate and process
      * @param int $rootPageId Page uid this identifier is bound to
+     * @param array<non-empty-string, Site> $allSites All sites loaded without `settings.yaml`.
+     * @param array<int, Site> $mappingRootPageToSite Identifier site mapping as lookup. Not loaded `settings.yaml`.
      * @return mixed Verified / modified value
      */
-    protected function validateAndProcessIdentifier(bool $isNew, string $identifier, int $rootPageId)
+    protected function validateAndProcessIdentifier(bool $isNew, string $identifier, int $rootPageId, array $allSites, array $mappingRootPageToSite)
     {
         $languageService = $this->getLanguageService();
         // Normal "eval" processing of field first
@@ -439,8 +447,7 @@ class SiteConfigurationController
         if ($isNew) {
             // Verify no other site with this identifier exists. If so, find a new unique name as
             // identifier and show a flash message the identifier has been adapted
-            try {
-                $this->siteFinder->getSiteByIdentifier($identifier);
+            if (($allSites[$identifier] ?? null) instanceof Site) {
                 // Force this identifier to be unique
                 $originalIdentifier = $identifier;
                 $identifier = StringUtility::getUniqueId($identifier . '-');
@@ -454,33 +461,30 @@ class SiteConfigurationController
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                 $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);
-            } catch (SiteNotFoundException $e) {
-                // Do nothing, this new identifier is ok
             }
         } else {
             // If this is an existing config, the site for this identifier must have the same rootPageId, otherwise
             // a user tried to rename a site identifier to a different site that already exists. If so, we do not rename
             // the site and show a flash message
-            try {
-                $site = $this->siteFinder->getSiteByIdentifier($identifier);
-                if ($site->getRootPageId() !== $rootPageId) {
-                    // Find original value and keep this
-                    $origSite = $this->siteFinder->getSiteByRootPageId($rootPageId);
-                    $originalIdentifier = $identifier;
-                    $identifier = $origSite->getIdentifier();
-                    $message = sprintf(
-                        $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.identifierExists.message'),
-                        $originalIdentifier,
-                        $identifier
-                    );
-                    $messageTitle = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.identifierExists.title');
-                    $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
-                    $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-                    $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-                    $defaultFlashMessageQueue->enqueue($flashMessage);
-                }
-            } catch (SiteNotFoundException $e) {
-                // User is renaming identifier which does not exist yet. That's ok
+            $site = ($allSites[$identifier] ?? null);
+            if ($site instanceof Site
+                && $site->getRootPageId() !== $rootPageId
+                && ($mappingRootPageToSite[$rootPageId] ?? null) instanceof Site
+            ) {
+                // Find original value and keep this
+                $origSite = $mappingRootPageToSite[$rootPageId];
+                $originalIdentifier = $identifier;
+                $identifier = $origSite->getIdentifier();
+                $message = sprintf(
+                    $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.identifierExists.message'),
+                    $originalIdentifier,
+                    $identifier
+                );
+                $messageTitle = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.identifierExists.title');
+                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
+                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+                $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+                $defaultFlashMessageQueue->enqueue($flashMessage);
             }
         }
         return $identifier;

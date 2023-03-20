@@ -19,11 +19,19 @@ configuration available in any context.
 In order to separate these settings from the system site configuration, make them
 accessible and editable in the TYPO3 backend, and to distinguish between required
 site configuration and optional settings, the "settings" part of the settings are
-moved to a separate :file:`settings.yaml` file in the site configuration folder.
+copied to a separate :file:`settings.yaml` file in the site configuration folder.
 
 A migration wizard is provided as upgrade wizard to migrate settings into the
 new file.
 
+..  info::
+
+    Settings are not removed from the :file:`config.yaml` for now but will not
+    have any effect anymore as soon as a :file:`settings.yaml` exists.
+
+    Please review your settings in the :file:`config.yaml` and remove them
+    manually. Eventually, you need and/or want to adopt your deployment
+    workflow.
 
 Impact
 ======
