@@ -1523,17 +1523,22 @@ class FileList
      */
     protected function sortResources(array $resources, string $sortField): array
     {
-        usort($resources, function (ResourceInterface $resource1, ResourceInterface $resource2) use ($sortField, $resources) {
-            // Folders are always priotized above files
+        $collator = new \Collator((string)($this->getLanguageService()->getLocale() ?? 'en'));
+        uksort($resources, function (int $index1, int $index2) use ($sortField, $resources, $collator) {
+            $resource1 = $resources[$index1];
+            $resource2 = $resources[$index2];
+
+            // Folders are always prioritized above files
             if ($resource1 instanceof File && $resource2 instanceof Folder) {
                 return 1;
             }
             if ($resource1 instanceof Folder && $resource2 instanceof File) {
                 return -1;
             }
-            return strnatcasecmp(
-                $this->getSortingValue($resource1, $sortField) . array_search($resource1, $resources),
-                $this->getSortingValue($resource2, $sortField) . array_search($resource2, $resources)
+
+            return (int)$collator->compare(
+                $this->getSortingValue($resource1, $sortField) . $index1,
+                $this->getSortingValue($resource2, $sortField) . $index2
             );
         });
 
