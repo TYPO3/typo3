@@ -40,12 +40,12 @@ class FileStorageTreeProvider
     protected ?array $expandedState = null;
     protected string $userSettingsIdentifier = 'BackendComponents.States.FileStorageTree';
 
-    public function prepareFolderInformation(Folder $folder, ?string $alternativeName = null): array
+    public function prepareFolderInformation(Folder $folder, ?string $alternativeName = null, ?Folder $parentFolder = null, ?array $children = null): array
     {
         $name = $alternativeName ?? $folder->getName();
         $storage = $folder->getStorage();
         try {
-            $parentFolder = $folder->getParentFolder();
+            $parentFolder = $parentFolder ?? $folder->getParentFolder();
         } catch (FolderDoesNotExistException | InsufficientFolderAccessPermissionsException $e) {
             $parentFolder = null;
         }
@@ -61,7 +61,7 @@ class FileStorageTreeProvider
         }
 
         try {
-            $hasSubfolders = !empty($folder->getSubfolders());
+            $hasSubfolders = is_array($children) ? $children !== [] : !empty($folder->getSubfolders());
         } catch (\InvalidArgumentException | InsufficientFolderReadPermissionsException $e) {
             $hasSubfolders = false;
         }
@@ -179,13 +179,13 @@ class FileStorageTreeProvider
         return $foundFolders;
     }
 
-    public function getSubfoldersRecursively(Folder $folderObject, int $currentDepth): array
+    public function getSubfoldersRecursively(Folder $folderObject, int $currentDepth, ?array $subFolders = null): array
     {
         $items = [];
         if ($folderObject instanceof InaccessibleFolder) {
             $subFolders = [];
         } else {
-            $subFolders = $folderObject->getSubfolders();
+            $subFolders = is_array($subFolders) ? $subFolders : $folderObject->getSubfolders();
             $subFolders = ListUtility::resolveSpecialFolderNames($subFolders);
             uksort($subFolders, 'strnatcasecmp');
         }
@@ -201,7 +201,7 @@ class FileStorageTreeProvider
             }
 
             $items[] = array_merge(
-                $this->prepareFolderInformation($subFolder, $subFolderName),
+                $this->prepareFolderInformation($subFolder, $subFolderName, $folderObject, $children),
                 [
                     'depth' => $currentDepth,
                     'expanded' => $expanded,
@@ -212,7 +212,7 @@ class FileStorageTreeProvider
             );
 
             if ($expanded && !empty($children)) {
-                $childItems = $this->getSubfoldersRecursively($subFolder, $currentDepth + 1);
+                $childItems = $this->getSubfoldersRecursively($subFolder, $currentDepth + 1, $children);
                 array_push($items, ...$childItems);
             }
         }
