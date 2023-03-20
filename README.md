@@ -156,18 +156,19 @@ worth it. TYPO3 is the Enterprise Content Management System "for all".
 The GPL license allows for developments that are based upon TYPO3 to
 also be freely available under the GPL. Please remember this, because
 TYPO3 is about "Inspiring People To Share". If you are making money with
-TYPO3 you can donate or become a member of the TYPO3 Association.
+TYPO3 you can donate or become a member of the
+[TYPO3 Association](https://typo3.org/association).
 
 By becoming a supporting member, individuals and organisations mainly
 fund core development of TYPO3. The decision about what the funds are
-used for, is made by all members of the Association and the Expert
-Advisory Board (EAB). The decisions will be made transparent to the
-community and especially the supporting members. Your funds will also
-serve for other purposes as laid out in the bylaws.
+used for, is made by all members of the Association and the TYPO3
+Association Board. The decisions will be made transparent to the community
+and especially the supporting members. Your funds will also serve for
+other purposes as laid out in the bylaws.
 
-* Donate: https://typo3.org/donate
-* Become a member of the TYPO3 Association:
-  https://typo3.org/project/association/
+* [Donate to TYPO3](https://typo3.org/donate)
+* [Become a member of the TYPO3 Association](
+  https://typo3.org/membership)
 
 Copyleft
 --------
