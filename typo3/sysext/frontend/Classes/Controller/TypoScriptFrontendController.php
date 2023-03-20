@@ -46,6 +46,7 @@ use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Locking\ResourceMutex;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -549,7 +550,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->pageRenderer->setTemplateFile('EXT:frontend/Resources/Private/Templates/MainPage.html');
         // As initPageRenderer could be called in constructor and for USER_INTs, this information is only set
         // once - in order to not override any previous settings of PageRenderer.
-        $this->pageRenderer->setLanguage($this->language->getTypo3Language());
+        if ($this->language->hasCustomTypo3Language()) {
+            $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($this->language->getTypo3Language());
+        } else {
+            $locale = $this->language->getLocale();
+        }
+        $this->pageRenderer->setLanguage($locale);
     }
 
     /**

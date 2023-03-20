@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -50,10 +51,10 @@ class LocalizationUtility
      * @param string|null $extensionName The name of the extension
      * @param array|null $arguments The arguments of the extension, being passed over to sprintf
      * @param string|null $languageKey The language key or null for using the current language from the system
-     * @param string[] $alternativeLanguageKeys The alternative language keys if no translation was found.
+     * @param string[]|null $alternativeLanguageKeys The alternative language keys if no translation was found.
      * @return string|null The value from LOCAL_LANG or null if no translation was found.
      */
-    public static function translate(string $key, ?string $extensionName = null, array $arguments = null, string $languageKey = null, array $alternativeLanguageKeys = []): ?string
+    public static function translate(string $key, ?string $extensionName = null, array $arguments = null, string $languageKey = null, array $alternativeLanguageKeys = null): ?string
     {
         if ($key === '') {
             // Early return guard: returns null if the key was empty, because the key may be a dynamic value
@@ -84,6 +85,7 @@ class LocalizationUtility
         // Check if a value was explicitly set to "" via TypoScript, if so, we need to ensure that this is "" and not null
         if ($extensionName) {
             $overrideLabels = static::loadTypoScriptLabels($extensionName);
+            // @todo: probably cannot handle "de-DE" and "de" fallbacks
             if ($value === null && isset($overrideLabels[$languageKey])) {
                 $value = '';
             }
@@ -102,9 +104,9 @@ class LocalizationUtility
      * Loads local-language values by looking for a "locallang.xlf" file in the plugin resources directory and if found includes it.
      * Locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.xlf" file.
      *
-     * @param string[] $alternativeLanguageKeys
+     * @param string[]|null $alternativeLanguageKeys
      */
-    protected static function initializeLocalization(string $languageFilePath, string $languageKey, array $alternativeLanguageKeys, ?string $extensionName): LanguageService
+    protected static function initializeLocalization(string $languageFilePath, string $languageKey, ?array $alternativeLanguageKeys, ?string $extensionName): LanguageService
     {
         $languageService = self::buildLanguageService($languageKey, $alternativeLanguageKeys, $languageFilePath);
         if (!empty($extensionName)) {
@@ -116,12 +118,16 @@ class LocalizationUtility
         return $languageService;
     }
 
-    protected static function buildLanguageService(string $languageKey, array $alternativeLanguageKeys, $languageFilePath): LanguageService
+    protected static function buildLanguageService(string $languageKey, ?array $alternativeLanguageKeys, $languageFilePath): LanguageService
     {
-        $languageKeyHash = sha1(json_encode(array_merge([$languageKey], $alternativeLanguageKeys, [$languageFilePath])));
+        $languageKeyHash = sha1(json_encode(array_merge([$languageKey], $alternativeLanguageKeys ?? [], [$languageFilePath])));
         $cache = self::getRuntimeCache();
         if (!$cache->get($languageKeyHash)) {
-            $locale = new Locale($languageKey, $alternativeLanguageKeys);
+            if ($alternativeLanguageKeys === [] || $alternativeLanguageKeys === null) {
+                $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($languageKey);
+            } else {
+                $locale = new Locale($languageKey, $alternativeLanguageKeys);
+            }
             $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create($locale);
             $languageService->includeLLFile($languageFilePath);
             $cache->set($languageKeyHash, $languageService);

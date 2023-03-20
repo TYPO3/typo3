@@ -261,6 +261,14 @@ class SiteLanguage
     }
 
     /**
+     * @internal
+     */
+    public function hasCustomTypo3Language(): bool
+    {
+        return $this->typo3Language !== '';
+    }
+
+    /**
      * Returns the ISO-639-1 language ISO code
      * @deprecated not needed anymore, use $this->getLocale()->getLanguageCode() instead.
      */

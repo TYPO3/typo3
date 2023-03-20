@@ -1331,13 +1331,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_lang($content = '', $conf = [])
     {
-        $currentLanguageCode = $this->getTypoScriptFrontendController()->getLanguage()->getTypo3Language();
+        $siteLanguage = $this->getTypoScriptFrontendController()->getLanguage();
+        $currentLanguageCode = $siteLanguage->getTypo3Language();
         if (!$currentLanguageCode) {
             return $content;
         }
         if (isset($conf['lang.'][$currentLanguageCode])) {
             $content = $conf['lang.'][$currentLanguageCode];
         } else {
+            // @todo: use the Locale object and its dependencies in TYPO3 v13
             // Check language dependencies
             $locales = GeneralUtility::makeInstance(Locales::class);
             foreach ($locales->getLocaleDependencies($currentLanguageCode) as $languageCode) {

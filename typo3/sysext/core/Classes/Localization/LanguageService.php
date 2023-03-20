@@ -315,6 +315,11 @@ class LanguageService
         $this->overrideLabels[$fileRef] = $localLanguage;
     }
 
+    public function getLocale(): ?Locale
+    {
+        return $this->locale;
+    }
+
     private function getTypo3LanguageKey(): string
     {
         if ($this->locale === null) {

@@ -52,7 +52,7 @@ trait PageRendererBackendSetupTrait
         ServerRequestInterface $request,
         LanguageService $languageService,
     ): void {
-        $pageRenderer->setLanguage($languageService->lang);
+        $pageRenderer->setLanguage($languageService->getLocale());
         $pageRenderer->setMetaTag('name', 'viewport', 'width=device-width, initial-scale=1');
         $pageRenderer->setFavIcon($this->getBackendFavicon($extensionConfiguration, $request));
         $nonce = $request->getAttribute('nonce');
