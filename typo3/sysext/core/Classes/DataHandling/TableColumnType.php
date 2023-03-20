@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,53 +17,34 @@
 
 namespace TYPO3\CMS\Core\DataHandling;
 
-use TYPO3\CMS\Core\Type\Enumeration;
-
 /**
  * Enumeration object for tca type
  */
-final class TableColumnType extends Enumeration
+enum TableColumnType: string
 {
-    public const __default = self::INPUT;
-
-    /**
-     * Constants reflecting the table column type
-     */
-    public const INPUT = 'INPUT';
-    public const TEXT = 'TEXT';
-    public const CHECK = 'CHECK';
-    public const RADIO = 'RADIO';
-    public const SELECT = 'SELECT';
-    public const GROUP = 'GROUP';
-    public const FOLDER = 'FOLDER';
-    public const NONE = 'NONE';
-    public const LANGUAGE = 'LANGUAGE';
-    public const PASSTHROUGH = 'PASSTHROUGH';
-    public const USER = 'USER';
-    public const FLEX = 'FLEX';
-    public const INLINE = 'INLINE';
-    public const IMAGEMANIPULATION = 'IMAGEMANIPULATION';
-    public const SLUG = 'SLUG';
-    public const CATEGORY = 'CATEGORY';
-    public const EMAIL = 'EMAIL';
-    public const LINK = 'LINK';
-    public const PASSWORD = 'PASSWORD';
-    public const DATETIME = 'DATETIME';
-    public const COLOR = 'COLOR';
-    public const NUMBER = 'NUMBER';
-    public const FILE = 'FILE';
-    public const JSON = 'JSON';
-    public const UUID = 'UUID';
-
-    /**
-     * @param mixed $type
-     */
-    public function __construct($type = null)
-    {
-        if ($type !== null) {
-            $type = strtoupper((string)$type);
-        }
-
-        parent::__construct($type);
-    }
+    case INPUT = 'input';
+    case TEXT = 'text';
+    case CHECK = 'check';
+    case RADIO = 'radio';
+    case SELECT = 'select';
+    case GROUP = 'group';
+    case FOLDER = 'folder';
+    case NONE = 'none';
+    case LANGUAGE = 'language';
+    case PASSTHROUGH = 'passthrough';
+    case USER = 'user';
+    case FLEX = 'flex';
+    case INLINE = 'inline';
+    case IMAGEMANIPULATION = 'imagemanipulation';
+    case SLUG = 'slug';
+    case CATEGORY = 'category';
+    case EMAIL = 'email';
+    case LINK = 'link';
+    case PASSWORD = 'password';
+    case DATETIME = 'datetime';
+    case COLOR = 'color';
+    case NUMBER = 'number';
+    case FILE = 'file';
+    case JSON = 'json';
+    case UUID = 'uuid';
 }

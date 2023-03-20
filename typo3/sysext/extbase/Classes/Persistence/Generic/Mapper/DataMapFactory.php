@@ -287,8 +287,7 @@ class DataMapFactory implements SingletonInterface
         // todo: take place outside this method.
 
         $tableColumnType = $columnConfiguration['type'] ?? null;
-        $columnMap->setType(TableColumnType::cast($tableColumnType));
-
+        $columnMap->setType(TableColumnType::tryFrom($tableColumnType) ?? TableColumnType::INPUT);
         return $columnMap;
     }
 
@@ -354,7 +353,7 @@ class DataMapFactory implements SingletonInterface
         // todo: this method should only be called with proper arguments which means that the TCA integrity check should
         // todo: take place outside this method.
 
-        if ((string)$columnMap->getType() === TableColumnType::DATETIME
+        if ($columnMap->getType() === TableColumnType::DATETIME
             && in_array($columnConfiguration['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)
         ) {
             $columnMap->setDateTimeStorageFormat($columnConfiguration['dbType']);

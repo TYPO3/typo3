@@ -364,7 +364,7 @@ class DataMapFactoryTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $mockColumnMap->setType(new TableColumnType('datetime'));
+        $mockColumnMap->setType(TableColumnType::DATETIME);
 
         if ($expectedValue !== null) {
             $mockColumnMap->expects(self::once())->method('setDateTimeStorageFormat')->with(self::equalTo($type));
@@ -472,7 +472,7 @@ class DataMapFactoryTest extends UnitTestCase
      * @test
      * @dataProvider tcaConfigurationsContainingType
      */
-    public function setTypeDetectsTypeProperly(array $columnConfiguration, string $type): void
+    public function setTypeDetectsTypeProperly(array $columnConfiguration, TableColumnType $type): void
     {
         $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, null, [], '', false);
 
@@ -480,6 +480,6 @@ class DataMapFactoryTest extends UnitTestCase
 
         $dataMapFactory->_call('setType', $columnMap, $columnConfiguration);
 
-        self::assertEquals($type, (string)$columnMap->getType());
+        self::assertEquals($type, $columnMap->getType());
     }
 }

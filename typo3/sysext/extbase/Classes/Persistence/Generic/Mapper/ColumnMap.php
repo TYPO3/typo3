@@ -182,11 +182,7 @@ class ColumnMap
      */
     private $dateTimeStorageFormat;
 
-    /**
-     * todo: Check if this property should support null. If not, set default value.
-     * @var TableColumnType|null
-     */
-    private $type;
+    private TableColumnType $type = TableColumnType::INPUT;
 
     /**
      * Constructs a Column Map
@@ -336,7 +332,7 @@ class ColumnMap
         $this->type = $type;
     }
 
-    public function getType(): ?TableColumnType
+    public function getType(): TableColumnType
     {
         return $this->type;
     }
