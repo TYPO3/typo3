@@ -178,10 +178,10 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
     public function getBodyTagAttributes(): array
     {
         $attributes = [
-            'data-identifier' => 't3://record?identifier=' . $this->identifier . '&uid=',
+            'data-linkbrowser-identifier' => 't3://record?identifier=' . $this->identifier . '&uid=',
         ];
         if (!empty($this->linkParts)) {
-            $attributes['data-current-link'] = $this->linkService->asString($this->linkParts['url']);
+            $attributes['data-linkbrowser-current-link'] = $this->linkService->asString($this->linkParts['url']);
         }
         return $attributes;
     }

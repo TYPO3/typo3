@@ -36,3 +36,11 @@ services:
 
   TYPO3\CMS\Filelist\ElementBrowser\FolderBrowser:
     shared: false
+
+  TYPO3\CMS\Filelist\LinkHandler\FileLinkHandler:
+    public: true
+    shared: false
+
+  TYPO3\CMS\Filelist\LinkHandler\FolderLinkHandler:
+    public: true
+    shared: false

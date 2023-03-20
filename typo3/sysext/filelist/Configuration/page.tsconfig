@@ -1,0 +1,15 @@
+# Register link handlers
+TCEMAIN.linkHandler {
+  file {
+    handler = TYPO3\CMS\Filelist\LinkHandler\FileLinkHandler
+    label = LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:file
+    displayAfter = page
+    scanAfter = page
+  }
+  folder {
+    handler = TYPO3\CMS\Filelist\LinkHandler\FolderLinkHandler
+    label = LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:folder
+    displayAfter = page,file
+    scanAfter = page,file
+  }
+}

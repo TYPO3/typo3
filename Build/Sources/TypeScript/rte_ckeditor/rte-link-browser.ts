@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import LinkBrowser from '@typo3/backend/link-browser';
+import LinkBrowser, { LinkAttributes } from '@typo3/backend/link-browser';
 import Modal from '@typo3/backend/modal';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { Typo3LinkDict, LINK_ALLOWED_ATTRIBUTES, addLinkPrefix } from '@typo3/rte-ckeditor/plugin/typo3-link';
@@ -49,7 +49,7 @@ class RteLinkBrowser {
    * @param {String} link The select element or anything else which identifies the link (e.g. "page:<pageUid>" or "file:<uid>")
    */
   public finalizeFunction(link: string): void {
-    const attributes: Record<string, string> = LinkBrowser.getLinkAttributeValues();
+    const attributes = LinkBrowser.getLinkAttributeValues();
     const queryParams = attributes.params ? attributes.params : '';
     delete attributes.params;
 
@@ -69,7 +69,7 @@ class RteLinkBrowser {
     });
   }
 
-  private convertAttributes(attributes: Record<string, string>, text?: string): Typo3LinkDict {
+  private convertAttributes(attributes: LinkAttributes, text?: string): Typo3LinkDict {
     const linkAttr: { attrs: { [key: string]: string}, linkText?: string} = { attrs: {} };
     for (const [attribute, value] of Object.entries(attributes)) {
       if (LINK_ALLOWED_ATTRIBUTES.includes(attribute)) {

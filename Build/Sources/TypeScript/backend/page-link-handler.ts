@@ -26,12 +26,6 @@ class PageLinkHandler {
       LinkBrowser.finalizeFunction(targetEl.getAttribute('href'));
     }).delegateTo(document, 'a.t3js-pageLink');
 
-    // Link to current page
-    new RegularEvent('click', (evt: MouseEvent): void => {
-      evt.preventDefault();
-      LinkBrowser.finalizeFunction(document.body.dataset.currentLink);
-    }).delegateTo(document, 'input.t3js-linkCurrent');
-
     // Input field
     new RegularEvent('click', (evt: MouseEvent): void => {
       evt.preventDefault();

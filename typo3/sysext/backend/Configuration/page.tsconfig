@@ -4,18 +4,6 @@ TCEMAIN.linkHandler {
     handler = TYPO3\CMS\Backend\LinkHandler\PageLinkHandler
     label = LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:page
   }
-  file {
-    handler = TYPO3\CMS\Backend\LinkHandler\FileLinkHandler
-    label = LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:file
-    displayAfter = page
-    scanAfter = page
-  }
-  folder {
-    handler = TYPO3\CMS\Backend\LinkHandler\FolderLinkHandler
-    label = LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:folder
-    displayAfter = page,file
-    scanAfter = page,file
-  }
   url {
     handler = TYPO3\CMS\Backend\LinkHandler\UrlLinkHandler
     label = LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:extUrl

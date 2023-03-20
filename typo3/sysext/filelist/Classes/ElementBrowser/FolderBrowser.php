@@ -56,7 +56,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
     protected ?Folder $selectedFolder = null;
 
     protected ?Matcher $resourceDisplayMatcher = null;
-    protected ?Matcher $resourceSelectMatcher = null;
+    protected ?Matcher $resourceSelectableMatcher = null;
 
     /**
      * Adds additional JavaScript modules
@@ -109,8 +109,8 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
 
         $this->resourceDisplayMatcher = GeneralUtility::makeInstance(Matcher::class);
         $this->resourceDisplayMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
-        $this->resourceSelectMatcher = GeneralUtility::makeInstance(Matcher::class);
-        $this->resourceSelectMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
+        $this->resourceSelectableMatcher = GeneralUtility::makeInstance(Matcher::class);
+        $this->resourceSelectableMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
     }
 
     /**
@@ -159,7 +159,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
             // Create the filelist
             $this->filelist->start($this->selectedFolder, MathUtility::forceIntegerInRange($this->currentPage, 1, 100000), 'asc', false, Mode::BROWSE);
             $this->filelist->setResourceDisplayMatcher($this->resourceDisplayMatcher);
-            $this->filelist->setResourceSelectMatcher($this->resourceSelectMatcher);
+            $this->filelist->setResourceSelectableMatcher($this->resourceSelectableMatcher);
             $markup[] = $this->filelist->render(null, $this->view);
 
             // Build the folder creation form

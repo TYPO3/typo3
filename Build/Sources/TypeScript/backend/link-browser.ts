@@ -11,11 +11,33 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 
-interface LinkAttributes {
+export interface LinkAttributes {
   [s: string]: any;
+}
+
+export interface LinkBrowserFieldChangeFunc {
+  name: string;
+  data: Record<string, string>;
+}
+
+export interface LinkBrowserParameters {
+  table: string;
+  uid: string;
+  pid: string;
+  field?: string;
+  fieldName?: string;
+  formName?: string;
+  itemName?: string;
+  hmac?: string;
+  recordType?: string;
+  richtextConfigurationName?: string;
+  fieldChangeFunc?:LinkBrowserFieldChangeFunc[];
+  fieldChangeFuncHash?: string;
+  curUrl?: Record<string, string>,
+  currentValue?: string;
+  currentSelectedValues?: string;
 }
 
 /**
@@ -23,24 +45,23 @@ interface LinkAttributes {
  * @exports @typo3/backend/link-browser
  */
 class LinkBrowser {
-  private urlParameters: Object = {};
-  private parameters: Object = {};
+  public parameters: LinkBrowserParameters;
   private linkAttributeFields: LinkAttributes;
 
   constructor() {
-    DocumentService.ready().then((): void => {
-      this.urlParameters = JSON.parse(document.body.dataset.urlParameters || '{}');
-      this.parameters = JSON.parse(document.body.dataset.parameters || '{}');
-      this.linkAttributeFields = JSON.parse(document.body.dataset.linkAttributeFields || '{}');
+    this.parameters = JSON.parse(document.body.dataset.linkbrowserParameters || '{}');
+    this.linkAttributeFields = JSON.parse(document.body.dataset.linkbrowserAttributeFields || '{}');
 
-      new RegularEvent('change', this.loadTarget)
-        .delegateTo(document, '.t3js-targetPreselect');
-      new RegularEvent('submit', (event: SubmitEvent): void => event.preventDefault())
-        .delegateTo(document, 'form.t3js-dummyform');
-    });
+    new RegularEvent('click', (event: PointerEvent): void => {
+      event.preventDefault();
+      this.finalizeFunction(document.body.dataset.linkbrowserCurrentLink);
+    }).delegateTo(document, 'button.t3js-linkCurrent');
+
+    new RegularEvent('change', this.loadTarget)
+      .delegateTo(document, '.t3js-targetPreselect');
   }
 
-  public getLinkAttributeValues(): Object {
+  public getLinkAttributeValues(): LinkAttributes {
     const linkAttributeValues: LinkAttributes = {};
     for (const fieldName of this.linkAttributeFields.values()) {
       const linkAttribute: HTMLInputElement = document.querySelector('[name="l' + fieldName + '"]');

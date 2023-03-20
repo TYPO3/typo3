@@ -36,8 +36,9 @@ class ResourceView
     public ?string $editDataUri;
     public ?string $replaceUri;
 
-    public bool $isSelectable = true;
     public bool $isDownloadable = true;
+    public bool $isSelectable = true;
+    public bool $isSelected = false;
 
     public function __construct(
         public readonly ResourceInterface $resource,
@@ -203,6 +204,7 @@ class ResourceView
             'class' => 't3js-multi-record-selection-check',
             'name' => 'CBC[_' . strtoupper($this->getType()) . '|' . md5($this->getIdentifier()) . ']',
             'value' => $this->getIdentifier(),
+            'checked' => $this->isSelected,
         ];
     }
 

@@ -18,6 +18,13 @@ return [
         'target' => Controller\Resource\ResourceController::class . '::renameResourceAction',
     ],
 
+    // Link resource
+    'link_resource' => [
+        'path' => '/link/resource',
+        'methods' => ['POST'],
+        'target' => Controller\LinkController::class . '::resourceAction',
+    ],
+
     // File processing
     'file_process' => [
         'path' => '/file/process',

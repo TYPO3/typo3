@@ -141,9 +141,14 @@ class FileList
      */
     public $clipObj;
 
+    // Evaluates if a resource can be downloaded
     protected ?Matcher $resourceDownloadMatcher = null;
+    // Evaluates if a resource can be displayed
     protected ?Matcher $resourceDisplayMatcher = null;
-    protected ?Matcher $resourceSelectMatcher = null;
+    // Evaluates if a resource can be selected
+    protected ?Matcher $resourceSelectableMatcher = null;
+    // Evaluates if a resource is currently selected
+    protected ?Matcher $resourceSelectedMatcher = null;
 
     protected ?FileSearchDemand $searchDemand = null;
     protected EventDispatcherInterface $eventDispatcher;
@@ -205,9 +210,15 @@ class FileList
         return $this;
     }
 
-    public function setResourceSelectMatcher(?Matcher $matcher): self
+    public function setResourceSelectableMatcher(?Matcher $matcher): self
     {
-        $this->resourceSelectMatcher = $matcher;
+        $this->resourceSelectableMatcher = $matcher;
+        return $this;
+    }
+
+    public function setResourceSelectedMatcher(?Matcher $matcher): self
+    {
+        $this->resourceSelectedMatcher = $matcher;
         return $this;
     }
 
@@ -229,7 +240,7 @@ class FileList
         $this->totalbytes = 0;
         $this->resourceDownloadMatcher = null;
         $this->resourceDisplayMatcher = null;
-        $this->resourceSelectMatcher = null;
+        $this->resourceSelectableMatcher = null;
         $this->setMode($mode);
     }
 
@@ -250,6 +261,7 @@ class FileList
     protected function renderTiles(ResourceCollectionPaginator $paginator, array $resourceViews, ViewInterface $view): string
     {
         $view->assign('displayThumbs', $this->thumbs);
+        $view->assign('displayCheckbox', $this->resourceSelectableMatcher ? true : false);
         $view->assign('pagination', [
             'backward' => $this->getPaginationLinkForDirection($paginator, NavigationDirection::BACKWARD),
             'forward' => $this->getPaginationLinkForDirection($paginator, NavigationDirection::FORWARD),
@@ -294,6 +306,14 @@ class FileList
             $files = $this->folderObject->getFiles();
         }
 
+        // Cleanup field array
+        $this->fieldArray = array_filter($this->fieldArray, function (string $fieldName) {
+            if ($fieldName === '_SELECTOR_' && $this->resourceSelectableMatcher === null) {
+                return false;
+            }
+            return true;
+        });
+
         // Remove processing folders
         $folders = array_filter($folders, function (Folder $folder) {
             return $folder->getRole() !== FolderInterface::ROLE_PROCESSING;
@@ -329,11 +349,12 @@ class FileList
             $resourceView->editContentUri = $this->createEditContentUriForResource($resource);
             $resourceView->replaceUri = $this->createReplaceUriForResource($resource);
 
-            $resourceView->isDownloadable = $this->resourceDownloadMatcher === null || $this->resourceDownloadMatcher->match($resource);
-            $resourceView->isSelectable = $this->resourceSelectMatcher === null || $this->resourceSelectMatcher->match($resource);
+            $resourceView->isDownloadable = $this->resourceDownloadMatcher !== null && $this->resourceDownloadMatcher->match($resource);
+            $resourceView->isSelectable = $this->resourceSelectableMatcher !== null && $this->resourceSelectableMatcher->match($resource);
             if ($this->mode === Mode::BROWSE && $resource instanceof File) {
                 $resourceView->isSelectable = $this->eventDispatcher->dispatch(new IsFileSelectableEvent($resource))->isFileSelectable();
             }
+            $resourceView->isSelected = $this->resourceSelectedMatcher !== null && $this->resourceSelectedMatcher->match($resource);
 
             $resourceViews[] = $resourceView;
         }
@@ -360,29 +381,20 @@ class FileList
         // Initialize rendering.
         $cols = [];
         $colType = $isTableHeader ? 'th' : 'td';
-        $colspan = '';
-        $colspanCounter = 0;
-        $lastField = '';
         // Traverse field array which contains the data to present:
         foreach ($this->fieldArray as $fieldName) {
-            if (isset($data[$fieldName])) {
-                if ($lastField && isset($data[$lastField])) {
-                    $cssClass = $this->addElement_tdCssClass[$lastField] ?? 'col-nowrap';
-                    $cols[] = '<' . $colType . ' class="' . $cssClass . '"' . $colspan . '>' . $data[$lastField] . '</' . $colType . '>';
-                }
-                $lastField = $fieldName;
-                $colspanCounter = 1;
-            } else {
-                if (!$lastField) {
-                    $lastField = $fieldName;
-                }
-                $colspanCounter++;
+            $cellAttributes = [];
+            $cellAttributes['class'] = $this->addElement_tdCssClass[$fieldName] ?? 'col-nowrap';
+
+            // Special handling to combine icon and name column
+            if ($isTableHeader && $fieldName === 'icon') {
+                continue;
             }
-            $colspan = ($colspanCounter > 1) ? ' colspan="' . $colspanCounter . '"' : '';
-        }
-        if ($lastField) {
-            $cssClass = $this->addElement_tdCssClass[$lastField] ?? '';
-            $cols[] = '<' . $colType . ' class="' . $cssClass . '"' . $colspan . '>' . $data[$lastField] . '</' . $colType . '>';
+            if ($isTableHeader && $fieldName === 'name') {
+                $cellAttributes['colspan'] = 2;
+            }
+
+            $cols[] = '<' . $colType . ' ' . GeneralUtility::implodeAttributes($cellAttributes, true) . '>' . ($data[$fieldName] ?? '') . '</' . $colType . '>';
         }
 
         // Add the table row
@@ -408,23 +420,42 @@ class FileList
     protected function renderListTableHeader(): string
     {
         $data = [];
-        foreach ($this->fieldArray as $fieldName) {
-            if ($fieldName === '_SELECTOR_') {
-                $data[$fieldName] = $this->renderCheckboxActions();
-            } elseif ($fieldName === '_CONTROL_') {
-                // Special case: The control column header should not be wrapped into a sort link
-                $data[$fieldName] = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_');
-            } elseif ($specialLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $fieldName)) {
-                $data[$fieldName] = $this->linkWrapSort($fieldName, $specialLabel);
-            } elseif ($customLabel = $this->getLanguageService()->getLL('c_' . $fieldName)) {
-                $data[$fieldName] = $this->linkWrapSort($fieldName, $customLabel);
-            } elseif ($fieldName !== 'icon') {
-                // Normal database field
-                $data[$fieldName] = $this->linkWrapSort($fieldName);
+        foreach ($this->fieldArray as $field) {
+            switch ($field) {
+                case 'icon':
+                    $data[$field] = '';
+                    break;
+                case '_SELECTOR_':
+                    $data[$field] = $this->renderCheckboxActions();
+                    break;
+                default:
+                    $data[$field] = $this->renderListTableFieldHeader($field);
+                    break;
             }
         }
 
         return $this->addElement($data, [], true);
+    }
+
+    protected function renderListTableFieldHeader(string $field): string
+    {
+        $label = $this->getFieldLabel($field);
+        if (in_array($field, ['_SELECTOR_', '_CONTROL_', '_PATH_'])) {
+            return $label;
+        }
+
+        $params = ['sort' => $field, 'currentPage' => 0];
+        if ($this->sort === $field) {
+            // Check reverse sorting
+            $params['reverse'] = ($this->sortRev ? '0' : '1');
+            $sortArrow = $this->iconFactory->getIcon('status-status-sorting-' . ($this->sortRev ? 'desc' : 'asc'), Icon::SIZE_SMALL)->render();
+        } else {
+            $params['reverse'] = 0;
+            $sortArrow = '';
+        }
+        $href = $this->createModuleUri($params);
+
+        return '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($label) . ' ' . $sortArrow . '</a>';
     }
 
     /**
@@ -436,6 +467,7 @@ class FileList
         foreach ($resourceViews as $resourceView) {
             $data = [];
             $attributes = [
+                'class' => $resourceView->isSelected ? 'selected' : '',
                 'data-filelist-element' => 'true',
                 'data-filelist-type' => $resourceView->getType(),
                 'data-filelist-identifier' => $resourceView->getIdentifier(),
@@ -445,6 +477,7 @@ class FileList
                 'data-filelist-uid' => $resourceView->getUid(),
                 'data-filelist-meta-uid' => $resourceView->getMetaDataUid(),
                 'data-filelist-selectable' => $resourceView->isSelectable ? 'true' : 'false',
+                'data-filelist-selected' => $resourceView->isSelected ? 'true' : 'false',
                 'data-multi-record-selection-element' => 'true',
                 'draggable' => $resourceView->canMove() ? 'true' : 'false',
             ];
@@ -512,13 +545,17 @@ class FileList
                 break;
         }
 
-        $data = [];
-        $data['_SELECTOR_'] = '<a href="' . htmlspecialchars($link->uri) . '">'
-            . ($iconIdentifier !== null ? $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() : '')
-            . '<i>[' . $link->label . ']</i>'
-            . '</a>';
+        $markup = [];
+        $markup[] = '<tr>';
+        $markup[] = '  <td colspan="' . count($this->fieldArray) . '">';
+        $markup[] = '    <a href="' . htmlspecialchars($link->uri) . '">';
+        $markup[] = '      ' . ($iconIdentifier !== null ? $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() : '');
+        $markup[] = '      <i>[' . $link->label . ']</i>';
+        $markup[] = '    </a>';
+        $markup[] = '  </td>';
+        $markup[] = '</tr>';
 
-        return $this->addElement($data);
+        return implode(PHP_EOL, $markup);
     }
 
     /**
@@ -555,42 +592,6 @@ class FileList
             $translations[$languageId] = $record;
         }
         return $translations;
-    }
-
-    /**
-     * Wraps a field label for the header row into a link to the filelist with sorting commands
-     *
-     * @param string $fieldName The field to sort
-     * @param string $label The label to be wrapped - will be determined if not given
-     */
-    protected function linkWrapSort(string $fieldName, string $label = ''): string
-    {
-        // Determine label if not given
-        if ($label === '') {
-            $lang = $this->getLanguageService();
-            $concreteTableName = $this->getConcreteTableName($fieldName);
-            $label = BackendUtility::getItemLabel($concreteTableName, $fieldName);
-            // In case global TSconfig exists we have to check if the label is overridden there
-            $tsConfig = BackendUtility::getPagesTSconfig(0);
-            $label = $lang->translateLabel(
-                $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label.'] ?? [],
-                $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label'] ?? $label
-            );
-        }
-
-        $params = ['sort' => $fieldName, 'currentPage' => 0];
-
-        if ($this->sort === $fieldName) {
-            // Check reverse sorting
-            $params['reverse'] = ($this->sortRev ? '0' : '1');
-            $sortArrow = $this->iconFactory->getIcon('status-status-sorting-' . ($this->sortRev ? 'desc' : 'asc'), Icon::SIZE_SMALL)->render();
-        } else {
-            $params['reverse'] = 0;
-            $sortArrow = '';
-        }
-        $href = $this->createModuleUri($params);
-
-        return '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($label) . ' ' . $sortArrow . '</a>';
     }
 
     /**
@@ -757,8 +758,16 @@ class FileList
             return '';
         }
 
+        $attributes = [
+            'class' => 'form-check-input ' . $checkboxConfig['class'],
+            'type' => 'checkbox',
+            'name' => $checkboxConfig['name'],
+            'value' => $checkboxConfig['value'],
+            'checked' => $checkboxConfig['checked'],
+        ];
+
         return '<span class="form-check form-toggle">'
-            . '<input class="form-check-input ' . $checkboxConfig['class'] . '" type="checkbox" name="' . $checkboxConfig['name'] . '" value="' . $checkboxConfig['value'] . '" />'
+            . '<input ' . GeneralUtility::implodeAttributes($attributes, true) . ' />'
             . '</span>';
     }
 
@@ -1586,6 +1595,30 @@ class FileList
             default:
                 return '';
         }
+    }
+
+    protected function getFieldLabel(string $field): string
+    {
+        $lang = $this->getLanguageService();
+
+        if ($specialLabel = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $field)) {
+            return $specialLabel;
+        }
+        if ($customLabel = $lang->getLL('c_' . $field)) {
+            return $customLabel;
+        }
+
+        $concreteTableName = $this->getConcreteTableName($field);
+        $label = BackendUtility::getItemLabel($concreteTableName, $field);
+
+        // In case global TSconfig exists we have to check if the label is overridden there
+        $tsConfig = BackendUtility::getPagesTSconfig(0);
+        $label = $lang->translateLabel(
+            $tsConfig['TCEFORM.'][$concreteTableName . '.'][$field . '.']['label.'] ?? [],
+            $tsConfig['TCEFORM.'][$concreteTableName . '.'][$field . '.']['label'] ?? $label
+        );
+
+        return $label;
     }
 
     /**

@@ -64,7 +64,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     protected ?FileSearchDemand $searchDemand = null;
 
     protected ?Matcher $resourceDisplayMatcher = null;
-    protected ?Matcher $resourceSelectMatcher = null;
+    protected ?Matcher $resourceSelectableMatcher = null;
 
     /**
      * Loads additional JavaScript
@@ -126,8 +126,8 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $this->resourceDisplayMatcher = GeneralUtility::makeInstance(Matcher::class);
         $this->resourceDisplayMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
         $this->resourceDisplayMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFileExtensionMatcher::class)->setExtensions($this->allowedFileExtensions));
-        $this->resourceSelectMatcher = GeneralUtility::makeInstance(Matcher::class);
-        $this->resourceSelectMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFileExtensionMatcher::class)->setExtensions($this->allowedFileExtensions));
+        $this->resourceSelectableMatcher = GeneralUtility::makeInstance(Matcher::class);
+        $this->resourceSelectableMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFileExtensionMatcher::class)->setExtensions($this->allowedFileExtensions));
     }
 
     /**
@@ -182,7 +182,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             // Create the filelist
             $this->filelist->start($this->selectedFolder, MathUtility::forceIntegerInRange($this->currentPage, 1, 100000), 'asc', false, Mode::BROWSE);
             $this->filelist->setResourceDisplayMatcher($this->resourceDisplayMatcher);
-            $this->filelist->setResourceSelectMatcher($this->resourceSelectMatcher);
+            $this->filelist->setResourceSelectableMatcher($this->resourceSelectableMatcher);
             $searchDemand = $this->searchWord !== ''
                 ? FileSearchDemand::createForSearchTerm($this->searchWord)->withFolder($this->selectedFolder)->withRecursive()
                 : null;

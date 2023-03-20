@@ -292,7 +292,6 @@ class BrowseLinksController extends AbstractLinkBrowserController
     protected function getLinkAttributeFieldDefinitions(): array
     {
         $fieldRenderingDefinitions = parent::getLinkAttributeFieldDefinitions();
-        $fieldRenderingDefinitions['title'] = $this->getTitleField();
         $fieldRenderingDefinitions['class'] = $this->getClassField();
         $fieldRenderingDefinitions['target'] = $this->getTargetField();
         $fieldRenderingDefinitions['rel'] = $this->getRelField();
@@ -318,16 +317,12 @@ class BrowseLinksController extends AbstractLinkBrowserController
         }
 
         return '
-            <form action="" name="lrelform" id="lrelform" class="t3js-dummyform">
-                 <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label">' .
-                        htmlspecialchars($this->getLanguageService()->getLL('linkRelationship')) .
-                    '</label>
-                    <div class="col-sm-9">
-                        <input type="text" name="lrel" class="form-control" value="' . htmlspecialchars($currentRel) . '" />
-                    </div>
-                </div>
-            </form>
+            <div class="element-browser-form-group">
+                <label for="lrel" class="form-label">' .
+                    htmlspecialchars($this->getLanguageService()->getLL('linkRelationship')) .
+                '</label>
+                <input type="text" name="lrel" class="form-control" value="' . htmlspecialchars($currentRel) . '" />
+            </div>
             ';
     }
 
@@ -339,51 +334,27 @@ class BrowseLinksController extends AbstractLinkBrowserController
         }
         $target = !empty($this->linkAttributeValues['target']) ? $this->linkAttributeValues['target'] : $this->defaultLinkTarget;
         $lang = $this->getLanguageService();
-        $targetSelector = '';
 
         $disabled = $targetSelectorConfig['disabled'] ?? false;
-        if (!$disabled) {
-            $targetSelector = '
-						<select name="ltarget_type" class="t3js-targetPreselect form-select">
-							<option value=""></option>
-							<option value="_top">' . htmlspecialchars($lang->getLL('top')) . '</option>
-							<option value="_blank">' . htmlspecialchars($lang->getLL('newWindow')) . '</option>
-						</select>
-			';
+        if ($disabled) {
+            return '';
         }
 
         return '
-				<form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform">
-                    <div class="row mb-3" ' . ($disabled ? ' style="display: none;"' : '') . '>
-                        <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('target')) . '</label>
-						<div class="col-sm-4">
-							<input type="text" name="ltarget" class="t3js-linkTarget form-control"
-							    value="' . htmlspecialchars($target) . '" />
-						</div>
-						<div class="col-sm-5">
-							' . $targetSelector . '
-						</div>
-					</div>
-				</form>
-				';
-    }
-
-    protected function getTitleField(): string
-    {
-        $title = $this->linkAttributeValues['title'] ?? '';
-
-        return '
-                <form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform">
-                    <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label">
-                            ' . htmlspecialchars($this->getLanguageService()->getLL('title')) . '
-                        </label>
-                        <div class="col-sm-9">
-                            <input type="text" name="ltitle" class="form-control" value="' . htmlspecialchars($title) . '">
-                        </div>
-                    </div>
-                </form>
-                ';
+            <div class="element-browser-form-group">
+                <label for="ltarget" class="form-label">
+                    ' . htmlspecialchars($lang->getLL('target')) . '
+                </label>
+                <span class="input-group">
+                    <input id="ltarget" type="text" name="ltarget" class="t3js-linkTarget form-control"
+                        value="' . htmlspecialchars($target) . '" />
+                    <select name="ltarget_type" class="t3js-targetPreselect form-select">
+                        <option value=""></option>
+                        <option value="_top">' . htmlspecialchars($lang->getLL('top')) . '</option>
+                        <option value="_blank">' . htmlspecialchars($lang->getLL('newWindow')) . '</option>
+                    </select>
+                </span>
+            </div>';
     }
 
     /**
@@ -393,24 +364,20 @@ class BrowseLinksController extends AbstractLinkBrowserController
      */
     protected function getClassField(): string
     {
-        $selectClass = '';
-        if (isset($this->classesAnchorJSOptions[$this->displayedLinkHandlerId])) {
-            $selectClass = '
-                <form action="" name="lclassform" id="lclassform" class="t3js-dummyform">
-                    <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label">
-                            ' . htmlspecialchars($this->getLanguageService()->getLL('class')) . '
-                        </label>
-                        <div class="col-sm-9">
-                            <select name="lclass" class="t3js-class-selector form-select">
-                                ' . $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] . '
-                            </select>
-                        </div>
-                    </div>
-                </form>
-            ';
+        if (!isset($this->classesAnchorJSOptions[$this->displayedLinkHandlerId])) {
+            return '';
         }
-        return $selectClass;
+
+        return '
+            <div class="element-browser-form-group">
+                <label for="lclass" class="form-label">
+                    ' . htmlspecialchars($this->getLanguageService()->getLL('class')) . '
+                </label>
+                <select id="lclass" name="lclass" class="t3js-class-selector form-select">
+                    ' . $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] . '
+                </select>
+            </div>
+        ';
     }
 
     /**

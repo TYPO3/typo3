@@ -6,15 +6,22 @@
 <f:layout name="LinkBrowser" />
 
 <f:section name="Content">
-    <form action="" id="ltelephoneform">
-        <div class="row">
-            <label class="col-3 col-form-label" for="ltelephone-label"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:telephoneNumber" /></label>
-            <div class="col-9">
-                <div class="input-group">
-                    <input id="ltelephone-label" type="tel" name="ltelephone" size="20" class="form-control" value="{telephone}" required />
-                    <div class="input-group-btn">
-                        <input class="btn btn-default" type="submit" value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:setLink')}" />
-                    </div>
+    <form class="form" action="" id="ltelephoneform">
+        <div class="element-browser-form-group">
+            <label for="ltelephone" class="form-label">
+                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:telephoneNumber" />
+            </label>
+            <div class="input-group">
+                <input
+                    id="ltelephone"
+                    type="tel"
+                    name="ltelephone"
+                    size="20"
+                    class="form-control"
+                    value="{telephone}"
+                    required />
+                <div class="input-group-btn">
+                    <input class="btn btn-primary" type="submit" value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:setLink')}" />
                 </div>
             </div>
         </div>

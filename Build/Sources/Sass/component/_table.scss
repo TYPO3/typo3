@@ -164,6 +164,11 @@ td.active {
     @extend .table-active;
 }
 
+tr.selected,
+td.selected {
+    @extend .table-info;
+}
+
 //
 // Fits the table in the viewport and makes overflow possible
 //

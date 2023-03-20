@@ -1,0 +1,42 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="LinkBrowser" />
+
+<f:section name="Navigation">
+    <typo3-backend-component-filestorage-browser
+        class="scaffold-content-navigation-component"
+        tree-actions="{treeActions -> f:format.json()}"
+        active-folder="{f:if(condition: selectedFolder, then: selectedFolder.combinedIdentifier, else: '') -> f:format.htmlentities()}"
+    >
+    </typo3-backend-component-filestorage-browser>
+</f:section>
+
+<f:section name="Content">
+    <f:if condition="{selectedFolder}">
+        <h4 class="text-truncate">
+            <core:iconForResource resource="{selectedFolder}" />
+            <f:render section="LinkWrap" contentAs="linkText" arguments="{_all}">
+                {selectedFolder.storage.name}: {selectedFolder.identifier}
+            </f:render>
+        </h4>
+    </f:if>
+    <f:format.raw>{content}</f:format.raw>
+</f:section>
+
+<f:section name="LinkWrap">
+    <f:if condition="{selectedFolderLink}">
+        <f:then>
+            <a href="#" class="element-browser-link" data-linkbrowser-link="{selectedFolderLink}">
+                {linkText -> f:format.raw()}
+            </a>
+        </f:then>
+        <f:else>
+            {linkText -> f:format.raw()}
+        </f:else>
+    </f:if>
+</f:section>
+
+</html>

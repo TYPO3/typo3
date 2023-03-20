@@ -56,6 +56,9 @@ use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Filelist\FileList;
+use TYPO3\CMS\Filelist\Matcher\Matcher;
+use TYPO3\CMS\Filelist\Matcher\ResourceFileTypeMatcher;
+use TYPO3\CMS\Filelist\Matcher\ResourceFolderTypeMatcher;
 use TYPO3\CMS\Filelist\Type\ViewMode;
 
 /**
@@ -335,6 +338,16 @@ class FileListController implements LoggerAwareInterface
             (bool)$this->moduleData->get('reverse')
         );
         $this->filelist->setColumnsToRender($this->getBackendUser()->getModuleData('list/displayFields')['_FILE'] ?? []);
+
+        $resourceSelectableMatcher = GeneralUtility::makeInstance(Matcher::class);
+        $resourceSelectableMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFileTypeMatcher::class));
+        $resourceSelectableMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
+        $this->filelist->setResourceSelectableMatcher($resourceSelectableMatcher);
+
+        $resourceDownloadMatcher = GeneralUtility::makeInstance(Matcher::class);
+        $resourceDownloadMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFileTypeMatcher::class));
+        $resourceDownloadMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
+        $this->filelist->setResourceDownloadMatcher($resourceDownloadMatcher);
     }
 
     protected function generateFileList(ServerRequestInterface $request): void

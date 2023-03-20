@@ -7,14 +7,21 @@
 
 <f:section name="Content">
     <form action="" id="lmailform">
-        <div class="row">
-            <label class="col-3 col-form-label" for="lemail-label"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:emailAddress" /></label>
-            <div class="col-9">
-                <div class="input-group">
-                    <input id="lemail-label" type="email" name="lemail" size="20" class="form-control" value="{email}" required />
-                    <div class="input-group-btn">
-                        <input class="btn btn-default" type="submit" value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:setLink')}" />
-                    </div>
+        <div class="element-browser-form-group">
+            <label for="lemail" class="form-label">
+                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:emailAddress" />
+            </label>
+            <div class="input-group">
+                <input
+                    id="lemail"
+                    type="email"
+                    name="lemail"
+                    size="20"
+                    class="form-control"
+                    value="{email}"
+                    required />
+                <div class="input-group-btn">
+                    <input class="btn btn-primary" type="submit" value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:setLink')}" />
                 </div>
             </div>
         </div>

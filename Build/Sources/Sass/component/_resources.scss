@@ -24,6 +24,9 @@
     --resource-tile-success-color: var(--resource-tile-color);
     --resource-tile-success-bg: #{tint-color($success, 95%)};
     --resource-tile-success-border-color: #{tint-color($success, 20%)};
+    --resource-tile-info-color: var(--resource-tile-color);
+    --resource-tile-info-bg: #{tint-color($info, 95%)};
+    --resource-tile-info-border-color: #{tint-color($info, 20%)};
     --resource-tile-danger-color: var(--resource-tile-color);
     --resource-tile-danger-bg: #{tint-color($danger, 95%)};
     --resource-tile-danger-border-color: #{tint-color($danger, 20%)};
@@ -34,7 +37,6 @@
     grid-template-columns: repeat(auto-fill, var(--resource-tiles-grid-width));
     gap: var(--resource-tiles-grid-spacing);
     user-select: none;
-    margin-bottom: $spacer;
 }
 
 // Container queries are currently not supported by clean-css and stylelint,
@@ -43,11 +45,12 @@
 /* clean-css ignore:start */
 .resource-tiles-container {
     container-type: inline-size;
+    margin-bottom: var(--typo3-component-spacing);
 }
 
 @container (min-width: 480px) {
     .resource-tiles {
-        --resource-tiles-grid-width: 170px;
+        --resource-tiles-grid-width: 169px;
     }
 }
 
@@ -91,6 +94,13 @@
     --resource-tile-border-color: var(--resource-tile-active-border-color);
 }
 
+.resource-tile.selected,
+.resource-tile.info {
+    --resource-tile-color: var(--resource-tile-info-color);
+    --resource-tile-bg: var(--resource-tile-info-bg);
+    --resource-tile-border-color: var(--resource-tile-info-border-color);
+}
+
 .resource-tile.success {
     --resource-tile-color: var(--resource-tile-success-color);
     --resource-tile-bg: var(--resource-tile-success-bg);
@@ -110,6 +120,7 @@
 }
 
 .resource-tile.active,
+.resource-tile.selected,
 .resource-tile:hover {
     .resource-tile-checkbox {
         display: block;

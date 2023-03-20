@@ -23,6 +23,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\Event\ModifyAllowedItemsEvent;
 use TYPO3\CMS\Backend\Controller\Event\ModifyLinkHandlersEvent;
 use TYPO3\CMS\Backend\LinkHandler\LinkHandlerInterface;
+use TYPO3\CMS\Backend\LinkHandler\LinkHandlerVariableProviderInterface;
+use TYPO3\CMS\Backend\LinkHandler\LinkHandlerViewProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -164,16 +166,24 @@ abstract class AbstractLinkBrowserController
         $this->loadLinkHandlers();
         $this->initCurrentUrl();
 
-        $view = $this->backendViewFactory->create($request, ['typo3/cms-backend']);
         $menuData = $this->buildMenuArray();
-        $renderLinkAttributeFields = $this->renderLinkAttributeFields($view);
-        if (method_exists($this->displayedLinkHandler, 'setView')) {
-            $this->displayedLinkHandler->setView($view);
+        if ($this->displayedLinkHandler instanceof LinkHandlerViewProviderInterface) {
+            $view = $this->displayedLinkHandler->createView($this->backendViewFactory, $request);
+        } else {
+            $view = $this->backendViewFactory->create($request, ['typo3/cms-backend']);
         }
+        if ($this->displayedLinkHandler instanceof LinkHandlerVariableProviderInterface) {
+            $this->displayedLinkHandler->initializeVariables($request);
+        }
+        $renderLinkAttributeFields = $this->renderLinkAttributeFields($view);
         if (!empty($this->currentLinkParts)) {
             $this->renderCurrentUrl($view);
         }
+        if (method_exists($this->displayedLinkHandler, 'setView')) {
+            $this->displayedLinkHandler->setView($view);
+        }
         $view->assignMultiple([
+            'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250,
             'menuItems' => $menuData,
             'linkAttributes' => $renderLinkAttributeFields,
             'contentOnly' => $request->getQueryParams()['contentOnly'] ?? false,
@@ -456,58 +466,44 @@ abstract class AbstractLinkBrowserController
         $fieldRenderingDefinitions = [];
         $fieldRenderingDefinitions['target'] = '
             <!-- Selecting target for link: -->
-            <form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform">
-                <div class="row mb-3" id="typo3-linkTarget">
-                    <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('target')) . '</label>
-                    <div class="col-sm-4">
-                        <input type="text" name="ltarget" class="t3js-linkTarget form-control"
-                            value="' . htmlspecialchars($this->linkAttributeValues['target'] ?? '') . '" />
-                    </div>
-                    <div class="col-sm-5">
-                        <select name="ltarget_type" class="t3js-targetPreselect form-select">
-                            <option value=""></option>
-                            <option value="_top">' . htmlspecialchars($lang->getLL('top')) . '</option>
-                            <option value="_blank">' . htmlspecialchars($lang->getLL('newWindow')) . '</option>
-                        </select>
-                    </div>
-                </div>
-            </form>';
+            <div class="element-browser-form-group">
+                <label for="ltarget" class="form-label">' . htmlspecialchars($lang->getLL('target')) . '</label>
+                <span class="input-group">
+                    <input id="ltarget" type="text" name="ltarget" class="t3js-linkTarget form-control"
+                        value="' . htmlspecialchars($this->linkAttributeValues['target'] ?? '') . '" />
+                    <select name="ltarget_type" class="t3js-targetPreselect form-select">
+                        <option value=""></option>
+                        <option value="_top">' . htmlspecialchars($lang->getLL('top')) . '</option>
+                        <option value="_blank">' . htmlspecialchars($lang->getLL('newWindow')) . '</option>
+                    </select>
+                </span>
+            </div>';
 
         $fieldRenderingDefinitions['title'] = '
             <!-- Selecting title for link: -->
-            <form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform">
-                <div class="row mb-3" id="typo3-linkTitle">
-                    <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('title')) . '</label>
-                    <div class="col-sm-9">
-                        <input type="text" name="ltitle" class="form-control"
-                            value="' . htmlspecialchars($this->linkAttributeValues['title'] ?? '') . '" />
-                    </div>
-                </div>
-            </form>';
+            <div class="element-browser-form-group">
+                <label for="ltitle" class="form-label">' . htmlspecialchars($lang->getLL('title')) . '</label>
+                <input id="ltitle" type="text" name="ltitle" class="form-control"
+                    value="' . htmlspecialchars($this->linkAttributeValues['title'] ?? '') . '" />
+            </div>';
 
         $fieldRenderingDefinitions['class'] = '
             <!-- Selecting class for link: -->
-            <form action="" name="lclassform" id="lclassform" class="t3js-dummyform">
-                <div class="row mb-3" id="typo3-linkClass">
-                    <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('class')) . '</label>
-                    <div class="col-sm-9">
-                        <input type="text" name="lclass" class="form-control"
-                            value="' . htmlspecialchars($this->linkAttributeValues['class'] ?? '') . '" />
-                    </div>
-                </div>
-            </form>';
+            <div class="element-browser-form-group">
+                <label for="lclass" class="form-label">
+                    ' . htmlspecialchars($lang->getLL('class')) . '
+                </label>
+                <input id="lclass" type="text" name="lclass" class="form-control"
+                    value="' . htmlspecialchars($this->linkAttributeValues['class'] ?? '') . '" />
+            </div>';
 
         $fieldRenderingDefinitions['params'] = '
             <!-- Selecting params for link: -->
-            <form action="" name="lparamsform" id="lparamsform" class="t3js-dummyform">
-                <div class="row" id="typo3-linkParams">
-                    <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('params')) . '</label>
-                    <div class="col-sm-9">
-                        <input type="text" name="lparams" class="form-control"
-                            value="' . htmlspecialchars($this->linkAttributeValues['params'] ?? '') . '" />
-                    </div>
-                </div>
-            </form>';
+            <div class="element-browser-form-group">
+                <label for="lparams" class="form-label">' . htmlspecialchars($lang->getLL('params')) . '</label>
+                <input id="lparams" type="text" name="lparams" class="form-control"
+                    value="' . htmlspecialchars($this->linkAttributeValues['params'] ?? '') . '" />
+            </div>';
 
         return $fieldRenderingDefinitions;
     }
@@ -521,9 +517,8 @@ abstract class AbstractLinkBrowserController
         return array_merge(
             $attributes,
             [
-                'data-url-parameters' => json_encode($this->getUrlParameters()) ?: '',
-                'data-parameters' => json_encode($this->parameters) ?: '',
-                'data-link-attribute-fields' => json_encode(array_values($this->linkAttributeFields)) ?: '',
+                'data-linkbrowser-parameters' => json_encode($this->parameters) ?: '',
+                'data-linkbrowser-attribute-fields' => json_encode(array_values($this->linkAttributeFields)) ?: '',
             ]
         );
     }

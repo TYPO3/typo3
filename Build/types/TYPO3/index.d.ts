@@ -82,7 +82,6 @@ declare module 'flatpickr/flatpickr.min';
 declare module 'flatpickr/locales';
 declare module '@typo3/backend/legacy-tree';
 declare module '@typo3/install/chosen.jquery.min';
-declare module '@typo3/backend/link-browser';
 declare module '@typo3/dashboard/contrib/chartjs';
 declare module '@typo3/backend/contrib/mark';
 

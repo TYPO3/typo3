@@ -7,26 +7,29 @@
 // --------------
 //
 // <div class="element-browser">
-//     <div class="element-browser-panel element-browser-title">
-//         ...
+//     <div class="element-browser-header">
+//         <div class="element-browser-header-title">
+//             ...
+//         </div>
+//         <div class="element-browser-header-actions">
+//             ...
+//         </div>
 //     </div>
-//     <div class="element-browser-panel element-browser-tabs">
+//     <div class="element-browser-tabs">
 //         <ul class="nav nav-tabs" role="tablist">
 //             <li class="active"><a href="#">Page 1</a></li>
 //             <li class="active"><a href="#">Page 2</a></li>
 //             <li class="active"><a href="#">Page 3</a></li>
 //         </ul>
 //     </div>
-//     <div class="element-browser-panel element-browser-attributes">
-//         ...
-//     </div>
-//     <div class="element-browser-panel element-browser-main">
+//     <div class="element-browser-main">
 //         <div class="element-browser-main-sidebar">
-//             <div class="element-browser-body">
-//                 ...
-//             </div>
+//             ...
 //         </div>
 //         <div class="element-browser-main-content">
+//             <div class="element-browser-attributes">
+//                 ...
+//             </div>
 //             <div class="element-browser-body">
 //                 ...
 //             </div>
@@ -36,26 +39,55 @@
 //
 
 //
-// Variables
-//
-$elementbrowser-breakpoint: 600px;
-
-//
 // Component
 //
 .element-browser {
     display: flex;
     flex-flow: nowrap column;
     width: 100%;
+    height: 100%;
+    overflow: hidden;
 
     h3 {
         font-size: 1.2em;
     }
 }
 
+.element-browser-header {
+    // Workaround to keep matching height even if no button is present
+    min-height: 42px;
+    padding: calc(var(--typo3-spacing) / 2) var(--typo3-spacing);
+    background-color: var(--module-docheader-bg);
+    display: flex;
+    gap: var(--typo3-spacing);
+    align-items: center;
+}
+
+.element-browser-header-title {
+    flex-grow: 1;
+}
+
+.element-browser-nav {
+    padding: calc(var(--typo3-spacing) / 2) var(--typo3-spacing);
+    background-color: var(--module-docheader-bg);
+    border-bottom: 1px solid var(--module-docheader-border);
+
+    .element-browser-header + & {
+        padding-top: 0;
+    }
+
+    .nav {
+        gap: 2px;
+    }
+
+    .nav-link {
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15);
+    }
+}
+
 .element-browser-body {
     overflow: unset;
-    padding: ($grid-gutter-width * .5);
+    padding: var(--typo3-spacing);
 
     > *:first-child {
         margin-top: 0;
@@ -66,88 +98,33 @@ $elementbrowser-breakpoint: 600px;
     }
 }
 
-.element-browser-title {
-    padding: ($grid-gutter-width * .5);
-    color: #fff;
-    background-color: #292929;
-    position: sticky;
-    top: 0;
-    z-index: 3;
-
-    a {
-        color: inherit;
-        text-decoration: underline;
-    }
-}
-
-.element-browser-tabs {
-    position: sticky;
-    top: 0;
-    z-index: 3;
-
-    .nav-tabs {
-        padding: ($grid-gutter-width * .5);
-        padding-bottom: 0;
-    }
-
-    .link-browser-has-title & {
-        top: 42px;
-    }
-}
-
 .element-browser-attributes {
-    padding: ($grid-gutter-width * .5);
+    padding: var(--typo3-spacing);
     background-color: #fafafa;
     border-bottom: 1px solid #ddd;
+
+    > *:first-child {
+        margin-top: 0;
+    }
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
 }
 
 .element-browser-main {
-    @media (min-width: $elementbrowser-breakpoint) {
-        display: flex;
-        flex-wrap: nowrap;
-        flex: 1 auto;
-    }
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-grow: 1;
 }
 
 .element-browser-main-sidebar {
     background-color: #f2f2f2;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-
-    .link-browser & {
-        top: 44px;
-        height: calc(100vh - 44px);
-    }
-
-    .link-browser.link-browser-has-title & {
-        top: 86px;
-        height: calc(100vh - 86px);
-    }
-
-    @media (min-width: $elementbrowser-breakpoint) {
-        flex-shrink: 0;
-        width: 260px;
-        border-right: 1px solid #ddd;
-    }
-
-    @media (min-width: $elementbrowser-breakpoint * 1.2) {
-        width: 280px;
-    }
-
-    @media (min-width: $elementbrowser-breakpoint * 1.4) {
-        width: 300px;
-    }
-
-    @media (min-width: $elementbrowser-breakpoint * 1.6) {
-        width: 320px;
-    }
-
-    .list-tree {
-        li:last-child:before {
-            background-color: #f2f2f2;
-        }
-    }
+    height: 100%;
+    border-right: 1px solid #ddd;
+    flex-shrink: 0;
 
     .scaffold-content-navigation-available & {
         display: none;
@@ -158,33 +135,45 @@ $elementbrowser-breakpoint: 600px;
     }
 }
 
-.link-browser .scaffold-content-navigation-available {
-    .scaffold-content-navigation-drag,
-    .scaffold-content-navigation-switcher {
-        position: sticky;
-        top: 44px;
-    }
-
-    .scaffold-content-navigation-drag {
-        height: calc(100vh - 44px);
-    }
-}
-
-.link-browser.link-browser-has-title .scaffold-content-navigation-available {
-    .scaffold-content-navigation-drag,
-    .scaffold-content-navigation-switcher {
-        position: sticky;
-        top: 86px;
-    }
-
-    .scaffold-content-navigation-drag {
-        height: calc(100vh - 86px);
-    }
-}
-
 .element-browser-main-content {
-    @media (min-width: $elementbrowser-breakpoint) {
-        overflow: auto;
-        flex: 1 auto;
+    flex-grow: 1;
+    overflow: auto;
+
+    @media (max-width: 499px) {
+        min-width: calc(100% - 38px);
     }
 }
+
+/* clean-css ignore:start */
+.element-browser-main-content {
+    container-type: inline-size;
+}
+
+.element-browser-form-group {
+    margin-bottom: calc(var(--typo3-spacing) / 2);
+
+    .form-label {
+        overflow: hidden;
+        display: block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+@container (min-width: 500px) {
+    .element-browser-form-group {
+        display: flex;
+        align-items: center;
+        gap: calc(var(--typo3-spacing) / 2);
+    }
+
+    .form-label {
+        width: 180px;
+        flex-shrink: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 0 !important;
+    }
+}
+
+/* clean-css ignore:end */

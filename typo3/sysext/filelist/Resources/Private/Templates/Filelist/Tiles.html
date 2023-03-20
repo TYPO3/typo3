@@ -8,7 +8,7 @@
             }" />
         </f:if>
         <f:for each="{resources}" as="resource">
-            <f:render section="ResourceTile" arguments="{resource: resource, displayThumbs: displayThumbs}" />
+            <f:render section="ResourceTile" arguments="{resource: resource, displayThumbs: displayThumbs, displayCheckbox: displayCheckbox}" />
         </f:for>
         <f:if condition="{pagination.forward}">
             <f:render section="PaginationTile" arguments="{
@@ -42,7 +42,7 @@
 
 <f:section name="ResourceTile">
     <div
-        class="resource-tile"
+        class="resource-tile{f:if(condition: resource.isSelected, then: ' selected')}"
         aria-labelledby="resource-tile-label-{resource.uid}"
         data-filelist-element="true"
         data-filelist-type="{resource.type}"
@@ -53,6 +53,7 @@
         data-filelist-uid="{resource.uid}"
         data-filelist-meta-uid="{resource.metaDataUid}"
         data-filelist-selectable="{f:if(condition: resource.isSelectable, then: 'true', else: 'false')}"
+        data-filelist-selected="{f:if(condition: resource.isSelected, then: 'true', else: 'false')}"
         data-multi-record-selection-element="true"
         draggable="{resource.canMove ? 'true' : 'false'}"
     >
@@ -86,10 +87,16 @@
                 <span class="resource-tile-nameplate-activity">{resource.updatedAt -> f:format.date()}</span>
             </span>
         </a>
-        <f:if condition="{resource.isSelectable} && {resource.checkboxConfig}">
+        <f:if condition="{resource.isSelectable} && {resource.checkboxConfig} && {displayCheckbox}">
             <span class="resource-tile-checkbox" role="checkbox" aria-label="{resource.name}">
                 <div class="form-check">
-                    <input class="form-check-input {resource.checkboxConfig.class}" type="checkbox" name="{resource.checkboxConfig.name}" value="{resource.checkboxConfig.value}">
+                    <input
+                        class="form-check-input {resource.checkboxConfig.class}"
+                        type="checkbox"
+                        name="{resource.checkboxConfig.name}"
+                        value="{resource.checkboxConfig.value}"
+                        {f:if(condition: resource.checkboxConfig.checked, then: 'checked')}
+                    >
                 </div>
             </span>
         </f:if>

@@ -1,5 +1,6 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 
@@ -8,58 +9,71 @@
         <f:render section="Content" />
     </f:then>
     <f:else>
-        <div class="element-browser link-browser {f:if(condition: '{currentUrl}', then: 'link-browser-has-title')}">
+        <div class="element-browser">
             <f:if condition="{currentUrl}">
-                <div class="element-browser-panel element-browser-title">
-                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:currentLink" />: {currentUrl}
+                <div class="element-browser-header">
+                    <div class="element-browser-header-title">
+                        <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:currentLink" />:</strong>
+                        {currentUrl}
+                    </div>
                     <f:if condition="{removeCurrentLink}">
-                        <span class="float-end">
-                            <a href="#" class="t3js-removeCurrentLink"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:removeLink" /></a>
-                        </span>
+                        <div class="element-browser-header-actions">
+                            <button class="btn btn-sm btn-default t3js-removeCurrentLink" class="t3js-removeCurrentLink">
+                                <core:icon identifier="actions-delete" />
+                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:removeLink" />
+                            </button>
+                        </div>
                     </f:if>
                 </div>
             </f:if>
-            <div class="element-browser-panel element-browser-tabs">
-                <ul class="nav nav-tabs" role="tablist">
+            <div class="element-browser-nav">
+                <ul class="nav nav-pills" role="tablist">
                     <f:for each="{menuItems}" as="menuItem" key="menuId">
-                        <li class="nav-item">
-                            <a href="{menuItem.url}" class="nav-link {f:if(condition: menuItem.isActive, then: 'active')}" {menuItem.addParams -> f:format.raw()}>{menuItem.label}</a>
+                        <li class="nav-item" role="presentation">
+                            <a href="{menuItem.url}"
+                                class="nav-link {f:if(condition: menuItem.isActive, then: 'active')}"
+                                role="tab"
+                                aria-selected="{f:if(condition: menuItem.isActive, then: 'true', else: 'false')}"
+                                {menuItem.addParams -> f:format.raw()}
+                            >
+                                {menuItem.label}
+                            </a>
                         </li>
                     </f:for>
                 </ul>
             </div>
-            <f:flashMessages queueIdentifier="core.template.flashMessages" />
             <div class="element-browser-main {f:if(condition: initialNavigationWidth, then: 'scaffold-content-navigation-available scaffold-content-navigation-expanded')}">
-                <f:if condition="{initialNavigationWidth}">
+
+                <f:if condition="{initialNavigationWidth}"><f:else><f:variable name="initialNavigationWidth">250</f:variable></f:else></f:if>
+                <f:variable name="navigationContent"><f:render section="Navigation" optional="true" /></f:variable>
+                <f:if condition="{navigationContent}">
                     <div class="element-browser-main-sidebar" style="width: {initialNavigationWidth}px">
-                        <f:render section="Navigation" optional="true" />
+                        {navigationContent-> f:format.raw()}
                     </div>
                     <typo3-backend-navigation-switcher
                         parent=".element-browser-main"
                         navigation=".element-browser-main-sidebar"
                         minimum-width="250"
                         initial-width="{initialNavigationWidth}"
-                        persistence-identifier="selector.navigation.width"
-                    ></typo3-backend-navigation-switcher>
+                        persistence-identifier="selector.navigation.width">
+                    </typo3-backend-navigation-switcher>
                 </f:if>
 
                 <div class="element-browser-main-content">
-                    <div class="element-browser-panel element-browser-attributes">
+                    <div class="element-browser-attributes">
                         <f:format.raw>{linkAttributes}</f:format.raw>
                         <f:if condition="{showUpdateParametersButton}">
-                            <form action="" name="lupdateform" id="lupdateform">
-                                <div class="row mt-3">
-                                    <div class="col-12">
-                                        <input class="btn btn-default t3js-linkCurrent" type="submit" value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:update')}" />
-                                    </div>
-                                </div>
-                            </form>
+                            <button class="btn btn-default t3js-linkCurrent" type="submit">
+                                {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:update')}
+                            </button>
                         </f:if>
                     </div>
                     <div class="element-browser-body">
+                        <f:flashMessages queueIdentifier="core.template.flashMessages" />
                         <f:render section="Content" />
                     </div>
                 </div>
+
             </div>
         </div>
     </f:else>

@@ -1,3 +1,5 @@
+<?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -10,4 +12,12 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import LinkBrowser from"@typo3/backend/link-browser.js";import RegularEvent from"@typo3/core/event/regular-event.js";class RecordLinkHandler{constructor(){new RegularEvent("click",((e,r)=>{e.preventDefault();const t=r.closest("span").dataset;LinkBrowser.finalizeFunction(document.body.dataset.linkbrowserIdentifier+t.uid)})).delegateTo(document,"[data-close]")}}export default new RecordLinkHandler;
+
+namespace TYPO3\CMS\Backend\LinkHandler;
+
+use Psr\Http\Message\ServerRequestInterface;
+
+interface LinkHandlerVariableProviderInterface
+{
+    public function initializeVariables(ServerRequestInterface $request): void;
+}

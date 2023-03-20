@@ -301,13 +301,13 @@ body {
     display: none;
 
     .scaffold-content-navigation-available & {
-        width: auto;
+        width: 38px;
         height: 100%;
         display: flex;
         position: relative;
         flex-direction: column;
         border-right: 1px solid #c3c3c3;
-        padding: 4px 4px 4px 2px;
+        padding: 4px;
         background: #eee;
     }
 

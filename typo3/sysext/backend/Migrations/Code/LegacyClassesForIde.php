@@ -154,14 +154,14 @@ namespace TYPO3\CMS\Recordlist\LinkHandler {
     /**
      * @deprecated since TYPO3 v12, will be removed in TYPO3 v13
      */
-    class FileLinkHandler extends \TYPO3\CMS\Backend\LinkHandler\FileLinkHandler
+    class FileLinkHandler extends \TYPO3\CMS\Filelist\LinkHandler\FileLinkHandler
     {
     }
 
     /**
      * @deprecated since TYPO3 v12, will be removed in TYPO3 v13
      */
-    class FolderLinkHandler extends \TYPO3\CMS\Backend\LinkHandler\FolderLinkHandler
+    class FolderLinkHandler extends \TYPO3\CMS\Filelist\LinkHandler\FolderLinkHandler
     {
     }
 

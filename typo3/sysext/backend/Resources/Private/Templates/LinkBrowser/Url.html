@@ -6,20 +6,23 @@
 <f:layout name="LinkBrowser" />
 
 <f:section name="Content">
-    <form action="" id="lurlform">
-        <div class="row">
-            <label class="col-3 col-form-label">URL</label>
-            <div class="col-9">
-                <div class="input-group">
-                    <input type="text"
-                        name="lurl"
-                        size="30"
-                        class="form-control"
-                        value="{url}"
-                        placeholder="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:urlPlaceholder')}" />
-                    <div class="input-group-btn">
-                        <input class="btn btn-default" type="submit" value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:setLink')}" />
-                    </div>
+    <form class="form" action="" id="lurlform">
+        <div class="element-browser-form-group">
+            <label for="lurl" class="form-label">
+                URL
+            </label>
+            <div class="input-group">
+                <input
+                    id="lurl"
+                    type="text"
+                    name="lurl"
+                    size="30"
+                    class="form-control"
+                    value="{url}"
+                    placeholder="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:urlPlaceholder')}"
+                    required />
+                <div class="input-group-btn">
+                    <input class="btn btn-primary" type="submit" value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:setLink')}" />
                 </div>
             </div>
         </div>
