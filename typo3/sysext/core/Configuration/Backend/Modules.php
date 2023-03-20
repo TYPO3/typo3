@@ -9,15 +9,15 @@ return [
         'iconIdentifier' => 'modulegroup-web',
         'navigationComponent' => '@typo3/backend/page-tree/page-tree-element',
     ],
-    'site' => [
-        'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_site.xlf',
-        'workspaces' => 'live',
-        'iconIdentifier' => 'modulegroup-site',
-    ],
     'file' => [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf',
         'iconIdentifier' => 'modulegroup-file',
         'navigationComponent' => '@typo3/backend/tree/file-storage-tree-container',
+    ],
+    'site' => [
+        'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_site.xlf',
+        'workspaces' => 'live',
+        'iconIdentifier' => 'modulegroup-site',
     ],
     'user' => [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_usertools.xlf',
