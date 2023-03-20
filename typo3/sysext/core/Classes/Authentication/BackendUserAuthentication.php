@@ -44,13 +44,12 @@ use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Type\Bitmask\BackendGroupMountOption;
-use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 use TYPO3\CMS\Core\TypoScript\UserTsConfig;
 use TYPO3\CMS\Core\TypoScript\UserTsConfigFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\Service\SessionService;
 
@@ -989,20 +988,18 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Returns TRUE or FALSE, depending if an alert popup (a javascript confirmation) should be shown
      * call like $GLOBALS['BE_USER']->jsConfirmation($BITMASK).
      *
-     * @param int $bitmask Bitmask, one of \TYPO3\CMS\Core\Type\Bitmask\JsConfirmation
+     * @param int $bitmask Bitmask, one of \TYPO3\CMS\Core\Authentication\JsConfirmation
      * @return bool TRUE if the confirmation should be shown
      * @see JsConfirmation
      */
-    public function jsConfirmation($bitmask)
+    public function jsConfirmation(int $bitmask): bool
     {
-        try {
-            $alertPopupsSetting = trim((string)($this->getTSConfig()['options.']['alertPopups'] ?? ''));
-            $alertPopup = JsConfirmation::cast($alertPopupsSetting === '' ? null : (int)$alertPopupsSetting);
-        } catch (InvalidEnumerationValueException $e) {
-            $alertPopup = new JsConfirmation();
-        }
+        $alertPopupsSetting = trim((string)($this->getTSConfig()['options.']['alertPopups'] ?? ''));
+        $alertPopupsSetting = MathUtility::canBeInterpretedAsInteger($alertPopupsSetting)
+            ? MathUtility::forceIntegerInRange((int)$alertPopupsSetting, 0, JsConfirmation::ALL)
+            : JsConfirmation::ALL;
 
-        return JsConfirmation::cast($bitmask)->matches($alertPopup);
+        return (new JsConfirmation($alertPopupsSetting))->get($bitmask);
     }
 
     /**

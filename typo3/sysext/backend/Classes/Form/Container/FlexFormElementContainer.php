@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\Behavior\ReloadOnFieldChange;
 use TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange;
+use TYPO3\CMS\Core\Authentication\JsConfirmation;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 
 /**
  * The container handles single elements.
