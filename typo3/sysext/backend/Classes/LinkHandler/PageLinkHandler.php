@@ -191,7 +191,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             return [];
         }
         return [
-            'data-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString([
+            'data-linkbrowser-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString([
                 'type' => LinkService::TYPE_PAGE,
                 'pageuid' => (int)$this->linkParts['url']['pageuid'],
                 'fragment' => $this->linkParts['url']['fragment'] ?? '',

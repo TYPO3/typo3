@@ -1,26 +1,28 @@
-<f:layout name="{f:if(condition: treeEnabled, then: 'ElementBrowserWithNavigation', else: 'ElementBrowser')}" />
+<html
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="ElementBrowserWithNavigation" />
 
 <f:section name="Navigation">
-    <f:if condition="{tree}">
-        <f:then>
-            <div class="element-browser-body">
-                {tree -> f:format.raw()}
-            </div>
-        </f:then>
-        <f:else>
-            <typo3-backend-component-filestorage-browser
-                class="scaffold-content-navigation-component"
-                active-folder="{f:if(condition: selectedFolder, then: selectedFolder.combinedIdentifier, else: '') -> f:format.htmlentities()}"
-            >
-            </typo3-backend-component-filestorage-browser>
-        </f:else>
-    </f:if>
+    <typo3-backend-component-filestorage-browser
+        class="scaffold-content-navigation-component"
+        active-folder="{f:if(condition: selectedFolder, then: selectedFolder.combinedIdentifier, else: '') -> f:format.htmlentities()}"
+    >
+    </typo3-backend-component-filestorage-browser>
 </f:section>
 
 <f:section name="Content">
     <f:if condition="{selectedFolder}">
-        <h4 class="text-truncate mb-4">{selectedFolderIcon -> f:format.raw()} {selectedFolder.storage.name}: {selectedFolder.identifier}</h4>
+        <h4 class="text-truncate mb-4">
+            <core:iconForResource resource="{selectedFolder}" />
+            {selectedFolder.storage.name}: {selectedFolder.identifier}
+        </h4>
     </f:if>
     <f:flashMessages queueIdentifier="core.template.flashMessages"/>
     <f:format.raw>{content}</f:format.raw>
 </f:section>
+
+</html>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,8 +18,6 @@
 namespace TYPO3\CMS\Filelist\ElementBrowser;
 
 use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Filelist\Matcher\Matcher;
@@ -25,19 +25,19 @@ use TYPO3\CMS\Filelist\Matcher\ResourceFolderTypeMatcher;
 use TYPO3\CMS\Filelist\Type\Mode;
 
 /**
- * Browser for folders. This is used with type=folder to select folders.
+ * Browser to create one or more folders. This is used with type=folder to select folders.
  *
  * @internal
  */
-class FolderBrowser extends AbstractResourceBrowser
+class CreateFolderBrowser extends AbstractResourceBrowser
 {
-    public const IDENTIFIER = 'folder';
+    public const IDENTIFIER = 'create_folder';
     protected string $identifier = self::IDENTIFIER;
 
     protected function initialize(): void
     {
         parent::initialize();
-        $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/browse-folders.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/create-folder.js');
     }
 
     protected function initVariables(): void
@@ -45,31 +45,22 @@ class FolderBrowser extends AbstractResourceBrowser
         parent::initVariables();
         $this->resourceDisplayMatcher = GeneralUtility::makeInstance(Matcher::class);
         $this->resourceDisplayMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
-        $this->resourceSelectableMatcher = GeneralUtility::makeInstance(Matcher::class);
-        $this->resourceSelectableMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
     }
 
-    /**
-     * @return string HTML content
-     */
-    public function render()
+    public function render(): string
     {
         $contentHtml = '';
 
-        if ($this->selectedFolder instanceof Folder) {
+        if ($this->selectedFolder !== null) {
             $markup = [];
+
+            // Build the folder creation form
+            $folderUtilityRenderer = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this);
+            $markup[] = $folderUtilityRenderer->createFolder($this->selectedFolder);
 
             // Create the filelist header bar
             $markup[] = '<div class="row justify-content-between mb-2">';
-            $markup[] = '    <div class="col-auto">';
-            $markup[] = '        <div class="hidden t3js-multi-record-selection-actions">';
-            $markup[] = '            <strong>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection')) . '</strong>';
-            $markup[] = '            <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="import" title="' . htmlspecialchars($this->getLanguageService()->getLL('importSelection')) . '">';
-            $markup[] = '                ' . $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL);
-            $markup[] = '                ' . htmlspecialchars($this->getLanguageService()->getLL('importSelection'));
-            $markup[] = '            </button>';
-            $markup[] = '        </div>';
-            $markup[] = '    </div>';
+            $markup[] = '    <div class="col-auto"></div>';
             $markup[] = '    <div class="col-auto">';
             $markup[] = '        ' . $this->getViewModeButton();
             $markup[] = '    </div>';
@@ -81,20 +72,16 @@ class FolderBrowser extends AbstractResourceBrowser
             $this->filelist->setResourceSelectableMatcher($this->resourceSelectableMatcher);
             $markup[] = $this->filelist->render(null, $this->view);
 
-            // Build the folder creation form
-            $folderUtilityRenderer = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this);
-            $markup[] = $folderUtilityRenderer->createFolder($this->selectedFolder);
-
-            $contentHtml = implode('', $markup);
+            $contentHtml = implode(PHP_EOL, $markup);
         }
 
         $contentOnly = (bool)($this->getRequest()->getQueryParams()['contentOnly'] ?? false);
-        $this->pageRenderer->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:folderSelector'));
+        $this->pageRenderer->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:createFolder'));
         $this->view->assign('selectedFolder', $this->selectedFolder);
         $this->view->assign('content', $contentHtml);
         $this->view->assign('contentOnly', $contentOnly);
 
-        $content = $this->view->render('ElementBrowser/Folder');
+        $content = $this->view->render('ElementBrowser/CreateFolder');
         if ($contentOnly) {
             return $content;
         }

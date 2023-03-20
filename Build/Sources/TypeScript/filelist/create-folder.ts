@@ -11,43 +11,48 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { default as Modal } from '@typo3/backend/modal';
+import { ResourceInterface } from '@typo3/backend/resource/resource';
+import { FileListActionEvent } from '@typo3/filelist/file-list-actions';
+import InfoWindow from '@typo3/backend/info-window';
 
-/**
- * Module: @typo3/filelist/create-folder
- * @exports @typo3/filelist/create-folder
- */
-export default class CreateFolder {
+class CreateFolder {
   constructor() {
-    DocumentService.ready().then((): void => {
-      new RegularEvent('click', (e: Event, target: HTMLAnchorElement): void => {
-        e.preventDefault();
+    new RegularEvent(FileListActionEvent.primary, (event: CustomEvent): void => {
+      event.preventDefault();
+      document.dispatchEvent(new CustomEvent(FileListActionEvent.select, { detail: { resource: event.detail.resource } }));
+    }).bindTo(document);
 
-        const url = new URL(target.href, window.location.origin);
-        url.searchParams.set('contentOnly', '1');
+    new RegularEvent(FileListActionEvent.select, (event: CustomEvent): void => {
+      event.preventDefault();
+      const resource = event.detail.resource as ResourceInterface;
+      if (resource.type === 'folder') {
+        this.loadContent(resource);
+      }
+    }).bindTo(document);
 
-        (new AjaxRequest(url.toString())).get()
-          .then((response: AjaxResponse) => response.resolve())
-          .then((response) => {
-            const contentContainer = document.querySelector('.element-browser-main-content .element-browser-body') as HTMLElement;
-            contentContainer.innerHTML = response;
-          });
-      }).delegateTo(document, '[data-filelist-action="list-folders"]');
+    new RegularEvent(FileListActionEvent.show, (event: CustomEvent): void => {
+      event.preventDefault();
+      const resource = event.detail.resource as ResourceInterface;
+      InfoWindow.showItem('_' + resource.type.toUpperCase(), resource.identifier);
+    }).bindTo(document);
+  }
 
-      new RegularEvent('click', (e: Event, target: HTMLAnchorElement): void => {
-        e.preventDefault();
-
-        top.list_frame.document.location.href = target.href;
-        Modal.currentModal.addEventListener('typo3-modal-hide', (modalEvent: Event): void => {
-          // stop event propagation to avoid `typo3-modal-hidden` being triggered
-          modalEvent.stopImmediatePropagation();
-        });
-        Modal.dismiss();
-      }).delegateTo(document, '[data-filelist-action="open-module"]');
-    });
+  private loadContent(resource: ResourceInterface): void
+  {
+    if (resource.type !== 'folder') {
+      return;
+    }
+    const contentsUrl = document.location.href + '&contentOnly=1&expandFolder=' + resource.identifier;
+    (new AjaxRequest(contentsUrl)).get()
+      .then((response: AjaxResponse) => response.resolve())
+      .then((response) => {
+        const contentContainer = document.querySelector('.element-browser-main-content .element-browser-body') as HTMLElement;
+        contentContainer.innerHTML = response;
+      });
   }
 }
+
+export default new CreateFolder();

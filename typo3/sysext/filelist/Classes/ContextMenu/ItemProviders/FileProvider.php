@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Filelist\ContextMenu\ItemProviders;
 
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\AbstractProvider;
-use TYPO3\CMS\Backend\ElementBrowser\CreateFolderBrowser;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -28,6 +27,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Filelist\ElementBrowser\CreateFolderBrowser;
 
 /**
  * Provides click menu items for files and folders

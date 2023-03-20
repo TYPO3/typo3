@@ -32,7 +32,6 @@ use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -41,7 +40,6 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -83,34 +81,6 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
         protected readonly LanguageServiceFactory $languageServiceFactory
     ) {
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
-    }
-
-    /**
-     * Renders a single item displayed in the current folder
-     *
-     *
-     * @return array
-     * @throws \InvalidArgumentException
-     */
-    protected function renderItem(ResourceInterface $fileOrFolderObject)
-    {
-        if (!$fileOrFolderObject instanceof File) {
-            throw new \InvalidArgumentException('Expected File object, got "' . get_class($fileOrFolderObject) . '" object.', 1443651368);
-        }
-        // Get size and icon:
-        $size = GeneralUtility::formatSize(
-            (int)$fileOrFolderObject->getSize(),
-            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:byteSizeUnits')
-        );
-
-        return [
-            'icon' => $this->iconFactory->getIconForResource($fileOrFolderObject, Icon::SIZE_SMALL)->render(),
-            'uid'  => $fileOrFolderObject->getUid(),
-            'size' => $size,
-            'name' => $fileOrFolderObject->getName(),
-            'url'  => GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FILE, 'file' => $fileOrFolderObject]),
-            'title' => GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), (int)$this->getBackendUser()->uc['titleLen']),
-        ];
     }
 
     public function canHandleLink(array $linkParts): bool
