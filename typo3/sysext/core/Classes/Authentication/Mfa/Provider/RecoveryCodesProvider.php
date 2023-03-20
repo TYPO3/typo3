@@ -134,7 +134,7 @@ class RecoveryCodesProvider implements MfaProviderInterface
     public function handleRequest(
         ServerRequestInterface $request,
         MfaProviderPropertyManager $propertyManager,
-        string $type
+        MfaViewType $type
     ): ResponseInterface {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplateRootPaths(['EXT:core/Resources/Private/Templates/Authentication/MfaProvider/RecoveryCodes']);

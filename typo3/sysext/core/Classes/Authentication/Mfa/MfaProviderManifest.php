@@ -111,7 +111,7 @@ final class MfaProviderManifest implements MfaProviderManifestInterface
     public function handleRequest(
         ServerRequestInterface $request,
         MfaProviderPropertyManager $propertyManager,
-        string $type
+        MfaViewType $type
     ): ResponseInterface {
         return $this->getInstance()->handleRequest($request, $propertyManager, $type);
     }

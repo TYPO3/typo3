@@ -17,16 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Authentication\Mfa;
 
-use TYPO3\CMS\Core\Type\Enumeration;
-
 /**
  * Enumeration of possible view types for MFA providers
  *
- * @internal This is an experimental TYPO3 Core API and subject to change until v11 LTS
+ * @internal
  */
-class MfaViewType extends Enumeration
+enum MfaViewType: string
 {
-    public const SETUP = 'setup';
-    public const EDIT ='edit';
-    public const AUTH ='auth';
+    case SETUP = 'setup';
+    case EDIT ='edit';
+    case AUTH ='auth';
 }
