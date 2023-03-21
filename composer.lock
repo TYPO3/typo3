@@ -8829,12 +8829,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "c4a77337b5c6f2adb66b717f88a653e9cbb34f51"
+                "reference": "78ea0d9428ee604d76cfc2a90bbb89011f03980a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/c4a77337b5c6f2adb66b717f88a653e9cbb34f51",
-                "reference": "c4a77337b5c6f2adb66b717f88a653e9cbb34f51",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/78ea0d9428ee604d76cfc2a90bbb89011f03980a",
+                "reference": "78ea0d9428ee604d76cfc2a90bbb89011f03980a",
                 "shasum": ""
             },
             "require-dev": {
@@ -8844,9 +8844,9 @@
                 "codeception/module-webdriver": "^3.1",
                 "phpstan/phpstan": "^1.4.8",
                 "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "^0.0.1",
-                "typo3/cms-core": "~12.2@dev",
-                "typo3/cms-frontend": "~12.2@dev",
-                "typo3/cms-install": "~12.2@dev",
+                "typo3/cms-core": "~12.3@dev",
+                "typo3/cms-frontend": "~12.3@dev",
+                "typo3/cms-install": "~12.3@dev",
                 "typo3/coding-standards": "^0.5.0",
                 "typo3/testing-framework": "dev-main"
             },
@@ -8894,7 +8894,7 @@
                 "issues": "https://github.com/TYPO3/styleguide/issues",
                 "source": "https://github.com/TYPO3/styleguide/tree/main"
             },
-            "time": "2023-01-30T11:57:14+00:00"
+            "time": "2023-03-21T10:43:24+00:00"
         },
         {
             "name": "typo3/testing-framework",
