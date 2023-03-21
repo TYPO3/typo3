@@ -52,7 +52,7 @@ class TypeRadio extends AbstractFieldGenerator implements FieldGeneratorInterfac
             $values = $data['fieldConfig']['config']['items'];
             array_shift($values);
             $value = array_shift($values);
-            $value = $value[1] ?? $value['value'];
+            $value = $value['value'];
         }
         return (string)$value;
     }

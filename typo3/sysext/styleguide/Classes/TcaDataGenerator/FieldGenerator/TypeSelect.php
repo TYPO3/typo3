@@ -57,8 +57,8 @@ class TypeSelect extends AbstractFieldGenerator implements FieldGeneratorInterfa
                     continue;
                 }
                 // Ignore divider
-                if ((isset($item[1]) || isset($item['value']))) {
-                    $value = $item[1] ?? $item['value'];
+                if (isset($item['value'])) {
+                    $value = $item['value'];
                     if ($value !== '--div--') {
                         if (count($result) <= $numberOfItemsToSelect) {
                             $result[] = $value;
