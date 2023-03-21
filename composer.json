@@ -98,7 +98,7 @@
 		"typo3/cms-cli": "^3.1",
 		"typo3/cms-composer-installers": "^5.0",
 		"typo3/html-sanitizer": "^2.1.1",
-		"typo3fluid/fluid": "^2.7.2"
+		"typo3fluid/fluid": "^2.7.3"
 	},
 	"require-dev": {
 		"bnf/phpstan-psr-container": "^1.0.1",
