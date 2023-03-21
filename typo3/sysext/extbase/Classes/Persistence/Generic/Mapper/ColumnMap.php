@@ -135,18 +135,6 @@ class ColumnMap
 
     /**
      * todo: Check if this property should support null. If not, set default value.
-     *
-     * todo: Check if this property should be dropped as it's not in use. Basically we have to answer the question if
-     * todo: MM_table_where should have any impact on Extbase at all.
-     * The where clause to narrow down the selected relation table records
-     *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Group/Properties/Mm.html#confval-MM_insert_fields(type=%3Egroup)
-     * @var string|null
-     */
-    private $relationTableWhereStatement;
-
-    /**
-     * todo: Check if this property should support null. If not, set default value.
      * The name of the field holding the parents key
      *
      * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/ForeignField.html

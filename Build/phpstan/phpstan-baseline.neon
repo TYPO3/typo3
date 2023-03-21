@@ -1616,11 +1616,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Request.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Mapper\\\\ColumnMap\\:\\:\\$relationTableWhereStatement is unused\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/ColumnMap.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\JoinConditionInterface\\:\\:getProperty1Name\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
