@@ -32,7 +32,7 @@ class ReactionItemsProcFunc
     public function validateAllowedTablesForExternalCreation(array &$fieldDefinition): void
     {
         foreach ($fieldDefinition['items'] as $key => $item) {
-            if (!CreateRecordReactionTable::fromProcFuncItem($item)->isAllowedForItemsProcFunc()) {
+            if (!CreateRecordReactionTable::fromSelectItem($item)->isAllowedForItemsProcFunc()) {
                 unset($fieldDefinition['items'][$key]);
             }
         }

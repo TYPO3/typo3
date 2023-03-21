@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Reactions\Validation;
 
+use TYPO3\CMS\Core\Schema\Struct\SelectItem;
+
 /**
  * Validation class for tables to be allowed for record creation in the "create record" reaction
  *
@@ -28,9 +30,9 @@ final class CreateRecordReactionTable
     {
     }
 
-    public static function fromProcFuncItem(array $procFuncItem): CreateRecordReactionTable
+    public static function fromSelectItem(SelectItem $selectItem): CreateRecordReactionTable
     {
-        return new self((string)($procFuncItem[1] ?? ''));
+        return new self((string)$selectItem->getValue());
     }
 
     public function isAllowedForCreation(): bool
