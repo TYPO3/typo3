@@ -2258,4 +2258,14 @@ return [
             'Deprecation-100047-DeprecatedConditionMatcherClasses.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Exception\MissingTsfeException' => [
+        'restFiles' => [
+            'Deprecation-100237-TypoScriptRelatedExceptions.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException' => [
+        'restFiles' => [
+            'Deprecation-100237-TypoScriptRelatedExceptions.rst',
+        ],
+    ],
 ];

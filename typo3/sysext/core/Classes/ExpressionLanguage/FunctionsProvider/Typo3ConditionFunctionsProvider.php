@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\ExpressionLanguage\FunctionsProvider;
 
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
-use TYPO3\CMS\Core\Exception\MissingTsfeException;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -83,7 +82,8 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
                 if (($arguments['tsfe'] ?? null) instanceof TypoScriptFrontendController) {
                     return $arguments['tsfe'];
                 }
-                throw new MissingTsfeException('TSFE is not available in this context', 1578831632);
+                // If TSFE is not given as argument, evaluate to false.
+                return false;
             }
         );
     }

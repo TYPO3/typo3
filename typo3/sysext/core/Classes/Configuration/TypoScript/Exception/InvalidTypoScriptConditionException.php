@@ -20,6 +20,8 @@ use TYPO3\CMS\Core\Exception;
 /**
  * A "Your TypoScript condition is invalid" exception
  * used when a TypoScript condition is called with invalid syntax.
+ *
+ * @deprecated since TYPO3 v12. Remove together with AbstractConditionMatcher in v13.
  */
 class InvalidTypoScriptConditionException extends Exception
 {

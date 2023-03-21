@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Exception;
 
+/**
+ * @deprecated and unused since TYPO3 v12. Remove in v13.
+ */
 class MissingTsfeException extends \RuntimeException
 {
 }

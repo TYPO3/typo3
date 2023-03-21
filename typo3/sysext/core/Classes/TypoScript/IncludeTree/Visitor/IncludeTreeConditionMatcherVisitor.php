@@ -24,7 +24,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
-use TYPO3\CMS\Core\Exception\MissingTsfeException;
 use TYPO3\CMS\Core\ExpressionLanguage\RequestWrapper;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeConditionInterface;
@@ -162,10 +161,6 @@ final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInte
         $conditionExpression = $include->getConditionToken()->getValue();
         try {
             $verdict = (bool)$this->resolver->evaluate($conditionExpression);
-        } catch (MissingTsfeException) {
-            // TSFE is not available in the current context (e.g. TSFE in BE context),
-            // we set all conditions false for this case.
-            $verdict = false;
         } catch (SyntaxError) {
             $this->logger->error('Expression could not be parsed.', ['expression' => $conditionExpression]);
             $verdict = false;
