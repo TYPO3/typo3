@@ -1,0 +1,1 @@
+@import 'EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario3/subInclude.tsconfig'

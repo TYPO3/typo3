@@ -63,7 +63,7 @@ final class TreeFromLineStreamBuilder
     /**
      * Using "@import" with wildcards, the file ending depends on the given type:
      * With Frontend TypoScript, .typoscript is allowed, with TsConfig, .tsconfig
-     * is allowed. This property maps types to their file suffixes.
+     * and .typoscript is allowed. This property maps types to their file suffixes.
      *
      * @var array<string, array<int, string>>
      */
@@ -264,8 +264,8 @@ final class TreeFromLineStreamBuilder
         if ($absoluteFileName === '') {
             return;
         }
-        if (is_file($absoluteFileName)) {
-            // Simple file
+        if (str_ends_with($absoluteFileName, '.' . $fileSuffix) && is_file($absoluteFileName)) {
+            // Simple file with allowed file suffix
             if ($this->fileNameValidator->isValid($absoluteFileName)) {
                 $this->addSingleAtImportFile($node, $absoluteFileName, $atImportValue, $atImportLine);
                 $this->addStaticMagicFromGlobals($node, $atImportValue);
@@ -286,7 +286,7 @@ final class TreeFromLineStreamBuilder
                 $this->addStaticMagicFromGlobals($node, $identifier);
             }
         } elseif (is_file($absoluteFileName . '.' . $fileSuffix)) {
-            // Simple file without .typoscript ending
+            // File without .typoscript / .tsconfig suffix, but exists when suffix is added
             if ($this->fileNameValidator->isValid($absoluteFileName . '.' . $fileSuffix)) {
                 $singleAbsoluteFileName = $absoluteFileName . '.' . $fileSuffix;
                 $identifier = $atImportValue . '.' . $fileSuffix;

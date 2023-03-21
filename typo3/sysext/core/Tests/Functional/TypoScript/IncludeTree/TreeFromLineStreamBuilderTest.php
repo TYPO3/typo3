@@ -764,6 +764,43 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         self::assertEquals($expectedTree, $tree);
     }
 
+    public function buildTreeAtImportTsConfigDataProvider(): iterable
+    {
+        $atImportStatement = '@import \'EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario3/mainInclude.tsconfig\'';
+        $atImportLineStream = (new LosslessTokenizer())->tokenize($atImportStatement);
+        $expectedTree = new FileInclude();
+        $expectedTree->setLineStream($atImportLineStream);
+        $expectedTree->setSplit();
+        $subNode = new AtImportInclude();
+        $subNode->setName('EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario3/mainInclude.tsconfig');
+        $subNode->setLineStream((new LosslessTokenizer())->tokenize("@import 'EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario3/subInclude.tsconfig'\n"));
+        $subNode->setSplit();
+        $subNode->setOriginalLine(iterator_to_array($atImportLineStream->getNextLine())[0]);
+        $subSubNode = new AtImportInclude();
+        $subSubNode->setName('EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario3/subInclude.tsconfig');
+        $subSubNode->setLineStream((new LosslessTokenizer())->tokenize("subInclude.typoscript\n"));
+        $subSubNode->setOriginalLine(iterator_to_array((new LosslessTokenizer())->tokenize("@import 'EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario3/subInclude.tsconfig'\n")->getNextLine())[0]);
+        $subNode->addChild($subSubNode);
+        $expectedTree->addChild($subNode);
+        yield 'atImport with dot-slash path traversal is allowed for tsconfig' => [
+            $atImportLineStream,
+            $expectedTree,
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider buildTreeAtImportTsConfigDataProvider
+     */
+    public function buildTreeAtImportTsConfig(LineStream $lineStream, IncludeInterface $expectedTree): void
+    {
+        $tree = (new FileInclude());
+        $tree->setLineStream($lineStream);
+        $treeFromTokenStreamBuilder = $this->get(TreeFromLineStreamBuilder::class);
+        $treeFromTokenStreamBuilder->buildTree($tree, 'tsconfig', new LosslessTokenizer());
+        self::assertEquals($expectedTree, $tree);
+    }
+
     public function buildTreeImportTyposcriptDataProvider(): iterable
     {
         $includeTyposcriptStatement = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/IncludeTyposcript/ExtImport/Scenario1/setup.typoscript">';
