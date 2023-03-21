@@ -22,8 +22,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
 
 /**
  * CLI command for the 'scheduler' extension which executes
@@ -34,11 +36,6 @@ class SchedulerCommand extends Command
      * @var bool
      */
     protected $hasTask = true;
-
-    /**
-     * @var Scheduler
-     */
-    protected $scheduler;
 
     /**
      * @var SymfonyStyle
@@ -64,9 +61,10 @@ class SchedulerCommand extends Command
      */
     protected $forceExecution;
 
-    public function __construct(Scheduler $scheduler)
-    {
-        $this->scheduler = $scheduler;
+    public function __construct(
+        protected readonly Scheduler $scheduler,
+        protected readonly SchedulerTaskRepository $taskRepository
+    ) {
         parent::__construct();
     }
 
@@ -152,8 +150,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
      */
     protected function stopTask(AbstractTask $task)
     {
-        $task->unmarkAllExecutions();
-
+        $this->taskRepository->removeAllRegisteredExecutionsForTask($task);
         if ($this->io->isVeryVerbose()) {
             $this->io->writeln(sprintf('Task #%d was stopped', $task->getTaskUid()));
         }
@@ -161,18 +158,15 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
 
     /**
      * Return task a task for a given UID
-     *
-     * @return AbstractTask|null
      */
-    protected function getTask(int $taskUid)
+    protected function getTask(int $taskUid): ?AbstractTask
     {
         $force = $this->stopTasks || $this->forceExecution;
         if ($force) {
-            return $this->scheduler->fetchTask($taskUid);
+            return $this->taskRepository->findByUid($taskUid);
         }
 
-        $whereClause = 'uid = ' . (int)$taskUid . ' AND nextexecution != 0 AND nextexecution <= ' . $GLOBALS['EXEC_TIME'];
-        return $this->scheduler->fetchTasksWithCondition($whereClause)[0] ?? null;
+        return $this->taskRepository->findNextExecutableTaskForUid($taskUid);
     }
 
     /**
@@ -224,7 +218,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
     protected function fetchNextTask(): AbstractTask
     {
         if ($this->overwrittenTaskList === null) {
-            return $this->scheduler->fetchTask();
+            return $this->taskRepository->findNextExecutableTask();
         }
 
         if (count($this->overwrittenTaskList) === 0) {
@@ -233,7 +227,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
 
         $taskUid = (int)array_shift($this->overwrittenTaskList);
         $task = $this->getTask($taskUid);
-        if (!$this->scheduler->isValidTaskObject($task)) {
+        if (!(new TaskValidator())->isValid($task)) {
             throw new \UnexpectedValueException(
                 sprintf('The task #%d is not scheduled for execution or does not exist.', $taskUid),
                 1547675557

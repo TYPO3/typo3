@@ -32,6 +32,7 @@ use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Linkvalidator\Event\ModifyValidatorTaskEmailEvent;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry;
 use TYPO3\CMS\Linkvalidator\Result\LinkAnalyzerResult;
+use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -290,7 +291,7 @@ class ValidatorTask extends AbstractTask
 
         if ($this->taskNeedsUpdate) {
             $this->taskNeedsUpdate = false;
-            $this->save();
+            GeneralUtility::makeInstance(SchedulerTaskRepository::class)->update($this);
         }
 
         return $successfullyExecuted;

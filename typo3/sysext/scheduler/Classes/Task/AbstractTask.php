@@ -17,12 +17,10 @@ namespace TYPO3\CMS\Scheduler\Task;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Execution;
 use TYPO3\CMS\Scheduler\Scheduler;
 
@@ -86,7 +84,7 @@ abstract class AbstractTask implements LoggerAwareInterface
     /**
      * Task group for this task
      *
-     * @var int
+     * @var int|null
      */
     protected $taskGroup = 0;
 
@@ -175,7 +173,7 @@ abstract class AbstractTask implements LoggerAwareInterface
     }
 
     /**
-     * This method returns the disable status of the task
+     * This method returns the disabled status of the task
      *
      * @return bool TRUE if task is disabled, FALSE otherwise
      */
@@ -185,7 +183,7 @@ abstract class AbstractTask implements LoggerAwareInterface
     }
 
     /**
-     * This method is used to set the disable status of the task
+     * This method is used to set the disabled status of the task
      *
      * @param bool $flag TRUE if task should be disabled, FALSE otherwise
      */
@@ -231,7 +229,7 @@ abstract class AbstractTask implements LoggerAwareInterface
     /**
      * This method returns the task group (uid) of the task
      *
-     * @return int Uid of task group
+     * @return int|null Uid of task group or null if it came back from the DB without the task group set.
      */
     public function getTaskGroup()
     {
@@ -281,6 +279,7 @@ abstract class AbstractTask implements LoggerAwareInterface
     /**
      * Sets the internal reference to the singleton instance of the Scheduler
      * and the logger instance in case it was unserialized
+     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
      */
     public function setScheduler()
     {
@@ -293,6 +292,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      * and the logger instance.
      * This is done before a task is serialized, so that the scheduler instance
      * and the logger instance are not saved to the database
+     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
      */
     public function unsetScheduler()
     {
@@ -304,6 +304,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      * Registers a single execution of the task
      *
      * @param int $timestamp Timestamp of the next execution
+     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
      */
     public function registerSingleExecution($timestamp)
     {
@@ -326,6 +327,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      * @param int $end The last date/time where this execution should occur (timestamp)
      * @param bool $multiple Set to FALSE if multiple executions of this task are not permitted in parallel
      * @param string $cron_cmd Used like in crontab (minute hour day month weekday)
+     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
      */
     public function registerRecurringExecution($start, $interval, $end = 0, $multiple = false, $cron_cmd = '')
     {
@@ -351,6 +353,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      * Sets the internal execution object
      *
      * @param Execution $execution The execution to add
+     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
      */
     public function setExecution(Execution $execution)
     {
@@ -361,6 +364,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      * Returns the execution object
      *
      * @return Execution The internal execution object
+     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
      */
     public function getExecution()
     {
@@ -371,6 +375,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      * Returns the timestamp for next due execution of the task
      *
      * @return int Date and time of the next execution as a timestamp
+     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
      */
     public function getNextDueExecution()
     {
@@ -382,6 +387,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      * Returns TRUE if several runs of the task are allowed concurrently
      *
      * @return bool TRUE if concurrent executions are allowed, FALSE otherwise
+     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
      */
     public function areMultipleExecutionsAllowed()
     {
@@ -392,25 +398,12 @@ abstract class AbstractTask implements LoggerAwareInterface
      * Returns TRUE if an instance of the task is already running
      *
      * @return bool TRUE if an instance is already running, FALSE otherwise
+     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
      */
     public function isExecutionRunning()
     {
-        $isRunning = false;
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('tx_scheduler_task');
-        $row = $queryBuilder
-            ->select('serialized_executions')
-            ->from('tx_scheduler_task')
-            ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->taskUid, Connection::PARAM_INT))
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-
-        if ($row && !empty($row['serialized_executions'])) {
-            $isRunning = true;
-        }
-        return $isRunning;
+        trigger_error('AbstractTask->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
+        return GeneralUtility::makeInstance(SchedulerTaskRepository::class)->isTaskMarkedAsRunning($this);
     }
 
     /**
@@ -418,155 +411,66 @@ abstract class AbstractTask implements LoggerAwareInterface
      * It also logs the execution time and mode
      *
      * @return int Execution id
+     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
      */
     public function markExecution()
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('tx_scheduler_task');
-
-        $row = $queryBuilder
-            ->select('serialized_executions')
-            ->from('tx_scheduler_task')
-            ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->taskUid, Connection::PARAM_INT))
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-
-        $runningExecutions = [];
-        if ($row && !empty($row['serialized_executions'])) {
-            $runningExecutions = unserialize($row['serialized_executions']);
-        }
-        // Count the number of existing executions and use that number as a key
-        // (we need to know that number, because it is returned at the end of the method)
-        $numExecutions = count($runningExecutions);
-        $runningExecutions[$numExecutions] = time();
-        GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('tx_scheduler_task')
-            ->update(
-                'tx_scheduler_task',
-                [
-                    'serialized_executions' => serialize($runningExecutions),
-                    'lastexecution_time' => time(),
-                    // Define the context in which the script is running
-                    'lastexecution_context' => Environment::isCli() ? 'CLI' : 'BE',
-                ],
-                [
-                    'uid' => $this->taskUid,
-                ],
-                [
-                    'serialized_executions' => Connection::PARAM_LOB,
-                ]
-            );
-        return $numExecutions;
+        trigger_error('AbstractTask->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
+        return GeneralUtility::makeInstance(SchedulerTaskRepository::class)->addExecutionToTask($this);
     }
 
     /**
      * Removes given execution from list
      *
      * @param int $executionID Id of the execution to remove.
-     * @param \Throwable $e An exception to signal a failed execution
+     * @param \Throwable|null $e An exception to signal a failed execution
+     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
      */
     public function unmarkExecution($executionID, \Throwable $e = null)
     {
-        // Get the executions for the task
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('tx_scheduler_task');
-
-        $row = $queryBuilder
-            ->select('serialized_executions')
-            ->from('tx_scheduler_task')
-            ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->taskUid, Connection::PARAM_INT))
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-
-        if ($row && $row['serialized_executions'] !== '') {
-            $runningExecutions = unserialize($row['serialized_executions']);
-            // Remove the selected execution
-            unset($runningExecutions[$executionID]);
-            if (!empty($runningExecutions)) {
-                // Re-serialize the updated executions list (if necessary)
-                $runningExecutionsSerialized = serialize($runningExecutions);
-            } else {
-                $runningExecutionsSerialized = '';
-            }
-            if ($e instanceof \Throwable) {
-                // Log failed execution
-                $this->logger->error('Task failed to execute successfully. Class: {class}, UID: {uid}', [
-                    'class' => __CLASS__,
-                    'uid' => $this->taskUid,
-                    'exception' => $e,
-                ]);
-                // Do not serialize the complete exception or the trace, this can lead to huge strings > 50MB
-                $failureString = serialize([
-                    'code' => $e->getCode(),
-                    'message' => $e->getMessage(),
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'traceString' => $e->getTraceAsString(),
-                ]);
-            } else {
-                $failureString = '';
-            }
-            // Save the updated executions list
-            GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('tx_scheduler_task')
-                ->update(
-                    'tx_scheduler_task',
-                    [
-                        'serialized_executions' => $runningExecutionsSerialized,
-                        'lastexecution_failure' => $failureString,
-                    ],
-                    [
-                        'uid' => $this->taskUid,
-                    ],
-                    [
-                        'serialized_executions' => Connection::PARAM_LOB,
-                    ]
-                );
+        trigger_error('AbstractTask->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
+        if ($e instanceof \Throwable) {
+            // Do not serialize the complete exception or the trace, this can lead to huge strings > 50MB
+            $failureString = serialize([
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'traceString' => $e->getTraceAsString(),
+            ]);
+        } else {
+            $failureString = '';
         }
+        GeneralUtility::makeInstance(SchedulerTaskRepository::class)->removeExecutionOfTask($this, $executionID, $failureString);
     }
 
     /**
      * Clears all marked executions
      *
      * @return bool TRUE if the clearing succeeded, FALSE otherwise
+     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
      */
     public function unmarkAllExecutions()
     {
-        // Set the serialized executions field to empty
-        $result = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('tx_scheduler_task')
-            ->update(
-                'tx_scheduler_task',
-                [
-                    'serialized_executions' => '',
-                ],
-                [
-                    'uid' => $this->taskUid,
-                ],
-                [
-                    'serialized_executions' => Connection::PARAM_LOB,
-                ]
-            );
-        return (bool)$result;
+        trigger_error('AbstractTask->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
+        return GeneralUtility::makeInstance(SchedulerTaskRepository::class)->removeAllRegisteredExecutionsForTask($this);
     }
 
     /**
      * Saves the details of the task to the database.
      *
      * @return bool
+     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
      */
     public function save()
     {
-        return $this->scheduler->saveTask($this);
+        return GeneralUtility::makeInstance(SchedulerTaskRepository::class)->update($this);
     }
 
     /**
      * Stops the task, by replacing the execution object by an empty one
      * NOTE: the task still needs to be saved after that
+     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
      */
     public function stop()
     {
@@ -575,10 +479,12 @@ abstract class AbstractTask implements LoggerAwareInterface
 
     /**
      * Removes the task totally from the system.
+     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
      */
     public function remove()
     {
-        $this->scheduler->removeTask($this);
+        trigger_error('AbstractTask->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
+        GeneralUtility::makeInstance(SchedulerTaskRepository::class)->remove($this);
     }
 
     /**

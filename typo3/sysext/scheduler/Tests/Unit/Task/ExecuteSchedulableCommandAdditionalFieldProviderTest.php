@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
@@ -43,6 +44,9 @@ class ExecuteSchedulableCommandAdditionalFieldProviderTest extends UnitTestCase
         $mockScheduler = $this->getAccessibleMock(Scheduler::class, ['saveTask'], [], '', false);
         GeneralUtility::setSingletonInstance(Scheduler::class, $mockScheduler);
         $mockScheduler->method('saveTask')->willReturn(false);
+
+        $mockTaskRepository = $this->getMockBuilder(SchedulerTaskRepository::class)->disableOriginalConstructor()->getMock();
+        GeneralUtility::addInstance(SchedulerTaskRepository::class, $mockTaskRepository);
 
         $command = new class () extends Command {
             protected function configure(): void

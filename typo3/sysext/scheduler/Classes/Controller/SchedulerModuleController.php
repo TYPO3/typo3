@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
+use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Exception\InvalidDateException;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\ProgressProviderInterface;
@@ -46,6 +47,7 @@ use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
+use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
 
 /**
  * Scheduler backend module.
@@ -60,6 +62,7 @@ class SchedulerModuleController
     public function __construct(
         protected readonly Scheduler $scheduler,
         protected readonly TaskSerializer $taskSerializer,
+        protected readonly SchedulerTaskRepository $taskRepository,
         protected readonly IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
@@ -200,17 +203,17 @@ class SchedulerModuleController
     {
         $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
-        if (!$taskUid > 0) {
+        if ($taskUid <= 0) {
             throw new \RuntimeException('Expecting a valid task uid', 1641670374);
         }
         try {
             // Try to fetch the task and delete it
-            $task = $this->scheduler->fetchTask($taskUid);
-            if ($task->isExecutionRunning()) {
+            $task = $this->taskRepository->findByUid($taskUid);
+            if ($this->taskRepository->isTaskMarkedAsRunning($task)) {
                 // If the task is currently running, it may not be deleted
                 $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.canNotDeleteRunningTask'), ContextualFeedbackSeverity::ERROR);
             } else {
-                if ($this->scheduler->removeTask($task)) {
+                if ($this->taskRepository->remove($task)) {
                     $backendUser->writelog(
                         SystemLogType::EXTENSION,
                         SystemLogDatabaseAction::DELETE,
@@ -226,7 +229,7 @@ class SchedulerModuleController
             }
         } catch (\UnexpectedValueException $e) {
             // The task could not be unserialized, simply update the database record setting it to deleted
-            $result = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tx_scheduler_task')->update('tx_scheduler_task', ['deleted' => 1], ['uid' => $taskUid]);
+            $result = $this->taskRepository->remove($taskUid);
             if ($result) {
                 $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.deleteSuccess'));
             } else {
@@ -251,10 +254,10 @@ class SchedulerModuleController
         }
         try {
             // Try to fetch the task and stop it
-            $task = $this->scheduler->fetchTask($taskUid);
-            if ($task->isExecutionRunning()) {
+            $task = $this->taskRepository->findByUid($taskUid);
+            if ($this->taskRepository->isTaskMarkedAsRunning($task)) {
                 // If the task is indeed currently running, clear marked executions
-                $result = $task->unmarkAllExecutions();
+                $result = $this->taskRepository->removeAllRegisteredExecutionsForTask($task);
                 if ($result) {
                     $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stopSuccess'));
                 } else {
@@ -281,7 +284,7 @@ class SchedulerModuleController
             throw new \RuntimeException('Expecting a valid task uid to toggle disabled state', 1641670373);
         }
         try {
-            $task = $this->scheduler->fetchTask($taskUid);
+            $task = $this->taskRepository->findByUid($taskUid);
             // If a disabled single task is enabled again, register it for a single execution at next scheduler run.
             $isTaskQueuedForExecution = $task->getType() === AbstractTask::TYPE_SINGLE;
 
@@ -299,7 +302,7 @@ class SchedulerModuleController
                 $task->setDisabled(true);
                 $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskDisabled'), $taskName, $taskUid));
             }
-            $task->save();
+            $this->taskRepository->update($task);
         } catch (\OutOfBoundsException $e) {
             $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), ContextualFeedbackSeverity::ERROR);
         } catch (\UnexpectedValueException $e) {
@@ -399,7 +402,7 @@ class SchedulerModuleController
         }
 
         try {
-            $taskRecord = $this->scheduler->fetchTaskRecord($taskUid);
+            $taskRecord = $this->taskRepository->findRecordByUid($taskUid);
         } catch (\OutOfBoundsException $e) {
             // Task not found - removed meanwhile?
             $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), ContextualFeedbackSeverity::ERROR);
@@ -422,7 +425,7 @@ class SchedulerModuleController
             $class = $this->taskSerializer->extractClassName($taskRecord['serialized_task_object']);
         }
 
-        if ($isInvalidTask || !isset($registeredClasses[$class]) || !$this->scheduler->isValidTaskObject($task)) {
+        if ($isInvalidTask || !isset($registeredClasses[$class]) || !(new TaskValidator())->isValid($task)) {
             // The task object is not valid anymore. Add flash message and go back to list view.
             $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClassEdit'), $class), ContextualFeedbackSeverity::ERROR);
             return $this->renderListTasksView($view, $moduleData);
@@ -503,7 +506,7 @@ class SchedulerModuleController
         $languageService = $this->getLanguageService();
         foreach ($taskUids as $uid) {
             try {
-                $task = $this->scheduler->fetchTask($uid);
+                $task = $this->taskRepository->findByUid($uid);
                 $name = $this->getHumanReadableTaskName($task);
                 // Try to execute it and report result
                 $result = $this->scheduler->executeTask($task);
@@ -534,7 +537,7 @@ class SchedulerModuleController
         $languageService = $this->getLanguageService();
         foreach ($taskUids as $uid) {
             try {
-                $task = $this->scheduler->fetchTask($uid);
+                $task = $this->taskRepository->findByUid($uid);
                 $name = $this->getHumanReadableTaskName($task);
                 $task->setRunOnNextCronJob(true);
                 if ($task->isDisabled()) {
@@ -543,7 +546,7 @@ class SchedulerModuleController
                 } else {
                     $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskQueuedForExecution'), $name, $uid));
                 }
-                $task->save();
+                $this->taskRepository->update($task);
             } catch (\OutOfBoundsException $e) {
                 $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $uid), ContextualFeedbackSeverity::ERROR);
             } catch (\UnexpectedValueException $e) {
@@ -605,7 +608,7 @@ class SchedulerModuleController
             $taskClass = $this->taskSerializer->resolveClassName($taskObject);
             $taskData['class'] = $taskClass;
 
-            if (!$this->scheduler->isValidTaskObject($taskObject)) {
+            if (!(new TaskValidator())->isValid($taskObject)) {
                 $taskData['errorMessage'] = 'The class ' . $taskClass . ' is not a valid task';
                 $errorClasses[] = $taskData;
                 continue;
@@ -674,7 +677,8 @@ class SchedulerModuleController
         $view->makeDocHeaderModuleMenu();
         $this->addDocHeaderReloadButton($view);
         if (!empty($registeredClasses)) {
-            $this->addDocHeaderAddButton($view);
+            $this->addDocHeaderAddTaskButton($view);
+            $this->addDocHeaderAddTaskGroupButton($view);
         }
         $this->addDocHeaderShortcutButton($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler'));
         return $view->renderResponse('ListTasks');
@@ -698,7 +702,7 @@ class SchedulerModuleController
         } else {
             try {
                 $taskUid = (int)($parsedBody['uid'] ?? 0);
-                $task = $this->scheduler->fetchTask($taskUid);
+                $task = $this->taskRepository->findByUid($taskUid);
                 $taskClass = get_class($task);
             } catch (\OutOfBoundsException|\UnexpectedValueException $e) {
                 $result = false;
@@ -764,7 +768,7 @@ class SchedulerModuleController
         /** @var AbstractTask $task */
         $task = GeneralUtility::makeInstance($request->getParsedBody()['tx_scheduler']['class']);
         $task = $this->setTaskDataFromRequest($task, $request);
-        if (!$this->scheduler->addTask($task)) {
+        if (!$this->taskRepository->add($task)) {
             throw new \RuntimeException('Unable to add task. Possible database error', 1641720169);
         }
         $this->getBackendUser()->writelog(
@@ -784,9 +788,9 @@ class SchedulerModuleController
      */
     protected function updateTask(ModuleTemplate $view, ServerRequestInterface $request): void
     {
-        $task = $this->scheduler->fetchTask($request->getParsedBody()['tx_scheduler']['uid']);
+        $task = $this->taskRepository->findByUid((int)$request->getParsedBody()['tx_scheduler']['uid']);
         $task = $this->setTaskDataFromRequest($task, $request);
-        $this->scheduler->saveTask($task);
+        $this->taskRepository->update($task);
         $this->getBackendUser()->writelog(
             SystemLogType::EXTENSION,
             SystemLogDatabaseAction::UPDATE,
@@ -925,7 +929,7 @@ class SchedulerModuleController
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
     }
 
-    protected function addDocHeaderAddButton(ModuleTemplate $moduleTemplate): void
+    protected function addDocHeaderAddTaskButton(ModuleTemplate $moduleTemplate): void
     {
         $languageService = $this->getLanguageService();
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -935,15 +939,20 @@ class SchedulerModuleController
             ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL))
             ->setHref((string)$this->uriBuilder->buildUriFromRoute('scheduler_manage', ['action' => 'add']));
         $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+    }
 
-        $addGroupButton = $buttonBar->makeInputButton()
+    private function addDocHeaderAddTaskGroupButton(ModuleTemplate $moduleTemplate): void
+    {
+        $languageService = $this->getLanguageService();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $addButton = $buttonBar->makeInputButton()
+            ->setTitle($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.group.add'))
+            ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL))
             ->setName('createSchedulerGroup')
-            ->setShowLabelText(true)
-            ->setTitle($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.group.add'))
             ->setValue('1')
             ->setClasses('t3js-create-group');
-        $buttonBar->addButton($addGroupButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+        $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
     }
 
     protected function addDocHeaderCloseAndSaveButtons(ModuleTemplate $moduleTemplate): void
@@ -1034,16 +1043,6 @@ class SchedulerModuleController
         $moduleTemplate->addFlashMessage($message, '', $severity);
     }
 
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
     private function getGroupsWithoutTasks(array $taskGroupsWithTasks): array
     {
         $uidGroupsWithTasks = array_filter(array_column($taskGroupsWithTasks, 'groupUid'));
@@ -1077,5 +1076,15 @@ class SchedulerModuleController
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($groupId)))
             ->set('hidden', $hidden)
             ->executeStatement();
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

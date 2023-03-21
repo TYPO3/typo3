@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
@@ -84,7 +85,8 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
             $fields = array_merge($fields, $argumentFields);
             $optionFields = $this->getCommandOptionFields($command->getDefinition());
             $fields = array_merge($fields, $optionFields);
-            $this->task->save(); // todo: this seems to be superfluous
+            // @todo: this seems to be superfluous
+            GeneralUtility::makeInstance(SchedulerTaskRepository::class)->update($this->task);
         }
 
         return $fields;

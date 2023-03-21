@@ -284,6 +284,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {
+        /** @var ValidatorTask $task */
         $task
             ->setDepth((int)$submittedData['linkvalidator']['depth'])
             ->setPage((int)$submittedData['linkvalidator']['page'])

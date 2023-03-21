@@ -24,7 +24,7 @@ class CronCommand
 {
     /**
      * Normalized sections of the cron command.
-     * Allowed are comma separated lists of integers and the character '*'
+     * Comma separated lists of integers and the character '*' are allowed.
      *
      * field          lower and upper bound
      * -----          --------------
@@ -153,7 +153,7 @@ class CronCommand
      * @param int $timestamp to test
      * @return bool TRUE if cron command conditions are met
      */
-    protected function dayMatchesCronCommand($timestamp)
+    protected function dayMatchesCronCommand($timestamp): bool
     {
         $dayOfMonth = (int)date('j', $timestamp);
         $month = (int)date('n', $timestamp);

@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Scheduler;
 
-use Doctrine\DBAL\Exception as DBALException;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
@@ -24,9 +23,11 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
+use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
 
 /**
  * TYPO3 Scheduler. This class handles scheduling and execution of tasks.
@@ -35,6 +36,7 @@ class Scheduler implements SingletonInterface
 {
     protected LoggerInterface $logger;
     protected TaskSerializer $taskSerializer;
+    protected SchedulerTaskRepository $schedulerTaskRepository;
 
     /**
      * @var array $extConf Settings from the extension manager
@@ -44,10 +46,11 @@ class Scheduler implements SingletonInterface
     /**
      * Constructor, makes sure all derived client classes are included
      */
-    public function __construct(LoggerInterface $logger, TaskSerializer $taskSerializer)
+    public function __construct(LoggerInterface $logger, TaskSerializer $taskSerializer, SchedulerTaskRepository $schedulerTaskRepository)
     {
         $this->logger = $logger;
         $this->taskSerializer = $taskSerializer;
+        $this->schedulerTaskRepository = $schedulerTaskRepository;
         // Get configuration from the extension manager
         $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('scheduler');
         if (empty($this->extConf['maxLifetime'])) {
@@ -62,37 +65,12 @@ class Scheduler implements SingletonInterface
      *
      * @param Task\AbstractTask $task The object representing the task to add
      * @return bool TRUE if the task was successfully added, FALSE otherwise
+     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
      */
     public function addTask(AbstractTask $task)
     {
-        $taskUid = $task->getTaskUid();
-        if (empty($taskUid)) {
-            $fields = [
-                'crdate' => $GLOBALS['EXEC_TIME'],
-                'disable' => (int)$task->isDisabled(),
-                'description' => $task->getDescription(),
-                'task_group' => $task->getTaskGroup(),
-                'serialized_task_object' => 'RESERVED',
-            ];
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('tx_scheduler_task');
-            $result = $connection->insert(
-                'tx_scheduler_task',
-                $fields,
-                ['serialized_task_object' => Connection::PARAM_LOB]
-            );
-
-            if ($result) {
-                $task->setTaskUid($connection->lastInsertId('tx_scheduler_task'));
-                $task->save();
-                $result = true;
-            } else {
-                $result = false;
-            }
-        } else {
-            $result = false;
-        }
-        return $result;
+        trigger_error('Scheduler->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
+        return $this->schedulerTaskRepository->add($task);
     }
 
     /**
@@ -169,13 +147,13 @@ class Scheduler implements SingletonInterface
         // Trigger the saving of the task, as this will calculate its next execution time
         // This should be calculated all the time, even if the execution is skipped
         // (in case it is skipped, this pushes back execution to the next possible date)
-        $task->save();
+        $this->schedulerTaskRepository->update($task);
         // Set a scheduler object for the task again,
         // as it was removed during the save operation
         $task->setScheduler();
         $result = true;
         // Task is already running and multiple executions are not allowed
-        if (!$task->areMultipleExecutionsAllowed() && $task->isExecutionRunning()) {
+        if (!$task->areMultipleExecutionsAllowed() && $this->schedulerTaskRepository->isTaskMarkedAsRunning($task)) {
             // Log multiple execution error
             $this->logger->info('Task is already running and multiple executions are not allowed, skipping! Class: {class}, UID: {uid}', [
                 'class' => get_class($task),
@@ -189,8 +167,9 @@ class Scheduler implements SingletonInterface
                 'uid' => $task->getTaskUid(),
             ]);
             // Register execution
-            $executionID = $task->markExecution();
-            $failure = null;
+            $executionID = $this->schedulerTaskRepository->addExecutionToTask($task);
+            $failureString = '';
+            $e = null;
             try {
                 // Execute task
                 $successfullyExecuted = $task->execute();
@@ -198,11 +177,24 @@ class Scheduler implements SingletonInterface
                     throw new FailedExecutionException('Task failed to execute successfully. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid(), 1250596541);
                 }
             } catch (\Throwable $e) {
+                // Log failed execution
+                $this->logger->error('Task failed to execute successfully. Class: {class}, UID: {uid}', [
+                    'class' => get_class($task),
+                    'uid' => $task->getTaskUid(),
+                    'exception' => $e,
+                ]);
                 // Store exception, so that it can be saved to database
-                $failure = $e;
+                // Do not serialize the complete exception or the trace, this can lead to huge strings > 50MB
+                $failureString = serialize([
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'traceString' => $e->getTraceAsString(),
+                ]);
             }
             // Un-register execution
-            $task->unmarkExecution($executionID, $failure);
+            $this->schedulerTaskRepository->removeExecutionOfTask($task, $executionID, $failureString);
             // Log completion of execution
             $this->logger->info('Task executed. Class: {class}, UID: {uid}', [
                 'class' => get_class($task),
@@ -210,8 +202,8 @@ class Scheduler implements SingletonInterface
             ]);
             // Now that the result of the task execution has been handled,
             // throw the exception again, if any
-            if ($failure instanceof \Throwable) {
-                throw $failure;
+            if ($e instanceof \Throwable) {
+                throw $e;
             }
         }
         return $result;
@@ -240,63 +232,22 @@ class Scheduler implements SingletonInterface
      *
      * @param Task\AbstractTask $task The object representing the task to delete
      * @return bool TRUE if task was successfully deleted, FALSE otherwise
+     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
      */
     public function removeTask(AbstractTask $task)
     {
-        $taskUid = $task->getTaskUid();
-        if (!empty($taskUid)) {
-            $affectedRows = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('tx_scheduler_task')
-                ->update('tx_scheduler_task', ['deleted' => 1], ['uid' => $taskUid]);
-            $result = $affectedRows === 1;
-        } else {
-            $result = false;
-        }
-        return $result;
+        trigger_error('Scheduler->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
+        return $this->schedulerTaskRepository->remove($task);
     }
 
     /**
      * Update a task in the pool.
+     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
      */
     public function saveTask(AbstractTask $task): bool
     {
-        $result = true;
-        $taskUid = $task->getTaskUid();
-        if (empty($taskUid)) {
-            return false;
-        }
-        try {
-            if ($task->getRunOnNextCronJob()) {
-                $executionTime = time();
-            } else {
-                $executionTime = $task->getNextDueExecution();
-            }
-            $task->setExecutionTime($executionTime);
-        } catch (\Exception $e) {
-            $task->setDisabled(true);
-            $executionTime = 0;
-        }
-        $task->unsetScheduler();
-        $fields = [
-            'nextexecution' => $executionTime,
-            'disable' => (int)$task->isDisabled(),
-            'description' => $task->getDescription(),
-            'task_group' => $task->getTaskGroup(),
-            'serialized_task_object' => serialize($task),
-        ];
-        try {
-            GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('tx_scheduler_task')
-                ->update(
-                    'tx_scheduler_task',
-                    $fields,
-                    ['uid' => $taskUid],
-                    ['serialized_task_object' => Connection::PARAM_LOB]
-                );
-        } catch (DBALException $e) {
-            $result = false;
-        }
-        return $result;
+        trigger_error('Scheduler->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
+        return $this->schedulerTaskRepository->update($task);
     }
 
     /**
@@ -308,84 +259,15 @@ class Scheduler implements SingletonInterface
      * @return Task\AbstractTask The fetched task object
      * @throws \OutOfBoundsException
      * @throws \UnexpectedValueException
+     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
      */
     public function fetchTask($uid = 0): AbstractTask
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_scheduler_task');
-
-        $queryBuilder->select('t.uid', 't.serialized_task_object')
-            ->from('tx_scheduler_task', 't')
-            ->setMaxResults(1);
-        // Define where clause
-        // If no uid is given, take any non-disabled task which has a next execution time in the past
-        if (empty($uid)) {
-            $queryBuilder->getRestrictions()->removeAll();
-            $queryBuilder->leftJoin(
-                't',
-                'tx_scheduler_task_group',
-                'g',
-                $queryBuilder->expr()->eq('t.task_group', $queryBuilder->quoteIdentifier('g.uid'))
-            );
-            $queryBuilder->where(
-                $queryBuilder->expr()->eq('t.disable', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
-                $queryBuilder->expr()->neq('t.nextexecution', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
-                $queryBuilder->expr()->lte(
-                    't.nextexecution',
-                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->or(
-                    $queryBuilder->expr()->eq('g.hidden', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
-                    $queryBuilder->expr()->isNull('g.hidden')
-                ),
-                $queryBuilder->expr()->eq('t.deleted', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
-            );
-            $queryBuilder->orderBy('t.nextexecution', 'ASC');
-        } else {
-            $queryBuilder->where(
-                $queryBuilder->expr()->eq('t.uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
-                $queryBuilder->expr()->eq('t.deleted', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
-            );
+        trigger_error('Scheduler->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
+        if ($uid > 0) {
+            return $this->schedulerTaskRepository->findByUid((int)$uid);
         }
-
-        $row = $queryBuilder->executeQuery()->fetchAssociative();
-        if (empty($row)) {
-            if (empty($uid)) {
-                // No uid was passed and no overdue task was found
-                throw new \OutOfBoundsException('No (more) tasks available for execution', 1247827244);
-            }
-            // Although a uid was passed, no task with given was found
-            throw new \OutOfBoundsException('No task with id ' . $uid . ' found', 1422044826);
-        }
-
-        $isInvalidTask = false;
-        $task = null;
-        try {
-            $task = $this->taskSerializer->deserialize($row['serialized_task_object']);
-        } catch (InvalidTaskException) {
-            $isInvalidTask = true;
-        }
-
-        if ($isInvalidTask || !$this->isValidTaskObject($task)) {
-            // Forcibly set the disable flag to 1 in the database,
-            // so that the task does not come up again and again for execution
-            $connectionPool->getConnectionForTable('tx_scheduler_task')->update(
-                'tx_scheduler_task',
-                ['disable' => 1],
-                ['uid' => (int)$row['uid']]
-            );
-            // Throw an exception to raise the problem
-            throw new \UnexpectedValueException('Could not unserialize task', 1255083671);
-        }
-
-        // The task is valid, return it
-        $task->setScheduler();
-        if ($task->getTaskGroup() === null) {
-            // Fix invalid task_group=NULL settings in order to avoid exceptions when saving on PostgreSQL
-            $task->setTaskGroup(0);
-        }
-
-        return $task;
+        return $this->schedulerTaskRepository->findNextExecutableTask();
     }
 
     /**
@@ -396,25 +278,16 @@ class Scheduler implements SingletonInterface
      * @return array Database record for the task
      * @see \TYPO3\CMS\Scheduler\Scheduler::fetchTask()
      * @throws \OutOfBoundsException
+     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
      */
     public function fetchTaskRecord($uid)
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('tx_scheduler_task');
-        $row = $queryBuilder->select('*')
-            ->from('tx_scheduler_task')
-            ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$uid, Connection::PARAM_INT)),
-                $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-
+        trigger_error('Scheduler->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
+        $row = $this->schedulerTaskRepository->findRecordByUid((int)$uid);
         // If the task is not found, throw an exception
         if (empty($row)) {
             throw new \OutOfBoundsException('No task', 1247827245);
         }
-
         return $row;
     }
 
@@ -425,9 +298,11 @@ class Scheduler implements SingletonInterface
      * @param string $where Part of a SQL where clause (without the "WHERE" keyword)
      * @param bool $includeDisabledTasks TRUE if disabled tasks should be fetched too, FALSE otherwise
      * @return array List of task objects
+     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
      */
     public function fetchTasksWithCondition($where, $includeDisabledTasks = false)
     {
+        trigger_error('Scheduler->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
         $tasks = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tx_scheduler_task');
@@ -458,7 +333,7 @@ class Scheduler implements SingletonInterface
             }
 
             // Add the task to the list only if it is valid
-            if ($this->isValidTaskObject($task)) {
+            if ((new TaskValidator())->isValid($task)) {
                 $task->setScheduler();
                 $tasks[] = $task;
             }
@@ -478,10 +353,12 @@ class Scheduler implements SingletonInterface
      *
      * @param object $task The object to test
      * @return bool TRUE if object is a task, FALSE otherwise
+     * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
      */
     public function isValidTaskObject($task)
     {
-        return $task instanceof AbstractTask && get_class($task->getExecution()) !== \__PHP_Incomplete_Class::class;
+        trigger_error('Scheduler->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
+        return (new TaskValidator())->isValid($task);
     }
 
     /**
@@ -491,6 +368,7 @@ class Scheduler implements SingletonInterface
      * @param string $message The message to write to the log
      * @param int $status Status (0 = message, 1 = error)
      * @param mixed $code Key for the message
+     * @internal
      */
     public function log($message, $status = 0, $code = '')
     {

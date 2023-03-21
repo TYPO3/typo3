@@ -5519,4 +5519,88 @@ return [
             'Deprecation-99932-PageRendererEnableDebugMode.rst',
         ],
     ],
+    'TYPO3\CMS\Scheduler\Task\AbstractTask->isExecutionRunning' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+        ],
+    ],
+    'TYPO3\CMS\Scheduler\Task\AbstractTask->markExecution' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+        ],
+    ],
+    'TYPO3\CMS\Scheduler\Task\AbstractTask->unmarkExecution' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+        ],
+    ],
+    'TYPO3\CMS\Scheduler\Task\AbstractTask->unmarkAllExecutions' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+        ],
+    ],
+    'TYPO3\CMS\Scheduler\Task\AbstractTask->remove' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+        ],
+    ],
+    'TYPO3\CMS\Scheduler\Scheduler->addTask' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+        ],
+    ],
+    'TYPO3\CMS\Scheduler\Scheduler->removeTask' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+        ],
+    ],
+    'TYPO3\CMS\Scheduler\Scheduler->saveTask' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+        ],
+    ],
+    'TYPO3\CMS\Scheduler\Scheduler->fetchTask' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+        ],
+    ],
+    'TYPO3\CMS\Scheduler\Scheduler->fetchTaskRecord' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+        ],
+    ],
+    'TYPO3\CMS\Scheduler\Scheduler->fetchTasksWithCondition' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+        ],
+    ],
+    'TYPO3\CMS\Scheduler\Scheduler->isValidTaskObject' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-100247-VariousInterconnectedMethodsInEXTscheduler.rst',
+        ],
+    ],
 ];

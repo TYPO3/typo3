@@ -21,10 +21,10 @@ use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 
 /**
  * Event listener to display information about last automated run, as stored in the system registry.
@@ -33,10 +33,8 @@ final class ToolbarItemProvider
 {
     /**
      * Scheduler last run registry information
-     *
-     * @var array
      */
-    protected $lastRunInformation = [];
+    protected array $lastRunInformation = [];
 
     /**
      * Gather initial information
@@ -122,15 +120,7 @@ final class ToolbarItemProvider
      */
     private function hasConfiguredTasks(): bool
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task');
-        $queryBuilder->getRestrictions()->removeAll();
-        $queryBuilder
-            ->count('uid')
-            ->from('tx_scheduler_task')
-            ->where(
-                $queryBuilder->expr()->eq('deleted', 0)
-            );
-        return $queryBuilder->executeQuery()->fetchOne() > 0;
+        return GeneralUtility::makeInstance(SchedulerTaskRepository::class)->hasTasks();
     }
 
     private function getLanguageService(): LanguageService

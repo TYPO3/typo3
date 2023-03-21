@@ -3036,11 +3036,6 @@ parameters:
 			path: ../../typo3/sysext/linkvalidator/Classes/LinkAnalyzer.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Scheduler\\\\Task\\\\AbstractTask\\:\\:setDepth\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/linkvalidator/Classes/Task/ValidatorTaskAdditionalFieldProvider.php
-
-		-
 			message: "#^Parameter \\#3 \\$searchFields of method TYPO3\\\\CMS\\\\Linkvalidator\\\\Repository\\\\BrokenLinkRepository\\:\\:getAllBrokenLinksForPages\\(\\) expects array\\<string\\>, array\\<string, array\\<int, string\\>\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/linkvalidator/Tests/Functional/Repository/BrokenLinkRepositoryTest.php
@@ -3126,14 +3121,9 @@ parameters:
 			path: ../../typo3/sysext/scheduler/Classes/CronCommand/NormalizeCommand.php
 
 		-
-			message: "#^Parameter \\#1 \\$id of method TYPO3\\\\CMS\\\\Scheduler\\\\Task\\\\AbstractTask\\:\\:setTaskUid\\(\\) expects int, string given\\.$#"
+			message: "#^Right side of && is always true\\.$#"
 			count: 1
-			path: ../../typo3/sysext/scheduler/Classes/Scheduler.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between int and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/scheduler/Classes/Scheduler.php
+			path: ../../typo3/sysext/scheduler/Classes/Validation/Validator/TaskValidator.php
 
 		-
 			message: "#^Comparison operation \"\\>\" between 1 and 0 is always true\\.$#"
