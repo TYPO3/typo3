@@ -93,13 +93,13 @@ class PreviewModuleTest extends UnitTestCase
         $context = $this->getMockBuilder(Context::class)->getMock();
         $context->method('hasAspect')->with('frontend.preview')->willReturn(false);
         $context->expects(self::any())->method('setAspect')
-            ->withConsecutive(
-                ['date', self::anything()],
-                ['visibility', self::anything()],
-                ['visibility', self::anything()],
-                ['frontend.user', self::anything()],
-                ['frontend.preview', self::anything()],
-            );
+            ->willReturnCallback(fn (string $name): bool => match (true) {
+                $name === 'date',
+                $name === 'visibility',
+                $name === 'frontend.user',
+                $name === 'frontend.preview' => true,
+                default => throw new \LogicException('Unexpected argument "' . $name . '" provided.', 1679482900),
+            });
         GeneralUtility::setSingletonInstance(Context::class, $context);
 
         $previewModule = new PreviewModule();
