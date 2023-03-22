@@ -10,7 +10,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FlexFormToolsTest extends UnitTestCase
 {
-    protected function tceFormsRemovedInMigrationDataProvider(): iterable
+    public static function tceFormsRemovedInMigrationDataProvider(): iterable
     {
         yield 'TCEforms removed recursively.' => [
             'dataStructure' => [

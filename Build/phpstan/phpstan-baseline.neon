@@ -1336,11 +1336,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Frontend/PhpFrontendTest.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\DataHandling\\\\DataHandlerTest\\:\\:numberValueCheckRecognizesDecimalStringValuesAsFloatValuesCorrectlyDataProvider\\(\\) is unused\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
-
-		-
 			message: "#^Offset 0 does not exist on array\\{\\}\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
@@ -1419,61 +1414,6 @@ parameters:
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mailer\\\\Transport\\\\Smtp\\\\Stream\\\\AbstractStream\\:\\:getPort\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Migrations\\\\TcaMigrationTest\\:\\:evalEmailMigratedToTypeDataProvider\\(\\) is unused\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Migrations/TcaMigrationTest.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Migrations\\\\TcaMigrationTest\\:\\:evalNullMigratedToNullableOptionDataProvider\\(\\) is unused\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Migrations/TcaMigrationTest.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Migrations\\\\TcaMigrationTest\\:\\:evalPasswordSaltedPasswordMigratedToTypePasswordDataProvider\\(\\) is unused\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Migrations/TcaMigrationTest.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Migrations\\\\TcaMigrationTest\\:\\:falHandlingInTypeInlineIsMigratedToTypeFileDataProvider\\(\\) is unused\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Migrations/TcaMigrationTest.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Migrations\\\\TcaMigrationTest\\:\\:internalTypeFolderMigratedToTypeDataProvider\\(\\) is unused\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Migrations/TcaMigrationTest.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Migrations\\\\TcaMigrationTest\\:\\:propertyAlwaysDescriptionIsRemovedDataProvider\\(\\) is unused\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Migrations/TcaMigrationTest.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Migrations\\\\TcaMigrationTest\\:\\:renderTypeColorpickerToTypeColorDataProvider\\(\\) is unused\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Migrations/TcaMigrationTest.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Migrations\\\\TcaMigrationTest\\:\\:renderTypeInputDateTimeMigratedToTypeDatetimeDataProvider\\(\\) is unused\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Migrations/TcaMigrationTest.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Migrations\\\\TcaMigrationTest\\:\\:renderTypeInputLinkMigratedToTypeLinkDataProvider\\(\\) is unused\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Migrations/TcaMigrationTest.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Migrations\\\\TcaMigrationTest\\:\\:typeNoneColsMigratedToSizeDataProvider\\(\\) is unused\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Migrations/TcaMigrationTest.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Migrations\\\\TcaMigrationTest\\:\\:typeTextWithEvalIntOrDouble2MigratedToTypeNumberDataProvider\\(\\) is unused\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Migrations/TcaMigrationTest.php
 
 		-
 			message: "#^Call to an undefined method Psr\\\\EventDispatcher\\\\EventDispatcherInterface\\:\\:expects\\(\\)\\.$#"

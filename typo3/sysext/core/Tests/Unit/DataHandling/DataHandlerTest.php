@@ -258,7 +258,7 @@ class DataHandlerTest extends UnitTestCase
         self::assertSame($expectedReturnValue, $returnValue['value']);
     }
 
-    private function numberValueCheckRecognizesDecimalStringValuesAsFloatValuesCorrectlyDataProvider(): iterable
+    public static function numberValueCheckRecognizesDecimalStringValuesAsFloatValuesCorrectlyDataProvider(): iterable
     {
         yield 'simple negative decimal value with comma and one position' => [
             'input' => '-0,5',

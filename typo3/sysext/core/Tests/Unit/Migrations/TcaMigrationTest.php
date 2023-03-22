@@ -1277,7 +1277,7 @@ class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    private function internalTypeFolderMigratedToTypeDataProvider(): iterable
+    public static function internalTypeFolderMigratedToTypeDataProvider(): iterable
     {
         yield 'internal_type=folder migrated to type=folder' => [
             'input' => [
@@ -1451,7 +1451,7 @@ class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    private function evalNullMigratedToNullableOptionDataProvider(): iterable
+    public static function evalNullMigratedToNullableOptionDataProvider(): iterable
     {
         yield 'field contains eval=null' => [
             'tca' => [
@@ -1573,7 +1573,7 @@ class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, $subject->migrate($input));
     }
 
-    private function evalEmailMigratedToTypeDataProvider(): iterable
+    public static function evalEmailMigratedToTypeDataProvider(): iterable
     {
         yield 'eval=email migrated to type=email' => [
             'input' => [
@@ -1664,7 +1664,7 @@ class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, $subject->migrate($input));
     }
 
-    private function typeNoneColsMigratedToSizeDataProvider(): iterable
+    public static function typeNoneColsMigratedToSizeDataProvider(): iterable
     {
         yield 'type none cols migrated to size' => [
             'tca' => [
@@ -1734,7 +1734,7 @@ class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, $subject->migrate($tca));
     }
 
-    private function renderTypeInputLinkMigratedToTypeLinkDataProvider(): iterable
+    public static function renderTypeInputLinkMigratedToTypeLinkDataProvider(): iterable
     {
         yield 'Full example of renderType=inputLink migrated to type=link' => [
             'input' => [
@@ -1974,7 +1974,7 @@ class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, $subject->migrate($input));
     }
 
-    private function evalPasswordSaltedPasswordMigratedToTypePasswordDataProvider(): iterable
+    public static function evalPasswordSaltedPasswordMigratedToTypePasswordDataProvider(): iterable
     {
         yield 'eval=password and eval=saltedPassword migrated to type=password' => [
             'input' => [
@@ -2095,7 +2095,7 @@ class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, $subject->migrate($input));
     }
 
-    private function renderTypeInputDateTimeMigratedToTypeDatetimeDataProvider(): iterable
+    public static function renderTypeInputDateTimeMigratedToTypeDatetimeDataProvider(): iterable
     {
         yield 'Full example of renderType=inputDateTime migrated to type=datetime' => [
             'input' => [
@@ -2791,7 +2791,7 @@ class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    private function renderTypeColorpickerToTypeColorDataProvider(): iterable
+    public static function renderTypeColorpickerToTypeColorDataProvider(): iterable
     {
         yield 'Full example of renderType=colorpicker migrated to type=color' => [
             'input' => [
@@ -2874,7 +2874,7 @@ class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, $subject->migrate($input));
     }
 
-    private function typeTextWithEvalIntOrDouble2MigratedToTypeNumberDataProvider(): iterable
+    public static function typeTextWithEvalIntOrDouble2MigratedToTypeNumberDataProvider(): iterable
     {
         yield 'Full example of eval=double2 migrated to type=number' => [
             'input' => [
@@ -3046,7 +3046,7 @@ class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, $subject->migrate($input));
     }
 
-    private function propertyAlwaysDescriptionIsRemovedDataProvider(): iterable
+    public static function propertyAlwaysDescriptionIsRemovedDataProvider(): iterable
     {
         yield 'always_description is removed' => [
             'input' => [
@@ -3119,7 +3119,7 @@ class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, $subject->migrate($input));
     }
 
-    private function falHandlingInTypeInlineIsMigratedToTypeFileDataProvider(): iterable
+    public static function falHandlingInTypeInlineIsMigratedToTypeFileDataProvider(): iterable
     {
         yield 'Full example of type=inline with foreign_table=sys_file_reference migrated to type=file' => [
             'input' => [

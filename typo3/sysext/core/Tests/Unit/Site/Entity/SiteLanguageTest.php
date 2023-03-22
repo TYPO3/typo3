@@ -112,7 +112,7 @@ class SiteLanguageTest extends UnitTestCase
         self::assertSame($expected, $subject->toArray());
     }
 
-    protected function typo3LanguageAndLocaleDataProvider(): \Generator
+    public static function typo3LanguageAndLocaleDataProvider(): \Generator
     {
         yield 'Defined "default" configuration' => [
             'en-US',
