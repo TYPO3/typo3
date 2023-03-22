@@ -223,19 +223,23 @@ class DeletedRecords
             if ($maxResults) {
                 $queryBuilder->setMaxResults($maxResults);
             }
-            $recordsToCheck = $queryBuilder->select('*')
+            $queryBuilder = $queryBuilder->select('*')
                 ->from($table)
                 ->andWhere(
                     $queryBuilder->expr()->eq(
                         $deletedField,
                         $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)
                     )
-                )
-                ->orderBy('uid')
-                ->executeQuery()
-                ->fetchAllAssociative();
-
-            if ($recordsToCheck !== false) {
+                );
+            if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? false) {
+                $queryBuilder = $queryBuilder
+                    ->orderBy($GLOBALS['TCA'][$table]['ctrl']['tstamp'], 'desc')
+                    ->addOrderBy('uid');
+            } else {
+                $queryBuilder = $queryBuilder->orderBy('uid');
+            }
+            $recordsToCheck = $queryBuilder->executeQuery()->fetchAllAssociative();
+            if ($recordsToCheck !== []) {
                 $this->checkRecordAccess($table, $recordsToCheck);
             }
         }
