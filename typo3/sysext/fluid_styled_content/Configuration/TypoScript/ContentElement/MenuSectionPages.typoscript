@@ -20,6 +20,7 @@ tt_content.menu_section_pages {
                 20 {
                     table = tt_content
                     pidInList.field = uid
+                    where = {#sectionIndex} = 1
                     orderBy = sorting
                     as = content
                     dataProcessing {
