@@ -937,7 +937,7 @@ class SchedulerModuleController
         $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
 
         $addGroupButton = $buttonBar->makeInputButton()
-            ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL))
             ->setName('createSchedulerGroup')
             ->setShowLabelText(true)
             ->setTitle($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.group.add'))
