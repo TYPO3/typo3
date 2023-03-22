@@ -518,7 +518,7 @@ class FileListController implements LoggerAwareInterface
                     ])
                     ->setHref(
                         (string)$this->uriBuilder->buildUriFromRoute(
-                            'file_FilelistList',
+                            'media_management',
                             ['id' => $parentFolder->getCombinedIdentifier()]
                         )
                     )
@@ -532,7 +532,7 @@ class FileListController implements LoggerAwareInterface
 
         // Shortcut
         $shortCutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('file_FilelistList')
+            ->setRouteIdentifier('media_management')
             ->setDisplayName(sprintf(
                 '%s: %s',
                 $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:mlang_tabs_tab'),

@@ -127,7 +127,7 @@ class EditFileController
         $returnUrl = GeneralUtility::sanitizeLocalUrl(
             $parsedBody['returnUrl']
             ?? $queryParams['returnUrl']
-            ?? (string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', [
+            ?? (string)$this->uriBuilder->buildUriFromRoute('media_management', [
                 'id' => $file->getParentFolder()->getCombinedIdentifier(),
             ])
         );

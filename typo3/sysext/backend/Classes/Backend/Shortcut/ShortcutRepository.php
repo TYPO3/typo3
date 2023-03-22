@@ -401,7 +401,7 @@ class ShortcutRepository
                 continue;
             }
 
-            if ($moduleName === 'file_FilelistList') {
+            if ($moduleName === 'file_FilelistList' || $moduleName === 'media_management') {
                 $combinedIdentifier = (string)($arguments['id'] ?? '');
                 if ($combinedIdentifier !== '') {
                     $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByCombinedIdentifier($combinedIdentifier);

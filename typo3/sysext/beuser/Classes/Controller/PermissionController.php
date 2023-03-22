@@ -290,12 +290,12 @@ class PermissionController
             'beUsers' => BackendUtility::getUserNames(),
             'beGroups' => BackendUtility::getGroupNames(),
             'depth' => $this->depth,
-            'depthBaseUrl' => $this->uriBuilder->buildUriFromRoute('system_BeuserTxPermission', [
+            'depthBaseUrl' => $this->uriBuilder->buildUriFromRoute('permissions_pages', [
                 'id' => $this->id,
                 'depth' => '${value}',
                 'action' => 'index',
             ]),
-            'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('system_BeuserTxPermission', [
+            'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('permissions_pages', [
                 'id' => $this->id,
                 'depth' => $this->depth,
                 'action' => 'index',
@@ -335,7 +335,7 @@ class PermissionController
             'pageInfo' => $this->pageInfo,
             'returnUrl' => $this->returnUrl,
             'recursiveSelectOptions' => $this->getRecursiveSelectOptions(),
-            'formAction' => (string)$this->uriBuilder->buildUriFromRoute('system_BeuserTxPermission', [
+            'formAction' => (string)$this->uriBuilder->buildUriFromRoute('permissions_pages', [
                 'action' => 'update',
                 'id' => $this->id,
                 'depth' => $this->depth,
@@ -421,7 +421,7 @@ class PermissionController
                 $viewModeItems[] = GeneralUtility::makeInstance(DropDownRadio::class)
                     ->setActive($this->depth === $value)
                     ->setLabel($label)
-                    ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_BeuserTxPermission', ['depth' => $value]));
+                    ->setHref((string)$this->uriBuilder->buildUriFromRoute('permissions_pages', ['depth' => $value]));
             }
             $viewModeButton = $buttonBar->makeDropDownButton()
                 ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'))
@@ -433,7 +433,7 @@ class PermissionController
         }
 
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('system_BeuserTxPermission')
+            ->setRouteIdentifier('permissions_pages')
             ->setDisplayName($this->getShortcutTitle())
             ->setArguments(['id' => $this->id, 'action' => $action]);
         $buttonBar->addButton($shortcutButton);

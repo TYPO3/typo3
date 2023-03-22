@@ -79,7 +79,7 @@ class SwitchUserController
 
         if (ExtensionManagementUtility::isLoaded('beuser')) {
             // Set backend user listing module as starting module if installed
-            $currentUser->uc['startModuleOnFirstLogin'] = 'system_BeuserTxBeuser';
+            $currentUser->uc['startModuleOnFirstLogin'] = 'backend_user_management';
         }
         $currentUser->uc['recentSwitchedToUsers'] = $this->generateListOfMostRecentSwitchedUsers($targetUserId);
         $currentUser->writeUC();

@@ -19,12 +19,12 @@
         <td class="col-title">{fileMount.title}</td>
         <td>{fileMount.description}</td>
         <td>
-            <a href="{be:moduleLink(route: 'file_FilelistList', query: 'id={fileMount.storage.uid}:/')}'">
+            <a href="{be:moduleLink(route: 'media_management', query: 'id={fileMount.storage.uid}:/')}'">
                 {fileMount.storage.name} <code>[{fileMount.storage.uid}]</code>
             </a>
         </td>
         <td>
-            <a href="{be:moduleLink(route: 'file_FilelistList', query: 'id={fileMount.storage.uid}:{fileMount.path}')}'">
+            <a href="{be:moduleLink(route: 'media_management', query: 'id={fileMount.storage.uid}:{fileMount.path}')}'">
                 {fileMount.storage.configuration.basePath}{fileMount.path}
             </a>
         </td>

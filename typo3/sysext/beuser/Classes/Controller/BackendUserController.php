@@ -176,7 +176,7 @@ class BackendUserController extends ActionController
             ]));
         $buttonBar->addButton($addUserButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('system_BeuserTxBeuser')
+            ->setRouteIdentifier('backend_user_management')
             ->setArguments(['action' => 'index'])
             ->setDisplayName(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUsers', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
@@ -210,7 +210,7 @@ class BackendUserController extends ActionController
         $this->addMainMenu('online');
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('system_BeuserTxBeuser')
+            ->setRouteIdentifier('backend_user_management')
             ->setArguments(['action' => 'online'])
             ->setDisplayName(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:onlineUsers', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
@@ -229,7 +229,7 @@ class BackendUserController extends ActionController
             ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
             ->setShowLabelText(true)
-            ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('system_BeuserTxBeuser'));
+            ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('backend_user_management'));
         $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         $editButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL))
@@ -251,7 +251,7 @@ class BackendUserController extends ActionController
         $buttonBar->addButton($addUserButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
         $username = empty($data['user']['username']) ? '' : ': ' . $data['user']['username'];
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('system_BeuserTxBeuser')
+            ->setRouteIdentifier('backend_user_management')
             ->setArguments(['action' => 'show', 'uid' => $uid])
             ->setDisplayName(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser', 'beuser') . $username);
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
@@ -287,10 +287,10 @@ class BackendUserController extends ActionController
             ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
             ->setShowLabelText(true)
-            ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('system_BeuserTxBeuser'));
+            ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('backend_user_management'));
         $buttonBar->addButton($backButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('system_BeuserTxBeuser')
+            ->setRouteIdentifier('backend_user_management')
             ->setArguments(['action' => 'compare'])
             ->setDisplayName(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:compareUsers', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
@@ -425,7 +425,7 @@ class BackendUserController extends ActionController
             ]));
         $buttonBar->addButton($addGroupButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('system_BeuserTxBeuser')
+            ->setRouteIdentifier('backend_user_management')
             ->setArguments(['action' => 'groups'])
             ->setDisplayName(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroupsMenu', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
@@ -458,7 +458,7 @@ class BackendUserController extends ActionController
             ->setHref($this->uriBuilder->uriFor('groups'));
         $buttonBar->addButton($backButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('system_BeuserTxBeuser')
+            ->setRouteIdentifier('backend_user_management')
             ->setArguments(['action' => 'compareGroups'])
             ->setDisplayName(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:compareBackendUsersGroups', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);

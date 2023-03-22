@@ -478,7 +478,7 @@ class Clipboard
         } elseif (is_string($reference)) {
             if ($isRequestedTable && ExtensionManagementUtility::isLoaded('filelist')) {
                 // Wrap in link to the files folder in case current requested table matches and filelist is loaded
-                $itemText = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', ['id' => $reference])) . '">' . $itemText . '</a>';
+                $itemText = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('media_management', ['id' => $reference])) . '">' . $itemText . '</a>';
             } else {
                 $itemText = '<span class="text-muted">' . $itemText . '</span>';
             }

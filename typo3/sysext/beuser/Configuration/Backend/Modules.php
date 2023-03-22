@@ -7,7 +7,7 @@ use TYPO3\CMS\Beuser\Controller\PermissionController;
  * Definitions for modules provided by EXT:beuser
  */
 return [
-    'system_BeuserTxPermission' => [
+    'permissions_pages' => [
         'parent' => 'system',
         'position' => ['before' => '*'],
         'access' => 'admin',
@@ -15,19 +15,21 @@ return [
         'iconIdentifier' => 'module-permission',
         'navigationComponent' => '@typo3/backend/page-tree/page-tree-element',
         'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf',
+        'aliases' => ['system_BeuserTxPermission'],
         'routes' => [
             '_default' => [
                 'target' => PermissionController::class . '::handleRequest',
             ],
         ],
     ],
-    'system_BeuserTxBeuser' => [
+    'backend_user_management' => [
         'parent' => 'system',
-        'position' => ['after' => 'system_BeuserTxPermission'],
+        'position' => ['after' => 'permissions_pages'],
         'access' => 'admin',
         'iconIdentifier' => 'module-beuser',
         'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod.xlf',
         'extensionName' => 'Beuser',
+        'aliases' => ['system_BeuserTxBeuser'],
         'controllerActions' => [
             BackendUserController::class => [
                 'index',

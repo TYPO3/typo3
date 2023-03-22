@@ -32,7 +32,7 @@ return [
     ],
     'web_list' => [
         'parent' => 'web',
-        'position' => ['after' => 'web_ViewpageView'],
+        'position' => ['after' => 'page_preview'],
         'access' => 'user',
         'path' => '/module/web/list',
         'iconIdentifier' => 'module-list',
@@ -72,13 +72,14 @@ return [
             ],
         ],
     ],
-    'help_AboutAbout' => [
+    'about' => [
         'parent' => 'help',
         'position' => ['before' => '*'],
         'access' => 'user',
         'path' => '/module/help/about',
         'iconIdentifier' => 'module-about',
         'labels' => 'LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf',
+        'aliases' => ['help_AboutAbout'],
         'routes' => [
             '_default' => [
                 'target' => AboutController::class . '::handleRequest',

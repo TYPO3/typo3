@@ -42,7 +42,7 @@ class ViewPage {
   private readonly minimalHeight: number = 300;
   private readonly minimalWidth: number = 300;
 
-  private readonly storagePrefix: string = 'moduleData.web_ViewpageView.States.';
+  private readonly storagePrefix: string = 'moduleData.page_preview.States.';
   private iframe: HTMLIFrameElement;
   private inputCustomWidth: HTMLInputElement;
   private inputCustomHeight: HTMLInputElement;

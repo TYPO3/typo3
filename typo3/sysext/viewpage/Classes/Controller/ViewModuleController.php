@@ -128,7 +128,7 @@ class ViewModuleController
             $languageMenu->setIdentifier('_langSelector');
             foreach ($languages as $value => $label) {
                 $href = (string)$this->uriBuilder->buildUriFromRoute(
-                    'web_ViewpageView',
+                    'page_preview',
                     [
                         'id' => $pageId,
                         'language' => (int)$value,
@@ -170,7 +170,7 @@ class ViewModuleController
 
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('web_ViewpageView')
+            ->setRouteIdentifier('page_preview')
             ->setDisplayName($this->getShortcutTitle($pageId))
             ->setArguments(['id' => $pageId]);
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);

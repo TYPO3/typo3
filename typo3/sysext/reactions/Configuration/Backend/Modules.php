@@ -8,7 +8,7 @@ use TYPO3\CMS\Reactions\Controller\ManagementController;
 return [
     'system_reactions' => [
         'parent' => 'system',
-        'position' => ['after' => 'system_BeuserTxBeuser'],
+        'position' => ['after' => 'backend_user_management'],
         'access' => 'admin',
         'workspaces' => 'live',
         'path' => '/module/system/reactions',

@@ -34,7 +34,7 @@
                     <f:if condition="{data.row.uid}">
                         <f:then>
                             <f:variable name="editUrl">
-                                <be:moduleLink route="system_BeuserTxPermission" arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', action: 'edit', depth: depth, returnUrl: returnUrl}" />
+                                <be:moduleLink route="permissions_pages" arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', action: 'edit', depth: depth, returnUrl: returnUrl}" />
                             </f:variable>
 
                             <f:comment>

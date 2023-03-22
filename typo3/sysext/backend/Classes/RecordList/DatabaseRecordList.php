@@ -20,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Module\ModuleData;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListHeaderColumnsEvent;
 use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent;
 use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListTableActionsEvent;
@@ -395,6 +396,7 @@ class DatabaseRecordList
         protected readonly TranslationConfigurationProvider $translateTools,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly BackendViewFactory $backendViewFactory,
+        protected readonly ModuleProvider $moduleProvider,
     ) {
         $this->calcPerms = new Permission();
         $this->spaceIcon = '<span class="btn btn-default disabled" aria-hidden="true">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
@@ -1424,7 +1426,7 @@ class DatabaseRecordList
             }
 
             // "Edit Perms" link:
-            if ($table === 'pages' && $backendUser->check('modules', 'system_BeuserTxPermission') && ExtensionManagementUtility::isLoaded('beuser')) {
+            if ($table === 'pages' && $this->moduleProvider->accessGranted('permissions_pages', $backendUser)) {
                 if ($isL10nOverlay || $isDeletePlaceHolder) {
                     $permsAction = $this->spaceIcon;
                 } else {
@@ -1433,7 +1435,7 @@ class DatabaseRecordList
                         'action' => 'edit',
                         'returnUrl' => $this->listURL(),
                     ];
-                    $href = (string)$this->uriBuilder->buildUriFromRoute('system_BeuserTxPermission', $params);
+                    $href = (string)$this->uriBuilder->buildUriFromRoute('permissions_pages', $params);
                     $permsAction = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="'
                         . htmlspecialchars($this->getLanguageService()->getLL('permissions')) . '">'
                         . $this->iconFactory->getIcon('actions-lock', Icon::SIZE_SMALL)->render() . '</a>';
