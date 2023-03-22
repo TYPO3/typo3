@@ -4,13 +4,13 @@
 		<header/>
 		<body>
 			<trans-unit id="module.pagetsconfig.title" resname="module.pagetsconfig.title">
-				<source>PageTsConfig</source>
+				<source>Page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig.description" resname="module.pagetsconfig.description">
-				<source>The Page TsConfig module lets you manage configuration overrides for editors and option display throughout the Backend.</source>
+				<source>The Page TSconfig module lets you manage configuration overrides for editors and option display throughout the Backend.</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig.shortDescription" resname="module.pagetsconfig.shortDescription">
-				<source>Page TsConfig tools</source>
+				<source>Page TSconfig tools</source>
 			</trans-unit>
 
 			<trans-unit id="module.pagetsconfig.noAccess" resname="module.pagetsconfig.noAccess">
@@ -18,10 +18,10 @@
 			</trans-unit>
 
 			<trans-unit id="module.pagetsconfig_records" resname="module.pagetsconfig_records">
-				<source>PageTsConfig Records</source>
+				<source>Page TSconfig Records</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_records.headline" resname="module.pagetsconfig_records.headline">
-				<source>PageTsConfig Records</source>
+				<source>Page TSconfig Records</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_records.description" resname="module.pagetsconfig_records.description">
 				<source>Global overview of all pages in the database containing custom Page TSconfig.</source>
@@ -37,16 +37,16 @@
 			</trans-unit>
 
 			<trans-unit id="module.pagetsconfig_active" resname="module.pagetsconfig_active">
-				<source>Active PageTsConfig</source>
+				<source>Active Page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.headline" resname="module.pagetsconfig_active.headline">
-				<source>Active PageTsConfig of page "%s"</source>
+				<source>Active Page TSconfig of page "%s"</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.description" resname="module.pagetsconfig_active.description">
-				<source>Overview of the current PageTsConfig of the system. A targeted search for values and names is possible. The list of results can also be filtered according to conditions.</source>
+				<source>Overview of the current Page TSconfig of the system. A targeted search for values and names is possible. The list of results can also be filtered according to conditions.</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.displayConstantSubstitutions" resname="module.pagetsconfig_active.displayConstantSubstitutions">
-				<source>Substitute constants in PageTsConfig</source>
+				<source>Substitute constants in Page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.displayComments" resname="module.pagetsconfig_active.displayComments">
 				<source>Display comments</source>
@@ -76,7 +76,7 @@
 				<source>Constants from site settings</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.activePageTsConfig" resname="module.pagetsconfig_active.activePageTsConfig">
-				<source>PageTsConfig</source>
+				<source>Page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.noPageTSconfigAvailable" resname="module.pagetsconfig_active.noPageTSconfigAvailable">
 				<source>No suitable Page TSconfig available.</source>
@@ -86,10 +86,10 @@
 			</trans-unit>
 
 			<trans-unit id="module.pagetsconfig_includes" resname="module.pagetsconfig_includes">
-				<source>Included PageTsConfig</source>
+				<source>Included Page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.headline" resname="module.pagetsconfig_includes.headline">
-				<source>Included PageTsConfig</source>
+				<source>Included Page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.description" resname="module.pagetsconfig_includes.description">
 				<source>Overview of the included TypoScript and include order for the current page.</source>
@@ -98,7 +98,7 @@
 				<source>Constants from site settings</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.pagetsconfig" resname="module.pagetsconfig_includes.pagetsconfig">
-				<source>PageTsConfig</source>
+				<source>Page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.panel.header.configuration" resname="module.pagetsconfig_includes.panel.header.configuration">
 				<source>Configuration</source>
