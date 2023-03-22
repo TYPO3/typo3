@@ -102,10 +102,10 @@
 	},
 	"require-dev": {
 		"bnf/phpstan-psr-container": "^1.0.1",
-		"codeception/codeception": "^5.0.3",
-		"codeception/lib-asserts": "^2.0.1",
+		"codeception/codeception": "^5.0.10",
+		"codeception/lib-asserts": "^2.1.0",
 		"codeception/module-asserts": "^3.0.0",
-		"codeception/module-cli": "^2.0.0",
+		"codeception/module-cli": "^2.0.1",
 		"codeception/module-filesystem": "^3.0.0",
 		"codeception/module-webdriver": "^3.2.0",
 		"composer/composer": "^2.4.2",
