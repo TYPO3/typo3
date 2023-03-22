@@ -1,3 +1,5 @@
+/* eslint-env node, commonjs */
+/* eslint-disable @typescript-eslint/no-var-requires */
 'use strict';
 
 const fs = require('fs')
@@ -46,14 +48,14 @@ module.exports = function(config) {
           resolveId: (source) => {
 
             const importMap = {
-              'lit': 'lit@2.0.0/index',
-              'lit/': 'lit@2.0.0/',
-              'lit-html': 'lit-html@2.0.0/lit-html',
-              'lit-html/': 'lit-html@2.0.0/',
-              'lit-element': 'lit-element@3.0.0/lit-element',
-              'lit-element/': 'lit-element@3.0.0/',
-              '@lit/reactive-element': '@lit/reactive-element@1.0.0/reactive-element',
-              '@lit/reactive-element/': '@lit/reactive-element@1.0.0/',
+              'lit': 'lit/index',
+              'lit/': 'lit/',
+              'lit-html': 'lit-html/lit-html',
+              'lit-html/': 'lit-html/',
+              'lit-element': 'lit-element/lit-element',
+              'lit-element/': 'lit-element/',
+              '@lit/reactive-element': '@lit/reactive-element/reactive-element',
+              '@lit/reactive-element/': '@lit/reactive-element/',
             };
 
             if (source in importMap) {
@@ -73,17 +75,17 @@ module.exports = function(config) {
               const path = parts.join('/');
               const fullPath = `typo3/sysext/${extension}/Resources/Public/JavaScript/${path}`;
 
-              return {id: fullPath}
+              return { id: fullPath }
             }
 
             let contribPath = `typo3/sysext/core/Resources/Public/JavaScript/Contrib/${source}.js`;
             if (fs.existsSync(contribPath)) {
-              return {id: contribPath}
+              return { id: contribPath }
             }
 
             contribPath = `typo3/sysext/core/Resources/Public/JavaScript/Contrib/${source}`;
             if (fs.existsSync(contribPath)) {
-              return {id: contribPath}
+              return { id: contribPath }
             }
 
             return null
@@ -111,7 +113,7 @@ module.exports = function(config) {
 
     coverageReporter: {
       reporters: [
-        {type: 'clover', dir: 'typo3temp', subdir: 'var/tests', file: 'karma.clover.xml'}
+        { type: 'clover', dir: 'typo3temp', subdir: 'var/tests', file: 'karma.clover.xml' }
       ]
     },
 

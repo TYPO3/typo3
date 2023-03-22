@@ -406,22 +406,6 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '<%= paths.node_modules %>',
           dest: '<%= paths.core %>Public/JavaScript/Contrib/',
-          rename: function (dest, src) {
-            let [packageName, ...paths] = src.split('/');
-            let packageJson = `${grunt.config.get('paths.node_modules')}/${packageName}/package.json`;
-            let scopedPackageJson = `${grunt.config.get('paths.node_modules')}/${packageName}/${paths[0]}/package.json`;
-
-            let version = '';
-            if (grunt.file.exists(packageJson)) {
-              version = '@' + grunt.file.readJSON(packageJson).version;
-            } else if (grunt.file.exists(scopedPackageJson)) {
-              version = '@' + grunt.file.readJSON(scopedPackageJson).version;
-              packageName += '/' + paths[0];
-              paths.shift();
-            }
-
-            return `${dest}${packageName}${version}/${paths.join('/')}`;
-          },
           src: [
             'lit/*.js',
             'lit/decorators/*.js',
@@ -467,6 +451,19 @@ module.exports = function (grunt) {
             src: '<%= paths.node_modules %>w3c-keyname/index.es.js',
             dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/w3c-keyname.js'
           },
+        ]
+      }
+    },
+    clean: {
+      lit: {
+        options: {
+          'force': true
+        },
+        src: [
+          '<%= paths.core %>Public/JavaScript/Contrib/lit',
+          '<%= paths.core %>Public/JavaScript/Contrib/lit-html',
+          '<%= paths.core %>Public/JavaScript/Contrib/lit-element',
+          '<%= paths.core %>Public/JavaScript/Contrib/@lit/reactive-element',
         ]
       }
     },
@@ -822,7 +819,7 @@ module.exports = function (grunt) {
       compile_assets: ['scripts', 'css'],
       compile_flags: ['flags-build'],
       minify_assets: ['terser:thirdparty', 'terser:t3editor'],
-      copy_static: ['copy:core_icons', 'copy:install_icons', 'copy:module_icons', 'copy:extension_icons', 'copy:fonts', 'copy:t3editor'],
+      copy_static: ['copy:core_icons', 'copy:install_icons', 'copy:module_icons', 'copy:extension_icons', 'copy:fonts', 'copy:lit', 'copy:t3editor'],
       build: ['copy:core_icons', 'copy:install_icons', 'copy:module_icons', 'copy:extension_icons', 'copy:fonts', 'copy:t3editor'],
     },
   });
@@ -835,6 +832,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-terser');
   grunt.loadNpmTasks('@lodder/grunt-postcss');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-stylelint');
@@ -950,7 +948,7 @@ module.exports = function (grunt) {
    * - minifies svg files
    * - compiles TypeScript files
    */
-  grunt.registerTask('default', ['clear-build', 'update', 'concurrent:copy_static', 'concurrent:compile_flags', 'concurrent:compile_assets', 'concurrent:minify_assets']);
+  grunt.registerTask('default', ['clear-build', 'clean', 'update', 'concurrent:copy_static', 'concurrent:compile_flags', 'concurrent:compile_assets', 'concurrent:minify_assets']);
 
   /**
    * grunt build task (legacy, for those used to it). Use `grunt default` instead.
