@@ -8903,19 +8903,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "c64e8f59b803b75fe1d62ae97f19e662aad5d268"
+                "reference": "04add64f7f9979ed812d2bcc8d93159c71ba8c77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/c64e8f59b803b75fe1d62ae97f19e662aad5d268",
-                "reference": "c64e8f59b803b75fe1d62ae97f19e662aad5d268",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/04add64f7f9979ed812d2bcc8d93159c71ba8c77",
+                "reference": "04add64f7f9979ed812d2bcc8d93159c71ba8c77",
                 "shasum": ""
             },
             "require": {
                 "ext-pdo": "*",
                 "guzzlehttp/psr7": "^1.7 || ^2.0",
                 "php": "^8.1",
-                "phpunit/phpunit": "^9.5.25",
+                "phpunit/phpunit": "^9.5.25 || ^10.0.14",
                 "psr/container": "^1.1.0 || ^2.0.0",
                 "typo3/cms-backend": "12.*.*@dev",
                 "typo3/cms-core": "12.*.*@dev",
@@ -8967,7 +8967,7 @@
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
                 "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
-            "time": "2023-01-23T12:45:28+00:00"
+            "time": "2023-03-03T17:47:06+00:00"
         }
     ],
     "aliases": [],
