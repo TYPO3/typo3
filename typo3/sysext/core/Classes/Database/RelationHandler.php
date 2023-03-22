@@ -121,12 +121,9 @@ class RelationHandler
     public $undeleteRecord;
 
     /**
-     * Array of fields value pairs that should match while SELECT
-     * and will be written into MM table if $MM_insert_fields is not set
-     *
-     * @var array
+     * Array of fields value pairs that should match while SELECT.
      */
-    protected $MM_match_fields = [];
+    protected array $MM_match_fields = [];
 
     /**
      * This is set to TRUE if the MM table has a UID field.
@@ -137,10 +134,8 @@ class RelationHandler
 
     /**
      * Array of fields and value pairs used for insert in MM table
-     *
-     * @var array
      */
-    protected $MM_insert_fields = [];
+    protected array $MM_insert_fields = [];
 
     /**
      * Extra MM table where
@@ -248,7 +243,7 @@ class RelationHandler
         $this->MM_table_where = $conf['MM_table_where'] ?? null;
         $this->MM_hasUidField = $conf['MM_hasUidField'] ?? null;
         $this->MM_match_fields = (isset($conf['MM_match_fields']) && is_array($conf['MM_match_fields'])) ? $conf['MM_match_fields'] : [];
-        $this->MM_insert_fields = (isset($conf['MM_insert_fields']) && is_array($conf['MM_insert_fields'])) ? $conf['MM_insert_fields'] : $this->MM_match_fields;
+        $this->MM_insert_fields = (isset($conf['MM_insert_fields']) && is_array($conf['MM_insert_fields'])) ? $conf['MM_insert_fields'] : [];
         $this->currentTable = $currentTable;
         if (!empty($conf['MM_oppositeUsage']) && is_array($conf['MM_oppositeUsage'])) {
             $this->MM_oppositeUsage = $conf['MM_oppositeUsage'];
@@ -257,7 +252,7 @@ class RelationHandler
         if ($this->MM_is_foreign) {
             $allowedTableList = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
             // Normally, $conf['allowed'] can contain a list of tables,
-            // but as we are looking at a MM relation from the foreign side,
+            // but as we are looking at an MM relation from the foreign side,
             // it only makes sense to allow one table in $conf['allowed'].
             [$mmOppositeTable] = GeneralUtility::trimExplode(',', $allowedTableList);
             // Only add the current table name if there is more than one allowed
@@ -728,6 +723,7 @@ class RelationHandler
                     unset($oldMMs_inclUid[$oldMMs_index]);
                 } else {
                     $insertFields = $this->MM_insert_fields;
+                    $insertFields = array_merge($insertFields, $this->MM_match_fields);
                     $insertFields[$uidLocal_field] = $uid;
                     $insertFields[$uidForeign_field] = $val['id'];
                     $insertFields[$sorting_field] = $c;
