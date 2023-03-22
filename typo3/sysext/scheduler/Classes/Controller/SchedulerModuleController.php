@@ -1064,7 +1064,7 @@ class SchedulerModuleController
     private function groupRemove(int $groupId): int
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task_group');
-        return $queryBuilder->delete('tx_scheduler_task_group')
+        return $queryBuilder->update('tx_scheduler_task_group')
             ->where($queryBuilder->expr()->eq('uid', $groupId))
             ->set('deleted', 1)
             ->executeStatement();
