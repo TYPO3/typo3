@@ -206,7 +206,7 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['path_Workspace_crop'] = htmlspecialchars($pathWorkspaceCropped);
                     $versionArray['workspace_Title'] = htmlspecialchars($this->workspaceService->getWorkspaceTitle((int)$versionRecord['t3ver_wsid']));
                     $versionArray['workspace_Tstamp'] = $versionRecord['tstamp'];
-                    $versionArray['workspace_Formated_Tstamp'] = BackendUtility::datetime($versionRecord['tstamp']);
+                    $versionArray['lastChangedFormatted'] = BackendUtility::datetime($versionRecord['tstamp']);
                     $versionArray['t3ver_wsid'] = $versionRecord['t3ver_wsid'];
                     $versionArray['t3ver_oid'] = $calculatedT3verOid;
                     $versionArray['livepid'] = $record['livepid'];

@@ -675,7 +675,7 @@ class Backend extends Workspaces {
         this.elements.$tableBody.append(
           $('<tr />').append(
             $('<th />'),
-            $('<th />', { colspan: 6 }).html(
+            $('<th />', { colspan: 7 }).html(
               '<span title="' + item.path_Workspace + '">' + item.path_Workspace_crop + '</span>'
             ),
           ),
@@ -730,6 +730,7 @@ class Backend extends Workspaces {
             + '<span class"workspace-live-title title="' + item.label_Live + '">' + item.label_Live_crop + '</span>'
           ),
           $('<td />').text(item.label_Stage),
+          $('<td />').text(item.lastChangedFormatted),
           $('<td />').empty().append($integrityIcon),
           $('<td />').html(this.getIcon(item.language.icon)),
           $('<td />', { class: 'text-end nowrap' }).append($actions),

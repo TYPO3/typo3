@@ -148,6 +148,9 @@
 			<trans-unit id="column.stage" resname="column.stage">
 				<source>Current Stage</source>
 			</trans-unit>
+			<trans-unit id="column.lastChangeOn" resname="column.lastChangeOn">
+				<source>Last change</source>
+			</trans-unit>
 			<trans-unit id="column.actions" resname="column.actions">
 				<source>Actions</source>
 			</trans-unit>
