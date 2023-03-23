@@ -671,8 +671,8 @@ class Backend implements BackendInterface, SingletonInterface
             $columnMap->getChildSortByFieldName() => $sortingPosition !== null ? (int)$sortingPosition : 0,
         ];
         $relationTableName = $columnMap->getRelationTableName();
-        if ($columnMap->getRelationTablePageIdColumnName() !== null) {
-            $row[$columnMap->getRelationTablePageIdColumnName()] = $this->determineStoragePageIdForNewRecord();
+        if (isset($GLOBALS['TCA'][$relationTableName])) {
+            $row[AbstractDomainObject::PROPERTY_PID] = $this->determineStoragePageIdForNewRecord();
         }
         $relationTableMatchFields = $columnMap->getRelationTableMatchFields();
         if (is_array($relationTableMatchFields)) {

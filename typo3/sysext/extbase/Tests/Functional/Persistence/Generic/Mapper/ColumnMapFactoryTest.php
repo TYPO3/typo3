@@ -390,51 +390,6 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         self::assertEquals($expectedColumnMap, $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class));
     }
 
-    /**
-     * @test
-     */
-    public function columnMapIsInitializedWithManyToManyRelationWithoutPidColumn(): void
-    {
-        $columnName = 'many_to_many';
-        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $columnConfiguration = [
-            'config' => [
-                'type' => 'select',
-                'foreign_table' => 'tx_myextension_righttable',
-                'foreign_table_where' => 'WHERE 1=1',
-                'MM' => 'tx_myextension_mm',
-            ],
-        ];
-
-        $columnMap = $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class);
-
-        self::assertNull($columnMap->getRelationTablePageIdColumnName());
-    }
-
-    /**
-     * @test
-     */
-    public function columnMapIsInitializedWithManyToManyRelationWithPidColumn(): void
-    {
-        $columnName = 'many_to_many';
-        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $columnConfiguration = [
-            'config' => [
-                'type' => 'select',
-                'foreign_table' => 'tx_myextension_righttable',
-                'foreign_table_where' => 'WHERE 1=1',
-                'MM' => 'tx_myextension_mm',
-            ],
-        ];
-        // MM checks if "the other" side exist in TCA. We need to at least have a TCA ctrl section.
-        // @see ColumnMapFactory->getControlSection() and usage in this case.
-        $GLOBALS['TCA']['tx_myextension_mm']['ctrl'] = [];
-
-        $columnMap = $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class);
-
-        self::assertSame('pid', $columnMap->getRelationTablePageIdColumnName());
-    }
-
     public function columnMapIsInitializedWithFieldEvaluationsForDateTimeFieldsDataProvider(): array
     {
         return [

@@ -108,14 +108,6 @@ class ColumnMap
 
     /**
      * todo: Check if this property should support null. If not, set default value.
-     * The name of the column  of the relation table holding the page id
-     *
-     * @var string|null
-     */
-    private $relationTablePageIdColumnName;
-
-    /**
-     * todo: Check if this property should support null. If not, set default value.
      * An array of field => value pairs to both insert and match against when writing/reading MM relations
      *
      * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/ForeignMatchFields.html
@@ -243,16 +235,6 @@ class ColumnMap
     public function getRelationTableName(): ?string
     {
         return $this->relationTableName;
-    }
-
-    public function setRelationTablePageIdColumnName(string $relationTablePageIdColumnName): void
-    {
-        $this->relationTablePageIdColumnName = $relationTablePageIdColumnName;
-    }
-
-    public function getRelationTablePageIdColumnName(): ?string
-    {
-        return $this->relationTablePageIdColumnName;
     }
 
     public function setRelationTableMatchFields(?array $relationTableMatchFields): void

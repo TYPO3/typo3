@@ -248,23 +248,6 @@ class ColumnMapFactory
 
             throw new UnsupportedRelationException('The given information to build a many-to-many-relation was not sufficient. Check your TCA definitions. mm-relations with IRRE must have at least a defined "MM" or "foreign_selector".', 1268817963);
         }
-        $relationTableName = $columnMap->getRelationTableName();
-        if ($relationTableName !== null && $this->getControlSection($relationTableName) !== null) {
-            $columnMap->setRelationTablePageIdColumnName('pid');
-        }
         return $columnMap;
-    }
-
-    /**
-     * Returns the TCA ctrl section of the specified table; or NULL if not set
-     *
-     * @param string $tableName An optional table name to fetch the columns definition from
-     * @return array|null The TCA columns definition
-     */
-    protected function getControlSection(string $tableName): ?array
-    {
-        return (isset($GLOBALS['TCA'][$tableName]['ctrl']) && is_array($GLOBALS['TCA'][$tableName]['ctrl']))
-            ? $GLOBALS['TCA'][$tableName]['ctrl']
-            : null;
     }
 }
