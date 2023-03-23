@@ -15,9 +15,124 @@ import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ClientStorage from './storage/client';
 import { Sizes, States, MarkupIdentifiers } from './enum/icon-types';
+import { css, CSSResult, unsafeCSS } from 'lit';
 
 interface PromiseCache {
   [key: string]: Promise<string>;
+}
+
+export class IconStyles {
+  public static getStyles(): CSSResult[] {
+    return [
+      css`
+        :host {
+          --icon-color-primary: currentColor;
+          --icon-size-small: 16px;
+          --icon-size-medium: 32px;
+          --icon-size-large: 48px;
+          --icon-size-mega: 64px;
+          --icon-unify-modifier: 0.86;
+          --icon-opacity-disabled: 0.5
+
+          display: inline-block;
+        }
+
+        .icon-wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .icon {
+          position: relative;
+          display: inline-flex;
+          overflow: hidden;
+          white-space: nowrap;
+          height: var(--icon-size, 1em);
+          width: var(--icon-size, 1em);
+          line-height: var(--icon-size, 1em);
+          flex-shrink: 0;
+        }
+
+        .icon img, .icon svg {
+          display: block;
+          height: 100%;
+          width: 100%
+        }
+
+        .icon * {
+          display: block;
+          line-height: inherit
+        }
+
+        .icon-markup {
+          position: absolute;
+          display: block;
+          text-align: center;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0
+        }
+
+        .icon-overlay {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          height: 68.75%;
+          width: 68.75%;
+          text-align: center
+        }
+
+        .icon-color {
+          fill: var(--icon-color-primary)
+        }
+
+        .icon-spin .icon-markup {
+          -webkit-animation: icon-spin 2s infinite linear;
+          animation: icon-spin 2s infinite linear
+        }
+
+        @keyframes icon-spin {
+          0% {
+            transform: rotate(0)
+          }
+          100% {
+            transform: rotate(360deg)
+          }
+        }
+
+        .icon-state-disabled .icon-markup {
+          opacity: var(--icon-opacity-disabled)
+        }
+      `,
+      IconStyles.getStyleSizeVariant(Sizes.small),
+      IconStyles.getStyleSizeVariant(Sizes.default),
+      IconStyles.getStyleSizeVariant(Sizes.medium),
+      IconStyles.getStyleSizeVariant(Sizes.large),
+      IconStyles.getStyleSizeVariant(Sizes.mega),
+    ];
+  }
+
+  public static getStyleSizeVariant(variant: string): CSSResult {
+    const variantResult = unsafeCSS(variant);
+    return css`
+      :host([size=${variantResult}]) .icon-size-${variantResult},
+      :host([raw]) .icon-size-${variantResult} {
+        --icon-size: var(--icon-size-${variantResult})
+      }
+      :host([size=${variantResult}]) .icon-size-${variantResult} .icon-unify,
+      :host([raw]) .icon-size-${variantResult} .icon-unify {
+        line-height: var(--icon-size);
+        font-size: calc(var(--icon-size) * var(--icon-unify-modifier))
+      }
+      :host([size=${variantResult}]) .icon-size-${variantResult} .icon-overlay .icon-unify,
+      :host([raw]) .icon-size-${variantResult} .icon-overlay .icon-unify {
+        line-height: calc(var(--icon-size) / 1.6);
+        font-size: calc((var(--icon-size) / 1.6) * var(--icon-unify-modifier))
+      }
+    `;
+  }
 }
 
 /**
