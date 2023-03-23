@@ -15,7 +15,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
  * "public function testSomething". Instead they should be
  *  like "public function SomethinIsLike()" and have a @test annotation.
  *
- * This is done for general consistency and the the "splitter"
+ * This is done for general consistency and the "splitter"
  * scripts that chunk tests to multiple nodes for functional tests.
  */
 class NodeVisitor extends NodeVisitorAbstract
@@ -74,7 +74,7 @@ if (!empty($errors)) {
 
     foreach ($errors as $file => $matchesPerLine) {
         $output->writeln('');
-        $output->writeln('<error>At least on method starts with "test" in ' . $file . '</error>');
+        $output->writeln('<error>Method shoud not start "test". Use @test phpDoc annotation instead. Found in ' . $file . '</error>');
 
         /**
          * @var array $matchesPerLine
