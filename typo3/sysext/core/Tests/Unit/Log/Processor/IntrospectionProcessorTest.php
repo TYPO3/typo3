@@ -61,10 +61,7 @@ class IntrospectionProcessorTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->processor = $this->getAccessibleMock(
-            IntrospectionProcessor::class,
-            ['getDebugBacktrace', 'formatDebugBacktrace']
-        );
+        $this->processor = $this->getAccessibleMock(IntrospectionProcessor::class, ['getDebugBacktrace']);
     }
 
     /**

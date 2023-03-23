@@ -665,9 +665,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function overrideByTypoScriptSettingsReturnsOverriddenConfigurationIfTypoScriptOverridesExists(): void
     {
-        $mockController = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'dummy',
-        ], [], '', false);
+        $mockController = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
 
         $typoScriptServiceMock = $this->createMock(TypoScriptService::class);
         $typoScriptServiceMock->method('resolvePossibleTypoScriptConfiguration')->with(self::anything())
@@ -816,9 +814,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ],
         ];
 
-        $controllerMock = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'dummy',
-        ], [], '', false);
+        $controllerMock = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
 
         $typoScriptServiceMock = $this->createMock(TypoScriptService::class);
         $typoScriptServiceMock
@@ -839,31 +835,21 @@ class FormPersistenceManagerTest extends UnitTestCase
     {
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1471630578);
-
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'dummy',
-        ], [], '', false);
-
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
         $storage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
             ->getMock();
-
         $storage
             ->method('checkFileActionPermission')
             ->willReturn(false);
-
         $file = new File(['name' => 'foo', 'identifier' => '', 'mime_type' => ''], $storage);
-
         $resourceFactory = $this->getMockBuilder(ResourceFactory::class)
             ->disableOriginalConstructor()
             ->getMock();
-
         $resourceFactory
             ->method('retrieveFileOrFolderObject')
             ->willReturn($file);
-
         $mockFormPersistenceManager->_set('resourceFactory', $resourceFactory);
-
         $input = '-1:/user_uploads/example.yaml';
         $mockFormPersistenceManager->_call('retrieveFileByPersistenceIdentifier', $input);
     }
@@ -940,19 +926,13 @@ class FormPersistenceManagerTest extends UnitTestCase
     {
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1471630581);
-
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'dummy',
-        ], [], '', false);
-
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
         $mockStorageRepository = $this->getMockBuilder(StorageRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-
         $mockStorageRepository
             ->method('findByUid')
             ->willReturn(null);
-
         $mockFormPersistenceManager->_set('storageRepository', $mockStorageRepository);
         $mockFormPersistenceManager->_call('getStorageByUid', -1);
     }
@@ -964,27 +944,19 @@ class FormPersistenceManagerTest extends UnitTestCase
     {
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1471630581);
-
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'dummy',
-        ], [], '', false);
-
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
         $mockStorageRepository = $this->getMockBuilder(StorageRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-
         $mockStorage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
             ->getMock();
-
         $mockStorage
             ->method('isBrowsable')
             ->willReturn(false);
-
         $mockStorageRepository
             ->method('findByUid')
             ->willReturn($mockStorage);
-
         $mockFormPersistenceManager->_set('storageRepository', $mockStorageRepository);
         $mockFormPersistenceManager->_call('getStorageByUid', -1);
     }

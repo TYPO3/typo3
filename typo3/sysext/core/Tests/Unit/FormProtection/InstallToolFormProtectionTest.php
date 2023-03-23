@@ -17,32 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase
- */
 class InstallToolFormProtectionTest extends UnitTestCase
 {
-    protected InstallToolFormProtection&MockObject&AccessibleObjectInterface $subject;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->subject = $this->getAccessibleMock(
-            InstallToolFormProtection::class,
-            ['dummy']
-        );
-    }
-
-    //////////////////////////////////////////////////////////
-    // Tests concerning the reading and saving of the tokens
-    //////////////////////////////////////////////////////////
-
     /**
      * @test
      */
@@ -52,16 +32,11 @@ class InstallToolFormProtectionTest extends UnitTestCase
         $formName = 'foo';
         $action = 'edit';
         $formInstanceName = '42';
-
         $tokenId = GeneralUtility::hmac($formName . $action . $formInstanceName . $sessionToken);
-
         $_SESSION['installToolFormToken'] = $sessionToken;
-
-        $this->subject->_call('retrieveSessionToken');
-
-        self::assertTrue(
-            $this->subject->validateToken($tokenId, $formName, $action, $formInstanceName)
-        );
+        $subject = $this->getAccessibleMock(InstallToolFormProtection::class, null);
+        $subject->_call('retrieveSessionToken');
+        self::assertTrue($subject->validateToken($tokenId, $formName, $action, $formInstanceName));
     }
 
     /**
@@ -70,11 +45,9 @@ class InstallToolFormProtectionTest extends UnitTestCase
     public function persistSessionTokenWritesTokensToSession(): void
     {
         $_SESSION['installToolFormToken'] = 'foo';
-
-        $this->subject->_set('sessionToken', '881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd');
-
-        $this->subject->persistSessionToken();
-
+        $subject = $this->getAccessibleMock(InstallToolFormProtection::class, null);
+        $subject->_set('sessionToken', '881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd');
+        $subject->persistSessionToken();
         self::assertEquals(
             '881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd',
             $_SESSION['installToolFormToken']

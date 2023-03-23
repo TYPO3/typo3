@@ -206,7 +206,7 @@ class ExportTest extends UnitTestCase
                 $fakeFileUidDerivedFromFileName = hexdec(substr(md5($relFileName), 0, 6));
                 $fileMock = $this->getAccessibleMock(
                     File::class,
-                    ['dummy'],
+                    null,
                     [],
                     '',
                     false

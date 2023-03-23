@@ -126,7 +126,7 @@ class TemplatePathsTest extends UnitTestCase
                 ],
             ],
         ]);
-        $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode']);
+        $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'isBackendMode', 'isFrontendMode']);
         $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
         $subject->expects(self::once())->method('getConfigurationManager')->willReturn($configurationManager);
         $subject->expects(self::once())->method('isBackendMode')->willReturn(false);
@@ -183,7 +183,7 @@ class TemplatePathsTest extends UnitTestCase
                 ],
             ],
         ]);
-        $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode']);
+        $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'isBackendMode', 'isFrontendMode']);
         $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
         $subject->expects(self::once())->method('getConfigurationManager')->willReturn($configurationManager);
         $subject->expects(self::once())->method('isBackendMode')->willReturn(true);
@@ -240,7 +240,7 @@ class TemplatePathsTest extends UnitTestCase
                 ],
             ],
         ]);
-        $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode']);
+        $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'isBackendMode', 'isFrontendMode']);
         $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
         $subject->expects(self::once())->method('getConfigurationManager')->willReturn($configurationManager);
         $subject->expects(self::once())->method('isBackendMode')->willReturn(false);

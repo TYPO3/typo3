@@ -50,9 +50,7 @@ class FormFrontendControllerTest extends UnitTestCase
      */
     public function overrideByFlexFormSettingsReturnsNoOverriddenConfigurationIfFlexformOverridesDisabled(): void
     {
-        $mockController = $this->getAccessibleMock(FormFrontendController::class, [
-            'dummy',
-        ], [], '', false);
+        $mockController = $this->getAccessibleMock(FormFrontendController::class, null, [], '', false);
 
         $configurationServiceMock = $this->createMock(ConfigurationService::class);
         GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationServiceMock);
@@ -183,9 +181,7 @@ class FormFrontendControllerTest extends UnitTestCase
      */
     public function overrideByFlexFormSettingsReturnsOverriddenConfigurationIfFlexformOverridesEnabled(): void
     {
-        $mockController = $this->getAccessibleMock(FormFrontendController::class, [
-            'dummy',
-        ], [], '', false);
+        $mockController = $this->getAccessibleMock(FormFrontendController::class, null, [], '', false);
 
         $configurationServiceMock = $this->createMock(ConfigurationService::class);
         GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationServiceMock);
@@ -339,9 +335,7 @@ class FormFrontendControllerTest extends UnitTestCase
      */
     public function overrideByFlexFormSettingsReturnsNotOverriddenConfigurationKeyIfFlexformOverridesAreNotRepresentedInFormEngineConfiguration(): void
     {
-        $mockController = $this->getAccessibleMock(FormFrontendController::class, [
-            'dummy',
-        ], [], '', false);
+        $mockController = $this->getAccessibleMock(FormFrontendController::class, null, [], '', false);
 
         $configurationServiceMock = $this->createMock(ConfigurationService::class);
         GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationServiceMock);

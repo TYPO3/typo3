@@ -107,7 +107,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             ->getMock();
         $this->frontendConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
-            ['dummy'],
+            null,
             [],
             '',
             false

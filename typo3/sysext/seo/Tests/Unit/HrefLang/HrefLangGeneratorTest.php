@@ -36,7 +36,7 @@ class HrefLangGeneratorTest extends UnitTestCase
 
         $this->subject = $this->getAccessibleMock(
             HrefLangGenerator::class,
-            ['dummy'],
+            null,
             [
                 $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock(),
                 $this->getMockBuilder(LanguageMenuProcessor::class)->disableOriginalConstructor()->getMock(),

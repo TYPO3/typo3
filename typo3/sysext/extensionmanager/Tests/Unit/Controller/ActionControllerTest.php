@@ -29,11 +29,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class ActionControllerTest extends UnitTestCase
 {
     /**
-     * List of created fake extensions to be deleted in tearDown() again
-     */
-    protected array $fakedExtensions = [];
-
-    /**
      * Creates a fake extension inside typo3temp/. No configuration is created,
      * just the folder
      */
@@ -70,7 +65,7 @@ class ActionControllerTest extends UnitTestCase
         // Build mocked fileHandlingUtility:
         $subject = $this->getAccessibleMock(
             ActionController::class,
-            ['dummy'],
+            null,
             [
                 $installUtility,
                 $this->createMock(ExtensionManagementService::class),

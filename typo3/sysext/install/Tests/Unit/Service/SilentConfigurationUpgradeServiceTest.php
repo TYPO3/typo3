@@ -72,7 +72,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     {
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [],
             '',
             false
@@ -109,7 +109,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     {
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [],
             '',
             false
@@ -144,7 +144,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     {
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [],
             '',
             false
@@ -178,7 +178,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     {
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [],
             '',
             false
@@ -313,7 +313,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     {
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [],
             '',
             false
@@ -355,7 +355,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     {
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [],
             '',
             false
@@ -399,7 +399,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     {
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [],
             '',
             false
@@ -438,7 +438,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     {
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [],
             '',
             false
@@ -483,7 +483,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     {
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [],
             '',
             false
@@ -576,7 +576,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     {
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [],
             '',
             false
@@ -609,7 +609,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     {
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [],
             '',
             false
@@ -659,7 +659,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
 
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [],
             '',
             false
@@ -681,7 +681,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
 
         $silentConfigurationUpgradeService = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [$configurationManagerMock]
         );
         $silentConfigurationUpgradeService->_call('migrateVersionNumberInFileNameSetting');
@@ -698,7 +698,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $configurationManagerMock->expects(self::never())->method('setLocalConfigurationValuesByPathValuePairs');
         $silentConfigurationUpgradeService = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [$configurationManagerMock]
         );
         $silentConfigurationUpgradeService->_call('migrateSaltedPasswordsSettings');
@@ -715,7 +715,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
 
         $silentConfigurationUpgradeService = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [$configurationManagerMock]
         );
         $silentConfigurationUpgradeService->_call('migrateSaltedPasswordsSettings');
@@ -737,7 +737,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $configurationManagerMock->expects(self::atLeastOnce())->method('removeLocalConfigurationKeysByPath')->with(['EXTENSIONS/saltedpasswords']);
         $silentConfigurationUpgradeService = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [$configurationManagerMock]
         );
         $this->expectException(ConfigurationChangedException::class);
@@ -780,7 +780,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
 
         $silentConfigurationUpgradeService = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [$configurationManagerMock]
         );
         $this->expectException(ConfigurationChangedException::class);
@@ -835,7 +835,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
 
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [],
             '',
             false
@@ -872,7 +872,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $configurationManagerMock->expects(self::never())->method('setLocalConfigurationValueByPath');
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
-            ['dummy'],
+            null,
             [],
             '',
             false

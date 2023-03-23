@@ -247,9 +247,7 @@ class FormEditorControllerTest extends UnitTestCase
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1480294721);
 
-        $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy',
-        ], [], '', false);
+        $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
 
         $mockController->_set('prototypeConfiguration', [
             'formEditor' => [
@@ -270,9 +268,7 @@ class FormEditorControllerTest extends UnitTestCase
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1480294721);
 
-        $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy',
-        ], [], '', false);
+        $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
 
         $mockController->_set('prototypeConfiguration', [
             'formEditor' => [
@@ -294,9 +290,7 @@ class FormEditorControllerTest extends UnitTestCase
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1480294722);
 
-        $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy',
-        ], [], '', false);
+        $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
 
         $mockController->_set('prototypeConfiguration', [
             'formEditor' => [
@@ -318,9 +312,7 @@ class FormEditorControllerTest extends UnitTestCase
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1480294722);
 
-        $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy',
-        ], [], '', false);
+        $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
 
         $mockController->_set('prototypeConfiguration', [
             'formEditor' => [
@@ -342,9 +334,7 @@ class FormEditorControllerTest extends UnitTestCase
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1485636499);
 
-        $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy',
-        ], [], '', false);
+        $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
 
         $mockController->_set('prototypeConfiguration', [
             'formEditor' => [
@@ -360,9 +350,7 @@ class FormEditorControllerTest extends UnitTestCase
      */
     public function transformMultiValuePropertiesForFormEditorConvertMultiValueDataIntoMetaData(): void
     {
-        $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy',
-        ], [], '', false);
+        $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
 
         $input = [
             0 => [
@@ -442,9 +430,7 @@ class FormEditorControllerTest extends UnitTestCase
      */
     public function filterEmptyArraysRemovesEmptyArrayKeys(): void
     {
-        $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy',
-        ], [], '', false);
+        $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
 
         $input = [
             'heinz' => 1,

@@ -32,16 +32,11 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
     {
         $this->expectException(FinisherException::class);
         $this->expectExceptionCode(1480469086);
-
-        $mockSaveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, [
-            'dummy',
-        ], [], '', false);
-
+        $mockSaveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, null, [], '', false);
         $mockSaveToDatabaseFinisher->_set('options', [
             'mode' => 'update',
             'whereClause' => '',
         ]);
-
         $mockSaveToDatabaseFinisher->_call('throwExceptionOnInconsistentConfiguration');
     }
 

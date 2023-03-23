@@ -37,7 +37,7 @@ class StorageRepositoryTest extends UnitTestCase
         $registry->registerDriverClass($driverFixtureClass);
         $subject = $this->getAccessibleMock(
             StorageRepository::class,
-            ['dummy'],
+            null,
             [
                 new NoopEventDispatcher(),
                 $registry,

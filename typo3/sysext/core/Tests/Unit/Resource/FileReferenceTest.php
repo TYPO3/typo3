@@ -29,9 +29,8 @@ class FileReferenceTest extends UnitTestCase
     protected function prepareFixture(array $fileReferenceProperties, array $originalFileProperties): FileReference&MockObject&AccessibleObjectInterface
     {
         $fixture = $this->getAccessibleMock(FileReference::class, null, [], '', false);
-        $originalFileMock = $this->getAccessibleMock(File::class, [], [], '', false);
-        $originalFileMock
-            ->method('getProperties')
+        $originalFileMock = $this->createMock(File::class);
+        $originalFileMock->method('getProperties')
             ->willReturn(
                 $originalFileProperties
             );

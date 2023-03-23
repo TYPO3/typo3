@@ -68,14 +68,12 @@ class InstallUtilityTest extends UnitTestCase
         $this->installMock = $this->getAccessibleMock(
             InstallUtility::class,
             [
-                'isLoaded',
                 'loadExtension',
                 'unloadExtension',
                 'updateDatabase',
                 'importStaticSqlFile',
                 'importT3DFile',
                 'reloadCaches',
-                'processCachingFrameworkUpdates',
                 'processExtensionSetup',
                 'saveDefaultConfiguration',
                 'getExtensionArray',

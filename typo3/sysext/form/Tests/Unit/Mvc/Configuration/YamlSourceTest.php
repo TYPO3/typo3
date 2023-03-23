@@ -34,9 +34,7 @@ class YamlSourceTest extends UnitTestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionCode(1480195405);
 
-        $mockYamlSource = $this->getAccessibleMock(YamlSource::class, [
-            'dummy',
-        ], [], '', false);
+        $mockYamlSource = $this->getAccessibleMock(YamlSource::class, null, [], '', false);
 
         $input = [
             'EXT:form/Resources/Forms/_example.yaml',
@@ -53,9 +51,7 @@ class YamlSourceTest extends UnitTestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionCode(1480195405);
 
-        $mockYamlSource = $this->getAccessibleMock(YamlSource::class, [
-            'dummy',
-        ], [], '', false);
+        $mockYamlSource = $this->getAccessibleMock(YamlSource::class, null, [], '', false);
 
         $input = [
             'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/Invalid.yaml',
@@ -69,9 +65,7 @@ class YamlSourceTest extends UnitTestCase
      */
     public function getHeaderFromFileReturnsHeaderPart(): void
     {
-        $mockYamlSource = $this->getAccessibleMock(YamlSource::class, [
-            'dummy',
-        ], [], '', false);
+        $mockYamlSource = $this->getAccessibleMock(YamlSource::class, null, [], '', false);
 
         $input = GeneralUtility::getFileAbsFileName('EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/Header.yaml');
         $expected =

@@ -254,10 +254,7 @@ class AbstractFormElementTest extends UnitTestCase
      */
     public function setDefaultValueSetStringValueIfKeyDoesNotExists(): void
     {
-        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, [
-            'dummy',
-        ], [], '', false);
-
+        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);
         $abstractFormElementMock = $this->getMockForAbstractClass(
             AbstractFormElement::class,
             ['is_in', 'a_type'],
@@ -267,7 +264,6 @@ class AbstractFormElementTest extends UnitTestCase
             true,
             ['getRootForm']
         );
-
         $abstractFormElementMock
             ->method('getRootForm')
             ->willReturn($formDefinitionMock);
@@ -285,10 +281,7 @@ class AbstractFormElementTest extends UnitTestCase
      */
     public function setDefaultValueSetArrayValueIfKeyDoesNotExists(): void
     {
-        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, [
-            'dummy',
-        ], [], '', false);
-
+        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);
         $abstractFormElementMock = $this->getMockForAbstractClass(
             AbstractFormElement::class,
             ['is_in', 'a_type'],
@@ -298,7 +291,6 @@ class AbstractFormElementTest extends UnitTestCase
             true,
             ['getRootForm']
         );
-
         $abstractFormElementMock
             ->method('getRootForm')
             ->willReturn($formDefinitionMock);
@@ -316,10 +308,7 @@ class AbstractFormElementTest extends UnitTestCase
      */
     public function setDefaultValueUnsetIfValueIsArrayWithSomeNullVales(): void
     {
-        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, [
-            'dummy',
-        ], [], '', false);
-
+        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);
         $abstractFormElementMock = $this->getMockForAbstractClass(
             AbstractFormElement::class,
             ['is_in', 'a_type'],
@@ -329,7 +318,6 @@ class AbstractFormElementTest extends UnitTestCase
             true,
             ['getRootForm']
         );
-
         $abstractFormElementMock
             ->method('getRootForm')
             ->willReturn($formDefinitionMock);
@@ -370,10 +358,7 @@ class AbstractFormElementTest extends UnitTestCase
      */
     public function setDefaultValueAddValueIfValueIsArray(): void
     {
-        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, [
-            'dummy',
-        ], [], '', false);
-
+        $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);
         $abstractFormElementMock = $this->getMockForAbstractClass(
             AbstractFormElement::class,
             ['is_in', 'a_type'],
@@ -383,7 +368,6 @@ class AbstractFormElementTest extends UnitTestCase
             true,
             ['getRootForm']
         );
-
         $abstractFormElementMock
             ->method('getRootForm')
             ->willReturn($formDefinitionMock);
