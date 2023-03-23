@@ -71,7 +71,7 @@ class AudioTagRendererTest extends UnitTestCase
     /**
      * Array of configurations
      */
-    public function renderArgumentsDataProvider(): array
+    public static function renderArgumentsDataProvider(): array
     {
         return [
             [

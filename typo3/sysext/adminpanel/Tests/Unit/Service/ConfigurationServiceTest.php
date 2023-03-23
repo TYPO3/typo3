@@ -106,7 +106,7 @@ class ConfigurationServiceTest extends UnitTestCase
         self::assertSame('1', $result);
     }
 
-    public function getConfigurationOptionEmptyArgumentDataProvider(): array
+    public static function getConfigurationOptionEmptyArgumentDataProvider(): array
     {
         return [
             'empty identifier' => [

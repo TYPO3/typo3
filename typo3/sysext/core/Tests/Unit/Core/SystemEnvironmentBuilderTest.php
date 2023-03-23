@@ -93,7 +93,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     /**
      * Data provider for initializeGlobalTimeTrackingVariablesSetsGlobalVariables
      */
-    public function initializeGlobalTimeTrackingVariablesSetsGlobalVariablesDataProvider(): array
+    public static function initializeGlobalTimeTrackingVariablesSetsGlobalVariablesDataProvider(): array
     {
         return [
             'EXEC_TIME' => ['EXEC_TIME'],

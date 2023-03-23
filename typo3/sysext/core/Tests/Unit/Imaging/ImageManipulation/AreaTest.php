@@ -46,7 +46,7 @@ class AreaTest extends UnitTestCase
         self::assertSame($expectedResult, $relativeArea->asArray());
     }
 
-    public function applyRatioRestrictsAreaToRespectRatioDataProvider(): array
+    public static function applyRatioRestrictsAreaToRespectRatioDataProvider(): array
     {
         return [
             [

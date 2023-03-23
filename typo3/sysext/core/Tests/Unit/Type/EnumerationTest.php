@@ -97,7 +97,7 @@ class EnumerationTest extends UnitTestCase
     /**
      * Array of value pairs and expected comparison result
      */
-    public function looseEnumerationValues(): array
+    public static function looseEnumerationValues(): array
     {
         return [
             [

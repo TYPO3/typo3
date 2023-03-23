@@ -95,7 +95,7 @@ class LoggerTest extends UnitTestCase
         self::assertNotEmpty($writer->getRecords());
     }
 
-    public function loggerLogsRecordsThroughShorthandMethodDataProvider(): array
+    public static function loggerLogsRecordsThroughShorthandMethodDataProvider(): array
     {
         return [
             ['emergency'],

@@ -82,7 +82,7 @@ class MailUtilityTest extends UnitTestCase
     /**
      * Data provider for parseAddressesTest
      */
-    public function parseAddressesProvider(): array
+    public static function parseAddressesProvider(): array
     {
         return [
             'name &ltemail&gt;' => ['name <email@example.org>', ['email@example.org' => 'name']],
@@ -114,7 +114,7 @@ class MailUtilityTest extends UnitTestCase
         self::assertEquals($addressList, $returnArray);
     }
 
-    public function replyToProvider(): array
+    public static function replyToProvider(): array
     {
         return [
             'only address' => [

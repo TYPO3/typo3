@@ -51,7 +51,7 @@ class ValidatorResolverServiceTest extends UnitTestCase
         }
     }
 
-    public function validatorConfigDataProvider(): \Generator
+    public static function validatorConfigDataProvider(): \Generator
     {
         return [
             yield 'simple className' => ['config' => [NotEmptyValidator::class]],

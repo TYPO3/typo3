@@ -60,7 +60,7 @@ class L18nDiffsourceToJsonMigrationTest extends UnitTestCase
         self::assertSame($row, (new L18nDiffsourceToJsonMigration())->updateTableRow('testTable', $row));
     }
 
-    public function updateTableRowUpdatesFieldDataProvider(): array
+    public static function updateTableRowUpdatesFieldDataProvider(): array
     {
         $object = new \stdClass();
         $json = json_encode(['foo' => 'bar']);

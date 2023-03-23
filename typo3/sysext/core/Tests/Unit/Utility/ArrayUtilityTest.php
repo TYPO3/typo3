@@ -38,7 +38,7 @@ class ArrayUtilityTest extends UnitTestCase
      * - Input array
      * - Expected result array
      */
-    public function filterByValueRecursive(): array
+    public static function filterByValueRecursive(): array
     {
         return [
             'empty search array' => [
@@ -255,7 +255,7 @@ class ArrayUtilityTest extends UnitTestCase
      * - String path
      * - Expected result
      */
-    public function getValueByPathInvalidPathDataProvider(): array
+    public static function getValueByPathInvalidPathDataProvider(): array
     {
         return [
             'not existing index' => [
@@ -346,7 +346,7 @@ class ArrayUtilityTest extends UnitTestCase
      * - String path
      * - Expected result
      */
-    public function getValueByPathValidDataProvider(): array
+    public static function getValueByPathValidDataProvider(): array
     {
         $testObject = new \stdClass();
         $testObject->foo = 'foo';
@@ -528,7 +528,7 @@ class ArrayUtilityTest extends UnitTestCase
      * - Value to set
      * - Expected result
      */
-    public function setValueByPathSetsCorrectValueDataProvider(): array
+    public static function setValueByPathSetsCorrectValueDataProvider(): array
     {
         $testObject = new \stdClass();
         $testObject->foo = 'foo';
@@ -859,7 +859,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * Data provider for removeByPathRemovesCorrectPath
      */
-    public function removeByPathRemovesCorrectPathDataProvider(): array
+    public static function removeByPathRemovesCorrectPathDataProvider(): array
     {
         return [
             'single value' => [
@@ -955,7 +955,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * Data provider for sortArraysByKeyCheckIfSortingIsCorrect
      */
-    public function sortArraysByKeyCheckIfSortingIsCorrectDataProvider(): array
+    public static function sortArraysByKeyCheckIfSortingIsCorrectDataProvider(): array
     {
         return [
             'assoc array index' => [
@@ -1217,7 +1217,7 @@ class ArrayUtilityTest extends UnitTestCase
         self::assertSame($expected, ArrayUtility::arrayExport($array));
     }
 
-    public function flattenCalculatesExpectedResultDataProvider(): array
+    public static function flattenCalculatesExpectedResultDataProvider(): array
     {
         return [
             'plain array' => [
@@ -1334,7 +1334,7 @@ class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expected, ArrayUtility::flatten($array));
     }
 
-    public function flattenPlainCalculatesExpectedResultDataProvider(): array
+    public static function flattenPlainCalculatesExpectedResultDataProvider(): array
     {
         return [
             'plain array' => [
@@ -1501,7 +1501,7 @@ class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expected, ArrayUtility::flattenPlain($array));
     }
 
-    public function flattenWithKeepDotsCalculatesExpectedResultDataProvider(): array
+    public static function flattenWithKeepDotsCalculatesExpectedResultDataProvider(): array
     {
         return [
             'plain array' => [
@@ -1618,7 +1618,7 @@ class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expected, ArrayUtility::flatten($array, '', true));
     }
 
-    public function unflattenCalculatesExpectedResultDataProvider(): array
+    public static function unflattenCalculatesExpectedResultDataProvider(): array
     {
         return [
             'plain array' => [
@@ -1785,7 +1785,7 @@ class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expected, ArrayUtility::unflatten($array));
     }
 
-    public function intersectRecursiveCalculatesExpectedResultDataProvider(): array
+    public static function intersectRecursiveCalculatesExpectedResultDataProvider(): array
     {
         $sameObject = new \stdClass();
         return [
@@ -1988,7 +1988,7 @@ class ArrayUtilityTest extends UnitTestCase
         self::assertSame($expected, ArrayUtility::intersectRecursive($source, $mask));
     }
 
-    public function renumberKeysToAvoidLeapsIfKeysAreAllNumericDataProvider(): array
+    public static function renumberKeysToAvoidLeapsIfKeysAreAllNumericDataProvider(): array
     {
         return [
             'empty array is returned if source is empty array' => [
@@ -2117,7 +2117,7 @@ class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expected, ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($inputArray));
     }
 
-    public function mergeRecursiveWithOverruleCalculatesExpectedResultDataProvider(): array
+    public static function mergeRecursiveWithOverruleCalculatesExpectedResultDataProvider(): array
     {
         return [
             'Override array can reset string to array' => [
@@ -2449,7 +2449,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * Data provider for keepItemsInArrayWorksWithOneArgument
      */
-    public function keepItemsInArrayWorksWithOneArgumentDataProvider(): array
+    public static function keepItemsInArrayWorksWithOneArgumentDataProvider(): array
     {
         $array = [
             0 => 0,
@@ -2849,7 +2849,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * Data provider for filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsTrue
      */
-    public function filterAndSortByNumericKeysWithAcceptAnyKey(): array
+    public static function filterAndSortByNumericKeysWithAcceptAnyKey(): array
     {
         return [
             'ordered list of plain numeric keys' => [
@@ -2944,7 +2944,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * Data provider for filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsFalse
      */
-    public function filterAndSortByNumericKeysWithoutAcceptAnyKey(): array
+    public static function filterAndSortByNumericKeysWithoutAcceptAnyKey(): array
     {
         return [
             'ordered list of plain numeric keys' => [
@@ -3008,7 +3008,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * dataProvider for sortArrayWithIntegerKeys
      */
-    public function sortArrayWithIntegerKeysDataProvider(): array
+    public static function sortArrayWithIntegerKeysDataProvider(): array
     {
         return [
             [
@@ -3326,7 +3326,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * Data provider for arrayFilterRecursiveFiltersFalseElements
      */
-    public function filterRecursiveFiltersFalseElementsDataProvider(): array
+    public static function filterRecursiveFiltersFalseElementsDataProvider(): array
     {
         return [
             'filter all values which will be false when converted to boolean' => [
@@ -3399,7 +3399,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * Data provider for filterRecursiveCallbackFiltersEmptyElementsWithoutIntegerByCallback
      */
-    public function filterRecursiveCallbackFiltersEmptyElementsWithoutIntegerZeroByCallbackDataProvider(): array
+    public static function filterRecursiveCallbackFiltersEmptyElementsWithoutIntegerZeroByCallbackDataProvider(): array
     {
         return [
             'filter empty values, keep zero integers' => [
@@ -3481,7 +3481,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * Data provider for filterRecursiveSupportsCallableCallback
      */
-    public function filterRecursiveSupportsCallableCallbackDataProvider(): array
+    public static function filterRecursiveSupportsCallableCallbackDataProvider(): array
     {
         $input = [
             'foo' => 'remove',
@@ -3552,7 +3552,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * Data provider for isAssociativeCorrectlyFindsStringKeys
      */
-    public function isAssociativeCorrectlyFindsStringKeysDataProvider(): array
+    public static function isAssociativeCorrectlyFindsStringKeysDataProvider(): array
     {
         return [
             'array without string keys' => [
@@ -3594,7 +3594,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * Data provider for replaceAndAppendScalarValuesRecursiveCorrectlyMergesArrays
      */
-    public function replaceAndAppendScalarValuesRecursiveCorrectlyMergesArraysDataProvider(): array
+    public static function replaceAndAppendScalarValuesRecursiveCorrectlyMergesArraysDataProvider(): array
     {
         return [
             'merge simple lists' => [

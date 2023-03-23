@@ -24,7 +24,7 @@ class ResourceCompressorTest extends UnitTestCase
 {
     protected bool $backupEnvironment = true;
 
-    public function cssFixStatementsDataProvider(): array
+    public static function cssFixStatementsDataProvider(): array
     {
         return [
             'nothing to do - no charset/import/namespace' => [
@@ -300,7 +300,7 @@ class ResourceCompressorTest extends UnitTestCase
         self::assertTrue($result[$concatenatedFileName]['excludeFromConcatenation']);
     }
 
-    public function concatenateJsFileAsyncDataProvider(): array
+    public static function concatenateJsFileAsyncDataProvider(): array
     {
         return [
             'all files have no async' => [
@@ -423,7 +423,7 @@ class ResourceCompressorTest extends UnitTestCase
         self::assertSame($expected, $result[$concatenatedFileName]['async']);
     }
 
-    public function calcStatementsDataProvider(): array
+    public static function calcStatementsDataProvider(): array
     {
         return [
             'simple calc' => [

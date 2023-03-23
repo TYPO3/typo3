@@ -77,7 +77,7 @@ class CreatablePropertyCollectionElementPropertiesValidatorTest extends UnitTest
         self::assertFalse($failed);
     }
 
-    public function validatePropertyCollectionPropertyValueThrowsExceptionIfValueDoesNotMatchDataProvider(): array
+    public static function validatePropertyCollectionPropertyValueThrowsExceptionIfValueDoesNotMatchDataProvider(): array
     {
         return [
             [
@@ -126,7 +126,7 @@ class CreatablePropertyCollectionElementPropertiesValidatorTest extends UnitTest
         $validatorMock->_call('validatePropertyCollectionPropertyValue', $input, $validationDto);
     }
 
-    public function validatePropertyCollectionPropertyValueThrowsNoExceptionIfValueMatchesDataProvider(): array
+    public static function validatePropertyCollectionPropertyValueThrowsNoExceptionIfValueMatchesDataProvider(): array
     {
         return [
             [

@@ -160,7 +160,7 @@ class EventDispatcherTest extends UnitTestCase
      * Provider for callables.
      * Either an invokable, class/method combination or a closure.
      */
-    public function callables(): array
+    public static function callables(): array
     {
         return [
             [

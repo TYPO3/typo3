@@ -29,7 +29,7 @@ class ContextTest extends UnitTestCase
     /**
      * Date provider for hasAspectReturnsTrueOnExistingAspect
      */
-    public function validAspectKeysDataProvider(): array
+    public static function validAspectKeysDataProvider(): array
     {
         return [
             ['myfirst'],
@@ -58,7 +58,7 @@ class ContextTest extends UnitTestCase
     /**
      * Date provider for hasAspectReturnsFalseOnNonExistingAspect
      */
-    public function invalidAspectKeysDataProvider(): array
+    public static function invalidAspectKeysDataProvider(): array
     {
         return [
             ['visible'],

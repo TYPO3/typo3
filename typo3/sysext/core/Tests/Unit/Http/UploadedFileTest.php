@@ -45,7 +45,7 @@ class UploadedFileTest extends UnitTestCase
         parent::tearDown();
     }
 
-    public function invalidStreamsDataProvider(): array
+    public static function invalidStreamsDataProvider(): array
     {
         return [
             'null'   => [null],
@@ -72,7 +72,7 @@ class UploadedFileTest extends UnitTestCase
         new UploadedFile($streamOrFile, 0, UPLOAD_ERR_OK);
     }
 
-    public function invalidSizesDataProvider(): array
+    public static function invalidSizesDataProvider(): array
     {
         return [
             'null'   => [null],
@@ -96,7 +96,7 @@ class UploadedFileTest extends UnitTestCase
         new UploadedFile(fopen('php://temp', 'wb+'), $size, UPLOAD_ERR_OK);
     }
 
-    public function invalidErrorStatusesDataProvider(): array
+    public static function invalidErrorStatusesDataProvider(): array
     {
         return [
             'null'     => [null],
@@ -122,7 +122,7 @@ class UploadedFileTest extends UnitTestCase
         new UploadedFile(fopen('php://temp', 'wb+'), 0, $status);
     }
 
-    public function invalidFilenamesAndMediaTypesDataProvider(): array
+    public static function invalidFilenamesAndMediaTypesDataProvider(): array
     {
         return [
             'true'   => [true],
@@ -206,7 +206,7 @@ class UploadedFileTest extends UnitTestCase
         self::assertEquals($stream->__toString(), $contents);
     }
 
-    public function invalidMovePathsDataProvider(): array
+    public static function invalidMovePathsDataProvider(): array
     {
         return [
             'null'   => [null],

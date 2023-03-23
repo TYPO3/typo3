@@ -286,7 +286,7 @@ class PackageManagerTest extends UnitTestCase
     /**
      * Data Provider returning valid package keys and the corresponding path
      */
-    public function packageKeysAndPaths(): array
+    public static function packageKeysAndPaths(): array
     {
         return [
             ['TYPO3.YetAnotherTestPackage', 'Packages/Application/TYPO3.YetAnotherTestPackage/'],
@@ -403,7 +403,7 @@ class PackageManagerTest extends UnitTestCase
         self::assertFalse($this->packageManager->isPackageAvailable('Acme.YetAnotherTestPackage'));
     }
 
-    public function buildDependencyGraphBuildsCorrectGraphDataProvider(): array
+    public static function buildDependencyGraphBuildsCorrectGraphDataProvider(): array
     {
         return [
             'TYPO3 CMS Extensions' => [
@@ -596,7 +596,7 @@ class PackageManagerTest extends UnitTestCase
         self::assertEquals($expectedGraph, $dependencyGraph);
     }
 
-    public function packageSortingDataProvider(): array
+    public static function packageSortingDataProvider(): array
     {
         return [
             'TYPO3 Flow Packages' => [

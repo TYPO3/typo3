@@ -100,7 +100,7 @@ class ElementBrowserTest extends UnitTestCase
         self::assertEquals($expected, $result['linkAttributes']['data-entry-point'] ?? '');
     }
 
-    public function renderResolvesEntryPointDataProvider(): \Generator
+    public static function renderResolvesEntryPointDataProvider(): \Generator
     {
         yield 'Wildcard' => [
             [

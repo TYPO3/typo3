@@ -29,7 +29,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    public function frontendStatesDataProvider(): array
+    public static function frontendStatesDataProvider(): array
     {
         return [
             'Live, no preview' => [

@@ -465,7 +465,7 @@ class CoreVersionServiceTest extends UnitTestCase
         self::assertSame($expectation, $instance->isCurrentInstalledVersionElts());
     }
 
-    public function isCurrentInstalledVersionEltsReturnsExpectedResultDataProvider(): array
+    public static function isCurrentInstalledVersionEltsReturnsExpectedResultDataProvider(): array
     {
         return [
             ['8', '8.7.4', false],
@@ -496,7 +496,7 @@ class CoreVersionServiceTest extends UnitTestCase
         self::assertSame($response['elts'], $result->isElts());
     }
 
-    public function getYoungestPatchReleaseReturnsLatestReleaseForCurrentMajorVersionDataProvider(): array
+    public static function getYoungestPatchReleaseReturnsLatestReleaseForCurrentMajorVersionDataProvider(): array
     {
         return [
             [

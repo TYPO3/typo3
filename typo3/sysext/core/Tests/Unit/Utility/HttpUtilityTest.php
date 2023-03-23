@@ -35,7 +35,7 @@ class HttpUtilityTest extends UnitTestCase
         self::assertEquals($expected, $url);
     }
 
-    public function isUrlBuiltCorrectlyDataProvider(): array
+    public static function isUrlBuiltCorrectlyDataProvider(): array
     {
         return [
             'rebuild url without scheme' => [
@@ -64,7 +64,7 @@ class HttpUtilityTest extends UnitTestCase
     /**
      * Data provider for buildQueryString
      */
-    public function queryStringDataProvider(): array
+    public static function queryStringDataProvider(): array
     {
         $valueArray = ['one' => '√', 'two' => 2];
 

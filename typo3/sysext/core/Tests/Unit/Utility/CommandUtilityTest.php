@@ -25,7 +25,7 @@ class CommandUtilityTest extends UnitTestCase
     /**
      * Data provider for getConfiguredApps
      */
-    public function getConfiguredAppsDataProvider(): array
+    public static function getConfiguredAppsDataProvider(): array
     {
         $defaultExpected = [
             'perl' => [
@@ -89,7 +89,7 @@ class CommandUtilityTest extends UnitTestCase
     /**
      * Data provider unQuoteFilenameUnquotesCorrectly
      */
-    public function unQuoteFilenameUnquotesCorrectlyDataProvider(): array
+    public static function unQuoteFilenameUnquotesCorrectlyDataProvider(): array
     {
         return [
             // Some theoretical tests first

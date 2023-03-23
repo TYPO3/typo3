@@ -128,7 +128,7 @@ class DataHandlerTest extends UnitTestCase
         self::assertFalse($this->subject->checkModifyAccessList($tableName));
     }
 
-    public function checkValueForDatetimeDataProvider(): array
+    public static function checkValueForDatetimeDataProvider(): array
     {
         // Three elements: input, timezone of input, expected output (UTC)
         return [
@@ -158,7 +158,7 @@ class DataHandlerTest extends UnitTestCase
         self::assertEquals($expectedOutput, $output['value']);
     }
 
-    public function checkValueForColorDataProvider(): array
+    public static function checkValueForColorDataProvider(): array
     {
         // Three elements: input, timezone of input, expected output (UTC)
         return [
@@ -211,7 +211,7 @@ class DataHandlerTest extends UnitTestCase
         self::assertNotSame($inputValue, $result['value']);
     }
 
-    public function numberValueCheckRecognizesStringValuesAsIntegerValuesCorrectlyDataProvider(): array
+    public static function numberValueCheckRecognizesStringValuesAsIntegerValuesCorrectlyDataProvider(): array
     {
         return [
             'Empty string returns zero as integer' => [
@@ -313,7 +313,7 @@ class DataHandlerTest extends UnitTestCase
     /**
      * Data provider for inputValuesRangeDoubleDataProvider
      */
-    public function inputValuesRangeDoubleDataProvider(): array
+    public static function inputValuesRangeDoubleDataProvider(): array
     {
         return [
             'Empty string returns zero as string' => [
@@ -380,7 +380,7 @@ class DataHandlerTest extends UnitTestCase
         self::assertSame($expectedReturnValue, $returnValue['value']);
     }
 
-    public function datetimeValuesDataProvider(): array
+    public static function datetimeValuesDataProvider(): array
     {
         return [
             'undershot date adjusted' => [
@@ -429,7 +429,7 @@ class DataHandlerTest extends UnitTestCase
         self::assertSame($expected, $returnValue['value']);
     }
 
-    public function inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmptyDataProvider(): array
+    public static function inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmptyDataProvider(): array
     {
         return [
             'Empty string returns the number zero' => [
@@ -467,7 +467,7 @@ class DataHandlerTest extends UnitTestCase
         self::assertSame($expected, $returnValue['value']);
     }
 
-    public function datetimeValueCheckDbtypeIsIndependentFromTimezoneDataProvider(): array
+    public static function datetimeValueCheckDbtypeIsIndependentFromTimezoneDataProvider(): array
     {
         return [
             // Values of this kind are passed in from the DateTime control
@@ -591,7 +591,7 @@ class DataHandlerTest extends UnitTestCase
         self::assertFalse($subject->process_datamap());
     }
 
-    public function checkValue_flex_procInData_travDSDataProvider(): iterable
+    public static function checkValue_flex_procInData_travDSDataProvider(): iterable
     {
         yield 'Flat structure' => [
             'dataValues' => [
@@ -778,7 +778,7 @@ class DataHandlerTest extends UnitTestCase
         self::assertEquals($expected, $result);
     }
 
-    public function equalSubmittedAndStoredValuesAreDeterminedDataProvider(): array
+    public static function equalSubmittedAndStoredValuesAreDeterminedDataProvider(): array
     {
         return [
             // String
@@ -1001,7 +1001,7 @@ class DataHandlerTest extends UnitTestCase
         $mockDataHandler->deleteRecord_procBasedOnFieldType($table, 42, 'bar', $conf);
     }
 
-    public function checkValue_checkReturnsExpectedValuesDataProvider(): array
+    public static function checkValue_checkReturnsExpectedValuesDataProvider(): array
     {
         return [
             'None item selected' => [
@@ -1060,7 +1060,7 @@ class DataHandlerTest extends UnitTestCase
         self::assertSame($expectedResult, $this->subject->_call('checkValueForInput', null, ['type' => 'input', 'max' => 40], 'tt_content', 'NEW55c0e67f8f4d32.04974534', 89, 'table_caption'));
     }
 
-    public function checkValueForJsonDataProvider(): \Generator
+    public static function checkValueForJsonDataProvider(): \Generator
     {
         yield 'Converts empty string to array' => [
             '',
@@ -1151,7 +1151,7 @@ class DataHandlerTest extends UnitTestCase
         );
     }
 
-    public function referenceValuesAreCastedDataProvider(): array
+    public static function referenceValuesAreCastedDataProvider(): array
     {
         return [
             'all empty' => [
@@ -1181,7 +1181,7 @@ class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    public function clearPrefixFromValueRemovesPrefixDataProvider(): array
+    public static function clearPrefixFromValueRemovesPrefixDataProvider(): array
     {
         return [
             'normal case' => ['Test (copy 42)', 'Test'],
@@ -1209,7 +1209,7 @@ class DataHandlerTest extends UnitTestCase
         self::assertEquals($expected, (new DataHandler())->clearPrefixFromValue('testTable', $input));
     }
 
-    public function applyFiltersToValuesFiltersValuesDataProvider(): iterable
+    public static function applyFiltersToValuesFiltersValuesDataProvider(): iterable
     {
         yield 'values are filtered by provided user function' => [
             'tcaFieldConfiguration' => [
@@ -1277,7 +1277,7 @@ class DataHandlerTest extends UnitTestCase
         $this->subject->_call('applyFiltersToValues', $tcaFieldConfiguration, $values);
     }
 
-    public function validateValueForRequiredReturnsExpectedValueDataHandler(): iterable
+    public static function validateValueForRequiredReturnsExpectedValueDataHandler(): iterable
     {
         yield 'no required flag set with empty string' => [
             [],

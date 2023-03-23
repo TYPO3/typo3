@@ -55,7 +55,7 @@ class ImageContentObjectTest extends UnitTestCase
         $this->subject->_set('pageRenderer', $pageRenderer);
     }
 
-    public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFoundDataProvider(): array
+    public static function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFoundDataProvider(): array
     {
         return [
             [null, null],
@@ -78,7 +78,7 @@ class ImageContentObjectTest extends UnitTestCase
         self::assertEquals($result, $defaultImgTagTemplate);
     }
 
-    public function getImageTagTemplateReturnTemplateElementIdentifiedByKeyDataProvider(): array
+    public static function getImageTagTemplateReturnTemplateElementIdentifiedByKeyDataProvider(): array
     {
         return [
             [
@@ -108,7 +108,7 @@ class ImageContentObjectTest extends UnitTestCase
         self::assertEquals($result, $expectation);
     }
 
-    public function getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefinedDataProvider(): array
+    public static function getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefinedDataProvider(): array
     {
         return [
             [null, null, null],
@@ -188,7 +188,7 @@ class ImageContentObjectTest extends UnitTestCase
      * @return array multi-dimensional array with the second level like this:
      * @see getImageSourceCollectionRendersDefinedLayoutKeyDefault
      */
-    public function getImageSourceCollectionRendersDefinedLayoutKeyDataDefaultProvider(): array
+    public static function getImageSourceCollectionRendersDefinedLayoutKeyDataDefaultProvider(): array
     {
         $sourceCollectionArray = [
             'small.' => [
@@ -256,7 +256,7 @@ class ImageContentObjectTest extends UnitTestCase
      * @return array multi-dimensional array with the second level like this:
      * @see getImageSourceCollectionRendersDefinedLayoutKeyData
      */
-    public function getImageSourceCollectionRendersDefinedLayoutKeyDataDataProvider(): array
+    public static function getImageSourceCollectionRendersDefinedLayoutKeyDataDataProvider(): array
     {
         $sourceCollectionArray = [
             'small.' => [
@@ -470,7 +470,7 @@ class ImageContentObjectTest extends UnitTestCase
      *
      * @return array [[$expected, $content, $wrap],]
      */
-    public function linkWrapDataProvider(): array
+    public static function linkWrapDataProvider(): array
     {
         $content = StringUtility::getUniqueId();
         return [

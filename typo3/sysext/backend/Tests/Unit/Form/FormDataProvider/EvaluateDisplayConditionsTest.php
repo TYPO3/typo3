@@ -900,7 +900,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * Test scenarios for "a display condition references the value of another field"
      */
-    public function addDataRemovesTcaReferencingOtherFieldsInDisplayConditionDataProvider(): array
+    public static function addDataRemovesTcaReferencingOtherFieldsInDisplayConditionDataProvider(): array
     {
         return [
 
@@ -3632,7 +3632,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      * - the current record
      * - the expected result
      */
-    public function conditionStringDataProvider(): array
+    public static function conditionStringDataProvider(): array
     {
         return [
             'Field is not greater zero if not given' => [

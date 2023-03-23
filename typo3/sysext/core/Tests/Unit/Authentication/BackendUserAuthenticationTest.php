@@ -94,7 +94,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
         $subject->logoff();
     }
 
-    public function getFilePermissionsTakesUserDefaultAndStoragePermissionsIntoAccountIfUserIsNotAdminDataProvider(): array
+    public static function getFilePermissionsTakesUserDefaultAndStoragePermissionsIntoAccountIfUserIsNotAdminDataProvider(): array
     {
         return [
             'Only read permissions' => [
@@ -197,7 +197,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
         self::assertEquals($expectedPermissions, $subject->getFilePermissions());
     }
 
-    public function getFilePermissionsFromStorageDataProvider(): array
+    public static function getFilePermissionsFromStorageDataProvider(): array
     {
         $defaultPermissions = [
             'addFile' => true,
@@ -363,7 +363,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
         self::assertEquals($defaultPermissions, $subject->getFilePermissionsForStorage($storageMock));
     }
 
-    public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdminDataProvider(): array
+    public static function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdminDataProvider(): array
     {
         return [
             'No permission' => [
@@ -579,7 +579,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
         self::assertEquals($otherAllowed, $subject->jsConfirmation(JsConfirmation::OTHER));
     }
 
-    public function jsConfirmationsWithUnsetBits(): array
+    public static function jsConfirmationsWithUnsetBits(): array
     {
         return [
             'All except "type change" and "copy/move/paste"' => [
@@ -638,7 +638,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      *  - groups for user
      *  - expected SQL fragment
      */
-    public function getPagePermissionsClauseWithValidUserDataProvider(): array
+    public static function getPagePermissionsClauseWithValidUserDataProvider(): array
     {
         return [
             'for admin' => [
@@ -736,7 +736,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    public function checkAuthModeReturnsExpectedValueDataProvider(): array
+    public static function checkAuthModeReturnsExpectedValueDataProvider(): array
     {
         return [
             'explicit allow, not allowed value' => [

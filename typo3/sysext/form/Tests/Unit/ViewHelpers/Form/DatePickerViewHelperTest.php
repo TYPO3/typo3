@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DatePickerViewHelperTest extends UnitTestCase
 {
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormatDataProvider(): array
+    public static function convertDateFormatToDatePickerFormatReturnsTransformedFormatDataProvider(): array
     {
         return [
             [

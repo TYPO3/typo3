@@ -26,7 +26,7 @@ class QueryHelperTest extends UnitTestCase
     /**
      * Test cases for stripping of leading logical operators in where constraints.
      */
-    public function stripLogicalOperatorPrefixDataProvider(): array
+    public static function stripLogicalOperatorPrefixDataProvider(): array
     {
         return [
             'unprefixed input' => ['1=1', '1=1'],
@@ -58,7 +58,7 @@ class QueryHelperTest extends UnitTestCase
     /**
      * Test cases for parsing ORDER BY SQL fragments
      */
-    public function parseOrderByDataProvider(): array
+    public static function parseOrderByDataProvider(): array
     {
         return [
             'empty string' => [
@@ -140,7 +140,7 @@ class QueryHelperTest extends UnitTestCase
     /**
      * Test cases for parsing FROM tableList SQL fragments
      */
-    public function parseTableListDataProvider(): array
+    public static function parseTableListDataProvider(): array
     {
         return [
             'single table' => [
@@ -212,7 +212,7 @@ class QueryHelperTest extends UnitTestCase
     /**
      * Test cases for parsing ORDER BY SQL fragments
      */
-    public function parseGroupByDataProvider(): array
+    public static function parseGroupByDataProvider(): array
     {
         return [
             'single field' => [
@@ -258,7 +258,7 @@ class QueryHelperTest extends UnitTestCase
     /**
      * Test cases for parsing JOIN fragments into table name, alias and conditions
      */
-    public function parseJoinDataProvider(): array
+    public static function parseJoinDataProvider(): array
     {
         return [
             'unquoted tableName' => [
@@ -428,7 +428,7 @@ class QueryHelperTest extends UnitTestCase
     /**
      * Test cases for quoting column/table name identifiers in SQL fragments
      */
-    public function quoteDatabaseIdentifierDataProvider(): array
+    public static function quoteDatabaseIdentifierDataProvider(): array
     {
         return [
             'no marked identifiers' => [

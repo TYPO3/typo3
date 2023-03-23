@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
 class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTest
 {
-    public function urlSoftReferenceParserTestDataProvider(): array
+    public static function urlSoftReferenceParserTestDataProvider(): array
     {
         return [
             'Simple url matches' => [

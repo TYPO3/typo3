@@ -103,7 +103,7 @@ EOC;
         self::assertEmpty($subject->getMatches());
     }
 
-    public function matchesReturnsExpectedRestFilesDataProvider(): array
+    public static function matchesReturnsExpectedRestFilesDataProvider(): array
     {
         return [
             'two rest candidates with same number of arguments' => [

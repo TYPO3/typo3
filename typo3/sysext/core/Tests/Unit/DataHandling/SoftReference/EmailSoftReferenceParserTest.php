@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
 class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
 {
-    public function emailSoftReferenceParserTestDataProvider(): array
+    public static function emailSoftReferenceParserTestDataProvider(): array
     {
         return [
             'Simple email address found' => [

@@ -211,7 +211,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         self::assertSame($expected, $fieldDefinition);
     }
 
-    public function populateExcludeFieldsTestDataProvider(): array
+    public static function populateExcludeFieldsTestDataProvider(): array
     {
         return [
             'Table with exclude and non exclude field returns exclude item' => [
@@ -407,7 +407,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         self::assertSame($expected, $fieldDefinition);
     }
 
-    public function populateExplicitAuthValuesTestDataProvider(): \Generator
+    public static function populateExplicitAuthValuesTestDataProvider(): \Generator
     {
         yield 'ExplicitAllow fields with special explicit values' => [
             [
@@ -558,7 +558,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         self::assertSame($expected, $fieldDefinition);
     }
 
-    public function populateAvailableCategoryFieldsDataProvider(): \Generator
+    public static function populateAvailableCategoryFieldsDataProvider(): \Generator
     {
         yield 'falls back to default relationship (manyToMany)' => [
             [

@@ -63,7 +63,7 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
         };
     }
 
-    public function doRedirectOnMissingOrSuperfluousRequestUrlDataProvider(): array
+    public static function doRedirectOnMissingOrSuperfluousRequestUrlDataProvider(): array
     {
         $site1 = new Site('outside-site', 13, [
             'base' => 'https://twenty.one/',
@@ -160,7 +160,7 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
         self::assertEquals($expectedRedirectUrl, $response->getHeader('Location')[0] ?? '');
     }
 
-    public function checkIf404IsSiteLanguageIsDisabledInFrontendDataProvider(): array
+    public static function checkIf404IsSiteLanguageIsDisabledInFrontendDataProvider(): array
     {
         return [
             'disabled site language' => ['https://twenty.one/en/pilots/', 404, 0],
@@ -211,7 +211,7 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
         self::assertEquals($expectedStatusCode, $response->getStatusCode());
     }
 
-    public function doNotRedirectOnBaseWithoutQueryDataProvider(): array
+    public static function doNotRedirectOnBaseWithoutQueryDataProvider(): array
     {
         $site1 = new Site('outside-site', 13, [
             'base' => 'https://twenty.one/',

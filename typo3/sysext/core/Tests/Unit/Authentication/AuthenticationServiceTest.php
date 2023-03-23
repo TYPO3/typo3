@@ -33,7 +33,7 @@ class AuthenticationServiceTest extends UnitTestCase
         parent::tearDown();
     }
 
-    public function processLoginDataProvider(): array
+    public static function processLoginDataProvider(): array
     {
         return [
             'Backend login with securityLevel "normal"' => [

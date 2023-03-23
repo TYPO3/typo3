@@ -48,7 +48,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TokenizerInterfaceTest extends UnitTestCase
 {
-    public function tokenizeStringDataProvider(): array
+    public static function tokenizeStringDataProvider(): array
     {
         return [
             'empty string' => [

@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 
 class FileNameValidatorTest extends TestCase
 {
-    public function deniedFilesWithoutDenyPatternDataProvider(): array
+    public static function deniedFilesWithoutDenyPatternDataProvider(): array
     {
         return [
             'Nul character in file' => ['image' . "\0" . '.gif'],
@@ -49,7 +49,7 @@ class FileNameValidatorTest extends TestCase
         self::assertFalse($subject->isValid($deniedFile));
     }
 
-    public function deniedFilesWithDefaultDenyPatternDataProvider(): array
+    public static function deniedFilesWithDefaultDenyPatternDataProvider(): array
     {
         $data = [
             'Nul character in file' => ['image' . "\0", '.gif'],
@@ -123,7 +123,7 @@ class FileNameValidatorTest extends TestCase
         self::assertFalse($subject->isValid($deniedFile));
     }
 
-    public function insecureFilesDataProvider(): array
+    public static function insecureFilesDataProvider(): array
     {
         return [
             'Classic php file' => ['user.php'],
@@ -143,7 +143,7 @@ class FileNameValidatorTest extends TestCase
         self::assertTrue($subject->isValid($fileName));
     }
 
-    public function allowedFilesDataProvider(): array
+    public static function allowedFilesDataProvider(): array
     {
         return [
             'Regular .gif file' => ['image.gif'],
@@ -199,7 +199,7 @@ class FileNameValidatorTest extends TestCase
     /**
      * Data provider for 'defaultFileDenyPatternMatchesPhpExtension' test case.
      */
-    public function phpExtensionDataProvider(): array
+    public static function phpExtensionDataProvider(): array
     {
         $data = [];
         $fileName = StringUtility::getUniqueId('filename');

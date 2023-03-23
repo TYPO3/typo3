@@ -29,7 +29,7 @@ class ApplicationContextTest extends UnitTestCase
     /**
      * Data provider with allowed contexts.
      */
-    public function allowedContexts(): array
+    public static function allowedContexts(): array
     {
         return [
             ['Production'],
@@ -55,7 +55,7 @@ class ApplicationContextTest extends UnitTestCase
     /**
      * Data provider with forbidden contexts.
      */
-    public function forbiddenContexts(): array
+    public static function forbiddenContexts(): array
     {
         return [
             ['MySpecialContext'],
@@ -80,7 +80,7 @@ class ApplicationContextTest extends UnitTestCase
     /**
      * Data provider with expected is*() values for various contexts.
      */
-    public function isMethods(): array
+    public static function isMethods(): array
     {
         return [
             'Development' => [

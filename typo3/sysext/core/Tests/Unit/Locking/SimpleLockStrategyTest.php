@@ -86,7 +86,7 @@ class SimpleLockStrategyTest extends UnitTestCase
     /**
      * Dataprovider for releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory
      */
-    public function invalidFileReferences(): array
+    public static function invalidFileReferences(): array
     {
         return [
             'not within project path' => [tempnam(sys_get_temp_dir(), 'foo')],

@@ -547,7 +547,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         self::assertFalse($mockFormPersistenceManager->_call('checkForDuplicateIdentifier', $input));
     }
 
-    public function metaDataIsExtractedDataProvider(): \Generator
+    public static function metaDataIsExtractedDataProvider(): \Generator
     {
         yield 'enclosed with single quotation marks and escaped single quotation marks within the label' => [
             'maybeRawFormDefinition' => "label: 'Ouverture d''un compte'",
@@ -989,7 +989,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $mockFormPersistenceManager->_call('getStorageByUid', -1);
     }
 
-    public function isAllowedPersistencePathReturnsPropperValuesDataProvider(): array
+    public static function isAllowedPersistencePathReturnsPropperValuesDataProvider(): array
     {
         return [
             [

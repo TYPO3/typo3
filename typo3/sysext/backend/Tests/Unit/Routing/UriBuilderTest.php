@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class UriBuilderTest extends UnitTestCase
 {
-    public function validRoutesAreBuiltDataProvider(): array
+    public static function validRoutesAreBuiltDataProvider(): array
     {
         return [
             'plain route' => [

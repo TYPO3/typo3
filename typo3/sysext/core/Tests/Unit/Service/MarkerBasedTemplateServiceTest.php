@@ -40,7 +40,7 @@ class MarkerBasedTemplateServiceTest extends UnitTestCase
     /**
      * Data provider for getSubpart
      */
-    public function getSubpartDataProvider(): array
+    public static function getSubpartDataProvider(): array
     {
         return [
             'No start marker' => [
@@ -115,7 +115,7 @@ text
     /**
      * Data provider for substituteSubpart
      */
-    public function substituteSubpartDataProvider(): array
+    public static function substituteSubpartDataProvider(): array
     {
         return [
             'No start marker' => [
@@ -253,7 +253,7 @@ hello
     /**
      * Data provider for substituteMarkerArray
      */
-    public function substituteMarkerArrayDataProvider(): array
+    public static function substituteMarkerArrayDataProvider(): array
     {
         return [
             'Upper case marker' => [
@@ -351,7 +351,7 @@ hello
     /**
      * Data provider for substituteMarker
      */
-    public function substituteMarkerDataProvider(): array
+    public static function substituteMarkerDataProvider(): array
     {
         return [
             'Single marker' => [
@@ -384,7 +384,7 @@ hello
     /**
      * Data provider for substituteSubpartArray
      */
-    public function substituteSubpartArrayDataProvider(): array
+    public static function substituteSubpartArrayDataProvider(): array
     {
         return [
             'Substitute multiple subparts at once with plain marker' => [
@@ -416,7 +416,7 @@ world
     /**
      * Data provider for substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray
      */
-    public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider(): array
+    public static function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider(): array
     {
         $template = '###SINGLEMARKER1###
 <!-- ###FOO### begin -->
@@ -632,7 +632,7 @@ Value 2.2
         );
     }
 
-    public function substituteMarkerArrayCachedReturnsExpectedContentDataProvider(): array
+    public static function substituteMarkerArrayCachedReturnsExpectedContentDataProvider(): array
     {
         return [
             'no markers defined' => [

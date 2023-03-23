@@ -31,7 +31,7 @@ class BlobTypesTest extends AbstractDataTypeBaseTestCase
     /**
      * Data provider for canParseBlobDataType()
      */
-    public function canParseBlobDataTypeProvider(): array
+    public static function canParseBlobDataTypeProvider(): array
     {
         return [
             'TINYBLOB' => [

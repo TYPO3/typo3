@@ -32,7 +32,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
         self::assertSame($expectedOrderedItems, $orderedItems);
     }
 
-    public function orderByDependenciesBuildsCorrectOrderDataProvider(): array
+    public static function orderByDependenciesBuildsCorrectOrderDataProvider(): array
     {
         return [
             'unordered' => [
@@ -162,7 +162,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
         self::assertEquals($expectedDependencies, $preparedDependencies);
     }
 
-    public function prepareDependenciesBuildsFullIdentifierListDataProvider(): array
+    public static function prepareDependenciesBuildsFullIdentifierListDataProvider(): array
     {
         return [
             'simple' => [
@@ -213,7 +213,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
         self::assertEquals($expectedGraph, $graph);
     }
 
-    public function buildDependencyGraphBuildsValidGraphDataProvider(): array
+    public static function buildDependencyGraphBuildsValidGraphDataProvider(): array
     {
         return [
             'graph1' => [
@@ -580,7 +580,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
         self::assertSame($expectedList, $list);
     }
 
-    public function calculateOrderResolvesCorrectOrderDataProvider(): array
+    public static function calculateOrderResolvesCorrectOrderDataProvider(): array
     {
         return [
             'list1' => [
@@ -643,7 +643,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
         ]);
     }
 
-    public function findPathInGraphReturnsCorrectPathDataProvider(): array
+    public static function findPathInGraphReturnsCorrectPathDataProvider(): array
     {
         return [
             'Simple path' => [

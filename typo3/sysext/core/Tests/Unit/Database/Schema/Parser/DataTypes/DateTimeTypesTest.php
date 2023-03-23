@@ -33,7 +33,7 @@ class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
     /**
      * Data provider for canParseDateTimeType()
      */
-    public function canParseDateTimeTypeProvider(): array
+    public static function canParseDateTimeTypeProvider(): array
     {
         return [
             'DATE' => [

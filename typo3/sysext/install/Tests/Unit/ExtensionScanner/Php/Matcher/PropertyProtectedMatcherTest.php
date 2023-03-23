@@ -58,7 +58,7 @@ class PropertyProtectedMatcherTest extends UnitTestCase
         self::assertEquals($expectedHitLineNumbers, $actualHitLineNumbers);
     }
 
-    public function matchesReturnsExpectedRestFilesDataProvider(): array
+    public static function matchesReturnsExpectedRestFilesDataProvider(): array
     {
         return [
             'two candidates' => [

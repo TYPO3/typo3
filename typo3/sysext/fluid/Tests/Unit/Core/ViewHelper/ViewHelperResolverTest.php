@@ -47,7 +47,7 @@ class ViewHelperResolverTest extends UnitTestCase
         self::assertEquals($expected, $viewHelperResolver->resolveViewHelperClassName($namespace, $method));
     }
 
-    public function getResolveViewHelperNameTestValues(): array
+    public static function getResolveViewHelperNameTestValues(): array
     {
         return [
             ['f', 'cObject', CObjectViewHelper::class],

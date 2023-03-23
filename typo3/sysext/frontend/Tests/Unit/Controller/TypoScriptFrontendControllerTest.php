@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TypoScriptFrontendControllerTest extends UnitTestCase
 {
-    public function baseUrlWrapHandlesDifferentUrlsDataProvider(): array
+    public static function baseUrlWrapHandlesDifferentUrlsDataProvider(): array
     {
         return [
             'without base url' => [

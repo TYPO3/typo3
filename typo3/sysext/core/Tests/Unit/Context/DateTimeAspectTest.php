@@ -57,7 +57,7 @@ class DateTimeAspectTest extends UnitTestCase
         self::assertIsInt($timestamp);
     }
 
-    public function dateFormatValuesDataProvider(): array
+    public static function dateFormatValuesDataProvider(): array
     {
         return [
             'timestamp' => [

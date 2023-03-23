@@ -33,7 +33,7 @@ class CreateTableFragmentTest extends UnitTestCase
      *  - table name
      *  - is temporary
      */
-    public function canParseCreateTableFragmentDataProvider(): array
+    public static function canParseCreateTableFragmentDataProvider(): array
     {
         return [
             'CREATE TABLE' => [

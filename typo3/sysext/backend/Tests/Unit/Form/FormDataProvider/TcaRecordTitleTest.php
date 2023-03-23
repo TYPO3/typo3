@@ -254,7 +254,7 @@ class TcaRecordTitleTest extends UnitTestCase
      *  - Database value for field
      *  - expected title to be generated
      */
-    public function addDataReturnsRecordTitleForDatetimeTypeDataProvider(): array
+    public static function addDataReturnsRecordTitleForDatetimeTypeDataProvider(): array
     {
         return [
             'new record' => [
@@ -677,7 +677,7 @@ class TcaRecordTitleTest extends UnitTestCase
      *  - Database value for field
      *  - expected title to be generated
      */
-    public function addDataReturnsRecordTitleForGroupTypeDataProvider(): array
+    public static function addDataReturnsRecordTitleForGroupTypeDataProvider(): array
     {
         return [
             'new record' => [

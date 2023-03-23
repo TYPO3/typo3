@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class CorrelationIdTest extends UnitTestCase
 {
-    public function canBeParsedDataProvider(): array
+    public static function canBeParsedDataProvider(): array
     {
         return [
             [

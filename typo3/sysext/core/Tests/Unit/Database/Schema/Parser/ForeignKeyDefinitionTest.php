@@ -35,7 +35,7 @@ class ForeignKeyDefinitionTest extends UnitTestCase
      *  - foreign table name
      *  - array of foreign column definitions [name, length, direction]
      */
-    public function canParseForeignKeyDefinitionDataProvider(): array
+    public static function canParseForeignKeyDefinitionDataProvider(): array
     {
         return [
             // See ReferenceDefinitionTest for actual reference definition parsing tests

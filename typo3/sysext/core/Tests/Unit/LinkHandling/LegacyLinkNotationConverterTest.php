@@ -34,7 +34,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page
      */
-    public function resolveParametersForNonFilesDataProvider(): array
+    public static function resolveParametersForNonFilesDataProvider(): array
     {
         return [
             'simple page - old style' => [
@@ -169,7 +169,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
      * t3:file:1:myfolder/myidentifier.jpg
      * t3:folder:1:myfolder
      */
-    public function resolveParametersForFilesDataProvider(): array
+    public static function resolveParametersForFilesDataProvider(): array
     {
         return [
             'file without FAL - VERY old style' => [
@@ -343,7 +343,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
         self::assertEquals($expected, $subject->asString($parameters));
     }
 
-    public function resolveThrowExceptionWithPharReferencesDataProvider(): array
+    public static function resolveThrowExceptionWithPharReferencesDataProvider(): array
     {
         return [
             'URL encoded local' => [

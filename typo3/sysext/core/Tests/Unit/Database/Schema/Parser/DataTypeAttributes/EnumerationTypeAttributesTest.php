@@ -28,7 +28,7 @@ class EnumerationTypeAttributesTest extends AbstractDataTypeBaseTestCase
     /**
      * Data provider for canParseEnumerationDataTypeAttributes()
      */
-    public function canParseEnumerationDataTypeAttributesProvider(): array
+    public static function canParseEnumerationDataTypeAttributesProvider(): array
     {
         return [
             'CHARACTER SET' => [

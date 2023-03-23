@@ -36,7 +36,7 @@ class XliffParserTest extends UnitTestCase
         }
     }
 
-    public function canParseXliffDataProvider(): \Generator
+    public static function canParseXliffDataProvider(): \Generator
     {
         yield 'Can handle default' => [
             'languageKey' => 'default',

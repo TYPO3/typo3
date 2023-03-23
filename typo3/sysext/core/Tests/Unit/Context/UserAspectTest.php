@@ -142,7 +142,7 @@ class UserAspectTest extends UnitTestCase
         self::assertEquals([33], $subject->getGroupIds());
     }
 
-    public function isUserOrGroupSetDataProvider(): array
+    public static function isUserOrGroupSetDataProvider(): array
     {
         return [
             'Not logged in: no id or group set' => [

@@ -44,7 +44,7 @@ class HrefLangGeneratorTest extends UnitTestCase
         );
     }
 
-    public function urlPathWithoutHostDataProvider(): array
+    public static function urlPathWithoutHostDataProvider(): array
     {
         return [
             [
@@ -77,7 +77,7 @@ class HrefLangGeneratorTest extends UnitTestCase
         $this->subject->_call('getAbsoluteUrl', $url, $mockSiteLanguage);
     }
 
-    public function urlPathWithHostDataProvider(): array
+    public static function urlPathWithHostDataProvider(): array
     {
         return [
             [

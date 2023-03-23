@@ -51,7 +51,7 @@ class JsonViewTest extends UnitTestCase
     /**
      * data provider for testTransformValue()
      */
-    public function jsonViewTestData(): array
+    public static function jsonViewTestData(): array
     {
         $output = [];
 
@@ -186,7 +186,7 @@ class JsonViewTest extends UnitTestCase
     /**
      * data provider for testRecursive()
      */
-    public function jsonViewTestDataRecursive(): array
+    public static function jsonViewTestDataRecursive(): array
     {
         $object = new class ('foo') {
             private $value1 = '';
@@ -361,7 +361,7 @@ class JsonViewTest extends UnitTestCase
     /**
      * data provider for testTransformValueWithObjectIdentifierExposure()
      */
-    public function objectIdentifierExposureTestData(): array
+    public static function objectIdentifierExposureTestData(): array
     {
         $output = [];
 
@@ -415,7 +415,7 @@ class JsonViewTest extends UnitTestCase
     /**
      * A data provider
      */
-    public function exposeClassNameSettingsAndResults(): array
+    public static function exposeClassNameSettingsAndResults(): array
     {
         $className = StringUtility::getUniqueId('DummyClass');
         $namespace = 'TYPO3\CMS\Extbase\Tests\Unit\Mvc\View\\' . $className;
@@ -530,7 +530,7 @@ class JsonViewTest extends UnitTestCase
     /**
      * @return string[][]
      */
-    public function escapeCharacterDataProvider(): array
+    public static function escapeCharacterDataProvider(): array
     {
         return [
             'backslash' => ['\\'],

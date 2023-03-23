@@ -148,7 +148,7 @@ class OpenGraphMetaTagManagerTest extends UnitTestCase
         self::assertEquals([], $manager->getProperty('og:description'));
     }
 
-    public function propertiesProvider(): array
+    public static function propertiesProvider(): array
     {
         return [
             [

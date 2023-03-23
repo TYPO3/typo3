@@ -112,7 +112,7 @@ class ExternalLinktypeTest extends UnitTestCase
         ];
     }
 
-    public function preprocessUrlsDataProvider(): \Generator
+    public static function preprocessUrlsDataProvider(): \Generator
     {
         // regression test for issue #92230: handle incomplete or faulty URLs gracefully
         yield 'faulty URL with mailto' => [

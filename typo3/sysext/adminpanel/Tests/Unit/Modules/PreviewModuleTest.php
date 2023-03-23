@@ -29,7 +29,7 @@ class PreviewModuleTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    public function simulateDateDataProvider(): array
+    public static function simulateDateDataProvider(): array
     {
         return [
             'timestamp' => [

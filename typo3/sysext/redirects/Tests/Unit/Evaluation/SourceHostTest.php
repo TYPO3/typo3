@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SourceHostTest extends UnitTestCase
 {
-    public function evaluateFieldValueWorksWithDifferentInputsDataProvider(): array
+    public static function evaluateFieldValueWorksWithDifferentInputsDataProvider(): array
     {
         return [
             // Valid formats

@@ -51,7 +51,7 @@ class StringUtilityTest extends UnitTestCase
         self::assertEquals($expectedValue, StringUtility::escapeCssSelector($selector));
     }
 
-    public function escapeCssSelectorDataProvider(): array
+    public static function escapeCssSelectorDataProvider(): array
     {
         return [
             ['data.field', 'data\\.field'],
@@ -72,7 +72,7 @@ class StringUtilityTest extends UnitTestCase
         self::assertSame($expectedValue, StringUtility::removeByteOrderMark(hex2bin($input)));
     }
 
-    public function removeByteOrderMarkDataProvider(): array
+    public static function removeByteOrderMarkDataProvider(): array
     {
         return [
             'BOM gets removed' => [
@@ -95,7 +95,7 @@ class StringUtilityTest extends UnitTestCase
         self::assertSame($result, StringUtility::searchStringWildcard($haystack, $needle));
     }
 
-    public function searchStringWildcardDataProvider(): array
+    public static function searchStringWildcardDataProvider(): array
     {
         return [
             'Simple wildcard single character with *' => [
@@ -139,7 +139,7 @@ class StringUtilityTest extends UnitTestCase
     /**
      * Data provider for uniqueListUnifiesCommaSeparatedList
      */
-    public function uniqueListUnifiesCommaSeparatedListDataProvider(): \Generator
+    public static function uniqueListUnifiesCommaSeparatedListDataProvider(): \Generator
     {
         yield 'List without duplicates' => ['one,two,three', 'one,two,three'];
         yield 'List with two consecutive duplicates' => ['one,two,two,three,three', 'one,two,three'];
@@ -164,7 +164,7 @@ class StringUtilityTest extends UnitTestCase
     /**
      * Data provider for multibyteStringPadReturnsSameValueAsStrPadForAsciiStrings
      */
-    public function multibyteStringPadReturnsSameValueAsStrPadForAsciiStringsDataProvider(): \Generator
+    public static function multibyteStringPadReturnsSameValueAsStrPadForAsciiStringsDataProvider(): \Generator
     {
         yield 'Pad right to 10 with string with uneven length' => ['ABC', 10, ' ', STR_PAD_RIGHT];
         yield 'Pad left to 10  with string with uneven length' => ['ABC', 10, ' ', STR_PAD_LEFT];
@@ -196,7 +196,7 @@ class StringUtilityTest extends UnitTestCase
         );
     }
 
-    public function multibyteStringPadReturnsCorrectResultsMultibyteDataProvider(): \Generator
+    public static function multibyteStringPadReturnsCorrectResultsMultibyteDataProvider(): \Generator
     {
         yield 'Pad right to 8 with string with uneven length' => ['häh     ', 'häh', 8, ' ', STR_PAD_RIGHT];
         yield 'Pad left to 8  with string with uneven length' => ['     häh', 'häh', 8, ' ', STR_PAD_LEFT];
@@ -276,7 +276,7 @@ class StringUtilityTest extends UnitTestCase
         self::assertSame($rawValue, StringUtility::base64urlDecode($encodedValue));
     }
 
-    public function explodeEscapedDataProvider(): array
+    public static function explodeEscapedDataProvider(): array
     {
         return [
             'no escape' => [

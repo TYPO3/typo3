@@ -244,7 +244,7 @@ class DataStructureIdentifierListenerTest extends UnitTestCase
         self::assertEquals($expected, $event->getDataStructure());
     }
 
-    public function modifyDataStructureDataProvider(): array
+    public static function modifyDataStructureDataProvider(): array
     {
         return [
             'simple' => [

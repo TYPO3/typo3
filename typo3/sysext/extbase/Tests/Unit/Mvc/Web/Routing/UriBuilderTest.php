@@ -250,7 +250,7 @@ class UriBuilderTest extends UnitTestCase
     /**
      * return array
      */
-    public function buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSetDataProvider(): array
+    public static function buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSetDataProvider(): array
     {
         return [
             'Arguments to be excluded in the beginning' => [
@@ -915,7 +915,7 @@ class UriBuilderTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    public function convertIteratorToArrayConvertsIteratorsToArrayProvider(): array
+    public static function convertIteratorToArrayConvertsIteratorsToArrayProvider(): array
     {
         return [
             'Extbase ObjectStorage' => [new ObjectStorage()],

@@ -41,7 +41,7 @@ class StateTest extends UnitTestCase
         self::assertInstanceOf(State::class, $subject);
     }
 
-    public function stateObjectCanBeCreatedDataProvider(): array
+    public static function stateObjectCanBeCreatedDataProvider(): array
     {
         return [
             'without states' => [
@@ -76,7 +76,7 @@ class StateTest extends UnitTestCase
         );
     }
 
-    public function statesAreEnrichedAndSanitizedOnObjectCreationDataProvider(): array
+    public static function statesAreEnrichedAndSanitizedOnObjectCreationDataProvider(): array
     {
         return [
             'empty' => [

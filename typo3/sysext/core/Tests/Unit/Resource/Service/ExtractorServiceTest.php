@@ -163,7 +163,7 @@ class ExtractorServiceTest extends UnitTestCase
         self::assertSame(['width' => 800, 'height' => 600, 'keywords' => 'typo3, cms'], $subject->extractMetaData($fileMock));
     }
 
-    public function extractMetaDataComposesDataByAvailableExtractorsWithDifferentPrioritiesDataProvider(): array
+    public static function extractMetaDataComposesDataByAvailableExtractorsWithDifferentPrioritiesDataProvider(): array
     {
         return [
             'Second has higher data priority' => [

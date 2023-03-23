@@ -75,7 +75,7 @@ class ModifyNewContentElementWizardItemsEventTest extends UnitTestCase
         self::assertEquals(3, $this->subject->getUidPid());
     }
 
-    public function addWizardItemTestDataProvider(): iterable
+    public static function addWizardItemTestDataProvider(): iterable
     {
         yield 'Change an existing item configuration' => [
             'aItem',

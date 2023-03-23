@@ -407,7 +407,7 @@ class ObjectAccessTest extends UnitTestCase
         self::assertEquals($expected, ObjectAccess::isPropertyGettable($this->dummyObject, $property));
     }
 
-    public function propertyGettableTestValues(): array
+    public static function propertyGettableTestValues(): array
     {
         return [
             ['publicProperty', true],

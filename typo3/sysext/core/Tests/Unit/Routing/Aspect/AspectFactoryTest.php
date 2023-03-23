@@ -68,7 +68,7 @@ class AspectFactoryTest extends UnitTestCase
         );
     }
 
-    public function aspectsDataProvider(): array
+    public static function aspectsDataProvider(): array
     {
         return [
             'single aspect' => [

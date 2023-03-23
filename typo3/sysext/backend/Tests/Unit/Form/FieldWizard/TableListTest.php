@@ -69,7 +69,7 @@ class TableListTest extends UnitTestCase
         }
     }
 
-    public function renderResolvesEntryPointDataProvider(): \Generator
+    public static function renderResolvesEntryPointDataProvider(): \Generator
     {
         yield 'Wildcard' => [
             [

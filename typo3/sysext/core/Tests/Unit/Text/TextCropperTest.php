@@ -44,7 +44,7 @@ class TextCropperTest extends UnitTestCase
         self::assertEquals('бла', $actual);
     }
 
-    public function cropWorksDataProvicer(): \Generator
+    public static function cropWorksDataProvicer(): \Generator
     {
         $plainText = 'Kasper Sk' . chr(229) . 'rh' . chr(248)
             . 'j implemented the original version of the crop function.';

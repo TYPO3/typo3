@@ -82,7 +82,7 @@ class RenderingContextTest extends UnitTestCase
         self::assertSame(lcfirst($expected), $subject->getControllerAction());
     }
 
-    public function getControllerActionTestValues(): array
+    public static function getControllerActionTestValues(): array
     {
         return [
             ['default', 'default'],

@@ -343,7 +343,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         self::assertEquals($returnedExceptionCode, $exceptionCode);
     }
 
-    public function validateAllPropertyValuesFromCreatableFormElementDataProvider(): array
+    public static function validateAllPropertyValuesFromCreatableFormElementDataProvider(): array
     {
         $encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
@@ -478,7 +478,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         ];
     }
 
-    public function validateAllPropertyValuesFromCreatablePropertyCollectionElementDataProvider(): array
+    public static function validateAllPropertyValuesFromCreatablePropertyCollectionElementDataProvider(): array
     {
         $encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';

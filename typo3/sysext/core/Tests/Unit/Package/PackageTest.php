@@ -53,7 +53,7 @@ class PackageTest extends UnitTestCase
         new Package($packageManagerMock, 'Vendor.TestPackage', './ThisPackageSurelyDoesNotExist');
     }
 
-    public function validPackageKeys(): array
+    public static function validPackageKeys(): array
     {
         return [
             ['Doctrine.DBAL'],
@@ -81,7 +81,7 @@ class PackageTest extends UnitTestCase
         self::assertEquals($packageKey, $package->getPackageKey());
     }
 
-    public function invalidPackageKeys(): array
+    public static function invalidPackageKeys(): array
     {
         return [
             ['TYPO3..Flow'],

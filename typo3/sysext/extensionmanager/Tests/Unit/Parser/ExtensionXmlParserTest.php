@@ -34,7 +34,7 @@ class ExtensionXmlParserTest extends UnitTestCase
         self::assertEquals($isValid, $subject->isValidVersionNumber());
     }
 
-    public function isValidVersionNumberDataProvider(): \Generator
+    public static function isValidVersionNumberDataProvider(): \Generator
     {
         yield 'Successive zeros are not allowed' => [
             '00.2.3',

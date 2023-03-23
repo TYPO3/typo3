@@ -47,7 +47,7 @@ class SiteTest extends UnitTestCase
         GeneralUtility::purgeInstances();
     }
 
-    public function getBaseReturnsProperUriDataProvider(): array
+    public static function getBaseReturnsProperUriDataProvider(): array
     {
         return [
             'URL with scheme and domain' => ['https://www.typo3.org', 'https://www.typo3.org'],
@@ -83,7 +83,7 @@ class SiteTest extends UnitTestCase
      * - input "site language" base
      * - expected "site language" base after it is glued together
      */
-    public function getBaseForSiteLanguageReturnsProperUriDataProvider(): array
+    public static function getBaseForSiteLanguageReturnsProperUriDataProvider(): array
     {
         return [
             'Language as a regular path segment' => [

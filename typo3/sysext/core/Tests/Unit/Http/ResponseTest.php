@@ -54,7 +54,7 @@ class ResponseTest extends UnitTestCase
         self::assertEquals(400, $response->getStatusCode());
     }
 
-    public function invalidStatusCodesDataProvider(): array
+    public static function invalidStatusCodesDataProvider(): array
     {
         return [
             'too-low'  => [99],
@@ -121,7 +121,7 @@ class ResponseTest extends UnitTestCase
         self::assertEquals($headers, $response->getHeaders());
     }
 
-    public function invalidStatusDataProvider(): array
+    public static function invalidStatusDataProvider(): array
     {
         return [
             'true'       => [true],
@@ -146,7 +146,7 @@ class ResponseTest extends UnitTestCase
         new Response('php://memory', $code);
     }
 
-    public function invalidResponseBodyDataProvider(): array
+    public static function invalidResponseBodyDataProvider(): array
     {
         return [
             'true'     => [true],
@@ -192,7 +192,7 @@ class ResponseTest extends UnitTestCase
         self::assertEquals($expected, $response->getHeaders());
     }
 
-    public function headersWithInjectionVectorsDataProvider(): array
+    public static function headersWithInjectionVectorsDataProvider(): array
     {
         return [
             'name-with-cr'           => ["X-Foo\r-Bar", 'value'],

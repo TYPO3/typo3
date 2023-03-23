@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DemandTest extends UnitTestCase
 {
-    public function getParametersRespectsDemandStateStateDataProvider(): array
+    public static function getParametersRespectsDemandStateStateDataProvider(): array
     {
         return [
             [[1, '', '', [], '', '', []], []],

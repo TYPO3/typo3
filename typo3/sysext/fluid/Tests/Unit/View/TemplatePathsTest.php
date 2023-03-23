@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TemplatePathsTest extends UnitTestCase
 {
-    public function getPathSetterMethodTestValues(): array
+    public static function getPathSetterMethodTestValues(): array
     {
         $generator = static function ($method, $indexType = 'numeric') {
             switch ($indexType) {

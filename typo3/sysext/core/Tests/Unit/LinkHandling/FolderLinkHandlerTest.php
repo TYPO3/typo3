@@ -33,7 +33,7 @@ class FolderLinkHandlerTest extends UnitTestCase
      * t3:file:1:myfolder/myidentifier.jpg
      * t3:folder:1:myfolder
      */
-    public function resolveParametersForFilesDataProvider(): array
+    public static function resolveParametersForFilesDataProvider(): array
     {
         return [
             'folder without FAL - cool style' => [

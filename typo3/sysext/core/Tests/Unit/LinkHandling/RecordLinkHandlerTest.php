@@ -41,7 +41,7 @@ class RecordLinkHandlerTest extends UnitTestCase
         self::assertEquals($url, $subject->asString($parameters));
     }
 
-    public function missingParameterDataProvider(): array
+    public static function missingParameterDataProvider(): array
     {
         return [
             'identifier is missing' => [

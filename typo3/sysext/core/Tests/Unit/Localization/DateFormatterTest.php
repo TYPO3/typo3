@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DateFormatterTest extends UnitTestCase
 {
-    protected function formatDateProvider(): \Generator
+    protected static function formatDateProvider(): \Generator
     {
         yield 'regular formatting - no locale' => [
             '2023.02.02 AD at 13:05:00 UTC',

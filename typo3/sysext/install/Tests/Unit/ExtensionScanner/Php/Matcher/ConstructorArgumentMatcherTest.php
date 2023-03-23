@@ -27,7 +27,7 @@ use TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures\Subject;
 
 class ConstructorArgumentMatcherTest extends TestCase
 {
-    public function hitsFromFixtureAreFoundDataProvider(): array
+    public static function hitsFromFixtureAreFoundDataProvider(): array
     {
         $defaults = [
             'restFiles' => [

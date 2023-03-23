@@ -65,7 +65,7 @@ class ImageInfoTest extends UnitTestCase
         self::assertEquals(0, $imageInfo->getWidth());
     }
 
-    public function doesNotBreakOnImageInfoWithInvalidSvgDataProvider(): array
+    public static function doesNotBreakOnImageInfoWithInvalidSvgDataProvider(): array
     {
         return [
             ['Invalid XML.', 0, 0],
@@ -129,7 +129,7 @@ class ImageInfoTest extends UnitTestCase
         GeneralUtility::makeInstance(GraphicalFunctions::class);
     }
 
-    public function canDetectImageSizesDataProvider(): array
+    public static function canDetectImageSizesDataProvider(): array
     {
         return [
             'svg' => ['test.svg', 80, 80],

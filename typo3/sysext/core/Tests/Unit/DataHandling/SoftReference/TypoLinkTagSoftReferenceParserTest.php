@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferenceParserTest
 {
-    public function findRefReturnsParsedElementsDataProvider(): array
+    public static function findRefReturnsParsedElementsDataProvider(): array
     {
         return [
             'link to page' => [
@@ -148,7 +148,7 @@ class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferenceParserTest
         self::assertEquals($expectedElement, $matchedElements[$softrefConfiguration['elementKey']]);
     }
 
-    public function findRefReturnsParsedElementsWithFileDataProvider(): array
+    public static function findRefReturnsParsedElementsWithFileDataProvider(): array
     {
         return [
             'link to file' => [
@@ -205,7 +205,7 @@ class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferenceParserTest
         self::assertEquals($expectedElement, $matchedElements[$softrefConfiguration['elementKey']]);
     }
 
-    public function findRefReturnsNullWithFolderDataProvider(): array
+    public static function findRefReturnsNullWithFolderDataProvider(): array
     {
         return [
             'link to folder' => [

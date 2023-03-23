@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaJsonTest extends UnitTestCase
 {
-    public function resultArrayDataProvider(): \Generator
+    public static function resultArrayDataProvider(): \Generator
     {
         yield 'Only handle new records' => [
             [

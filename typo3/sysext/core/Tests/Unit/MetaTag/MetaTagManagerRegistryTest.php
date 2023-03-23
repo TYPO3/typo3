@@ -84,7 +84,7 @@ class MetaTagManagerRegistryTest extends UnitTestCase
         $metaTagManagerRegistry->registerManager($input['name'], $input['className'], (array)$input['before'], (array)$input['after']);
         $metaTagManagerRegistry->getAllManagers();
     }
-    public function registerMetaTagManagersProvider(): array
+    public static function registerMetaTagManagersProvider(): array
     {
         return [
             [

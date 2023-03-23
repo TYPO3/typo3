@@ -113,7 +113,7 @@ class RedirectServiceTest extends UnitTestCase
         self::assertSame($row, $result);
     }
 
-    public function matchRedirectReturnsRedirectOnFlatMatchDataProvider(): array
+    public static function matchRedirectReturnsRedirectOnFlatMatchDataProvider(): array
     {
         return [
             'default case' => [
@@ -688,7 +688,7 @@ class RedirectServiceTest extends UnitTestCase
         self::assertEquals($uri, $result);
     }
 
-    public function getTargetUrlWithQueryReplaceRegExpCaptureGroupDataProvider(): array
+    public static function getTargetUrlWithQueryReplaceRegExpCaptureGroupDataProvider(): array
     {
         $cyrilicPlain = 'АВГДЄЅЗИѲІКЛМНѮѺПЧ';
         return [
@@ -769,7 +769,7 @@ class RedirectServiceTest extends UnitTestCase
         self::assertEquals($uri, $result);
     }
 
-    public function getTargetUrlWithQueryAndSlashReplaceRegExpCaptureGroupDataProvider(): array
+    public static function getTargetUrlWithQueryAndSlashReplaceRegExpCaptureGroupDataProvider(): array
     {
         $cyrilicPlain = 'АВГДЄЅЗИѲІКЛМНѮѺПЧ';
         return [

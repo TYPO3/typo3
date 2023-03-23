@@ -36,7 +36,7 @@ class VariableProcessorTest extends UnitTestCase
         parent::tearDown();
     }
 
-    public function routePathDataProvider(): array
+    public static function routePathDataProvider(): array
     {
         $plainInflatedRoutePath = '/static/{aa}/{bb}/{some_cc}/tail';
         $enforcedInflatedRoutePath = '/static/{!aa}/{bb}/{some_cc}/tail';
@@ -151,7 +151,7 @@ class VariableProcessorTest extends UnitTestCase
         );
     }
 
-    public function parametersDataProvider(): array
+    public static function parametersDataProvider(): array
     {
         return [
             'no namespace, no arguments' => [
@@ -190,7 +190,7 @@ class VariableProcessorTest extends UnitTestCase
         );
     }
 
-    public function namespaceParametersDataProvider(): array
+    public static function namespaceParametersDataProvider(): array
     {
         return [
             // no changes expected without having a non-empty namespace
@@ -314,7 +314,7 @@ class VariableProcessorTest extends UnitTestCase
         ];
     }
 
-    public function specialKeysDataProvider(): array
+    public static function specialKeysDataProvider(): array
     {
         return [
             'a -> @any/nested, no namespace' => [

@@ -31,7 +31,7 @@ class CharDataTypeTest extends AbstractDataTypeBaseTestCase
     /**
      * Data provider for canParseBinaryDataType()
      */
-    public function canParseBinaryDataTypeProvider(): array
+    public static function canParseBinaryDataTypeProvider(): array
     {
         return [
             'CHAR without length' => [

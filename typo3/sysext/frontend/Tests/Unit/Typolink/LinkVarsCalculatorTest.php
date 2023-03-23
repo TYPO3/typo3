@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class LinkVarsCalculatorTest extends UnitTestCase
 {
-    public function calculateLinkVarsDataProvider(): array
+    public static function calculateLinkVarsDataProvider(): array
     {
         return [
             'simple variable' => [
@@ -73,7 +73,7 @@ class LinkVarsCalculatorTest extends UnitTestCase
         self::assertEquals($expected, $result);
     }
 
-    public function splitLinkVarsDataProvider(): array
+    public static function splitLinkVarsDataProvider(): array
     {
         return [
             [

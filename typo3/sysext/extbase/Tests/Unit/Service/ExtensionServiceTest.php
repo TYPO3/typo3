@@ -115,7 +115,7 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * DataProvider for getPluginNamespaceByPluginSignatureTests()
      */
-    public function getPluginNamespaceDataProvider(): array
+    public static function getPluginNamespaceDataProvider(): array
     {
         return [
             [null, null, 'tx__'],
@@ -154,7 +154,7 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * DataProvider for getPluginNameByActionTests()
      */
-    public function getPluginNameByActionDataProvider(): array
+    public static function getPluginNameByActionDataProvider(): array
     {
         return [
             ['ExtensionName', 'ControllerName', 'someNonExistingAction', null],

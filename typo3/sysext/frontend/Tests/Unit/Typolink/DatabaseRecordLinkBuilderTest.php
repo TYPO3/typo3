@@ -32,7 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DatabaseRecordLinkBuilderTest extends UnitTestCase
 {
-    public function attributesSetInRecordLinkOverwriteConfiguredAttributesDataProvider(): array
+    public static function attributesSetInRecordLinkOverwriteConfiguredAttributesDataProvider(): array
     {
         return [
             'attributes from db overwrite config' => [

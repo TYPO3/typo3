@@ -48,7 +48,7 @@ class ResolverTest extends UnitTestCase
         parent::tearDown();
     }
 
-    public function basicExpressionsDataProvider(): array
+    public static function basicExpressionsDataProvider(): array
     {
         return [
             '1+1' => ['1+1', 2],
@@ -73,7 +73,7 @@ class ResolverTest extends UnitTestCase
         self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
     }
 
-    public function basicExpressionsWithVariablesDataProvider(): array
+    public static function basicExpressionsWithVariablesDataProvider(): array
     {
         return [
             'var1 + var2' => ['var1 + var2', 3],
@@ -107,7 +107,7 @@ class ResolverTest extends UnitTestCase
         self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
     }
 
-    public function basicExpressionHandlingWithContextVariablesDataProvider(): array
+    public static function basicExpressionHandlingWithContextVariablesDataProvider(): array
     {
         return [
             'additional context variable can be provided' => ['var1 + var2 + contextVar3', ['contextVar3' => 1], 4],
@@ -134,7 +134,7 @@ class ResolverTest extends UnitTestCase
         self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression, $contextVariables));
     }
 
-    public function basicExpressionsWithVariablesAndExpressionLanguageProviderDataProvider(): array
+    public static function basicExpressionsWithVariablesAndExpressionLanguageProviderDataProvider(): array
     {
         return [
             'testMeLowercase(var1) == var2' => ['testMeLowercase(var1) == var2', true],

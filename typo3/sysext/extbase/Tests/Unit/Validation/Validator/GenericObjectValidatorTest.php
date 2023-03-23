@@ -41,7 +41,7 @@ class GenericObjectValidatorTest extends UnitTestCase
         self::assertFalse((new GenericObjectValidator())->validate(null)->hasErrors());
     }
 
-    public function dataProviderForValidator(): array
+    public static function dataProviderForValidator(): array
     {
         $error1 = new Error('error1', 1);
         $error2 = new Error('error2', 2);

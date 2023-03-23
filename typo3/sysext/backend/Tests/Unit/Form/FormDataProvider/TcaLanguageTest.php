@@ -595,7 +595,7 @@ class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    public function addDataAddsAllSiteLanguagesDataProvider(): \Generator
+    public static function addDataAddsAllSiteLanguagesDataProvider(): \Generator
     {
         yield 'On root level pid=0' => [
             [

@@ -88,7 +88,7 @@ class VerifyHostHeaderTest extends UnitTestCase
         self::assertFalse($subject->isAllowedHostHeaderValue($httpHost, $serverParams));
     }
 
-    public function serverNamePatternDataProvider(): array
+    public static function serverNamePatternDataProvider(): array
     {
         return [
             'host value matches server name and server port is default http' => [

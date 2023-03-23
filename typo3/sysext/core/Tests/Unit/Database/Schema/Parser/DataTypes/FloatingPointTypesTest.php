@@ -30,7 +30,7 @@ class FloatingPointTypesTest extends AbstractDataTypeBaseTestCase
     /**
      * Data provider for canParseFloatingPointTypes()
      */
-    public function canParseFloatingPointTypesProvider(): array
+    public static function canParseFloatingPointTypesProvider(): array
     {
         return [
             'FLOAT without precision' => [

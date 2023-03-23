@@ -102,7 +102,7 @@ class NormalizeCommandTest extends UnitTestCase
         self::assertEquals($invalidKeyword, $result);
     }
 
-    public function normalizeFieldsValidDataProvider(): array
+    public static function normalizeFieldsValidDataProvider(): array
     {
         return [
             '1-2 * * * *' => ['1-2 * * * *', '1,2 * * * *'],

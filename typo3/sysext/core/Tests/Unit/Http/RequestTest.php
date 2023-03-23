@@ -113,7 +113,7 @@ class RequestTest extends UnitTestCase
         new Request(null, 'BOGUS-METHOD');
     }
 
-    public function invalidRequestBodyDataProvider(): array
+    public static function invalidRequestBodyDataProvider(): array
     {
         return [
             'true'     => [true],
@@ -178,7 +178,7 @@ class RequestTest extends UnitTestCase
         self::assertEquals('/', $request->getRequestTarget());
     }
 
-    public function requestsWithUriDataProvider(): array
+    public static function requestsWithUriDataProvider(): array
     {
         return [
             'absolute-uri'            => [
@@ -217,7 +217,7 @@ class RequestTest extends UnitTestCase
         self::assertEquals($expected, $request->getRequestTarget());
     }
 
-    public function validRequestTargetsDataProvider(): array
+    public static function validRequestTargetsDataProvider(): array
     {
         return [
             'asterisk-form'         => ['*'],
@@ -402,7 +402,7 @@ class RequestTest extends UnitTestCase
         self::assertEquals('www.example.com:10081', $new->getHeaderLine('Host'));
     }
 
-    public function headersWithUpperAndLowerCaseValuesDataProvider(): array
+    public static function headersWithUpperAndLowerCaseValuesDataProvider(): array
     {
         // 'name' => [$headerName, $headerValue, $expectedValue]
         return [
@@ -424,7 +424,7 @@ class RequestTest extends UnitTestCase
         self::assertEquals([$expected], $request->getHeader(strtoupper($header)));
     }
 
-    public function headersWithInjectionVectorsDataProvider(): array
+    public static function headersWithInjectionVectorsDataProvider(): array
     {
         return [
             'name-with-cr'           => ["X-Foo\r-Bar", 'value'],

@@ -35,7 +35,7 @@ class RandomTest extends UnitTestCase
     /**
      * Data provider for generateRandomHexStringReturnsExpectedAmountOfChars
      */
-    public function generateRandomHexStringReturnsExpectedAmountOfCharsDataProvider(): array
+    public static function generateRandomHexStringReturnsExpectedAmountOfCharsDataProvider(): array
     {
         return [
             [1],
@@ -67,7 +67,7 @@ class RandomTest extends UnitTestCase
         self::assertEquals($numberOfChars, strlen($subject->generateRandomHexString($numberOfChars)));
     }
 
-    public function generateRandomPasswordThrowsInvalidPasswordRulesExceptionDataProvider(): \Generator
+    public static function generateRandomPasswordThrowsInvalidPasswordRulesExceptionDataProvider(): \Generator
     {
         yield 'Invalid length' => [
             [
@@ -105,7 +105,7 @@ class RandomTest extends UnitTestCase
         (new Random())->generateRandomPassword($passwordRules);
     }
 
-    public function generateRandomPasswordGeneratesRandomWithEncodingDataProvider(): \Generator
+    public static function generateRandomPasswordGeneratesRandomWithEncodingDataProvider(): \Generator
     {
         yield 'Hex with 42 chars' => [
             [
@@ -135,7 +135,7 @@ class RandomTest extends UnitTestCase
         self::assertMatchesRegularExpression($pattern, (new Random())->generateRandomPassword($passwordRules));
     }
 
-    public function generateRandomPasswordGeneratesRandomWithCharacterSetsDataProvider(): \Generator
+    public static function generateRandomPasswordGeneratesRandomWithCharacterSetsDataProvider(): \Generator
     {
         yield 'lowercase' => [
             [
@@ -174,7 +174,7 @@ class RandomTest extends UnitTestCase
         self::assertMatchesRegularExpression($pattern, (new Random())->generateRandomPassword($passwordRules));
     }
 
-    public function generateRandomPasswordGeneratesRandomWithLengthDataProvider(): \Generator
+    public static function generateRandomPasswordGeneratesRandomWithLengthDataProvider(): \Generator
     {
         yield 'fallback' => [
             [],

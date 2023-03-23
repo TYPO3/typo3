@@ -22,7 +22,7 @@ use TYPO3\CMS\Install\SystemEnvironment\ServerResponse\ContentSecurityPolicyHead
 
 class ContentSecurityPolicyHeaderTest extends TestCase
 {
-    public function mitigatesCrossSiteScriptingDataProvider(): array
+    public static function mitigatesCrossSiteScriptingDataProvider(): array
     {
         return [
             '#1' => [

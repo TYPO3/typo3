@@ -37,7 +37,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AstBuilderInterfaceTest extends UnitTestCase
 {
-    public function buildDataProvider(): \Generator
+    public static function buildDataProvider(): \Generator
     {
         $expectedAst = new RootNode();
         yield 'ignore invalid line' => [
@@ -1243,7 +1243,7 @@ class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
-    public function buildWithPreviousValueDataProvider(): \Generator
+    public static function buildWithPreviousValueDataProvider(): \Generator
     {
         $expectedAst = new RootNode();
         $objectNode = new ChildNode('foo');
@@ -1444,7 +1444,7 @@ class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedAst, $ast);
     }
 
-    public function buildReferenceDataProvider(): \Generator
+    public static function buildReferenceDataProvider(): \Generator
     {
         $expectedAst = new RootNode();
         $fooNode = new ChildNode('foo');
@@ -1719,7 +1719,7 @@ class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
-    public function buildConstantDataProvider(): \Generator
+    public static function buildConstantDataProvider(): \Generator
     {
         $expectedAst = new RootNode();
         $objectNode = new ChildNode('foo');
@@ -1961,7 +1961,7 @@ class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedArray, $resultAst->toArray());
     }
 
-    public function functionSortListThrowsSortingNonNumericListNumericDataProvider(): \Generator
+    public static function functionSortListThrowsSortingNonNumericListNumericDataProvider(): \Generator
     {
         yield 'non-numeric list numeric' => [
             "foo = 10,0,100,-20,abc\n" .
@@ -2000,7 +2000,7 @@ class AstBuilderInterfaceTest extends UnitTestCase
         (new CommentAwareAstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
     }
 
-    public function functionGetEnvDataProvider(): \Generator
+    public static function functionGetEnvDataProvider(): \Generator
     {
         $fooNode = new ChildNode('foo');
         $fooNode->setValue('bar');
@@ -2108,7 +2108,7 @@ class AstBuilderInterfaceTest extends UnitTestCase
         }
     }
 
-    public function flattenDataProvider(): \Generator
+    public static function flattenDataProvider(): \Generator
     {
         $typoscript =
             "first = firstValue\n" .
@@ -2217,7 +2217,7 @@ class AstBuilderInterfaceTest extends UnitTestCase
         self::assertSame($expected, $ast->flatten());
     }
 
-    public function buildWithCommentsDataProvider(): \Generator
+    public static function buildWithCommentsDataProvider(): \Generator
     {
         $expectedAst = new RootNode();
         $expectedAst->addComment(

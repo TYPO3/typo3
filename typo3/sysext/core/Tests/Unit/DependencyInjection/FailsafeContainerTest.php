@@ -440,7 +440,7 @@ class FailsafeContainerTest extends UnitTestCase
      * Provider for ServerProvider callables.
      * Either a closure, a static callable or invokable.
      */
-    public function objectFactories(): array
+    public static function objectFactories(): array
     {
         return [
             [

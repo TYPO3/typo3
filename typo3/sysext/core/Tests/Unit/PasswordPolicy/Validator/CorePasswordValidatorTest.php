@@ -32,7 +32,7 @@ class CorePasswordValidatorTest extends UnitTestCase
             ->getMock();
     }
 
-    public function validatorReturnsExpectedResultsDataProvider(): array
+    public static function validatorReturnsExpectedResultsDataProvider(): array
     {
         return [
             'empty password' => [

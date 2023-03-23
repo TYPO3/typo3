@@ -205,7 +205,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         self::assertEquals('OVERLAID', $result[0]['title']);
     }
 
-    public function sectionIndexFiltersDataProvider(): array
+    public static function sectionIndexFiltersDataProvider(): array
     {
         return [
             'unfiltered fields' => [
@@ -272,7 +272,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         self::assertCount($expectedAmount, $result);
     }
 
-    public function sectionIndexQueriesWithDifferentColPosDataProvider(): array
+    public static function sectionIndexQueriesWithDifferentColPosDataProvider(): array
     {
         return [
             'no configuration' => [
@@ -345,7 +345,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $this->subject->_call('sectionIndex', 'field', 12);
     }
 
-    public function isItemStateChecksExcludeUidListDataProvider(): array
+    public static function isItemStateChecksExcludeUidListDataProvider(): array
     {
         return [
             'none excluded' => [
@@ -466,7 +466,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         self::assertEquals($expectedResult, $subject->_call('isItemState', 'IFSUB', 0));
     }
 
-    public function menuTypoLinkCreatesExpectedTypoLinkConfigurationDataProvider(): array
+    public static function menuTypoLinkCreatesExpectedTypoLinkConfigurationDataProvider(): array
     {
         return [
             'standard parameter without access protected setting' => [

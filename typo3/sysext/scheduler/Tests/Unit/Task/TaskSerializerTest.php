@@ -97,7 +97,7 @@ class TaskSerializerTest extends UnitTestCase
         $taskSerializer->deserialize($data);
     }
 
-    public function classNameIsResolvedDataProvider(): array
+    public static function classNameIsResolvedDataProvider(): array
     {
         $missingTaskData = 'O:29:"TYPO3\CMS\Testing\MissingTask":0:{}';
         $missingTask = unserialize($missingTaskData, ['allowed_classes' => false]);
@@ -124,7 +124,7 @@ class TaskSerializerTest extends UnitTestCase
         self::assertSame($expectation, $taskSerializer->resolveClassName($task));
     }
 
-    public function classNameIsExtractedDataProvider(): array
+    public static function classNameIsExtractedDataProvider(): array
     {
         return [
             'from object serialization' => [

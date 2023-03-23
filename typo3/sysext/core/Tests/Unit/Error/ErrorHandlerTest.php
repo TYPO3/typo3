@@ -126,7 +126,7 @@ class ErrorHandlerTest extends UnitTestCase
          */
     }
 
-    public function errorTests(): iterable
+    public static function errorTests(): iterable
     {
         // @todo Clean up the code base so the defaults can change to report notices.
         yield 'defaults ignore a notice' => [

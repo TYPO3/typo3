@@ -49,7 +49,7 @@ class ExportTest extends UnitTestCase
         self::assertEquals($expected, $actual);
     }
 
-    public function setExportFileNameSanitizesFileNameProvider(): array
+    public static function setExportFileNameSanitizesFileNameProvider(): array
     {
         return [
             [
@@ -90,7 +90,7 @@ class ExportTest extends UnitTestCase
         self::assertMatchesRegularExpression("/T3D_list_sys_news_0-news_$patternDateTime.xml/", $this->exportMock->getOrGenerateExportFileNameWithFileExtension());
     }
 
-    public function setExportFileTypeSucceedsWithSupportedFileTypeProvider(): array
+    public static function setExportFileTypeSucceedsWithSupportedFileTypeProvider(): array
     {
         return [
             ['fileType' => Export::FILETYPE_XML],
@@ -147,7 +147,7 @@ class ExportTest extends UnitTestCase
         self::assertEquals($expected, $relations);
     }
 
-    public function removeRedundantSoftRefsInRelationsProcessesOriginalRelationsArrayDataProvider(): array
+    public static function removeRedundantSoftRefsInRelationsProcessesOriginalRelationsArrayDataProvider(): array
     {
         return [
             'Remove one typolink entry from relation' => [
@@ -220,7 +220,7 @@ class ExportTest extends UnitTestCase
         self::assertEquals($expected, $relations);
     }
 
-    public function exportAddFilesFromRelationsSucceedsDataProvider(): array
+    public static function exportAddFilesFromRelationsSucceedsDataProvider(): array
     {
         $oneDat = [
             'files' => [

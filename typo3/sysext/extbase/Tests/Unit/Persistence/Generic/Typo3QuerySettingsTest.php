@@ -40,7 +40,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
         );
     }
 
-    public function booleanValueProvider(): array
+    public static function booleanValueProvider(): array
     {
         return [
             'TRUE setting' => [true],
@@ -48,7 +48,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
         ];
     }
 
-    public function arrayValueProvider(): array
+    public static function arrayValueProvider(): array
     {
         return [
             'empty array' => [[]],

@@ -35,7 +35,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * Data provider for calcAge function
      */
-    public function calcAgeDataProvider(): array
+    public static function calcAgeDataProvider(): array
     {
         return [
             'Single year' => [
@@ -482,7 +482,7 @@ class BackendUtilityTest extends UnitTestCase
         self::assertSame('28-08-15 (-2 days)', BackendUtility::getProcessedValue('tt_content', 'date', mktime(0, 0, 0, 8, 28, 2015)));
     }
 
-    public function inputTypeDateDisplayOptions(): array
+    public static function inputTypeDateDisplayOptions(): array
     {
         return [
             'typeSafe Setting' => [
@@ -600,7 +600,7 @@ class BackendUtilityTest extends UnitTestCase
         self::assertSame('No', BackendUtility::getProcessedValue('tt_content', 'hide', 1));
     }
 
-    public function getCommonSelectFieldsReturnsCorrectFieldsDataProvider(): array
+    public static function getCommonSelectFieldsReturnsCorrectFieldsDataProvider(): array
     {
         return [
             'only uid' => [
@@ -711,7 +711,7 @@ class BackendUtilityTest extends UnitTestCase
         self::assertEquals($selectFields, $expectedFields);
     }
 
-    public function getLabelFromItemlistReturnsCorrectFieldsDataProvider(): array
+    public static function getLabelFromItemlistReturnsCorrectFieldsDataProvider(): array
     {
         return [
             'item set' => [
@@ -791,7 +791,7 @@ class BackendUtilityTest extends UnitTestCase
         self::assertEquals($label, $expectedLabel);
     }
 
-    public function getLabelFromItemListMergedReturnsCorrectFieldsDataProvider(): array
+    public static function getLabelFromItemListMergedReturnsCorrectFieldsDataProvider(): array
     {
         return [
             'no field found' => [
@@ -854,7 +854,7 @@ class BackendUtilityTest extends UnitTestCase
         self::assertEquals($expectedLabel, LabelFromItemListMergedReturnsCorrectFieldsFixture::getLabelFromItemListMerged($pageId, $table, $column, $key));
     }
 
-    public function getLabelsFromItemsListDataProvider(): array
+    public static function getLabelsFromItemsListDataProvider(): array
     {
         return [
             'return value if found' => [
@@ -1025,7 +1025,7 @@ class BackendUtilityTest extends UnitTestCase
         self::assertSame($expected, $computedProperties);
     }
 
-    public function splitTableUidDataProvider(): array
+    public static function splitTableUidDataProvider(): array
     {
         return [
             'simple' => [
@@ -1080,7 +1080,7 @@ class BackendUtilityTest extends UnitTestCase
         self::assertNull(BackendUtility::resolveFileReferences($tableName, $fieldName, []));
     }
 
-    public function unfitResolveFileReferencesTableConfig(): array
+    public static function unfitResolveFileReferencesTableConfig(): array
     {
         return [
             'invalid table' => [

@@ -75,7 +75,7 @@ class DebugExceptionHandlerTest extends UnitTestCase
      *
      * @return string[][]
      */
-    public function exampleUrlsForTokenAnonymization(): array
+    public static function exampleUrlsForTokenAnonymization(): array
     {
         return [
             'url with valid token' => [

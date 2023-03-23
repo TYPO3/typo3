@@ -47,7 +47,7 @@ class StorageRepositoryTest extends UnitTestCase
         self::assertInstanceOf(AbstractDriver::class, $obj);
     }
 
-    public function storageDetectionDataProvider(): array
+    public static function storageDetectionDataProvider(): array
     {
         $asRelativePathClosure = fn ($value) => new LocalPath($value, LocalPath::TYPE_RELATIVE);
         return [

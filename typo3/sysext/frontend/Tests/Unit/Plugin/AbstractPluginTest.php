@@ -88,7 +88,7 @@ class AbstractPluginTest extends UnitTestCase
      *
      * @return array input-array with configuration and stdWrap, expected output-array in piVars
      */
-    public function piSetPiVarDefaultsStdWrapProvider(): array
+    public static function piSetPiVarDefaultsStdWrapProvider(): array
     {
         return [
             'stdWrap on conf, non-recursive, stdWrap 1 level deep' => [
@@ -218,7 +218,7 @@ class AbstractPluginTest extends UnitTestCase
     /**
      * Data provider for multiple registered result browser implementations
      */
-    public function registeredResultBrowserProvider(): array
+    public static function registeredResultBrowserProvider(): array
     {
         return [
             'Result browser returning false' => [

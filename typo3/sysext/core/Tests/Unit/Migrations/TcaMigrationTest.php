@@ -214,7 +214,7 @@ class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    public function ctrlIntegrityColumnsAreAvailableDataProvider(): array
+    public static function ctrlIntegrityColumnsAreAvailableDataProvider(): array
     {
         return [
             'filled columns' => [
@@ -1331,7 +1331,7 @@ class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, $subject->migrate($input));
     }
 
-    public function requiredFlagIsMigratedDataProvider(): iterable
+    public static function requiredFlagIsMigratedDataProvider(): iterable
     {
         yield 'field contains eval=required' => [
             'tca' => [
@@ -2512,7 +2512,7 @@ class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, (new TcaMigration())->migrate($input));
     }
 
-    public function selectIndividualAllowDenyMigratedToNewPositionDataProvider(): iterable
+    public static function selectIndividualAllowDenyMigratedToNewPositionDataProvider(): iterable
     {
         yield 'keyword EXPL_ALLOW at position 5 in times array' => [
             'tca' => [

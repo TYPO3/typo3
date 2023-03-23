@@ -152,7 +152,7 @@ class PageRendererTest extends UnitTestCase
         self::assertEquals([], $subject->_get('inlineLanguageLabels'));
     }
 
-    public function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabelsProvider(): array
+    public static function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabelsProvider(): array
     {
         $llFileContent = [
             'inline_label_first_Key' => 'first',

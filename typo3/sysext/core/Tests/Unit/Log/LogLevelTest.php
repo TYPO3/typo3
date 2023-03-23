@@ -48,7 +48,7 @@ class LogLevelTest extends UnitTestCase
     /**
      * Data provider or isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSo
      */
-    public function isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSoDataProvider(): array
+    public static function isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSoDataProvider(): array
     {
         return [
             'negative integer' => [-1],
@@ -76,7 +76,7 @@ class LogLevelTest extends UnitTestCase
         self::assertEquals(7, LogLevel::normalizeLevel('debug'));
     }
 
-    public function atLeastReturnsCorrectListOfLevelsDataProvider(): array
+    public static function atLeastReturnsCorrectListOfLevelsDataProvider(): array
     {
         return [
             'debug and up' => [

@@ -89,7 +89,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
         $saveToDatabaseFinisher->execute($this->createMock(FinisherContext::class));
     }
 
-    public function skipIfValueIsEmptyDataProvider(): array
+    public static function skipIfValueIsEmptyDataProvider(): array
     {
         return [
             'null value' => [

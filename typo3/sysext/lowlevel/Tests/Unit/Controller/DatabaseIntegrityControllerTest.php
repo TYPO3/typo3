@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DatabaseIntegrityControllerTest extends UnitTestCase
 {
-    public function getSubscriptReturnsExpectedValuesDataProvider(): array
+    public static function getSubscriptReturnsExpectedValuesDataProvider(): array
     {
         return [
             'multidimensional array input' => [

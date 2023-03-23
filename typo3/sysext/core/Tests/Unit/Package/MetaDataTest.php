@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class MetaDataTest extends UnitTestCase
 {
-    public function typeIsCorrectlyResolvedDataProvider(): \Generator
+    public static function typeIsCorrectlyResolvedDataProvider(): \Generator
     {
         yield 'framework type is set' => [
             'typo3-cms-framework',

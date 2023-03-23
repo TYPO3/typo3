@@ -31,7 +31,7 @@ class BinaryDataTypeTest extends AbstractDataTypeBaseTestCase
     /**
      * Data provider for canParseBinaryDataType()
      */
-    public function canParseBinaryDataTypeProvider(): array
+    public static function canParseBinaryDataTypeProvider(): array
     {
         return [
             'BINARY without length' => [

@@ -68,7 +68,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     /**
      * @return array The test data for forceAbsoluteUrlReturnsAbsoluteUrl
      */
-    public function forceAbsoluteUrlReturnsCorrectAbsoluteUrlDataProvider(): array
+    public static function forceAbsoluteUrlReturnsCorrectAbsoluteUrlDataProvider(): array
     {
         return [
             'Missing forceAbsoluteUrl leaves URL untouched' => [
@@ -248,7 +248,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
      *
      * @return array [[$expected, $conf, $name],]
      */
-    public function resolveTargetAttributeDataProvider(): array
+    public static function resolveTargetAttributeDataProvider(): array
     {
         $targetName = StringUtility::getUniqueId('name_');
         $target = StringUtility::getUniqueId('target_');

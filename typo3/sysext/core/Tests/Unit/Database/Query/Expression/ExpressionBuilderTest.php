@@ -705,7 +705,7 @@ class ExpressionBuilderTest extends UnitTestCase
         );
     }
 
-    public function trimQuotesIdentifierDataProvider(): array
+    public static function trimQuotesIdentifierDataProvider(): array
     {
         return  [
             'trim leading character' => [

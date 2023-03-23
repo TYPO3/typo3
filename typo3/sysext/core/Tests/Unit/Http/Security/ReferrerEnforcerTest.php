@@ -39,7 +39,7 @@ class ReferrerEnforcerTest extends UnitTestCase
         );
     }
 
-    public function validReferrerIsHandledDataProvider(): array
+    public static function validReferrerIsHandledDataProvider(): array
     {
         return [
             // Without query parameters
@@ -125,7 +125,7 @@ class ReferrerEnforcerTest extends UnitTestCase
         }
     }
 
-    public function invalidReferrerIsHandledDataProvider(): array
+    public static function invalidReferrerIsHandledDataProvider(): array
     {
         return [
             [

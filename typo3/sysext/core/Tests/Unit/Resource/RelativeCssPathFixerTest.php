@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RelativeCssPathFixerTest extends UnitTestCase
 {
-    public function fixRelativeUrlPathsDataProvider(): array
+    public static function fixRelativeUrlPathsDataProvider(): array
     {
         return [
             '@import from fileadmin with relative' => [

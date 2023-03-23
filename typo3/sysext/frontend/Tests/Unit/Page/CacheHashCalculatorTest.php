@@ -55,7 +55,7 @@ class CacheHashCalculatorTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->calculateCacheHash($params));
     }
 
-    public function cacheHashCalculationDataProvider(): array
+    public static function cacheHashCalculationDataProvider(): array
     {
         return [
             'Empty parameters should not return a hash' => [
@@ -90,7 +90,7 @@ class CacheHashCalculatorTest extends UnitTestCase
         self::assertEquals($expected, array_keys($actual));
     }
 
-    public function getRelevantParametersDataprovider(): array
+    public static function getRelevantParametersDataprovider(): array
     {
         return [
             'Empty list should be passed through' => ['', []],
@@ -136,7 +136,7 @@ class CacheHashCalculatorTest extends UnitTestCase
         $this->subject->generateForParameters('&key=x');
     }
 
-    public function canGenerateForParametersDataProvider(): array
+    public static function canGenerateForParametersDataProvider(): array
     {
         $knowHash = 'fac112f7e662c83c19b57142c3a921f5';
         return [
@@ -162,7 +162,7 @@ class CacheHashCalculatorTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->doParametersRequireCacheHash($params));
     }
 
-    public function parametersRequireCacheHashDataprovider(): array
+    public static function parametersRequireCacheHashDataprovider(): array
     {
         return [
             'Empty parameter strings should not require anything.' => ['', false],
@@ -188,7 +188,7 @@ class CacheHashCalculatorTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->generateForParameters($params));
     }
 
-    public function canWhitelistParametersDataProvider(): array
+    public static function canWhitelistParametersDataProvider(): array
     {
         $oneParamHash = 'eae50a13101afd53a9d2c543230eb5bb';
         $twoParamHash = '701e2d2f1becc9d1b71d327e5cb1c3ed';
@@ -212,7 +212,7 @@ class CacheHashCalculatorTest extends UnitTestCase
         self::assertEquals($expected, array_keys($actual));
     }
 
-    public function canSkipParametersWithEmptyValuesDataProvider(): array
+    public static function canSkipParametersWithEmptyValuesDataProvider(): array
     {
         return [
             'The default configuration does not allow to skip an empty key.' => [

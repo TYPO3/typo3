@@ -182,7 +182,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * Data provider for getClassNamePrefixForExtensionKey.
      */
-    public function extensionKeyDataProvider(): array
+    public static function extensionKeyDataProvider(): array
     {
         return [
             'Without underscores' => [
@@ -435,7 +435,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         self::assertEquals('fieldX, fieldX1, fieldY, newA, newB', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
     }
 
-    public function removeDuplicatesForInsertionRemovesDuplicatesDataProvider(): array
+    public static function removeDuplicatesForInsertionRemovesDuplicatesDataProvider(): array
     {
         return [
             'Simple' => [
@@ -981,7 +981,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * Data provider for executePositionedStringInsertionTrimsCorrectCharacters
      */
-    public function executePositionedStringInsertionTrimsCorrectCharactersDataProvider(): array
+    public static function executePositionedStringInsertionTrimsCorrectCharactersDataProvider(): array
     {
         return [
             'normal characters' => [
@@ -1052,7 +1052,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * Data provider for addTcaSelectItemInsertsItemAtSpecifiedPosition
      */
-    public function addTcaSelectItemDataProvider(): array
+    public static function addTcaSelectItemDataProvider(): array
     {
         // Every array splits into:
         // - relativeToField
@@ -1648,7 +1648,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         self::assertEquals($GLOBALS['TCA']['tt_content']['types']['header'], $GLOBALS['TCA']['tt_content']['types']['felogin']);
     }
 
-    public function addTcaSelectItemGroupAddsGroupDataProvider(): array
+    public static function addTcaSelectItemGroupAddsGroupDataProvider(): array
     {
         return [
             'add the first group' => [

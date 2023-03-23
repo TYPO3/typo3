@@ -39,7 +39,7 @@ class RequestHandlerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    public function generateHtmlTagIncludesAllPossibilitiesDataProvider(): array
+    public static function generateHtmlTagIncludesAllPossibilitiesDataProvider(): array
     {
         return [
             'no original values' => [
@@ -156,7 +156,7 @@ class RequestHandlerTest extends UnitTestCase
         $pageRendererMock->expects(self::never())->method('setMetaTag')->with($expectedTags['type'], $expectedTags['name'], $expectedTags['content'])->willThrowException(new \InvalidArgumentException('', 1666309039));
     }
 
-    public function generateMetaTagHtmlGeneratesCorrectTagsDataProvider(): array
+    public static function generateMetaTagHtmlGeneratesCorrectTagsDataProvider(): array
     {
         return [
             'simple meta' => [
@@ -364,7 +364,7 @@ class RequestHandlerTest extends UnitTestCase
         $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $request);
     }
 
-    public function generateMultipleMetaTagsDataProvider(): array
+    public static function generateMultipleMetaTagsDataProvider(): array
     {
         return [
             'multi value attribute name' => [

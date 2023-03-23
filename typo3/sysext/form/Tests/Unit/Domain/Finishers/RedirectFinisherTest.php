@@ -80,7 +80,7 @@ class RedirectFinisherTest extends UnitTestCase
         }
     }
 
-    public function pageUidOptionForFinisherAcceptsVariousPageRepresentationsDataProvider(): array
+    public static function pageUidOptionForFinisherAcceptsVariousPageRepresentationsDataProvider(): array
     {
         return [
             'null' => [

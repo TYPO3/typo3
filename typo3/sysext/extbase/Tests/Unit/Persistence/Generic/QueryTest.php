@@ -121,7 +121,7 @@ class QueryTest extends UnitTestCase
         $this->query->setOffset(-1);
     }
 
-    public function equalsForCaseSensitiveFalseLowercasesOperandProvider(): array
+    public static function equalsForCaseSensitiveFalseLowercasesOperandProvider(): array
     {
         return [
             'Polish alphabet' => ['name', 'ĄĆĘŁŃÓŚŹŻABCDEFGHIJKLMNOPRSTUWYZQXVąćęłńóśźżabcdefghijklmnoprstuwyzqxv', 'ąćęłńóśźżabcdefghijklmnoprstuwyzqxvąćęłńóśźżabcdefghijklmnoprstuwyzqxv'],

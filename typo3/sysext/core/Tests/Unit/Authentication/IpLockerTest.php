@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class IpLockerTest extends UnitTestCase
 {
-    public function getSessionIpLockDataProvider(): array
+    public static function getSessionIpLockDataProvider(): array
     {
         return [
             'basic IPv4-locks, part-count 0' => [

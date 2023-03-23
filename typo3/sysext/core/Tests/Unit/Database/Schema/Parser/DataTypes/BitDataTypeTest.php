@@ -28,7 +28,7 @@ class BitDataTypeTest extends AbstractDataTypeBaseTestCase
     /**
      * Data provider for canParseBitDataType()
      */
-    public function canParseBitDataTypeProvider(): array
+    public static function canParseBitDataTypeProvider(): array
     {
         return [
             'BIT without length' => [

@@ -170,7 +170,7 @@ class RequestTest extends UnitTestCase
     /**
      * DataProvider for explodeObjectControllerName
      */
-    public function controllerArgumentsAndExpectedObjectName(): array
+    public static function controllerArgumentsAndExpectedObjectName(): array
     {
         return [
             'Vendor TYPO3\CMS, extension, controller given' => [

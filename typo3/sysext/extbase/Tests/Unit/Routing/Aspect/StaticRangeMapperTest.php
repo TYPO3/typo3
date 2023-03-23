@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Routing\Aspect\StaticRangeMapper;
 
 class StaticRangeMapperTest extends TestCase
 {
-    public function valueSettingsDataProvider(): array
+    public static function valueSettingsDataProvider(): array
     {
         return [
             '1-3' => [

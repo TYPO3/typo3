@@ -63,7 +63,7 @@ class QueryFactoryTest extends UnitTestCase
         );
     }
 
-    public function getStaticAndRootLevelAndExpectedResult(): array
+    public static function getStaticAndRootLevelAndExpectedResult(): array
     {
         return [
             'Respect storage page is set when entity is neither marked as static nor as rootLevel.' => [false, false, true],

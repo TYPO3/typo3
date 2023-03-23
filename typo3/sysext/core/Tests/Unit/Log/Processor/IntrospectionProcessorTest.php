@@ -117,7 +117,7 @@ class IntrospectionProcessorTest extends UnitTestCase
     /**
      * DataProvider for introspectionProcessorShiftsGivenNumberOfEntriesFromBacktrace
      */
-    public function introspectionProcessorShiftsGivenNumberOfEntriesFromBacktraceDataProvider(): array
+    public static function introspectionProcessorShiftsGivenNumberOfEntriesFromBacktraceDataProvider(): array
     {
         return [
             ['0'],

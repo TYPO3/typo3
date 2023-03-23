@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AbstractHierarchicalFilesystemDriverTest extends UnitTestCase
 {
-    public function canonicalizeAndCheckFileIdentifierCanonicalizesPathDataProvider(): array
+    public static function canonicalizeAndCheckFileIdentifierCanonicalizesPathDataProvider(): array
     {
         return [
             'File path gets leading slash' => [
@@ -70,7 +70,7 @@ class AbstractHierarchicalFilesystemDriverTest extends UnitTestCase
         self::assertSame($expectedPath, $subject->_call('canonicalizeAndCheckFileIdentifier', $fileIdentifier));
     }
 
-    public function canonicalizeAndCheckFolderIdentifierCanonicalizesFolderIdentifierDataProvider(): array
+    public static function canonicalizeAndCheckFolderIdentifierCanonicalizesFolderIdentifierDataProvider(): array
     {
         return [
             'Empty string results in slash' => [

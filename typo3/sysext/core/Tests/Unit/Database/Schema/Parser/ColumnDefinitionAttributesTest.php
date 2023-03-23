@@ -41,7 +41,7 @@ class ColumnDefinitionAttributesTest extends UnitTestCase
      *  - column format
      *  - storage
      */
-    public function canParseColumnDefinitionAttributesDataProvider(): array
+    public static function canParseColumnDefinitionAttributesDataProvider(): array
     {
         return [
             'NULL' => [

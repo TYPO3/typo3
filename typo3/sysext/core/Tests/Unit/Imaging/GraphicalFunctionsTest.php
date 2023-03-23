@@ -27,7 +27,7 @@ class GraphicalFunctionsTest extends UnitTestCase
     /**
      * Dataprovider for getScaleForImage
      */
-    public function getScaleForImageDataProvider(): array
+    public static function getScaleForImageDataProvider(): array
     {
         return [
             'Get image scale for a width of 150px' => [

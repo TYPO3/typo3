@@ -28,7 +28,7 @@ class NumericTypeAttributesTest extends AbstractDataTypeBaseTestCase
     /**
      * Data provider for canParseNumericDataTypeAttributes()
      */
-    public function canParseNumericDataTypeAttributesProvider(): array
+    public static function canParseNumericDataTypeAttributesProvider(): array
     {
         return [
             'UNSIGNED' => [

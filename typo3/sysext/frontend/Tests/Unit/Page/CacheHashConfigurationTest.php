@@ -23,7 +23,7 @@ use TYPO3\CMS\Frontend\Page\CacheHashConfiguration;
 
 class CacheHashConfigurationTest extends TestCase
 {
-    public function nonArrayValueThrowsExceptionDataProvider(): array
+    public static function nonArrayValueThrowsExceptionDataProvider(): array
     {
         return PermutationUtility::meltArrayItems([
             [
@@ -47,7 +47,7 @@ class CacheHashConfigurationTest extends TestCase
         new CacheHashConfiguration([$aspect => $value]);
     }
 
-    public function nonScalarValueThrowsExceptionDataProvider(): array
+    public static function nonScalarValueThrowsExceptionDataProvider(): array
     {
         return PermutationUtility::meltArrayItems([
             [
@@ -71,7 +71,7 @@ class CacheHashConfigurationTest extends TestCase
         new CacheHashConfiguration([$aspect => [$value]]);
     }
 
-    public function emptyIndicatedValueThrowsExceptionDataProvider(): array
+    public static function emptyIndicatedValueThrowsExceptionDataProvider(): array
     {
         return PermutationUtility::meltArrayItems([
             [
@@ -95,7 +95,7 @@ class CacheHashConfigurationTest extends TestCase
         new CacheHashConfiguration([$aspect => [$value]]);
     }
 
-    public function equalsResolvesParameterValueDataProvider(): array
+    public static function equalsResolvesParameterValueDataProvider(): array
     {
         return PermutationUtility::meltArrayItems([
             [
@@ -125,7 +125,7 @@ class CacheHashConfigurationTest extends TestCase
         }
     }
 
-    public function startsWithResolvesParameterValueDataProvider(): array
+    public static function startsWithResolvesParameterValueDataProvider(): array
     {
         return PermutationUtility::meltArrayItems([
             [
@@ -155,7 +155,7 @@ class CacheHashConfigurationTest extends TestCase
         }
     }
 
-    public function containsResolvesParameterValueDataProvider(): array
+    public static function containsResolvesParameterValueDataProvider(): array
     {
         return PermutationUtility::meltArrayItems([
             [

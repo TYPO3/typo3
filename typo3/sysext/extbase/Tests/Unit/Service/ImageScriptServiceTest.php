@@ -59,7 +59,7 @@ class ImageScriptServiceTest extends UnitTestCase
         $this->subject->applyProcessingInstructions($reference, []);
     }
 
-    public function prefixIsCorrectlyAppliedToGetImageUriDataProvider(): array
+    public static function prefixIsCorrectlyAppliedToGetImageUriDataProvider(): array
     {
         return [
             'with scheme' => ['http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'],
@@ -85,7 +85,7 @@ class ImageScriptServiceTest extends UnitTestCase
         self::assertSame($expected, $this->subject->getImageUri($file));
     }
 
-    public function prefixIsCorrectlyAppliedToGetImageUriWithAbsolutePathDataProvider(): array
+    public static function prefixIsCorrectlyAppliedToGetImageUriWithAbsolutePathDataProvider(): array
     {
         return [
             'with scheme' => ['http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'],

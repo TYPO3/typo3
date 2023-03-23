@@ -36,7 +36,7 @@ class ReferenceDefinitionTest extends UnitTestCase
      *  - ON DELETE value
      *  - ON UPDATE value
      */
-    public function canParseReferenceDefinitionDataProvider(): array
+    public static function canParseReferenceDefinitionDataProvider(): array
     {
         return [
             'REFERENCES `anotherTable`(`aColumn`)' => [

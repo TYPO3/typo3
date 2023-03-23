@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class MySqlTest extends UnitTestCase
 {
-    public function checkMySQLOrMariaDBVersionReportsExpectedStatusDataProvider(): \Generator
+    public static function checkMySQLOrMariaDBVersionReportsExpectedStatusDataProvider(): \Generator
     {
         // invalid cases
         yield 'Invalid ServerVersionString returns version too low' => [

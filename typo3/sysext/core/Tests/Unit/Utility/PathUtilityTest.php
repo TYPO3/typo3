@@ -39,7 +39,7 @@ class PathUtilityTest extends UnitTestCase
         self::assertEquals($expected, $commonPrefix);
     }
 
-    public function isCommonPrefixResolvedCorrectlyDataProvider(): array
+    public static function isCommonPrefixResolvedCorrectlyDataProvider(): array
     {
         return [
             [
@@ -144,7 +144,7 @@ class PathUtilityTest extends UnitTestCase
         self::assertEquals($expected, $relativePath);
     }
 
-    public function isRelativePathResolvedCorrectlyDataProvider(): array
+    public static function isRelativePathResolvedCorrectlyDataProvider(): array
     {
         return [
             [
@@ -193,7 +193,7 @@ class PathUtilityTest extends UnitTestCase
         self::assertEquals($expected, $sanitizedPath);
     }
 
-    public function isTrailingSeparatorSanitizedCorrectlyDataProvider(): array
+    public static function isTrailingSeparatorSanitizedCorrectlyDataProvider(): array
     {
         return [
             ['/var/www//', '/', '/var/www/'],
@@ -205,7 +205,7 @@ class PathUtilityTest extends UnitTestCase
     /**
      * Data Provider for getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectly
      */
-    public function getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectlyDataProvider(): array
+    public static function getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectlyDataProvider(): array
     {
         return [
             'basic' => [
@@ -256,7 +256,7 @@ class PathUtilityTest extends UnitTestCase
      *
      * @return string[][]
      */
-    public function getCanonicalPathCorrectlyCleansPathDataProvider(): array
+    public static function getCanonicalPathCorrectlyCleansPathDataProvider(): array
     {
         return [
             'removes single-dot-elements' => [
@@ -375,7 +375,7 @@ class PathUtilityTest extends UnitTestCase
      *
      * @return string[][]
      */
-    public function dirnameDuringBootstrapCorrectlyFetchesParentDataProvider(): array
+    public static function dirnameDuringBootstrapCorrectlyFetchesParentDataProvider(): array
     {
         return [
             'relative path' => [
@@ -412,7 +412,7 @@ class PathUtilityTest extends UnitTestCase
     /**
      * Data provider for basenameDuringBootstrapCorrectlyFetchesBasename
      */
-    public function basenameDuringBootstrapCorrectlyFetchesBasenameDataProvider(): array
+    public static function basenameDuringBootstrapCorrectlyFetchesBasenameDataProvider(): array
     {
         return [
             'relative path' => [
@@ -451,7 +451,7 @@ class PathUtilityTest extends UnitTestCase
      *
      * @return array[]
      */
-    public function isAbsolutePathRespectsAllOperatingSystemsPathDataProvider(): array
+    public static function isAbsolutePathRespectsAllOperatingSystemsPathDataProvider(): array
     {
         return [
             'starting slash' => [
@@ -526,7 +526,7 @@ class PathUtilityTest extends UnitTestCase
         self::assertSame($expectedResult, PathUtility::isAbsolutePath($inputPath));
     }
 
-    public function hasProtocolAndSchemeDataProvider(): array
+    public static function hasProtocolAndSchemeDataProvider(): array
     {
         return [
             ['//example.com/demo.html', true],

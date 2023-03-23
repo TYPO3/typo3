@@ -34,7 +34,7 @@ class MathUtilityTest extends UnitTestCase
      *
      * @return array expected values, arithmetic expression
      */
-    public function forceIntegerInRangeForcesIntegerIntoDefaultBoundariesDataProvider(): array
+    public static function forceIntegerInRangeForcesIntegerIntoDefaultBoundariesDataProvider(): array
     {
         return [
             'negativeValue' => [0, -10],
@@ -89,7 +89,7 @@ class MathUtilityTest extends UnitTestCase
      *
      * @return array Data sets
      */
-    public function functionCanBeInterpretedAsIntegerValidDataProvider(): array
+    public static function functionCanBeInterpretedAsIntegerValidDataProvider(): array
     {
         return [
             'int' => [32425],
@@ -116,7 +116,7 @@ class MathUtilityTest extends UnitTestCase
      *
      * @return array Data sets
      */
-    public function functionCanBeInterpretedAsIntegerInvalidDataProvider(): array
+    public static function functionCanBeInterpretedAsIntegerInvalidDataProvider(): array
     {
         $objectWithNumericalStringRepresentation = new MathUtilityTestClassWithStringRepresentationFixture();
         $objectWithNumericalStringRepresentation->setString('1234');
@@ -201,7 +201,7 @@ class MathUtilityTest extends UnitTestCase
      *
      * @return array Data sets
      */
-    public function functionCanBeInterpretedAsFloatInvalidDataProvider(): array
+    public static function functionCanBeInterpretedAsFloatInvalidDataProvider(): array
     {
         $objectWithNumericalStringRepresentation = new MathUtilityTestClassWithStringRepresentationFixture();
         $objectWithNumericalStringRepresentation->setString('1234');
@@ -249,7 +249,7 @@ class MathUtilityTest extends UnitTestCase
      *
      * @return array expected values, arithmetic expression
      */
-    public function calculateWithPriorityToAdditionAndSubtractionDataProvider(): array
+    public static function calculateWithPriorityToAdditionAndSubtractionDataProvider(): array
     {
         return [
             'add' => [9, '6 + 3'],
@@ -285,7 +285,7 @@ class MathUtilityTest extends UnitTestCase
      *
      * @return array expected values, arithmetic expression
      */
-    public function calculateWithParenthesesDataProvider(): array
+    public static function calculateWithParenthesesDataProvider(): array
     {
         return [
             'starts with parenthesis' => [18, '(6 + 3) * 2'],
@@ -343,7 +343,7 @@ class MathUtilityTest extends UnitTestCase
     /**
      * Data provider or isIntegerInRangeRejectsOtherDataTypes
      */
-    public function isIntegerInRangeRejectsOtherDataTypesDataProvider(): array
+    public static function isIntegerInRangeRejectsOtherDataTypesDataProvider(): array
     {
         return [
             'negative integer' => [-1],

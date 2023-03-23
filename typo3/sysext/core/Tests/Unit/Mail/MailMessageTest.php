@@ -78,7 +78,7 @@ class MailMessageTest extends UnitTestCase
         self::assertSame('no-reply@typo3.com', $this->subject->getReturnPath()->getAddress());
     }
 
-    public function setSenderAddressDataProvider(): array
+    public static function setSenderAddressDataProvider(): array
     {
         return [
             'address without name' => [
@@ -106,7 +106,7 @@ class MailMessageTest extends UnitTestCase
         $this->assertCorrectAddresses([$this->subject->getSender()], $expectedAddresses);
     }
 
-    public function globalSetAddressDataProvider(): array
+    public static function globalSetAddressDataProvider(): array
     {
         return [
             'address without name' => [
@@ -221,7 +221,7 @@ class MailMessageTest extends UnitTestCase
         $this->assertCorrectAddresses($this->subject->getBcc(), $expectedAddresses);
     }
 
-    public function globalAddAddressDataProvider(): array
+    public static function globalAddAddressDataProvider(): array
     {
         return [
             'address without name' => [
@@ -301,7 +301,7 @@ class MailMessageTest extends UnitTestCase
         self::assertSame('foo@example.com', $this->subject->getHeaders()->get('Disposition-Notification-To')->getAddress()->getAddress());
     }
 
-    public function exceptionIsThrownForInvalidArgumentCombinationsDataProvider(): array
+    public static function exceptionIsThrownForInvalidArgumentCombinationsDataProvider(): array
     {
         return [
           'setFrom' => ['setFrom'],

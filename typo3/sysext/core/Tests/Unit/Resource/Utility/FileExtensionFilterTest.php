@@ -40,7 +40,7 @@ class FileExtensionFilterTest extends UnitTestCase
         (new FileExtensionFilter())->filter([0, '', null, false], '', '', $dataHandlerMock);
     }
 
-    public function extensionFilterIgnoresCaseInAllowedExtensionCheckDataProvider(): array
+    public static function extensionFilterIgnoresCaseInAllowedExtensionCheckDataProvider(): array
     {
         return [
             'Allowed extensions' => [

@@ -31,7 +31,7 @@ class TextTypesTest extends AbstractDataTypeBaseTestCase
     /**
      * Data provider for canParseTextDataType()
      */
-    public function canParseTextDataTypeProvider(): array
+    public static function canParseTextDataTypeProvider(): array
     {
         return [
             'TINYTEXT' => [

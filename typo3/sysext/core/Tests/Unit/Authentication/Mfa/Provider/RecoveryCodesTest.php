@@ -90,7 +90,7 @@ class RecoveryCodesTest extends UnitTestCase
         }
     }
 
-    public function generatePlainRecoveryCodesTestDataProvider(): \Generator
+    public static function generatePlainRecoveryCodesTestDataProvider(): \Generator
     {
         yield 'Default 8 codes with 8 chars' => [8, 8];
         yield '8 codes with 10 chars' => [8, 10];

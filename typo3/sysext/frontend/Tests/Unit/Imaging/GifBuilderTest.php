@@ -36,7 +36,7 @@ class GifBuilderTest extends UnitTestCase
     /**
      * @return array<string, array{0: non-empty-string}>
      */
-    public function singleIntegerDataProvider(): array
+    public static function singleIntegerDataProvider(): array
     {
         return [
             'positive integer' => ['1'],
@@ -81,7 +81,7 @@ class GifBuilderTest extends UnitTestCase
     /**
      * @return array<string, array{0: non-empty-string, 1: non-empty-string}>
      */
-    public function roundingDataProvider(): array
+    public static function roundingDataProvider(): array
     {
         return [
             'rounding down' => ['1.1', '1'],
@@ -104,7 +104,7 @@ class GifBuilderTest extends UnitTestCase
     /**
      * @return array<string, array{0: non-empty-string, 1: non-empty-string}>
      */
-    public function calculationDataProvider(): array
+    public static function calculationDataProvider(): array
     {
         return [
             'addition of positive numbers' => ['1+1', '2'],

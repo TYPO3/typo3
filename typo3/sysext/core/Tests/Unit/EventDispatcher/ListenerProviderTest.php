@@ -168,7 +168,7 @@ class ListenerProviderTest extends UnitTestCase
      * Provider for event listeners.
      * Either an invokable, class/method combination or a closure.
      */
-    public function listeners(): array
+    public static function listeners(): array
     {
         return [
             [

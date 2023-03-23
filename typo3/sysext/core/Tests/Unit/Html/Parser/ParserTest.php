@@ -32,7 +32,7 @@ class ParserTest extends UnitTestCase
     /**
      * @return string[]
      */
-    public function nodesAreResolvedDataProvider(): array
+    public static function nodesAreResolvedDataProvider(): array
     {
         return [
             [

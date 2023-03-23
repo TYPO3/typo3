@@ -108,7 +108,7 @@ class FileWriterTest extends UnitTestCase
         self::assertFileExists($this->getDefaultFileName());
     }
 
-    public function logsToFileDataProvider(): array
+    public static function logsToFileDataProvider(): array
     {
         $simpleRecord = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.fileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
         $recordWithData = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.fileWriter.recordWithData.'), LogLevel::ALERT, 'test record with data', ['foo' => ['bar' => 'baz']]);

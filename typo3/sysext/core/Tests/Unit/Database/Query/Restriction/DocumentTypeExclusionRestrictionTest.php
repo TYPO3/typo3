@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
 
 class DocumentTypeExclusionRestrictionTest extends AbstractRestrictionTestCase
 {
-    public function buildRestrictionsAddsDoktypeWhereClauseDataProvider(): array
+    public static function buildRestrictionsAddsDoktypeWhereClauseDataProvider(): array
     {
         return [
             'build with one parameter' => [

@@ -33,7 +33,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
         parent::tearDown();
     }
 
-    public function checkboxConfigurationDataProvider(): array
+    public static function checkboxConfigurationDataProvider(): array
     {
         return [
             'simpleCheckboxConfig' => [

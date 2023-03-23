@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TypolinkViewHelperTest extends UnitTestCase
 {
-    public function plainDecodedConfigurationDataProvider(): array
+    public static function plainDecodedConfigurationDataProvider(): array
     {
         return [
             'empty input' => [
@@ -89,7 +89,7 @@ class TypolinkViewHelperTest extends UnitTestCase
         self::assertSame($decodedConfiguration, $result);
     }
 
-    public function decodedConfigurationAndFluidArgumentDataProvider(): array
+    public static function decodedConfigurationAndFluidArgumentDataProvider(): array
     {
         return [
             'empty input' => [

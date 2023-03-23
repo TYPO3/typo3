@@ -25,7 +25,7 @@ class EmailLinkHandlerTest extends UnitTestCase
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page
      */
-    public function resolveParametersForNonFilesDataProvider(): array
+    public static function resolveParametersForNonFilesDataProvider(): array
     {
         return [
             'email without protocol' => [

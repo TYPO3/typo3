@@ -44,7 +44,7 @@ class StateUtilityTest extends UnitTestCase
         self::assertFalse($isEnabled);
     }
 
-    public function tsConfigEnabledDataProvider(): array
+    public static function tsConfigEnabledDataProvider(): array
     {
         return [
             '1 module enabled' => [
@@ -81,7 +81,7 @@ class StateUtilityTest extends UnitTestCase
         self::assertTrue($isEnabled);
     }
 
-    public function tsConfigDisabledDataProvider(): array
+    public static function tsConfigDisabledDataProvider(): array
     {
         return [
             'no config set' => [
@@ -117,7 +117,7 @@ class StateUtilityTest extends UnitTestCase
         self::assertFalse($isEnabled);
     }
 
-    public function tsConfigHideDataProvider(): array
+    public static function tsConfigHideDataProvider(): array
     {
         return [
             'no config set' => [
@@ -166,7 +166,7 @@ class StateUtilityTest extends UnitTestCase
         self::assertFalse($isEnabled);
     }
 
-    public function ucDisplayOpenDataProvider(): array
+    public static function ucDisplayOpenDataProvider(): array
     {
         return [
             'no config set' => [
@@ -215,7 +215,7 @@ class StateUtilityTest extends UnitTestCase
         self::assertFalse($isOpen);
     }
 
-    public function typoScriptDataProvider(): array
+    public static function typoScriptDataProvider(): array
     {
         return [
             'no config set' => [

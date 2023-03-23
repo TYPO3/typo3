@@ -43,7 +43,7 @@ class UriTest extends UnitTestCase
         self::assertEquals('quz', $uri->getFragment());
     }
 
-    public function canSerializeToStringDataProvider(): array
+    public static function canSerializeToStringDataProvider(): array
     {
         return [
             'full uri' => [ 'https://user:pass@local.example.com:3001/foo?bar=baz#quz' ],
@@ -120,7 +120,7 @@ class UriTest extends UnitTestCase
             (string)$new
         );
     }
-    public function validPortsDataProvider(): array
+    public static function validPortsDataProvider(): array
     {
         return [
             'int'    => [3000],
@@ -144,7 +144,7 @@ class UriTest extends UnitTestCase
         );
     }
 
-    public function invalidPortsDataProviderType(): array
+    public static function invalidPortsDataProviderType(): array
     {
         return [
             'false'     => [false],
@@ -166,7 +166,7 @@ class UriTest extends UnitTestCase
         $uri->withPort($port);
     }
 
-    public function invalidPortsDataProviderRange(): array
+    public static function invalidPortsDataProviderRange(): array
     {
         return [
             'zero'      => [0],
@@ -241,7 +241,7 @@ class UriTest extends UnitTestCase
         self::assertEquals('https://user:pass@local.example.com:3001/bar/baz?bar=baz#quz', (string)$new);
     }
 
-    public function invalidPathsDataProvider(): array
+    public static function invalidPathsDataProvider(): array
     {
         return [
             'null'     => [null],
@@ -298,7 +298,7 @@ class UriTest extends UnitTestCase
         self::assertEquals('https://user:pass@local.example.com:3001/foo?baz=bat#quz', (string)$new);
     }
 
-    public function invalidQueryStringsDataProvider(): array
+    public static function invalidQueryStringsDataProvider(): array
     {
         return [
             'null'     => [null],
@@ -344,7 +344,7 @@ class UriTest extends UnitTestCase
         self::assertEquals('https://user:pass@local.example.com:3001/foo?bar=baz#qat', (string)$new);
     }
 
-    public function authorityInfoDataProvider(): array
+    public static function authorityInfoDataProvider(): array
     {
         return [
             'host-only'      => ['http://foo.com/bar', 'foo.com'],
@@ -411,7 +411,7 @@ class UriTest extends UnitTestCase
         self::assertEquals('?foo=bar', (string)$uri);
     }
 
-    public function invalidConstructorUrisDataProvider(): array
+    public static function invalidConstructorUrisDataProvider(): array
     {
         return [
             'null'   => [null],
@@ -452,7 +452,7 @@ class UriTest extends UnitTestCase
         self::assertEquals('https', $new->getScheme());
     }
 
-    public function invalidSchemesDataProvider(): array
+    public static function invalidSchemesDataProvider(): array
     {
         return [
             'mailto' => ['mailto'],
@@ -539,7 +539,7 @@ class UriTest extends UnitTestCase
         self::assertEquals('/foo/bar', $new->getFragment());
     }
 
-    public function standardSchemePortCombinationsDataProvider(): array
+    public static function standardSchemePortCombinationsDataProvider(): array
     {
         return [
             'http'  => ['http', 80],
@@ -580,7 +580,7 @@ class UriTest extends UnitTestCase
         self::assertEquals($expected, $uri->getPath());
     }
 
-    public function queryStringsForEncodingDataProvider(): array
+    public static function queryStringsForEncodingDataProvider(): array
     {
         return [
             'key-only'        => ['k^ey', 'k%5Eey'],

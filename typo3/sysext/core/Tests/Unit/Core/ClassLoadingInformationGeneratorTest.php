@@ -136,7 +136,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     /**
      * Data provider for different autoload information
      */
-    public function autoloadFilesAreBuildCorrectlyDataProvider(): array
+    public static function autoloadFilesAreBuildCorrectlyDataProvider(): array
     {
         return [
             'Psr-4 section' => [
@@ -292,7 +292,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     /**
      * Data provider for different autoload information
      */
-    public function autoloadDevFilesAreBuildCorrectlyDataProvider(): array
+    public static function autoloadDevFilesAreBuildCorrectlyDataProvider(): array
     {
         return [
             'Psr-4 sections' => [

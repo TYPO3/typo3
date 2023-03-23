@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class VersionNumberUtilityTest extends UnitTestCase
 {
-    public function getNumericTypo3VersionNumberDataProvider(): array
+    public static function getNumericTypo3VersionNumberDataProvider(): array
     {
         return [
             [
@@ -72,7 +72,7 @@ class VersionNumberUtilityTest extends UnitTestCase
     /**
      * Data provider for convertVersionsStringToVersionNumbersForcesVersionNumberInRange
      */
-    public function convertVersionsStringToVersionNumbersForcesVersionNumberInRangeDataProvider(): array
+    public static function convertVersionsStringToVersionNumbersForcesVersionNumberInRangeDataProvider(): array
     {
         return [
             'everything ok' => [

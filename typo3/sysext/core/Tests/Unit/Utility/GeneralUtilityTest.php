@@ -103,7 +103,7 @@ class GeneralUtilityTest extends UnitTestCase
      * Data provider for canRetrieveGlobalInputsThroughGet
      * and canRetrieveGlobalInputsThroughPost
      */
-    public function getAndPostDataProvider(): array
+    public static function getAndPostDataProvider(): array
     {
         return [
             'canRetrieveGlobalInputsThroughPosted input data doesn\'t exist' => ['cake', [], null],
@@ -395,7 +395,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for inListForItemContainedReturnsTrue.
      */
-    public function inListForItemContainedReturnsTrueDataProvider(): array
+    public static function inListForItemContainedReturnsTrueDataProvider(): array
     {
         return [
             'Element as second element of four items' => ['one,findme,three,four'],
@@ -417,7 +417,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for inListForItemNotContainedReturnsFalse.
      */
-    public function inListForItemNotContainedReturnsFalseDataProvider(): array
+    public static function inListForItemNotContainedReturnsFalseDataProvider(): array
     {
         return [
             'Four item list' => ['one,two,three,four'],
@@ -441,7 +441,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for expandListExpandsIntegerRangesDataProvider
      */
-    public function expandListExpandsIntegerRangesDataProvider(): array
+    public static function expandListExpandsIntegerRangesDataProvider(): array
     {
         return [
             'Expand for the same number' => ['1,2-2,7', '1,2,7'],
@@ -480,7 +480,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for formatSizeTranslatesBytesToHigherOrderRepresentation
      */
-    public function formatSizeDataProvider(): array
+    public static function formatSizeDataProvider(): array
     {
         return [
             'IEC Bytes stay bytes (min)' => [1, '', 0, '1 '],
@@ -527,7 +527,7 @@ class GeneralUtilityTest extends UnitTestCase
      *
      * @return array expected values, arithmetic expression
      */
-    public function splitCalcDataProvider(): array
+    public static function splitCalcDataProvider(): array
     {
         return [
             'empty string returns empty array' => [
@@ -576,7 +576,7 @@ class GeneralUtilityTest extends UnitTestCase
      *
      * @return array Valid email addresses
      */
-    public function validEmailValidDataProvider(): array
+    public static function validEmailValidDataProvider(): array
     {
         return [
             'short mail address' => ['a@b.c'],
@@ -612,7 +612,7 @@ class GeneralUtilityTest extends UnitTestCase
      *
      * @return array Invalid email addresses
      */
-    public function validEmailInvalidDataProvider(): array
+    public static function validEmailInvalidDataProvider(): array
     {
         return [
             'empty string' => [''],
@@ -657,7 +657,7 @@ class GeneralUtilityTest extends UnitTestCase
     // Tests concerning intExplode
     //////////////////////////////////
 
-    public function intExplodeDataProvider(): array
+    public static function intExplodeDataProvider(): array
     {
         return [
             'convertStringToInteger' => [
@@ -698,7 +698,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for implodeArrayForUrlBuildsValidParameterString
      */
-    public function implodeArrayForUrlDataProvider(): array
+    public static function implodeArrayForUrlDataProvider(): array
     {
         $valueArray = ['one' => '√', 'two' => 2];
         return [
@@ -738,7 +738,7 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertSame($expected, GeneralUtility::implodeArrayForUrl('foo', $input, '', false, true));
     }
 
-    public function explodeUrl2ArrayTransformsParameterStringToFlatArrayDataProvider(): array
+    public static function explodeUrl2ArrayTransformsParameterStringToFlatArrayDataProvider(): array
     {
         return [
             'Empty string' => ['', []],
@@ -760,7 +760,7 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertEquals($expected, GeneralUtility::explodeUrl2Array($input));
     }
 
-    public function revExplodeDataProvider(): array
+    public static function revExplodeDataProvider(): array
     {
         return [
             'limit 0 should return unexploded string' => [
@@ -859,7 +859,7 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertSame($expectedResult, GeneralUtility::trimExplode($delimiter, $testString, $removeEmpty, $limit));
     }
 
-    public function trimExplodeReturnsCorrectResultDataProvider(): array
+    public static function trimExplodeReturnsCorrectResultDataProvider(): array
     {
         return [
             'spaces at element start and end' => [
@@ -1083,7 +1083,7 @@ class GeneralUtilityTest extends UnitTestCase
      *
      * @return array expected value, input string
      */
-    public function getBytesFromSizeMeasurementDataProvider(): array
+    public static function getBytesFromSizeMeasurementDataProvider(): array
     {
         return [
             '100 kilo Bytes' => ['102400', '100k'],
@@ -1163,7 +1163,7 @@ class GeneralUtilityTest extends UnitTestCase
      *
      * @return array expected, input string
      */
-    public function underscoredToUpperCamelCaseDataProvider(): array
+    public static function underscoredToUpperCamelCaseDataProvider(): array
     {
         return [
             'single word' => ['Blogexample', 'blogexample'],
@@ -1188,7 +1188,7 @@ class GeneralUtilityTest extends UnitTestCase
      *
      * @return array expected, input string
      */
-    public function underscoredToLowerCamelCaseDataProvider(): array
+    public static function underscoredToLowerCamelCaseDataProvider(): array
     {
         return [
             'single word' => ['minimalvalue', 'minimalvalue'],
@@ -1213,7 +1213,7 @@ class GeneralUtilityTest extends UnitTestCase
      *
      * @return array expected, input string
      */
-    public function camelCaseToLowerCaseUnderscoredDataProvider(): array
+    public static function camelCaseToLowerCaseUnderscoredDataProvider(): array
     {
         return [
             'single word' => ['blogexample', 'blogexample'],
@@ -1240,7 +1240,7 @@ class GeneralUtilityTest extends UnitTestCase
      *
      * @return array Valid resource
      */
-    public function validUrlValidResourceDataProvider(): array
+    public static function validUrlValidResourceDataProvider(): array
     {
         return [
             'http' => ['http://www.example.org/'],
@@ -1279,7 +1279,7 @@ class GeneralUtilityTest extends UnitTestCase
      *
      * @return array Invalid resource
      */
-    public function isValidUrlInvalidResourceDataProvider(): array
+    public static function isValidUrlInvalidResourceDataProvider(): array
     {
         return [
             'http missing colon' => ['http//www.example/wrong/url/'],
@@ -1346,7 +1346,7 @@ class GeneralUtilityTest extends UnitTestCase
      *
      * @return array Valid url
      */
-    public function sanitizeLocalUrlValidPathsDataProvider(): array
+    public static function sanitizeLocalUrlValidPathsDataProvider(): array
     {
         return [
             'alt_intro.php' => ['alt_intro.php'],
@@ -1406,7 +1406,7 @@ class GeneralUtilityTest extends UnitTestCase
      *
      * @return array Valid url
      */
-    public function sanitizeLocalUrlValidUrlsDataProvider(): array
+    public static function sanitizeLocalUrlValidUrlsDataProvider(): array
     {
         return [
             '/cms/typo3/alt_intro.php' => [
@@ -1483,7 +1483,7 @@ class GeneralUtilityTest extends UnitTestCase
      *
      * @return array Valid url
      */
-    public function sanitizeLocalUrlInvalidDataProvider(): array
+    public static function sanitizeLocalUrlInvalidDataProvider(): array
     {
         return [
             'empty string' => [''],
@@ -1678,7 +1678,7 @@ class GeneralUtilityTest extends UnitTestCase
     // Tests concerning implodeAttributes
     //////////////////////////////////
 
-    public function implodeAttributesDataProvider(): \Iterator
+    public static function implodeAttributesDataProvider(): \Iterator
     {
         yield 'Generic input without xhtml' => [
             ['hREf' => 'https://example.com', 'title' => 'above'],
@@ -1829,7 +1829,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for quoteJSvalueTest.
      */
-    public function quoteJsValueDataProvider(): array
+    public static function quoteJsValueDataProvider(): array
     {
         return [
             'Immune characters are returned as is' => [
@@ -2253,7 +2253,7 @@ class GeneralUtilityTest extends UnitTestCase
      * when adding entries here, make sure to register any files or directories that might get created as third array item
      * they will be cleaned up after test run.
      */
-    public function invalidFilePathForTypo3tempDirDataProvider(): array
+    public static function invalidFilePathForTypo3tempDirDataProvider(): array
     {
         return [
             [
@@ -2313,7 +2313,7 @@ class GeneralUtilityTest extends UnitTestCase
      * when adding entries here, make sure to register any files or directories that might get created as second array item
      * they will be cleaned up after test run.
      */
-    public function validFilePathForTypo3tempDirDataProvider(): array
+    public static function validFilePathForTypo3tempDirDataProvider(): array
     {
         return [
             'Default text file' => [
@@ -2387,7 +2387,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for mkdirDeepCreatesDirectoryWithDoubleSlashes.
      */
-    public function mkdirDeepCreatesDirectoryWithAndWithoutDoubleSlashesDataProvider(): array
+    public static function mkdirDeepCreatesDirectoryWithAndWithoutDoubleSlashesDataProvider(): array
     {
         return [
             'no double slash if concatenated with Environment::getPublicPath()' => ['fileadmin/testDir1'],
@@ -2669,7 +2669,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for getFilesInDirByExtensionFindsFiles
      */
-    public function fileExtensionDataProvider(): array
+    public static function fileExtensionDataProvider(): array
     {
         return [
             'no space' => [
@@ -2832,7 +2832,7 @@ class GeneralUtilityTest extends UnitTestCase
      * @see dirnameWithDataProvider
      * @return array|array[]
      */
-    public function dirnameDataProvider(): array
+    public static function dirnameDataProvider(): array
     {
         return [
             'absolute path with multiple part and file' => ['/dir1/dir2/script.php', '/dir1/dir2'],
@@ -2863,7 +2863,7 @@ class GeneralUtilityTest extends UnitTestCase
      * @see resolveBackPathWithDataProvider
      * @return array|array[]
      */
-    public function resolveBackPathDataProvider(): array
+    public static function resolveBackPathDataProvider(): array
     {
         return [
             'empty path' => ['', ''],
@@ -3204,7 +3204,7 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertNotSame($instance, GeneralUtility::makeInstance($className));
     }
 
-    public function getFileAbsFileNameDataProvider(): array
+    public static function getFileAbsFileNameDataProvider(): array
     {
         return [
             'relative path is prefixed with public path' => [
@@ -3276,7 +3276,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for validPathStrDetectsInvalidCharacters.
      */
-    public function validPathStrInvalidCharactersDataProvider(): array
+    public static function validPathStrInvalidCharactersDataProvider(): array
     {
         $data = [
             'double slash in path' => ['path//path'],
@@ -3318,7 +3318,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Data provider for positive values within validPathStr()
      */
-    public function validPathStrDataProvider(): array
+    public static function validPathStrDataProvider(): array
     {
         $data = [
             'normal ascii path' => ['fileadmin/templates/myfile..xml'],
@@ -3415,7 +3415,7 @@ class GeneralUtilityTest extends UnitTestCase
      * Data provider for callUserFunctionInvalidParameterDataprovider and
      * callUserFunctionWillThrowExceptionForInvalidParameters.
      */
-    public function callUserFunctionInvalidParameterDataprovider(): array
+    public static function callUserFunctionInvalidParameterDataprovider(): array
     {
         return [
             'Function is not prefixed' => [self::class . '->calledUserFunction', 1294585865],
@@ -3535,7 +3535,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @return string[][]
      */
-    public function xml2arrayProcessHandlesWhitespacesDataProvider(): array
+    public static function xml2arrayProcessHandlesWhitespacesDataProvider(): array
     {
         $headerVariants = [
             'utf-8' => '<?xml version="1.0" encoding="utf-8" standalone="yes"?>',
@@ -3607,7 +3607,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @return string[][]
      */
-    public function xml2arrayProcessHandlesTagNamespacesDataProvider(): array
+    public static function xml2arrayProcessHandlesTagNamespacesDataProvider(): array
     {
         return [
             'inputWithNameSpaceOnRootLevel' => [
@@ -3662,7 +3662,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function xml2arrayProcessHandlesDocumentTagDataProvider(): array
+    public static function xml2arrayProcessHandlesDocumentTagDataProvider(): array
     {
         return [
             'input' => [
@@ -3721,7 +3721,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function xml2ArrayProcessHandlesBigXmlContentDataProvider(): array
+    public static function xml2ArrayProcessHandlesBigXmlContentDataProvider(): array
     {
         return [
             '1mb' => [
@@ -3768,7 +3768,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function xml2ArrayProcessHandlesAttributeTypesDataProvider(): array
+    public static function xml2ArrayProcessHandlesAttributeTypesDataProvider(): array
     {
         $prefix = '<?xml version="1.0" encoding="utf-8" standalone="yes"?><T3FlexForms><field index="index">';
         $suffix = '</field></T3FlexForms>';
@@ -3850,7 +3850,7 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertSame($expected, $result['index']['vDEF']);
     }
 
-    public function locationHeaderUrlDataProvider(): array
+    public static function locationHeaderUrlDataProvider(): array
     {
         return [
             'simple relative path' => [

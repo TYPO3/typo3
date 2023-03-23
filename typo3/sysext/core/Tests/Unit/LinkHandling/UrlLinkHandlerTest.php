@@ -26,7 +26,7 @@ class UrlLinkHandlerTest extends UnitTestCase
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page
      */
-    public function resolveParametersForNonFilesDataProvider(): array
+    public static function resolveParametersForNonFilesDataProvider(): array
     {
         return [
             'URL without a scheme' => [

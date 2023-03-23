@@ -177,7 +177,7 @@ class SiteResolverTest extends UnitTestCase
         }
     }
 
-    public function detectSubSubsiteInsideNestedUrlStructureDataProvider(): array
+    public static function detectSubSubsiteInsideNestedUrlStructureDataProvider(): array
     {
         return [
             'matches second site' => [
@@ -269,7 +269,7 @@ class SiteResolverTest extends UnitTestCase
         }
     }
 
-    public function detectProperLanguageByIncomingUrlDataProvider(): array
+    public static function detectProperLanguageByIncomingUrlDataProvider(): array
     {
         return [
             'matches second site' => [

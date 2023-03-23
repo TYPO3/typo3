@@ -124,7 +124,7 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
         self::assertEquals(1535655756, $subject->getLastModified());
     }
 
-    public function numberOfItemsPerPageProvider(): array
+    public static function numberOfItemsPerPageProvider(): array
     {
         return [
             '1 items per page' => [1],

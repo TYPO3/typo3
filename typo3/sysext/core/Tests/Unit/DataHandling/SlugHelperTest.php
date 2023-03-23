@@ -24,7 +24,7 @@ class SlugHelperTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    public function sanitizeDataProvider(): array
+    public static function sanitizeDataProvider(): array
     {
         return [
             'empty string' => [
@@ -151,7 +151,7 @@ class SlugHelperTest extends UnitTestCase
         );
     }
 
-    public function generateNeverDeliversEmptySlugDataProvider(): array
+    public static function generateNeverDeliversEmptySlugDataProvider(): array
     {
         return [
             'simple title' => [
@@ -191,7 +191,7 @@ class SlugHelperTest extends UnitTestCase
         );
     }
 
-    public function sanitizeForPagesDataProvider(): array
+    public static function sanitizeForPagesDataProvider(): array
     {
         return [
             'empty string' => [
@@ -343,7 +343,7 @@ class SlugHelperTest extends UnitTestCase
         );
     }
 
-    public function generateNeverDeliversEmptySlugForPagesDataProvider(): array
+    public static function generateNeverDeliversEmptySlugForPagesDataProvider(): array
     {
         return [
             'simple title' => [
@@ -383,7 +383,7 @@ class SlugHelperTest extends UnitTestCase
         );
     }
 
-    public function generatePrependsSlugsForPagesDataProvider(): array
+    public static function generatePrependsSlugsForPagesDataProvider(): array
     {
         return [
             'simple title' => [
@@ -497,7 +497,7 @@ class SlugHelperTest extends UnitTestCase
         );
     }
 
-    public function generateSlugWithNavTitleAndFallbackForPagesDataProvider(): array
+    public static function generateSlugWithNavTitleAndFallbackForPagesDataProvider(): array
     {
         return [
             'title and empty nav_title' => [
@@ -661,7 +661,7 @@ class SlugHelperTest extends UnitTestCase
         );
     }
 
-    public function generateSlugWithPid0DataProvider(): array
+    public static function generateSlugWithPid0DataProvider(): array
     {
         return [
             'pages' => [
@@ -695,7 +695,7 @@ class SlugHelperTest extends UnitTestCase
         );
     }
 
-    public function generatePrependsSlugsForNonPagesDataProvider(): array
+    public static function generatePrependsSlugsForNonPagesDataProvider(): array
     {
         return [
             'simple title' => [

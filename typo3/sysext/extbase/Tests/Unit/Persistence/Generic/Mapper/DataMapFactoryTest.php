@@ -43,7 +43,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockDataMapFactory->buildDataMap('UnknownObject');
     }
 
-    public function classNameTableNameMappings(): array
+    public static function classNameTableNameMappings(): array
     {
         return [
             'Core classes' => [LogEntry::class, 'tx_belog_domain_model_logentry'],

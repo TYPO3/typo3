@@ -38,7 +38,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
         $GLOBALS['TCA']['foo']['columns'] = [];
     }
 
-    public function invalidConfigurationDataProvider(): array
+    public static function invalidConfigurationDataProvider(): array
     {
         return [
             'Empty Configuration' => [[], 1288215890],

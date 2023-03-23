@@ -226,7 +226,7 @@ class CharsetConverterTest extends UnitTestCase
      *
      * @return string[][]
      */
-    public function validInputForSpecCharsToAscii(): array
+    public static function validInputForSpecCharsToAscii(): array
     {
         return [
             'scandinavian input' => [
@@ -258,7 +258,7 @@ class CharsetConverterTest extends UnitTestCase
      *
      * @return array[]
      */
-    public function invalidInputForSpecCharsToAscii(): array
+    public static function invalidInputForSpecCharsToAscii(): array
     {
         return [
             'integer input' => [

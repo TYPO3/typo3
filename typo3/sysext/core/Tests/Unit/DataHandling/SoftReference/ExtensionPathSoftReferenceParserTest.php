@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
 class ExtensionPathSoftReferenceParserTest extends AbstractSoftReferenceParserTest
 {
-    public function extensionPathSoftReferenceParserDataProvider(): array
+    public static function extensionPathSoftReferenceParserDataProvider(): array
     {
         return [
             'Simple EXT: path has a match' => [

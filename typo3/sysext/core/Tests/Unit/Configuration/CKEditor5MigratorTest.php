@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class CKEditor5MigratorTest extends UnitTestCase
 {
-    public function migrationDataProvider(): array
+    public static function migrationDataProvider(): array
     {
         return [
             'empty' => [

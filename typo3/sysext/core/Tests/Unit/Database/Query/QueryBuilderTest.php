@@ -230,7 +230,7 @@ class QueryBuilderTest extends UnitTestCase
         $this->subject->select('aField', 'anotherField');
     }
 
-    public function quoteIdentifiersForSelectDataProvider(): array
+    public static function quoteIdentifiersForSelectDataProvider(): array
     {
         return [
             'fieldName' => [
@@ -959,7 +959,7 @@ class QueryBuilderTest extends UnitTestCase
         self::assertEquals($expected, $result);
     }
 
-    public function unquoteSingleIdentifierUnquotesCorrectlyOnDifferentPlatformsDataProvider(): array
+    public static function unquoteSingleIdentifierUnquotesCorrectlyOnDifferentPlatformsDataProvider(): array
     {
         return [
             'mysql' => [
@@ -1164,7 +1164,7 @@ class QueryBuilderTest extends UnitTestCase
         self::assertSame($type, $concreteQueryBuilder->getParameterType('dcValue1'));
     }
 
-    public function createNamedParameterInput(): array
+    public static function createNamedParameterInput(): array
     {
         return [
             'string input and output' => [
@@ -1186,7 +1186,7 @@ class QueryBuilderTest extends UnitTestCase
         ];
     }
 
-    public function castFieldToTextTypeDataProvider(): array
+    public static function castFieldToTextTypeDataProvider(): array
     {
         return [
             'Test cast for MySQLPlatform' => [

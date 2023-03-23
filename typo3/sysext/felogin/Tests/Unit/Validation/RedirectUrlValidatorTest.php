@@ -77,7 +77,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
     /**
      * Data provider for validateRedirectUrlClearsUrl
      */
-    public function validateRedirectUrlClearsUrlDataProvider(): array
+    public static function validateRedirectUrlClearsUrlDataProvider(): array
     {
         return [
             'absolute URL, hostname not in site, trailing slash' => ['http://badhost.tld/'],
@@ -120,7 +120,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
     /**
      * Data provider for validateRedirectUrlKeepsCleanUrl
      */
-    public function validateRedirectUrlKeepsCleanUrlDataProvider(): array
+    public static function validateRedirectUrlKeepsCleanUrlDataProvider(): array
     {
         return [
             'sane absolute URL' => ['http://sub.domainhostname.tld/path/'],
@@ -158,7 +158,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
     /**
      * Data provider for validateRedirectUrlClearsInvalidUrlInSubdirectory
      */
-    public function validateRedirectUrlClearsInvalidUrlInSubdirectoryDataProvider(): array
+    public static function validateRedirectUrlClearsInvalidUrlInSubdirectoryDataProvider(): array
     {
         return [
             'absolute URL, missing subdirectory' => ['http://hostname.tld/'],
@@ -185,7 +185,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
     /**
      * Data provider for validateRedirectUrlKeepsCleanUrlInSubdirectory
      */
-    public function validateRedirectUrlKeepsCleanUrlInSubdirectoryDataProvider(): array
+    public static function validateRedirectUrlKeepsCleanUrlInSubdirectoryDataProvider(): array
     {
         return [
             'absolute URL, correct subdirectory' => ['http://hostname.tld/subdir/'],
@@ -227,7 +227,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
     /**
      * Dataprovider for isInCurrentDomainIgnoresScheme
      */
-    public function isInCurrentDomainIgnoresSchemeDataProvider(): array
+    public static function isInCurrentDomainIgnoresSchemeDataProvider(): array
     {
         return [
             'url https, current host http' => [
@@ -285,7 +285,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
         self::assertTrue($this->accessibleFixture->_call('isInCurrentDomain', $extbaseRequest, $url));
     }
 
-    public function isInCurrentDomainReturnsFalseIfDomainsAreDifferentDataProvider(): array
+    public static function isInCurrentDomainReturnsFalseIfDomainsAreDifferentDataProvider(): array
     {
         return [
             'simple difference' => [

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserTest
 {
-    public function findRefReturnsParsedElementsDataProvider(): array
+    public static function findRefReturnsParsedElementsDataProvider(): array
     {
         return [
             'link to page' => [
@@ -163,7 +163,7 @@ class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserTest
         self::assertEquals($expectedElement, $matchedElements[$softrefConfiguration['elementKey']]);
     }
 
-    public function findRefReturnsParsedElementsWithFileDataProvider(): array
+    public static function findRefReturnsParsedElementsWithFileDataProvider(): array
     {
         return [
             'link to file' => [
@@ -264,7 +264,7 @@ class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserTest
         self::assertEquals($expectedElement, $matchedElements[$softrefConfiguration['elementKey']]);
     }
 
-    public function findRefReturnsNullWithFolderDataProvider(): array
+    public static function findRefReturnsNullWithFolderDataProvider(): array
     {
         return [
             'link to folder' => [
@@ -298,7 +298,7 @@ class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserTest
         self::assertFalse($result->hasMatched());
     }
 
-    public function getTypoLinkPartsThrowExceptionWithPharReferencesDataProvider(): array
+    public static function getTypoLinkPartsThrowExceptionWithPharReferencesDataProvider(): array
     {
         return [
             'URL encoded local' => [

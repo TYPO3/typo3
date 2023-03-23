@@ -55,7 +55,7 @@ class GalleryProcessorTest extends UnitTestCase
     /**
      * Gallery position test data provider
      */
-    public function galleryPositionDataProvider(): array
+    public static function galleryPositionDataProvider(): array
     {
         return [
             'Default: horizontal above' => [
@@ -194,7 +194,7 @@ class GalleryProcessorTest extends UnitTestCase
     /**
      * Count test data provider
      */
-    public function countDataProvider(): array
+    public static function countDataProvider(): array
     {
         return [
             'Default settings with 3 files' => [
@@ -267,7 +267,7 @@ class GalleryProcessorTest extends UnitTestCase
     /**
      * Data provider for calculateMediaWidthsAndHeightsTest
      */
-    public function calculateMediaWidthsAndHeightsDataProvider(): array
+    public static function calculateMediaWidthsAndHeightsDataProvider(): array
     {
         return [
             'Default settings' => [

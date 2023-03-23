@@ -25,7 +25,7 @@ class TypoScriptServiceTest extends UnitTestCase
     /**
      * data provider for convertTypoScriptArrayToPlainArray
      */
-    public function convertTypoScriptArrayToPlainArrayTestdata(): array
+    public static function convertTypoScriptArrayToPlainArrayTestdata(): array
     {
         return [
             'simple typoscript array' => [
@@ -163,7 +163,7 @@ class TypoScriptServiceTest extends UnitTestCase
     /**
      * Dataprovider for testcase "convertPlainArrayToTypoScriptArray"
      */
-    public function convertPlainArrayToTypoScriptArrayTestdata(): array
+    public static function convertPlainArrayToTypoScriptArrayTestdata(): array
     {
         return [
             'simple typoscript' => [
@@ -292,7 +292,7 @@ class TypoScriptServiceTest extends UnitTestCase
         self::assertEquals($converted, $classic);
     }
 
-    public function explodeConfigurationForOptionSplitProvider(): array
+    public static function explodeConfigurationForOptionSplitProvider(): array
     {
         return [
             [

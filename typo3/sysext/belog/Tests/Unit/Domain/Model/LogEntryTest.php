@@ -75,7 +75,7 @@ class LogEntryTest extends UnitTestCase
         self::assertSame([], $this->subject->getLogData());
     }
 
-    public function getErrorIconReturnsCorrespondingClassDataProvider(): array
+    public static function getErrorIconReturnsCorrespondingClassDataProvider(): array
     {
         return [
             'empty' => [

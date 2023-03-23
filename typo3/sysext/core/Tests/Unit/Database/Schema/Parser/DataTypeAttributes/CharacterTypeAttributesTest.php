@@ -28,7 +28,7 @@ class CharacterTypeAttributesTest extends AbstractDataTypeBaseTestCase
     /**
      * Data provider for canParseCharacterDataTypeAttributes()
      */
-    public function canParseCharacterDataTypeAttributesProvider(): array
+    public static function canParseCharacterDataTypeAttributesProvider(): array
     {
         return [
             'BINARY' => [

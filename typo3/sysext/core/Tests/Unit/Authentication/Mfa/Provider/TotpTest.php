@@ -85,7 +85,7 @@ class TotpTest extends UnitTestCase
         );
     }
 
-    public function totpDataProvider(): \Generator
+    public static function totpDataProvider(): \Generator
     {
         yield 'Default' => ['337475', []];
         yield 'sha256 algo' => ['874487', ['sha256']];
@@ -134,7 +134,7 @@ class TotpTest extends UnitTestCase
         self::assertEquals($expected, $totp->getTotpAuthUrl(...$methodArguments));
     }
 
-    public function getTotpAuthUrlTestDataProvider(): \Generator
+    public static function getTotpAuthUrlTestDataProvider(): \Generator
     {
         yield 'Default Totp with account and additional params' => [
             [

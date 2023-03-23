@@ -211,7 +211,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * Data provider for transferHttpSettings
      */
-    public function httpSettingsMappingDataProvider(): array
+    public static function httpSettingsMappingDataProvider(): array
     {
         return [
             'No changes overridden in Local Configuration' => [
@@ -539,7 +539,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         }, $silentConfigurationUpgradeService, SilentConfigurationUpgradeService::class)();
     }
 
-    public function graphicsProcessorEffects(): array
+    public static function graphicsProcessorEffects(): array
     {
         return [
             'integer 1' => [

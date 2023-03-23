@@ -54,7 +54,7 @@ class DatetimeElementTest extends UnitTestCase
     /**
      * Data provider for renderAppliesCorrectTimestampConversion
      */
-    public function renderAppliesCorrectTimestampConversionDataProvider(): array
+    public static function renderAppliesCorrectTimestampConversionDataProvider(): array
     {
         // Three elements: input (UTC), timezone of output, expected output
         return [

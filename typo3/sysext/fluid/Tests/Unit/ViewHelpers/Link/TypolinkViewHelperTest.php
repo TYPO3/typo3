@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TypolinkViewHelperTest extends UnitTestCase
 {
-    public function decodedConfigurationAndFluidArgumentDataProvider(): array
+    public static function decodedConfigurationAndFluidArgumentDataProvider(): array
     {
         return [
             'blank input' => [

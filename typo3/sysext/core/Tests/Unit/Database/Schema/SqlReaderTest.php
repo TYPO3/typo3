@@ -123,7 +123,7 @@ class SqlReaderTest extends UnitTestCase
         self::assertStringStartsWith('CREATE TABLE', array_pop($result));
     }
 
-    public function commentProvider(): array
+    public static function commentProvider(): array
     {
         return [
             'Single line comment starting with "#"' => [

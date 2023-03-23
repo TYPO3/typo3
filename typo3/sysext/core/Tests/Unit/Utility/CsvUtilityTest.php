@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CsvUtilityTest extends UnitTestCase
 {
-    public function csvToArrayDataProvider(): array
+    public static function csvToArrayDataProvider(): array
     {
         return [
             'Valid data' => [
@@ -94,7 +94,7 @@ class CsvUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, CsvUtility::csvToArray($input, $fieldDelimiter, $fieldEnclosure, $maximumColumns));
     }
 
-    public function csvValuesDataProvider(): array
+    public static function csvValuesDataProvider(): array
     {
         return [
             'row with semicolon as delimiter (TYPE_PASSTHROUGH)' => [

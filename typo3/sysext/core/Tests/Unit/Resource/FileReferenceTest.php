@@ -41,7 +41,7 @@ class FileReferenceTest extends UnitTestCase
         return $fixture;
     }
 
-    public function propertiesDataProvider(): array
+    public static function propertiesDataProvider(): array
     {
         return [
             'File properties correctly override file reference properties' => [

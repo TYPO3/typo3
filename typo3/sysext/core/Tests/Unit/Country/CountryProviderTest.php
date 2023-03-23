@@ -83,7 +83,7 @@ class CountryProviderTest extends UnitTestCase
         self::assertCount($expectedCount, $list);
     }
 
-    public function findByFilterReturnsValidObjectDataProvider(): array
+    public static function findByFilterReturnsValidObjectDataProvider(): array
     {
         return [
             'full list' => [249, [], []],

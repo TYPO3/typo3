@@ -47,7 +47,7 @@ class ListUtilityTest extends UnitTestCase
         $this->subject->injectPackageManager($packageManagerMock);
     }
 
-    public function getAvailableAndInstalledExtensionsDataProvider(): array
+    public static function getAvailableAndInstalledExtensionsDataProvider(): array
     {
         return [
             'same extension lists' => [
@@ -116,7 +116,7 @@ class ListUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, $this->subject->getAvailableAndInstalledExtensions($availableExtensions));
     }
 
-    public function enrichExtensionsWithEmConfInformationDataProvider(): array
+    public static function enrichExtensionsWithEmConfInformationDataProvider(): array
     {
         return [
             'simple key value array emconf' => [

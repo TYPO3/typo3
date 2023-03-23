@@ -334,7 +334,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $conf, $content]
      */
-    public function cropHTMLDataProvider(): array
+    public static function cropHTMLDataProvider(): array
     {
         $plainText = 'Kasper Sk' . chr(229) . 'rh' . chr(248)
             . 'j implemented the original version of the crop function.';
@@ -655,7 +655,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf]
      */
-    public function roundDataProvider(): array
+    public static function roundDataProvider(): array
     {
         return [
             // floats
@@ -780,7 +780,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf]
      */
-    public function numberFormatDataProvider(): array
+    public static function numberFormatDataProvider(): array
     {
         return [
             'testing decimals' => [
@@ -837,7 +837,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf]
      */
-    public function replacementDataProvider(): array
+    public static function replacementDataProvider(): array
     {
         return [
             'multiple replacements, including regex' => [
@@ -908,7 +908,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $timestamp, $labels]
      */
-    public function calcAgeDataProvider(): array
+    public static function calcAgeDataProvider(): array
     {
         return [
             'minutes' => [
@@ -973,7 +973,7 @@ class ContentObjectRendererTest extends UnitTestCase
         );
     }
 
-    public function stdWrapReturnsExpectationDataProvider(): array
+    public static function stdWrapReturnsExpectationDataProvider(): array
     {
         return [
             'Prevent silent bool conversion' => [
@@ -997,7 +997,7 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertSame($expectation, $this->subject->stdWrap($content, $configuration));
     }
 
-    public function stdWrapDoesOnlyCallIfEmptyIfTheTrimmedContentIsEmptyOrZeroDataProvider(): array
+    public static function stdWrapDoesOnlyCallIfEmptyIfTheTrimmedContentIsEmptyOrZeroDataProvider(): array
     {
         return [
             'ifEmpty is not called if content is present as an non-empty string' => [
@@ -1045,7 +1045,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf]
      */
-    public function substringDataProvider(): array
+    public static function substringDataProvider(): array
     {
         return [
             'sub -1' => ['g', 'substring', '-1'],
@@ -1078,7 +1078,7 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertSame($expect, $this->subject->substring($content, $conf));
     }
 
-    public function getDataWithTypeGpDataProvider(): array
+    public static function getDataWithTypeGpDataProvider(): array
     {
         return [
             'Value in get-data' => ['onlyInGet', 'GetValue'],
@@ -1175,7 +1175,7 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertEquals($value, $this->subject->getData('field:' . $key, $field));
     }
 
-    public function getDataWithTypeFileReturnsUidOfFileObjectDataProvider(): array
+    public static function getDataWithTypeFileReturnsUidOfFileObjectDataProvider(): array
     {
         return [
             'no whitespace' => [
@@ -1411,7 +1411,7 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertSame('someTitle', $this->subject->getData('db:tt_content:106:title'));
     }
 
-    public function getDataWithTypeDbDataProvider(): array
+    public static function getDataWithTypeDbDataProvider(): array
     {
         return [
             'identifier with missing table, uid and column' => [
@@ -1952,7 +1952,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @return array multi-dimensional array with test data
      * @see parseFuncParsesNestedTagsProperly
      */
-    public function _parseFuncParsesNestedTagsProperlyDataProvider(): array
+    public static function _parseFuncParsesNestedTagsProperlyDataProvider(): array
     {
         $defaultListItemParseFunc = [
             'parseFunc'  => '',
@@ -2216,7 +2216,7 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
     }
 
-    public function httpMakelinksDataProvider(): array
+    public static function httpMakelinksDataProvider(): array
     {
         return [
             'http link' => [
@@ -2361,7 +2361,7 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertSame($expectedResult, $this->subject->_call('http_makelinks', $data, $configuration));
     }
 
-    public function invalidHttpMakelinksDataProvider(): array
+    public static function invalidHttpMakelinksDataProvider(): array
     {
         return [
             'only http protocol' => [
@@ -2394,7 +2394,7 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertSame($expectedResult, $this->subject->_call('http_makelinks', $data, $configuration));
     }
 
-    public function mailtoMakelinksDataProvider(): array
+    public static function mailtoMakelinksDataProvider(): array
     {
         return [
             'mailto link' => [
@@ -2481,7 +2481,7 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertSame('mailto:', $this->subject->_call('mailto_makelinks', 'mailto:', []));
     }
 
-    public function typolinkReturnsCorrectLinksForEmailsAndUrlsDataProvider(): array
+    public static function typolinkReturnsCorrectLinksForEmailsAndUrlsDataProvider(): array
     {
         return [
             'Link to url' => [
@@ -2689,7 +2689,7 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->typoLink($linkText, $typoScript));
     }
 
-    public function typoLinkEncodesMailAddressForSpamProtectionDataProvider(): array
+    public static function typoLinkEncodesMailAddressForSpamProtectionDataProvider(): array
     {
         return [
             'plain mail without mailto scheme' => [
@@ -2786,7 +2786,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
     }
 
-    public function typolinkReturnsCorrectLinksFilesDataProvider(): array
+    public static function typolinkReturnsCorrectLinksFilesDataProvider(): array
     {
         return [
             'Link to file' => [
@@ -2904,7 +2904,7 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
     }
 
-    public function typolinkReturnsCorrectLinksForFilesWithAbsRefPrefixDataProvider(): array
+    public static function typolinkReturnsCorrectLinksForFilesWithAbsRefPrefixDataProvider(): array
     {
         return [
             'Link to file' => [
@@ -3228,7 +3228,7 @@ class ContentObjectRendererTest extends UnitTestCase
         GeneralUtility::purgeInstances();
     }
 
-    public function typoLinkProperlyEncodesLinkResultDataProvider(): array
+    public static function typoLinkProperlyEncodesLinkResultDataProvider(): array
     {
         return [
             'Link to file' => [
@@ -3319,7 +3319,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order: expect, conf, times, with, withWrap, will
      */
-    public function calculateCacheKeyDataProvider(): array
+    public static function calculateCacheKeyDataProvider(): array
     {
         $value = StringUtility::getUniqueId('value');
         $wrap = [StringUtility::getUniqueId('wrap')];
@@ -3396,7 +3396,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order: expect, conf, cacheKey, times, cached.
      */
-    public function getFromCacheDataProvider(): array
+    public static function getFromCacheDataProvider(): array
     {
         $conf = [StringUtility::getUniqueId('conf')];
         return [
@@ -3466,7 +3466,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $fields]
      */
-    public function getFieldValDataProvider(): array
+    public static function getFieldValDataProvider(): array
     {
         return [
             'invalid single key' => [null, 'invalid'],
@@ -3557,7 +3557,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $case]
      */
-    public function caseshiftDataProvider(): array
+    public static function caseshiftDataProvider(): array
     {
         return [
             'lower' => ['x y', 'X Y', 'lower'],
@@ -3592,7 +3592,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $case, $with, $will]
      */
-    public function HTMLcaseshiftDataProvider(): array
+    public static function HTMLcaseshiftDataProvider(): array
     {
         $case = StringUtility::getUniqueId('case');
         return [
@@ -3767,7 +3767,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order: stdWrap, hookObjectCall
      */
-    public function fourTypesOfStdWrapHookObjectProcessorsDataProvider(): array
+    public static function fourTypesOfStdWrapHookObjectProcessorsDataProvider(): array
     {
         return [
             'preProcess' => [
@@ -3839,7 +3839,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf, $times, $will].
      */
-    public function stdWrap_HTMLparserDataProvider(): array
+    public static function stdWrap_HTMLparserDataProvider(): array
     {
         $content = StringUtility::getUniqueId('content');
         $parsed = StringUtility::getUniqueId('parsed');
@@ -3917,7 +3917,7 @@ class ContentObjectRendererTest extends UnitTestCase
         );
     }
 
-    public function stdWrap_addPageCacheTagsAddsPageTagsDataProvider(): array
+    public static function stdWrap_addPageCacheTagsAddsPageTagsDataProvider(): array
     {
         return [
             'No Tag' => [
@@ -4018,7 +4018,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return string[][] Order expected, given, xhtmlDoctype
      */
-    public function stdWrapBrDataProvider(): array
+    public static function stdWrapBrDataProvider(): array
     {
         return [
             'no xhtml with LF in between' => [
@@ -4065,7 +4065,7 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * Data provider for stdWrap_brTag
      */
-    public function stdWrapBrTagDataProvider(): array
+    public static function stdWrapBrTagDataProvider(): array
     {
         $noConfig = [];
         $config1 = ['brTag' => '<br/>'];
@@ -4112,7 +4112,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf]
      */
-    public function stdWrap_bytesDataProvider(): array
+    public static function stdWrap_bytesDataProvider(): array
     {
         return [
             'value 1234 default' => [
@@ -4234,7 +4234,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$firstConf, $secondConf, $conf]
      */
-    public function stdWrap_orderedStdWrapDataProvider(): array
+    public static function stdWrap_orderedStdWrapDataProvider(): array
     {
         $confA = [StringUtility::getUniqueId('conf A')];
         $confB = [StringUtility::getUniqueId('conf B')];
@@ -4313,7 +4313,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order: expect, input, conf, times, with, will
      */
-    public function stdWrap_cacheReadDataProvider(): array
+    public static function stdWrap_cacheReadDataProvider(): array
     {
         $cacheConf = [StringUtility::getUniqueId('cache.')];
         $conf = ['cache.' => $cacheConf];
@@ -4397,7 +4397,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$confCache, $timesCCK, $key, $times]
      */
-    public function stdWrap_cacheStoreDataProvider(): array
+    public static function stdWrap_cacheStoreDataProvider(): array
     {
         $confCache = [StringUtility::getUniqueId('cache.')];
         $key = [StringUtility::getUniqueId('key')];
@@ -4632,7 +4632,7 @@ class ContentObjectRendererTest extends UnitTestCase
         );
     }
 
-    protected function stdWrap_formattedDateProvider(): \Generator
+    protected static function stdWrap_formattedDateProvider(): \Generator
     {
         yield 'regular formatting - no locale' => [
             '2023.02.02 AD at 13:05:00 UTC',
@@ -4721,7 +4721,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order expected, input, conf
      */
-    public function stdWrap_csConvDataProvider(): array
+    public static function stdWrap_csConvDataProvider(): array
     {
         return [
             'empty string from ISO-8859-15' => [
@@ -4812,7 +4812,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $data]
      */
-    public function stdWrap_dataDataProvider(): array
+    public static function stdWrap_dataDataProvider(): array
     {
         $data = [StringUtility::getUniqueId('data')];
         return [
@@ -4889,7 +4889,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf, $now]
      */
-    public function stdWrap_dateDataProvider(): array
+    public static function stdWrap_dateDataProvider(): array
     {
         // Fictive execution time: 2015-10-02 12:00
         $now = 1443780000;
@@ -4998,7 +4998,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expectArray, $confDebugFunc]
      */
-    public function stdWrap_debugFuncDataProvider(): array
+    public static function stdWrap_debugFuncDataProvider(): array
     {
         return [
             'expect array by string' => [true, '2'],
@@ -5050,7 +5050,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order expected, input, config
      */
-    public function stdWrapDoubleBrTagDataProvider(): array
+    public static function stdWrapDoubleBrTagDataProvider(): array
     {
         return [
             'no config: void input' => [
@@ -5185,7 +5185,7 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertSame($expected, $result);
     }
 
-    public function html5SelfClosingTagsDataprovider(): array
+    public static function html5SelfClosingTagsDataprovider(): array
     {
         return [
             'areaTag_selfclosing' => [
@@ -5272,7 +5272,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array[]
      */
-    public function stdWrap_encodeForJavaScriptValueDataProvider(): array
+    public static function stdWrap_encodeForJavaScriptValueDataProvider(): array
     {
         return [
             'double quote in string' => [
@@ -5327,7 +5327,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content]
      */
-    public function stdWrap_expandListDataProvider(): array
+    public static function stdWrap_expandListDataProvider(): array
     {
         return [
             'numbers' => ['1,2,3', '1,2,3'],
@@ -5389,7 +5389,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $stop, $content, $conf]
      */
-    public function stdWrap_fieldRequiredDataProvider(): array
+    public static function stdWrap_fieldRequiredDataProvider(): array
     {
         $content = StringUtility::getUniqueId('content');
         return [
@@ -5507,7 +5507,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf]
      */
-    public function hashDataProvider(): array
+    public static function hashDataProvider(): array
     {
         return [
             'md5' => [
@@ -5564,7 +5564,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order: expected, input, conf
      */
-    public function stdWrap_htmlSpecialCharsDataProvider(): array
+    public static function stdWrap_htmlSpecialCharsDataProvider(): array
     {
         return [
             'void conf' => [
@@ -5612,7 +5612,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $stop, $content, $conf, $times, $will]
      */
-    public function stdWrap_ifDataProvider(): array
+    public static function stdWrap_ifDataProvider(): array
     {
         $content = StringUtility::getUniqueId('content');
         $conf = ['if.' => [StringUtility::getUniqueId('if.')]];
@@ -5728,7 +5728,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $conf]
      */
-    public function checkIfDataProvider(): array
+    public static function checkIfDataProvider(): array
     {
         return [
             'true bitAnd the same' => [true, ['bitAnd' => '4', 'value' => '4']],
@@ -5774,7 +5774,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf]
      */
-    public function stdWrap_ifBlankDataProvider(): array
+    public static function stdWrap_ifBlankDataProvider(): array
     {
         $alt = StringUtility::getUniqueId('alternative content');
         $conf = ['ifBlank' => $alt];
@@ -5820,7 +5820,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf]
      */
-    public function stdWrap_ifEmptyDataProvider(): array
+    public static function stdWrap_ifEmptyDataProvider(): array
     {
         $alt = StringUtility::getUniqueId('alternative content');
         $conf = ['ifEmpty' => $alt];
@@ -5874,7 +5874,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf]
      */
-    public function stdWrap_ifNullDataProvider(): array
+    public static function stdWrap_ifNullDataProvider(): array
     {
         $alt = StringUtility::getUniqueId('alternative content');
         $conf = ['ifNull' => $alt];
@@ -5915,7 +5915,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order expected, input, conf
      */
-    public function stdWrap_innerWrapDataProvider(): array
+    public static function stdWrap_innerWrapDataProvider(): array
     {
         return [
             'no conf' => [
@@ -5971,7 +5971,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order expected, input, conf
      */
-    public function stdWrap_innerWrap2DataProvider(): array
+    public static function stdWrap_innerWrap2DataProvider(): array
     {
         return [
             'no conf' => [
@@ -6052,7 +6052,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content]
      */
-    public function stdWrap_insertDataProvider(): array
+    public static function stdWrap_insertDataProvider(): array
     {
         return [
             'empty' => ['', ''],
@@ -6079,7 +6079,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content]
      */
-    public function stdWrap_intvalDataProvider(): array
+    public static function stdWrap_intvalDataProvider(): array
     {
         return [
             // numbers
@@ -6133,7 +6133,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return string[][] Order expected, input
      */
-    public function stdWrapKeywordsDataProvider(): array
+    public static function stdWrapKeywordsDataProvider(): array
     {
         return [
             'empty string' => ['', ''],
@@ -6191,7 +6191,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order expected, input, conf, language
      */
-    public function stdWrap_langDataProvider(): array
+    public static function stdWrap_langDataProvider(): array
     {
         return [
             'empty conf' => [
@@ -6316,7 +6316,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf]
      */
-    public function stdWrap_noTrimWrapDataProvider(): array
+    public static function stdWrap_noTrimWrapDataProvider(): array
     {
         return [
             'Standard case' => [
@@ -6462,7 +6462,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order expected, input, conf
      */
-    public function stdWrap_outerWrapDataProvider(): array
+    public static function stdWrap_outerWrapDataProvider(): array
     {
         return [
             'no conf' => [
@@ -6518,7 +6518,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order expected, input, conf
      */
-    public function stdWrap_overrideDataProvider(): array
+    public static function stdWrap_overrideDataProvider(): array
     {
         return [
             'standard case' => [
@@ -6836,7 +6836,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf, $disable, $times, $will]
      */
-    public function stdWrap_prefixCommentDataProvider(): array
+    public static function stdWrap_prefixCommentDataProvider(): array
     {
         $content = StringUtility::getUniqueId('content');
         $will = StringUtility::getUniqueId('will');
@@ -6934,7 +6934,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf]
      */
-    public function stdWrap_prioriCalcDataProvider(): array
+    public static function stdWrap_prioriCalcDataProvider(): array
     {
         return [
             'priority of *' => ['7', '1 + 2 * 3', []],
@@ -7007,7 +7007,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content].
      */
-    public function stdWrap_rawUrlEncodeDataProvider(): array
+    public static function stdWrap_rawUrlEncodeDataProvider(): array
     {
         return [
             'https://typo3.org?id=10' => [
@@ -7075,7 +7075,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $stop, $content]
      */
-    public function stdWrap_requiredDataProvider(): array
+    public static function stdWrap_requiredDataProvider(): array
     {
         return [
             // empty content
@@ -7169,7 +7169,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order input, conf
      */
-    public function stdWrap_setCurrentDataProvider(): array
+    public static function stdWrap_setCurrentDataProvider(): array
     {
         return [
             'no conf' => [
@@ -7287,7 +7287,7 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * Data provider for stdWrap_stdWrapValue test
      */
-    public function stdWrap_stdWrapValueDataProvider(): array
+    public static function stdWrap_stdWrapValueDataProvider(): array
     {
         return [
             'only key returns value' => [
@@ -7371,7 +7371,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf]
      */
-    public function stdWrap_strPadDataProvider(): array
+    public static function stdWrap_strPadDataProvider(): array
     {
         return [
             'pad string with default settings and length 10' => [
@@ -7495,7 +7495,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf, $now]
      */
-    public function stdWrap_strftimeDataProvider(): array
+    public static function stdWrap_strftimeDataProvider(): array
     {
         // Fictive execution time is 2012-09-01 12:00 in UTC/GMT.
         $now = 1346500800;
@@ -7564,7 +7564,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf]
      */
-    public function stdWrap_strtotimeDataProvider(): array
+    public static function stdWrap_strtotimeDataProvider(): array
     {
         return [
             'date from content' => [
@@ -7664,7 +7664,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content]
      */
-    public function stdWrap_trimDataProvider(): array
+    public static function stdWrap_trimDataProvider(): array
     {
         return [
             // string not trimmed
@@ -7755,7 +7755,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order expected, input, conf
      */
-    public function stdWrap_wrapDataProvider(): array
+    public static function stdWrap_wrapDataProvider(): array
     {
         return [
             'no conf' => [
@@ -7821,7 +7821,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order expected, input, conf
      */
-    public function stdWrap_wrap2DataProvider(): array
+    public static function stdWrap_wrap2DataProvider(): array
     {
         return [
             'no conf' => [
@@ -7884,7 +7884,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order expected, input, conf
      */
-    public function stdWrap_wrap3DataProvider(): array
+    public static function stdWrap_wrap3DataProvider(): array
     {
         return [
             'no conf' => [
@@ -7947,7 +7947,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $content, $conf]
      */
-    public function stdWrap_wrapAlignDataProvider(): array
+    public static function stdWrap_wrapAlignDataProvider(): array
     {
         $format = '<div style="text-align:%s;">%s</div>';
         $content = StringUtility::getUniqueId('content');
@@ -8016,7 +8016,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array [$expect, $comment, $content]
      */
-    public function prefixCommentDataProvider(): array
+    public static function prefixCommentDataProvider(): array
     {
         $comment = StringUtility::getUniqueId();
         $content = StringUtility::getUniqueId();
@@ -8135,7 +8135,7 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertEquals($value, $this->subject->getUserObjectType());
     }
 
-    public function getGlobalDataProvider(): array
+    public static function getGlobalDataProvider(): array
     {
         return [
             'simple' => [

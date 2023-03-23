@@ -326,7 +326,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @return array<string, array{0: mixed}>
      */
-    public function informationDataProvider(): array
+    public static function informationDataProvider(): array
     {
         return [
             'integer' => [42],

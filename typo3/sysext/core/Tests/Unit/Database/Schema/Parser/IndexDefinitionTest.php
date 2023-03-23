@@ -40,7 +40,7 @@ class IndexDefinitionTest extends UnitTestCase
      *  - indexType
      *  - options array
      */
-    public function canParseIndexDefinitionDataProvider(): array
+    public static function canParseIndexDefinitionDataProvider(): array
     {
         return [
             'PRIMARY KEY (single column)' => [

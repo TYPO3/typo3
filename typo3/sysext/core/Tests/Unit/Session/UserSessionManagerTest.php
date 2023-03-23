@@ -31,7 +31,7 @@ class UserSessionManagerTest extends UnitTestCase
 {
     use JwtTrait;
 
-    public function willExpireDataProvider(): array
+    public static function willExpireDataProvider(): array
     {
         return [
             [

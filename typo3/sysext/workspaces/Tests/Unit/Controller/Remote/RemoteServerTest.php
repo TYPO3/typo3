@@ -35,7 +35,7 @@ class RemoteServerTest extends UnitTestCase
      */
     protected array $fileReferenceMocks;
 
-    public function prepareFileReferenceDifferencesAreCorrectDataProvider(): array
+    public static function prepareFileReferenceDifferencesAreCorrectDataProvider(): array
     {
         return [
             // without thumbnails

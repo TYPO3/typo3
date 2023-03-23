@@ -81,7 +81,7 @@ class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
         self::assertFalse($failed);
     }
 
-    public function validateFormElementValueThrowsExceptionIfValueDoesNotMatchDataProvider(): array
+    public static function validateFormElementValueThrowsExceptionIfValueDoesNotMatchDataProvider(): array
     {
         return [
             [
@@ -135,7 +135,7 @@ class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
         $validatorMock->_call('validateFormElementValue', $input, $validationDto);
     }
 
-    public function validateFormElementValueThrowsNoExceptionIfValueMatchesDataProvider(): array
+    public static function validateFormElementValueThrowsNoExceptionIfValueMatchesDataProvider(): array
     {
         return [
             [

@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class YamlFileLoaderTest extends UnitTestCase
 {
-    public function loadWithEnvVarDataProvider(): array
+    public static function loadWithEnvVarDataProvider(): array
     {
         return [
             'plain' => [
@@ -148,7 +148,7 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
     /**
      * dataprovider for tests isPlaceholderTest
      */
-    public function isPlaceholderDataProvider(): array
+    public static function isPlaceholderDataProvider(): array
     {
         return [
             'regular string' => [

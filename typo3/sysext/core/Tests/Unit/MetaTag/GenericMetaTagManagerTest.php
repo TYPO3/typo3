@@ -168,7 +168,7 @@ class GenericMetaTagManagerTest extends UnitTestCase
         self::assertEquals([], $manager->getProperty('twitter:card'));
     }
 
-    public function propertiesProvider(): array
+    public static function propertiesProvider(): array
     {
         return [
             [

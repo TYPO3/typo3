@@ -32,7 +32,7 @@ class IntegerTypesTest extends AbstractDataTypeBaseTestCase
     /**
      * Data provider for canParseIntegerDataType()
      */
-    public function canParseIntegerDataTypeProvider(): array
+    public static function canParseIntegerDataTypeProvider(): array
     {
         return [
             'TINYINT without length' => [

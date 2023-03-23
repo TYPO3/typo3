@@ -31,7 +31,7 @@ class ResultTest extends UnitTestCase
         $this->result = new Result();
     }
 
-    public function dataTypes(): array
+    public static function dataTypes(): array
     {
         return [
             ['Error', 'Errors'],

@@ -42,7 +42,7 @@ class ArrayConverterTest extends UnitTestCase
         self::assertEquals($sourceArray, $this->converter->convertFrom($sourceArray, 'array'));
     }
 
-    public function stringToArrayDataProvider(): array
+    public static function stringToArrayDataProvider(): array
     {
         return [
             'Empty string to empty array' => ['', []],

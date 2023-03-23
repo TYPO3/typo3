@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class NonceTest extends UnitTestCase
 {
-    public function nonceIsCreatedDataProvider(): \Generator
+    public static function nonceIsCreatedDataProvider(): \Generator
     {
         yield [0, 40];
         yield [20, 40];

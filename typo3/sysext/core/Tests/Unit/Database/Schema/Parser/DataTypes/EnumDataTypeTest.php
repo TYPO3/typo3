@@ -28,7 +28,7 @@ class EnumDataTypeTest extends AbstractDataTypeBaseTestCase
     /**
      * Data provider for canParseEnumDataType()
      */
-    public function canParseEnumDataTypeProvider(): array
+    public static function canParseEnumDataTypeProvider(): array
     {
         return [
             'ENUM(value)' => [

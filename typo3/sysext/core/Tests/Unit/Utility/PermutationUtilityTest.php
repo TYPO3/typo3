@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PermutationUtilityTest extends UnitTestCase
 {
-    public function meltStringItemsDataProvider(): array
+    public static function meltStringItemsDataProvider(): array
     {
         return [
             'string items' => [
@@ -114,7 +114,7 @@ class PermutationUtilityTest extends UnitTestCase
         self::assertSame($expectation, PermutationUtility::meltStringItems($payload));
     }
 
-    public function meltArrayItemsDataProvider(): array
+    public static function meltArrayItemsDataProvider(): array
     {
         $aStringValue = new StringValue('a');
         $bStringValue = new StringValue('b');

@@ -87,7 +87,7 @@ class DateTimeConverterTest extends UnitTestCase
     /**
      * @see convertFromStringTests()
      */
-    public function convertFromStringDataProvider(): array
+    public static function convertFromStringDataProvider(): array
     {
         return [
             ['1308174051', '', false],
@@ -137,7 +137,7 @@ class DateTimeConverterTest extends UnitTestCase
      * @see convertFromIntegerOrDigitStringWithoutConfigurationTests()
      * @see convertFromIntegerOrDigitStringInArrayWithoutConfigurationTests()
      */
-    public function convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider(): array
+    public static function convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider(): array
     {
         return [
             ['1308174051'],
@@ -202,7 +202,7 @@ class DateTimeConverterTest extends UnitTestCase
     /**
      * @see convertFromThrowsExceptionIfDatePartKeysHaveInvalidValuesSpecified
      */
-    public function invalidDatePartKeyValuesDataProvider(): array
+    public static function invalidDatePartKeyValuesDataProvider(): array
     {
         return [
             [['day' => '13.0', 'month' => '10', 'year' => '2010']],
@@ -316,7 +316,7 @@ class DateTimeConverterTest extends UnitTestCase
     /**
      * @see convertFromArrayTests()
      */
-    public function convertFromArrayDataProvider(): array
+    public static function convertFromArrayDataProvider(): array
     {
         return [
             [['date' => '2005-08-15T15:52:01+01:00'], true, '2005-08-15T15:52:01+01:00'],

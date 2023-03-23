@@ -180,7 +180,7 @@ class MessageTest extends UnitTestCase
         self::assertCount(0, $headers);
     }
 
-    public function invalidGeneralHeaderValuesDataProvider(): array
+    public static function invalidGeneralHeaderValuesDataProvider(): array
     {
         return [
             'null'   => [null],
@@ -204,7 +204,7 @@ class MessageTest extends UnitTestCase
         $this->message->withHeader('X-Foo', [$value]);
     }
 
-    public function invalidHeaderValuesDataProvider(): array
+    public static function invalidHeaderValuesDataProvider(): array
     {
         return [
             'null'   => [null],
@@ -263,7 +263,7 @@ class MessageTest extends UnitTestCase
         self::assertSame('', $this->message->getHeaderLine('X-Foo-Bar'));
     }
 
-    public function headersWithInjectionVectorsDataProvider(): array
+    public static function headersWithInjectionVectorsDataProvider(): array
     {
         return [
             'name-with-cr'            => ["X-Foo\r-Bar", 'value'],

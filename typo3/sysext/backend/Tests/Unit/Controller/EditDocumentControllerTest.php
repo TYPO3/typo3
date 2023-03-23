@@ -46,7 +46,7 @@ class EditDocumentControllerTest extends UnitTestCase
         self::assertEquals($result, $editDocumentControllerMock->_get('columnsOnly'));
     }
 
-    public function slugDependentFieldsAreAddedToColumnsOnlyDataProvider(): array
+    public static function slugDependentFieldsAreAddedToColumnsOnlyDataProvider(): array
     {
         return [
             'fields in string' => [
@@ -97,7 +97,7 @@ class EditDocumentControllerTest extends UnitTestCase
         ];
     }
 
-    public function resolvePreviewRecordIdDataProvider(): array
+    public static function resolvePreviewRecordIdDataProvider(): array
     {
         return [
             'default useDefaultLanguageRecord' => [
@@ -130,7 +130,7 @@ class EditDocumentControllerTest extends UnitTestCase
         self::assertSame($expected, $result);
     }
 
-    public function resolvePreviewRecordIdForNonTranslatableTableDataProvider(): array
+    public static function resolvePreviewRecordIdForNonTranslatableTableDataProvider(): array
     {
         return [
             'default useDefaultLanguageRecord' => [

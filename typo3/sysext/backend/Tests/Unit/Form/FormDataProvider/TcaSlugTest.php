@@ -36,7 +36,7 @@ class TcaSlugTest extends UnitTestCase
      *
      * @return array [$input, $expected]
      */
-    public function resultArrayDataProvider(): array
+    public static function resultArrayDataProvider(): array
     {
         return [
             'Language default [0]' => [

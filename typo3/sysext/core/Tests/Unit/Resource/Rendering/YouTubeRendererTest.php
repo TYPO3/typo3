@@ -135,7 +135,7 @@ class YouTubeRendererTest extends UnitTestCase
         );
     }
 
-    public function renderOutputWithControlsDataProvider(): array
+    public static function renderOutputWithControlsDataProvider(): array
     {
         return [
             'no options given, visible player controls (default)' => [

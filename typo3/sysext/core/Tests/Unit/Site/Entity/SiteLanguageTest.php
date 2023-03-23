@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteLanguageTest extends UnitTestCase
 {
-    public function languageFallbackIdConversionDataProvider(): array
+    public static function languageFallbackIdConversionDataProvider(): array
     {
         return [
             'no fallback set' => [

@@ -192,7 +192,7 @@ class InstallUtilityTest extends UnitTestCase
         $this->installMock->install($this->extensionKey);
     }
 
-    public function importT3DFileDoesNotImportFileIfAlreadyImportedDataProvider(): array
+    public static function importT3DFileDoesNotImportFileIfAlreadyImportedDataProvider(): array
     {
         return [
             'Import T3D file when T3D was imported before extension to XML' => [

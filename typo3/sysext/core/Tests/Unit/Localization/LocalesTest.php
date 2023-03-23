@@ -95,7 +95,7 @@ class LocalesTest extends UnitTestCase
         self::assertEquals(['fr'], $dependencies);
     }
 
-    public function browserLanguageDetectionWorksDataProvider(): array
+    public static function browserLanguageDetectionWorksDataProvider(): array
     {
         return [
             'german' => [

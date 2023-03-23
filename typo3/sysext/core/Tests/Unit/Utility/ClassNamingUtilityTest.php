@@ -29,7 +29,7 @@ class ClassNamingUtilityTest extends UnitTestCase
      * DataProvider for translateModelNameToRepositoryName
      * and translateRepositoryNameToModelName
      */
-    public function repositoryAndModelClassNames(): array
+    public static function repositoryAndModelClassNames(): array
     {
         return [
             [
@@ -86,7 +86,7 @@ class ClassNamingUtilityTest extends UnitTestCase
     /**
      * DataProvider for explodeObjectControllerName
      */
-    public function controllerObjectNamesAndMatches(): array
+    public static function controllerObjectNamesAndMatches(): array
     {
         return [
             [

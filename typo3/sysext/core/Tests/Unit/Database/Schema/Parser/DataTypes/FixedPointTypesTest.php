@@ -29,7 +29,7 @@ class FixedPointTypesTest extends AbstractDataTypeBaseTestCase
     /**
      * Data provider for canParseFixedPointTypes()
      */
-    public function canParseFixedPointTypesProvider(): array
+    public static function canParseFixedPointTypesProvider(): array
     {
         return [
             'DECIMAL without precision and scale' => [

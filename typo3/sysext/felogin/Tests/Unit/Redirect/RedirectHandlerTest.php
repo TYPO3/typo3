@@ -57,7 +57,7 @@ class RedirectHandlerTest extends UnitTestCase
         );
     }
 
-    public function loginTypeLogoutDataProvider(): Generator
+    public static function loginTypeLogoutDataProvider(): Generator
     {
         yield 'empty string on empty redirect mode' => ['', ''];
         yield 'empty string on redirect mode logout' => ['', 'logout'];
@@ -78,7 +78,7 @@ class RedirectHandlerTest extends UnitTestCase
         self::assertEquals($expect, $result);
     }
 
-    public function getLogoutRedirectUrlDataProvider(): Generator
+    public static function getLogoutRedirectUrlDataProvider(): Generator
     {
         yield 'empty redirect mode should return empty returnUrl' => ['', [], [], false];
         yield 'redirect mode getpost should return param return_url' => [
@@ -150,7 +150,7 @@ class RedirectHandlerTest extends UnitTestCase
         return new Context(['frontend.user' => new UserAspect($mockUserAuthentication)]);
     }
 
-    public function getLoginFormRedirectUrlDataProvider(): array
+    public static function getLoginFormRedirectUrlDataProvider(): array
     {
         return [
             'redirect disabled' => [

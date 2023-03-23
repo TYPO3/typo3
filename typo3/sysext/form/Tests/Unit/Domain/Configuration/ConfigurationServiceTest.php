@@ -590,7 +590,7 @@ class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    public function formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider(): array
+    public static function formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider(): array
     {
         return [
             [
@@ -670,7 +670,7 @@ class ConfigurationServiceTest extends UnitTestCase
         $configurationServiceMock->getAllowedValuesForFormElementPropertyFromFormEditorSetup($validationDto);
     }
 
-    public function getAllowedValuesForFormElementPropertyFromFormEditorSetupDataProvider(): array
+    public static function getAllowedValuesForFormElementPropertyFromFormEditorSetupDataProvider(): array
     {
         return [
             [
@@ -722,7 +722,7 @@ class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    public function propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider(): array
+    public static function propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider(): array
     {
         return [
             [
@@ -802,7 +802,7 @@ class ConfigurationServiceTest extends UnitTestCase
         $configurationServiceMock->getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetup($validationDto);
     }
 
-    public function getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetupDataProvider(): array
+    public static function getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetupDataProvider(): array
     {
         return [
             [
@@ -854,7 +854,7 @@ class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    public function isFormElementPropertyDefinedInFormEditorSetupDataProvider(): array
+    public static function isFormElementPropertyDefinedInFormEditorSetupDataProvider(): array
     {
         return [
             [
@@ -935,7 +935,7 @@ class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    public function isPropertyCollectionPropertyDefinedInFormEditorSetupDataProvider(): array
+    public static function isPropertyCollectionPropertyDefinedInFormEditorSetupDataProvider(): array
     {
         return [
             [
@@ -1065,7 +1065,7 @@ class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    public function isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider(): array
+    public static function isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider(): array
     {
         return [
             [
@@ -1086,7 +1086,7 @@ class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    public function isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider(): array
+    public static function isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider(): array
     {
         return [
             [
@@ -1112,7 +1112,7 @@ class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    public function isFormElementTypeCreatableByFormEditorDataProvider(): array
+    public static function isFormElementTypeCreatableByFormEditorDataProvider(): array
     {
         return [
             [
@@ -1138,7 +1138,7 @@ class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    public function isPropertyCollectionElementIdentifierCreatableByFormEditorDataProvider(): array
+    public static function isPropertyCollectionElementIdentifierCreatableByFormEditorDataProvider(): array
     {
         return [
             [
@@ -1169,7 +1169,7 @@ class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    public function buildFormDefinitionValidationConfigurationFromFormEditorSetupDataProvider(): array
+    public static function buildFormDefinitionValidationConfigurationFromFormEditorSetupDataProvider(): array
     {
         return [
             [

@@ -195,7 +195,7 @@ class MetaDataAspectTest extends UnitTestCase
         self::assertSame(['foo' => 'bar', 'testproperty' => 'testvalue'], $metaDataAspectMock->get());
     }
 
-    public function propertyDataProvider(): array
+    public static function propertyDataProvider(): array
     {
         return [
             [

@@ -25,7 +25,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function getHttpHostReturnsSanitizedValueDataProvider(): array
+    public static function getHttpHostReturnsSanitizedValueDataProvider(): array
     {
         return [
             'simple HTTP_HOST' => [
@@ -133,7 +133,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function isHttpsReturnSanitizedValueDataProvider(): array
+    public static function isHttpsReturnSanitizedValueDataProvider(): array
     {
         return [
             'false if nothing special is set' => [
@@ -350,7 +350,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function getScriptNameReturnsExpectedValueDataProvider(): array
+    public static function getScriptNameReturnsExpectedValueDataProvider(): array
     {
         return [
             'empty string if nothing is set' => [
@@ -413,7 +413,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function getRequestUriReturnsExpectedValueDataProvider(): array
+    public static function getRequestUriReturnsExpectedValueDataProvider(): array
     {
         return [
             'slash if nothing is set' => [
@@ -573,7 +573,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function isBehindReverseProxyReturnsExpectedValueDataProvider(): array
+    public static function isBehindReverseProxyReturnsExpectedValueDataProvider(): array
     {
         return [
             'false with empty data' => [
@@ -629,7 +629,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function getRemoteAddressReturnsExpectedValueDataProvider(): array
+    public static function getRemoteAddressReturnsExpectedValueDataProvider(): array
     {
         return [
             'simple REMOTE_ADDR' => [
@@ -879,7 +879,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function getSitePathReturnsExpectedPathDataProvider(): array
+    public static function getSitePathReturnsExpectedPathDataProvider(): array
     {
         return [
             'empty config' => [
@@ -922,7 +922,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function getSiteScriptReturnsExpectedPathDataProvider(): array
+    public static function getSiteScriptReturnsExpectedPathDataProvider(): array
     {
         return [
             'not in a sub directory' => [

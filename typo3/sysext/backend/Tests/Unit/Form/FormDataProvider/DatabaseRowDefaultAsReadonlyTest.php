@@ -72,7 +72,7 @@ class DatabaseRowDefaultAsReadonlyTest extends UnitTestCase
         );
     }
 
-    public function addDataDoesNotReplaceCurrentDatabaseValueDataProvider(): \Generator
+    public static function addDataDoesNotReplaceCurrentDatabaseValueDataProvider(): \Generator
     {
         yield 'No default language row available' => [
             [

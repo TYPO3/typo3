@@ -74,7 +74,7 @@ class ValidatorClassNameResolverTest extends UnitTestCase
         self::assertSame(IntegerValidator::class, ValidatorClassNameResolver::resolve('NonExisting'));
     }
 
-    public function namespacedShorthandValidatorNamesDataProvider(): array
+    public static function namespacedShorthandValidatorNamesDataProvider(): array
     {
         return [
             'TYPO3.CMS.Extbase:NotEmpty' => [

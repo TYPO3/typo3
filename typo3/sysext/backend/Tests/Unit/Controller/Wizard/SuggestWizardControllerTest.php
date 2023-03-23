@@ -121,7 +121,7 @@ class SuggestWizardControllerTest extends UnitTestCase
         self::assertEquals($expected, $subject->_call('isTableHidden', $array));
     }
 
-    public function isTableHiddenIsProperlyRetrievedDataProvider(): array
+    public static function isTableHiddenIsProperlyRetrievedDataProvider(): array
     {
         return [
           'notSetValue' => [false, ['ctrl' => ['hideTable' => null]]],
@@ -142,7 +142,7 @@ class SuggestWizardControllerTest extends UnitTestCase
         self::assertEquals($expected, $subject->_call('getWhereClause', $array));
     }
 
-    public function whereClauseIsProperlyRetrievedDataProvider(): array
+    public static function whereClauseIsProperlyRetrievedDataProvider(): array
     {
         return [
             'no foreign_table' => [

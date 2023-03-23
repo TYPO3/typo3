@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SelectItemTest extends UnitTestCase
 {
-    public function selectionItemCanBeConstructedFromTcaItemDataProvider(): iterable
+    public static function selectionItemCanBeConstructedFromTcaItemDataProvider(): iterable
     {
         yield 'only required fields' => [
             ['label' => 'foo', 'value' => 'bar'],
@@ -83,7 +83,7 @@ class SelectItemTest extends UnitTestCase
         self::assertTrue($selectionItem->isDivider());
     }
 
-    public function notSetValuesCanBeIdentifiedDataProvider(): iterable
+    public static function notSetValuesCanBeIdentifiedDataProvider(): iterable
     {
         yield 'only required fields' => [
             ['label' => 'foo', 'value' => 'bar'],

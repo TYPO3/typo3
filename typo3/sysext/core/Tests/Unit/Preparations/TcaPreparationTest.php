@@ -31,7 +31,7 @@ class TcaPreparationTest extends UnitTestCase
         self::assertEquals($expected, (new TcaPreparation())->prepare($input));
     }
 
-    public function configureCategoryRelationsDataProvider(): \Generator
+    public static function configureCategoryRelationsDataProvider(): \Generator
     {
         yield 'No category field' => [
             [
@@ -251,7 +251,7 @@ class TcaPreparationTest extends UnitTestCase
         (new TcaPreparation())->prepare($input);
     }
 
-    public function configureCategoryRelationsThrowsExceptionOnInvalidMaxitemsDataProvider(): \Generator
+    public static function configureCategoryRelationsThrowsExceptionOnInvalidMaxitemsDataProvider(): \Generator
     {
         yield 'No relationship with maxitems=1 (falls back to manyToMany)' => [
             [

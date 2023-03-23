@@ -32,7 +32,7 @@ class TableOptionsTest extends UnitTestCase
      *  - table options SQL fragment
      *  - expected options array
      */
-    public function canParseTableOptionsDataProvider(): array
+    public static function canParseTableOptionsDataProvider(): array
     {
         return [
             'ENGINE engine_name' => [

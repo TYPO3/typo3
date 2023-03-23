@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AbstractFormElementTest extends UnitTestCase
 {
-    public function formatValueDataProvider(): array
+    public static function formatValueDataProvider(): array
     {
         return [
             'format with empty format configuration' => [

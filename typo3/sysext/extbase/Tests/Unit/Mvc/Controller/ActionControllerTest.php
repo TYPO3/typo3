@@ -286,7 +286,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController->_call('setViewConfiguration', $view);
     }
 
-    public function templateRootPathDataProvider(): array
+    public static function templateRootPathDataProvider(): array
     {
         return [
             'text keys' => [
@@ -357,7 +357,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController->_call('setViewConfiguration', $view);
     }
 
-    public function layoutRootPathDataProvider(): array
+    public static function layoutRootPathDataProvider(): array
     {
         return [
             'text keys' => [
@@ -428,7 +428,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController->_call('setViewConfiguration', $view);
     }
 
-    public function partialRootPathDataProvider(): array
+    public static function partialRootPathDataProvider(): array
     {
         return [
             'text keys' => [
@@ -545,7 +545,7 @@ class ActionControllerTest extends UnitTestCase
         ];
     }
 
-    public function addFlashMessageDataProvider(): array
+    public static function addFlashMessageDataProvider(): array
     {
         return [
             [

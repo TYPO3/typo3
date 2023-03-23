@@ -197,7 +197,7 @@ class FileTest extends UnitTestCase
         $fixture->moveTo($targetFolder);
     }
 
-    public function filenameExtensionDataProvider(): array
+    public static function filenameExtensionDataProvider(): array
     {
         return [
             ['somefile.jpg', 'somefile', 'jpg'],

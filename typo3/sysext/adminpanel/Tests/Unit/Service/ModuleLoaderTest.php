@@ -37,7 +37,7 @@ class ModuleLoaderTest extends UnitTestCase
         self::assertSame([], $result);
     }
 
-    public function missingConfigurationDataProvider(): array
+    public static function missingConfigurationDataProvider(): array
     {
         return [
             'empty' => [['modulename' => []]],
@@ -58,7 +58,7 @@ class ModuleLoaderTest extends UnitTestCase
         $moduleLoader->validateSortAndInitializeModules($configuration);
     }
 
-    public function invalidConfigurationDataProvider(): array
+    public static function invalidConfigurationDataProvider(): array
     {
         return [
             'module class name is no string' => [

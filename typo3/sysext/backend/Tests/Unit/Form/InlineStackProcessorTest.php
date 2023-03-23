@@ -38,7 +38,7 @@ class InlineStackProcessorTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
     }
 
-    public function structureStringIsParsedDataProvider(): array
+    public static function structureStringIsParsedDataProvider(): array
     {
         return [
             'simple 1-level table structure' => [

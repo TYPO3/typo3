@@ -327,7 +327,7 @@ class ExtensionUtilityTest extends UnitTestCase
         );
     }
 
-    public function checkResolveControllerAliasFromControllerClassNameDataProvider(): array
+    public static function checkResolveControllerAliasFromControllerClassNameDataProvider(): array
     {
         return [
             'Class in root namespace without controller suffix' => [
