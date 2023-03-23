@@ -2111,6 +2111,15 @@ class PageRenderer implements SingletonInterface
     {
         $out = '';
 
+        // adds a nonce hint/work-around for lit-elements (which is only applied automatically in ShadowDOM)
+        // see https://lit.dev/docs/api/ReactiveElement/#ReactiveElement.styles)
+        if ($this->nonce instanceof Nonce) {
+            $out .= GeneralUtility::wrapJS(
+                sprintf('window.litNonce = %s;', GeneralUtility::quoteJSvalue($this->nonce->b64)),
+                ['nonce' => $this->nonce->b64]
+            );
+        }
+
         if (!$this->addRequireJs && $this->javaScriptRenderer->hasRequireJs()) {
             $this->loadRequireJs();
         }
@@ -2140,6 +2149,7 @@ class PageRenderer implements SingletonInterface
             if ($this->getApplicationType() === 'BE') {
                 $this->javaScriptRenderer->addGlobalAssignment(['TYPO3' => $assignments]);
             } else {
+                // @todo apply nonce for CSP (means dropping static `inlineJavascriptWrap`)
                 $out .= sprintf(
                     "%svar TYPO3 = Object.assign(TYPO3 || {}, %s);\r\n%s",
                     $this->inlineJavascriptWrap[0],

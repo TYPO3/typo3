@@ -11,8 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { render, TemplateResult } from 'lit';
+import { html, HTMLTemplateResult, render, TemplateResult } from 'lit';
 import { ClassInfo } from 'lit/directives/class-map';
+
+interface LitNonceWindow extends Window {
+  litNonce?: string;
+}
 
 /**
  * @internal
@@ -52,4 +56,33 @@ export const classesArrayToClassInfo = (classes: Array<string>): ClassInfo => {
     },
     {} as Writeable<ClassInfo>
   );
+};
+
+/**
+ * Creates style tag having using a nonce-value if declared in `window.litNonce`
+ * (see https://lit.dev/docs/api/ReactiveElement/#ReactiveElement.styles)
+ *
+ * @example
+ * ```
+ *  return html`
+ *    ${styleTag`
+ *      .my-style { ... }
+ *    `}
+ *    <div class="my-style">...</div>
+ *  `
+ * ```
+ * produces a template result containing
+ * ```
+ *    <style nonce="...">
+ *      .my-style { ... }
+ *    </style>
+ *    <div class="my-style">...</div>
+ * ```
+ */
+export const styleTag = (strings: TemplateStringsArray): HTMLTemplateResult => {
+  const nonce = (window as LitNonceWindow).litNonce;
+  if (nonce) {
+    return html`<style nonce="${nonce}">${strings}</style>`;
+  }
+  return html`<style>${strings}</style>`;
 };

@@ -13,7 +13,7 @@
 
 import { html, LitElement, TemplateResult, render } from 'lit';
 import { customElement, property } from 'lit/decorators';
-import { lll } from '@typo3/core/lit-helper';
+import { lll, styleTag } from '@typo3/core/lit-helper';
 import '@typo3/backend/element/icon-element';
 import Severity from '@typo3/backend/severity';
 import Modal from '@typo3/backend/modal';
@@ -172,9 +172,9 @@ export class TableWizardElement extends LitElement {
     const lastRowIndex = this.table.length - 1;
 
     return html`
-      <style>
+      ${styleTag`
         :host, typo3-backend-table-wizard { display: inline-block; }
-      </style>
+      `}
       <div class="table-fit table-fit-inline-block">
         <table class="table table-center">
           <thead>

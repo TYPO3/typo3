@@ -10939,26 +10939,24 @@ class ContextPlugin extends ObservableMixin() {
     static get isContextPlugin() {
         return true;
     }
-}function styleInject(css, ref) {
-  if ( ref === void 0 ) ref = {};
-  var insertAt = ref.insertAt;
+}/**
+ * duplicated from https://github.com/egoist/style-inject/blob/04ca45c34f20f0aa63d3d68e668de037d24579ad/src/index.js
+ * extended by nonce capabilities
+ */
+function styleInject(css, { insertAt } = {}) {
+  if (!css || typeof document === 'undefined') return
 
-  if (!css || typeof document === 'undefined') { return; }
-
-  var head = document.head || document.getElementsByTagName('head')[0];
-  var style = document.createElement('style');
+  const head = document.head || document.getElementsByTagName('head')[0];
+  const style = document.createElement('style');
   style.type = 'text/css';
-
-  if (insertAt === 'top') {
-    if (head.firstChild) {
-      head.insertBefore(style, head.firstChild);
-    } else {
-      head.appendChild(style);
-    }
+  if (window['litNonce']) {
+    style.setAttribute('nonce', window['litNonce']);
+  }
+  if (insertAt === 'top' && head.firstChild) {
+    head.insertBefore(style, head.firstChild);
   } else {
     head.appendChild(style);
   }
-
   if (style.styleSheet) {
     style.styleSheet.cssText = css;
   } else {
