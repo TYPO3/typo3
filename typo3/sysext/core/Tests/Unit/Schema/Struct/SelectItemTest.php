@@ -43,7 +43,7 @@ class SelectItemTest extends UnitTestCase
         ];
 
         yield 'checkbox fields' => [
-            ['label' => 'foo', 'invertStateDisplay' => true, 'iconIdentifierChecked' => 'foo1', 'iconIdentifierUnchecked' => 'foo2', 'labelChecked' => 'foo3', 'labelUnchecked' => 'foo4'],
+            ['label' => 'foo', 'invertStateDisplay' => 1, 'iconIdentifierChecked' => 'foo1', 'iconIdentifierUnchecked' => 'foo2', 'labelChecked' => 'foo3', 'labelUnchecked' => 'foo4'],
             'check',
             ['label' => 'foo', 'invertStateDisplay' => true, 'iconIdentifierChecked' => 'foo1', 'iconIdentifierUnchecked' => 'foo2', 'labelChecked' => 'foo3', 'labelUnchecked' => 'foo4'],
         ];

@@ -52,7 +52,7 @@ final class SelectItem implements \ArrayAccess
             icon: $item['icon'] ?? $item[2] ?? null,
             group: $item['group'] ?? $item[3] ?? null,
             description: $item['description'] ?? $item[4] ?? null,
-            invertStateDisplay: $item['invertStateDisplay'] ?? false,
+            invertStateDisplay: (bool)($item['invertStateDisplay'] ?? false),
             iconIdentifierChecked: $item['iconIdentifierChecked'] ?? null,
             iconIdentifierUnchecked: $item['iconIdentifierUnchecked'] ?? null,
             labelChecked: $item['labelChecked'] ?? null,
