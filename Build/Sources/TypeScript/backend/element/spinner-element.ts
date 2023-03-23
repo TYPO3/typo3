@@ -90,3 +90,9 @@ export class SpinnerElement extends LitElement {
     `;
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-spinner': SpinnerElement;
+  }
+}

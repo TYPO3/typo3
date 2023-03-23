@@ -26,3 +26,9 @@ export class BackendSearch extends LitElement {
     return this;
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-live-search': BackendSearch;
+  }
+}

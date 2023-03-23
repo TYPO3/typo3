@@ -34,7 +34,7 @@ export const navigationComponentName: string = 'typo3-backend-navigation-compone
  * tree highlighting from the outside
  */
 @customElement('typo3-backend-navigation-component-filestorage-tree')
-class EditableFileStorageTree extends FileStorageTree {
+export class EditableFileStorageTree extends FileStorageTree {
   private readonly actionHandler: FileStorageTreeActions;
 
   public constructor() {
@@ -115,7 +115,7 @@ class EditableFileStorageTree extends FileStorageTree {
 /**
  * Responsible for setting up the viewport for the Navigation Component for the File Tree
  */
-@customElement(navigationComponentName)
+@customElement('typo3-backend-navigation-component-filestoragetree')
 export class FileStorageTreeNavigationComponent extends LitElement {
   @query('.svg-tree-wrapper') tree: EditableFileStorageTree;
   @query('typo3-backend-tree-toolbar') toolbar: Toolbar;
@@ -544,5 +544,12 @@ class FileOperationCollection {
     });
 
     return resources;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-navigation-component-filestorage-tree': EditableFileStorageTree;
+    'typo3-backend-navigation-component-filestoragetree': FileStorageTreeNavigationComponent;
   }
 }

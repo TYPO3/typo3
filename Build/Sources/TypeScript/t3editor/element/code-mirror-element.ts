@@ -219,3 +219,9 @@ export class CodeMirrorElement extends LitElement {
     });
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-t3editor-codemirror': CodeMirrorElement;
+  }
+}

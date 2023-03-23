@@ -17,4 +17,4 @@ var __decorate=function(e,t,r,i){var o,n=arguments.length,l=n<3?t:null===i?i=Obj
         <p class="livesearch-detail-preamble-type">${this.resultItem.typeLabel}</p>
       </div>
       <typo3-backend-live-search-result-item-action-container .resultItem="${this.resultItem}"></typo3-backend-live-search-result-item-action-container>
-    `}};__decorate([property({type:Object,attribute:!1})],ResultDetailContainer.prototype,"resultItem",void 0),ResultDetailContainer=__decorate([customElement(componentName)],ResultDetailContainer);export{ResultDetailContainer};
+    `}};__decorate([property({type:Object,attribute:!1})],ResultDetailContainer.prototype,"resultItem",void 0),ResultDetailContainer=__decorate([customElement("typo3-backend-live-search-result-item-detail-container")],ResultDetailContainer);export{ResultDetailContainer};

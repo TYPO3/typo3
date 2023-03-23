@@ -88,3 +88,9 @@ export class CopyToClipboard extends LitElement {
     }
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-copy-to-clipboard': CopyToClipboard;
+  }
+}

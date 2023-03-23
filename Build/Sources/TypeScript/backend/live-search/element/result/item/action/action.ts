@@ -48,3 +48,9 @@ export class Action extends LitElement {
     `;
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-live-search-result-item-action': Action;
+  }
+}

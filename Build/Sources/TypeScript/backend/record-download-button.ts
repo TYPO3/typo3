@@ -120,3 +120,9 @@ export class RecordDownloadButton extends LitElement {
     });
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-recordlist-record-download-button': RecordDownloadButton;
+  }
+}

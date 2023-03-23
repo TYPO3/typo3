@@ -251,7 +251,7 @@ interface Configuration {
   [keys: string]: any;
 }
 
-@customElement(navigationComponentName)
+@customElement('typo3-backend-navigation-component-pagetree')
 export class PageTreeNavigationComponent extends LitElement {
   @property({ type: String }) mountPointPath: string = null;
 
@@ -1114,5 +1114,13 @@ class PageTreeNodeDragHandler implements DragDropHandler {
     } else {
       done();
     }
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-navigation-component-pagetree-tree': EditablePageTree
+    'typo3-backend-navigation-component-pagetree': PageTreeNavigationComponent;
+    'typo3-backend-navigation-component-pagetree-toolbar': PageTreeToolbar;
   }
 }

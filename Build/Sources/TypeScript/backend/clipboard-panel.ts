@@ -236,3 +236,9 @@ export class ClipboardPanel extends LitElement {
     }
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-clipboard-panel': ClipboardPanel;
+  }
+}

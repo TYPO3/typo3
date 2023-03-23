@@ -82,4 +82,8 @@ export class SwitchUser extends LitElement {
   }
 }
 
-
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-switch-user': SwitchUser;
+  }
+}

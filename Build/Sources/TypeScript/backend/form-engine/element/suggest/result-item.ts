@@ -101,3 +101,9 @@ export class ResultItem extends LitElement {
     }));
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-formengine-suggest-result-item': ResultItem;
+  }
+}

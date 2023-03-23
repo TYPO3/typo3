@@ -230,3 +230,9 @@ export class EditablePageTitle extends LitElement {
       </form>`;
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-editable-page-title': EditablePageTitle;
+  }
+}

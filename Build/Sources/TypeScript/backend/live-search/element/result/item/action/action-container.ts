@@ -19,7 +19,7 @@ import { Action } from './action';
 
 export const componentName = 'typo3-backend-live-search-result-item-action-container';
 
-@customElement(componentName)
+@customElement('typo3-backend-live-search-result-item-action-container')
 export class ActionContainer extends LitElement {
   @property({ type: Object, attribute: false }) resultItem: ResultItemInterface|null = null;
 
@@ -121,5 +121,12 @@ export class ActionList extends LitElement {
         action: actionElement.resultItemAction
       }
     }));
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-live-search-result-item-action-container': ActionContainer;
+    'typo3-backend-live-search-result-action-list': ActionList;
   }
 }

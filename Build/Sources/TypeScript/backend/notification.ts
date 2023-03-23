@@ -131,7 +131,7 @@ class Notification {
 }
 
 @customElement('typo3-notification-message')
-class NotificationMessage extends LitElement {
+export class NotificationMessage extends LitElement {
   @property() notificationId: string;
   @property() title: string;
   @property() message: string;
@@ -247,6 +247,12 @@ class NotificationMessage extends LitElement {
       </div>
     `;
     /* eslint-enable @typescript-eslint/indent */
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-notification-message': NotificationMessage;
   }
 }
 

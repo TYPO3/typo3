@@ -16,7 +16,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import '@typo3/backend/element/icon-element';
 
 @customElement('typo3-backend-live-search-result-item-default')
-export class PageProviderResultItem extends LitElement {
+export class DefaultProviderResultItem extends LitElement {
   @property({ type: Object, attribute: false }) icon: Record<string, string>;
   @property({ type: String, attribute: false }) itemTitle: string;
   @property({ type: String, attribute: false }) typeLabel: string;
@@ -36,5 +36,11 @@ export class PageProviderResultItem extends LitElement {
         ${this.itemTitle}${this.extraData.breadcrumb !== undefined ? html`<br><small>${this.extraData.breadcrumb}</small>` : ''}
       </div>
     `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-live-search-result-item-default': DefaultProviderResultItem;
   }
 }

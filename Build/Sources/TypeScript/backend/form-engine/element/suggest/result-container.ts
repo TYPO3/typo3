@@ -109,3 +109,10 @@ export class ResultList extends LitElement {
     return html`<slot></slot>`;
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-formengine-suggest-result-container': ResultContainer;
+    'typo3-backend-formengine-suggest-result-list': ResultList;
+  }
+}

@@ -171,3 +171,9 @@ export class IconElement extends LitElement {
     return html`<div class="icon-wrapper">${until(icon, html`<typo3-backend-spinner></typo3-backend-spinner>`)}</div>`;
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-icon': IconElement;
+  }
+}

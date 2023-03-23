@@ -21,7 +21,7 @@ import ResponseInterface from '@typo3/backend/ajax-data-handler/response-interfa
 import Notification from '@typo3/backend/notification';
 
 @customElement('typo3-scheduler-editable-group-name')
-class EditableGroupName extends LitElement {
+export class EditableGroupName extends LitElement {
   static styles = css`
     :host {
       display: inline-block;
@@ -215,5 +215,11 @@ class EditableGroupName extends LitElement {
           <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
         </button>
       </form>`;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-scheduler-editable-group-name': EditableGroupName;
   }
 }

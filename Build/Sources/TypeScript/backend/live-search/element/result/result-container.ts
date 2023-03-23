@@ -24,7 +24,7 @@ import { ResultDetailContainer } from './result-detail-container';
 
 export const componentName = 'typo3-backend-live-search-result-container';
 
-@customElement(componentName)
+@customElement('typo3-backend-live-search-result-container')
 export class ResultContainer extends LitElement {
   @property({ type: Object }) results: ResultItemInterface[] | null = null;
   @property({ type: Boolean, attribute: false }) loading: boolean = false;
@@ -92,5 +92,11 @@ export class ResultContainer extends LitElement {
     this.dispatchEvent(new CustomEvent('live-search:item-chosen', {
       detail: { resultItem }
     }));
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-live-search-result-container': ResultContainer;
   }
 }

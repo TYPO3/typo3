@@ -540,3 +540,9 @@ export class NewContentElementWizard extends LitElement {
     }
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-new-content-element-wizard': NewContentElementWizard;
+  }
+}

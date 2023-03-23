@@ -24,7 +24,7 @@ type GroupedResultItems = { [key: string ]: ResultItemInterface[] };
 
 export const componentName = 'typo3-backend-live-search-result-item-container';
 
-@customElement(componentName)
+@customElement('typo3-backend-live-search-result-item-container')
 export class ItemContainer extends LitElement {
   @property({ type: Object, attribute: false }) results: ResultItemInterface[]|null = null;
 
@@ -207,5 +207,12 @@ export class ResultList extends LitElement {
         action: item.actions[0]
       }
     }));
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-live-search-result-item-container': ItemContainer;
+    'typo3-backend-live-search-result-list': ResultList;
   }
 }

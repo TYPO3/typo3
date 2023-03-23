@@ -320,3 +320,9 @@ export class ColumnSelectorButton extends LitElement {
     Modal.dismiss();
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-column-selector-button': ColumnSelectorButton;
+  }
+}

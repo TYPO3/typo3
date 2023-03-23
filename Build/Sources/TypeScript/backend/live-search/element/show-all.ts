@@ -48,3 +48,9 @@ export class ResultItem extends LitElement {
     Modal.dismiss();
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-live-search-show-all': ResultItem;
+  }
+}

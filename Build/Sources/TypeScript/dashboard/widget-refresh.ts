@@ -45,3 +45,9 @@ export class WidgetRefresh extends LitElement {
     this.querySelector('button').blur();
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-dashboard-widget-refresh': WidgetRefresh;
+  }
+}

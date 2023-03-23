@@ -39,3 +39,9 @@ export default class PageProviderResultItem extends LitElement {
     `;
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-live-search-result-item-page-provider': PageProviderResultItem;
+  }
+}

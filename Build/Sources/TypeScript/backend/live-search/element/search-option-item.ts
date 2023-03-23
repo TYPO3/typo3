@@ -62,3 +62,9 @@ export class SearchOptionItem extends LitElement {
     BrowserSession.set(this.getStorageKey(), this.active ? '1' : '0');
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-live-search-option-item': SearchOptionItem;
+  }
+}

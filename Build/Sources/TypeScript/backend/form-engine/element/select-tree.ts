@@ -276,3 +276,9 @@ export class SelectTree extends SvgTree
     };
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-form-selecttree': SelectTree;
+  }
+}

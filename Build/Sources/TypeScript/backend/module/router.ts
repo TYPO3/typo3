@@ -209,3 +209,9 @@ export class ModuleRouter extends LitElement {
   }
 
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-module-router': ModuleRouter;
+  }
+}

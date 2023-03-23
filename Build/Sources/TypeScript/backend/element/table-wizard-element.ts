@@ -434,3 +434,9 @@ export class TableWizardElement extends LitElement {
     }
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-table-wizard': TableWizardElement;
+  }
+}

@@ -18,7 +18,7 @@ import { ResultItemInterface } from './item/item';
 
 export const componentName = 'typo3-backend-live-search-result-item-detail-container';
 
-@customElement(componentName)
+@customElement('typo3-backend-live-search-result-item-detail-container')
 export class ResultDetailContainer extends LitElement {
   @property({ type: Object, attribute: false }) resultItem: ResultItemInterface|null = null;
 
@@ -40,5 +40,11 @@ export class ResultDetailContainer extends LitElement {
       </div>
       <typo3-backend-live-search-result-item-action-container .resultItem="${this.resultItem}"></typo3-backend-live-search-result-item-action-container>
     `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-live-search-result-item-detail-container': ResultDetailContainer;
   }
 }

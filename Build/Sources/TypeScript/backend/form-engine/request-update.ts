@@ -51,3 +51,9 @@ export class RequestUpdate extends LitElement {
     FormEngine.requestFormEngineUpdate(askForUpdate);
   };
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-formengine-updater': RequestUpdate;
+  }
+}

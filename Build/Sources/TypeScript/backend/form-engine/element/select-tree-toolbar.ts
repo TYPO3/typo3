@@ -114,3 +114,9 @@ export class SelectTreeToolbar extends LitElement {
     this.tree.updateVisibleNodes();
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-form-selecttree-toolbar': SelectTreeToolbar;
+  }
+}

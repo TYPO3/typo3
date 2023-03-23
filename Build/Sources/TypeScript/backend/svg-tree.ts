@@ -1497,3 +1497,9 @@ export class Toolbar extends LitElement {
     this.tree.updateVisibleNodes();
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-tree-toolbar': Toolbar;
+  }
+}

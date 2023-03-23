@@ -23,14 +23,12 @@ import '@typo3/backend/element/icon-element';
 import Persistent from '@typo3/backend/storage/persistent';
 import { FileStorageTree } from './file-storage-tree';
 
-const componentName: string = 'typo3-backend-component-filestorage-browser';
-
 /**
  * Extension of the SVG Tree, allowing to show additional actions on the right hand of the tree to directly link
  * select a folder
  */
 @customElement('typo3-backend-component-filestorage-browser-tree')
-class FileStorageBrowserTree extends FileStorageTree {
+export class FileStorageBrowserTree extends FileStorageTree {
 
   protected updateNodeActions(nodesActions: TreeNodeSelection): TreeNodeSelection {
     const nodes = super.updateNodeActions(nodesActions);
@@ -75,7 +73,7 @@ class FileStorageBrowserTree extends FileStorageTree {
   }
 }
 
-@customElement(componentName)
+@customElement('typo3-backend-component-filestorage-browser')
 export class FileStorageBrowser extends LitElement {
   @query('.svg-tree-wrapper') tree: FileStorageBrowserTree;
 
@@ -175,4 +173,11 @@ export class FileStorageBrowser extends LitElement {
         contentContainer.innerHTML = response;
       });
   };
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-component-filestorage-browser-tree': FileStorageBrowserTree;
+    'typo3-backend-component-filestorage-browser': FileStorageBrowser;
+  }
 }

@@ -25,9 +25,6 @@ import LinkBrowser from '@typo3/backend/link-browser';
 import '@typo3/backend/element/icon-element';
 import Persistent from '@typo3/backend/storage/persistent';
 
-
-const componentName: string = 'typo3-backend-component-page-browser';
-
 interface Configuration {
   [keys: string]: any;
 }
@@ -37,7 +34,7 @@ interface Configuration {
  * select a page
  */
 @customElement('typo3-backend-component-page-browser-tree')
-class PageBrowserTree extends PageTree {
+export class PageBrowserTree extends PageTree {
 
   /**
    * Check if the page is linkable, if not, let's grey it out.
@@ -114,7 +111,7 @@ class PageBrowserTree extends PageTree {
 /**
  * The actual element used in the HTML composing the tree and the toolbar
  */
-@customElement(componentName)
+@customElement('typo3-backend-component-page-browser')
 export class PageBrowser extends LitElement {
   @property({ type: String }) mountPointPath: string = null;
   @query('.svg-tree-wrapper') tree: PageBrowserTree;
@@ -292,6 +289,13 @@ export class PageBrowser extends LitElement {
       .catch((error) => {
         this.tree.errorNotification(error, true);
       });
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-component-page-browser-tree': PageBrowserTree;
+    'typo3-backend-component-page-browser': PageBrowserTree;
   }
 }
 

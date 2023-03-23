@@ -268,6 +268,12 @@ export class ModalElement extends LitElement {
   }
 }
 
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-modal': ModalElement;
+  }
+}
+
 /**
  * Module: @typo3/backend/modal
  * API for modal windows powered by Twitter Bootstrap.

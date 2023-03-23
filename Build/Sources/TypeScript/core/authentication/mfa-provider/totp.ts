@@ -53,3 +53,9 @@ export class MfaTotpUrlButton extends LitElement {
     });
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-mfa-totp-url-info-button': MfaTotpUrlButton;
+  }
+}

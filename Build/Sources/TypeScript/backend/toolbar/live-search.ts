@@ -208,7 +208,7 @@ class LiveSearch {
   }
 
   private updateSearchResults(searchResults: ResultItemInterface[]|null): void {
-    const searchAllButton = document.querySelector('typo3-backend-live-search-show-all') as HTMLButtonElement;
+    const searchAllButton = document.querySelector('typo3-backend-live-search-show-all');
     searchAllButton.parentElement.hidden = searchResults === null || searchResults.length === 0;
 
     const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container') as ResultContainer;

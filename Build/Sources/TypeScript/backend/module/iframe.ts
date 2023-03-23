@@ -21,7 +21,7 @@ import { lll } from '@typo3/core/lit-helper';
  */
 export const componentName = 'typo3-iframe-module';
 
-@customElement(componentName)
+@customElement('typo3-iframe-module')
 export class IframeModuleElement extends LitElement {
 
   @property({ type: String }) endpoint: string = '';
@@ -116,5 +116,11 @@ export class IframeModuleElement extends LitElement {
     this.dispatchEvent(
       new CustomEvent<ModuleState>(type, { detail: state, bubbles: true, composed: true })
     );
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-iframe-module': IframeModuleElement;
   }
 }

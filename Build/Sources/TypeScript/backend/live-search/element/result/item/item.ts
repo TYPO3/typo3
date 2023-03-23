@@ -72,3 +72,9 @@ export class Item extends LitElement {
     target.classList.add('active');
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-live-search-result-item': Item;
+  }
+}

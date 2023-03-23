@@ -179,3 +179,9 @@ export class CKEditor5Element extends LitElement {
     }
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-rte-ckeditor-ckeditor5': CKEditor5Element;
+  }
+}

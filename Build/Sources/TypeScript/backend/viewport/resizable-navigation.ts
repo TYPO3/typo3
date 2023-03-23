@@ -149,3 +149,9 @@ export class ResizableNavigation extends LitElement {
     this.navigationContainer.style.width = width + 'px';
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-navigation-switcher': ResizableNavigation;
+  }
+}
