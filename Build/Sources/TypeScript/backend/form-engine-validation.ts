@@ -23,6 +23,8 @@ import DocumentSaveActions from '@typo3/backend/document-save-actions';
 import Modal from '@typo3/backend/modal';
 import Severity from '@typo3/backend/severity';
 
+type CustomEvaluationCallback = (value: string) => string;
+
 export default (function() {
 
   /**
@@ -132,7 +134,7 @@ export default (function() {
    * @param {string} name
    * @param {Function} handler
    */
-  FormEngineValidation.registerCustomEvaluation = function(name: string, handler: Function): void {
+  FormEngineValidation.registerCustomEvaluation = function(name: string, handler: CustomEvaluationCallback): void {
     if (!customEvaluations.has(name)) {
       customEvaluations.set(name, handler);
     }

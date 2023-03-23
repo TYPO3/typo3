@@ -53,10 +53,6 @@ export interface TreeNode extends d3selection.EnterElement {
   parentsStateIdentifier: Array<string>;
   backgroundColor: string;
   overlayIcon: string;
-  attr: Function;
-  enter: Function;
-  append: Function;
-  select: Function;
   icon: any;
   node: boolean | TreeNode;
   siblingsCount: number;

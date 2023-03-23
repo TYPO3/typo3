@@ -24,7 +24,7 @@ export class SelectTreeElement {
   private readonly recordField: HTMLInputElement = null;
   private readonly tree: SelectTree = null;
 
-  constructor(treeWrapperId: string, treeRecordFieldId: string, callback?: Function, onFieldChangeItems?: OnFieldChangeItem[]) {
+  constructor(treeWrapperId: string, treeRecordFieldId: string, callback?: () => void, onFieldChangeItems?: OnFieldChangeItem[]) {
     if (callback instanceof Function) {
       throw new Error('Function `callback` is not supported anymore since TYPO3 v12.0');
     }

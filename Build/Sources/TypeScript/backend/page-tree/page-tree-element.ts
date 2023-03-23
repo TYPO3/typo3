@@ -1091,7 +1091,7 @@ class PageTreeNodeDragHandler implements DragDropHandler {
   /**
    * Animates the drop zone next to given node
    */
-  private animateDropZone(action: string, dropZone: SVGElement, node: TreeNode, onfinish: Function = null) {
+  private animateDropZone(action: string, dropZone: SVGElement, node: TreeNode, onfinish: () => void = null) {
     dropZone.classList.add('animating');
     dropZone.dataset.open = (action === 'show') ? 'true' : 'false';
     let keyframes = [

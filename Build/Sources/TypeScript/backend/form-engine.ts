@@ -38,6 +38,12 @@ interface OnFieldChangeItem {
   data: {[key: string]: string|number|boolean|null}
 }
 
+type OnChangeFieldHandlerCallback = (data: object, e: Event) => void;
+type PreviewActionCallback = (targetName: string, previewUrl: string, $actionElement: JQuery, modal: ModalElement) => void;
+type NewActionCallback = (targetName: string, $actionElement: JQuery) => void;
+type DuplicateActionCallback = (targetName: string, $actionElement: JQuery) => void;
+type DeleteActionCallback = (targetName: string, $actionElement: JQuery) => void;
+
 /**
  * Module: @typo3/backend/form-engine
  */
@@ -51,7 +57,7 @@ export default (function() {
     }
   }
 
-  const onFieldChangeHandlers: Map<string, Function> = new Map();
+  const onFieldChangeHandlers: Map<string, OnChangeFieldHandlerCallback> = new Map();
 
   // @see \TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange
   onFieldChangeHandlers.set('typo3-backend-form-update-value', (data: {elementName: string}) => {
@@ -590,11 +596,8 @@ export default (function() {
    * Initializes the left character count needed to reach the minimum value based on the field's minlength attribute
    */
   FormEngine.initializeMinimumCharactersLeftViews = function () {
-    // Helper method as replacement for jQuery "parents".
-    const closest: Function = (el: ParentNode, fn: Function) => el && (fn(el) ? el : closest(el.parentNode, fn));
-
     const addOrUpdateCounter = (minCharacterCountLeft: string, event: Event) => {
-      const parent = closest(event.currentTarget, (el: HTMLElement) => el.classList.contains('t3js-formengine-field-item'));
+      const parent = (event.currentTarget as HTMLInputElement).closest('.t3js-formengine-field-item');
       const counter = parent.querySelector('.t3js-charcounter-min');
       const labelValue = TYPO3.lang['FormEngine.minCharactersLeft'].replace('{0}', minCharacterCountLeft);
       if (counter) {
@@ -616,7 +619,7 @@ export default (function() {
       }
     };
     const removeCounter = (event: Event) => {
-      const parent = closest(event.currentTarget, (el: HTMLElement) => el.classList.contains('t3js-formengine-field-item'));
+      const parent = (event.currentTarget as HTMLInputElement).closest('.t3js-formengine-field-item');
       const counter = parent.querySelector('.t3js-charcounter-min');
       if (counter) {
         counter.remove();
@@ -783,7 +786,7 @@ export default (function() {
    *
    * @param {Function} callback
    */
-  FormEngine.preventExitIfNotSaved = function(callback: Function): void {
+  FormEngine.preventExitIfNotSaved = function(callback: (response: boolean) => void): void {
     callback = callback || FormEngine.preventExitIfNotSavedCallback;
 
     if (FormEngine.hasChange()) {
@@ -899,11 +902,7 @@ export default (function() {
     });
   };
 
-  /**
-   * @param {string} name
-   * @param {Function} handler
-   */
-  FormEngine.registerOnFieldChangeHandler = function(name: string, handler: Function): void {
+  FormEngine.registerOnFieldChangeHandler = function(name: string, handler: OnChangeFieldHandlerCallback): void {
     if (onFieldChangeHandlers.has(name)) {
       console.warn('Handler for onFieldChange name `' + name + '` has been overridden.');
     }
@@ -929,7 +928,7 @@ export default (function() {
    * @param {Event} event
    * @param {Function} callback
    */
-  FormEngine.previewAction = function(event: Event, callback: Function): void {
+  FormEngine.previewAction = function(event: Event, callback: PreviewActionCallback): void {
     callback = callback || FormEngine.previewActionCallback;
 
     const previewUrl = (event.currentTarget as HTMLAnchorElement).href;
@@ -980,7 +979,7 @@ export default (function() {
    * @param {element} $actionElement
    * @param {Function} callback
    */
-  FormEngine.showPreviewModal = function(previewUrl: string, isNew: boolean, $actionElement: JQuery, callback: Function): void {
+  FormEngine.showPreviewModal = function(previewUrl: string, isNew: boolean, $actionElement: JQuery, callback: PreviewActionCallback): void {
     const title = TYPO3.lang['label.confirm.view_record_changed.title'] || 'Do you want to save before viewing?';
     const modalCancelButtonConfiguration = {
       text: TYPO3.lang['buttons.confirm.view_record_changed.cancel'] || 'Cancel',
@@ -1036,7 +1035,7 @@ export default (function() {
    * @param {Event} event
    * @param {Function} callback
    */
-  FormEngine.newAction = function(event: Event, callback: Function): void {
+  FormEngine.newAction = function(event: Event, callback: NewActionCallback): void {
     callback = callback || FormEngine.newActionCallback;
 
     const $actionElement = $('<input />').attr('type', 'hidden').attr('name', '_savedoknew').attr('value', '1');
@@ -1079,7 +1078,7 @@ export default (function() {
    * @param {element} $actionElement
    * @param {Function} callback
    */
-  FormEngine.showNewModal = function(isNew: boolean, $actionElement: JQuery, callback: Function): void {
+  FormEngine.showNewModal = function(isNew: boolean, $actionElement: JQuery, callback: NewActionCallback): void {
     const title = TYPO3.lang['label.confirm.new_record_changed.title'] || 'Do you want to save before adding?';
     const content = (
       TYPO3.lang['label.confirm.new_record_changed.content']
@@ -1126,11 +1125,8 @@ export default (function() {
    * When there are changes:
    * Will take action based on local storage preset
    * If preset is not available, a modal will open
-   *
-   * @param {Event} event
-   * @param {Function} callback
    */
-  FormEngine.duplicateAction = function(event: Event, callback: Function): void {
+  FormEngine.duplicateAction = function(event: Event, callback: DuplicateActionCallback): void {
     callback = callback || FormEngine.duplicateActionCallback;
 
     const $actionElement = $('<input />').attr('type', 'hidden').attr('name', '_duplicatedoc').attr('value', '1');
@@ -1166,14 +1162,7 @@ export default (function() {
     }
   };
 
-  /**
-   * Show the duplicate modal
-   *
-   * @param {bool} isNew
-   * @param {element} $actionElement
-   * @param {Function} callback
-   */
-  FormEngine.showDuplicateModal = function(isNew: boolean, $actionElement: JQuery, callback: Function): void {
+  FormEngine.showDuplicateModal = function(isNew: boolean, $actionElement: JQuery, callback: DuplicateActionCallback): void {
     const title = TYPO3.lang['label.confirm.duplicate_record_changed.title'] || 'Do you want to save before duplicating this record?';
     const content = (
       TYPO3.lang['label.confirm.duplicate_record_changed.content']
@@ -1220,11 +1209,8 @@ export default (function() {
    * When there are changes:
    * Will take action based on local storage preset
    * If preset is not available, a modal will open
-   *
-   * @param {Event} event
-   * @param {Function} callback
    */
-  FormEngine.deleteAction = function(event: Event, callback: Function): void {
+  FormEngine.deleteAction = function(event: Event, callback: DeleteActionCallback): void {
     callback = callback || FormEngine.deleteActionCallback;
 
     const $anchorElement = $(event.target);
@@ -1251,7 +1237,7 @@ export default (function() {
    * @param {element} $anchorElement
    * @param {Function} callback
    */
-  FormEngine.showDeleteModal = function($anchorElement: JQuery, callback: Function): void {
+  FormEngine.showDeleteModal = function($anchorElement: JQuery, callback: DeleteActionCallback): void {
     const title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
     let content = (TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete the record \'%s\'?').replace('%s', $anchorElement.data('record-info'));
 

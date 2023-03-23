@@ -17,6 +17,7 @@ import { default as Modal, ModalElement } from './modal';
 import Severity from './severity';
 import Icons from './icons';
 
+type SlideCallback = ($slide: JQuery, settings: WizardSettings, identifier: string) => void;
 
 interface WizardSettings {
   [key: string]: any;
@@ -34,7 +35,7 @@ interface Slide {
   title: string;
   content: string|JQuery;
   severity: SeverityEnum;
-  callback?: Function;
+  callback?: SlideCallback;
 }
 
 /**
@@ -65,7 +66,7 @@ class Wizard {
     title: string,
     content: string = '',
     severity: SeverityEnum = SeverityEnum.info,
-    callback?: Function,
+    callback?: SlideCallback,
   ): Wizard {
     const slide: Slide = {
       identifier: identifier,
@@ -78,7 +79,7 @@ class Wizard {
     return this;
   }
 
-  public addFinalProcessingSlide(callback?: Function): Promise<void> {
+  public addFinalProcessingSlide(callback?: SlideCallback): Promise<void> {
     if (!callback) {
       callback = (): void => {
         this.dismiss();

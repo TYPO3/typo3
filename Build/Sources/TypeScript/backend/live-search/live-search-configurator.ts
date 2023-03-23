@@ -11,9 +11,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-type RendererDeclaration = { module: string, callback: Function };
-type RendererDeclarationCollection = { [key: string]: RendererDeclaration };
-type FunctionObjects = { [key: string]: Function };
+import { ResultItemActionInterface, ResultItemInterface } from '@typo3/backend/live-search/element/result/item/item';
+import { TemplateResult } from 'lit';
+
+type RendererCallback = (resultItem: ResultItemInterface) => TemplateResult;
+type InvokeCallback = (resultItem: ResultItemInterface, action: ResultItemActionInterface) => void;
+
+type RendererDeclaration = { module: string, callback: RendererCallback };
+type RendererDeclarationCollection = Record<string, RendererDeclaration>;
+type FunctionObjects = { [key: string]: InvokeCallback };
 
 class LiveSearchConfigurator {
   private renderers: RendererDeclarationCollection = {};
@@ -23,7 +29,7 @@ class LiveSearchConfigurator {
     return this.renderers;
   }
 
-  public addRenderer(type: string, module: string, callback: Function): void {
+  public addRenderer(type: string, module: string, callback: RendererCallback): void {
     this.renderers[type] = { module, callback };
   }
 
@@ -31,7 +37,7 @@ class LiveSearchConfigurator {
     return this.invokeHandlers;
   }
 
-  public addInvokeHandler(type: string, action: string, callback: Function): void {
+  public addInvokeHandler(type: string, action: string, callback: InvokeCallback): void {
     this.invokeHandlers[type + '_' + action] = callback;
   }
 }

@@ -39,7 +39,7 @@ declare namespace TYPO3 {
 }
 
 declare namespace TBE_EDITOR {
-  export const customEvalFunctions: { [key: string]: Function };
+  export const customEvalFunctions: { [key: string]: (value: string) => string };
 }
 
 declare module '@typo3/ckeditor5-bundle' {
@@ -69,7 +69,7 @@ declare module '@typo3/ckeditor5-bundle' {
 // type definition for global namespace object
 interface Window {
   TYPO3: any;
-  require: Function;
+  require: (moduleName: string) => void;
   list_frame: Window;
 }
 

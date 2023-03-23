@@ -15,9 +15,11 @@ import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import Icons from './icons';
 
+type PreSubmitCallback = (e: JQueryEventObject) => void;
+
 class DocumentSaveActions {
   private static instance: DocumentSaveActions = null;
-  private preSubmitCallbacks: Array<Function> = [];
+  private preSubmitCallbacks: PreSubmitCallback[] = [];
 
   private constructor() {
     DocumentService.ready().then((): void => {
@@ -38,7 +40,7 @@ class DocumentSaveActions {
    *
    * @param {Function} callback
    */
-  public addPreSubmitCallback(callback: Function): void {
+  public addPreSubmitCallback(callback: PreSubmitCallback): void {
     if (typeof callback !== 'function') {
       throw 'callback must be a function.';
     }

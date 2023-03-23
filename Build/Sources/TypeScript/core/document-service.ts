@@ -29,7 +29,7 @@ class DocumentService {
   }
 
   ready(): Promise<Document> {
-    return new Promise<Document>((resolve: Function, reject: Function) => {
+    return new Promise<Document>((resolve: (document: Document) => void, reject: (document: Document) => void) => {
       if (this.documentRef.readyState === 'complete') {
         resolve(this.documentRef);
       } else {

@@ -29,7 +29,6 @@ declare global {
     list_frame: Window;
   }
   interface Window {
-    setFormValueFromBrowseWin: Function;
     editform: any;
     content: any;
   }

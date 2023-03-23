@@ -17,6 +17,7 @@ import Modal from './modal';
 import Severity from './severity';
 import Icons from './icons';
 
+type SlideCallback = ($slide: JQuery, settings: MultiStepWizardSettings, identifier: string) => void;
 
 interface MultiStepWizardSettings {
   [key: string]: any;
@@ -35,7 +36,7 @@ interface Slide {
   progressBarTitle: string;
   content: string|JQuery;
   severity: SeverityEnum;
-  callback?: Function;
+  callback?: SlideCallback;
 }
 
 /**
@@ -84,7 +85,7 @@ class MultiStepWizard {
     content: string = '',
     severity: SeverityEnum = SeverityEnum.info,
     progressBarTitle: string,
-    callback?: Function,
+    callback?: SlideCallback,
   ): MultiStepWizard {
     const slide: Slide = {
       identifier: identifier,
@@ -104,7 +105,7 @@ class MultiStepWizard {
    * @param {Function} callback
    * @returns {Promise<string>}
    */
-  public addFinalProcessingSlide(callback?: Function): Promise<void> {
+  public addFinalProcessingSlide(callback?: SlideCallback): Promise<void> {
     if (!callback) {
       callback = (): void => {
         this.dismiss();

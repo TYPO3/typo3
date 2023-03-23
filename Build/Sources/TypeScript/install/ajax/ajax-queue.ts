@@ -21,7 +21,7 @@ interface Payload {
   data?: { [key: string]: any},
   onfulfilled: (value: AjaxResponse) => Promise<void>;
   onrejected: (reason: string) => void;
-  finally?: Function;
+  finally?: () => void;
 }
 
 /**

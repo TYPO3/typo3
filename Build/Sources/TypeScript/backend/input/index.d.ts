@@ -1,5 +1,5 @@
 interface Options {
-  onClear?: Function;
+  onClear?: (input: HTMLInputElement) => void;
 }
 
 interface HTMLInputElement {
