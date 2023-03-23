@@ -16,7 +16,7 @@
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -162,7 +162,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     public function count(): int
     {
         $columnMap = $this->dataMapper->getDataMap(get_class($this->parentObject))->getColumnMap($this->propertyName);
-        if (!$this->isInitialized && $columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
+        if (!$this->isInitialized && $columnMap->getTypeOfRelation() === Relation::HAS_MANY) {
             $numberOfElements = $this->dataMapper->countRelated($this->parentObject, $this->propertyName, $this->fieldValue);
         } else {
             $this->initialize();

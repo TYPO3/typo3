@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMapFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -41,7 +42,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::SELECT);
-        $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_ONE);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_ONE);
         $expectedColumnMap->setChildTableName('tx_myextension_bar');
         $expectedColumnMap->setParentKeyFieldName('parentid');
         yield 'setRelations detects one to one relation with legacy "Tx_Foo_Bar" class name schema' => [
@@ -61,7 +62,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::SELECT);
-        $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_AND_BELONGS_TO_MANY);
         $expectedColumnMap->setRelationTableName('tx_myextension_mm');
         $expectedColumnMap->setChildTableName('tx_myextension_bar');
         $expectedColumnMap->setChildSortByFieldName('sorting');
@@ -84,7 +85,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::SELECT);
-        $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
         $expectedColumnMap->setChildTableName('tx_myextension_bar');
         $expectedColumnMap->setParentTableFieldName('parenttable');
         $expectedColumnMap->setParentKeyFieldName('parentid');
@@ -106,7 +107,6 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::SELECT);
-        $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_NONE);
         yield 'setRelations detects select renderType selectSingle as non-relational' => [
             'columnName' => $columnName,
             'columnConfiguration' => [
@@ -128,7 +128,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::GROUP);
-        $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
         yield 'columns configuration is initialized for type group' => [
             'columnName' => $columnName,
             'columnConfiguration' => [
@@ -144,7 +144,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::FOLDER);
-        $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
         yield 'columns configuration is initialized for type folder' => [
             'columnName' => $columnName,
             'columnConfiguration' => [
@@ -160,7 +160,6 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::GROUP);
-        $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_NONE);
         yield 'columns configuration is initialized with maxitems = 1 evaluation for type group' => [
             'columnName' => $columnName,
             'columnConfiguration' => [
@@ -177,7 +176,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::GROUP);
-        $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
         yield 'columns configuration is initialized with maxitems > 1 evaluation for type group' => [
             'columnName' => $columnName,
             'columnConfiguration' => [
@@ -194,7 +193,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::SELECT);
-        $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_AND_BELONGS_TO_MANY);
         $expectedColumnMap->setRelationTableName('tx_myextension_mm');
         $expectedColumnMap->setChildTableName('tx_myextension_bar');
         $expectedColumnMap->setChildSortByFieldName('sorting');
@@ -217,7 +216,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::INLINE);
-        $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_AND_BELONGS_TO_MANY);
         $expectedColumnMap->setRelationTableName('tx_myextension_mm');
         $expectedColumnMap->setChildTableName('tx_myextension_righttable');
         $expectedColumnMap->setChildSortByFieldName('sorting');
@@ -314,7 +313,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::SELECT);
-        $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_AND_BELONGS_TO_MANY);
         $expectedColumnMap->setRelationTableName('tx_myextension_mm');
         $expectedColumnMap->setChildTableName('tx_myextension_righttable');
         $expectedColumnMap->setChildSortByFieldName('sorting');
@@ -343,7 +342,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::SELECT);
-        $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_AND_BELONGS_TO_MANY);
         $expectedColumnMap->setRelationTableName('tx_myextension_mm');
         $expectedColumnMap->setChildTableName('tx_myextension_lefttable');
         $expectedColumnMap->setChildSortByFieldName('sorting_foreign');
@@ -371,7 +370,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::INLINE);
-        $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_AND_BELONGS_TO_MANY);
         $expectedColumnMap->setRelationTableName('tx_myextension_mm');
         $expectedColumnMap->setChildTableName('tx_myextension_righttable');
         $expectedColumnMap->setChildSortByFieldName('sorting');

@@ -26,44 +26,13 @@ use TYPO3\CMS\Core\DataHandling\TableColumnType;
 class ColumnMap
 {
     /**
-     * @var string
-     */
-    public const RELATION_NONE = 'RELATION_NONE';
-
-    /**
-     * @var string
-     */
-    public const RELATION_HAS_ONE = 'RELATION_HAS_ONE';
-
-    /**
-     * @var string
-     */
-    public const RELATION_HAS_MANY = 'RELATION_HAS_MANY';
-
-    /**
-     * @var string
-     */
-    public const RELATION_BELONGS_TO_MANY = 'RELATION_BELONGS_TO_MANY';
-
-    /**
-     * @var string
-     */
-    public const RELATION_HAS_AND_BELONGS_TO_MANY = 'RELATION_HAS_AND_BELONGS_TO_MANY';
-
-    /**
      * The column name
      *
      * @var string
      */
     private $columnName;
 
-    /**
-     * todo: Check if this property should support null. If not, set default value.
-     * The type of relation
-     *
-     * @var string|null
-     */
-    private $typeOfRelation;
+    private ColumnMap\Relation $typeOfRelation = ColumnMap\Relation::NONE;
 
     /**
      * todo: Check if this property should support null. If not, set default value.
@@ -168,12 +137,12 @@ class ColumnMap
         $this->columnName = $columnName;
     }
 
-    public function setTypeOfRelation(string $typeOfRelation): void
+    public function setTypeOfRelation(ColumnMap\Relation $typeOfRelation): void
     {
         $this->typeOfRelation = $typeOfRelation;
     }
 
-    public function getTypeOfRelation(): string
+    public function getTypeOfRelation(): ColumnMap\Relation
     {
         return $this->typeOfRelation;
     }

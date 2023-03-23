@@ -68,7 +68,7 @@ class QueryParserTest extends FunctionalTestCase
     }
 
     /**
-     * Test ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY
+     * Test Relation::HAS_AND_BELONGS_TO_MANY
      *
      * @test
      */
@@ -84,7 +84,7 @@ class QueryParserTest extends FunctionalTestCase
     }
 
     /**
-     * Test ColumnMap::RELATION_HAS_MANY
+     * Test Relation::HAS_MANY
      *
      * @test
      */
@@ -101,7 +101,7 @@ class QueryParserTest extends FunctionalTestCase
     }
 
     /**
-     * Test ColumnMap::RELATION_HAS_ONE, ColumnMap::ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY
+     * Test Relation::HAS_ONE, ColumnMap::Relation::HAS_AND_BELONGS_TO_MANY
      *
      * @test
      */

@@ -32,6 +32,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception\NonExistentPropertyException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception\UnknownPropertyTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory;
@@ -372,7 +373,7 @@ class DataMapper
     protected function getEmptyRelationValue(DomainObjectInterface $parentObject, $propertyName)
     {
         $columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
-        $relatesToOne = $columnMap->getTypeOfRelation() == ColumnMap::RELATION_HAS_ONE;
+        $relatesToOne = $columnMap->getTypeOfRelation() == Relation::HAS_ONE;
         return $relatesToOne ? null : [];
     }
 
@@ -427,11 +428,11 @@ class DataMapper
         );
         $query->getQuerySettings()->setLanguageAspect($languageAspect);
 
-        if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
+        if ($columnMap->getTypeOfRelation() === Relation::HAS_MANY) {
             if (null !== $orderings = $this->getOrderingsForColumnMap($columnMap)) {
                 $query->setOrderings($orderings);
             }
-        } elseif ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+        } elseif ($columnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY) {
             $query->setSource($this->getSource($parentObject, $propertyName));
             if ($columnMap->getChildSortByFieldName() !== null) {
                 $query->setOrderings([$columnMap->getChildSortByFieldName() => QueryInterface::ORDER_ASCENDING]);
@@ -506,7 +507,7 @@ class DataMapper
                 // When querying MM relations directly, Typo3DbQueryParser uses enableFields and thus, filters
                 // out versioned records by default. However, we directly query versioned UIDs here, so we want
                 // to include the versioned records explicitly.
-                if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+                if ($columnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY) {
                     $query->getQuerySettings()->setEnableFieldsToBeIgnored(['pid']);
                     $query->getQuerySettings()->setIgnoreEnableFields(true);
                 }
@@ -523,7 +524,7 @@ class DataMapper
             $value = $parentObject;
             // If this a MM relation, and MM relations do not know about workspaces, the MM relations always point to the
             // versioned record, so this must be taken into account here and the versioned record's UID must be used.
-            if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+            if ($columnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY) {
                 // The versioned UID is used ideally the version ID of a translated record, so this takes precedence over the localized UID
                 if ($value->_hasProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) && $value->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) > 0 && $value->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) !== $value->getUid()) {
                     $value = (int)$value->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID);

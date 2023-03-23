@@ -1074,7 +1074,7 @@ class RelationTest extends FunctionalTestCase
     }
 
     /**
-     * Addresses ColumnMap::RELATION_HAS_ONE relations.
+     * Addresses Relation::HAS_ONE relations.
      * @test
      * @dataProvider distinctDataProvider
      */
@@ -1092,7 +1092,7 @@ class RelationTest extends FunctionalTestCase
     }
 
     /**
-     * Addresses ColumnMap::RELATION_HAS_ONE relations.
+     * Addresses Relation::HAS_ONE relations.
      * @test
      * @dataProvider distinctDataProvider
      */
@@ -1120,7 +1120,7 @@ class RelationTest extends FunctionalTestCase
     }
 
     /**
-     * Addresses ColumnMap::RELATION_HAS_MANY relations.
+     * Addresses Relation::HAS_MANY relations.
      * @test
      * @dataProvider distinctDataProvider
      */
@@ -1140,7 +1140,7 @@ class RelationTest extends FunctionalTestCase
     }
 
     /**
-     * Addresses ColumnMap::RELATION_HAS_MANY relations.
+     * Addresses Relation::HAS_MANY relations.
      * @test
      * @dataProvider distinctDataProvider
      */
@@ -1167,7 +1167,7 @@ class RelationTest extends FunctionalTestCase
     }
 
     /**
-     * Addresses ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY relations.
+     * Addresses Relation::HAS_AND_BELONGS_TO_MANY relations.
      * @test
      * @dataProvider distinctDataProvider
      */
@@ -1185,7 +1185,7 @@ class RelationTest extends FunctionalTestCase
     }
 
     /**
-     * Addresses ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY relations.
+     * Addresses Relation::HAS_AND_BELONGS_TO_MANY relations.
      * @test
      * @dataProvider distinctDataProvider
      */
@@ -1213,7 +1213,7 @@ class RelationTest extends FunctionalTestCase
     }
 
     /**
-     * Addresses ColumnMap::RELATION_HAS_ONE, ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY relations.
+     * Addresses Relation::HAS_ONE, Relation::HAS_AND_BELONGS_TO_MANY relations.
      * @test
      * @dataProvider distinctDataProvider
      */
@@ -1231,7 +1231,7 @@ class RelationTest extends FunctionalTestCase
     }
 
     /**
-     * Addresses ColumnMap::RELATION_HAS_ONE, ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY relations.
+     * Addresses Relation::HAS_ONE, Relation::HAS_AND_BELONGS_TO_MANY relations.
      * @test
      * @dataProvider distinctDataProvider
      */

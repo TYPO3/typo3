@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoPropertyTypesException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
@@ -87,7 +88,6 @@ class ColumnMapFactory
     protected function setRelations(ColumnMap $columnMap, ?array $columnConfiguration, ?string $type, ?string $elementType): ColumnMap
     {
         if (!isset($columnConfiguration)) {
-            $columnMap->setTypeOfRelation(ColumnMap::RELATION_NONE);
             return $columnMap;
         }
 
@@ -112,7 +112,7 @@ class ColumnMapFactory
                 || (isset($columnConfiguration['maxitems']) && $columnConfiguration['maxitems'] > 1)
             )
         ) {
-            $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
+            $columnMap->setTypeOfRelation(Relation::HAS_MANY);
             return $columnMap;
         }
 
@@ -120,11 +120,10 @@ class ColumnMapFactory
             isset($columnConfiguration['type']) && ($columnConfiguration['type'] === 'group' || $columnConfiguration['type'] === 'folder')
             && (!isset($columnConfiguration['maxitems']) || $columnConfiguration['maxitems'] > 1)
         ) {
-            $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
+            $columnMap->setTypeOfRelation(Relation::HAS_MANY);
             return $columnMap;
         }
 
-        $columnMap->setTypeOfRelation(ColumnMap::RELATION_NONE);
         return $columnMap;
     }
 
@@ -160,7 +159,7 @@ class ColumnMapFactory
         // todo: this method should only be called with proper arguments which means that the TCA integrity check should
         // todo: take place outside this method.
 
-        $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_ONE);
+        $columnMap->setTypeOfRelation(Relation::HAS_ONE);
         // check if foreign_table is set, which usually won't be the case for type "group" fields
         if (!empty($columnConfiguration['foreign_table'])) {
             $columnMap->setChildTableName($columnConfiguration['foreign_table']);
@@ -189,7 +188,7 @@ class ColumnMapFactory
         // todo: this method should only be called with proper arguments which means that the TCA integrity check should
         // todo: take place outside this method.
 
-        $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
+        $columnMap->setTypeOfRelation(Relation::HAS_MANY);
         // check if foreign_table is set, which usually won't be the case for type "group" fields
         if (!empty($columnConfiguration['foreign_table'])) {
             $columnMap->setChildTableName($columnConfiguration['foreign_table']);
@@ -219,7 +218,7 @@ class ColumnMapFactory
         // todo: take place outside this method.
 
         if (isset($columnConfiguration['MM'])) {
-            $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
+            $columnMap->setTypeOfRelation(Relation::HAS_AND_BELONGS_TO_MANY);
             // check if foreign_table is set, which usually won't be the case for type "group" fields
             if (!empty($columnConfiguration['foreign_table'])) {
                 $columnMap->setChildTableName($columnConfiguration['foreign_table']);

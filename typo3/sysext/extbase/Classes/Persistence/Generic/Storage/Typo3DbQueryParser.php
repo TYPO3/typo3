@@ -36,6 +36,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface;
@@ -333,7 +334,7 @@ class Typo3DbQueryParser
             $dataMap = $this->dataMapper->getDataMap($className);
             $columnMap = $dataMap->getColumnMap($propertyName);
             $typeOfRelation = $columnMap instanceof ColumnMap ? $columnMap->getTypeOfRelation() : null;
-            if ($typeOfRelation === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+            if ($typeOfRelation === Relation::HAS_AND_BELONGS_TO_MANY) {
                 /** @var ColumnMap $columnMap */
                 $relationTableName = (string)$columnMap->getRelationTableName();
                 $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
@@ -357,7 +358,7 @@ class Typo3DbQueryParser
                     '(' . $queryBuilderForSubselect->getSQL() . ')'
                 );
             }
-            if ($typeOfRelation === ColumnMap::RELATION_HAS_MANY) {
+            if ($typeOfRelation === Relation::HAS_MANY) {
                 $parentKeyFieldName = $columnMap->getParentKeyFieldName();
                 if (isset($parentKeyFieldName)) {
                     $childTableName = $columnMap->getChildTableName();
@@ -987,7 +988,7 @@ class Typo3DbQueryParser
             return;
         }
 
-        if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_ONE) {
+        if ($columnMap->getTypeOfRelation() === Relation::HAS_ONE) {
             if (isset($parentKeyFieldName)) {
                 // @todo: no test for this part yet
                 $joinConditionExpression = $this->queryBuilder->expr()->eq(
@@ -1005,7 +1006,7 @@ class Typo3DbQueryParser
             $this->queryBuilder->andWhere(
                 $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $childTableAlias, $realTableName)
             );
-        } elseif ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
+        } elseif ($columnMap->getTypeOfRelation() === Relation::HAS_MANY) {
             // @todo: no tests for this part yet
             if (isset($parentKeyFieldName)) {
                 $joinConditionExpression = $this->queryBuilder->expr()->eq(
@@ -1025,7 +1026,7 @@ class Typo3DbQueryParser
                 $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $childTableAlias, $realTableName)
             );
             $this->suggestDistinctQuery = true;
-        } elseif ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+        } elseif ($columnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY) {
             $relationTableName = (string)$columnMap->getRelationTableName();
             $relationTableAlias = $this->getUniqueAlias($relationTableName, $fullPropertyPath . '_mm');
 

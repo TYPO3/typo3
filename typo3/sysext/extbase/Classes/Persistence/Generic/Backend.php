@@ -33,6 +33,7 @@ use TYPO3\CMS\Extbase\Event\Persistence\ModifyQueryBeforeFetchingObjectDataEvent
 use TYPO3\CMS\Extbase\Event\Persistence\ModifyResultAfterFetchingObjectDataEvent;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -374,7 +375,7 @@ class Backend implements BackendInterface, SingletonInterface
         $property = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
         foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
             $this->detachObjectFromParentObject($removedObject, $parentObject, $propertyName);
-            if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY && $property->getCascadeValue() === 'remove') {
+            if ($columnMap->getTypeOfRelation() === Relation::HAS_MANY && $property->getCascadeValue() === 'remove') {
                 $this->removeEntity($removedObject);
             }
         }
@@ -455,9 +456,9 @@ class Backend implements BackendInterface, SingletonInterface
         $parentDataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
 
         $parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
-        if ($parentColumnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
+        if ($parentColumnMap->getTypeOfRelation() === Relation::HAS_MANY) {
             $this->attachObjectToParentObjectRelationHasMany($object, $parentObject, $parentPropertyName, $sortingPosition);
-        } elseif ($parentColumnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+        } elseif ($parentColumnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY) {
             $this->insertRelationInRelationtable($object, $parentObject, $parentPropertyName, $sortingPosition);
         }
     }
@@ -472,9 +473,9 @@ class Backend implements BackendInterface, SingletonInterface
     {
         $parentDataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
-        if ($parentColumnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
+        if ($parentColumnMap->getTypeOfRelation() === Relation::HAS_MANY) {
             $this->attachObjectToParentObjectRelationHasMany($object, $parentObject, $parentPropertyName, $sortingPosition);
-        } elseif ($parentColumnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+        } elseif ($parentColumnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY) {
             $this->updateRelationInRelationTable($object, $parentObject, $parentPropertyName, $sortingPosition);
         }
     }
@@ -490,10 +491,10 @@ class Backend implements BackendInterface, SingletonInterface
     {
         $parentDataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
-        if ($parentColumnMap->getTypeOfRelation() !== ColumnMap::RELATION_HAS_MANY) {
+        if ($parentColumnMap->getTypeOfRelation() !== Relation::HAS_MANY) {
             throw new IllegalRelationTypeException(
-                'Parent column relation type is ' . $parentColumnMap->getTypeOfRelation() .
-                ' but should be ' . ColumnMap::RELATION_HAS_MANY,
+                'Parent column relation type is ' . Relation::class . '::' . $parentColumnMap->getTypeOfRelation()->name .
+                ' but should be ' . Relation::class . '::' . Relation::HAS_MANY->name,
                 1345368105
             );
         }
@@ -528,7 +529,7 @@ class Backend implements BackendInterface, SingletonInterface
     {
         $parentDataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
-        if ($parentColumnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
+        if ($parentColumnMap->getTypeOfRelation() === Relation::HAS_MANY) {
             $row = [];
             $parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
             if ($parentKeyFieldName !== null) {
@@ -549,7 +550,7 @@ class Backend implements BackendInterface, SingletonInterface
             if (!empty($row)) {
                 $this->updateObject($object, $row);
             }
-        } elseif ($parentColumnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+        } elseif ($parentColumnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY) {
             $this->deleteRelationFromRelationtable($object, $parentObject, $parentPropertyName);
         }
     }
@@ -584,9 +585,9 @@ class Backend implements BackendInterface, SingletonInterface
                 continue;
             }
             $columnMap = $dataMap->getColumnMap($propertyName);
-            if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_ONE) {
+            if ($columnMap->getTypeOfRelation() === Relation::HAS_ONE) {
                 $row[$columnMap->getColumnName()] = 0;
-            } elseif ($columnMap->getTypeOfRelation() !== ColumnMap::RELATION_NONE) {
+            } elseif ($columnMap->getTypeOfRelation() !== Relation::NONE) {
                 if ($columnMap->getParentKeyFieldName() === null) {
                     // CSV type relation
                     $row[$columnMap->getColumnName()] = '';
@@ -886,7 +887,7 @@ class Backend implements BackendInterface, SingletonInterface
             }
             $propertyValue = $object->_getProperty($propertyName);
             if ($property->getCascadeValue() === 'remove') {
-                if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
+                if ($columnMap->getTypeOfRelation() === Relation::HAS_MANY) {
                     foreach ($propertyValue as $containedObject) {
                         $this->removeEntity($containedObject);
                     }
@@ -894,7 +895,7 @@ class Backend implements BackendInterface, SingletonInterface
                     $this->removeEntity($propertyValue);
                 }
             } elseif ($dataMap->getDeletedFlagColumnName() === null
-                && $columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY
+                && $columnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY
             ) {
                 $this->deleteAllRelationsFromRelationtable($object, $propertyName);
             }
