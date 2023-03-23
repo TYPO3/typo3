@@ -37,6 +37,16 @@ return [
                 'typo3/cms-backend/locked-backend',
             ],
         ],
+        'typo3/cms-backend/csp-report' => [
+            'target' => \TYPO3\CMS\Backend\Middleware\ContentSecurityPolicyReporter::class,
+            'after' => [
+                'typo3/cms-core/normalized-params-attribute',
+                'typo3/cms-backend/https-redirector',
+            ],
+            'before' => [
+                'typo3/cms-backend/backend-routing',
+            ],
+        ],
         'typo3/cms-backend/backend-routing' => [
             'target' => \TYPO3\CMS\Backend\Middleware\BackendRouteInitialization::class,
             'after' => [

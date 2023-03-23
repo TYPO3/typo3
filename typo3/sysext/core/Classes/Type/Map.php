@@ -97,6 +97,9 @@ final class Map implements \ArrayAccess, \Countable, \Iterator
 
     public function offsetGet(mixed $offset): mixed
     {
+        if (!$this->offsetExists($offset)) {
+            return null;
+        }
         return $this->storage->offsetGet($offset);
     }
 

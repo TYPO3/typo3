@@ -31,6 +31,16 @@ To delegate CSP handling to TYPO3, the scope-specific feature flags need to be e
 
 For new installations `security.backend.enforceContentSecurityPolicy` is enabled via factory default settings.
 
+Potential CSP violations are reported back to the TYPO3 system and persisted internally in database table
+`sys_http_report`. A corresponding Content-Security-Policy backend module supports users to keep track of
+recent violations and - if applicable - to select potential resolutions (stored in database table
+`sys_csp_resolution`) which extends the Content-Security-Policy for the given scope during runtime.
+
+As an alternative, the reporting URL can be configured to use 3rd party services as well:
+
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['contentSecurityPolicyReportingUrl'] = 'https://csp-violation.example.org/';`;
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['contentSecurityPolicyReportingUrl'] = 'https://csp-violation.example.org/';`;
+
 Impact
 ======
 
@@ -54,7 +64,7 @@ Configuration
     use TYPO3\CMS\Core\Security\Nonce;
 
     $nonce = Nonce::create();
-    $policy = (new Policy($nonce))
+    $policy = (new Policy())
         // results in `default-src 'self'`
         ->default(SourceKeyword::self)
         // extends the ancestor directive ('default-src'), thus reuses 'self' and adds additional sources
@@ -66,7 +76,7 @@ Configuration
         // sets (overrides) the directive, thus ignores 'self' of the 'default-src' directive
         // results in `worker-src blob:`
         ->set(Directive::WorkerSrc, SourceScheme::blob);
-    header('Content-Security-Policy: ' . (string)$policy);
+    header('Content-Security-Policy: ' . $policy->compile($nonce));
 
 The result of the compiled and serialized result as HTTP header would look similar to this
 (the following sections are using the same example, but utilize different techniques for the declarations).
@@ -152,9 +162,20 @@ In the frontend, the dedicated :file:`sites/my-site/csp.yaml` can be used to dec
 PSR-14 Events
 =============
 
+PolicyMutatedEvent
+------------------
+
 The :php:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\PolicyMutatedEvent` will
 be dispatched once all mutations have been applied to the current policy object, just
 before the corresponding HTTP header is added to the HTTP response object.
 This allows individual adjustments for custom implementations.
+
+InvestigateMutationsEvent
+-------------------------
+
+The :php:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\InvestigateMutationsEvent` will
+be dispatched when the Content-Security-Policy backend module is searching for potential resolutions
+to a specific CSP violation report. This way, 3rd party integrations that rely on external resources
+(e.g. maps, file storage, content processing/translation, ...) can provided the necessary mutations.
 
 .. index:: Backend, Fluid, Frontend, LocalConfiguration, PHP-API, ext:core

@@ -390,4 +390,10 @@ return [
         'path' => '/password/generate',
         'target' => \TYPO3\CMS\Core\Controller\PasswordGeneratorController::class . '::generate',
     ],
+
+    'security_csp_control' => [
+        'access' => 'systemMaintainer',
+        'path' => '/security/csp/control',
+        'target' => \TYPO3\CMS\Backend\Security\ContentSecurityPolicy\CspAjaxController::class . '::handleRequest',
+    ],
 ];

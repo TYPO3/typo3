@@ -18,8 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Core\RequestId;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\PolicyMutatedEvent;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\Resolution;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ResolutionRepository;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Map;
@@ -31,6 +37,8 @@ use TYPO3\CMS\Core\Type\Map;
  */
 final class PolicyProvider
 {
+    protected const REPORTING_URI = '@http-reporting';
+
     /**
      * @param Map<Scope, Map<MutationOrigin, MutationCollection>> $mutations
      */
@@ -39,6 +47,7 @@ final class PolicyProvider
         private readonly RequestId $requestId,
         private readonly SiteFinder $siteFinder,
         private readonly ModelService $modelService,
+        private readonly ResolutionRepository $resolutionRepository,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
@@ -50,7 +59,10 @@ final class PolicyProvider
     {
         // @todo add policy cache per scope
         $defaultPolicy = $this->provideDefaultFor($scope);
-        $mutationCollections = [];
+        $mutationCollections = array_map(
+            static fn (Resolution $resolution) => $resolution->mutationCollection,
+            $this->resolutionRepository->findByScope($scope)
+        );
         $currentPolicy = $defaultPolicy->mutate(...$mutationCollections);
         $event = new PolicyMutatedEvent($scope, $defaultPolicy, $currentPolicy, ...$mutationCollections);
         $this->eventDispatcher->dispatch($event);
@@ -70,7 +82,7 @@ final class PolicyProvider
         if ($isFrontendSite && $this->shallInheritDefault($scope)) {
             $policy = $this->provideFor(Scope::frontend());
         } else {
-            $policy = new Policy($this->requestId->nonce);
+            $policy = new Policy();
         }
         // apply static mutations (from DI, declared in `Configuration/ContentSecurityPolicies.php`)
         foreach ($this->mutations[$scope] ?? [] as $mutationCollection) {
@@ -83,6 +95,33 @@ final class PolicyProvider
             }
         }
         return $policy;
+    }
+
+    public function getReportingUrlFor(Scope $scope, ServerRequestInterface $request): ?UriInterface
+    {
+        $value = $GLOBALS['TYPO3_CONF_VARS'][$scope->type->abbreviate()]['contentSecurityPolicyReportingUrl'] ?? null;
+        if (!empty($value) && is_string($value)) {
+            try {
+                return new Uri($value);
+            } catch (\InvalidArgumentException) {
+                return null;
+            }
+        }
+        $uriBase = $this->getDefaultReportingUriBase($scope, $request);
+        return $uriBase->withQuery($uriBase->getQuery() . '&requestTime=' . $this->requestId->microtime);
+    }
+
+    /**
+     * Returns the URI base, for better partitioning it should be extended by `&requestTime=...`
+     */
+    public function getDefaultReportingUriBase(Scope $scope, ServerRequestInterface $request, bool $absolute = true): UriInterface
+    {
+        $normalizedParams = $request->getAttribute('normalizedParams') ?? NormalizedParams::createFromRequest($request);
+        $url = $absolute ? $normalizedParams->getSiteUrl() : $normalizedParams->getSitePath();
+        if ($scope->type->isBackend()) {
+            $url .= 'typo3/';
+        }
+        return (new Uri($url . self::REPORTING_URI))->withQuery('csp=report');
     }
 
     /**

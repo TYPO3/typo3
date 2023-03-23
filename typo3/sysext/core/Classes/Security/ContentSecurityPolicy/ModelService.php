@@ -26,6 +26,25 @@ use TYPO3\CMS\Core\Security\Nonce;
  */
 class ModelService
 {
+    public function buildMutationSuggestionFromArray(array $array): MutationSuggestion
+    {
+        return new MutationSuggestion(
+            $this->buildMutationCollectionFromArray($array['collection'] ?? []),
+            (string)($array['identifier'] ?? ''),
+            isset($array['priority']) ? (int)$array['priority'] : null,
+            $array['label'] ?? null
+        );
+    }
+
+    public function buildMutationCollectionFromArray(array $array): MutationCollection
+    {
+        $mutations = array_map(
+            [$this, 'buildMutationFromArray'],
+            $array['mutations'] ?? []
+        );
+        return new MutationCollection(...$mutations);
+    }
+
     public function buildMutationFromArray(array $array): Mutation
     {
         return new Mutation(

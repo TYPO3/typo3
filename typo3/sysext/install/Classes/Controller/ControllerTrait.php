@@ -32,12 +32,12 @@ trait ControllerTrait
     /**
      * Using fixed Content-Security-Policy for Admin Tool (extensions and database might not be available)
      */
-    protected function createContentSecurityPolicy(Nonce $nonce): Policy
+    protected function createContentSecurityPolicy(): Policy
     {
-        return GeneralUtility::makeInstance(Policy::class, $nonce)
+        return GeneralUtility::makeInstance(Policy::class)
             ->default(SourceKeyword::self)
             // script-src 'nonce-...' required for importmaps
-            ->extend(Directive::ScriptSrc, $nonce)
+            ->extend(Directive::ScriptSrc, SourceKeyword::nonceProxy)
             // `style-src 'unsafe-inline'` required for lit in safari and firefox to allow inline <style> tags
             // (for browsers that do not support https://caniuse.com/mdn-api_shadowroot_adoptedstylesheets)
             ->extend(Directive::StyleSrc, SourceKeyword::unsafeInline)

@@ -63,9 +63,13 @@ enum Directive: string
         return $ancestors;
     }
 
-    public function isReasonable(): bool
+    /**
+     * Determines whether a mutation for the current directive would be reasonable.
+     * For instance, changing the `default-src` or `report-uri` would not qualify.
+     */
+    public function isMutationReasonable(): bool
     {
-        return !in_array($this, self::reasonableItems(), true);
+        return in_array($this, self::reasonableMutationItems(), true);
     }
 
     /**
@@ -87,7 +91,7 @@ enum Directive: string
     /**
      * @return list<self>
      */
-    private static function reasonableItems(): array
+    private static function reasonableMutationItems(): array
     {
         return [
             self::ConnectSrc,

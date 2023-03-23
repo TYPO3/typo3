@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal This implementation still might be adjusted
  */
-class Policy implements \Stringable
+class Policy
 {
     /**
      * @var Map<Directive, SourceCollection>
@@ -35,11 +35,9 @@ class Policy implements \Stringable
     protected Map $directives;
 
     /**
-     * @param Nonce $nonce used to substitute `SourceKeyword::nonceProxy` items during compilation
      * @param SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources (optional) default-src sources
      */
     public function __construct(
-        protected readonly Nonce $nonce,
         SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources
     ) {
         $this->directives = new Map();
@@ -47,11 +45,6 @@ class Policy implements \Stringable
         if (!$collection->isEmpty()) {
             $this->directives[Directive::DefaultSrc] = $collection;
         }
-    }
-
-    public function __toString(): string
-    {
-        return $this->compile();
     }
 
     public function isEmpty(): bool
@@ -72,6 +65,8 @@ class Policy implements \Stringable
                 $self = $self->set($mutation->directive, ...$mutation->sources);
             } elseif ($mutation->mode === MutationMode::Extend) {
                 $self = $self->extend($mutation->directive, ...$mutation->sources);
+            } elseif ($mutation->mode === MutationMode::Reduce) {
+                $self = $self->reduce($mutation->directive, ...$mutation->sources);
             } elseif ($mutation->mode === MutationMode::Remove) {
                 $self = $self->remove($mutation->directive);
             }
@@ -99,7 +94,7 @@ class Policy implements \Stringable
             return $this;
         }
         foreach ($directive->getAncestors() as $ancestorDirective) {
-            if (isset($this->directives[$ancestorDirective])) {
+            if ($this->has($ancestorDirective)) {
                 $ancestorCollection = $this->directives[$ancestorDirective];
                 break;
             }
@@ -109,7 +104,19 @@ class Policy implements \Stringable
             $this->directives[$directive] ?? null,
             $collection,
         ]));
-        return $this->set($directive, $targetCollection);
+        return $this->changeDirectiveSources($directive, $targetCollection);
+    }
+
+    public function reduce(
+        Directive $directive,
+        SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources
+    ): self {
+        if (!$this->has($directive)) {
+            return $this;
+        }
+        $collection = $this->asMergedSourceCollection(...$sources);
+        $targetCollection = $this->directives[$directive]->exclude($collection);
+        return $this->changeDirectiveSources($directive, $targetCollection);
     }
 
     /**
@@ -120,12 +127,7 @@ class Policy implements \Stringable
         SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources
     ): self {
         $collection = $this->asMergedSourceCollection(...$sources);
-        if ($collection->isEmpty()) {
-            return $this;
-        }
-        $target = clone $this;
-        $target->directives[$directive] = $collection;
-        return $target;
+        return $this->changeDirectiveSources($directive, $collection);
     }
 
     /**
@@ -133,7 +135,7 @@ class Policy implements \Stringable
      */
     public function remove(Directive $directive): self
     {
-        if (!isset($this->directives[$directive])) {
+        if (!$this->has($directive)) {
             return $this;
         }
         $target = clone $this;
@@ -154,6 +156,11 @@ class Policy implements \Stringable
             }
         }
         return $target;
+    }
+
+    public function has(Directive $directive): bool
+    {
+        return isset($this->directives[$directive]);
     }
 
     /**
@@ -194,13 +201,15 @@ class Policy implements \Stringable
 
     /**
      * Compiles this policy and returns the serialized representation to be used as HTTP header value.
+     *
+     * @param Nonce $nonce used to substitute `SourceKeyword::nonceProxy` items during compilation
      */
-    public function compile(): string
+    public function compile(Nonce $nonce): string
     {
         $policyParts = [];
         $service = GeneralUtility::makeInstance(ModelService::class);
         foreach ($this->prepare()->directives as $directive => $collection) {
-            $directiveParts = $service->compileSources($this->nonce, $collection);
+            $directiveParts = $service->compileSources($nonce, $collection);
             if ($directiveParts !== []) {
                 array_unshift($directiveParts, $directive->value);
                 $policyParts[] = implode(' ', $directiveParts);
@@ -209,12 +218,66 @@ class Policy implements \Stringable
         return implode('; ', $policyParts);
     }
 
+    public function containsDirective(Directive $directive, SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources): bool
+    {
+        $sources = $this->asMergedSourceCollection(...$sources);
+        return (bool)$this->directives[$directive]?->contains(...$sources->sources);
+    }
+
+    public function coversDirective(Directive $directive, SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$sources): bool
+    {
+        $sources = $this->asMergedSourceCollection(...$sources);
+        return (bool)$this->directives[$directive]?->covers(...$sources->sources);
+    }
+
+    /**
+     * Whether the current policy contains another policy (in terms of instances and values, but without inference).
+     */
+    public function contains(Policy $other): bool
+    {
+        if ($other->isEmpty()) {
+            return false;
+        }
+        foreach ($other->directives as $directive => $collection) {
+            if (!$this->containsDirective($directive, $collection)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Whether the current policy covers another policy (in terms of CSP inference, considering wildcards and similar).
+     */
+    public function covers(Policy $other): bool
+    {
+        if ($other->isEmpty()) {
+            return false;
+        }
+        foreach ($other->directives as $directive => $collection) {
+            if (!$this->coversDirective($directive, $collection)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     protected function compareSources(
         SourceKeyword|SourceScheme|Nonce|UriValue|RawValue $a,
         SourceKeyword|SourceScheme|Nonce|UriValue|RawValue $b
     ): int {
         $service = GeneralUtility::makeInstance(ModelService::class);
         return $service->serializeSource($a) <=> $service->serializeSource($b);
+    }
+
+    protected function changeDirectiveSources(Directive $directive, SourceCollection $sources): self
+    {
+        if ($sources->isEmpty()) {
+            return $this;
+        }
+        $target = clone $this;
+        $target->directives[$directive] = $sources;
+        return $target;
     }
 
     protected function asMergedSourceCollection(SourceCollection|SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$subjects): SourceCollection

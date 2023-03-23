@@ -18,15 +18,17 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
 use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Domain\EqualityInterface;
 use TYPO3\CMS\Core\Http\Uri;
 
 /**
  * Bridge to UriInterface to be used in Content-Security-Policy models,
  * which e.g. supports wildcard domains, like `*.typo3.org` or `https://*.typo3.org`.
  */
-final class UriValue extends Uri implements \Stringable
+final class UriValue extends Uri implements \Stringable, EqualityInterface, CoveringInterface
 {
     private string $domainName = '';
+    private bool $domainWildcard = false;
 
     public static function fromUri(UriInterface $other): self
     {
@@ -36,9 +38,46 @@ final class UriValue extends Uri implements \Stringable
     public function __toString(): string
     {
         if ($this->domainName !== '') {
-            return $this->domainName;
+            return ($this->domainWildcard ? '*.' : '') . $this->domainName;
         }
         return parent::__toString();
+    }
+
+    public function equals(EqualityInterface $other): bool
+    {
+        return $other instanceof self && (string)$other === (string)$this;
+    }
+
+    public function covers(CoveringInterface $other): bool
+    {
+        if (!$other instanceof self) {
+            return false;
+        }
+        // `*.example.com` or `example.com`
+        if ($this->domainName !== '') {
+            if ($this->domainWildcard) {
+                if (($other->domainName !== '' && str_ends_with($other->domainName, '.' . $this->domainName))
+                    || ($other->host !== '' && str_ends_with($other->host, '.' . $this->domainName))
+                ) {
+                    return true;
+                }
+            } else {
+                if (($other->domainName !== '' && $other->domainName === $this->domainName)
+                    || ($other->host !== '' && $other->host === $this->domainName)
+                ) {
+                    return true;
+                }
+            }
+        }
+        // `https://*.example.com`
+        if ($other->host !== ''
+            && $this->scheme === $other->scheme
+            && str_starts_with($this->host, '*.')
+            && str_ends_with($other->host, substr($this->host, 1))
+        ) {
+            return true;
+        }
+        return str_starts_with((string)$other, (string)$this);
     }
 
     public function getDomainName(): string
@@ -53,7 +92,8 @@ final class UriValue extends Uri implements \Stringable
         $this->fragment = '';
         // handle domain names that were recognized as paths
         if ($this->canBeParsedAsWildcardDomainName()) {
-            $this->domainName = '*.' . substr($this->path, 4);
+            $this->domainName = substr($this->path, 4);
+            $this->domainWildcard = true;
         } elseif ($this->canBeParsedAsDomainName()) {
             $this->domainName = $this->path;
         }
@@ -76,7 +116,7 @@ final class UriValue extends Uri implements \Stringable
             || $this->host !== ''
             || $this->query !== ''
             || $this->userInfo !== ''
-            || stripos($this->path, '%2A') !== 0
+            || !str_starts_with($this->path, '%2A')
         ) {
             return false;
         }

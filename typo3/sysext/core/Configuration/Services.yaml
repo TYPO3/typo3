@@ -531,6 +531,16 @@ services:
     arguments:
       $mutations: '@content.security.policies'
 
+  TYPO3\CMS\Core\Security\ContentSecurityPolicy\Processing\AssetHandler:
+    tags:
+      - name: event.listener
+        identifier: 'security-csp-asset-handler'
+
+  TYPO3\CMS\Core\Security\ContentSecurityPolicy\Processing\GoogleMapsHandler:
+    tags:
+      - name: event.listener
+        identifier: 'security-csp-google-maps-handler'
+
   # External dependencies
 
   GuzzleHttp\Client:

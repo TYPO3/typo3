@@ -1,0 +1,68 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/backend/security/element/csp-reports.js'
+        }"
+    />
+    <h1>Content Security Policy</h1>
+
+
+    <f:if condition="{configurationStatus.featureDisabled.backend} || {configurationStatus.featureDisabled.frontend}">
+        <div class="callout callout-info">
+            <div class="media">
+                <div class="media-left">
+                    <span class="icon-emphasized">
+                        <core:icon identifier="actions-info" size="small" />
+                    </span>
+                </div>
+                <div class="media-body">
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.callout.featureDisabled.message" />
+                    <ul>
+                        <f:for each="{configurationStatus.featureDisabled}" as="value" key="key">
+                            <li><code>security.{key}.enforceContentSecurityPolicy</code></li>
+                        </f:for>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </f:if>
+
+    <f:if condition="{configurationStatus.customReporting.BE} || {configurationStatus.customReporting.FE}">
+        <div class="callout callout-info">
+            <div class="media">
+                <div class="media-left">
+                    <span class="icon-emphasized">
+                        <core:icon identifier="actions-info" size="small" />
+                    </span>
+                </div>
+                <div class="media-body">
+                    <div class="callout-body">
+                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.callout.customReporting.message" />
+                        <ul>
+                            <f:for each="{configurationStatus.customReporting}" as="value" key="key">
+                                <li><code>$GLOBALS['TYPO3_CONF_VARS']['{key}']['contentSecurityPolicyReportingUrl'] = '{value}'</code></li>
+                            </f:for>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </f:if>
+
+    <typo3-backend-security-csp-reports
+        scopes="{scopes -> f:format.json()}"
+        controlUri="{controlUri}">
+    </typo3-backend-security-csp-reports>
+
+</f:section>
+
+</html>

@@ -15,19 +15,14 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
+namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting;
 
 /**
- * The mode used in mutations (sic!).
+ * @internal
  */
-enum MutationMode: string
+enum ReportAttribute: string
 {
-    // sets (overrides) a directive completely
-    case Set = 'set';
-    // extends a directive by a given aspect
-    case Extend = 'extend';
-    // reduces a directive by a given aspect
-    case Reduce = 'reduce';
-    // removes a directive completely
-    case Remove = 'remove';
+    case fixable = 'fixable';
+    case irrelevant = 'irrelevant';
+    case suspicious = 'suspicious';
 }

@@ -7,6 +7,7 @@ use TYPO3\CMS\Backend\Controller\PageTsConfig\PageTsConfigIncludesController;
 use TYPO3\CMS\Backend\Controller\PageTsConfig\PageTsConfigRecordsOverviewController;
 use TYPO3\CMS\Backend\Controller\RecordListController;
 use TYPO3\CMS\Backend\Controller\SiteConfigurationController;
+use TYPO3\CMS\Backend\Security\ContentSecurityPolicy\CspModuleController;
 
 /**
  * Definitions for modules provided by EXT:backend
@@ -153,6 +154,19 @@ return [
         ],
         'moduleData' => [
             'pageTsConfigConditions' => [],
+        ],
+    ],
+    'tools_csp' => [
+        'parent' => 'tools',
+        'access' => 'systemMaintainer',
+        'icon' => 'EXT:backend/Resources/Public/Icons/module-security.svg',
+        // @todo use identifier once https://typo3.github.io/TYPO3.Icons/icons/module/module-security.html is released
+        // 'iconIdentifier' => 'module-security',
+        'labels' => 'LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf',
+        'routes' => [
+            '_default' => [
+                'target' => CspModuleController::class . '::mainAction',
+            ],
         ],
     ],
 ];

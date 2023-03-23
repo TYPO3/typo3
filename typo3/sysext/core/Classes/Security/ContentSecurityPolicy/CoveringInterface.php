@@ -17,17 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
+use TYPO3\CMS\Core\Http\Uri;
+
 /**
- * The mode used in mutations (sic!).
+ * Interface to determine whether a value is covered by some other value in the scope of CSP,
+ * e.g. URI `*.example.com` would "cover" URI `https://specific.example.com/path/file.js`
+ * @internal
  */
-enum MutationMode: string
+interface CoveringInterface
 {
-    // sets (overrides) a directive completely
-    case Set = 'set';
-    // extends a directive by a given aspect
-    case Extend = 'extend';
-    // reduces a directive by a given aspect
-    case Reduce = 'reduce';
-    // removes a directive completely
-    case Remove = 'remove';
+    public function covers(CoveringInterface $other): bool;
 }

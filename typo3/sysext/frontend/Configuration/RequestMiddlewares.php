@@ -83,6 +83,17 @@ return [
                 'typo3/cms-frontend/static-route-resolver',
             ],
         ],
+        'typo3/cms-frontend/csp-report' => [
+            'target' => \TYPO3\CMS\Frontend\Middleware\ContentSecurityPolicyReporter::class,
+            'after' => [
+                'typo3/cms-core/normalized-params-attribute',
+                'typo3/cms-frontend/site',
+                'typo3/cms-frontend/base-redirect-resolver',
+            ],
+            'before' => [
+                'typo3/cms-frontend/page-resolver',
+            ],
+        ],
         'typo3/cms-frontend/static-route-resolver' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\StaticRouteResolver::class,
             'after' => [

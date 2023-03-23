@@ -369,6 +369,9 @@ BE:
         checkStoredRecordsLoose:
             type: bool
             description: 'If set, make a loose comparison ('''' equals 0) when validating record values after saving in DataHandler.'
+        contentSecurityPolicyReportingUrl:
+            type: text
+            description: 'Content-Security-Policy reporting HTTP endpoint, if empty system default will be used'
         fileDenyPattern:
             type: text
             description: 'A perl-compatible and JavaScript-compatible regular expression (without delimiters "/"!) that - if it matches a filename - will deny the file upload/rename or whatever. For security reasons, files with multiple extensions have to be denied on an Apache environment with mod_alias, if the filename contains a valid php handler in an arbitrary position. Also, ".htaccess" files have to be denied. Matching is done case-insensitive. Default value is stored in PHP constant FILE_DENY_PATTERN_DEFAULT'
@@ -488,6 +491,9 @@ FE:
             'strict': 'Cookies sent by TYPO3 are only available for the current site, never shared to other third-party packages'
             'none': 'Allow cookies set by TYPO3 to be sent to other sites as well, please note - this only works with HTTPS connections'
           description: 'Indicates that the cookie should send proper information where the cookie can be shared (first-party cookies vs. third-party cookies) in TYPO3 Frontend.'
+        contentSecurityPolicyReportingUrl:
+            type: text
+            description: 'Content-Security-Policy reporting HTTP endpoint, if empty system default will be used'
         defaultTypoScript_constants:
             type: multiline
             description: 'Enter lines of default TypoScript, constants-field.'

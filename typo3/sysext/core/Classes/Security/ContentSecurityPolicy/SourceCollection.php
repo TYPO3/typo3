@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
+use TYPO3\CMS\Core\Domain\EqualityInterface;
 use TYPO3\CMS\Core\Security\Nonce;
 
 /**
@@ -43,6 +44,11 @@ final class SourceCollection
     public function merge(self $other): self
     {
         return $this->with(...$other->sources);
+    }
+
+    public function exclude(self $other): self
+    {
+        return $this->without(...$other->sources);
     }
 
     public function with(SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$subjects): self
@@ -85,16 +91,43 @@ final class SourceCollection
     }
 
     /**
-     * Determines whether at least one source matches.
+     * Determines whether all sources are contained (in terms of instances and values, but without inference).
      */
     public function contains(SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$subjects): bool
     {
-        foreach ($this->sources as $source) {
-            if (in_array($source, $subjects, true)) {
-                return true;
+        if ($subjects === []) {
+            return false;
+        }
+        foreach ($subjects as $subject) {
+            if ($subject instanceof EqualityInterface) {
+                if (!$this->hasEqualSource($subject)) {
+                    return false;
+                }
+            } elseif (!in_array($subject, $this->sources, true)) {
+                return false;
             }
         }
-        return false;
+        return true;
+    }
+
+    /**
+     * Determines whether all sources are covered (in terms of CSP inference, considering wildcards and similar).
+     */
+    public function covers(SourceKeyword|SourceScheme|Nonce|UriValue|RawValue ...$subjects): bool
+    {
+        if ($subjects === []) {
+            return false;
+        }
+        foreach ($subjects as $subject) {
+            if ($subject instanceof CoveringInterface) {
+                if (!$this->hasCoveredSource($subject)) {
+                    return false;
+                }
+            } elseif (!in_array($subject, $this->sources, true)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -105,6 +138,26 @@ final class SourceCollection
     {
         foreach ($this->sources as $source) {
             if ($this->isSourceOfTypes($source, ...$subjectTypes)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function hasEqualSource(EqualityInterface $subject): bool
+    {
+        foreach ($this->sources as $source) {
+            if ($source instanceof EqualityInterface && $source->equals($subject)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function hasCoveredSource(CoveringInterface $subject): bool
+    {
+        foreach ($this->sources as $source) {
+            if ($source instanceof CoveringInterface && $source->covers($subject)) {
                 return true;
             }
         }

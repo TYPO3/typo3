@@ -56,4 +56,52 @@ class UriValueTest extends UnitTestCase
         $uri = new UriValue($value);
         self::assertSame($expectation ?? $value, (string)$uri);
     }
+
+    public static function urisAreEqualDataProvider(): \Generator
+    {
+        yield ['https://example.com/path/file.js', 'https://example.com/path/file.js', true];
+        yield ['https://example.com/path/file.js', 'https://example.com/path/file.css', false];
+        yield ['https://*.example.com', 'https://*.example.com', true];
+        yield ['example.com/path', 'example.com/path', true];
+        yield ['example.com/path', 'example.com/other', false];
+        yield ['*.example.com', '*.example.com', true];
+    }
+
+    /**
+     * @test
+     * @dataProvider urisAreEqualDataProvider
+     */
+    public function urisAreEqual(string $a, string $b, bool $expectation): void
+    {
+        self::assertSame($expectation, (new UriValue($a))->equals(new UriValue($b)));
+    }
+
+    public static function uriIsCoveredDataProvider(): \Generator
+    {
+        yield ['https://example.com/path/file.js', 'https://example.com/path/file.js', true];
+        yield ['https://example.com/path/file.js', 'https://example.com/path/file.css', false];
+        yield ['example.com/path', 'example.com/path', true];
+        yield ['example.com/path', 'example.com/other', false];
+        yield ['*.example.com', '*.example.com', true];
+
+        yield ['https://example.com/', 'https://example.com/path/file.css', true];
+        yield ['example.com', 'https://example.com/path/file.css', true];
+        yield ['https://*.example.com', 'https://sub.example.com/path/file.css', true];
+        yield ['*.example.com', 'https://sub.example.com/path/file.css', true];
+        yield ['*.example.com', 'sub.example.com', true];
+        yield ['*.example.com', '*.sub.example.com', true];
+        yield ['sub.example.com', 'example.com', false];
+        yield ['*.sub.example.com', 'example.com', false];
+        yield ['sub.example.com', '*.example.com', false];
+        yield ['*.sub.example.com', '*.example.com', false];
+    }
+
+    /**
+     * @test
+     * @dataProvider uriIsCoveredDataProvider
+     */
+    public function uriIsCovered(string $a, string $b, bool $expectation): void
+    {
+        self::assertSame($expectation, (new UriValue($a))->covers(new UriValue($b)));
+    }
 }

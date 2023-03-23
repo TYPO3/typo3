@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
 
 /**
  * Adds Content-Security-Policy headers to response.
@@ -65,6 +66,10 @@ final class ContentSecurityPolicyHeaders implements MiddlewareInterface
         if ($policy->isEmpty()) {
             return $response;
         }
-        return $response->withHeader('Content-Security-Policy', (string)$policy);
+        $reportingUri = $this->policyProvider->getReportingUrlFor($scope, $request);
+        if ($reportingUri !== null) {
+            $policy = $policy->report(UriValue::fromUri($reportingUri));
+        }
+        return $response->withHeader('Content-Security-Policy', $policy->compile($this->requestId->nonce));
     }
 }

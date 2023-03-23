@@ -15,19 +15,14 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
+namespace TYPO3\CMS\Core\Domain;
 
 /**
- * The mode used in mutations (sic!).
+ * Interface that indicated an object can be compared for equality with other instances.
+ *
+ * @internal not part of public API
  */
-enum MutationMode: string
+interface EqualityInterface
 {
-    // sets (overrides) a directive completely
-    case Set = 'set';
-    // extends a directive by a given aspect
-    case Extend = 'extend';
-    // reduces a directive by a given aspect
-    case Reduce = 'reduce';
-    // removes a directive completely
-    case Remove = 'remove';
+    public function equals(EqualityInterface $other): bool;
 }

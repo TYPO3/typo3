@@ -409,3 +409,40 @@ CREATE TABLE `sys_messenger_messages` (
   KEY available_at (available_at),
   KEY delivered_at (delivered_at)
 ) ENGINE=InnoDB;
+
+#
+# Table structure for table 'sys_http_report'
+#
+CREATE TABLE sys_http_report (
+	uuid varchar(36) NOT NULL,
+	status tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	created int(11) unsigned NOT NULL,
+	changed int(11) unsigned NOT NULL,
+	type varchar(32) NOT NULL,
+	scope varchar(32) NOT NULL,
+	request_time bigint(20) unsigned NOT NULL,
+	meta mediumtext,
+	details mediumtext,
+	summary varchar(40) NOT NULL,
+
+	PRIMARY KEY (uuid),
+	KEY type_scope (type,scope),
+	KEY created (created),
+	KEY changed (changed),
+	KEY request_time (request_time)
+) ENGINE=InnoDB;
+
+#
+# Table structure for table 'sys_csp_resolution'
+#
+CREATE TABLE sys_csp_resolution (
+	summary varchar(40) NOT NULL,
+	created int(11) unsigned NOT NULL,
+	scope varchar(32) NOT NULL,
+	mutation_identifier text,
+	mutation_collection mediumtext,
+	meta mediumtext,
+
+	PRIMARY KEY (summary),
+	KEY created (created),
+) ENGINE=InnoDB;
