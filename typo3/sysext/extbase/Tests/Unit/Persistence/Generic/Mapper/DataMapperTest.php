@@ -44,7 +44,7 @@ class DataMapperTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->columnMap = new ColumnMap('foo', 'foo');
+        $this->columnMap = new ColumnMap('foo');
 
         $this->columnMapFactory = new ColumnMapFactory(
             $this->createMock(ReflectionService::class)

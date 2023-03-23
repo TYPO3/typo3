@@ -39,7 +39,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
     {
         $columnName = 'has_one';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName, $propertyName);
+        $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::SELECT);
         $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_ONE);
         $expectedColumnMap->setChildTableName('tx_myextension_bar');
@@ -59,7 +59,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
 
         $columnName = 'has_one_via_intermediate_table';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName, $propertyName);
+        $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::SELECT);
         $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
         $expectedColumnMap->setRelationTableName('tx_myextension_mm');
@@ -82,7 +82,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
 
         $columnName = 'has_many';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName, $propertyName);
+        $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::SELECT);
         $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
         $expectedColumnMap->setChildTableName('tx_myextension_bar');
@@ -104,7 +104,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
 
         $columnName = 'virtual';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName, $propertyName);
+        $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::SELECT);
         $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_NONE);
         yield 'setRelations detects select renderType selectSingle as non-relational' => [
@@ -126,7 +126,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
 
         $columnName = 'group';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName, $propertyName);
+        $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::GROUP);
         $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
         yield 'columns configuration is initialized for type group' => [
@@ -142,7 +142,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
 
         $columnName = 'folder';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName, $propertyName);
+        $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::FOLDER);
         $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
         yield 'columns configuration is initialized for type folder' => [
@@ -158,7 +158,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
 
         $columnName = 'group_with_maxitems_1';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName, $propertyName);
+        $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::GROUP);
         $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_NONE);
         yield 'columns configuration is initialized with maxitems = 1 evaluation for type group' => [
@@ -175,7 +175,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
 
         $columnName = 'group_with_maxitems_10';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName, $propertyName);
+        $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::GROUP);
         $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
         yield 'columns configuration is initialized with maxitems > 1 evaluation for type group' => [
@@ -192,7 +192,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
 
         $columnName = 'has_and_belongs_to_many';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName, $propertyName);
+        $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::SELECT);
         $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
         $expectedColumnMap->setRelationTableName('tx_myextension_mm');
@@ -215,7 +215,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
 
         $columnName = 'has_and_belongs_to_many';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName, $propertyName);
+        $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::INLINE);
         $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
         $expectedColumnMap->setRelationTableName('tx_myextension_mm');
@@ -312,7 +312,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
     {
         $columnName = 'has_and_belongs_to_many';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName, $propertyName);
+        $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::SELECT);
         $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
         $expectedColumnMap->setRelationTableName('tx_myextension_mm');
@@ -341,7 +341,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
     {
         $columnName = 'has_and_belongs_to_many';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName, $propertyName);
+        $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::SELECT);
         $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
         $expectedColumnMap->setRelationTableName('tx_myextension_mm');
@@ -369,7 +369,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
     {
         $columnName = 'has_and_belongs_to_many';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName, $propertyName);
+        $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::INLINE);
         $expectedColumnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
         $expectedColumnMap->setRelationTableName('tx_myextension_mm');

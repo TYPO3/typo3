@@ -65,7 +65,6 @@ class DataMapFactoryTest extends FunctionalTestCase
         $headerColumnMap = $dataMap->getColumnMap('header');
 
         self::assertInstanceOf(ColumnMap::class, $headerColumnMap);
-        self::assertEquals('header', $headerColumnMap->getPropertyName());
         self::assertEquals('header', $headerColumnMap->getColumnName());
     }
 }

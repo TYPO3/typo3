@@ -225,11 +225,11 @@ class DataMap
     /**
      * Adds a given column map to the data map.
      *
-     * @param ColumnMap $columnMap The column map
+     * @param non-empty-string $propertyName
      */
-    public function addColumnMap(ColumnMap $columnMap)
+    public function addColumnMap(string $propertyName, ColumnMap $columnMap): void
     {
-        $this->columnMaps[$columnMap->getPropertyName()] = $columnMap;
+        $this->columnMaps[$propertyName] = $columnMap;
     }
 
     /**

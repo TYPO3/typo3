@@ -150,12 +150,15 @@ class DataMapFactory implements SingletonInterface
         foreach ($this->getColumnsDefinition($tableName) as $columnName => $columnDefinition) {
             $propertyName = $fieldNameToPropertyNameMapping[$columnName]
                 ?? GeneralUtility::underscoredToLowerCamelCase($columnName);
-            $dataMap->addColumnMap($this->columnMapFactory->create(
-                $columnName,
-                $columnDefinition,
+            $dataMap->addColumnMap(
                 $propertyName,
-                $className
-            ));
+                $this->columnMapFactory->create(
+                    $columnName,
+                    $columnDefinition,
+                    $propertyName,
+                    $className
+                )
+            );
         }
         return $dataMap;
     }

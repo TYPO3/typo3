@@ -425,9 +425,9 @@ class DataMapperTest extends FunctionalTestCase
     public function getPlainValueReturnsCorrectDateTimeFormat(): void
     {
         $dataMapper = $this->get(DataMapper::class);
-        $columnMapDateTime = new ColumnMap('column_name', 'propertyName');
+        $columnMapDateTime = new ColumnMap('column_name');
         $columnMapDateTime->setDateTimeStorageFormat('datetime');
-        $columnMapDate = new ColumnMap('column_name', 'propertyName');
+        $columnMapDate = new ColumnMap('column_name');
         $columnMapDate->setDateTimeStorageFormat('date');
         $input = new \DateTime('2013-04-15 09:30:00');
 

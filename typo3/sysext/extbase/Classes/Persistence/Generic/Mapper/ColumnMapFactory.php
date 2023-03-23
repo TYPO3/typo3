@@ -37,7 +37,7 @@ class ColumnMapFactory
 
     public function create(string $columnName, array $columnDefinition, string $propertyName, string $className): ColumnMap
     {
-        $columnMap = GeneralUtility::makeInstance(ColumnMap::class, $columnName, $propertyName);
+        $columnMap = GeneralUtility::makeInstance(ColumnMap::class, $columnName);
         try {
             $property = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
             $nonProxyPropertyTypes = $property->getFilteredTypes([$property, 'filterLazyLoadingProxyAndLazyObjectStorage']);

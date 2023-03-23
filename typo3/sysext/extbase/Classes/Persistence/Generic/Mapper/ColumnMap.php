@@ -51,13 +51,6 @@ class ColumnMap
     public const RELATION_HAS_AND_BELONGS_TO_MANY = 'RELATION_HAS_AND_BELONGS_TO_MANY';
 
     /**
-     * The property name corresponding to the table name
-     *
-     * @var string
-     */
-    private $propertyName;
-
-    /**
      * The column name
      *
      * @var string
@@ -168,13 +161,11 @@ class ColumnMap
      * Constructs a Column Map
      *
      * @param string $columnName The column name
-     * @param string $propertyName The property name
      */
-    public function __construct(string $columnName, string $propertyName)
+    public function __construct(string $columnName)
     {
         // @todo Enable aliases (tx_anotherextension_addedcolumn -> theAddedColumn)
         $this->columnName = $columnName;
-        $this->propertyName = $propertyName;
     }
 
     public function setTypeOfRelation(string $typeOfRelation): void
@@ -185,11 +176,6 @@ class ColumnMap
     public function getTypeOfRelation(): string
     {
         return $this->typeOfRelation;
-    }
-
-    public function getPropertyName(): string
-    {
-        return $this->propertyName;
     }
 
     public function getColumnName(): string
