@@ -67,25 +67,4 @@ final class SearchCest
         $I->waitForElementNotVisible(self::$searchResultContainer);
         $I->cantSee(self::$searchField);
     }
-
-    public function checkIfTheShowAllLinkPointsToTheListViewWithSearchResults(ApplicationTester $I, ModalDialog $dialog): void
-    {
-        $I->click(self::$toolbarItemSelector);
-        $dialog->canSeeDialog();
-
-        $I->fillField(self::$searchField, 'fileadmin');
-
-        $I->canSee('fileadmin', self::$searchResultItem);
-        $I->click('Show All', 'typo3-backend-live-search');
-        $I->waitForElementNotVisible(self::$searchResultContainer);
-
-        $I->switchToContentFrame();
-
-        // Search word is transferred to the recordlist search form
-        $I->seeInField('#recordsearchbox-searchterm', 'fileadmin');
-
-        // Correct table and element is displayed
-        $I->waitForElementVisible('form[name="list-table-form-sys_file_storage"]');
-        $I->canSee('fileadmin', 'form[name="list-table-form-sys_file_storage"] a');
-    }
 }

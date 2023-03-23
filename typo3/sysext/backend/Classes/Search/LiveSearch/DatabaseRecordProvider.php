@@ -17,10 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Search\LiveSearch;
 
+use Doctrine\DBAL\ArrayParameterType;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Search\Event\BeforeSearchInDatabaseRecordProviderEvent;
 use TYPO3\CMS\Backend\Search\Event\ModifyQueryForLiveSearchEvent;
+use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\DemandProperty;
+use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\DemandPropertyName;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\SearchDemand;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -70,6 +73,30 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         return $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:liveSearch.databaseRecordProvider.filterLabel');
     }
 
+    public function count(SearchDemand $searchDemand): int
+    {
+        $count = 0;
+        $event = $this->eventDispatcher->dispatch(
+            new BeforeSearchInDatabaseRecordProviderEvent($this->getPageIdList(), $searchDemand)
+        );
+        $this->pageIdList = $event->getSearchPageIds();
+        $searchDemand = $event->getSearchDemand();
+
+        $accessibleTables = $this->getAccessibleTables($event);
+
+        $parsedCommand = $this->parseCommand($searchDemand);
+        $searchDemand = $parsedCommand['searchDemand'];
+        if ($parsedCommand['table'] !== null && in_array($parsedCommand['table'], $accessibleTables)) {
+            $accessibleTables = [$parsedCommand['table']];
+        }
+
+        foreach ($accessibleTables as $tableName) {
+            $count += $this->countByTable($searchDemand, $tableName);
+        }
+
+        return $count;
+    }
+
     /**
      * @return ResultItem[]
      */
@@ -77,6 +104,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
     {
         $result = [];
         $remainingItems = $searchDemand->getLimit();
+        $offset = $searchDemand->getOffset();
         if ($remainingItems < 1) {
             return [];
         }
@@ -86,56 +114,75 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         );
         $this->pageIdList = $event->getSearchPageIds();
         $searchDemand = $event->getSearchDemand();
-        $query = $searchDemand->getQuery();
-        $remainingItems = $searchDemand->getLimit();
+        $accessibleTables = $this->getAccessibleTables($event);
 
-        if ($this->queryParser->isValidPageJump($query)) {
-            $commandQuery = $this->queryParser->getCommandForPageJump($query);
-            $extractedQueryString = $this->queryParser->getSearchQueryValue($commandQuery);
-            $tableName = $this->queryParser->getTableNameFromCommand($commandQuery);
-
-            if ($event->isTableIgnored($tableName)) {
-                return [];
-            }
-            return $this->findByTable($extractedQueryString, $tableName, $remainingItems);
+        $parsedCommand = $this->parseCommand($searchDemand);
+        $searchDemand = $parsedCommand['searchDemand'];
+        if ($parsedCommand['table'] !== null && in_array($parsedCommand['table'], $accessibleTables)) {
+            $accessibleTables = [$parsedCommand['table']];
         }
 
-        foreach (array_keys($GLOBALS['TCA']) as $tableName) {
+        foreach ($accessibleTables as $tableName) {
             if ($remainingItems < 1) {
                 break;
             }
-            if ($event->isTableIgnored($tableName)) {
-                continue;
+
+            // To have a reliable offset calculation across several database tables, we have to count the amount of
+            // records and subtract the amount from the offset to be used, IF the amount is smaller than the requested
+            // offset. At any point, the offset will be smaller than the amount of records, which will then be used in
+            // ->findByTable().
+            // If any subsequent ->findByTable() call returns a result, the offset becomes irrelevant and is then zeroed.
+            if ($offset > 0) {
+                $tableCount = $this->countByTable($searchDemand, $tableName);
+                if ($tableCount <= $offset) {
+                    $offset = max(0, $offset - $tableCount);
+                    continue;
+                }
             }
 
-            $tableResult = $this->findByTable($query, $tableName, $remainingItems);
-            $remainingItems -= count($tableResult);
-
-            $result[] = $tableResult;
+            $tableResult = $this->findByTable($searchDemand, $tableName, $remainingItems, $offset);
+            if ($tableResult !== []) {
+                $remainingItems -= count($tableResult);
+                $offset = 0;
+                $result[] = $tableResult;
+            }
         }
 
         return array_merge([], ...$result);
     }
 
-    /**
-     * @return ResultItem[]
-     */
-    protected function findByTable(string $queryString, string $tableName, int $limit): array
+    protected function parseCommand(SearchDemand $searchDemand): array
     {
-        if (($GLOBALS['TCA'][$tableName]['ctrl']['hideTable'] ?? false)
-            || (
-                !$this->getBackendUser()->check('tables_select', $tableName)
-                && !$this->getBackendUser()->check('tables_modify', $tableName)
-            )
-        ) {
-            return [];
+        $tableName = null;
+        $commandQuery = null;
+        $query = $searchDemand->getQuery();
+
+        if ($this->queryParser->isValidCommand($query)) {
+            $commandQuery = $query;
+        } elseif ($this->queryParser->isValidPageJump($query)) {
+            $commandQuery = $this->queryParser->getCommandForPageJump($query);
         }
 
-        $fieldsToSearchWithin = $this->extractSearchableFieldsFromTable($tableName);
-        if ($fieldsToSearchWithin === []) {
-            return [];
+        if ($commandQuery !== null) {
+            $tableName = $this->queryParser->getTableNameFromCommand($query);
+            $extractedQueryString = $this->queryParser->getSearchQueryValue($commandQuery);
+            $searchDemand = new SearchDemand([
+                new DemandProperty(DemandPropertyName::query, $extractedQueryString),
+                ...array_filter(
+                    $searchDemand->getProperties(),
+                    static fn (DemandProperty $demandProperty) => $demandProperty->getName() !== DemandPropertyName::query
+                ),
+            ]);
         }
 
+        return [
+            'searchDemand' => $searchDemand,
+            'table' => $tableName,
+        ];
+    }
+
+    protected function getQueryBuilderForTable(SearchDemand $searchDemand, string $tableName): ?QueryBuilder
+    {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions()
@@ -143,33 +190,57 @@ final class DatabaseRecordProvider implements SearchProviderInterface
             ->removeByType(StartTimeRestriction::class)
             ->removeByType(EndTimeRestriction::class);
 
-        $constraints = $this->makeQuerySearchByTable($queryString, $queryBuilder, $tableName, $fieldsToSearchWithin);
+        $constraints = $this->buildConstraintsForTable($searchDemand->getQuery(), $queryBuilder, $tableName);
         if ($constraints === []) {
-            return [];
+            return null;
         }
 
         $queryBuilder
-            ->select('*')
             ->from($tableName)
             ->where(
                 $queryBuilder->expr()->or(...$constraints)
-            )
-            ->setMaxResults($limit);
+            );
 
         if ($this->pageIdList !== []) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->in(
                     'pid',
-                    $queryBuilder->createNamedParameter($this->pageIdList, Connection::PARAM_INT_ARRAY)
+                    $queryBuilder->createNamedParameter($this->pageIdList, ArrayParameterType::INTEGER)
                 )
             );
         }
 
-        $queryBuilder->addOrderBy('uid', 'DESC');
+        /** @var ModifyQueryForLiveSearchEvent $event */
         $event = $this->eventDispatcher->dispatch(new ModifyQueryForLiveSearchEvent($queryBuilder, $tableName));
 
+        return $event->getQueryBuilder();
+    }
+
+    protected function countByTable(SearchDemand $searchDemand, string $tableName): int
+    {
+        $queryBuilder = $this->getQueryBuilderForTable($searchDemand, $tableName);
+        return (int)$queryBuilder?->count('*')->executeQuery()->fetchOne();
+    }
+
+    /**
+     * @return ResultItem[]
+     */
+    protected function findByTable(SearchDemand $searchDemand, string $tableName, int $limit, int $offset): array
+    {
+        $queryBuilder = $this->getQueryBuilderForTable($searchDemand, $tableName);
+        if ($queryBuilder === null) {
+            return [];
+        }
+
+        $queryBuilder
+            ->select('*')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
+
+        $queryBuilder->addOrderBy('uid', 'DESC');
+
         $items = [];
-        $result = $event->getQueryBuilder()->executeQuery();
+        $result = $queryBuilder->executeQuery();
         while ($row = $result->fetchAssociative()) {
             BackendUtility::workspaceOL($tableName, $row);
             if (!is_array($row)) {
@@ -207,6 +278,27 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         }
 
         return $items;
+    }
+
+    protected function canAccessTable(string $tableName): bool
+    {
+        if (($GLOBALS['TCA'][$tableName]['ctrl']['hideTable'] ?? false)
+            || (
+                !$this->getBackendUser()->check('tables_select', $tableName)
+                && !$this->getBackendUser()->check('tables_modify', $tableName)
+            )
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function getAccessibleTables(BeforeSearchInDatabaseRecordProviderEvent $event): array
+    {
+        return array_filter(array_keys($GLOBALS['TCA']), function (string $tableName) use ($event) {
+            return $this->canAccessTable($tableName) && !$event->isTableIgnored($tableName);
+        });
     }
 
     /**
@@ -254,8 +346,13 @@ final class DatabaseRecordProvider implements SearchProviderInterface
     /**
      * @return CompositeExpression[]
      */
-    protected function makeQuerySearchByTable(string $queryString, QueryBuilder $queryBuilder, string $tableName, array $fieldsToSearchWithin): array
+    protected function buildConstraintsForTable(string $queryString, QueryBuilder $queryBuilder, string $tableName): array
     {
+        $fieldsToSearchWithin = $this->extractSearchableFieldsFromTable($tableName);
+        if ($fieldsToSearchWithin === []) {
+            return [];
+        }
+
         $constraints = [];
 
         // If the search string is a simple integer, assemble an equality comparison

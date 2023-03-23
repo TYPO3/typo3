@@ -40,12 +40,11 @@
                         <core:icon identifier="actions-lightbulb-on" size="small" /> {f:translate(key: '{hint}')}
                     </div>
                 </div>
-                <div class="col" hidden>
-                    <typo3-backend-live-search-show-all></typo3-backend-live-search-show-all>
-                </div>
             </div>
         </div>
+        <input type="hidden" name="offset" value="{searchDemand.offset}">
     </form>
-    <typo3-backend-live-search-result-container class="livesearch-results"></typo3-backend-live-search-result-container>
+    <typo3-backend-live-search-result-container></typo3-backend-live-search-result-container>
+    <typo3-backend-live-search-result-pagination></typo3-backend-live-search-result-pagination>
 </typo3-backend-live-search>
 </html>

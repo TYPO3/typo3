@@ -20,12 +20,12 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
-use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\MutableSearchDemand;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\SearchDemand;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchRepository;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
 
 /**
  * Returns the results for any live searches, e.g. in the toolbar
@@ -45,13 +45,29 @@ class LiveSearchController
      */
     public function searchAction(ServerRequestInterface $request): ResponseInterface
     {
-        $mutableSearchDemand = MutableSearchDemand::fromRequest($request);
+        $mutableSearchDemand = SearchDemand::fromRequest($request);
         if ($mutableSearchDemand->getQuery() === '') {
             return new Response('', 400, [], 'Argument "query" is missing or empty.');
         }
 
-        $searchResults = $this->searchService->find($mutableSearchDemand);
-        return new JsonResponse($searchResults);
+        $results = $this->searchService->find($mutableSearchDemand);
+        $pagination = new SlidingWindowPagination($results, 15);
+        $response = [
+            'pagination' => [
+                'itemsPerPage' => SearchDemand::DEFAULT_LIMIT,
+                'currentPage' => $pagination->getPaginator()->getCurrentPageNumber(),
+                'firstPage' => $pagination->getFirstPageNumber(),
+                'lastPage' => $pagination->getLastPageNumber(),
+                'allPageNumbers'=> $pagination->getAllPageNumbers(),
+                'previousPageNumber' => $pagination->getPreviousPageNumber(),
+                'nextPageNumber' => $pagination->getNextPageNumber(),
+                'hasMorePages' => $pagination->getHasMorePages(),
+                'hasLessPages' => $pagination->getHasLessPages(),
+            ],
+            'results' => $results->getPaginatedItems(),
+        ];
+
+        return new JsonResponse($response);
     }
 
     public function formAction(ServerRequestInterface $request): ResponseInterface

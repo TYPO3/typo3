@@ -17,6 +17,23 @@ typo3-backend-live-search {
         left: 100%;
         --bs-badge-border-radius: .65rem;
     }
+
+    typo3-backend-live-search-result-pagination {
+        display: block;
+        position: static;
+        margin: 4px 0;
+        transform: translateY(16px);
+
+        .pagination {
+            display: flex;
+
+            .page-item {
+                text-align: center;
+                flex-grow: 1;
+                max-width: 3rem;
+            }
+        }
+    }
 }
 
 typo3-backend-live-search-result-item-container,

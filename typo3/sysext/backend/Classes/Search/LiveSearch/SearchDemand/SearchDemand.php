@@ -27,7 +27,7 @@ use TYPO3\CMS\Backend\Search\LiveSearch\SearchProviderInterface;
  */
 class SearchDemand
 {
-    public const DEFAULT_LIMIT = 50;
+    public const DEFAULT_LIMIT = 20;
 
     /**
      * @var DemandProperty[] $demandProperties

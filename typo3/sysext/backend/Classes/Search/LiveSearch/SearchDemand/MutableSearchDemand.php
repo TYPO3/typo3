@@ -22,6 +22,11 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand;
  */
 final class MutableSearchDemand extends SearchDemand
 {
+    public static function fromSearchDemand(SearchDemand $searchDemand): self
+    {
+        return new self($searchDemand->getProperties());
+    }
+
     public function setProperty(DemandPropertyName $name, mixed $value): self
     {
         $this->demandProperties[$name->name] = new DemandProperty($name, $value);

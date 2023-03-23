@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Search\Event\ModifyResultItemInLiveSearchEvent;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\DemandPropertyName;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\MutableSearchDemand;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\SearchDemand;
+use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 
 /**
  * Repository class to ease using the search API.
@@ -66,34 +67,66 @@ final class SearchRepository
         );
     }
 
-    public function find(MutableSearchDemand $mutableSearchDemand): array
+    public function find(SearchDemand $searchDemand): ArrayPaginator
     {
         $searchResults = [];
-        $remainingItems = $mutableSearchDemand->getLimit();
+        $totalCount = 0;
+        $mutableSearchDemand = MutableSearchDemand::fromSearchDemand($searchDemand);
+        $offset = $searchDemand->getOffset();
+        $remainingItems = $searchDemand->getLimit();
 
-        foreach ($this->getViableSearchProviders($mutableSearchDemand) as $provider) {
+        foreach ($this->getViableSearchProviders($searchDemand) as $provider) {
+            $count = $provider->count($mutableSearchDemand->freeze());
+            $totalCount += $count;
+            if ($count < $offset) {
+                // The number of potential results is smaller than the offset, do not query results
+                $offset -= $count;
+                continue;
+            }
+
             if ($remainingItems < 1) {
-                break;
+                continue;
             }
 
             $mutableSearchDemand
-                ->setProperty(DemandPropertyName::limit, $remainingItems);
+                ->setProperty(DemandPropertyName::limit, $remainingItems)
+                ->setProperty(DemandPropertyName::offset, $offset);
             $providerResult = $provider->find($mutableSearchDemand->freeze());
-            foreach ($providerResult as $key => $resultItem) {
-                $modifyRecordEvent = $this->eventDispatcher->dispatch(new ModifyResultItemInLiveSearchEvent($resultItem));
-                $providerResult[$key] = $modifyRecordEvent->getResultItem();
-            }
-            $count = count($providerResult);
-            $remainingItems -= $count;
+            if ($providerResult !== []) {
+                foreach ($providerResult as $key => $resultItem) {
+                    $modifyRecordEvent = $this->eventDispatcher->dispatch(new ModifyResultItemInLiveSearchEvent($resultItem));
+                    $providerResult[$key] = $modifyRecordEvent->getResultItem();
+                }
+                $remainingItems -= count($providerResult);
+                // We got a result here, offset became irrelevant for next iteration
+                $offset = 0;
 
-            $searchResults[] = $providerResult;
+                $searchResults[] = $providerResult;
+            }
         }
+        unset($mutableSearchDemand);
 
         $flattenedSearchResults = array_merge([], ...$searchResults);
+        $resultCount = count($flattenedSearchResults);
 
-        // @todo: introduce pagination and return an ArrayPaginator.
-        //        Its implementation requires the full result set which is bad here for performance reasons.
-        //        Fill the "gaps" with stub data.
-        return $flattenedSearchResults;
+        $currentPage = (int)floor(($searchDemand->getOffset() + $searchDemand->getLimit()) / $searchDemand->getLimit());
+        if (ceil($totalCount / $searchDemand->getLimit()) < $currentPage) {
+            // Requested page does not match with the overall amount of items, reset to first page
+            $currentPage = 1;
+        }
+
+        if ($resultCount > 0) {
+            // The paginator expects a full result set to be able to calculate its pagination. This will have negative
+            // performance consequences, therefore we only consider the current result set and create stubs for the "gaps".
+            $paginatorItems = array_merge(
+                array_fill(0, $searchDemand->getOffset(), null),
+                $flattenedSearchResults,
+                array_fill(0, $totalCount - $searchDemand->getOffset() - $resultCount, null)
+            );
+        } else {
+            $paginatorItems = [];
+        }
+
+        return new ArrayPaginator($paginatorItems, $currentPage, SearchDemand::DEFAULT_LIMIT);
     }
 }

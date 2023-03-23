@@ -26,6 +26,8 @@ use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\SearchDemand;
  */
 interface SearchProviderInterface
 {
+    public function count(SearchDemand $searchDemand): int;
+
     /**
      * @return ResultItem[]
      */

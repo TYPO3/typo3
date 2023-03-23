@@ -15,8 +15,8 @@ import { lll } from '@typo3/core/lit-helper';
 import Modal from '../modal';
 import '@typo3/backend/element/icon-element';
 import '@typo3/backend/input/clearable';
+import '../live-search/element/result/result-pagination';
 import '../live-search/element/search-option-item';
-import '../live-search/element/show-all';
 import '../live-search/live-search-shortcut';
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
@@ -26,6 +26,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import BrowserSession from '@typo3/backend/storage/browser-session';
 import { ResultContainer, componentName as resultContainerComponentName } from '@typo3/backend/live-search/element/result/result-container';
 import { ResultItemInterface } from '@typo3/backend/live-search/element/result/item/item';
+import { Pagination, ResultPagination } from '@typo3/backend/live-search/element/result/result-pagination';
 
 enum Identifiers {
   toolbarItem = '.t3js-topbar-button-search',
@@ -36,6 +37,11 @@ interface SearchOption {
   key: string;
   value: string;
 }
+
+type SearchResponse = {
+  pagination: Pagination,
+  results: ResultItemInterface[]|null;
+};
 
 /**
  * Module: @typo3/backend/toolbar/live-search
@@ -66,6 +72,7 @@ class LiveSearch {
   private openSearchModal(): void {
     const url = new URL(TYPO3.settings.ajaxUrls.livesearch_form, window.location.origin);
     url.searchParams.set('query', BrowserSession.get('livesearch-term') ?? '');
+    url.searchParams.set('offset', BrowserSession.get('livesearch-offset') ?? '0');
 
     const persistedSearchOptions = Object.entries(BrowserSession.getByPrefix('livesearch-option-'))
       .filter((item: [string, string]) => item[1] === '1')
@@ -90,8 +97,18 @@ class LiveSearch {
       size: Modal.sizes.medium,
       ajaxCallback: (): void => {
         const liveSearchContainer = modal.querySelector('typo3-backend-live-search')
-        const searchField = liveSearchContainer.querySelector('input[type="search"]') as HTMLInputElement;
-        const searchForm = searchField.closest('form');
+        const searchForm = liveSearchContainer.querySelector('form');
+        const searchField = searchForm.querySelector('input[type="search"]') as HTMLInputElement;
+        const offsetField = searchForm.querySelector('input[name="offset"]') as HTMLInputElement;
+
+        new RegularEvent('livesearch:demand-changed', (): void => {
+          offsetField.value = '0';
+        }).bindTo(liveSearchContainer);
+
+        new RegularEvent('livesearch:pagination-selected', (e: CustomEvent): void => {
+          offsetField.value = e.detail.offset;
+          searchForm.requestSubmit();
+        }).bindTo(liveSearchContainer);
 
         new RegularEvent('submit', (e: SubmitEvent): void => {
           e.preventDefault();
@@ -99,7 +116,11 @@ class LiveSearch {
           const formData = new FormData(searchForm);
           this.search(formData).then((): void => {
             const query = formData.get('query').toString();
+            const offset = formData.get('offset')?.toString();
             BrowserSession.set('livesearch-term', query);
+            if (offset) {
+              BrowserSession.set('livesearch-offset', offset);
+            }
           });
           const optionCounterElement = searchForm.querySelector('[data-active-options-counter]') as HTMLElement;
           const count = parseInt(optionCounterElement.dataset.activeOptionsCounter, 10);
@@ -113,12 +134,14 @@ class LiveSearch {
           },
         });
 
-        const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container') as ResultContainer;
+        const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container');
         new RegularEvent('live-search:item-chosen', (): void => {
           Modal.dismiss();
         }).bindTo(searchResultContainer);
 
         new RegularEvent('typo3:live-search:option-invoked', (e: CustomEvent): void => {
+          liveSearchContainer.dispatchEvent(new CustomEvent('livesearch:demand-changed'));
+
           const optionCounterElement = searchForm.querySelector('[data-active-options-counter]') as HTMLElement;
           let count = parseInt(optionCounterElement.dataset.activeOptionsCounter, 10);
           count = e.detail.active ? count + 1 : count - 1;
@@ -132,6 +155,7 @@ class LiveSearch {
         }).bindTo(modal.querySelector(Identifiers.searchOptionDropdownToggle));
 
         new DebounceEvent('input', (): void => {
+          liveSearchContainer.dispatchEvent(new CustomEvent('livesearch:demand-changed'));
           searchForm.requestSubmit();
         }).bindTo(searchField);
 
@@ -181,18 +205,16 @@ class LiveSearch {
 
   private search = async (formData: FormData): Promise<void> => {
     const query = formData.get('query').toString();
-    let resultSet: ResultItemInterface[]|null = null;
 
-    if (query !== '') {
+    if (query === '') {
+      this.updateSearchResults(null);
+    } else {
       const searchResultContainer = document.querySelector(resultContainerComponentName) as ResultContainer;
       searchResultContainer.loading = true;
 
-      const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.livesearch).post(formData);
-
-      resultSet = await response.raw().json();
+      const response: SearchResponse = await (await new AjaxRequest(TYPO3.settings.ajaxUrls.livesearch).post(formData)).raw().json();
+      this.updateSearchResults(response);
     }
-
-    this.updateSearchResults(resultSet);
   }
 
   private handleKeyDown(e: KeyboardEvent): void {
@@ -207,14 +229,17 @@ class LiveSearch {
     firstSearchResultItem?.focus();
   }
 
-  private updateSearchResults(searchResults: ResultItemInterface[]|null): void {
-    const searchAllButton = document.querySelector('typo3-backend-live-search-show-all');
-    searchAllButton.parentElement.hidden = searchResults === null || searchResults.length === 0;
-
-    const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container') as ResultContainer;
-
-    searchResultContainer.results = searchResults;
+  private updateSearchResults(response: SearchResponse): void {
+    const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container');
+    searchResultContainer.results = response?.results ?? null;
     searchResultContainer.loading = false;
+
+    this.updatePagination(response?.pagination ?? null);
+  }
+
+  private updatePagination(pagination: Pagination): void {
+    const paginationElement: ResultPagination = document.querySelector('typo3-backend-live-search-result-pagination');
+    paginationElement.pagination = pagination;
   }
 }
 

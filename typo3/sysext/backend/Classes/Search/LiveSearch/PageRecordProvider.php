@@ -17,17 +17,20 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Search\LiveSearch;
 
+use Doctrine\DBAL\ArrayParameterType;
+use Hoa\Ustring\Search;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Search\Event\ModifyQueryForLiveSearchEvent;
+use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\DemandProperty;
+use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\DemandPropertyName;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\SearchDemand;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
@@ -73,50 +76,60 @@ final class PageRecordProvider implements SearchProviderInterface
         return $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:liveSearch.pageRecordProvider.filterLabel');
     }
 
+    public function count(SearchDemand $searchDemand): int
+    {
+        $searchDemand = $this->parseCommand($searchDemand);
+        $queryBuilder = $this->getQueryBuilderForTable($searchDemand);
+        return (int)$queryBuilder?->count('*')->executeQuery()->fetchOne();
+    }
+
     /**
      * @return ResultItem[]
      */
     public function find(SearchDemand $searchDemand): array
     {
         $this->pageIdList = $this->getPageIdList();
-
         $result = [];
 
-        $query = $searchDemand->getQuery();
         $remainingItems = $searchDemand->getLimit();
-        if ($this->queryParser->isValidPageJump($query)) {
-            $commandQuery = $this->queryParser->getCommandForPageJump($query);
-            $extractedQueryString = $this->queryParser->getSearchQueryValue($commandQuery);
-            $tableName = $this->queryParser->getTableNameFromCommand($commandQuery);
-
-            if ($tableName !== 'pages') {
-                return [];
-            }
-
-            return $this->findByTable($extractedQueryString, $remainingItems);
-        }
-
-        $tableResult = $this->findByTable($query, $remainingItems);
+        $searchDemand = $this->parseCommand($searchDemand);
+        $tableResult = $this->findByTable($searchDemand, $remainingItems);
 
         $result[] = $tableResult;
 
         return array_merge([], ...$result);
     }
 
-    /**
-     * @return ResultItem[]
-     */
-    protected function findByTable(string $queryString, int $limit): array
+    protected function parseCommand(SearchDemand $searchDemand): SearchDemand
     {
-        if (!$this->getBackendUser()->check('tables_select', 'pages')) {
-            return [];
+        $commandQuery = null;
+        $query = $searchDemand->getQuery();
+
+        if ($this->queryParser->isValidCommand($query)) {
+            $commandQuery = $query;
+        } elseif ($this->queryParser->isValidPageJump($query)) {
+            $commandQuery = $this->queryParser->getCommandForPageJump($query);
         }
 
-        $fieldsToSearchWithin = $this->extractSearchableFieldsFromTable();
-        if ($fieldsToSearchWithin === []) {
-            return [];
+        if ($commandQuery !== null) {
+            $tableName = $this->queryParser->getTableNameFromCommand($query);
+            if ($tableName === 'pages') {
+                $extractedQueryString = $this->queryParser->getSearchQueryValue($commandQuery);
+                $searchDemand = new SearchDemand([
+                    new DemandProperty(DemandPropertyName::query, $extractedQueryString),
+                    ...array_filter(
+                        $searchDemand->getProperties(),
+                        static fn (DemandProperty $demandProperty) => $demandProperty->getName() !== DemandPropertyName::query
+                    ),
+                ]);
+            }
         }
 
+        return $searchDemand;
+    }
+
+    protected function getQueryBuilderForTable(SearchDemand $searchDemand): ?QueryBuilder
+    {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
@@ -124,37 +137,55 @@ final class PageRecordProvider implements SearchProviderInterface
             ->removeByType(StartTimeRestriction::class)
             ->removeByType(EndTimeRestriction::class);
 
-        $constraints = $this->makeQuerySearchByTable($queryString, $queryBuilder, $fieldsToSearchWithin);
+        $constraints = $this->buildConstraintsForTable($searchDemand->getQuery(), $queryBuilder);
         if ($constraints === []) {
-            return [];
+            return null;
         }
 
         $queryBuilder
-            ->select('*')
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->or(...$constraints)
-            )
-            ->setMaxResults($limit);
-
-        if ($this->pageIdList !== []) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->in(
-                    'pid',
-                    $queryBuilder->createNamedParameter($this->pageIdList, Connection::PARAM_INT_ARRAY)
-                )
             );
-        }
 
         if ($this->userPermissions) {
             $queryBuilder->andWhere($this->userPermissions);
         }
 
-        $queryBuilder->addOrderBy('uid', 'DESC');
+        if ($this->pageIdList !== []) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    'pid',
+                    $queryBuilder->createNamedParameter($this->pageIdList, ArrayParameterType::INTEGER)
+                )
+            );
+        }
+
         $event = $this->eventDispatcher->dispatch(new ModifyQueryForLiveSearchEvent($queryBuilder, 'pages'));
 
+        return $event->getQueryBuilder();
+    }
+
+    /**
+     * @return ResultItem[]
+     */
+    protected function findByTable(SearchDemand $searchDemand, int $limit): array
+    {
+        $queryBuilder = $this->getQueryBuilderForTable($searchDemand);
+        if ($queryBuilder === null) {
+            return [];
+        }
+
+        $queryBuilder
+            ->select('*')
+            ->setFirstResult($searchDemand->getOffset())
+            ->setMaxResults($limit)
+            ->addOrderBy('uid', 'DESC');
+
+        $queryBuilder->addOrderBy('uid', 'DESC');
+
         $items = [];
-        $result = $event->getQueryBuilder()->executeQuery();
+        $result = $queryBuilder->executeQuery();
         while ($row = $result->fetchAssociative()) {
             BackendUtility::workspaceOL('pages', $row);
             if (!is_array($row)) {
@@ -253,11 +284,13 @@ final class PageRecordProvider implements SearchProviderInterface
         return $fieldListArray;
     }
 
-    /**
-     * @return CompositeExpression[]
-     */
-    protected function makeQuerySearchByTable(string $queryString, QueryBuilder $queryBuilder, array $fieldsToSearchWithin): array
+    protected function buildConstraintsForTable(string $queryString, QueryBuilder $queryBuilder): array
     {
+        $fieldsToSearchWithin = $this->extractSearchableFieldsFromTable();
+        if ($fieldsToSearchWithin === []) {
+            return [];
+        }
+
         $constraints = [];
 
         // If the search string is a simple integer, assemble an equality comparison

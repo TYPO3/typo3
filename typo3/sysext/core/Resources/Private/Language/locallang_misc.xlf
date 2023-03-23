@@ -426,9 +426,6 @@
 			<trans-unit id="liveSearch_listEmptyText" resname="liveSearch_listEmptyText">
 				<source>No results found.</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_showAllResults" resname="liveSearch_showAllResults">
-				<source>Show All</source>
-			</trans-unit>
 			<trans-unit id="liveSearch_helpTitle" resname="liveSearch_helpTitle">
 				<source>How to use advanced search tags</source>
 			</trans-unit>

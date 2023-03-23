@@ -45,7 +45,13 @@ export class ItemContainer extends LitElement {
 
   protected render(): TemplateResult {
     const groupedResults: GroupedResultItems = {};
-    this.results.forEach((result: ResultItemInterface): void => {
+    const filteredResults = this.results.filter((result: ResultItemInterface): boolean => result !== null);
+    if (filteredResults.length !== this.results.length) {
+      console.warn(
+        'The result set contained "null" values, indicating something went wrong while building the search results. Affected values were removed to no break the user interface.'
+      );
+    }
+    filteredResults.forEach((result: ResultItemInterface): void => {
       if (!(result.typeLabel in groupedResults)) {
         groupedResults[result.typeLabel] = [result];
       } else {
