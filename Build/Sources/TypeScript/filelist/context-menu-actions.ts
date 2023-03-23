@@ -53,7 +53,7 @@ class ContextMenuActions {
         event: null,
         trigger: null,
         action: FileListActionEvent.rename,
-        resource: resource,
+        resources: [resource],
         url: null
       };
       document.dispatchEvent(new CustomEvent(FileListActionEvent.rename, { detail: detail }));

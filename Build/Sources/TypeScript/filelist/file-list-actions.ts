@@ -11,14 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { ResourceInterface } from '@typo3/backend/resource/resource';
 
 export interface FileListActionDetail {
   event: Event;
   action: string;
-  resource: ResourceInterface;
+  resources: [ResourceInterface, ...ResourceInterface[]];
   trigger: HTMLElement | null;
   url: string | null;
 }
@@ -70,55 +69,52 @@ export class FileListActionUtility {
 
 class FileListActions {
   constructor() {
-    DocumentService.ready().then((): void => {
+    new RegularEvent('contextmenu', (event: Event, target: HTMLElement): void => {
+      event.preventDefault();
+      const detail: FileListActionDetail = this.getActionDetail(event, target);
+      switch (detail.action) {
+        case 'primary':
+          document.dispatchEvent(new CustomEvent(FileListActionEvent.primaryContextmenu, { detail: detail }));
+          break;
+        default:
+          break;
+      }
+    }).delegateTo(document, FileListActionSelector.actionSelector);
 
-      new RegularEvent('contextmenu', (event: Event, target: HTMLElement): void => {
-        event.preventDefault();
-        const detail: FileListActionDetail = this.getActionDetail(event, target);
-        switch (detail.action) {
-          case 'primary':
-            document.dispatchEvent(new CustomEvent(FileListActionEvent.primaryContextmenu, { detail: detail }));
-            break;
-          default:
-            break;
-        }
-      }).delegateTo(document, FileListActionSelector.actionSelector);
-
-      new RegularEvent('click', (event: Event, target: HTMLElement): void => {
-        event.preventDefault();
-        const detail: FileListActionDetail = this.getActionDetail(event, target);
-        switch (detail.action) {
-          case 'primary':
-            document.dispatchEvent(new CustomEvent(FileListActionEvent.primary, { detail: detail }));
-            break;
-          case 'show':
-            document.dispatchEvent(new CustomEvent(FileListActionEvent.show, { detail: detail }));
-            break;
-          case 'select':
-            document.dispatchEvent(new CustomEvent(FileListActionEvent.select, { detail: detail }));
-            break;
-          case 'rename':
-            document.dispatchEvent(new CustomEvent(FileListActionEvent.rename, { detail: detail }));
-            break;
-          case 'download':
-            document.dispatchEvent(new CustomEvent(FileListActionEvent.download, { detail: detail }));
-            break;
-          default:
-            break;
-        }
-      }).delegateTo(document, FileListActionSelector.actionSelector);
-
-    });
+    new RegularEvent('click', (event: Event, target: HTMLElement): void => {
+      event.preventDefault();
+      const detail: FileListActionDetail = this.getActionDetail(event, target);
+      switch (detail.action) {
+        case 'primary':
+          document.dispatchEvent(new CustomEvent(FileListActionEvent.primary, { detail: detail }));
+          break;
+        case 'show':
+          document.dispatchEvent(new CustomEvent(FileListActionEvent.show, { detail: detail }));
+          break;
+        case 'select':
+          document.dispatchEvent(new CustomEvent(FileListActionEvent.select, { detail: detail }));
+          break;
+        case 'rename':
+          document.dispatchEvent(new CustomEvent(FileListActionEvent.rename, { detail: detail }));
+          break;
+        case 'download':
+          document.dispatchEvent(new CustomEvent(FileListActionEvent.download, { detail: detail }));
+          break;
+        default:
+          break;
+      }
+    }).delegateTo(document, FileListActionSelector.actionSelector);
   }
 
   private getActionDetail(event: Event, target: HTMLElement): FileListActionDetail {
     const action = target.dataset.filelistAction;
     const element = target.closest(FileListActionSelector.elementSelector) as HTMLElement;
+    const resource = FileListActionUtility.getResourceForElement(element);
     const detail: FileListActionDetail = {
       event: event,
       trigger: target,
       action: action,
-      resource: FileListActionUtility.getResourceForElement(element),
+      resources: [resource],
       url: target.dataset.filelistActionUrl ?? null,
     };
     return detail;

@@ -13,7 +13,7 @@
 
 import LinkBrowser from '@typo3/backend/link-browser';
 import RegularEvent from '@typo3/core/event/regular-event';
-import { FileListActionEvent } from '@typo3/filelist/file-list-actions';
+import { FileListActionEvent, FileListActionDetail } from '@typo3/filelist/file-list-actions';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { ResourceInterface } from '@typo3/backend/resource/resource';
@@ -26,12 +26,15 @@ class LinkBrowserFileHandler {
 
     new RegularEvent(FileListActionEvent.primary, (event: CustomEvent): void => {
       event.preventDefault();
-      document.dispatchEvent(new CustomEvent(FileListActionEvent.select, { detail: { resource: event.detail.resource } }));
+      const detail: FileListActionDetail = event.detail;
+      detail.action = FileListActionEvent.select;
+      document.dispatchEvent(new CustomEvent(FileListActionEvent.select, { detail: detail }));
     }).bindTo(document);
 
     new RegularEvent(FileListActionEvent.select, (event: CustomEvent): void => {
       event.preventDefault();
-      const resource = event.detail.resource as ResourceInterface;
+      const detail: FileListActionDetail = event.detail;
+      const resource = detail.resources[0];
       if (resource.type === 'file') {
         this.insertLink(resource);
       }
@@ -42,7 +45,8 @@ class LinkBrowserFileHandler {
 
     new RegularEvent(FileListActionEvent.show, (event: CustomEvent): void => {
       event.preventDefault();
-      const resource = event.detail.resource as ResourceInterface;
+      const detail: FileListActionDetail = event.detail;
+      const resource = detail.resources[0];
       InfoWindow.showItem('_' + resource.type.toUpperCase(), resource.identifier);
     }).bindTo(document);
 

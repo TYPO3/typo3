@@ -31,11 +31,12 @@ class FileListRenameHandler {
 
     new RegularEvent(FileListActionEvent.rename, (event: CustomEvent): void => {
       const detail: FileListActionDetail = event.detail;
+      const resource = detail.resources[0];
       const modal = Modal.advanced({
-        title: TYPO3.lang['file_rename.rename'] || 'Rename',
+        title: TYPO3.lang['file_rename.title'] || 'Rename',
         type: Modal.types.default,
         size: Modal.sizes.small,
-        content: this.composeEditForm(detail.resource),
+        content: this.composeEditForm(resource),
         buttons: [
           {
             text: TYPO3.lang['file_rename.button.cancel'] || 'Cancel',
@@ -62,11 +63,11 @@ class FileListRenameHandler {
             const formData = new FormData(event.target as HTMLFormElement);
             const submittedData = Object.fromEntries(formData);
             const resourceName = submittedData.name.toString();
-            if (detail.resource.name !== resourceName) {
+            if (detail.resources[0].name !== resourceName) {
 
               const request = new AjaxRequest(TYPO3.settings.ajaxUrls.resource_rename);
               request.post({
-                identifier: detail.resource.identifier,
+                identifier: detail.resources[0].identifier,
                 resourceName: resourceName,
               }).then(async (success: AjaxResponse): Promise<void> => {
 

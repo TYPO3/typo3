@@ -88,14 +88,15 @@ export default class Filelist {
     // Filelist resource events
     new RegularEvent(FileListActionEvent.primary, (event: CustomEvent): void => {
       const detail: FileListActionDetail = event.detail;
-      if (detail.resource.type === 'file') {
+      const resource = detail.resources[0];
+      if (resource.type === 'file') {
         window.location.href = top.TYPO3.settings.FormEngine.moduleUrl
-          + '&edit[sys_file_metadata][' + detail.resource.metaUid + ']=edit'
+          + '&edit[sys_file_metadata][' + resource.metaUid + ']=edit'
           + '&returnUrl=' + Filelist.getReturnUrl('');
       }
-      if (detail.resource.type === 'folder') {
+      if (resource.type === 'folder') {
         const parameters = Filelist.parseQueryParameters(document.location);
-        parameters.id = detail.resource.identifier;
+        parameters.id = resource.identifier;
         let parameterString = '';
         Object.keys(parameters).forEach(key => {
           if (parameters[key] === '') { return; }
@@ -107,24 +108,20 @@ export default class Filelist {
 
     new RegularEvent(FileListActionEvent.primaryContextmenu, (event: CustomEvent): void => {
       const detail: FileListActionDetail = event.detail;
-      ContextMenu.show(
-        'sys_file',
-        detail.resource.identifier,
-        '',
-        '',
-        '',
-        detail.trigger
-      );
+      const resource = detail.resources[0];
+      ContextMenu.show('sys_file', resource.identifier, '', '', '', detail.trigger);
     }).bindTo(document);
 
     new RegularEvent(FileListActionEvent.show, (event: CustomEvent): void => {
       const detail: FileListActionDetail = event.detail;
-      Filelist.openInfoPopup('_' + detail.resource.type.toUpperCase(), detail.resource.identifier);
+      const resource = detail.resources[0];
+      Filelist.openInfoPopup('_' + resource.type.toUpperCase(), resource.identifier);
     }).bindTo(document);
 
     new RegularEvent(FileListActionEvent.download, (event: CustomEvent): void => {
       const detail: FileListActionDetail = event.detail;
-      this.triggerDownload([detail.resource.identifier], detail.url, detail.trigger);
+      const resource = detail.resources[0];
+      this.triggerDownload([resource.identifier], detail.url, detail.trigger);
     }).bindTo(document);
 
     DocumentService.ready().then((): void => {
