@@ -74,7 +74,7 @@ class FeLoginModeExtractionUpdate extends AbstractDownloadExtensionUpdate
     {
         return 'To reduce complexity and speed up frontend requests, the rarely used "frontend user login mode"'
             . ' functionality has been extracted into the TYPO3 Extension Repository. This update downloads the TYPO3'
-            . ' extension fe_login_mode from the TER. Use this if you\'re currenlty using this functionality.';
+            . ' extension fe_login_mode from the TER. Use this if you\'re currently using this functionality.';
     }
 
     /**
