@@ -22,6 +22,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Core\Authentication\Event\BeforeRequestTokenProcessedEvent;
+use TYPO3\CMS\Core\Authentication\Event\LoginAttemptFailedEvent;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
 use TYPO3\CMS\Core\Context\Context;
@@ -638,6 +639,9 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
             // If there were a login failure, check to see if a warning email should be sent
             if ($activeLogin) {
+                GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+                    new LoginAttemptFailedEvent($this, $request, $this->removeSensitiveLoginDataForLoggingInfo($loginData))
+                );
                 $this->handleLoginFailure();
             }
         }
@@ -730,6 +734,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     protected function handleLoginFailure(): void
     {
+        if (($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'] ?? []) !== []) {
+            trigger_error(
+                'The hook $TYPO3_CONF_VARS[\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauth.php\'][\'postLoginFailureProcessing\']'
+                . ' will be removed in TYPO3 v13.0. Use the PSR-14 event LoginAttemptFailedEvent.',
+                E_USER_DEPRECATED
+            );
+        }
         $_params = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'] ?? [] as $hookIdentifier => $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);

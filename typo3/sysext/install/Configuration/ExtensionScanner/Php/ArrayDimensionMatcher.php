@@ -992,4 +992,10 @@ return [
             'Deprecation-83608-BackendUsersGetDefaultUploadFolderHook.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauth.php\'][\'postLoginFailureProcessing\']' => [
+        'restFiles' => [
+            'Deprecation-100278-PostLoginFailureProcessingHook.rst',
+            'Feature-100278-PSR-14EventAfterFailedLoginsInBackendOrFrontendUsers.rst',
+        ],
+    ],
 ];

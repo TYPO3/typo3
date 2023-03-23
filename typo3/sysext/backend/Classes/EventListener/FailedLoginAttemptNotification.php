@@ -15,12 +15,12 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Security;
+namespace TYPO3\CMS\Backend\EventListener;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\Event\LoginAttemptFailedEvent;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -39,36 +39,25 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Relevant settings:
  * $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr']
  *
- * @internal this class is not part of the TYPO3 Core API as this is a concrete hook implementation
+ * @internal this class is not part of the TYPO3 Core API as this is a concrete event listener implementation
  */
-class FailedLoginAttemptNotification
+final class FailedLoginAttemptNotification
 {
     use LogDataTrait;
 
-    /**
-     * The receiver of the notification
-     * @var string
-     */
-    protected $notificationRecipientEmailAddress;
+    protected string $notificationRecipientEmailAddress;
 
     /**
-     * Time span (in seconds) within the number of failed logins are collected.
-     * Number of sections back in time to check. This is a kind of limit for how many failures an hour.
-     * @var int
+     * @param string|null $notificationRecipientEmailAddress The receiver of the notification
+     * @param int $warningPeriod Time span (in seconds) within the number of failed logins are collected. Number of sections back in time to check. This is a kind of limit for how many failures an hour.
+     * @param int $failedLoginAttemptsThreshold The maximum accepted number of warnings before an email to $notificationRecipientEmailAddress is sent
      */
-    protected $warningPeriod;
-
-    /**
-     * The maximum accepted number of warnings before an email to $notificationRecipientEmailAddress is sent
-     * @var int
-     */
-    protected $failedLoginAttemptsThreshold;
-
-    public function __construct(string $notificationRecipientEmailAddress = null, int $warningPeriod = 3600, int $failedLoginAttemptsThreshold = 3)
-    {
+    public function __construct(
+        string $notificationRecipientEmailAddress = null,
+        protected readonly int $warningPeriod = 3600,
+        protected readonly int $failedLoginAttemptsThreshold = 3
+    ) {
         $this->notificationRecipientEmailAddress = $notificationRecipientEmailAddress ?? (string)$GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
-        $this->warningPeriod = $warningPeriod;
-        $this->failedLoginAttemptsThreshold = $failedLoginAttemptsThreshold;
     }
 
     /**
@@ -76,27 +65,25 @@ class FailedLoginAttemptNotification
      * If a login fails, this function is called. It will look up the sys_log to see if there
      * have been more than $failedLoginAttemptsThreshold failed logins the last X seconds
      * (default 3600, see $warningPeriod). If so, an email with a warning is sent.
-     *
-     * @param array $params always empty in this hook
-     * @param AbstractUserAuthentication $user the referenced user where the hook is called.
-     * @return bool always returns true to ensure "sleep" functionality of AbstractUserAuthentication is kept.
      */
-    public function sendEmailOnLoginFailures(array $params, AbstractUserAuthentication $user): bool
+    public function __invoke(LoginAttemptFailedEvent $event): void
     {
-        if (!($user instanceof BackendUserAuthentication)) {
+        if (!$event->isBackendAttempt()) {
             // This notification only works for backend users
-            return true;
+            return;
         }
         if (!GeneralUtility::validEmail($this->notificationRecipientEmailAddress)) {
-            return true;
+            return;
         }
 
+        /** @var BackendUserAuthentication $user */
+        $user = $event->getUser();
         $earliestTimeToCheckForFailures = $GLOBALS['EXEC_TIME'] - $this->warningPeriod;
         $loginFailures = $this->getLoginFailures($earliestTimeToCheckForFailures);
         // Check for more than a maximum number of login failures with the last period
         if (count($loginFailures) > $this->failedLoginAttemptsThreshold) {
             // OK, so there were more than the max allowed number of login failures - so we will send an email then.
-            $this->sendLoginAttemptEmail($loginFailures);
+            $this->sendLoginAttemptEmail($loginFailures, $event->getRequest());
             // Login failure attempt written to log, which will be picked up later-on again
             $user->writelog(
                 SystemLogType::LOGIN,
@@ -107,7 +94,6 @@ class FailedLoginAttemptNotification
                 [count($loginFailures), $this->warningPeriod, $this->notificationRecipientEmailAddress]
             );
         }
-        return true;
     }
 
     /**
@@ -142,7 +128,7 @@ class FailedLoginAttemptNotification
      *
      * @param array $previousFailures sys_log entries that have been logged since the last time a notification was sent
      */
-    protected function sendLoginAttemptEmail(array $previousFailures): void
+    protected function sendLoginAttemptEmail(array $previousFailures, ServerRequestInterface $request): void
     {
         $emailData = [];
         foreach ($previousFailures as $row) {
@@ -158,17 +144,15 @@ class FailedLoginAttemptNotification
         $email = GeneralUtility::makeInstance(FluidEmail::class)
             ->to($this->notificationRecipientEmailAddress)
             ->setTemplate('Security/LoginAttemptFailedWarning')
-            ->assign('lines', $emailData);
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
-            $email->setRequest($GLOBALS['TYPO3_REQUEST']);
-        }
+            ->assign('lines', $emailData)
+            ->setRequest($request);
 
         try {
-            // TODO: DI should be used to inject the MailerInterface
+            // @todo DI should be used to inject the MailerInterface
             GeneralUtility::makeInstance(MailerInterface::class)->send($email);
         } catch (TransportExceptionInterface $e) {
             // Sending mail failed. Probably broken smtp setup.
-            // @todo: Maybe log that sending mail failed.
+            // @todo Maybe log that sending mail failed.
         }
     }
 

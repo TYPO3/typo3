@@ -168,6 +168,11 @@ services:
     shared: false
     public: true
 
+  TYPO3\CMS\Backend\EventListener\FailedLoginAttemptNotification:
+    tags:
+      - name: event.listener
+        identifier: 'typo3/cms-backend/failed-login-attempt-notification'
+
   TYPO3\CMS\Backend\EventListener\SilentSiteLanguageFlagMigration:
     tags:
       - name: event.listener
