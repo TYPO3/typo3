@@ -21,6 +21,7 @@ interface CKEditor5Config {
 
   wordCount?: any;
   typo3link?: any;
+  debug?: boolean;
 }
 
 interface PluginModule {
@@ -135,6 +136,10 @@ export class CKEditor5Element extends LitElement {
             this.applyEditableElementStyles(editor);
             this.handleWordCountPlugin(editor);
             this.applyReadOnly(editor);
+
+            if (this.options.debug) {
+              window.CKEditorInspector.attach(editor, { isCollapsed: true });
+            }
           });
       });
   }

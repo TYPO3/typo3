@@ -71,6 +71,7 @@ interface Window {
   TYPO3: any;
   require: (moduleName: string) => void;
   list_frame: Window;
+  CKEditorInspector: any;
 }
 
 /**

@@ -183,6 +183,11 @@ class RichTextElement extends AbstractFormElement
 
         $resultArray['html'] = implode(LF, $html);
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/rte-ckeditor/ckeditor5.js');
+
+        if ($ckeditorConfiguration['options']['debug'] ?? false) {
+            $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/ckeditor5-inspector.js');
+        }
+
         $resultArray['stylesheetFiles'][] = PathUtility::getPublicResourceWebPath('EXT:rte_ckeditor/Resources/Public/Css/editor.css');
 
         return $resultArray;
@@ -380,6 +385,11 @@ class RichTextElement extends AbstractFormElement
         }
         if (is_array($configuration['removeButtons'] ?? null)) {
             $configuration['removeButtons'] = implode(',', $configuration['removeButtons']);
+        }
+
+        // unless explicitly set, the debug mode is enabled in development context
+        if (!isset($configuration['debug'])) {
+            $configuration['debug'] = ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) && Environment::getContext()->isDevelopment();
         }
 
         // The removePlugins option needs to be assigned as an array in CKEditor5.

@@ -128,6 +128,7 @@
     "@ckeditor/ckeditor5-horizontal-line": "^35.4.0",
     "@ckeditor/ckeditor5-html-support": "^35.4.0",
     "@ckeditor/ckeditor5-indent": "^35.4.0",
+    "@ckeditor/ckeditor5-inspector": "^4.1.0",
     "@ckeditor/ckeditor5-link": "^35.4.0",
     "@ckeditor/ckeditor5-list": "^35.4.0",
     "@ckeditor/ckeditor5-paragraph": "^35.4.0",
