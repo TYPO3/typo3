@@ -36,7 +36,71 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         $this->columnMapFactory = $this->get(ColumnMapFactory::class);
     }
 
-    public static function createDataProvider(): \Generator
+    public static function createWithGroupTypeDataProvider(): \Generator
+    {
+        $columnName = 'group';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
+        $expectedColumnMap = new ColumnMap($columnName);
+        $expectedColumnMap->setType(TableColumnType::GROUP);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
+        yield 'columns configuration is initialized for type group' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'group',
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedColumnMap' => $expectedColumnMap,
+        ];
+
+        $columnName = 'group_with_maxitems_1';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
+        $expectedColumnMap = new ColumnMap($columnName);
+        $expectedColumnMap->setType(TableColumnType::GROUP);
+        yield 'columns configuration is initialized with maxitems = 1 evaluation for type group' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'group',
+                    'maxitems' => '1',
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedColumnMap' => $expectedColumnMap,
+        ];
+
+        $columnName = 'group_with_maxitems_10';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
+        $expectedColumnMap = new ColumnMap($columnName);
+        $expectedColumnMap->setType(TableColumnType::GROUP);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
+        yield 'columns configuration is initialized with maxitems > 1 evaluation for type group' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'group',
+                    'maxitems' => '10',
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedColumnMap' => $expectedColumnMap,
+        ];
+    }
+
+    /**
+     * @dataProvider createWithGroupTypeDataProvider
+     * @test
+     */
+    public function createWithGroupType(string $columnName, array $columnConfiguration, string $propertyName, ColumnMap $expectedColumnMap): void
+    {
+        self::assertEquals(
+            $expectedColumnMap,
+            $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class)
+        );
+    }
+
+    public static function createWithSelectTypeDataProvider(): \Generator
     {
         $columnName = 'has_one';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
@@ -124,71 +188,6 @@ class ColumnMapFactoryTest extends FunctionalTestCase
             'expectedColumnMap' => $expectedColumnMap,
         ];
 
-        $columnName = 'group';
-        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName);
-        $expectedColumnMap->setType(TableColumnType::GROUP);
-        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
-        yield 'columns configuration is initialized for type group' => [
-            'columnName' => $columnName,
-            'columnConfiguration' => [
-                'config' => [
-                    'type' => 'group',
-                ],
-            ],
-            'propertyName' => $propertyName,
-            'expectedColumnMap' => $expectedColumnMap,
-        ];
-
-        $columnName = 'folder';
-        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName);
-        $expectedColumnMap->setType(TableColumnType::FOLDER);
-        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
-        yield 'columns configuration is initialized for type folder' => [
-            'columnName' => $columnName,
-            'columnConfiguration' => [
-                'config' => [
-                    'type' => 'folder',
-                ],
-            ],
-            'propertyName' => $propertyName,
-            'expectedColumnMap' => $expectedColumnMap,
-        ];
-
-        $columnName = 'group_with_maxitems_1';
-        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName);
-        $expectedColumnMap->setType(TableColumnType::GROUP);
-        yield 'columns configuration is initialized with maxitems = 1 evaluation for type group' => [
-            'columnName' => $columnName,
-            'columnConfiguration' => [
-                'config' => [
-                    'type' => 'group',
-                    'maxitems' => '1',
-                ],
-            ],
-            'propertyName' => $propertyName,
-            'expectedColumnMap' => $expectedColumnMap,
-        ];
-
-        $columnName = 'group_with_maxitems_10';
-        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName);
-        $expectedColumnMap->setType(TableColumnType::GROUP);
-        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
-        yield 'columns configuration is initialized with maxitems > 1 evaluation for type group' => [
-            'columnName' => $columnName,
-            'columnConfiguration' => [
-                'config' => [
-                    'type' => 'group',
-                    'maxitems' => '10',
-                ],
-            ],
-            'propertyName' => $propertyName,
-            'expectedColumnMap' => $expectedColumnMap,
-        ];
-
         $columnName = 'has_and_belongs_to_many';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
@@ -211,7 +210,53 @@ class ColumnMapFactoryTest extends FunctionalTestCase
             'propertyName' => $propertyName,
             'expectedColumnMap' => $expectedColumnMap,
         ];
+    }
 
+    /**
+     * @dataProvider createWithSelectTypeDataProvider
+     * @test
+     */
+    public function createWithSelectType(string $columnName, array $columnConfiguration, string $propertyName, ColumnMap $expectedColumnMap): void
+    {
+        self::assertEquals(
+            $expectedColumnMap,
+            $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class)
+        );
+    }
+
+    public static function createWithFolderTypeDataProvider(): \Generator
+    {
+        $columnName = 'folder';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
+        $expectedColumnMap = new ColumnMap($columnName);
+        $expectedColumnMap->setType(TableColumnType::FOLDER);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
+        yield 'columns configuration is initialized for type folder' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'folder',
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedColumnMap' => $expectedColumnMap,
+        ];
+    }
+
+    /**
+     * @dataProvider createWithFolderTypeDataProvider
+     * @test
+     */
+    public function createWithFolderType(string $columnName, array $columnConfiguration, string $propertyName, ColumnMap $expectedColumnMap): void
+    {
+        self::assertEquals(
+            $expectedColumnMap,
+            $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class)
+        );
+    }
+
+    public static function createWithInlineTypeDataProvider(): \Generator
+    {
         $columnName = 'has_and_belongs_to_many';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
@@ -237,10 +282,10 @@ class ColumnMapFactoryTest extends FunctionalTestCase
     }
 
     /**
-     * @dataProvider createDataProvider
+     * @dataProvider createWithInlineTypeDataProvider
      * @test
      */
-    public function create(string $columnName, array $columnConfiguration, string $propertyName, ColumnMap $expectedColumnMap): void
+    public function createWithInlineType(string $columnName, array $columnConfiguration, string $propertyName, ColumnMap $expectedColumnMap): void
     {
         self::assertEquals(
             $expectedColumnMap,
