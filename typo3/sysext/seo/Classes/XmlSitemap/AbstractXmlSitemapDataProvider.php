@@ -104,7 +104,7 @@ abstract class AbstractXmlSitemapDataProvider implements XmlSitemapDataProviderI
     {
         $lastMod = 0;
         foreach ($this->items as $item) {
-            if ((int)$item['lastMod'] > $lastMod) {
+            if ((int)($item['lastMod'] ?? 0) > $lastMod) {
                 $lastMod = (int)$item['lastMod'];
             }
         }
