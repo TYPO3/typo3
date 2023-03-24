@@ -149,7 +149,7 @@
 				<source>Current Stage</source>
 			</trans-unit>
 			<trans-unit id="column.lastChangeOn" resname="column.lastChangeOn">
-				<source>Last change</source>
+				<source>Last changed on</source>
 			</trans-unit>
 			<trans-unit id="column.actions" resname="column.actions">
 				<source>Actions</source>
