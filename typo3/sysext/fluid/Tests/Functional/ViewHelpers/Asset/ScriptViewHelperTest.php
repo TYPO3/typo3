@@ -18,7 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Asset;
 
 use TYPO3\CMS\Core\Page\AssetCollector;
-use TYPO3\CMS\Fluid\ViewHelpers\Asset\ScriptViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
+use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ScriptViewHelperTest extends FunctionalTestCase
@@ -42,18 +43,14 @@ class ScriptViewHelperTest extends FunctionalTestCase
      */
     public function sourceStringIsNotHtmlEncodedBeforePassedToAssetCollector(string $src): void
     {
-        $viewHelper = new ScriptViewHelper();
-        $assetCollector = new AssetCollector();
-        $viewHelper->injectAssetCollector($assetCollector);
-        $viewHelper->setArguments([
-            'identifier' => 'test',
-            'src' => $src,
-            'priority' => false,
-        ]);
-        $viewHelper->initializeArgumentsAndRender();
-        $collectedJavaScripts = $assetCollector->getJavaScripts();
-        self::assertSame($collectedJavaScripts['test']['source'], $src);
-        self::assertSame($collectedJavaScripts['test']['attributes'], []);
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:asset.script identifier="test" src="' . $src . '" priority="0"/>');
+
+        (new TemplateView($context))->render();
+
+        $collectedJavaScripts = $this->get(AssetCollector::class)->getJavaScripts();
+        self::assertSame($src, $collectedJavaScripts['test']['source']);
+        self::assertSame([], $collectedJavaScripts['test']['attributes']);
     }
 
     /**
@@ -61,19 +58,12 @@ class ScriptViewHelperTest extends FunctionalTestCase
      */
     public function booleanAttributesAreProperlyConverted(): void
     {
-        $viewHelper = new ScriptViewHelper();
-        $assetCollector = new AssetCollector();
-        $viewHelper->injectAssetCollector($assetCollector);
-        $viewHelper->setArguments([
-            'identifier' => 'test',
-            'src' => 'my.js',
-            'async' => true,
-            'defer' => true,
-            'nomodule' => true,
-            'priority' => false,
-        ]);
-        $viewHelper->initializeArgumentsAndRender();
-        $collectedJavaScripts = $assetCollector->getJavaScripts();
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:asset.script identifier="test" src="my.js" async="1" defer="1" nomodule="1" priority="0"/>');
+
+        (new TemplateView($context))->render();
+
+        $collectedJavaScripts = $this->get(AssetCollector::class)->getJavaScripts();
         self::assertSame($collectedJavaScripts['test']['source'], 'my.js');
         self::assertSame($collectedJavaScripts['test']['attributes'], ['async' => 'async', 'defer' => 'defer', 'nomodule' => 'nomodule']);
     }

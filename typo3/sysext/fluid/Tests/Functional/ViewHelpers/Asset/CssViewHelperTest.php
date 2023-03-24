@@ -18,10 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Asset;
 
 use TYPO3\CMS\Core\Page\AssetCollector;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Fluid\ViewHelpers\Asset\CssViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class CssViewHelperTest extends FunctionalTestCase
 {
@@ -44,18 +43,14 @@ class CssViewHelperTest extends FunctionalTestCase
      */
     public function sourceStringIsNotHtmlEncodedBeforePassedToAssetCollector(string $href): void
     {
-        $assetCollector = new AssetCollector();
-        $viewHelper = new CssViewHelper();
-        $viewHelper->injectAssetCollector($assetCollector);
-        $viewHelper->setArguments([
-            'identifier' => 'test',
-            'href' => $href,
-            'priority' => false,
-        ]);
-        $viewHelper->initializeArgumentsAndRender();
-        $collectedJavaScripts = $assetCollector->getStyleSheets();
-        self::assertSame($collectedJavaScripts['test']['source'], $href);
-        self::assertSame($collectedJavaScripts['test']['attributes'], []);
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:asset.css identifier="test" href="' . $href . '" priority="0"/>');
+
+        (new TemplateView($context))->render();
+
+        $collectedStyleSheets = $this->get(AssetCollector::class)->getStyleSheets();
+        self::assertSame($href, $collectedStyleSheets['test']['source']);
+        self::assertSame([], $collectedStyleSheets['test']['attributes']);
     }
 
     /**
@@ -63,19 +58,14 @@ class CssViewHelperTest extends FunctionalTestCase
      */
     public function booleanAttributesAreProperlyConverted(): void
     {
-        $assetCollector = new AssetCollector();
-        $viewHelper = new CssViewHelper();
-        $viewHelper->injectAssetCollector($assetCollector);
-        $viewHelper->setArguments([
-            'identifier' => 'test',
-            'href' => 'my.css',
-            'disabled' => true,
-            'priority' => false,
-        ]);
-        $viewHelper->initializeArgumentsAndRender();
-        $collectedJavaScripts = $assetCollector->getStyleSheets();
-        self::assertSame($collectedJavaScripts['test']['source'], 'my.css');
-        self::assertSame($collectedJavaScripts['test']['attributes'], ['disabled' => 'disabled']);
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:asset.css identifier="test" href="my.css" disabled="1" priority="0"/>');
+
+        (new TemplateView($context))->render();
+
+        $collectedStyleSheets = $this->get(AssetCollector::class)->getStyleSheets();
+        self::assertSame('my.css', $collectedStyleSheets['test']['source']);
+        self::assertSame(['disabled' => 'disabled'], $collectedStyleSheets['test']['attributes']);
     }
 
     public static function childNodeRenderingIsCorrectDataProvider(): array
@@ -138,15 +128,13 @@ class CssViewHelperTest extends FunctionalTestCase
      */
     public function childNodeRenderingIsCorrect(string $value, string $source, string $expectation): void
     {
-        $assetCollector = new AssetCollector();
-        GeneralUtility::setSingletonInstance(AssetCollector::class, $assetCollector);
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:asset.css identifier="test">' . $source . '</f:asset.css>');
+        $context->getVariableProvider()->add('color', $value);
 
-        $view = new StandaloneView();
-        $view->setTemplateSource(sprintf('<f:asset.css identifier="test">%s</f:asset.css>', $source));
-        $view->assign('color', $value);
-        $view->render();
-        GeneralUtility::removeSingletonInstance(AssetCollector::class, $assetCollector);
+        (new TemplateView($context))->render();
 
-        self::assertSame($expectation, $assetCollector->getInlineStyleSheets()['test']['source']);
+        $collectedInlineStyleSheets = $this->get(AssetCollector::class)->getInlineStyleSheets();
+        self::assertSame($expectation, $collectedInlineStyleSheets['test']['source']);
     }
 }
