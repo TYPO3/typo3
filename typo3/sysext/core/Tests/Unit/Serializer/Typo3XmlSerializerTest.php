@@ -366,7 +366,7 @@ class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    public function encodeCanDisableAddingTypeAttributeToNodeExceptIfValueIsArrayDataProvider(): array
+    public static function encodeCanDisableAddingTypeAttributeToNodeExceptIfValueIsArrayDataProvider(): array
     {
         return [
             ['disableTypeAttrib' => true],

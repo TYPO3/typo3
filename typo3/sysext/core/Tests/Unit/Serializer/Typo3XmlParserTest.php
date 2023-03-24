@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class Typo3XmlParserTest extends UnitTestCase
 {
-    public function decodeReturnsStringOrArrayDataProvider(): array
+    public static function decodeReturnsStringOrArrayDataProvider(): array
     {
         return [
             'EmptyRootNode' => [
@@ -55,7 +55,7 @@ class Typo3XmlParserTest extends UnitTestCase
         self::assertEquals($expected, $result);
     }
 
-    public function decodeHandlesCommentsDataProvider(): array
+    public static function decodeHandlesCommentsDataProvider(): array
     {
         return [
             'IgnoreComments' => [
@@ -102,7 +102,7 @@ class Typo3XmlParserTest extends UnitTestCase
     /**
      * @return string[][]
      */
-    public function decodeHandlesWhitespacesDataProvider(): array
+    public static function decodeHandlesWhitespacesDataProvider(): array
     {
         $headerVariants = [
             'utf-8' => '<?xml version="1.0" encoding="utf-8" standalone="yes"?>',
@@ -176,7 +176,7 @@ class Typo3XmlParserTest extends UnitTestCase
     /**
      * @return array<string, mixed>
      */
-    public function decodeHandlesTagNamespacesDataProvider(): array
+    public static function decodeHandlesTagNamespacesDataProvider(): array
     {
         return [
             'inputWithNameSpaceOnRootLevel' => [
@@ -275,7 +275,7 @@ class Typo3XmlParserTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function decodeReturnsRootNodeNameDataProvider(): array
+    public static function decodeReturnsRootNodeNameDataProvider(): array
     {
         return [
             'input' => [
@@ -360,7 +360,7 @@ class Typo3XmlParserTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function decodeHandlesBigXmlContentDataProvider(): array
+    public static function decodeHandlesBigXmlContentDataProvider(): array
     {
         return [
             '1mb' => [
@@ -419,7 +419,7 @@ class Typo3XmlParserTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function decodeHandlesAttributeTypesDataProvider(): array
+    public static function decodeHandlesAttributeTypesDataProvider(): array
     {
         $prefix = '<?xml version="1.0" encoding="utf-8" standalone="yes"?><T3FlexForms><field index="index">';
         $suffix = '</field></T3FlexForms>';
@@ -530,7 +530,7 @@ class Typo3XmlParserTest extends UnitTestCase
         self::assertSame($content, $result['index']['image']);
     }
 
-    public function decodeThrowsExceptionOnXmlParsingErrorDataProvider(): array
+    public static function decodeThrowsExceptionOnXmlParsingErrorDataProvider(): array
     {
         return [
             'emptyXml' => [
