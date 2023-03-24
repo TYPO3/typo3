@@ -555,7 +555,7 @@ class SchedulerTaskRepository
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE_NAME);
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder
-            ->count('uid')
+            ->count('*')
             ->from(self::TABLE_NAME)
             ->where(
                 $queryBuilder->expr()->eq('deleted', 0)
