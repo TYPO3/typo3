@@ -200,11 +200,13 @@ final class UpgradeWizardsService
             $markup[] = '        <p>' . nl2br(htmlspecialchars($wizard->getConfirmation()->getMessage())) . '</p>';
             $markup[] = '        <div class="btn-group">';
             if (!$wizard->getConfirmation()->isRequired()) {
-                $markup[] = '        <input ' . GeneralUtility::implodeAttributes($radioAttributes, true) . ' checked id="upgrade-wizard-deny">';
+                $denyChecked = $wizard->getConfirmation()->getDefaultValue() === false ? ' checked' : '';
+                $markup[] = '        <input ' . GeneralUtility::implodeAttributes($radioAttributes, true) . $denyChecked . ' id="upgrade-wizard-deny">';
                 $markup[] = '        <label class="btn btn-default" for="upgrade-wizard-deny">' . $wizard->getConfirmation()->getDeny() . '</label>';
             }
             $radioAttributes['value'] = '1';
-            $markup[] = '            <input ' . GeneralUtility::implodeAttributes($radioAttributes, true) . ' id="upgrade-wizard-confirm">';
+            $confirmChecked = $wizard->getConfirmation()->getDefaultValue() === true ? ' checked' : '';
+            $markup[] = '            <input ' . GeneralUtility::implodeAttributes($radioAttributes, true) . $confirmChecked . ' id="upgrade-wizard-confirm">';
             $markup[] = '            <label class="btn btn-default" for="upgrade-wizard-confirm">' . $wizard->getConfirmation()->getConfirm() . '</label>';
             $markup[] = '        </div>';
             $markup[] = '    </div>';
