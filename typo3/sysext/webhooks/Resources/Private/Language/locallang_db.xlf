@@ -20,7 +20,7 @@
 				<source>Description</source>
 			</trans-unit>
 			<trans-unit id="sys_webhook.description.description" resname="sys_webhook.description.description">
-				<source>Additional information about the webhook for your internal reference.</source>
+				<source>Additional information about the webhook.</source>
 			</trans-unit>
 			<trans-unit id="sys_webhook.url" resname="sys_webhook.url">
 				<source>URL</source>
