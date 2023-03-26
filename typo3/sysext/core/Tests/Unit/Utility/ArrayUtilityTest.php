@@ -204,7 +204,7 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isValidPathReturnsTrueIfPathExists(): void
+    public function isValidPathReturnsTrueIfPathExistsStringVersion(): void
     {
         self::assertTrue(ArrayUtility::isValidPath(['foo' => 'bar'], 'foo'));
     }
@@ -212,9 +212,25 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isValidPathReturnsFalseIfPathDoesNotExist(): void
+    public function isValidPathReturnsFalseIfPathDoesNotExistStringVersion(): void
     {
         self::assertFalse(ArrayUtility::isValidPath(['foo' => 'bar'], 'bar'));
+    }
+
+    /**
+     * @test
+     */
+    public function isValidPathReturnsTrueIfPathExistsArrayVersion(): void
+    {
+        self::assertTrue(ArrayUtility::isValidPath(['foo' => 'bar'], ['foo']));
+    }
+
+    /**
+     * @test
+     */
+    public function isValidPathReturnsFalseIfPathDoesNotExistArrayVersion(): void
+    {
+        self::assertFalse(ArrayUtility::isValidPath(['foo' => 'bar'], ['bar']));
     }
 
     ///////////////////////

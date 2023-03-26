@@ -134,11 +134,11 @@ class ArrayUtility
      * - return: TRUE
      *
      * @param array $array Given array
-     * @param string $path Path to test, 'foo/bar/foobar'
+     * @param array|string $path Path to test within the array
      * @param string $delimiter Delimiter for path, default /
      * @return bool TRUE if path exists in array
      */
-    public static function isValidPath(array $array, string $path, string $delimiter = '/'): bool
+    public static function isValidPath(array $array, array|string $path, string $delimiter = '/'): bool
     {
         $isValid = true;
         try {
