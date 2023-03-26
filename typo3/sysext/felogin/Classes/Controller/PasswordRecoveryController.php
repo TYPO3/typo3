@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
@@ -252,6 +253,15 @@ class PasswordRecoveryController extends AbstractLoginFormController
             $contextData->setData('currentUsername', $userData['username']);
             $contextData->setData('currentFirstname', $userData['first_name']);
             $contextData->setData('currentLastname', $userData['last_name']);
+            $event = $this->eventDispatcher->dispatch(
+                new EnrichPasswordValidationContextDataEvent(
+                    $contextData,
+                    $userData,
+                    self::class
+                )
+            );
+            $contextData = $event->getContextData();
+
             if (!$passwordPolicyValidator->isValidPassword($newPass, $contextData)) {
                 foreach ($passwordPolicyValidator->getValidationErrors() as $validationError) {
                     $validationResult = new Result();

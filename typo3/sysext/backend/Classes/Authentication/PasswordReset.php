@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Authentication;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -39,6 +40,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
@@ -278,7 +280,7 @@ class PasswordReset implements LoggerAwareInterface
         $queryBuilder = $this->getPreparedQueryBuilder();
 
         $queryBuilder
-            ->select('uid', 'email', 'password_reset_token', 'password')
+            ->select('uid', 'username', 'realName', 'email', 'password_reset_token', 'password')
             ->from('be_users');
         if ($queryBuilder->getConnection()->getDatabasePlatform() instanceof MySQLPlatform) {
             $queryBuilder->andWhere(
@@ -496,6 +498,17 @@ class PasswordReset implements LoggerAwareInterface
             is_string($passwordPolicy) ? $passwordPolicy : ''
         );
         $contextData = new ContextData(currentPasswordHash: $user['password']);
+        $contextData->setData('currentUsername', $user['username']);
+        $contextData->setData('currentFullname', $user['realName']);
+        $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            new EnrichPasswordValidationContextDataEvent(
+                $contextData,
+                $user,
+                self::class
+            )
+        );
+        $contextData = $event->getContextData();
+
         return $passwordPolicyValidator->isValidPassword($password, $contextData);
     }
 

@@ -19,6 +19,7 @@ use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\JsonType;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Uid\Uuid;
@@ -57,6 +58,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
@@ -1875,6 +1877,15 @@ class DataHandler implements LoggerAwareInterface
                 newUserLastName: $incomingFieldArray['last_name'] ?? '',
                 newUserFullName: $incomingFieldArray['realName'] ?? '',
             );
+            $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+                new EnrichPasswordValidationContextDataEvent(
+                    $contextData,
+                    $incomingFieldArray,
+                    self::class
+                )
+            );
+            $contextData = $event->getContextData();
+
             $isValidPassword = $passwordPolicyValidator->isValidPassword($value, $contextData);
             if (!$isValidPassword) {
                 $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_password_policy.xlf:dataHandler.passwordNotSaved');

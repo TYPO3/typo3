@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
@@ -241,6 +242,16 @@ class SetupModuleController
                     currentPasswordHash: $this->getBackendUser()->user['password'],
                     newUserFullName: $be_user_data['realName']
                 );
+                $contextData->setData('currentUsername', $this->getBackendUser()->user['username']);
+                $event = $this->eventDispatcher->dispatch(
+                    new EnrichPasswordValidationContextDataEvent(
+                        $contextData,
+                        $be_user_data,
+                        self::class
+                    )
+                );
+                $contextData = $event->getContextData();
+
                 $passwordValid = true;
                 if ($passwordIsConfirmed &&
                     !$this->passwordPolicyValidator->isValidPassword($be_user_data['password'], $contextData)

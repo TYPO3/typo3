@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Uid\Uuid;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -26,6 +27,8 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent;
+use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\SysLog;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\InvalidHookFixture;
@@ -205,6 +208,11 @@ class DataHandlerTest extends UnitTestCase
      */
     public function checkValuePasswordWithSaltedPasswordReturnsHashForSaltedPassword(): void
     {
+        $event = new EnrichPasswordValidationContextDataEvent(new ContextData(), [], '');
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects(self::once())->method('dispatch')->willReturn($event);
+        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
+
         // Note the involved salted passwords are NOT mocked since the factory is static
         $inputValue = 'myPassword';
         $result = $this->subject->_call('checkValueForPassword', $inputValue, [], 'be_users', 0, 0);
