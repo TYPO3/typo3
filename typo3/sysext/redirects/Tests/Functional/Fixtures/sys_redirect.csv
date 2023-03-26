@@ -1,0 +1,3 @@
+sys_redirect,,,,,,,,,,,
+,uid,pid,createdon,deleted,disabled,source_host,source_path,target,target_statuscode,hitcount,protected
+,1,0,2147483647,0,0,*,/foo,https://example.com/bar,301,0,1

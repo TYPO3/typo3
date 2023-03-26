@@ -1,0 +1,4 @@
+"sys_webhook"
+,"uid","pid","updatedon","createdon","deleted","disabled","starttime","endtime","description","name","url","method","secret","webhook_type","identifier","verify_ssl","additional_headers"
+,1,0,1674072816,1674066297,0,0,0,0,"Test","Test with valid SSL","https://t3main.devbox.example.com/","POST","39d3d0611628863b4c2e6a30b0d36c923dd90160","typo3/redirect-was-hit","33dc5709-5471-4b17-af1f-4193e37d12e7",1,"[]"
+

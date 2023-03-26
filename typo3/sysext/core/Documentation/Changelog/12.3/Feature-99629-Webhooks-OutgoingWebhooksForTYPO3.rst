@@ -38,6 +38,7 @@ The TYPO3 core currently provides the following triggers for webhooks:
 * File Updated: Triggers when a file is updated
 * File Removed: Triggers when a file is removed
 * Login Error Occurred: Triggers when a login error occurred
+* Redirect Was Hit: Triggers when a redirect has been hit
 
 These triggers are meant as a first set of triggers that can be used to send webhooks,
 further triggers will be added in the future. In most projects however, it's likely

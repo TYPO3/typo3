@@ -102,6 +102,9 @@
 			<trans-unit id="sys_redirect.creation_type.0" resname="sys_redirect.creation_type.0">
 				<source>automatically created</source>
 			</trans-unit>
+			<trans-unit id="sys_redirect.webhook_type.typo3-redirect-was-hit" resname="sys_redirect.webhook_type.typo3-redirect-was-hit">
+				<source>... when a redirect has been hit</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
