@@ -43,7 +43,7 @@ class TextDescriptor extends SymfonyTextDescriptor
     /**
      * {@inheritdoc}
      */
-    protected function describeApplication(Application $application, array $options = [])
+    protected function describeApplication(Application $application, array $options = []): void
     {
         $describedNamespace = $options['namespace'] ?? null;
         $rawOutput = $options['raw_text'] ?? false;
