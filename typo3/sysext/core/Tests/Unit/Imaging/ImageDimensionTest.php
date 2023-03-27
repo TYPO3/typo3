@@ -34,149 +34,134 @@ class ImageDimensionTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    public function givenProcessingInstructionsCalculatesCorrectDimensionDataProvider(): array
+    public static function givenProcessingInstructionsCalculatesCorrectDimensionDataProvider(): array
     {
         return [
             'max width is applied' => [
-                $this->createTask(
-                    [
-                        'maxWidth' => 100,
-                    ],
-                    new ImageDimension(1000, 500),
-                    'jpg'
-                ),
+                [
+                    'maxWidth' => 100,
+                ],
+                new ImageDimension(1000, 500),
+                'jpg',
+                ImageCropScaleMaskTask::class,
                 new ImageDimension(100, 50),
             ],
             'max width is applied when provided in width' => [
-                $this->createTask(
-                    [
-                        'width' => '100m',
-                    ],
-                    new ImageDimension(1000, 500),
-                    'jpg'
-                ),
+                [
+                    'width' => '100m',
+                ],
+                new ImageDimension(1000, 500),
+                'jpg',
+                ImageCropScaleMaskTask::class,
                 new ImageDimension(100, 50),
             ],
             'max height is applied' => [
-                $this->createTask(
-                    [
-                        'maxHeight' => 100,
-                    ],
-                    new ImageDimension(1000, 500),
-                    'jpg'
-                ),
+                [
+                    'maxHeight' => 100,
+                ],
+                new ImageDimension(1000, 500),
+                'jpg',
+                ImageCropScaleMaskTask::class,
                 new ImageDimension(200, 100),
             ],
             'max height is applied when provided in height' => [
-                $this->createTask(
-                    [
-                        'height' => '100m',
-                    ],
-                    new ImageDimension(1000, 500),
-                    'jpg'
-                ),
+                [
+                    'height' => '100m',
+                ],
+                new ImageDimension(1000, 500),
+                'jpg',
+                ImageCropScaleMaskTask::class,
                 new ImageDimension(200, 100),
             ],
             'crop scale is applied' => [
-                $this->createTask(
-                    [
-                        'width' => 100,
-                        'height' => '100c',
-                    ],
-                    new ImageDimension(1000, 500),
-                    'jpg'
-                ),
+                [
+                    'width' => 100,
+                    'height' => '100c',
+                ],
+                new ImageDimension(1000, 500),
+                'jpg',
+                ImageCropScaleMaskTask::class,
                 new ImageDimension(100, 100),
             ],
             'maxWidth higher than crop scale' => [
-                $this->createTask(
-                    [
-                        'width' => 100,
-                        'height' => '100c',
-                        'maxWidth' => 200,
-                    ],
-                    new ImageDimension(1000, 500),
-                    'jpg'
-                ),
+                [
+                    'width' => 100,
+                    'height' => '100c',
+                    'maxWidth' => 200,
+                ],
+                new ImageDimension(1000, 500),
+                'jpg',
+                ImageCropScaleMaskTask::class,
                 new ImageDimension(100, 100),
             ],
             'maxWidth lower than crop scale (crop scale is ignored)' => [
-                $this->createTask(
-                    [
-                        'width' => 100,
-                        'height' => '100c',
-                        'maxWidth' => 50,
-                    ],
-                    new ImageDimension(1000, 500),
-                    'jpg'
-                ),
+                [
+                    'width' => 100,
+                    'height' => '100c',
+                    'maxWidth' => 50,
+                ],
+                new ImageDimension(1000, 500),
+                'jpg',
+                ImageCropScaleMaskTask::class,
                 new ImageDimension(50, 25),
             ],
             'width and height are applied as given' => [
-                $this->createTask(
-                    [
-                        'width' => 100,
-                        'height' => 125,
-                    ],
-                    new ImageDimension(1000, 500),
-                    'jpg'
-                ),
+                [
+                    'width' => 100,
+                    'height' => 125,
+                ],
+                new ImageDimension(1000, 500),
+                'jpg',
+                ImageCropScaleMaskTask::class,
                 new ImageDimension(100, 125),
             ],
             'cropping is applied before scaling' => [
-                $this->createTask(
-                    [
-                        'maxWidth' => 100,
-                        'crop' => new Area(0, 0, 121.8, 45.3),
-                    ],
-                    new ImageDimension(1000, 500),
-                    'jpg'
-                ),
+                [
+                    'maxWidth' => 100,
+                    'crop' => new Area(0, 0, 121.8, 45.3),
+                ],
+                new ImageDimension(1000, 500),
+                'jpg',
+                ImageCropScaleMaskTask::class,
                 new ImageDimension(100, 37),
             ],
             'width and height act as maxWidth and maxHeight for previews' => [
-                $this->createTask(
-                    [
-                        'width' => 100,
-                        'height' => 125,
-                    ],
-                    new ImageDimension(1000, 500),
-                    'jpg',
-                    ImagePreviewTask::class
-                ),
+                [
+                    'width' => 100,
+                    'height' => 125,
+                ],
+                new ImageDimension(1000, 500),
+                'jpg',
+                ImagePreviewTask::class,
                 new ImageDimension(100, 50),
             ],
             'width and height act as maxWidth and maxHeight for previews, max height' => [
-                $this->createTask(
-                    [
-                        'width' => 100,
-                        'height' => 125,
-                    ],
-                    new ImageDimension(500, 1000),
-                    'jpg',
-                    ImagePreviewTask::class
-                ),
+                [
+                    'width' => 100,
+                    'height' => 125,
+                ],
+                new ImageDimension(500, 1000),
+                'jpg',
+                ImagePreviewTask::class,
                 new ImageDimension(63, 125),
             ],
             'SVGs are scaled when crop scale is applied' => [
-                $this->createTask(
-                    [
-                        'width' => 100,
-                        'height' => '100c',
-                    ],
-                    new ImageDimension(1000, 500),
-                    'svg'
-                ),
+                [
+                    'width' => 100,
+                    'height' => '100c',
+                ],
+                new ImageDimension(1000, 500),
+                'svg',
+                ImageCropScaleMaskTask::class,
                 new ImageDimension(100, 50),
             ],
             'cropping is applied on SVGs' => [
-                $this->createTask(
-                    [
-                        'crop' => new Area(0, 0, 121.8, 45.3),
-                    ],
-                    new ImageDimension(1000, 500),
-                    'svg'
-                ),
+                [
+                    'crop' => new Area(0, 0, 121.8, 45.3),
+                ],
+                new ImageDimension(1000, 500),
+                'svg',
+                ImageCropScaleMaskTask::class,
                 new ImageDimension(122, 45),
             ],
         ];
@@ -186,30 +171,25 @@ class ImageDimensionTest extends UnitTestCase
      * @dataProvider givenProcessingInstructionsCalculatesCorrectDimensionDataProvider
      * @test
      */
-    public function givenProcessingInstructionsCalculatesCorrectDimension(TaskInterface $task, ImageDimension $expectedImageDimension): void
-    {
+    public function givenProcessingInstructionsCalculatesCorrectDimension(
+        array $processingConfiguration,
+        ImageDimension $originalImageDimension,
+        string $fileExtension,
+        string $taskClass,
+        ImageDimension $expectedImageDimension
+    ): void {
+        $task = $this->createTask($processingConfiguration, $originalImageDimension, $fileExtension, $taskClass);
         $calculatedDimension = ImageDimension::fromProcessingTask($task);
         self::assertEquals($expectedImageDimension, $calculatedDimension);
     }
 
     private function createTask(array $processingConfiguration, ImageDimension $originalImageDimension, string $fileExtension, string $taskClass = ImageCropScaleMaskTask::class): TaskInterface
     {
-        $originalFileMock = $this->getMockBuilder(File::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $originalFileMock
-            ->method('getExtension')
-            ->willReturn($fileExtension);
-        $originalFileMock->expects(self::exactly(2))
-            ->method('getProperty')
-            ->withConsecutive(['width'], ['height'])
-            ->willReturnOnConsecutiveCalls($originalImageDimension->getWidth(), $originalImageDimension->getHeight());
-        $processedFileMock = $this->getMockBuilder(ProcessedFile::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $processedFileMock
-            ->method('getOriginalFile')
-            ->willReturn($originalFileMock);
+        $originalFileMock = $this->getMockBuilder(File::class)->disableOriginalConstructor()->getMock();
+        $originalFileMock->method('getExtension')->willReturn($fileExtension);
+        $originalFileMock->method('getProperty')->willReturnOnConsecutiveCalls($originalImageDimension->getWidth(), $originalImageDimension->getHeight());
+        $processedFileMock = $this->getMockBuilder(ProcessedFile::class)->disableOriginalConstructor()->getMock();
+        $processedFileMock->method('getOriginalFile')->willReturn($originalFileMock);
 
         /** @var TaskInterface $task */
         $task = new $taskClass(
@@ -217,9 +197,7 @@ class ImageDimensionTest extends UnitTestCase
             $processingConfiguration
         );
 
-        $processedFileMock
-            ->method('getTaskIdentifier')
-            ->willReturn($task->getType() . '.' . $task->getName());
+        $processedFileMock->method('getTaskIdentifier')->willReturn($task->getType() . '.' . $task->getName());
 
         return $task;
     }
