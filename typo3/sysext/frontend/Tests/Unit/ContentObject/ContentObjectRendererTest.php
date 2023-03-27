@@ -435,7 +435,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $getImgResourceHookMock
             ->expects(self::once())
             ->method('getImgResourcePostProcess')
-            ->willReturnCallback([$this, 'isGetImgResourceHookCalledCallback']);
+            ->willReturnCallback($this->isGetImgResourceHookCalledCallback(...));
         $getImgResourceHookObjects = [$getImgResourceHookMock];
         $this->subject->_set('getImgResourceHookObjects', $getImgResourceHookObjects);
         $this->subject->getImgResource('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', []);
@@ -1996,7 +1996,7 @@ final class ContentObjectRendererTest extends UnitTestCase
             ->getMock();
         $contentObjectFixture->expects(self::once())
             ->method('render')
-            ->willReturnCallback(static function () {
+            ->willReturnCallback(static function (array $conf = []): string {
                 throw new \LogicException('Exception during rendering', 1414513947);
             });
         $contentObjectFixture->setContentObjectRenderer($this->subject);

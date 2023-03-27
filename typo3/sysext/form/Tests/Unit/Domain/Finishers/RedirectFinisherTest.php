@@ -44,8 +44,8 @@ final class RedirectFinisherTest extends UnitTestCase
     {
         $uriPrefix = 'https://site.test/?id=';
         $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
-        $contentObjectRendererMock->method('createUrl')->with(self::isType('array'))->willReturnCallback(static function ($arguments) use ($uriPrefix) {
-            return $uriPrefix . $arguments['parameter'];
+        $contentObjectRendererMock->method('createUrl')->willReturnCallback(static function (array $conf) use ($uriPrefix): string {
+            return $uriPrefix . $conf['parameter'];
         });
         $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
         $frontendController = $frontendControllerMock;

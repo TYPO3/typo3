@@ -136,11 +136,13 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         $this->extbasePropertyMappingConfiguration
             ->expects(self::atLeastOnce())
             ->method('setTypeConverterOptions')
-            ->willReturnCallback(function ($class, $config) {
-                $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS, $config);
-                $validators = $config[UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS];
+            ->willReturnCallback(function (string $typeConverter, array $options): ExtbasePropertyMappingConfiguration {
+                $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS, $options);
+                $validators = $options[UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS];
 
                 $this->assertInstanceOf(MimeTypeValidator::class, $validators[0]);
+
+                return $this->extbasePropertyMappingConfiguration;
             });
 
         $mimeTypeValidator = new MimeTypeValidator();
@@ -176,11 +178,13 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         $this->extbasePropertyMappingConfiguration
             ->expects(self::atLeastOnce())
             ->method('setTypeConverterOptions')
-            ->willReturnCallback(function ($class, $config) {
-                $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER, $config);
-                $folder = $config[UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER];
+            ->willReturnCallback(function (string $typeConverter, array $options): ExtbasePropertyMappingConfiguration {
+                $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER, $options);
+                $folder = $options[UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER];
 
                 $this->assertSame('/tmp', $folder);
+
+                return $this->extbasePropertyMappingConfiguration;
             });
 
         $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
@@ -212,11 +216,13 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         $this->extbasePropertyMappingConfiguration
             ->expects(self::atLeastOnce())
             ->method('setTypeConverterOptions')
-            ->willReturnCallback(function ($class, $config) {
-                $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER, $config);
-                $folder = $config[UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER];
+            ->willReturnCallback(function (string $typeConverter, array $options): ExtbasePropertyMappingConfiguration {
+                $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER, $options);
+                $folder = $options[UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER];
 
                 $this->assertSame('/tmp', $folder);
+
+                return $this->extbasePropertyMappingConfiguration;
             });
 
         $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
@@ -245,8 +251,10 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         $this->extbasePropertyMappingConfiguration
             ->expects(self::atLeastOnce())
             ->method('setTypeConverterOptions')
-            ->willReturnCallback(function ($class, $config) {
-                $this->assertArrayNotHasKey(UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER, $config);
+            ->willReturnCallback(function (string $typeConverter, array $options): ExtbasePropertyMappingConfiguration {
+                $this->assertArrayNotHasKey(UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER, $options);
+
+                return $this->extbasePropertyMappingConfiguration;
             });
 
         $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
@@ -272,11 +280,13 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         $this->extbasePropertyMappingConfiguration
             ->expects(self::atLeastOnce())
             ->method('setTypeConverterOptions')
-            ->willReturnCallback(function ($class, $config) use ($otherValidator) {
-                $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS, $config);
-                $validators = $config[UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS];
+            ->willReturnCallback(function (string $typeConverter, array $options) use ($otherValidator): ExtbasePropertyMappingConfiguration {
+                $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS, $options);
+                $validators = $options[UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS];
 
                 self::assertContains($otherValidator, $validators);
+
+                return $this->extbasePropertyMappingConfiguration;
             });
 
         $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
@@ -303,11 +313,13 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         $this->extbasePropertyMappingConfiguration
             ->expects(self::atLeastOnce())
             ->method('setTypeConverterOptions')
-            ->willReturnCallback(function ($class, $config) use ($notEmptyValidator) {
-                $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS, $config);
-                $validators = $config[UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS];
+            ->willReturnCallback(function (string $typeConverter, array $options) use ($notEmptyValidator): ExtbasePropertyMappingConfiguration {
+                $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS, $options);
+                $validators = $options[UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS];
 
                 self::assertNotContains($notEmptyValidator, $validators);
+
+                return $this->extbasePropertyMappingConfiguration;
             });
 
         $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);

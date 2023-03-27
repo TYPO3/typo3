@@ -202,8 +202,8 @@ final class ExportTest extends UnitTestCase
             false
         );
         $resourceFactoryMock->method('retrieveFileOrFolderObject')
-            ->willReturnCallback(function ($relFileName) {
-                $fakeFileUidDerivedFromFileName = hexdec(substr(md5($relFileName), 0, 6));
+            ->willReturnCallback(function (string $input): File {
+                $fakeFileUidDerivedFromFileName = hexdec(substr(md5($input), 0, 6));
                 $fileMock = $this->getAccessibleMock(
                     File::class,
                     null,

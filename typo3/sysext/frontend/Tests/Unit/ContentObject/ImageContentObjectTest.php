@@ -425,7 +425,7 @@ final class ImageContentObjectTest extends UnitTestCase
         $getImageSourceCollectionHookMock
             ->expects(self::once())
             ->method('getOneSourceCollection')
-            ->willReturnCallback([$this, 'isGetOneSourceCollectionCalledCallback']);
+            ->willReturnCallback($this->isGetOneSourceCollectionCalledCallback(...));
 
         $configuration = [
             'layoutKey' => 'data',

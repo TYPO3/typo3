@@ -353,7 +353,7 @@ EOT;
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
 
         $mockPersistenceManager->method('getIdentifierByObject')->willReturnCallback(
-            static function ($object) {
+            static function (object $object): mixed {
                 return $object->getId();
             }
         );
