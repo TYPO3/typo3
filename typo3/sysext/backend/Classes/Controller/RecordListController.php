@@ -519,10 +519,10 @@ class RecordListController
                 $output .= '<option value="' . htmlspecialchars($targetUrl) . '">' . htmlspecialchars($languageTitle) . '</option>';
             }
 
-            return '<div class="form-group">'
+            return '<div class="row row-cols-auto align-items-end g-3 mb-3"><div class="col"><div class="form-group">'
                 . '<select class="form-select" name="createNewLanguage" data-global-event="change" data-action-navigate="$value">'
                 . $output
-                . '</select></div>';
+                . '</select></div></div></div>';
         }
         return '';
     }
