@@ -49,7 +49,7 @@ class DebugModule extends AbstractModule implements ShortInfoProviderInterface
     public function getShortInfo(): string
     {
         $logRecords = GeneralUtility::makeInstance(InMemoryLogWriter::class)->getLogEntries();
-        $errorsAndWarnings = array_filter($logRecords, static function (LogRecord $entry) {
+        $errorsAndWarnings = array_filter($logRecords, static function (LogRecord $entry): bool {
             return LogLevel::normalizeLevel($entry->getLevel()) <= 4;
         });
 

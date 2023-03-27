@@ -121,7 +121,7 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
         }
         uasort(
             $groupedQueries,
-            static function ($a, $b) {
+            static function (array $a, array $b): int {
                 return $b['time'] <=> $a['time'];
             }
         );
