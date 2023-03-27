@@ -22,12 +22,9 @@ use TYPO3\CMS\Core\Core\ClassLoadingInformationGenerator;
 use TYPO3\CMS\Core\Error\Exception;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Tests\Unit\Core\Fixtures\test_extension\Resources\PHP\AnotherTestFile;
-use TYPO3\CMS\Core\Tests\Unit\Core\Fixtures\test_extension\Resources\PHP\Test;
+use TYPO3\CMS\Core\Tests\Unit\Core\Fixtures\test_extension\Resources\PHP\TestFile;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for the ClassLoadingInformationGenerator class
- */
 class ClassLoadingInformationGeneratorTest extends UnitTestCase
 {
     /**
@@ -42,7 +39,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
             'extra' => [
                 'typo3/class-alias-loader' => [
                     'class-alias-maps' => [
-                        'foo' => Test::class,
+                        'foo' => TestFile::class,
                         'bar' => AnotherTestFile::class,
                     ],
                 ],
@@ -82,11 +79,11 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     {
         $expectedClassMap = [
             'aliasToClassNameMapping' => [
-                'foo' => Test::class,
+                'foo' => TestFile::class,
                 'bar' => AnotherTestFile::class,
             ],
             'classNameToAliasMapping' => [
-                Test::class => [
+                TestFile::class => [
                     'foo' => 'foo',
                 ],
                 AnotherTestFile::class => [
@@ -107,11 +104,11 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     {
         $expectedClassMap = [
             'aliasToClassNameMapping' => [
-                'foo' => Test::class,
+                'foo' => TestFile::class,
                 'bar' => AnotherTestFile::class,
             ],
             'classNameToAliasMapping' => [
-                Test::class => [
+                TestFile::class => [
                     'foo' => 'foo',
                 ],
                 AnotherTestFile::class => [
@@ -133,9 +130,6 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
         self::assertEquals($expectedClassMap, $generator->buildClassAliasMapForPackage($packageMock));
     }
 
-    /**
-     * Data provider for different autoload information
-     */
     public static function autoloadFilesAreBuildCorrectlyDataProvider(): array
     {
         return [
@@ -188,9 +182,9 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 ],
                 [],
                 [
-                    '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Test.php\'',
+                    '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/TestFile.php\'',
                     '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/AnotherTestFile.php\'',
-                    '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTest.php\'',
+                    '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTestFile.php\'',
                 ],
             ],
             'Classmap section without trailing slash' => [
@@ -203,34 +197,34 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 ],
                 [],
                 [
-                    '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Test.php\'',
+                    '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/TestFile.php\'',
                     '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/AnotherTestFile.php\'',
-                    '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTest.php\'',
+                    '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTestFile.php\'',
                 ],
             ],
             'Classmap section pointing to a file' => [
                 [
                     'autoload' => [
                         'classmap' => [
-                            'Resources/PHP/Test.php',
+                            'Resources/PHP/TestFile.php',
                         ],
                     ],
                 ],
                 [],
                 [
-                    '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Test.php\'',
+                    '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/TestFile.php\'',
                     '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/AnotherTestFile.php\'',
-                    '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTest.php\'',
+                    '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTestFile.php\'',
                 ],
             ],
             'No autoload section' => [
                 [],
                 [],
                 [
-                    '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Test.php\'',
+                    '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/TestFile.php\'',
                     '!$typo3InstallDir . \'/Fixtures/test_extension/Tests/TestClass.php\'',
                     '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/AnotherTestFile.php\'',
-                    '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTest.php\'',
+                    '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTestFile.php\'',
                     '!$typo3InstallDir . \'/Fixtures/test_extension/class.ext_update.php\'',
                 ],
             ],
@@ -238,16 +232,16 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 [
                     'autoload' => [
                         'classmap' => [
-                            'Resources/PHP/Test.php',
+                            'Resources/PHP/TestFile.php',
                             'Resources/PHP/AnotherTestFile.php',
                         ],
                     ],
                 ],
                 [],
                 [
-                    '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Test.php\'',
+                    '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/TestFile.php\'',
                     '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/AnotherTestFile.php\'',
-                    '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTest.php\'',
+                    '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTestFile.php\'',
                 ],
             ],
         ];
@@ -289,9 +283,6 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
         }
     }
 
-    /**
-     * Data provider for different autoload information
-     */
     public static function autoloadDevFilesAreBuildCorrectlyDataProvider(): array
     {
         return [
@@ -337,7 +328,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 [
                     'autoload' => [
                         'classmap' => [
-                            'Resources/PHP/Test.php',
+                            'Resources/PHP/TestFile.php',
                         ],
                     ],
                     'autoload-dev' => [
@@ -348,9 +339,9 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 ],
                 [],
                 [
-                    '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Test.php\'',
+                    '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/TestFile.php\'',
                     '$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/AnotherTestFile.php\'',
-                    '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTest.php\'',
+                    '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTestFile.php\'',
                 ],
             ],
         ];
@@ -359,12 +350,8 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider autoloadDevFilesAreBuildCorrectlyDataProvider
-     *
-     * @param array $packageManifest
-     * @param array $expectedPsr4Files
-     * @param array $expectedClassMapFiles
      */
-    public function autoloadDevFilesAreBuildCorrectly($packageManifest, $expectedPsr4Files, $expectedClassMapFiles): void
+    public function autoloadDevFilesAreBuildCorrectly(array $packageManifest, array $expectedPsr4Files, array $expectedClassMapFiles): void
     {
         $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [$this->createPackageMock($packageManifest)], __DIR__, true);
@@ -390,7 +377,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
         }
     }
 
-    protected function createPackageMock(array $packageManifest): PackageInterface
+    private function createPackageMock(array $packageManifest): PackageInterface
     {
         $packageMock = $this->createMock(PackageInterface::class);
         $packageMock->method('getPackagePath')->willReturn(__DIR__ . '/Fixtures/test_extension/');
