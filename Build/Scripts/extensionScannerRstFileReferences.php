@@ -89,7 +89,7 @@ class ExtensionScannerRstFileReferencesChecker
             ->notName(['Changelog-*.rst', 'Index.rst', 'Master.rst'])
             ->in(__DIR__ . '/../../typo3/sysext/core/Documentation/Changelog');
         $fileNames = array_map(
-            static function (SplFileInfo $file) {
+            static function (SplFileInfo $file): string {
                 return $file->getFilename();
             },
             iterator_to_array($finder)

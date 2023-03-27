@@ -187,7 +187,7 @@ class CheckNamespaceIntegrity
                 foreach ($autoloadPSR4 as $namespace => $relativePath) {
                     $pathBasedAutoloadInformation[trim($relativePath, '/') . '/'] = $namespace;
                 }
-                $keys = array_map('mb_strlen', array_keys($pathBasedAutoloadInformation));
+                $keys = array_map(mb_strlen(...), array_keys($pathBasedAutoloadInformation));
                 array_multisort($keys, SORT_DESC, $pathBasedAutoloadInformation);
 
                 foreach ($pathBasedAutoloadInformation as $relativePath => $namespace) {

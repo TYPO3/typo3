@@ -93,7 +93,7 @@ class NodeVisitor extends NodeVisitorAbstract
                     $matches
                 );
                 if (!empty($matches['annotations'])) {
-                    $this->matches[$node->getLine()] = array_map(static function ($value) {
+                    $this->matches[$node->getLine()] = array_map(static function (string $value): string {
                         return '@' . $value;
                     }, $matches['annotations']);
                 }
