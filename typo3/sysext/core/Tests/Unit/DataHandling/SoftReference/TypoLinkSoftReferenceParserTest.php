@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserTest
+class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserTestCase
 {
     public static function findRefReturnsParsedElementsDataProvider(): array
     {

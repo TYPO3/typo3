@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\DataHandling\SoftReference\UrlSoftReferenceParser;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-abstract class AbstractSoftReferenceParserTest extends UnitTestCase
+abstract class AbstractSoftReferenceParserTestCase extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 

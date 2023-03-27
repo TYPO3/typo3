@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
-class ExtensionPathSoftReferenceParserTest extends AbstractSoftReferenceParserTest
+class ExtensionPathSoftReferenceParserTest extends AbstractSoftReferenceParserTestCase
 {
     public static function extensionPathSoftReferenceParserDataProvider(): array
     {

@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
-class NotifySoftReferenceParserTest extends AbstractSoftReferenceParserTest
+class NotifySoftReferenceParserTest extends AbstractSoftReferenceParserTestCase
 {
     /**
      * @test
