@@ -99,7 +99,7 @@ return [
         ],
         'navigationComponent' => '@typo3/backend/page-tree/page-tree-element',
     ],
-    'pagetsconfig_records' => [
+    'pagetsconfig_pages' => [
         'parent' => 'pagetsconfig',
         'access' => 'admin',
         'path' => '/module/pagetsconfig/records',

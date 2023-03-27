@@ -75,17 +75,12 @@ final class PageTsConfigActiveController
         $moduleData = $request->getAttribute('moduleData');
 
         $pageUid = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
-        if ($pageUid <= 0) {
-            // Redirect to records overview if on page 0 or invalid uid.
-            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('pagetsconfig_records'));
-        }
-
         $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
         if (empty($pageRecord)) {
-            // Redirect to records overview if page could not be determined.
+            // Redirect to overview if page could not be determined.
             // Edge case if page has been removed meanwhile.
             BackendUtility::setUpdateSignal('updatePageTree');
-            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('pagetsconfig_records'));
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('pagetsconfig_pages'));
         }
 
         // Force boolean toggles to bool and init further get/post vars
@@ -184,13 +179,13 @@ final class PageTsConfigActiveController
         }
 
         $view = $this->moduleTemplateFactory->create($request);
-        $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
+        $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title'] ?? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '');
         $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
         $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
         $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         $view->assignMultiple([
             'pageUid' => $pageUid,
-            'pageTitle' => $pageRecord['title'],
+            'pageTitle' => $pageRecord['title'] ?? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '',
             'displayConstantSubstitutions' => $displayConstantSubstitutions,
             'displayComments' => $displayComments,
             'sortAlphabetically' => $sortAlphabetically,

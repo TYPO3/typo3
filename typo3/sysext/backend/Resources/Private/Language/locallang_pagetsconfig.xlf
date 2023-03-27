@@ -88,7 +88,7 @@
 				<source>Included Page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.headline" resname="module.pagetsconfig_includes.headline">
-				<source>Included Page TSconfig</source>
+				<source>Included Page TSconfig of page "%s"</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.description" resname="module.pagetsconfig_includes.description">
 				<source>Overview of the included TypoScript and include order for the current page.</source>

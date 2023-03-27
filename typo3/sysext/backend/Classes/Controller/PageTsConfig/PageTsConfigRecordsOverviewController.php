@@ -94,9 +94,7 @@ final class PageTsConfigRecordsOverviewController
             $view->assign('overviewOfPagesUsingTSConfig', $pagesUsingTSConfig);
         }
 
-        if ($pageId !== 0) {
-            $view->makeDocHeaderModuleMenu(['id' => $pageId]);
-        }
+        $view->makeDocHeaderModuleMenu(['id' => $pageId]);
         return $view->renderResponse('PageTsConfig/RecordsOverview');
     }
 

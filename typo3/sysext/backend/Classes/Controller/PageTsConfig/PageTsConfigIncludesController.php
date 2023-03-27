@@ -80,16 +80,12 @@ final class PageTsConfigIncludesController
         $moduleData = $request->getAttribute('moduleData');
 
         $pageUid = (int)($queryParams['id'] ?? 0);
-        if ($pageUid === 0) {
-            // Redirect to template record overview if on page 0.
-            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('pagetsconfig_records'));
-        }
         $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
         if (empty($pageRecord)) {
             // Redirect to records overview if page could not be determined.
             // Edge case if page has been removed meanwhile.
             BackendUtility::setUpdateSignal('updatePageTree');
-            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('pagetsconfig_records'));
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('pagetsconfig_pages'));
         }
 
         // Prepare site constants if any
@@ -154,12 +150,13 @@ final class PageTsConfigIncludesController
         $treeTraverser->traverse($pageTsConfigTree);
 
         $view = $this->moduleTemplateFactory->create($request);
-        $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
+        $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title'] ?? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '');
         $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
         $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
         $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         $view->assignMultiple([
             'pageUid' => $pageUid,
+            'pageTitle' => $pageRecord['title'] ?? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '',
             'siteSettingsTree' => $siteSettingsTree,
             'pageTsConfigTree' => $pageTsConfigTree,
             'pageTsConfigConditions' => $pageTsConfigConditions,
