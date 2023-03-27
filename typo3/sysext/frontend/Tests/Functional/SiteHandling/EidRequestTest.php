@@ -45,7 +45,7 @@ class EidRequestTest extends AbstractTestCase
         });
     }
 
-    public function ensureEidRequestsWorkDataProvider(): array
+    public static function ensureEidRequestsWorkDataProvider(): array
     {
         return [
             'eid without index.php' => [

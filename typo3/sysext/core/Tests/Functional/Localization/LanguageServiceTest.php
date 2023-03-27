@@ -61,7 +61,7 @@ class LanguageServiceTest extends FunctionalTestCase
         self::assertEquals($expected, $subject->sL($input));
     }
 
-    public function splitLabelTestDataProvider(): \Generator
+    public static function splitLabelTestDataProvider(): \Generator
     {
         yield 'String without whitespace' => [
             'Edit content',
@@ -139,7 +139,7 @@ class LanguageServiceTest extends FunctionalTestCase
         $this->ensureLocalizationScenarioWorks($locale, self::LANGUAGE_FILE, $expectedLabels);
     }
 
-    public function ensureVariousLocalizationScenariosWorkDataProvider(): \Generator
+    public static function ensureVariousLocalizationScenariosWorkDataProvider(): \Generator
     {
         yield 'Can handle localization for native language' => [
             'locale' => 'default',
@@ -180,7 +180,7 @@ class LanguageServiceTest extends FunctionalTestCase
         $this->ensureLocalizationScenarioWorks($locale, self::LANGUAGE_FILE, $expectedLabels);
     }
 
-    public function ensureVariousLocalizationOverrideScenariosWorkDataProvider(): \Generator
+    public static function ensureVariousLocalizationOverrideScenariosWorkDataProvider(): \Generator
     {
         yield 'Can override localization for native translation' => [
             'locale' => 'default',
@@ -220,7 +220,7 @@ class LanguageServiceTest extends FunctionalTestCase
         $this->ensureLocalizationScenarioWorks($locale, self::LANGUAGE_FILE_CORE, $expectedLabels);
     }
 
-    public function ensureVariousLocalizationOverrideScenariosForCoreExtensionWorkDataProvider(): \Generator
+    public static function ensureVariousLocalizationOverrideScenariosForCoreExtensionWorkDataProvider(): \Generator
     {
         yield 'Can override localization of core for native locale' => [
             'locale' => 'default',
@@ -251,7 +251,7 @@ class LanguageServiceTest extends FunctionalTestCase
         }
     }
 
-    public function ensureMultiLanguageTranslationInSameContextWorkDataProvider(): \Generator
+    public static function ensureMultiLanguageTranslationInSameContextWorkDataProvider(): \Generator
     {
         yield 'Multi language translation in same context works with default first' => [
             'expectedLabelSet' => [

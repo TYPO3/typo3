@@ -97,7 +97,7 @@ class SlugHelperTest extends AbstractDataHandlerActionTestCase
      * 2 = "German" - (Fallback to Default)
      * 3 = "Swiss German" - (Fallback to German)
      */
-    public function generateRespectsFallbackLanguageOfParentPageSlugDataProvider(): array
+    public static function generateRespectsFallbackLanguageOfParentPageSlugDataProvider(): array
     {
         return [
             'default page / default parent' => [

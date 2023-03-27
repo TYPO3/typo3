@@ -43,7 +43,7 @@ class IfHasRoleViewHelperTest extends FunctionalTestCase
         $context->setAspect('frontend.user', new UserAspect($user, [1, 2]));
     }
 
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'viewHelperRendersThenChildIfFeUserWithSpecifiedRoleIsLoggedIn' => [

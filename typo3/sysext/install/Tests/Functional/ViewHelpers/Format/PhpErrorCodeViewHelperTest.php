@@ -26,7 +26,7 @@ class PhpErrorCodeViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    public function errorCodesDataProvider(): array
+    public static function errorCodesDataProvider(): array
     {
         return [
             [

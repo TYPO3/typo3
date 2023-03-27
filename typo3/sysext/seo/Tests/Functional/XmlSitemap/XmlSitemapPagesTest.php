@@ -97,7 +97,7 @@ class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTest
         );
     }
 
-    public function pagesToCheckDataProvider(): array //18-03-2019 21:24:07
+    public static function pagesToCheckDataProvider(): array //18-03-2019 21:24:07
     {
         return [
             'complete-entry' => ['#<url>\s+<loc>http://localhost/complete\-entry</loc>\s+<lastmod>\d+-\d+-\d+T\d+:\d+:\d+\+\d+:\d+</lastmod>\s+<changefreq>daily</changefreq>\s+<priority>0\.7</priority>\s+</url>#'],

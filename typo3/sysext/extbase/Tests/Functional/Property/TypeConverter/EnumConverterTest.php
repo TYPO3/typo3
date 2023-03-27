@@ -40,7 +40,7 @@ class EnumConverterTest extends FunctionalTestCase
         self::assertSame($expected, $enumItem);
     }
 
-    public function convertEnumDataProvider(): Generator
+    public static function convertEnumDataProvider(): Generator
     {
         yield 'convert by name 1' => [
             UnbackedEnum::class,

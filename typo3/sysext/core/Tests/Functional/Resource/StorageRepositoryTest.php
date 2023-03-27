@@ -42,7 +42,7 @@ class StorageRepositoryTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    public function bestStorageIsResolvedDataProvider(): iterable
+    public static function bestStorageIsResolvedDataProvider(): iterable
     {
         // `{public}` will be replaced by public project path (not having trailing slash)
         // double slashes `//` are used on purpose for given file identifiers
@@ -162,7 +162,7 @@ class StorageRepositoryTest extends FunctionalTestCase
         self::assertEquals($rootProcessingFolder, $processingFolder);
     }
 
-    public function isWithinFileMountBoundariesDataProvider(): array
+    public static function isWithinFileMountBoundariesDataProvider(): array
     {
         return [
             'Access to file in ro file mount denied for write request' => [
@@ -327,7 +327,7 @@ class StorageRepositoryTest extends FunctionalTestCase
         self::assertFileDoesNotExist(Environment::getPublicPath() . '/fileadmin/foo/bar.txt');
     }
 
-    public function searchFilesFindsFilesInFolderDataProvider(): array
+    public static function searchFilesFindsFilesInFolderDataProvider(): array
     {
         return [
             'Finds foo recursive by name' => [

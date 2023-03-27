@@ -87,7 +87,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
      * @return array multi-dimensional array with the second level like this:
      * @see getQuery
      */
-    public function getQueryDataProvider(): array
+    public static function getQueryDataProvider(): array
     {
         return [
             'testing empty conf' => [
@@ -439,7 +439,7 @@ And another one';
         ];
     }
 
-    public function checkIfReturnsExpectedValuesDataProvider(): iterable
+    public static function checkIfReturnsExpectedValuesDataProvider(): iterable
     {
         yield 'isNull returns true if stdWrap returns null' => [
             'configuration' => [
@@ -472,7 +472,7 @@ And another one';
         self::assertSame($expected, $this->subject->checkIf($configuration));
     }
 
-    public function imageLinkWrapWrapsTheContentAsConfiguredDataProvider(): iterable
+    public static function imageLinkWrapWrapsTheContentAsConfiguredDataProvider(): iterable
     {
         $width = 900;
         $height = 600;

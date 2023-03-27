@@ -227,7 +227,7 @@ class ExportTest extends AbstractImportExportTestCase
         self::assertEquals($renderPreviewExport, $previewData);
     }
 
-    public function addFilesSucceedsDataProvider(): array
+    public static function addFilesSucceedsDataProvider(): array
     {
         return [
             ['dat' => [

@@ -107,7 +107,7 @@ class BackendModuleControllerTest extends FunctionalTestCase
         );
     }
 
-    public function environmentContextIsRespectedTestDataProvider(): \Generator
+    public static function environmentContextIsRespectedTestDataProvider(): \Generator
     {
         yield 'maintenance module' => ['maintenance'];
         yield 'settings module' => ['settings'];

@@ -28,7 +28,7 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableV
 
 class PersistedPatternMapperTest extends AbstractEnhancerSiteRequestTest
 {
-    public function persistedPatternMapperDataProvider(string|TestSet|null $parentSet = null): array
+    public static function persistedPatternMapperDataProvider(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)

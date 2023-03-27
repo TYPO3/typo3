@@ -43,7 +43,7 @@ class TypolinkViewHelperTest extends FunctionalTestCase
         ],
     ];
 
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'link: default' => [
@@ -153,7 +153,7 @@ EOT
         self::assertStringContainsString($expected, (string)$response->getBody());
     }
 
-    public function renderWithAssignedParametersDataProvider(): array
+    public static function renderWithAssignedParametersDataProvider(): array
     {
         return [
             'target _self' => [

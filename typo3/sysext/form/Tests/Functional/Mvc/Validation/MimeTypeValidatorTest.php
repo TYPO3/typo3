@@ -114,7 +114,7 @@ class MimeTypeValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate('string')->hasErrors());
     }
 
-    public function fileExtensionMatchesMimeTypesDataProvider(): array
+    public static function fileExtensionMatchesMimeTypesDataProvider(): array
     {
         $allowedMimeTypes = ['application/pdf', 'application/vnd.oasis.opendocument.text'];
         return [
@@ -145,7 +145,7 @@ class MimeTypeValidatorTest extends FunctionalTestCase
         self::assertSame($isValid, !$result->hasErrors());
     }
 
-    public function validateHandlesMimeTypesOfFilesDataProvider(): array
+    public static function validateHandlesMimeTypesOfFilesDataProvider(): array
     {
         // error-codes
         // + 1471708998: mime-type not allowed

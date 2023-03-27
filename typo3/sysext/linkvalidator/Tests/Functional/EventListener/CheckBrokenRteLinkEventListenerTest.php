@@ -51,7 +51,7 @@ class CheckBrokenRteLinkEventListenerTest extends FunctionalTestCase
         self::assertEquals($isMarkedAsBroken, $event->isBrokenLink());
     }
 
-    public function checkPageLinkTestDataProvider(): \Generator
+    public static function checkPageLinkTestDataProvider(): \Generator
     {
         yield 'No uid parameter given' => [
             'page',

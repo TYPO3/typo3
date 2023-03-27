@@ -92,7 +92,7 @@ class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
         );
     }
 
-    public function urisAreRenderedUsingForceAbsoluteUrlsDataProvider(): \Generator
+    public static function urisAreRenderedUsingForceAbsoluteUrlsDataProvider(): \Generator
     {
         // no compression settings
         yield 'none - none' => [

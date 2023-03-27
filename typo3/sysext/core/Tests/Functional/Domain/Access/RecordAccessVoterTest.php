@@ -37,7 +37,7 @@ class RecordAccessVoterTest extends FunctionalTestCase
         );
     }
 
-    public function accessGrantedTestDataProvider(): \Generator
+    public static function accessGrantedTestDataProvider(): \Generator
     {
         yield 'No access permissions set' => [
             'pages',
@@ -131,7 +131,7 @@ class RecordAccessVoterTest extends FunctionalTestCase
         ));
     }
 
-    public function groupAccessGrantedTestDataProvider(): \Generator
+    public static function groupAccessGrantedTestDataProvider(): \Generator
     {
         yield 'No enable field' => [
             'aTable',

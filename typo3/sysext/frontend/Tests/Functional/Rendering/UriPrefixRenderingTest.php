@@ -91,7 +91,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
         );
     }
 
-    public function urisAreRenderedUsingAbsRefPrefixDataProvider(): array
+    public static function urisAreRenderedUsingAbsRefPrefixDataProvider(): array
     {
         return [
             // no compression settings

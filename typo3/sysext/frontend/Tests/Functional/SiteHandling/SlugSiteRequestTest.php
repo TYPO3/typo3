@@ -1145,7 +1145,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function crossSiteShortcutsAreRedirectedDataProvider(): array
+    public static function crossSiteShortcutsAreRedirectedDataProvider(): array
     {
         return [
             'shortcut is redirected' => [
@@ -1189,7 +1189,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame($expectedHeaders, $response->getHeaders());
     }
 
-    public function pageIsRenderedForVersionedPageDataProvider(): \Generator
+    public static function pageIsRenderedForVersionedPageDataProvider(): \Generator
     {
         yield 'Live page with logged-in user' => [
             'url' => 'https://website.local/en-en/welcome',
@@ -1255,7 +1255,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame($expectedPageTitle, $responseStructure->getScopePath('page/title'));
     }
 
-    public function defaultLanguagePageNotResolvedForSiteLanguageBaseIfLanguagePageExistsDataProvider(): \Generator
+    public static function defaultLanguagePageNotResolvedForSiteLanguageBaseIfLanguagePageExistsDataProvider(): \Generator
     {
         yield 'Default slug with default base resolves' => [
             'uri' => 'https://website.local/welcome/',
@@ -1362,7 +1362,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         }
     }
 
-    public function defaultLanguagePageNotResolvedForSiteLanguageBaseWithNonDefaultLanguageShorterUriIfLanguagePageExistsDataProvider(): \Generator
+    public static function defaultLanguagePageNotResolvedForSiteLanguageBaseWithNonDefaultLanguageShorterUriIfLanguagePageExistsDataProvider(): \Generator
     {
         yield 'Default slug with default base resolves' => [
             'uri' => 'https://website.local/en-en/welcome/',

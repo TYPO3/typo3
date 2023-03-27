@@ -30,7 +30,7 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableV
 
 class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTest
 {
-    public function persistedAliasMapperDataProvider(string|TestSet|null $parentSet = null): array
+    public static function persistedAliasMapperDataProvider(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)

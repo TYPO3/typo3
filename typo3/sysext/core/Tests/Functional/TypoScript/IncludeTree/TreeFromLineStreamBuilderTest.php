@@ -59,7 +59,7 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $this->registerComparator(new IncludeTreeObjectIgnoringIdentifierAndPathComparator());
     }
 
-    public function buildTreeConditionDataProvider(): iterable
+    public static function buildTreeConditionDataProvider(): iterable
     {
         $typoScript = '[foo = bar]';
         $typoScriptLineStream = (new LosslessTokenizer())->tokenize($typoScript);
@@ -291,7 +291,7 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         self::assertEquals($expectedTree, $tree);
     }
 
-    public function buildTreeAtImportDataProvider(): iterable
+    public static function buildTreeAtImportDataProvider(): iterable
     {
         $atImportStatement = '@import \'EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario1/setup.typoscript\'';
         $atImportLineStream = (new LosslessTokenizer())->tokenize($atImportStatement);
@@ -764,7 +764,7 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         self::assertEquals($expectedTree, $tree);
     }
 
-    public function buildTreeAtImportTsConfigDataProvider(): iterable
+    public static function buildTreeAtImportTsConfigDataProvider(): iterable
     {
         $atImportStatement = '@import \'EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario3/mainInclude.tsconfig\'';
         $atImportLineStream = (new LosslessTokenizer())->tokenize($atImportStatement);
@@ -801,7 +801,7 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         self::assertEquals($expectedTree, $tree);
     }
 
-    public function buildTreeImportTyposcriptDataProvider(): iterable
+    public static function buildTreeImportTyposcriptDataProvider(): iterable
     {
         $includeTyposcriptStatement = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/IncludeTyposcript/ExtImport/Scenario1/setup.typoscript">';
         $includeTyposcriptStatementLineStream = (new LosslessTokenizer())->tokenize($includeTyposcriptStatement);

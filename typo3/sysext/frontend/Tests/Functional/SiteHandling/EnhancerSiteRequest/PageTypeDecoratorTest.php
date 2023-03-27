@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 class PageTypeDecoratorTest extends AbstractEnhancerSiteRequestTest
 {
-    public function pageTypeDecoratorIsAppliedDataProvider(): array
+    public static function pageTypeDecoratorIsAppliedDataProvider(): array
     {
         $testSets = [];
         foreach (Builder::create()->declarePageTypes() as $pageTypeDeclaration) {
@@ -65,7 +65,7 @@ class PageTypeDecoratorTest extends AbstractEnhancerSiteRequestTest
         parent::pageTypeDecoratorIsApplied($testSet);
     }
 
-    public function pageTypeDecoratorIndexCanBePartOfSlugDataProvider(): array
+    public static function pageTypeDecoratorIndexCanBePartOfSlugDataProvider(): array
     {
         $testSets = [];
         foreach (Builder::create()->declarePageTypes() as $pageTypeDeclaration) {

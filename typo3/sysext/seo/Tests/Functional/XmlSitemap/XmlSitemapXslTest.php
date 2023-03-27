@@ -82,7 +82,7 @@ class XmlSitemapXslTest extends AbstractTestCase
         self::assertMatchesRegularExpression('/<\?xml-stylesheet type="text\/xsl" href="' . $xslFilePath . '"\?>/', (string)$response->getBody());
     }
 
-    public function getXslFilePathsDataProvider(): array
+    public static function getXslFilePathsDataProvider(): array
     {
         return [
             [

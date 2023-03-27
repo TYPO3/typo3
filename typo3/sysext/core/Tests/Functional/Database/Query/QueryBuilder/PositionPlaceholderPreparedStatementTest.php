@@ -228,7 +228,7 @@ class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
         unset($result1, $result2);
     }
 
-    public function invalidParameterTypesForPreparedStatements(): array
+    public static function invalidParameterTypesForPreparedStatements(): array
     {
         return [
             'PARAM_INT_ARRAY' => [Connection::PARAM_INT_ARRAY, 'PARAM_INT_ARRAY', [10, 20]],

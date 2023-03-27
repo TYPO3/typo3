@@ -98,7 +98,7 @@ class LocalizationUtilityTest extends FunctionalTestCase
         self::assertNull(LocalizationUtility::translate('', 'extbase', ['argument']));
     }
 
-    public function translateDataProvider(): array
+    public static function translateDataProvider(): array
     {
         return [
             'get translated key' =>

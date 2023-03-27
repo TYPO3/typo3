@@ -26,7 +26,7 @@ class ScriptViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    public function sourceDataProvider(): array
+    public static function sourceDataProvider(): array
     {
         return [
             'fileadmin reference' => ['fileadmin/JavaScript/foo.js'],

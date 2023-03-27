@@ -324,7 +324,7 @@ class DataMapperTest extends FunctionalTestCase
      * strings but using the date('c') conversion instead, which considers the
      * current local timezone setting.
      */
-    public function mapDateTimeHandlesDifferentFieldEvaluationsDataProvider(): array
+    public static function mapDateTimeHandlesDifferentFieldEvaluationsDataProvider(): array
     {
         return [
             'nothing' => [null, null, null],
@@ -359,7 +359,7 @@ class DataMapperTest extends FunctionalTestCase
         $cacheManager->getCache('extbase')->flush();
     }
 
-    public function mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZoneDataProvider(): array
+    public static function mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZoneDataProvider(): array
     {
         return [
             'nothing' => [null, null, null],
@@ -438,7 +438,7 @@ class DataMapperTest extends FunctionalTestCase
         self::assertSame('2013-04-15', $plainValueDate);
     }
 
-    public function getPlainValueReturnsExpectedValuesDataProvider(): array
+    public static function getPlainValueReturnsExpectedValuesDataProvider(): array
     {
         return [
             'datetime to timestamp' => ['1365866253', new \DateTime('@1365866253')],

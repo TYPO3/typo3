@@ -573,7 +573,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    public function hierarchicalMenuIsGeneratedDataProvider(): array
+    public static function hierarchicalMenuIsGeneratedDataProvider(): array
     {
         return [
             'ACME Inc' => [
@@ -805,7 +805,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, $json);
     }
 
-    public function hierarchicalMenuSetsActiveStateProperlyDataProvider(): array
+    public static function hierarchicalMenuSetsActiveStateProperlyDataProvider(): array
     {
         return [
             'regular page' => [
@@ -885,7 +885,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, $json);
     }
 
-    public function hierarchicalMenuAlwaysResolvesToDefaultLanguageDataProvider(): array
+    public static function hierarchicalMenuAlwaysResolvesToDefaultLanguageDataProvider(): array
     {
         return [
             'no banned IDs in default language' => [
@@ -949,7 +949,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectedMenuItems, count($json));
     }
 
-    public function directoryMenuIsGeneratedDataProvider(): array
+    public static function directoryMenuIsGeneratedDataProvider(): array
     {
         return [
             'ACME Inc First Level - Live' => [
@@ -1104,7 +1104,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, $json);
     }
 
-    public function directoryMenuToAccessRestrictedPagesIsGeneratedDataProvider(): array
+    public static function directoryMenuToAccessRestrictedPagesIsGeneratedDataProvider(): array
     {
         return [
             'All restricted pages are linked to welcome page' => [
@@ -1194,7 +1194,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, $json);
     }
 
-    public function listMenuIsGeneratedDataProvider(): array
+    public static function listMenuIsGeneratedDataProvider(): array
     {
         return [
             'Live' => [
@@ -1325,7 +1325,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, $json);
     }
 
-    public function languageMenuIsGeneratedDataProvider(): array
+    public static function languageMenuIsGeneratedDataProvider(): array
     {
         return [
             'ACME Inc (EN)' => [

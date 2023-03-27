@@ -266,7 +266,7 @@ class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    public function pageIsRenderedWithPathsAndChineseBaseDataProvider(): array
+    public static function pageIsRenderedWithPathsAndChineseBaseDataProvider(): array
     {
         return [
             ['https://website.local/简/简/?id=1110', 'ZH-CN: Welcome Default'],
@@ -941,7 +941,7 @@ class SiteRequestTest extends AbstractTestCase
         self::assertSame($expectedHeaders, $response->getHeaders());
     }
 
-    public function crossSiteShortcutsAreRedirectedDataProvider(): array
+    public static function crossSiteShortcutsAreRedirectedDataProvider(): array
     {
         return [
             'shortcut is redirected #1' => [
@@ -1025,7 +1025,7 @@ class SiteRequestTest extends AbstractTestCase
         self::assertSame($expectedHeaders, $response->getHeaders());
     }
 
-    public function crossSiteShortcutsWithWrongSiteHostSendsPageNotFoundWithoutHavingErrorHandlingDataProvider(): array
+    public static function crossSiteShortcutsWithWrongSiteHostSendsPageNotFoundWithoutHavingErrorHandlingDataProvider(): array
     {
         return [
             'shortcut requested by id on wrong site #1' => [

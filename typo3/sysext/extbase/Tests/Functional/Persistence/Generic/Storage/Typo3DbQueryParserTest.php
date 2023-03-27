@@ -738,7 +738,7 @@ class Typo3DbQueryParserTest extends FunctionalTestCase
         $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
     }
 
-    public function addPageIdStatementSetsPidToZeroIfTableDeclaresRootLevelDataProvider(): iterable
+    public static function addPageIdStatementSetsPidToZeroIfTableDeclaresRootLevelDataProvider(): iterable
     {
         yield 'set Pid to zero if rootLevel = 1' => [
             'rootLevel' => 1,

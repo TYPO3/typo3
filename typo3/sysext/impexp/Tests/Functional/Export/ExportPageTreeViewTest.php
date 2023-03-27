@@ -28,7 +28,7 @@ class ExportPageTreeViewTest extends AbstractImportExportTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
     ];
 
-    public function printTreeSucceedsDataProvider(): array
+    public static function printTreeSucceedsDataProvider(): array
     {
         return [
             ['pid' => 0, 'levels' => Export::LEVELS_EXPANDED_TREE, 'expectedTreeItemsCount' => 2],

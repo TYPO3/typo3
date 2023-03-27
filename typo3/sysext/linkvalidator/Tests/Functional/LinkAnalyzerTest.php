@@ -39,7 +39,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
     }
 
-    public function findAllBrokenLinksDataProvider(): array
+    public static function findAllBrokenLinksDataProvider(): array
     {
         return [
             'Test with one broken external link (not existing domain)' =>
@@ -108,7 +108,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
         $this->assertCSVDataSet($expectedOutputFile);
     }
 
-    public function findFindOnlyFileBrokenLinksDataProvider(): array
+    public static function findFindOnlyFileBrokenLinksDataProvider(): array
     {
         return [
             // Tests with one broken link
@@ -160,7 +160,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
         $this->assertCSVDataSet($expectedOutputFile);
     }
 
-    public function findFindOnlyPageBrokenLinksDataProvider(): array
+    public static function findFindOnlyPageBrokenLinksDataProvider(): array
     {
         return [
             // Tests with one broken link
@@ -212,7 +212,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
         $this->assertCSVDataSet($expectedOutputFile);
     }
 
-    public function findFindOnlyExternalBrokenLinksDataProvider(): array
+    public static function findFindOnlyExternalBrokenLinksDataProvider(): array
     {
         return [
             // Tests with one broken link
@@ -263,7 +263,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
         $this->assertCSVDataSet($expectedOutputFile);
     }
 
-    public function getLinkStatisticsFindOnlyExternalBrokenLinksInBodytextWithHugeListOfPageIdsDataProvider(): array
+    public static function getLinkStatisticsFindOnlyExternalBrokenLinksInBodytextWithHugeListOfPageIdsDataProvider(): array
     {
         $lagePageUidList = range(1, 200000, 1);
         return [

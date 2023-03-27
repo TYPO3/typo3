@@ -82,7 +82,7 @@ class DocumentationFileTest extends FunctionalTestCase
     /**
      * Data provider with invalid dir path. They should raise an exception and don't process.
      */
-    public function invalidDirProvider(): array
+    public static function invalidDirProvider(): array
     {
         return [
             ['root' => '/'],
@@ -106,7 +106,7 @@ class DocumentationFileTest extends FunctionalTestCase
     /**
      * Data provider with invalid file paths. They should raise an exception and don't process.
      */
-    public function invalidFilesProvider(): array
+    public static function invalidFilesProvider(): array
     {
         return [
             ['/etc/passwd' => '/etc/passwd'],

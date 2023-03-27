@@ -29,7 +29,7 @@ class IncludeTreeSetupConditionConstantSubstitutionVisitorTest extends Functiona
 {
     protected bool $initializeDatabase = false;
 
-    public function visitDataProvider(): iterable
+    public static function visitDataProvider(): iterable
     {
         yield 'nothing to substitute, no condition' => [
             [],

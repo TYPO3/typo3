@@ -187,7 +187,7 @@ alert(yes);', $body);
         return $GLOBALS['TSFE']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_page');
     }
 
-    public function mountPointParameterContainsOnlyValidMPValuesDataProvider(): array
+    public static function mountPointParameterContainsOnlyValidMPValuesDataProvider(): array
     {
         return [
             'no MP Parameter given' => [
@@ -242,7 +242,7 @@ alert(yes);', $body);
         return 'foo' . $GLOBALS['TSFE']->MP . 'bar';
     }
 
-    public function getFromCacheSetsConfigRootlineToLocalRootlineDataProvider(): array
+    public static function getFromCacheSetsConfigRootlineToLocalRootlineDataProvider(): array
     {
         $page1 = [
             'pid' => 0,

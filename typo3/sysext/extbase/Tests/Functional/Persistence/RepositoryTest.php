@@ -42,7 +42,7 @@ class RepositoryTest extends FunctionalTestCase
         $this->postRepository = $this->get(PostRepository::class);
     }
 
-    public function findByRespectsSingleCriteriaDataProvider(): \Generator
+    public static function findByRespectsSingleCriteriaDataProvider(): \Generator
     {
         yield 'findBy(["blog" => 1]) => 10' => [
             ['blog' => 1],
@@ -243,7 +243,7 @@ class RepositoryTest extends FunctionalTestCase
         ], $titles);
     }
 
-    public function findOneByRespectsSingleCriteriaDataProvider(): \Generator
+    public static function findOneByRespectsSingleCriteriaDataProvider(): \Generator
     {
         yield 'findOneBy(["blog" => 1]) => "Post4"' => [
             ['uid' => 1],

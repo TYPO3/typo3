@@ -56,7 +56,7 @@ class TranslateViewHelperTest extends FunctionalTestCase
         (new TemplateView($context))->render();
     }
 
-    public function renderReturnsStringInNonExtbaseContextDataProvider(): array
+    public static function renderReturnsStringInNonExtbaseContextDataProvider(): array
     {
         return [
             'fallback to default attribute for not existing label' => [
@@ -128,7 +128,7 @@ class TranslateViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 
-    public function renderReturnsStringInExtbaseContextDataProvider(): array
+    public static function renderReturnsStringInExtbaseContextDataProvider(): array
     {
         return [
             'key given for not existing label, fallback to child' => [

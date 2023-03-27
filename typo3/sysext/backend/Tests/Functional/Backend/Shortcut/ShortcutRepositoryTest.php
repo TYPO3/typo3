@@ -63,7 +63,7 @@ class ShortcutRepositoryTest extends FunctionalTestCase
         self::assertEquals($exists, $this->subject->shortcutExists($routeIdentifier, json_encode($arguments)));
     }
 
-    public function shortcutExistsTestDataProvider(): \Generator
+    public static function shortcutExistsTestDataProvider(): \Generator
     {
         yield 'Shortcut exists' => [
             'web_list',

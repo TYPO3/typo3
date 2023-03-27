@@ -36,7 +36,7 @@ class VariableFrontendTest extends FunctionalTestCase
         ],
     ];
 
-    public function insertSerializedArrayIntoLobAndRetrieveItDataProvider(): array
+    public static function insertSerializedArrayIntoLobAndRetrieveItDataProvider(): array
     {
         $arrayToSerialize = [
             'string' => 'Serialize a string',

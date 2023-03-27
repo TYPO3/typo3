@@ -41,7 +41,7 @@ class MinValueTest extends FunctionalTestCase
         Bootstrap::initializeLanguageObject();
     }
 
-    public function valuesLowerThanMinResetToEmptyStringDataProvider(): iterable
+    public static function valuesLowerThanMinResetToEmptyStringDataProvider(): iterable
     {
         yield 'Too few characters result in empty string' => [
             'value' => 'Too short',

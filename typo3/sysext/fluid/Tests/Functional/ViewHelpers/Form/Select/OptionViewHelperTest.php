@@ -76,7 +76,7 @@ class OptionViewHelperTest extends FunctionalTestCase
         self::assertSame('<select name=""><option selected="selected" value="Option Label">Option Label</option></select>', (new TemplateView($context))->render());
     }
 
-    public function selectedIsAddedToSelectedOptionForProvidedValueDataProvider(): array
+    public static function selectedIsAddedToSelectedOptionForProvidedValueDataProvider(): array
     {
         return [
             'string value, string selection' => [
@@ -134,7 +134,7 @@ class OptionViewHelperTest extends FunctionalTestCase
         self::assertSame('<select name=""><option value="Option Label">Option Label</option></select>', (new TemplateView($context))->render());
     }
 
-    public function selectedIsNotAddedToSelectedOptionForProvidedValueDataProvider(): array
+    public static function selectedIsNotAddedToSelectedOptionForProvidedValueDataProvider(): array
     {
         return [
             'string value, string selection' => [

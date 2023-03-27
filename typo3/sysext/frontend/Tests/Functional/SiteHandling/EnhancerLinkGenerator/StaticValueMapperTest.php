@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
 {
-    public function staticValueMapperDataProvider(string|TestSet|null $parentSet = null): array
+    public static function staticValueMapperDataProvider(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)

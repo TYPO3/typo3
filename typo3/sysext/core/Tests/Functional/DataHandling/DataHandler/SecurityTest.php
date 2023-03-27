@@ -57,7 +57,7 @@ class SecurityTest extends FunctionalTestCase
         $this->actionService = GeneralUtility::makeInstance(ActionService::class);
     }
 
-    public function crossSiteScriptingDataProvider(): array
+    public static function crossSiteScriptingDataProvider(): array
     {
         return [
             [

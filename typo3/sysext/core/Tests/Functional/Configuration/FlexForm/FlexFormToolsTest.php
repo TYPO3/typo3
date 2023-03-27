@@ -364,7 +364,7 @@ class FlexFormToolsTest extends FunctionalTestCase
     /**
      * Data provider for getDataStructureIdentifierReturnsValidNameForTwoFieldCombinations
      */
-    public function getDataStructureIdentifierReturnsValidNameForTwoFieldCombinationsDataProvider(): array
+    public static function getDataStructureIdentifierReturnsValidNameForTwoFieldCombinationsDataProvider(): array
     {
         return [
             'direct match of two fields' => [

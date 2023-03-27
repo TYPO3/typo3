@@ -55,7 +55,7 @@ class ResourceViewHelperTest extends FunctionalTestCase
         (new TemplateView($context))->render();
     }
 
-    public function renderWithoutRequestDataProvider(): \Generator
+    public static function renderWithoutRequestDataProvider(): \Generator
     {
         yield 'render returns URI using UpperCamelCase extensionName' => [
             '<f:uri.resource path="Icons/Extension.svg" extensionName="Core" />',
@@ -82,7 +82,7 @@ class ResourceViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 
-    public function renderWithExtbaseRequestDataProvider(): \Generator
+    public static function renderWithExtbaseRequestDataProvider(): \Generator
     {
         yield 'render returns URI using extensionName from Extbase Request' => [
             '<f:uri.resource path="Icons/Extension.svg" />',

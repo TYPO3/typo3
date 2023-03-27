@@ -75,7 +75,7 @@ class ResourceStorageTest extends FunctionalTestCase
     /**
      * @return array<string, array{0: 'read'|'write', 1: array<string, bool>, 2: bool}>
      */
-    public function checkFolderPermissionsFilesystemPermissionsDataProvider(): array
+    public static function checkFolderPermissionsFilesystemPermissionsDataProvider(): array
     {
         return [
             'read action on readable/writable folder' => [
@@ -147,7 +147,7 @@ class ResourceStorageTest extends FunctionalTestCase
     /**
      * @return array<string, array{0: array<string, bool>, 1: string, string}>
      */
-    public function checkUserActionPermission_arbitraryPermissionDataProvider(): array
+    public static function checkUserActionPermission_arbitraryPermissionDataProvider(): array
     {
         return [
             'all lower cased' => [

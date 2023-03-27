@@ -180,7 +180,7 @@ class DateViewHelperTest extends FunctionalTestCase
         self::assertEquals('2015', (new TemplateView($context))->render());
     }
 
-    public function viewHelperRespectsDefaultTimezoneForIntegerTimestampDataProvider(): array
+    public static function viewHelperRespectsDefaultTimezoneForIntegerTimestampDataProvider(): array
     {
         return [
             'Europe/Berlin' => [
@@ -207,7 +207,7 @@ class DateViewHelperTest extends FunctionalTestCase
         self::assertEquals($expected, (new TemplateView($context))->render());
     }
 
-    public function viewHelperRespectsDefaultTimezoneForStringTimestampDataProvider(): array
+    public static function viewHelperRespectsDefaultTimezoneForStringTimestampDataProvider(): array
     {
         return [
             'Europe/Berlin UTC' => [
@@ -245,7 +245,7 @@ class DateViewHelperTest extends FunctionalTestCase
         self::assertEquals($expected, (new TemplateView($context))->render());
     }
 
-    public function viewHelperUsesIcuBasedPatternDataProvider(): \Generator
+    public static function viewHelperUsesIcuBasedPatternDataProvider(): \Generator
     {
         yield 'default value in english' => [
             '10:55:36 on a Tuesday',

@@ -76,7 +76,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
         GeneralUtility::writeFile($fileName, $yamlFileContents);
     }
 
-    public function titleTagDataProvider(): array
+    public static function titleTagDataProvider(): array
     {
         return [
             [

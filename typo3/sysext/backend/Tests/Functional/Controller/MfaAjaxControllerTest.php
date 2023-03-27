@@ -55,7 +55,7 @@ class MfaAjaxControllerTest extends FunctionalTestCase
         self::assertEquals('Invalid request could not be processed', $response['message']);
     }
 
-    public function handleRequestHandlesInvalidRequestTestDataProvider(): \Generator
+    public static function handleRequestHandlesInvalidRequestTestDataProvider(): \Generator
     {
         yield 'No parameters' => [[]];
         yield 'Invalid action' => [['action' => 'unknown']];
@@ -113,7 +113,7 @@ class MfaAjaxControllerTest extends FunctionalTestCase
         self::assertEquals($remaining, $response['remaining']);
     }
 
-    public function handleRequestHandlesDeactivationRequestTestDataProvider(): \Generator
+    public static function handleRequestHandlesDeactivationRequestTestDataProvider(): \Generator
     {
         yield 'No deactivation because no active providers' => [
             ['userId' => 3],

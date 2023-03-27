@@ -34,7 +34,7 @@ class TextValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    public function isValidDataProvider(): array
+    public static function isValidDataProvider(): array
     {
         return [
             'a simple string' => [

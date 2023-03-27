@@ -41,7 +41,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
-    public function forwardedActionValidatesPreviouslyIgnoredArgumentDataProvider(): array
+    public static function forwardedActionValidatesPreviouslyIgnoredArgumentDataProvider(): array
     {
         return [
             'new blog post' => [

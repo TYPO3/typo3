@@ -64,7 +64,7 @@ class IconFactoryTest extends FunctionalTestCase
     /**
      * DataProvider for icon sizes
      */
-    public function differentSizesDataProvider(): array
+    public static function differentSizesDataProvider(): array
     {
         return [
             ['size ' . Icon::SIZE_DEFAULT => ['input' => Icon::SIZE_DEFAULT, 'expected' => Icon::SIZE_DEFAULT]],

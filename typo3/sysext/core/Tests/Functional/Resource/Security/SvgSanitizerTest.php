@@ -28,7 +28,7 @@ class SvgSanitizerTest extends FunctionalTestCase
     /**
      * @return array<string, string[]>
      */
-    public function svgContentIsSanitizedDataProvider(): array
+    public static function svgContentIsSanitizedDataProvider(): array
     {
         $basePath = dirname(__FILE__, 2) . '/Fixtures/';
         $finder = new Finder();

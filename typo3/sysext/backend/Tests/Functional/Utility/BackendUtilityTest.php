@@ -145,7 +145,7 @@ class BackendUtilityTest extends FunctionalTestCase
         );
     }
 
-    public function enableFieldsStatementIsCorrectDataProvider(): array
+    public static function enableFieldsStatementIsCorrectDataProvider(): array
     {
         // Expected sql should contain identifier escaped in mysql/mariadb identifier quotings "`", which are
         // replaced by corresponding quoting values for other database systems.

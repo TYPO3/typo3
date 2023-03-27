@@ -33,7 +33,7 @@ class FloatValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    public function validFloats(): array
+    public static function validFloats(): array
     {
         return [
             [1029437.234726],
@@ -56,7 +56,7 @@ class FloatValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate($float)->hasErrors());
     }
 
-    public function invalidFloats(): array
+    public static function invalidFloats(): array
     {
         return [
             [1029437],

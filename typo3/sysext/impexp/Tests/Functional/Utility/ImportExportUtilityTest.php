@@ -23,7 +23,7 @@ use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
 
 class ImportExportUtilityTest extends AbstractImportExportTestCase
 {
-    public function importFailsDataProvider(): array
+    public static function importFailsDataProvider(): array
     {
         return [
             'path to not existing file' => [

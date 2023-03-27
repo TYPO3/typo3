@@ -210,7 +210,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         self::assertEquals($flashMessage, $message->getMessage());
     }
 
-    public function handleRequestRedirectsToOverviewOnActionProviderMismatchTestDataProvider(): \Generator
+    public static function handleRequestRedirectsToOverviewOnActionProviderMismatchTestDataProvider(): \Generator
     {
         yield 'Empty provider' => [
             'setup',
@@ -318,7 +318,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         }
     }
 
-    public function handleRequestForwardsToCorrectActionTestDataProvider(): \Generator
+    public static function handleRequestForwardsToCorrectActionTestDataProvider(): \Generator
     {
         yield 'Edit provider' => [
             'edit',
@@ -400,7 +400,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         self::assertMatchesRegularExpression($providerContent, $responseContent);
     }
 
-    public function handleRequestAddsFormOnInteractionViewsTestTestDataProvider(): \Generator
+    public static function handleRequestAddsFormOnInteractionViewsTestTestDataProvider(): \Generator
     {
         yield 'Edit provider' => ['edit', true, '/<input.*id="name"/s'];
         yield 'Setup provider' => ['setup', false, '/<input.*id="totp"/s'];

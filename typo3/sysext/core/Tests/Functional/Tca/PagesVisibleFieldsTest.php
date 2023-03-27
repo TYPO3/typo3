@@ -206,7 +206,7 @@ class PagesVisibleFieldsTest extends FunctionalTestCase
         ],
     ];
 
-    public function pagesFormContainsExpectedFieldsDataProvider(): array
+    public static function pagesFormContainsExpectedFieldsDataProvider(): array
     {
         $pageTypes = [];
 

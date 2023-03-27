@@ -27,7 +27,7 @@ class IncludeTreeSyntaxScannerVisitorTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    public function visitDataProvider(): iterable
+    public static function visitDataProvider(): iterable
     {
         $node = new FileInclude();
         $node->setLineStream((new LosslessTokenizer())->tokenize('

@@ -36,7 +36,7 @@ class IntegerValidatorTest extends FunctionalTestCase
     /**
      * Data provider with valid integers
      */
-    public function validIntegers(): array
+    public static function validIntegers(): array
     {
         return [
             [1029437],
@@ -60,7 +60,7 @@ class IntegerValidatorTest extends FunctionalTestCase
     /**
      * Data provider with invalid integers
      */
-    public function invalidIntegers(): array
+    public static function invalidIntegers(): array
     {
         return [
             ['not a number'],

@@ -33,7 +33,7 @@ class PageTreeRepositoryTest extends FunctionalTestCase
         $this->setUpBackendUser(1);
     }
 
-    public function getTreeLevelsReturnsGroupedAndSortedPageTreeArrayDataProvider(): iterable
+    public static function getTreeLevelsReturnsGroupedAndSortedPageTreeArrayDataProvider(): iterable
     {
         yield 'Single entry point with depth 2' => [
             'pageTree' => [
@@ -238,7 +238,7 @@ class PageTreeRepositoryTest extends FunctionalTestCase
         self::assertEquals($expected, $actual[0]);
     }
 
-    public function fetchFilteredTreeDataProvider(): \Generator
+    public static function fetchFilteredTreeDataProvider(): \Generator
     {
         yield 'Third level find by title' => [
             'Sub Area 2',

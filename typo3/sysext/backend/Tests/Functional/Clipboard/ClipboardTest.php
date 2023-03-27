@@ -75,7 +75,7 @@ class ClipboardTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    public function localizationsAreResolvedDataProvider(): array
+    public static function localizationsAreResolvedDataProvider(): array
     {
         return [
             'live workspace with live & version localizations' => [

@@ -40,7 +40,7 @@ class PlainDataResolverTest extends AbstractDataHandlerActionTestCase
      *      ['sorting']                      // sorting criteria
      *  ]
      */
-    public function sortingDataProvider(): array
+    public static function sortingDataProvider(): array
     {
         return [
             'sorting' => [

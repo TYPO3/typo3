@@ -76,7 +76,7 @@ class RegularExpressionValidatorTest extends FunctionalTestCase
         self::assertEquals([new Error('custom message', 1221565130)], $errors);
     }
 
-    public function customErrorMessagesDataProvider(): array
+    public static function customErrorMessagesDataProvider(): array
     {
         return [
             'no message' => [

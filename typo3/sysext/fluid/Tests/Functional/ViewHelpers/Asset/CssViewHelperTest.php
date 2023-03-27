@@ -26,7 +26,7 @@ class CssViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    public function sourceDataProvider(): array
+    public static function sourceDataProvider(): array
     {
         return [
             'fileadmin reference' => ['fileadmin/StyleSheets/foo.css'],

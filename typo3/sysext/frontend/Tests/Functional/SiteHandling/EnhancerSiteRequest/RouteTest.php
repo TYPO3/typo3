@@ -38,7 +38,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
 {
     use TestSetDataProviderTrait;
 
-    public function routeDefaultsAreConsideredDataProvider(string|TestSet|null $parentSet = null): array
+    public static function routeDefaultsAreConsideredDataProvider(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)
@@ -130,7 +130,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
         $this->assertPageArgumentsEquals($testSet);
     }
 
-    public function routeRequirementsHavingAspectsAreConsideredDataProvider($parentSet = null): array
+    public static function routeRequirementsHavingAspectsAreConsideredDataProvider($parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)
@@ -208,7 +208,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
         $this->assertPageArgumentsEquals($testSet);
     }
 
-    public function routeRequirementsAreConsideredDataProvider($parentSet = null): array
+    public static function routeRequirementsAreConsideredDataProvider($parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)
@@ -312,7 +312,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
         $this->assertPageArgumentsEquals($testSet);
     }
 
-    public function routeIdentifiersAreResolvedDataProvider(): array
+    public static function routeIdentifiersAreResolvedDataProvider(): array
     {
         return [
             // namespace[value]

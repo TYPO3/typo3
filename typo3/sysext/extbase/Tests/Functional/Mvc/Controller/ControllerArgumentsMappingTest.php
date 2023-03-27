@@ -73,7 +73,7 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
         $this->controller = $this->get(BlogController::class);
     }
 
-    public function actionGetsBlogFromUidArgumentDataProvider(): array
+    public static function actionGetsBlogFromUidArgumentDataProvider(): array
     {
         return [
             [

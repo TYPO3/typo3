@@ -116,7 +116,7 @@ class MountPointTest extends AbstractTestCase
         });
     }
 
-    public function hierarchicalMenuIsGeneratedDataProvider(): array
+    public static function hierarchicalMenuIsGeneratedDataProvider(): array
     {
         $siteMapOfMainPage = [
             ['title' => 'EN: Welcome', 'link' => '/welcome'],
@@ -371,7 +371,7 @@ class MountPointTest extends AbstractTestCase
         self::assertSame($expectation, $json);
     }
 
-    public function requestsResolvePageIdAndMountPointParameterDataProvider(): array
+    public static function requestsResolvePageIdAndMountPointParameterDataProvider(): array
     {
         return [
             'regular page on global site' => [
@@ -423,7 +423,7 @@ class MountPointTest extends AbstractTestCase
         self::assertSame($expectedMountPointParameter, $responseData['dynamicArguments']['MP'] ?? null);
     }
 
-    public function mountPointPagesShowContentAsConfiguredDataProvider(): array
+    public static function mountPointPagesShowContentAsConfiguredDataProvider(): array
     {
         return [
             'Show content of MountPoint Page' => [

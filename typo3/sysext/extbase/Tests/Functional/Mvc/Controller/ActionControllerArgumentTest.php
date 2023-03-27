@@ -43,7 +43,7 @@ class ActionControllerArgumentTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_argument_test',
     ];
 
-    public function validationErrorReturnsToForwardedPreviousActionDataProvider(): array
+    public static function validationErrorReturnsToForwardedPreviousActionDataProvider(): array
     {
         return [
             // regular models

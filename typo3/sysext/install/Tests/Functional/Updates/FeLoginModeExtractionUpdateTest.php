@@ -61,7 +61,7 @@ class FeLoginModeExtractionUpdateTest extends FunctionalTestCase
         self::assertEquals($updateNecessary, (new FeLoginModeExtractionUpdate())->updateNecessary());
     }
 
-    public function functionalityUsedTestDataProvider(): \Generator
+    public static function functionalityUsedTestDataProvider(): \Generator
     {
         yield 'Column exist but functionality not used' => [
             'FeLoginModeNotUsed',

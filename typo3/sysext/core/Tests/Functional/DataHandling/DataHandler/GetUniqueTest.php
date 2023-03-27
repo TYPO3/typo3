@@ -43,7 +43,7 @@ class GetUniqueTest extends FunctionalTestCase
     /**
      * Data provider for getUnique
      */
-    public function getUniqueDataProvider(): array
+    public static function getUniqueDataProvider(): array
     {
         $randomValue = GeneralUtility::makeInstance(Random::class)->generateRandomHexString(10);
 

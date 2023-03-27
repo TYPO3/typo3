@@ -75,7 +75,7 @@ class ShortcutButtonTest extends FunctionalTestCase
         );
     }
 
-    public function rendersCorrectMarkupDataProvider(): \Generator
+    public static function rendersCorrectMarkupDataProvider(): \Generator
     {
         yield 'Recordlist' => [
             (new ShortcutButton())

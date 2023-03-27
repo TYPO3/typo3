@@ -75,7 +75,7 @@ class ApcuBackendTest extends FunctionalTestCase
         self::assertTrue($backend->has($identifier));
     }
 
-    public function itIsPossibleToSetAndGetEntryDataProvider(): iterable
+    public static function itIsPossibleToSetAndGetEntryDataProvider(): iterable
     {
         yield [ 5 ];
         yield [ 5.23 ];

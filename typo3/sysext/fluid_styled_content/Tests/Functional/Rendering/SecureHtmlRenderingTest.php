@@ -78,7 +78,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
         );
     }
 
-    public function defaultParseFuncRteAvoidsCrossSiteScriptingDataProvider(): array
+    public static function defaultParseFuncRteAvoidsCrossSiteScriptingDataProvider(): array
     {
         return [
             '#01' => [
@@ -208,7 +208,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
         self::assertSame($expectation, trim((string)$response->getBody(), "\n"));
     }
 
-    public function customParseFuncAvoidsCrossSiteScriptingDataProvider(): array
+    public static function customParseFuncAvoidsCrossSiteScriptingDataProvider(): array
     {
         return [
             '#01' => [

@@ -173,7 +173,7 @@ class PageViewHelperTest extends FunctionalTestCase
         self::assertSame('http://localhost/typo3/module/web/layout?token=dummyToken&amp;id=42', $result);
     }
 
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'renderProvidesATagForValidLinkTarget' => [

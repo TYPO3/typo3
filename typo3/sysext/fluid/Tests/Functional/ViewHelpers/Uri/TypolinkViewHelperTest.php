@@ -54,7 +54,7 @@ class TypolinkViewHelperTest extends FunctionalTestCase
         );
     }
 
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'uri: default' => [

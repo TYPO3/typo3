@@ -34,7 +34,7 @@ class RecordHistoryTest extends FunctionalTestCase
         $this->subject = new RecordHistory();
     }
 
-    public function findEventsForCorrelationWorksAsExpectedDataProvider(): array
+    public static function findEventsForCorrelationWorksAsExpectedDataProvider(): array
     {
         return [
             'da625644-8e50-47ee-8c11-bb19552a79e4' => ['da625644-8e50-47ee-8c11-bb19552a79e4', 2],

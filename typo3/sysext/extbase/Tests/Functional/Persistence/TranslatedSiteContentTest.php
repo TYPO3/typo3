@@ -146,7 +146,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
     /**
      * Danish language has pages record and some content elements are translated
      */
-    public function danishDataProvider(): array
+    public static function danishDataProvider(): array
     {
         // Expected behaviour:
         // Page is translated to Danish, so changing sys_language_mode does NOT change the results
@@ -270,7 +270,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
         }
     }
 
-    public function contentOnNonTranslatedPageDataProvider(): array
+    public static function contentOnNonTranslatedPageDataProvider(): array
     {
         return [
             [
@@ -482,7 +482,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
         self::assertEquals($statusCode, $response->getStatusCode());
     }
 
-    public function contentOnPartiallyTranslatedPageDataProvider(): array
+    public static function contentOnPartiallyTranslatedPageDataProvider(): array
     {
         // Expected behaviour:
         // Setting sys_language_mode to different values doesn't influence the result as the requested page is translated to Polish,

@@ -25,7 +25,7 @@ class BytesViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    public function renderConvertsAValueDataProvider(): array
+    public static function renderConvertsAValueDataProvider(): array
     {
         return [
             // invalid values

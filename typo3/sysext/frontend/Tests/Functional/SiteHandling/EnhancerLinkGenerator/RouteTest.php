@@ -34,7 +34,7 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
 {
     use TestSetDataProviderTrait;
 
-    public function routeDefaultsForSingleParameterAreConsideredDataProvider(string|TestSet|null $parentSet = null): array
+    public static function routeDefaultsForSingleParameterAreConsideredDataProvider(string|TestSet|null $parentSet = null): array
     {
         $builder = Builder::create();
         $enhancerDeclarations = $builder->declareEnhancers();
@@ -124,7 +124,7 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
         $this->assertGeneratedUriEquals($testSet);
     }
 
-    public function routeDefaultsForMultipleParametersAreConsideredDataProvider($parentSet = null): array
+    public static function routeDefaultsForMultipleParametersAreConsideredDataProvider($parentSet = null): array
     {
         $builder = Builder::create();
         $routePath = VariableValue::create('/[[routePrefix]]/[[routeParameter]]/{additional}');
@@ -218,7 +218,7 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
         $this->assertGeneratedUriEquals($testSet);
     }
 
-    public function routeRequirementsHavingAspectsAreConsideredDataProvider($parentSet = null): array
+    public static function routeRequirementsHavingAspectsAreConsideredDataProvider($parentSet = null): array
     {
         $builder = Builder::create();
         // variables (applied when invoking expectations)

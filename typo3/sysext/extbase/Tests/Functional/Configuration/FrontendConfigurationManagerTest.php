@@ -81,7 +81,7 @@ class FrontendConfigurationManagerTest extends FunctionalTestCase
         self::assertSame('from eventlistener', $frontendConfigurationManager->getConfiguration('foo')['settings']['foo']);
     }
 
-    public function overrideConfigurationFromFlexFormSettingsDataProvider(): iterable
+    public static function overrideConfigurationFromFlexFormSettingsDataProvider(): iterable
     {
         yield 'no flexForm override configuration' => [
             'flexForm' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>

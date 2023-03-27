@@ -154,7 +154,7 @@ class PersistedPatternMapperTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    public function languageAwareRecordsAreResolvedDataProvider(): array
+    public static function languageAwareRecordsAreResolvedDataProvider(): array
     {
         $baseDataSet = [
             'non-existing, default language' => ['this-value-does-not-exist', 'default', null],
@@ -220,7 +220,7 @@ class PersistedPatternMapperTest extends FunctionalTestCase
         self::assertSame($expectation, $this->subject->resolve($requestValue));
     }
 
-    public function recordVisibilityDataProvider(): array
+    public static function recordVisibilityDataProvider(): array
     {
         $rawContext = new Context();
         $visibleContext = new Context();

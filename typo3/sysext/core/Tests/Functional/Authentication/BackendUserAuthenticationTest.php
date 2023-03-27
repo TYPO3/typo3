@@ -142,7 +142,7 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
         $this->setUpBackendUser(4);
     }
 
-    public function isImportEnabledDataProvider(): array
+    public static function isImportEnabledDataProvider(): array
     {
         return [
             'admin user' => [
@@ -175,7 +175,7 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
         self::assertEquals($expected, $subject->isImportEnabled());
     }
 
-    public function isExportEnabledDataProvider(): array
+    public static function isExportEnabledDataProvider(): array
     {
         return [
             'admin user' => [

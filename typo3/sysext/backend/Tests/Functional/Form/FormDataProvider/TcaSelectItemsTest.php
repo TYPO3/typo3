@@ -604,7 +604,7 @@ class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    public function addDataReplacesMarkersInForeignTableClauseDataProvider(): array
+    public static function addDataReplacesMarkersInForeignTableClauseDataProvider(): array
     {
         return [
             'replace REC_FIELD' => [
@@ -2788,7 +2788,7 @@ class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    public function processSelectFieldSetsCorrectValuesForMmRelationsDataProvider(): array
+    public static function processSelectFieldSetsCorrectValuesForMmRelationsDataProvider(): array
     {
         return [
             'Relation with MM table and new status with default values' => [

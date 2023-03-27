@@ -50,7 +50,7 @@ class EmailViewHelperTest extends FunctionalTestCase
         self::assertEquals('<a href="mailto:foo@example.com">foo@example.com</a>', (new TemplateView($context))->render());
     }
 
-    public function renderEncodesEmailInFrontendDataProvider(): array
+    public static function renderEncodesEmailInFrontendDataProvider(): array
     {
         return [
             'Plain email' => [

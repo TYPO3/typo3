@@ -92,7 +92,7 @@ class LocalDriverTest extends FunctionalTestCase
         self::assertStringNotContainsString('/../', $basePath);
     }
 
-    public function publicUrlIsCalculatedCorrectlyWithDifferentBasePathsAndBasUrisDataProvider(): array
+    public static function publicUrlIsCalculatedCorrectlyWithDifferentBasePathsAndBasUrisDataProvider(): array
     {
         return [
             'no base uri, within public' => [
@@ -325,7 +325,7 @@ class LocalDriverTest extends FunctionalTestCase
         self::assertNotEquals('/', substr($subject->_call('getAbsoluteBasePath'), -2, 1));
     }
 
-    public function getSpecificFileInformationDataProvider(): array
+    public static function getSpecificFileInformationDataProvider(): array
     {
         return [
             'size' => [
@@ -499,7 +499,7 @@ class LocalDriverTest extends FunctionalTestCase
         self::assertEquals($baseUri . '/subfolder/file2.ext', $subject->getPublicUrl('/subfolder/file2.ext'));
     }
 
-    public function getPublicUrlReturnsValidUrlContainingSpecialCharactersDataProvider(): array
+    public static function getPublicUrlReturnsValidUrlContainingSpecialCharactersDataProvider(): array
     {
         return [
             ['/single file with some special chars äüö!.txt'],
@@ -1185,7 +1185,7 @@ class LocalDriverTest extends FunctionalTestCase
      * - String value charset (none = '', utf-8, latin1, etc.)
      * - Expected result (cleaned fileName)
      */
-    public function sanitizeFileNameUTF8FilesystemDataProvider(): array
+    public static function sanitizeFileNameUTF8FilesystemDataProvider(): array
     {
         // Generate string containing all characters for the utf-8 Latin-1 Supplement (U+0080 to U+00FF)
         // without U+0080 to U+009F: control characters
@@ -1244,7 +1244,7 @@ class LocalDriverTest extends FunctionalTestCase
      * - String value charset (none = '', utf-8, latin1, etc.)
      * - Expected result (cleaned fileName)
      */
-    public function sanitizeFileNameNonUTF8FilesystemDataProvider(): array
+    public static function sanitizeFileNameNonUTF8FilesystemDataProvider(): array
     {
         // Generate string containing all characters for the iso8859-1 charset, charcode greater than 127
         $iso88591GreaterThan127 = '';

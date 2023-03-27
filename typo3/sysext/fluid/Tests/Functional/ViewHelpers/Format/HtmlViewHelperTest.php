@@ -33,7 +33,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
-    public function contentIsRenderedDataProvider(): array
+    public static function contentIsRenderedDataProvider(): array
     {
         return [
             'format.html: process lib.parseFunc_RTE by default' => [
@@ -91,7 +91,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString($expected, (string)$response->getBody());
     }
 
-    public function invalidInvocationIsDeterminedDataProvider(): array
+    public static function invalidInvocationIsDeterminedDataProvider(): array
     {
         return [
             'explicitly empty parseFunc path' => [

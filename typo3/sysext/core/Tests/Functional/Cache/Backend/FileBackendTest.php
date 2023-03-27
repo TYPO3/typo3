@@ -367,7 +367,7 @@ class FileBackendTest extends FunctionalTestCase
         self::assertFileDoesNotExist($pathAndFilename);
     }
 
-    public function invalidEntryIdentifiers(): array
+    public static function invalidEntryIdentifiers(): array
     {
         return [
             'trailing slash' => ['/myIdentifier'],

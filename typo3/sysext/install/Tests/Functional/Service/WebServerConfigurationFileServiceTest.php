@@ -66,7 +66,7 @@ class WebServerConfigurationFileServiceTest extends FunctionalTestCase
         unlink($filename);
     }
 
-    public function webServerConfigurationIsChangedDataProvider(): \Generator
+    public static function webServerConfigurationIsChangedDataProvider(): \Generator
     {
         yield '.htaccess with custom configuration - will not be changed' => [
             'Apache',

@@ -26,7 +26,7 @@ class RateLimiterFactoryTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    public function loginRateLimiterLimitsRequestsDataProvider(): array
+    public static function loginRateLimiterLimitsRequestsDataProvider(): array
     {
         return [
             'backend accepted' => [

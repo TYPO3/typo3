@@ -132,7 +132,7 @@ class RedirectServiceTest extends FunctionalTestCase
         self::assertEquals(new Uri('https://acme.com/access-restricted'), $targetUrl);
     }
 
-    public function redirectsDataProvider(): array
+    public static function redirectsDataProvider(): array
     {
         return [
             [
@@ -184,7 +184,7 @@ class RedirectServiceTest extends FunctionalTestCase
         self::assertEquals($targetUrl, $response->getHeader('location')[0]);
     }
 
-    public function checkRegExpRedirectsDataProvider(): array
+    public static function checkRegExpRedirectsDataProvider(): array
     {
         return [
             'regexp redirect respecting query parameter but not keeping them' => [
@@ -335,7 +335,7 @@ class RedirectServiceTest extends FunctionalTestCase
         self::assertEquals($expectedRedirectUri, $response->getHeader('location')[0]);
     }
 
-    public function samePathWithSameDomainT3TargetDataProvider(): array
+    public static function samePathWithSameDomainT3TargetDataProvider(): array
     {
         return [
             'flat' => [
@@ -495,7 +495,7 @@ class RedirectServiceTest extends FunctionalTestCase
         }
     }
 
-    public function samePathWithSameDomainAndRelativeTargetDataProvider(): array
+    public static function samePathWithSameDomainAndRelativeTargetDataProvider(): array
     {
         return [
             'flat' => [
@@ -640,7 +640,7 @@ class RedirectServiceTest extends FunctionalTestCase
         }
     }
 
-    public function samePathRedirectsWithExternalTargetDataProvider(): array
+    public static function samePathRedirectsWithExternalTargetDataProvider(): array
     {
         return [
             'flat' => [

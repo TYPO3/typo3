@@ -201,7 +201,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
     /**
      * Dutch language has page translation record and some content elements are translated
      */
-    public function dutchDataProvider(): array
+    public static function dutchDataProvider(): array
     {
         return [
             [
@@ -344,7 +344,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
         self::assertEquals($overlayType, $responseStructure->getScopePath('languageInfo/overlayType'), 'language overlayType does not match');
     }
 
-    public function contentOnNonTranslatedPageDataProvider(): array
+    public static function contentOnNonTranslatedPageDataProvider(): array
     {
         //Expected behaviour:
         //the page is NOT translated so setting sys_language_mode to different values changes the results
@@ -678,7 +678,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
         self::assertEquals($statusCode, $response->getStatusCode());
     }
 
-    public function contentOnPartiallyTranslatedPageDataProvider(): \Generator
+    public static function contentOnPartiallyTranslatedPageDataProvider(): \Generator
     {
         //Expected behaviour:
         //Setting sys_language_mode to different values doesn't influence the result as the requested page is translated to Polish,

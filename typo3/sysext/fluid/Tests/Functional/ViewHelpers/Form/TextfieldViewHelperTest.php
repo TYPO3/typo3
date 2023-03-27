@@ -29,7 +29,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 class TextfieldViewHelperTest extends FunctionalTestCase
 {
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'renderCorrectlySetsTagName' => [

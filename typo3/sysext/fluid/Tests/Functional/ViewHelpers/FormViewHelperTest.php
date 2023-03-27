@@ -31,7 +31,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 class FormViewHelperTest extends FunctionalTestCase
 {
-    public function isRenderedDataProvider(): array
+    public static function isRenderedDataProvider(): array
     {
         return [
             '#1' => [

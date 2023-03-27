@@ -85,7 +85,7 @@ class ImportCommandTest extends AbstractImportExportTestCase
         $tester->execute($input);
     }
 
-    public function importCommandFailsDataProvider(): array
+    public static function importCommandFailsDataProvider(): array
     {
         return [
             'path to not existing file' => [

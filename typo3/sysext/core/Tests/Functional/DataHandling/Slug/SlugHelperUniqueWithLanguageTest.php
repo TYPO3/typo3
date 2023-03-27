@@ -37,7 +37,7 @@ class SlugHelperUniqueWithLanguageTest extends AbstractDataHandlerActionTestCase
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
 
-    public function buildSlugForUniqueRespectsLanguageDataProvider(): array
+    public static function buildSlugForUniqueRespectsLanguageDataProvider(): array
     {
         return [
             'sameLanguageSameSlug' =>  [

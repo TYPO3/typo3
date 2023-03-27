@@ -43,7 +43,7 @@ class PluginsTest extends AbstractTestCase
         );
     }
 
-    public function ensurePageSetupIsOkDataProvider(): array
+    public static function ensurePageSetupIsOkDataProvider(): array
     {
         return [
             'page:uid:1' => [1, false],
@@ -75,7 +75,7 @@ class PluginsTest extends AbstractTestCase
         }
     }
 
-    public function ensureMetaDataAreCorrectDataProvider(): array
+    public static function ensureMetaDataAreCorrectDataProvider(): array
     {
         return [
             'page:uid:1' => [1, 'Rootpage for Tests', ''],

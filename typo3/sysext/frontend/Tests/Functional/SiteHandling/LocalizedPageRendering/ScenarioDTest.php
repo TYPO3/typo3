@@ -62,7 +62,7 @@ class ScenarioDTest extends AbstractLocalizedPagesTestCase
         $this->setUpDatabaseWithYamlPayload(__DIR__ . '/Fixtures/ScenarioD.yaml');
     }
 
-    public function resolvablePagesDataProvider(): array
+    public static function resolvablePagesDataProvider(): array
     {
         return [
             'home page in EN' => [
@@ -101,7 +101,7 @@ class ScenarioDTest extends AbstractLocalizedPagesTestCase
         $this->assertScopes($url, $scopes);
     }
 
-    public function pageNotFoundDataProvider(): array
+    public static function pageNotFoundDataProvider(): array
     {
         return [
             'home page in DE where page translation does not exist' => [
@@ -125,7 +125,7 @@ class ScenarioDTest extends AbstractLocalizedPagesTestCase
         $this->assertResponseStatusCode($url);
     }
 
-    public function menuDataProvider(): array
+    public static function menuDataProvider(): array
     {
         return [
             [

@@ -184,7 +184,7 @@ class TcaCategoryTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaCategory())->addData($input));
     }
 
-    public function addDataOverridesDefaultFieldConfigurationBySiteConfigDataProvider(): array
+    public static function addDataOverridesDefaultFieldConfigurationBySiteConfigDataProvider(): array
     {
         return [
             'one setting' => [

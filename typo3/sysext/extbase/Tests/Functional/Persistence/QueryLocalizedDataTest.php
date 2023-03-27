@@ -379,7 +379,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         ]);
     }
 
-    public function queryFirst5PostsDataProvider(): array
+    public static function queryFirst5PostsDataProvider(): array
     {
         //put it to variable to make cases with the same expected values explicit
         $lang0Expected = [
@@ -816,7 +816,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         $this->assertObjectsProperties($posts, $expected);
     }
 
-    public function queryPostsByPropertyDataProvider(): array
+    public static function queryPostsByPropertyDataProvider(): array
     {
         $lang0Expected = [
             [
@@ -995,7 +995,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         $this->assertObjectsProperties($posts, $expected);
     }
 
-    public function postsWithoutRespectingSysLanguageDataProvider(): array
+    public static function postsWithoutRespectingSysLanguageDataProvider(): array
     {
         $allLanguages = [
              [

@@ -434,7 +434,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         self::assertEquals($expectedColumnMap, $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class));
     }
 
-    public function columnMapIsInitializedWithFieldEvaluationsForDateTimeFieldsDataProvider(): array
+    public static function columnMapIsInitializedWithFieldEvaluationsForDateTimeFieldsDataProvider(): array
     {
         return [
             'date field' => ['date', 'date'],
@@ -464,7 +464,7 @@ class ColumnMapFactoryTest extends FunctionalTestCase
         self::assertSame($expectedValue, $columnMap->getDateTimeStorageFormat());
     }
 
-    public function tcaConfigurationsContainingTypeDataProvider(): array
+    public static function tcaConfigurationsContainingTypeDataProvider(): array
     {
         return [
             ['input', TableColumnType::INPUT],

@@ -25,7 +25,7 @@ class Nl2brViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'viewHelperDoesNotModifyTextWithoutLineBreaks' => [

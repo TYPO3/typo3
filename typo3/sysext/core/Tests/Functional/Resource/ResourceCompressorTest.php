@@ -89,7 +89,7 @@ class ResourceCompressorTest extends FunctionalTestCase
         );
     }
 
-    public function compressCssFileContentDataProvider(): array
+    public static function compressCssFileContentDataProvider(): array
     {
         return [
             // File. Tests:
@@ -138,7 +138,7 @@ class ResourceCompressorTest extends FunctionalTestCase
         self::assertStringEqualsFile($expected, $compressedCss);
     }
 
-    public function getFilenamesFromMainDirInFrontendContextDataProvider(): array
+    public static function getFilenamesFromMainDirInFrontendContextDataProvider(): array
     {
         return [
             // Get filename using EXT:

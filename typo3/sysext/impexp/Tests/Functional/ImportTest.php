@@ -25,7 +25,7 @@ class ImportTest extends AbstractImportExportTestCase
         'typo3/sysext/impexp/Tests/Functional/Fixtures/XmlImports' => 'fileadmin/xml_imports',
     ];
 
-    public function loadingFileFromWithinTypo3BaseFolderSucceedsProvider(): array
+    public static function loadingFileFromWithinTypo3BaseFolderSucceedsProvider(): array
     {
         return [
             'relative path to fileadmin' => ['fileadmin/xml_imports/sys_news.xml'],
@@ -49,7 +49,7 @@ class ImportTest extends AbstractImportExportTestCase
         self::assertTrue(true);
     }
 
-    public function loadingFileFailsProvider(): array
+    public static function loadingFileFailsProvider(): array
     {
         return [
             'storage path' => ['1:/xml_imports/sys_news.xml'],
@@ -188,7 +188,7 @@ class ImportTest extends AbstractImportExportTestCase
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
-    public function addFilesSucceedsDataProvider(): array
+    public static function addFilesSucceedsDataProvider(): array
     {
         return [
             ['dat' => [

@@ -126,7 +126,7 @@ class WidgetRegistryTest extends FunctionalTestCase
         self::assertCount(4, $this->subject->getAllWidgets());
     }
 
-    public function expectedAmountOfWidgetsForUserDataProvider(): array
+    public static function expectedAmountOfWidgetsForUserDataProvider(): array
     {
         return [
             'Admin User - access to all groups' => [

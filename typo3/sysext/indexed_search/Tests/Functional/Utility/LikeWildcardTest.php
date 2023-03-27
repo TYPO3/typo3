@@ -54,7 +54,7 @@ class LikeWildcardTest extends FunctionalTestCase
      * - the wildcard mode
      * - the expected result
      */
-    public function getLikeQueryPartDataProvider(): array
+    public static function getLikeQueryPartDataProvider(): array
     {
         return [
             'no placeholders and no wildcard mode' => [

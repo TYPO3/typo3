@@ -33,7 +33,7 @@ class DateTimeValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    public function acceptsDateTimeValuesDataProvider(): array
+    public static function acceptsDateTimeValuesDataProvider(): array
     {
         return [
             \DateTime::class => [

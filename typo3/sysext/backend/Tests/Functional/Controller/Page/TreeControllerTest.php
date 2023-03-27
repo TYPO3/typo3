@@ -575,7 +575,7 @@ class TreeControllerTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    public function getAllEntryPointPageTreesInWorkspaceWithSearchDataProvider(): array
+    public static function getAllEntryPointPageTreesInWorkspaceWithSearchDataProvider(): array
     {
         return [
             'search for "ACME in your Region" (live value, but deleted in workspace)' => [

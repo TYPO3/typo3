@@ -25,7 +25,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 class ImageViewHelperTest extends FunctionalTestCase
 {
-    public function invalidArgumentsDataProvider(): array
+    public static function invalidArgumentsDataProvider(): array
     {
         return [
             [['src' => '', 'image' => null], 1382284106],
@@ -50,7 +50,7 @@ class ImageViewHelperTest extends FunctionalTestCase
         $viewHelper->render();
     }
 
-    public function renderReturnsExpectedMarkupDataProvider(): array
+    public static function renderReturnsExpectedMarkupDataProvider(): array
     {
         return [
             'crop false' => [

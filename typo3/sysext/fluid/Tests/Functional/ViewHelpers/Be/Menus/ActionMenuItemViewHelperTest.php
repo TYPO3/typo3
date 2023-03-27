@@ -27,7 +27,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 class ActionMenuItemViewHelperTest extends FunctionalTestCase
 {
-    public function isRenderedDataProvider(): array
+    public static function isRenderedDataProvider(): array
     {
         return [
             'tag syntax' => [

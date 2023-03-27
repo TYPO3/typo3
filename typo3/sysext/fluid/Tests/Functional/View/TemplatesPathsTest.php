@@ -85,7 +85,7 @@ class TemplatesPathsTest extends FunctionalTestCase
         $this->setUpFrontendRootPage(1, ['EXT:fluid_test/Configuration/TypoScript/Basic.typoscript']);
     }
 
-    public function differentOverrideScenariosDataProvider(): array
+    public static function differentOverrideScenariosDataProvider(): array
     {
         return [
             'base' => [

@@ -50,7 +50,7 @@ class FilesContentObjectTest extends FunctionalTestCase
         $this->subject = $contentObjectRenderer->getContentObject('FILES');
     }
 
-    public function renderReturnsFilesForFileReferencesDataProvider(): array
+    public static function renderReturnsFilesForFileReferencesDataProvider(): array
     {
         return [
             'One file reference' => [
@@ -195,7 +195,7 @@ class FilesContentObjectTest extends FunctionalTestCase
         self::assertSame($expected, $this->subject->render($configuration));
     }
 
-    public function renderReturnsFilesForFilesDataProvider(): array
+    public static function renderReturnsFilesForFilesDataProvider(): array
     {
         return [
             'One file' => [
@@ -340,7 +340,7 @@ class FilesContentObjectTest extends FunctionalTestCase
         self::assertSame($expected, $this->subject->render($configuration));
     }
 
-    public function renderReturnsFilesForCollectionsDataProvider(): array
+    public static function renderReturnsFilesForCollectionsDataProvider(): array
     {
         return [
             'One collection' => [
@@ -522,7 +522,7 @@ class FilesContentObjectTest extends FunctionalTestCase
         self::assertSame($expected, $this->subject->render($configuration));
     }
 
-    public function renderReturnsFilesForFoldersDataProvider(): array
+    public static function renderReturnsFilesForFoldersDataProvider(): array
     {
         return [
             'One folder' => [
@@ -733,7 +733,7 @@ class FilesContentObjectTest extends FunctionalTestCase
         self::assertSame($expected, $this->subject->render($configuration));
     }
 
-    public function renderReturnsFilesForReferencesAsArrayDataProvider(): iterable
+    public static function renderReturnsFilesForReferencesAsArrayDataProvider(): iterable
     {
         yield 'references option as array with nothing provided returns nothing' => [
             'configuration' => [

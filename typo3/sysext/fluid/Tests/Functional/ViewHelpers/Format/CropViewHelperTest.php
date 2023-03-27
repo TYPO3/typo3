@@ -25,7 +25,7 @@ class CropViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    public function renderConvertsAValueDataProvider(): array
+    public static function renderConvertsAValueDataProvider(): array
     {
         return [
             'simple html crop' => [

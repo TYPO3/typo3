@@ -126,7 +126,7 @@ class CreateRecordReactionTest extends FunctionalTestCase
         return $this->authenticateBackendUser($backendUser, $request);
     }
 
-    public function replacePlaceHolderDataProvider(): array
+    public static function replacePlaceHolderDataProvider(): array
     {
         return [
             'no placeholders' => [

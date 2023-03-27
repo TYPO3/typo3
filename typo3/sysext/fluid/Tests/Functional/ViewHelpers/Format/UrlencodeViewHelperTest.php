@@ -25,7 +25,7 @@ class UrlencodeViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'renderUsesValueAsSourceIfSpecified' => [

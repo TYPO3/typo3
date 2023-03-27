@@ -41,7 +41,7 @@ class MetaTagTest extends AbstractTestCase
         );
     }
 
-    public function ensureMetaDataAreCorrectDataProvider(): array
+    public static function ensureMetaDataAreCorrectDataProvider(): array
     {
         return [
             'page with twitter_card in page properties' => [

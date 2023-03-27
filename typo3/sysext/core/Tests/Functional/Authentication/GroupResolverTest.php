@@ -30,7 +30,7 @@ class GroupResolverTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_groups.csv');
     }
 
-    public function findAllUsersOfGroupsHandlesRecursiveCallsDataProvider(): array
+    public static function findAllUsersOfGroupsHandlesRecursiveCallsDataProvider(): array
     {
         return [
             'invalid group' => [

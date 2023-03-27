@@ -27,7 +27,7 @@ class ImageMagickFileTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    public function framesAreConsideredDataProvider(): array
+    public static function framesAreConsideredDataProvider(): array
     {
         return [
             'file.pdf'    => ['file.pdf', null, '\'pdf:{directory}/file.pdf\''],
@@ -47,7 +47,7 @@ class ImageMagickFileTest extends FunctionalTestCase
         self::assertSame($expectation, (string)$file);
     }
 
-    public function resultIsEscapedDataProvider(): array
+    public static function resultIsEscapedDataProvider(): array
     {
         // probably Windows system
         if (DIRECTORY_SEPARATOR === '\\') {
@@ -77,7 +77,7 @@ class ImageMagickFileTest extends FunctionalTestCase
         self::assertSame($expectation, (string)$file);
     }
 
-    public function fileStatementIsResolvedDataProvider(): array
+    public static function fileStatementIsResolvedDataProvider(): array
     {
         return [
             'file.ai'       => ['file.ai', '\'pdf:{directory}/file.ai\''],
@@ -118,7 +118,7 @@ class ImageMagickFileTest extends FunctionalTestCase
      * In case mime-types cannot be resolved (or cannot be verified), allowed extensions
      * are used as conversion format (e.g. 'file.ai.jpg' -> 'jpg:...').
      */
-    public function fileStatementIsResolvedForEnforcedMimeTypeDataProvider(): array
+    public static function fileStatementIsResolvedForEnforcedMimeTypeDataProvider(): array
     {
         return [
             'file.ai.jpg'   => ['file.ai.jpg', '\'jpg:{directory}/file.ai.jpg\'', 'inode/x-empty'],
@@ -151,7 +151,7 @@ class ImageMagickFileTest extends FunctionalTestCase
         self::assertSame($expectation, (string)$file);
     }
 
-    public function fileStatementIsResolvedForConfiguredMimeTypeDataProvider(): array
+    public static function fileStatementIsResolvedForConfiguredMimeTypeDataProvider(): array
     {
         return [
             'file.fax'      => ['file.fax', '\'g3:{directory}/file.fax\''],
@@ -176,7 +176,7 @@ class ImageMagickFileTest extends FunctionalTestCase
         self::assertSame($expectation, (string)$file);
     }
 
-    public function fileStatementIsDeniedDataProvider(): array
+    public static function fileStatementIsDeniedDataProvider(): array
     {
         return [
             'file.ps'     => ['file.ps'],
@@ -205,7 +205,7 @@ class ImageMagickFileTest extends FunctionalTestCase
         ImageMagickFile::fromFilePath($filePath);
     }
 
-    public function fileStatementIsDeniedForConfiguredMimeTypeDataProvider(): array
+    public static function fileStatementIsDeniedForConfiguredMimeTypeDataProvider(): array
     {
         return [
             'file.ps'     => ['file.ps'],

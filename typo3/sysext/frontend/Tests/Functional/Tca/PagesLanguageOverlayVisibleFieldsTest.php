@@ -127,7 +127,7 @@ class PagesLanguageOverlayVisibleFieldsTest extends FunctionalTestCase
         ],
     ];
 
-    public function pagesLanguageOverlayFormContainsExpectedFieldsDataProvider(): array
+    public static function pagesLanguageOverlayFormContainsExpectedFieldsDataProvider(): array
     {
         $pageTypes = [];
 

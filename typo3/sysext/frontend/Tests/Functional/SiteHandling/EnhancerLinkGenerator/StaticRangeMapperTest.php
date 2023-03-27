@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 class StaticRangeMapperTest extends AbstractEnhancerLinkGeneratorTestCase
 {
-    public function staticRangeMapperDataProvider(string|TestSet|null $parentSet = null): array
+    public static function staticRangeMapperDataProvider(string|TestSet|null $parentSet = null): array
     {
         $variableContexts = array_map(
             static function ($value) {

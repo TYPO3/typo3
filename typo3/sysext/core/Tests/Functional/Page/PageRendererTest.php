@@ -191,7 +191,7 @@ class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString('<meta property="og:image" content="/path/to/image2.jpg" />', $stateBasedRenderedString);
     }
 
-    public function pageRendererRendersFooterValuesDataProvider(): array
+    public static function pageRendererRendersFooterValuesDataProvider(): array
     {
         return [
             'frontend' => [SystemEnvironmentBuilder::REQUESTTYPE_FE],

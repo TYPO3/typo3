@@ -27,7 +27,7 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_request_mirror',
     ];
 
-    public function ensureRequestMappingWorksDataProvider(): \Generator
+    public static function ensureRequestMappingWorksDataProvider(): \Generator
     {
         yield 'POST parsedBody(_POST) as parsedBody' => [
             'uri' => 'https://acme.com/request-mirror',

@@ -52,7 +52,7 @@ class WorkspaceTest extends FunctionalTestCase
         $this->importCsvDataSet(__DIR__ . '/../Persistence/Fixtures/category-mm.csv');
     }
 
-    public function contextDataProvider(): array
+    public static function contextDataProvider(): array
     {
         return [
             'test frontend context' => [

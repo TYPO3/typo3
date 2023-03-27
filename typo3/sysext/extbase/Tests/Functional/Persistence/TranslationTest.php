@@ -235,7 +235,7 @@ class TranslationTest extends FunctionalTestCase
         self::assertSame('GR:Post11', $posts[1]->getTitle());
     }
 
-    public function fetchingTranslatedPostByUidDataProvider(): array
+    public static function fetchingTranslatedPostByUidDataProvider(): array
     {
         return [
             'with one id' => [

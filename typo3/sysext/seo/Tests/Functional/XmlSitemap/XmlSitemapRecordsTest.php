@@ -103,7 +103,7 @@ class XmlSitemapRecordsTest extends AbstractTestCase
     /**
      * @return array[]
      */
-    public function sitemapEntriesToCheck(): array
+    public static function sitemapEntriesToCheck(): array
     {
         return [
             'default-language' => [
@@ -219,7 +219,7 @@ class XmlSitemapRecordsTest extends AbstractTestCase
     /**
      * @return array[]
      */
-    public function additionalWhereTypoScriptConfigurationsToCheck(): array
+    public static function additionalWhereTypoScriptConfigurationsToCheck(): array
     {
         return [
             [

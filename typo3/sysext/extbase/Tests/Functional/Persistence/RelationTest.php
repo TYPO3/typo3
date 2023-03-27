@@ -991,7 +991,7 @@ class RelationTest extends FunctionalTestCase
         self::assertEquals($this->blog->getCategories()->count(), $newBlogCategoryCount);
     }
 
-    public function distinctDataProvider(): array
+    public static function distinctDataProvider(): array
     {
         return [
             'order default' => [

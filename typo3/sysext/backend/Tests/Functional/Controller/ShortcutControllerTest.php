@@ -63,7 +63,7 @@ class ShortcutControllerTest extends FunctionalTestCase
         self::assertEquals($expectedResponseStatus, $response->getStatusCode());
     }
 
-    public function addShortcutTestDataProvide(): \Generator
+    public static function addShortcutTestDataProvide(): \Generator
     {
         yield 'No route defined' => [
             [],

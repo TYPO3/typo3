@@ -219,7 +219,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    public function ATagParamsAreAddedInOrderDataProvider(): array
+    public static function ATagParamsAreAddedInOrderDataProvider(): array
     {
         return [
             'No ATag Params' => [
@@ -492,7 +492,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    public function linkToPageIsProcessedDataProvider(): array
+    public static function linkToPageIsProcessedDataProvider(): array
     {
         return [
             [
@@ -578,7 +578,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    public function linkWithoutAnchorIsGeneratedDataProvider(): array
+    public static function linkWithoutAnchorIsGeneratedDataProvider(): array
     {
         return [
             'empty parameter does not create a link' => [

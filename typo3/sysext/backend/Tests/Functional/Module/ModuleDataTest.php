@@ -128,7 +128,7 @@ class ModuleDataTest extends FunctionalTestCase
         $moduleData->clean('property', []);
     }
 
-    public function cleanModuleDataPropertyDataProvider(): \Generator
+    public static function cleanModuleDataPropertyDataProvider(): \Generator
     {
         yield 'Nothing happens since the value is valid' => [
             ['aValue'],
@@ -167,7 +167,7 @@ class ModuleDataTest extends FunctionalTestCase
         self::assertEquals($cleanedValue, $moduleData->get('property'));
     }
 
-    public function cleanUpModuleDataPropertiesDataProvider(): \Generator
+    public static function cleanUpModuleDataPropertiesDataProvider(): \Generator
     {
         yield 'All valid' => [
             [

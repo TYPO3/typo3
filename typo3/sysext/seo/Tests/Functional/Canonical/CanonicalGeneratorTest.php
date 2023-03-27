@@ -67,7 +67,7 @@ class CanonicalGeneratorTest extends FunctionalTestCase
         );
     }
 
-    public function generateDataProvider(): array
+    public static function generateDataProvider(): array
     {
         return [
             'uid: 1 with canonical_link' => [

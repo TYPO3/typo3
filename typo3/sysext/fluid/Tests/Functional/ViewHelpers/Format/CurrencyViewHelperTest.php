@@ -25,7 +25,7 @@ class CurrencyViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    public function renderConvertsAValueDataProvider(): array
+    public static function renderConvertsAValueDataProvider(): array
     {
         return [
             'rounds float correctly' => [

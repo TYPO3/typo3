@@ -27,7 +27,7 @@ class EscapeChildrenRenderingStandaloneTest extends FunctionalTestCase
 
     protected array $testExtensionsToLoad = ['typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test'];
 
-    public function viewHelperTemplateSourcesDataProvider(): array
+    public static function viewHelperTemplateSourcesDataProvider(): array
     {
         return [
             'EscapeChildrenEnabledAndEscapeOutputDisabled: Tag syntax with children, properly encodes variable value' =>

@@ -57,7 +57,7 @@ class ScenarioATest extends AbstractLocalizedPagesTestCase
         $this->setUpDatabaseWithYamlPayload(__DIR__ . '/Fixtures/ScenarioA.yaml');
     }
 
-    public function resolvablePagesDataProvider(): array
+    public static function resolvablePagesDataProvider(): array
     {
         return [
             'home page in EN' => [
@@ -90,7 +90,7 @@ class ScenarioATest extends AbstractLocalizedPagesTestCase
         $this->assertScopes($url, $scopes);
     }
 
-    public function menuDataProvider(): array
+    public static function menuDataProvider(): array
     {
         return [
             [

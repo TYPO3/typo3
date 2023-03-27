@@ -251,7 +251,7 @@ class TcaSelectTreeItemsTest extends FunctionalTestCase
         self::assertEquals($expectedItems, $resultItems);
     }
 
-    public function addDataHandsSiteConfigurationOverToTableConfigurationTreeDataProvider(): array
+    public static function addDataHandsSiteConfigurationOverToTableConfigurationTreeDataProvider(): array
     {
         return [
             'one setting' => [

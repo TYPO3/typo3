@@ -123,7 +123,7 @@ class DatabaseIntegrityControllerTest extends FunctionalTestCase
         self::assertSame($expectation, $treeList);
     }
 
-    public function dataForGetTreeListReturnsListOfIdsWithBeginSetToZero(): array
+    public static function dataForGetTreeListReturnsListOfIdsWithBeginSetToZero(): array
     {
         return [
             // [$id, $depth, $expectation]
@@ -162,7 +162,7 @@ class DatabaseIntegrityControllerTest extends FunctionalTestCase
         self::assertSame($expectation, $treeList);
     }
 
-    public function dataForGetTreeListReturnsListOfIdsWithBeginSetToMinusOne(): array
+    public static function dataForGetTreeListReturnsListOfIdsWithBeginSetToMinusOne(): array
     {
         return [
             // [$id, $depth, $expectation]
@@ -230,7 +230,7 @@ class DatabaseIntegrityControllerTest extends FunctionalTestCase
         self::assertSame('3,5', $treeList);
     }
 
-    public function getQueryWithIdOrDateDataProvider(): array
+    public static function getQueryWithIdOrDateDataProvider(): array
     {
         return [
             'pid 5134' => [

@@ -33,7 +33,7 @@ class UrlValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    public function urlDataProvider(): array
+    public static function urlDataProvider(): array
     {
         return [
             'Regular URL' => [
