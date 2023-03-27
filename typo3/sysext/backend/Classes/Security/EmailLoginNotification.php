@@ -24,6 +24,7 @@ use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
@@ -39,46 +40,41 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal this is not part of TYPO3 API as this is an internal hook
  */
-class EmailLoginNotification implements LoggerAwareInterface
+final class EmailLoginNotification implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var int
-     */
-    private $warningMode;
-
-    /**
-     * @var string
-     */
-    private $warningEmailRecipient;
+    private int $warningMode = 0;
+    private string $warningEmailRecipient = '';
 
     /**
      * @var ServerRequestInterface
      */
     private $request;
 
-    public function __construct()
-    {
+    public function __construct(
+        private readonly MailerInterface $mailer
+    ) {
         $this->warningMode = (int)($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode'] ?? 0);
         $this->warningEmailRecipient = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'] ?? '';
     }
 
     /**
      * Sends an email notification to warning_email_address and/or the logged-in user's email address.
-     *
-     * @param array $parameters array data
-     * @param BackendUserAuthentication $currentUser the currently just-logged in user
      */
-    public function emailAtLogin(array $parameters, BackendUserAuthentication $currentUser): void
+    public function emailAtLogin(AfterUserLoggedInEvent $event): void
     {
-        $user = $parameters['user'];
+        if (!$event->getUser() instanceof BackendUserAuthentication) {
+            return;
+        }
+        $currentUser = $event->getUser();
+        $user = $currentUser->user;
         $genericLoginWarning = $this->warningMode > 0 && !empty($this->warningEmailRecipient);
         $userLoginNotification = ($currentUser->uc['emailMeAtLogin'] ?? null) && GeneralUtility::validEmail($user['email']);
         if (!$genericLoginWarning && !$userLoginNotification) {
             return;
         }
-        $this->request = $parameters['request'] ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
+        $this->request = $event->getRequest() ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
 
         if ($genericLoginWarning) {
             $prefix = $currentUser->isAdmin() ? '[AdminLoginWarning]' : '[LoginWarning]';
@@ -114,8 +110,7 @@ class EmailLoginNotification implements LoggerAwareInterface
                 'headline' => $headline,
             ]);
         try {
-            // TODO: DI should be used to inject the MailerInterface
-            GeneralUtility::makeInstance(MailerInterface::class)->send($email);
+            $this->mailer->send($email);
         } catch (TransportException $e) {
             $this->logger->warning('Could not send notification email to "{recipient}" due to mailer settings error', [
                 'recipient' => $recipient,

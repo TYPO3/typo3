@@ -15,8 +15,11 @@
 
 namespace TYPO3\CMS\Core\Authentication;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
@@ -2066,7 +2069,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @throws \RuntimeException
      * @todo deprecate
      */
-    public function backendCheckLogin()
+    public function backendCheckLogin(ServerRequestInterface $request = null)
     {
         if (empty($this->user['uid'])) {
             // @todo: throw a proper AccessDeniedException in TYPO3 v12.0. and handle this functionality in the calling code
@@ -2075,7 +2078,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             throw new ImmediateResponseException(new RedirectResponse($url, 303), 1607271747);
         }
         if ($this->isUserAllowedToLogin()) {
-            $this->initializeBackendLogin();
+            $this->initializeBackendLogin($request);
         } else {
             // @todo: throw a proper AccessDeniedException in TYPO3 v12.0.
             throw new \RuntimeException('Login Error: TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.', 1294585860);
@@ -2085,7 +2088,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     /**
      * @internal
      */
-    public function initializeBackendLogin(): void
+    public function initializeBackendLogin(ServerRequestInterface $request = null): void
     {
         // The groups are fetched and ready for permission checking in this initialization.
         // Tables.php must be read before this because stuff like the modules has impact in this
@@ -2101,9 +2104,18 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     ->getConnectionForTable($this->user_table)
                     ->update($this->user_table, ['password_reset_token' => ''], ['uid' => $this->user['uid']]);
             }
+
+            $event = new AfterUserLoggedInEvent($this, $request);
+            GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
             // Process hooks
-            $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['backendUserLogin'];
-            foreach ($hooks ?? [] as $_funcRef) {
+            $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['backendUserLogin'] ?? [];
+            if (!empty($hooks)) {
+                trigger_error(
+                    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauthgroup.php\'][\'backendUserLogin\'] will be removed in TYPO3 v13.0. Use the PSR-14 "AfterUserLoggedInEvent" instead.',
+                    E_USER_DEPRECATED
+                );
+            }
+            foreach ($hooks as $_funcRef) {
                 $_params = ['user' => $this->user];
                 GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }

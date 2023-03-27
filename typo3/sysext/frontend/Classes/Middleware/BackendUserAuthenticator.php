@@ -104,7 +104,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
             $backendUserObject->fetchGroupData();
         }
         // Unset the user initialization if any setting / restriction applies
-        if (!$this->isAuthenticated($backendUserObject, $request->getAttribute('normalizedParams'))) {
+        if (!$this->isAuthenticated($backendUserObject, $request, $request->getAttribute('normalizedParams'))) {
             $backendUserObject = null;
             $this->setBackendUserAspect(null);
         }
@@ -115,7 +115,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
      * Implementing the access checks that the TYPO3 CMS bootstrap script does before a user is ever logged in.
      * Returns TRUE if access is OK
      */
-    protected function isAuthenticated(FrontendBackendUserAuthentication $user, NormalizedParams $normalizedParams): bool
+    protected function isAuthenticated(FrontendBackendUserAuthentication $user, ServerRequestInterface $request, NormalizedParams $normalizedParams): bool
     {
         // Check IP
         $ipMask = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'] ?? '');
@@ -126,6 +126,6 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         if ((bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] && !$normalizedParams->isHttps()) {
             return false;
         }
-        return $user->backendCheckLogin();
+        return $user->backendCheckLogin($request);
     }
 }

@@ -66,7 +66,7 @@ class ReactionUserAuthentication extends BackendUserAuthentication
         return null;
     }
 
-    public function backendCheckLogin(): void
+    public function backendCheckLogin(ServerRequestInterface $request = null): void
     {
         // do nothing
     }
@@ -82,7 +82,7 @@ class ReactionUserAuthentication extends BackendUserAuthentication
         return (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] === 0;
     }
 
-    public function initializeBackendLogin(): void
+    public function initializeBackendLogin(ServerRequestInterface $request = null): void
     {
         throw new \RuntimeException('Login Error: No login possible for reaction.', 1669800914);
     }

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\IpLocker;
@@ -26,6 +28,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -42,6 +45,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class BackendUserAuthenticationTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     /**
      * @test
      */
@@ -68,6 +73,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
         );
         GeneralUtility::addInstance(FormProtectionFactory::class, $formProtectionFactory);
         GeneralUtility::addInstance(BackendFormProtection::class, $formProtectionMock);
+        GeneralUtility::setSingletonInstance(EventDispatcherInterface::class, new EventDispatcher($this->createMock(ListenerProviderInterface::class)));
 
         $sessionBackendMock = $this->createMock(SessionBackendInterface::class);
         $sessionBackendMock->method('remove')->with(self::anything())->willReturn(true);

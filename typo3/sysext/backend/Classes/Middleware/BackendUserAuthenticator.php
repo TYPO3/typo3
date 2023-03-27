@@ -134,7 +134,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
             }
         }
         if ($this->context->getAspect('backend.user')->isLoggedIn()) {
-            $GLOBALS['BE_USER']->initializeBackendLogin();
+            $GLOBALS['BE_USER']->initializeBackendLogin($request);
             // Reset the limiter after successful login
             if ($rateLimiter) {
                 $rateLimiter->reset();

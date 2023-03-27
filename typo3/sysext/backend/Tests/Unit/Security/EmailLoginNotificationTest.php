@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Security;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Security\EmailLoginNotification;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -39,18 +40,16 @@ class EmailLoginNotificationTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $backendUser->uc['emailMeAtLogin'] = 1;
-
-        $userData = [
+        $backendUser->user = [
             'email' => 'test@acme.com',
         ];
 
         $mailMessage = $this->setUpMailMessageMock();
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects(self::once())->method('send')->with($mailMessage);
-        GeneralUtility::addInstance(MailerInterface::class, $mailerMock);
 
-        $subject = new EmailLoginNotification();
-        $subject->emailAtLogin(['user' => $userData], $backendUser);
+        $subject = new EmailLoginNotification($mailerMock);
+        $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
     /**
@@ -65,14 +64,14 @@ class EmailLoginNotificationTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $backendUser->uc['emailMeAtLogin'] = 0;
-
-        $userData = [
+        $backendUser->user = [
             'username' => 'karl',
             'email' => 'test@acme.com',
         ];
+        $mailerMock = $this->createMock(MailerInterface::class);
 
-        $subject = new EmailLoginNotification();
-        $subject->emailAtLogin(['user' => $userData], $backendUser);
+        $subject = new EmailLoginNotification($mailerMock);
+        $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
 
         // no additional assertion here, as the test would fail due to missing mail mocking if it actually tried to send an email
     }
@@ -89,14 +88,14 @@ class EmailLoginNotificationTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $backendUser->uc['emailMeAtLogin'] = 1;
-
-        $userData = [
+        $backendUser->user = [
             'username' => 'karl',
             'email' => 'dot.com',
         ];
+        $mailerMock = $this->createMock(MailerInterface::class);
 
-        $subject = new EmailLoginNotification();
-        $subject->emailAtLogin(['user' => $userData], $backendUser);
+        $subject = new EmailLoginNotification($mailerMock);
+        $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
 
         // no additional assertion here, as the test would fail due to missing mail mocking if it actually tried to send an email
     }
@@ -115,18 +114,16 @@ class EmailLoginNotificationTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $backendUser->method('isAdmin')->willReturn(true);
-
-        $userData = [
+        $backendUser->user = [
             'username' => 'karl',
         ];
 
         $mailMessage = $this->setUpMailMessageMock('typo3-admin@acme.com');
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects(self::once())->method('send')->with($mailMessage);
-        GeneralUtility::addInstance(MailerInterface::class, $mailerMock);
 
-        $subject = new EmailLoginNotification();
-        $subject->emailAtLogin(['user' => $userData], $backendUser);
+        $subject = new EmailLoginNotification($mailerMock);
+        $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
     /**
@@ -143,18 +140,16 @@ class EmailLoginNotificationTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $backendUser->method('isAdmin')->willReturn(true);
-
-        $userData = [
+        $backendUser->user = [
             'username' => 'karl',
         ];
 
         $mailMessage = $this->setUpMailMessageMock('typo3-admin@acme.com');
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects(self::once())->method('send')->with($mailMessage);
-        GeneralUtility::addInstance(MailerInterface::class, $mailerMock);
 
-        $subject = new EmailLoginNotification();
-        $subject->emailAtLogin(['user' => $userData], $backendUser);
+        $subject = new EmailLoginNotification($mailerMock);
+        $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
     /**
@@ -171,18 +166,16 @@ class EmailLoginNotificationTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $backendUser->method('isAdmin')->willReturn(false);
-
-        $userData = [
+        $backendUser->user = [
             'username' => 'karl',
         ];
 
         $mailMessage = $this->setUpMailMessageMock('typo3-admin@acme.com');
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects(self::once())->method('send')->with($mailMessage);
-        GeneralUtility::addInstance(MailerInterface::class, $mailerMock);
 
-        $subject = new EmailLoginNotification();
-        $subject->emailAtLogin(['user' => $userData], $backendUser);
+        $subject = new EmailLoginNotification($mailerMock);
+        $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
     /**
@@ -199,13 +192,13 @@ class EmailLoginNotificationTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $backendUser->method('isAdmin')->willReturn(false);
-
-        $userData = [
+        $backendUser->user = [
             'username' => 'karl',
         ];
+        $mailerMock = $this->createMock(MailerInterface::class);
 
-        $subject = new EmailLoginNotification();
-        $subject->emailAtLogin(['user' => $userData], $backendUser);
+        $subject = new EmailLoginNotification($mailerMock);
+        $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
 
         // no additional assertion here as the test would fail due to not mocking the email API
     }

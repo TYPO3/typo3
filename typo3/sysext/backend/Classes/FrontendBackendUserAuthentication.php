@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
@@ -71,7 +72,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      *
      * @return bool Returns TRUE if access is OK
      */
-    public function backendCheckLogin()
+    public function backendCheckLogin(ServerRequestInterface $request = null)
     {
         if (empty($this->user['uid'])) {
             return false;

@@ -173,6 +173,12 @@ services:
       - name: event.listener
         identifier: 'typo3/cms-backend/failed-login-attempt-notification'
 
+  TYPO3\CMS\Backend\Security\EmailLoginNotification:
+    tags:
+      - name: event.listener
+        identifier: 'typo3/cms-backend/login-notification'
+        method: 'emailAtLogin'
+
   TYPO3\CMS\Backend\EventListener\SilentSiteLanguageFlagMigration:
     tags:
       - name: event.listener

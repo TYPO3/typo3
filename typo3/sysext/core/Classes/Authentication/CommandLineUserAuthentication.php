@@ -113,7 +113,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
     /**
      * Logs in the TYPO3 Backend user "_cli_"
      */
-    public function backendCheckLogin()
+    public function backendCheckLogin(ServerRequestInterface $request = null)
     {
         $this->authenticate();
     }
