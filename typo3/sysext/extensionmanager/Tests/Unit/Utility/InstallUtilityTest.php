@@ -93,11 +93,11 @@ class InstallUtilityTest extends UnitTestCase
         $this->installMock
             ->method('getExtensionArray')
             ->with($this->extensionKey)
-            ->willReturnCallback([$this, 'getExtensionData']);
+            ->willReturnCallback($this->getExtensionData(...));
         $this->installMock
             ->method('enrichExtensionWithDetails')
             ->with($this->extensionKey)
-            ->willReturnCallback([$this, 'getExtensionData']);
+            ->willReturnCallback($this->getExtensionData(...));
 
         $cacheManagerMock = $this->createMock(CacheManager::class);
         $cacheManagerMock->method('getCache')->with('core')->willReturn(new NullFrontend('core'));
