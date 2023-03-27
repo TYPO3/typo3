@@ -219,7 +219,7 @@ class PageRendererTest extends UnitTestCase
     {
         $subject = $this->getMockBuilder(PageRenderer::class)
             ->setConstructorArgs($this->getPageRendererConstructorArgs())
-            ->setMethodsExcept(['setMetaTag', 'getMetaTag'])
+            ->onlyMethods([])
             ->getMock();
         $subject->setMetaTag('nAme', 'Author', 'foobar');
         $actualResult = $subject->getMetaTag('naMe', 'AUTHOR');
@@ -238,7 +238,7 @@ class PageRendererTest extends UnitTestCase
     {
         $subject = $this->getMockBuilder(PageRenderer::class)
             ->setConstructorArgs($this->getPageRendererConstructorArgs())
-            ->setMethodsExcept(['setMetaTag', 'getMetaTag'])
+            ->onlyMethods([])
             ->getMock();
         $subject->setMetaTag('nAme', 'Author', 'Axel Foley');
         $subject->setMetaTag('nAme', 'Author', 'foobar');
@@ -258,7 +258,7 @@ class PageRendererTest extends UnitTestCase
     {
         $subject = $this->getMockBuilder(PageRenderer::class)
             ->setConstructorArgs($this->getPageRendererConstructorArgs())
-            ->setMethodsExcept(['setMetaTag', 'removeMetaTag', 'getMetaTag'])
+            ->onlyMethods([])
             ->getMock();
         $subject->setMetaTag('nAme', 'Author', 'foobar');
         $subject->removeMetaTag('naMe', 'AUTHOR');
