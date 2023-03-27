@@ -51,9 +51,9 @@ class SetTypeTest extends UnitTestCase
         ];
 
         $databaseMock = $this->createMock(AbstractPlatform::class);
-        $databaseMock->method('quoteStringLiteral')->with(self::anything())->willReturnCallback(
-            static function ($args) {
-                return "'" . $args . "'";
+        $databaseMock->method('quoteStringLiteral')->willReturnCallback(
+            static function (string $str): string {
+                return "'" . $str . "'";
             }
         );
 

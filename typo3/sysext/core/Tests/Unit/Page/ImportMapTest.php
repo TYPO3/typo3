@@ -235,11 +235,11 @@ class ImportMapTest extends UnitTestCase
     {
         $test = $this;
         $packageManagerMock = $this->createMock(PackageManager::class);
-        $packageManagerMock->method('resolvePackagePath')->with(self::isType('string'))->willReturnCallback(
-            fn (string $args): string => str_replace(
+        $packageManagerMock->method('resolvePackagePath')->willReturnCallback(
+            fn (string $path): string => str_replace(
                 array_map(fn (PackageInterface $package): string => 'EXT:' . $package->getPackageKey() . '/', $test->getPackages()),
                 array_map(fn (PackageInterface $package): string => $package->getPackagePath(), $test->getPackages()),
-                $args
+                $path
             )
         );
         return $packageManagerMock;

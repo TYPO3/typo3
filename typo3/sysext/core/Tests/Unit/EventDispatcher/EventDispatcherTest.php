@@ -55,7 +55,7 @@ class EventDispatcherTest extends UnitTestCase
         $event = new \stdClass();
         $event->invoked = 0;
 
-        $this->listenerProviderMock->method('getListenersForEvent')->with($event)->willReturnCallback(static function () use ($callable): iterable {
+        $this->listenerProviderMock->method('getListenersForEvent')->with($event)->willReturnCallback(static function (object $event) use ($callable): iterable {
             yield $callable;
         });
 
@@ -79,7 +79,7 @@ class EventDispatcherTest extends UnitTestCase
             }
         };
 
-        $this->listenerProviderMock->method('getListenersForEvent')->with($event)->willReturnCallback(static function () use ($callable): iterable {
+        $this->listenerProviderMock->method('getListenersForEvent')->with($event)->willReturnCallback(static function (object $event) use ($callable): iterable {
             yield $callable;
         });
 
@@ -97,7 +97,7 @@ class EventDispatcherTest extends UnitTestCase
         $event = new \stdClass();
         $event->invoked = 0;
 
-        $this->listenerProviderMock->method('getListenersForEvent')->with($event)->willReturnCallback(static function () use ($callable): iterable {
+        $this->listenerProviderMock->method('getListenersForEvent')->with($event)->willReturnCallback(static function (object $event) use ($callable): iterable {
             yield $callable;
             yield $callable;
         });
@@ -123,7 +123,7 @@ class EventDispatcherTest extends UnitTestCase
             }
         };
 
-        $this->listenerProviderMock->method('getListenersForEvent')->with($event)->willReturnCallback(static function () use ($callable): iterable {
+        $this->listenerProviderMock->method('getListenersForEvent')->with($event)->willReturnCallback(static function (object $event) use ($callable): iterable {
             yield $callable;
             yield static function (object $event): void {
                 $event->invoked += 1;
@@ -147,7 +147,7 @@ class EventDispatcherTest extends UnitTestCase
 
         $event = new \stdClass();
 
-        $this->listenerProviderMock->method('getListenersForEvent')->with($event)->willReturnCallback(static function (): iterable {
+        $this->listenerProviderMock->method('getListenersForEvent')->with($event)->willReturnCallback(static function (object $event): iterable {
             yield static function (object $event): void {
                 throw new \BadMethodCallException('some invalid state', 1563270337);
             };

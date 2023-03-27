@@ -52,8 +52,7 @@ class ConsoleCommandPassTest extends UnitTestCase
 
         $cacheMock = $this->createMock(PhpFrontend::class);
         $cacheMock->method('requireOnce')->with(self::isType('string'))->willReturn(false);
-        $cacheMock->method('set')->with(self::isType('string'), self::isType('string'))->willReturnCallback(function (...$args) {
-            $sourceCode = $args[1];
+        $cacheMock->method('set')->willReturnCallback(function (string $entryIdentifier, string $sourceCode): void {
             eval($sourceCode);
         });
 

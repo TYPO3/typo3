@@ -457,12 +457,12 @@ class QueryHelperTest extends UnitTestCase
     public function quoteDatabaseIdentifiers(string $input, string $expected): void
     {
         $connectionMock = $this->createMock(Connection::class);
-        $connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
+        $connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
             $parts = array_map(
-                static function ($identifier) {
+                static function (string $identifier): string {
                     return '"' . $identifier . '"';
                 },
-                explode('.', $args)
+                explode('.', $identifier)
             );
 
             return implode('.', $parts);

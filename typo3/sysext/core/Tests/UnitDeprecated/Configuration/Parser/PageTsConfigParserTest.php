@@ -39,7 +39,7 @@ class PageTsConfigParserTest extends UnitTestCase
         $expectedParsedTsConfig = ['mod' => ['web_layout' => 'disabled']];
         $matcherMock = $this->createMock(ConditionMatcherInterface::class);
         $typoScriptParserMock = $this->createMock(TypoScriptParser::class);
-        $parseClosure = function () use ($expectedParsedTsConfig) {
+        $parseClosure = function (string $string, object|string $matchObj) use ($expectedParsedTsConfig): void {
             /** @var TypoScriptParser $this */
             $this->setup = $expectedParsedTsConfig;
         };

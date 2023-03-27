@@ -690,8 +690,8 @@ class BackendUserAuthenticationTest extends UnitTestCase
         if (!$admin) {
             $connectionMock = $this->createMock(Connection::class);
             $connectionMock->method('getDatabasePlatform')->willReturn(new MockPlatform());
-            $connectionMock->method('quoteIdentifier')->with(self::anything())
-                ->willReturnCallback(fn ($identifier) => '`' . str_replace('.', '`.`', $identifier) . '`');
+            $connectionMock->method('quoteIdentifier')
+                ->willReturnCallback(fn (string $identifier): string => '`' . str_replace('.', '`.`', $identifier) . '`');
 
             $queryBuilderMock = $this->createMock(QueryBuilder::class);
             $queryBuilderMock->method('expr')->willReturn(

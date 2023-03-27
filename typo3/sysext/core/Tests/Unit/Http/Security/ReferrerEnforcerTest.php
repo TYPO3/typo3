@@ -211,7 +211,7 @@ class ReferrerEnforcerTest extends UnitTestCase
         $normalizedParams->method('getRequestHost')->willReturn($host);
         $normalizedParams->method('getRequestDir')->willReturn($dir);
         $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getAttribute')->willReturnCallback(static fn (string $name) => match ($name) {
+        $request->method('getAttribute')->willReturnCallback(static fn (string $name): mixed => match ($name) {
             'normalizedParams' => $normalizedParams,
             'nonce' => $nonce,
             default => null,
@@ -224,7 +224,7 @@ class ReferrerEnforcerTest extends UnitTestCase
             ->onlyMethods(['resolveAbsoluteWebPath'])
             ->setConstructorArgs([$request])
             ->getMock();
-        $mock->method('resolveAbsoluteWebPath')->willReturnCallback(static fn (string $path) => '/' . $path);
+        $mock->method('resolveAbsoluteWebPath')->willReturnCallback(static fn (string $target): string => '/' . $target);
         return $mock;
     }
 }

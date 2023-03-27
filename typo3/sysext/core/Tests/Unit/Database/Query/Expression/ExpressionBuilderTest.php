@@ -250,8 +250,8 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform = $this->createMock(MockPlatform::class);
         $databasePlatform->method('getName')->willReturn('mysql');
 
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return '`' . $args . '`';
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return '`' . $identifier . '`';
         });
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -274,8 +274,8 @@ class ExpressionBuilderTest extends UnitTestCase
             ["'1'", Connection::PARAM_STR],
             [',', self::anything()],
         )->willReturnOnConsecutiveCalls("'1'", "','");
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return '"' . $args . '"';
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return '"' . $identifier . '"';
         });
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -294,8 +294,8 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->method('getName')->willReturn('postgresql');
 
         $this->connectionMock->expects(self::atLeastOnce())->method('quote')->with(',', self::anything())->willReturn("','");
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return '"' . $args . '"';
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return '"' . $identifier . '"';
         });
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -319,8 +319,8 @@ class ExpressionBuilderTest extends UnitTestCase
             [',', self::anything()],
             [',1,', self::anything()],
         )->willReturnOnConsecutiveCalls("','", "','", "'%,1,%'");
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return '"' . $args . '"';
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return '"' . $identifier . '"';
         });
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -344,8 +344,8 @@ class ExpressionBuilderTest extends UnitTestCase
             [',', self::anything()],
             [',\'Some\'Value,', self::anything()],
         )->willReturnOnConsecutiveCalls("','", "','", "',''Some''Value,'");
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return '"' . $args . '"';
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return '"' . $identifier . '"';
         });
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -417,8 +417,8 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform = $this->createMock(MockPlatform::class);
         $databasePlatform->method('getName')->willReturn('mysql');
 
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return '`' . $args . '`';
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return '`' . $identifier . '`';
         });
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -441,8 +441,8 @@ class ExpressionBuilderTest extends UnitTestCase
             ["'1'", Connection::PARAM_STR],
             [',', self::anything()],
         )->willReturnOnConsecutiveCalls("'1'", "','");
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return '"' . $args . '"';
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return '"' . $identifier . '"';
         });
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -461,8 +461,8 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->method('getName')->willReturn('postgresql');
 
         $this->connectionMock->expects(self::atLeastOnce())->method('quote')->with(',', self::anything())->willReturn("','");
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return '"' . $args . '"';
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return '"' . $identifier . '"';
         });
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -486,8 +486,8 @@ class ExpressionBuilderTest extends UnitTestCase
             [',', self::anything()],
             [',1,', self::anything()]
         )->willReturnOnConsecutiveCalls("','", "','", "'%,1,%'");
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return '"' . $args . '"';
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return '"' . $identifier . '"';
         });
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -511,8 +511,8 @@ class ExpressionBuilderTest extends UnitTestCase
             [',', Connection::PARAM_STR],
             [',\'Some\'Value,', self::anything()],
         )->willReturnOnConsecutiveCalls("','", "','", "',''Some''Value,'");
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return '"' . $args . '"';
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return '"' . $identifier . '"';
         });
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -563,8 +563,8 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $databasePlatform = $this->createMock(MockPlatform::class);
 
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return '"' . $args . '"';
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return '"' . $identifier . '"';
         });
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -580,8 +580,8 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform = $this->createMock(MockPlatform::class);
         $databasePlatform->method('getName')->willReturn('pdo_oracle');
 
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return '"' . $args . '"';
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return '"' . $identifier . '"';
         });
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -594,8 +594,8 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function maxQuotesIdentifier(): void
     {
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return (new MockPlatform())->quoteIdentifier($args);
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return (new MockPlatform())->quoteIdentifier($identifier);
         });
 
         self::assertSame('MAX("tableName"."fieldName")', $this->subject->max('tableName.fieldName'));
@@ -610,8 +610,8 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function minQuotesIdentifier(): void
     {
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return (new MockPlatform())->quoteIdentifier($args);
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return (new MockPlatform())->quoteIdentifier($identifier);
         });
 
         self::assertSame('MIN("tableName"."fieldName")', $this->subject->min('tableName.fieldName'));
@@ -626,8 +626,8 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function sumQuotesIdentifier(): void
     {
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return (new MockPlatform())->quoteIdentifier($args);
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return (new MockPlatform())->quoteIdentifier($identifier);
         });
 
         self::assertSame('SUM("tableName"."fieldName")', $this->subject->sum('tableName.fieldName'));
@@ -642,8 +642,8 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function avgQuotesIdentifier(): void
     {
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return (new MockPlatform())->quoteIdentifier($args);
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return (new MockPlatform())->quoteIdentifier($identifier);
         });
 
         self::assertSame('AVG("tableName"."fieldName")', $this->subject->avg('tableName.fieldName'));
@@ -658,8 +658,8 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function countQuotesIdentifier(): void
     {
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return (new MockPlatform())->quoteIdentifier($args);
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return (new MockPlatform())->quoteIdentifier($identifier);
         });
 
         self::assertSame('COUNT("tableName"."fieldName")', $this->subject->count('tableName.fieldName'));
@@ -674,8 +674,8 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function lengthQuotesIdentifier(): void
     {
-        $this->connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return (new MockPlatform())->quoteIdentifier($args);
+        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return (new MockPlatform())->quoteIdentifier($identifier);
         });
 
         self::assertSame('LENGTH("tableName"."fieldName")', $this->subject->length('tableName.fieldName'));
@@ -692,10 +692,10 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $platform = new MockPlatform();
         $this->connectionMock->expects(self::atLeastOnce())->method('getDatabasePlatform')->willReturn($platform);
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with(self::anything())
+        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')
             ->willReturnCallback(
-                static function ($args) use ($platform) {
-                    return $platform->quoteIdentifier($args);
+                static function (string $identifier) use ($platform): string {
+                    return $platform->quoteIdentifier($identifier);
                 }
             );
 
@@ -739,15 +739,15 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $platform = new MockPlatform();
         $this->connectionMock->expects(self::atLeastOnce())->method('getDatabasePlatform')->willReturn($platform);
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with(self::anything())
+        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')
             ->willReturnCallback(
-                static function ($args) use ($platform) {
-                    return $platform->quoteIdentifier($args);
+                static function (string $identifier) use ($platform): string {
+                    return $platform->quoteIdentifier($identifier);
                 }
             );
         $this->connectionMock->expects(self::atLeastOnce())->method('quote')->willReturnCallback(
-            static function ($args) {
-                return '"' . $args . '"';
+            static function (string $identifier): string {
+                return '"' . $identifier . '"';
             }
         );
 

@@ -34,11 +34,11 @@ class AbstractRestrictionTestCase extends UnitTestCase
     {
         parent::setUp();
         $connection = $this->createMock(Connection::class);
-        $connection->method('quoteIdentifier')->with(self::anything())->willReturnCallback(static function ($args) {
-            return '"' . implode('"."', explode('.', $args)) . '"';
+        $connection->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+            return '"' . implode('"."', explode('.', $identifier)) . '"';
         });
-        $connection->method('quote')->with(self::anything())->willReturnCallback(static function ($args) {
-            return '\'' . $args . '\'';
+        $connection->method('quote')->willReturnCallback(static function (string $value): string {
+            return '\'' . $value . '\'';
         });
         $connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
 

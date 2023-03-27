@@ -294,9 +294,9 @@ class QueryBuilderTest extends UnitTestCase
      */
     public function quoteIdentifiersForSelect(string $identifier, string $expectedResult): void
     {
-        $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnCallback(
-            static function ($args) {
-                return (new MockPlatform())->quoteIdentifier($args);
+        $this->connection->method('quoteIdentifier')->willReturnCallback(
+            static function (string $identifier): string {
+                return (new MockPlatform())->quoteIdentifier($identifier);
             }
         );
         self::assertSame([$expectedResult], $this->subject->quoteIdentifiersForSelect([$identifier]));
@@ -309,9 +309,9 @@ class QueryBuilderTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1461170686);
-        $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnCallback(
-            static function ($args) {
-                return (new MockPlatform())->quoteIdentifier($args);
+        $this->connection->method('quoteIdentifier')->willReturnCallback(
+            static function (string $identifier): string {
+                return (new MockPlatform())->quoteIdentifier($identifier);
             }
         );
         $this->subject->quoteIdentifiersForSelect(['aField AS anotherField,someField AS someThing']);
