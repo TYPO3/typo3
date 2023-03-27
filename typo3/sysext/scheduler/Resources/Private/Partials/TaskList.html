@@ -176,7 +176,7 @@
                 <f:render partial="MultiRecordSelectionActions" />
             </div>
             <form name="tx_scheduler_form_{f:if(condition: '{taskGroup.groupUid} == 0', then: '0', else: taskGroup.groupUid)}" id="tx_scheduler_form_{f:if(condition: '{taskGroup.groupUid} == 0', then: '0', else: taskGroup.groupUid)}" method="post">
-                <div class="panel-collapse collapse {f:if(condition: '!{taskGroup.taskGroupCollapsed}', then: 'show')}" id="scheduler-task-group-{taskGroup.groupUid}" data-table="task-group-{taskGroup.groupUid}">
+                <div class="panel-collapse collapse {f:if(condition: '!{taskGroup.taskGroupCollapsed}', then: 'show')}" id="scheduler-task-group-{taskGroupId}" data-table="task-group-{taskGroup.groupUid}">
                     <div class="table-fit">
                         <table class="table table-striped table-hover" data-scheduler-table>
                             <thead>
