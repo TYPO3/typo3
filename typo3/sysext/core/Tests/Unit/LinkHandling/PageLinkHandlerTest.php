@@ -48,7 +48,7 @@ final class PageLinkHandlerTest extends UnitTestCase
             ],
             'simple page - cool style' => [
                 [
-                    'uid' => 13,
+                    'uid' => '13',
                 ],
                 [
                     'pageuid' => 13,
@@ -69,7 +69,7 @@ final class PageLinkHandlerTest extends UnitTestCase
         if (isset($expected['fragment'])) {
             unset($expected['fragment']);
         }
-        self::assertEquals($expected, $subject->resolveHandlerData($input));
+        self::assertSame($expected, $subject->resolveHandlerData($input));
     }
 
     /**

@@ -90,11 +90,11 @@ class LegacyLinkNotationConverter
                 $tableAndUid = explode(':', $tableAndUid);
                 if (count($tableAndUid) > 1) {
                     $a['table'] = $tableAndUid[0];
-                    $a['uid'] = $tableAndUid[1];
+                    $a['uid'] = (int)$tableAndUid[1];
                 } else {
                     // this case can happen if there is the very old linkhandler syntax, which was only record:<table>:<uid>
                     $a['table'] = $a['identifier'];
-                    $a['uid'] = $tableAndUid[0];
+                    $a['uid'] = (int)$tableAndUid[0];
                 }
                 $result = array_merge($result, $a);
             }
@@ -188,6 +188,9 @@ class LegacyLinkNotationConverter
             }
         } else {
             $result['pageuid'] = $data;
+        }
+        if (MathUtility::canBeInterpretedAsInteger($result['pageuid'])) {
+            $result['pageuid'] = (int)$result['pageuid'];
         }
         return $result;
     }

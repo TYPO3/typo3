@@ -61,7 +61,7 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
                 [
                     'type' => LinkService::TYPE_PAGE,
                     'pageuid' => 13,
-                    'pagetype' => 31,
+                    'pagetype' => '31',
                 ],
                 't3://page?uid=13&type=31',
             ],
@@ -69,7 +69,7 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
                 '13,31#uncool',
                 [
                     'type' => LinkService::TYPE_PAGE,
-                    'pageuid' => '13',
+                    'pageuid' => 13,
                     'pagetype' => '31',
                     'fragment' => 'uncool',
                 ],
@@ -79,7 +79,7 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
                 '13,31?unbel=ievable#uncool',
                 [
                     'type' => LinkService::TYPE_PAGE,
-                    'pageuid' => '13',
+                    'pageuid' => 13,
                     'pagetype' => '31',
                     'parameters' => 'unbel=ievable',
                     'fragment' => 'uncool',
@@ -90,7 +90,7 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
                 '13,31,&unbel=ievable&but=possibly#uncool',
                 [
                     'type' => LinkService::TYPE_PAGE,
-                    'pageuid' => '13',
+                    'pageuid' => 13,
                     'pagetype' => '31',
                     'parameters' => 'unbel=ievable&but=possibly',
                     'fragment' => 'uncool',
@@ -101,7 +101,7 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
                 '1,0,&param=2',
                 [
                     'type' => LinkService::TYPE_PAGE,
-                    'pageuid' => '1',
+                    'pageuid' => 1,
                     'pagetype' => '0',
                     'parameters' => 'param=2',
                 ],
@@ -143,7 +143,11 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
     public function resolveReturnsSplitParameters(string $input, array $expected): void
     {
         $subject = new LegacyLinkNotationConverter();
-        self::assertEquals($expected, $subject->resolve($input));
+        ksort($expected);
+        $result = $subject->resolve($input);
+        ksort($result);
+
+        self::assertSame($expected, $result);
     }
 
     /**

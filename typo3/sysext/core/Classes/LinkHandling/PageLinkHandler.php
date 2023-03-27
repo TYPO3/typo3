@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\LinkHandling;
 
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * Resolves links to pages and the parameters given
  */
@@ -56,7 +58,7 @@ class PageLinkHandler implements LinkHandlingInterface
     {
         $result = [];
         if (isset($data['uid'])) {
-            $result['pageuid'] = $data['uid'];
+            $result['pageuid'] = MathUtility::canBeInterpretedAsInteger($data['uid']) ? (int)$data['uid'] : $data['uid'];
             unset($data['uid']);
         }
         if (isset($data['type'])) {
