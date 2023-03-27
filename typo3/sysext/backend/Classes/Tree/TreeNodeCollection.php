@@ -49,7 +49,7 @@ class TreeNodeCollection extends \ArrayObject
     #[\ReturnTypeWillChange]
     public function asort(int $flags = SORT_REGULAR): bool
     {
-        $this->uasort([$this, 'nodeCompare']);
+        $this->uasort($this->nodeCompare(...));
         return true;
     }
 

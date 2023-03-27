@@ -95,12 +95,12 @@ abstract class AbstractItemProvider
 
         try {
             $items = array_map(
-                fn (array $item) => SelectItem::fromTcaItemArray($item, $config['type']),
+                fn (array $item): SelectItem => SelectItem::fromTcaItemArray($item, $config['type']),
                 $items
             );
             GeneralUtility::callUserFunction($config['itemsProcFunc'], $processorParameters, $this);
             $items = array_map(
-                fn ($item) => $item instanceof SelectItem ? $item : SelectItem::fromTcaItemArray($item, $config['type']),
+                fn (SelectItem|array $item): SelectItem => $item instanceof SelectItem ? $item : SelectItem::fromTcaItemArray($item, $config['type']),
                 $processorParameters['items']
             );
         } catch (\Exception $exception) {
@@ -538,7 +538,7 @@ abstract class AbstractItemProvider
         }
 
         $allowedStorageIds = array_map(
-            static function (ResourceStorage $storage) {
+            static function (ResourceStorage $storage): int {
                 return $storage->getUid();
             },
             $this->getBackendUser()->getFileStorages()
@@ -546,7 +546,7 @@ abstract class AbstractItemProvider
 
         return array_filter(
             $items,
-            static function (array $item) use ($allowedStorageIds) {
+            static function (array $item) use ($allowedStorageIds): bool {
                 $itemValue = $item['value'] ?? null;
                 return empty($itemValue)
                     || in_array((int)$itemValue, $allowedStorageIds, true);
@@ -855,7 +855,7 @@ abstract class AbstractItemProvider
 
         $replacements = [];
         $configuration = $site->getConfiguration();
-        array_walk($matches, static function ($match) use (&$replacements, &$configuration) {
+        array_walk($matches, static function (array $match) use (&$replacements, &$configuration): void {
             $key = $match[1];
             try {
                 $value = ArrayUtility::getValueByPath($configuration, $key, '.');
@@ -918,9 +918,9 @@ abstract class AbstractItemProvider
         $parsedSiteConfiguration = $this->parseSiteConfiguration($result['site'], $fieldConfig['config']['treeConfig']['startingPoints']);
         if ($parsedSiteConfiguration !== []) {
             // $this->quoteParsedSiteConfiguration() is omitted on purpose, all values are cast to integers
-            $parsedSiteConfiguration = array_unique(array_map(static function ($value): string {
+            $parsedSiteConfiguration = array_unique(array_map(static function (array|string|int $value): string {
                 if (is_array($value)) {
-                    return implode(',', array_map('intval', $value));
+                    return implode(',', array_map(intval(...), $value));
                 }
 
                 return implode(',', GeneralUtility::intExplode(',', (string)$value, true));

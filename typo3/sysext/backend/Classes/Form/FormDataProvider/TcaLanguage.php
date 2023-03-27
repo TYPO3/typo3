@@ -130,7 +130,7 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
 
             // Check current database value
             $currentDatabaseValue = (int)($result['databaseRow'][$fieldName] ?? 0);
-            if (!in_array($currentDatabaseValue, array_map('intval', array_column($fieldConfig['config']['items'], 'value')), true)) {
+            if (!in_array($currentDatabaseValue, array_map(intval(...), array_column($fieldConfig['config']['items'], 'value')), true)) {
                 // Current value is invalid, so add it with a proper message at the top
                 $fieldConfig['config']['items'] = $this->addInvalidItem($result, $table, $fieldName, $currentDatabaseValue, $fieldConfig['config']['items']);
             }

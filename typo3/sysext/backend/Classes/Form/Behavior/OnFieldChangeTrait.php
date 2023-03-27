@@ -31,7 +31,7 @@ trait OnFieldChangeTrait
             return [];
         }
         return array_map(
-            static function (OnFieldChangeInterface $item) {
+            static function (OnFieldChangeInterface $item): array {
                 return $item->toArray();
             },
             // omitting array keys

@@ -342,7 +342,7 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
             $parentTableName,
             $parentConfig
         );
-        return array_map('intval', $relationHandler->getValueArray());
+        return array_map(intval(...), $relationHandler->getValueArray());
     }
 
     protected function getBackendUser(): BackendUserAuthentication

@@ -209,7 +209,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
     protected function prepareRecordsForDbCompatAssertions(array $records): array
     {
         foreach ($records as &$record) {
-            $record = array_map('strval', $record);
+            $record = array_map(strval(...), $record);
         }
         return $records;
     }

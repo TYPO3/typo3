@@ -146,7 +146,7 @@ EOT
         // So in case a user was deleted and will be restored, this could cause duplicated usernames.
         $queryBuilder = $this->connectionPool->getConnectionForTable('be_users');
         $userList = $queryBuilder->select(['username'], 'be_users')->fetchAllAssociative();
-        $usernames = array_map(static function ($user) {
+        $usernames = array_map(static function (array $user): string {
             return $user['username'];
         }, $userList);
 

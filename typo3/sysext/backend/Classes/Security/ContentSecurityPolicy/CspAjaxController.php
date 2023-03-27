@@ -133,7 +133,7 @@ class CspAjaxController
     protected function muteReportAction(string ...$summaries): ResponseInterface
     {
         $reports = $this->reportRepository->findBySummary(...$summaries);
-        $uuids = array_map(static fn (Report $report) => $report->uuid, $reports);
+        $uuids = array_map(static fn (Report $report): UuidV4 => $report->uuid, $reports);
         $this->reportRepository->updateStatus(ReportStatus::Muted, ...$uuids);
         return new JsonResponse(['uuids' => $uuids]);
     }
@@ -202,7 +202,7 @@ class CspAjaxController
 
     protected function resolveReportUuids(Report ...$reports): array
     {
-        return array_map(static fn (Report $report) => $report->uuid, $reports);
+        return array_map(static fn (Report $report): UuidV4 => $report->uuid, $reports);
     }
 
     protected function isSystemMaintainer(): bool

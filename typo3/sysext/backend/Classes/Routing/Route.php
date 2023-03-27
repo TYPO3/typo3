@@ -92,7 +92,7 @@ class Route
      */
     public function setMethods(array $methods): self
     {
-        $this->methods = array_map('strtoupper', $methods);
+        $this->methods = array_map(strtoupper(...), $methods);
         return $this;
     }
 

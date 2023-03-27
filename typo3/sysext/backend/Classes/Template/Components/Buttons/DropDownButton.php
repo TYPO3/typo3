@@ -150,7 +150,7 @@ class DropDownButton implements ButtonInterface
         /**
          * @var DropDownRadio[] $activeItems
          */
-        $activeItems = array_filter($items, function (DropDownItemInterface $item) {
+        $activeItems = array_filter($items, function (DropDownItemInterface $item): bool {
             return $item instanceof DropDownRadio && $item->isActive();
         });
         if (!empty($activeItems)) {

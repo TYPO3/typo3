@@ -349,7 +349,7 @@ class NewContentElementController
     {
         if (isset($wizardGroup[$key])) {
             $wizardGroup[$key] = GeneralUtility::trimExplode(',', $wizardGroup[$key]);
-            $wizardGroup[$key] = array_map(static fn ($s) => $s . '.', $wizardGroup[$key]);
+            $wizardGroup[$key] = array_map(static fn (string|int $s): string => $s . '.', $wizardGroup[$key]);
         }
         return $wizardGroup;
     }

@@ -46,6 +46,7 @@ use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -1081,7 +1082,7 @@ class DatabaseRecordList
         }
 
         $tagAttributes = array_map(
-            static function ($attributeValue) {
+            static function (array|string $attributeValue): string {
                 if (is_array($attributeValue)) {
                     return implode(' ', $attributeValue);
                 }
@@ -1853,8 +1854,8 @@ class DatabaseRecordList
         $possibleTranslations = $this->possibleTranslations;
         if ($table === 'pages') {
             // Calculate possible translations for pages
-            $possibleTranslations = array_map(static fn ($siteLanguage) => $siteLanguage->getLanguageId(), $this->languagesAllowedForUser);
-            $possibleTranslations = array_filter($possibleTranslations, static fn ($languageUid) => $languageUid > 0);
+            $possibleTranslations = array_map(static fn (SiteLanguage $siteLanguage): int => $siteLanguage->getLanguageId(), $this->languagesAllowedForUser);
+            $possibleTranslations = array_filter($possibleTranslations, static fn (int $languageUid): bool => $languageUid > 0);
         }
 
         // Traverse page translations and add icon for each language that does NOT yet exist and is included in site configuration:
@@ -2700,7 +2701,7 @@ class DatabaseRecordList
      */
     public function setOverridePageIdList(array $overridePageIdList)
     {
-        $this->overridePageIdList = array_map('intval', $overridePageIdList);
+        $this->overridePageIdList = array_map(intval(...), $overridePageIdList);
     }
 
     /**
@@ -2719,7 +2720,7 @@ class DatabaseRecordList
             $backendUser = $this->getBackendUserAuthentication();
 
             if (!$backendUser->isAdmin() && $id === 0) {
-                $mountPoints = array_map('intval', $backendUser->returnWebmounts());
+                $mountPoints = array_map(intval(...), $backendUser->returnWebmounts());
                 $mountPoints = array_unique($mountPoints);
             } else {
                 $mountPoints = [$id];

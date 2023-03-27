@@ -120,7 +120,7 @@ class SiteLanguageContainer extends AbstractContainer
             // we also allow new languages to be created, we just use the maxitems value.
             'max' => $config['maxitems'],
             // "used" must be a string array
-            'used' => array_map('strval', $uniqueIds),
+            'used' => array_map(strval(...), $uniqueIds),
             'table' => self::FOREIGN_TABLE,
             'elTable' => self::FOREIGN_TABLE,
             'field' => self::FOREIGN_FIELD,

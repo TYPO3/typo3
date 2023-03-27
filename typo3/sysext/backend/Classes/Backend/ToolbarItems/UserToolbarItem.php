@@ -98,9 +98,7 @@ class UserToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemIn
             }
 
             // Remove any item that is not an array (means, the stored uid is not available anymore)
-            $mostRecentUsers = array_filter($mostRecentUsers, static function ($record) {
-                return is_array($record);
-            });
+            $mostRecentUsers = array_filter($mostRecentUsers, is_array(...));
 
             $availableUsers = array_keys($mostRecentUsers);
             if (!empty(array_diff($backendUser->uc['recentSwitchedToUsers'], $availableUsers))) {

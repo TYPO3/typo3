@@ -62,7 +62,7 @@ class TreeController
         } else {
             $items = $this->treeProvider->getRootNodes($this->getBackendUser());
         }
-        $items = array_map(function (array $item) {
+        $items = array_map(function (array $item): array {
             return $this->prepareItemForOutput($item);
         }, $items);
         return new JsonResponse($items);
@@ -131,14 +131,14 @@ class TreeController
         foreach ($items as $item) {
             $stateIdentifier = $item['stateIdentifier'];
             $parentIdentifier = $item['parentIdentifier'];
-            $siblings = array_filter($items, static function ($itemInArray) use ($parentIdentifier) {
+            $siblings = array_filter($items, static function (array $itemInArray) use ($parentIdentifier): bool {
                 if ($itemInArray['parentIdentifier'] === $parentIdentifier) {
                     return true;
                 }
                 return false;
             });
             $positionFound = false;
-            $siblingsBeforeInSameDepth = array_filter($siblings, static function ($itemInArray) use ($stateIdentifier, &$positionFound): bool {
+            $siblingsBeforeInSameDepth = array_filter($siblings, static function (array $itemInArray) use ($stateIdentifier, &$positionFound): bool {
                 if ($itemInArray['stateIdentifier'] === $stateIdentifier) {
                     $positionFound = true;
                     return false;

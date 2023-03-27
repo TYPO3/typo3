@@ -144,7 +144,7 @@ class AddController
                         }
 
                         // Normalize all items to "<table>_<uid>" format
-                        $currentValue = array_map(function ($item) {
+                        $currentValue = array_map(function (array|int|string $item): string {
                             // Handle per-item table for "group" elements
                             if (is_array($item)) {
                                 $item = $item['table'] . '_' . $item['uid'];

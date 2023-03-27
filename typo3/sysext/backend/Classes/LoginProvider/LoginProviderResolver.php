@@ -78,8 +78,8 @@ class LoginProviderResolver
             }
         }
         // sort providers
-        uasort($providers, static function ($a, $b) {
-            return $b['sorting'] - $a['sorting'];
+        uasort($providers, static function (array $a, array $b): int {
+            return (int)$b['sorting'] - (int)$a['sorting'];
         });
         return $providers;
     }

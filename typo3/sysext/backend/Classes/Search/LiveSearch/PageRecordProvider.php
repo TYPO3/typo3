@@ -118,7 +118,7 @@ final class PageRecordProvider implements SearchProviderInterface
                     new DemandProperty(DemandPropertyName::query, $extractedQueryString),
                     ...array_filter(
                         $searchDemand->getProperties(),
-                        static fn (DemandProperty $demandProperty) => $demandProperty->getName() !== DemandPropertyName::query
+                        static fn (DemandProperty $demandProperty): bool => $demandProperty->getName() !== DemandPropertyName::query
                     ),
                 ]);
             }

@@ -476,7 +476,7 @@ class NewRecordController
         if (isset($pageTS['mod.']['wizards.']['newRecord.']['order'])) {
             $this->newRecordSortList = GeneralUtility::trimExplode(',', $pageTS['mod.']['wizards.']['newRecord.']['order'], true);
         }
-        uksort($this->tRows, [$this, 'sortTableRows']);
+        uksort($this->tRows, $this->sortTableRows(...));
         $this->view->assign('groupedLinksOnTop', $groupedLinksOnTop);
         $this->view->assign('recordTypeGroups', $this->tRows);
     }

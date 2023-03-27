@@ -226,14 +226,14 @@ class BackendController
      */
     protected function getToolbarItems(ServerRequestInterface $request): array
     {
-        return array_map(static function (ToolbarItemInterface $toolbarItem) use ($request) {
+        return array_map(static function (ToolbarItemInterface $toolbarItem) use ($request): ToolbarItemInterface {
             if ($toolbarItem instanceof RequestAwareToolbarItemInterface) {
                 $toolbarItem->setRequest($request);
             }
             return $toolbarItem;
         }, array_filter(
             $this->toolbarItemsRegistry->getToolbarItems(),
-            static fn (ToolbarItemInterface $toolbarItem) => $toolbarItem->checkAccess()
+            static fn (ToolbarItemInterface $toolbarItem): bool => $toolbarItem->checkAccess()
         ));
     }
 

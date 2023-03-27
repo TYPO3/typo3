@@ -143,10 +143,10 @@ class TreeController
         }
         if ($request->getQueryParams()['alternativeEntryPoints'] ?? false) {
             $this->alternativeEntryPoints = $request->getQueryParams()['alternativeEntryPoints'];
-            $this->alternativeEntryPoints = array_filter($this->alternativeEntryPoints, function ($pageId) {
+            $this->alternativeEntryPoints = array_filter($this->alternativeEntryPoints, function (int $pageId): bool {
                 return $this->getBackendUser()->isInWebMount($pageId) !== null;
             });
-            $this->alternativeEntryPoints = array_map('intval', $this->alternativeEntryPoints);
+            $this->alternativeEntryPoints = array_map(intval(...), $this->alternativeEntryPoints);
             $this->alternativeEntryPoints = array_unique($this->alternativeEntryPoints);
         }
         $userTsConfig = $this->getBackendUser()->getTSConfig();
@@ -518,9 +518,9 @@ class TreeController
         $mountPoints = [];
         if ($entryPointIds === null) {
             //watch out for deleted pages returned as webmount
-            $mountPoints = array_map('intval', $backendUser->returnWebmounts());
+            $mountPoints = array_map(intval(...), $backendUser->returnWebmounts());
             $mountPoints = array_unique($mountPoints);
-            $mountPoints = array_filter($mountPoints, fn ($id) => !in_array($id, $this->hiddenRecords, true));
+            $mountPoints = array_filter($mountPoints, fn (int $id): bool => !in_array($id, $this->hiddenRecords, true));
 
             // Switch to multiple-entryPoint-mode if the rootPage is to be mounted.
             // (other mounts would appear duplicated in the pid = 0 tree otherwise)
@@ -545,7 +545,7 @@ class TreeController
 
             $entryPointRecords[] = $rootRecord;
         } else {
-            $entryPointIds = array_filter($entryPointIds, fn ($id) => !in_array($id, $this->hiddenRecords, true));
+            $entryPointIds = array_filter($entryPointIds, fn (int $id): bool => !in_array($id, $this->hiddenRecords, true));
             $this->calculateBackgroundColors($entryPointIds);
             foreach ($entryPointIds as $k => $entryPointId) {
                 if ($entryPointId === 0) {
@@ -657,7 +657,7 @@ class TreeController
             if (!empty($this->alternativeEntryPoints)) {
                 return $this->alternativeEntryPoints;
             }
-            $mountPoints = array_map('intval', $this->getBackendUser()->returnWebmounts());
+            $mountPoints = array_map(intval(...), $this->getBackendUser()->returnWebmounts());
             return array_unique($mountPoints);
         }
         return [$mountPoints];
@@ -666,7 +666,7 @@ class TreeController
     protected function getPostProcessedPageItems(ServerRequestInterface $request, array $items): array
     {
         return array_map(
-            static function ($item) {
+            static function (array $item): array {
                 // Unset _page, which holds the page record and was only provided for the event listeners
                 unset($item['_page']);
                 return $item;

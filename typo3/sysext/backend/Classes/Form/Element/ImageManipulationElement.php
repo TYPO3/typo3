@@ -239,7 +239,7 @@ class ImageManipulationElement extends AbstractFormElement
         $cropVariants = [];
         foreach ($config['cropVariants'] as $id => $cropVariant) {
             // Filter allowed aspect ratios
-            $cropVariant['allowedAspectRatios'] = array_filter($cropVariant['allowedAspectRatios'] ?? [], static function ($aspectRatio) {
+            $cropVariant['allowedAspectRatios'] = array_filter($cropVariant['allowedAspectRatios'] ?? [], static function (array $aspectRatio): bool {
                 return !(bool)($aspectRatio['disabled'] ?? false);
             });
 

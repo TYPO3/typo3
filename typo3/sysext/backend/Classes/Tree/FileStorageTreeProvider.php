@@ -134,12 +134,12 @@ class FileStorageTreeProvider
         $storages = $user->getFileStorages();
         foreach ($storages as $resourceStorage) {
             $processingFolders = $resourceStorage->getProcessingFolders();
-            $processingFolderIdentifiers = array_map(static function ($folder) {
+            $processingFolderIdentifiers = array_map(static function (Folder $folder): string {
                 return $folder->getIdentifier();
             }, $processingFolders);
             $resourceStorage->addFileAndFolderNameFilter(static function ($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, DriverInterface $driver) use ($resourceStorage, $search, $processingFolderIdentifiers) {
                 // Skip items in processing folders
-                $isInProcessingFolder = array_filter($processingFolderIdentifiers, static function ($processingFolderIdentifier) use ($parentIdentifier) {
+                $isInProcessingFolder = array_filter($processingFolderIdentifiers, static function (string $processingFolderIdentifier) use ($parentIdentifier): bool {
                     return stripos($parentIdentifier, $processingFolderIdentifier) !== false;
                 });
                 if (!empty($isInProcessingFolder)) {
@@ -187,7 +187,7 @@ class FileStorageTreeProvider
         } else {
             $subFolders = is_array($subFolders) ? $subFolders : $folderObject->getSubfolders();
             $subFolders = ListUtility::resolveSpecialFolderNames($subFolders);
-            uksort($subFolders, 'strnatcasecmp');
+            uksort($subFolders, strnatcasecmp(...));
         }
 
         $subFolderCounter = 0;
@@ -228,7 +228,7 @@ class FileStorageTreeProvider
     {
         $fileMounts = $resourceStorage->getFileMounts();
         if (!empty($fileMounts)) {
-            return array_map(static function ($fileMountInfo) {
+            return array_map(static function (array $fileMountInfo): array {
                 return [
                     'folder' => $fileMountInfo['folder'],
                     'name' => $fileMountInfo['title'],

@@ -170,7 +170,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                 new DemandProperty(DemandPropertyName::query, $extractedQueryString),
                 ...array_filter(
                     $searchDemand->getProperties(),
-                    static fn (DemandProperty $demandProperty) => $demandProperty->getName() !== DemandPropertyName::query
+                    static fn (DemandProperty $demandProperty): bool => $demandProperty->getName() !== DemandPropertyName::query
                 ),
             ]);
         }
@@ -296,7 +296,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
 
     protected function getAccessibleTables(BeforeSearchInDatabaseRecordProviderEvent $event): array
     {
-        return array_filter(array_keys($GLOBALS['TCA']), function (string $tableName) use ($event) {
+        return array_filter(array_keys($GLOBALS['TCA']), function (string $tableName) use ($event): bool {
             return $this->canAccessTable($tableName) && !$event->isTableIgnored($tableName);
         });
     }

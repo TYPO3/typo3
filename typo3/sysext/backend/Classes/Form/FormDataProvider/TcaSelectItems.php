@@ -91,7 +91,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 
             // add item values as keys to determine which items are stored in the database and should be preselected
             $itemArrayValues = array_column(
-                array_map(fn ($item) => $item instanceof SelectItem ? $item->toArray() : $item, $fieldConfig['config']['items']),
+                array_map(fn (SelectItem|array $item): array => $item instanceof SelectItem ? $item->toArray() : $item, $fieldConfig['config']['items']),
                 'value'
             );
             $itemArray = array_fill_keys(
@@ -163,14 +163,14 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
             array_values($databaseValues),
             array_column(
                 array_map(
-                    fn ($item) => $item instanceof SelectItem ? $item->toArray() : $item,
+                    fn (SelectItem|array $item): array => $item instanceof SelectItem ? $item->toArray() : $item,
                     $fieldConf['config']['items']
                 ),
                 'value'
             ),
             array_column(
                 array_map(
-                    fn ($item) => $item instanceof SelectItem ? $item->toArray() : $item,
+                    fn (SelectItem|array $item): array => $item instanceof SelectItem ? $item->toArray() : $item,
                     $removedItems
                 ),
                 'value'

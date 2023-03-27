@@ -63,7 +63,7 @@ final class SearchRepository
     {
         return array_filter(
             $this->searchProviderRegistry->getProviders(),
-            static fn (SearchProviderInterface $provider) => $searchDemand->getSearchProviders() === [] || in_array(get_class($provider), $searchDemand->getSearchProviders(), true)
+            static fn (SearchProviderInterface $provider): bool => $searchDemand->getSearchProviders() === [] || in_array(get_class($provider), $searchDemand->getSearchProviders(), true)
         );
     }
 

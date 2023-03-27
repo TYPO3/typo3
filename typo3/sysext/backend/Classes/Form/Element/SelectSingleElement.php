@@ -110,7 +110,7 @@ class SelectSingleElement extends AbstractFormElement
             ) {
                 $uniqueIds[] = $this->data['inlineParentUid'];
             }
-            $uniqueIds = array_map(static fn ($item) => (int)$item, $uniqueIds);
+            $uniqueIds = array_map(intval(...), $uniqueIds);
         }
 
         // Initialization:

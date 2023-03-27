@@ -42,7 +42,7 @@ final class ModuleRegistry
      */
     public function __construct(array $modules)
     {
-        array_walk($modules, [$this, 'addModule']);
+        array_walk($modules, $this->addModule(...));
         $this->modules = $this->applyHierarchy($this->modules);
         $this->populateAliasMapping();
     }
@@ -142,7 +142,7 @@ final class ModuleRegistry
             }
             $subModules = array_filter(
                 $modules,
-                static fn ($mod) => $mod->getParentIdentifier() === $identifier
+                static fn (ModuleInterface $mod): bool => $mod->getParentIdentifier() === $identifier
             );
             if ($subModules === []) {
                 continue;

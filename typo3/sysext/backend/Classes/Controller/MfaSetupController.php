@@ -166,7 +166,7 @@ class MfaSetupController extends AbstractMfaController
         $this->pageRenderer->loadJavaScriptModule('bootstrap');
 
         $recommendedProvider = $this->getRecommendedProvider();
-        $providers = array_filter($this->allowedProviders, static function ($provider) use ($recommendedProvider) {
+        $providers = array_filter($this->allowedProviders, static function (MfaProviderManifestInterface $provider) use ($recommendedProvider): bool {
             // Remove the recommended provider and providers, which can not be used as default, e.g. recovery codes
             return $provider->isDefaultProviderAllowed()
                 && ($recommendedProvider === null || $provider->getIdentifier() !== $recommendedProvider->getIdentifier());

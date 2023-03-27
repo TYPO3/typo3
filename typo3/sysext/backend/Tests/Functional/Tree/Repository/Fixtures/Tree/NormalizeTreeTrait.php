@@ -26,7 +26,7 @@ trait NormalizeTreeTrait
     {
         ksort($tree);
         return array_map(
-            function (array $item) {
+            function (array $item): array {
                 foreach ($item as $propertyName => $propertyValue) {
                     if (!is_array($propertyValue)) {
                         continue;
@@ -49,7 +49,7 @@ trait NormalizeTreeTrait
     private function normalizeTreeArray(array $tree, array $keepProperties): array
     {
         return array_map(
-            function (array $item) use ($keepProperties) {
+            function (array $item) use ($keepProperties): array {
                 // only keep these property names
                 $item = array_intersect_key($item, $keepProperties);
                 foreach ($item as $propertyName => $propertyValue) {

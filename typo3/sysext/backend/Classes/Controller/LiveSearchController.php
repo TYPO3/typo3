@@ -83,7 +83,8 @@ class LiveSearchController
         $searchProviders = $this->searchService->getSearchProviderState($searchDemand);
 
         $activeOptions = 0;
-        $activeOptions += count(array_filter($searchProviders, fn (array $searchProviderOption) => $searchProviderOption['isActive']));
+        // `isActive` is the result of `in_array()`, which returns a `bool`.
+        $activeOptions += count(array_filter($searchProviders, fn (array $searchProviderOption): bool => $searchProviderOption['isActive']));
 
         $view = $this->backendViewFactory->create($request, ['typo3/cms-backend']);
         $view->assignMultiple([

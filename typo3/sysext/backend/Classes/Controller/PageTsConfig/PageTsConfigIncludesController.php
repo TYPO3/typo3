@@ -145,7 +145,7 @@ final class PageTsConfigIncludesController
         $treeTraverser->addVisitor($syntaxScannerVisitor);
         $pageTsConfigConditions = $this->handleToggledPageTsConfigConditions($pageTsConfigTree, $moduleData, $parsedBody, $siteSettingsFlat);
         $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
-        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($pageTsConfigConditions, static fn ($condition) => $condition['active']), 'value'));
+        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($pageTsConfigConditions, static fn (array $condition): bool => (bool)$condition['active']), 'value'));
         $treeTraverser->addVisitor($conditionEnforcerVisitor);
         $treeTraverser->traverse($pageTsConfigTree);
 
@@ -160,7 +160,7 @@ final class PageTsConfigIncludesController
             'siteSettingsTree' => $siteSettingsTree,
             'pageTsConfigTree' => $pageTsConfigTree,
             'pageTsConfigConditions' => $pageTsConfigConditions,
-            'pageTsConfigConditionsActiveCount' => count(array_filter($pageTsConfigConditions, static fn ($condition) => $condition['active'])),
+            'pageTsConfigConditionsActiveCount' => count(array_filter($pageTsConfigConditions, static fn (array $condition): bool => (bool)$condition['active'])),
             'syntaxErrors' => $syntaxScannerVisitor->getErrors(),
             'syntaxErrorCount' => count($syntaxScannerVisitor->getErrors()),
         ]);

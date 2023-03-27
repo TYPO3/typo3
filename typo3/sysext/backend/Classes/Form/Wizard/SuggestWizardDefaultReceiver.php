@@ -222,7 +222,7 @@ class SuggestWizardDefaultReceiver
             }
         }
         if (!empty($this->allowedPages)) {
-            $pidList = array_map('intval', $this->allowedPages);
+            $pidList = array_map(intval(...), $this->allowedPages);
             if (!empty($pidList)) {
                 $this->queryBuilder->andWhere(
                     $expressionBuilder->in('pid', $pidList)

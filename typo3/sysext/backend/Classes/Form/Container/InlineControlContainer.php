@@ -488,7 +488,7 @@ class InlineControlContainer extends AbstractContainer
                 <div class="form-text">
                     ' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedRelations')) . '
                     <br>
-                    ' . implode(' ', array_map(static fn ($item) => '<span class="badge badge-success">' . strtoupper($item) . '</span>', $allowed)) . '
+                    ' . implode(' ', array_map(static fn (string $item): string => '<span class="badge badge-success">' . strtoupper($item) . '</span>', $allowed)) . '
                 </div>';
         }
         return '<div class="form-group t3js-formengine-validation-marker t3js-inline-controls-top-outer-container">' . $item . '</div>';

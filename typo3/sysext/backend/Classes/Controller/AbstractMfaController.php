@@ -75,7 +75,7 @@ abstract class AbstractMfaController
         $this->mfaRequired = $backendUser->isMfaSetupRequired();
 
         // Set up allowed providers based on user TSconfig and user groupData
-        $this->allowedProviders = array_filter($this->mfaProviderRegistry->getProviders(), function ($identifier) use ($backendUser) {
+        $this->allowedProviders = array_filter($this->mfaProviderRegistry->getProviders(), function (string $identifier) use ($backendUser): bool {
             return $backendUser->check('mfa_providers', $identifier)
                 && !GeneralUtility::inList(($this->mfaTsConfig['disableProviders'] ?? ''), $identifier);
         }, ARRAY_FILTER_USE_KEY);

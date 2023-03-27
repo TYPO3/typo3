@@ -79,11 +79,11 @@ class ModuleProvider
         if (!$grouped) {
             return array_filter(
                 $this->moduleRegistry->getModules(),
-                fn ($module) => $user === null || $this->accessGranted($module->getIdentifier(), $user, $respectWorkspaceRestrictions)
+                fn (ModuleInterface $module): bool => $user === null || $this->accessGranted($module->getIdentifier(), $user, $respectWorkspaceRestrictions)
             );
         }
 
-        $availableModules = array_filter($this->moduleRegistry->getModules(), static fn ($module) => !$module->hasParentModule());
+        $availableModules = array_filter($this->moduleRegistry->getModules(), static fn (ModuleInterface $module): bool => !$module->hasParentModule());
 
         foreach ($availableModules as $identifier => $module) {
             if ($user !== null && !$this->accessGranted($identifier, $user, $respectWorkspaceRestrictions)) {
@@ -245,7 +245,7 @@ class ModuleProvider
      */
     public function getFirstAccessibleModule(BackendUserAuthentication $user): ?ModuleInterface
     {
-        $modules = array_filter($this->moduleRegistry->getModules(), function ($module) use ($user) {
+        $modules = array_filter($this->moduleRegistry->getModules(), function (ModuleInterface $module) use ($user): bool {
             return $this->accessGranted($module->getIdentifier(), $user)
                 && ($module->isStandalone() || $module->hasParentModule());
         });
@@ -261,6 +261,6 @@ class ModuleProvider
      */
     public function getUserModules(): array
     {
-        return array_filter($this->moduleRegistry->getModules(), static fn ($module) => $module->getAccess() === 'user');
+        return array_filter($this->moduleRegistry->getModules(), static fn (ModuleInterface $module): bool => $module->getAccess() === 'user');
     }
 }
