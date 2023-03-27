@@ -71,12 +71,12 @@ class PaletteAndSingleContainerTest extends UnitTestCase
 
         // Expect translation call to the label reference and empty description
         $series = [
-            [$labelReference],
-            [''],
+            $labelReference,
+            '',
         ];
-        $languageService->method('sL')->willReturnCallback(function (string ...$args) use (&$series): string {
-            self::assertSame(array_shift($series), $args);
-            return $args[0];
+        $languageService->method('sL')->willReturnCallback(function (string $input) use (&$series): string {
+            self::assertSame(array_shift($series), $input);
+            return $input;
         });
 
         $expectedChildDataArray = $input;
@@ -137,12 +137,12 @@ class PaletteAndSingleContainerTest extends UnitTestCase
 
         // Expect translation call to the label and description references
         $series = [
-            [$labelReference],
-            [$descriptionReference],
+            $labelReference,
+            $descriptionReference,
         ];
-        $languageService->method('sL')->willReturnCallback(function (string ...$args) use (&$series): string {
-            self::assertSame(array_shift($series), $args);
-            return $args[0];
+        $languageService->method('sL')->willReturnCallback(function (string $input) use (&$series): string {
+            self::assertSame(array_shift($series), $input);
+            return $input;
         });
 
         $expectedChildDataArray = $input;
@@ -205,12 +205,12 @@ class PaletteAndSingleContainerTest extends UnitTestCase
 
         // Expect translation call to the label and description references
         $series = [
-            [$labelReferenceFieldArray],
-            [$descriptionReferencePaletteArray],
+            $labelReferenceFieldArray,
+            $descriptionReferencePaletteArray,
         ];
-        $languageService->method('sL')->willReturnCallback(function (string ...$args) use (&$series): string {
-            self::assertSame(array_shift($series), $args);
-            return $args[0];
+        $languageService->method('sL')->willReturnCallback(function (string $input) use (&$series): string {
+            self::assertSame(array_shift($series), $input);
+            return $input;
         });
 
         $expectedChildDataArray = $input;

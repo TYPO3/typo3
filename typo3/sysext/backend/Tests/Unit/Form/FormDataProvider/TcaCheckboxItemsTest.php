@@ -715,12 +715,12 @@ class TcaCheckboxItemsTest extends UnitTestCase
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
         $series = [
-            ['aLabel'],
-            ['labelOverride'],
+            'aLabel',
+            'labelOverride',
         ];
-        $languageService->method('sL')->willReturnCallback(function (string ...$args) use (&$series): string {
-            self::assertSame(array_shift($series), $args);
-            return $args[0];
+        $languageService->method('sL')->willReturnCallback(function (string $input) use (&$series): string {
+            self::assertSame(array_shift($series), $input);
+            return $input;
         });
 
         $expected = $input;

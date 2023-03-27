@@ -180,12 +180,13 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         ];
         $this->beUserMock->method('isAdmin')->willReturn(false);
         $series = [
-            [['tables_modify', $input['tableName']], true],
-            [['pagetypes_select', $input['databaseRow']['doktype']], false],
+            [['type' => 'tables_modify', 'value' => $input['tableName']], true],
+            [['type' => 'pagetypes_select', 'value' => $input['databaseRow']['doktype']], false],
         ];
-        $this->beUserMock->method('check')->willReturnCallback(function (string|int ...$args) use (&$series): bool {
+        $this->beUserMock->method('check')->willReturnCallback(function (string $type, string|int $value) use (&$series): bool {
             [$expectedArgs, $return] = array_shift($series);
-            self::assertSame($expectedArgs, $args);
+            self::assertSame($expectedArgs['type'], $type);
+            self::assertSame($expectedArgs['value'], $value);
             return $return;
         });
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
@@ -222,11 +223,13 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         ];
         $this->beUserMock->method('isAdmin')->willReturn(false);
         $series = [
-            ['tables_modify', $input['tableName']],
-            ['pagetypes_select', $input['databaseRow']['doktype']],
+            ['type' => 'tables_modify', 'value' => $input['tableName']],
+            ['type' => 'pagetypes_select', 'value' => $input['databaseRow']['doktype']],
         ];
-        $this->beUserMock->method('check')->willReturnCallback(function (string|int ...$args) use (&$series): bool {
-            self::assertSame(array_shift($series), $args);
+        $this->beUserMock->method('check')->willReturnCallback(function (string $type, string|int $value) use (&$series): bool {
+            $expectedArgs = array_shift($series);
+            self::assertSame($expectedArgs['type'], $type);
+            self::assertSame($expectedArgs['value'], $value);
             return true;
         });
         $this->beUserMock->method('calcPerms')->with($input['databaseRow'])->willReturn(Permission::PAGE_EDIT);

@@ -49,12 +49,13 @@ class DatabaseParentPageRowTest extends UnitTestCase
         ];
 
         $series = [
-            [[$input['tableName'], 10], ['pid' => 123]],
-            [['pages', 123], $parentPageRow],
+            [['tableName' => $input['tableName'], 'uid' => 10], ['pid' => 123]],
+            [['tableName' => 'pages', 'uid' => 123], $parentPageRow],
         ];
-        $this->subject->expects(self::exactly(2))->method('getDatabaseRow')->willReturnCallback(function (string|int ...$args) use (&$series): array {
+        $this->subject->expects(self::exactly(2))->method('getDatabaseRow')->willReturnCallback(function (string $tableName, int $uid) use (&$series): array {
             [$expectedArgs, $return] = array_shift($series);
-            self::assertSame($expectedArgs, $args);
+            self::assertSame($expectedArgs['tableName'], $tableName);
+            self::assertSame($expectedArgs['uid'], $uid);
             return $return;
         });
 
@@ -83,12 +84,13 @@ class DatabaseParentPageRowTest extends UnitTestCase
         ];
 
         $series = [
-            [[$input['tableName'], 10], $neighborRow],
-            [['pages', 321], $parentPageRow],
+            [['tableName' => $input['tableName'], 'uid' => 10], $neighborRow],
+            [['tableName' => 'pages', 'uid' => 321], $parentPageRow],
         ];
-        $this->subject->expects(self::exactly(2))->method('getDatabaseRow')->willReturnCallback(function (string|int ...$args) use (&$series): array {
+        $this->subject->expects(self::exactly(2))->method('getDatabaseRow')->willReturnCallback(function (string $tableName, int $uid) use (&$series): array {
             [$expectedArgs, $return] = array_shift($series);
-            self::assertSame($expectedArgs, $args);
+            self::assertSame($expectedArgs['tableName'], $tableName);
+            self::assertSame($expectedArgs['uid'], $uid);
             return $return;
         });
 

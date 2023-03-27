@@ -238,14 +238,15 @@ class DatabaseLanguageRowsTest extends UnitTestCase
 
         // The second call is the real check: The "additional overlay" should be fetched
         $series = [
-            [['tt_content', 23], $defaultLanguageRow],
-            [['tt_content', 43], $recordWsolResult],
+            [['tableName' => 'tt_content', 'uid' => 23], $defaultLanguageRow],
+            [['tableName' => 'tt_content', 'uid' => 43], $recordWsolResult],
         ];
         $this->subject->expects(self::exactly(2))
             ->method('getRecordWorkspaceOverlay')
-            ->willReturnCallback(function (string|int ...$args) use (&$series): array {
+            ->willReturnCallback(function (string $tableName, int $uid) use (&$series): array {
                 [$expectedArgs, $return] = array_shift($series);
-                self::assertSame($expectedArgs, $args);
+                self::assertSame($expectedArgs['tableName'], $tableName);
+                self::assertSame($expectedArgs['uid'], $uid);
                 return $return;
             });
 
@@ -336,14 +337,15 @@ class DatabaseLanguageRowsTest extends UnitTestCase
 
         // The second call is the real check: The "additional overlay" should be fetched
         $series = [
-            [['tt_content', 23], $defaultLanguageRow],
-            [['tt_content', 43], $recordWsolResult],
+            [['tableName' => 'tt_content', 'uid' => 23], $defaultLanguageRow],
+            [['tableName' => 'tt_content', 'uid' => 43], $recordWsolResult],
         ];
         $this->subject->expects(self::exactly(2))
             ->method('getRecordWorkspaceOverlay')
-            ->willReturnCallback(function (string|int ...$args) use (&$series): array {
+            ->willReturnCallback(function (string $tableName, int $uid) use (&$series): array {
                 [$expectedArgs, $return] = array_shift($series);
-                self::assertSame($expectedArgs, $args);
+                self::assertSame($expectedArgs['tableName'], $tableName);
+                self::assertSame($expectedArgs['uid'], $uid);
                 return $return;
             });
 
@@ -419,14 +421,15 @@ class DatabaseLanguageRowsTest extends UnitTestCase
         ];
 
         $series = [
-            [['tt_content', 23], $defaultLanguageRow],
-            [['tt_content', 24], $sourceLanguageRow],
+            [['tableName' => 'tt_content', 'uid' => 23], $defaultLanguageRow],
+            [['tableName' => 'tt_content', 'uid' => 24], $sourceLanguageRow],
         ];
         $this->subject->expects(self::exactly(2))
             ->method('getRecordWorkspaceOverlay')
-            ->willReturnCallback(function (string|int ...$args) use (&$series): array {
+            ->willReturnCallback(function (string $tableName, int $uid) use (&$series): array {
                 [$expectedArgs, $return] = array_shift($series);
-                self::assertSame($expectedArgs, $args);
+                self::assertSame($expectedArgs['tableName'], $tableName);
+                self::assertSame($expectedArgs['uid'], $uid);
                 return $return;
             });
 

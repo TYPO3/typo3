@@ -92,12 +92,12 @@ class FieldControlTest extends UnitTestCase
         $anotherControlNodeFactoryInput['renderType'] = 'anotherControl';
 
         $series = [
-            [[$aControlNodeFactoryInput], $aControlMock],
-            [[$anotherControlNodeFactoryInput], $anotherControlMock],
+            [$aControlNodeFactoryInput, $aControlMock],
+            [$anotherControlNodeFactoryInput, $anotherControlMock],
         ];
-        $nodeFactoryMock->method('create')->willReturnCallback(function (array ...$args) use (&$series): NodeInterface {
+        $nodeFactoryMock->method('create')->willReturnCallback(function (array $data) use (&$series): NodeInterface {
             [$expectedArgs, $return] = array_shift($series);
-            self::assertSame($expectedArgs, $args);
+            self::assertSame($expectedArgs, $data);
             return $return;
         });
 
