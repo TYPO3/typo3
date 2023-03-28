@@ -123,6 +123,9 @@ class TreeController
 
     protected UriBuilder $uriBuilder;
 
+    protected PageTreeRepository $pageTreeRepository;
+    protected bool $userHasAccessToModifyPagesAndToDefaultLanguage = false;
+
     /**
      * Constructor to set up common objects needed in various places.
      */
@@ -164,6 +167,7 @@ class TreeController
             $stateHash = $backendUserPageTreeState['stateHash'] ?? [];
             $this->expandedState = is_array($stateHash) ? $stateHash : [];
         }
+        $this->userHasAccessToModifyPagesAndToDefaultLanguage = $this->getBackendUser()->check('tables_modify', 'pages') && $this->getBackendUser()->checkLanguageAccess(0);
     }
 
     /**
@@ -268,14 +272,15 @@ class TreeController
             $parentDepth = (int)($request->getQueryParams()['pidDepth'] ?? 0);
             $this->levelsToFetch = $parentDepth + $this->levelsToFetch;
             foreach ($entryPoints as $page) {
-                $items = array_merge($items, $this->pagesToFlatArray($page, $mountPid, $parentDepth));
+                $items[] = $this->pagesToFlatArray($page, $mountPid, $parentDepth);
             }
         } else {
             $entryPoints = $this->getAllEntryPointPageTrees();
             foreach ($entryPoints as $page) {
-                $items = array_merge($items, $this->pagesToFlatArray($page, (int)$page['uid']));
+                $items[] = $this->pagesToFlatArray($page, (int)$page['uid']);
             }
         }
+        $items = array_merge(...$items);
 
         return new JsonResponse($items);
     }
@@ -301,9 +306,10 @@ class TreeController
 
         foreach ($entryPoints as $page) {
             if (!empty($page)) {
-                $items = array_merge($items, $this->pagesToFlatArray($page, (int)$page['uid']));
+                $items[] = $this->pagesToFlatArray($page, (int)$page['uid']);
             }
         }
+        $items = array_merge(...$items);
 
         return new JsonResponse($items);
     }
@@ -411,15 +417,13 @@ class TreeController
             'siblingsCount' => $page['siblingsCount'] ?? 1,
             'siblingsPosition' => $page['siblingsPosition'] ?? 1,
             'allowDelete' => $backendUser->doesUserHaveAccess($page, Permission::PAGE_DELETE),
-            'allowEdit' => $backendUser->doesUserHaveAccess($page, Permission::PAGE_EDIT)
-                && $backendUser->check('tables_modify', 'pages')
-                && $backendUser->checkLanguageAccess(0),
+            'allowEdit' => $this->userHasAccessToModifyPagesAndToDefaultLanguage && $backendUser->doesUserHaveAccess($page, Permission::PAGE_EDIT),
         ];
 
-        if (!empty($page['_children']) || $this->getPageTreeRepository()->hasChildren($pageId)) {
+        if (!empty($page['_children']) || $this->pageTreeRepository->hasChildren($pageId)) {
             $item['hasChildren'] = true;
             if ($depth >= $this->levelsToFetch) {
-                $page = $this->getPageTreeRepository()->getTreeLevels($page, 1);
+                $page = $this->pageTreeRepository->getTreeLevels($page, 1);
             }
         }
         if (!empty($prefix)) {
@@ -435,13 +439,13 @@ class TreeController
             $item['overlayIcon'] = $icon->getOverlayIcon()->getIdentifier();
         }
         if ($expanded && is_array($page['_children']) && !empty($page['_children'])) {
-            $item['expanded'] = $expanded;
+            $item['expanded'] = true;
         }
         if ($backgroundColor) {
             $item['backgroundColor'] = htmlspecialchars($backgroundColor);
         }
         if ($stopPageTree) {
-            $item['stopPageTree'] = $stopPageTree;
+            $item['stopPageTree'] = true;
         }
         $class = $this->resolvePageCssClassNames($page);
         if (!empty($class)) {
@@ -469,14 +473,14 @@ class TreeController
         return $items;
     }
 
-    protected function getPageTreeRepository(): PageTreeRepository
+    protected function initializePageTreeRepository(): PageTreeRepository
     {
         $backendUser = $this->getBackendUser();
         $userTsConfig = $backendUser->getTSConfig();
         $excludedDocumentTypes = GeneralUtility::intExplode(',', $userTsConfig['options.']['pageTree.']['excludeDoktypes'] ?? '', true);
 
         $additionalQueryRestrictions = [];
-        if (!empty($excludedDocumentTypes)) {
+        if ($excludedDocumentTypes !== []) {
             $additionalQueryRestrictions[] = GeneralUtility::makeInstance(DocumentTypeExclusionRestriction::class, $excludedDocumentTypes);
         }
 
@@ -497,6 +501,7 @@ class TreeController
      */
     protected function getAllEntryPointPageTrees(int $startPid = 0, string $query = ''): array
     {
+        $this->pageTreeRepository ??= $this->initializePageTreeRepository();
         $backendUser = $this->getBackendUser();
         if ($startPid === 0) {
             $startPid = (int)($backendUser->uc['pageTree_temporaryMountPoint'] ?? 0);
@@ -509,11 +514,10 @@ class TreeController
             $entryPointIds = $this->alternativeEntryPoints;
         }
 
-        $repository = $this->getPageTreeRepository();
         $permClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
         if ($query !== '') {
             $this->levelsToFetch = 999;
-            $repository->fetchFilteredTree(
+            $this->pageTreeRepository->fetchFilteredTree(
                 $query,
                 $this->getAllowedMountPoints(),
                 $permClause
@@ -540,9 +544,9 @@ class TreeController
 
         if ($entryPointIds === null) {
             if ($query !== '') {
-                $rootRecord = $repository->getTree(0, null, $mountPoints, true);
+                $rootRecord = $this->pageTreeRepository->getTree(0, null, $mountPoints, true);
             } else {
-                $rootRecord = $repository->getTreeLevels($rootRecord, $this->levelsToFetch, $mountPoints);
+                $rootRecord = $this->pageTreeRepository->getTreeLevels($rootRecord, $this->levelsToFetch, $mountPoints);
             }
 
             $mountPointOrdering = array_flip($mountPoints);
@@ -572,9 +576,9 @@ class TreeController
 
                 $entryPointRecord['uid'] = (int)$entryPointRecord['uid'];
                 if ($query === '') {
-                    $entryPointRecord = $repository->getTreeLevels($entryPointRecord, $this->levelsToFetch);
+                    $entryPointRecord = $this->pageTreeRepository->getTreeLevels($entryPointRecord, $this->levelsToFetch);
                 } else {
-                    $entryPointRecord = $repository->getTree($entryPointRecord['uid'], null, $entryPointIds, true);
+                    $entryPointRecord = $this->pageTreeRepository->getTree($entryPointRecord['uid'], null, $entryPointIds, true);
                 }
 
                 if (is_array($entryPointRecord) && !empty($entryPointRecord)) {
@@ -588,7 +592,7 @@ class TreeController
 
     protected function calculateBackgroundColors(array $pageIds)
     {
-        foreach ($pageIds as $k => $pageId) {
+        foreach ($pageIds as $pageId) {
             if (!empty($this->backgroundColors) && is_array($this->backgroundColors)) {
                 try {
                     $entryPointRootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
