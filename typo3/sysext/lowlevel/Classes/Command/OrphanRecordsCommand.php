@@ -191,7 +191,7 @@ Manual repair suggestions:
                     $versions = BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid', null, true);
                     if (is_array($versions)) {
                         foreach ($versions as $verRec) {
-                            if (!$verRec['_CURRENT_VERSION']) {
+                            if (!isset($verRec['_CURRENT_VERSION'])) {
                                 $allRecords[$tableName][$verRec['uid']] = $verRec['uid'];
                             }
                         }
@@ -229,7 +229,7 @@ Manual repair suggestions:
             $versions = BackendUtility::selectVersionsOfRecord('pages', $pageId, 'uid,t3ver_oid,t3ver_wsid', null, true);
             if (is_array($versions)) {
                 foreach ($versions as $verRec) {
-                    if (!$verRec['_CURRENT_VERSION']) {
+                    if (!isset($verRec['_CURRENT_VERSION'])) {
                         $allRecords = $this->findAllConnectedRecordsInPage((int)$verRec['uid'], $depth, $allRecords);
                     }
                 }
