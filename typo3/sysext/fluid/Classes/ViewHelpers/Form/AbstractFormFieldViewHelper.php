@@ -118,7 +118,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
                 'formObjectName'
             );
             if (!empty($formObjectName)) {
-                $propertySegments = explode('.', $this->arguments['property'] ?? '');
+                $propertySegments = explode('.', (string)($this->arguments['property'] ?? ''));
                 $propertyPath = '';
                 foreach ($propertySegments as $segment) {
                     $propertyPath .= '[' . $segment . ']';
@@ -136,7 +136,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
                 $name .= '[__identity]';
             }
         }
-        return $name;
+        return (string)$name;
     }
 
     /**
@@ -256,7 +256,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
         ) {
             return;
         }
-        $propertySegments = explode('.', $this->arguments['property']);
+        $propertySegments = explode('.', (string)($this->arguments['property'] ?? ''));
         // hierarchical property. If there is no "." inside (thus $propertySegments == 1), we do not need to do anything
         if (count($propertySegments) < 2) {
             return;
@@ -296,7 +296,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
      */
     protected function getPropertyValue()
     {
-        if ($this->arguments['property'] === null) {
+        if (!isset($this->arguments['property'])) {
             return null;
         }
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
@@ -311,7 +311,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
             FormViewHelper::class,
             'formObject'
         );
-        return ObjectAccess::getPropertyPath($formObject, $this->arguments['property']);
+        return ObjectAccess::getPropertyPath($formObject, (string)$this->arguments['property']);
     }
 
     /**
@@ -364,7 +364,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
             FormViewHelper::class,
             'formObjectName'
         );
-        return $originalRequestMappingResults->forProperty($formObjectName)->forProperty($this->arguments['property']);
+        return $originalRequestMappingResults->forProperty($formObjectName)->forProperty((string)$this->arguments['property']);
     }
 
     /**
