@@ -37,7 +37,7 @@ Recommendations for the description field
 .. danger::
 
    Current state of SEO research states that the description should be either lovely crafted by hand,
-   of left our completely. (end of 2019)
+   or left out completely. (end of 2019)
 
    If you are unsure contact an expert.
 
