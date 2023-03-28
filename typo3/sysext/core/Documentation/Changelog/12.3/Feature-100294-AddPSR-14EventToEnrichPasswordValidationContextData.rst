@@ -12,7 +12,8 @@ Description
 ===========
 
 A new PSR-14 event :php:`\TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent`
-has been added, which allows extension authors to enrich the :php:`ContextData`
+has been added, which allows extension authors to enrich the
+:php:`\TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData`
 DTO used in password policy validation.
 
 The PSR-14 event is dispatched  in all classes, where a user password is
@@ -29,10 +30,10 @@ The event features the following methods:
 The event can be used to enrich the :php:`ContextData` DTO with additional data
 used in custom password policy validators.
 
-.. note::
+..  note::
 
     The user data returned by :php:`getUserData()` will include user data
-    available from the initiating class only. Event listeners should therefore
+    available from the initiating class only. Therefore, event listeners should
     always consider the initiating class name when accessing data from
     :php:`getUserData()`. If required user data is not available via
     :php:`getUserData()`, it can possibly be retrieved by a custom database
@@ -42,21 +43,22 @@ used in custom password policy validators.
 Registration of the event in your extension's :file:`Services.yaml`:
 
 ..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Services.yaml
 
-    MyVendor\MyExtension\EventListener\EnrichContextDataEventListener:
+    MyVendor\MyExtension\PasswordPolicy\EventListener\MyEventListener:
       tags:
         - name: event.listener
-          identifier: 'my-extension/enrich-context-data-event-listener'
+          identifier: 'my-extension/enrich-context-data'
 
 The corresponding event listener class:
 
 ..  code-block:: php
-    :caption: EXT:my_extension/Classes/EventListener/EnrichContextDataEventListener.php
+    :caption: EXT:my_extension/Classes/PasswordPolicy/EventListener/MyEventListener.php
 
     use TYPO3\CMS\Core\DataHandling\DataHandler;
     use TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent;
 
-    class EnrichContextData
+    final class MyEventListener
     {
         public function __invoke(EnrichPasswordValidationContextDataEvent $event): void
         {

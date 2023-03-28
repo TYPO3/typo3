@@ -32,8 +32,8 @@ Affected installations
 ======================
 
 TYPO3 installations with third-party extensions using :php:`GeneralUtility::_GP()`
-are affected. This typically occurs in TYPO3 installations which
-have been migrated to latest TYPO3 Core versions and
+are affected, typically in TYPO3 installations which
+have been migrated to the latest TYPO3 Core versions and
 haven't been adapted properly yet.
 
 The extension scanner will find usages with a strong match.

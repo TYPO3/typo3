@@ -11,16 +11,16 @@ See :issue:`100167`
 Description
 ===========
 
-This extends the AdminPanel toolbar with more important metrics:
+This extends the AdminPanel toolbar with more metrics:
 
 * Peak memory usage
 * Amount of SQL queries
-* Time spent doing SQL queries
+* Time spent processing SQL queries
 
 
 Impact
 ======
 
-The AdminPanel toolbar now shows more important information.
+The AdminPanel toolbar now shows more information.
 
 .. index:: Frontend, ext:adminpanel

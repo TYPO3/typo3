@@ -12,23 +12,23 @@ Description
 ===========
 
 The scheduler system extension, responsible for executing long-running, timed
-or recurring tasks, has been included since TYPO3 v4.3, but never received a
-larger overhaul from its code base.
+or recurring tasks, has been included since TYPO3 v4.3, but never received an
+overhaul of its code base.
 
-Back then, the main classes :php:`Scheduler` class, as well as the
-:php:`AbstractTask` were the main API classes, all logic is included,
-whereas :php:`AbstractTask` is the main class, all custom tasks within
+Back then, the main :php:`\TYPO3\CMS\Scheduler\Scheduler` class and the
+:php:`\TYPO3\CMS\Scheduler\Task\AbstractTask` class were the main API classes, all logic being included,
+whereas :php:`AbstractTask` is the main class that all custom tasks within
 extensions derive from.
 
-However, in the past 15 years, TYPO3's Code base has undergone a lot of API
-design changes, related to separation of concerns. In order to achieve this in
-the Scheduler extension, almost all access to the actual database access around
-task retrieving and scheduling has been moved in its own
-:php:`SchedulerTaskRepository` class.
+However, in the past 15 years TYPO3's code base has undergone a lot of API
+design changes related to separation of concerns. In order to achieve this in
+the scheduler extension, almost all access to the actual database access around
+task retrieving and scheduling has been moved into its own
+:php:`\TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository` class.
 
 For this reason, the following methods within the original API classes are now
 either marked as deprecated or internal - not part of TYPO3's public API
-anymore - as they are now moved into the new Repository class.
+anymore - as they have now been moved into the new repository class.
 
 * :php:`Scheduler->addTask()`
 * :php:`Scheduler->log()` - marked as internal
@@ -59,7 +59,7 @@ Impact
 ======
 
 Calling any of the deprecated methods will trigger a PHP warning. Using the
-internal methods should be avoided and is not covered by TYPO3 backwards
+internal methods should be avoided and is not covered by the TYPO3 backwards
 compatibility promise.
 
 

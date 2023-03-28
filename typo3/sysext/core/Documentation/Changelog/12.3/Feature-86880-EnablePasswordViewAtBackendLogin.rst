@@ -3,7 +3,7 @@
 .. _feature-86880-1659742357:
 
 =======================================================
-Feature: #86880 - Enable password view at Backend login
+Feature: #86880 - Enable password view at backend login
 =======================================================
 
 See :issue:`86880`
@@ -11,13 +11,13 @@ See :issue:`86880`
 Description
 ===========
 
-The TYPO3 backend login now displays an additional button to reveal the user's
-password on click, once anything was typed into the password field.
+On clicking, the TYPO3 backend login now displays an additional button to reveal the user's
+password, once something has been typed in the password field.
 
 Impact
 ======
 
-A user who's about to log in into the backend is now able to reveal the typed
+A user who is about to log in to the backend is now able to reveal the typed
 password. Once the password field is cleared, the visibility mode automatically
 switches back to its default to avoid revealing sensitive data by accident.
 

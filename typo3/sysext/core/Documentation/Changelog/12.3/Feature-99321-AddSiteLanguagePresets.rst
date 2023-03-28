@@ -11,14 +11,14 @@ See :issue:`99321`
 Description
 ===========
 
-When adding a new language for a site, an integrator can now
+When adding a new language to a site, an integrator can now
 choose
 
-a) to create a new language defining all values by themselves
-b) choose from a list of default language settings ("presets")
-c) use an existing language if it is already used in a different site.
+a) to create a new language by defining all values themselves
+b) from a list of default language settings ("presets")
+c) to use an existing language if it is already used in a different site
 
-Although c) is always recommended when working with multi-site setups
+Although c) is always recommended when working with multi-site setups,
 to keep language IDs between sites in sync, b) is now a quick start
 to setup a new site.
 

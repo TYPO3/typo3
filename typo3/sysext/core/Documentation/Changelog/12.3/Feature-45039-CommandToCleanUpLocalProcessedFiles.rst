@@ -12,15 +12,15 @@ Description
 ===========
 
 It is now possible to set up a recurring scheduler task or execute a CLI command
-to clean up local processed files and their respective database records.
+to clean up locally processed files and their database records.
 
 
 Impact
 ======
 
-The command will delete `sys_file_processedfile` records with references on
-non-existing files. Also files in the configured temporary directory
-(typically `_processed_`) will be deleted if there are no references on them.
+The command will delete :sql:`sys_file_processedfile` records with references to
+non-existing files. Also, files in the configured temporary directory
+(typically :file:`_processed_`) will be deleted if there are no references to them.
 
 
 Example

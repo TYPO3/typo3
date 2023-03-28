@@ -23,18 +23,18 @@ alongside the reset link.
 
 .. note::
 
-   Be aware this feature comes with security risks:
+   Be aware, this feature comes with security risks:
 
-   Before, a third-party that gained access to the email account could only
+   Previously, a third-party that gained access to the email account could only
    reset the password of the TYPO3 backend user, but not login if the username
-   is different from the email address.
+   was different to the email address.
 
-   Now, it has all the information needed to login into the TYPO3 backend and
-   potentially cause damage to the website.
+   Now it has all the information needed to login into the TYPO3 backend and
+   potentially could cause damage to the website.
 
    We highly recommend protecting backend accounts using :doc:`MFA <../11.1/Feature-93526-MultiFactorAuthentication>`.
-   
-   It is also possible override the ResetPassword email template to remove
+
+   It is also possible to override the ResetPassword email template to remove
    the username and customize the result.
 
 .. index:: LocalConfiguration, ext:backend

@@ -23,15 +23,15 @@ A webhook is defined as an authorized POST or GET request to a defined URL.
 For example, a webhook can be used to send a notification to a Slack channel
 when a new page is created in TYPO3.
 
-Any webhook record is defined by a unique uid (UUID), a speaking name, an optional
+Any webhook record is defined by a universally unique identifier (UUID), a speaking name, an optional
 description, a trigger, the target URL and a signing-secret.
 Both the unique identifier and the signing-secret are generated in the backend
 when a new webhook is created.
 
-Triggers provided by the TYPO3 core
+Triggers provided by the TYPO3 Core
 -----------------------------------
 
-The TYPO3 core currently provides the following triggers for webhooks:
+The TYPO3 Core currently provides the following triggers for webhooks:
 
 * Page Modification: Triggers when a page is created, updated or deleted
 * File Added: Triggers when a file is added
@@ -41,13 +41,13 @@ The TYPO3 core currently provides the following triggers for webhooks:
 * Redirect Was Hit: Triggers when a redirect has been hit
 
 These triggers are meant as a first set of triggers that can be used to send webhooks,
-further triggers will be added in the future. In most projects however, it's likely
+further triggers will be added in the future. In most projects however, it is likely
 that custom triggers are required.
 
 Custom triggers
 ---------------
 
-Trigger by PSR-14 Events
+Trigger by PSR-14 events
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 Custom triggers can be added by creating a `Message` for an specific PSR-14 event and
@@ -56,7 +56,7 @@ tagging that message as a webhook message.
 The following example shows how to create a simple webhook message for the
 :php:`\TYPO3\CMS\Core\Resource\Event\AfterFolderAddedEvent`:
 
-.. code-block:: php
+..  code-block:: php
 
     namespace TYPO3\CMS\Webhooks\Message;
 
@@ -93,31 +93,34 @@ The following example shows how to create a simple webhook message for the
         }
     }
 
-#. Create a final class implementing the `WebhookMessageInterface`.
-#. Add the :php:`WebhookMessage` attribute to the class. The attribute requires the
-    following information:
+#.  Create a final class implementing `\TYPO3\CMS\Core\Messaging\WebhookMessageInterface`.
+#.  Add the :php:`\TYPO3\CMS\Core\Attribute\WebhookMessage` attribute to the class.
+    The attribute requires the following information:
 
     *   `identifier`: The identifier of the webhook message.
     *   `description`: The description of the webhook message. This description
         is used to describe the trigger in the TYPO3 backend.
-#. Add a static method `createFromEvent` that creates a new instance of the message from the event you want to use as a trigger.
-#. Add a method `jsonSerialize` that returns an array with the data that should be send with the webhook.
+
+#.  Add a static method `createFromEvent()` that creates a new instance of the
+    message from the event you want to use as a trigger.
+#.  Add a method `jsonSerialize()` that returns an array with the data that
+    should be sent with the webhook.
 
 Trigger by hooks or custom code
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In case a trigger is not provided by the TYPO3 core or a PSR-14 event is not available,
-it's possible to create a custom trigger - for example by using a TYPO3 hook.
+In case a trigger is not provided by the TYPO3 Core or a PSR-14 event is not available,
+it is possible to create a custom trigger - for example by using a TYPO3 hook.
 
 The message itself should look similar to the example above, but does not need the
-:php:`createFromEvent` method.
+:php:`createFromEvent()` method.
 
 Instead, the custom code (hook implementation) will create the message
 and dispatch it.
 
-Example hook implementation for a datahandler hook (see :php:`\TYPO3\CMS\Webhooks\Listener\PageModificationListener`):
+Example hook implementation for a DataHandler hook (see :php:`\TYPO3\CMS\Webhooks\Listener\PageModificationListener`):
 
-.. code-example:: php
+..  code-block:: php
 
     public function __construct(
         protected readonly \Symfony\Component\Messenger\MessageBusInterface $bus
@@ -142,14 +145,15 @@ Example hook implementation for a datahandler hook (see :php:`\TYPO3\CMS\Webhook
         $this->bus->dispatch($message);
     }
 
-Use :file:`services.yaml` instead of the PHP attribute
+Use :file:`Services.yaml` instead of the PHP attribute
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Instead of the PHP attribute the :file:`services.yaml` can be used to define the
+Instead of the PHP attribute the :file:`Services.yaml` can be used to define the
 webhook message. The following example shows how to define the webhook message
-from the example above in the :file:`services.yaml`:
+from the example above in the :file:`Services.yaml`:
 
-.. code-block:: yaml
+..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Services.yaml
 
     TYPO3\CMS\Webhooks\Message\FolderAddedMessage:
         tags:
@@ -158,7 +162,7 @@ from the example above in the :file:`services.yaml`:
             description: 'LLL:EXT:webhooks/Resources/Private/Language/locallang_db.xlf:sys_webhook.webhook_type.typo3-folder-added'
 
 
-HTTP Headers of every webhook
+HTTP headers of every webhook
 -----------------------------
 
 With every webhook request, the following HTTP headers are sent:
@@ -176,7 +180,7 @@ Hash calculation
 
 The hash is calculated with the following PHP code:
 
-.. code-block:: php
+..  code-block:: php
 
     $hash = hash_hmac('sha256', sprintf(
         '%s:%s',
@@ -198,27 +202,31 @@ Technical background and advanced usage
 
 The webhook system is based on the Symfony Messenger component. The messages
 are simple PHP objects that implement an interface that denotes
-them as Webhook messages.
+them as webhook messages.
 
-That message is then dispatched to the Symfony Messenger bus. The TYPO3 core
-provides a `WebhookMessageHandler` that is responsible for sending the webhook
-requests to the third-party system if configured to do so. The handler looks up
+That message is then dispatched to the Symfony Messenger bus. The TYPO3 Core
+provides a :php:`\TYPO3\CMS\Webhooks\MessageHandler\WebhookMessageHandler`
+that is responsible for sending the webhook
+requests to the third-party system, if configured to do so. The handler looks up
 the webhook configuration and sends the request to the configured URL.
 
 Messages are sent to the bus in any case. The handler is then responsible for checking
 whether or not an external request (webhook) should be sent.
 
 If advanced request handling is necessary or a custom implementation should be used,
-a custom handler can be created that handles `WebhookMessageInterface`
-messages. See the TYPO3 queue documentation for more information on messages and their
-handlers.
+a custom handler can be created that handles :php:`WebhookMessageInterface`
+messages.
+
+..  seealso::
+    :ref:`More information on messages and their handlers <t3coreapi:message-bus>`
 
 Impact
 ======
 
-The TYPO3 core does now provide a convenient GUI to create and send webhooks to
-third party systems.
-In combination with the system extension `reactions` TYPO3 can now be used as a
+The TYPO3 Core now provides a convenient GUI to create and send webhooks to
+third-party systems.
+In combination with the system extension :doc:`reactions <ext_reactions:Index>`
+TYPO3 can now be used as a
 low-code/no-code integration platform between multiple systems.
 
 .. index:: Backend, Frontend, PHP-API, ext:webhooks

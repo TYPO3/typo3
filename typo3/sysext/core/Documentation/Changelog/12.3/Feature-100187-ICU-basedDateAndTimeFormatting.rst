@@ -17,7 +17,7 @@ the International Components for Unicode standard (ICU).
 TYPO3 previously only supported rendering of dates based on the PHP-native
 functions :php:`date()` and :php:`strftime()`.
 
-However, :php:`date()` can only format dates with english texts, such as
+However, :php:`date()` can only format dates with English texts, such as
 "December" as non-localized values, the C-based :php:`strftime()` function works
 only with the locale defined in PHP and availability in the underlying operating
 system.
@@ -32,7 +32,7 @@ without having to define a custom pattern just by using the SHORT default
 pattern.
 
 In addition, the patterns can be adjusted more fine-grained, and can easily
-deal with TimeZones for output when DateTime objects are handed in.
+deal with time zones for output when DateTime objects are handed in.
 
 TYPO3 also adds prepared custom patterns:
 
@@ -55,13 +55,13 @@ Impact
 A new stdWrap feature called `formattedDate` is added, and the new formatting
 can also be used in Fluid's :html:`<f:format.date>` ViewHelper.
 
-The locale is typically fetched from the Site languages' locale (stdWrap or
-ViewHelper), or the backend users' language (in Backend context) for the
+The locale is typically fetched from the locale of the site language (stdWrap or
+ViewHelper), or the backend user's language (in backend context) for the
 ViewHelper usages.
 
 Examples for stdWrap:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     page.10 = TEXT
     page.10.value = 1998-02-20 3:00:00
@@ -72,7 +72,7 @@ Examples for stdWrap:
 
 will result in "Freitag, 20. Februar 1998 um 03:00:00 Koordinierte Weltzeit".
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     page.10 = TEXT
     page.10.value = -5 days
@@ -83,7 +83,7 @@ will result in "jeudi 9 mars 2023 à 21:40:49 temps universel coordonné".
 
 Examples for Fluid `<f:format.date>` ViewHelper:
 
-.. code-block:: html
+..  code-block:: html
 
     <f:format.date pattern="dd. MMMM yyyy" locale="de-DE">{date}</f:format.date>
 

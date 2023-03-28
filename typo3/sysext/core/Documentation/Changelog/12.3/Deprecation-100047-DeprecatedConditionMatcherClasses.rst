@@ -23,17 +23,17 @@ be removed with v13:
 Impact
 ======
 
-The TYPO3 core only uses these classes within the old TypoScript parser classes,
-which have been deprecated as well. Using the classes will trigger a deprecation
-level log entry.
+The TYPO3 Core only uses these classes within the old TypoScript parser classes,
+which have been :ref:`deprecated <deprecation-99120-1670428555>` as well.
+Using the classes will trigger a deprecation level log entry.
 
 
 Affected installations
 ======================
 
-There was most likely little need do implement own variants of the above classes,
-the underlying :php:`ExpressionLanguage` construct has an own API to add own
-variables and functions for this TypoScript condition related symfony expression
+There was probably little need to implement new variants of the above classes as
+the underlying :php:`ExpressionLanguage` construct has its own API to add new
+variables and functions for this TypoScript condition related to Symfony expression
 language usage.
 
 
@@ -41,7 +41,7 @@ Migration
 =========
 
 No direct migration possible. These classes have been merged into the new
-TypoScript parser approach, specifically to class
+TypoScript parser approach, specifically for class
 :php:`\TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionMatcherVisitor`.
 
 Adding TypoScript related expression language variables and functions should be

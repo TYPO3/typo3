@@ -27,7 +27,7 @@ Calling :js:`getParameterFromUrl()` will trigger a deprecation warning.
 Affected installations
 ======================
 
-All installations using 3rd party extensions relying on the deprecated code are
+All installations using third-party extensions relying on the deprecated code are
 affected.
 
 

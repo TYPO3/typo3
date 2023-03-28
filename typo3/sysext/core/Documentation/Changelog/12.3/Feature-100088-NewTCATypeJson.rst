@@ -34,14 +34,14 @@ The TCA type :php:`json` features the following column configuration:
 - :php:`required`
 - :php:`rows`
 
-.. note::
+..  note::
 
     In case :php:`enableCodeEditor` is set to :php:`true`, which is the default
     and the system extension `t3editor` is installed and active, the JSON value
     is rendered in the corresponding code editor. Otherwise it is rendered in a
     standard `textarea` HTML element.
 
-The following column configuration can be overwritten by Page TSconfig:
+The following column configuration can be overwritten by page TSconfig:
 
 - :typoscript:`cols`
 - :typoscript:`rows`
@@ -52,7 +52,7 @@ The following column configuration can be overwritten by Page TSconfig:
 Impact
 ======
 
-It's now possible to use a dedicated TCA type for rendering of JSON fields.
+It is now possible to use a dedicated TCA type for rendering of JSON fields.
 Using the new TCA type, corresponding database columns are added automatically.
 
 .. index:: Backend, PHP-API, TCA, ext:backend

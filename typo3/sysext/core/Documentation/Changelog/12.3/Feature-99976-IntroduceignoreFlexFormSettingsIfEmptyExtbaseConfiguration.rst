@@ -3,7 +3,7 @@
 .. _feature-99976-1676660028:
 
 ===============================================================================
-Feature: #99976 - Introduce ignoreFlexFormSettingsIfEmpty extbase configuration
+Feature: #99976 - Introduce ignoreFlexFormSettingsIfEmpty Extbase configuration
 ===============================================================================
 
 See :issue:`99976`
@@ -12,10 +12,10 @@ Description
 ===========
 
 It is now possible to exclude empty FlexForm settings from being merged into
-extbase extension settings. Extension authors and integrators can use the new
-extbase TypoScript configuration :typoscript:`ignoreFlexFormSettingsIfEmpty`
-to define FlexForm settings, which will be ignored in the extension settings
-merge process, if their value is considered empty (either an empty string or a
+Extbase extension settings. Extension authors and integrators can use the new
+Extbase TypoScript configuration :typoscript:`ignoreFlexFormSettingsIfEmpty`
+to define FlexForm settings, which will be ignored in the merge process of the
+extension settings, if their value is considered empty (either an empty string or a
 string containing `0`).
 
 In the following example, :xml:`settings.showForgotPassword` and
@@ -44,11 +44,11 @@ configuration.
 
 Extension authors can use the new PSR-14 event
 :php:`\TYPO3\CMS\Extbase\Event\Configuration\BeforeFlexFormConfigurationOverrideEvent`
-to implement a custom extension FlexForm override process based on the original
+to implement a FlexForm override process in a custom extension based on the original
 FlexForm configuration and the framework configuration.
 
-Additionally the new extbase TypoScript configuration is used in EXT:felogin to
-ensure, that empty FlexForm settings are not merged into extension settings.
+Additionally, the new Extbase TypoScript configuration is used in EXT:felogin to
+ensure that empty FlexForm settings are not merged into extension settings.
 
 Event example
 -------------
@@ -58,26 +58,26 @@ Register an event listener in your :file:`Services.yaml` file:
 ..  code-block:: yaml
     :caption: EXT:my_extension/Configuration/Services.yaml
 
-    MyVendor\MyExtension\EventListener\MyCustomBeforeFlexFormConfigurationOverrideEventListener:
+    MyVendor\MyExtension\FlexForm\EventListener\MyEventListener:
       tags:
         - name: event.listener
-          identifier: 'custom-absolute-path'
+          identifier: 'my-extension/custom-absolute-path'
 
 
 Implement the event listener:
 
 ..  code-block:: php
-    :caption: EXT:my_extension/Classes/EventListener/MyCustomBeforeFlexFormConfigurationOverrideEventListener.php
+    :caption: EXT:my_extension/Classes/FlexForm/EventListener/MyEventListener.php
 
     <?php
 
     declare(strict_types=1);
 
-    namespace MyVendor\MyExtension\EventListener;
+    namespace MyVendor\MyExtension\FlexForm\EventListener;
 
     use TYPO3\CMS\Extbase\Event\Configuration\BeforeFlexFormConfigurationOverrideEvent;
 
-    final class MyCustomBeforeFlexFormConfigurationOverrideEventListener
+    final class MyEventListener
     {
         public function __invoke(BeforeFlexFormConfigurationOverrideEvent $event): void
         {
@@ -103,7 +103,7 @@ Impact
 Empty FlexForm extension settings can now conditionally be excluded from the
 FlexForm configuration merge process.
 
-It is now also possible again to use global TypoScript extension settings
+Also, it is now possible again to use global TypoScript extension settings
 in EXT:felogin, which previously might have been overridden by empty FlexForm
 settings.
 

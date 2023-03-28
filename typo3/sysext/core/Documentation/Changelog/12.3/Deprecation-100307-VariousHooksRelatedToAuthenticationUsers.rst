@@ -18,7 +18,7 @@ The following hooks have been marked as deprecated:
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['backendUserLogin']`
 
 They can be used to add notifications or actions to a TYPO3 installation
-after a frontend user or a backend user has been actively logged
+after a frontend user or a backend user has actively logged
 in or logged out.
 
 Impact
@@ -45,5 +45,8 @@ Migrate to the newly introduced PSR-14 events:
 * :php:`\TYPO3\CMS\Core\Authentication\Event\BeforeUserLogoutEvent`
 * :php:`\TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedOutEvent`
 * :php:`\TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent`
+
+..  seealso::
+    :ref:`feature-100307-1679924551`
 
 .. index:: Backend, Frontend, PHP-API, FullyScanned, ext:core

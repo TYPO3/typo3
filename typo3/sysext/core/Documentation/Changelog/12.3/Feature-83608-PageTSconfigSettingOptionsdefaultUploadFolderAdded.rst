@@ -2,9 +2,9 @@
 
 .. _feature-83608-1668162306:
 
-==========================================================================
-Feature: #83608 - PageTSconfig setting "options.defaultUploadFolder" added
-==========================================================================
+===========================================================================
+Feature: #83608 - Page TSconfig setting "options.defaultUploadFolder" added
+===========================================================================
 
 See :issue:`83608`
 
@@ -18,7 +18,7 @@ Impact
 ======
 
 Identical to the user TSconfig setting :typoscript:`options.defaultUploadFolder`,
-this allows setting a default upload folder per page.
+this allows default upload folder per page to be set.
 
 If specified and the given folder exists, this setting will override the value
 defined in user TSconfig.

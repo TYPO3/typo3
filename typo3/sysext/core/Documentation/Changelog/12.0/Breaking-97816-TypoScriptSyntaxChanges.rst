@@ -157,20 +157,20 @@ Integrators are encouraged to switch from :typoscript:`<INCLUDE_TYPOSCRIPT:` to
 :typoscript:`@import` in TYPO3 v12 projects: The :typoscript:`<INCLUDE_TYPOSCRIPT:`
 is more complex and harder to handle, but a bit more permissive. Note :typoscript:`@import`
 can be placed within conditions bodies now: :typoscript:`@import` lines are only considered
-if the condition matches. This did not work with TYPO3 v11. It is likely the
+if the condition matches. This did not work with TYPO3 v11. It is likely that
 :typoscript:`<INCLUDE_TYPOSCRIPT:` will be deprecated with TYPO3 v13, integrators
 should adapt to :typoscript:`@import` when upgrading to TYPO3 v12 already.
 
 The following rules apply to :typoscript:`@import`:
 
-* Files *must* reside in extensions, the lookup pattern *must* start with ::typoscript:`EXT`
-  if absolute. Including TypoScript snippets for instance from :file:`fileadmin` is *not* allowed
+* Files *must* reside in extensions, the lookup pattern *must* start with :typoscript:`EXT`
+  if absolute. Including TypoScript snippets, for instance, from :file:`fileadmin` is *not* allowed
   and never has been for :typoscript:`@import`.
 
 * File includes *may* be relative to the current file, and *must* be prefixed with :file:`./`
-  in this case. Sub directories are allowed, path traversal using :file:`../` is not allowed.
+  in this case. Subdirectories are allowed, path traversal using :file:`../` is not allowed.
 
-* Files *must* end with :file:`.typoscript` in Frontend TypoScript. With TSconfig, both
+* Files *must* end with :file:`.typoscript` in frontend TypoScript. With TSconfig, both
   :file:`.tsconfig` and :file:`.typoscript` are allowed, but :file:`.tsconfig` should be
   preferred.
 
@@ -186,7 +186,7 @@ The following rules apply to :typoscript:`@import`:
 
 Valid examples:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     @import 'EXT:my_extension/Configuration/TypoScript/bar.typoscript'
 
@@ -212,7 +212,7 @@ Valid examples:
 
 Invalid examples:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     # fileadmin and friends not allowed
     @import 'fileadmin/foo.typoscript'

@@ -11,7 +11,7 @@ See :issue:`100093`
 Description
 ===========
 
-To ease the usage of `group` fields in the FormEngine like e.g. in the
+To ease the usage of `group` fields in the FormEngine, for example, like in the
 "Insert records" content element, the record overview now shows the path to the
 location where each assigned record is stored, respectively.
 

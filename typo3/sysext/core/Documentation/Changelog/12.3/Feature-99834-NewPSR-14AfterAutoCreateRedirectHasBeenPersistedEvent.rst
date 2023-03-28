@@ -66,7 +66,7 @@ The corresponding event listener class:
 Impact
 ======
 
-With the new :php:`AfterAutoCreateRedirectHasBeenPersistedEvent`, it's now possible
+With the new :php:`AfterAutoCreateRedirectHasBeenPersistedEvent`, it is now possible
 to react on persisted auto-created redirects. Manually created redirects can be handled
 by using one of the available :php:`\TYPO3\CMS\Core\DataHandling\DataHandler` hooks,
 not suitable for auto-created redirects.

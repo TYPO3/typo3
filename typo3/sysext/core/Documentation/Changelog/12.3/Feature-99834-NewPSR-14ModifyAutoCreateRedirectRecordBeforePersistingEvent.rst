@@ -13,8 +13,8 @@ Description
 
 A new PSR-14 :php:`\TYPO3\CMS\Redirects\Event\ModifyAutoCreateRedirectRecordBeforePersistingEvent`
 is introduced, allowing extension authors to modify the redirect record before it is persisted to
-the database. This can be used to change values based on circumstances like e.g.
-different sub tree settings, not covered by core site configuration. Another use-case
+the database. This can be used to change values based on circumstances, for example, like
+different sub tree settings, not covered by the Core site configuration. Another use-case
 could be to write data to additional :sql:`sys_redirect` columns added by a custom
 extension for later use.
 
@@ -28,7 +28,7 @@ Example:
 --------
 
 ..  code-block:: yaml
-    :caption: my_extension/Configuration/Services.yaml
+    :caption: EXT:my_extension/Configuration/Services.yaml
 
     MyVendor\MyExtension\Redirects\MyEventListener:
       tags:
@@ -38,7 +38,7 @@ Example:
 The corresponding event listener class:
 
 ..  code-block:: php
-    :caption: my_extension/Classes/Redirects/MyEventListener.php
+    :caption: EXT:my_extension/Classes/Redirects/MyEventListener.php
 
     namespace MyVendor\MyExtension\Redirects;
 
@@ -77,9 +77,9 @@ The corresponding event listener class:
 Impact
 ======
 
-With the new :php:`ModifyAutoCreateRedirectRecordBeforePersistingEvent`, it's now
+With the new :php:`ModifyAutoCreateRedirectRecordBeforePersistingEvent`, it is now
 possible to modify the auto-create redirect record before it is persisted to the database.
-Manually created redirects or updated redirects can be handled by using the well known
+Manually created redirects or updated redirects can be handled by using the well-known
 :php:`\TYPO3\CMS\Core\DataHandling\DataHandler` and the available hooks.
 
 .. index:: PHP-API, ext:redirects

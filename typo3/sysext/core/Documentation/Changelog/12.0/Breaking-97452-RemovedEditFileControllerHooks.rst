@@ -33,9 +33,9 @@ Migration
 =========
 
 The form data modification, allowed by :php:`preOutputProcessingHook`, can be
-achieved with the new :doc:`PSR-14 ModifyEditFileFormDataEvent <Feature-98521-PSR-14EventToModifyFormDataForEditFileForm>`.
+achieved with the new :ref:`PSR-14 ModifyEditFileFormDataEvent <feature-98521-1664890745>`.
 
 The content manipulation :php:`postOutputProcessingHook` hook can be substituted with a template override
-as outlined in :doc:`this changelog entry <Feature-96812-OverrideBackendTemplatesWithTSconfig>`.
+as outlined in :ref:`this changelog entry <feature-96812>`.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

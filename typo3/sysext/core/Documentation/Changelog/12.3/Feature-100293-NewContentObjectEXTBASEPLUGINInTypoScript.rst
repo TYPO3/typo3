@@ -16,7 +16,7 @@ a custom ContentObject in TypoScript called :typoscript:`EXTBASEPLUGIN`.
 
 Previously, TypoScript code for Extbase plugins looked like this:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     page.10 = USER
     page.10 {
@@ -25,10 +25,10 @@ Previously, TypoScript code for Extbase plugins looked like this:
         pluginName = cart
     }
 
-The new way, which Extbase Plugin Registration uses under the hood now, looks
+The new way, which Extbase plugin registration uses under the hood now, looks
 like this:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     page.10 = EXTBASEPLUGIN
     page.10.extensionName = shop
@@ -45,7 +45,7 @@ Impact
 This change is an effort to distinguish between plugins and regular other
 more static content.
 
-Extbase is the de-facto standard for Plugins, which serve dynamic content by
+Extbase is the de-facto standard for plugins, which serve dynamic content by
 custom PHP code divided in controllers and actions by extension developers.
 
 Regular other content can be written in pure TypoScript, such as ContentObjects

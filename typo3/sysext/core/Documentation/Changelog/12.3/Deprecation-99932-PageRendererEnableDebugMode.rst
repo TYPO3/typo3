@@ -16,15 +16,15 @@ in TYPO3 v13:
 
 *   :php:`\TYPO3\CMS\Core\Page\PageRenderer::enableDebugMode()`
 
-The method acts as as shortcut to quickly disable some functions in backend
+The method acts as as shortcut to quickly disable some functions in the backend
 context to ease output inspection. However, the properties set by the
-method are ignored in backend context anyways, the method is obsolete.
+method are ignored in the backend context anyway, the method is obsolete.
 
 Impact
 ======
 
 Using the method will raise a deprecation level log entry and will stop
-working with TYPO3 v13.
+working in TYPO3 v13.
 
 
 Affected installations
@@ -32,7 +32,7 @@ Affected installations
 
 Instances with extensions that call the method are affected.
 
-The extension scanner reports usages as weak match.
+The extension scanner reports usages as a weak match.
 
 
 Migration

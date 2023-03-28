@@ -11,14 +11,14 @@ See :issue:`100143`
 Description
 ===========
 
-The Scheduler module cli command :shell:`scheduler:run` offers a way to run a
+The CLI command :bash:`scheduler:run` of EXT:scheduler offers a way to run a
 task using a cronjob. It also allows to run tasks if the UID of the task
 is known.
 
-To make it more convenient to use the command, :shell:`scheduler:list` and
-:shell:`scheduler:execute` were introduced.
+To make it more convenient to use the command, :bash:`scheduler:list` and
+:bash:`scheduler:execute` were introduced.
 
-The :shell:`scheduler:list` command shows an overview of all available tasks or
+The :bash:`scheduler:list` command shows an overview of all available tasks or
 a given group with an option to watch and reload the list every X seconds
 (default every 1 second).
 
@@ -36,7 +36,7 @@ Example:
     vendor/bin/typo3 scheduler:list -g 0 -w 2
 
 
-The :shell:`scheduler:execute` command displays a list of groups and available
+The :bash:`scheduler:execute` command displays a list of groups and available
 tasks for the selection. If a group is selected all tasks within this group are
 executed.
 
@@ -53,7 +53,7 @@ Example:
 Impact
 ======
 
-The new commands :shell:`scheduler:list` and :shell:`scheduler:execute`  enable
+The new commands :bash:`scheduler:list` and :bash:`scheduler:execute` enable
 the user to manage and run tasks without leaving the terminal.
 
 .. index:: Backend, ext:scheduler

@@ -24,7 +24,7 @@ level log entry. A TCA migration is in place.
 Affected installations
 ======================
 
-All installations having custom extensions, that make use of the TCA types
+All installations having custom extensions that make use of TCA types
 :php:`select`, :php:`radio` or :php:`check` and define at least one entry in
 the :php:`items` array.
 
@@ -32,9 +32,9 @@ itemsProcFunc
 _____________
 
 The :php:`items` array handed over to custom :php:`itemsProcFunc` functions
-contains a new object type :php:`TYPO3\CMS\Core\Schema\Struct\SelectionItem`,
+contains the new object type :php:`TYPO3\CMS\Core\Schema\Struct\SelectionItem`
 which acts as a compatibility layer for old style indexed keys. Accessing,
-writing and reading items still works in the old manner. Added items will be
+writing and reading items still work in the old way. Added items will be
 automatically converted. For third-party extensions supporting both TYPO3 v11
 (or lower) and v12 it is recommended to keep using indexed keys.
 

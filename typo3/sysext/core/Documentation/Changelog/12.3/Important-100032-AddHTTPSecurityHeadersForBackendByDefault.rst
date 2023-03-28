@@ -19,15 +19,15 @@ backend:
 * `X-Content-Type-Options: nosniff`
 * `Referrer-Policy: strict-origin-when-cross-origin`
 
-The default HTTP security headers are globally configured in
+The default HTTP security headers are configured globally in
 `$GLOBALS['TYPO3_CONF_VARS']['BE']['HTTP']['Response']['Headers']` and include
 a unique array key, so it is possible to individually unset/remove unwanted
 headers.
 
-.. important::
+..  important::
 
-   TYPO3 websites, which already use custom HTTP headers for the TYPO3 backend,
-   must ensure that individual HTTP security headers are not sent multiple
-   times.
+    TYPO3 websites, which already use custom HTTP headers for the TYPO3 backend,
+    must ensure that individual HTTP security headers are not sent multiple
+    times.
 
 .. index:: Backend, ext:backend

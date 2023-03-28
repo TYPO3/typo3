@@ -11,7 +11,7 @@ See :issue:`100071`
 Description
 ===========
 
-Extbase repositories come with a magic :php:`__call()`-method to allow calling
+Extbase repositories come with a magic :php:`__call()` method to allow calling
 the following methods without implementing:
 
 - :php:`findBy[PropertyName]($propertyValue)`
@@ -22,13 +22,13 @@ Magic methods are quite handy but they have a huge disadvantage. There is no
 proper IDE support i.e. most IDEs show an error or at least a warning,
 saying method :php:`findByAuthor()` does not exist. Also, type declarations are
 impossible to use because with :php:`__call()` everything is :php:`mixed`. And
-last but not least, static code analysis - like phpstan - cannot properly
-analyse those and give meaningful errors.
+last but not least, static code analysis - like PHPStan - cannot properly
+analyze those and give meaningful errors.
 
 Therefore, there is a new set of methods without all those downsides:
 
 - :php:`findBy(array $criteria, ...): QueryResultInterface`
-- :php:`findOneBy(array $criteria, ...):object|null`
+- :php:`findOneBy(array $criteria, ...): object|null`
 - :php:`count(array $criteria, ...): int`
 
 The naming of those methods follows those of `doctrine/orm` and only
@@ -38,14 +38,14 @@ those methods allow for multiple comparisons, called constraints.
 
 Example:
 
-.. code-block:: php
+..  code-block:: php
 
     $this->blogRepository->findBy(['author' => 1, 'published' => true]);
 
 Impact
 ======
 
-Those new methods support a broader feature set, support IDEs, static code
-analysers and type declarations.
+The new methods support a broader feature set, support IDEs, static code
+analyzers and type declarations.
 
 .. index:: PHP-API, NotScanned, ext:extbase

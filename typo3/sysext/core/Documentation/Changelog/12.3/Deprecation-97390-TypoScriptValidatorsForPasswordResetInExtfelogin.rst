@@ -15,13 +15,13 @@ The TypoScript password validation configured through
 :typoscript:`plugin.tx_felogin_login.settings.passwordValidators` has been
 marked as deprecated.
 
-The TypoScript validators are used, when the feature toggle
+The TypoScript validators are used when the feature toggle
 `security.usePasswordPolicyForFrontendUsers` is set to `false` (default for
 existing TYPO3 installations).
 
-An update wizard will ask the user during the TYPO3 update,
-if `security.usePasswordPolicyForFrontendUsers` should be activated or if
-deprecated TypoScript validators should be used.
+An upgrade wizard will ask the user during the TYPO3 upgrade
+if `security.usePasswordPolicyForFrontendUsers` should be activated or, if
+deprecated, TypoScript validators should be used.
 
 Impact
 ======
@@ -46,7 +46,7 @@ must be migrated to a custom password policy validator as described
 in :ref:`#97388 <feature-97388>`.
 
 Before creating a custom password policy validator, it is recommended to
-evaluate, if the :php:`CorePasswordValidator` used in the default password
+check if the :php:`CorePasswordValidator` used in the default password
 policy suits current password requirements.
 
 .. index:: Frontend, NotScanned, ext:felogin

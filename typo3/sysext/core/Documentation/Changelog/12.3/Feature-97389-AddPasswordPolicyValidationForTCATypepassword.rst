@@ -11,18 +11,18 @@ See :issue:`97389`
 Description
 ===========
 
-It is now possible to assign a password policy to TCA fields of the type
+It is now possible to assign a password policy to TCA fields of type
 `password`. For configured fields, the password policy validator will be used
-in `DataHandler` to ensure, that the new password comply with the configured
+in `DataHandler` to ensure that the new password complies with the configured
 password policy.
 
-Password policy requirements are shown below the password field, when the focus
+Password policy requirements are shown below the password field when the focus
 is changed to the password field.
 
-The TCA field `password` for the tables `be_users` and `fe_users` does now by
-default use the password policy configured in
-`$GLOBALS['TYPO3_CONF_VARS']['FE']['passwordPolicy']` (fe_users) or
-`$GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy']` (be_users).
+The TCA field `password` for tables :sql:`be_users` and :sql:`fe_users` uses
+now by default the password policy configured in
+:php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['passwordPolicy']` (fe_users) or
+:php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy']` (be_users).
 
 Example configuration
 ---------------------
@@ -43,6 +43,6 @@ Impact
 ======
 
 For TYPO3 frontend and backend users, the global password policy is used. A
-new password is not saved, if it does not comply with the password policy.
+new password is not saved if it does not comply with the password policy.
 
 .. index:: Backend, ext:core

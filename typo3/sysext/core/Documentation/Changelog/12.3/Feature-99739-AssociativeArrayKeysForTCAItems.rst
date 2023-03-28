@@ -95,7 +95,7 @@ Impact
 It is now much easier and clearer to define the TCA :php:`items` configuration
 with associative array keys. The struggle to remember which option is first,
 label or value, is now over. In addition, optional keys like :php:`icon` and
-:php:`group` can be omitted, when one for example desires to set the
+:php:`group` can be omitted, for example, when one desires to set the
 :php:`description` option.
 
 .. index:: TCA, ext:backend

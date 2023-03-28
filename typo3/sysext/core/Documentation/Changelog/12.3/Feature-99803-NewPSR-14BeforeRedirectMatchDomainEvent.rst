@@ -12,7 +12,7 @@ Description
 ===========
 
 A new PSR-14 event :php:`\TYPO3\CMS\Redirects\Event\BeforeRedirectMatchDomainEvent`
-is introduced to the RedirectService, allowing extension authors to implement a
+is introduced to the :php:`\TYPO3\CMS\Redirects\Service\RedirectService`, allowing extension authors to implement a
 custom redirect matching upon the loaded redirects or return matched redirect
 record from other sources.
 
@@ -31,7 +31,7 @@ This event features following methods:
 ..  note::
 
     Full :sql:`sys_redirect` record must be set using `setMatchedRedirect()` method.
-    Otherwise later core code would fail, as it expects e.g. the uid of the record
+    Otherwise later Core code would fail, as it expects, for example, the uid of the record
     to set the `X-Redirect-By` response header. Therefore, the `getMatchedRedirect()`
     method returns null or a full :sql:`sys_redirect` record.
 
@@ -40,7 +40,7 @@ This event features following methods:
     The :php:`BeforeRedirectMatchDomainEvent` is dispatched before cached redirects
     are retrieved. That means, that the event does not contain any :sql:`sys_redirect`
     records. Internal redirect cache may vanish eventually if possible. Therefore,
-    it's left out to avoid a longer bound state to the event by properly deprecate it.
+    it is left out to avoid a longer bound state to the event by properly deprecate it.
 
 Example:
 --------

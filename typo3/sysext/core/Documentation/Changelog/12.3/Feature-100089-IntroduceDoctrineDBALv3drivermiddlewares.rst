@@ -16,7 +16,7 @@ middlewares act as a decorator around the actual `Driver` component.
 Subsequently, the `Connection`, `Statement` and `Result` components can be
 decorated as well. These middlewares must implement the
 :php:`\Doctrine\DBAL\Driver\Middleware` interface.
-A common use case would be a middleware for implementing sql logging capabilities.
+A common use case would be a middleware for implementing SQL logging capabilities.
 
 For more information on driver middlewares,
 see https://www.doctrine-project.org/projects/doctrine-dbal/en/current/reference/architecture.html.
@@ -34,5 +34,8 @@ Registering a new driver middleware
 
 Impact
 ======
+
+Using custom middlewares allows to enhance the functionality of Doctrine
+components.
 
 .. index:: Database, ext:core

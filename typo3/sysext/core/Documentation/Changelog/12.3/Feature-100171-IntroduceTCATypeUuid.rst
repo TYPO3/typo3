@@ -24,27 +24,27 @@ The TCA type :php:`uuid` features the following column configuration:
 - :php:`size`
 - :php:`version`
 
-.. note::
+..  note::
 
     In case :php:`enableCopyToClipboard` is set to :php:`true`, which is the
     default, a button is rendered next to the input field, which allows to copy
-    the UUID to the operating system's clipboard.
+    the UUID to the clipboard of the operating system.
 
-.. note::
+..  note::
 
-    The :php:`version` option defines the uuid version to be used. Allowed
+    The :php:`version` option defines the UUID version to be used. Allowed
     values are `4`, `6` or `7`. The default is `4`. For more information
     about the different versions, have a look at the corresponding
     `symfony documentation`_.
 
-The following column configuration can be overwritten by Page TSconfig:
+The following column configuration can be overwritten by page TSconfig:
 
 - :typoscript:`size`
 - :typoscript:`enableCopyToClipboard`
 
 An example configuration looks like the following:
 
-.. code-block:: php
+..  code-block:: php
 
     'identifier' => [
         'label' => 'My record identifier',
@@ -57,7 +57,7 @@ An example configuration looks like the following:
 Impact
 ======
 
-It's now possible to use a dedicated TCA type for rendering of a UUID field.
+It is now possible to use a dedicated TCA type for rendering of a UUID field.
 Using the new TCA type, corresponding database columns are added automatically.
 
 .. _symfony documentation: https://symfony.com/doc/current/components/uid.html#uuids

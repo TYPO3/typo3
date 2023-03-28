@@ -12,7 +12,7 @@ Description
 ===========
 
 The usage of :php:`$GLOBALS['TBE_STYLES']['stylesheet']` and
-:php:`$GLOBALS['TBE_STYLES']['stylesheet2']` to add a custom CSS files
+:php:`$GLOBALS['TBE_STYLES']['stylesheet2']` to add custom CSS files
 to the TYPO3 backend has been marked as deprecated in TYPO3 v12 and will be
 removed in TYPO3 v13.
 
@@ -55,6 +55,6 @@ Example
     $GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets']['my_extension'] = 'EXT:my_extension/Resources/Public/Css';
 
 In the example above, all CSS files in the configured directory will be loaded
-in TYPO3 Backend.
+in TYPO3 backend.
 
 .. index:: Backend, FullyScanned, ext:backend

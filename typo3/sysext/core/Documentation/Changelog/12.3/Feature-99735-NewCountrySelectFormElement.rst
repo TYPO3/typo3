@@ -3,7 +3,7 @@
 .. _feature-99735-1678701694:
 
 =================================================
-Feature: #99735 - New Country Select Form Element
+Feature: #99735 - New Country Select form element
 =================================================
 
 See :issue:`99735`
@@ -11,10 +11,10 @@ See :issue:`99735`
 Description
 ===========
 
-Since :issue:`99618`, TYPO3 provides a list of countries, together with an API
-and a Fluid form viewhelper. A new "Country select" form element has now been
-added to the TYPO3 Form Framework for easily creating a country select in a
-form. The new form element features a couple of configuration options, which
+Since :ref:`feature-99618-1674063182`, TYPO3 provides a list of countries, together with an API
+and a Fluid form ViewHelper. A new "Country select" form element has now been
+added to the TYPO3 Form Framework for creating a country select in a form
+easily. The new form element features a couple of configuration options, which
 can either be configured via the :guilabel:`Forms` module or directly in the
 corresponding YAML file.
 
@@ -32,7 +32,7 @@ element in the frontend.
 Impact
 ======
 
-With the new "Country select" form element is now available in the Form
+The new "Country select" form element is now available in the Form
 Framework with a couple of specific configuration options.
 
 .. index:: ext:form
