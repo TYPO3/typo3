@@ -224,8 +224,10 @@ class TranslationStatusController extends InfoModuleController
                         } else {
                             $pageModuleLink = $info;
                         }
+                        $icon = $this->iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL);
+                        $iconMarkup = '<span title="' . BackendUtility::getRecordIconAltText($row, 'pages') . '">' . $icon->render() . '</span>';
                         $tCells[] = '<td class="' . $status . ' col-border-left">' .
-                            BackendUtility::wrapClickMenuOnIcon($tree->getIcon($row), 'pages', (int)$row['uid']) .
+                            BackendUtility::wrapClickMenuOnIcon($iconMarkup, 'pages', (int)$row['uid']) .
                             $pageModuleLink .
                             '</td>';
                         // Edit whole record:

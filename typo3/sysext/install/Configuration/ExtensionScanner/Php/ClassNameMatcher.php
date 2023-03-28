@@ -2268,4 +2268,14 @@ return [
             'Deprecation-100237-TypoScriptRelatedExceptions.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Tree\View\BrowseTreeView' => [
+        'restFiles' => [
+            'Deprecation-100237-TypoScriptRelatedExceptions.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView' => [
+        'restFiles' => [
+            'Deprecation-100454-LegacyTreeImplementations.rst',
+        ],
+    ],
 ];

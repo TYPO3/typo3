@@ -456,10 +456,12 @@ class PermissionController
 
         // Create the tree from $this->id
         if ($this->id) {
-            $tree->tree[] = ['row' => $this->pageInfo, 'HTML' => '', 'icon' => $tree->getIcon($this->pageInfo)];
+            $icon = $this->iconFactory->getIconForRecord('pages', $this->pageInfo, Icon::SIZE_SMALL);
         } else {
-            $tree->tree[] = ['row' => $this->pageInfo, 'HTML' => '', 'icon' => $tree->getRootIcon($this->pageInfo)];
+            $icon = $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL);
         }
+        $iconMarkup = '<span title="' . BackendUtility::getRecordIconAltText($this->pageInfo, 'pages') . '">' . $icon->render() . '</span>';
+        $tree->tree[] = ['row' => $this->pageInfo, 'HTML' => '', 'icon' => $iconMarkup];
         $tree->getTree($this->id, $this->depth);
 
         return $tree->tree;

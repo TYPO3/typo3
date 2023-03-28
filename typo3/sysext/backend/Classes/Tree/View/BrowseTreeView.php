@@ -23,9 +23,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Generate a page-tree, browsable.
+ * @deprecated not needed anymore, will be removed in TYPO3 v13.0
  */
 class BrowseTreeView extends AbstractTreeView
 {
+    public function __construct()
+    {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v13, as Tree implementations should be built with Web Components', E_USER_DEPRECATED);
+        parent::__construct();
+    }
+
     /**
      * Initialize, setting what is necessary for browsing pages.
      * Using the current user.

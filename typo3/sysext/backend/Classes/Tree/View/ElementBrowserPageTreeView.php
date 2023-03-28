@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  * Class which generates the selectable page tree
  *
  * Browsable tree, used in PagePositionMaps (move elements), the Link Wizard and the Database Browser (for which it will be extended)
+ * @deprecated not needed anymore, will be removed in TYPO3 v13.0
  */
 class ElementBrowserPageTreeView extends BrowseTreeView
 {
@@ -42,6 +43,7 @@ class ElementBrowserPageTreeView extends BrowseTreeView
      */
     public function __construct()
     {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v13, as Tree implementations should be built with Web Components', E_USER_DEPRECATED);
         parent::__construct();
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 

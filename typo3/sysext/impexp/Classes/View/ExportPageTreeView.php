@@ -77,7 +77,7 @@ class ExportPageTreeView extends AbstractTreeView
      */
     public function getTitleAttrib($row)
     {
-        return BackendUtility::titleAttribForPages($row, '1=1 ' . $this->clause, false);
+        return BackendUtility::titleAttribForPages($row, '1=1 ', false);
     }
 
     /**
@@ -141,7 +141,8 @@ class ExportPageTreeView extends AbstractTreeView
                 'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
                 'uid' => 0,
             ];
-            $rootHtml = $this->getRootIcon($rootRecord);
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            $rootHtml = $iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render();
         }
 
         $this->tree[] = [

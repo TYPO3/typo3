@@ -41,12 +41,14 @@ abstract class AbstractTreeView
     // Holds the current script to reload to.
     /**
      * @var string
+     * @deprecated will be removed in TYPO3 v13.0.
      */
     public $thisScript = '';
 
     // Used if the tree is made of records (not folders for ex.)
     /**
      * @var string
+     * @internal since TYPO3 v12 will be marked as protected in TYPO3 v13.0.
      */
     public $title = 'no title';
 
@@ -55,6 +57,7 @@ abstract class AbstractTreeView
      * Done by default in init()
      *
      * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|string
+     * @deprecated will be removed in TYPO3 v13.0 as it is not in use anymore.
      */
     public $BE_USER = '';
 
@@ -63,6 +66,7 @@ abstract class AbstractTreeView
      * Leave blank if data comes from an array.
      *
      * @var string
+     * @internal since TYPO3 v12 will be marked as protected in TYPO3 v13.0.
      */
     public $table = 'pages';
 
@@ -70,6 +74,7 @@ abstract class AbstractTreeView
      * Defines the field of $table which is the parent id field (like pid for table pages).
      *
      * @var string
+     * @internal since TYPO3 v12 will be marked as protected in TYPO3 v13.0.
      */
     public $parentField = 'pid';
 
@@ -78,6 +83,7 @@ abstract class AbstractTreeView
      *
      * @see init()
      * @var string
+     * @internal since TYPO3 v12, will be marked as protected in TYPO3 v13.0.
      */
     public $clause = '';
 
@@ -86,6 +92,7 @@ abstract class AbstractTreeView
      *
      * @see init()
      * @var string
+     * @internal since TYPO3 v12, will be marked as protected in TYPO3 v13.0.
      */
     public $orderByFields = '';
 
@@ -95,6 +102,7 @@ abstract class AbstractTreeView
      *
      * @see addField()
      * @var array
+     * @internal since TYPO3 v12, will be marked as protected in TYPO3 v13.0.
      */
     public $fieldArray = [
         'uid',
@@ -121,6 +129,7 @@ abstract class AbstractTreeView
      *
      * @see addField()
      * @var string
+     * @internal since TYPO3 v12, will be marked as protected in TYPO3 v13.0.
      */
     public $defaultList = 'uid,pid,tstamp,sorting,deleted,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,crdate';
 
@@ -172,14 +181,24 @@ abstract class AbstractTreeView
     public function __construct()
     {
         $this->title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
-        $this->determineScriptUrl();
+
+        // @deprecated Copied from determineScriptUrl() to be able to trigger a deprecation entry. Remove in v13.0!
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ($route = $GLOBALS['TYPO3_REQUEST']->getAttribute('route')) instanceof Route
+        ) {
+            $this->thisScript = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoutePath(
+                $route->getPath()
+            );
+        }
     }
 
     /**
      * Sets the script url depending on being a module or script request
+     * @deprecated will be removed in TYPO3 v13.0.
      */
     protected function determineScriptUrl()
     {
+        trigger_error(__CLASS__ . '->' . __METHOD__ . ' will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ($route = $GLOBALS['TYPO3_REQUEST']->getAttribute('route')) instanceof Route
         ) {
@@ -191,6 +210,8 @@ abstract class AbstractTreeView
 
     /**
      * @return string
+     * @deprecated will be removed in TYPO3 v13.0. No deprecation is thrown due to
+     *             a usage in ElementBrowserPageTreeView (which is also deprecated).
      */
     protected function getThisScript()
     {
@@ -271,7 +292,7 @@ abstract class AbstractTreeView
      * @param string $bMark If set, the link will have an anchor point (=$bMark) and a name attribute (=$bMark)
      * @param bool $isOpen
      * @return string Link-wrapped input string
-     * @internal
+     * @internal since TYPO3 v12, will be marked as protected in TYPO3 v13.0.
      */
     public function PM_ATagWrap($bMark = '', $isOpen = false)
     {
@@ -296,9 +317,11 @@ abstract class AbstractTreeView
      * @param string $icon Icon image tag
      * @param string $attr Attributes to add, eg. ' border="0"'
      * @return string Image tag, modified with $attr attributes added.
+     * @deprecated will be removed in TYPO3 v13.0.
      */
     public function addTagAttributes($icon, $attr)
     {
+        trigger_error(__CLASS__ . '->' . __METHOD__ . ' will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
         return preg_replace('/ ?\\/?>$/', '', $icon) . ' ' . $attr . ' />';
     }
 
@@ -332,9 +355,11 @@ abstract class AbstractTreeView
      *
      * @param array $rec Record for root.
      * @return string Icon image tag.
+     * @deprecated will be removed in TYPO3 v13.0.
      */
     public function getRootIcon($rec)
     {
+        trigger_error(__CLASS__ . '->' . __METHOD__ . ' will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         return $iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render();
     }
@@ -344,6 +369,7 @@ abstract class AbstractTreeView
      *
      * @param array $row The row to get the icon for
      * @return string The icon markup, wrapped into a span tag, with the records title as title attribute
+     * @internal since TYPO3 v12, will be marked as protected in TYPO3 v13.0.
      */
     public function getIcon(array $row): string
     {
@@ -360,6 +386,7 @@ abstract class AbstractTreeView
      * @param array $row The input row array (where the key "title" is used for the title)
      * @param int $titleLen Title length (30)
      * @return string The title.
+     * @internal since TYPO3 v12, will be marked as protected in TYPO3 v13.0.
      */
     public function getTitleStr($row, $titleLen = 30)
     {
@@ -372,6 +399,7 @@ abstract class AbstractTreeView
      *
      * @param array $row The input row array (where the key "title" is used for the title)
      * @return string The attribute value (is htmlspecialchared() already)
+     * @internal since TYPO3 v12, will be marked as protected in TYPO3 v13.0.
      */
     public function getTitleAttrib($row)
     {
@@ -504,9 +532,11 @@ abstract class AbstractTreeView
      * Returns root record for uid (<=0)
      *
      * @return array Array with title/uid keys with values of $this->title/0 (zero)
+     * @deprecated will be removed in TYPO3 v13.0.
      */
     public function getRootRecord()
     {
+        trigger_error(__CLASS__ . '->' . __METHOD__ . ' will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
         return ['title' => $this->title, 'uid' => 0];
     }
 
