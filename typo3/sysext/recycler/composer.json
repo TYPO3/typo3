@@ -19,7 +19,7 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-core": "12.3.0"
+		"typo3/cms-core": "12.4.*@dev"
 	},
 	"suggest": {
 		"typo3/cms-scheduler": "Remove deleted records after given time"
@@ -29,7 +29,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-main": "12.3.x-dev"
+			"dev-main": "12.4.x-dev"
 		},
 		"typo3/cms": {
 			"extension-key": "recycler"

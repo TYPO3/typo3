@@ -24,16 +24,16 @@
 		"nikic/php-parser": "^4.15.1",
 		"symfony/finder": "^6.2",
 		"symfony/http-foundation": "^6.2",
-		"typo3/cms-core": "12.3.0",
-		"typo3/cms-extbase": "12.3.0",
-		"typo3/cms-fluid": "12.3.0"
+		"typo3/cms-core": "12.4.*@dev",
+		"typo3/cms-extbase": "12.4.*@dev",
+		"typo3/cms-fluid": "12.4.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-main": "12.3.x-dev"
+			"dev-main": "12.4.x-dev"
 		},
 		"typo3/cms": {
 			"Package": {
