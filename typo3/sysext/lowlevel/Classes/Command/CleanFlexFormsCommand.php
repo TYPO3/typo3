@@ -155,7 +155,7 @@ class CleanFlexFormsCommand extends Command
                     );
                     if (is_array($versions)) {
                         foreach ($versions as $verRec) {
-                            if (!($verRec['_CURRENT_VERSION'] ?? false)) {
+                            if (!isset($verRec['_CURRENT_VERSION'])) {
                                 // Traverse flexforms
                                 $dirtyFlexFormFields = $this->compareAllFlexFormsInRecord($tableName, $verRec['uid'], $dirtyFlexFormFields);
                             }
@@ -192,7 +192,7 @@ class CleanFlexFormsCommand extends Command
             $versions = BackendUtility::selectVersionsOfRecord('pages', $pageId, 'uid,t3ver_oid,t3ver_wsid', null, true);
             if (is_array($versions)) {
                 foreach ($versions as $verRec) {
-                    if (!($verRec['_CURRENT_VERSION'] ?? false)) {
+                    if (!isset($verRec['_CURRENT_VERSION'])) {
                         $dirtyFlexFormFields = $this->findAllDirtyFlexformsInPage($verRec['uid'], $depth, $dirtyFlexFormFields);
                     }
                 }
