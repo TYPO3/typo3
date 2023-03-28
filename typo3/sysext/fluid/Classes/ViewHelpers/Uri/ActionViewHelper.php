@@ -73,22 +73,17 @@ final class ActionViewHelper extends AbstractViewHelper
             );
         }
 
-        /** @var int $pageUid */
-        $pageUid = $arguments['pageUid'] ?? 0;
-        /** @var int $pageType */
-        $pageType = $arguments['pageType'] ?? 0;
-        /** @var bool $noCache */
-        $noCache = $arguments['noCache'] ?? false;
+        $pageUid = (int)($arguments['pageUid'] ?? 0);
+        $pageType = (int)($arguments['pageType'] ?? 0);
+        $noCache = (bool)($arguments['noCache'] ?? false);
         /** @var string|null $section */
         $section = $arguments['section'] ?? null;
         /** @var string|null $format */
         $format = $arguments['format'] ?? null;
-        /** @var bool $linkAccessRestrictedPages */
-        $linkAccessRestrictedPages = $arguments['linkAccessRestrictedPages'] ?? false;
+        $linkAccessRestrictedPages = (bool)($arguments['linkAccessRestrictedPages'] ?? false);
         /** @var array|null $additionalParams */
         $additionalParams = $arguments['additionalParams'] ?? null;
-        /** @var bool $absolute */
-        $absolute = $arguments['absolute'] ?? false;
+        $absolute = (bool)($arguments['absolute'] ?? false);
         /** @var bool|string $addQueryString */
         $addQueryString = $arguments['addQueryString'] ?? false;
         /** @var array|null $argumentsToBeExcludedFromQueryString */
@@ -135,7 +130,7 @@ final class ActionViewHelper extends AbstractViewHelper
             $uriBuilder->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString);
         }
         if ($linkAccessRestrictedPages === true) {
-            $uriBuilder->setLinkAccessRestrictedPages($linkAccessRestrictedPages);
+            $uriBuilder->setLinkAccessRestrictedPages(true);
         }
 
         return $uriBuilder->uriFor($action, $arguments, $controller, $extensionName, $pluginName);
