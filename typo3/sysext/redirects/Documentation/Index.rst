@@ -45,6 +45,7 @@ redirects and automatically create redirects on slug changes.
    Setup/Index
    Usage/Index
    BestPractices/Index
+   Events/Index
    KnownProblems/Index
    Basics/Index
 
