@@ -114,6 +114,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         'baseUrl' => '$TSFE->baseUrl will be removed in TYPO3 v13.0. Use $TSFE->config[\'config\'][\'baseURL\'] instead.',
         'xhtmlDoctype' => '$TSFE->xhtmlDoctype will be removed in TYPO3 v13.0. Use PageRenderer->getDocType() instead.',
         'xhtmlVersion' => '$TSFE->xhtmlVersion will be removed in TYPO3 v13.0. Use PageRenderer->getDocType() instead.',
+        'type' => '$TSFE->type will be removed in TYPO3 v13.0. Use $TSFE->getPageArguments()->getPageType() instead.',
     ];
 
     /**
@@ -124,8 +125,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * The type (read-only)
      * @var int|string
+     * @internal since TYPO3 v12. Use $TSFE->getPageArguments()->getPageType() instead
      */
-    public $type = 0;
+    protected $type = 0;
 
     protected Site $site;
     protected SiteLanguage $language;

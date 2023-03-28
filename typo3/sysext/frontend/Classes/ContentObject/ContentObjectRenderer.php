@@ -3981,8 +3981,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $requestParameters = array_replace_recursive($requestParameters, (array)$this->getRequest()->getParsedBody());
                         $retVal = $this->getGlobal($key, $requestParameters);
                         break;
+                    case 'request':
+                        $retVal = $this->getValueFromRecursiveData(GeneralUtility::trimExplode('|', $key), $this->getRequest());
+                        break;
                     case 'tsfe':
-                        $retVal = $this->getGlobal('TSFE|' . $key);
+                        $retVal = $this->getValueFromRecursiveData(GeneralUtility::trimExplode('|', $key), $this->getTypoScriptFrontendController());
                         break;
                     case 'getenv':
                         $retVal = getenv($key);
@@ -4322,14 +4325,37 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function getGlobal($keyString, $source = null)
     {
-        $keys = explode('|', $keyString);
-        $numberOfLevels = count($keys);
-        $rootKey = trim($keys[0]);
+        $keys = GeneralUtility::trimExplode('|', $keyString);
+        // remove the first key, as this is only used for finding the original value
+        $rootKey = array_shift($keys);
         $value = isset($source) ? ($source[$rootKey] ?? '') : ($GLOBALS[$rootKey] ?? '');
-        for ($i = 1; $i < $numberOfLevels && isset($value); $i++) {
-            $currentKey = trim($keys[$i]);
+        return $this->getValueFromRecursiveData($keys, $value);
+    }
+
+    /**
+     * This method recursively checks for values in methods, arrays, objects, but
+     * does not fall back to $GLOBALS object instead of getGlobal().
+     *
+     * see getGlobal()
+     */
+    protected function getValueFromRecursiveData(array $keys, mixed $startValue): int|float|string
+    {
+        $value = $startValue;
+        $numberOfLevels = count($keys);
+        for ($i = 0; $i < $numberOfLevels && isset($value); $i++) {
+            $currentKey = $keys[$i];
             if (is_object($value)) {
-                $value = $value->{$currentKey};
+                // getter method
+                if (method_exists($value, 'get' . ucfirst($currentKey))) {
+                    $getterMethod = 'get' . ucfirst($currentKey);
+                    $value = $value->$getterMethod(...)();
+                // server request attribute, such as "routing"
+                } elseif ($value instanceof ServerRequestInterface) {
+                    $value = $value->getAttribute($currentKey);
+                } else {
+                    // Public property
+                    $value = $value->{$currentKey};
+                }
             } elseif (is_array($value)) {
                 $value = $value[$currentKey] ?? '';
             } else {
@@ -4538,7 +4564,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         trigger_error('$cObj->getUrlToCurrentLocation() is deprecated in favor of the unified LinkFactory API for generating links. This method will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
         $conf = [];
-        $conf['parameter'] = $this->getTypoScriptFrontendController()->id . ',' . $this->getTypoScriptFrontendController()->type;
+        $conf['parameter'] = $this->getTypoScriptFrontendController()->id . ',' . $this->getTypoScriptFrontendController()->getPageArguments()->getPageType();
         if ($addQueryString) {
             $conf['addQueryString'] = '1';
             $linkVars = implode(',', array_keys(GeneralUtility::explodeUrl2Array($this->getTypoScriptFrontendController()->linkVars)));

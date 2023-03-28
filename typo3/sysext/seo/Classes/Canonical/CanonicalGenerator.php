@@ -124,7 +124,7 @@ class CanonicalGenerator
         $this->typoScriptFrontendController->MP = '';
 
         $link = $this->typoScriptFrontendController->cObj->createUrl([
-            'parameter' => $this->typoScriptFrontendController->id . ',' . $this->typoScriptFrontendController->type,
+            'parameter' => $this->typoScriptFrontendController->id . ',' . $this->typoScriptFrontendController->getPageArguments()->getPageType(),
             'forceAbsoluteUrl' => true,
             'addQueryString' => true,
             'addQueryString.' => [

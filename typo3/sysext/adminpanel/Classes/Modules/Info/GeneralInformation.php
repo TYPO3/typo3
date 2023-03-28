@@ -50,7 +50,7 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
                 'server' => $request->getServerParams(),
                 'info' => [
                     'pageUid' => $tsfe->id,
-                    'pageType' => $tsfe->type,
+                    'pageType' => $tsfe->getPageArguments()->getPageType(),
                     'groupList' => implode(',', $frontendUserAspect->getGroupIds()),
                     'noCache' => $this->isNoCacheEnabled(),
                     'countUserInt' => count($tsfe->config['INTincScript'] ?? []),
