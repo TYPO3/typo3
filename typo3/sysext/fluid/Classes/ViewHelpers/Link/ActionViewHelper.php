@@ -83,13 +83,13 @@ class ActionViewHelper extends AbstractTagBasedViewHelper
         $extensionName = $this->arguments['extensionName'];
         $pluginName = $this->arguments['pluginName'];
         $pageUid = (int)$this->arguments['pageUid'] ?: null;
-        $pageType = (int)$this->arguments['pageType'];
-        $noCache = (bool)$this->arguments['noCache'];
+        $pageType = (int)($this->arguments['pageType'] ?? 0);
+        $noCache = (bool)($this->arguments['noCache'] ?? false);
         $section = (string)$this->arguments['section'];
         $format = (string)$this->arguments['format'];
-        $linkAccessRestrictedPages = (bool)$this->arguments['linkAccessRestrictedPages'];
+        $linkAccessRestrictedPages = (bool)($this->arguments['linkAccessRestrictedPages'] ?? false);
         $additionalParams = (array)$this->arguments['additionalParams'];
-        $absolute = (bool)$this->arguments['absolute'];
+        $absolute = (bool)($this->arguments['absolute'] ?? false);
         $addQueryString = (bool)$this->arguments['addQueryString'];
         $argumentsToBeExcludedFromQueryString = (array)$this->arguments['argumentsToBeExcludedFromQueryString'];
         $parameters = $this->arguments['arguments'];

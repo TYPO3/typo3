@@ -72,21 +72,21 @@ class ActionViewHelper extends AbstractViewHelper
             trigger_error('Using the argument "addQueryStringMethod" in <f:uri.action> ViewHelper has no effect anymore and will be removed in TYPO3 v12. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
         }
         /** @var int $pageUid */
-        $pageUid = $arguments['pageUid'] ?? 0;
+        $pageUid = (int)($arguments['pageUid'] ?? 0);
         /** @var int $pageType */
-        $pageType = $arguments['pageType'] ?? 0;
+        $pageType = (int)($arguments['pageType'] ?? 0);
         /** @var bool $noCache */
-        $noCache = $arguments['noCache'] ?? false;
+        $noCache = (bool)($arguments['noCache'] ?? false);
         /** @var string|null $section */
         $section = $arguments['section'] ?? null;
         /** @var string|null $format */
         $format = $arguments['format'] ?? null;
         /** @var bool $linkAccessRestrictedPages */
-        $linkAccessRestrictedPages = $arguments['linkAccessRestrictedPages'] ?? false;
+        $linkAccessRestrictedPages = (bool)($arguments['linkAccessRestrictedPages'] ?? false);
         /** @var array|null $additionalParams */
         $additionalParams = $arguments['additionalParams'] ?? null;
         /** @var bool $absolute */
-        $absolute = $arguments['absolute'] ?? false;
+        $absolute = (bool)($arguments['absolute'] ?? false);
         /** @var bool $addQueryString */
         $addQueryString = $arguments['addQueryString'] ?? false;
         /** @var array|null $argumentsToBeExcludedFromQueryString */
@@ -142,7 +142,7 @@ class ActionViewHelper extends AbstractViewHelper
         }
 
         if ($linkAccessRestrictedPages === true) {
-            $uriBuilder->setLinkAccessRestrictedPages($linkAccessRestrictedPages);
+            $uriBuilder->setLinkAccessRestrictedPages(true);
         }
 
         return $uriBuilder->uriFor($action, $arguments, $controller, $extensionName, $pluginName);
