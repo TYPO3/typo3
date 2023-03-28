@@ -214,7 +214,7 @@ class DeletedRecordsCommand extends Command
                 if (is_array($versions)) {
                     foreach ($versions as $verRec) {
                         // Mark as deleted
-                        if (!$verRec['_CURRENT_VERSION'] && $verRec[$deletedField]) {
+                        if (!($verRec['_CURRENT_VERSION'] ?? false) && $verRec[$deletedField]) {
                             $deletedRecords[$tableName][$verRec['uid']] = $verRec['uid'];
                         }
                     }
@@ -250,7 +250,7 @@ class DeletedRecordsCommand extends Command
             ) ?: [];
             if (is_array($versions)) {
                 foreach ($versions as $verRec) {
-                    if (!$verRec['_CURRENT_VERSION']) {
+                    if (!($verRec['_CURRENT_VERSION'] ?? false)) {
                         $deletedRecords = $this->findAllFlaggedRecordsInPage($verRec['uid'], $depth, $deletedRecords);
                     }
                 }
