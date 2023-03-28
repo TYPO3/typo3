@@ -134,6 +134,8 @@ class RelationHandler
 
     /**
      * Array of fields and value pairs used for insert in MM table
+     *
+     * @deprecated since v12. Remove in v13 with other MM_insert_fields places.
      */
     protected array $MM_insert_fields = [];
 
@@ -243,6 +245,7 @@ class RelationHandler
         $this->MM_table_where = $conf['MM_table_where'] ?? null;
         $this->MM_hasUidField = $conf['MM_hasUidField'] ?? null;
         $this->MM_match_fields = (isset($conf['MM_match_fields']) && is_array($conf['MM_match_fields'])) ? $conf['MM_match_fields'] : [];
+        // @deprecated since v12. Remove in v13 with other MM_insert_fields places.
         $this->MM_insert_fields = (isset($conf['MM_insert_fields']) && is_array($conf['MM_insert_fields'])) ? $conf['MM_insert_fields'] : [];
         $this->currentTable = $currentTable;
         if (!empty($conf['MM_oppositeUsage']) && is_array($conf['MM_oppositeUsage'])) {
@@ -722,6 +725,8 @@ class RelationHandler
                     // foreach loop only the ones that need to be deleted are in there.
                     unset($oldMMs_inclUid[$oldMMs_index]);
                 } else {
+                    // @deprecated since v12. Remove in v13 with other MM_insert_fields places.
+                    //             Simplify to $insertFields = $this->MM_match_fields;
                     $insertFields = $this->MM_insert_fields;
                     $insertFields = array_merge($insertFields, $this->MM_match_fields);
                     $insertFields[$uidLocal_field] = $uid;
@@ -1531,9 +1536,8 @@ class RelationHandler
 
         $configuration = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
         if (!empty($configuration['MM_insert_fields'])) {
-            // @todo: MM_insert_fields does not make sense and should be probably dropped altogether.
-            //        No core usages, not even with sys_category. There is no point in having data fields that
-            //        are filled with static content, especially since the mm table can't be edited directly.
+            // @deprecated since v12. Remove in v13 with other MM_insert_fields places.
+            //             Remove if() and change elseif() to if().
             $referenceValues = array_merge($configuration['MM_insert_fields'], $referenceValues);
         } elseif (!empty($configuration['MM_match_fields'])) {
             // @todo: In the end, MM_match_fields does not make sense. The 'tablename' and 'fieldname' restriction

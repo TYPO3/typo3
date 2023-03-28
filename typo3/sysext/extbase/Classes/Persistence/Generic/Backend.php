@@ -679,6 +679,7 @@ class Backend implements BackendInterface, SingletonInterface
         if (is_array($relationTableMatchFields)) {
             $row = array_merge($relationTableMatchFields, $row);
         }
+        // @deprecated since v12. Remove in v13 with other MM_insert_fields places.
         $relationTableInsertFields = $columnMap->getRelationTableInsertFields();
         if (is_array($relationTableInsertFields)) {
             $row = array_merge($relationTableInsertFields, $row);

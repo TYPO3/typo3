@@ -87,6 +87,7 @@ class TcaMigration
         $tca = $this->removeFalRelatedOptionsFromTypeInline($tca);
         $tca = $this->removePassContentFromTypeNone($tca);
         $tca = $this->migrateItemsToAssociativeArray($tca);
+        $tca = $this->removeMmInsertFields($tca);
 
         return $tca;
     }
@@ -1441,6 +1442,27 @@ class TcaMigration
                             . 'the legacy way of defining \'items\'. Please switch to associated array keys: '
                             . 'label, value, icon, group, description.';
                     }
+                }
+            }
+        }
+        return $tca;
+    }
+
+    protected function removeMmInsertFields(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (isset($fieldConfig['config']['MM_insert_fields'])) {
+                    // @deprecated since v12.
+                    //             *Enable* the commented unset line in v13 when removing MM_insert_fields deprecations.
+                    //             *Enable* the disabled unit test set.
+                    // unset($tca[$table]['columns'][$fieldName]['config']['MM_insert_fields']);
+                    $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' uses '
+                        . '\'MM_insert_fields\'. This config key is obsolete and should be removed. '
+                        . 'Please adjust your TCA accordingly.';
                 }
             }
         }

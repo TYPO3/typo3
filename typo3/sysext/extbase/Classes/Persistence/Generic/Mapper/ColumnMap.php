@@ -84,6 +84,7 @@ class ColumnMap
      *
      * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Group/Properties/Mm.html#confval-MM_insert_fields(type=%3Egroup)
      * @var array|null
+     * @deprecated since v12. Remove in v13 with other MM_insert_fields places.
      */
     private $relationTableInsertFields;
 
@@ -202,11 +203,17 @@ class ColumnMap
         return $this->relationTableMatchFields;
     }
 
+    /**
+     * @deprecated since v12. Remove in v13 with other MM_insert_fields places.
+     */
     public function setRelationTableInsertFields(array $relationTableInsertFields): void
     {
         $this->relationTableInsertFields = $relationTableInsertFields;
     }
 
+    /**
+     * @deprecated since v12. Remove in v13 with other MM_insert_fields places.
+     */
     public function getRelationTableInsertFields(): ?array
     {
         return $this->relationTableInsertFields;

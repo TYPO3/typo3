@@ -3655,4 +3655,37 @@ class TcaMigrationTest extends UnitTestCase
 
         self::assertSame($expected, (new TcaMigration())->migrate($input));
     }
+
+    /**
+     * @deprecated since v12. Add @test when removing MM_insert_fields in v13.
+     */
+    public function migrationRemovesMmInsertFields(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'group',
+                            'MM_insert_fields' => [
+                                'aField' => 'aValue',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'group',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        self::assertSame($expected, (new TcaMigration())->migrate($input));
+    }
 }
