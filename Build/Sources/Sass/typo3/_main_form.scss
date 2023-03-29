@@ -112,6 +112,11 @@ label {
         margin: 0 0 $form-label-margin-bottom;
         word-break: break-all;
     }
+
+    .panel,
+    .panel-group {
+        overflow: visible;
+    }
 }
 
 .form-control[disabled],
