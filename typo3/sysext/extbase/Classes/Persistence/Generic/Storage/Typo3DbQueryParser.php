@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -1039,7 +1041,7 @@ class Typo3DbQueryParser
                 ),
                 $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $relationTableAlias, $realTableName)
             );
-            $this->queryBuilder->leftJoin($tableName, $relationTableName, $relationTableAlias, $joinConditionExpression);
+            $this->queryBuilder->leftJoin($tableName, $relationTableName, $relationTableAlias, (string)$joinConditionExpression);
             $joinConditionExpression = $this->queryBuilder->expr()->eq(
                 $relationTableAlias . '.' . $columnMap->getChildKeyFieldName(),
                 $this->queryBuilder->quoteIdentifier($childTableAlias . '.uid')
