@@ -132,10 +132,14 @@ export class CKEditor5Element extends LitElement {
 
         CKEditor5
           .create(this.target, config)
-          .then((editor: EditorWithUI) => {
+          .then((editor: CKEditor5) => {
             this.applyEditableElementStyles(editor);
             this.handleWordCountPlugin(editor);
             this.applyReadOnly(editor);
+            editor.model.document.on('change:data', (): void => {
+              editor.updateSourceElement();
+              this.target.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+            });
 
             if (this.options.debug) {
               window.CKEditorInspector.attach(editor, { isCollapsed: true });
