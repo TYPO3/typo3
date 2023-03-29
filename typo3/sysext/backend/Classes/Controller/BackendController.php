@@ -277,6 +277,8 @@ class BackendController
             }
         }
         if ($startModule) {
+            // startModule may be an alias, resolve original module name
+            $startModule = $this->moduleProvider->getModule($startModule)->getIdentifier();
             if (is_array($moduleParameters)) {
                 $parameters = $moduleParameters;
             } else {
