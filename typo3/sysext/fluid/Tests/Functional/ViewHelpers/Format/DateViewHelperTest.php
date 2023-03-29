@@ -67,6 +67,16 @@ class DateViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function viewHelperAcceptsStrftimeFormat(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:format.date format="%Y-%m-%d">1980-02-01</f:format.date>');
+        self::assertSame('1980-02-01', (new TemplateView($context))->render());
+    }
+
+    /**
+     * @test
+     */
     public function viewHelperReturnsEmptyStringIfChildrenIsEmpty(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();

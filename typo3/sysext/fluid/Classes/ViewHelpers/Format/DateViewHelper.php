@@ -197,7 +197,7 @@ final class DateViewHelper extends AbstractViewHelper
         if (str_contains($format, '%')) {
             // @todo: deprecate this syntax in TYPO3 v13.
             $locale = $arguments['locale'] ?? self::resolveLocale($renderingContext);
-            return (new DateFormatter())->format($date, $format, $locale);
+            return (new DateFormatter())->strftime($format, $date, $locale);
         }
         return $date->format($format);
     }
