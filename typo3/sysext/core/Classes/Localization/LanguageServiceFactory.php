@@ -59,7 +59,10 @@ class LanguageServiceFactory
 
     public function createFromSiteLanguage(SiteLanguage $language): LanguageService
     {
-        $languageService = $this->create($language->getLocale());
+        // createLocale from a string takes care of resolving the automatic dependencies of e.g. "de_AT" to also check for "de"
+        // and also validates if TYPO3 supports the original language (at least in TYPO3 v12, there is a fixed list of
+        // allowed language keys)
+        $languageService = $this->create((string)$language->getLocale());
         // Always disable debugging for frontend
         $languageService->debugKey = false;
         return $languageService;
