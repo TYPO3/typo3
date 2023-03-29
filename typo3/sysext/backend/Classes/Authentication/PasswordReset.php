@@ -331,8 +331,13 @@ class PasswordReset implements LoggerAwareInterface
         }
         $userId = (int)$user['uid'];
 
+        if ($newPassword === '') {
+            $this->logger->debug('Password reset not possible because an empty password was provided.');
+            return false;
+        }
+
         if ($newPassword !== $newPasswordRepeat) {
-            $this->logger->debug('Password reset not possible because new password and new password repeat do not match');
+            $this->logger->debug('Password reset not possible because new password and new password repeat do not match.');
             return false;
         }
 
