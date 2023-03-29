@@ -1200,9 +1200,11 @@ class BackendUtility
      *
      * @param string $table
      * @return string
+     * @deprecated will be removed in TYPO3 v13.0 - use getRecordIconAltText directly
      */
     public static function getRecordToolTip(array $row, $table = 'pages')
     {
+        trigger_error('BackendUtility::getRecordToolTip() will be removed in TYPO3 v13.0 - use getRecordIconAltText() instead', E_USER_DEPRECATED);
         return 'title="' . self::getRecordIconAltText($row, $table) . '"';
     }
 

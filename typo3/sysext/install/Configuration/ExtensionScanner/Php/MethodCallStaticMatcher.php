@@ -1471,4 +1471,11 @@ return [
             'Deprecation-100053-GeneralUtility_GP.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getRecordToolTip' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-100459-BackendUtilitygetRecordToolTip.rst',
+        ],
+    ],
 ];

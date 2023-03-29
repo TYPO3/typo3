@@ -93,7 +93,7 @@ class MoveElementController
         // Headerline: Icon, record title:
         $assigns['table'] = $this->table;
         $assigns['elRow'] = $elRow;
-        $assigns['recordTooltip'] = BackendUtility::getRecordToolTip($elRow, $this->table);
+        $assigns['recordTooltip'] = BackendUtility::getRecordIconAltText($elRow, $this->table);
         $assigns['recordTitle'] = BackendUtility::getRecordTitle($this->table, $elRow, true);
         // Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
         $assigns['makeCopyChecked'] = (bool)$this->makeCopy;
@@ -137,7 +137,7 @@ class MoveElementController
                     $contentPositionMap->cur_sys_language = $this->sys_language;
                     $contentPositionMap->R_URI = $this->R_URI;
                     // Headerline for the parent page: Icon, record title:
-                    $assigns['ttContent']['recordTooltip'] = BackendUtility::getRecordToolTip($pageInfo);
+                    $assigns['ttContent']['recordTooltip'] = BackendUtility::getRecordIconAltText($pageInfo, 'pages');
                     $assigns['ttContent']['recordTitle'] = BackendUtility::getRecordTitle('pages', $pageInfo, true);
                     // Adding parent page-header and the content element columns from position-map:
                     $assigns['contentElementColumns'] = $contentPositionMap->printContentElementColumns($this->page_id);

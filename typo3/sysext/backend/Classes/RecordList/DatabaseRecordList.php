@@ -1024,7 +1024,7 @@ class DatabaseRecordList
                 }
             } elseif ($fCol === 'icon') {
                 $iconImg = '
-                    <span ' . BackendUtility::getRecordToolTip($row, $table) . ' ' . ($indent ? ' style="margin-left: ' . $indent . 'px;"' : '') . '>
+                    <span title="' . BackendUtility::getRecordIconAltText($row, $table) . '" ' . ($indent ? ' style="margin-left: ' . $indent . 'px;"' : '') . '>
                         ' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '
                     </span>';
                 $theData[$fCol] = ($this->clickMenuEnabled && !$this->isRecordDeletePlaceholder($row)) ? BackendUtility::wrapClickMenuOnIcon($iconImg, $table, $row['uid']) : $iconImg;

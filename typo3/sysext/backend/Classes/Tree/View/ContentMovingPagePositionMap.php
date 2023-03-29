@@ -87,7 +87,7 @@ class ContentMovingPagePositionMap extends AbstractContentPagePositionMap
     protected function getRecordHeader(array $row): string
     {
         return '
-            <span class="py-2" ' . BackendUtility::getRecordToolTip($row, 'tt_content') . '>
+            <span class="py-2" title="' . BackendUtility::getRecordIconAltText($row, 'tt_content') . '">
                 ' . $this->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render() . '
                 ' . ($this->moveUid === (int)$row['uid'] ? '<strong>' : '') . '
                 ' . BackendUtility::getRecordTitle('tt_content', $row, true) . '

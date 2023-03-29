@@ -92,7 +92,7 @@ class ContentCreationPagePositionMap extends AbstractContentPagePositionMap
         }
 
         return '
-            <button type="button"  class="btn btn-link" data-target="' . htmlspecialchars($target) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:insertNewRecordHere')) . '">
+            <button type="button" class="btn btn-link" data-target="' . htmlspecialchars($target) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:insertNewRecordHere')) . '">
                 ' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '
             </button>';
     }
@@ -103,7 +103,7 @@ class ContentCreationPagePositionMap extends AbstractContentPagePositionMap
     protected function getRecordHeader(array $row): string
     {
         return '
-            <span class="py-2" ' . BackendUtility::getRecordToolTip($row, 'tt_content') . '>
+            <span class="py-2" title="' . BackendUtility::getRecordIconAltText($row, 'tt_content') . '">
                 ' . $this->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render() . '
                 ' . BackendUtility::getRecordTitle('tt_content', $row, true) . '
             </span>';

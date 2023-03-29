@@ -225,8 +225,7 @@ class MetaInformation
             }
         } elseif (is_array($pageRecord) && !empty($pageRecord['uid'])) {
             // If there IS a real page
-            $toolTip = BackendUtility::getRecordToolTip($pageRecord, 'pages');
-            $theIcon = '<span ' . $toolTip . '>' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
+            $theIcon = '<span title="' . BackendUtility::getRecordIconAltText($pageRecord) . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
             // Make Icon:
             $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'pages', $pageRecord['uid']);
             $uid = $pageRecord['uid'];

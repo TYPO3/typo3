@@ -176,8 +176,9 @@ class PagePositionMap
                 $lines[] = '<span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($prevPid, $dat['row']['pid'])) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '</a></span>';
             }
             // The line with the icon and title:
-            $toolTip = BackendUtility::getRecordToolTip($dat['row'], 'pages');
-            $icon = '<span ' . $toolTip . '>' . $this->iconFactory->getIconForRecord('pages', $dat['row'], Icon::SIZE_SMALL)->render() . '</span>';
+            $icon = '<span title="' . BackendUtility::getRecordIconAltText($dat['row'], 'pages') . '">'
+                . $this->iconFactory->getIconForRecord('pages', $dat['row'], Icon::SIZE_SMALL)->render()
+                . '</span>';
 
             $lines[] = '<span class="text-nowrap">' . $icon . ' ' . $this->linkPageTitle($this->boldTitle(htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], (int)$this->getBackendUser()->uc['titleLen'])), $dat, $id), $dat['row']) . '</span>';
         }

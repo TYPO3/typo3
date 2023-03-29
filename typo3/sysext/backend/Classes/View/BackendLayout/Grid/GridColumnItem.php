@@ -174,8 +174,7 @@ class GridColumnItem extends AbstractGridObject
         $row = $this->record;
         $icons = [];
 
-        $toolTip = BackendUtility::getRecordToolTip($row, $table);
-        $icon = '<span ' . $toolTip . '>' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
+        $icon = '<span title="' . BackendUtility::getRecordIconAltText($row, $table) . '">' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
         if ($this->getBackendUser()->recordEditAccessInternals($table, $row)) {
             $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid']);
         }

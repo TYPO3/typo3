@@ -10,7 +10,7 @@
 
     <h1><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:movingElement" /></h1>
     <h3 class="mb-2">
-        <span {recordTooltip -> f:format.raw()}><core:iconForRecord table="{table}" row="{elRow}" /></span>
+        <span title="{recordTooltip -> f:format.raw()}"><core:iconForRecord table="{table}" row="{elRow}" /></span>
         {recordTitle -> f:format.raw()}
     </h3>
     <div class="pt-2">
@@ -37,7 +37,7 @@
         </f:if>
         <f:if condition="{table} == 'tt_content'">
             <f:if condition="{pageInfo}">
-                <span {ttContent.recordTooltip -> f:format.raw()}><core:iconForRecord table="pages" row="{pageInfo}" /></span>
+                <span title="{ttContent.recordTooltip -> f:format.raw()}"><core:iconForRecord table="pages" row="{pageInfo}" /></span>
             </f:if>
             {ttContent.recordTitle}<br />
             {contentElementColumns -> f:format.raw()}<br />
