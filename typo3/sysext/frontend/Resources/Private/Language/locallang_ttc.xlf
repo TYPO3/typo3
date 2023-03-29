@@ -648,9 +648,6 @@
 			<trans-unit id="tabs.plugin" resname="tabs.plugin">
 				<source>Plugin</source>
 			</trans-unit>
-			<trans-unit id="sys_language_uid_formlabel" resname="sys_language_uid_formlabel">
-				<source>Language</source>
-			</trans-unit>
 			<trans-unit id="subheader_formlabel" resname="subheader_formlabel">
 				<source>Subheader</source>
 			</trans-unit>
