@@ -638,8 +638,8 @@ class DataMapper
             $propertyValue = $this->getEmptyRelationValue($parentObject, $propertyName);
         } else {
             $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-            if ($this->persistenceSession->hasIdentifier($fieldValue, $property->getType())) {
-                $propertyValue = $this->persistenceSession->getObjectByIdentifier($fieldValue, $property->getType());
+            if ($this->persistenceSession->hasIdentifier((string)$fieldValue, $property->getType())) {
+                $propertyValue = $this->persistenceSession->getObjectByIdentifier((string)$fieldValue, $property->getType());
             } else {
                 $primaryType = $this->reflectionService
                     ->getClassSchema(get_class($parentObject))
@@ -658,8 +658,8 @@ class DataMapper
                     );
                 }
 
-                if ($this->persistenceSession->hasIdentifier($fieldValue, $className)) {
-                    $propertyValue = $this->persistenceSession->getObjectByIdentifier($fieldValue, $className);
+                if ($this->persistenceSession->hasIdentifier((string)$fieldValue, $className)) {
+                    $propertyValue = $this->persistenceSession->getObjectByIdentifier((string)$fieldValue, $className);
                 } else {
                     $result = $this->fetchRelated($parentObject, $propertyName, $fieldValue);
                     $propertyValue = $this->mapResultToPropertyValue($parentObject, $propertyName, $result);

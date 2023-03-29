@@ -603,7 +603,7 @@ class Typo3DbQueryParser
      * @param ColumnMap $columnMap The column man for which the condition should be build.
      * @param string $childTableAlias The alias of the child record table used in the query.
      * @param string $parentTable The real name of the parent table (used for building the foreign_table_field condition).
-     * @return string The match field conditions or an empty string.
+     * @return CompositeExpression|string The match field conditions or an empty string.
      */
     protected function getAdditionalMatchFieldsStatement($exprBuilder, $columnMap, $childTableAlias, $parentTable = null)
     {
@@ -749,7 +749,7 @@ class Typo3DbQueryParser
      * @param string $tableName The database table name
      * @param string $tableAlias The table alias used in the query.
      * @param QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
-     * @return string
+     * @return CompositeExpression|string
      */
     protected function getLanguageStatement($tableName, $tableAlias, QuerySettingsInterface $querySettings)
     {
@@ -1044,7 +1044,7 @@ class Typo3DbQueryParser
                 $relationTableAlias . '.' . $columnMap->getChildKeyFieldName(),
                 $this->queryBuilder->quoteIdentifier($childTableAlias . '.uid')
             );
-            $this->queryBuilder->leftJoin($relationTableAlias, $childTableName, $childTableAlias, $joinConditionExpression);
+            $this->queryBuilder->leftJoin($relationTableAlias, $childTableName, $childTableAlias, (string)$joinConditionExpression);
             $this->unionTableAliasCache[] = $childTableAlias;
             $this->suggestDistinctQuery = true;
         } else {
