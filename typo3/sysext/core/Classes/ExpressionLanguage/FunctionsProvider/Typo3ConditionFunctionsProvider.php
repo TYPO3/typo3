@@ -47,17 +47,20 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
         ];
     }
 
+    /**
+     * @deprecated since TYPO3 v12, will be removed in TYPO3 v13
+     */
     protected function getLoginUserFunction(): ExpressionFunction
     {
-        // @todo: This function is problematic (even though its documented as such):
-        //        In FE context, it will use a FE user if logged in, but fall back to
-        //        a potentially logged in BE user. This may lead to unexpected results.
-        //        This should be deprecated, similar things should be possible on backend / frontend
-        //        variable directly.
         return new ExpressionFunction(
             'loginUser',
             static fn () => null, // Not implemented, we only use the evaluator
             static function ($arguments, $str) {
+                trigger_error(
+                    'TypoScript condition function "loginUser()" has been deprecated with TYPO3 v12 and' .
+                    ' will be removed in v13. Use "frontend.user" and "backend.user" variables instead.',
+                    E_USER_DEPRECATED
+                );
                 $user = $arguments['frontend']->user ?? $arguments['backend']->user;
                 if ($user->isLoggedIn) {
                     foreach (GeneralUtility::trimExplode(',', $str, true) as $test) {
@@ -88,17 +91,20 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
         );
     }
 
+    /**
+     * @deprecated since TYPO3 v12, will be removed in TYPO3 v13
+     */
     protected function getUsergroupFunction(): ExpressionFunction
     {
-        // @todo: This function is problematic (even though its documented as such):
-        //        In FE context, it will use a FE user if logged in, but fall back to
-        //        a potentially logged in BE user. This may lead to unexpected results.
-        //        This should be deprecated, similar things should be possible on backend / frontend
-        //        variable directly.
         return new ExpressionFunction(
             'usergroup',
             static fn () => null, // Not implemented, we only use the evaluator
             static function ($arguments, $str) {
+                trigger_error(
+                    'TypoScript condition function "usergroup()" has been deprecated with TYPO3 v12 and' .
+                    ' will be removed in v13. Use "frontend.user" and "backend.user" variables instead.',
+                    E_USER_DEPRECATED
+                );
                 $user = $arguments['frontend']->user ?? $arguments['backend']->user;
                 $groupList = $user->userGroupList ?? '';
                 // '0,-1' is the default usergroups string when not logged in!
