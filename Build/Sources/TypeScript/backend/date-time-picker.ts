@@ -13,7 +13,6 @@
 
 import flatpickr from 'flatpickr/flatpickr.min';
 import { DateTime } from 'luxon';
-import PersistentStorage from './storage/persistent';
 import ThrottleEvent from '@typo3/core/event/throttle-event';
 
 interface FlatpickrInputElement extends HTMLInputElement {
@@ -59,8 +58,9 @@ class DateTimePicker {
       return;
     }
 
-    let userLocale = PersistentStorage.get('lang');
-    if (!userLocale) {
+    let userLocale = document.documentElement.lang;
+    if (!userLocale || userLocale === 'en') {
+      // flatpickr's English localization is "default"
       userLocale = 'default';
     } else if (userLocale === 'ch') {
       // Fix our made up locale "ch"
