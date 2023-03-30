@@ -108,7 +108,7 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
         $subject = $this->getParserByKey('url');
         $result = $subject->parse('pages', 'url', 1, $content);
         self::assertSame($expectedContent, $result->getContent());
-        self::assertSame($expectedElements, $result->getMatchedElements());
+        self::assertEquals($expectedElements, $result->getMatchedElements());
     }
 
     /**
@@ -134,6 +134,6 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
                 ],
             ],
         ];
-        self::assertSame($expected, $matchedElements);
+        self::assertEquals($expected, $matchedElements);
     }
 }
