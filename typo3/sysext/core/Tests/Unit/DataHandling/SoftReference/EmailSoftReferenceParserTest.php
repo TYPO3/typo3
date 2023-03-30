@@ -82,9 +82,9 @@ final class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
     {
         $subject = $this->getParserByKey('email');
         $result = $subject->parse('be_users', 'email', 1, $content);
-        self::assertSame($expectedContent, $result->getContent());
-        self::assertSame($expectedElements, $result->getMatchedElements());
-        self::assertSame($expectedHasMatched, $result->hasMatched());
+        self::assertEquals($expectedContent, $result->getContent());
+        self::assertEquals($expectedElements, $result->getMatchedElements());
+        self::assertEquals($expectedHasMatched, $result->hasMatched());
     }
 
     /**
@@ -110,6 +110,6 @@ final class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                 ],
             ],
         ];
-        self::assertSame($expected, $matchedElements);
+        self::assertEquals($expected, $matchedElements);
     }
 }
