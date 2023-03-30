@@ -25,7 +25,7 @@ var __decorate=function(t,e,l,a){var o,n=arguments.length,i=n<3?e:null===a?a=Obj
           <tbody>
             ${this.table.map(((t,e)=>html`
             <tr>
-              <th>${this.renderRowButtons(e,l)}</th>
+              <td>${this.renderRowButtons(e,l)}</td>
               ${t.map(((t,l)=>html`
               <td>${this.renderDataElement(t,e,l)}</td>
               `))}
@@ -35,10 +35,10 @@ var __decorate=function(t,e,l,a){var o,n=arguments.length,i=n<3?e:null===a?a=Obj
         </table>
       </div>
     `}renderDataElement(t,e,l){const a=t=>this.modifyTable(t,e,l);return"input"===this.type?html`
-          <input class="form-control" type="text" name="TABLE[c][${e}][${l}]"
+          <input class="form-control" type="text" data-row="${e}" data-col="${l}"
             @change="${a}" .value="${t.replace(/\n/g,"<br>")}">
         `:html`
-          <textarea class="form-control" rows="6" name="TABLE[c][${e}][${l}]"
+          <textarea class="form-control" rows="6" data-row="${e}" data-col="${l}"
             @change="${a}" .value="${t.replace(/<br[ ]*\/?>/g,"\n")}"></textarea>
         `}renderTypeButton(){return html`
       <span class="btn-group">

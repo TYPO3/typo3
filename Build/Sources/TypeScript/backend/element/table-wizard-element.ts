@@ -186,7 +186,7 @@ export class TableWizardElement extends LitElement {
           <tbody>
             ${this.table.map((row: string[], rowIndex: number) => html`
             <tr>
-              <th>${this.renderRowButtons(rowIndex, lastRowIndex)}</th>
+              <td>${this.renderRowButtons(rowIndex, lastRowIndex)}</td>
               ${row.map((value: string, colIndex: number) => html`
               <td>${this.renderDataElement(value, rowIndex, colIndex)}</td>
               `)}
@@ -203,13 +203,13 @@ export class TableWizardElement extends LitElement {
     switch (this.type) {
       case 'input':
         return html`
-          <input class="form-control" type="text" name="TABLE[c][${rowIndex}][${colIndex}]"
+          <input class="form-control" type="text" data-row="${rowIndex}" data-col="${colIndex}"
             @change="${modifyTable}" .value="${value.replace(/\n/g, '<br>')}">
         `;
       case 'textarea':
       default:
         return html`
-          <textarea class="form-control" rows="6" name="TABLE[c][${rowIndex}][${colIndex}]"
+          <textarea class="form-control" rows="6" data-row="${rowIndex}" data-col="${colIndex}"
             @change="${modifyTable}" .value="${value.replace(/<br[ ]*\/?>/g, '\n')}"></textarea>
         `;
     }
