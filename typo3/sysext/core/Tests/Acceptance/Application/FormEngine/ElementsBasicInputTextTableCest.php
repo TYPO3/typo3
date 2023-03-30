@@ -70,7 +70,7 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         $I->amGoingTo('check for correct data in each column');
         foreach ($this->tableDataProvider() as $keyRow => $row) {
             foreach ($row as $keyCol => $col) {
-                $input = $this->getTable($I)->findElement(WebDriverBy::cssSelector('input[name="TABLE[c][' . $keyRow . '][' . $keyCol . ']"]'));
+                $input = $this->getTable($I)->findElement(WebDriverBy::cssSelector('input[data-row="' . $keyRow . '"][data-col="' . $keyCol . '"]'));
                 $value = $input->getAttribute('value');
                 $I->assertEquals($col, $value);
             }
@@ -92,12 +92,12 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
             ],
             [
                 'description' => 'add a row',
-                'click' => 'typo3-backend-table-wizard tbody tr:first-child > th button[title="Add row below"]',
+                'click' => 'typo3-backend-table-wizard tbody tr:first-child > td button[title="Add row below"]',
                 'expected' => 8,
             ],
             [
                 'description' => 'remove a row',
-                'click' => 'typo3-backend-table-wizard tbody tr:first-child > th button[title="Remove row"]',
+                'click' => 'typo3-backend-table-wizard tbody tr:first-child > td button[title="Remove row"]',
                 'expected' => 6,
             ],
         ];
@@ -122,35 +122,35 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         $formSection = $this->getTable($I);
         $formSection->getLocationOnScreenOnceScrolledIntoView();
 
-        $I->fillField('input[name="TABLE[c][0][0]"]', 'Test Column 1');
-        $I->fillField('input[name="TABLE[c][0][1]"]', 'Test Column 2');
+        $I->fillField('input[data-row="0"][data-col="0"]', 'Test Column 1');
+        $I->fillField('input[data-row="0"][data-col="1"]', 'Test Column 2');
 
         $I->amGoingTo('move column to the right');
-        $textOriginColumn = $I->grabValueFrom('input[name="TABLE[c][0][0]"]');
+        $textOriginColumn = $I->grabValueFrom('input[data-row="0"][data-col="0"]');
         $I->click('typo3-backend-table-wizard tr > th:nth-child(2) button[title="Move right"]');
         $I->click(self::$saveButtonLink);
-        $textNewColumn = $I->grabValueFrom('input[name="TABLE[c][0][1]"]');
+        $textNewColumn = $I->grabValueFrom('input[data-row="0"][data-col="1"]');
         $I->assertEquals($textOriginColumn, $textNewColumn);
 
         $I->amGoingTo('move column to the left');
-        $textOriginColumn = $I->grabValueFrom('input[name="TABLE[c][0][1]"]');
+        $textOriginColumn = $I->grabValueFrom('input[data-row="0"][data-col="1"]');
         $I->click('typo3-backend-table-wizard tr > th:nth-child(3) button[title="Move left"]');
         $I->click(self::$saveButtonLink);
-        $textNewColumn = $I->grabValueFrom('input[name="TABLE[c][0][0]"]');
+        $textNewColumn = $I->grabValueFrom('input[data-row="0"][data-col="0"]');
         $I->assertEquals($textOriginColumn, $textNewColumn);
 
         $I->amGoingTo('move row down');
-        $textOriginColumn = $I->grabValueFrom('input[name="TABLE[c][0][0]"]');
-        $I->click('typo3-backend-table-wizard tbody tr:first-child > th button[title="Move down"]');
+        $textOriginColumn = $I->grabValueFrom('input[data-row="0"][data-col="0"]');
+        $I->click('typo3-backend-table-wizard tbody tr:first-child > td button[title="Move down"]');
         $I->click(self::$saveButtonLink);
-        $textNewColumn = $I->grabValueFrom('input[name="TABLE[c][1][0]"]');
+        $textNewColumn = $I->grabValueFrom('input[data-row="1"][data-col="0"]');
         $I->assertEquals($textOriginColumn, $textNewColumn);
 
         $I->amGoingTo('move row up');
-        $textOriginColumn = $I->grabValueFrom('input[name="TABLE[c][2][0]"]');
-        $I->click('typo3-backend-table-wizard tbody tr:nth-child(3) > th button[title="Move up"]');
+        $textOriginColumn = $I->grabValueFrom('input[data-row="2"][data-col="0"]');
+        $I->click('typo3-backend-table-wizard tbody tr:nth-child(3) > td button[title="Move up"]');
         $I->click(self::$saveButtonLink);
-        $textNewColumn = $I->grabValueFrom('input[name="TABLE[c][1][0]"]');
+        $textNewColumn = $I->grabValueFrom('input[data-row="1"][data-col="0"]');
         $I->assertEquals($textOriginColumn, $textNewColumn);
     }
 
