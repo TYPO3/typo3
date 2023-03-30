@@ -10,3 +10,6 @@ editor:
     softhyphen:
       resource: "EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/softhyphen/"
       enableShortcut: true
+    nbsp:
+      resource: "EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/nbsp/"
+      enableShortcut: true
