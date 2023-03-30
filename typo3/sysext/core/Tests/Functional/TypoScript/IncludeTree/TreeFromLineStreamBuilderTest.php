@@ -544,7 +544,28 @@ class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $subSubNode->setOriginalLine(iterator_to_array((new LosslessTokenizer())->tokenize("@import 'EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario2/./subInclude.typoscript'\n")->getNextLine())[0]);
         $subNode->addChild($subSubNode);
         $expectedTree->addChild($subNode);
-        yield 'atImport with dot-slash path traversal is allowed' => [
+        yield 'atImport with dot-slash path traversal is loaded' => [
+            $atImportLineStream,
+            $expectedTree,
+        ];
+
+        $atImportStatement = '@import \'EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario4/*.setup.typoscript\'';
+        $atImportLineStream = (new LosslessTokenizer())->tokenize($atImportStatement);
+        $atImportLine = iterator_to_array($atImportLineStream->getNextLine())[0];
+        $expectedTree = new FileInclude();
+        $expectedTree->setLineStream($atImportLineStream);
+        $expectedTree->setSplit();
+        $subNode = new AtImportInclude();
+        $subNode->setName('EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario4/file1.setup.typoscript');
+        $subNode->setOriginalLine($atImportLine);
+        $subNode->setLineStream((new LosslessTokenizer())->tokenize("file1\n"));
+        $expectedTree->addChild($subNode);
+        $subNode = new AtImportInclude();
+        $subNode->setName('EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/AtImport/AbsoluteImport/Scenario4/file2.setup.typoscript');
+        $subNode->setOriginalLine($atImportLine);
+        $subNode->setLineStream((new LosslessTokenizer())->tokenize("file2\n"));
+        $expectedTree->addChild($subNode);
+        yield 'atImport with EXT:.../SomeDirectory/*.setup.typoscript is allowed' => [
             $atImportLineStream,
             $expectedTree,
         ];

@@ -69,7 +69,7 @@ syntax, and integrators are encouraged to fully switch to :typoscript:`@import`.
 
 ..  code-block:: typoscript
 
-    [loginUser('*')]
+    [frontend.user.isLoggedIn]
       @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUser.typoscript
     [ELSE]
       @import 'EXT:my_extension/Configuration/TypoScript/NotLoggedInUser.typoscript
@@ -95,7 +95,7 @@ two conditions follow directly in one snippet:
 
 ..  code-block:: typoscript
 
-    [loginUser('*')]
+    [frontend.user.isLoggedIn]
       @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUser.typoscript
     [applicationContext == "Development"]
       @import 'EXT:my_extension/Configuration/TypoScript/Development.typoscript
@@ -112,7 +112,7 @@ included if a user is logged in *and* the application is in development context.
 
 ..  code-block:: typoscript
 
-    [loginUser('*')]
+    [frontend.user.isLoggedIn]
       @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUser.typoscript
     [END]
 

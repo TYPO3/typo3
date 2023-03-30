@@ -145,6 +145,90 @@ any curly braces level, resetting current scope to top level. While inclusion of
 never been documented to be valid within braces assignments, it still worked until TYPO3 v11.
 This is now disallowed and must not be used anymore.
 
+@import is more restrictive with wildcards
+------------------------------------------
+
+The previous implementation of :typoscript:`@import` relied on Symfony Finder. This turned out
+to be a performance bottleneck, the new implementation is based on "native" PHP file and directory
+lookup logic. For performance, security and best practice considerations, :typoscript:`@import`
+is now a bit more restrictive than before, especially with wildcard :typoscript:`*` handling.
+
+Integrators are encouraged to switch from :typoscript:`<INCLUDE_TYPOSCRIPT:` to
+:typoscript:`@import` in TYPO3 v12 projects: The :typoscript:`<INCLUDE_TYPOSCRIPT:`
+is more complex and harder to handle, but a bit more permissive. Note :typoscript:`@import`
+can be placed within conditions bodies now: :typoscript:`@import` lines are only considered
+if the condition matches. This did not work with TYPO3 v11. It is likely the
+:typoscript:`<INCLUDE_TYPOSCRIPT:` will be deprecated with TYPO3 v13, integrators
+should adapt to :typoscript:`@import` when upgrading to TYPO3 v12 already.
+
+The following rules apply to :typoscript:`@import`:
+
+* Files *must* reside in extensions, the lookup pattern *must* start with ::typoscript:`EXT`
+  if absolute. Including TypoScript snippets for instance from :file:`fileadmin` is *not* allowed
+  and never has been for :typoscript:`@import`.
+
+* File includes *may* be relative to the current file, and *must* be prefixed with :file:`./`
+  in this case. Sub directories are allowed, path traversal using :file:`../` is not allowed.
+
+* Files *must* end with :file:`.typoscript` in Frontend TypoScript. With TSconfig, both
+  :file:`.tsconfig` and :file:`.typoscript` are allowed, but :file:`.tsconfig` should be
+  preferred.
+
+* Directory includes are *not* recursive.
+
+* Directory traversal using :file:`../` is *not* allowed.
+
+* Wildcards for directories are *not* allowed. This has never been documented as working, and
+  is considered an unplanned side-effect of Symfony Finder. Few people used this undocumented
+  feature, it should be possible to restructure existing uses relatively easily.
+
+* Only a single wildcard :typoscript:`*` is allowed for filename patterns.
+
+Valid examples:
+
+.. code-block:: typoscript
+
+    @import 'EXT:my_extension/Configuration/TypoScript/bar.typoscript'
+
+    # Import all files in directory, ending with :file:`.typoscript`, or additionally
+    # :file:`.tsconfig` in TSconfig scope, in native operating system ascending order.
+    @import 'EXT:my_extension/Configuration/TypoScript/'
+
+    @import 'EXT:my_extension/Configuration/TypoScript/*.typoscript'
+    @import 'EXT:my_extension/Configuration/TypoScript/*.setup.typoscript'
+
+    # Import setupFoo.typoscript, setup.foo.typoscript and similar
+    @import 'EXT:my_extension/Configuration/TypoScript/setup*.typoscript'
+    @import 'EXT:my_extension/Configuration/TypoScript/setup*'
+
+    # If this is in file 'EXT:my_extension/Configuration/TypoScript/foo.typoscript',
+    # file 'EXT:my_extension/Configuration/TypoScript/bar.typoscript is included
+    @import './bar.typoscript`
+    # Relative sub directories includes are supported
+    @import './SubDirectory/bar.typoscript`
+    # Relative sub directories with wildcards are supported,
+    # this will include ./SubDirectory/foo.typoscript
+    @import './SubDirectory/*'
+
+Invalid examples:
+
+.. code-block:: typoscript
+
+    # fileadmin and friends not allowed
+    @import 'fileadmin/foo.typoscript'
+
+    # Tries to include foo.txt.typoscript, *not* foo.txt
+    @import 'EXT:my_extension/Configuration/TypoScript/foo.txt'
+
+    # Directory traversal is not allowed
+    @import 'EXT:my_extension/Configuration/TypoScript/Foo/../Bar/bar.typoscript'
+
+    # Directory wildcards are not allowed
+    @import 'EXT:my_extension/Configuration/TypoScript/*/foo.typoscript'
+
+    # Multiple wildcards in filename pattern are not allowed
+    @import 'EXT:my_extension/Configuration/TypoScript/foo.*.*.typoscript'
+
 
 UTF-8 BOM in TypoScript files
 -----------------------------

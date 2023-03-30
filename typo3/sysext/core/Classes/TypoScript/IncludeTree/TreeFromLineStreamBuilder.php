@@ -294,7 +294,7 @@ final class TreeFromLineStreamBuilder
                 $this->addStaticMagicFromGlobals($node, $identifier);
             }
         } elseif (str_contains($absoluteFileName, '*')) {
-            // Something with * in file part
+            // Something with *
             $directory = rtrim(dirname($absoluteFileName) . '/');
             $directoryExists = is_dir($directory);
             if (!$directoryExists && str_starts_with($atImportValue, './') && !$tryRelative) {
@@ -308,19 +308,28 @@ final class TreeFromLineStreamBuilder
             }
             $filePattern = basename($absoluteFileName);
             if (!str_contains($filePattern, '*')) {
+                // The * wildcard must occur in the filename, wildcards in directories are not handled.
                 return;
             }
-            if (str_ends_with($absoluteFileName, '*')) {
-                $filePattern = basename($absoluteFileName, '*');
-            } elseif (str_ends_with($filePattern, '*' . $fileSuffix)) {
-                $filePattern = mb_substr($filePattern, 0, -1 * (strlen($fileSuffix) + 1));
-            } elseif (str_ends_with($filePattern, '*.' . $fileSuffix)) {
-                $filePattern = mb_substr($filePattern, 0, -1 * (strlen($fileSuffix) + 2));
+            if (mb_substr_count($filePattern, '*') > 1) {
+                // Only one wildcard character is allowed, foo*.bar*.typoscript is considered an invalid pattern.
+                return;
             }
+            // Normalize right side, making sure it always ends with $fileSuffix ".typoscript" / ".tsconfig"
+            if (str_ends_with($filePattern, $fileSuffix)) {
+                $filePattern = mb_substr($filePattern, 0, -1 * strlen($fileSuffix));
+                $filePattern = rtrim($filePattern, '.');
+            }
+            $filePattern = $filePattern . '.' . $fileSuffix;
+            $wildcardPosition = mb_strpos($filePattern, '*');
+            $leftPrefix = mb_substr($filePattern, 0, $wildcardPosition);
+            $rightPrefix = mb_substr($filePattern, $wildcardPosition + 1);
             $filesAndDirs = scandir($directory);
             foreach ($filesAndDirs as $potentialInclude) {
-                if (!str_starts_with($potentialInclude, $filePattern)
-                    || !str_ends_with($potentialInclude, '.' . $fileSuffix)
+                if ($potentialInclude === '.'
+                    || $potentialInclude === '..'
+                    || !str_starts_with($potentialInclude, $leftPrefix)
+                    || !str_ends_with($potentialInclude, $rightPrefix)
                     || is_dir($directory . $potentialInclude)
                     || !$this->fileNameValidator->isValid($directory . $potentialInclude)
                 ) {
