@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Configuration;
 
 use Symfony\Component\Finder\Finder;
+use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -79,6 +80,16 @@ class SiteTcaConfiguration
         }
         $result = $GLOBALS['SiteConfiguration'];
         unset($GLOBALS['SiteConfiguration']);
+        $tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
+        $result = $tcaMigration->migrate($result);
+        $messages = $tcaMigration->getMessages();
+        if (!empty($messages)) {
+            $context = 'Automatic TCA migration done during bootstrap of Site TCA Configuration.'
+                . ' Please adapt TCA accordingly, these migrations will be removed.'
+                . ' Please adapt these areas:';
+            array_unshift($messages, $context);
+            trigger_error(implode(LF, $messages), E_USER_DEPRECATED);
+        }
         return $result;
     }
 }
