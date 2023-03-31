@@ -1322,7 +1322,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function hashFileIdentifier($file)
     {
-        if (is_object($file) && $file instanceof FileInterface) {
+        if ($file instanceof FileInterface) {
             /** @var FileInterface $file */
             $file = $file->getIdentifier();
         }

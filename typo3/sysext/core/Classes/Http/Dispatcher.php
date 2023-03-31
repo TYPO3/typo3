@@ -67,7 +67,7 @@ class Dispatcher implements DispatcherInterface
             return $target;
         }
 
-        if (is_object($target) && $target instanceof \Closure) {
+        if ($target instanceof \Closure) {
             return $target;
         }
 

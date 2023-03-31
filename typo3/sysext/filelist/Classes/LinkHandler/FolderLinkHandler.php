@@ -63,7 +63,7 @@ class FolderLinkHandler extends AbstractResourceLinkHandler
             $this->filelist->setResourceSelectableMatcher($this->resourceSelectableMatcher);
 
             $resource = $this->linkParts['url']['folder'] ?? null;
-            if ($resource && $resource instanceof ResourceInterface) {
+            if ($resource instanceof ResourceInterface) {
                 $resourceSelectedMatcher = GeneralUtility::makeInstance(Matcher::class);
                 $resourceMatcher = GeneralUtility::makeInstance(ResourceMatcher::class);
                 $resourceMatcher->addResource($resource);

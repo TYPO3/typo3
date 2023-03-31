@@ -834,7 +834,7 @@ abstract class ActionController implements ControllerInterface
             return;
         }
         $dataType = $argument->getDataType();
-        if (is_object($rawValue) && $rawValue instanceof $dataType) {
+        if ($rawValue instanceof $dataType) {
             $argument->setValue($rawValue);
             return;
         }

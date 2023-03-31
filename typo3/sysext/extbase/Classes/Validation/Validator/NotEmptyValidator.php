@@ -62,7 +62,7 @@ final class NotEmptyValidator extends AbstractValidator
                 1347992400
             );
         }
-        if (is_object($value) && $value instanceof \Countable && $value->count() === 0) {
+        if ($value instanceof \Countable && $value->count() === 0) {
             $this->addError(
                 $this->translateErrorMessage(
                     'validator.notempty.empty',

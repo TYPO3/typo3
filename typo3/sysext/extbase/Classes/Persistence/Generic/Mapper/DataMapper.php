@@ -722,7 +722,7 @@ class DataMapper
                 }
             } elseif (strpbrk((string)$primaryType->getClassName(), '_\\') !== false) {
                 // @todo: check the strpbrk function call. Seems to be a check for Tx_Foo_Bar style class names
-                if (is_object($result) && $result instanceof QueryResultInterface) {
+                if ($result instanceof QueryResultInterface) {
                     $propertyValue = $result->getFirst();
                 } else {
                     $propertyValue = $result;

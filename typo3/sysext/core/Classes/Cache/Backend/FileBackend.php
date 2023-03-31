@@ -349,7 +349,7 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
     {
         $pattern = $this->cacheDirectory . $entryIdentifier;
         $filesFound = glob($pattern);
-        if ($filesFound === false || empty($filesFound)) {
+        if (empty($filesFound)) {
             return false;
         }
         return $filesFound;

@@ -452,7 +452,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (isset($GLOBALS['TSFE'])) {
             $this->typoScriptFrontendController = $GLOBALS['TSFE'];
         }
-        if ($this->currentFile !== null && is_string($this->currentFile)) {
+        if (is_string($this->currentFile)) {
             [$objectType, $identifier] = explode(':', $this->currentFile, 2);
             try {
                 if ($objectType === 'File') {

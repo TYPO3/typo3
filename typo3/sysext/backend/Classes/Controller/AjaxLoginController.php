@@ -136,7 +136,7 @@ class AjaxLoginController
     protected function isAuthorizedBackendSession()
     {
         $backendUser = $this->getBackendUser();
-        return $backendUser !== null && $backendUser instanceof BackendUserAuthentication && isset($backendUser->user['uid']);
+        return $backendUser instanceof BackendUserAuthentication && isset($backendUser->user['uid']);
     }
 
     /**
