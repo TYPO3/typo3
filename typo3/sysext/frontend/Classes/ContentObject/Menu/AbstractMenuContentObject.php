@@ -568,7 +568,7 @@ abstract class AbstractMenuContentObject
         $menuItems = [];
         // Getting current page record NOT overlaid by any translation:
         $tsfe = $this->getTypoScriptFrontendController();
-        $currentPageWithNoOverlay = $this->sys_page->getRawRecord('pages', $tsfe->id);
+        $currentPageWithNoOverlay = ($tsfe->page['_TRANSLATION_SOURCE'] ?? null)?->toArray(true) ?? $tsfe->page;
 
         $languages = $this->getCurrentSite()->getLanguages();
         if ($specialValue === 'auto') {
