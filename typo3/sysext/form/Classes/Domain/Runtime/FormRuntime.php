@@ -178,7 +178,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     public function initialize()
     {
-        $arguments = $this->request->getArguments();
+        $arguments = array_merge_recursive($this->request->getArguments(), $this->request->getUploadedFiles());
         $formIdentifier = $this->formDefinition->getIdentifier();
         if (isset($arguments[$formIdentifier])) {
             $this->request = $this->request->withArguments($arguments[$formIdentifier]);

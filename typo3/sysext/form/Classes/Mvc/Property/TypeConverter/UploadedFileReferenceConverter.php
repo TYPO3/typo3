@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Mvc\Property\TypeConverter;
 
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File as File;
@@ -143,13 +144,16 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      * Actually convert from $source to $targetType, taking into account the fully
      * built $convertedChildProperties and $configuration.
      *
-     * @param array $source
+     * @param array|UploadedFile $source
      * @param string $targetType
      * @return AbstractFileFolder|Error|null
      * @internal
      */
     public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
     {
+        if ($source instanceof UploadedFile) {
+            $source = $this->convertUploadedFileToUploadInfoArray($source);
+        }
         // slot/listener using `FileDumpController` instead of direct public URL in (later) rendering process
         $resourcePublicationSlot = GeneralUtility::makeInstance(ResourcePublicationSlot::class);
         if (!isset($source['error']) || $source['error'] === \UPLOAD_ERR_NO_FILE) {
@@ -352,5 +356,16 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         if (!$parentFolder->hasFile('index.html')) {
             $parentFolder->createFile('index.html');
         }
+    }
+
+    protected function convertUploadedFileToUploadInfoArray(UploadedFile $uploadedFile): array
+    {
+        return [
+            'name' => $uploadedFile->getClientFilename(),
+            'tmp_name' => $uploadedFile->getTemporaryFileName(),
+            'size' => $uploadedFile->getSize(),
+            'error' => $uploadedFile->getError(),
+            'type' => $uploadedFile->getClientMediaType(),
+        ];
     }
 }
