@@ -72,7 +72,9 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
         while ($record = $result->fetchAssociative()) {
             $additionalFieldsForRootline = ['sorting', 'shortcut'];
             $rootline = array_reverse(BackendUtility::BEgetRootLine($record['pid'], '', true, $additionalFieldsForRootline));
-            $pagesWithTemplates = $this->setInPageArray($pagesWithTemplates, $rootline, $record);
+            if ($rootline !== []) {
+                $pagesWithTemplates = $this->setInPageArray($pagesWithTemplates, $rootline, $record);
+            }
         }
 
         $view = $this->moduleTemplateFactory->create($request);
@@ -88,6 +90,7 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
 
     /**
      * Recursively add template row in pages tree array by given pages rootline to prepare tree rendering.
+     * @param non-empty-array $rootline
      */
     private function setInPageArray(array $pages, array $rootline, array $row): array
     {
