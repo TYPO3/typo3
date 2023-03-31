@@ -5557,12 +5557,21 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (!is_array($pageIds) || empty($pageIds)) {
             return [];
         }
+
+        $tsfe = $this->getTypoScriptFrontendController();
+        if ($pageIds === [$tsfe->id]) {
+            // The TypoScriptFrontendController already granted access to the current page (see getPageAndRootline())
+            // and made sure the current doktype is a doktype whose content should be rendered, so there is no need
+            // to check that again.
+            return $pageIds;
+        }
+
         $restrictionContainer = GeneralUtility::makeInstance(FrontendRestrictionContainer::class);
         $restrictionContainer->add(GeneralUtility::makeInstance(
             DocumentTypeExclusionRestriction::class,
             GeneralUtility::intExplode(',', (string)$this->checkPid_badDoktypeList, true)
         ));
-        return $this->getTypoScriptFrontendController()->sys_page->filterAccessiblePageIds($pageIds, $restrictionContainer);
+        return $tsfe->sys_page->filterAccessiblePageIds($pageIds, $restrictionContainer);
     }
 
     /**
