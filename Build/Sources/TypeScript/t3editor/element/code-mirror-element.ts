@@ -23,7 +23,7 @@ import {
   KeyBinding,
   placeholder
 } from '@codemirror/view';
-import { Extension, EditorState } from '@codemirror/state';
+import { Extension, EditorState, Compartment } from '@codemirror/state';
 import { syntaxHighlighting, defaultHighlightStyle } from '@codemirror/language';
 import { defaultKeymap, indentWithTab } from '@codemirror/commands';
 import { oneDark } from '@codemirror/theme-one-dark';
@@ -37,16 +37,42 @@ import '@typo3/backend/element/spinner-element';
 @customElement('typo3-t3editor-codemirror')
 export class CodeMirrorElement extends LitElement {
   static styles = css`
+    @media (prefers-color-scheme: dark) {
+      :host {
+        --codemirror-border-color: #7d8799;
+        --codemirror-panel-background-color: #282c34;
+      }
+
+      .cm-scroller {
+        color-scheme: dark;
+      }
+    }
+
+    @media (prefers-color-scheme: light) {
+      :host {
+        --codemirror-border-color: #dddddd;
+        --codemirror-panel-background-color: #f5f5f5;
+      }
+    }
+
     :host {
       display: flex;
       flex-direction: column;
       position: relative;
+      border: 1px solid var(--codemirror-border-color);
+      border-radius: var(--typo3-input-border-radius);
+      transition: outline-color .15s ease-in-out, box-shadow .15s ease-in-out;
     }
 
     :host([fullscreen]) {
       position: fixed;
       inset: 64px 0 0;
       z-index: 9;
+    }
+
+    :host(:focus) {
+      --codemirror-border-color: #80bcf3;
+      box-shadow: 0 0 0 0.25rem rgba(0,120,230,.25);
     }
 
     typo3-backend-spinner {
@@ -59,6 +85,7 @@ export class CodeMirrorElement extends LitElement {
     #codemirror-parent {
       min-height: calc(8px + 12px * 1.4 * var(--rows, 18));
     }
+
     #codemirror-parent,
     .cm-editor {
       display: flex;
@@ -67,11 +94,14 @@ export class CodeMirrorElement extends LitElement {
       max-height: 100%;
     }
 
+    #codemirror-parent .cm-focused {
+      outline: none;
+    }
+
     .cm-scroller {
       min-height: 100%;
       max-height: calc(100vh - 10rem);
       flex: 1;
-      color-scheme: dark;
     }
 
     :host([fullscreen]) .cm-scroller {
@@ -85,10 +115,10 @@ export class CodeMirrorElement extends LitElement {
 
     .panel {
       font-size: .85em;
-      color: #abb2bf;
-      background: #282c34;
+      color: var(--typo3-component-color);
+      background-color: var(--codemirror-panel-background-color);
       border-style: solid;
-      border-color: #7d8799;
+      border-color: var(--codemirror-border-color);
       border-width: 0;
       border-top-width: 1px;
       padding: .25em .5em;
@@ -115,6 +145,7 @@ export class CodeMirrorElement extends LitElement {
   @property({ type: String }) placeholder: string;
   @property({ type: String }) panel: string = 'bottom';
 
+  @state() editorTheme: Compartment = null;
   @state() editorView: EditorView = null;
 
   render() {
@@ -172,8 +203,9 @@ export class CodeMirrorElement extends LitElement {
       this.style.setProperty('--rows', textarea.getAttribute('rows'));
     }
 
+    this.editorTheme = new Compartment();
     const extensions: Extension[] = [
-      oneDark,
+      this.editorTheme.of([]),
       updateListener,
       lineNumbers(),
       highlightSpecialChars(),
@@ -216,6 +248,21 @@ export class CodeMirrorElement extends LitElement {
       }),
       parent: this.renderRoot.querySelector('#codemirror-parent'),
       root: this.renderRoot as ShadowRoot
+    });
+
+    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    this.toggleDarkMode(darkModeMediaQuery.matches);
+
+    darkModeMediaQuery.addEventListener('change', (e: MediaQueryListEvent): void => {
+      this.toggleDarkMode(e.matches);
+    });
+  }
+
+  private toggleDarkMode(enabled: boolean): void {
+    this.editorView.dispatch({
+      effects: this.editorTheme.reconfigure(
+        enabled ? oneDark : []
+      )
     });
   }
 }

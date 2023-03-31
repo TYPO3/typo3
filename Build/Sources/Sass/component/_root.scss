@@ -93,6 +93,9 @@
     --typo3-list-item-disabled-color: var(--typo3-component-disabled-color);
     --typo3-list-item-disabled-bg: var(--typo3-component-disabled-bg);
     --typo3-list-item-disabled-border-color: var(--typo3-component-disabled-border-color);
+
+    // Input fields
+    --typo3-input-border-radius: #{$border-radius};
 }
 
 @mixin lightmode {
