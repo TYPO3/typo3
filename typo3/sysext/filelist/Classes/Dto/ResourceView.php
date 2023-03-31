@@ -202,7 +202,7 @@ class ResourceView
 
         return [
             'class' => 't3js-multi-record-selection-check',
-            'name' => 'CBC[_' . strtoupper($this->getType()) . '|' . md5($this->getIdentifier()) . ']',
+            'name' => 'CBC[_FILE|' . md5($this->getIdentifier()) . ']',
             'value' => $this->getIdentifier(),
             'checked' => $this->isSelected,
         ];
