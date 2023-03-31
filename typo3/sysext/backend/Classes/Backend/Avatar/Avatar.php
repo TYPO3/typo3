@@ -40,18 +40,12 @@ class Avatar
      */
     protected array $avatarProviders = [];
 
-    protected FrontendInterface $cache;
-    protected DependencyOrderingService $dependencyOrderingService;
-    protected IconFactory $iconFactory;
-
     public function __construct(
-        FrontendInterface $cache,
-        DependencyOrderingService $dependencyOrderingService,
-        IconFactory $iconFactory
+        protected readonly FrontendInterface $cache,
+        protected readonly DependencyOrderingService $dependencyOrderingService,
+        protected readonly IconFactory $iconFactory
     ) {
-        $this->cache = $cache;
-        $this->dependencyOrderingService = $dependencyOrderingService;
-        $this->iconFactory = $iconFactory;
+        $this->validateSortAndInitiateAvatarProviders();
     }
 
     /**
@@ -68,7 +62,6 @@ class Avatar
         $cacheId = 'avatar_' . sha1($backendUser['uid'] . $size . $showIcon);
         $avatar = $this->cache->get($cacheId);
         if (!$avatar) {
-            $this->validateSortAndInitiateAvatarProviders();
             $icon = $showIcon ? $this->iconFactory->getIconForRecord('be_users', $backendUser, Icon::SIZE_SMALL)->render() : '';
             $avatar =
                 '<span class="avatar" style="--avatar-size: ' . $size . 'px;">'
