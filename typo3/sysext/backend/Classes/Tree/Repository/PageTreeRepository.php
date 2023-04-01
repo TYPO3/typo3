@@ -44,59 +44,26 @@ class PageTreeRepository
      *
      * @var string[]
      */
-    protected $fields = [
-        'uid',
-        'pid',
-        'sorting',
-        'starttime',
-        'endtime',
-        'hidden',
-        'fe_group',
-        'title',
-        'nav_title',
-        'nav_hide',
-        'php_tree_stop',
-        'doktype',
-        'is_siteroot',
-        'module',
-        'extendToSubpages',
-        'content_from_pid',
-        't3ver_oid',
-        't3ver_wsid',
-        't3ver_state',
-        't3ver_stage',
-        'perms_userid',
-        'perms_user',
-        'perms_groupid',
-        'perms_group',
-        'perms_everybody',
-        'mount_pid',
-        'shortcut',
-        'shortcut_mode',
-        'mount_pid_ol',
-        'url',
-        'sys_language_uid',
-        'l10n_parent',
-    ];
+    protected readonly array $fields;
+
+    /**
+     * The fields array, quoted for repeated use in recursive pages queries, to avoid the need to newly
+     * quote the fields for each single query (which can get really expensive for a large amount of fields)
+     * @var string[]
+     */
+    protected readonly array $quotedFields;
 
     /**
      * The workspace ID to operate on
-     *
-     * @var int
      */
-    protected $currentWorkspace = 0;
+    protected readonly int $currentWorkspace;
 
     /**
      * Full page tree when selected without permissions applied.
-     *
-     * @var array
      */
-    protected $fullPageTree = [];
+    protected array $fullPageTree = [];
 
-    /**
-     * @var array
-     */
-    protected $additionalQueryRestrictions = [];
+    protected readonly array $additionalQueryRestrictions;
 
     protected ?string $additionalWhereClause = null;
 
@@ -108,13 +75,45 @@ class PageTreeRepository
     public function __construct(int $workspaceId = 0, array $additionalFieldsToQuery = [], array $additionalQueryRestrictions = [])
     {
         $this->currentWorkspace = $workspaceId;
-        if (!empty($additionalFieldsToQuery)) {
-            $this->fields = array_merge($this->fields, $additionalFieldsToQuery);
-        }
+        $this->fields = array_merge([
+            'uid',
+            'pid',
+            'sorting',
+            'starttime',
+            'endtime',
+            'hidden',
+            'fe_group',
+            'title',
+            'nav_title',
+            'nav_hide',
+            'php_tree_stop',
+            'doktype',
+            'is_siteroot',
+            'module',
+            'extendToSubpages',
+            'content_from_pid',
+            't3ver_oid',
+            't3ver_wsid',
+            't3ver_state',
+            't3ver_stage',
+            'perms_userid',
+            'perms_user',
+            'perms_groupid',
+            'perms_group',
+            'perms_everybody',
+            'mount_pid',
+            'shortcut',
+            'shortcut_mode',
+            'mount_pid_ol',
+            'url',
+            'sys_language_uid',
+            'l10n_parent',
+        ], $additionalFieldsToQuery);
+        $this->additionalQueryRestrictions = $additionalQueryRestrictions;
 
-        if (!empty($additionalQueryRestrictions)) {
-            $this->additionalQueryRestrictions = $additionalQueryRestrictions;
-        }
+        $this->quotedFields = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages')
+            ->quoteIdentifiersForSelect($this->fields);
     }
 
     public function setAdditionalWhereClause(string $additionalWhereClause): void
@@ -149,7 +148,7 @@ class PageTreeRepository
     /**
      * Removes items from a tree based on a callback, usually used for permission checks
      */
-    protected function applyCallbackToChildren(array &$tree, callable $callback)
+    protected function applyCallbackToChildren(array &$tree, callable $callback): void
     {
         if (!isset($tree['_children'])) {
             return;
@@ -242,7 +241,7 @@ class PageTreeRepository
         }
 
         $queryBuilder
-            ->select(...$this->fields)
+            ->add('select', $this->quotedFields)
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
@@ -302,7 +301,7 @@ class PageTreeRepository
             if (!empty($recordIds)) {
                 $queryBuilder->getRestrictions()->removeAll();
                 $pageRecords = $queryBuilder
-                    ->select(...$this->fields)
+                    ->add('select', $this->quotedFields)
                     ->from('pages')
                     ->where(
                         $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($recordIds, Connection::PARAM_INT_ARRAY))
@@ -368,7 +367,7 @@ class PageTreeRepository
         }
 
         $query = $queryBuilder
-            ->select(...$this->fields)
+            ->add('select', $this->quotedFields)
             ->from('pages')
             ->where(
                 // Only show records in default language
@@ -425,7 +424,7 @@ class PageTreeRepository
 
             $queryBuilder->getRestrictions()->removeAll();
             $pageRecords = $queryBuilder
-                ->select(...$this->fields)
+                ->add('select', $this->quotedFields)
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->in('uid', $recordIds)
@@ -475,7 +474,7 @@ class PageTreeRepository
      *
      * @param array[] $groupedAndSortedPagesByPid
      */
-    protected function addChildrenToPage(array &$page, array &$groupedAndSortedPagesByPid)
+    protected function addChildrenToPage(array &$page, array &$groupedAndSortedPagesByPid): void
     {
         $page['_children'] = $groupedAndSortedPagesByPid[(int)$page['uid']] ?? [];
         ksort($page['_children']);
@@ -536,7 +535,7 @@ class PageTreeRepository
         }
 
         $queryBuilder = $queryBuilder
-            ->select(...$this->fields)
+            ->add('select', $this->quotedFields)
             ->from('pages')
             ->where(
                 // Only show records in default language
@@ -615,7 +614,7 @@ class PageTreeRepository
             if (!empty($recordIds)) {
                 $queryBuilder->getRestrictions()->removeAll();
                 $queryBuilder
-                    ->select(...$this->fields)
+                    ->add('select', $this->quotedFields)
                     ->from('pages')
                     ->where(
                         $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($recordIds, Connection::PARAM_INT_ARRAY))
@@ -741,7 +740,7 @@ class PageTreeRepository
      *
      * @param array $groupedAndSortedPagesByPid
      */
-    protected function groupAndSortPages(array $pages, $groupedAndSortedPagesByPid = []): array
+    protected function groupAndSortPages(array $pages, array $groupedAndSortedPagesByPid = []): array
     {
         foreach ($pages as $key => $pageRecord) {
             $parentPageId = (int)$pageRecord['pid'];
