@@ -1156,7 +1156,7 @@ class BackendUtility
             $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['url']['label'] ?? '') . ' ' . ($row['url'] ?? '');
         } elseif ($row['doktype'] == PageRepository::DOKTYPE_SHORTCUT) {
             if ($perms_clause) {
-                $label = self::getRecordPath((int)$row['shortcut'], $perms_clause, 20);
+                $label = self::getRecordPath((int)($row['shortcut'] ?? 0), $perms_clause, 20);
             } else {
                 $row['shortcut'] = (int)($row['shortcut'] ?? 0);
                 $lRec = self::getRecordWSOL('pages', $row['shortcut'], 'title');
