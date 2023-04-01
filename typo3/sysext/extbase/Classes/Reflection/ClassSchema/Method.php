@@ -24,31 +24,14 @@ use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodParameterExce
  */
 class Method
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private array $definition;
+    private array $parameters = [];
 
-    /**
-     * @var array
-     */
-    private $definition;
-
-    /**
-     * @var string
-     */
-    private $className;
-
-    /**
-     * @var array
-     */
-    private $parameters = [];
-
-    public function __construct(string $name, array $definition, string $className)
-    {
-        $this->name = $name;
-        $this->className = $className;
-
+    public function __construct(
+        private readonly string $name,
+        array $definition,
+        private readonly string $className,
+    ) {
         $defaults = [
             'params' => [],
             'public' => false,

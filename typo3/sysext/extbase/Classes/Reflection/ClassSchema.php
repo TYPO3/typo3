@@ -50,56 +50,24 @@ use TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver;
 class ClassSchema
 {
     private const BIT_CLASS_IS_CONTROLLER = 1 << 3;
-
-    /**
-     * @var BitSet
-     */
-    private $bitSet;
-
-    /**
-     * @var array
-     */
-    private static $propertyObjects = [];
-
-    /**
-     * @var array
-     */
-    private static $methodObjects = [];
-
-    /**
-     * Name of the class this schema is referring to
-     *
-     * @var string
-     */
-    protected $className;
-
-    /**
-     * Properties of the class which need to be persisted
-     *
-     * @var array
-     */
-    protected $properties = [];
-
-    /**
-     * @var array
-     */
-    private $methods = [];
-
+    private BitSet $bitSet;
+    private static array $propertyObjects = [];
+    private static array $methodObjects = [];
+    private array $properties = [];
+    private array $methods = [];
     private static ?PropertyInfoExtractor $propertyInfoExtractor = null;
     private static ?DocBlockFactoryInterface $docBlockFactory = null;
 
     /**
      * Constructs this class schema
      *
-     * @param string $className Name of the class this schema is referring to
+     * @param class-string $className Name of the class this schema is referring to
      * @throws InvalidTypeHintException
      * @throws InvalidValidationConfigurationException
      * @throws \ReflectionException
      */
-    public function __construct(string $className)
+    public function __construct(private readonly string $className)
     {
-        /** @var class-string $className */
-        $this->className = $className;
         $this->bitSet = new BitSet();
 
         $reflectionClass = new \ReflectionClass($className);

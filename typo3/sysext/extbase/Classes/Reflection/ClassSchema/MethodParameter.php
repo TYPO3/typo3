@@ -22,20 +22,12 @@ namespace TYPO3\CMS\Extbase\Reflection\ClassSchema;
  */
 class MethodParameter
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private array $definition;
 
-    /**
-     * @var array
-     */
-    private $definition;
-
-    public function __construct(string $name, array $definition)
-    {
-        $this->name = $name;
-
+    public function __construct(
+        private readonly string $name,
+        array $definition,
+    ) {
         $defaults = [
             'type' => null,
             'array' => false,
