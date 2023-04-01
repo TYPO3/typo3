@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 
 /**
  * An operand to a binary operation specified by a Comparison.
+ *
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 interface OperandInterface
 {

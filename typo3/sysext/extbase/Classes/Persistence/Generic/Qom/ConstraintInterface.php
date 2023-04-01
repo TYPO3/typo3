@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * the joins between them.
  *
  * To be included in the query results, a tuple must satisfy the constraint.
+ *
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 interface ConstraintInterface
 {

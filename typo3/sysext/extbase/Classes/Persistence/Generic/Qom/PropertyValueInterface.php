@@ -25,6 +25,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * selector is not the name of a selector in the query, or
  * property is not a syntactically valid JCR name.
+ *
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 interface PropertyValueInterface extends DynamicOperandInterface
 {

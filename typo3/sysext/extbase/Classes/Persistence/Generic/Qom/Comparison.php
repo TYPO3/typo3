@@ -61,6 +61,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  * the character "_" (underscore) matches exactly one character, and
  * the string "\x" matches the character "x", and
  * all other characters match themselves.
+ *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class Comparison implements ComparisonInterface

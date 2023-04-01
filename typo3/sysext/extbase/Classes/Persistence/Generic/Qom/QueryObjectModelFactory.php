@@ -23,6 +23,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
  * The Query Object Model Factory
+ *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class QueryObjectModelFactory implements SingletonInterface

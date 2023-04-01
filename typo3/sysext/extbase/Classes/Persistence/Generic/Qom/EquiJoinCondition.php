@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * A node-tuple satisfies the constraint only if: the selector1Name node has a property named property1Name, and
  * the selector2Name node has a property named property2Name, and
  * the value of property property1Name is equal to the value of property property2Name.
+ *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class EquiJoinCondition implements EquiJoinConditionInterface

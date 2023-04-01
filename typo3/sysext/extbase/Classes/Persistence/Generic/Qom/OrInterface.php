@@ -22,6 +22,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * satisfy constraint1 but not constraint2, or
  * satisfy constraint2 but not constraint1, or
  * satisfy both constraint1 and constraint2.
+ *
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 interface OrInterface extends ConstraintInterface
 {

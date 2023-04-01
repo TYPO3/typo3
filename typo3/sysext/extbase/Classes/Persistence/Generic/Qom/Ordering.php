@@ -22,6 +22,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 /**
  * Determines the relative order of two rows in the result set by evaluating operand for
  * each.
+ *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class Ordering implements OrderingInterface

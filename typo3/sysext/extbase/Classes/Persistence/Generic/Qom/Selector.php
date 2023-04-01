@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * the node's primary node type is a subtype of nodeType, or
  * the node has a mixin node type that is nodeType, or
  * the node has a mixin node type that is a subtype of nodeType.
+ *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class Selector implements SelectorInterface

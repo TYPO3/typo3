@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * Performs a logical negation of another constraint.
  *
  * To satisfy the Not constraint, the node-tuple must not satisfy constraint.
+ *
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 interface NotInterface extends ConstraintInterface
 {

@@ -23,6 +23,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * to a string.
  *
  * If operand evaluates to null, the LowerCase operand also evaluates to null.
+ *
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 interface LowerCaseInterface extends PropertyValueInterface
 {

@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 
 /**
  * Filters the set of node-tuples formed from a join.
+ *
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 interface JoinConditionInterface
 {

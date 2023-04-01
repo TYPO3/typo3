@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 
 /**
  * Evaluates to a set of node-tuples.
+ *
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 interface SourceInterface
 {

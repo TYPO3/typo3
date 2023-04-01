@@ -21,6 +21,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * childSelectorNode.getParent().isSame(parentSelectorNode)
  * would return true, where childSelectorNode is the node for childSelector and
  * parentSelectorNode is the node for parentSelector.
+ *
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 interface EquiJoinConditionInterface extends JoinConditionInterface
 {
