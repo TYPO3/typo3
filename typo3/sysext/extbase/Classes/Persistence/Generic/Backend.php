@@ -316,7 +316,7 @@ class Backend implements BackendInterface
         }
         $dataMap = $this->dataMapFactory->buildDataMap($object::class);
         foreach ($this->reflectionService->getClassSchema($object::class)->getDomainObjectProperties() as $property) {
-            $propertyName = $property->getName();
+            $propertyName = $property->name;
             $propertyValue = $dataMap->isPersistableProperty($propertyName) ? $this->reflectionService->getRawEntityPropertyValue($object, $propertyName) : null;
             if ($propertyValue === null || $this->propertyValueIsLazyLoaded($propertyValue)) {
                 continue;
@@ -343,7 +343,7 @@ class Backend implements BackendInterface
         $dataMap = $this->dataMapFactory->buildDataMap($className);
         $classSchema = $this->reflectionService->getClassSchema($className);
         foreach ($classSchema->getDomainObjectProperties() as $property) {
-            $propertyName = $property->getName();
+            $propertyName = $property->name;
             if (!$dataMap->isPersistableProperty($propertyName)) {
                 continue;
             }
@@ -435,7 +435,7 @@ class Backend implements BackendInterface
         $property = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
         foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
             $this->detachObjectFromParentObject($removedObject, $parentObject, $propertyName);
-            if ($columnMap->typeOfRelation === Relation::HAS_MANY && $property->getCascadeValue() === 'remove') {
+            if ($columnMap->typeOfRelation === Relation::HAS_MANY && $property->cascade === 'remove') {
                 $this->removeEntity($removedObject);
             }
         }
@@ -626,7 +626,7 @@ class Backend implements BackendInterface
         $row = [];
         $classSchema = $this->reflectionService->getClassSchema($className);
         foreach ($classSchema->getDomainObjectProperties() as $property) {
-            $propertyName = $property->getName();
+            $propertyName = $property->name;
             if (!$dataMap->isPersistableProperty($propertyName)) {
                 continue;
             }
@@ -917,13 +917,13 @@ class Backend implements BackendInterface
         $dataMap = $this->dataMapFactory->buildDataMap($className);
         $classSchema = $this->reflectionService->getClassSchema($className);
         foreach ($classSchema->getDomainObjectProperties() as $property) {
-            $propertyName = $property->getName();
+            $propertyName = $property->name;
             $columnMap = $dataMap->getColumnMap($propertyName);
             if ($columnMap === null) {
                 continue;
             }
             $propertyValue = $this->reflectionService->getRawEntityPropertyValue($object, $propertyName);
-            if ($property->getCascadeValue() === 'remove') {
+            if ($property->cascade === 'remove') {
                 if ($columnMap->typeOfRelation === Relation::HAS_MANY) {
                     foreach ($propertyValue as $containedObject) {
                         $this->removeEntity($containedObject);

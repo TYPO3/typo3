@@ -236,7 +236,7 @@ class DataMapper
             $this->reflectionService->setRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_VERSIONED_UID, (int)$row['_ORIG_uid']);
         }
         foreach ($classSchema->getDomainObjectProperties() as $property) {
-            $propertyName = $property->getName();
+            $propertyName = $property->name;
             $columnMap = $dataMap->getColumnMap($propertyName);
             if ($columnMap === null) {
                 continue;

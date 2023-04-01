@@ -18,11 +18,22 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\TypeInfo\Type\BuiltinType;
+use Symfony\Component\TypeInfo\Type\CollectionType;
+use Symfony\Component\TypeInfo\Type\GenericType;
+use Symfony\Component\TypeInfo\Type\NullableType;
+use Symfony\Component\TypeInfo\Type\ObjectType;
+use Symfony\Component\TypeInfo\Type\UnionType;
+use Symfony\Component\TypeInfo\TypeIdentifier;
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\PropertyCharacteristics;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfProperties;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAttributeWithoutParamTypeHint;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyModel;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -146,5 +157,61 @@ final class ClassSchemaTest extends UnitTestCase
         $classSchema = new ClassSchema(get_class($class));
         self::assertSame(get_class($class), $classSchema->getMethod('injectCopy')->getParameter('copy')->getType());
         self::assertSame(get_class($class), $classSchema->getMethod('bar')->getParameter('copy')->getType());
+    }
+
+    #[Test]
+    public function classSchemaSurvivesSerialization(): void
+    {
+        // Given a schema with cascade, validators, types and a method
+        $classSchema = new ClassSchema(DummyClassWithAllTypesOfProperties::class);
+
+        // When it is serialized and unserialized again
+        $restored = $this->serializeAndRestore($classSchema);
+
+        // Then it equals the original one
+        self::assertEquals($classSchema, $restored);
+        self::assertSame('remove', $restored->getProperty('propertyWithCascadeAttribute')->cascade);
+    }
+
+    #[Test]
+    public function classSchemaWithFileUploadSurvivesSerialization(): void
+    {
+        // Given a schema with a file upload property
+        $classSchema = new ClassSchema(DummyModel::class);
+
+        // When it is serialized and unserialized again
+        $restored = $this->serializeAndRestore($classSchema);
+
+        // Then it equals the original one and the file upload configuration is restored
+        self::assertEquals($classSchema, $restored);
+        $fileUpload = $restored->getProperty('propertyWithFileUploadAttribute')->fileUpload;
+        self::assertNotNull($fileUpload);
+        self::assertEquals($classSchema->getProperty('propertyWithFileUploadAttribute')->fileUpload, $fileUpload);
+    }
+
+    #[Test]
+    public function serializedClassSchemaContainsNoPropertyObjects(): void
+    {
+        $serialized = serialize(new ClassSchema(DummyClassWithAllTypesOfProperties::class));
+
+        self::assertStringNotContainsString(Property::class, $serialized);
+        self::assertStringNotContainsString(PropertyCharacteristics::class, $serialized);
+    }
+
+    private function serializeAndRestore(ClassSchema $classSchema): ClassSchema
+    {
+        return unserialize(serialize($classSchema), [
+            'allowed_classes' => [
+                ClassSchema::class,
+                BuiltinType::class,
+                ObjectType::class,
+                CollectionType::class,
+                GenericType::class,
+                NullableType::class,
+                UnionType::class,
+                TypeIdentifier::class,
+                DuplicationBehavior::class,
+            ],
+        ]);
     }
 }

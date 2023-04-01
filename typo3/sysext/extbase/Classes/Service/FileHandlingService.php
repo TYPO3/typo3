@@ -107,7 +107,7 @@ readonly class FileHandlingService
             throw new \InvalidArgumentException(
                 sprintf(
                     'There is no @var annotation or type declaration for file upload property "%s" in class "%s".',
-                    $property->getName(),
+                    $property->name,
                     $argument->getDataType()
                 ),
                 1712309171
@@ -128,12 +128,12 @@ readonly class FileHandlingService
         }
 
         // Skip unsupported classes for #[FileUpload] attribute or properties with empty FileUpload configuration
-        if ($propertyTargetClassName !== FileReference::class || $property->getFileUpload() === null) {
+        if ($propertyTargetClassName !== FileReference::class || $property->fileUpload === null) {
             return;
         }
 
-        $fileUploadConfiguration = $property->getFileUpload();
-        $configurationPropertyName = $property->getName();
+        $fileUploadConfiguration = $property->fileUpload;
+        $configurationPropertyName = $property->name;
 
         $configuration = new FileUploadConfiguration($configurationPropertyName)
             ->initializeWithConfiguration($fileUploadConfiguration);

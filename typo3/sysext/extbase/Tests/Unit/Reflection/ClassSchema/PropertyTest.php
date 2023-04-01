@@ -112,7 +112,7 @@ final class PropertyTest extends UnitTestCase
         $property = new ClassSchema(DummyClassWithAllTypesOfProperties::class)
             ->getProperty('propertyWithCascadeAttribute');
 
-        self::assertSame('remove', $property->getCascadeValue());
+        self::assertSame('remove', $property->cascade);
     }
 
     #[Test]
@@ -184,7 +184,7 @@ final class PropertyTest extends UnitTestCase
                     'className' => NotEmptyValidator::class,
                 ],
             ],
-            $property->getValidators()
+            $property->validators
         );
     }
 
@@ -220,7 +220,7 @@ final class PropertyTest extends UnitTestCase
                     'className' => NotEmptyValidator::class,
                 ],
             ],
-            $property->getValidators()
+            $property->validators
         );
     }
 
@@ -315,7 +315,7 @@ final class PropertyTest extends UnitTestCase
                 'duplicationBehavior' => DuplicationBehavior::REPLACE,
                 'createUploadFolderIfNotExist' => true,
             ],
-            $property->getFileUpload()
+            $property->fileUpload
         );
     }
 
@@ -339,7 +339,7 @@ final class PropertyTest extends UnitTestCase
                 'duplicationBehavior' => DuplicationBehavior::REPLACE,
                 'createUploadFolderIfNotExist' => true,
             ],
-            $property->getFileUpload()
+            $property->fileUpload
         );
     }
 }

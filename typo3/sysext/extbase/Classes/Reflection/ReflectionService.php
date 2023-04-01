@@ -52,7 +52,7 @@ class ReflectionService
     public function __construct(
         #[Autowire(service: 'cache.extbase')]
         protected FrontendInterface $dataCache,
-        #[Autowire(expression: 'service("package-dependent-cache-identifier").withPrefix("ClassSchemata").toString()')]
+        #[Autowire(expression: 'service("package-dependent-cache-identifier").withPrefix("ClassSchemata").withAdditionalHashedIdentifier(constant("TYPO3\\\\CMS\\\\Extbase\\\\Reflection\\\\ClassSchema::SERIALIZATION_FORMAT")).toString()')]
         private string $cacheIdentifier
     ) {
         if (($classSchemata = $this->dataCache->get($this->cacheIdentifier)) !== false) {
@@ -156,9 +156,9 @@ class ReflectionService
         $initializedObject = new \ReflectionClass($object)->initializeLazyObject($object);
         $values = [];
         foreach ($this->getClassSchema($className)->getDomainObjectProperties() as $property) {
-            $reflectionProperty = $this->getCachedReflectionProperty($className, $property->getName());
+            $reflectionProperty = $this->getCachedReflectionProperty($className, $property->name);
             if ($reflectionProperty !== null && $reflectionProperty->isInitialized($initializedObject)) {
-                $values[$property->getName()] = $reflectionProperty->getRawValue($initializedObject);
+                $values[$property->name] = $reflectionProperty->getRawValue($initializedObject);
             }
         }
         return $values;

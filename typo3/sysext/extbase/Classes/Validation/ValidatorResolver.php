@@ -134,7 +134,7 @@ class ValidatorResolver
                 //        a collection. If this is evaluated in the ClassSchema, this whole code part is not needed
                 //        any longer and can be removed.
                 throw new \InvalidArgumentException(
-                    sprintf('There is no @var annotation or type declaration for property "%s" in class "%s".', $property->getName(), $targetClassName),
+                    sprintf('There is no @var annotation or type declaration for property "%s" in class "%s".', $property->name, $targetClassName),
                     1363778104
                 );
             }
@@ -148,7 +148,7 @@ class ValidatorResolver
                 $primaryCollectionValueType = $property->getPrimaryCollectionValueType();
                 if ($primaryType->isCollection() && $primaryCollectionValueType instanceof TypeAdapter) {
                     if ($property->isTransient()) {
-                        $this->triggerTransientValidationDeprecation($targetClassName, $property->getName());
+                        $this->triggerTransientValidationDeprecation($targetClassName, $property->name);
                     } else {
                         /** @var CollectionValidator $collectionValidator */
                         $collectionValidator = $this->createValidator(
@@ -158,7 +158,7 @@ class ValidatorResolver
                             ],
                             $request
                         );
-                        $objectValidator->addPropertyValidator($property->getName(), $collectionValidator);
+                        $objectValidator->addPropertyValidator($property->name, $collectionValidator);
                     }
                 } elseif (class_exists($propertyTargetClassName)
                     && !TypeHandlingUtility::isCoreType($propertyTargetClassName)
@@ -180,17 +180,17 @@ class ValidatorResolver
                     // It makes sense on a theoretical level, but I don't see a technical issue allowing these as
                     // well.
                     if ($property->isTransient()) {
-                        $this->triggerTransientValidationDeprecation($targetClassName, $property->getName());
+                        $this->triggerTransientValidationDeprecation($targetClassName, $property->name);
                     } else {
                         $validatorForProperty = $this->getBaseValidatorConjunction($propertyTargetClassName, $request);
                         if ($validatorForProperty->count() > 0) {
-                            $objectValidator->addPropertyValidator($property->getName(), $validatorForProperty);
+                            $objectValidator->addPropertyValidator($property->name, $validatorForProperty);
                         }
                     }
                 }
             }
 
-            foreach ($property->getValidators() as $validatorDefinition) {
+            foreach ($property->validators as $validatorDefinition) {
                 // @todo: At this point we already have the class name of the validator, thus there is not need
                 //        calling ValidatorClassNameResolver::resolve inside
                 //        \TYPO3\CMS\Extbase\Validation\ValidatorResolver::createValidator once again. However, to
@@ -207,12 +207,12 @@ class ValidatorResolver
                 }
                 if ($newValidator === null) {
                     throw new NoSuchValidatorException(
-                        'Invalid #[Validate] attribute in ' . $targetClassName . '::' . $property->getName() . ': '
+                        'Invalid #[Validate] attribute in ' . $targetClassName . '::' . $property->name . ': '
                         . 'Could not resolve class name for validator "' . $validatorDefinition['className'] . '".',
                         1241098027
                     );
                 }
-                $objectValidator->addPropertyValidator($property->getName(), $newValidator);
+                $objectValidator->addPropertyValidator($property->name, $newValidator);
             }
         }
 

@@ -409,7 +409,7 @@ readonly class Typo3DbBackend implements BackendInterface
         // loop over all properties of the object to exactly set the values of each database field
         $classSchema = $this->reflectionService->getClassSchema($className);
         foreach ($classSchema->getDomainObjectProperties() as $property) {
-            $propertyName = $property->getName();
+            $propertyName = $property->name;
             // @todo We couple the Backend to the Entity implementation (uid, isClone); changes there breaks this method
             if ($dataMap->isPersistableProperty($propertyName) && $propertyName !== AbstractDomainObject::PROPERTY_UID && $propertyName !== AbstractDomainObject::PROPERTY_PID && $propertyName !== 'isClone') {
                 $propertyValue = $this->reflectionService->getRawEntityPropertyValue($object, $propertyName);

@@ -28,53 +28,22 @@ use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
- * @phpstan-type PropertyDefinitionSpec array{
- *     'c': null|string,
- *     'f': null|array<string, mixed>,
- *     't': null|Type,
- *     'v': list<array>,
- *     'propertyCharacteristicsBit'?: int
- * }
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class Property
+readonly class Property
 {
     /**
-     * @var PropertyDefinitionSpec
-     */
-    private array $definition;
-    private PropertyCharacteristics $characteristics;
-
-    /**
-     * @param PropertyDefinitionSpec $definition
+     * @param array<string, mixed>|null $fileUpload
+     * @param list<array<string, mixed>> $validators
      */
     public function __construct(
-        private readonly string $name,
-        array $definition
-    ) {
-        $this->characteristics = new PropertyCharacteristics($definition['propertyCharacteristicsBit']);
-        unset($definition['propertyCharacteristicsBit']);
-
-        $defaults = [
-            'c' => null, // cascade
-            'f' => null, // file upload
-            't' => null, // type
-            'v' => [], // validators
-        ];
-
-        foreach ($defaults as $key => $defaultValue) {
-            if (!isset($definition[$key])) {
-                $definition[$key] = $defaultValue;
-            }
-        }
-
-        $this->definition = $definition;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
+        public string $name,
+        public ?string $cascade,
+        public ?array $fileUpload,
+        public PropertyCharacteristics $characteristics,
+        public ?Type $type,
+        public array $validators,
+    ) {}
 
     /**
      * Returns the types (string, integer, ...) set by the `@var` doc comment and php property type declarations
@@ -85,7 +54,7 @@ class Property
      */
     public function getTypes(): array
     {
-        $type = $this->getType();
+        $type = $this->type;
         if ($type === null) {
             return [];
         }
@@ -126,14 +95,6 @@ class Property
             );
         }
         return [new TypeAdapter($type)];
-    }
-
-    /**
-     * Gets the native `symfony/type-info` type.
-     */
-    public function getType(): ?Type
-    {
-        return $this->definition['t'];
     }
 
     /**
@@ -214,20 +175,5 @@ class Property
     {
         $primaryType = $this->getPrimaryType();
         return $primaryType === null || $primaryType->isNullable();
-    }
-
-    public function getValidators(): array
-    {
-        return $this->definition['v'];
-    }
-
-    public function getFileUpload(): ?array
-    {
-        return $this->definition['f'];
-    }
-
-    public function getCascadeValue(): ?string
-    {
-        return $this->definition['c'];
     }
 }

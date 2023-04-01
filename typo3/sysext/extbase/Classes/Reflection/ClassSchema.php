@@ -36,17 +36,30 @@ use TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver;
 /**
  * A class schema
  *
- * @phpstan-import-type PropertyDefinitionSpec from Property
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class ClassSchema
 {
+    /**
+     * Change this whenever the result of __serialize() changes, so that cache
+     * entries written in a previous format are not read anymore.
+     */
+    public const string SERIALIZATION_FORMAT = '1';
+
+    private const string SERIALIZATION_KEY_NAME = 'n';
+    private const string SERIALIZATION_KEY_BITSET = 'b';
+    private const string SERIALIZATION_KEY_PROPERTIES = 'p';
+    private const string SERIALIZATION_KEY_METHODS = 'm';
+    private const string SERIALIZATION_KEY_CASCADE = 'c';
+    private const string SERIALIZATION_KEY_FILE_UPLOAD = 'f';
+    private const string SERIALIZATION_KEY_TYPE = 't';
+    private const string SERIALIZATION_KEY_VALIDATORS = 'v';
+
     private const int BIT_CLASS_IS_CONTROLLER = 1 << 3;
     private BitSet $bitSet;
-    private static array $propertyObjects = [];
     private static array $methodObjects = [];
     /**
-     * @var array<string, PropertyDefinitionSpec>
+     * @var array<string, Property>
      */
     private array $properties = [];
     private array $methods = [];
@@ -98,12 +111,9 @@ class ClassSchema
             $propertyCharacteristicsBit += $reflectionProperty->isProtected() ? PropertyCharacteristics::VISIBILITY_PROTECTED : 0;
             $propertyCharacteristicsBit += $reflectionProperty->isPublic() ? PropertyCharacteristics::VISIBILITY_PUBLIC : 0;
 
-            $this->properties[$propertyName] = [
-                'c' => null, // cascade
-                'f' => null, // file upload
-                't' => null, // type
-                'v' => [], // validators
-            ];
+            $propertyCascadeValue = null;
+            $propertyFileUpload = null;
+            $propertyValidators = [];
 
             $validateAttributes = [];
             $fileUploadAttributes = [];
@@ -114,7 +124,7 @@ class ClassSchema
                     Attribute\ORM\Lazy::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_LAZY,
                     Attribute\ORM\Transient::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_TRANSIENT,
                     Attribute\IgnoreValidation::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_IGNORE_VALIDATION,
-                    Attribute\ORM\Cascade::class => $this->properties[$propertyName]['c'] = $attribute->newInstance()->value,
+                    Attribute\ORM\Cascade::class => $propertyCascadeValue = $attribute->newInstance()->value,
                     default => '' // non-extbase attributes
                 };
 
@@ -138,13 +148,13 @@ class ClassSchema
                     ];
                 }
 
-                $this->properties[$propertyName]['v'][] = $property;
+                $propertyValidators[] = $property;
             }
 
             foreach ($fileUploadAttributes as $attribute) {
                 $fileUpload = $attribute->newInstance();
 
-                $this->properties[$propertyName]['f'] = [
+                $propertyFileUpload = [
                     'validation' => $fileUpload->validation,
                     'uploadFolder' => $fileUpload->uploadFolder,
                     'addRandomSuffix' => $fileUpload->addRandomSuffix,
@@ -153,12 +163,14 @@ class ClassSchema
                 ];
             }
 
-            $this->properties[$propertyName]['propertyCharacteristicsBit'] = $propertyCharacteristicsBit;
-
-            $type = self::$propertyInfoExtractor->getType($this->className, $propertyName, ['reflectionProperty' => $reflectionProperty]);
-            if ($type !== null) {
-                $this->properties[$propertyName]['t'] = $type;
-            }
+            $this->properties[$propertyName] = new Property(
+                $propertyName,
+                $propertyCascadeValue,
+                $propertyFileUpload,
+                new PropertyCharacteristics($propertyCharacteristicsBit),
+                self::$propertyInfoExtractor->getType($this->className, $propertyName, ['reflectionProperty' => $reflectionProperty]),
+                $propertyValidators,
+            );
         }
     }
 
@@ -291,34 +303,32 @@ class ClassSchema
      */
     public function getProperty(string $propertyName): Property
     {
-        $properties = $this->buildPropertyObjects();
-
-        if (!isset($properties[$propertyName])) {
+        if (!isset($this->properties[$propertyName])) {
             throw NoSuchPropertyException::create($this->className, $propertyName);
         }
 
-        return $properties[$propertyName];
+        return $this->properties[$propertyName];
     }
 
     /**
-     * @return array|Property[]
+     * @return array<string, Property>
      */
     public function getProperties(): array
     {
-        return $this->buildPropertyObjects();
+        return $this->properties;
     }
 
     /**
      * Returns all properties that do not start with an underscore like $_localizedUid
      *
-     * @return Property[]
+     * @return array<string, Property>
      * @internal
      */
     public function getDomainObjectProperties(): array
     {
         return array_filter(
             $this->getProperties(),
-            static fn(Property $property): bool => !str_starts_with($property->getName(), '_')
+            static fn(Property $property): bool => !str_starts_with($property->name, '_')
         );
     }
 
@@ -360,21 +370,6 @@ class ClassSchema
     }
 
     /**
-     * @return array|Property[]
-     */
-    private function buildPropertyObjects(): array
-    {
-        if (!isset(self::$propertyObjects[$this->className])) {
-            self::$propertyObjects[$this->className] = [];
-            foreach ($this->properties as $propertyName => $propertyDefinition) {
-                self::$propertyObjects[$this->className][$propertyName] = new Property($propertyName, $propertyDefinition);
-            }
-        }
-
-        return self::$propertyObjects[$this->className];
-    }
-
-    /**
      * @return array|Method[]
      */
     private function buildMethodObjects(): array
@@ -387,5 +382,51 @@ class ClassSchema
         }
 
         return self::$methodObjects[$this->className];
+    }
+
+    public function __serialize(): array
+    {
+        $properties = [];
+        foreach ($this->properties as $name => $property) {
+            $data = [self::SERIALIZATION_KEY_BITSET => $property->characteristics->__toInt()];
+            if ($property->cascade !== null) {
+                $data[self::SERIALIZATION_KEY_CASCADE] = $property->cascade;
+            }
+            if ($property->fileUpload !== null) {
+                $data[self::SERIALIZATION_KEY_FILE_UPLOAD] = $property->fileUpload;
+            }
+            if ($property->type !== null) {
+                $data[self::SERIALIZATION_KEY_TYPE] = $property->type;
+            }
+            if ($property->validators !== []) {
+                $data[self::SERIALIZATION_KEY_VALIDATORS] = $property->validators;
+            }
+            $properties[$name] = $data;
+        }
+
+        return [
+            self::SERIALIZATION_KEY_NAME => $this->className,
+            self::SERIALIZATION_KEY_BITSET => $this->bitSet->__toInt(),
+            self::SERIALIZATION_KEY_PROPERTIES => $properties,
+            self::SERIALIZATION_KEY_METHODS => $this->methods,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->className = $data[self::SERIALIZATION_KEY_NAME];
+        $this->bitSet = new BitSet($data[self::SERIALIZATION_KEY_BITSET]);
+        $this->methods = $data[self::SERIALIZATION_KEY_METHODS];
+
+        foreach ($data[self::SERIALIZATION_KEY_PROPERTIES] as $name => $propertyData) {
+            $this->properties[$name] = new Property(
+                (string)$name,
+                $propertyData[self::SERIALIZATION_KEY_CASCADE] ?? null,
+                $propertyData[self::SERIALIZATION_KEY_FILE_UPLOAD] ?? null,
+                new PropertyCharacteristics($propertyData[self::SERIALIZATION_KEY_BITSET]),
+                $propertyData[self::SERIALIZATION_KEY_TYPE] ?? null,
+                $propertyData[self::SERIALIZATION_KEY_VALIDATORS] ?? [],
+            );
+        }
     }
 }
