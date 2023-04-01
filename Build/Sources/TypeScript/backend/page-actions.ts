@@ -55,6 +55,14 @@ class PageActions {
       hiddenElement.style.display = '';
 
       if (!me.checked) {
+        // Spacing between content elements is kept uniform by collapsed margins,
+        // hidden elements have a height of 0 and the margins of the surrounding elements
+        // cannot collapse, causing a visual gap. We therefore remove the element
+        // from the flow to prevent this.
+        hiddenElement.addEventListener('transitionend', (): void => {
+          hiddenElement.style.position = 'absolute';
+        }, { once: true });
+
         // We use requestAnimationFrame() as we have to set the container's height at first before resizing to 0px
         // results in a smooth animation.
         requestAnimationFrame(function() {
@@ -64,6 +72,7 @@ class PageActions {
           });
         });
       } else {
+        hiddenElement.style.position = '';
         hiddenElement.style.height = scrollHeight + 'px';
       }
     }
