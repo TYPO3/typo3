@@ -17,8 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Html;
 
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Html\DefaultSanitizerBuilder;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
+use TYPO3\CMS\Core\Html\SanitizerInitiator;
+use TYPO3\CMS\Core\Log\LogRecord;
+use TYPO3\CMS\Core\Tests\Functional\Fixtures\Log\DummyWriter;
 use TYPO3\CMS\Core\Tests\Functional\Html\Fixtures\ExtendedSanitizerBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\HtmlSanitizer\Behavior;
@@ -31,6 +35,26 @@ class DefaultSanitizerBuilderTest extends FunctionalTestCase
      * @var bool Speed up this test case, it needs no database
      */
     protected $initializeDatabase = false;
+
+    protected $configurationToUseInTestInstance = [
+        'LOG' => [
+            'TYPO3' => [
+                'HtmlSanitizer' => [
+                    'writerConfiguration' => [
+                        LogLevel::DEBUG => [
+                            DummyWriter::class => [],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ];
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        DummyWriter::$logs = [];
+    }
 
     public static function isSanitizedDataProvider(): array
     {
@@ -185,6 +209,25 @@ class DefaultSanitizerBuilderTest extends FunctionalTestCase
             $extendedBehavior,
             'in-memory cache violation for different scopes'
         );
+    }
+
+    /**
+     * @test
+     */
+    public function incidentIsLogged(): void
+    {
+        $trace = bin2hex(random_bytes(8));
+        $sanitizer = (new DefaultSanitizerBuilder())->build();
+        $sanitizer->sanitize('<script>alert(1)</script>', new SanitizerInitiator($trace));
+        $logItemDataExpectation = [
+            'behavior' => 'default',
+            'nodeName' => 'script',
+            'initiator' => $trace,
+        ];
+        $logItem = end(DummyWriter::$logs);
+        self::assertInstanceOf(LogRecord::class, $logItem);
+        self::assertSame($logItemDataExpectation, $logItem->getData());
+        self::assertSame('TYPO3.HtmlSanitizer.Visitor.CommonVisitor', $logItem->getComponent());
     }
 
     private function resolveBehaviorFromSanitizer(Sanitizer $sanitizer): Behavior

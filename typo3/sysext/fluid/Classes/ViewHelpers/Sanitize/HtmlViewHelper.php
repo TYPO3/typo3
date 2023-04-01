@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Sanitize;
 
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
+use TYPO3\CMS\Core\Html\SanitizerInitiator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
 use TYPO3\HtmlSanitizer\Sanitizer;
@@ -94,7 +95,12 @@ class HtmlViewHelper extends AbstractViewHelper
     {
         $value = $renderChildrenClosure();
         $build = $arguments['build'] ?? 'default';
-        return static::createSanitizer($build)->sanitize((string)$value);
+        return static::createSanitizer($build)->sanitize((string)$value, self::createInitiator());
+    }
+
+    protected static function createInitiator(): SanitizerInitiator
+    {
+        return GeneralUtility::makeInstance(SanitizerInitiator::class, self::class);
     }
 
     protected static function createSanitizer(string $build): Sanitizer
