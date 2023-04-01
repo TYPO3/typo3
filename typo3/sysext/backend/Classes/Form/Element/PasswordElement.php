@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
@@ -60,6 +61,13 @@ class PasswordElement extends AbstractFormElement
         );
 
         $passwordPolicy = $config['passwordPolicy'] ?? null;
+
+        // Ignore password policy for frontend users, if "security.usePasswordPolicyForFrontendUsers" is disabled
+        $features = GeneralUtility::makeInstance(Features::class);
+        if ($table === 'fe_users' && !$features->isFeatureEnabled('security.usePasswordPolicyForFrontendUsers')) {
+            $passwordPolicy = null;
+        }
+
         if ($passwordPolicy) {
             // We always use PasswordPolicyAction::NEW_USER_PASSWORD here, since the password is not set by the user,
             // but either by an admin or an editor
