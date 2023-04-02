@@ -1866,21 +1866,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Property/PropertyMappingConfigurationBuilderTest.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Property\\\\PropertyMappingConfigurationTest\\:\\:buildChildConfigurationForSingleProperty\\(\\) should return array but returns TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfiguration\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Property/PropertyMappingConfigurationTest.php
-
-		-
-			message: "#^PHPDoc tag @return with type TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfiguration is incompatible with native type array\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Property/PropertyMappingConfigurationTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$propertyName of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfiguration\\:\\:shouldMap\\(\\) expects string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Property/PropertyMappingConfigurationTest.php
-
-		-
 			message: "#^Constructor of an anonymous class has an unused parameter \\$copy\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/ClassSchemaTest.php
