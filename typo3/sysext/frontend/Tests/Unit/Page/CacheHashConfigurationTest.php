@@ -185,10 +185,10 @@ class CacheHashConfigurationTest extends TestCase
         }
     }
 
-    public function appliesResolvesParameterValueDataProvider(): array
+    public static function appliesResolvesParameterValueDataProvider(): array
     {
-        // currently using "contains" data provider, could have own test sets as well
-        return $this->containsResolvesParameterValueDataProvider();
+        // Currently using "contains" data provider, could have own test sets as well
+        return self::containsResolvesParameterValueDataProvider();
     }
 
     /**
