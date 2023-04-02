@@ -21,15 +21,15 @@ use TYPO3\CMS\Core\Routing\Route;
 use TYPO3\CMS\Core\Routing\RouteSorter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class RouteSorterTest extends UnitTestCase
+final class RouteSorterTest extends UnitTestCase
 {
-    public function routesAreSortedForGenerationDataProvider(): array
+    public static function routesAreSortedForGenerationDataProvider(): array
     {
         return [
             'default route only' => [
                 // routes
                 [
-                    $this->createDefaultRoute('/default'),
+                    self::createDefaultRoute('/default'),
                 ],
                 // given parameters
                 [],
@@ -40,9 +40,9 @@ class RouteSorterTest extends UnitTestCase
             ],
             'static, default route' => [
                 [
-                    $this->createDefaultRoute('/default-1'),
-                    $this->createRoute('/list'),
-                    $this->createDefaultRoute('/default-2'),
+                    self::createDefaultRoute('/default-1'),
+                    self::createRoute('/list'),
+                    self::createDefaultRoute('/default-2'),
                 ],
                 [],
                 [
@@ -53,9 +53,9 @@ class RouteSorterTest extends UnitTestCase
             ],
             'mandatory, static, default route' => [
                 [
-                    $this->createDefaultRoute('/default'),
-                    $this->createRoute('/list'),
-                    $this->createRoute('/list/{page}', ['page' => 0]),
+                    self::createDefaultRoute('/default'),
+                    self::createRoute('/list'),
+                    self::createRoute('/list/{page}', ['page' => 0]),
                 ],
                 [],
                 [
@@ -68,11 +68,11 @@ class RouteSorterTest extends UnitTestCase
             // variables would have been skipped during generation
             'ambiguous routes, no parameters, most probable' => [
                 [
-                    $this->createRoute('/list'),
-                    $this->createRoute('/list/{uid}'),
-                    $this->createRoute('/list/{uid}/{category}', ['category' => 0]),
-                    $this->createRoute('/list/{page}', ['page' => 0]),
-                    $this->createRoute('/list/{category}', ['category' => 0]),
+                    self::createRoute('/list'),
+                    self::createRoute('/list/{uid}'),
+                    self::createRoute('/list/{uid}/{category}', ['category' => 0]),
+                    self::createRoute('/list/{page}', ['page' => 0]),
+                    self::createRoute('/list/{category}', ['category' => 0]),
                 ],
                 [],
                 [
@@ -85,11 +85,11 @@ class RouteSorterTest extends UnitTestCase
             ],
             'mandatory first, ambiguous parameters' => [
                 [
-                    $this->createRoute('/list'),
-                    $this->createRoute('/list/{uid}'),
-                    $this->createRoute('/list/{uid}/{category}', ['category' => 0]),
-                    $this->createRoute('/list/{page}', ['page' => 0]),
-                    $this->createRoute('/list/{category}', ['category' => 0]),
+                    self::createRoute('/list'),
+                    self::createRoute('/list/{uid}'),
+                    self::createRoute('/list/{uid}/{category}', ['category' => 0]),
+                    self::createRoute('/list/{page}', ['page' => 0]),
+                    self::createRoute('/list/{category}', ['category' => 0]),
                 ],
                 [
                     'uid' => 123,
@@ -105,11 +105,11 @@ class RouteSorterTest extends UnitTestCase
             ],
             'complete first, ambiguous parameters #1' => [
                 [
-                    $this->createRoute('/list'),
-                    $this->createRoute('/list/{uid}'),
-                    $this->createRoute('/list/{uid}/{category}', ['category' => 0]),
-                    $this->createRoute('/list/{page}', ['page' => 0]),
-                    $this->createRoute('/list/{category}', ['category' => 0]),
+                    self::createRoute('/list'),
+                    self::createRoute('/list/{uid}'),
+                    self::createRoute('/list/{uid}/{category}', ['category' => 0]),
+                    self::createRoute('/list/{page}', ['page' => 0]),
+                    self::createRoute('/list/{category}', ['category' => 0]),
                 ],
                 [
                     'category' => 1,
@@ -125,11 +125,11 @@ class RouteSorterTest extends UnitTestCase
             ],
             'complete first, ambiguous parameters #2' => [
                 [
-                    $this->createRoute('/list'),
-                    $this->createRoute('/list/{uid}'),
-                    $this->createRoute('/list/{uid}/{category}', ['category' => 0]),
-                    $this->createRoute('/list/{page}', ['page' => 0]),
-                    $this->createRoute('/list/{category}', ['category' => 0]),
+                    self::createRoute('/list'),
+                    self::createRoute('/list/{uid}'),
+                    self::createRoute('/list/{uid}/{category}', ['category' => 0]),
+                    self::createRoute('/list/{page}', ['page' => 0]),
+                    self::createRoute('/list/{category}', ['category' => 0]),
                 ],
                 [
                     'uid' => 123,
@@ -147,8 +147,8 @@ class RouteSorterTest extends UnitTestCase
             // not really important, just to show order is kept
             'defaults only, no parameters given #1' => [
                 [
-                    $this->createRoute('/list/{defA}/{defB}/{defC}', ['defA' => 0, 'defB' => 0, 'defC' => 0]),
-                    $this->createRoute('/list/{defD}/{defE}/{defF}', ['defD' => 0, 'defE' => 0, 'defF' => 0]),
+                    self::createRoute('/list/{defA}/{defB}/{defC}', ['defA' => 0, 'defB' => 0, 'defC' => 0]),
+                    self::createRoute('/list/{defD}/{defE}/{defF}', ['defD' => 0, 'defE' => 0, 'defF' => 0]),
                 ],
                 [
                 ],
@@ -160,8 +160,8 @@ class RouteSorterTest extends UnitTestCase
             // not really important, just to show order is kept
             'defaults only, no parameters given #2' => [
                 [
-                    $this->createRoute('/list/{defD}/{defE}/{defF}', ['defD' => 0, 'defE' => 0, 'defF' => 0]),
-                    $this->createRoute('/list/{defA}/{defB}/{defC}', ['defA' => 0, 'defB' => 0, 'defC' => 0]),
+                    self::createRoute('/list/{defD}/{defE}/{defF}', ['defD' => 0, 'defE' => 0, 'defF' => 0]),
+                    self::createRoute('/list/{defA}/{defB}/{defC}', ['defA' => 0, 'defB' => 0, 'defC' => 0]),
                 ],
                 [
                 ],
@@ -172,8 +172,8 @@ class RouteSorterTest extends UnitTestCase
             ],
             'defaults only, {defF} given, best match' => [
                 [
-                    $this->createRoute('/list/{defA}/{defB}/{defC}', ['defA' => 0, 'defB' => 0, 'defC' => 0]),
-                    $this->createRoute('/list/{defD}/{defE}/{defF}', ['defD' => 0, 'defE' => 0, 'defF' => 0]),
+                    self::createRoute('/list/{defA}/{defB}/{defC}', ['defA' => 0, 'defB' => 0, 'defC' => 0]),
+                    self::createRoute('/list/{defD}/{defE}/{defF}', ['defD' => 0, 'defE' => 0, 'defF' => 0]),
                 ],
                 [
                     'defF' => 1,
@@ -185,8 +185,8 @@ class RouteSorterTest extends UnitTestCase
             ],
             'mixed variables, ambiguous parameters, complete mandatory first #1' => [
                 [
-                    $this->createRoute('/list/{d}/{e}/{defF}', ['defF' => 0]),
-                    $this->createRoute('/list/{a}/{defB}/{defC}', ['defB' => 0, 'defC' => 0]),
+                    self::createRoute('/list/{d}/{e}/{defF}', ['defF' => 0]),
+                    self::createRoute('/list/{a}/{defB}/{defC}', ['defB' => 0, 'defC' => 0]),
                 ],
                 [
                     'a' => 1,
@@ -200,8 +200,8 @@ class RouteSorterTest extends UnitTestCase
             ],
             'mixed variables, ambiguous parameters, complete mandatory first #2' => [
                 [
-                    $this->createRoute('/list/{a}/{defB}/{defC}', ['defB' => 0, 'defC' => 0]),
-                    $this->createRoute('/list/{d}/{e}/{defF}', ['defF' => 0]),
+                    self::createRoute('/list/{a}/{defB}/{defC}', ['defB' => 0, 'defC' => 0]),
+                    self::createRoute('/list/{d}/{e}/{defF}', ['defF' => 0]),
                 ],
                 [
                     'd' => 1,
@@ -216,8 +216,8 @@ class RouteSorterTest extends UnitTestCase
             ],
             'mixed variables, ambiguous parameters, complete first' => [
                 [
-                    $this->createRoute('/list/{d}/{e}/{defF}', ['defF' => 0]),
-                    $this->createRoute('/list/{a}/{defB}/{defC}', ['defB' => 0, 'defC' => 0]),
+                    self::createRoute('/list/{d}/{e}/{defF}', ['defF' => 0]),
+                    self::createRoute('/list/{a}/{defB}/{defC}', ['defB' => 0, 'defC' => 0]),
                 ],
                 [
                     'd' => 1,
@@ -257,14 +257,14 @@ class RouteSorterTest extends UnitTestCase
         return $route->getPath();
     }
 
-    private function createRoute(string $path, array $defaults = []): Route
+    private static function createRoute(string $path, array $defaults = []): Route
     {
         $route = new Route($path);
         $route->setDefaults($defaults);
         return $route;
     }
 
-    private function createDefaultRoute(string $path): Route
+    private static function createDefaultRoute(string $path): Route
     {
         $route = new Route($path);
         $route->setOption('_isDefault', true);
