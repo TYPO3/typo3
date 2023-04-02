@@ -98,20 +98,19 @@ use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ContentObjectRendererTest extends UnitTestCase
+final class ContentObjectRendererTest extends UnitTestCase
 {
-    use ContentObjectRendererTestTrait;
-
     protected bool $resetSingletonInstances = true;
+    protected bool $backupEnvironment = true;
 
-    protected ContentObjectRenderer&MockObject&AccessibleObjectInterface $subject;
-
-    protected TypoScriptFrontendController&MockObject&AccessibleObjectInterface $frontendControllerMock;
+    private ContentObjectRenderer&MockObject&AccessibleObjectInterface $subject;
+    private TypoScriptFrontendController&MockObject&AccessibleObjectInterface $frontendControllerMock;
+    private CacheManager&MockObject $cacheManagerMock;
 
     /**
      * Default content object name -> class name map, shipped with TYPO3 CMS
      */
-    protected array $contentObjectMap = [
+    private array $contentObjectMap = [
         'TEXT' => TextContentObject::class,
         'CASE' => CaseContentObject::class,
         'COBJ_ARRAY' => ContentObjectArrayContentObject::class,
@@ -131,10 +130,6 @@ class ContentObjectRendererTest extends UnitTestCase
         'FLUIDTEMPLATE' => FluidTemplateContentObject::class,
         'SVG' => ScalableVectorGraphicsContentObject::class,
     ];
-
-    protected MockObject&CacheManager $cacheManagerMock;
-
-    protected bool $backupEnvironment = true;
 
     protected function setUp(): void
     {
@@ -200,12 +195,12 @@ class ContentObjectRendererTest extends UnitTestCase
     // Utility functions
     //////////////////////
 
-    protected function getFrontendController(): TypoScriptFrontendController
+    private function getFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
     }
 
-    protected function getLinkFactory(SiteConfiguration $siteConfiguration = null, $linkService = null): LinkFactory
+    private function getLinkFactory(SiteConfiguration $siteConfiguration = null, $linkService = null): LinkFactory
     {
         $linkService ??= new LinkService();
         $typoLinkCodecService = new TypoLinkCodecService();
@@ -236,10 +231,182 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param string $subject the subject, will be modified
      * @param string $expected the expected result, will be modified
      */
-    protected function handleCharset(string &$subject, string &$expected): void
+    private function handleCharset(string &$subject, string &$expected): void
     {
         $subject = mb_convert_encoding($subject, 'utf-8', 'iso-8859-1');
         $expected = mb_convert_encoding($expected, 'utf-8', 'iso-8859-1');
+    }
+
+    private static function getLibParseFunc_RTE(): array
+    {
+        return [
+            'parseFunc' => '',
+            'parseFunc.' => [
+                'allowTags' => 'a, abbr, acronym, address, article, aside, b, bdo, big, blockquote, br, caption, center, cite, code, col, colgroup, dd, del, dfn, dl, div, dt, em, font, footer, header, h1, h2, h3, h4, h5, h6, hr, i, img, ins, kbd, label, li, link, meta, nav, ol, p, pre, q, samp, sdfield, section, small, span, strike, strong, style, sub, sup, table, thead, tbody, tfoot, td, th, tr, title, tt, u, ul, var',
+                'constants' => '1',
+                'denyTags' => '*',
+                'externalBlocks' => 'article, aside, blockquote, div, dd, dl, footer, header, nav, ol, section, table, ul, pre',
+                'externalBlocks.' => [
+                    'article.' => [
+                        'callRecursive' => '1',
+                        'stripNL' => '1',
+                    ],
+                    'aside.' => [
+                        'callRecursive' => '1',
+                        'stripNL' => '1',
+                    ],
+                    'blockquote.' => [
+                        'callRecursive' => '1',
+                        'stripNL' => '1',
+                    ],
+                    'dd.' => [
+                        'callRecursive' => '1',
+                        'stripNL' => '1',
+                    ],
+                    'div.' => [
+                        'callRecursive' => '1',
+                        'stripNL' => '1',
+                    ],
+                    'dl.' => [
+                        'callRecursive' => '1',
+                        'stripNL' => '1',
+                    ],
+                    'footer.' => [
+                        'callRecursive' => '1',
+                        'stripNL' => '1',
+                    ],
+                    'header.' => [
+                        'callRecursive' => '1',
+                        'stripNL' => '1',
+                    ],
+                    'nav.' => [
+                        'callRecursive' => '1',
+                        'stripNL' => '1',
+                    ],
+                    'ol.' => [
+                        'callRecursive' => '1',
+                        'stripNL' => '1',
+                    ],
+                    'section.' => [
+                        'callRecursive' => '1',
+                        'stripNL' => '1',
+                    ],
+                    'table.' => [
+                        'HTMLtableCells' => '1',
+                        'HTMLtableCells.' => [
+                            'addChr10BetweenParagraphs' => '1',
+                            'default.' => [
+                                'stdWrap.' => [
+                                    'parseFunc' => '=< lib.parseFunc_RTE',
+                                    'parseFunc.' => [
+                                        'nonTypoTagStdWrap.' => [
+                                            'encapsLines.' => [
+                                                'nonWrappedTag' => '',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'stdWrap.' => [
+                            'HTMLparser' => '1',
+                            'HTMLparser.' => [
+                                'keepNonMatchedTags' => '1',
+                                'tags.' => [
+                                    'table.' => [
+                                        'fixAttrib.' => [
+                                            'class.' => [
+                                                'always' => '1',
+                                                'default' => 'contenttable',
+                                                'list' => 'contenttable',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'stripNL' => '1',
+                    ],
+                    'ul.' => [
+                        'callRecursive' => '1',
+                        'stripNL' => '1',
+                    ],
+                ],
+                'makelinks' => '1',
+                'makelinks.' => [
+                    'http.' => [
+                        'extTarget.' => [
+                            'override' => '_blank',
+                        ],
+                        'keep' => 'path',
+                    ],
+                ],
+                'nonTypoTagStdWrap.' => [
+                    'encapsLines.' => [
+                        'addAttributes.' => [
+                            'P.' => [
+                                'class' => 'bodytext',
+                                'class.' => [
+                                    'setOnly' => 'blank',
+                                ],
+                            ],
+                        ],
+                        'encapsTagList' => 'p,pre,h1,h2,h3,h4,h5,h6,hr,dt,li',
+                        'innerStdWrap_all.' => [
+                            'ifBlank' => '&nbsp;',
+                        ],
+                        'nonWrappedTag' => 'P',
+                        'remapTag.' => [
+                            'DIV' => 'P',
+                        ],
+                    ],
+                    'HTMLparser' => '1',
+                    'HTMLparser.' => [
+                        'htmlSpecialChars' => '2',
+                        'keepNonMatchedTags' => '1',
+                    ],
+                ],
+                'sword' => '<span class="csc-sword">|</span>',
+                'tags.' => [
+                    'link' => 'TEXT',
+                    'link.' => [
+                        'current' => '1',
+                        'parseFunc.' => [
+                            'constants' => '1',
+                        ],
+                        'typolink.' => [
+                            'directImageLink' => false,
+                            'extTarget.' => [
+                                'override' => '',
+                            ],
+                            'parameter.' => [
+                                'data' => 'parameters : allParams',
+                            ],
+                            'target.' => [
+                                'override' => '',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    private function createSiteWithLanguage(array $languageConfiguration): Site
+    {
+        return new Site('test', 1, [
+            'identifier' => 'test',
+            'rootPageId' => 1,
+            'base' => '/',
+            'languages' => [
+                array_merge(
+                    $languageConfiguration,
+                    [
+                        'base' => '/',
+                    ]
+                ),
+            ],
+        ]);
     }
 
     /////////////////////////////////////////////
@@ -1823,7 +1990,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->subject->render($contentObjectFixture, $configuration);
     }
 
-    protected function createContentObjectThrowingExceptionFixture(bool $addProductionExceptionHandlerInstance = true): AbstractContentObject&MockObject
+    private function createContentObjectThrowingExceptionFixture(bool $addProductionExceptionHandlerInstance = true): AbstractContentObject&MockObject
     {
         $contentObjectFixture = $this->getMockBuilder(AbstractContentObject::class)
             ->getMock();
@@ -1842,7 +2009,7 @@ class ContentObjectRendererTest extends UnitTestCase
         return $contentObjectFixture;
     }
 
-    protected function getLibParseFunc(): array
+    private function getLibParseFunc(): array
     {
         return [
             'makelinks' => '1',
@@ -1884,48 +2051,48 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
     }
 
-    public function _parseFuncReturnsCorrectHtmlDataProvider(): array
+    public static function _parseFuncReturnsCorrectHtmlDataProvider(): array
     {
         return [
             'Text without tag is wrapped with <p> tag' => [
                 'Text without tag',
-                $this->getLibParseFunc_RTE(),
+                self::getLibParseFunc_RTE(),
                 '<p class="bodytext">Text without tag</p>',
                 false,
             ],
             'Text wrapped with <p> tag remains the same' => [
                 '<p class="myclass">Text with &lt;p&gt; tag</p>',
-                $this->getLibParseFunc_RTE(),
+                self::getLibParseFunc_RTE(),
                 '<p class="myclass">Text with &lt;p&gt; tag</p>',
                 false,
             ],
             'Text with absolute external link' => [
                 'Text with <link http://example.com/foo/>external link</link>',
-                $this->getLibParseFunc_RTE(),
+                self::getLibParseFunc_RTE(),
                 '<p class="bodytext">Text with <a href="http://example.com/foo/">external link</a></p>',
                 (new LinkResult(LinkService::TYPE_URL, 'http://example.com/foo/'))->withLinkText('external link'),
             ],
             'Empty lines are not duplicated' => [
                 LF,
-                $this->getLibParseFunc_RTE(),
+                self::getLibParseFunc_RTE(),
                 '<p class="bodytext">&nbsp;</p>',
                 false,
             ],
             'Multiple empty lines with no text' => [
                 LF . LF . LF,
-                $this->getLibParseFunc_RTE(),
+                self::getLibParseFunc_RTE(),
                 '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">&nbsp;</p>',
                 false,
             ],
             'Empty lines are not duplicated at the end of content' => [
                 'test' . LF . LF,
-                $this->getLibParseFunc_RTE(),
+                self::getLibParseFunc_RTE(),
                 '<p class="bodytext">test</p>' . LF . '<p class="bodytext">&nbsp;</p>',
                 false,
             ],
             'Empty lines are not trimmed' => [
                 LF . 'test' . LF,
-                $this->getLibParseFunc_RTE(),
+                self::getLibParseFunc_RTE(),
                 '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">test</p>' . LF . '<p class="bodytext">&nbsp;</p>',
                 false,
             ],
@@ -4638,7 +4805,7 @@ class ContentObjectRendererTest extends UnitTestCase
         );
     }
 
-    protected static function stdWrap_formattedDateProvider(): \Generator
+    public static function stdWrap_formattedDateProvider(): \Generator
     {
         yield 'regular formatting - no locale' => [
             '2023.02.02 AD at 13:05:00 UTC',
@@ -5169,7 +5336,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_encapsLines_HTML5SelfClosingTags(string $input, string $expected): void
     {
-        $rteParseFunc = $this->getLibParseFunc_RTE();
+        $rteParseFunc = self::getLibParseFunc_RTE();
 
         $conf = [
             'encapsLines' => $rteParseFunc['parseFunc.']['nonTypoTagStdWrap.']['encapsLines'] ?? null,
@@ -8231,7 +8398,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * End: Mixed tests
      ***************************************************************************/
 
-    protected function createContentObjectFactoryMock()
+    private function createContentObjectFactoryMock()
     {
         return new class (new Container()) extends ContentObjectFactory {
             /**
