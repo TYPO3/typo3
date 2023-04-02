@@ -17,67 +17,47 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\OnlineMedia\Helpers;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\VimeoHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class VimeoHelperTest
- */
-class VimeoHelperTest extends UnitTestCase
+final class VimeoHelperTest extends UnitTestCase
 {
-    protected VimeoHelper&MockObject $subject;
-
-    protected ?string $extension;
-
-    protected function setUp(): void
+    public static function transformUrlDataProvider(): array
     {
-        parent::setUp();
-
-        $this->extension = 'video/vimeo';
-        $this->subject = $this->getAccessibleMock(VimeoHelper::class, ['transformMediaIdToFile'], [$this->extension]);
+        return [
+            [null, null, false],
+            ['https://typo3.org/', null, false],
+            ['https://vimeo.com/', '7215347324', true],
+            ['https://vimeo.com/', '7215347324/hasf8a65sdsa7d', true],
+            ['https://vimeo.com/video/', '7215347324', true],
+            ['https://vimeo.com/video/', '7215347324/hasf8a65sdsa7d', true],
+            ['https://player.vimeo.com/', '7215347324', true],
+            ['https://player.vimeo.com/', '7215347324/hasf8a65sdsa7d', true],
+            ['https://vimeo.com/event/', '7215347324', true],
+        ];
     }
 
     /**
      * @test
      * @dataProvider transformUrlDataProvider
-     *
-     * @param string $url
-     * @param string $videoId
-     * @param File|null $expectedResult
-     *
-     * @throws \ReflectionException
-     * @todo Specifying the argument types results in test bench errors
      */
-    public function transformUrlToFileReturnsExpectedResult($url, $videoId, $expectedResult): void
+    public function transformUrlToFileReturnsExpectedResult(?string $url, ?string $videoId, bool $expectsMock): void
     {
         $mockedFolder = $this->createMock(Folder::class);
+        $expectedResult = null;
+        if ($expectsMock) {
+            $expectedResult = $this->createMock(File::class);
+        }
 
-        $this->subject->method('transformMediaIdToFile')
-            ->with($videoId, $mockedFolder, $this->extension)
+        $subject = $this->getAccessibleMock(VimeoHelper::class, ['transformMediaIdToFile'], ['video/vimeo']);
+        $subject->method('transformMediaIdToFile')
+            ->with($videoId, $mockedFolder, 'video/vimeo')
             ->willReturn($expectedResult);
 
-        $result = $this->subject->transformUrlToFile($url . $videoId, $mockedFolder);
+        $result = $subject->transformUrlToFile($url . $videoId, $mockedFolder);
 
         self::assertSame($expectedResult, $result);
-    }
-
-    public function transformUrlDataProvider(): array
-    {
-        $fileResourceMock = $this->createMock(File::class);
-
-        return [
-            [null, null, null],
-            ['https://typo3.org/', null, null],
-            ['https://vimeo.com/', '7215347324', $fileResourceMock],
-            ['https://vimeo.com/', '7215347324/hasf8a65sdsa7d', $fileResourceMock],
-            ['https://vimeo.com/video/', '7215347324', $fileResourceMock],
-            ['https://vimeo.com/video/', '7215347324/hasf8a65sdsa7d', $fileResourceMock],
-            ['https://player.vimeo.com/', '7215347324', $fileResourceMock],
-            ['https://player.vimeo.com/', '7215347324/hasf8a65sdsa7d', $fileResourceMock],
-            ['https://vimeo.com/event/', '7215347324', $fileResourceMock],
-        ];
     }
 }
