@@ -21,10 +21,7 @@ use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\MathUtilityTestClassWithStringRep
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for class \TYPO3\CMS\Core\Utility\MathUtility
- */
-class MathUtilityTest extends UnitTestCase
+final class MathUtilityTest extends UnitTestCase
 {
     //////////////////////////////////
     // Tests concerning forceIntegerInRange
@@ -163,15 +160,10 @@ class MathUtilityTest extends UnitTestCase
     ///////////////////////////////
     // Tests concerning canBeInterpretedAsFloat
     ///////////////////////////////
-    /**
-     * Data provider for canBeInterpretedAsFloatReturnsTrue
-     *
-     * @return array Data sets
-     */
-    public function functionCanBeInterpretedAsFloatValidDataProvider(): array
+    public static function functionCanBeInterpretedAsFloatValidDataProvider(): array
     {
         // testcases for Integer apply for float as well
-        $intTestcases = $this->functionCanBeInterpretedAsIntegerValidDataProvider();
+        $intTestcases = self::functionCanBeInterpretedAsIntegerValidDataProvider();
         $floatTestcases = [
             'zero as float' => [(float)0],
             'negative float' => [(float)-7.5],
