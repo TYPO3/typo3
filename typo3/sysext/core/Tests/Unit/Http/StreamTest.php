@@ -23,26 +23,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Adapted from https://github.com/phly/http/
- */
-class StreamTest extends UnitTestCase
+final class StreamTest extends UnitTestCase
 {
-    protected ?Stream $stream;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->stream = new Stream('php://memory', 'wb+');
-    }
-
     /**
      * Helper method to create a random directory and return the path.
      * The path will be registered for deletion upon test ending
      */
-    protected function getTestDirectory(string $prefix = 'root_'): string
+    private function getTestDirectory(): string
     {
-        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId($prefix);
+        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('root_');
         $this->testFilesToDelete[] = $path;
         GeneralUtility::mkdir_deep($path);
         return $path;
@@ -53,7 +42,7 @@ class StreamTest extends UnitTestCase
      */
     public function canInstantiateWithStreamIdentifier(): void
     {
-        self::assertInstanceOf(Stream::class, $this->stream);
+        self::assertInstanceOf(Stream::class, new Stream('php://memory', 'wb+'));
     }
 
     /**
@@ -62,8 +51,8 @@ class StreamTest extends UnitTestCase
     public function canInstantiateWithStreamResource(): void
     {
         $resource = fopen('php://memory', 'wb+');
-        $stream = new Stream($resource);
-        self::assertInstanceOf(Stream::class, $stream);
+        $subject = new Stream($resource);
+        self::assertInstanceOf(Stream::class, $subject);
     }
 
     /**
@@ -73,8 +62,8 @@ class StreamTest extends UnitTestCase
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
-        $stream = new Stream($fileName, 'w');
-        self::assertFalse($stream->isReadable());
+        $subject = new Stream($fileName, 'w');
+        self::assertFalse($subject->isReadable());
     }
 
     /**
@@ -82,8 +71,8 @@ class StreamTest extends UnitTestCase
      */
     public function isWritableReturnsFalseIfStreamIsNotWritable(): void
     {
-        $stream = new Stream('php://memory', 'r');
-        self::assertFalse($stream->isWritable());
+        $subject = new Stream('php://memory', 'r');
+        self::assertFalse($subject->isWritable());
     }
 
     /**
@@ -92,8 +81,9 @@ class StreamTest extends UnitTestCase
     public function toStringRetrievesFullContentsOfStream(): void
     {
         $message = 'foo bar';
-        $this->stream->write($message);
-        self::assertEquals($message, (string)$this->stream);
+        $subject = new Stream('php://memory', 'wb+');
+        $subject->write($message);
+        self::assertEquals($message, (string)$subject);
     }
 
     /**
@@ -102,8 +92,8 @@ class StreamTest extends UnitTestCase
     public function detachReturnsResource(): void
     {
         $resource = fopen('php://memory', 'wb+');
-        $stream = new Stream($resource);
-        self::assertSame($resource, $stream->detach());
+        $subject = new Stream($resource);
+        self::assertSame($resource, $subject->detach());
     }
 
     /**
@@ -123,9 +113,8 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
         file_put_contents($fileName, 'FOO BAR');
-        $stream = new Stream($fileName, 'w');
-
-        self::assertEquals('', $stream->__toString());
+        $subject = new Stream($fileName, 'w');
+        self::assertEquals('', $subject->__toString());
     }
 
     /**
@@ -136,11 +125,9 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-        $stream->close();
-
-        // Testing with a variable here, otherwise the suggested assertion would be assertIsNotResource
-        // which fails.
+        $subject = new Stream($resource);
+        $subject->close();
+        // Testing with a variable here, otherwise the suggested assertion would be assertIsNotResource, which fails.
         $isResource = is_resource($resource);
         self::assertFalse($isResource);
     }
@@ -153,10 +140,9 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-        $stream->close();
-
-        self::assertNull($stream->detach());
+        $subject = new Stream($resource);
+        $subject->close();
+        self::assertNull($subject->detach());
     }
 
     /**
@@ -167,10 +153,9 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-        $detached = $stream->detach();
-
-        $stream->close();
+        $subject = new Stream($resource);
+        $detached = $subject->detach();
+        $subject->close();
         self::assertIsResource($detached);
         self::assertSame($resource, $detached);
     }
@@ -180,8 +165,9 @@ class StreamTest extends UnitTestCase
      */
     public function getSizeReportsNullWhenNoResourcePresent(): void
     {
-        $this->stream->detach();
-        self::assertNull($this->stream->getSize());
+        $subject = new Stream('php://memory', 'wb+');
+        $subject->detach();
+        self::assertNull($subject->getSize());
     }
 
     /**
@@ -192,11 +178,9 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-
+        $subject = new Stream($resource);
         fseek($resource, 2);
-
-        self::assertEquals(2, $stream->tell());
+        self::assertEquals(2, $subject->tell());
     }
 
     /**
@@ -207,13 +191,12 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-
+        $subject = new Stream($resource);
         fseek($resource, 2);
-        $stream->detach();
+        $subject->detach();
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1436717285);
-        $stream->tell();
+        $subject->tell();
     }
 
     /**
@@ -224,10 +207,9 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-
+        $subject = new Stream($resource);
         fseek($resource, 2);
-        self::assertFalse($stream->eof());
+        self::assertFalse($subject->eof());
     }
 
     /**
@@ -238,12 +220,11 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-
+        $subject = new Stream($resource);
         while (!feof($resource)) {
             fread($resource, 4096);
         }
-        self::assertTrue($stream->eof());
+        self::assertTrue($subject->eof());
     }
 
     /**
@@ -254,11 +235,10 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-
+        $subject = new Stream($resource);
         fseek($resource, 2);
-        $stream->detach();
-        self::assertTrue($stream->eof());
+        $subject->detach();
+        self::assertTrue($subject->eof());
     }
 
     /**
@@ -269,8 +249,8 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-        self::assertTrue($stream->isSeekable());
+        $subject = new Stream($resource);
+        self::assertTrue($subject->isSeekable());
     }
 
     /**
@@ -281,9 +261,9 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-        $stream->detach();
-        self::assertFalse($stream->isSeekable());
+        $subject = new Stream($resource);
+        $subject->detach();
+        self::assertFalse($subject->isSeekable());
     }
 
     /**
@@ -294,9 +274,9 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-        $stream->seek(2);
-        self::assertEquals(2, $stream->tell());
+        $subject = new Stream($resource);
+        $subject->seek(2);
+        self::assertEquals(2, $subject->tell());
     }
 
     /**
@@ -307,10 +287,10 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-        $stream->seek(2);
-        $stream->rewind();
-        self::assertEquals(0, $stream->tell());
+        $subject = new Stream($resource);
+        $subject->seek(2);
+        $subject->rewind();
+        self::assertEquals(0, $subject->tell());
     }
 
     /**
@@ -321,11 +301,11 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-        $stream->detach();
+        $subject = new Stream($resource);
+        $subject->detach();
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1436717287);
-        $stream->seek(2);
+        $subject->seek(2);
     }
 
     /**
@@ -336,9 +316,9 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-        $stream->detach();
-        self::assertFalse($stream->isWritable());
+        $subject = new Stream($resource);
+        $subject->detach();
+        self::assertFalse($subject->isWritable());
     }
 
     /**
@@ -349,11 +329,11 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-        $stream->detach();
+        $subject = new Stream($resource);
+        $subject->detach();
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1436717290);
-        $stream->write('bar');
+        $subject->write('bar');
     }
 
     /**
@@ -364,9 +344,9 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
-        $stream = new Stream($resource);
-        $stream->detach();
-        self::assertFalse($stream->isReadable());
+        $subject = new Stream($resource);
+        $subject->detach();
+        self::assertFalse($subject->isReadable());
     }
 
     /**
@@ -377,11 +357,11 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'r');
-        $stream = new Stream($resource);
-        $stream->detach();
+        $subject = new Stream($resource);
+        $subject->detach();
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1436717292);
-        $stream->read(4096);
+        $subject->read(4096);
     }
 
     /**
@@ -392,11 +372,11 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'r');
-        $stream = new Stream($resource);
+        $subject = new Stream($resource);
         while (!feof($resource)) {
             fread($resource, 4096);
         }
-        self::assertEquals('', $stream->read(4096));
+        self::assertEquals('', $subject->read(4096));
     }
 
     /**
@@ -407,23 +387,20 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'w');
-        $stream = new Stream($resource);
-        self::assertEquals('', $stream->getContents());
+        $subject = new Stream($resource);
+        self::assertEquals('', $subject->getContents());
     }
 
-    public function invalidResourcesDataProvider(): array
+    public static function invalidResourcesDataProvider(): array
     {
-        $fileName = tempnam(sys_get_temp_dir(), 'PHLY');
-        $this->testFilesToDelete[] = $fileName;
-
         return [
-            'null'                => [null],
-            'false'               => [false],
-            'true'                => [true],
-            'int'                 => [1],
-            'float'               => [1.1],
-            'array'               => [[fopen($fileName, 'r+')]],
-            'object'              => [(object)['resource' => fopen($fileName, 'r+')]],
+            'null' => [null],
+            'false' => [false],
+            'true' => [true],
+            'int' => [1],
+            'float' => [1.1],
+            'array' => [[]],
+            'object' => [new \stdClass()],
         ];
     }
 
@@ -435,7 +412,8 @@ class StreamTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717297);
-        $this->stream->attach($resource);
+        $subject = new Stream('php://memory', 'wb+');
+        $subject->attach($resource);
     }
 
     /**
@@ -445,7 +423,8 @@ class StreamTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717296);
-        $this->stream->attach('foo-bar-baz');
+        $subject = new Stream('php://memory', 'wb+');
+        $subject->attach('foo-bar-baz');
     }
 
     /**
@@ -456,12 +435,10 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
         $resource = fopen($fileName, 'r+');
-        $this->stream->attach($resource);
-
-        $r = new \ReflectionProperty($this->stream, 'resource');
-        $r->setAccessible(true);
-        $test = $r->getValue($this->stream);
-        self::assertSame($resource, $test);
+        $subject = new Stream('php://memory', 'wb+');
+        $subject->attach($resource);
+        $reflection = new \ReflectionProperty($subject, 'resource');
+        self::assertSame($resource, $reflection->getValue($subject));
     }
 
     /**
@@ -471,14 +448,12 @@ class StreamTest extends UnitTestCase
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
-        $this->stream->attach($fileName);
-
+        $subject = new Stream('php://memory', 'wb+');
+        $subject->attach($fileName);
         $resource = fopen($fileName, 'r+');
         fwrite($resource, 'FooBar');
-
-        $this->stream->rewind();
-        $test = (string)$this->stream;
-        self::assertEquals('FooBar', $test);
+        $subject->rewind();
+        self::assertEquals('FooBar', (string)$subject);
     }
 
     /**
@@ -489,14 +464,12 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
         $resource = fopen($fileName, 'r+');
-        $this->stream->attach($resource);
-
+        $subject = new Stream('php://memory', 'wb+');
+        $subject->attach($resource);
         fwrite($resource, 'FooBar');
-
         // rewind, because current pointer is at end of stream!
-        $this->stream->rewind();
-        $test = $this->stream->getContents();
-        self::assertEquals('FooBar', $test);
+        $subject->rewind();
+        self::assertEquals('FooBar', $subject->getContents());
     }
 
     /**
@@ -507,14 +480,12 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
         $resource = fopen($fileName, 'r+');
-        $this->stream->attach($resource);
-
+        $subject = new Stream('php://memory', 'wb+');
+        $subject->attach($resource);
         fwrite($resource, 'FooBar');
-
         // seek to position 3
-        $this->stream->seek(3);
-        $test = $this->stream->getContents();
-        self::assertEquals('Bar', $test);
+        $subject->seek(3);
+        self::assertEquals('Bar', $subject->getContents());
     }
 
     /**
@@ -525,12 +496,10 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
         $resource = fopen($fileName, 'r+');
-        $this->stream->attach($resource);
-
+        $subject = new Stream('php://memory', 'wb+');
+        $subject->attach($resource);
         $expected = stream_get_meta_data($resource);
-        $test = $this->stream->getMetadata();
-
-        self::assertEquals($expected, $test);
+        self::assertEquals($expected, $subject->getMetadata());
     }
 
     /**
@@ -541,14 +510,11 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
         $resource = fopen($fileName, 'r+');
-        $this->stream->attach($resource);
-
+        $subject = new Stream('php://memory', 'wb+');
+        $subject->attach($resource);
         $metadata = stream_get_meta_data($resource);
         $expected = $metadata['uri'];
-
-        $test = $this->stream->getMetadata('uri');
-
-        self::assertEquals($expected, $test);
+        self::assertEquals($expected, $subject->getMetadata('uri'));
     }
 
     /**
@@ -559,9 +525,9 @@ class StreamTest extends UnitTestCase
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         touch($fileName);
         $resource = fopen($fileName, 'r+');
-        $this->stream->attach($resource);
-
-        self::assertNull($this->stream->getMetadata('TOTALLY_MADE_UP'));
+        $subject = new Stream('php://memory', 'wb+');
+        $subject->attach($resource);
+        self::assertNull($subject->getMetadata('TOTALLY_MADE_UP'));
     }
 
     /**
@@ -571,7 +537,7 @@ class StreamTest extends UnitTestCase
     {
         $resource = fopen(__FILE__, 'r');
         $expected = fstat($resource);
-        $stream = new Stream($resource);
-        self::assertEquals($expected['size'], $stream->getSize());
+        $subject = new Stream($resource);
+        self::assertEquals($expected['size'], $subject->getSize());
     }
 }
