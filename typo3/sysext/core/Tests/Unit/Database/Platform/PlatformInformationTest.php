@@ -24,27 +24,40 @@ use Doctrine\DBAL\Platforms\SqlitePlatform;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class PlatformInformationTest extends UnitTestCase
+final class PlatformInformationTest extends UnitTestCase
 {
     /**
-     * Test cases for stripping of leading logical operators in where constraints.
+     * @return array<string, array{0: class-string<AbstractPlatform>}>
      */
-    public function platformDataProvider(): array
+    public static function platformDataProvider(): array
     {
         return [
-            'mysql' => [$this->createMock(MySQLPlatform::class)],
-            'postgresql' => [$this->createMock(PostgreSQLPlatform::class)],
-            'sqlite' => [$this->createMock(SqlitePlatform::class)],
+            'mysql' => [MySQLPlatform::class],
+            'postgresql' => [PostgreSQLPlatform::class],
+            'sqlite' => [SqlitePlatform::class],
         ];
     }
 
     /**
      * @test
+     * @param class-string<AbstractPlatform> $platform
      * @dataProvider platformDataProvider
      */
-    public function maxBindParameters(AbstractPlatform $platform): void
+    public function maxBindParameters(string $platform): void
     {
-        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platform));
+        $platformMock = $this->createMock($platform);
+        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platformMock));
+    }
+
+    /**
+     * @test
+     * @param class-string<AbstractPlatform> $platform
+     * @dataProvider platformDataProvider
+     */
+    public function maxIdentifierLength(string $platform): void
+    {
+        $platformMock = $this->createMock($platform);
+        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platformMock));
     }
 
     /**
@@ -54,17 +67,8 @@ class PlatformInformationTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1500958070);
-        $platform = $this->createMock(AbstractPlatform::class);
-        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platform));
-    }
-
-    /**
-     * @test
-     * @dataProvider platformDataProvider
-     */
-    public function maxIdentifierLength(AbstractPlatform $platform): void
-    {
-        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platform));
+        $platformMock = $this->createMock(AbstractPlatform::class);
+        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platformMock));
     }
 
     /**
@@ -74,7 +78,7 @@ class PlatformInformationTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1500958070);
-        $platform = $this->createMock(AbstractPlatform::class);
-        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platform));
+        $platformMock = $this->createMock(AbstractPlatform::class);
+        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platformMock));
     }
 }
