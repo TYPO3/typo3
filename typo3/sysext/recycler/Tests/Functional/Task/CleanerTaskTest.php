@@ -15,15 +15,12 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Recycler\Tests\Functional\Task\Pages;
+namespace TYPO3\CMS\Recycler\Tests\Functional\Task;
 
 use TYPO3\CMS\Recycler\Task\CleanerTask;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test Case
- */
-class CleanerTaskTest extends FunctionalTestCase
+final class CleanerTaskTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['recycler', 'scheduler'];
 

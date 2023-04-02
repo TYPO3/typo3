@@ -3081,11 +3081,6 @@ parameters:
 			path: ../../typo3/sysext/recycler/Classes/Controller/RecyclerAjaxController.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Recycler\\\\Task\\\\CleanerFieldProvider\\:\\:expects\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recycler/Tests/Unit/Task/CleanerFieldProviderTest.php
-
-		-
 			message: "#^Right side of && is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/rte_ckeditor/Classes/Controller/BrowseLinksController.php
