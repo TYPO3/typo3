@@ -51,13 +51,22 @@ class HrefLangGenerator
 
         $this->cObj->setRequest($event->getRequest());
         $languages = $this->languageMenuProcessor->process($this->cObj, [], [], []);
-        $site = $this->getTypoScriptFrontendController()->getSite();
-        $siteLanguage = $this->getTypoScriptFrontendController()->getLanguage();
-        $pageId = $this->getTypoScriptFrontendController()->id;
+        $tsfe = $this->getTypoScriptFrontendController();
+        $site = $tsfe->getSite();
+        $siteLanguage = $tsfe->getLanguage();
+        $pageId = $tsfe->id;
 
         foreach ($languages['languagemenu'] as $language) {
             if (!empty($language['link']) && $language['hreflang']) {
-                $page = $this->getTranslatedPageRecord($pageId, $language['languageId'], $site);
+                if ($language['languageId'] === 0) {
+                    // No need to fetch default language
+                    $page = ($tsfe->page['_TRANSLATION_SOURCE'] ?? null)?->toArray(true) ?? $tsfe->page;
+                } elseif ($language['languageId'] === ($tsfe->page['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] ?? false)) {
+                    // No need to fetch current language
+                    $page = $tsfe->page;
+                } else {
+                    $page = $this->getTranslatedPageRecord($pageId, $language['languageId'], $site);
+                }
                 // do not set hreflang if a page is not translated explicitly
                 if (empty($page)) {
                     continue;
