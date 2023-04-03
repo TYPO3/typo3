@@ -26,6 +26,12 @@ import Severity from '../severity';
 import '@typo3/backend/element/icon-element';
 import { SeverityEnum } from '../enum/severity';
 
+type PasteOptions = {
+  itemOnClipboardUid: number;
+  itemOnClipboardTitle: string;
+  copyMode: string;
+}
+
 class Paste {
   private readonly itemOnClipboardUid: number = 0;
   private readonly itemOnClipboardTitle: string = '';
@@ -37,10 +43,10 @@ class Paste {
   /**
    * initializes paste icons for all content elements on the page
    */
-  constructor(itemOnClipboardUid: number, itemOnClipboardTitle: string, copyMode: string) {
-    this.itemOnClipboardUid = itemOnClipboardUid;
-    this.itemOnClipboardTitle = itemOnClipboardTitle;
-    this.copyMode = copyMode;
+  constructor(args: PasteOptions) {
+    this.itemOnClipboardUid = args.itemOnClipboardUid;
+    this.itemOnClipboardTitle = args.itemOnClipboardTitle;
+    this.copyMode = args.copyMode;
 
     DocumentService.ready().then((): void => {
       if ($('.t3js-page-columns').length) {
