@@ -24,7 +24,7 @@ use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\ValidationDto;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionValidationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FormDefinitionValidationServiceTest extends UnitTestCase
+final class FormDefinitionValidationServiceTest extends UnitTestCase
 {
     protected function setUp(): void
     {
@@ -120,7 +120,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $sessionToken,
                 $validationDto
             );
-        } catch (PropertyException $e) {
+        } catch (PropertyException) {
             $failed = true;
         }
         self::assertFalse($failed);
@@ -239,108 +239,10 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $sessionToken,
                 $validationDto
             );
-        } catch (PropertyException $e) {
+        } catch (PropertyException) {
             $failed = true;
         }
         self::assertFalse($failed);
-    }
-
-    /**
-     * @test
-     * @dataProvider validateAllPropertyValuesFromCreatableFormElementDataProvider
-     */
-    public function validateAllPropertyValuesFromCreatableFormElement(
-        array $mockConfiguration,
-        array $formElement,
-        string $sessionToken,
-        int $exceptionCode,
-        ValidationDto $validationDto
-    ): void {
-        $typeConverter = $this->getAccessibleMock(
-            FormDefinitionValidationService::class,
-            ['getConfigurationService'],
-            [],
-            '',
-            false
-        );
-
-        $configurationService = $this->createMock(ConfigurationService::class);
-        $configurationService
-            ->method('isFormElementPropertyDefinedInFormEditorSetup')
-            ->willReturn($mockConfiguration['isFormElementPropertyDefinedInFormEditorSetup']);
-        $configurationService->method(
-            'isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
-        )->willReturn($mockConfiguration['isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup']);
-        $configurationService
-            ->method('getFormElementPredefinedDefaultValueFromFormEditorSetup')
-            ->willReturn($mockConfiguration['getFormElementPredefinedDefaultValueFromFormEditorSetup']);
-        $typeConverter->method('getConfigurationService')->willReturn($configurationService);
-        $formDefinitionValidationService = $this->getAccessibleMock(FormDefinitionValidationService::class, ['getConfigurationService']);
-        $formDefinitionValidationService->method('getConfigurationService')->willReturn($configurationService);
-        GeneralUtility::setSingletonInstance(FormDefinitionValidationService::class, $formDefinitionValidationService);
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService);
-
-        $returnedExceptionCode = -1;
-        try {
-            $typeConverter->_call(
-                'validateAllPropertyValuesFromCreatableFormElement',
-                $formElement,
-                $sessionToken,
-                $validationDto
-            );
-        } catch (PropertyException $e) {
-            $returnedExceptionCode = $e->getCode();
-        }
-        self::assertEquals($returnedExceptionCode, $exceptionCode);
-    }
-
-    /**
-     * @test
-     * @dataProvider validateAllPropertyValuesFromCreatablePropertyCollectionElementDataProvider
-     */
-    public function validateAllPropertyValuesFromCreatablePropertyCollectionElement(
-        array $mockConfiguration,
-        array $formElement,
-        string $sessionToken,
-        int $exceptionCode,
-        ValidationDto $validationDto
-    ): void {
-        $typeConverter = $this->getAccessibleMock(
-            FormDefinitionValidationService::class,
-            ['getConfigurationService'],
-            [],
-            '',
-            false
-        );
-
-        $configurationService = $this->createMock(ConfigurationService::class);
-        $configurationService
-            ->method('isPropertyCollectionPropertyDefinedInFormEditorSetup')
-            ->willReturn($mockConfiguration['isPropertyCollectionPropertyDefinedInFormEditorSetup']);
-        $configurationService->method(
-            'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
-        )->willReturn($mockConfiguration['isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup']);
-        $configurationService->method(
-            'getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup'
-        )->willReturn($mockConfiguration['getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup']);
-        $typeConverter->method('getConfigurationService')->willReturn($configurationService);
-        $formDefinitionValidationService = $this->getAccessibleMock(FormDefinitionValidationService::class, ['getConfigurationService']);
-        $formDefinitionValidationService->method('getConfigurationService')->willReturn($configurationService);
-        GeneralUtility::setSingletonInstance(FormDefinitionValidationService::class, $formDefinitionValidationService);
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService);
-
-        $returnedExceptionCode = -1;
-        try {
-            $typeConverter->_call(
-                'validateAllPropertyValuesFromCreatablePropertyCollectionElement',
-                $formElement,
-                $sessionToken,
-                $validationDto
-            );
-        } catch (PropertyException $e) {
-            $returnedExceptionCode = $e->getCode();
-        }
-        self::assertEquals($returnedExceptionCode, $exceptionCode);
     }
 
     public static function validateAllPropertyValuesFromCreatableFormElementDataProvider(): array
@@ -478,6 +380,46 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         ];
     }
 
+    /**
+     * @test
+     * @dataProvider validateAllPropertyValuesFromCreatableFormElementDataProvider
+     */
+    public function validateAllPropertyValuesFromCreatableFormElement(
+        array $mockConfiguration,
+        array $formElement,
+        string $sessionToken,
+        int $exceptionCode,
+        ValidationDto $validationDto
+    ): void {
+        $configurationService = $this->createMock(ConfigurationService::class);
+        $configurationService
+            ->method('isFormElementPropertyDefinedInFormEditorSetup')
+            ->willReturn($mockConfiguration['isFormElementPropertyDefinedInFormEditorSetup']);
+        $configurationService
+            ->method('isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup')
+            ->willReturn($mockConfiguration['isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup']);
+        $configurationService
+            ->method('getFormElementPredefinedDefaultValueFromFormEditorSetup')
+            ->willReturn($mockConfiguration['getFormElementPredefinedDefaultValueFromFormEditorSetup']);
+        $formDefinitionValidationService = $this->getAccessibleMock(FormDefinitionValidationService::class, null);
+        GeneralUtility::setSingletonInstance(FormDefinitionValidationService::class, $formDefinitionValidationService);
+        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService);
+
+        $subject = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
+        $returnedExceptionCode = -1;
+        try {
+            $subject->_call(
+                'validateAllPropertyValuesFromCreatableFormElement',
+                $formElement,
+                $sessionToken,
+                $validationDto
+            );
+        } catch (PropertyException $e) {
+            $returnedExceptionCode = $e->getCode();
+        }
+        self::assertEquals($returnedExceptionCode, $exceptionCode);
+    }
+
     public static function validateAllPropertyValuesFromCreatablePropertyCollectionElementDataProvider(): array
     {
         $encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
@@ -612,5 +554,45 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $validationDto,
             ],
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider validateAllPropertyValuesFromCreatablePropertyCollectionElementDataProvider
+     */
+    public function validateAllPropertyValuesFromCreatablePropertyCollectionElement(
+        array $mockConfiguration,
+        array $formElement,
+        string $sessionToken,
+        int $exceptionCode,
+        ValidationDto $validationDto
+    ): void {
+        $configurationService = $this->createMock(ConfigurationService::class);
+        $configurationService
+            ->method('isPropertyCollectionPropertyDefinedInFormEditorSetup')
+            ->willReturn($mockConfiguration['isPropertyCollectionPropertyDefinedInFormEditorSetup']);
+        $configurationService->method(
+            'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
+        )->willReturn($mockConfiguration['isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup']);
+        $configurationService->method(
+            'getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup'
+        )->willReturn($mockConfiguration['getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup']);
+        $formDefinitionValidationService = $this->getAccessibleMock(FormDefinitionValidationService::class, null);
+        GeneralUtility::setSingletonInstance(FormDefinitionValidationService::class, $formDefinitionValidationService);
+        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService);
+
+        $subject = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
+        $returnedExceptionCode = -1;
+        try {
+            $subject->_call(
+                'validateAllPropertyValuesFromCreatablePropertyCollectionElement',
+                $formElement,
+                $sessionToken,
+                $validationDto
+            );
+        } catch (PropertyException $e) {
+            $returnedExceptionCode = $e->getCode();
+        }
+        self::assertEquals($returnedExceptionCode, $exceptionCode);
     }
 }
