@@ -18,11 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions;
+use TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider\Fixtures\EvaluateDisplayConditionsTestClass;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class EvaluateDisplayConditionsTest extends UnitTestCase
+final class EvaluateDisplayConditionsTest extends UnitTestCase
 {
     /**
      * @test
@@ -496,87 +497,19 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      */
     public function addDataEvaluatesUserCondition(): void
     {
-        $input = [
-            'databaseRow' => [],
-            'processedTca' => [
-                'columns' => [
-                    'field_1' => [
-                        'displayCond' => 'USER:' . self::class . '->addDataEvaluatesUserConditionCallback:more:arguments',
-                    ],
-                ],
-            ],
-        ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1488130499);
-        (new EvaluateDisplayConditions())->addData($input);
-    }
-
-    /**
-     * Callback method of addDataEvaluatesUserCondition. A USER condition
-     * Throws an exception if data is correct!
-     *
-     * @throws \RuntimeException if data is ok
-     */
-    public function addDataEvaluatesUserConditionCallback(array $parameter): void
-    {
-        $expected = [
-            'record' => [],
-            'flexContext' => [],
-            'flexformValueKey' => 'vDEF',
-            'conditionParameters' => [
-                0 => 'more',
-                1 => 'arguments',
-            ],
-        ];
-        if ($expected === $parameter) {
-            throw new \RuntimeException('testing', 1488130499);
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function addDataResolvesAllUserParameters(): void
-    {
         $input = [
             'databaseRow' => [],
             'processedTca' => [
                 'columns' => [
                     'field_1' => [
-                        'displayCond' => 'USER:' . self::class . '->addDataResolvesAllUserParametersCallback:some:more:info',
-                        'config' => [
-                            'type' => 'input',
-                        ],
+                        'displayCond' => 'USER:' . EvaluateDisplayConditionsTestClass::class . '->addDataEvaluatesUserConditionCallback:more:arguments',
                     ],
                 ],
             ],
         ];
-
-        $expected = $input;
-        unset($expected['processedTca']['columns']['field_1']['displayCond']);
-
-        self::assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
-    }
-
-    /**
-     * Callback method of addDataResolvesAllUserParameters. A USER condition
-     * receives all condition parameter!
-     *
-     * @throws \RuntimeException if condition parameter not resolved correctly
-     */
-    public function addDataResolvesAllUserParametersCallback(array $parameter): bool
-    {
-        $expected = [
-            0 => 'some',
-            1 => 'more',
-            2 => 'info',
-        ];
-
-        if ($expected !== $parameter['conditionParameters']) {
-            throw new \RuntimeException('testing', 1538055997);
-        }
-
-        return true;
+        (new EvaluateDisplayConditions())->addData($input);
     }
 
     /**
@@ -598,7 +531,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                                             'type' => 'array',
                                             'el' => [
                                                 'foo' => [
-                                                    'displayCond' => 'USER:' . self::class . '->addDataPassesFlexContextToUserConditionCallback:some:info',
+                                                    'displayCond' => 'USER:' . EvaluateDisplayConditionsTestClass::class . '->addDataPassesFlexContextToUserConditionCallback:some:info',
                                                 ],
                                             ],
                                         ],
@@ -610,53 +543,9 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                 ],
             ],
         ];
-
         $expected = $input;
         unset($expected['processedTca']['columns']['field_1']['config']['ds']['sheets']['sDEF']['ROOT']['el']['foo']['displayCond']);
-
         self::assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
-    }
-
-    /**
-     * Callback method of addDataEvaluatesUserCondition. A USER condition
-     * Throws an exception if data is correct!
-     *
-     * @throws \RuntimeException if FlexForm context is not as expected
-     */
-    public function addDataPassesFlexContextToUserConditionCallback(array $parameter): bool
-    {
-        $expected = [
-            'context' => 'flexField',
-            'sheetNameFieldNames' => [
-                'sDEF.foo' => [
-                    'sheetName' => 'sDEF',
-                    'fieldName' => 'foo',
-                ],
-            ],
-            'currentSheetName' => 'sDEF',
-            'currentFieldName' => 'foo',
-            'flexFormDataStructure' => [
-                'sheets' => [
-                    'sDEF' => [
-                        'ROOT' => [
-                            'type' => 'array',
-                            'el' => [
-                                'foo' => [
-                                    'displayCond' => 'USER:' . self::class . '->addDataPassesFlexContextToUserConditionCallback:some:info',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'flexFormRowData' => null,
-        ];
-
-        if ($expected !== $parameter['flexContext']) {
-            throw new \RuntimeException('testing', 1538057402);
-        }
-
-        return true;
     }
 
     /**
