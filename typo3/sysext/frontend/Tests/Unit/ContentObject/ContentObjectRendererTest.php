@@ -3725,120 +3725,87 @@ final class ContentObjectRendererTest extends UnitTestCase
         self::assertSame($expect, $this->subject->getFieldVal($fields));
     }
 
-    /**
-     * Data provider for caseshift.
-     *
-     * @return array [$expect, $content, $case]
-     */
     public static function caseshiftDataProvider(): array
     {
         return [
-            'lower' => ['x y', 'X Y', 'lower'],
-            'upper' => ['X Y', 'x y', 'upper'],
-            'capitalize' => ['One Two', 'one two', 'capitalize'],
-            'ucfirst' => ['One two', 'one two', 'ucfirst'],
-            'lcfirst' => ['oNE TWO', 'ONE TWO', 'lcfirst'],
-            'uppercamelcase' => ['CamelCase', 'camel_case', 'uppercamelcase'],
-            'lowercamelcase' => ['camelCase', 'camel_case', 'lowercamelcase'],
+            'lower' => [
+                'x y', // expected
+                'X Y', // content
+                'lower', // case
+            ],
+            'upper' => [
+                'X Y',
+                'x y',
+                'upper',
+            ],
+            'capitalize' => [
+                'One Two',
+                'one two',
+                'capitalize',
+            ],
+            'ucfirst' => [
+                'One two',
+                'one two',
+                'ucfirst',
+            ],
+            'lcfirst' => [
+                'oNE TWO',
+                'ONE TWO',
+                'lcfirst',
+            ],
+            'uppercamelcase' => [
+                'CamelCase',
+                'camel_case',
+                'uppercamelcase',
+            ],
+            'lowercamelcase' => [
+                'camelCase',
+                'camel_case',
+                'lowercamelcase',
+            ],
         ];
     }
 
     /**
-     * Check if caseshift works properly.
-     *
      * @test
      * @dataProvider caseshiftDataProvider
-     * @param string $expect The expected output.
-     * @param string $content The given input.
-     * @param string $case The given type of conversion.
      */
-    public function caseshift(string $expect, string $content, string $case): void
+    public function caseshift(string $expected, string $content, string $case): void
     {
-        self::assertSame(
-            $expect,
-            $this->subject->caseshift($content, $case)
-        );
+        self::assertSame($expected, $this->subject->caseshift($content, $case));
     }
 
-    /**
-     * Data provider for HTMLcaseshift.
-     *
-     * @return array [$expect, $content, $case, $with, $will]
-     */
     public static function HTMLcaseshiftDataProvider(): array
     {
-        $case = StringUtility::getUniqueId('case');
         return [
             'simple text' => [
-                'TEXT',
                 'text',
-                $case,
-                [['text', $case]],
-                ['TEXT'],
+                'TEXT',
             ],
             'simple tag' => [
-                '<i>TEXT</i>',
                 '<i>text</i>',
-                $case,
-                [['', $case], ['text', $case]],
-                ['', 'TEXT'],
+                '<i>TEXT</i>',
             ],
             'multiple nested tags with classes' => [
-                '<div class="typo3">'
-                . '<p>A <b>BOLD<\b> WORD.</p>'
-                . '<p>AN <i>ITALIC<\i> WORD.</p>'
-                . '</div>',
                 '<div class="typo3">'
                 . '<p>A <b>bold<\b> word.</p>'
                 . '<p>An <i>italic<\i> word.</p>'
                 . '</div>',
-                $case,
-                [
-                    ['', $case],
-                    ['', $case],
-                    ['A ', $case],
-                    ['bold', $case],
-                    [' word.', $case],
-                    ['', $case],
-                    ['An ', $case],
-                    ['italic', $case],
-                    [' word.', $case],
-                    ['', $case],
-                ],
-                ['', '', 'A ', 'BOLD', ' WORD.', '', 'AN ', 'ITALIC', ' WORD.', ''],
+                '<div class="typo3">'
+                . '<p>A <b>BOLD<\b> WORD.</p>'
+                . '<p>AN <i>ITALIC<\i> WORD.</p>'
+                . '</div>',
             ],
         ];
     }
 
     /**
-     * Check if HTMLcaseshift works properly.
-     *
-     * Show:
-     *
-     * - Only shifts the case of characters not part of tags.
-     * - Delegates to the method caseshift.
-     *
      * @test
      * @dataProvider HTMLcaseshiftDataProvider
-     * @param string $expect The expected output.
-     * @param string $content The given input.
-     * @param string $case The given type of conversion.
-     * @param array $with Consecutive args expected by caseshift.
-     * @param array $will Consecutive return values of caseshfit.
      */
-    public function HTMLcaseshift(string $expect, string $content, string $case, array $with, array $will): void
+    public function HTMLcaseshift(string $content, string $expected): void
     {
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->onlyMethods(['caseshift'])->getMock();
-        $subject
-            ->expects(self::exactly(count($with)))
-            ->method('caseshift')
-            ->withConsecutive(...$with)
-            ->will(self::onConsecutiveCalls(...$will));
-        self::assertSame(
-            $expect,
-            $subject->HTMLcaseshift($content, $case)
-        );
+        self::assertSame($expected, (new ContentObjectRenderer())->HTMLcaseshift($content, 'upper'));
     }
 
     /***************************************************************************
@@ -4402,83 +4369,84 @@ final class ContentObjectRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * Data provider for stdWrap_orderedStdWrap.
-     *
-     * @return array [$firstConf, $secondConf, $conf]
-     */
     public static function stdWrap_orderedStdWrapDataProvider(): array
     {
-        $confA = [StringUtility::getUniqueId('conf A')];
-        $confB = [StringUtility::getUniqueId('conf B')];
         return [
-            'standard case: order 1, 2' => [
-                $confA,
-                $confB,
-                ['1.' => $confA, '2.' => $confB],
+            'standard case: given order 1, 2' => [
+                [
+                    'orderedStdWrap.' => [
+                        '1.' => [
+                            'wrap' => '<inner>|</inner>',
+                        ],
+                        '2.' => [
+                            'wrap' => '<outer>|</outer>',
+                        ],
+                    ],
+                ],
+                '<outer><inner>someContent</inner></outer>',
             ],
-            'inverted: order 2, 1' => [
-                $confB,
-                $confA,
-                ['2.' => $confA, '1.' => $confB],
+            'inverted: given order 2, 1' => [
+                [
+                    'orderedStdWrap.' => [
+                        '2.' => [
+                            'wrap' => '<outer>|</outer>',
+                        ],
+                        '1.' => [
+                            'wrap' => '<inner>|</inner>',
+                        ],
+                    ],
+                ],
+                '<outer><inner>someContent</inner></outer>',
             ],
-            '0 as integer: order 0, 2' => [
-                $confA,
-                $confB,
-                ['0.' => $confA, '2.' => $confB],
+            '0 as integer: given order 0, 2' => [
+                [
+                    'orderedStdWrap.' => [
+                        '0.' => [
+                            'wrap' => '<inner>|</inner>',
+                        ],
+                        '2.' => [
+                            'wrap' => '<outer>|</outer>',
+                        ],
+                    ],
+                ],
+                '<outer><inner>someContent</inner></outer>',
             ],
-            'negative integers: order 2, -2' => [
-                $confB,
-                $confA,
-                ['2.' => $confA, '-2.' => $confB],
+            'negative integers: given order 2, -2' => [
+                [
+                    'orderedStdWrap.' => [
+                        '2.' => [
+                            'wrap' => '<outer>|</outer>',
+                        ],
+                        '-2.' => [
+                            'wrap' => '<inner>|</inner>',
+                        ],
+                    ],
+                ],
+                '<outer><inner>someContent</inner></outer>',
             ],
             'chars are casted to key 0, that is not in the array' => [
-                null,
-                $confB,
-                ['2.' => $confB, 'xxx.' => $confA],
+                [
+                    'orderedStdWrap.' => [
+                        '2.' => [
+                            'wrap' => '<inner>|</inner>',
+                        ],
+                        'xxx.' => [
+                            'wrap' => '<invalid>|</invalid>',
+                        ],
+                    ],
+                ],
+                '<inner>someContent</inner>',
             ],
         ];
     }
 
     /**
-     * Check if stdWrap_orderedStdWrap works properly.
-     *
-     * Show:
-     *
-     * - For each entry of $conf['orderedStdWrap.'] stdWrap is applied
-     *   to $content.
-     * - The order is defined by the keys, after they have been casted
-     *   to integers.
-     * - Returns the processed $content after all entries have been applied.
-     *
-     * Each test calls stdWrap two times. First $content is processed to
-     * $between, second $between is processed to $expect, the final return
-     * value. It is checked, if the expected parameters are given in the right
-     * consecutive order to stdWrap.
-     *
      * @test
      * @dataProvider stdWrap_orderedStdWrapDataProvider
-     * @param array|null $firstConf Parameter 2 expected by first call to stdWrap.
-     * @param array $secondConf Parameter 2 expected by second call to stdWrap.
-     * @param array $conf The given configuration.
      */
-    public function stdWrap_orderedStdWrap(?array $firstConf, array $secondConf, array $conf): void
+    public function stdWrap_orderedStdWrap(array $config, string $expected): void
     {
-        $content = StringUtility::getUniqueId('content');
-        $between = StringUtility::getUniqueId('between');
-        $expect = StringUtility::getUniqueId('expect');
-        $conf['orderedStdWrap.'] = $conf;
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->onlyMethods(['stdWrap'])->getMock();
-        $subject
-            ->expects(self::exactly(2))
-            ->method('stdWrap')
-            ->withConsecutive([$content, $firstConf], [$between, $secondConf])
-            ->will(self::onConsecutiveCalls($between, $expect));
-        self::assertSame(
-            $expect,
-            $subject->stdWrap_orderedStdWrap($content, $conf)
-        );
+        self::assertSame($expected, (new ContentObjectRenderer())->stdWrap_orderedStdWrap('someContent', $config));
     }
 
     /**

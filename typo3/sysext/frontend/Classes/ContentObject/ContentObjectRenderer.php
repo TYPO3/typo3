@@ -4770,7 +4770,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Shifts the case of characters outside of HTML tags in the input string
      *
      * @param string $theValue The string to change case for.
-     * @param string $case The direction; either "upper" or "lower
+     * @param string $case The direction; either "upper" or "lower"
      * @return string
      * @see caseshift()
      */
