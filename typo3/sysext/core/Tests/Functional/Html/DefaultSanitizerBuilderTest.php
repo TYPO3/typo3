@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Html;
 use TYPO3\CMS\Core\Html\DefaultSanitizerBuilder;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Tests\Functional\Html\Fixtures\ExtendedSanitizerBuilder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\HtmlSanitizer\Behavior;
 use TYPO3\HtmlSanitizer\Sanitizer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -142,7 +141,7 @@ class DefaultSanitizerBuilderTest extends FunctionalTestCase
      */
     public function behaviorIsCachedInMemory(): void
     {
-        $default = GeneralUtility::makeInstance(DefaultSanitizerBuilder::class);
+        $default = new DefaultSanitizerBuilder();
         $defaultSanitizer = $default->build();
         $defaultBehavior = $this->resolveBehaviorFromSanitizer($defaultSanitizer);
 
@@ -152,7 +151,7 @@ class DefaultSanitizerBuilderTest extends FunctionalTestCase
             'in-memory caching failed for same scope DefaultSanitizerBuilder'
         );
 
-        $extended = GeneralUtility::makeInstance(ExtendedSanitizerBuilder::class);
+        $extended = new ExtendedSanitizerBuilder();
         $extendedSanitizer = $extended->build();
         $extendedBehavior = $this->resolveBehaviorFromSanitizer($extendedSanitizer);
 
