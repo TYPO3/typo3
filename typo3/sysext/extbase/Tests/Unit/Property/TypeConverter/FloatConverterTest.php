@@ -20,28 +20,16 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter;
-use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class FloatConverterTest extends UnitTestCase
+final class FloatConverterTest extends UnitTestCase
 {
-    /**
-     * @var TypeConverterInterface
-     */
-    protected $converter;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->converter = new FloatConverter();
-    }
-
     /**
      * @test
      */
     public function convertFromShouldCastTheStringToFloat(): void
     {
-        self::assertSame(1.5, $this->converter->convertFrom('1.5', 'float'));
+        self::assertSame(1.5, (new FloatConverter())->convertFrom('1.5', 'float'));
     }
 
     /**
@@ -49,7 +37,7 @@ class FloatConverterTest extends UnitTestCase
      */
     public function convertFromReturnsNullIfEmptyStringSpecified(): void
     {
-        self::assertNull($this->converter->convertFrom('', 'float'));
+        self::assertNull((new FloatConverter())->convertFrom('', 'float'));
     }
 
     /**
@@ -57,7 +45,7 @@ class FloatConverterTest extends UnitTestCase
      */
     public function convertFromShouldAcceptIntegers(): void
     {
-        self::assertSame((float)123, $this->converter->convertFrom(123, 'float'));
+        self::assertSame((float)123, (new FloatConverter())->convertFrom(123, 'float'));
     }
 
     /**
@@ -66,15 +54,20 @@ class FloatConverterTest extends UnitTestCase
     public function convertFromShouldRespectConfiguration(): void
     {
         $mockMappingConfiguration = $this->createMock(PropertyMappingConfigurationInterface::class);
+        $series = [
+            [FloatConverter::class, FloatConverter::CONFIGURATION_THOUSANDS_SEPARATOR, '.'],
+            [FloatConverter::class, FloatConverter::CONFIGURATION_DECIMAL_POINT, ','],
+        ];
         $mockMappingConfiguration
             ->expects(self::exactly(2))
             ->method('getConfigurationValue')
-            ->withConsecutive(
-                [FloatConverter::class, FloatConverter::CONFIGURATION_THOUSANDS_SEPARATOR],
-                [FloatConverter::class, FloatConverter::CONFIGURATION_DECIMAL_POINT]
-            )
-            ->willReturnOnConsecutiveCalls('.', ',');
-        self::assertSame(1024.42, $this->converter->convertFrom('1.024,42', 'float', [], $mockMappingConfiguration));
+            ->willReturnCallback(function (string $class, string $key) use (&$series): string {
+                $arguments = array_shift($series);
+                self::assertSame($class, $arguments[0]);
+                self::assertSame($key, $arguments[1]);
+                return $arguments[2];
+            });
+        self::assertSame(1024.42, (new FloatConverter())->convertFrom('1.024,42', 'float', [], $mockMappingConfiguration));
     }
 
     /**
@@ -82,7 +75,7 @@ class FloatConverterTest extends UnitTestCase
      */
     public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric(): void
     {
-        self::assertInstanceOf(Error::class, $this->converter->convertFrom('not numeric', 'float'));
+        self::assertInstanceOf(Error::class, (new FloatConverter())->convertFrom('not numeric', 'float'));
     }
 
     /**
@@ -90,6 +83,6 @@ class FloatConverterTest extends UnitTestCase
      */
     public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray(): void
     {
-        self::assertEquals([], $this->converter->getSourceChildPropertiesToBeConverted('myString'));
+        self::assertEquals([], (new FloatConverter())->getSourceChildPropertiesToBeConverted('myString'));
     }
 }

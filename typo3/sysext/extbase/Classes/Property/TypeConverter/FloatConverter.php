@@ -66,15 +66,11 @@ class FloatConverter extends AbstractTypeConverter
         if ($source === null || (string)$source === '') {
             return null;
         }
-
-        // We won't backport the full flavored locale parsing of floats from Flow here
-
         if (is_string($source) && $configuration !== null) {
             $thousandsSeparator = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_THOUSANDS_SEPARATOR);
             $decimalPoint = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_DECIMAL_POINT);
             $source = str_replace([$thousandsSeparator, $decimalPoint], ['', '.'], $source);
         }
-
         if (!is_numeric($source)) {
             return new Error('"%s" cannot be converted to a float value.', 1332934124, [$source]);
         }
