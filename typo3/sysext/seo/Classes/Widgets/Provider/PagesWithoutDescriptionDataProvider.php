@@ -43,6 +43,10 @@ final class PagesWithoutDescriptionDataProvider
     {
         $backendUser = $this->getBackendUser();
         $items = [];
+        if (!$backendUser->check('tables_modify', 'pages')) {
+            // Early return in case user is not allowed to modify pages at all
+            return $items;
+        }
         $rowCount = 0;
         $pagesResult = $this->getPotentialPages();
         while ($row = $pagesResult->fetchAssociative()) {
@@ -81,7 +85,7 @@ final class PagesWithoutDescriptionDataProvider
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->add(new WorkspaceRestriction($this->getBackendUser()->workspace));
         return $queryBuilder
-            ->select('uid', 'pid', 'title', 'slug', 'sys_language_uid', 'l10n_parent', 'perms_userid', 'perms_groupid', 'perms_everybody')
+            ->select('uid', 'pid', 'title', 'slug', 'sys_language_uid', 'l10n_parent', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody')
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->notIn('doktype', $this->excludedDoktypes),
