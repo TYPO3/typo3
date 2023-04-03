@@ -27,7 +27,7 @@ use TYPO3\CMS\Extensionmanager\Utility\EmConfUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class DependencyUtilityTest extends UnitTestCase
+final class DependencyUtilityTest extends UnitTestCase
 {
     /**
      * @test
@@ -352,7 +352,7 @@ class DependencyUtilityTest extends UnitTestCase
             ->onlyMethods(['countByVersionRangeAndExtensionKey'])
             ->getMock();
         $extensionRepositoryMock->expects(self::once())->method('countByVersionRangeAndExtensionKey')->with('dummy', 1000000, 2000000)->willReturn(0);
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['getLowestAndHighestIntegerVersions']);
+        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, null);
         $dependencyUtility->injectExtensionRepository($extensionRepositoryMock);
         $count = $dependencyUtility->_call('isDownloadableVersionCompatible', $dependency);
 
@@ -386,7 +386,7 @@ class DependencyUtilityTest extends UnitTestCase
         $myStorage->extensions[] = $extension1;
         $myStorage->extensions[] = $extension2;
         $dependency = Dependency::createFromEmConf('foobar', '1.0.0-2.0.0');
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['getLowestAndHighestIntegerVersions']);
+        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, null);
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
             ->onlyMethods(['findByVersionRangeAndExtensionKeyOrderedByVersion'])
             ->getMock();
