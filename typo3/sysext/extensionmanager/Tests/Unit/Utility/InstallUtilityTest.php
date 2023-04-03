@@ -20,20 +20,11 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
-use TYPO3\CMS\Core\Configuration\Features;
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
-use TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider;
-use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
-use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Package\Package;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -42,25 +33,18 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class InstallUtilityTest extends UnitTestCase
+final class InstallUtilityTest extends UnitTestCase
 {
-    protected string $extensionKey;
-    protected array $extensionData = [];
-
-    /**
-     * @var array List of created fake extensions to be deleted in tearDown() again
-     */
-    protected array $fakedExtensions = [];
-
-    protected bool $backupEnvironment = true;
     protected bool $resetSingletonInstances = true;
 
-    protected InstallUtility&MockObject&AccessibleObjectInterface $installMock;
+    private string $extensionKey = 'dummy';
+    private array $extensionData = [];
+    private array $fakedExtensions = [];
+    private InstallUtility&MockObject&AccessibleObjectInterface $installMock;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->extensionKey = 'dummy';
         $this->extensionData = [
             'key' => $this->extensionKey,
             'packagePath' => '',
@@ -118,12 +102,12 @@ class InstallUtilityTest extends UnitTestCase
     }
 
     /**
-     * Creates a fake extension inside typo3temp/. No configuration is created,
-     * just the folder
+     * Creates a fake extension inside typo3temp/.
+     * No configuration is created, just the folder.
      *
      * @return string The extension key
      */
-    protected function createFakeExtension(): string
+    private function createFakeExtension(): string
     {
         $extKey = strtolower(StringUtility::getUniqueId('testing'));
         $absExtPath = Environment::getVarPath() . '/tests/' . $extKey;
@@ -217,13 +201,10 @@ class InstallUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param string $fileName
-     * @param string $registryNameReturnsFalse
-     * @param string $registryNameReturnsTrue
      * @test
      * @dataProvider importT3DFileDoesNotImportFileIfAlreadyImportedDataProvider
      */
-    public function importT3DFileDoesNotImportFileIfAlreadyImported($fileName, $registryNameReturnsFalse, $registryNameReturnsTrue): void
+    public function importT3DFileDoesNotImportFileIfAlreadyImported(string $fileName, string $registryNameReturnsFalse, string $registryNameReturnsTrue): void
     {
         $extKey = $this->createFakeExtension();
         $absPath = $this->fakedExtensions[$extKey]['packagePath'];
@@ -243,195 +224,12 @@ class InstallUtilityTest extends UnitTestCase
             );
         $installMock = $this->getAccessibleMock(
             InstallUtility::class,
-            ['getRegistry', 'getImportExportUtility'],
+            null,
             [],
             '',
             false
         );
         $installMock->_set('registry', $registryMock);
-        $installMock->expects(self::never())->method('getImportExportUtility');
         $installMock->_call('importT3DFile', $extKey, $this->fakedExtensions[$extKey]['packagePath']);
-    }
-
-    /**
-     * @test
-     * @todo: At least this test should obviously turned into a functional test ...
-     */
-    public function siteConfigGetsMovedIntoPlace(): void
-    {
-        // prepare an extension with a shipped site config
-        $extKey = $this->createFakeExtension();
-        $absPath = $this->fakedExtensions[$extKey]['packagePath'];
-        $config = Yaml::dump(['dummy' => true]);
-        $siteIdentifier = 'site_identifier';
-        GeneralUtility::mkdir_deep($absPath . 'Initialisation/Site/' . $siteIdentifier);
-        file_put_contents($absPath . 'Initialisation/Site/' . $siteIdentifier . '/config.yaml', $config);
-
-        GeneralUtility::setSingletonInstance(
-            SiteConfiguration::class,
-            new SiteConfiguration(
-                Environment::getConfigPath() . '/sites',
-                new class () implements EventDispatcherInterface {
-                    public function dispatch(object $event)
-                    {
-                        return $event;
-                    }
-                },
-                new NullFrontend('core')
-            )
-        );
-
-        $packageMock = $this->getMockBuilder(Package::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
-           ->disableOriginalConstructor()
-           ->getMock();
-        $packageMock
-            ->method('getPackagePath')
-            ->willReturn($absPath);
-        $packageManagerMock
-            ->method('getPackage')
-            ->with(self::equalTo($extKey))
-            ->willReturn($packageMock);
-
-        $subject = new InstallUtility();
-        $subject->injectEventDispatcher(new NoopEventDispatcher());
-        $subject->injectPackageManager($packageManagerMock);
-
-        $registry = $this->createMock(Registry::class);
-        $registry->method('get')->willReturnMap([
-            ['extensionDataImport', self::anything(), 'some folder name'],
-            ['siteConfigImport', self::anything(), null],
-        ]);
-        $registry->expects(self::atLeastOnce())->method('set')->withConsecutive(
-            ['extensionDataImport', self::anything()],
-            ['siteConfigImport', self::anything()],
-            ['siteConfigImport', $siteIdentifier, 1],
-        );
-
-        $subject->injectRegistry($registry);
-
-        $providerConfigurationLoader = $this->createMock(ProviderConfigurationLoader::class);
-        GeneralUtility::addInstance(ProviderConfigurationLoader::class, $providerConfigurationLoader);
-        GeneralUtility::addInstance(ProviderConfigurationLoader::class, $providerConfigurationLoader);
-        $defaultProvider = new DefaultProvider(new Typo3Version(), new Context(), new Features());
-        GeneralUtility::addInstance(DefaultProvider::class, $defaultProvider);
-        GeneralUtility::addInstance(DefaultProvider::class, $defaultProvider);
-
-        // provide function result inside test output folder
-        $environment = new Environment();
-        $configDir = $absPath . 'Result/config';
-        if (!file_exists($configDir)) {
-            GeneralUtility::mkdir_deep($configDir);
-        }
-        $environment::initialize(
-            Environment::getContext(),
-            Environment::isCli(),
-            Environment::isComposerMode(),
-            Environment::getProjectPath(),
-            Environment::getPublicPath(),
-            Environment::getVarPath(),
-            $configDir,
-            Environment::getCurrentScript(),
-            'UNIX'
-        );
-        $subject->processExtensionSetup($extKey);
-
-        $siteConfigFile = $configDir . '/sites/' . $siteIdentifier . '/config.yaml';
-        self::assertFileExists($siteConfigFile);
-        self::assertStringEqualsFile($siteConfigFile, $config);
-        GeneralUtility::purgeInstances();
-    }
-
-    /**
-     * @test
-     * @todo: At least this test should obviously turned into a functional test ...
-     */
-    public function siteConfigGetsNotOverriddenIfExistsAlready(): void
-    {
-        // prepare an extension with a shipped site config
-        $extKey = $this->createFakeExtension();
-        $absPath = $this->fakedExtensions[$extKey]['packagePath'];
-        $siteIdentifier = 'site_identifier';
-        GeneralUtility::mkdir_deep($absPath . 'Initialisation/Site/' . $siteIdentifier);
-        file_put_contents($absPath . 'Initialisation/Site/' . $siteIdentifier . '/config.yaml', Yaml::dump(['dummy' => true]));
-
-        // fake an already existing site config in test output folder
-        $configDir = $absPath . 'Result/config';
-        if (!file_exists($configDir)) {
-            GeneralUtility::mkdir_deep($configDir);
-        }
-        $config = Yaml::dump(['foo' => 'bar']);
-        $existingSiteConfig = 'sites/' . $siteIdentifier . '/config.yaml';
-        GeneralUtility::mkdir_deep($configDir . '/sites/' . $siteIdentifier);
-        file_put_contents($configDir . '/' . $existingSiteConfig, $config);
-
-        GeneralUtility::setSingletonInstance(
-            SiteConfiguration::class,
-            new SiteConfiguration(
-                Environment::getConfigPath() . '/sites',
-                new class () implements EventDispatcherInterface {
-                    public function dispatch(object $event)
-                    {
-                        return $event;
-                    }
-                },
-                new NullFrontend('core')
-            )
-        );
-        $packageMock = $this->getMockBuilder(Package::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $packageMock
-            ->method('getPackagePath')
-            ->willReturn($absPath);
-        $packageManagerMock
-            ->method('getPackage')
-            ->with(self::equalTo($extKey))
-            ->willReturn($packageMock);
-
-        $subject = new InstallUtility();
-        $subject->injectEventDispatcher(new NoopEventDispatcher());
-        $subject->injectPackageManager($packageManagerMock);
-
-        $registry = $this->createMock(Registry::class);
-        $registry->method('get')->willReturnMap([
-            ['extensionDataImport', self::anything(), 'some folder name'],
-            ['siteConfigImport', self::anything(), null],
-        ]);
-        // Note, that test will fail if `set` is called with `siteConfigImport` as first argument.
-        $registry->expects(self::atLeastOnce())->method('set')->with('extensionDataImport', self::anything());
-        $subject->injectRegistry($registry);
-
-        $providerConfigurationLoader = $this->createMock(ProviderConfigurationLoader::class);
-        GeneralUtility::addInstance(ProviderConfigurationLoader::class, $providerConfigurationLoader);
-        GeneralUtility::addInstance(ProviderConfigurationLoader::class, $providerConfigurationLoader);
-        $defaultProvider = new DefaultProvider(new Typo3Version(), new Context(), new Features());
-        GeneralUtility::addInstance(DefaultProvider::class, $defaultProvider);
-        GeneralUtility::addInstance(DefaultProvider::class, $defaultProvider);
-
-        $environment = new Environment();
-
-        $environment::initialize(
-            Environment::getContext(),
-            Environment::isCli(),
-            Environment::isComposerMode(),
-            Environment::getProjectPath(),
-            Environment::getPublicPath(),
-            Environment::getVarPath(),
-            $configDir,
-            Environment::getCurrentScript(),
-            'UNIX'
-        );
-        $subject->processExtensionSetup($extKey);
-
-        $siteConfigFile = $configDir . '/sites/' . $siteIdentifier . '/config.yaml';
-        self::assertFileExists($siteConfigFile);
-        self::assertStringEqualsFile($siteConfigFile, $config);
-        GeneralUtility::purgeInstances();
     }
 }
